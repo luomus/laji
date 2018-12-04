@@ -19,6 +19,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() activeNP: number;
   @Input() height: string;
   @Input() userID: string;
+  @Input() reservable: boolean;
   @Output() activePlaceChange = new EventEmitter<number>();
   legend;
 
@@ -98,12 +99,14 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     if (!this.namedPlaces) {
       return;
     }
-    this.legend = {
-      [this.placeColor]: 'Vapaa',
-      [this.reservedColor]: 'Varattu',
-      [this.mineColor]: 'Itselle varattu',
-      [this.sentColor]: 'Ilmoitettu'
-    };
+    if (this.reservable) {
+      this.legend = {
+        [this.placeColor]: 'Vapaa',
+        [this.reservedColor]: 'Varattu',
+        [this.mineColor]: 'Itselle varattu',
+        [this.sentColor]: 'Ilmoitettu'
+      };
+    }
 
     try {
       this._data = {

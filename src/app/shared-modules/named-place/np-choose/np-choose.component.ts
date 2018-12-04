@@ -52,6 +52,8 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
 
   _activeNP = -1;
 
+  private FEATURE_RESERVE = 'MHL.featureReserve';
+
   constructor(
     @Inject(WINDOW) private window: Window,
     @Inject(PLATFORM_ID) private platformID: object
