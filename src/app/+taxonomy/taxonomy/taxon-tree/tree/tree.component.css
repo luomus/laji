@@ -5,11 +5,13 @@
 .tree, .tree ul, .tree li {
   position: relative;
 }
-.tree ul, .tree li {
-  display: inline-block;
-  float: left;
-  clear: both;
-}
+/*@media only screen and (min-width : 768px) {
+  .tree ul, .tree li {
+    display: inline-block;
+    float: left;
+    clear: both;
+  }
+}*/
 .tree ul {
   list-style: none;
   padding-left: 10px;
