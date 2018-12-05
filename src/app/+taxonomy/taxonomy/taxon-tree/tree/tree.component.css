@@ -1,20 +1,15 @@
 .tree {
-  margin-left: -10px;
   overflow: auto;
 }
 .tree, .tree ul, .tree li {
   position: relative;
 }
-/*@media only screen and (min-width : 768px) {
-  .tree ul, .tree li {
-    display: inline-block;
-    float: left;
-    clear: both;
-  }
-}*/
 .tree ul {
   list-style: none;
   padding-left: 10px;
+}
+.tree > ul {
+  padding-left: 0;
 }
 .tree li {
   line-height: 30px;

@@ -8,7 +8,4 @@
   .row {
     display: flex;
   }
-  .taxon-tree-container {
-    flex: 1 0 auto;
-  }
 }

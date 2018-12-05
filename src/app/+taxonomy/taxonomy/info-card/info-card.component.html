@@ -4,7 +4,7 @@
       <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
     </h1>
     <div class="row">
-      <div class="col-sm-12 descriptions" *ngIf="hasDescription">
+      <div class="col-md-6 descriptions" *ngIf="hasDescription">
         <select style="margin-bottom: 8px;" class="form-control"
                 (change)="onDescriptionChange($event.target.value)"
                 *ngIf="taxonDescription.length > 1">
@@ -38,9 +38,9 @@
           <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content | multiLang"></span>
         </div>
       </div>
-      <div [class.col-sm-12]="hasDescription">
+      <div [class.col-md-6]="hasDescription">
         <div [ngClass]="{
-                'col-sm-12 col-md-8': !hasDescription
+                'col-md-6 col-lg-4': !hasDescription
                 }"
              [hidden]="!hasTaxonImages && !hasCollectionImages">
           <div class="panel panel-default taxon-images">
@@ -78,8 +78,8 @@
           </div>
         </div>
         <div [ngClass]="{
-              'col-sm-12': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
-              'col-md-10': !hasDescription && (hasCollectionImages || hasTaxonImages)
+              'col-md-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
+              'col-lg-5': !hasDescription && (hasCollectionImages || hasTaxonImages)
             }">
           <div class="panel panel-default">
             <div class="panel-heading" role="tab">
@@ -128,8 +128,8 @@
           </div>
         </div>
         <div *ngIf="isFromMasterChecklist" [ngClass]="{
-              'col-sm-12': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
-              'col-md-6': !hasDescription && (hasCollectionImages || hasTaxonImages)
+              'col-md-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
+              'col-lg-3': !hasDescription && (hasCollectionImages || hasTaxonImages)
             }">
           <div class="panel panel-default">
             <div class="panel-heading" role="tab">
