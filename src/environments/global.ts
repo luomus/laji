@@ -33,6 +33,7 @@ export const Global = {
     'MHL.27': '/linjalaskenta',
     'MHL.28': '/linjalaskenta',
     'MHL.3': '/talvilintu',
+    'MHL.33': '/vieraslajit'
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {
