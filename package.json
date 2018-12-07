@@ -34,7 +34,7 @@
     "build:ssr:dev": "yarn run build:server:dev && yarn run build:dev",
     "build:ssr:local": "yarn run build:server:local && yarn run build:local",
     "server": "node local.js",
-    "msg-a": "node ./scripts/echo.js \"\nWill now run lint check!\n\nPlease note that warnings can be ignored, only errors will prevent the commit!\n\n\""
+    "msg-a": "node ./scripts/echo.js \"\nLint check!\n**Please note that warnings can be ignored, only errors will prevent the commit!**\n\n\""
   },
   "contributors": [
     "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>",
@@ -159,7 +159,7 @@
   "homepage": "https://bitbucket.org/luomus/laji.fi-front",
   "husky": {
     "hooks": {
-      "pre-commit": "yarn --silent run msg-a && yarn run lint"
+      "pre-commit": "yarn --silent run msg-a && yarn --silent run lint"
     }
   }
 }
