@@ -171,7 +171,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     this.userService.getToken();
     this.warehouseService[type](
       this.userService.getToken(),
-      'CSV_FLAT',
+      'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
       this._query,
       this.translate.currentLang
