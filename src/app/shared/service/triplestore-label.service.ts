@@ -38,9 +38,8 @@ export class TriplestoreLabelService {
               private lajiApi: LajiApiService,
               private userService: UserService
   ) {
-    if (!this.pending) {
-      this.pending = this.getAllLabels();
-    }
+    this.pending = this.getAllLabels();
+    this.pending.subscribe();
   }
 
   public getAll(keys: string[], lang): Observable<{[key: string]: string}> {
