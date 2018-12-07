@@ -58,6 +58,59 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
   formReservable = false;
 
+  public static getListItems(npFormData: any, np: NamedPlace, form: any): any[] {
+    const {namedPlaceOptions, collectionID: collectionId} = form;
+    const fields = npFormData.schema.properties;
+    let displayed = [];
+    if (namedPlaceOptions.infoFields) {
+      displayed = namedPlaceOptions.infoFields || [];
+    } else {
+      const displayedById =
+        npFormData.uiSchema['ui:options'].fieldScopes.collectionID;
+      displayed = (displayedById[collectionId] || displayedById['*'] || []).fields;
+    }
+
+    let gData = null;
+
+    if (np.prepopulatedDocument && np.prepopulatedDocument.gatherings && np.prepopulatedDocument.gatherings.length >= 0) {
+      gData = np.prepopulatedDocument.gatherings[0];
+    }
+
+    const listItems = [];
+    for (const field of displayed) {
+      if (!fields[field]) {
+        continue;
+      }
+
+      let value;
+      if (!isEmpty(np[field])) {
+        value = np[field];
+      } else if (gData && !isEmpty(gData[field])) {
+        value = gData[field];
+      }
+
+      let pipe;
+      if (field === 'taxonIDs') {
+        pipe = 'label';
+      } else if (field === 'municipality') {
+        pipe = 'area';
+      }
+
+      if (value) {
+        listItems.push({
+          title: fields[field].title,
+          value,
+          pipe
+        });
+      }
+    }
+    return listItems;
+
+    function isEmpty(value: string) {
+      return value == null || value === '';
+    }
+  }
+
   constructor(private userService: UserService,
               private cdRef: ChangeDetectorRef) { }
 
@@ -151,58 +204,4 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   private updateFields() {
     this.listItems = NpInfoComponent.getListItems(this.npFormData, this.namedPlace, this.formData);
   }
-
-  public static getListItems(npFormData: any, np: NamedPlace, form: any): any[] {
-    const {namedPlaceOptions, collectionID: collectionId} = form;
-    const fields = npFormData.schema.properties;
-    let displayed = [];
-    if (namedPlaceOptions.infoFields) {
-      displayed = namedPlaceOptions.infoFields || [];
-    } else {
-      const displayedById =
-        npFormData.uiSchema['ui:options'].fieldScopes.collectionID;
-      displayed = (displayedById[collectionId] || displayedById['*'] || []).fields;
-    }
-
-    let gData = null;
-
-    if (np.prepopulatedDocument && np.prepopulatedDocument.gatherings && np.prepopulatedDocument.gatherings.length >= 0) {
-      gData = np.prepopulatedDocument.gatherings[0];
-    }
-
-    const listItems = [];
-    for (const field of displayed) {
-      if (!fields[field]) {
-        continue;
-      }
-
-      let value;
-      if (!isEmpty(np[field])) {
-        value = np[field];
-      } else if (gData && !isEmpty(gData[field])) {
-        value = gData[field];
-      }
-
-      let pipe;
-      if (field === 'taxonIDs') {
-        pipe = 'label';
-      } else if (field === 'municipality') {
-        pipe = 'area';
-      }
-
-      if (value) {
-        listItems.push({
-          title: fields[field].title,
-          value,
-          pipe
-        });
-      }
-    }
-    return listItems;
-
-    function isEmpty(value: string) {
-      return value == null || value === '';
-    }
-  }
-
 }

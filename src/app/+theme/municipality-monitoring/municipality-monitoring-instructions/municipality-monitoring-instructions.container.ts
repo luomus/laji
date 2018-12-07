@@ -37,14 +37,12 @@ export class MunicipalityMonitoringInstructionsContainerComponent
              this.translateService.currentLang)
     .switchMap(form => this.formPermissionService.getRights(form))
     .pipe(
-      catchError(() => {
-        return of({edit: false, admin: false})
-      }),
+      catchError(() => of({edit: false, admin: false})),
       map((rights) => {
         if (rights.edit === true) {
           return Rights.Allowed;
         } else {
-          return Rights.NotAllowed
+          return Rights.NotAllowed;
         }
       })
     );

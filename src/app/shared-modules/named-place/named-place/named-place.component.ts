@@ -149,7 +149,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         } else {
           return ObservableOf([]);
         }
-      }), )
+      }))
       .subscribe(() => {
         this.loading = false;
         this.cdr.markForCheck();
@@ -427,7 +427,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   toNormalMode({np, isEdit}: {np?: NamedPlace, isEdit?: boolean} = {}) {
-    let idx = undefined;
+    let idx;
     if (np) {
       if (isEdit && this.activeNP >= 0) {
         idx = this.findNPIndexById(np.id);

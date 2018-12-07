@@ -82,7 +82,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
 
   ngAfterViewChecked() {
     const {nativeElement: popup} = this.popupComponent || {nativeElement: undefined};
-    popup && this._popupCallback && this._popupCallback(popup);
+    if (popup && this._popupCallback) {
+      this._popupCallback(popup);
+    }
   }
 
   setMapData() {
