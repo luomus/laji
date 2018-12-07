@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AreaType } from '../../../../shared/service/area.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of as ObservableOf, Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
   templateUrl: './line-transect-result-chart.component.html',
   styleUrls: ['./line-transect-result-chart.component.css']
 })
-export class LineTransectResultChartComponent implements OnInit {
+export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   @Input() informalTaxonGroup: string;
   @Input() defaultTaxonId: string;
@@ -27,7 +27,6 @@ export class LineTransectResultChartComponent implements OnInit {
   taxon: string;
   taxonId: string;
   fromYear = 2006;
-  private fetchSub: Subscription;
   result: PagedResult<any> = {
     currentPage: 1,
     lastPage: 1,
@@ -43,6 +42,8 @@ export class LineTransectResultChartComponent implements OnInit {
   };
   line: {name: string, series: {name: string, value: number}[]}[] = [];
   private afterBothFetched: any;
+  private subQParams: Subscription;
+  private fetchSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,15 +55,20 @@ export class LineTransectResultChartComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const {taxonId, birdAssociationAreas, fromYear} = this.route.snapshot.queryParams;
-    if (taxonId) {
+    this.subQParams = this.route.queryParams.subscribe((params) => {
+      const {taxonId, birdAssociationAreas, fromYear} = params;
       this.taxonId = taxonId;
+      this.birdAssociationAreas = (birdAssociationAreas || '').split(',');
+      const parsedFromYear = parseInt(fromYear, 10);
+      this.fromYear = !isNaN(parsedFromYear) ? parsedFromYear : fromYear;
+      this.fetch();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.subQParams) {
+      this.subQParams.unsubscribe();
     }
-    if (birdAssociationAreas) {
-      this.birdAssociationAreas = birdAssociationAreas.split(',');
-    }
-    this.fromYear = parseInt(fromYear, 10);
-    this.fetch();
   }
 
   private navigate(taxonId: string, birdAssociationAreas: string[], fromYear: number) {
