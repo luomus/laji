@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import { AreaService, AreaType } from '../../../shared/service/area.service';
 import { CollectionService } from '../../../shared/service/collection.service';
 import { Observable } from 'rxjs';
@@ -21,7 +29,7 @@ export class AreaSelectComponent implements OnInit {
 
   @Output() select = new EventEmitter<string>();
 
-  options: {id: string, value: string}[] = [];
+  options: {id: string, value: string, translate?: boolean}[] = [];
 
   constructor(
     private collectionService: CollectionService,
@@ -39,9 +47,17 @@ export class AreaSelectComponent implements OnInit {
     }
     this.getDataObservable()
       .subscribe((data) => {
-        this.options = data.sort((a, b) => {
+        const options = [];
+        if (this.selectOptionEnabled) {
+          options.push({id: undefined, value: 'select', translate: true});
+        }
+        if (this.allOptionEnabled) {
+          options.push({id: 'all', value: 'area-select.all', translate: true});
+        }
+        this.options = [...options, ...data.sort((a, b) => {
           return a.value.localeCompare(b.value);
-        });
+        })];
+
         this.cd.markForCheck();
       });
   }

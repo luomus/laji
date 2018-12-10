@@ -150,7 +150,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     if (this.errorSub) {
       this.errorSub.unsubscribe();
     }
-    this.errorSub = this.ngZone.onError.subscribe(() => {
+    this.errorSub = this.ngZone.onError.subscribe((error) => {
+      this.logger.error('LajiForm crashed', {error, userSetting: this.settings});
+      throw error;
       this.errorModal.show();
     });
   }
@@ -202,7 +204,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
         });
       });
     } catch (err) {
-      this.logger.error('Failed to load lajiForm', {error: err, userSetting: this.settings});
+      this.logger.error('Failed to load LajiForm', {error: err, userSetting: this.settings});
     }
   }
 

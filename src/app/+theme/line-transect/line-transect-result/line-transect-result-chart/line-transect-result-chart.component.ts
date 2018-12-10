@@ -42,7 +42,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   };
   line: {name: string, series: {name: string, value: number}[]}[] = [];
   private afterBothFetched: any;
-  private subQParams: Subscription;
+  private subQuery: Subscription;
   private fetchSub: Subscription;
 
   constructor(
@@ -55,7 +55,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subQParams = this.route.queryParams.subscribe((params) => {
+    this.subQuery = this.route.queryParams.subscribe((params) => {
       const {taxonId, birdAssociationAreas, fromYear} = params;
       this.taxonId = taxonId;
       this.birdAssociationAreas = (birdAssociationAreas || '').split(',');
@@ -66,8 +66,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subQParams) {
-      this.subQParams.unsubscribe();
+    if (this.subQuery) {
+      this.subQuery.unsubscribe();
     }
   }
 
