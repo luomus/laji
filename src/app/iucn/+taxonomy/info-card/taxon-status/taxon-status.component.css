@@ -16,6 +16,25 @@ table td {
 }
 
 .active {
-  color: black;
-  background: #990000;
+  color: #333;
+}
+
+.active.RE {
+  background-color: #000;
+  color: #fff;
+}
+.active.CR {
+  background: #d81e05;
+}
+.active.EN{
+  background: #fc7f3f;
+}
+.active.VU {
+  background: #f9e814;
+}
+.active.NT {
+  background: #cce226;
+}
+.active.LC {
+  background: #60c659;
 }

@@ -45,7 +45,7 @@
       <laji-iucn-result-pie [year]="2000" [data]="iucnService.getResults(2000) | async"></laji-iucn-result-pie>
     </div>
   </div>
-  <a href="/">Selaa tuloksia</a>
+  <a [routerLink]="'/taxon' | localize">Selaa tuloksia</a>
   <h2>
     Julkaistut punaiset kirjat
   </h2>

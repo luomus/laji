@@ -18,6 +18,9 @@ import { RedListStatusComponent } from './list/results/red-list-status/red-list-
 import { RedListSpeciesComponent } from './list/results/red-list-species/red-list-species.component';
 import { RedListChartComponent } from './list/results/red-list-chart/red-list-chart.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
+import { RedListEvaluationInfoComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info.component';
+import { RedListEvaluationInfoRowsetComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
+import { RedListEvaluationOccurrencesComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-occurrences/red-list-evaluation-occurrences.component';
 
 @NgModule({
   imports: [
@@ -41,7 +44,10 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
     RedListClassFilterComponent,
     RedListStatusComponent,
     RedListSpeciesComponent,
-    RedListChartComponent
+    RedListChartComponent,
+    RedListEvaluationInfoComponent,
+    RedListEvaluationInfoRowsetComponent,
+    RedListEvaluationOccurrencesComponent
   ]
 })
 export class TaxonomyModule { }

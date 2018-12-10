@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { LatestRedListStatusFinland } from '../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-status-history',
@@ -8,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class TaxonStatusHistoryComponent implements OnInit {
 
   @Input()
-  history: {status: string, year: number, criteria: string, reasons: string, threats: string}[] = [];
+  history: LatestRedListStatusFinland[] = [];
 
   constructor() { }
 

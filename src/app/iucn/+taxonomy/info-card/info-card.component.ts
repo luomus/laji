@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { LatestRedListStatusFinland, Taxonomy } from '../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonService } from '../../iucn-shared/service/taxon.service';
 
@@ -11,6 +11,7 @@ import { TaxonService } from '../../iucn-shared/service/taxon.service';
 export class InfoCardComponent implements OnInit {
 
   public taxon: Taxonomy;
+  public latestStatus: LatestRedListStatusFinland;
   public activeIucnYear: number;
 
   constructor(
@@ -30,6 +31,8 @@ export class InfoCardComponent implements OnInit {
     this.taxonService.getTaxon(id, this.translateService.currentLang)
       .subscribe(taxon => {
         this.activeIucnYear = taxon.latestRedListStatusFinland && taxon.latestRedListStatusFinland.year || null;
+        this.latestStatus = taxon.redListStatusesInFinland &&
+          taxon.redListStatusesInFinland.filter(s => s.year === this.activeIucnYear)[0] || null;
         this.taxon = taxon;
       });
   }
