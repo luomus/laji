@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { Injectable } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
@@ -57,7 +56,7 @@ export class DocumentExportService {
         switchMap(jsonForms => {
           return this.getAllFields(jsonForms)
             .pipe(
-              switchMap(({fields: fields, fieldStructure: fieldStructure}) => {
+              switchMap(({fields, fieldStructure}) => {
                 const dataObservables = [];
                 docs.reduce((arr: Observable<any>[], doc: any) => {
                   if (!this.isEmpty('', doc, jsonForms[doc.formID])) {

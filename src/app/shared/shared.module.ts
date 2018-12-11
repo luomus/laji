@@ -52,6 +52,7 @@ import { IucnFooterComponent } from './iucn-footer/footer.component';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
+import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import { FilterPipe } from './pipe/filter.pipe';
     IucnFooterComponent,
     CapitalizePipe,
     CoordinatePipe,
-    FilterPipe
+    FilterPipe,
+    BoolToStringPipe
   ],
   imports: [
     FormsModule,
@@ -98,7 +100,7 @@ import { FilterPipe } from './pipe/filter.pipe';
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent,
     FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
-    FilterPipe
+    FilterPipe, BoolToStringPipe
   ]
 })
 export class SharedModule {

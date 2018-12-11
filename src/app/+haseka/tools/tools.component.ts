@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'laji-tools',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tools.component.css']
 })
 export class ToolsComponent implements OnInit {
+
+  env = environment.type;
 
   constructor() { }
 

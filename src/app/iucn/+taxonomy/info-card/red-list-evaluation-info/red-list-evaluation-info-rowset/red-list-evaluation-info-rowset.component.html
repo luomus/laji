@@ -1,0 +1,4 @@
+<div class="row" *ngFor="let val of values">
+  <div class="col-sm-5">{{ val.key | label }}</div>
+  <div class="col-sm-7" [innerHtml]="val.value | label | values:'<br>'"></div>
+</div>

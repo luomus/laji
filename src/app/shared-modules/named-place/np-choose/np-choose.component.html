@@ -26,6 +26,9 @@
                  [activeNP]="_activeNP"
                  [userID]="userID"
                  [visible]="active === 'map' && visible"
+                 [reservable]="formData.features.indexOf(FEATURE_RESERVE) !== -1"
+                 [npFormData]="npFormData"
+                 [formData]="formData"
                  (activePlaceChange)="setActiveNP($event)"></laji-np-map>
   </div>
 

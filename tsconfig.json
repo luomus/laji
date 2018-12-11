@@ -10,8 +10,18 @@
     "experimentalDecorators": true,
     "target": "es5",
     "paths": {
-      "@laji-map/*": ["app/shared-modules/laji-map/*"],
-      "@laji-form/*": ["app/shared-modules/laji-form/*"]
+      "@laji-map/*": [
+        "app/shared-modules/laji-map/*"
+      ],
+      "@laji-form/*": [
+        "app/shared-modules/laji-form/*"
+      ],
+      "generic-label-maker": [
+        "dist/generic-label-maker"
+      ],
+      "generic-label-maker/*": [
+        "dist/generic-label-maker/*"
+      ]
     },
     "typeRoots": [
       "node_modules/@types"

@@ -39,6 +39,9 @@ export class IucnResultPieComponent implements OnInit {
 
   @Input()
   set data(data: {name: string, value: number}[]) {
+    if (!data) {
+      return;
+    }
     this._data = data;
     this.total = data.reduce((cumulative, current) => cumulative + current.value, 0);
   }

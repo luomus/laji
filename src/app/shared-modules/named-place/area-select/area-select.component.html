@@ -1,8 +1,12 @@
 <ng-container *ngIf="!multiselect">
-    <select class="form-control" #areaSelect (change)="select.emit(areaSelect.value !== '0' ? areaSelect.value : undefined)" *ngIf="options.length > 0" [disabled]="disabled">
-      <option *ngIf="selectOptionEnabled" [value]="0">{{ 'select' | translate }}</option>
-      <option *ngIf='allOptionEnabled' [value]="'all'" [selected]="value === 'all'">{{ 'area-select.all' | translate }}</option>
-      <option *ngFor="let option of options" [value]="option.id" [selected]="option.id === value">{{ option.value }}</option>
+    <select class="form-control" #areaSelect
+            *ngIf="options.length > 0"
+            (change)="select.emit(areaSelect.value)"
+            [disabled]="disabled"
+            [value]="value">
+      <option *ngFor="let option of options" [value]="option.id" [selected]="option.id === value">
+        {{ option.translate ? (option.value | translate) : option.value }}
+      </option>
     </select>
 </ng-container>
 <ng-container *ngIf="multiselect">

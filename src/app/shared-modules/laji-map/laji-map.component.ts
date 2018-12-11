@@ -46,6 +46,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() maxBounds: [[number, number], [number, number]];
   @Input() tileLayerOpacity: number;
   @Input() lang: string;
+  @Input() onPopupClose: (elem: string | HTMLElement) => void;
   @Output() select = new EventEmitter();
 
   @Output() create = new EventEmitter();
@@ -135,7 +136,10 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     }
   }
 
-  @Input() set legend(legend: {[color: string]: string}) {
+  @Input() set legend(legend: {[color: string]: string} | undefined) {
+    if (!legend) {
+      return;
+    }
     const leg = [];
     Object.keys(legend).forEach(color => {
       leg.push({color, label: legend[color]});

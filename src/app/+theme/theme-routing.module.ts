@@ -37,6 +37,9 @@ import { LineTransectFormKartoitusComponent } from './line-transect/line-transec
 import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
 import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
 import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
+import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/municipality-monitoring-form/municipality-monitoring-form.component';
+import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
+import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -154,6 +157,28 @@ const routes: Routes = [
         path: 'form/:id',
         pathMatch: 'full',
         component: InvasiveControlFormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard]
+      },
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
+    ]
+  },
+  {
+    path: 'kunnat',
+    component: MunicipalityMonitoringContainerComponent,
+    children: [
+      {path: '', pathMatch: 'full', component: MunicipalityMonitoringInstructionsContainerComponent},
+      {
+        path: 'instructions',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringInstructionsContainerComponent
+      },
+      {path: 'places', pathMatch: 'full', component: MunicipalityMonitoringFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'form', pathMatch: 'full', component: MunicipalityMonitoringFormComponent},
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringFormComponent,
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },

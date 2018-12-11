@@ -33,6 +33,8 @@ import { StepperComponent } from './shared/stepper/stepper.component';
 import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
 // tslint:disable-next-line:max-line-length
 import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
+import { LabelDesignerComponent } from './label-designer/label-designer.component';
+import { GenericLabelMakerModule } from 'generic-label-maker';
 
 @NgModule({
   imports: [
@@ -42,7 +44,8 @@ import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mappi
     DatatableModule,
     LajiMapModule,
     TypeaheadModule,
-    TaxonAutocompleteModule
+    TaxonAutocompleteModule,
+    GenericLabelMakerModule
   ],
   declarations: [
     ToolsComponent,
@@ -64,7 +67,8 @@ import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mappi
     SpecialTaxonNameComponent,
     ToolSuccessComponent,
     StepperComponent,
-    SpecialInformalTaxonGroupsComponent
+    SpecialInformalTaxonGroupsComponent,
+    LabelDesignerComponent
   ],
   providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService],
   exports: []

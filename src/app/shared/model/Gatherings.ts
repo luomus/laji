@@ -163,6 +163,7 @@ export interface Gatherings {
      * QName for MX.taxon
      */
     invasiveControlTaxon?: Array<string>;
+    invasiveControlOpen?: boolean;
 
     keywords?: Array<string>;
 

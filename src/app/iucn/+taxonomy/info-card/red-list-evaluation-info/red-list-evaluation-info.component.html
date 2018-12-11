@@ -1,0 +1,13 @@
+<laji-red-list-evaluation-info-rowset [values]="generalValues"></laji-red-list-evaluation-info-rowset>
+<ng-container *ngIf="habitatValues.length">
+  <div class="row">
+    <div style="margin-top: 20px;" class="col-sm-5 text-bold"></div>
+  </div>
+  <laji-red-list-evaluation-info-rowset [values]="habitatValues"></laji-red-list-evaluation-info-rowset>
+</ng-container>
+<ng-container *ngIf="occurrences.length">
+  <div class="row">
+    <div style="margin-top: 20px;" class="col-sm-5 text-bold">Esiintymisalueet ja alueellinen uhanalaisuus</div>
+  </div>
+  <laji-red-list-evaluation-occurrences [occurrences]="occurrences"></laji-red-list-evaluation-occurrences>
+</ng-container>

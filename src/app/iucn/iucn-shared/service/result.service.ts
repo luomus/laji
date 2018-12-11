@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
+import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
+import { map, share, tap } from 'rxjs/operators';
+
+const AGG_STATUS = 'latestRedListStatusFinland.status';
 
 export interface FilterQuery {
   redListGroup?: string;
@@ -14,7 +18,7 @@ export interface FilterQuery {
 })
 export class ResultService {
 
-  private queryCache: {[key: string]: any};
+  private requestCache: {[key: string]: any} = {};
   private resultCache: {[key: string]: any} = {};
 
   years: string[] = [
@@ -44,48 +48,40 @@ export class ResultService {
     'DD'
   ];
 
-  constructor() { }
+  private yearToChecklistVersion = {
+    '2019': 'MR.424',
+    '2015': 'MR.425',
+    '2010': 'MR.426',
+    '2000': 'MR.426',
+  };
 
-
+  constructor(private taxonomyApi: TaxonomyApi) { }
 
   getResults(year: number): Observable<{name: string, value: number}[]> {
-    return ObservableOf(this.dataMock[year]);
+    if (this.resultCache[year]) {
+      return ObservableOf(this.resultCache[year]);
+    }
+    if (!this.requestCache[year]) {
+      this.requestCache[year] = this.taxonomyApi.species({
+        // checklistVersion: this.yearToChecklistVersion[year],
+        redListStatusFilters: 'MX.iucnEN,MX.iucnCR,MX.iucnVU,MX.iucnDD,MX.iucnRE,MX.iucnNT,MX.iucnLC,MX.iucnDD',
+        aggregateBy: AGG_STATUS,
+        aggregateBySize: 1000
+      }, 'multi', '1', '0').pipe(
+        map(data => this.mapAgg(data)),
+        tap(data => this.resultCache[year] = data),
+        share()
+      );
+    }
+    return this.requestCache[year];
   }
 
-  /* tslint:disable */
-  dataMock = {
-    '2000': [
-      {name: 'lc', value: 1000},
-      {name: 'nt', value: 120},
-      {name: 'vu', value: 43},
-      {name: 'en', value: 21},
-      {name: 'cr', value: 7},
-      {name: 're', value: 10}
-    ],
-    '2010': [
-      {name: 'lc', value: 2463},
-      {name: 'nt', value: 234},
-      {name: 'vu', value: 26},
-      {name: 'en', value: 22},
-      {name: 'cr', value: 12},
-      {name: 're', value: 17}
-    ],
-    '2015': [
-      {name: 'lc', value: 2113},
-      {name: 'nt', value: 151},
-      {name: 'vu', value: 75},
-      {name: 'en', value: 24},
-      {name: 'cr', value: 9},
-      {name: 're', value: 12}
-    ],
-    '2019': [
-      {name: 'lc', value: 1231},
-      {name: 'nt', value: 291},
-      {name: 'vu', value: 85},
-      {name: 'en', value: 54},
-      {name: 'cr', value: 12},
-      {name: 're', value: 10}
-    ]
-  };
+  private mapAgg(data) {
+    if (!data.aggregations || !data.aggregations[AGG_STATUS]) {
+      return [];
+    }
+    return data.aggregations[AGG_STATUS]
+      .map(res => ({name: res.values[AGG_STATUS].replace('MX.iucn', ''), value: res.count}));
+  }
 
 }

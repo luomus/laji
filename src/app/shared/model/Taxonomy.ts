@@ -217,6 +217,15 @@ export interface Taxonomy {
   descriptions?: any[];
 
   additionalIds?: string[];
+
+  redListEvaluation?: {[year: string]: RedListEvaluation};
+}
+
+export interface RedListEvaluation {
+  reasonForStatusChange?: string;
+  evaluationYear?: string;
+  redListStatus?: string;
+  criteriaForStatus?: string;
 }
 
 export interface LatestRedListStatusFinland {

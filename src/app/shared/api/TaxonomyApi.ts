@@ -239,6 +239,28 @@ export class TaxonomyApi {
     return this.http.get<PagedResult<Taxonomy>>(path, {params: queryParameters});
   }
 
+  public species(query: any = {}, lang?: string, page?: string, pageSize?: string, sortOrder?: string): Observable<PagedResult<Taxonomy>> {
+    const path = this.basePath + '/taxa/species';
+
+    const queryParameters = {...Util.removeUndefinedFromObject(query)};
+    if (lang !== undefined) {
+      queryParameters['lang'] = lang;
+    }
+    if (page !== undefined) {
+      queryParameters['page'] = page
+    }
+
+    if (pageSize !== undefined) {
+      queryParameters['pageSize'] = pageSize
+    }
+
+    if (sortOrder !== undefined) {
+      queryParameters['sortOrder'] = sortOrder
+    }
+
+    return this.http.get<PagedResult<Taxonomy>>(path, {params: queryParameters});
+  }
+
   /**
    * Search taxon data with the given query
    *

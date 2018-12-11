@@ -14,7 +14,8 @@ import { UserService } from './user.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, delay, filter, map, merge, retryWhen, share, take, tap } from 'rxjs/operators';
+import { catchError, delay, filter, map, merge, share, take, tap } from 'rxjs/operators';
+import { AreaService } from './area.service';
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -36,11 +37,11 @@ export class TriplestoreLabelService {
               private sourceService: SourceService,
               private cacheService: CacheService,
               private lajiApi: LajiApiService,
-              private userService: UserService
+              private userService: UserService,
+              private areaService: AreaService
   ) {
-    if (!this.pending) {
-      this.pending = this.getAllLabels();
-    }
+    this.pending = this.getAllLabels();
+    this.pending.subscribe();
   }
 
   public getAll(keys: string[], lang): Observable<{[key: string]: string}> {
@@ -107,6 +108,8 @@ export class TriplestoreLabelService {
             );
           }
           return TriplestoreLabelService.requestCache[key];
+        case 'ML':
+          return this.areaService.getName(key, lang);
         case 'KE':
           return this.sourceService.getName(key, lang);
         case 'MX':

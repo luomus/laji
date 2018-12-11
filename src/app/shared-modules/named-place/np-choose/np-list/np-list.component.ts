@@ -7,13 +7,14 @@ import { Util } from '../../../../shared/service/util.service';
 import { AreaNamePipe } from '../../../../shared/pipe/area-name.pipe';
 import { LabelPipe } from '../../../../shared/pipe';
 import { zip } from 'rxjs';
+import { BoolToStringPipe } from 'app/shared/pipe/bool-to-string.pipe';
 
 @Component({
   selector: 'laji-np-list',
   templateUrl: './np-list.component.html',
   styleUrls: ['./np-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ AreaNamePipe, LabelPipe ]
+  providers: [ AreaNamePipe, LabelPipe, BoolToStringPipe ]
 })
 export class NpListComponent {
   _namedPlaces: NamedPlace[];
@@ -43,7 +44,8 @@ export class NpListComponent {
 
   constructor(private cd: ChangeDetectorRef,
               private areaNamePipe: AreaNamePipe,
-              private labelPipe: LabelPipe
+              private labelPipe: LabelPipe,
+              private boolToStringPipe: BoolToStringPipe
   ) {
     this.columnsMetaData = {
       '$.alternativeIDs[0]': {
@@ -85,6 +87,10 @@ export class NpListComponent {
         label: 'np.municipality',
         pipe: this.areaNamePipe,
         sortWithPipe: true
+      },
+      '$.invasiveControlOpen': {
+        label: 'np.invasiveControlOpen',
+        pipe: this.boolToStringPipe
       }
     };
 
@@ -145,7 +151,7 @@ export class NpListComponent {
     const results = [];
     const municipalities$ = [];
     for (const namedPlace of this._namedPlaces) {
-      const row = {};
+      const row: any = {};
       for (const path of this._fields) {
         let value = Util.parseJSONPath(namedPlace, path);
         if (value && value.length && (
@@ -158,6 +164,9 @@ export class NpListComponent {
       }
       if (row['$.municipality']) {
         municipalities$.push(this.areaNamePipe.updateValue(row['$.municipality']));
+      }
+      if ('$.invasiveControlOpen' in row) {
+        row['$.invasiveControlOpen'] = namedPlace.prepopulatedDocument.gatherings[0].invasiveControlOpen;
       }
       results.push(row);
     }

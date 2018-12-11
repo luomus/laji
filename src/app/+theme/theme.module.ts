@@ -78,6 +78,11 @@ import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.com
 import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
 import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
 import { ThemeFormComponent } from './common/theme-form.component';
+import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
+import { MunicipalityMonitoringComponent } from './municipality-monitoring/municipality-monitoring.component';
+import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
+import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/municipality-monitoring-form/municipality-monitoring-form.component';
+import { MunicipalityMonitoringInstructionsComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.component';
 
 /* tslint:enable:max-line-length */
 
@@ -157,7 +162,12 @@ import { ThemeFormComponent } from './common/theme-form.component';
     WbcRoutesListComponent,
     WbcRoutesMapComponent,
     ThemePageComponent,
-    MonitoringThemeBaseComponent
+    MonitoringThemeBaseComponent,
+    MunicipalityMonitoringContainerComponent,
+    MunicipalityMonitoringComponent,
+    MunicipalityMonitoringInstructionsContainerComponent,
+    MunicipalityMonitoringInstructionsComponent,
+    MunicipalityMonitoringFormComponent,
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })

@@ -1,6 +1,14 @@
 
 import {tap, catchError,  switchMap, take } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
@@ -17,6 +25,8 @@ import { NpEditComponent } from '../np-edit/np-edit.component';
 import { FormPermissionService, Rights } from '../../../+haseka/form-permission/form-permission.service';
 import * as moment from 'moment';
 import { EventEmitter } from 'events';
+import { environment } from '../../../../environments/environment';
+import { Util } from '../../../shared/service/util.service';
 
 @Component({
   selector: 'laji-named-place',
@@ -50,8 +60,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     edit: false
   };
 
-  listenToNextParamChange = true;
-
   filterByMunicipality = false;
   filterByBirdAssociationArea = false;
 
@@ -61,12 +69,18 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   errorMsg = '';
 
-  _editModeInit: string;
-  _formRightsInit = false;
+  editModeQParam: boolean;
+
+  mapOptionsData: any;
+  npFormData: any;
+  lang: string;
 
   private subParam: Subscription;
   private subTrans: Subscription;
   private subQParams: Subscription;
+
+  private npFormId: string;
+  private npForm$: Subscription;
 
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
   @ViewChild(NpEditComponent) editView: NpEditComponent;
@@ -80,40 +94,26 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private userService: UserService,
     private formPermissionService: FormPermissionService,
-    private cd: ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.subQParams = this.route.queryParams.subscribe((params) => {
-      if (this.listenToNextParamChange) {
-        let updateList = false;
-        if (params.taxonID) {
-          this.taxonID = params.taxonID;
-          updateList = true;
-        }
-        if (params.municipality) {
-          this.updateMunicipalityFilter(params.municipality);
-        }
-        if (params.birdAssociationArea) {
-          this.birdAssociationArea = params.birdAssociationArea;
-          updateList = true;
-        }
-        if (params.activeNP) {
-          this.namedPlacesEvents.once('update', () => {
-            this.setActiveNP(this.findNPIndexById(params.activeNP));
-            this.preselectedNPIndex = this.findNPIndexById(params.activeNP);
-          });
-          updateList = true;
-        } else {
-          this.setActiveNP(-1);
-          this.preselectedNPIndex = -1;
-        }
-        this._editModeInit = params.edit;
-        this.initEditMode();
-        if (updateList) { this.updateList(); }
-        this.cd.markForCheck();
+      const {municipality, birdAssociationArea, activeNP, edit} = params;
+      this.birdAssociationArea = birdAssociationArea;
+      this.municipality = municipality;
+      if (this.birdAssociationArea) {
+        this.prepopulatedNamedPlace['birdAssociationArea'] = [this.birdAssociationArea];
       }
-      this.listenToNextParamChange = true;
+      if (this.municipality) {
+        this.prepopulatedNamedPlace['municipality'] = [this.municipality];
+      }
+      this.editModeQParam = edit === 'true';
+      this.updateEditMode();
+      this.setActiveNP(this.findNPIndexById(activeNP));
+      this.preselectedNPIndex = this.findNPIndexById(activeNP);
+      this.updateList();
+      this.cdr.markForCheck();
     });
 
     this.loading = true;
@@ -132,13 +132,20 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         } else {
           return ObservableOf([]);
         }
-      }), )
+      }))
       .subscribe(() => {
         this.loading = false;
-        this.cd.markForCheck();
+        this.cdr.markForCheck();
       });
     this.userService.getUser()
       .subscribe(person => this.userID = person.id);
+
+    this.subTrans = this.translate.onLangChange.subscribe(
+      () => {
+        this.onLangChange();
+        this.cdr.markForCheck();
+      }
+    );
 
     this.footerService.footerVisible = false;
   }
@@ -156,43 +163,27 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = true;
   }
 
-  initEditMode() {
-    if (!this._editModeInit || !this._formRightsInit) {
-      return;
-    }
-    if (this.formRights.admin && this._editModeInit === 'true') {
-      this.editMode = true;
-    } else {
-      this.editMode = false;
-    }
+  updateEditMode() {
+    this.editMode = this.editModeQParam && this.formRights.admin;
   }
 
-  updateBirdAssociationAreaFilter(value) {
+  onBirdAssiciationAreaChange(value) {
     this.birdAssociationArea = value;
-    this.prepopulatedNamedPlace['birdAssociationArea'] = [value];
-    this.updateList();
     this.updateQueryParams();
   }
 
-  updateMunicipalityFilter(value: string) {
-    if (value === undefined) {
+  onMunicipalityChange(value: string) {
+    if (value === undefined || value === 'undefined') {
       this.namedPlaces = undefined;
       this.municipality = '';
-      this.updateMunicipalityParam();
-      return;
+    } else {
+      this.municipality = value;
     }
-    this.municipality = value;
-    if (value.match(/^ML\..+/)) {
-      this.prepopulatedNamedPlace['municipality'] = [value];
-    }
-    this.updateMunicipalityParam();
-    this.updateList();
+    this.updateQueryParams();
   }
 
   onTaxonSelect(e) {
     this.taxonID = e.key;
-    this.prepopulatedNamedPlace['taxonIDs'] = [this.taxonID];
-    this.updateList();
     this.updateQueryParams();
   }
 
@@ -204,7 +195,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.namedPlace = np;
         this.updateNPInNPList(np);
-        this.cd.markForCheck();
+        this.setFormData();
+        this.cdr.markForCheck();
       }, () => {
         this.loading = false;
       });
@@ -212,7 +204,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   reserve() {
     this.loading = true;
-    const namedPlaceOptions = this.formData.namedPlaceOptions || {};
+    const {namedPlaceOptions = {}} = this.formData || {};
     const until = namedPlaceOptions.reservationUntil;
     this.namedPlaceService
       .reserve(this.namedPlace.id, until ? {until: until.replace('${year}', moment().year())} : undefined)
@@ -220,7 +212,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.namedPlace = np;
         this.updateNPInNPList(np);
-        this.cd.markForCheck();
+        this.cdr.markForCheck();
       }, () => {
         this.loading = false;
       });
@@ -239,7 +231,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateNP()
       .subscribe(() => {
         this.loading = false;
-        this.cd.markForCheck();
+        this.cdr.markForCheck();
         const params = this.route.snapshot.queryParams;
         if (params['activeNP']) {
           const index = this.findNPIndexById(params['activeNP']);
@@ -303,9 +295,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           .getRights(formData).pipe(
           take(1)).pipe(
           switchMap(rights => {
-            this._formRightsInit = true;
-            this.initEditMode();
             this.formRights = rights;
+            this.updateEditMode();
             if (this.formData && this.formData.namedPlaceOptions
                 && this.formData.namedPlaceOptions.requireAdmin === false) {
               this.allowCreate = true;
@@ -326,32 +317,31 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           .subscribe(msg => this.setErrorMessage(msg));
         return ObservableOf({});
       })).pipe(
-      tap(form => this.formData = form));
-  }
-
-  updateMunicipalityParam() {
-    const sub = this.route.queryParams.subscribe((params) => {
-      const queryParams = {...params};
-      this.municipality.length > 0 ? queryParams['municipality'] = this.municipality
-      : delete queryParams['municipality'];
-      this.listenToNextParamChange = false;
-      this.router.navigate([], { queryParams: queryParams });
-      sub.unsubscribe();
-    });
+      tap(form => {
+        this.formData = form;
+        this.npFormId = this.formData.namedPlaceOptions
+          && this.formData.namedPlaceOptions.formID
+          || environment.namedPlaceForm;
+        this.mapOptionsData = this.getMapOptions();
+        this.fetchForm();
+      }));
   }
 
   updateQueryParams() {
     const queryParams = {};
-    this.activeNP >= 0 ? queryParams['activeNP'] = this.findNPIdByIndex(this.activeNP)
+    this.activeNP >= 0
+      ? queryParams['activeNP'] = this.findNPIdByIndex(this.activeNP)
       : delete queryParams['activeNP'];
-    this.municipality.length > 0 ? queryParams['municipality'] = this.municipality
+    (this.municipality || '').length > 0
+      ? queryParams['municipality'] = this.municipality
       : delete queryParams['municipality'];
-    this.taxonID.length > 0 ? queryParams['taxonID'] = this.taxonID
+    (this.taxonID || '').length > 0
+      ? queryParams['taxonID'] = this.taxonID
       : delete queryParams['taxonID'];
-    this.birdAssociationArea.length > 0 ? queryParams['birdAssociationArea'] = this.birdAssociationArea
+    (this.birdAssociationArea || '').length > 0
+      ? queryParams['birdAssociationArea'] = this.birdAssociationArea
       : delete queryParams['birdAssociationArea'];
-    queryParams['edit'] = this.editMode;
-    this.listenToNextParamChange = false;
+    queryParams['edit'] = this.editModeQParam;
     this.router.navigate([], { queryParams: queryParams });
   }
 
@@ -360,19 +350,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
   }
 
-  onTabChange(e) {
-    const sub = this.route.queryParams.subscribe((params) => {
-      if (params['activeNP']) {
-        const index = this.findNPIndexById(params['activeNP']);
-        this.setActiveNP(index);
-        this.preselectedNPIndex = index;
-      }
-      sub.unsubscribe();
-    });
-  }
-
   setActiveNP(idx: number) {
     this.activeNP = idx;
+    this.preselectedNPIndex = idx;
     if (this.activeNP >= 0) {
       if (this.namedPlaces) { this.namedPlace = this.namedPlaces[this.activeNP]; }
       if (this.editView) { this.editView.npClick(); }
@@ -386,7 +366,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       return;
     }
     this.npEdit.setIsEdit(!create);
-    this.editMode = true;
+    this.editModeQParam = true;
     if (create) {
       this.setActiveNP(-1);
       this.preselectedNPIndex = -1;
@@ -394,20 +374,23 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
   }
 
-  toNormalMode(np: NamedPlace) {
+  toNormalMode({np, isEdit}: {np?: NamedPlace, isEdit?: boolean} = {}) {
+    let idx;
     if (np) {
-      if (this.activeNP >= 0) {
-        this.namedPlaces[this.activeNP] = np;
+      if (isEdit && this.activeNP >= 0) {
+        idx = this.findNPIndexById(np.id);
+        this.namedPlaces[idx] = np;
         this.namedPlace = np;
       } else {
-        this.namedPlaces.push(np);
+        this.namedPlaces = [...this.namedPlaces, np];
+        idx = this.namedPlaces.length - 1;
       }
     }
-    this.editMode = false;
+    this.editModeQParam = false;
     this.updateQueryParams();
     if (np) {
-      this.setActiveNP(this.findNPIndexById(np.id));
-      this.preselectedNPIndex = this.findNPIndexById(np.id);
+      this.setActiveNP(idx);
+      this.preselectedNPIndex = idx;
     }
   }
 
@@ -427,4 +410,112 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       return np.id === id;
     });
   }
+
+  onLangChange() {
+    if (this.npForm$) {
+      this.npForm$.unsubscribe();
+    }
+    const data = this.npFormData.formData;
+    this.npFormData = null;
+    this.npForm$ = this.formService
+      .getForm(this.npFormId, this.translate.currentLang)
+      .subscribe(form => {
+        form['formData'] = data;
+        if (this.mapOptionsData) {
+          form['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
+        }
+        this.lang = this.translate.currentLang;
+        this.npFormData = form;
+        this.cdr.markForCheck();
+      });
+  }
+
+  fetchForm() {
+    if (this.npForm$) {
+      this.npForm$.unsubscribe();
+    }
+    this.lang = this.translate.currentLang;
+    this.npForm$ = this.formService
+      .load(this.npFormId, this.lang)
+      .subscribe(
+        data => {
+          if (this.mapOptionsData) {
+            data['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
+          }
+          this.npFormData = data;
+          this.setFormData();
+          this.cdr.markForCheck();
+        },
+        err => {
+          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
+          this.translate.get(msgKey, {formId: this.npFormId})
+            .subscribe(msg => {
+              this.setErrorMessage(msg);
+              this.cdr.markForCheck();
+            });
+        }
+      );
+  }
+
+  setFormData() {
+    if (!this.npFormData) {
+      return;
+    }
+
+    if (this.namedPlace) {
+      const npData = Util.clone(this.namedPlace);
+
+      npData['geometry'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
+
+      if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings[0]) {
+        const gathering = npData.prepopulatedDocument.gatherings[0];
+        if (gathering.locality) {
+          npData['locality'] = gathering.locality;
+        }
+        if (gathering.localityDescription) {
+          npData['localityDescription'] = gathering.localityDescription;
+        }
+      }
+
+      this.npFormData.formData = npData;
+    } else {
+      this.npFormData.formData = this.prepopulatedNamedPlace;
+    }
+  }
+
+  private getMapOptions() {
+    const uiSchema = this.formData.uiSchema;
+
+    if (!uiSchema) {
+      return null;
+    }
+
+    return this.findObjectByKey(uiSchema, 'mapOptions', ['gatherings', 'uiSchema', 'ui:options']);
+  }
+
+  private findObjectByKey(obj, key, allowedObjectsInPath, recursionLimit = 5) {
+    if (recursionLimit <= 0) {
+      return null;
+    }
+
+    let foundObject = null;
+
+    for (const i in obj) {
+      if (!obj.hasOwnProperty(i) || typeof  obj[i] !== 'object') {
+        continue;
+      }
+
+      if (i === key) {
+        foundObject = obj[i];
+      } else if (typeof obj[i] === 'object' && allowedObjectsInPath.indexOf(i) !== -1) {
+        foundObject = this.findObjectByKey(obj[i], key, allowedObjectsInPath, recursionLimit - 1);
+      }
+
+      if (foundObject !== null) {
+        break;
+      }
+    }
+    return foundObject;
+  }
+
 }

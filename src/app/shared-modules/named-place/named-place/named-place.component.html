@@ -1,13 +1,20 @@
 <div class="container-fluid" style="width: 100%">
   <div id="container" class="row np-row">
-    <laji-document-form-header *ngIf="formData" [formID]="formId" [onlyNpDescription]="true" class="no-flex"></laji-document-form-header>
+    <laji-document-form-header *ngIf="formData"
+                               [formID]="formId"
+                               [type]="editMode
+                                 ? activeNP >= 0
+                                   ? 'npEdit'
+                                   : 'npCreate'
+                                 : 'np'"
+    class="no-flex"></laji-document-form-header>
 
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 
     <ng-container *ngIf="filterByMunicipality && !editMode">
       <label>{{ 'MNP.municipality' | label }}</label>
       <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality"
-      [allOptionEnabled]='true' (select)="updateMunicipalityFilter($event)" [value]='municipality'></laji-area-select>
+      [allOptionEnabled]='true' (select)="onMunicipalityChange($event)" [value]='municipality'></laji-area-select>
     </ng-container>
     <div *ngIf="filterByBirdAssociationArea">
       <label [tooltip]="birdAssociationAreaHelp"
@@ -15,7 +22,7 @@
              [isDisabled]="!formData.namedPlaceOptions || !formData.namedPlaceOptions.birdAssociationAreaHelp">{{ 'MNP.birdAssociationArea' | label }}
         <span *ngIf="formData.namedPlaceOptions && formData.namedPlaceOptions.birdAssociationAreaHelp" class="label-info laji-form-help-glyph"><strong>?</strong></span>
       </label>
-      <laji-area-select [disabled]="editMode" [field]="areaTypes.BirdAssociationArea" (select)="updateBirdAssociationAreaFilter($event)"></laji-area-select>
+      <laji-area-select [disabled]="editMode" [field]="areaTypes.BirdAssociationArea" (select)="onBirdAssiciationAreaChange($event)" [value]="this.birdAssociationArea"></laji-area-select>
     </div>
     <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">
       <span>{{formData.namedPlaceOptions?.createNewLabels?.desc
@@ -29,6 +36,7 @@
         <div [ngClass]="{'col-sm-12 col-md-12 col-lg-6': !editMode}">
           <laji-np-choose [namedPlaces]="namedPlaces"
                           [formData]="formData"
+                          [npFormData]="npFormData"
                           [userID]="userID"
                           [visible]="!editMode"
                           [allowCreate]="allowCreate"
@@ -36,10 +44,9 @@
                           [activeNP]="activeNP"
                           (activePlaceChange)="onActivePlaceChange($event)"
                           (createButtonClick)="toEditMode(true)"
-                          (tabChange)="onTabChange($event)"
                           [preselectedNPIndex]="preselectedNPIndex"></laji-np-choose>
         </div>
-        <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-lg-6 nav-margin'">
+        <div [ngClass]="editMode ? 'col-xs-12 nav-margin' : 'col-lg-6 nav-margin'">
           <laji-np-edit [editMode]="editMode"
                         [formId]="formId"
                         [loading]="loading"
@@ -48,11 +55,13 @@
                         [formRights]="formRights"
                         [formData]="formData"
                         [allowEdit]="allowEdit"
+                        [npFormData]="npFormData"
+                        [mapOptionsData]="mapOptionsData"
+                        [lang]="lang"
                         (reserve)="reserve()"
                         (release)="release()"
                         (editButtonClick)="toEditMode(false)"
-                        (editReady)="toNormalMode($event)"
-                        (error)="setErrorMessage($event)"></laji-np-edit>
+                        (editReady)="toNormalMode($event)"></laji-np-edit>
         </div>
       </div>
     </laji-spinner>

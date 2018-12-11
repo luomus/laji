@@ -3,14 +3,24 @@
     'col-sm-8': form.logo,
     'col-sm-12': !(form.logo)
   }">
-    <h3>{{ form.title }}</h3>
-    <ng-container *ngIf="onlyNpDescription && form.namedPlaceOptions && form.namedPlaceOptions.description; else description">
+    <ng-container *ngIf="type !== 'npCreate' && type !== 'npEdit'">
+		  <h3>{{ form.title }}</h3>
+    </ng-container>
+    <ng-container *ngIf="type === 'np'">
       <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
       <br>
     </ng-container>
-    <ng-template #description>
+    <ng-container *ngIf="type === 'npCreate'">
+      <div [innerHtml]="form.namedPlaceOptions?.createDescription ? form.namedPlaceOptions.createDescription : 'np.defaultCreateDescription' | translate"></div>
+      <br>
+    </ng-container>
+    <ng-container *ngIf="type === 'npEdit'">
+      <div [innerHtml]="form.namedPlaceOptions?.editDescription ? form.namedPlaceOptions.editDescription : 'np.defaultEditDescription' | translate"></div>
+      <br>
+    </ng-container>
+    <ng-container *ngIf="type === 'form' && form.description">
       <div [innerHtml]="form.description"></div><br>
-    </ng-template>
+    </ng-container>
     <span *ngIf="form.instructions && form.instructions[translate.currentLang]">
       <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
       |

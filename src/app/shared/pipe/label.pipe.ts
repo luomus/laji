@@ -12,7 +12,7 @@ import 'rxjs-compat/add/operator/delay';
 import 'rxjs-compat/add/operator/take';
 import 'rxjs-compat/add/operator/concat';
 
-type labelType = 'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
+type labelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
 
 /**
  * Triplestores label maker
@@ -56,7 +56,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  transform(value: string, type?: labelType, joinBy = '; '): any {
+  transform(value: string, type?: labelType): any {
     if (Array.isArray(value)) {
       return value.map(v => this.transform(v, type));
     }
