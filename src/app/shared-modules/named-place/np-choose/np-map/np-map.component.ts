@@ -38,8 +38,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   @Input() formData: any;
   @Output() activePlaceChange = new EventEmitter<number>();
 
-  private legend;
-  private listItems: NpInfoRow[] = [];
+  legend;
+  listItems: NpInfoRow[] = [];
   private _data: any;
   private _popupCallback: (elemOrString: HTMLElement | string) => void;
 
