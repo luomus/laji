@@ -20,6 +20,7 @@ import { LajiFormModule } from '@laji-form/laji-form.module';
 import { SearchFiltersModule } from '../search-filters/search-filters.module';
 import { TaxonAutocompleteModule } from '../taxon-autocomplete/taxon-autocomplete.module';
 import { FormPermissionModule } from 'app/+haseka/form-permission/form-permission.module';
+import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 
 @NgModule({
   providers: [],
@@ -32,7 +33,8 @@ import { FormPermissionModule } from 'app/+haseka/form-permission/form-permissio
     LajiFormModule,
     LajiMapModule,
     TaxonAutocompleteModule,
-    FormPermissionModule
+    FormPermissionModule,
+    DocumentViewerModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,

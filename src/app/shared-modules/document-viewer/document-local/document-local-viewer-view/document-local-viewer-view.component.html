@@ -52,7 +52,7 @@
             <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
           </button>
           <div style="margin-top: 35px;">
-            <alert [type]="'warning'">
+            <alert [type]="'warning'" *ngIf="document.publicityRestrictions !== publicity.publicityRestrictionsPublic">
               <span>
                 {{ 'viewer.notPublished' | translate }}
               </span>
