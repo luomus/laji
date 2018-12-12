@@ -81,7 +81,8 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       draw: false
     },
     center: [64.709804, 25],
-    zoom: 2
+    zoom: 2,
+    tileLayerOpacity: 0.5
   };
 
   constructor(
