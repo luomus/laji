@@ -1,7 +1,8 @@
 import {
   Component,
   OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  HostListener
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -13,7 +14,9 @@ import { Subscription } from 'rxjs';
 })
 export class TaxonomyComponent implements OnInit {
   taxonId: string;
-  showFilter = true;
+  sideBarWidth = 225;
+
+  private dragging = false;
   private subParam: Subscription;
 
   constructor(
@@ -26,5 +29,25 @@ export class TaxonomyComponent implements OnInit {
       this.taxonId = data['id'];
       this.cd.markForCheck();
     });
+  }
+
+  startDragging(e) {
+    e.preventDefault();
+    this.dragging = true;
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(e) {
+    if (this.dragging) {
+      e.preventDefault();
+      this.sideBarWidth = Math.max(e.pageX + 2, 120);
+    }
+  }
+
+  @HostListener('document:mouseup', ['$event'])
+  onMouseUp(e) {
+    if (this.dragging) {
+      this.dragging = false;
+    }
   }
 }

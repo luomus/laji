@@ -1,11 +1,21 @@
 .taxon-tree-container {
   padding: 15px;
-  border-right: 1px solid #e1e1e1;
   background-color: #ECF0F1;
+  position: relative;
 }
 
 @media only screen and (min-width : 768px) {
   .row {
     display: flex;
   }
+}
+
+.dragbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 3px;
+  cursor: col-resize;
+  background-color: #e1e1e1;
 }
