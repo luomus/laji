@@ -38,7 +38,7 @@ export class IdentifyComponent implements OnInit {
           sourceId: sources,
           unidentified: true,
           countryId: ['ML.206'],
-          informalTaxonGroupId: this.group ? [this.group] : []
+          informalTaxonGroupIdIncludingReported: this.group ? [this.group] : []
         };
         this.cd.markForCheck();
       });
@@ -47,7 +47,7 @@ export class IdentifyComponent implements OnInit {
   onSelectGroup() {
     this.query = {
       ...this.query,
-      informalTaxonGroupId: [this.group]
+      informalTaxonGroupIdIncludingReported: [this.group]
     };
   }
 

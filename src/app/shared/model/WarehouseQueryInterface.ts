@@ -117,6 +117,7 @@ export interface WarehouseQueryInterface {
   useIdentificationAnnotations?: boolean;
   taxonRankId?: string;
   informalTaxonGroupId?: Array<string>;
+  informalTaxonGroupIdIncludingReported?: Array<string>;
   administrativeStatusId?: Array<string>;
   redListStatusId?: Array<string>;
   finnish?: boolean;
