@@ -8,34 +8,28 @@
       ></laji-select2>
     </div>
     <div class="col-sm-5 col-md-4">
-      <laji-select2 [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="[
-      {label:'Metsät', value:'t1'},
-      {label:'Suot', value:'t2'},
-      {label:'Suot', value:'t3'},
-      {label: 'Vedet', value: 't4'},
-      {label: 'Rannat', value: 't5'},
-      {label: 'Kalliot ja kivikot', value: 't6'},
-      {label: 'Tunturipaljakat', value: 't7'}
-      ]" [placeholder]="'Elinympäristö'"></laji-select2>
+      <laji-select2 [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async" [placeholder]="'Elinympäristö'"></laji-select2>
     </div>
   </div>
-  <div class="form-group">
-    <div class="col-sm-offset-1 col-sm-5 col-md-4">
-      <laji-select2
-        [value]="query?.reasons"
-        (valueChange)="change('reasons', $event)"
-        [options]="[{label:'Metsästys', value:'r1'}, {label:'Hakkuut', value:'r2'}]"
-        [placeholder]="'Uhanalaisuuden syyt'"></laji-select2>
+  <ng-container *ngIf="threadReasons$ | async; let reasons">
+    <div class="form-group">
+      <div class="col-sm-offset-1 col-sm-5 col-md-4">
+        <laji-select2
+          [value]="query?.reasons"
+          (valueChange)="change('reasons', $event)"
+          [options]="reasons"
+          [placeholder]="'Uhanalaisuuden syyt'"></laji-select2>
+      </div>
+      <div class="col-sm-5 col-md-4">
+        <laji-select2
+          [value]="query?.threads"
+          (valueChange)="change('threads', $event)"
+          [options]="reasons"
+          [placeholder]="'Uhkatekijöillä'"></laji-select2>
+      </div>
     </div>
-    <div class="col-sm-5 col-md-4">
-      <laji-select2
-        [value]="query?.threads"
-        (valueChange)="change('threads', $event)"
-        [options]="[{label:'Metsästys', value:'r1'}, {label:'Hakkuut', value:'r2'}]"
-        [placeholder]="'Uhkatekijöillä'"></laji-select2>
-    </div>
-  </div>
-  <div class="form-group">
+  </ng-container>
+  <div class="form-group" *ngIf="type !== 'status'">
     <div class="col-sm-offset-1 col-sm-11">
       <laji-redlist-class-filter [value]="query?.status" (valueChange)="change('status', $event)"></laji-redlist-class-filter>
     </div>
