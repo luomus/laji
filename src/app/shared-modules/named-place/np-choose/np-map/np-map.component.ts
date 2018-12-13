@@ -38,8 +38,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   @Input() formData: any;
   @Output() activePlaceChange = new EventEmitter<number>();
 
-  private legend;
-  private listItems: NpInfoRow[] = [];
+  legend;
+  listItems: NpInfoRow[] = [];
+  tileLayerName;
   private _data: any;
   private _popupCallback: (elemOrString: HTMLElement | string) => void;
 
@@ -133,6 +134,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
         [this.sentColor]: 'Ilmoitettu'
       };
     }
+
+    const {mapTileLayerName = 'maastokartta'} = this.formData.namedPlaceOptions || {};
+    this.tileLayerName = mapTileLayerName;
 
     try {
       this._data = {

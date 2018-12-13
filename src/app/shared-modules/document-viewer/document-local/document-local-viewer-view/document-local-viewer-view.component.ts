@@ -20,6 +20,8 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
   @Input() imageData: {[key: string]: any} = {};
   @Input() useWorldMap = true;
 
+  publicity = Document.PublicityRestrictionsEnum;
+
   personID: string;
   active = 0;
   @SessionStorage() showFacts = false;

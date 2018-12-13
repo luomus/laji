@@ -30,6 +30,7 @@ export class SearchQuery implements SearchQueryInterface {
     'exactTarget',
     'originalExactTarget',
     'informalTaxonGroupId',
+    'informalTaxonGroupIdIncludingReported',
     'administrativeStatusId',
     'redListStatusId',
     'countryId',
