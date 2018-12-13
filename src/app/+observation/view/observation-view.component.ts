@@ -1,19 +1,12 @@
 
-import {filter, catchError, debounceTime, switchMap} from 'rxjs/operators';
+import {filter, debounceTime} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
-import { of as ObservableOf, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { ObservationResultComponent } from '../result/observation-result.component';
-import { AreaType } from '../../shared/service/area.service';
-import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
-import { FormService } from '../../shared/service/form.service';
-import { environment } from '../../../environments/environment';
-import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
-import { CoordinateService } from '../../shared/service/coordinate.service';
-import { LajiApiService } from '../../shared/service/laji-api.service';
 import { WINDOW } from '@ng-toolkit/universal';
 import { ObservationFormComponent } from '../form/observation-form.component';
 
@@ -33,12 +26,10 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
   @ViewChild(ObservationFormComponent) form: ObservationFormComponent;
 
-  hasInvasiveControleRights = false;
   debouchAfterChange = 500;
   limit = 10;
   typeaheadLoading = false;
   showFilter = true;
-  areaType = AreaType;
   dateFormat = 'YYYY-MM-DD';
 
   drawing = false;
@@ -62,26 +53,10 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
               public searchQuery: SearchQuery,
               public translate: TranslateService,
               private route: Router,
-              private cd: ChangeDetectorRef,
-              private userService: UserService,
-              private lajiApi: LajiApiService,
-              private formService: FormService,
-              private formPermissionService: FormPermissionService,
-              private coordinateService: CoordinateService) {
+              private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    if (environment.invasiveControlForm) {
-      this.formService
-        .load(environment.invasiveControlForm, this.translate.currentLang).pipe(
-        switchMap((form) => this.formPermissionService.hasEditAccess(form))).pipe(
-        catchError(() => ObservableOf(false)))
-        .subscribe(hasPermission => {
-          this.hasInvasiveControleRights = hasPermission;
-          this.cd.markForCheck();
-        });
-    }
-
     this.subSearch = this.delayedSearch.pipe(
       debounceTime(this.debouchAfterChange))
       .subscribe(() => {
@@ -157,17 +132,4 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.searchQuery.query = event;
     this.delayedSearchSource.next();
   }
-
-  toInvasiveControlForm() {
-    this.formService.populate({
-      URL: this.window.document.location.href,
-      gatherings: [
-        {
-          geometry: this.coordinateService.convertLajiEtlCoordinatesToGeometry(this.searchQuery.query.coordinates)
-        }
-      ]
-    });
-    this.route.navigate(['/vihko', environment.invasiveControlForm]);
-  }
-
 }
