@@ -44,7 +44,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
-  @Input() tileLayerOpacity: number;
   @Input() lang: string;
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
   @Output() select = new EventEmitter();
@@ -163,9 +162,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     if (changes.data) {
       this.setData(this.data);
     }
-    if (changes.tileLayerOpacity && this.map && this.map.tileLayer) {
-      this.map.setTileLayerOpacity(typeof this.tileLayerOpacity === 'undefined' ? this.tileLayerOpacity : 1);
-    }
     if (changes.lang && this.map) {
       this.map.setOption('lang', (this.lang || 'fi'));
     }
@@ -181,7 +177,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       ...(this.userSettings || {}),
       rootElem: this.elemRef.nativeElement,
       googleApiKey: Global.googleApiKey,
-      tileLayerOpacity: this.tileLayerOpacity,
       data: this.data
     };
     try {

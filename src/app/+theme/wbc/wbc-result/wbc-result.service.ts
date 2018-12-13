@@ -202,7 +202,7 @@ export class WbcResultService {
 
   getCensusListForRoute(routeId: string): Observable<any[]> {
     return this.getList(
-      this.warehouseApi.warehouseQueryAggregateGet(
+      this.warehouseApi.warehouseQueryStatisticsGet(
         {...this.getFilterParams(), namedPlaceId: [routeId]},
         ['document.documentId', 'gathering.eventDate.begin', 'gathering.team'],
         ['gathering.eventDate.begin DESC'],
