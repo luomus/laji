@@ -20,11 +20,6 @@
   </div>
   <div class="lj-filter-wrap">
     <ng-content></ng-content>
-    <div style="padding-top: 10px" *ngIf="hasInvasiveControlRights">
-      <button type="button" class="btn btn-default" (click)="toInvasiveControlForm()">
-        {{ 'toICForm' | translate }}
-      </button>
-    </div>
     <div class="form-filters-fill"></div>
   </div>
 </div>
