@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class TaxonSelectComponent {
   @Input() taxonId: string;
   @Input() searchParams = {};
+  @Input() placeholder = '';
   @Output() select = new EventEmitter<string>();
 
   @ViewChild('typeahead') typeahead;

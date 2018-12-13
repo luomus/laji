@@ -44,11 +44,12 @@ import { InfoModule } from '../shared-modules/info/info.module';
 import { BoldSynonymComponent } from './taxonomy/taxon-info/bold-synonym/bold-synonym.component';
 import { SpeciesCountComponent } from './taxon-browse/species-count/species-count.component';
 import { SpeciesPieComponent } from './taxonomy/species-pie/species-pie.component';
+import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule,
-    ObservationMapModule, NgxDatatableModule, NgxChartsModule, InfoModule ],
+    ObservationMapModule, NgxDatatableModule, NgxChartsModule, InfoModule, NavigationThumbnailModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonComponent, TaxonInfoComponent, TaxonomyComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,

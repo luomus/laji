@@ -23,4 +23,12 @@ export class TaxonComponent {
       }}
     );
   }
+
+  toTaxonPage(taxonId: string) {
+    if (taxonId) {
+      this.router.navigate(
+        this.localizeRouterService.translateRoute(['/taxon', taxonId])
+      );
+    }
+  }
 }
