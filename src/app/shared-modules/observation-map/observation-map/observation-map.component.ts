@@ -412,7 +412,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
             this.addToMap(query, page);
           } else {
             this.mapData = [{
-              geoData: Util.clone(this.dataCache),
+              featureCollection: Util.clone(this.dataCache),
               getFeatureStyle: this.getStyle.bind(this),
               getClusterStyle: this.getClusterStyle.bind(this),
               getPopup: this.getPopup.bind(this),
@@ -441,7 +441,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       undefined, this.size, page, true
     ).subscribe(data => {
       this.lajiMap.map.addData([{
-        geoData: data.featureCollection || data,
+        featureCollection: data.featureCollection || data,
         getFeatureStyle: this.getStyle.bind(this),
         getClusterStyle: this.getClusterStyle.bind(this),
         getPopup: this.getPopup.bind(this),
