@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
@@ -147,9 +147,11 @@ export class ResultsComponent implements OnChanges {
     const cacheKey = 'habitat';
     const primaryField = 'redListEvaluation.2019.primaryHabitat.habitat';
     const allField = 'redListEvaluation.2019.secondaryHabitats.habitat';
+    const statusField = 'latestRedListStatusFinland.status';
     const query = {
       ...this.baseQuery,
-      aggregateBy: primaryField + ';' + allField,
+      redListStatusFilters: this.resultService.habitatStatuses.join(','),
+      aggregateBy: primaryField  + ',' + statusField + '=' + primaryField + ';' + allField + ',' + statusField + '=' + allField,
       aggregateSize: 10000
     };
     const currentQuery = JSON.stringify(query);
@@ -159,47 +161,42 @@ export class ResultsComponent implements OnChanges {
       this.taxonApi.species(query, this.lang, '1', '0').pipe(
         map(data => {
           const lookup = {};
-          const result = [];
-          const last = {};
 
           data.aggregations[primaryField].forEach(agg => {
-            lookup[agg.values[primaryField]] = {
-              name: agg.values[primaryField],
-              series: [{name: '', value: agg.count}]
-            };
-            result.push(lookup[agg.values[primaryField]]);
+            if (!lookup[agg.values[primaryField]]) {
+              lookup[agg.values[primaryField]] = {primary: {total: 0}, secondary: {total: 0}};
+            }
+            lookup[agg.values[primaryField]].primary[agg.values[statusField]] = agg.count;
+            lookup[agg.values[primaryField]].primary.total += agg.count;
           });
           data.aggregations[allField].forEach(agg => {
-            const value = agg.values[allField];
-            if (lookup[value]) {
-              lookup[value].series.push({name: 'allLabel', value: agg.count});
-            } else {
-              const obj = {
-                name: agg.values[allField],
-                series: [{name: 'primaryLabel', value: 0}, {name: 'allLabel', value: agg.count}]
-              };
-                result.push(obj);
+            if (!lookup[agg.values[allField]]) {
+              lookup[agg.values[allField]] = {primary: {total: 0}, secondary: {total: 0}};
             }
+            if (!lookup[agg.values[allField]].secondary[agg.values[statusField]]) {
+              lookup[agg.values[allField]].secondary[agg.values[statusField]] = 0;
+            }
+            lookup[agg.values[allField]].secondary[agg.values[statusField]] += agg.count;
+            lookup[agg.values[allField]].secondary.total += agg.count;
           });
-
-          return result;
+          return Object.keys(lookup).map(name => ({...lookup[name], name: name}));
         }),
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-          map(translations => data.map(a => ({...a, name: translations[a.name]})))
+          map(translations => data.map(a => ({...a, name: translations[a.name]}))),
         )),
+        map(data => data.sort((a, b) => {
+          const aIsAlphabetical = a.name.localeCompare('a') >= 0,
+            bIsAlphabetical = b.name.localeCompare('a') >= 0;
+          if (!aIsAlphabetical && bIsAlphabetical) {
+            return 1;
+          }
+          if (aIsAlphabetical && !bIsAlphabetical) {
+            return -1;
+          }
+          return a.name.localeCompare(b.name);
+        })),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
-
-    this.habitatQuery$ =
-
-    this.habitatQuery$ = this.getGraph(
-      'habitat',
-      this.baseQuery,
-      'redListEvaluation.2019.primaryHabitat.habitat',
-      'redListEvaluation.2019.secondaryHabitats.habitat',
-      'Ensisijainen habitaatti',
-      'Toissijainen habitaatti'
-    );
   }
 
   private initSpeciesListQuery() {

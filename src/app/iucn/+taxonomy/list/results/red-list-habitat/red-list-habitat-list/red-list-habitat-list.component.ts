@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ResultService } from '../../../../../iucn-shared/service/result.service';
+import { RedListHabitatData } from '../red-list-habitat.component';
 
 @Component({
   selector: 'laji-red-list-habitat-list',
@@ -9,13 +10,15 @@ import { ResultService } from '../../../../../iucn-shared/service/result.service
 })
 export class RedListHabitatListComponent {
 
+  @Input() data: RedListHabitatData[] = [];
+
   statuses: string[];
   statusLabel: any;
 
   constructor(
     private resultService: ResultService
   ) {
-    this.statuses = this.resultService.statuses;
+    this.statuses = this.resultService.habitatStatuses;
     this.statusLabel = this.resultService.shortLabel;
   }
 

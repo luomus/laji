@@ -14,13 +14,13 @@
       <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
       <th>Total</th>
     </tr>
-    <!--
-    <tr *ngFor="let data of _data; let l=last" [class.title]="l">
-      <th>{{ data.species }}</th>
-      <td *ngFor="let status of statuses">{{ data[status] || 0 }}</td>
-      <td>{{ data.redListCnt }}</td>
-      <td>{{ data.redListPct }}%</td>
+    <tr *ngFor="let row of data; let l=last" [class.title]="l">
+      <th>{{ row.name }}</th>
+      <td *ngFor="let status of statuses">{{ row.primary[status] || 0 }}</td>
+      <td>{{ row.primary.total }}</td>
+      <td *ngFor="let status of statuses">{{ row.secondary[status] || 0 }}</td>
+      <td>{{ row.secondary.total }}</td>
+      <td>{{ row.secondary.total +  row.primary.total }}</td>
     </tr>
-    -->
   </table>
 </div>

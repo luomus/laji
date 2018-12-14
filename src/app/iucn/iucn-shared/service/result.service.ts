@@ -60,6 +60,15 @@ export class ResultService {
     'MX.iucnDD'
   ];
 
+  habitatStatuses: string[] = [
+    'MX.iucnRE',
+    'MX.iucnEN',
+    'MX.iucnCR',
+    'MX.iucnVU',
+    'MX.iucnNT',
+    'MX.iucnDD'
+  ];
+
   private yearToChecklistVersion = {
     '2019': 'MR.424',
     '2015': 'MR.425',
