@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
@@ -61,79 +61,142 @@ export class ResultsComponent implements OnChanges {
     this.initReasons();
   }
 
-  private initHabitat() {
-    const cacheKey = 'habitat';
-    const habitatField = 'redListEvaluation.2019.primaryHabitat.habitat';
-    const query = {
-      ...this.baseQuery,
-      aggregateBy: habitatField
-    };
-
-    const currentQuery = JSON.stringify(query);
-    this.habitatQuery$ = this.hasCache(cacheKey, currentQuery) ?
-      ObservableOf(this.cache[cacheKey]) :
-      this.taxonApi.species(query, this.lang, '1', '0').pipe(
-      map(data => data.aggregations[habitatField].map(agg => ({
-        name: agg.values[habitatField],
-        series: [{name: '', value: agg.count}]
-      }))),
-      switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-        map(translations => {
-          return data.map(a => ({...a, name: translations[a.name]}));
-        })
-      )),
-      tap(data => this.setCache(cacheKey, data, currentQuery))
+  private initReasons() {
+    this.reasonsQuery$ = this.getGraph(
+      'reasons',
+      this.baseQuery,
+      'redListEvaluation.2019.primaryEndangermentReason',
+      'redListEvaluation.2019.endangermentReasons',
+      'Ensisijainen uhka',
+      'Yksi uhista',
+      ['MKV.endangermentReasonMuu', 'MKV.endangermentReasonT']
     );
   }
 
-  private initReasons() {
-    const cacheKey = 'reasons';
-    const field = 'redListEvaluation.2019.endangermentReasons';
-    const query = {
-      ...this.baseQuery,
-      aggregateBy: field
-    };
+  private initThreads() {
+    this.threadQuery$ = this.getGraph(
+      'threads',
+      this.baseQuery,
+      'redListEvaluation.2019.primaryThreat',
+      'redListEvaluation.2019.threats',
+      'Ensisijainen uhka',
+      'Yksi uhista',
+      ['MKV.endangermentReasonMuu', 'MKV.endangermentReasonT']
+    );
+  }
 
+  private getGraph(cacheKey, baseQuery, primaryField, allField, primaryLabel, allLabel, lastKeys: string[] = []): Observable<ChartData[]> {
+    const query = {
+      ...baseQuery,
+      aggregateBy: primaryField + ';' + allField,
+      aggregateSize: 10000
+    };
     const currentQuery = JSON.stringify(query);
-    this.reasonsQuery$ = this.hasCache(cacheKey, currentQuery) ?
+
+    return this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
       this.taxonApi.species(query, this.lang, '1', '0').pipe(
-        map(data => data.aggregations[field].map(agg => ({
-          name: agg.values[field],
-          series: [{name: '', value: agg.count}]
-        }))),
+        map(data => {
+          const lookup = {};
+          const result = [];
+          const last = {};
+
+          data.aggregations[primaryField].forEach(agg => {
+            lookup[agg.values[primaryField]] = {
+              name: agg.values[primaryField],
+              series: [{name: primaryLabel, value: agg.count}]
+            };
+            if (lastKeys.indexOf(agg.values[primaryField]) > -1) {
+              last[agg.values[primaryField]] = lookup[agg.values[primaryField]];
+            } else {
+              result.push(lookup[agg.values[primaryField]]);
+            }
+          });
+          data.aggregations[allField].forEach(agg => {
+            const value = agg.values[allField];
+            if (lookup[value]) {
+              lookup[value].series.push({name: allLabel, value: agg.count});
+            } else {
+              const obj = {
+                name: agg.values[allField],
+                series: [{name: primaryLabel, value: 0}, {name: allLabel, value: agg.count}]
+              };
+              if (lastKeys.indexOf(value) > -1) {
+                last[value] = obj;
+              } else {
+                result.push(obj);
+              }
+            }
+          });
+          lastKeys.forEach(key => {
+            if (last[key]) {
+              result.push(last[key]);
+            }
+          });
+
+          return result;
+        }),
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-          map(translations => {
-            return data.map(a => ({...a, name: translations[a.name]}));
-          })
+          map(translations => data.map(a => ({...a, name: translations[a.name]})))
         )),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
   }
 
-  private initThreads() {
-    const cacheKey = 'threads';
-    const threadField = 'redListEvaluation.2019.threats';
+  private initHabitat() {
+    const cacheKey = 'habitat';
+    const primaryField = 'redListEvaluation.2019.primaryHabitat.habitat';
+    const allField = 'redListEvaluation.2019.secondaryHabitats.habitat';
+    const statusField = 'latestRedListStatusFinland.status';
     const query = {
       ...this.baseQuery,
-      aggregateBy: threadField
+      redListStatusFilters: this.resultService.habitatStatuses.join(','),
+      aggregateBy: primaryField  + ',' + statusField + '=' + primaryField + ';' + allField + ',' + statusField + '=' + allField,
+      aggregateSize: 10000
     };
-
     const currentQuery = JSON.stringify(query);
-    this.threadQuery$ = this.hasCache(cacheKey, currentQuery) ?
+
+    this.habitatQuery$ = this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
       this.taxonApi.species(query, this.lang, '1', '0').pipe(
-      map(data => data.aggregations[threadField].map(agg => ({
-        name: agg.values[threadField],
-        series: [{name: '', value: agg.count}]
-      }))),
-      switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-        map(translations => {
-          return data.map(a => ({...a, name: translations[a.name]}));
-        })
-      )),
-      tap(data => this.setCache(cacheKey, data, currentQuery))
-    );
+        map(data => {
+          const lookup = {};
+
+          data.aggregations[primaryField].forEach(agg => {
+            if (!lookup[agg.values[primaryField]]) {
+              lookup[agg.values[primaryField]] = {primary: {total: 0}, secondary: {total: 0}};
+            }
+            lookup[agg.values[primaryField]].primary[agg.values[statusField]] = agg.count;
+            lookup[agg.values[primaryField]].primary.total += agg.count;
+          });
+          data.aggregations[allField].forEach(agg => {
+            if (!lookup[agg.values[allField]]) {
+              lookup[agg.values[allField]] = {primary: {total: 0}, secondary: {total: 0}};
+            }
+            if (!lookup[agg.values[allField]].secondary[agg.values[statusField]]) {
+              lookup[agg.values[allField]].secondary[agg.values[statusField]] = 0;
+            }
+            lookup[agg.values[allField]].secondary[agg.values[statusField]] += agg.count;
+            lookup[agg.values[allField]].secondary.total += agg.count;
+          });
+          return Object.keys(lookup).map(name => ({...lookup[name], name: name}));
+        }),
+        switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
+          map(translations => data.map(a => ({...a, name: translations[a.name]}))),
+        )),
+        map(data => data.sort((a, b) => {
+          const aIsAlphabetical = a.name.localeCompare('a') >= 0,
+            bIsAlphabetical = b.name.localeCompare('a') >= 0;
+          if (!aIsAlphabetical && bIsAlphabetical) {
+            return 1;
+          }
+          if (aIsAlphabetical && !bIsAlphabetical) {
+            return -1;
+          }
+          return a.name.localeCompare(b.name);
+        })),
+        tap(data => this.setCache(cacheKey, data, currentQuery))
+      );
   }
 
   private initSpeciesListQuery() {
@@ -146,6 +209,10 @@ export class ResultsComponent implements OnChanges {
       'latestRedListStatusFinland.*',
       'redListEvaluation.*.endangermentReasons',
       'redListEvaluation.*.redListStatusNotes',
+      'redListEvaluation.*.reasonForStatusChange',
+      'redListEvaluation.*.primaryHabitat.habitat',
+      'redListEvaluation.*.secondaryHabitats.habitat',
+      'redListEvaluation.*.threats',
     ];
     const query = {
       ...this.baseQuery,

@@ -11,6 +11,9 @@ export class RedListSpeciesComponent {
   @Input()
   species = [];
 
+  @Input()
+  year: string;
+
   constructor() { }
 
 

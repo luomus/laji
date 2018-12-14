@@ -30,7 +30,6 @@ export class RedListStatusComponent {
   _data: RedListStatusDataInternal[] = [];
   statuses: string[];
   statusLabel: any;
-  redListStatus = {};
 
   constructor(
     private resultService: ResultService
@@ -45,7 +44,6 @@ export class RedListStatusComponent {
       this._data = [];
       return;
     }
-    console.log(data);
     const total: RedListStatusData = {species: 'Total', count: 0
     };
     this.statuses.forEach(status => {
