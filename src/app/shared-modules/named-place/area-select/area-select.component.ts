@@ -48,10 +48,10 @@ export class AreaSelectComponent implements OnInit {
     this.getDataObservable()
       .subscribe((data) => {
         const options = [];
-        if (this.selectOptionEnabled) {
+        if (!this.multiselect && this.selectOptionEnabled) {
           options.push({id: undefined, value: 'select', translate: true});
         }
-        if (this.allOptionEnabled) {
+        if (!this.multiselect && this.allOptionEnabled) {
           options.push({id: 'all', value: 'area-select.all', translate: true});
         }
         this.options = [...options, ...data.sort((a, b) => {
