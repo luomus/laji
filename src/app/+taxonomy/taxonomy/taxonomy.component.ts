@@ -14,7 +14,8 @@ import { Subscription } from 'rxjs';
 })
 export class TaxonomyComponent implements OnInit {
   taxonId: string;
-  sideBarWidth = 225;
+  sidebarWidth = 225;
+  showSidebar = true;
 
   private dragging = false;
   private subParam: Subscription;
@@ -40,7 +41,7 @@ export class TaxonomyComponent implements OnInit {
   onMouseMove(e) {
     if (this.dragging) {
       e.preventDefault();
-      this.sideBarWidth = Math.max(e.pageX + 2, 120);
+      this.sidebarWidth = Math.max(e.pageX + 2, 120);
     }
   }
 
@@ -49,5 +50,9 @@ export class TaxonomyComponent implements OnInit {
     if (this.dragging) {
       this.dragging = false;
     }
+  }
+
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
   }
 }

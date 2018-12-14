@@ -1,10 +1,19 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="taxon-tree-container" [style.width]="sideBarWidth + 'px'">
+    <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" *ngIf="showSidebar">
+      <div class="sidebar-toggle hide-sidebar-toggle link" (click)="toggleSidebar()">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+      </div>
       <laji-taxon-tree [activeId]="taxonId"></laji-taxon-tree>
       <div class="dragbar" (mousedown)="startDragging($event)"></div>
     </div>
-    <div class="info-card-container" [style.width]="'calc(100% - ' + sideBarWidth + 'px)'">
+    <div *ngIf="!showSidebar"
+         class="sidebar-toggle link"
+         (click)="toggleSidebar()"
+    >
+      <i class="glyphicon glyphicon-arrow-right"></i>
+    </div>
+    <div class="info-card-container" [style.width]="showSidebar ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'">
       <laji-info-card></laji-info-card>
     </div>
   </div>
