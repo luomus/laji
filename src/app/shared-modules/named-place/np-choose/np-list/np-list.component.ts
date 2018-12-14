@@ -93,7 +93,6 @@ export class NpListComponent {
         pipe: this.boolToStringPipe
       }
     };
-
   }
 
   changeActivePlace(event) {
