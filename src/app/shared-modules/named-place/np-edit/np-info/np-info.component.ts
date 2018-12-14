@@ -222,7 +222,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   private showDocumentViewer(doc: Document) {
     this.shownDocument = doc;
-    console.log('modal', this.documentModal);
     this.documentModal.show();
   }
 }
