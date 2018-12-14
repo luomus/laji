@@ -24,6 +24,8 @@ export class TreeComponent implements OnChanges {
   initialViewSubs: Subscription;
   loading = true;
 
+  nodeList: TreeNode[] = [];
+
   constructor(
     private cd: ChangeDetectorRef
   ) {}
@@ -38,7 +40,7 @@ export class TreeComponent implements OnChanges {
       }
     }
 
-    if ((changes.nodes || changes.activeId) && this.nodes.length > 0) {
+    if (changes.nodes || changes.activeId) {
       this.setInitialView(this.activeId);
     }
   }
@@ -59,10 +61,9 @@ export class TreeComponent implements OnChanges {
     if (this.initialViewSubs) {
       this.initialViewSubs.unsubscribe();
     }
-    this.loading = true;
-    this.hideChildren(this.nodes[0], this.treeState);
 
-    if (openId) {
+    if (openId && this.nodes.length > 0) {
+      this.loading = true;
       const nodes = this.nodes;
       const treeState = this.treeState;
 
@@ -71,12 +72,12 @@ export class TreeComponent implements OnChanges {
 
       this.initialViewSubs = getParents
         .pipe(
-          switchMap(res => {
-            res.push({id: openId});
-            return this.setChainOpen(nodes, treeState, res)
+          switchMap(parents => {
+            parents.push({id: openId});
+            return this.setView(nodes, treeState, parents)
               .pipe(
-                map((hideParams: any) => {
-                  treeState.setHideParams(nodes, hideParams);
+                map(nodeList => {
+                  this.nodeList = nodeList;
                   this.loading = false;
                   this.cd.markForCheck();
                 })
@@ -84,6 +85,7 @@ export class TreeComponent implements OnChanges {
           }))
         .subscribe();
     } else {
+      this.nodeList = this.nodes;
       this.loading = false;
     }
   }
@@ -113,24 +115,27 @@ export class TreeComponent implements OnChanges {
     });
   }
 
-  private setChainOpen(nodes: TreeNode[], treeState: TreeState, chain: any[], hideParams = [{key: 'id', values: []}]): Observable<any> {
-    if (chain.length === 0) { return of(hideParams); }
+  private setView(nodes: TreeNode[], treeState: TreeState, parentIds: any[], parentList = []): Observable<TreeNode[]> {
+    if (parentIds.length === 0) {
+      return of(parentList);
+    }
 
     let foundNode: TreeNode;
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
-      if (node.id === chain[0].id) {
+      if (node.id === parentIds[0].id) {
         foundNode = node;
       } else {
-        hideParams[0].values.push(node.id);
+        this.hideChildren(node, treeState);
       }
     }
 
-    if (!foundNode.hasChildren) { return of(hideParams); }
+    parentList.push(foundNode);
+    if (!foundNode.hasChildren) { return of(parentList); }
 
     return this.setOpen(foundNode, treeState)
       .pipe(switchMap(() => {
-        return this.setChainOpen(foundNode.children, treeState, chain.slice(1), hideParams);
+        return this.setView(foundNode.children, treeState, parentIds.slice(1), parentList);
       }));
   }
 

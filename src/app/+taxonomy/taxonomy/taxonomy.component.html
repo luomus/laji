@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" *ngIf="showSidebar">
+    <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" [hidden]="!showSidebar">
       <div class="sidebar-toggle hide-sidebar-toggle link" (click)="toggleSidebar()">
         <i class="glyphicon glyphicon-arrow-left"></i>
       </div>

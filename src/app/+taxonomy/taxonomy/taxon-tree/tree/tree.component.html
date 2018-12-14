@@ -1,6 +1,11 @@
 <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
   <div class="tree">
-    <ng-container *ngTemplateOutlet="treeBranch; context: {nodes: nodes}"></ng-container>
+    <ng-container *ngFor="let node of nodeList; let last = last">
+      <div *ngIf="last || !treeState.state[node.id].isSkipped">
+        <ng-container *ngTemplateOutlet="labelTpl; context: {'node': node}"></ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngTemplateOutlet="treeBranch; context: {nodes: nodeList[nodeList.length - 1]?.children}"></ng-container>
   </div>
 </laji-spinner>
 
@@ -24,7 +29,7 @@
 </ng-template>
 
 <ng-template #treeNodeContent let-node="node">
-  <li *ngIf="!treeState.state[node.id].isHidden">
+  <li>
     <i class="glyphicon link toggle-triangle"
        [ngClass]="{'glyphicon-triangle-right': !treeState.state[node.id].isExpanded, 'glyphicon-triangle-bottom': treeState.state[node.id].isExpanded}"
        [ngStyle]="{visibility: node.hasChildren ? 'visible' : 'hidden'}"

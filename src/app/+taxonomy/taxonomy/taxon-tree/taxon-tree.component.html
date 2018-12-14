@@ -18,11 +18,12 @@
   [skipParams]="skipParams"
 >
   <ng-template #label let-node="node">
-    <ng-container *ngIf="node.id !== activeId; else labelContent">
-      <a [routerLink]="['..', node.id]">
-        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
-      </a>
-    </ng-container>
+    <a *ngIf="node.id !== activeId" [routerLink]="['..', node.id]">
+      <ng-container *ngTemplateOutlet="labelContent"></ng-container>
+    </a>
+    <strong *ngIf="node.id === activeId">
+      <ng-container *ngTemplateOutlet="labelContent"></ng-container>
+    </strong>
     <ng-template #labelContent>
       <laji-taxon-name [taxon]="node" [addLink]="false"></laji-taxon-name>
     </ng-template>

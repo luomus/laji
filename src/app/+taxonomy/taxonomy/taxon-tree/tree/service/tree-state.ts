@@ -8,7 +8,6 @@ export class TreeState {
   pendingChildren: {[key: string]: Observable<TreeNode[]>} = {};
 
   private skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
-  private hideParams: {key: string, values: string[], isWhiteList?: boolean}[];
 
   constructor(
     nodes: TreeNode[],
@@ -23,11 +22,6 @@ export class TreeState {
     const missingChildren = [];
     this.updateAndCheckMissing(nodes, missingChildren);
     return missingChildren;
-  }
-
-  setHideParams(nodes: TreeNode[], hideParams: {key: string, values: string[], isWhiteList?: boolean}[]) {
-    this.hideParams = hideParams;
-    this.updateAndCheckMissing(nodes, []);
   }
 
   updateNodeStates(nodes: TreeNode[], parentId?: string, afterStateUpdate?: (node: TreeNode, state: TreeNodeState) => void) {
@@ -61,14 +55,12 @@ export class TreeState {
 
   private updateNodeState(node: TreeNode, parentId?: string): TreeNodeState {
     const skipped = this.checkConditions(node, this.skipParams);
-    const hidden = this.checkConditions(node, this.hideParams);
     const expanded = this.state[node.id] ? this.state[node.id].isExpanded : false;
     const parentState = parentId ? this.state[parentId] : undefined;
 
     this.state[node.id] = {
-      isExpanded: hidden ? false : (skipped && parentState.isExpanded ? true : expanded),
+      isExpanded: skipped && parentState.isExpanded ? true : expanded,
       isSkipped: skipped,
-      isHidden: hidden,
       loadingCount: this.state[node.id] ? this.state[node.id].loadingCount : 0
     };
 
