@@ -32,8 +32,12 @@ export class SpeciesPieComponent implements OnChanges {
     this.total = 0;
 
     if (this.taxonId) {
-      this.taxonomyService.taxonomyFindChildren(this.taxonId, this.translate.currentLang, '1', {selectedFields: 'vernacularName'})
-        .subscribe(children => {
+      this.taxonomyService.taxonomyFindChildren(
+        this.taxonId,
+        this.translate.currentLang,
+        '1',
+        {selectedFields: 'id,vernacularName,scientificName,countOfFinnishSpecies'}
+      ).subscribe(children => {
           this.data = children.reduce((arr: any[], child) => {
             const id = child.id;
             const count = child.countOfFinnishSpecies;
@@ -46,7 +50,6 @@ export class SpeciesPieComponent implements OnChanges {
 
             return arr;
           }, []);
-
           this.cd.markForCheck();
         });
     }

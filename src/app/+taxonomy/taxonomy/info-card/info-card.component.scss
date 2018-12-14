@@ -1,5 +1,4 @@
 .info-card-wrapper {
-  padding-right: 15px;
   padding-left: 15px;
   padding-bottom: 50px;
 }
@@ -10,8 +9,12 @@
 }
 .panel {
   display: flex;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   flex-direction: column;
+  margin-right: 15px;
+}
+.disclaimer {
+
 }
 
 :host >>> .descriptions .panel-body {
