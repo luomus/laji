@@ -6,6 +6,16 @@
     <ng-container *ngIf="type !== 'npCreate' && type !== 'npEdit'">
 		  <h3>{{ form.title }}</h3>
     </ng-container>
+    <laji-own-submissions *ngIf="namedPlace"
+                          [actions]="isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
+                          [columns]="['dateObserved', 'observer', 'dateEdited']"
+                          [columnNameMapping]="form.namedPlaceOptions?.columnNameMapping"
+                          [collectionID]="form.collectionID"
+                          [formID]="form.id"
+                          [namedPlace]="namedPlace.id"
+                          [showDownloadAll]="false"
+                          [header]="form.namedPlaceOptions?.formOwnSubmissionsLabel || 'np.formOwnSubmissions'"
+                          [admin]="isAdmin"></laji-own-submissions>
     <ng-container *ngIf="type === 'np'">
       <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
       <br>

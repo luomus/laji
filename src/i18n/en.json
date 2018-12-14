@@ -934,5 +934,6 @@
   "wholeYear": "Whole year {{year}}",
   "yes": "Yes",
   "invasiveSpecies.title": "Invasive species",
-  "invasiveSpecies.places": "Record control actions"
+  "invasiveSpecies.places": "Record control actions",
+  "np.formOwnSubmissions": "Places previous documents"
 }
