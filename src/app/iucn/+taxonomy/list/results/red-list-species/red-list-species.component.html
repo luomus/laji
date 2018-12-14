@@ -1,7 +1,7 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
     <tr>
-      <th></th>
+      <th>Laji</th>
       <th>Tila</th>
       <th>Perustelu</th>
       <th>Lisätiedot</th>
@@ -11,13 +11,17 @@
         <laji-taxon-name [taxon]="taxon"></laji-taxon-name>
       </th>
       <td>
-        {{taxon.status}}
+        {{ taxon.latestRedListStatusFinland?.status | label }}
       </td>
       <td>
-        {{taxon.critery}}
+        <ng-container *ngIf="taxon.latestRedListStatusFinland && taxon.redListEvaluation">
+          <span [innerHTML]="taxon.redListEvaluation[taxon.latestRedListStatusFinland.year]?.endangermentReasons | label | values:'<br>'"></span>
+        </ng-container>
       </td>
       <td>
-        {{taxon.note}}
+        <ng-container *ngIf="taxon.latestRedListStatusFinland && taxon.redListEvaluation">
+          {{ taxon.redListEvaluation[taxon.latestRedListStatusFinland.year]?.redListStatusNotes }}
+        </ng-container>
       </td>
     </tr>
   </table>

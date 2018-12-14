@@ -30,22 +30,34 @@ export class ResultService {
   ];
 
   statuses: string[] = [
-    'RE',
-    'CR',
-    'EN',
-    'VU',
-    'NT',
-    'DD',
-    'LC',
-    'NA',
-    'NE'
+    'MX.iucnRE',
+    'MX.iucnCR',
+    'MX.iucnEN',
+    'MX.iucnVU',
+    'MX.iucnNT',
+    'MX.iucnDD',
+    'MX.iucnLC',
+    'MX.iucnNA',
+    'MX.iucnNE'
   ];
 
+  shortLabel = {
+    'MX.iucnRE': 'RE',
+    'MX.iucnCR': 'CR',
+    'MX.iucnEN': 'EN',
+    'MX.iucnVU': 'VU',
+    'MX.iucnNT': 'NT',
+    'MX.iucnDD': 'DD',
+    'MX.iucnLC': 'LC',
+    'MX.iucnNA': 'NA',
+    'MX.iucnNE': 'NE'
+  };
+
   redListStatuses: string[] = [
-    'EN',
-    'CR',
-    'VU',
-    'DD'
+    'MX.iucnEN',
+    'MX.iucnCR',
+    'MX.iucnVU',
+    'MX.iucnDD'
   ];
 
   private yearToChecklistVersion = {
@@ -56,6 +68,10 @@ export class ResultService {
   };
 
   constructor(private taxonomyApi: TaxonomyApi) { }
+
+  getChecklistVersion(year: string): string {
+    return this.yearToChecklistVersion[year];
+  }
 
   getResults(year: number): Observable<{name: string, value: number}[]> {
     if (this.resultCache[year]) {
