@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, Input } from '@angular/core';
 
-const BAR_HEIGHT = 30;
+const BAR_HEIGHT = 20;
 
 export interface ChartData {
   'name': string;
@@ -22,6 +22,9 @@ export class RedListChartComponent implements AfterViewInit {
   @Input()
   legend = true;
 
+  @Input()
+  label = '';
+
   constructor(
     private el: ElementRef
   ) { }
@@ -35,7 +38,7 @@ export class RedListChartComponent implements AfterViewInit {
   @Input()
   set data(data: ChartData[]) {
     this._data = data;
-    this.height = data && data[0] && data[0].series ? ((data.length * data[0].series.length * BAR_HEIGHT) + 70) : 0;
+    this.height = data && data[0] && data[0].series ? ((data.length * Math.max(data[0].series.length * BAR_HEIGHT, 30)) + 70) : 0;
     this.resize();
   }
 

@@ -1,0 +1,26 @@
+<div class="table-responsive">
+  <table class="table table-hover">
+    <tr class="title">
+      <th rowspan="2">Elinympäristö</th>
+      <th class="center" [colSpan]="statuses.length">Ensisijainen</th>
+      <th class="no-border-bottom"></th>
+      <th class="center" [colSpan]="statuses.length">Toissijainen</th>
+      <th class="no-border-bottom"></th>
+      <th rowspan="2">Kaikki yhteensä</th>
+    </tr>
+    <tr class="title">
+      <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
+      <th>Total</th>
+      <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
+      <th>Total</th>
+    </tr>
+    <!--
+    <tr *ngFor="let data of _data; let l=last" [class.title]="l">
+      <th>{{ data.species }}</th>
+      <td *ngFor="let status of statuses">{{ data[status] || 0 }}</td>
+      <td>{{ data.redListCnt }}</td>
+      <td>{{ data.redListPct }}%</td>
+    </tr>
+    -->
+  </table>
+</div>
