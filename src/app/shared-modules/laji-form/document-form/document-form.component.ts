@@ -299,7 +299,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         return observer.next(this.readonly);
       }
       this.userService.getUser().subscribe(user => {
-        if (formData.creator !== user.id && formData.editors.indexOf(user.id) === -1) {
+        if (formData.id && formData.creator !== user.id && (!formData.editors || formData.editors.indexOf(user.id) === -1)) {
           this.readonly = 'haseka.form.readonly';
         } else {
           this.readonly = formData.locked;
@@ -361,7 +361,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         ).pipe(
           map(data => ({...result, rights: data[0], annotations: data[1]}))
         )
-      ), )
+      ))
       .subscribe(
         result => {
           const data = result.data;
