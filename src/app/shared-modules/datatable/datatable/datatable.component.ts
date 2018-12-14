@@ -178,7 +178,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
         return;
       }
       // Calculate relative position of selected row and scroll to it
-      const scrollAmount = this.datatable.bodyComponent.rowHeight * postSortIndex;
+      const scrollAmount = (<number> this.datatable.bodyComponent.rowHeight) * postSortIndex;
       if (!isNaN(scrollAmount)) {
         this.scrollTo(scrollAmount);
       }
