@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Area } from '../model/Area';
 import { Autocomplete } from '../model/Autocomplete';
+import { Checklist } from '../model/Checklist';
 import { PagedResult } from '../model/PagedResult';
 import { Source } from '../model/Source';
 import { Taxonomy } from '../model/Taxonomy';
@@ -26,6 +27,7 @@ export namespace LajiApi {
     areas = 'areas',
     autocomplete = 'autocomplete',
     documentStats = 'documents/stats',
+    checklists = 'checklists',
     feedback = 'feedback',
     forms = 'forms',
     htmlToPdf = 'html-to-pdf',
@@ -102,6 +104,10 @@ export namespace LajiApi {
       formID?: string;
     }
 
+    export interface ChecklistQuery extends Lang, Paged {
+      idIn?: string;
+    }
+
     export interface DocumentStatsQuery extends PersonToken {
       namedPlace: string;
     }
@@ -167,6 +173,8 @@ export namespace LajiApi {
 
     export interface AreaListResponse extends PagedResult<Area> { }
 
+    export interface ChecklistListResponse extends PagedResult<Checklist> { }
+
     export interface NewsListResponse extends PagedResult<News> { }
 
     export interface FormsListResponse extends PagedResult<Form.List> { }
@@ -191,6 +199,7 @@ export class LajiApiService {
 
   getList(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationListQuery): Observable<LajiApi.Response.AnnotationListResponse>;
   getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
+  getList(endpoint: LajiApi.Endpoints.checklists, query: LajiApi.Query.ChecklistQuery): Observable<LajiApi.Response.ChecklistListResponse>;
   getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
   getList(endpoint: LajiApi.Endpoints.forms, query: LajiApi.Query.FormsListQuery): Observable<LajiApi.Response.FormsListResponse>;
   getList(endpoint: LajiApi.Endpoints.information, query: LajiApi.Query.InformationQuery): Observable<Information>;

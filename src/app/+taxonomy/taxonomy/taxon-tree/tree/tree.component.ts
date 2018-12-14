@@ -149,7 +149,7 @@ export class TreeComponent implements OnChanges {
           const child = children[i];
           if (!child.hasChildren) { continue; }
 
-          if (treeState.state[child.id].isSkipped && !treeState.state[child.id].isHidden) {
+          if (treeState.state[child.id].isSkipped) {
             obs.push(this.setOpen(child, treeState));
           }
         }

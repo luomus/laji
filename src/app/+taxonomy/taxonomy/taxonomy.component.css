@@ -1,3 +1,9 @@
+:host {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
 .taxon-tree-container {
   padding: 15px;
   background-color: #ECF0F1;

@@ -1,6 +1,14 @@
 <table class="table table-condensed" *ngIf="taxon">
   <tbody>
   <tr>
+    <th>{{ 'taxonomy.nameAccordingTo' | translate }}</th>
+    <td>{{ taxon.nameAccordingTo | checklist }}</td>
+  </tr>
+  <!--tr *ngIf="taxon.originalPublication">
+    <th>{{ 'taxonomy.originalPublication' | translate }}</th>
+    <td>{{ taxon.originalPublication }}</td>
+  </tr-->
+  <tr>
     <th>{{ 'taxonomy.scientific.name' | translate }}</th>
     <td>
       <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
@@ -10,7 +18,7 @@
     <th>{{ 'taxonomy.author' | translate }}</th>
     <td>{{ taxon.scientificNameAuthorship }}</td>
   </tr>
-  <tr *ngIf="taxon.vernacularName">
+  <!--tr *ngIf="taxon.vernacularName">
     <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
     <td>{{ taxon.vernacularName | multiLang }}</td>
   </tr>
@@ -21,7 +29,7 @@
         <li *ngFor="let synonym of taxon.synonyms"><span class="scientificName" [class.cursive]="synonym.cursiveName">{{ synonym.scientificName }}</span></li>
       </ul>
     </td>
-  </tr>
+  </tr-->
   <tr>
     <th>{{ 'MX.taxonRank' | label }}</th>
     <td>{{ taxon.taxonRank | label }}</td>
@@ -30,7 +38,7 @@
     <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
     <td>{{ taxon.occurrenceInFinland | label }}</td>
   </tr>
-  <tr *ngIf="taxon.invasiveSpecies">
+  <!--tr *ngIf="taxon.invasiveSpecies">
     <th>
       <img src="/static/images/vieraslaji.png" class="img-responsive"/>
     </th>
@@ -102,6 +110,6 @@
       <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
       <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
     </td>
-  </tr>
+  </tr-->
   </tbody>
 </table>

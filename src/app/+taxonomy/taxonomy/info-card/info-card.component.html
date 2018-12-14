@@ -3,7 +3,12 @@
     <h1 style="margin-left: 25px">
       <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
     </h1>
-    <div class="row">
+    <div class="panel-container">
+      <div class="panel panel-default" laji-panel [title]="'taxonomy.card' | translate" [open]="true" [autoToggle]="true">
+        <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
+      </div>
+    </div>
+    <!--div class="row">
       <div class="col-md-6 descriptions" *ngIf="hasDescription">
         <select style="margin-bottom: 8px;" class="form-control"
                 (change)="onDescriptionChange($event.target.value)"
@@ -157,7 +162,7 @@
           [taxonId]="taxon.id"
         ></laji-species-pie>
       </div>
-    </div>
+    </div-->
   </div>
   <div class="container" *ngIf="taxon === false">
     <h1>
