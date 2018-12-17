@@ -37,3 +37,23 @@
 .inline-block {
   display: inline-block;
 }
+
+.glyph-link {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+}
+.glyph-link {
+  color: #337ab7;
+}
+.glyph-link.locked {
+  color: #777;
+
+}
