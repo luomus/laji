@@ -6,7 +6,7 @@
     <ng-container *ngIf="type !== 'npCreate' && type !== 'npEdit'">
 		  <h3>{{ form.title }}</h3>
     </ng-container>
-    <laji-own-submissions *ngIf="namedPlace && form.options?.displayOwnSubmissions"
+    <laji-own-submissions *ngIf="!formData?.id && namedPlace && form.options?.displayOwnSubmissions"
                           [actions]="isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
                           [columns]="['dateObserved', 'observer', 'dateEdited']"
                           [columnNameMapping]="form.namedPlaceOptions?.columnNameMapping"

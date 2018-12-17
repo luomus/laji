@@ -17,6 +17,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() isAdmin = false;
   @Input() printType: string;
   @Input() type: 'np' | 'npCreate' | 'npEdit' | 'form' = 'form';
+  @Input() formData: any;
 
   form: any;
 
