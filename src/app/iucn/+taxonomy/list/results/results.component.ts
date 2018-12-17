@@ -7,10 +7,11 @@ import { RedListStatusData } from './red-list-status/red-list-status.component';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../shared/service/util.service';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
-import { ChartData } from './red-list-chart/red-list-chart.component';
+import { ChartData, SimpleChartData } from './red-list-chart/red-list-chart.component';
 import { TriplestoreLabelService } from '../../../../shared/service/triplestore-label.service';
 import { TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { RedListTaxonGroup } from '../../../../shared/model/RedListTaxonGroup';
+import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
 
 @Component({
   selector: 'laji-results',
@@ -28,12 +29,17 @@ export class ResultsComponent implements OnChanges {
   redListStatusQuery$: Observable<RedListStatusData[]>;
   speciesQuery$: Observable<Taxonomy[]>;
   threadQuery$: Observable<ChartData[]>;
-  habitatQuery$: Observable<ChartData[]>;
+  habitatQuery$: Observable<RedListHabitatData[]>;
+  habitatChartQuery$: Observable<SimpleChartData[]>;
   reasonsQuery$: Observable<ChartData[]>;
 
   cache: any = {};
   baseQuery = {};
   statusMap = {};
+
+  colors = ['#d81e05', '#fc7f3f', '#f9e814', '#cce226', '#60c659', '#bfbfbf', '#777', '#000'];
+
+  colorSchema = [];
 
   constructor(
     private taxonApi: TaxonomyApi,
@@ -55,7 +61,10 @@ export class ResultsComponent implements OnChanges {
     this.baseQuery = Util.removeUndefinedFromObject({
       checklistVersion: this.resultService.getChecklistVersion(this.year),
       redListTaxonGroup: this.query.redListGroup,
-      redListStatusFilters: (this.query.status || []).map(status => this.statusMap[status] || status).join(',')
+      redListStatusFilters: (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
+      anyHabitat: this.query.habitat,
+      threat: this.query.threads,
+      endangermentReason: this.query.reasons
     });
     this.initStatusQuery();
     this.initSpeciesListQuery();
@@ -151,9 +160,9 @@ export class ResultsComponent implements OnChanges {
     const primaryField = 'redListEvaluation.2019.primaryHabitat.habitat';
     const allField = 'redListEvaluation.2019.secondaryHabitats.habitat';
     const statusField = 'latestRedListStatusFinland.status';
-    const query = {
+    const query: any = {
       ...this.baseQuery,
-      redListStatusFilters: this.resultService.habitatStatuses.join(','),
+      redListStatusFilters: (this.baseQuery as any).redListStatusFilters || this.resultService.habitatStatuses.join(','),
       aggregateBy: primaryField  + ',' + statusField + '=' + primaryField + ';' + allField + ',' + statusField + '=' + allField,
       aggregateSize: 10000
     };
@@ -162,28 +171,7 @@ export class ResultsComponent implements OnChanges {
     this.habitatQuery$ = this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
       this.taxonApi.species(query, this.lang, '1', '0').pipe(
-        map(data => {
-          const lookup = {};
-
-          data.aggregations[primaryField].forEach(agg => {
-            if (!lookup[agg.values[primaryField]]) {
-              lookup[agg.values[primaryField]] = {primary: {total: 0}, secondary: {total: 0}};
-            }
-            lookup[agg.values[primaryField]].primary[agg.values[statusField]] = agg.count;
-            lookup[agg.values[primaryField]].primary.total += agg.count;
-          });
-          data.aggregations[allField].forEach(agg => {
-            if (!lookup[agg.values[allField]]) {
-              lookup[agg.values[allField]] = {primary: {total: 0}, secondary: {total: 0}};
-            }
-            if (!lookup[agg.values[allField]].secondary[agg.values[statusField]]) {
-              lookup[agg.values[allField]].secondary[agg.values[statusField]] = 0;
-            }
-            lookup[agg.values[allField]].secondary[agg.values[statusField]] += agg.count;
-            lookup[agg.values[allField]].secondary.total += agg.count;
-          });
-          return Object.keys(lookup).map(name => ({...lookup[name], name: name}));
-        }),
+        map(data => this.extractHabitat(data, primaryField, allField, statusField)),
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
           map(translations => data.map(a => ({...a, name: translations[a.name]}))),
         )),
@@ -198,8 +186,64 @@ export class ResultsComponent implements OnChanges {
           }
           return a.name.localeCompare(b.name);
         })),
+        map(data => !!query.anyHabitat ? data : this.combineHabitat(data)),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
+    this.initHabitatChart();
+  }
+
+  private initHabitatChart() {
+    this.colorSchema = [];
+    this.habitatChartQuery$ = this.habitatQuery$.pipe(
+      map(habitat => habitat.map((h, index) => {
+        const color = this.colors[index % this.colors.length];
+        this.colorSchema.push({name: h.name, value: color});
+        return {name: h.name, value: h.primary.total};
+      }))
+    );
+  }
+
+  private combineHabitat(data) {
+    const lookup = {};
+    data.forEach(item => {
+      const key = item.name.charAt(0);
+      if (!lookup[key]) {
+        lookup[key] = item;
+        return;
+      }
+      const result = lookup[key];
+      ['primary', 'secondary'].forEach(type => {
+        Object.keys(item[type]).forEach(prop => {
+          if (!result[type][prop]) {
+            result[type][prop] = item[type][prop];
+          } else {
+            result[type][prop] += item[type][prop];
+          }
+        });
+      });
+    });
+
+    return Object.keys(lookup).map(name => lookup[name]);
+  }
+
+  private extractHabitat(data, primaryField, allField, statusField) {
+    const lookup = {};
+    const count = (agg, type, field) => {
+      const status = agg.values[statusField];
+      const key = agg.values[field];
+      if (!lookup[key]) {
+        lookup[key] = {primary: {total: 0}, secondary: {total: 0}};
+      }
+      if (!lookup[key][type][status]) {
+        lookup[key][type][status] = 0;
+      }
+      lookup[key].name = agg.values[field];
+      lookup[key][type][status] += agg.count;
+      lookup[key][type].total += agg.count;
+    };
+    data.aggregations[primaryField].forEach(agg => count(agg, 'primary', primaryField));
+    data.aggregations[allField].forEach(agg => count(agg, 'secondary', allField));
+    return Object.keys(lookup).map(name => lookup[name]);
   }
 
   private initSpeciesListQuery() {
@@ -341,6 +385,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private hasCache(key: string, query: string) {
+    console.log('CACHE', key, this.cache[key + '_query'], query);
     return !!(this.cache[key + '_query'] && this.cache[key + '_query'] === query);
   }
 

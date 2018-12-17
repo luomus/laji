@@ -7,6 +7,11 @@ export interface ChartData {
   'series': {name: string, value: number}[];
 }
 
+export interface SimpleChartData {
+  'name': string;
+  'value': number;
+}
+
 @Component({
   selector: 'laji-red-list-chart',
   templateUrl: './red-list-chart.component.html',

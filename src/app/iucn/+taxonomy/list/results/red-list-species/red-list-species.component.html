@@ -10,8 +10,10 @@
     </tr>
     <tr *ngFor="let taxon of species">
       <th>
-        <span *ngIf="taxon.scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}<br></span>
-        {{ taxon.vernacularName }}
+        <a [routerLink]="[taxon.id]">
+          <span *ngIf="taxon.scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}<br></span>
+          {{ taxon.vernacularName }}
+        </a>
       </th>
       <td>
         {{ taxon.latestRedListStatusFinland?.status | label }}
