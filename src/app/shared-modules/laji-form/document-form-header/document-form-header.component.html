@@ -15,6 +15,7 @@
                           [namedPlace]="namedPlace.id"
                           [showDownloadAll]="false"
                           [header]="form.options?.formOwnSubmissionsLabel || 'np.formOwnSubmissions'"
+                          [useInternalDocumentViewer]="true"
                           [admin]="isAdmin"></laji-own-submissions>
     <ng-container *ngIf="type === 'np'">
       <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
