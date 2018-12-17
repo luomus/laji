@@ -78,16 +78,16 @@
               <i class="glyphicon glyphicon-eye-close"></i>
             </span>
           </span>
-          <span *ngIf="actions.indexOf('edit') > -1" class="label label-primary link inline-block"
+          <a *ngIf="actions.indexOf('edit') > -1" class="glyph-link"
                 [ngClass]="{
-                  'label-primary': !row.locked,
-                  'label-default': row.locked
+                  '': !row.locked,
+                  'locked': row.locked
                 }"
                 [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
-                (click)="toEditPage(row)"
+                [href]="this.formService.getEditUrlPath(documents[row.index].formID, row.id)"
                 [placement]="'right'">
               <i class="glyphicon glyphicon-edit"></i>
-          </span>
+          </a>
           <span *ngIf="showMakeTemplate(row)">
             <span class="label label-warning link inline-block"
                   (click)="makeTemplate(row)"

@@ -268,13 +268,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  toEditPage(row: any) {
-    const formId = this.documents[row.index].formID;
-    this.router.navigate(
-      this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, row.id)])
-    );
-  }
-
   deleteDialog(row: any) {
     const document: any = this.documents[row.index] || {};
     if (document.id && row.id === document.id) {
