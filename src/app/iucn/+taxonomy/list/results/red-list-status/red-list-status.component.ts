@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ResultService } from '../../../../iucn-shared/service/result.service';
 
 export interface RedListStatusData {
   species: string;
   count: number;
-  RE: number;
-  CR: number;
-  EN: number;
-  VU: number;
-  NT: number;
-  DD: number;
-  LC: number;
-  NA: number;
-  NE: number;
+  'MX.iucnRE'?: number;
+  'MX.iucnCR'?: number;
+  'MX.iucnEN'?: number;
+  'MX.iucnVU'?: number;
+  'MX.iucnNT'?: number;
+  'MX.iucnDD'?: number;
+  'MX.iucnLC'?: number;
+  'MX.iucnNA'?: number;
+  'MX.iucnNE'?: number;
 }
 
 interface RedListStatusDataInternal extends RedListStatusData {
@@ -25,32 +25,30 @@ interface RedListStatusDataInternal extends RedListStatusData {
   templateUrl: './red-list-status.component.html',
   styleUrls: ['./red-list-status.component.scss']
 })
-export class RedListStatusComponent implements OnInit {
-
-  mockData: RedListStatusData[] = [
-    {species: 'Juoksujlkaiset, Chilopoda', count: 13, RE: 1, CR: 0, EN: 0, VU: 2, NT: 0, DD: 0, LC: 10, NA: 7, NE: 1},
-    {species: 'Kaksoisjalkaiset, Diplopoda', count: 23, RE: 0, CR: 0, EN: 0, VU: 1, NT: 0, DD: 0, LC: 22, NA: 4, NE: 1},
-    {species: 'Harvajalkaiset', count: 8, RE: 0, CR: 1, EN: 0, VU: 0, NT: 0, DD: 0, LC: 3, NA: 5, NE: 0},
-    {species: 'Juoksujlkaiset, Chilopoda', count: 13, RE: 1, CR: 0, EN: 0, VU: 2, NT: 0, DD: 0, LC: 10, NA: 7, NE: 1},
-    {species: 'Kaksoisjalkaiset, Diplopoda', count: 23, RE: 0, CR: 0, EN: 0, VU: 1, NT: 0, DD: 0, LC: 22, NA: 4, NE: 1},
-    {species: 'Harvajalkaiset', count: 8, RE: 0, CR: 1, EN: 0, VU: 0, NT: 0, DD: 0, LC: 3, NA: 5, NE: 0},
-  ];
+export class RedListStatusComponent {
 
   _data: RedListStatusDataInternal[] = [];
   statuses: string[];
-  redListStatus = {};
+  statusLabel: any;
 
   constructor(
     private resultService: ResultService
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.statuses = this.resultService.statuses;
-    this.data = this.mockData;
+    this.statusLabel = this.resultService.shortLabel;
   }
 
+  @Input()
   set data(data: RedListStatusData[]) {
-    const total: RedListStatusData = {species: 'Total', count: 0, CR: 0, RE: 0, EN: 0, VU: 0, NT: 0, DD: 0, LC: 0, NA: 0, NE: 0};
+    if (!data) {
+      this._data = [];
+      return;
+    }
+    const total: RedListStatusData = {species: 'Total', count: 0
+    };
+    this.statuses.forEach(status => {
+      total[status] = 0;
+    });
     const results = data.map<RedListStatusDataInternal>(row => {
       total.count += row.count;
       this.statuses.forEach(status => {

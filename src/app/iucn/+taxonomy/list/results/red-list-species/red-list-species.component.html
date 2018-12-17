@@ -1,23 +1,45 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
     <tr>
-      <th></th>
-      <th>Tila</th>
-      <th>Perustelu</th>
-      <th>Lisätiedot</th>
+      <th>Laji</th>
+      <th>Luokka</th>
+      <th>Elinympäristöt</th>
+      <th>Uhanalaisuuden syyt</th>
+      <th>Uhkatekijät</th>
+      <th>Muutoksen syy</th>
     </tr>
     <tr *ngFor="let taxon of species">
       <th>
-        <laji-taxon-name [taxon]="taxon"></laji-taxon-name>
+        <span *ngIf="taxon.scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}<br></span>
+        {{ taxon.vernacularName }}
       </th>
       <td>
-        {{taxon.status}}
+        {{ taxon.latestRedListStatusFinland?.status | label }}
       </td>
       <td>
-        {{taxon.critery}}
+        <ng-container *ngIf="taxon.latestRedListStatusFinland && taxon.redListEvaluation">
+          <span *ngIf="taxon.redListEvaluation[taxon.latestRedListStatusFinland.year]?.primaryHabitat">
+            {{ taxon.redListEvaluation[taxon.latestRedListStatusFinland.year]?.primaryHabitat?.habitat | label }}<br>
+          </span>
+          <ng-container *ngFor="let sec of taxon.redListEvaluation[taxon.latestRedListStatusFinland.year]?.secondaryHabitats">
+            <span>{{ sec.habitat | label }}<br></span>
+          </ng-container>
+        </ng-container>
       </td>
       <td>
-        {{taxon.note}}
+        <ng-container *ngIf="taxon.latestRedListStatusFinland && taxon.redListEvaluation">
+          <span [innerHTML]="taxon.redListEvaluation[taxon.latestRedListStatusFinland.year]?.endangermentReasons | label | values:'<br>'"></span>
+        </ng-container>
+      </td>
+      <td>
+        <ng-container *ngIf="taxon.latestRedListStatusFinland && taxon.redListEvaluation">
+          <span [innerHTML]="taxon.redListEvaluation[taxon.latestRedListStatusFinland.year]?.threats | label | values:'<br>'"></span>
+        </ng-container>
+      </td>
+      <td>
+        <ng-container *ngIf="taxon.latestRedListStatusFinland && taxon.redListEvaluation">
+          <span [innerHTML]="taxon.redListEvaluation[taxon.latestRedListStatusFinland.year]?.reasonForStatusChange | label | values:'<br>'"></span>
+        </ng-container>
       </td>
     </tr>
   </table>

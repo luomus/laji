@@ -1,4 +1,3 @@
-
 import {concat, take, retryWhen, delay, timeout, switchMap, tap, map} from 'rxjs/operators';
 import { of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
@@ -402,21 +401,19 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), )), )
       .subscribe((data: any) => {
           this.clearDrawData();
-          if (data.featureCollection) {
-            if (this.reset) {
-              this.reset = false;
-              this.dataCache = data.featureCollection;
-            } else {
-              this.dataCache.features =
-                this.dataCache.features.concat(data.featureCollection.features);
-            }
+          if (this.reset) {
+            this.reset = false;
+            this.dataCache = data.featureCollection || data;
+          } else {
+            this.dataCache.features =
+              this.dataCache.features.concat((data.featureCollection || data).features);
           }
           if (data.lastPage > page && (this.lastPage === 0 || page <= this.lastPage)) {
             page++;
             this.addToMap(query, page);
           } else {
             this.mapData = [{
-              featureCollection: Util.clone(this.dataCache),
+              geoData: Util.clone(this.dataCache),
               getFeatureStyle: this.getStyle.bind(this),
               getClusterStyle: this.getClusterStyle.bind(this),
               getPopup: this.getPopup.bind(this),
@@ -442,15 +439,13 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
       undefined, this.size, page, true
     ).subscribe(data => {
-      if (data.featureCollection) {
-        this.lajiMap.map.addData([{
-          featureCollection: data.featureCollection,
-          getFeatureStyle: this.getStyle.bind(this),
-          getClusterStyle: this.getClusterStyle.bind(this),
-          getPopup: this.getPopup.bind(this),
-          cluster: data.cluster || false
-        }]);
-      }
+      this.lajiMap.map.addData([{
+        geoData: data.featureCollection || data,
+        getFeatureStyle: this.getStyle.bind(this),
+        getClusterStyle: this.getClusterStyle.bind(this),
+        getPopup: this.getPopup.bind(this),
+        cluster: data.cluster || false
+      }]);
       if (data.lastPage > page && (this.lastPage === 0 || page <= this.lastPage)) {
         page++;
         this.addData(query, page);

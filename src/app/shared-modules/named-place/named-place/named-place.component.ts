@@ -132,12 +132,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       const {municipality, birdAssociationArea, activeNP, edit} = params;
       this.birdAssociationArea = birdAssociationArea;
       this.municipality = municipality;
-      if (this.birdAssociationArea) {
-        this.prepopulatedNamedPlace['birdAssociationArea'] = [this.birdAssociationArea];
-      }
-      if (this.municipality) {
-        this.prepopulatedNamedPlace['municipality'] = [this.municipality];
-      }
+      ['birdAssociationArea', 'municipality'].forEach(area => {
+        if (this[area] && this[area].match(/^ML\.[0-9]+$/)) {
+          this.prepopulatedNamedPlace[area] = [this[area]];
+        } else {
+          this.prepopulatedNamedPlace[area] = undefined;
+        }
+      });
       this.editModeQParam = edit === 'true';
       this.updateEditMode();
       const setIndex = () => {

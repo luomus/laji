@@ -173,8 +173,12 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       const postSortIndex = this.datatable._internalRows.findIndex((element) => {
         return element.preSortIndex === this._preselectedRowIndex;
       });
+      // Don't scroll if row is visible in initial viewport. Should be scrolled to top initially.
+      if (postSortIndex < this.datatable.bodyComponent._pageSize) {
+        return;
+      }
       // Calculate relative position of selected row and scroll to it
-      const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * postSortIndex;
+      const scrollAmount = (<number> this.datatable.bodyComponent.rowHeight) * postSortIndex;
       if (!isNaN(scrollAmount)) {
         this.scrollTo(scrollAmount);
       }

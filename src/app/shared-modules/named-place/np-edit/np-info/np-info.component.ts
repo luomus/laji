@@ -18,6 +18,9 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { Rights } from '../../../../+haseka/form-permission/form-permission.service';
 import { Form } from '../../../../shared/model/Form';
 import { NpInfoRow } from './np-info-row/np-info-row.component';
+import { RouterChildrenEventService } from '../../../own-submissions/service/router-children-event.service';
+import { Document } from '../../../../shared/model/Document';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-np-info',
@@ -49,6 +52,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild('infoModal') public modal: ModalDirective;
   @ViewChild('infoBox') infoBox;
+  @ViewChild('documentModal') public documentModal: ModalDirective;
+
+  publicity = Document.PublicityRestrictionsEnum;
 
   listItems: NpInfoRow[] = [];
 
@@ -57,6 +63,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   resizeCanOpenModal = false;
   useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
   formReservable = false;
+  showViewerClick$: Subscription;
+  documentModalVisible = false;
+  forceLocalViewer = true;
+  shownDocument: Document;
 
   public static getListItems(npFormData: any, np: NamedPlace, form: any): any[] {
     const {namedPlaceOptions, collectionID: collectionId} = form;
@@ -112,11 +122,16 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   constructor(private userService: UserService,
+              private eventService: RouterChildrenEventService,
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.updateFields();
     this.updateButtons();
+    this.showViewerClick$ = this.eventService.showViewerClick$.subscribe((doc) => {
+      this.showDocumentViewer(doc);
+    });
+
   }
 
   ngAfterViewInit() {
@@ -203,5 +218,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   private updateFields() {
     this.listItems = NpInfoComponent.getListItems(this.npFormData, this.namedPlace, this.formData);
+  }
+
+  private showDocumentViewer(doc: Document) {
+    this.shownDocument = doc;
+    this.documentModal.show();
   }
 }

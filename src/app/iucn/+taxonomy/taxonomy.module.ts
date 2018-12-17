@@ -22,6 +22,8 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 import { RedListEvaluationInfoComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info.component';
 import { RedListEvaluationInfoRowsetComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
 import { RedListEvaluationOccurrencesComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-occurrences/red-list-evaluation-occurrences.component';
+import { RedListHabitatComponent } from './list/results/red-list-habitat/red-list-habitat.component';
+import { RedListHabitatListComponent } from './list/results/red-list-habitat/red-list-habitat-list/red-list-habitat-list.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -49,7 +51,9 @@ import { RedListEvaluationOccurrencesComponent } from './info-card/red-list-eval
     RedListChartComponent,
     RedListEvaluationInfoComponent,
     RedListEvaluationInfoRowsetComponent,
-    RedListEvaluationOccurrencesComponent
+    RedListEvaluationOccurrencesComponent,
+    RedListHabitatComponent,
+    RedListHabitatListComponent
   ]
 })
 export class TaxonomyModule { }
