@@ -66,6 +66,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public namedPlace;
   public readyForForm = false;
   public readonly: boolean | string;
+  public isAdmin = false;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -294,7 +295,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   updateReadonly(): Observable<boolean> {
     const {formData = {}} = this.form || {};
     return Observable.create(observer => {
-      if (this.form.uiSchemaContext.isAdmin) {
+      if (this.isAdmin) {
         this.readonly = false;
         return observer.next(this.readonly);
       }
@@ -392,7 +393,8 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             data.uiSchemaContext.placeholderGeometry = this.namedPlace.geometry;
           }
           data.uiSchemaContext.formID = this.formId;
-          data.uiSchemaContext.isAdmin = result.rights.admin;
+          this.isAdmin = result.rights.admin;
+          data.uiSchemaContext.isAdmin = this.isAdmin;
           data.uiSchemaContext.annotations = result.annotations;
           this.form = data;
           this.updateReadonly().subscribe((readonly) => {

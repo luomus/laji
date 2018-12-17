@@ -5,11 +5,13 @@ import { LajiFormComponent } from './laji-form/laji-form.component';
 import { DocumentFormHeaderComponent } from './document-form-header/document-form-header.component';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { DocumentFormFooterComponent } from './document-form-footer/document-form-footer.component';
+import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    OwnSubmissionsModule
   ],
   declarations: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],
   exports: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent]

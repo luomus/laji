@@ -67,7 +67,7 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: WbcOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent}
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, data: { noScrollToTop: true }}
     ]
   },
   {
@@ -137,7 +137,7 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: LineTransectMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent },
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, data: { noScrollToTop: true } },
       {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ]
   },
@@ -160,7 +160,7 @@ const routes: Routes = [
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, data: { noScrollToTop: true } }
     ]
   },
   {
@@ -182,7 +182,7 @@ const routes: Routes = [
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, data: { noScrollToTop: true } }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

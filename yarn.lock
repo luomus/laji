@@ -4971,9 +4971,10 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-laji-form@^0.0.557:
-  version "0.0.557"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.557.tgz#a04b2e70c502d547d45a2d77187b25d56061adf7"
+laji-form@^0.0.558:
+  version "0.0.558"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.558.tgz#de6559be0daa49913f65f1ff7f2076a4d3f964b2"
+  integrity sha512-Q/HcmTy1Ka+mtyujmPA4tVKUGRTqQhRV/dPI8JkY+5i3JUhEk5P4xMG/xkdMQmShhUn9zctbZoLO+Ac6J2eotQ==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -5001,6 +5002,7 @@ laji-form@^0.0.557:
 laji-map@1.0.456, laji-map@^1.0.395, laji-map@^1.0.454, laji-map@^1.0.456:
   version "1.0.456"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.456.tgz#7be6d54ad6c4276cf53fb0d9747a3ba21bf26206"
+  integrity sha512-zBXKK9HMiSPm/5l6pA2YKyjzxMgSxFM3v0suYNHCzxqciqygnZmUs6NPYEdKrjNQ6Ts3ovo6kg4MGBYlyPyn7w==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.3.4"
