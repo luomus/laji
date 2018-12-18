@@ -254,12 +254,13 @@ export class ResultsComponent implements OnChanges {
       'vernacularName.' + this.lang,
       'cursiveName',
       'latestRedListStatusFinland.*',
-      'redListEvaluation.*.endangermentReasons',
-      'redListEvaluation.*.redListStatusNotes',
-      'redListEvaluation.*.reasonForStatusChange',
-      'redListEvaluation.*.primaryHabitat.habitat',
-      'redListEvaluation.*.secondaryHabitats.habitat',
-      'redListEvaluation.*.threats',
+      'latestRedListEvaluation.endangermentReasons',
+      'latestRedListEvaluation.redListStatusNotes',
+      'latestRedListEvaluation.reasonForStatusChange',
+      'latestRedListEvaluation.primaryHabitat.habitat',
+      'latestRedListEvaluation.secondaryHabitats.habitat',
+      'latestRedListEvaluation.threats',
+      'redListEvaluation.*.redListStatus'
     ];
     const query = {
       ...this.baseQuery,
