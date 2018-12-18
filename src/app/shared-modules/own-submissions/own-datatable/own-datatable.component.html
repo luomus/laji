@@ -78,10 +78,10 @@
               <i class="glyphicon glyphicon-eye-close"></i>
             </span>
           </span>
-          <a *ngIf="actions.indexOf('edit') > -1" class="glyph-link"
+          <a *ngIf="actions.indexOf('edit') > -1" class="label label-primary link inline-block"
                 [ngClass]="{
-                  '': !row.locked,
-                  'locked': row.locked
+                  'label-primary': !row.locked,
+                  'label-default': row.locked
                 }"
                 [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
                 [href]="row._editUrl"
