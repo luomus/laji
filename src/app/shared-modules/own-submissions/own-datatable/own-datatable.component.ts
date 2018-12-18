@@ -104,7 +104,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   downloadedDocumentIdx: number;
   fileType = 'csv';
 
-  private _documents: ExtendedDocument[];
+  _documents: ExtendedDocument[];
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
