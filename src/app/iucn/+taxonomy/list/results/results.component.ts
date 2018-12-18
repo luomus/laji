@@ -12,6 +12,7 @@ import { TriplestoreLabelService } from '../../../../shared/service/triplestore-
 import { TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { RedListTaxonGroup } from '../../../../shared/model/RedListTaxonGroup';
 import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
+import { MetadataService } from '../../../../shared/service/metadata.service';
 
 @Component({
   selector: 'laji-results',
@@ -45,6 +46,7 @@ export class ResultsComponent implements OnChanges {
     private taxonApi: TaxonomyApi,
     private resultService: ResultService,
     private triplestoreLabelService: TriplestoreLabelService,
+    private metadataService: MetadataService,
     private taxonService: TaxonService
   ) {
     this.statusMap = Object.keys(this.resultService.shortLabel).reduce((result, key) => {
@@ -62,7 +64,7 @@ export class ResultsComponent implements OnChanges {
       checklistVersion: this.resultService.getChecklistVersion(this.year),
       redListTaxonGroup: this.query.redListGroup,
       redListStatusFilters: (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
-      anyHabitat: this.query.habitat,
+      primaryHabitat: this.query.habitat,
       threat: this.query.threads,
       endangermentReason: this.query.reasons
     });
@@ -77,8 +79,8 @@ export class ResultsComponent implements OnChanges {
     this.reasonsQuery$ = this.getGraph(
       'reasons',
       this.baseQuery,
-      'redListEvaluation.2019.primaryEndangermentReason',
-      'redListEvaluation.2019.endangermentReasons',
+      'latestRedListEvaluation.primaryEndangermentReason',
+      'latestRedListEvaluation.endangermentReasons',
       'Ensisijainen uhka',
       'Yksi uhista',
       ['MKV.endangermentReasonMuu', 'MKV.endangermentReasonT']
@@ -89,8 +91,8 @@ export class ResultsComponent implements OnChanges {
     this.threadQuery$ = this.getGraph(
       'threads',
       this.baseQuery,
-      'redListEvaluation.2019.primaryThreat',
-      'redListEvaluation.2019.threats',
+      'latestRedListEvaluation.primaryThreat',
+      'latestRedListEvaluation.threats',
       'Ensisijainen uhka',
       'Yksi uhista',
       ['MKV.endangermentReasonMuu', 'MKV.endangermentReasonT']
@@ -157,8 +159,8 @@ export class ResultsComponent implements OnChanges {
 
   private initHabitat() {
     const cacheKey = 'habitat';
-    const primaryField = 'redListEvaluation.2019.primaryHabitat.habitat';
-    const allField = 'redListEvaluation.2019.secondaryHabitats.habitat';
+    const primaryField = 'latestRedListEvaluation.primaryHabitat.habitat';
+    const allField = 'latestRedListEvaluation.secondaryHabitats.habitat';
     const statusField = 'latestRedListStatusFinland.status';
     const query: any = {
       ...this.baseQuery,
@@ -172,21 +174,19 @@ export class ResultsComponent implements OnChanges {
       ObservableOf(this.cache[cacheKey]) :
       this.taxonApi.species(query, this.lang, '1', '0').pipe(
         map(data => this.extractHabitat(data, primaryField, allField, statusField)),
+        switchMap(data => this.metadataService.getRange('MKV.habitatEnum').pipe(
+          map(label => label.reduce((cumulative, current) => {
+            const idx = data.findIndex(d => d.name === current.id);
+            if (idx > -1) {
+              cumulative.push(data[idx]);
+            }
+            return cumulative;
+          }, []))
+        )),
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
           map(translations => data.map(a => ({...a, name: translations[a.name]}))),
         )),
-        map(data => data.sort((a, b) => {
-          const aIsAlphabetical = a.name.localeCompare('a') >= 0,
-            bIsAlphabetical = b.name.localeCompare('a') >= 0;
-          if (!aIsAlphabetical && bIsAlphabetical) {
-            return 1;
-          }
-          if (aIsAlphabetical && !bIsAlphabetical) {
-            return -1;
-          }
-          return a.name.localeCompare(b.name);
-        })),
-        map(data => !!query.anyHabitat ? data : this.combineHabitat(data)),
+        map(data => !!query.primaryHabitat ? data : this.combineHabitat(data)),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
     this.initHabitatChart();
@@ -385,7 +385,6 @@ export class ResultsComponent implements OnChanges {
   }
 
   private hasCache(key: string, query: string) {
-    console.log('CACHE', key, this.cache[key + '_query'], query);
     return !!(this.cache[key + '_query'] && this.cache[key + '_query'] === query);
   }
 
