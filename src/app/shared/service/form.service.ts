@@ -296,7 +296,6 @@ export class FormService {
     return `${this.getAddUrlPath(formId)}/${documentId}`;
   }
 
-
   getTmpDocumentStoreDate(id: string): Observable<Date> {
     return this.getUserId().pipe(
       switchMap(userID => {

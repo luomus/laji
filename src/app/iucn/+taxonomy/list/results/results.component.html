@@ -25,8 +25,10 @@
         <laji-red-list-habitat [data]="habitatQuery$ | async"></laji-red-list-habitat>
       </div>
     </div>
-  </ng-container>
-  <ng-container *ngSwitchDefault>
-    TODO
+    <div class="row">
+      <div class="col-sm-8" style="height: 400px">
+        <ngx-charts-pie-chart [results]="habitatChartQuery$ | async" [tooltipDisabled]="false" [labels]="true" [customColors]="colorSchema"></ngx-charts-pie-chart>
+      </div>
+    </div>
   </ng-container>
 </ng-container>
