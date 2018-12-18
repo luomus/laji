@@ -40,6 +40,9 @@ import * as moment from 'moment';
 import { isPlatformBrowser } from '@angular/common';
 
 
+interface ExtendedDocument extends Document {
+  _editUrl?: string;
+}
 
 @Component({
   selector: 'laji-own-datatable',
@@ -50,7 +53,6 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() year: number;
-  @Input() documents: Document[];
   @Input() loadError = '';
   @Input() showDownloadAll = true;
   @Input() admin = false;
@@ -102,6 +104,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   downloadedDocumentIdx: number;
   fileType = 'csv';
 
+  private _documents: ExtendedDocument[];
+
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
   @ViewChild('saveAsTemplate') public templateModal: ModalDirective;
@@ -123,6 +127,14 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private cd: ChangeDetectorRef,
     private labelService: TriplestoreLabelService
   ) {}
+
+  @Input()
+  set documents(docs: Document[]) {
+    this._documents = (docs || []).map(row => ({
+      ...row,
+      _editUrl: this.formService.getEditUrlPath(row.formID, row.id)
+    }));
+  }
 
   ngOnInit() {
     this.initColumns();
@@ -221,7 +233,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateRows() {
-    if (!this.documents) {
+    if (!this._documents) {
       this.temp = [];
       this.rows = [];
       return;
@@ -232,7 +244,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       this.rowData$.unsubscribe();
     }
 
-    this.rowData$ = ObservableFrom(this.documents.map((doc, i) => {
+    this.rowData$ = ObservableFrom(this._documents.map((doc, i) => {
       return this.setRowData(doc, i);
     })).pipe(
       mergeAll(),
@@ -240,6 +252,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe((array) => {
         this.temp = array;
         this.rows = this.temp;
+
         this.cd.markForCheck();
         // Table is not sorted with external sorter on initial load. So this is here to make sure that when data is received it's sorted.
         setTimeout(() => {
@@ -260,7 +273,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showViewer(row: any) {
-    const doc = this.documents[row.index];
+    const doc = this._documents[row.index];
     if (!this.useInternalDocumentViewer) {
       this.eventService.showViewerClicked(doc);
     } else {
@@ -269,7 +282,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   deleteDialog(row: any) {
-    const document: any = this.documents[row.index] || {};
+    const document: any = this._documents[row.index] || {};
     if (document.id && row.id === document.id) {
       this.deleteRow = row;
       this.deleting = false;
@@ -288,9 +301,9 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.delete$ = this.documentService.deleteDocument(this.deleteRow.id)
       .subscribe(
         () => {
-          this.documents = [
-            ...this.documents.slice(0, this.deleteRow.index),
-            ...this.documents.slice(this.deleteRow.index + 1)
+          this._documents = [
+            ...this._documents.slice(0, this.deleteRow.index),
+            ...this._documents.slice(this.deleteRow.index + 1)
           ];
           this.initRows();
           this.translate.get('delete.success')
@@ -311,7 +324,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   makeTemplate(row: any) {
-    this.templateForm.document = this.documents[row.index] || null;
+    this.templateForm.document = this._documents[row.index] || null;
     this.templateModal.show();
   }
 
@@ -354,9 +367,9 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   download() {
     if (this.downloadedDocumentIdx === -1) {
-      this.documentExportService.downloadDocuments(this.documents, this.year, this.fileType);
+      this.documentExportService.downloadDocuments(this._documents, this.year, this.fileType);
     } else {
-      this.documentExportService.downloadDocument(this.documents[this.downloadedDocumentIdx], this.fileType);
+      this.documentExportService.downloadDocument(this._documents[this.downloadedDocumentIdx], this.fileType);
     }
   }
 
