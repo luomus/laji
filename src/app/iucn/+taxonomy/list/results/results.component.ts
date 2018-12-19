@@ -66,7 +66,8 @@ export class ResultsComponent implements OnChanges {
       redListStatusFilters: (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
       primaryHabitat: this.query.habitat,
       threat: this.query.threads,
-      endangermentReason: this.query.reasons
+      endangermentReason: this.query.reasons,
+      includeHidden: true
     });
     this.initStatusQuery();
     this.initSpeciesListQuery();
