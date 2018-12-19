@@ -240,9 +240,11 @@ export class TaxonomyApi {
   }
 
   public species(query: any = {}, lang?: string, page?: string, pageSize?: string, sortOrder?: string): Observable<PagedResult<Taxonomy>> {
-    const path = this.basePath + '/taxa/species';
+    const path = this.basePath + '/taxa' + (query && query.id ? '/' + query.id : '') + '/species';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(query)};
+    const queryParameters: any = {...Util.removeUndefinedFromObject(query)};
+    delete queryParameters.id;
+
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }

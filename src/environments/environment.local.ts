@@ -7,7 +7,7 @@
 import { Global } from './global';
 
 export const environment = {
-  type: Global.type.dev,
+  type: Global.type.iucn,
   production: false,
   forceLogin: false,
   disableAnalytics: true,
@@ -19,7 +19,7 @@ export const environment = {
   invasiveControlForm: 'MHL.33',
   municipalityMonitoringForm: 'MHL.35',
   wbcForm: 'MHL.3',
-  apiBase: 'https://dev.laji.fi/api',
+  apiBase: '/api',
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',

@@ -3,9 +3,10 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { map, share, tap } from 'rxjs/operators';
 
-const AGG_STATUS = 'latestRedListStatusFinland.status';
+const AGG_STATUS = 'latestRedListEvaluation.redListStatus';
 
 export interface FilterQuery {
+  taxon?: string;
   redListGroup?: string;
   habitat?: string;
   threads?: string;
@@ -89,7 +90,7 @@ export class ResultService {
     if (!this.requestCache[year]) {
       this.requestCache[year] = this.taxonomyApi.species({
         // checklistVersion: this.yearToChecklistVersion[year],
-        redListStatusFilters: 'MX.iucnEN,MX.iucnCR,MX.iucnVU,MX.iucnDD,MX.iucnRE,MX.iucnNT,MX.iucnLC,MX.iucnDD',
+        'latestRedListEvaluation.redListStatus': 'MX.iucnEN,MX.iucnCR,MX.iucnVU,MX.iucnDD,MX.iucnRE,MX.iucnNT,MX.iucnLC,MX.iucnDD',
         aggregateBy: AGG_STATUS,
         aggregateBySize: 1000
       }, 'multi', '1', '0').pipe(

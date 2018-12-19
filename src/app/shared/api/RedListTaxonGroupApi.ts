@@ -48,7 +48,7 @@ export class RedListTaxonGroupApi {
    * @param pageSize Page size
    */
   public redListTaxonGroupsFind(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/iucn-red-list-taxon-groups';
+    const path = this.basePath + '/red-list-evaluation-groups';
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
@@ -73,7 +73,7 @@ export class RedListTaxonGroupApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
   public redListTaxonGroupsFindById(id: string, lang?: string, extraHttpRequestParams?: any): Observable<RedListTaxonGroup> {
-    const path = this.basePath + '/iucn-red-list-taxon-groups/{id}'
+    const path = this.basePath + '/red-list-evaluation-groups/{id}'
         .replace('{' + 'id' + '}', String(id));
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
@@ -96,7 +96,7 @@ export class RedListTaxonGroupApi {
    * @param pageSize Page size
    */
   public redListTaxonGroupsFindRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/iucn-red-list-taxon-groups/roots';
+    const path = this.basePath + '/red-list-evaluation-groups/roots';
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
@@ -123,7 +123,7 @@ export class RedListTaxonGroupApi {
    * @param pageSize Page size
    */
   public redListTaxonGroupsGetChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/iucn-red-list-taxon-groups/{id}/children'
+    const path = this.basePath + '/red-list-evaluation-groups/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
@@ -153,7 +153,7 @@ export class RedListTaxonGroupApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found.
    */
   public redListTaxonGroupsGetParents(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<RedListTaxonGroup>> {
-    const path = this.basePath + '/iucn-red-list-taxon-groups/{id}/parents'
+    const path = this.basePath + '/red-list-evaluation-groups/{id}/parents'
         .replace('{' + 'id' + '}', String(id));
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
@@ -177,7 +177,7 @@ export class RedListTaxonGroupApi {
    * @param pageSize Page size
    */
   public redListTaxonGroupsGetParentLevel(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<RedListTaxonGroup>>> {
-    const path = this.basePath + '/iucn-red-list-taxon-groups/{id}/parentLevel'
+    const path = this.basePath + '/red-list-evaluation-groups/{id}/parentLevel'
         .replace('{' + 'id' + '}', String(id));
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
@@ -208,7 +208,7 @@ export class RedListTaxonGroupApi {
    * @param pageSize Page size
    */
   public redListTaxonGroupsGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/iucn-red-list-taxon-groups/tree';
+    const path = this.basePath + '/red-list-evaluation-groups/tree';
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
@@ -235,7 +235,7 @@ export class RedListTaxonGroupApi {
    * @param pageSize Page size
    */
   public redListTaxonGroupsGetWithSiblings(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/iucn-red-list-taxon-groups/{id}/siblings'
+    const path = this.basePath + '/red-list-evaluation-groups/{id}/siblings'
         .replace('{' + 'id' + '}', String(id));
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};

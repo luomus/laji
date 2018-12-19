@@ -18,12 +18,13 @@ import { RedListClassFilterComponent } from './list/filters/red-list-class-filte
 import { RedListStatusComponent } from './list/results/red-list-status/red-list-status.component';
 import { RedListSpeciesComponent } from './list/results/red-list-species/red-list-species.component';
 import { RedListChartComponent } from './list/results/red-list-chart/red-list-chart.component';
-import {NgxChartsModule} from '@swimlane/ngx-charts';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RedListEvaluationInfoComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info.component';
 import { RedListEvaluationInfoRowsetComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
 import { RedListEvaluationOccurrencesComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-occurrences/red-list-evaluation-occurrences.component';
 import { RedListHabitatComponent } from './list/results/red-list-habitat/red-list-habitat.component';
 import { RedListHabitatListComponent } from './list/results/red-list-habitat/red-list-habitat-list/red-list-habitat-list.component';
+import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-select.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -31,7 +32,8 @@ import { RedListHabitatListComponent } from './list/results/red-list-habitat/red
     routing,
     CommonModule,
     SharedModule,
-    NgxChartsModule
+    NgxChartsModule,
+    TaxonSelectModule
   ],
   declarations: [
     InfoCardComponent,

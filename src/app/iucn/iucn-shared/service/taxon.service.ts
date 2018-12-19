@@ -20,9 +20,7 @@ export class TaxonService {
   ) { }
 
   getTaxon(id: string, lang: string): Observable<Taxonomy> {
-    return this.taxonApi.taxonomyFindBySubject(id, lang, {includeMedia: true, includeRedListEvaluations: true}).pipe(
-      map(data => this.mock(data))
-    );
+    return this.taxonApi.taxonomyFindBySubject(id, lang, {includeMedia: true, includeRedListEvaluations: true});
   }
 
   getRedListStatusTree(lang: string): Observable<RedListTaxonGroup[]> {
@@ -72,12 +70,5 @@ export class TaxonService {
       }
     });
     return result;
-  }
-
-  private mock(taxon: Taxonomy): Taxonomy {
-    if (taxon.redListStatusesInFinland) {
-      taxon.redListStatusesInFinland.unshift({year: 2019, status: 'MX.statusNT'});
-    }
-    return taxon;
   }
 }

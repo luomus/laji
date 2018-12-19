@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {SelectOption} from '../select/select.component';
 import {TaxonService} from '../../../iucn-shared/service/taxon.service';
 import { map } from 'rxjs/operators';
-import {RedListTaxonGroup} from '../../../../shared/model/RedListTaxonGroup';
+import { RedListTaxonGroup } from '../../../../shared/model/RedListTaxonGroup';
 import { MetadataService } from '../../../../shared/service/metadata.service';
 import { MultiLangService } from '../../../../shared-modules/lang/service/multi-lang.service';
 

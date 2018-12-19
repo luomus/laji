@@ -2,6 +2,16 @@
   <div class="form-group">
     <label class="col-sm-1 control-label">Rajaa</label>
     <div class="col-sm-5 col-md-4">
+      <laji-taxon-select
+        (select)="change('taxon', $event)"
+        [placeholder]="'species.form.specimen' | translate"
+        [taxonId]="query.taxon"
+        [searchParams]="{}">
+      </laji-taxon-select>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-1 col-sm-5 col-md-4">
       <laji-select2 [value]="query?.redListGroup" (valueChange)="change('redListGroup', $event)"
                     [options]="redListStatuses$ | async"
                     [placeholder]="'Lajiryhmä'"

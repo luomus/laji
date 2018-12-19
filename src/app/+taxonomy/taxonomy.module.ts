@@ -38,24 +38,24 @@ import { SpeciesListOptionsModalComponent } from './taxon-browse/species-list-op
 import { TaxonomyColumns } from './taxon-browse/service/taxonomy-columns';
 import { TaxonExportService } from './taxon-browse/service/taxon-export.service';
 import { DatatableUtil } from './taxon-browse/service/datatable-util.service';
-import { TaxonSelectComponent } from './taxon-browse/taxon-select/taxon-select.component';
 import { ExpandableDatatableComponent } from './taxon-browse/taxon-tree/tree-table/expandable-datatable/expandable-datatable.component';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { BoldSynonymComponent } from './info-card/taxon-info/bold-synonym/bold-synonym.component';
 import { SpeciesCountComponent } from './taxon-browse/species-count/species-count.component';
 import { SpeciesPieComponent } from './info-card/species-pie/species-pie.component';
+import { TaxonSelectModule } from '../shared-modules/taxon-select/taxon-select.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule,
-    ObservationMapModule, NgxDatatableModule, NgxChartsModule, InfoModule ],
+    ObservationMapModule, NgxDatatableModule, NgxChartsModule, InfoModule, TaxonSelectModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
     ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent,
     InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
     InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeTableComponent,
-    SpeciesListOptionsModalComponent, TaxonSelectComponent, ExpandableDatatableComponent, BoldSynonymComponent,
+    SpeciesListOptionsModalComponent, ExpandableDatatableComponent, BoldSynonymComponent,
     SpeciesCountComponent, SpeciesPieComponent
   ],
 })

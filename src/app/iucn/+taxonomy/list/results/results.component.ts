@@ -62,11 +62,13 @@ export class ResultsComponent implements OnChanges {
   private initQueries() {
     this.baseQuery = Util.removeUndefinedFromObject({
       checklistVersion: this.resultService.getChecklistVersion(this.year),
-      redListTaxonGroup: this.query.redListGroup,
-      redListStatusFilters: (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
-      primaryHabitat: this.query.habitat,
-      threat: this.query.threads,
-      endangermentReason: this.query.reasons,
+      id: this.query.taxon,
+      redListEvaluationGroups: this.query.redListGroup,
+      'latestRedListEvaluation.redListStatus': (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
+      'latestRedListEvaluation.endangermentReasons': this.query.reasons,
+      'latestRedListEvaluation.primaryHabitat': this.query.habitat,
+      'latestRedListEvaluation.threats': this.query.threads,
+      hasLatestRedListEvaluation: true,
       includeHidden: true
     });
     this.initStatusQuery();
@@ -165,7 +167,8 @@ export class ResultsComponent implements OnChanges {
     const statusField = 'latestRedListStatusFinland.status';
     const query: any = {
       ...this.baseQuery,
-      redListStatusFilters: (this.baseQuery as any).redListStatusFilters || this.resultService.habitatStatuses.join(','),
+      'latestRedListStatusFinland.status':
+        (this.baseQuery as any)['latestRedListStatusFinland.status'] || this.resultService.habitatStatuses.join(','),
       aggregateBy: primaryField  + ',' + statusField + '=' + primaryField + ';' + allField + ',' + statusField + '=' + allField,
       aggregateSize: 10000
     };
@@ -280,13 +283,13 @@ export class ResultsComponent implements OnChanges {
   private initStatusQuery() {
     const cacheKey = 'status';
     const statusField = 'latestRedListStatusFinland.status';
-    const groupField = 'iucnRedListTaxonGroups';
+    const groupField = 'redListEvaluationGroups';
 
     const scientificNameField = 'parent.family.scientificName';
     const vernacularNameField = 'parent.family.vernacularName.' + this.lang;
 
     const query: any = {
-      ...this.removeKeys(this.baseQuery, ['redListStatusFilters'])
+      ...this.removeKeys(this.baseQuery, ['latestRedListStatusFinland.status'])
     };
 
     const currentQuery = JSON.stringify(query);
@@ -299,7 +302,7 @@ export class ResultsComponent implements OnChanges {
       ObservableOf(this.cache[cacheKey]) :
       this.taxonService.getRedListStatusTree(this.lang).pipe(
         map(tree => {
-          if (!query.redListTaxonGroup) {
+          if (!query.redListEvaluationGroups) {
             return {
               groups: tree.map(v => v.id),
               aggregateBy: [statusField, groupField],
@@ -315,14 +318,14 @@ export class ResultsComponent implements OnChanges {
             };
           }
           return {
-            groups: [query.redListTaxonGroup],
+            groups: [query.redListEvaluationGroups],
             aggregateBy: [statusField, scientificNameField, vernacularNameField],
             hasKeys: false
           };
         }),
         switchMap(red  => this.taxonApi.species({
           ...query,
-          redListTaxonGroup: red.groups.join(','),
+          redListEvaluationGroups: red.groups.join(','),
           aggregateBy: red.aggregateBy.join(',') + '=a',
           aggregateSize: 100000,
           page: 1,
