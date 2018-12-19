@@ -1,5 +1,5 @@
 
-import {catchError} from 'rxjs/operators';
+import {catchError, filter} from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,7 +8,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Event, NavigationStart, NavigationError, NavigationEnd, NavigationCancel } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
@@ -84,7 +84,24 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.loading = true;
+    this.router.events.subscribe((event: Event) => {
+      switch (true) {
+        case event instanceof NavigationStart: {
+          this.loading = true;
+          break;
+        }
+        case event instanceof NavigationEnd:
+        case event instanceof NavigationCancel:
+        case event instanceof NavigationError: {
+          this.loading = false;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+
     this.subParam = this.route.data.pipe(catchError((err) => {
       this.setErrorMessage(err);
       return of({data: {}});
@@ -122,7 +139,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
       this.updateAllowCreate();
 
-      this.loading = false;
       this.cdr.markForCheck();
     });
 
