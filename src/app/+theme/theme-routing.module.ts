@@ -40,6 +40,7 @@ import { InvasiveControlInstructionsContainerComponent } from './invasive-contro
 import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/municipality-monitoring-form/municipality-monitoring-form.component';
 import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
 import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
+import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -67,7 +68,14 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: WbcOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, data: { noScrollToTop: true }}
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        data: { noScrollToTop: true }
+      }
     ]
   },
   {
@@ -137,7 +145,14 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: LineTransectMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, data: { noScrollToTop: true } },
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        data: { noScrollToTop: true }
+      },
       {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ]
   },
@@ -160,7 +175,14 @@ const routes: Routes = [
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, data: { noScrollToTop: true } }
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        data: { noScrollToTop: true }
+      }
     ]
   },
   {
@@ -182,7 +204,13 @@ const routes: Routes = [
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, data: { noScrollToTop: true } }
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        data: { noScrollToTop: true } }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
@@ -195,6 +223,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: []
+  providers: [NamedPlaceResolver]
 })
 export class ThemeRoutingModule { }

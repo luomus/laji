@@ -41,7 +41,7 @@ const routes: Routes = [
 ];
 
 const routesWithLang: Routes = [
-  {path: 'en', children: [
+  {path: 'en', data: {lang: 'en'}, children: [
     {path: 'nafi', redirectTo: '/en/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
@@ -51,7 +51,7 @@ const routesWithLang: Routes = [
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
   ], component: LocaleEnComponent},
-  {path: 'sv', children: [
+  {path: 'sv', data: {lang: 'sv'}, children: [
     {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},

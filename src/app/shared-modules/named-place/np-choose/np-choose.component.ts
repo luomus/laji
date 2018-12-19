@@ -127,7 +127,7 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
     this._activeNP = idx;
   }
 
-  setActiveNP(idx: number) {
+  onActivePlaceChange(idx: number) {
     this.activeNP = idx;
     this.activePlaceChange.emit(this._activeNP);
   }
