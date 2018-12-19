@@ -70,6 +70,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   lang: string;
 
   private subParam: Subscription;
+  private routerEvents: Subscription;
 
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
   @ViewChild(NpEditComponent) editView: NpEditComponent;
@@ -84,7 +85,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.router.events.subscribe((event: Event) => {
+    this.routerEvents = this.router.events.subscribe((event: Event) => {
       switch (true) {
         case event instanceof NavigationStart: {
           this.loading = true;
@@ -150,6 +151,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.subParam) {
       this.subParam.unsubscribe();
+    }
+    if (this.routerEvents) {
+      this.routerEvents.unsubscribe();
     }
     this.footerService.footerVisible = true;
   }
