@@ -8,6 +8,7 @@ import { FormService } from 'app/shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'app/shared/service/user.service';
 import { FormPermissionService, Rights } from 'app/+haseka/form-permission/form-permission.service';
+import { environment } from 'environments/environment';
 
 export interface NPResolverData {
     collectionId?: string;
@@ -58,7 +59,10 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
                     eventForm$.pipe(
                         mergeMap(res => {
                             const namedPlaces$ = this.getNamedPlaces$(res);
-                            const placeForm$ = this.getPlaceForm$(res.namedPlaceOptions.formID);
+                            const placeFormId = res.namedPlaceOptions
+                                && res.namedPlaceOptions.formID
+                                || environment.namedPlaceForm;
+                            const placeForm$ = this.getPlaceForm$(placeFormId);
                             return forkJoin(of(res), namedPlaces$, placeForm$);
                         })
                     )
