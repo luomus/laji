@@ -14,7 +14,7 @@ export interface NPResolverData {
     collectionId?: string;
     edit?: boolean;
 
-    eventForm?: any;
+    documentForm?: any;
     placeForm?: any;
     namedPlaces?: any[];
     user?: any;
@@ -28,7 +28,7 @@ export interface NPResolverData {
 @Injectable()
 export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     private collectionId;
-    private eventFormId;
+    private documentFormId;
     private birdAssociationId;
     private municipalityId;
     private lang;
@@ -42,7 +42,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
 
         const routeParams = route.params;
         this.collectionId = routeParams['collectionId'];
-        this.eventFormId = routeParams['formId'];
+        this.documentFormId = routeParams['formId'];
 
         const queryParams = route.queryParams;
         const edit = queryParams['edit'] === 'true';
@@ -51,12 +51,12 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
         const activeNPId = queryParams['activeNP'];
 
         const user$ = this.userService.getUser();
-        const eventForm$ = this.getEventForm$();
+        const documentForm$ = this.getDocumentForm$();
         return of([]).pipe(
             switchMap(() => {
                 return forkJoin(
                     user$,
-                    eventForm$.pipe(
+                    documentForm$.pipe(
                         mergeMap(res => {
                             const namedPlaces$ = this.getNamedPlaces$(res);
                             const placeFormId = res.namedPlaceOptions
@@ -78,14 +78,14 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
                 result.edit = edit;
                 result.user = res[0][0];
                 result.formRights = res[1];
-                result.eventForm = res[0][1][0];
+                result.documentForm = res[0][1][0];
                 result.placeForm = res[0][1][2];
                 result.namedPlaces = res[0][1][1];
                 result.municipalityId = this.municipalityId;
                 result.birdAssociationId = this.birdAssociationId;
                 result.activeNPId = activeNPId;
 
-                if (this.npRequirementsNotMet(result.eventForm)) {
+                if (this.npRequirementsNotMet(result.documentForm)) {
                     result.namedPlaces = undefined;
                 }
 
@@ -94,15 +94,15 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
         );
     }
 
-    getEventForm$(): Observable<any> {
-        return this.formService.getForm(this.eventFormId, this.lang)
+    getDocumentForm$(): Observable<any> {
+        return this.formService.getForm(this.documentFormId, this.lang)
             .pipe(
                 catchError((err) => {
                     const msgKey = err.status === 404
                         ? 'haseka.form.formNotFound'
                         : 'haseka.form.genericError';
                     return throwError(
-                        this.translate.instant(msgKey, {formId: this.eventFormId})
+                        this.translate.instant(msgKey, {formId: this.documentFormId})
                     );
                 })
             );
@@ -124,15 +124,15 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
         );
     }
 
-    getNamedPlaces$(eventForm): Observable<any> {
+    getNamedPlaces$(documentForm): Observable<any> {
         const query: NamedPlaceQuery = {
             collectionID: this.collectionId,
             municipality: this.municipalityId,
             birdAssociationArea: this.birdAssociationId,
-            includeUnits: eventForm.namedPlaceOptions.includeUnits
+            includeUnits: documentForm.namedPlaceOptions.includeUnits
         };
 
-        if (this.npRequirementsNotMet(eventForm)) {
+        if (this.npRequirementsNotMet(documentForm)) {
             return of([]);
         }
 
@@ -145,7 +145,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     }
 
     getFormRights$(): Observable<Rights> {
-        return this.formPermissionService.getRights(this.eventFormId);
+        return this.formPermissionService.getRights(this.documentFormId);
     }
 
     findLangFromRoute(_route: ActivatedRouteSnapshot) {
@@ -160,12 +160,12 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
         return lang;
     }
 
-    npRequirementsNotMet(eventForm) {
+    npRequirementsNotMet(documentForm) {
         return (
-            (eventForm.features
+            (documentForm.features
             .includes('MHL.featureFilterNamedPlacesByMunicipality')
             && !this.municipalityId)
-            || (eventForm.features
+            || (documentForm.features
             .includes('MHL.featureFilterNamedPlacesByBirdAssociationArea')
             && !this.birdAssociationId)
         );
