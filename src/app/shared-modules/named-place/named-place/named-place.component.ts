@@ -36,7 +36,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   formId;
   collectionId;
 
-  formData;
+  documentForm;
+  placeForm: any;
   prepopulatedNamedPlace = {};
 
   namedPlaces: NamedPlace[];
@@ -66,7 +67,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   errorMsg = '';
 
   mapOptionsData: any;
-  npFormData: any;
   lang: string;
 
   private subParam: Subscription;
@@ -110,14 +110,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       const data: NPResolverData = d.data;
       this.editMode = data.edit;
       this.collectionId = data.collectionId;
-      this.formId = data.eventForm.id;
+      this.formId = data.documentForm.id;
       this.userID = data.user.id;
       this.formRights = data.formRights;
       this.namedPlaces = data.namedPlaces;
       this.birdAssociationArea = data.birdAssociationId;
       this.municipality = data.municipalityId;
-      this.formData = data.eventForm;
-      this.npFormData = data.placeForm;
+      this.documentForm = data.documentForm;
+      this.placeForm = data.placeForm;
 
       ['birdAssociationArea', 'municipality'].forEach(area => {
         if (this[area] && this[area].match(/^ML\.[0-9]+$/)) {
@@ -131,7 +131,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.setActiveNP(this.preselectedNPIndex);
 
       this.mapOptionsData = this.getMapOptions();
-      this.updateSettings(data.eventForm);
+      this.updateSettings(data.documentForm);
 
       if (this.mapOptionsData) {
         data.placeForm['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
@@ -195,7 +195,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   onReserve() {
     this.loading = true;
-    const {namedPlaceOptions = {}} = this.formData || {};
+    const {namedPlaceOptions = {}} = this.documentForm || {};
     const until = namedPlaceOptions.reservationUntil;
     this.namedPlaceService
       .reserve(this.namedPlace.id, until ? {until: until.replace('${year}', moment().year())} : undefined)
@@ -226,13 +226,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   updateAllowCreate() {
-    if (this.formData && this.formData.namedPlaceOptions
-        && this.formData.namedPlaceOptions.requireAdmin === false) {
+    if (this.documentForm && this.documentForm.namedPlaceOptions
+        && this.documentForm.namedPlaceOptions.requireAdmin === false) {
       this.allowCreate = true;
     } else {
       this.allowCreate = this.formRights.admin
-                         && (!this.formData.features
-                         || this.formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1);
+                         && (!this.documentForm.features
+                         || this.documentForm.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1);
     }
   }
 
@@ -321,7 +321,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   setFormData() {
-    if (!this.npFormData) {
+    if (!this.placeForm) {
       return;
     }
 
@@ -340,14 +340,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         }
       }
 
-      this.npFormData.formData = npData;
+      this.placeForm.formData = npData;
     } else {
-      this.npFormData.formData = this.prepopulatedNamedPlace;
+      this.placeForm.formData = this.prepopulatedNamedPlace;
     }
   }
 
   private getMapOptions() {
-    const uiSchema = this.formData.uiSchema;
+    const uiSchema = this.documentForm.uiSchema;
 
     if (!uiSchema) {
       return null;
