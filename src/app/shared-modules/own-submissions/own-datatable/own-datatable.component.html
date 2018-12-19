@@ -131,7 +131,7 @@
               <i class="glyphicon glyphicon-download-alt"></i>
             </span>
             <a *ngIf="actions.indexOf('stats') > -1 && formsById[_documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
-                  class="glyph-link"
+                  class="label label-warning link inline-block"
                   [tooltip]="'haseka.submissions.toStatistics' | translate"
                   [placement]="'left'"
                   [container]="'body'"
