@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
-import { mergeMap, map, catchError, take, startWith, filter, switchMap } from 'rxjs/operators';
+import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlaceQuery } from 'app/shared/api/NamedPlaceApi';
 import { FormService } from 'app/shared/service/form.service';
@@ -51,14 +51,13 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
 
         const user$ = this.userService.getUser();
         const eventForm$ = this.getEventForm$();
-
         return of([]).pipe(
             switchMap(() => {
                 return forkJoin(
                     user$,
                     eventForm$.pipe(
                         mergeMap(res => {
-                            const namedPlaces$ = this.getNamedPlaces$(res.namedPlaceOptions);
+                            const namedPlaces$ = this.getNamedPlaces$(res);
                             const placeForm$ = this.getPlaceForm$(res.namedPlaceOptions.formID);
                             return forkJoin(of(res), namedPlaces$, placeForm$);
                         })
@@ -81,6 +80,11 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
                 result.municipalityId = this.municipalityId;
                 result.birdAssociationId = this.birdAssociationId;
                 result.activeNPId = activeNPId;
+
+                if (this.npRequirementsNotMet(result.eventForm)) {
+                    result.namedPlaces = undefined;
+                }
+
                 return result;
             })
         );
@@ -101,6 +105,9 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     }
 
     getPlaceForm$(id: string): Observable<any> {
+        if (!id) {
+            return of([]);
+        }
         return this.formService.load(id, this.lang).pipe(
             catchError((err) => {
                 const msgKey = err.status === 404
@@ -113,14 +120,18 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
         );
     }
 
-    getNamedPlaces$(namedPlaceOptions = { includeUnits: false }): Observable<any> {
-        delete namedPlaceOptions.includeUnits;
+    getNamedPlaces$(eventForm): Observable<any> {
         const query: NamedPlaceQuery = {
             collectionID: this.collectionId,
             municipality: this.municipalityId,
             birdAssociationArea: this.birdAssociationId,
-            includeUnits: namedPlaceOptions.includeUnits
+            includeUnits: eventForm.namedPlaceOptions.includeUnits
         };
+
+        if (this.npRequirementsNotMet(eventForm)) {
+            return of([]);
+        }
+
         return this.namedPlacesService.getAllNamePlaces(query)
             .pipe(
                 catchError(() => {
@@ -137,11 +148,22 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
         let lang = 'fi';
         const routes: ActivatedRouteSnapshot[] = _route.pathFromRoot;
         for (const route of routes) {
-            const path = route.url[0] && route.url[0].path;
-            if (path === 'en' || path === 'sv') {
-                lang = path;
+            const data = route.data;
+            if (data.lang) {
+                lang = data.lang;
             }
         }
         return lang;
+    }
+
+    npRequirementsNotMet(eventForm) {
+        return (
+            (eventForm.features
+            .includes('MHL.featureFilterNamedPlacesByMunicipality')
+            && !this.municipalityId)
+            || (eventForm.features
+            .includes('MHL.featureFilterNamedPlacesByBirdAssociationArea')
+            && !this.birdAssociationId)
+        );
     }
 }

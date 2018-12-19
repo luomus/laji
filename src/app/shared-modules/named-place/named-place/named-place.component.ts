@@ -98,6 +98,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.namedPlaces = data.namedPlaces;
       this.birdAssociationArea = data.birdAssociationId;
       this.municipality = data.municipalityId;
+      this.formData = data.eventForm;
+      this.npFormData = data.placeForm;
 
       ['birdAssociationArea', 'municipality'].forEach(area => {
         if (this[area] && this[area].match(/^ML\.[0-9]+$/)) {
@@ -110,14 +112,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.preselectedNPIndex = this.findNPIndexById(data.activeNPId);
       this.setActiveNP(this.preselectedNPIndex);
 
-      this.formData = data.eventForm;
       this.mapOptionsData = this.getMapOptions();
       this.updateSettings(data.eventForm);
 
       if (this.mapOptionsData) {
         data.placeForm['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
       }
-      this.npFormData = data.placeForm;
       this.setFormData();
 
       this.updateAllowCreate();
