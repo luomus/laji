@@ -35,7 +35,7 @@ export class TaxonSelectComponent {
   @Input() placeholder = '';
   @Input() typeaheadItemTemplate;
   @Input() allowInvalid = true;
-  @Output() select = new EventEmitter<string>();
+  @Output() taxonIdChange = new EventEmitter<string>();
 
   @ViewChild('typeahead') typeahead;
 
@@ -114,7 +114,7 @@ export class TaxonSelectComponent {
   }
 
   private selectValue(key: string, blur?: boolean) {
-    this.select.emit(key);
+    this.taxonIdChange.emit(key);
     if (blur) {
       this.blur();
     }
