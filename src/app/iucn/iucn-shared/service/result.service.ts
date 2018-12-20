@@ -89,7 +89,7 @@ export class ResultService {
     }
     if (!this.requestCache[year]) {
       this.requestCache[year] = this.taxonomyApi.species({
-        // checklistVersion: this.yearToChecklistVersion[year],
+        checklistVersion: this.yearToChecklistVersion[year],
         'latestRedListEvaluation.redListStatus': 'MX.iucnEN,MX.iucnCR,MX.iucnVU,MX.iucnDD,MX.iucnRE,MX.iucnNT,MX.iucnLC,MX.iucnDD',
         aggregateBy: AGG_STATUS,
         aggregateBySize: 1000
