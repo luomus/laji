@@ -293,23 +293,18 @@ export class ResultsComponent implements OnChanges {
     };
 
     const currentQuery = JSON.stringify(query);
-    if (this.hasCache(cacheKey, currentQuery)) {
-      this.redListStatusQuery$ = ObservableOf(this.cache[cacheKey]);
-      return;
-    }
-
     this.redListStatusQuery$ = this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
       this.taxonService.getRedListStatusTree(this.lang).pipe(
         map(tree => {
-          if (!query.redListEvaluationGroups) {
+          if (!query[groupField]) {
             return {
               groups: tree.map(v => v.id),
               aggregateBy: [statusField, groupField],
               hasKeys: true
             };
           }
-          const node = this.taxonService.findGroupFromTree(tree, query.redListTaxonGroup);
+          const node = this.taxonService.findGroupFromTree(tree, query[groupField]);
           if (node.hasIucnSubGroup) {
             return {
               groups: (node.hasIucnSubGroup as RedListTaxonGroup[]).map(v => v.id),
@@ -318,14 +313,14 @@ export class ResultsComponent implements OnChanges {
             };
           }
           return {
-            groups: [query.redListEvaluationGroups],
+            groups: [query[groupField]],
             aggregateBy: [statusField, scientificNameField, vernacularNameField],
             hasKeys: false
           };
         }),
         switchMap(red  => this.taxonApi.species({
           ...query,
-          redListEvaluationGroups: red.groups.join(','),
+          [groupField]: red.groups.join(','),
           aggregateBy: red.aggregateBy.join(',') + '=a',
           aggregateSize: 100000,
           page: 1,
