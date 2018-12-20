@@ -30,12 +30,11 @@ export class RoutingStateService {
 
   public getPathAndQueryFromUrl(uri: string): [string, any] {
     const [path, query = ''] = uri.split('?');
-    const backPath = path;
     const backQuery = query.split('&').filter(s => s).reduce((q, param) => {
       const [name, value] = param.split('=');
       q[name]  = value;
       return q;
     }, {});
-    return [backPath, backQuery];
+    return [path, backQuery];
   }
 }

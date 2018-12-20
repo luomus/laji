@@ -16,7 +16,7 @@
         </a>
       </th>
       <td>
-        {{ taxon.latestRedListStatusFinland?.status | label }}
+        {{ taxon.latestRedListEvaluation?.redListStatus | label }}
       </td>
       <td>
         <ng-container *ngIf="taxon.latestRedListEvaluation">

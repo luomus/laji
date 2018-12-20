@@ -74,7 +74,7 @@ export class ResultService {
     '2019': 'MR.424',
     '2015': 'MR.425',
     '2010': 'MR.426',
-    '2000': 'MR.426',
+    '2000': 'MR.427',
   };
 
   constructor(private taxonomyApi: TaxonomyApi) { }
