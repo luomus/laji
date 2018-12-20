@@ -43,7 +43,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   namedPlaces: NamedPlace[];
   namedPlacesEvents = new EventEmitter;
   activeNP = -1;
-  preselectedNPIndex = -1;
   namedPlace: NamedPlace;
 
   userID: string;
@@ -128,8 +127,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       });
       this.prepopulatedNamedPlace['collectionID'] = this.collectionId;
 
-      this.preselectedNPIndex = this.findNPIndexById(data.activeNPId);
-      this.setActiveNP(this.preselectedNPIndex);
+      this.setActiveNP(this.findNPIndexById(data.activeNPId));
 
       this.mapOptionsData = this.getMapOptions();
       this.updateSettings(data.documentForm);
@@ -262,7 +260,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   setActiveNP(idx: number) {
     this.activeNP = idx;
-    this.preselectedNPIndex = idx;
     if (this.activeNP >= 0) {
       if (this.namedPlaces) { this.namedPlace = this.namedPlaces[this.activeNP]; }
       if (this.editView) { this.editView.npClick(); }
@@ -279,7 +276,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.editMode = true;
     if (create) {
       this.setActiveNP(-1);
-      this.preselectedNPIndex = -1;
     }
     this.updateQueryParams();
   }
@@ -300,7 +296,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
     if (np) {
       this.setActiveNP(idx);
-      this.preselectedNPIndex = idx;
     }
   }
 

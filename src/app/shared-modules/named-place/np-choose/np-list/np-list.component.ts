@@ -32,8 +32,6 @@ export class NpListComponent {
   ];
   columnsMetaData: {[columnName: string]: DatatableColumn};
 
-  @Input() preselectedNPIndex = -1;
-
   @ViewChild('status') statusTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
