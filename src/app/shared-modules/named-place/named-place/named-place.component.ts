@@ -126,6 +126,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           this.prepopulatedNamedPlace[area] = undefined;
         }
       });
+      this.prepopulatedNamedPlace['collectionID'] = this.collectionId;
 
       this.preselectedNPIndex = this.findNPIndexById(data.activeNPId);
       this.setActiveNP(this.preselectedNPIndex);
