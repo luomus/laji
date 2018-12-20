@@ -1,3 +1,7 @@
+$evaluated-color: rgb(209, 231, 255);
+$red-list-color: rgb(255, 218, 218);
+$endangered-color: rgb(255, 144, 144);
+
 .selectable {
   border: 1px solid #ddd;
   background-color: #eee;
@@ -15,15 +19,30 @@
 }
 
 .evaluated {
-  background-color: rgb(209, 231, 255);
+  background-color: $evaluated-color;
+
+  .selectable {
+    background-color: darken($evaluated-color, 3%);
+    border-color:  darken($evaluated-color, 5%);
+  }
 }
 
 .redlist {
-  background-color: rgb(255, 218, 218);
+  background-color: $red-list-color;
+
+  .selectable {
+    background-color: darken($red-list-color, 3%);
+    border-color:  darken($red-list-color, 5%);
+  }
 }
 
 .endangered {
-  background-color: rgb(255, 144, 144);
+  background-color: $endangered-color;
+
+  .selectable {
+    background-color: darken($endangered-color, 3%);
+    border-color:  darken($endangered-color, 5%);
+  }
 }
 
 td {

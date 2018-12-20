@@ -257,7 +257,7 @@ export class ResultsComponent implements OnChanges {
       'scientificName',
       'vernacularName.' + this.lang,
       'cursiveName',
-      'latestRedListStatusFinland.*',
+      'latestRedListEvaluation.redListStatus',
       'latestRedListEvaluation.endangermentReasons',
       'latestRedListEvaluation.redListStatusNotes',
       'latestRedListEvaluation.reasonForStatusChange',
@@ -282,14 +282,14 @@ export class ResultsComponent implements OnChanges {
 
   private initStatusQuery() {
     const cacheKey = 'status';
-    const statusField = 'latestRedListStatusFinland.status';
+    const statusField = 'latestRedListEvaluation.redListStatus';
     const groupField = 'redListEvaluationGroups';
 
     const scientificNameField = 'parent.family.scientificName';
     const vernacularNameField = 'parent.family.vernacularName.' + this.lang;
 
     const query: any = {
-      ...this.removeKeys(this.baseQuery, ['latestRedListStatusFinland.status'])
+      ...this.removeKeys(this.baseQuery, [statusField])
     };
 
     const currentQuery = JSON.stringify(query);
