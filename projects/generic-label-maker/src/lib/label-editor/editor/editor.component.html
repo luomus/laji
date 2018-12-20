@@ -1,0 +1,10 @@
+<div id="label-editor" [style.width.mm]="width" [style.height.mm]="height">
+  <ll-editor-item
+    *ngFor="let item of labelItem" [magnification]="_magnification"
+    [item]="item"
+    [active]="item === active"
+    [maxWidth]="width"
+    [maxHeight]="height"
+    (click)="active = item"
+  ></ll-editor-item>
+</div>

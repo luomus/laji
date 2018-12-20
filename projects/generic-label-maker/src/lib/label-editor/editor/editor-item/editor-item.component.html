@@ -1,0 +1,21 @@
+<div
+  #item
+  class="editor-item"
+  [class.active]="active"
+  cdkDrag
+  [cdkDragBoundary]="'#label-editor'"
+  (cdkDragEnded)="onDrop($event)"
+  [style.width.mm]="width"
+  [style.height.mm]="height"
+  [style.top.mm]="y"
+  [style.left.mm]="x"
+  >
+  <div class="editor-item-content">
+    <div class="drag-handle"><i class="glyphicon glyphicon-move" cdkDragHandle></i></div>
+    <div class="resize-handle" cdkDrag (cdkDragStarted)="onResizeStart($event)" (cdkDragEnded)="onResizeEnd($event)" (cdkDragMoved)="onResize($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
+    <div class="option-handle"><i class="glyphicon glyphicon-edit"></i></div>
+    <ng-container *ngFor="let field of _item.fields; let l=last">
+      {{field.label}}<ng-container *ngIf="!l">{{field.separator}}</ng-container>
+    </ng-container>
+  </div>
+</div>

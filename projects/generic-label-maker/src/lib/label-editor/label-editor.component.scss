@@ -1,0 +1,20 @@
+.label-editor {
+  display: flex;
+}
+
+.settings-wrap {
+  width: 200px;
+}
+
+.editor-wrap {
+  flex: 1 1 auto;
+  flex-grow: 1;
+}
+
+.new-field {
+  border: 1px solid #999;
+  padding: 5px;
+  width: 150px;
+  margin-bottom: 5px;
+  background-color: #fafafa;
+}
