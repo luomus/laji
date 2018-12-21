@@ -1,8 +1,10 @@
 <div class="label-editor">
-    <div class="editor-wrap">
-        <ll-editor [label]="_setup.label" [labelItem]="_mockItems"></ll-editor>
-    </div>
-    <div class="settings-wrap">
-        <div *ngFor="let field of availableFields" cdkDrag (cdkDragEnded)="onDragEnd($event)" class="new-field">{{field.label}}</div>
-    </div>
+  <div class="editor-wrap">
+    <ll-label-preview [label]="_setup.label" [labelItem]="_mockItems"></ll-label-preview>
+    <ll-editor [label]="_setup.label" [(labelItem)]="_mockItems" [magnification]="2"></ll-editor>
+  </div>
+  <div class="settings-wrap">
+    <div *ngFor="let field of availableFields" cdkDrag (cdkDragEnded)="onNewFieldDragEnd($event)" [cdkDragData]="field"
+         class="new-field">{{field.label}}</div>
+  </div>
 </div>

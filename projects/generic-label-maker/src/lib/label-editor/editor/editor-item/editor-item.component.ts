@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { LabelItem } from '../../../generic-label-maker.interface';
-import { CdkDragEnd, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
+import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
+import { LabelService } from '../../../label.service';
 
 @Component({
   selector: 'll-editor-item',
@@ -19,16 +20,19 @@ export class EditorItemComponent implements AfterViewInit {
 
   _item: LabelItem;
 
+  boundary = '#label-editor';
   width: number;
   height: number;
+  size: number;
   x: number;
   y: number;
-  lastPointerPosition: {x: number, y: number};
-  origElememDimensions: DOMRect;
+  origElementDimensions: DOMRect;
 
   private elem: HTMLDivElement;
 
-  constructor() {}
+  constructor(
+    private labelService: LabelService
+  ) {}
 
   @Input()
   set item(item: LabelItem) {
@@ -45,6 +49,7 @@ export class EditorItemComponent implements AfterViewInit {
   recalculate() {
     this.width = this._item.width * this.magnification;
     this.height = this._item.height * this.magnification;
+    this.size = this.labelService.mmToPixel(Math.min(this.width, this.height));
     this.x = this._item.x * this.magnification;
     this.y = this._item.y * this.magnification;
 
@@ -57,23 +62,33 @@ export class EditorItemComponent implements AfterViewInit {
     }
   }
 
-  onDrop(event) {
-    console.log(event);
+  recordElementDimensions() {
+    this.origElementDimensions = this.elem.getBoundingClientRect() as DOMRect;
   }
 
-  onResizeStart(event: CdkDragStart) {
-    this.origElememDimensions = this.elem.getBoundingClientRect() as DOMRect;
+  onMoveEnd() {
+    const bounds = this.elem.getBoundingClientRect() as DOMRect;
+    const deltaX = this.labelService.pixelToMm(bounds.x - this.origElementDimensions.x) / this.magnification;
+    const deltaY = this.labelService.pixelToMm(bounds.y - this.origElementDimensions.y) / this.magnification;
+    this.itemChange.emit({
+      ...this._item,
+      x: this._item.x + deltaX,
+      y: this._item.y + deltaY,
+    });
   }
 
   onResize(event: CdkDragMove) {
-    this.elem.style.width = event.pointerPosition.x - this.origElememDimensions.x - 7 + 'px';
-    this.elem.style.height = event.pointerPosition.y - this.origElememDimensions.y - 7 + 'px';
+    this.elem.style.width = event.pointerPosition.x - this.origElementDimensions.x - 7 + 'px';
+    this.elem.style.height = event.pointerPosition.y - this.origElementDimensions.y - 7 + 'px';
     event.source.reset();
   }
 
   onResizeEnd(event: CdkDragEnd) {
     event.source.reset();
-    this.lastPointerPosition = undefined;
-    // TODO: send change event with mm as size values
+    this.itemChange.emit({
+      ...this._item,
+      width: this.labelService.pixelToMm(this.elem.offsetWidth) / this.magnification,
+      height: this.labelService.pixelToMm(this.elem.offsetHeight) / this.magnification
+    });
   }
 }

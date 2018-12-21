@@ -1,0 +1,16 @@
+<div
+  class="label-item"
+  [style.width.mm]="_item.width"
+  [style.height.mm]="_item.height"
+  [style.top.mm]="_item.y"
+  [style.left.mm]="_item.x"
+>
+  <ng-container *ngFor="let field of _item.fields; let l=last">
+    <ng-container *ngIf="field.isQRCode; else plainText">
+      <qrcode [qrdata]="field.exampleTxt" [size]="size" [level]="'H'"></qrcode>
+    </ng-container>
+    <ng-template #plainText>
+      {{field.exampleTxt}}<ng-container *ngIf="!l">{{field.separator || ', ' }}</ng-container>
+    </ng-template>
+  </ng-container>
+</div>

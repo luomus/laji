@@ -1,12 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, } from '@angular/core';
 import { Label, LabelItem } from '../../generic-label-maker.interface';
+import { LabelService } from '../../label.service';
 
 @Component({
   selector: 'll-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent {
 
   _label: Label;
   _magnification = 2;
@@ -14,12 +15,13 @@ export class EditorComponent implements OnInit {
   height: number;
   width: number;
   active: LabelItem;
+  init = false;
 
   @Input() labelItem: LabelItem[] = [];
+  @Output() labelItemChange = new EventEmitter();
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(labelService: LabelService) {
+    this.init = labelService.hasRation();
   }
 
   @Input()
@@ -42,7 +44,11 @@ export class EditorComponent implements OnInit {
     this.width = this._label.width * this._magnification;
   }
 
-  onDrop(event) {
-    console.log('dropEvent', event);
+  onItemChange(originalItem: LabelItem, newItem: LabelItem) {
+    const result = [];
+    this.labelItem.forEach(item => {
+      result.push(item === originalItem ? newItem : item);
+    });
+    this.labelItemChange.emit(result);
   }
 }

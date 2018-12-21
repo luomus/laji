@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LabelField, LabelItem, Setup } from '../generic-label-maker.interface';
-import { GenericLabelMakerService } from '../generic-label-maker.service';
+import { LabelService } from '../label.service';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'll-label-editor',
@@ -9,7 +10,7 @@ import { GenericLabelMakerService } from '../generic-label-maker.service';
 })
 export class LabelEditorComponent implements OnInit {
 
-  _setup: Setup = GenericLabelMakerService.EmptySetup;
+  _setup: Setup = LabelService.EmptySetup;
   _mockItems: LabelItem[];
   @Input() availableFields: LabelField[];
 
@@ -21,13 +22,13 @@ export class LabelEditorComponent implements OnInit {
     if (this.availableFields) {
       this._mockItems = this.availableFields.map((a, i) => ({
         type: 'field',
-        height: 4,
-        width: 20,
-        y: i * 5,
-        x: 10,
-        fields: [a],
+        height: i === 0 ? 13 : 4,
+        width: i === 0 ? 13 : 20,
+        y: i === 0 ? 0 : (i - 1) * 5,
+        x: i === 0 ? 0 : 15,
+        fields: i === 4 ? [a, this.availableFields[5]] : [a],
         margin: {}
-      })).splice(0, 4);
+      })).splice(0, 5);
     }
   }
 
@@ -36,7 +37,17 @@ export class LabelEditorComponent implements OnInit {
     this._setup = setup;
   }
 
-  onDragEnd(event) {
-    console.log(event);
+  onNewFieldDragEnd(event: CdkDragEnd) {
+    const field: LabelField = JSON.parse(JSON.stringify(event.source.data));
+    this._mockItems = [...this._mockItems, ({
+      type: 'field',
+      height: 4,
+      width: 20,
+      y: 10,
+      x: 25,
+      fields: [field],
+      margin: {}
+    })];
+    event.source.reset();
   }
 }

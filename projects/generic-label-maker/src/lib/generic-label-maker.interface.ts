@@ -42,7 +42,7 @@ export interface Size {
   /**
    * Page margins in mm
    */
-  margin: Margin;
+  margin?: Margin;
 
 }
 
@@ -61,7 +61,7 @@ export interface LabelField {
   exampleTxt?: string;
   separator?: string;
   includeLabel?: boolean;
-  canBeQRCode?: boolean;
+  isQRCode?: boolean;
   font?: Font;
 }
 
