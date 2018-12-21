@@ -430,7 +430,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     return [{ prop: 'dateEdited', dir: 'asc' }];
   }
 
-  private setRowData(document: Document, idx: number): Observable<any> {
+  private setRowData(document: ExtendedDocument, idx: number): Observable<any> {
     return this.getForm(document.formID).pipe(switchMap((form) => {
       const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
 
