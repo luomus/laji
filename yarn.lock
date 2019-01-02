@@ -4985,15 +4985,16 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-laji-form@^0.0.559:
-  version "0.0.559"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.559.tgz#ca75b201a31fdee5bdc34b6e28c5091c8346c67f"
+laji-form@^0.0.560:
+  version "0.0.560"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.560.tgz#5d66f418fd31829af2c267723bfc6834a1a23bda"
+  integrity sha512-ozYx9fY6fdWAC88LmpEg8lX9hjO+TJTdEPd34uhOV4pUcKgC0HdcJ1CHyK22+/esZ7W/gtUztq0y9ijS+aZ+Eg==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.454"
+    laji-map "^1.0.457"
     laji-validate "0.0.73"
     moment "*"
     prop-types "^15.5.8"
@@ -5012,9 +5013,10 @@ laji-form@^0.0.559:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.456, laji-map@^1.0.395, laji-map@^1.0.454, laji-map@^1.0.456:
-  version "1.0.456"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.456.tgz#7be6d54ad6c4276cf53fb0d9747a3ba21bf26206"
+laji-map@1.0.457, laji-map@^1.0.395, laji-map@^1.0.457:
+  version "1.0.457"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.457.tgz#a5259d6850679e6208ecc4269ec727f2e928d995"
+  integrity sha512-N1axYAaadGdfByhgkToY1Hhk7loI5g/AAFdpjpknbiJHRlxJefwjNaHgQEtfehPMRG7fyg5nwHdTuGa9aysvxQ==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.3.4"
