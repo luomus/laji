@@ -4,17 +4,18 @@ import { ObservationTableColumn } from '../../../observation-result/model/observ
 import { DatatableComponent } from '../../../datatable/datatable/datatable.component';
 import { DatatableColumn } from '../../../datatable/model/datatable-column';
 import { Util } from '../../../../shared/service/util.service';
-import { AreaNamePipe } from '../../../../shared/pipe/area-name.pipe';
-import { LabelPipe } from '../../../../shared/pipe';
-import { zip } from 'rxjs';
+import { map, reduce, take } from 'rxjs/operators';
+import { forkJoin, from, of } from 'rxjs';
 import { BoolToStringPipe } from 'app/shared/pipe/bool-to-string.pipe';
+import { AreaNamePipe } from '../../../../shared/pipe/area-name.pipe';
+import { orderByComparator } from '@swimlane/ngx-datatable/release/utils';
 
 @Component({
   selector: 'laji-np-list',
   templateUrl: './np-list.component.html',
   styleUrls: ['./np-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ AreaNamePipe, LabelPipe, BoolToStringPipe ]
+  providers: [ BoolToStringPipe, AreaNamePipe ]
 })
 export class NpListComponent {
   _namedPlaces: NamedPlace[];
@@ -32,7 +33,10 @@ export class NpListComponent {
   ];
   columnsMetaData: {[columnName: string]: DatatableColumn};
 
+  @ViewChild('label') labelIDTpl: TemplateRef<any>;
   @ViewChild('status') statusTpl: TemplateRef<any>;
+  @ViewChild('area') areaTpl: TemplateRef<any>;
+  @ViewChild('boolToStr') boolToStrTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Output() activePlaceChange = new EventEmitter<number>();
@@ -41,9 +45,7 @@ export class NpListComponent {
   @Input() height: string;
 
   constructor(private cd: ChangeDetectorRef,
-              private areaNamePipe: AreaNamePipe,
-              private labelPipe: LabelPipe,
-              private boolToStringPipe: BoolToStringPipe
+              private areaNamePipe: AreaNamePipe
   ) {
     this.columnsMetaData = {
       '$.alternativeIDs[0]': {
@@ -53,7 +55,7 @@ export class NpListComponent {
       '$.reserve.reserver': {
         label: 'result.gathering.team',
         width: 100,
-        pipe: this.labelPipe
+        cellTemplate: 'labelIDTpl'
       },
       '$.reserve.until': {
         label: 'result.reserve.until'
@@ -78,17 +80,14 @@ export class NpListComponent {
       },
       '$.taxonIDs[0]': {
         label: 'result.unit.taxonVerbatim',
-        pipe: this.labelPipe,
-        sortWithPipe: true
+        cellTemplate: 'labelIDTpl'
       },
       '$.municipality': {
-        label: 'np.municipality',
-        pipe: this.areaNamePipe,
-        sortWithPipe: true
+        label: 'np.municipality'
       },
       '$.invasiveControlOpen': {
         label: 'np.invasiveControlOpen',
-        pipe: this.boolToStringPipe
+        cellTemplate: 'boolToStrTpl'
       }
     };
   }
@@ -159,8 +158,12 @@ export class NpListComponent {
         }
         row[path] = value;
       }
-      if (row['$.municipality']) {
-        municipalities$.push(this.areaNamePipe.updateValue(row['$.municipality']));
+      const municipality = row['$.municipality'];
+      if (municipality) {
+        municipalities$.push(this.areaNamePipe.updateValue(municipality).pipe(
+          map(areaLabel => [row, areaLabel]),
+          take(1),
+        ));
       }
       if ('$.invasiveControlOpen' in row) {
         row['$.invasiveControlOpen'] = namedPlace.prepopulatedDocument.gatherings[0].invasiveControlOpen;
@@ -172,9 +175,11 @@ export class NpListComponent {
         this.datatable.refreshTable();
       }, 500);
     }
-    // Warm up municipality pipes before initial sorting.
     if (municipalities$.length) {
-      zip(...municipalities$).subscribe(() => {
+      forkJoin(...municipalities$).subscribe((municipalityTuples) => {
+        municipalityTuples.forEach(([row, municipalityLabel]) => {
+          row['$.municipality'] = municipalityLabel;
+        });
         this.data = results;
         this.cd.markForCheck();
       });
