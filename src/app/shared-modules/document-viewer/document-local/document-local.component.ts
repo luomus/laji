@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
@@ -9,16 +9,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { Image } from '../../../shared/image-gallery/image.interface';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { Global } from '../../../../environments/global';
+const { JSONPath } = require('jsonpath-plus');
 
 @Component({
   selector: 'laji-document-local',
   templateUrl: './document-local.component.html',
   styleUrls: ['./document-local.component.css']
 })
-export class DocumentLocalComponent implements OnInit, OnChanges {
+export class DocumentLocalComponent implements OnChanges {
   @Input() document: Document;
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
+  @Input() gatheringGeometryJSONPath = '$.geometry';
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -36,8 +38,6 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
     private formService: FormService,
     private translate: TranslateService
   ) { }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.document) {
@@ -71,9 +71,11 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
             observables.push(this.getImages(doc));
           }
 
-          doc.gatherings.map((gathering, i) => {
-            if (gathering.geometry) {
-              this.mapData[i] = {geoJSON: gathering.geometry};
+          doc.gatherings.forEach((gathering, i) => {
+            const geoData = JSONPath({json: gathering, path: this.gatheringGeometryJSONPath});
+            // TODO There could be more than one hit... But in our current domain there isn't, so we ignore the issue.
+            if (geoData && geoData[0]) {
+              this.mapData[i] = {geoJSON: geoData[0]};
             }
             if (gathering.images && gathering.images.length > 0) {
               observables.push(this.getImages(gathering));

@@ -31,7 +31,6 @@ import { Subscription } from 'rxjs';
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
   @Input() npFormData: any;
-  @Input() namedPlaceOptions: any;
   @Input() formData: any;
   @Input() collectionId: string;
   @Input() editMode: boolean;
@@ -131,7 +130,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     this.showViewerClick$ = this.eventService.showViewerClick$.subscribe((doc) => {
       this.showDocumentViewer(doc);
     });
-
   }
 
   ngAfterViewInit() {
