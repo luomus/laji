@@ -180,17 +180,13 @@ export class UserService extends LocalDb {
     }
   }
 
-  public returnToPageBeforeLogin(): void {
+  public getReturnUrl(): string {
     const returnTo = this.returnUrl || '/';
     const lang = this.localizeRouterService.getLocationLang(returnTo);
-    setTimeout(() => {
-      this.translate.use(lang);
-      this.router.navigateByUrl(
-        this.localizeRouterService.translateRoute(
-          this.localizeRouterService.getPathWithoutLocale(returnTo)
-        )
-      );
-    }, 10);
+    this.translate.use(lang);
+    return this.localizeRouterService.translateRoute(
+      this.localizeRouterService.getPathWithoutLocale(returnTo)
+    );
   }
 
   public getDefaultFormData(): Observable<any> {
