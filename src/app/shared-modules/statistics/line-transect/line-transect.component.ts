@@ -8,7 +8,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -45,7 +44,7 @@ interface LineTransectCount {
   styleUrls: ['./line-transect.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
+export class LineTransectComponent implements OnChanges, AfterViewInit {
   @ViewChild(LajiMapComponent)
   lajiMap: LajiMapComponent;
 
@@ -88,8 +87,6 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   warnings: {message: string; cnt: number}[] = [];
   stats$: Observable<string>;
 
-  mapZoomInitialized = false;
-
   placesDiff = false;
   isAdmin = false;
   activeMapLine = 'document';
@@ -124,26 +121,22 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
         this.missingNS = false;
         this.isAdmin = this.formPermissionService.isAdmin(data.formPermission, data.user);
         this.initPlacesDiff();
-        this.initMapZoom();
+        this.updateMapZoom();
         this.cdr.markForCheck();
       });
   }
 
-  ngOnInit() {
-
-  }
-
   ngAfterViewInit() {
-    this.initMapZoom();
+    this.updateMapZoom();
   }
 
-  initMapZoom() {
-    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.map || this.mapZoomInitialized) {
+  updateMapZoom() {
+    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.map) {
       return;
     }
-
-    this.lajiMap.map.zoomToData({paddingInMeters: 100});
-    this.mapZoomInitialized = true;
+    // Map is hidden during initialization since admin check is done async, so we have to initialize the view manually.
+    this.lajiMap.map.map.invalidateSize();
+    this.lajiMap.map._initializeView();
   }
 
   private initEditLink() {
@@ -256,7 +249,8 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
         feature: {type: 'Feature', properties: {}, geometry: this.getGeometry(this.activeMapLine)},
         editable: false
       },
-      tileLayerOpacity: 0.5
+      tileLayerOpacity: 0.5,
+      zoomToData: {paddingInMeters: 100}
     };
   }
 
