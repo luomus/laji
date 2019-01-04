@@ -32,7 +32,7 @@
         <th>Laskentanopeus</th>
         <td>
           {{ counts.minPerKm }}min/km
-          (<span class="speed-warning" *ngIf="counts.minPerKm > 50; else slowSpeed">keskimääräistä hitaampi</span><ng-template #slowSpeed><span class="speed-warning" *ngIf="counts.minPerKm < 35; else normalSpeed">kesimääräistä nopeampi</span></ng-template><ng-template #normalSpeed><span class="speed-ok">normaali</span></ng-template>)
+          (<span class="speed-warning" *ngIf="counts.minPerKm > 50; else slowSpeed">keskimääräistä hitaampi</span><ng-template #slowSpeed><span class="speed-warning" *ngIf="counts.minPerKm < 35; else normalSpeed">keskimääräistä nopeampi</span></ng-template><ng-template #normalSpeed><span class="speed-ok">normaali</span></ng-template>)
         </td>
       </tr>
       <tr *ngIf="stats$ | async let diff">
@@ -119,7 +119,7 @@
             (click)="acceptNamedPlaceChanges()"
             class="btn btn-sm btn-success">Hyväksy muutokset</button>
   </div>
-  <div class="col-xs-12" [style.height.px]="500" [style.display]="isAdmin && placesDiff ? 'block' : 'none'">
+  <div class="col-xs-12" [style.height.px]="1000" [style.display]="isAdmin && placesDiff ? 'block' : 'none'">
     <laji-map [options]="lajiMapOptions"></laji-map>
   </div>
 </div>

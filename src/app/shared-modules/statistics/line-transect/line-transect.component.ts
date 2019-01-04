@@ -250,7 +250,8 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
         editable: false
       },
       tileLayerOpacity: 0.5,
-      zoomToData: {paddingInMeters: 100}
+      zoomToData: {paddingInMeters: 100},
+      controls: true
     };
   }
 
