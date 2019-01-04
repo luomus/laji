@@ -82,7 +82,7 @@
     "laji-map": "^1.0.457",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.7.3",
-    "moment": "^2.22.2",
+    "moment": "2.22.2",
     "ngx-bootstrap": "3.0.1",
     "ngx-toastr": "^9.1.1",
     "ngx-webstorage": "^3.0.0-beta.14",
