@@ -13,7 +13,6 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TranslateFileLoader } from './shared/translate/translate-file-loader';
-import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
 import {
   AlertModule,
   BsDropdownModule,
@@ -51,7 +50,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 @NgModule({
   declarations: [
     AppComponent, NavbarComponent, FooterComponent, FeedbackComponent,
-    WhatsNewComponent,
     ForumComponent,
     LocaleEnComponent,
     LocaleFiComponent,
