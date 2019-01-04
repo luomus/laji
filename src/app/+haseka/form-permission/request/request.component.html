@@ -3,4 +3,5 @@
   [accessLevel]="accessLevel"
 ></laji-request-description>
 <button [disabled]="accessLevel === AccessLevel.Allowed || accessLevel === AccessLevel.Requested"
-        class="btn btn-success" (click)="makeAccessRequest()">Pyydä pääsy</button>
+        class="btn btn-success" (click)="makeAccessRequest()">{{ 'np.requestAccess' | translate }}</button>
+
