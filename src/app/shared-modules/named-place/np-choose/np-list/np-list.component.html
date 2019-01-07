@@ -27,7 +27,7 @@
     [pageSize]="data.length"
     [columns]="columns"
     [selectionType]="'single'"
-    [preselectedRowIndex]="preselectedNPIndex"
+    [preselectedRowIndex]="activeNP"
     >
   </laji-datatable>
   <div class="test"></div>
@@ -37,6 +37,18 @@
     </li>
   </ul>
 </div>
+
+<ng-template let-value="value" ngx-datatable-cell-template #label>
+  <span *ngIf="value">
+    {{ value | label }}
+  </span>
+</ng-template>
+
+<ng-template let-value="value" ngx-datatable-cell-template #boolToStr>
+  <span *ngIf="value">
+    {{ value | boolToString }}
+  </span>
+</ng-template>
 
 <ng-template let-value="value" ngx-datatable-cell-template #status>
   <ng-container *ngIf="value">

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenericLabelMakerComponent } from './generic-label-maker.component';
+import { LabelPreviewComponent } from './label-preview.component';
 
-describe('GenericLabelMakerComponent', () => {
-  let component: GenericLabelMakerComponent;
-  let fixture: ComponentFixture<GenericLabelMakerComponent>;
+describe('LabelPreviewComponent', () => {
+  let component: LabelPreviewComponent;
+  let fixture: ComponentFixture<LabelPreviewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GenericLabelMakerComponent ]
+      declarations: [ LabelPreviewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GenericLabelMakerComponent);
+    fixture = TestBed.createComponent(LabelPreviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

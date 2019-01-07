@@ -1,4 +1,6 @@
-
+/**
+ * TODO: Change this to use taxon-select component
+ */
 import {switchMap, distinctUntilChanged, tap, map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';

@@ -41,7 +41,6 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() allowCreate = true;
   @Input() userID: string;
   @Input() zoomToData: boolean;
-  @Input() preselectedNPIndex = -1;
 
   @Output() activePlaceChange = new EventEmitter<number>();
   @Output() createButtonClick = new EventEmitter();
@@ -127,7 +126,7 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
     this._activeNP = idx;
   }
 
-  setActiveNP(idx: number) {
+  onActivePlaceChange(idx: number) {
     this.activeNP = idx;
     this.activePlaceChange.emit(this._activeNP);
   }

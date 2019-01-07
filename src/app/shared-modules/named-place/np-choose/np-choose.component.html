@@ -15,8 +15,7 @@
                   [namedPlaces]="_namedPlaces"
                   [formData]="formData"
                   [activeNP]="_activeNP"
-                  (activePlaceChange)="setActiveNP($event)"
-                  [preselectedNPIndex]="preselectedNPIndex"
+                  (activePlaceChange)="onActivePlaceChange($event)"
                   ></laji-np-list>
   </div>
 
@@ -29,7 +28,7 @@
                  [reservable]="formData.features.indexOf(FEATURE_RESERVE) !== -1"
                  [npFormData]="npFormData"
                  [formData]="formData"
-                 (activePlaceChange)="setActiveNP($event)"></laji-np-map>
+                 (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
   </div>
 
   <button *ngIf="allowCreate"

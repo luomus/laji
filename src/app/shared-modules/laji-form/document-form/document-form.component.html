@@ -1,5 +1,5 @@
 <laji-spinner [spinning]="!form" [overlay]="true"></laji-spinner>
-<laji-document-form-header *ngIf="form" [formID]="form.id"></laji-document-form-header>
+<laji-document-form-header *ngIf="form" [formID]="form.id" [namedPlace]="namedPlace" [isAdmin]="isAdmin" [formData]="form.formData"></laji-document-form-header>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
   <div class="col-sm-12">
     <strong>{{ namedPlace.name }}</strong>

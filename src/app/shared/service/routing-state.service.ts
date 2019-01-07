@@ -27,4 +27,14 @@ export class RoutingStateService {
   public getPreviousUrl(): string {
     return this.history[this.history.length - 2] || '';
   }
+
+  public getPathAndQueryFromUrl(uri: string): [string, any] {
+    const [path, query = ''] = uri.split('?');
+    const backQuery = query.split('&').filter(s => s).reduce((q, param) => {
+      const [name, value] = param.split('=');
+      q[name]  = value;
+      return q;
+    }, {});
+    return [path, backQuery];
+  }
 }

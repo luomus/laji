@@ -1,5 +1,5 @@
-<laji-spinner [spinning]="!(documents && rows)" [overlay]="false">
-  <div *ngIf="documents && rows">
+<laji-spinner [spinning]="!(_documents && rows)" [overlay]="false">
+  <div *ngIf="_documents && rows">
     <div id="filter-row-container">
       <div id="download-button-container" *ngIf="showDownloadAll">
         <button type="button" class="btn btn-default inline-block" (click)="openChooseFileTypeModal(-1)">
@@ -78,16 +78,16 @@
               <i class="glyphicon glyphicon-eye-close"></i>
             </span>
           </span>
-          <span *ngIf="actions.indexOf('edit') > -1" class="label label-primary link inline-block"
+          <a *ngIf="actions.indexOf('edit') > -1" class="label label-primary link inline-block"
                 [ngClass]="{
                   'label-primary': !row.locked,
                   'label-default': row.locked
                 }"
                 [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
-                (click)="toEditPage(row)"
+                [href]="row._editUrl"
                 [placement]="'right'">
               <i class="glyphicon glyphicon-edit"></i>
-          </span>
+          </a>
           <span *ngIf="showMakeTemplate(row)">
             <span class="label label-warning link inline-block"
                   (click)="makeTemplate(row)"
@@ -130,14 +130,14 @@
                   (click)="openChooseFileTypeModal(row.index)">
               <i class="glyphicon glyphicon-download-alt"></i>
             </span>
-            <span *ngIf="actions.indexOf('stats') > -1 && formsById[documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
+            <a *ngIf="actions.indexOf('stats') > -1 && formsById[_documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
                   class="label label-warning link inline-block"
                   [tooltip]="'haseka.submissions.toStatistics' | translate"
                   [placement]="'left'"
                   [container]="'body'"
-                  (click)="toStatisticsPage(row.id)">
+                  [href]="'/theme/linjalaskenta/statistics/' + row.id">
               <i class="glyphicon glyphicon-stats"></i>
-            </span>
+            </a>
             <span *ngIf="actions.indexOf('delete') > -1 && (row.creator === userId || admin)" class="label label-danger link inline-block"
                   [tooltip]="'friend.remove' | translate"
                   [placement]="'left'"

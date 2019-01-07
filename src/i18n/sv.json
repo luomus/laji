@@ -929,5 +929,6 @@
   "wholeYear": "Helt år {{year}}",
   "yes": "Ja",
   "invasiveSpecies.title": "Invasiva arter",
-  "invasiveSpecies.places": "Spela in kontrol aktioner"
+  "invasiveSpecies.places": "Spela in kontrol aktioner",
+  "np.formOwnSubmissions": "Placerar tidigare dokument"
 }

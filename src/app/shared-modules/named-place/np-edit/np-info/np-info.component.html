@@ -139,6 +139,7 @@
                          [own]="!admin">
           </laji-document>
           <laji-document-local *ngIf="forceLocalViewer || shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
+                               [gatheringGeometryJSONPath]="formData?.namedPlaceOptions?.documentViewerGatheringGeometryJSONPath"
                                [document]="shownDocument">
           </laji-document-local>
         </div>

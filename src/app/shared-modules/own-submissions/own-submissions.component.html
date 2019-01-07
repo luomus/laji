@@ -1,5 +1,5 @@
+<h4 *ngIf="header">{{ header | translate }}</h4>
 <alert *ngIf="yearInfoError" type="danger">{{ yearInfoError }}</alert>
-
 
 <div *ngIf="!yearInfoError">
   <laji-year-slider *ngIf="!onlyTemplates && !!yearInfo" [year]="year" [showCounts]="!formID"
@@ -17,7 +17,6 @@
     [year]="year"
     [documents]="activeDocuments"></laji-own-datatable>
 </div>
-
 
 <div class="modal fade" bsModal #documentModal="bs-modal"
      (onHidden)="documentModalVisible = false"

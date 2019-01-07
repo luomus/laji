@@ -1,35 +1,49 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, Input } from '@angular/core';
 
-const BAR_HEIGHT = 30;
+const BAR_HEIGHT = 20;
+
+export interface ChartData {
+  'name': string;
+  'series': {name: string, value: number}[];
+}
+
+export interface SimpleChartData {
+  'name': string;
+  'value': number;
+}
 
 @Component({
   selector: 'laji-red-list-chart',
   templateUrl: './red-list-chart.component.html',
-  styleUrls: ['./red-list-chart.component.scss']
+  styleUrls: ['./red-list-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RedListChartComponent implements OnInit, AfterViewInit {
+export class RedListChartComponent implements AfterViewInit {
 
-  _data = [];
+  _data: ChartData[] = [];
   view: [number, number];
   height: number;
+
+  @Input()
+  legend = true;
+
+  @Input()
+  label = '';
 
   constructor(
     private el: ElementRef
   ) { }
 
-  ngOnInit() {
-    this.data = this.mock;
-  }
-
   ngAfterViewInit() {
     setTimeout(() => {
       this.resize();
-    });
+    }, 100);
   }
 
-  set data(data: any) {
+  @Input()
+  set data(data: ChartData[]) {
     this._data = data;
-    this.height = data[0].series ? data.length * data[0].series.length * BAR_HEIGHT : 0;
+    this.height = data && data[0] && data[0].series ? ((data.length * Math.max(data[0].series.length * BAR_HEIGHT, 30)) + 70) : 0;
     this.resize();
   }
 
@@ -42,7 +56,7 @@ export class RedListChartComponent implements OnInit, AfterViewInit {
   }
 
   /* tslint:disable */
-  private mock = [
+  private mock: ChartData[] = [
       {
         'name': 'Juoksujlkaiset',
         'series': [

@@ -27,6 +27,9 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
   @Input() onlyTemplates = false;
   @Input() namedPlace: string;
+  @Input() header: string;
+  @Input() documentViewerGatheringGeometryJSONPath: string;
+
   @ViewChild('documentModal') public modal: ModalDirective;
 
   publicity = Document.PublicityRestrictionsEnum;

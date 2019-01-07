@@ -1,32 +1,28 @@
 
-import {tap, catchError,  switchMap, take } from 'rxjs/operators';
+import {catchError, filter} from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { ActivatedRoute, Router, Event, NavigationStart, NavigationError, NavigationEnd, NavigationCancel } from '@angular/router';
+import { Subscription, of } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
-import { FormService } from '../../../shared/service/form.service';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
 import { FooterService } from '../../../shared/service/footer.service';
-import { UserService } from '../../../shared/service/user.service';
-import { NamedPlaceQuery } from '../../../shared/api/NamedPlaceApi';
 import { Form } from '../../../shared/model/Form';
 import { AreaType } from '../../../shared/service/area.service';
 import { NpEditComponent } from '../np-edit/np-edit.component';
-import { FormPermissionService, Rights } from '../../../+haseka/form-permission/form-permission.service';
+import { Rights } from '../../../+haseka/form-permission/form-permission.service';
 import * as moment from 'moment';
 import { EventEmitter } from 'events';
-import { environment } from '../../../../environments/environment';
 import { Util } from '../../../shared/service/util.service';
+import { NPResolverData } from '../named-place.resolver';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-named-place',
@@ -40,13 +36,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   formId;
   collectionId;
 
-  formData;
+  documentForm;
+  placeForm: any;
   prepopulatedNamedPlace = {};
 
   namedPlaces: NamedPlace[];
   namedPlacesEvents = new EventEmitter;
   activeNP = -1;
-  preselectedNPIndex = -1;
   namedPlace: NamedPlace;
 
   userID: string;
@@ -69,18 +65,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   errorMsg = '';
 
-  editModeQParam: boolean;
-
   mapOptionsData: any;
-  npFormData: any;
   lang: string;
 
   private subParam: Subscription;
-  private subTrans: Subscription;
-  private subQParams: Subscription;
-
-  private npFormId: string;
-  private npForm$: Subscription;
+  private routerEvents: Subscription;
 
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
   @ViewChild(NpEditComponent) editView: NpEditComponent;
@@ -89,19 +78,46 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private namedPlaceService: NamedPlacesService,
-    private formService: FormService,
     private footerService: FooterService,
-    private translate: TranslateService,
-    private userService: UserService,
-    private formPermissionService: FormPermissionService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
-    this.subQParams = this.route.queryParams.subscribe((params) => {
-      const {municipality, birdAssociationArea, activeNP, edit} = params;
-      this.birdAssociationArea = birdAssociationArea;
-      this.municipality = municipality;
+    this.routerEvents = this.router.events.subscribe((event: Event) => {
+      switch (true) {
+        case event instanceof NavigationStart: {
+          this.loading = true;
+          break;
+        }
+        case event instanceof NavigationEnd:
+        case event instanceof NavigationCancel:
+        case event instanceof NavigationError: {
+          this.loading = false;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+
+    this.subParam = this.route.data.pipe(catchError((err) => {
+      this.setErrorMessage(err);
+      return of({data: {}});
+    })).subscribe((d) => {
+      const data: NPResolverData = d.data;
+      this.editMode = data.edit;
+      this.collectionId = data.collectionId;
+      this.formId = data.documentForm.id;
+      this.userID = data.user.id;
+      this.formRights = data.formRights;
+      this.namedPlaces = data.namedPlaces;
+      this.birdAssociationArea = data.birdAssociationId;
+      this.municipality = data.municipalityId;
+      this.documentForm = data.documentForm;
+      this.placeForm = data.placeForm;
+
       ['birdAssociationArea', 'municipality'].forEach(area => {
         if (this[area] && this[area].match(/^ML\.[0-9]+$/)) {
           this.prepopulatedNamedPlace[area] = [this[area]];
@@ -109,44 +125,24 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           this.prepopulatedNamedPlace[area] = undefined;
         }
       });
-      this.editModeQParam = edit === 'true';
-      this.updateEditMode();
-      this.setActiveNP(this.findNPIndexById(activeNP));
-      this.preselectedNPIndex = this.findNPIndexById(activeNP);
-      this.updateList();
+      this.prepopulatedNamedPlace['collectionID'] = this.collectionId;
+
+      this.setActiveNP(this.findNPIndexById(data.activeNPId));
+
+      this.mapOptionsData = this.getMapOptions();
+      this.updateSettings(data.documentForm);
+
+      if (this.mapOptionsData) {
+        data.placeForm['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
+      }
+      this.setFormData();
+
+      this.updateAllowCreate();
+
       this.cdr.markForCheck();
     });
 
-    this.loading = true;
-    this.subParam = this.route.params.pipe(
-      switchMap((params) => {
-        this.formId = params['formId'];
-        this.collectionId = params['collectionId'];
-        this.prepopulatedNamedPlace['collectionID'] = this.collectionId;
-
-        return this.getFormInfo();
-      }),
-      switchMap((form) => this.updateSettings(form)),
-      switchMap(() => {
-        if (!(this.filterByMunicipality && !this.municipality)) {
-          return this.updateNP();
-        } else {
-          return ObservableOf([]);
-        }
-      }))
-      .subscribe(() => {
-        this.loading = false;
-        this.cdr.markForCheck();
-      });
-    this.userService.getUser()
-      .subscribe(person => this.userID = person.id);
-
-    this.subTrans = this.translate.onLangChange.subscribe(
-      () => {
-        this.onLangChange();
-        this.cdr.markForCheck();
-      }
-    );
+    this.lang = this.translate.currentLang;
 
     this.footerService.footerVisible = false;
   }
@@ -155,20 +151,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
-    if (this.subTrans) {
-      this.subTrans.unsubscribe();
-    }
-    if (this.subQParams) {
-      this.subQParams.unsubscribe();
+    if (this.routerEvents) {
+      this.routerEvents.unsubscribe();
     }
     this.footerService.footerVisible = true;
   }
 
-  updateEditMode() {
-    this.editMode = this.editModeQParam && this.formRights.admin;
-  }
-
-  onBirdAssiciationAreaChange(value) {
+  onBirdAssociationAreaChange(value) {
     this.birdAssociationArea = value;
     this.updateQueryParams();
   }
@@ -188,7 +177,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
   }
 
-  release() {
+  onRelease() {
     this.loading = true;
     this.namedPlaceService
       .releaseReservation(this.namedPlace.id)
@@ -203,9 +192,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       });
   }
 
-  reserve() {
+  onReserve() {
     this.loading = true;
-    const {namedPlaceOptions = {}} = this.formData || {};
+    const {namedPlaceOptions = {}} = this.documentForm || {};
     const until = namedPlaceOptions.reservationUntil;
     this.namedPlaceService
       .reserve(this.namedPlace.id, until ? {until: until.replace('${year}', moment().year())} : undefined)
@@ -227,105 +216,23 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateList() {
-    this.loading = true;
-    this.updateNP()
-      .subscribe(() => {
-        this.loading = false;
-        this.cdr.markForCheck();
-        const params = this.route.snapshot.queryParams;
-        if (params['activeNP']) {
-          const index = this.findNPIndexById(params['activeNP']);
-          this.setActiveNP(index);
-          this.preselectedNPIndex = index;
-        }
-      });
-  }
-
-  private updateNP(): Observable<any> {
-    if (!this.collectionId) {
-      return ObservableOf([]);
-    }
-    const query: NamedPlaceQuery = {
-      collectionID: this.collectionId
-    };
-    if (this.filterByMunicipality) {
-      query.municipality = this.municipality;
-    }
-    if (this.filterByBirdAssociationArea) {
-      if (!this.birdAssociationArea) {
-        return ObservableOf([]);
-      }
-      query.birdAssociationArea = this.birdAssociationArea;
-    }
-    const {namedPlaceOptions = {}} = this.formData;
-    if (namedPlaceOptions.hasOwnProperty('includeUnits')) {
-      query.includeUnits = namedPlaceOptions.includeUnits;
-    }
-    return this.namedPlaceService.getAllNamePlaces(query).pipe(
-      catchError(() => {
-        this.translate.get('np.loadError')
-          .subscribe(msg => (this.setErrorMessage(msg)));
-        return ObservableOf([]);
-      })).pipe(
-      tap(data => {
-        this.namedPlaces = data;
-        this.namedPlace = this.namedPlaces[this.activeNP];
-        this.namedPlacesEvents.emit('update');
-      }));
-  }
-
   private updateSettings(formData: any) {
     if (formData && formData.features && Array.isArray(formData.features)) {
       this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
       this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1;
     }
-    this.formRights = {
-      admin: false,
-      edit: false
-    };
-    this.allowCreate = false;
-    return this.userService.isLoggedIn$.pipe(
-      take(1),
-      switchMap(login => {
-        if (!formData || !formData.collectionID || !login) {
-          return ObservableOf(null);
-        }
-        return this.formPermissionService
-          .getRights(formData).pipe(
-          take(1)).pipe(
-          switchMap(rights => {
-            this.formRights = rights;
-            this.updateEditMode();
-            if (this.formData && this.formData.namedPlaceOptions
-                && this.formData.namedPlaceOptions.requireAdmin === false) {
-              this.allowCreate = true;
-            } else {
-              this.allowCreate =  rights.admin && (!formData.features || formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1);
-            }
-            return ObservableOf(null);
-          }));
-      })
-    );
   }
 
-  private getFormInfo(): Observable<any> {
-    return this.formService.getForm(this.formId, this.translate.currentLang).pipe(
-      catchError((err) => {
-        const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-        this.translate.get(msgKey, {formId: this.formId})
-          .subscribe(msg => this.setErrorMessage(msg));
-        return ObservableOf({});
-      })).pipe(
-      tap(form => {
-        this.formData = form;
-        this.npFormId = this.formData.namedPlaceOptions
-          && this.formData.namedPlaceOptions.formID
-          || environment.namedPlaceForm;
-        this.mapOptionsData = this.getMapOptions();
-        this.fetchForm();
-      }));
+  updateAllowCreate() {
+    if (this.documentForm && this.documentForm.namedPlaceOptions
+        && this.documentForm.namedPlaceOptions.requireAdmin === false) {
+      this.allowCreate = true;
+    } else {
+      this.allowCreate = this.formRights.admin
+                         && (!this.documentForm.features
+                         || this.documentForm.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1);
+    }
   }
 
   updateQueryParams() {
@@ -342,7 +249,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     (this.birdAssociationArea || '').length > 0
       ? queryParams['birdAssociationArea'] = this.birdAssociationArea
       : delete queryParams['birdAssociationArea'];
-    queryParams['edit'] = this.editModeQParam;
+    queryParams['edit'] = this.editMode;
     this.router.navigate([], { queryParams: queryParams });
   }
 
@@ -353,7 +260,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   setActiveNP(idx: number) {
     this.activeNP = idx;
-    this.preselectedNPIndex = idx;
     if (this.activeNP >= 0) {
       if (this.namedPlaces) { this.namedPlace = this.namedPlaces[this.activeNP]; }
       if (this.editView) { this.editView.npClick(); }
@@ -367,10 +273,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       return;
     }
     this.npEdit.setIsEdit(!create);
-    this.editModeQParam = true;
+    this.editMode = true;
     if (create) {
       this.setActiveNP(-1);
-      this.preselectedNPIndex = -1;
     }
     this.updateQueryParams();
   }
@@ -387,11 +292,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         idx = this.namedPlaces.length - 1;
       }
     }
-    this.editModeQParam = false;
+    this.editMode = false;
     this.updateQueryParams();
     if (np) {
       this.setActiveNP(idx);
-      this.preselectedNPIndex = idx;
     }
   }
 
@@ -412,54 +316,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     });
   }
 
-  onLangChange() {
-    if (this.npForm$) {
-      this.npForm$.unsubscribe();
-    }
-    const data = this.npFormData.formData;
-    this.npFormData = null;
-    this.npForm$ = this.formService
-      .getForm(this.npFormId, this.translate.currentLang)
-      .subscribe(form => {
-        form['formData'] = data;
-        if (this.mapOptionsData) {
-          form['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
-        }
-        this.lang = this.translate.currentLang;
-        this.npFormData = form;
-        this.cdr.markForCheck();
-      });
-  }
-
-  fetchForm() {
-    if (this.npForm$) {
-      this.npForm$.unsubscribe();
-    }
-    this.lang = this.translate.currentLang;
-    this.npForm$ = this.formService
-      .load(this.npFormId, this.lang)
-      .subscribe(
-        data => {
-          if (this.mapOptionsData) {
-            data['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
-          }
-          this.npFormData = data;
-          this.setFormData();
-          this.cdr.markForCheck();
-        },
-        err => {
-          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-          this.translate.get(msgKey, {formId: this.npFormId})
-            .subscribe(msg => {
-              this.setErrorMessage(msg);
-              this.cdr.markForCheck();
-            });
-        }
-      );
-  }
-
   setFormData() {
-    if (!this.npFormData) {
+    if (!this.placeForm) {
       return;
     }
 
@@ -478,14 +336,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         }
       }
 
-      this.npFormData.formData = npData;
+      this.placeForm.formData = npData;
     } else {
-      this.npFormData.formData = this.prepopulatedNamedPlace;
+      this.placeForm.formData = this.prepopulatedNamedPlace;
     }
   }
 
   private getMapOptions() {
-    const uiSchema = this.formData.uiSchema;
+    const uiSchema = this.documentForm.uiSchema;
 
     if (!uiSchema) {
       return null;

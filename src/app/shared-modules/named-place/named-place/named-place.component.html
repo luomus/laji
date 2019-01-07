@@ -1,6 +1,6 @@
 <div class="container-fluid" style="width: 100%">
   <div id="container" class="row np-row">
-    <laji-document-form-header *ngIf="formData"
+    <laji-document-form-header *ngIf="documentForm"
                                [formID]="formId"
                                [type]="editMode
                                  ? activeNP >= 0
@@ -19,32 +19,31 @@
     <div *ngIf="filterByBirdAssociationArea">
       <label [tooltip]="birdAssociationAreaHelp"
              [placement]="'right'"
-             [isDisabled]="!formData.namedPlaceOptions || !formData.namedPlaceOptions.birdAssociationAreaHelp">{{ 'MNP.birdAssociationArea' | label }}
-        <span *ngIf="formData.namedPlaceOptions && formData.namedPlaceOptions.birdAssociationAreaHelp" class="label-info laji-form-help-glyph"><strong>?</strong></span>
+             [isDisabled]="!documentForm.namedPlaceOptions || !documentForm.namedPlaceOptions.birdAssociationAreaHelp">{{ 'MNP.birdAssociationArea' | label }}
+        <span *ngIf="documentForm.namedPlaceOptions && documentForm.namedPlaceOptions.birdAssociationAreaHelp" class="label-info laji-form-help-glyph"><strong>?</strong></span>
       </label>
-      <laji-area-select [disabled]="editMode" [field]="areaTypes.BirdAssociationArea" (select)="onBirdAssiciationAreaChange($event)" [value]="this.birdAssociationArea"></laji-area-select>
+      <laji-area-select [disabled]="editMode" [field]="areaTypes.BirdAssociationArea" (select)="onBirdAssociationAreaChange($event)" [value]="this.birdAssociationArea"></laji-area-select>
     </div>
     <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">
-      <span>{{formData.namedPlaceOptions?.createNewLabels?.desc
+      <span>{{documentForm.namedPlaceOptions?.createNewLabels?.desc
             || 'np.chooseLabel' | translate}}</span>
       <button class='btn btn-default raised-1' (click)='toEditMode(true)'>
-        {{ formData.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}
+        {{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}
       </button>
     </div>
     <laji-spinner [spinning]="loading" [overlay]="true">
-      <div *ngIf="namedPlaces && formData && !errorMsg">
+      <div *ngIf="namedPlaces && documentForm && !errorMsg">
         <div [ngClass]="{'col-sm-12 col-md-12 col-lg-6': !editMode}">
           <laji-np-choose [namedPlaces]="namedPlaces"
-                          [formData]="formData"
-                          [npFormData]="npFormData"
+                          [formData]="documentForm"
+                          [npFormData]="placeForm"
                           [userID]="userID"
                           [visible]="!editMode"
                           [allowCreate]="allowCreate"
-                          [zoomToData]="formData.namedPlaceOptions?.zoomToData"
+                          [zoomToData]="documentForm.namedPlaceOptions?.zoomToData"
                           [activeNP]="activeNP"
                           (activePlaceChange)="onActivePlaceChange($event)"
-                          (createButtonClick)="toEditMode(true)"
-                          [preselectedNPIndex]="preselectedNPIndex"></laji-np-choose>
+                          (createButtonClick)="toEditMode(true)"></laji-np-choose>
         </div>
         <div [ngClass]="editMode ? 'col-xs-12 nav-margin' : 'col-lg-6 nav-margin'">
           <laji-np-edit [editMode]="editMode"
@@ -53,13 +52,13 @@
                         [prepopulatedNamedPlace]="prepopulatedNamedPlace"
                         [namedPlace]="namedPlace"
                         [formRights]="formRights"
-                        [formData]="formData"
+                        [formData]="documentForm"
                         [allowEdit]="allowEdit"
-                        [npFormData]="npFormData"
+                        [npFormData]="placeForm"
                         [mapOptionsData]="mapOptionsData"
                         [lang]="lang"
-                        (reserve)="reserve()"
-                        (release)="release()"
+                        (reserve)="onReserve()"
+                        (release)="onRelease()"
                         (editButtonClick)="toEditMode(false)"
                         (editReady)="toNormalMode($event)"></laji-np-edit>
         </div>
@@ -71,5 +70,5 @@
 <ng-template #birdAssociationAreaHelp>
   <strong>{{ 'MNP.birdAssociationArea' | label }}</strong>
   <br>
-  {{ formData.namedPlaceOptions.birdAssociationAreaHelp }}
+  {{ documentForm.namedPlaceOptions.birdAssociationAreaHelp }}
 </ng-template>

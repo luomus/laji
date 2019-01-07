@@ -962,5 +962,6 @@
   "wholeYear": "Koko vuosi {{year}}",
   "yes": "Kyllä",
   "invasiveSpecies.title": "Vieraslajit",
-  "invasiveSpecies.places": "Kirjaa torjuntatoimia"
+  "invasiveSpecies.places": "Kirjaa torjuntatoimia",
+  "np.formOwnSubmissions": "Paikan aiemmat ilmoitukset"
 }

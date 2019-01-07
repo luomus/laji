@@ -4,5 +4,4 @@ export interface DatatableColumn extends TableColumn {
   label?: string;
   target?: string;
   info?: string;
-  sortWithPipe?: boolean;
 }

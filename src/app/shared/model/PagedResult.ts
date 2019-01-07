@@ -15,4 +15,11 @@ export interface PagedResult<T> {
   results: T[];
 
   total: number;
+
+  aggregations?: {
+    [agg: string]: {
+      values: {[field: string]: string},
+      count: number;
+    }[]
+  };
 }

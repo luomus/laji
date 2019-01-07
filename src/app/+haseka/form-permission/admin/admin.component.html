@@ -30,7 +30,7 @@
             {{ formPermission.admins.length }}
           </span>
         </a></li>
-        <li *ngIf="back"><a [routerLink]="[back]">
+        <li *ngIf="backPath"><a [routerLink]="[backPath]" [queryParams]="backQuery">
           Takaisin
         </a></li>
       </ul>

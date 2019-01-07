@@ -1,35 +1,59 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 
 @Component({
   selector: 'laji-taxon-select',
-  templateUrl: './taxon-select.component.html',
-  styleUrls: ['./taxon-select.component.css']
+  template: `<input
+    #typeahead
+    [ngClass]="{loading: typeaheadLoading}"
+    type="text"
+    class="form-control input-sm"
+    [name]="name"
+    [placeholder]="placeholder"
+    [(ngModel)]="_taxonId"
+    [typeahead]="dataSource"
+    [typeaheadOptionsLimit]="typeaheadLimit"
+    [typeaheadWaitMs]="200"
+    [typeaheadMinLength]="3"
+    [typeaheadFocusFirst]="!allowInvalid"
+    [typeaheadOptionField]="'value'"
+    (typeaheadLoading)="changeTypeaheadLoading($event)"
+    (typeaheadOnSelect)="onTaxonSelect($event)"
+    [typeaheadItemTemplate]="typeaheadItemTemplate"
+    (keyup)="onTaxonSelect($event)"
+    autocomplete="off"
+    autocorrect="off">
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonSelectComponent {
-  @Input() taxonId: string;
   @Input() searchParams = {};
+  @Input() name = 'target';
   @Input() placeholder = '';
-  @Output() select = new EventEmitter<string>();
+  @Input() typeaheadItemTemplate;
+  @Input() allowInvalid = true;
+  @Output() taxonIdChange = new EventEmitter<string>();
 
   @ViewChild('typeahead') typeahead;
 
   private typeaheadMatch: {id: string, match: string};
   private enteredValue: string;
 
+  public _taxonId: string;
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
   public dataSource: Observable<any>;
 
   constructor(
     private lajiApi: LajiApiService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cdr: ChangeDetectorRef
   ) {
     this.dataSource = Observable.create((observer: any) => {
-      observer.next(this.taxonId);
+      observer.next(this._taxonId);
     })
       .pipe(
         distinctUntilChanged(),
@@ -37,11 +61,11 @@ export class TaxonSelectComponent {
         switchMap((data: any[]) => {
           this.typeaheadMatch = undefined;
 
-          if (this.taxonId) {
-            const searchTerm = this.taxonId.toLowerCase();
+          if (this._taxonId) {
+            const searchTerm = this._taxonId.toLowerCase();
             if (data.length > 0 && (data[0].value.toLowerCase() === searchTerm || data[0].key.toLowerCase() === searchTerm)) {
-              this.typeaheadMatch = {id: data[0].key, match: this.taxonId};
-              if (this.enteredValue === this.taxonId) {
+              this.typeaheadMatch = {id: data[0].key, match: this._taxonId};
+              if (this.enteredValue === this._taxonId) {
                 this.selectValue(this.typeaheadMatch.id, true);
                 return ObservableOf([]);
               }
@@ -51,6 +75,21 @@ export class TaxonSelectComponent {
           return ObservableOf([]);
         })
       );
+  }
+
+  @Input() set taxonId(id: string) {
+    if (!id) {
+      this._taxonId = id;
+    }
+    if (this._taxonId) {
+      return;
+    }
+    this.getTaxa(id).pipe(
+      take(1)
+    ).subscribe(result => {
+      this._taxonId = result[0] && result[0].value || id;
+      this.cdr.markForCheck();
+    });
   }
 
   changeTypeaheadLoading(e: boolean): void {
@@ -63,19 +102,19 @@ export class TaxonSelectComponent {
     if (event.item && event.item.key) {
       this.typeaheadMatch = {id: event.item.key, match: event.item.value};
       this.selectValue(event.item.key, true);
-    } else if (this.taxonId === '') {
+    } else if (this._taxonId === '') {
       this.selectValue(undefined, false);
     } else if (event.key === 'Enter') {
-      if (this.typeaheadMatch && this.typeaheadMatch.match === this.taxonId) {
+      if (this.typeaheadMatch && this.typeaheadMatch.match === this._taxonId) {
         this.selectValue(this.typeaheadMatch.id, true);
       } else {
-        this.enteredValue = this.taxonId;
+        this.enteredValue = this._taxonId;
       }
     }
   }
 
   private selectValue(key: string, blur?: boolean) {
-    this.select.emit(key);
+    this.taxonIdChange.emit(key);
     if (blur) {
       this.blur();
     }

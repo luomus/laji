@@ -1,0 +1,21 @@
+<div class="label-editor">
+  <div class="editor-wrap">
+    <ll-label-preview [label]="_setup.label" [labelItem]="_mockItems"></ll-label-preview>
+    <ll-label-editor [label]="_setup.label" [(labelItem)]="_mockItems" [magnification]="2" (showSettings)="showSettings($event)"></ll-label-editor>
+  </div>
+  <div class="settings-wrap">
+    <ul class="nav nav-tabs">
+      <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>Settings</a></li>
+      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Fields</a></li>
+    </ul>
+    <div class="tab-content clearfix">
+      <div [hidden]="_active !== 'settings'">
+        <ll-label-settings></ll-label-settings>
+      </div>
+      <div [hidden]="_active !== 'fields'">
+        <div *ngFor="let field of availableFields" cdkDrag (cdkDragEnded)="onNewFieldDragEnd($event)" [cdkDragData]="field"
+             class="new-field">{{field.label}}</div>
+      </div>
+    </div>
+  </div>
+</div>

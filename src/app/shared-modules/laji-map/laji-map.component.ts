@@ -10,7 +10,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -38,7 +37,7 @@ import { Global } from '../../../environments/global';
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   @Input() data: any = [];
   @Input() loading = false;
@@ -144,9 +143,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       leg.push({color, label: legend[color]});
     });
     this._legend = leg;
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy() {

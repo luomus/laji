@@ -3,7 +3,7 @@
     <tr class="title">
       <th></th>
       <th>Arvioitujen lajien määrä</th>
-      <th *ngFor="let status of statuses">{{ status }}</th>
+      <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
       <th>Punaisen listan lajeja</th>
       <th>Punaisen listan lajien osuus arvioidusta</th>
     </tr>
@@ -12,7 +12,7 @@
       <td>{{ data.count }}</td>
       <td *ngFor="let status of statuses">{{ data[status] || 0 }}</td>
       <td>{{ data.redListCnt }}</td>
-      <td>{{ data.redListPct }}</td>
+      <td>{{ data.redListPct }}%</td>
     </tr>
   </table>
 </div>

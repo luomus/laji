@@ -13,9 +13,11 @@ import { Title } from '@angular/platform-browser';
 export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() formID: string;
-  @Input() namedPlaceID: string;
+  @Input() namedPlace: any;
+  @Input() isAdmin = false;
   @Input() printType: string;
   @Input() type: 'np' | 'npCreate' | 'npEdit' | 'form' = 'form';
+  @Input() formData: any;
 
   form: any;
 

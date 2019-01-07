@@ -1,18 +1,34 @@
 <ng-container [ngSwitch]="type">
   <ng-container *ngSwitchCase="'status'">
-    <laji-red-list-status></laji-red-list-status>
+    <laji-red-list-status [data]="redListStatusQuery$ | async"></laji-red-list-status>
   </ng-container>
   <ng-container *ngSwitchCase="'species'">
-    <laji-red-list-species></laji-red-list-species>
+    <laji-red-list-species [year]="year" [species]="speciesQuery$ | async"></laji-red-list-species>
   </ng-container>
   <ng-container *ngSwitchCase="'reasons'">
     <div class="row">
       <div class="col-sm-10">
-        <laji-red-list-chart></laji-red-list-chart>
+        <laji-red-list-chart [data]="reasonsQuery$ | async" [label]="'lajia'"></laji-red-list-chart>
       </div>
     </div>
   </ng-container>
-  <ng-container *ngSwitchDefault>
-    TODO
+  <ng-container *ngSwitchCase="'threads'">
+    <div class="row">
+      <div class="col-sm-10">
+        <laji-red-list-chart [data]="threadQuery$ | async" [label]="'lajia'"></laji-red-list-chart>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'habitat'">
+    <div class="row">
+      <div class="col-sm-10">
+        <laji-red-list-habitat [data]="habitatQuery$ | async"></laji-red-list-habitat>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8" style="height: 400px">
+        <ngx-charts-pie-chart [results]="habitatChartQuery$ | async" [tooltipDisabled]="false" [labels]="true" [customColors]="colorSchema"></ngx-charts-pie-chart>
+      </div>
+    </div>
   </ng-container>
 </ng-container>

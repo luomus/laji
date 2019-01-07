@@ -21,7 +21,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   formPermission: FormPermission;
   isAllowed = false;
   collectionId: string;
-  back: string;
+  backPath: string;
+  backQuery: any;
 
   private subParam: Subscription;
   private subFPChanges: Subscription;
@@ -38,7 +39,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.back = this.routingStateService.getPreviousUrl();
+    const [path, query] = this.routingStateService.getPathAndQueryFromUrl(this.routingStateService.getPreviousUrl());
+    this.backPath = path;
+    this.backQuery = query;
     this.subParam = this.route.params.subscribe(params => {
       this.collectionId = params['collectionId'];
       this.initFormPermission();

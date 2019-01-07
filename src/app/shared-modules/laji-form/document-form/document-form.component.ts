@@ -66,6 +66,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public namedPlace;
   public readyForForm = false;
   public readonly: boolean | string;
+  public isAdmin = false;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -294,12 +295,12 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   updateReadonly(): Observable<boolean> {
     const {formData = {}} = this.form || {};
     return Observable.create(observer => {
-      if (this.form.uiSchemaContext.isAdmin) {
+      if (this.isAdmin) {
         this.readonly = false;
         return observer.next(this.readonly);
       }
       this.userService.getUser().subscribe(user => {
-        if (formData.creator !== user.id && formData.editors.indexOf(user.id) === -1) {
+        if (formData.id && formData.creator !== user.id && (!formData.editors || formData.editors.indexOf(user.id) === -1)) {
           this.readonly = 'haseka.form.readonly';
         } else {
           this.readonly = formData.locked;
@@ -361,7 +362,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         ).pipe(
           map(data => ({...result, rights: data[0], annotations: data[1]}))
         )
-      ), )
+      ))
       .subscribe(
         result => {
           const data = result.data;
@@ -392,7 +393,8 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             data.uiSchemaContext.placeholderGeometry = this.namedPlace.geometry;
           }
           data.uiSchemaContext.formID = this.formId;
-          data.uiSchemaContext.isAdmin = result.rights.admin;
+          this.isAdmin = result.rights.admin;
+          data.uiSchemaContext.isAdmin = this.isAdmin;
           data.uiSchemaContext.annotations = result.annotations;
           this.form = data;
           this.updateReadonly().subscribe((readonly) => {
