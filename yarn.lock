@@ -932,9 +932,10 @@ atob@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
 
-attr-accept@^1.0.3:
+attr-accept@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-1.1.3.tgz#48230c79f93790ef2775fcec4f0db0f5db41ca52"
+  integrity sha512-iT40nudw8zmCweivz6j58g+RT33I4KbaIvRUhjNmDwO2WmsQUxFEZZYZ5w3vXe5x5MX9D7mfvA/XaLOZYFR9EQ==
   dependencies:
     core-js "^2.5.0"
 
@@ -5604,15 +5605,16 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-laji-form@^0.0.548:
-  version "0.0.548"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.548.tgz#9bc42cb989caf9b533d2a7aa8f4270cab2361589"
+laji-form@^0.0.562:
+  version "0.0.562"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.562.tgz#b017f48d76febdda978a4a283867fd0452397d01"
+  integrity sha512-nHHt8fNwk+BXKin2QzsTZaixiN6vGQy1c1C3nGakdFTiedunAx7z/pb3GmvbWvgMdy8vdLTZzhQ11z1moyFCjA==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.451"
+    laji-map "^1.0.457"
     laji-validate "0.0.73"
     moment "*"
     prop-types "^15.5.8"
@@ -5623,17 +5625,18 @@ laji-form@^0.0.548:
     react-bootstrap "^0.32.1"
     react-bootstrap-switch "^15.0.4"
     react-dom "^16.4.1"
-    react-dropzone "^3.12.3"
+    react-dropzone "^4.3.0"
     react-inlinesvg "^0.6.0"
-    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#453552e958aa42bea1daaac8ba14e177c7825494"
+    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#d7e3482f2ad275a674ecb000793c579b12570235"
     react-sortable-hoc "^0.6.3"
     react-spinner "^0.2.7"
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.452, laji-map@^1.0.395, laji-map@^1.0.451, laji-map@^1.0.452:
-  version "1.0.452"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.452.tgz#51102c577f8022b806cd70d23c9911c4ab9f553e"
+laji-map@1.0.457, laji-map@^1.0.395, laji-map@^1.0.457:
+  version "1.0.457"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.457.tgz#a5259d6850679e6208ecc4269ec727f2e928d995"
+  integrity sha512-N1axYAaadGdfByhgkToY1Hhk7loI5g/AAFdpjpknbiJHRlxJefwjNaHgQEtfehPMRG7fyg5nwHdTuGa9aysvxQ==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.3.4"
@@ -7628,11 +7631,12 @@ react-dom@^16.4.1:
     prop-types "^15.6.2"
     schedule "^0.5.0"
 
-react-dropzone@^3.12.3:
-  version "3.13.4"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-3.13.4.tgz#84da26815c40339691c49b4544c2ef7a16912ccc"
+react-dropzone@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-4.3.0.tgz#facdd7db16509772633c9f5200621ac01aa6706f"
+  integrity sha512-ULfrLaTSsd8BDa9KVAGCueuq1AN3L14dtMsGGqtP0UwYyjG4Vhf158f/ITSHuSPYkZXbvfcIiOlZsH+e3QWm+Q==
   dependencies:
-    attr-accept "^1.0.3"
+    attr-accept "^1.1.3"
     prop-types "^15.5.7"
 
 react-inlinesvg@^0.6.0:
@@ -7646,9 +7650,9 @@ react-is@^16.3.2:
   version "16.5.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
 
-"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#453552e958aa42bea1daaac8ba14e177c7825494":
+"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#d7e3482f2ad275a674ecb000793c579b12570235":
   version "1.0.0"
-  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#453552e958aa42bea1daaac8ba14e177c7825494"
+  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#d7e3482f2ad275a674ecb000793c579b12570235"
   dependencies:
     ajv "^5.2.3"
     lodash.topath "^4.5.2"
