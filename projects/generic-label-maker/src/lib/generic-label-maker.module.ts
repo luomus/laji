@@ -1,30 +1,32 @@
 import { NgModule } from '@angular/core';
-import { LabelEditorComponent } from './label-editor/label-editor.component';
+import { LabelEditorContainerComponent } from './label-editor-container/label-editor-container.component';
 import { LabelPreviewComponent } from './label-preview/label-preview.component';
 import { LabelPrintComponent } from './label-print/label-print.component';
-import { EditorComponent } from './label-editor/editor/editor.component';
+import { LabelEditorComponent } from './label-editor-container/label-editor/label-editor.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { EditorItemComponent } from './label-editor/editor/editor-item/editor-item.component';
+import { EditorItemComponent } from './label-editor-container/label-editor/editor-item/editor-item.component';
 import { LabelItemComponent } from './label-preview/label-item/label-item.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { RulerComponent } from './ruler/ruler.component';
+import { LabelSettingsComponent } from './label-editor-container/label-settings/label-settings.component';
 
 @NgModule({
   declarations: [
-    LabelEditorComponent,
+    LabelEditorContainerComponent,
     LabelPreviewComponent,
     LabelPrintComponent,
-    EditorComponent,
+    LabelEditorComponent,
     EditorItemComponent,
     LabelItemComponent,
-    RulerComponent
+    RulerComponent,
+    LabelSettingsComponent
   ],
   imports: [
     CommonModule,
     DragDropModule,
     QRCodeModule
   ],
-  exports: [LabelEditorComponent, LabelPreviewComponent, LabelPrintComponent]
+  exports: [LabelEditorContainerComponent, LabelPreviewComponent, LabelPrintComponent]
 })
 export class GenericLabelMakerModule { }

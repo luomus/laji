@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output, } from '@angular/core';
-import { Label, LabelItem } from '../../generic-label-maker.interface';
+import { Label, LabelItem, LabelItemSelectAction } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 
 @Component({
-  selector: 'll-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.scss']
+  selector: 'll-label-editor',
+  templateUrl: './label-editor.component.html',
+  styleUrls: ['./label-editor.component.scss']
 })
-export class EditorComponent {
+export class LabelEditorComponent {
 
   _label: Label;
   _magnification = 2;
@@ -18,7 +18,8 @@ export class EditorComponent {
   init = false;
 
   @Input() labelItem: LabelItem[] = [];
-  @Output() labelItemChange = new EventEmitter();
+  @Output() labelItemChange = new EventEmitter<LabelItem[]>();
+  @Output() showSettings = new EventEmitter<LabelItemSelectAction>();
 
   constructor(labelService: LabelService) {
     this.init = labelService.hasRation();

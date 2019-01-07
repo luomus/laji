@@ -1,12 +1,13 @@
 <div id="label-editor" [style.width.mm]="width" [style.height.mm]="height" *ngIf="init">
   <ll-editor-item
-    *ngFor="let item of labelItem" [magnification]="_magnification"
+    *ngFor="let item of labelItem; let i=index" [magnification]="_magnification"
     [item]="item"
     (itemChange)="onItemChange(item, $event)"
     [active]="item === active"
     [maxWidth]="width"
     [maxHeight]="height"
     (click)="active = item"
+    (showSettings)="showSettings.emit({item: $event, index: i})"
   ></ll-editor-item>
 </div>
 <ll-ruler *ngIf="!init" (measured)="init = true"></ll-ruler>
