@@ -1,34 +1,36 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
-  <div class="info-card-wrapper" *ngIf="taxon">
+  <div class="container" style="width: auto" *ngIf="taxon">
     <h1 style="margin-left: 25px">
       <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
     </h1>
-    <div class="panel-container">
-      <div class="panel panel-default" laji-panel [title]="'taxonomy.card' | translate" [open]="true" [autoToggle]="true">
-        <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
+    <div>
+      <div class="block">
+        <div class="panel panel-default" laji-panel [title]="'taxonomy.card' | translate" [open]="true" [autoToggle]="true">
+          <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
+        </div>
+        <div *ngIf="taxonConceptId" class="panel panel-default" laji-panel [title]="'taxonomy.taxonConcept' | translate" [open]="true" [autoToggle]="true">
+          <laji-taxon-concept-info [taxonId]="taxon.id" [taxonConceptId]="taxonConceptId"></laji-taxon-concept-info>
+        </div>
       </div>
 
-      <div *ngIf="taxonConceptId" class="panel panel-default" laji-panel [title]="'taxonomy.taxonConcept' | translate" [open]="true" [autoToggle]="true">
-        <laji-taxon-concept-info [taxonId]="taxon.id" [taxonConceptId]="taxonConceptId"></laji-taxon-concept-info>
-      </div>
-
-      <div *ngIf="isFromMasterChecklist" class="panel panel-default" laji-panel [title]="'taxonomy.map' | translate" [open]="true" [autoToggle]="true">
-        <p class="disclaimer">
-          {{ 'taxonomy.map.disclaimer' | translate }}
-        </p>
-        <laji-observation-map [color]="'#009900'"
-                              [settingsKey]="'taxonMap'"
-                              [center]="[64.5, 25.0]"
-                              [query]="{taxonId: [taxon.id]}"
-                              [height]="300"
-                              [draw]="false">
-        </laji-observation-map>
-      </div>
-
-      <div *ngIf="taxon.hasChildren" class="panel panel-default" laji-panel [title]="'taxonomy.speciesPieChartTitle' | translate" [open]="true" [autoToggle]="true">
-        <laji-species-pie
-          [taxonId]="taxon.id"
-        ></laji-species-pie>
+      <div class="block">
+        <div *ngIf="isFromMasterChecklist" class="panel panel-default" laji-panel [title]="'taxonomy.map' | translate" [open]="true" [autoToggle]="true">
+          <p class="disclaimer">
+            {{ 'taxonomy.map.disclaimer' | translate }}
+          </p>
+          <laji-observation-map [color]="'#009900'"
+                                [settingsKey]="'taxonMap'"
+                                [center]="[64.5, 25.0]"
+                                [query]="{taxonId: [taxon.id]}"
+                                [height]="300"
+                                [draw]="false">
+          </laji-observation-map>
+        </div>
+        <div *ngIf="taxon.hasChildren" class="panel panel-default" laji-panel [title]="'taxonomy.speciesPieChartTitle' | translate" [open]="true" [autoToggle]="true">
+          <laji-species-pie
+            [taxonId]="taxon.id"
+          ></laji-species-pie>
+        </div>
       </div>
     </div>
     <!--div class="row">

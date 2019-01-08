@@ -1,20 +1,15 @@
-.info-card-wrapper {
-  padding-left: 15px;
-  padding-bottom: 50px;
+.block {
+  width: calc(100% - 10px);
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
-.panel-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-.panel {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  margin-right: 15px;
-}
-.disclaimer {
-
+@media only screen and (min-width : 992px) {
+  .block {
+    width: calc(50% - 10px);
+  }
 }
 
 :host >>> .descriptions .panel-body {
