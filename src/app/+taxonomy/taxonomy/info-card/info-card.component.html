@@ -8,6 +8,15 @@
         <div class="panel panel-default" laji-panel [title]="'taxonomy.card' | translate" [open]="true" [autoToggle]="true">
           <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
         </div>
+
+        <div *ngIf="hasDescription" class="panel panel-default" laji-panel [title]="'Kuvaukset'" [open]="true" [autoToggle]="true">
+          <laji-taxon-descriptions
+            [taxonDescription]="taxonDescription"
+            [context]="context"
+            (descriptionChange)="onDescriptionChange($event)"
+          ></laji-taxon-descriptions>
+        </div>
+
         <div *ngIf="taxonConceptId" class="panel panel-default" laji-panel [title]="'taxonomy.taxonConcept' | translate" [open]="true" [autoToggle]="true">
           <laji-taxon-concept-info [taxonId]="taxon.id" [taxonConceptId]="taxonConceptId"></laji-taxon-concept-info>
         </div>
@@ -26,6 +35,7 @@
                                 [draw]="false">
           </laji-observation-map>
         </div>
+
         <div *ngIf="taxon.hasChildren" class="panel panel-default" laji-panel [title]="'taxonomy.speciesPieChartTitle' | translate" [open]="true" [autoToggle]="true">
           <laji-species-pie
             [taxonId]="taxon.id"
@@ -34,40 +44,6 @@
       </div>
     </div>
     <!--div class="row">
-      <div class="col-md-6 descriptions" *ngIf="hasDescription">
-        <select style="margin-bottom: 8px;" class="form-control"
-                (change)="onDescriptionChange($event.target.value)"
-                *ngIf="taxonDescription.length > 1">
-          <option *ngFor="let description of taxonDescription; let i = index"
-                  [value]="description.id"
-                  [selected]="activeDescription === i">
-            {{ description.title ? (description.title | multiLang) : description.id }}
-          </option>
-        </select>
-        <div class="panel-group" role="tablist" aria-multiselectable="true">
-          <div class="panel panel-default"
-               *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index"
-               [title]="group.title | multiLang"
-               [open]="true"
-               [index]="i"
-               [headerLink]="false"
-               laji-panel>
-            <div *ngFor="let variable of group.variables">
-              <h4 *ngIf="variable.title !== 'Ingressi'">
-                {{ variable.title | multiLang }}
-              </h4>
-              <span [innerHTML]="variable.content | multiLang"></span>
-            </div>
-          </div>
-        </div>
-        <ng-container *ngIf="taxonDescription[activeDescription]?.id !== 'default'">
-          {{ 'taxonomy.source' | translate }}: {{ taxonDescription[activeDescription]?.title | multiLang }}
-        </ng-container>
-        <div *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
-          {{ taxonDescription[activeDescription]?.speciesCardAuthors.title | multiLang }}:
-          <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content | multiLang"></span>
-        </div>
-      </div>
       <div [class.col-md-6]="hasDescription">
         <div [ngClass]="{
                 'col-md-6 col-lg-4': !hasDescription
@@ -112,12 +88,7 @@
               'col-lg-5': !hasDescription && (hasCollectionImages || hasTaxonImages)
             }">
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-              <h4 class="panel-title">{{ 'taxonomy.card' | translate }}</h4>
-            </div>
-            <div class="panel-body">
-              <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
-            </div>
+
           </div>
           <div class="panel panel-default">
             <div class="panel-heading" role="tab">

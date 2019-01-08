@@ -40,7 +40,6 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public hasCollectionImages = false;
   public hasTaxonImages = true;
   public hasDescription = true;
-  public activeDescription = 0;
   public loading = false;
 
   @Input() public taxonId: string;
@@ -150,11 +149,6 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         this.hasTaxonImages = this.taxonImages.length > 0;
         this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
         this.hasCollectionImages = false;
-        this.taxonDescription.forEach((description, idx) => {
-          if (description.id === this.context) {
-            this.activeDescription = idx;
-          }
-        });
         (this.taxon.additionalIds || []).map(id => {
           const parts = id.split(':');
           if (parts[0] === 'taxonid') {
