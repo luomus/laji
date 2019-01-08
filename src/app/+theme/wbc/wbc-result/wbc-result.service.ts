@@ -215,7 +215,7 @@ export class WbcResultService {
   }
 
   getObservationStatsForRoute(routeId: string): Observable<ObservationStats> {
-    return this.warehouseApi.warehouseQueryAggregateGet(
+    return this.warehouseApi.warehouseQueryStatisticsGet(
       {...this.getFilterParams(undefined, undefined, undefined, true), namedPlaceId: [routeId]},
       ['unit.linkings.taxon.speciesId', 'unit.linkings.taxon.speciesNameFinnish', 'gathering.conversions.year',
         'gathering.conversions.month', 'document.documentId', 'unit.linkings.taxon.speciesTaxonomicOrder'],
