@@ -7,6 +7,7 @@ import {
   HostListener,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -28,7 +29,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./np-info.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
+export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() namedPlace: NamedPlace;
   @Input() npFormData: any;
   @Input() formData: any;
@@ -139,6 +140,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       this.modal.show();
     }
     this.viewIsInitialized = true;
+  }
+
+  ngOnDestroy() {
+    this.showViewerClick$.unsubscribe();
   }
 
   windowReadyForModal(): boolean {
