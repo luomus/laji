@@ -14,7 +14,7 @@
   <div class="editor-item-content">
     <div class="drag-handle"><i class="glyphicon glyphicon-move" cdkDragHandle></i></div>
     <div class="resize-handle" cdkDrag (cdkDragStarted)="recordElementDimensions()" (cdkDragEnded)="onResizeEnd($event)" (cdkDragMoved)="onResize($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
-    <div class="option-handle"><i class="glyphicon glyphicon-edit"></i></div>
+    <div class="option-handle"><i class="glyphicon glyphicon-edit" (click)="showSettings.emit(_item)"></i></div>
     <ng-container *ngFor="let field of _item.fields; let l=last">
       <ng-container *ngIf="field.isQRCode; else plainText">
         <qrcode [qrdata]="field.exampleTxt" [size]="size" [level]="'H'"></qrcode>

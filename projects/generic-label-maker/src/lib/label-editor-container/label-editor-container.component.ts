@@ -1,17 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LabelField, LabelItem, Setup } from '../generic-label-maker.interface';
+import { LabelField, LabelItem, LabelItemSelectAction, Setup } from '../generic-label-maker.interface';
 import { LabelService } from '../label.service';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
-  selector: 'll-label-editor',
-  templateUrl: './label-editor.component.html',
-  styleUrls: ['./label-editor.component.scss']
+  selector: 'll-label-editor-container',
+  templateUrl: './label-editor-container.component.html',
+  styleUrls: ['./label-editor-container.component.scss']
 })
-export class LabelEditorComponent implements OnInit {
+export class LabelEditorContainerComponent implements OnInit {
 
+  _active: 'settings'|'fields' = 'fields';
   _setup: Setup = LabelService.EmptySetup;
   _mockItems: LabelItem[];
+  _selectedLabelItem: LabelItemSelectAction;
   @Input() availableFields: LabelField[];
 
   @Output() setupChange = new EventEmitter<Setup>();
@@ -35,6 +37,11 @@ export class LabelEditorComponent implements OnInit {
   @Input()
   set setup(setup: Setup) {
     this._setup = setup;
+  }
+
+  showSettings(action: LabelItemSelectAction) {
+    this._selectedLabelItem = action;
+    this._active = 'settings';
   }
 
   onNewFieldDragEnd(event: CdkDragEnd) {

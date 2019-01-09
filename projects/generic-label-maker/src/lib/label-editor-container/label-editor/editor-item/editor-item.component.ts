@@ -17,6 +17,7 @@ export class EditorItemComponent implements AfterViewInit {
   @ViewChild('item') elemRef: ElementRef<HTMLDivElement>;
 
   @Output() itemChange = new EventEmitter<LabelItem>();
+  @Output() showSettings = new EventEmitter<LabelItem>();
 
   _item: LabelItem;
 

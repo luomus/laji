@@ -55,6 +55,11 @@ export interface LabelItem extends Size {
   order?: number;
 }
 
+export interface LabelItemSelectAction {
+  item: LabelItem;
+  index: number;
+}
+
 export interface LabelField {
   field: string;
   label: string;
