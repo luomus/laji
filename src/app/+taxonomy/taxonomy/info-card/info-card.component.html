@@ -36,92 +36,68 @@
           </laji-observation-map>
         </div>
 
+        <div class="panel panel-default taxon-images" laji-panel [hidden]="!hasTaxonImages && !hasCollectionImages" [title]="'taxonomy.images' | translate" [open]="true" [autoToggle]="true">
+          <ul class="nav nav-tabs">
+            <li role="presentation"
+                [ngClass]="{active: activeImageTab === 'taxon'}"
+                *ngIf="hasTaxonImages">
+              <a (click)="setActiveImageTab('taxon')">
+                {{ 'taxonomy.images.taxon' | translate }}
+              </a>
+            </li>
+            <li role="presentation"
+                [ngClass]="{active: activeImageTab === 'collection'}"
+                *ngIf="hasCollectionImages">
+              <a (click)="setActiveImageTab('collection')">
+                {{ 'taxonomy.images.collection' | translate }}
+              </a>
+            </li>
+          </ul>
+          <div [hidden]="activeImageTab !== 'taxon'" *ngIf="hasTaxonImages">
+            <laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
+          </div>
+          <div *ngIf="isFromMasterChecklist" [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
+            <laji-gallery
+              *ngIf="taxon.species"
+              [shortPager]="true"
+              (hasData)="onCollectionImagesLoaded($event)"
+              [query]="{taxonId: taxon.id, taxonRankId: taxon.taxonRank, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"
+            ></laji-gallery>
+          </div>
+        </div>
+
         <div *ngIf="taxon.hasChildren" class="panel panel-default" laji-panel [title]="'taxonomy.speciesPieChartTitle' | translate" [open]="true" [autoToggle]="true">
           <laji-species-pie
             [taxonId]="taxon.id"
           ></laji-species-pie>
         </div>
+
+        <div class="panel panel-default" laji-panel [title]="'taxonomy.browse.title' | translate" [open]="true" [autoToggle]="true">
+          <ul class="br-list">
+            <li>
+              <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
+                {{ 'taxonomy.browse' | translate }}
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="'/observation/load' | localize" [queryParams]="{target: taxon.id}">
+                {{ 'taxonomy.browse.download' | translate }}
+              </a>
+            </li>
+            <li [hidden]="!taxon.hasChildren">
+              <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id)}">
+                {{ 'taxonomy.browse.downloadSpecies' | translate }}
+              </a>
+            </li>
+            <li [hidden]="!taxon.hasChildren">
+              <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id), onlyFinnish: true}">
+                {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-    <!--div class="row">
-      <div [class.col-md-6]="hasDescription">
-        <div [ngClass]="{
-                'col-md-6 col-lg-4': !hasDescription
-                }"
-             [hidden]="!hasTaxonImages && !hasCollectionImages">
-          <div class="panel panel-default taxon-images">
-            <div class="panel-heading" role="tab">
-              <h4 class="panel-title">{{ 'taxonomy.images' | translate }}</h4>
-            </div>
-            <div class="panel-body">
-              <ul class="nav nav-tabs">
-                <li role="presentation"
-                    [ngClass]="{active: activeImageTab === 'taxon'}"
-                    *ngIf="hasTaxonImages">
-                  <a (click)="setActiveImageTab('taxon')">
-                    {{ 'taxonomy.images.taxon' | translate }}
-                  </a>
-                </li>
-                <li role="presentation"
-                    [ngClass]="{active: activeImageTab === 'collection'}"
-                    *ngIf="hasCollectionImages">
-                  <a (click)="setActiveImageTab('collection')">
-                    {{ 'taxonomy.images.collection' | translate }}
-                  </a>
-                </li>
-              </ul>
-              <div [hidden]="activeImageTab !== 'taxon'" *ngIf="hasTaxonImages">
-                <laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
-              </div>
-              <div *ngIf="isFromMasterChecklist" [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
-                <laji-gallery
-                  *ngIf="taxon.species"
-                  [shortPager]="true"
-                  (hasData)="onCollectionImagesLoaded($event)"
-                  [query]="{taxonId: taxon.id, taxonRankId: taxon.taxonRank, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"></laji-gallery>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div [ngClass]="{
-              'col-md-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
-              'col-lg-5': !hasDescription && (hasCollectionImages || hasTaxonImages)
-            }">
-          <div class="panel panel-default">
-
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-              <h4 class="panel-title">{{ 'taxonomy.browse.title' | translate }}</h4>
-            </div>
-            <div class="panel-body">
-              <ul class="br-list">
-                <li>
-                  <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
-                    {{ 'taxonomy.browse' | translate }}
-                  </a>
-                </li>
-                <li>
-                  <a [routerLink]="'/observation/load' | localize" [queryParams]="{target: taxon.id}">
-                    {{ 'taxonomy.browse.download' | translate }}
-                  </a>
-                </li>
-                <li [hidden]="!taxon.hasChildren">
-                  <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id)}">
-                    {{ 'taxonomy.browse.downloadSpecies' | translate }}
-                  </a>
-                </li>
-                <li [hidden]="!taxon.hasChildren">
-                  <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id), onlyFinnish: true}">
-                    {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div-->
   </div>
   <div class="container" *ngIf="taxon === false">
     <h1>
