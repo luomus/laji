@@ -5,13 +5,11 @@ import { SharedModule } from '../shared/shared.module';
 import { TaxonComponent } from './taxon.component';
 import { TaxonomyComponent } from './taxonomy/taxonomy.component';
 import { InfoCardComponent } from './taxonomy/info-card/info-card.component';
-import { ParentsComponent } from './taxonomy/parents/parents.component';
 import { IUCNComponent } from './iucn/iucn.component';
 import { InformalListComponent } from './informal-group-select/informal-list/informal-list.component';
 import { InformalListBreadcrumbComponent } from './informal-group-select/informal-list-breadcrumb/informal-list-breadcrumb.component';
 import { TaxonTreeComponent } from './taxonomy/taxon-tree/taxon-tree.component';
 import { SpeciesListComponent } from './taxon-browse/species-list/species-list.component';
-import { ChildrenListComponent } from './taxonomy/children-list/children-list.component';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
 import { TaxonInfoComponent } from './taxonomy/taxon-info/taxon-info.component';
@@ -52,9 +50,9 @@ import { TaxonDescriptionsComponent } from './taxonomy/taxon-descriptions/taxon-
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, ObservationMapModule, NgxDatatableModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
-  declarations: [TaxonComponent, TaxonInfoComponent, TaxonomyComponent, ParentsComponent, IUCNComponent,
+  declarations: [TaxonComponent, TaxonInfoComponent, TaxonomyComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
-    ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent,
+    BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent,
     InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
     InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
     SpeciesListOptionsModalComponent, BoldSynonymComponent,
