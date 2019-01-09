@@ -1,0 +1,10 @@
+<table class="table table-condensed" *ngIf="taxon">
+  <tbody>
+  <tr *ngIf="taxon.vernacularName">
+    <th rowspan="3">{{ 'taxonomy.vernacular.name' | translate }}</th>
+    <td>{{ taxon.vernacularName | multiLang: false:'fi' }} (fi)</td>
+  </tr>
+  <tr><td>{{ taxon.vernacularName | multiLang: false:'sv' }} (sv)</td></tr>
+  <tr><td>{{ taxon.vernacularName | multiLang: false:'en' }} (en)</td></tr>
+  </tbody>
+</table>

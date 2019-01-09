@@ -44,6 +44,8 @@ import { SpeciesPieComponent } from './taxonomy/species-pie/species-pie.componen
 import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { TaxonSelectModule } from '../shared-modules/taxon-select/taxon-select.module';
 import { TaxonDescriptionsComponent } from './taxonomy/taxon-descriptions/taxon-descriptions.component';
+import { TaxonSynonymsComponent } from './taxonomy/taxon-synonyms/taxon-synonyms.component';
+import { TaxonNamesComponent } from './taxonomy/taxon-names/taxon-names.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -56,7 +58,7 @@ import { TaxonDescriptionsComponent } from './taxonomy/taxon-descriptions/taxon-
     InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
     InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
     SpeciesListOptionsModalComponent, BoldSynonymComponent,
-    SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonDescriptionsComponent
+    SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonDescriptionsComponent, TaxonSynonymsComponent, TaxonNamesComponent
   ],
 })
 export class TaxonomyModule {
