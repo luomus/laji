@@ -9,11 +9,11 @@
     "@angular-devkit/core" "7.0.7"
     rxjs "6.3.3"
 
-"@angular-devkit/architect@0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.12.0.tgz#93dc6c8a97971bac745bff6ecc7e21d502a8a472"
+"@angular-devkit/architect@0.12.1":
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.12.1.tgz#397768d1ccd0cef76db96d6b39db8aebad68c031"
   dependencies:
-    "@angular-devkit/core" "7.2.0"
+    "@angular-devkit/core" "7.2.1"
     rxjs "6.3.3"
 
 "@angular-devkit/build-angular@~0.10.0":
@@ -105,9 +105,9 @@
     rxjs "6.3.3"
     source-map "0.7.3"
 
-"@angular-devkit/core@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-7.2.0.tgz#c138be754f17908b773dba7c20fe6f40a080d10b"
+"@angular-devkit/core@7.2.1":
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-7.2.1.tgz#8c6df59eab77bcc98a348c8cdf9eb217c8b751a5"
   dependencies:
     ajv "6.6.2"
     chokidar "2.0.4"
@@ -122,11 +122,11 @@
     "@angular-devkit/core" "7.0.7"
     rxjs "6.3.3"
 
-"@angular-devkit/schematics@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-7.2.0.tgz#6d51209047bd6a74bcea99fcd0b48fedbbd074d3"
+"@angular-devkit/schematics@7.2.1":
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-7.2.1.tgz#9c1c784f4a81a3a840fa4a1435948c6203be6062"
   dependencies:
-    "@angular-devkit/core" "7.2.0"
+    "@angular-devkit/core" "7.2.1"
     rxjs "6.3.3"
 
 "@angular/animations@^7.1.1":
@@ -144,14 +144,14 @@
     parse5 "^5.0.0"
 
 "@angular/cli@^7.1.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-7.2.0.tgz#912f83a74b7dded4a14fc3db4857c4873479de32"
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-7.2.1.tgz#cef405a6edc2747aa004f758c691496a81edc8d1"
   dependencies:
-    "@angular-devkit/architect" "0.12.0"
-    "@angular-devkit/core" "7.2.0"
-    "@angular-devkit/schematics" "7.2.0"
-    "@schematics/angular" "7.2.0"
-    "@schematics/update" "0.12.0"
+    "@angular-devkit/architect" "0.12.1"
+    "@angular-devkit/core" "7.2.1"
+    "@angular-devkit/schematics" "7.2.1"
+    "@schematics/angular" "7.2.1"
+    "@schematics/update" "0.12.1"
     inquirer "6.2.1"
     opn "5.3.0"
     semver "5.5.1"
@@ -410,12 +410,12 @@
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
 
-"@schematics/angular@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-7.2.0.tgz#850e403a0c37ceae994d7240e84be0dac818d190"
+"@schematics/angular@7.2.1":
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-7.2.1.tgz#9eeab1354ec8d970121cc067e9636098ab84e152"
   dependencies:
-    "@angular-devkit/core" "7.2.0"
-    "@angular-devkit/schematics" "7.2.0"
+    "@angular-devkit/core" "7.2.1"
+    "@angular-devkit/schematics" "7.2.1"
     typescript "3.2.2"
 
 "@schematics/angular@~7.0.0":
@@ -426,12 +426,12 @@
     "@angular-devkit/schematics" "7.0.7"
     typescript "3.1.6"
 
-"@schematics/update@0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@schematics/update/-/update-0.12.0.tgz#3d5ea63e714e2df10bbe6656b5cecb9052cc8ed9"
+"@schematics/update@0.12.1":
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/@schematics/update/-/update-0.12.1.tgz#44d853321ae8a56c43a579c0639d26d625001037"
   dependencies:
-    "@angular-devkit/core" "7.2.0"
-    "@angular-devkit/schematics" "7.2.0"
+    "@angular-devkit/core" "7.2.1"
+    "@angular-devkit/schematics" "7.2.1"
     "@yarnpkg/lockfile" "1.1.0"
     ini "1.3.5"
     pacote "9.1.1"
@@ -977,7 +977,7 @@ arraybuffer.slice@~0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/arraybuffer.slice/-/arraybuffer.slice-0.0.7.tgz#3bbc4275dd584cc1b10809b89d4e8b63a69e7675"
 
-arrify@^1.0.0:
+arrify@^1.0.0, arrify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
 
@@ -1403,8 +1403,8 @@ browserslist@^4.0.0, browserslist@^4.1.0, browserslist@^4.3.7:
     node-releases "^1.1.3"
 
 browserstack@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/browserstack/-/browserstack-1.5.1.tgz#e2dfa66ffee940ebad0a07f7e00fd4687c455d66"
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/browserstack/-/browserstack-1.5.2.tgz#17d8bb76127a1cc0ea416424df80d218f803673f"
   dependencies:
     https-proxy-agent "^2.2.1"
 
@@ -1573,8 +1573,8 @@ camelcase@^5.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.0.0.tgz#03295527d58bd3cd4aa75363f35b2e8d97be2f42"
 
 caniuse-lite@^1.0.30000884, caniuse-lite@^1.0.30000925, caniuse-lite@^1.0.30000926:
-  version "1.0.30000927"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000927.tgz#114a9de4ff1e01f5790fe578ecd93421c7524665"
+  version "1.0.30000928"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000928.tgz#805e828dc72b06498e3683a32e61c7507fd67b88"
 
 canonical-path@1.0.0:
   version "1.0.0"
@@ -2012,8 +2012,8 @@ core-js@^1.0.0, core-js@^1.1.1:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
 core-js@^2.2.0, core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.7:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.1.tgz#87416ae817de957a3f249b3b5ca475d4aaed6042"
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.2.tgz#267988d7268323b349e20b4588211655f0e83944"
 
 core-js@~2.3.0:
   version "2.3.0"
@@ -2722,9 +2722,16 @@ diffie-hellman@^5.0.0:
     miller-rabin "^4.0.0"
     randombytes "^2.0.0"
 
+dir-glob@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/dir-glob/-/dir-glob-2.0.0.tgz#0b205d2b6aef98238ca286598a8204d29d0a0034"
+  dependencies:
+    arrify "^1.0.1"
+    path-type "^3.0.0"
+
 dir-glob@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/dir-glob/-/dir-glob-2.2.0.tgz#7c2986acade3beda2a037dcd9d20af7256cff6c5"
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/dir-glob/-/dir-glob-2.2.1.tgz#ce8413234ffe8452b76b7741c32f116cf2a7b1a7"
   dependencies:
     path-type "^3.0.0"
 
@@ -3752,11 +3759,11 @@ globby@^7.1.1:
     slash "^1.0.0"
 
 globby@^8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/globby/-/globby-8.0.1.tgz#b5ad48b8aa80b35b814fc1281ecc851f1d2b5b50"
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/globby/-/globby-8.0.2.tgz#5697619ccd95c5275dbb2d6faa42087c1a941d8d"
   dependencies:
     array-union "^1.0.1"
-    dir-glob "^2.0.0"
+    dir-glob "2.0.0"
     fast-glob "^2.0.2"
     glob "^7.1.2"
     ignore "^3.3.5"
@@ -4897,7 +4904,6 @@ klaw-sync@^4.0.0:
 laji-form@^0.0.563:
   version "0.0.563"
   resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.563.tgz#c651b209c5e2dbe6c52090a018d59fc72048bd94"
-  integrity sha512-Lt1Pe+kS1ND7dSBD0e9izYMnBrcA5zGNkAmn4MrjR49CC7B6PwRw8IORtgniJWNgF/Yb7vweM1fAVrJYFqKkng==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -4925,7 +4931,6 @@ laji-form@^0.0.563:
 laji-map@1.0.458, laji-map@^1.0.395, laji-map@^1.0.457, laji-map@^1.0.458:
   version "1.0.458"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.458.tgz#8ffcf062c987b1d10931159b0919896bec169e3b"
-  integrity sha512-/zP/cEZQ3onSjcBOao7zxVf04WnUBsSxP+wFyQ7j2g8BiTtqcPwX7xxiOV3eOAi98sbnOXsmWqZTZHb4+Y7z0w==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.3.4"
