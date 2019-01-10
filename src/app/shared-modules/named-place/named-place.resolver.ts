@@ -29,6 +29,7 @@ export interface NPResolverData {
 export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
   private collectionId;
   private documentFormId;
+  private documentForm: any;
   private birdAssociationId;
   private municipalityId;
   private lang;
@@ -58,6 +59,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
           user$,
           documentForm$.pipe(
             mergeMap(res => {
+              this.documentForm = res;
               const namedPlaces$ = this.getNamedPlaces$(res);
               const placeFormId = res.namedPlaceOptions
                 && res.namedPlaceOptions.formID
@@ -145,7 +147,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
   }
 
   getFormRights$(): Observable<Rights> {
-    return this.formPermissionService.getRights(this.documentFormId);
+    return this.formPermissionService.getRights(this.documentForm);
   }
 
   findLangFromRoute(_route: ActivatedRouteSnapshot) {
