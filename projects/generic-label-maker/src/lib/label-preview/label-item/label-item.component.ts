@@ -20,7 +20,7 @@ export class LabelItemComponent {
   @Input()
   set item(item: LabelItem) {
     this._item = item;
-    this.size = this.labelService.mmToPixel(Math.min(item.height, item.width));
+    this.size = this.labelService.mmToPixel(Math.min(item.style['height.mm'], item.style['width.mm']));
   }
 
 

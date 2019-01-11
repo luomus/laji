@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Label, LabelItem } from '../generic-label-maker.interface';
+import { Setup } from '../generic-label-maker.interface';
 import { LabelService } from '../label.service';
 
 @Component({
@@ -10,8 +10,7 @@ import { LabelService } from '../label.service';
 })
 export class LabelPreviewComponent implements OnInit {
 
-  @Input() labelItem: LabelItem[] = [];
-  @Input() label: Label;
+  @Input() setup: Setup;
   @Input() preview = true;
 
   init;

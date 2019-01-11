@@ -6,37 +6,28 @@ import { Setup } from './generic-label-maker.interface';
 })
 export class LabelService {
 
-  public static EmptySetup: Setup = {
-    page: {
-      height: 297,
-      width: 210,
-      margin: {
-        top: 10,
-        left: 10
-      }
-    },
-    label: {
-      height: 20,
-      width: 50,
-      margin: {
-        top: 3,
-        left: 3
-      }
-    },
-    labelItems: []
-  };
-
   private pixelToMMRation;
 
   constructor() {}
 
+  public countLabelsPerPage(setup: Setup): {cols: number, rows: number} {
+    const pageWidth = setup.page['width.mm'] - ((setup.page['paddingRight.mm'] || 0) + (setup.page['paddingLeft.mm'] || 0));
+    const pageHeight = setup.page['height.mm'] - ((setup.page['paddingTop.mm'] || 0) + (setup.page['paddingBottom.mm'] || 0));
+    const labelWidth = setup.label['width.mm'] + ((setup.label['marginRight.mm'] || 0) + (setup.label['marginLeft.mm'] || 0));
+    const labelHeight = setup.label['height.mm'] + ((setup.label['marginTop.mm'] || 0) + (setup.label['marginBottom.mm'] || 0));
+
+    return {
+      cols: Math.floor(pageWidth / labelWidth),
+      rows: Math.floor(pageHeight / labelHeight)
+    };
+  }
 
   public pixelToMm(pixels: number) {
-    return Math.floor(pixels / this.pixelToMMRation);
+    return pixels / this.pixelToMMRation;
   }
 
   public mmToPixel(mm: number) {
-    return Math.floor(mm * this.pixelToMMRation);
+    return mm * this.pixelToMMRation;
   }
 
   public initPixelMMRatio(elem100mmHigh: HTMLDivElement) {

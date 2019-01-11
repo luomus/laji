@@ -1,3 +1,7 @@
 <h2>Design your own label</h2>
 <p>With this tool you can make a label design that can be used to print labels to Notebook observations</p>
-<ll-label-editor-container [availableFields]="labelFields"></ll-label-editor-container>
+<ll-label-editor-container [setup]="setup" [availableFields]="labelFields"></ll-label-editor-container>
+
+<h2>Demo print</h2>
+<p>Just for the demonstration purposes the print button is here.</p>
+<ll-label-print [setup]="setup" [data]="data"></ll-label-print>

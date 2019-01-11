@@ -1,6 +1,6 @@
 <div id="label-editor" [style.width.mm]="width" [style.height.mm]="height" *ngIf="init">
   <ll-editor-item
-    *ngFor="let item of labelItem; let i=index" [magnification]="_magnification"
+    *ngFor="let item of _setup.labelItems; let i=index" [magnification]="_magnification"
     [item]="item"
     (itemChange)="onItemChange(item, $event)"
     [active]="item === active"

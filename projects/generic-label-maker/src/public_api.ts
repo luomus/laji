@@ -2,7 +2,7 @@
  * Public API Surface of generic-label-maker
  */
 
-export * from './lib/label.service';
+export * from './lib/presets';
 export * from './lib/label-editor-container/label-editor-container.component';
 export * from './lib/label-editor-container/label-editor/label-editor.component';
 export * from './lib/label-editor-container/label-settings/label-settings.component';

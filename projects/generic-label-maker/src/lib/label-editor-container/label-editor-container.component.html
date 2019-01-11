@@ -1,7 +1,9 @@
 <div class="label-editor">
   <div class="editor-wrap">
-    <ll-label-preview [label]="_setup.label" [labelItem]="_mockItems"></ll-label-preview>
-    <ll-label-editor [label]="_setup.label" [(labelItem)]="_mockItems" [magnification]="2" (showSettings)="showSettings($event)"></ll-label-editor>
+    <div style="margin-bottom: 15px;">
+      <ll-label-preview [setup]="_setup"></ll-label-preview>
+    </div>
+    <ll-label-editor [setup]="_setup" (setupChange)="setupChanged($event)" [magnification]="2" (showSettings)="showSettings($event)"></ll-label-editor>
   </div>
   <div class="settings-wrap">
     <ul class="nav nav-tabs">
@@ -13,8 +15,10 @@
         <ll-label-settings></ll-label-settings>
       </div>
       <div [hidden]="_active !== 'fields'">
-        <div *ngFor="let field of availableFields" cdkDrag (cdkDragEnded)="onNewFieldDragEnd($event)" [cdkDragData]="field"
-             class="new-field">{{field.label}}</div>
+        <ll-label-fields-available
+          [availableFields]="availableFields"
+          (addLabelItem)="addLabelItem($event)"
+        ></ll-label-fields-available>
       </div>
     </div>
   </div>

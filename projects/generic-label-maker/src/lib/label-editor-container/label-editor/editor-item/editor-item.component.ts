@@ -48,8 +48,8 @@ export class EditorItemComponent implements AfterViewInit {
   }
 
   recalculate() {
-    this.width = this._item.width * this.magnification;
-    this.height = this._item.height * this.magnification;
+    this.width = this._item.style['width.mm'] * this.magnification;
+    this.height = this._item.style['height.mm'] * this.magnification;
     this.size = this.labelService.mmToPixel(Math.min(this.width, this.height));
     this.x = this._item.x * this.magnification;
     this.y = this._item.y * this.magnification;
@@ -88,8 +88,11 @@ export class EditorItemComponent implements AfterViewInit {
     event.source.reset();
     this.itemChange.emit({
       ...this._item,
-      width: this.labelService.pixelToMm(this.elem.offsetWidth) / this.magnification,
-      height: this.labelService.pixelToMm(this.elem.offsetHeight) / this.magnification
+      style: {
+        ...this._item.style,
+        'width.mm': this.labelService.pixelToMm(this.elem.offsetWidth) / this.magnification,
+        'height.mm': this.labelService.pixelToMm(this.elem.offsetHeight) / this.magnification
+      }
     });
   }
 }

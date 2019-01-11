@@ -10,6 +10,8 @@ import { LabelItemComponent } from './label-preview/label-item/label-item.compon
 import { QRCodeModule } from 'angularx-qrcode';
 import { RulerComponent } from './ruler/ruler.component';
 import { LabelSettingsComponent } from './label-editor-container/label-settings/label-settings.component';
+import { LabelFieldsAvailableComponent } from './label-editor-container/label-fields-available/label-fields-available.component';
+import { LabelPageComponent } from './label-print/label-page/label-page.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { LabelSettingsComponent } from './label-editor-container/label-settings/
     EditorItemComponent,
     LabelItemComponent,
     RulerComponent,
-    LabelSettingsComponent
+    LabelSettingsComponent,
+    LabelFieldsAvailableComponent,
+    LabelPageComponent
   ],
   imports: [
     CommonModule,
