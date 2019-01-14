@@ -785,6 +785,7 @@
   "taxonomy.vernacular.name.fi": "Finska namn",
   "taxonomy.vernacular.name.sv": "Svenska namn",
   "taxonomy.vernacular.names": "Triviala namn",
+  "taxonomy.alternative.vernacular.name": "Andra folkspråkliga namn",
   "taxonomy.speciesPieChartTitle": "Lajien määrän jakautuminen alemmille taksoneille",
   "taxonomy.species": "arter",
   "taxonomy.species.singular": "art",

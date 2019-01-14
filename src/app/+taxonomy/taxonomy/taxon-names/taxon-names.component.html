@@ -1,10 +1,34 @@
-<table class="table table-condensed" *ngIf="taxon">
+<table class="table table-condensed" *ngIf="_taxon">
   <tbody>
-  <tr *ngIf="taxon.vernacularName">
-    <th rowspan="3">{{ 'taxonomy.vernacular.name' | translate }}</th>
-    <td>{{ taxon.vernacularName | multiLang: false:'fi' }} (fi)</td>
+  <tr *ngIf="availableLangs.vernacularName.length > 0">
+    <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
+    <td>
+      <ul>
+        <li *ngFor="let lang of availableLangs.vernacularName">
+          {{ _taxon.vernacularName | multiLang: false:lang }} ({{ lang }})
+        </li>
+      </ul>
+    </td>
   </tr>
-  <tr><td>{{ taxon.vernacularName | multiLang: false:'sv' }} (sv)</td></tr>
-  <tr><td>{{ taxon.vernacularName | multiLang: false:'en' }} (en)</td></tr>
+  <tr *ngIf="availableLangs.alternativeVernacularName.length > 0">
+    <th>{{ 'taxonomy.alternative.vernacular.name' | translate }}</th>
+    <td>
+      <ul>
+        <li *ngFor="let lang of availableLangs.alternativeVernacularName">
+          {{ _taxon.alternativeVernacularName | multiLang: false:lang | values }} ({{ lang }})
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr *ngIf="availableLangs.tradeName.length > 0">
+    <th>{{ 'taxonomy.trade.name' | translate }}</th>
+    <td>
+      <ul>
+        <li *ngFor="let lang of availableLangs.tradeName">
+          {{ _taxon.tradeName | multiLang: false:lang | values }} ({{ lang }})
+        </li>
+      </ul>
+    </td>
+  </tr>
   </tbody>
 </table>

@@ -1,7 +1,4 @@
-.table tr {
-  border-top: 1px solid #ddd;
-}
-.table tr th, .table tr td, .table tr:first-child {
+.table tr:first-child th, .table tr:first-child td {
   border-top: none;
 }
 ul {

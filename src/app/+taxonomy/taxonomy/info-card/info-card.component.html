@@ -21,7 +21,7 @@
           <laji-taxon-synonyms [taxon]="taxon"></laji-taxon-synonyms>
         </div>
 
-        <div class="panel panel-default" laji-panel [title]="'Muut nimet'" [open]="true" [autoToggle]="true">
+        <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName" class="panel panel-default" laji-panel [title]="'Muut nimet'" [open]="true" [autoToggle]="true">
           <laji-taxon-names [taxon]="taxon"></laji-taxon-names>
         </div>
 
