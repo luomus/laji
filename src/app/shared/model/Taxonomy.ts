@@ -221,6 +221,8 @@ export interface Taxonomy {
   redListEvaluation?: {[year: string]: RedListEvaluation};
 
   alternativeVernacularName?: string[];
+
+  misspelledNames?: string[];
 }
 
 export interface RedListEvaluation {

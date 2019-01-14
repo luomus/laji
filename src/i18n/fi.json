@@ -820,6 +820,7 @@
   "taxonomy.vernacular.name.sv": "Ruotsinkielinen nimi",
   "taxonomy.vernacular.names": "Yleiskieliset nimet",
   "taxonomy.alternative.vernacular.name": "Muut yleiskieliset nimet",
+  "taxonomy.misspelled.names": "Väärinkirjoitettu nimi",
   "taxonomy.speciesPieChartTitle": "Lajien määrän jakautuminen alemmille taksoneille",
   "taxonomy.species": "lajia",
   "taxonomy.species.singular": "laji",

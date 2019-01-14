@@ -17,7 +17,7 @@
           ></laji-taxon-descriptions>
         </div>
 
-        <div class="panel panel-default" laji-panel [title]="'Synonyymit'" [open]="true" [autoToggle]="true">
+        <div *ngIf="taxon.misspelledNames" class="panel panel-default" laji-panel [title]="'Synonyymit'" [open]="true" [autoToggle]="true">
           <laji-taxon-synonyms [taxon]="taxon"></laji-taxon-synonyms>
         </div>
 

@@ -26,7 +26,6 @@ export class TaxonNamesComponent implements OnInit {
     }
 
     this._taxon = taxon;
-    console.log(taxon);
   }
 
   constructor() { }

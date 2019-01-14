@@ -792,6 +792,7 @@
   "taxonomy.vernacular.name.sv": "Swedish name",
   "taxonomy.vernacular.names": "Vernacular names",
   "taxonomy.alternative.vernacular.name": "Other vernacular names",
+  "taxonomy.misspelled.names": "Misspelled name",
   "taxonomy.speciesPieChartTitle": "Lajien määrän jakautuminen alemmille taksoneille",
   "taxonomy.species": "species",
   "taxonomy.species.singular": "species",

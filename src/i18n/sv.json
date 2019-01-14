@@ -786,6 +786,7 @@
   "taxonomy.vernacular.name.sv": "Svenska namn",
   "taxonomy.vernacular.names": "Triviala namn",
   "taxonomy.alternative.vernacular.name": "Andra folkspråkliga namn",
+  "taxonomy.misspelled.names": "Felstavat namn",
   "taxonomy.speciesPieChartTitle": "Lajien määrän jakautuminen alemmille taksoneille",
   "taxonomy.species": "arter",
   "taxonomy.species.singular": "art",
