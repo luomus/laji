@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Setup } from './generic-label-maker.interface';
+import { Setup, Style } from './generic-label-maker.interface';
+
+export interface PageLayout {
+  cols: number;
+  rows: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +13,29 @@ export class LabelService {
 
   private pixelToMMRation;
 
+  public static widthInner(style: Style) {
+    return style['width.mm'] - ((style['paddingRight.mm'] || 0) + (style['paddingLeft.mm'] || 0));
+  }
+
+  public static heightInner(style: Style) {
+    return style['height.mm'] - ((style['paddingTop.mm'] || 0) + (style['paddingBottom.mm'] || 0));
+  }
+
+  public static widthOuter(style: Style) {
+    return style['width.mm'] + ((style['marginRight.mm'] || 0) + (style['marginLeft.mm'] || 0));
+  }
+
+  public static heightOuter(style: Style) {
+    return style['height.mm'] + ((style['marginTop.mm'] || 0) + (style['marginBottom.mm'] || 0));
+  }
+
   constructor() {}
 
-  public countLabelsPerPage(setup: Setup): {cols: number, rows: number} {
-    const pageWidth = setup.page['width.mm'] - ((setup.page['paddingRight.mm'] || 0) + (setup.page['paddingLeft.mm'] || 0));
-    const pageHeight = setup.page['height.mm'] - ((setup.page['paddingTop.mm'] || 0) + (setup.page['paddingBottom.mm'] || 0));
-    const labelWidth = setup.label['width.mm'] + ((setup.label['marginRight.mm'] || 0) + (setup.label['marginLeft.mm'] || 0));
-    const labelHeight = setup.label['height.mm'] + ((setup.label['marginTop.mm'] || 0) + (setup.label['marginBottom.mm'] || 0));
+  public countLabelsPerPage(setup: Setup): PageLayout {
+    const pageWidth = LabelService.widthInner(setup.page);
+    const pageHeight = LabelService.heightInner(setup.page);
+    const labelWidth = LabelService.widthOuter(setup.label);
+    const labelHeight = LabelService.heightOuter(setup.label);
 
     return {
       cols: Math.floor(pageWidth / labelWidth),
@@ -39,6 +60,10 @@ export class LabelService {
 
   public hasRation() {
     return !!this.pixelToMMRation;
+  }
+
+  public hasValue(data: object, field: string) {
+    return !(typeof data[field] === 'undefined' || data[field] === '');
   }
 
 }

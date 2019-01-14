@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LabelField, LabelItem, Setup } from '../generic-label-maker.interface';
-import { LabelService } from '../label.service';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
+import { Setup } from '../generic-label-maker.interface';
+import { LabelService, PageLayout } from '../label.service';
+import * as style from '../../styles/ll-label.css';
 
 @Component({
   selector: 'll-label-print',
@@ -10,7 +20,6 @@ import { LabelService } from '../label.service';
 })
 export class LabelPrintComponent implements OnInit {
 
-
   @Input() setup: Setup;
   @Input() data: object[];
   @Input() labelButton = 'PDF';
@@ -18,10 +27,17 @@ export class LabelPrintComponent implements OnInit {
   @Input('class') btnClass = 'btn btn-default';
 
   @Output() click = new EventEmitter<void>();
+  @Output() html = new EventEmitter<string>();
+
+  @ViewChild('pagesContainer') public pageContainer: ElementRef<HTMLDivElement>;
 
   pages: object[][] = [];
+  pageLayout: PageLayout;
+  nroPages: number;
 
-  constructor(private labelService: LabelService) { }
+  constructor(
+    private labelService: LabelService
+  ) { }
 
   ngOnInit() {
   }
@@ -30,8 +46,8 @@ export class LabelPrintComponent implements OnInit {
   btnClick(event: MouseEvent) {
     event.preventDefault();
     this.click.emit();
-    const dim = this.labelService.countLabelsPerPage(this.setup);
-    const perPage = dim.rows * dim.rows;
+    this.pageLayout = this.labelService.countLabelsPerPage(this.setup);
+    const perPage = this.pageLayout.rows * this.pageLayout.cols;
     const pages = [];
     let page = [];
     this.data.forEach((item, idx) => {
@@ -45,5 +61,18 @@ export class LabelPrintComponent implements OnInit {
       pages.push([...page]);
     }
     this.pages = pages;
+    this.nroPages = pages.length;
+  }
+
+  printReady() {
+    this.nroPages--;
+    if (this.nroPages <= 0) {
+        const html = `<!DOCTYPE html>
+<html>
+  <head><meta charset="utf-8"><title>Labels</title><style>${style}</style></head>
+  <body style="margin: 0; padding: 0;">${this.pageContainer.nativeElement.innerHTML}</body>
+</html>`;
+        this.html.emit(html);
+    }
   }
 }

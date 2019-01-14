@@ -40,8 +40,8 @@ export class LabelEditorComponent {
     if (!this._setup) {
       return;
     }
-    this.height = this._setup.label['height.mm'] * this._magnification;
-    this.width = this._setup.label['width.mm'] * this._magnification;
+    this.height = this._setup.label['height.mm'];
+    this.width = this._setup.label['width.mm'];
   }
 
   onItemChange(originalItem: LabelItem, newItem: LabelItem) {
@@ -55,5 +55,17 @@ export class LabelEditorComponent {
     };
     this.setupChange.emit(this._setup);
 
+  }
+
+  updateDimensions(event: Event, target: string, sec: 'page'|'label') {
+    const value = Number((event.target as HTMLInputElement).value);
+    this._setup = {
+      ...this._setup,
+      [sec]: {
+        ...this._setup[sec],
+        [target]: value
+      }
+    };
+    this.setupChange.emit(this._setup);
   }
 }

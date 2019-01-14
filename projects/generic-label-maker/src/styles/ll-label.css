@@ -1,0 +1,20 @@
+.ll-print-content {
+  display: grid;
+  grid-gap: 0;
+  grid-auto-flow: column;
+  align-items: start;
+  justify-items: start;
+  page-break-inside: avoid;
+  page-break-after: always;
+}
+.ll-label-item {
+  position: absolute;
+  overflow: hidden;
+}
+.ll-label {
+  position: relative;
+  overflow: hidden;
+}
+.ll-label.preview {
+  border: 1px solid #333;
+}

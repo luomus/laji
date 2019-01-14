@@ -1,3 +1,5 @@
 <div [ngStyle]="setup.page">
-  <ll-label-preview [setup]="setup" *ngFor="let item of data"></ll-label-preview>
+  <div class="ll-print-content" [ngStyle]="{'grid-template-columns': cols, 'grid-template-rows': rows}">
+    <ll-label-preview [setup]="setup" *ngFor="let item of data" [data]="item"></ll-label-preview>
+  </div>
 </div>

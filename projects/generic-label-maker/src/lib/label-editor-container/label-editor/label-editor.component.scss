@@ -2,3 +2,15 @@
   border: 1px solid #999;
   position: relative;
 }
+
+.height-settings, .width-settings {
+  padding: 5px;
+}
+
+.height-settings {
+  vertical-align: center;
+}
+
+.width-settings {
+  text-align: center;
+}

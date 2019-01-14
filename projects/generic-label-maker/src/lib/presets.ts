@@ -18,7 +18,7 @@ export class Presets {
       'marginTop.mm': 1.5,
       'marginLeft.mm': 1.5,
       'marginBottom.mm': 1.5,
-      'marginRight.mm': 2.5,
+      'marginRight.mm': 1.5,
       'font-size.pt': 10
     },
     labelItems: []

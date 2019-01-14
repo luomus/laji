@@ -6,6 +6,7 @@
   <ll-label-item
     *ngFor="let item of setup?.labelItems"
     [item]="item"
+    [data]="data"
   ></ll-label-item>
 </div>
 <ll-ruler *ngIf="!init" (measured)="init = true"></ll-ruler>

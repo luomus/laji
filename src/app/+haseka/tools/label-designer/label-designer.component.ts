@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { LabelField, Setup } from 'generic-label-maker';
 import { Presets } from 'generic-label-maker';
+import { isPlatformBrowser } from '@angular/common';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'laji-label-designer',
@@ -29,7 +32,10 @@ export class LabelDesignerComponent implements OnInit {
   setup: Setup;
   data: any;
 
-  constructor() { }
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private lajiApiService: LajiApiService
+  ) { }
 
   ngOnInit() {
     this.setup = {
@@ -47,6 +53,17 @@ export class LabelDesignerComponent implements OnInit {
     };
     this.data = this.getMockData();
   }
+
+
+  htmlToPdf(html: string) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, html)
+        .subscribe((response) => {
+          FileSaver.saveAs(response,  'labels.pdf');
+        });
+    }
+  }
+
   // tslint:disable
   private getMockData() {
     return [
