@@ -11,3 +11,7 @@
     width: calc(50% - 10px);
   }
 }
+
+::ng-deep .info-card .panel-body {
+  overflow-y: auto;
+}

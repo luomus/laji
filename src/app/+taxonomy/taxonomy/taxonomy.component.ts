@@ -41,7 +41,7 @@ export class TaxonomyComponent implements OnInit {
   onMouseMove(e) {
     if (this.dragging) {
       e.preventDefault();
-      this.sidebarWidth = Math.max(e.pageX + 2, 120);
+      this.sidebarWidth = Math.min(Math.max(e.pageX + 2, 120), 450);
     }
   }
 
