@@ -98,12 +98,10 @@ export class EditorItemComponent implements AfterViewInit {
     const height = event.pointerPosition.y - this.origElementDimensions.y - 7;
     const widthMaxMm = this.labelService.pixelToMm(width) + this.x;
     const heightMaxMm = this.labelService.pixelToMm(height) + this.y;
-    if (widthMaxMm < this.maxWidthMm) {
-      this.elem.style.width = width + 'px';
-    }
-    if (heightMaxMm < this.maxHeightMm) {
-      this.elem.style.height =  height + 'px';
-    }
+
+    this.elem.style.width = (widthMaxMm < this.maxWidthMm ? width : this.labelService.mmToPixel(this.maxWidthMm - this.x)) + 'px';
+    this.elem.style.height = (heightMaxMm < this.maxHeightMm ? height : this.labelService.mmToPixel(this.maxHeightMm - this.y)) + 'px';
+
     event.source.reset();
   }
 
