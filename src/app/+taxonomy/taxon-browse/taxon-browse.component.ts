@@ -43,20 +43,6 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
       withLatestFrom(this.route.queryParams)
     )
       .subscribe(([tab, params]) => {
-        if (tab === 'tree') {
-          this.searchQuery.skippedQueryParams = [
-            'informalGroupFilters',
-            'target',
-            'invasiveSpeciesFilter',
-            'redListStatusFilters',
-            'adminStatusFilters',
-            'typesOfOccurrenceFilters',
-            'typesOfOccurrenceNotFilters'
-          ];
-        } else {
-          this.searchQuery.skippedQueryParams = [];
-        }
-
         if (params['reset']) {
           this.searchQuery.empty();
         }
@@ -79,11 +65,6 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
     if (this.subQuery) {
       this.subQuery.unsubscribe();
     }
-  }
-
-  informalGroupSelect(groupId?) {
-    this.searchQuery.query.informalGroupFilters = groupId;
-    this.searchQuery.queryUpdate({formSubmit: true});
   }
 
   @HostListener('window:scroll')

@@ -6,8 +6,6 @@ import { TaxonComponent } from './taxon.component';
 import { TaxonomyComponent } from './taxonomy/taxonomy.component';
 import { InfoCardComponent } from './taxonomy/info-card/info-card.component';
 import { IUCNComponent } from './iucn/iucn.component';
-import { InformalListComponent } from './informal-group-select/informal-list/informal-list.component';
-import { InformalListBreadcrumbComponent } from './informal-group-select/informal-list-breadcrumb/informal-list-breadcrumb.component';
 import { TaxonTreeComponent } from './taxonomy/taxon-tree/taxon-tree.component';
 import { SpeciesListComponent } from './taxon-browse/species-list/species-list.component';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
@@ -25,7 +23,6 @@ import { TaxonomySearchQuery } from './taxon-browse/service/taxonomy-search-quer
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 import { SpeciesDownloadComponent } from './taxon-browse/species-download/species-download.component';
 import { SpeciesBrowseObservationsComponent } from './taxon-browse/species-browse-observations/species-browse-observations.component';
-import { InformalGroupSelectComponent } from './informal-group-select/informal-group-select.component';
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
 import { SpeciesImagesComponent } from './taxon-browse/species-images/species-images.component';
 import { TaxonConceptInfoComponent } from './taxonomy/taxon-concept-info/taxon-concept-info.component';
@@ -53,10 +50,10 @@ import { TaxonNamesComponent } from './taxonomy/taxon-names/taxon-names.componen
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonComponent, TaxonInfoComponent, TaxonomyComponent, IUCNComponent,
-    InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
+     TaxonTreeComponent, SpeciesListComponent,
     BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent,
     InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
-    InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
+    SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
     SpeciesListOptionsModalComponent, BoldSynonymComponent,
     SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonDescriptionsComponent, TaxonSynonymsComponent, TaxonNamesComponent
   ],

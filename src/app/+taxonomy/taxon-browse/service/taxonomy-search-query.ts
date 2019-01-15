@@ -11,7 +11,6 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 
   public query: TaxonomySearchQueryInterface;
-  public skippedQueryParams = [];
 
   public listOptions: {
     page: number,
@@ -20,9 +19,6 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   };
   public imageOptions: {
     page: number
-  };
-  public treeOptions: {
-    selected: string[]
   };
 
   constructor(
@@ -42,9 +38,8 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
       if (this.query[key] === '' || (Array.isArray(this.query[key]) && this.query[key].length === 0)) {
         this.query[key] = undefined;
       }
-      if (this.skippedQueryParams.indexOf(key) === -1) {
-        queryParams[key] = this.query[key];
-      }
+
+      queryParams[key] = this.query[key];
     }
 
     if (Object.keys(this.query).length > 0) {
@@ -69,10 +64,6 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
     this.imageOptions = {
       page: 1
     };
-    this.treeOptions = {
-      selected: ['scientificName', 'taxonRank', 'vernacularName', 'typeOfOccurrenceInFinland',
-        'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames']
-    };
   }
 
   public setQueryFromParams(params: Params) {
@@ -92,9 +83,7 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   }
 
   private setQueryValue(key: string, value: any) {
-    if (this.skippedQueryParams.indexOf(key) === -1) {
-      this.query[key] = value;
-    }
+    this.query[key] = value;
   }
 
   private getArrayParam(params: Params, key: string) {
