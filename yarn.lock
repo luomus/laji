@@ -4901,15 +4901,16 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.563:
-  version "0.0.563"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.563.tgz#c651b209c5e2dbe6c52090a018d59fc72048bd94"
+laji-form@^0.0.566:
+  version "0.0.566"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.566.tgz#f3e2ea17b90d43ce0154ab417df306e0df28dc07"
+  integrity sha512-BE6PpDAzZ2uxIobTuoXld2ttEuUB0gM4AQY9K9c6GLhwhNgsvDtW9OgytaBLu72BPfxBlNGOLQjdwYYdZt5Q5Q==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.457"
+    laji-map "^1.0.459"
     laji-validate "0.0.73"
     moment "*"
     prop-types "^15.5.8"
@@ -4917,7 +4918,7 @@ laji-form@^0.0.563:
     react-addons-css-transition-group "*"
     react-addons-shallow-compare "*"
     react-autosuggest "^9.3.2"
-    react-bootstrap "^0.32.1"
+    react-bootstrap "git+https://git@github.com/olzraiti/react-bootstrap.git#927b8f7a33ba1262b8a59cf236f612f5b5e2130c"
     react-bootstrap-switch "^15.0.4"
     react-dom "^16.4.1"
     react-dropzone "^4.3.0"
@@ -4928,7 +4929,7 @@ laji-form@^0.0.563:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.461, laji-map@^1.0.395, laji-map@^1.0.457, laji-map@^1.0.461:
+laji-map@1.0.461, laji-map@^1.0.395, laji-map@^1.0.459, laji-map@^1.0.461:
   version "1.0.461"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.461.tgz#b7e88d5e7156e49e8f00cde7001009b05e5f6cf2"
   integrity sha512-Ckt8pkecc2OXWEdz1vajhi6yGWtIWuUkZ3KHj8bNO2+lBG//HvnfY1pImbEyxIYMW/oTSoLsBgwHgtj3+oy9TQ==
@@ -6749,9 +6750,9 @@ react-bootstrap-switch@^15.0.4:
   version "15.5.3"
   resolved "https://registry.yarnpkg.com/react-bootstrap-switch/-/react-bootstrap-switch-15.5.3.tgz#97287791d4ec0d1892d142542e7e5248002b1251"
 
-react-bootstrap@^0.32.1:
+"react-bootstrap@git+https://git@github.com/olzraiti/react-bootstrap.git#927b8f7a33ba1262b8a59cf236f612f5b5e2130c":
   version "0.32.4"
-  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.32.4.tgz#8efc4cbfc4807215d75b7639bee0d324c8d740d1"
+  resolved "git+https://git@github.com/olzraiti/react-bootstrap.git#927b8f7a33ba1262b8a59cf236f612f5b5e2130c"
   dependencies:
     "@babel/runtime-corejs2" "^7.0.0"
     classnames "^2.2.5"
