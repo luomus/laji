@@ -1,5 +1,5 @@
 
-import {catchError, concat, take, delay, retryWhen,  combineLatest, map, switchMap, tap } from 'rxjs/operators';
+import {catchError, concat, take, delay, retryWhen, combineLatest, map, switchMap, tap, share} from 'rxjs/operators';
 import { Observable, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -20,6 +20,9 @@ import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { ObservationMapComponent } from '../../../shared-modules/observation-map/observation-map/observation-map.component';
 import { Title } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
+import { CacheService } from '../../../shared/service/cache.service';
+
+const CACHE_KEY = 'info-card-boxes';
 
 @Component({
   selector: 'laji-info-card',
@@ -28,6 +31,8 @@ import { isPlatformBrowser } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardComponent implements OnInit, OnDestroy {
+  private static settings: any;
+
   @ViewChild(ObservationMapComponent) map: ObservationMapComponent;
 
   public taxon: Taxonomy;
@@ -44,12 +49,14 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
   @Input() public taxonId: string;
   public context: string;
+  public settings: any;
 
   private subParam: Subscription;
 
   constructor(
     public translate: TranslateService,
     private taxonService: TaxonomyApi,
+    private cacheService: CacheService,
     private route: ActivatedRoute,
     private logger: Logger,
     private router: Router,
@@ -76,6 +83,29 @@ export class InfoCardComponent implements OnInit, OnDestroy {
           this.cd.markForCheck();
         });
     }
+
+    this.initSettings();
+  }
+
+  private initSettings() {
+    const settings$ = InfoCardComponent.settings ?
+      ObservableOf(InfoCardComponent.settings) :
+      this.cacheService.getItem<any>(CACHE_KEY)
+        .pipe(
+          map(value => value || {}),
+          tap(value => InfoCardComponent.settings = value)
+        );
+
+    settings$.subscribe(settings => {
+      this.settings = settings;
+    });
+  }
+
+  updateSettings(boxName: string, open: boolean) {
+    this.settings[boxName] = {open: open};
+    InfoCardComponent.settings[boxName] = {open: open};
+    this.cacheService.setItem<Settings>(CACHE_KEY, InfoCardComponent.settings)
+      .subscribe(() => {}, () => {});
   }
 
   onCollectionImagesLoaded(event) {
