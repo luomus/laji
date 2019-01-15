@@ -76,7 +76,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onInvasiveChange(id: string) {
+  onInvasiveChange(id) {
     if (id === 'onlyInvasive') {
       this.onInvasiveToggle();
     } else if (id === 'onlyNonInvasive') {
@@ -201,7 +201,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   private queryToFormQuery() {
     const query = this.searchQuery.query;
-
     this.formQuery = {
       onlyFinnish: !!query.onlyFinnish,
       onlyInvasive: query.invasiveSpeciesFilter === true,
