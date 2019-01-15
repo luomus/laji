@@ -760,6 +760,7 @@
   "taxonomy.active.target": "Taksonominen rajaus",
   "taxonomy.active.typesOfOccurrenceFilters": "Asema Suomessa on",
   "taxonomy.active.typesOfOccurrenceNotFilters": "Asema Suomessa ei ole",
+  "taxonomy.active.taxonRanks": "Taksonominen taso",
   "taxonomy.administrative.statuses": "Hallinnolliset lajitiedot",
   "taxonomy.administrativeStatuses": "Hallinnollinen asema",
   "taxonomy.alternative.vernacular.names": "Vaihtoehtoiset yleiskieliset nimet",

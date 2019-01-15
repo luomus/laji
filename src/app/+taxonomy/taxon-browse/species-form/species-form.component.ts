@@ -76,7 +76,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onInvasiveChange(id) {
+  onInvasiveChange(id: string) {
     if (id === 'onlyInvasive') {
       this.onInvasiveToggle();
     } else if (id === 'onlyNonInvasive') {

@@ -48,6 +48,22 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
+          [(ngModel)]="searchQuery.query.taxonRanks"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          name="taxonRanks"
+          [placeholder]="'taxonomy.active.taxonRanks'"
+          [alt]="'MX.taxonRankEnum'"
+          [lang]="translate.currentLang"
+          [skipBefore]="'MX.species'"
+        ></laji-metadata-select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
           [(ngModel)]="searchQuery.query.redListStatusFilters"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"

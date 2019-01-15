@@ -734,6 +734,7 @@
   "taxonomy.active.target": "Taxonomic delimitation",
   "taxonomy.active.typesOfOccurrenceFilters": "Status in Finland is",
   "taxonomy.active.typesOfOccurrenceNotFilters": "Status in Finland is not",
+  "taxonomy.active.taxonRanks": "Taxonomic rank",
   "taxonomy.administrative.statuses": "Administrative status",
   "taxonomy.administrativeStatuses": "Administrative status",
   "taxonomy.alternative.vernacular.names": "Alternative vernacular names",

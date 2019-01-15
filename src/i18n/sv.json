@@ -728,6 +728,7 @@
   "taxonomy.active.target": "Taksonomisk avgränsning",
   "taxonomy.active.typesOfOccurrenceFilters": "Status i Finland är",
   "taxonomy.active.typesOfOccurrenceNotFilters": "Status i Finland är inte",
+  "taxonomy.active.taxonRanks": "Taksonomisk nivå",
   "taxonomy.administrative.statuses": "Administrativa status",
   "taxonomy.administrativeStatuses": "Administrativ status",
   "taxonomy.alternative.vernacular.names": "Alternativa folkspråkliga namn",
