@@ -1,3 +1,7 @@
+/**
+Content of this file needs to be copied to label-print.component.ts
+so that this styling will be included in the generated pdf
+ */
 .ll-print-content {
   display: grid;
   grid-gap: 0;

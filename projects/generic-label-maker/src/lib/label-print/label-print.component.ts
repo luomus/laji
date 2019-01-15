@@ -1,4 +1,3 @@
-/// <reference path="../../../../../node_modules/@types/node/index.d.ts" />
 
 import {
   ChangeDetectionStrategy,
@@ -12,7 +11,28 @@ import {
 } from '@angular/core';
 import { Setup } from '../generic-label-maker.interface';
 import { LabelService, PageLayout } from '../label.service';
-const style = require('../../styles/ll-label.css');
+const style = `
+.ll-print-content {
+  display: grid;
+  grid-gap: 0;
+  grid-auto-flow: column;
+  align-items: start;
+  justify-items: start;
+  page-break-inside: avoid;
+  page-break-after: always;
+}
+.ll-label-item {
+  position: absolute;
+  overflow: hidden;
+}
+.ll-label {
+  position: relative;
+  overflow: hidden;
+}
+.ll-label.preview {
+  border: 1px solid #333;
+}
+`;
 
 @Component({
   selector: 'll-label-print',
