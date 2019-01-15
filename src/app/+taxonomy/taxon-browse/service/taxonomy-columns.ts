@@ -122,6 +122,51 @@ export class TaxonomyColumns {
     },
     {
       name: 'notes'
+    },
+    {
+      name: 'parent.domain',
+      selectField: 'parent',
+      cellTemplate: 'parent'
+    },
+    {
+      name: 'parent.kingdom',
+      selectField: 'parent',
+      cellTemplate: 'parent'
+    },
+    {
+      name: 'parent.phylum',
+      selectField: 'parent',
+      cellTemplate: 'parent'
+    },
+    {
+      name: 'parent.division',
+      selectField: 'parent',
+      cellTemplate: 'parent'
+    },
+    {
+      name: 'parent.class',
+      selectField: 'parent',
+      cellTemplate: 'parent'
+    },
+    {
+      name: 'parent.order',
+      selectField: 'parent',
+      cellTemplate: 'parent'
+    },
+    {
+      name: 'parent.family',
+      selectField: 'parent',
+      cellTemplate: 'parent'
+    },
+    {
+      name: 'parent.tribe',
+      selectField: 'parent',
+      cellTemplate: 'parent'
+    },
+    {
+      name: 'parent.genus',
+      selectField: 'parent',
+      cellTemplate: 'parent'
     }
   ];
 

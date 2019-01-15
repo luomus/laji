@@ -241,3 +241,16 @@
     {{ roundNumber(value) }}
   </span>
 </ng-template>
+<ng-template let-value="value" #parent>
+  <span *ngIf="value.scientificName || value.scientificNameAuthorship"
+        title="{{(value.scientificName ? value.scientificName : '')
+                + (value.scientificNameAuthorship ? ' ' + value.scientificNameAuthorship : '')
+               }}">
+    <span *ngIf="value.scientificName" [class.cursive]="value.cursiveName" class="inline">
+      {{ value.scientificName }}
+    </span>
+    <span *ngIf="value.scientificNameAuthorship" class="inline">
+      {{ value.scientificNameAuthorship }}
+    </span>
+  </span>
+</ng-template>

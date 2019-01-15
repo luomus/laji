@@ -86,6 +86,24 @@
               [disabled]="requiredFields"
               (toggle)="toggleSelectedField($event)"
             ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="species.list.parents"
+              [fields]="[
+                'parent.domain',
+                'parent.kingdom',
+                'parent.phylum',
+                'parent.division',
+                'parent.class',
+                'parent.order',
+                'parent.family',
+                'parent.tribe',
+                'parent.genus'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              [disabled]="requiredFields"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
           </div>
         </div>
         <div class="row">
