@@ -1,3 +1,5 @@
+/// <reference path="../../typings.d.ts" />
+
 import {
   ChangeDetectionStrategy,
   Component,
