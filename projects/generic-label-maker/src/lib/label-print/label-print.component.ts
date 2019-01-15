@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Setup } from '../generic-label-maker.interface';
 import { LabelService, PageLayout } from '../label.service';
-import * as style from '../../styles/ll-label.css';
+const style = require('../../styles/ll-label.css');
 
 @Component({
   selector: 'll-label-print',
