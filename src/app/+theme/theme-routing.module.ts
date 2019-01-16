@@ -41,6 +41,7 @@ import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/m
 import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
 import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
 import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
+import { ChecklistComponent } from './checklist/checklist.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -217,7 +218,8 @@ const routes: Routes = [
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},
   {path: 'ykj',  pathMatch: 'full', component: YkjComponent, data: {title: 'navigation.ykj'}},
-  {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}}
+  {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}},
+  {path: 'checklist',  pathMatch: 'full', component: ChecklistComponent, data: {title: 'navigation.checklist'}}
 ];
 
 @NgModule({
