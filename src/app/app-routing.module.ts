@@ -67,6 +67,9 @@ const routesWithLang: Routes = [
     {path: 'linjalaskenta', redirectTo: '/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/theme/talvilintulaskenta', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/theme/vieraslajit', pathMatch: 'full'},
+    {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
+    {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
+    {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/error/404'}
   ], component: LocaleFiComponent}

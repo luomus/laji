@@ -73,6 +73,8 @@ import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest
 import { WbcTableFilterComponent } from './wbc/wbc-result/wbc-table-filter/wbc-table-filter.component';
 import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-list/wbc-routes-list.component';
 import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
+import { ChecklistComponent } from './checklist/checklist.component';
+import { IucnSharedModule } from '../iucn/iucn-shared/shared.module';
 
 /* tslint:enable:max-line-length */
 
@@ -96,11 +98,13 @@ import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-ma
     JWBootstrapSwitchModule,
     FormPermissionModule,
     NavigationThumbnailModule,
-    LatestDocumentsModule
+    LatestDocumentsModule,
+    IucnSharedModule
   ],
   declarations: [
     NafiComponent,
     HerpetologyComponent,
+    ChecklistComponent,
     ThemeResultComponent,
     NafiResultComponent,
     FixedTableDirective,

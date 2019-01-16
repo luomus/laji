@@ -78,6 +78,26 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
+      <strong>{{'theme.names.title' | translate}}</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tr>
+          <th>
+            <a [routerLink]="[({fi: '/lajiluettelo', sv: '/artlistan', en: '/checklist'} | multiLang)]">
+              {{ 'navigation.checklist' | translate }}
+            </a>
+          </th>
+          <td>
+            {{'theme.checklist.intro' | translate}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
       <strong>{{'theme.census.title' | translate}}</strong>
     </div>
     <div class="panel-body">
