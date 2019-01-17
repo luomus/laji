@@ -39,6 +39,7 @@ export interface NamedPlaceQuery {
   birdAssociationArea?: string;
   includePublic?: boolean;
   includeUnits?: boolean;
+  selectedFields?: string;
 }
 
 @Injectable({providedIn: 'root'})

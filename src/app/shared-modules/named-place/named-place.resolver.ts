@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
-import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlaceQuery } from 'app/shared/api/NamedPlaceApi';
 import { FormService } from 'app/shared/service/form.service';
@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'app/shared/service/user.service';
 import { FormPermissionService, Rights } from 'app/+haseka/form-permission/form-permission.service';
 import { environment } from 'environments/environment';
+import { NamedPlace } from '../../shared/model/NamedPlace';
 
 export interface NPResolverData {
   collectionId?: string;
@@ -23,13 +24,13 @@ export interface NPResolverData {
   birdAssociationId?: string;
   municipalityId?: string;
   activeNPId?: any;
+  activeNP?: NamedPlace;
 }
 
 @Injectable()
 export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
   private collectionId;
   private documentFormId;
-  private documentForm: any;
   private birdAssociationId;
   private municipalityId;
   private lang;
@@ -51,48 +52,31 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     this.municipalityId = queryParams['municipality'];
     const activeNPId = queryParams['activeNP'];
 
-    const user$ = this.userService.getUser();
-    const documentForm$ = this.getDocumentForm$();
-    return of([]).pipe(
-      switchMap(() => {
-        return forkJoin(
-          user$,
-          documentForm$.pipe(
-            mergeMap(res => {
-              this.documentForm = res;
-              const namedPlaces$ = this.getNamedPlaces$(res);
-              const placeFormId = res.namedPlaceOptions
-                && res.namedPlaceOptions.formID
-                || environment.namedPlaceForm;
-              const placeForm$ = this.getPlaceForm$(placeFormId);
-              return forkJoin(of(res), namedPlaces$, placeForm$);
-            })
-          )
-        );
-      }),
-      mergeMap(res => {
-        const formRights$ = this.getFormRights$();
-        return forkJoin(of(res), formRights$);
-      }),
-      map(res => {
-        const result: NPResolverData = {};
-        result.collectionId = this.collectionId;
-        result.edit = edit;
-        result.user = res[0][0];
-        result.formRights = res[1];
-        result.documentForm = res[0][1][0];
-        result.placeForm = res[0][1][2];
-        result.namedPlaces = res[0][1][1];
-        result.municipalityId = this.municipalityId;
-        result.birdAssociationId = this.birdAssociationId;
-        result.activeNPId = activeNPId;
-
-        if (this.npRequirementsNotMet(result.documentForm)) {
-          result.namedPlaces = undefined;
-        }
-
-        return result;
-      })
+    return this.getDocumentForm$().pipe(
+      switchMap((documentForm) => this.userService.getUser().pipe(map((user) => ({documentForm, user})))),
+      switchMap(data => forkJoin(
+          this.getNamedPlaces$(data.documentForm),
+          this.getPlaceForm$(data.documentForm.namedPlaceOptions
+            && data.documentForm.namedPlaceOptions.formID
+            || environment.namedPlaceForm
+          ),
+          this.getFormRights$(data.documentForm),
+          this.namedPlacesService.getNamedPlace(activeNPId)
+        ).pipe(
+          map<any, NPResolverData>(join => ({
+            ...data,
+            formRights: join[2],
+            placeForm: join[1],
+            namedPlaces: this.npRequirementsNotMet(data.documentForm) ? undefined : join[0],
+            edit: edit,
+            collectionId: this.collectionId,
+            municipalityId: this.municipalityId,
+            birdAssociationId: this.birdAssociationId,
+            activeNPId: activeNPId,
+            activeNP: join[3]
+          }))
+        )
+      )
     );
   }
 
@@ -127,11 +111,13 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
   }
 
   getNamedPlaces$(documentForm): Observable<any> {
+    const selected = (documentForm.options && documentForm.options.namedPlaceList || []).map((field: string) => field.replace('$.', ''));
     const query: NamedPlaceQuery = {
       collectionID: this.collectionId,
       municipality: this.municipalityId,
       birdAssociationArea: this.birdAssociationId,
-      includeUnits: documentForm.namedPlaceOptions.includeUnits
+      includeUnits: documentForm.namedPlaceOptions.includeUnits,
+      selectedFields: selected
     };
 
     if (this.npRequirementsNotMet(documentForm)) {
@@ -146,8 +132,8 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
       );
   }
 
-  getFormRights$(): Observable<Rights> {
-    return this.formPermissionService.getRights(this.documentForm);
+  getFormRights$(documentForm: any): Observable<Rights> {
+    return this.formPermissionService.getRights(documentForm);
   }
 
   findLangFromRoute(_route: ActivatedRouteSnapshot) {
