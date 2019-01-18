@@ -201,7 +201,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   private queryToFormQuery() {
     const query = this.searchQuery.query;
-
     this.formQuery = {
       onlyFinnish: !!query.onlyFinnish,
       onlyInvasive: query.invasiveSpeciesFilter === true,

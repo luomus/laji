@@ -34,6 +34,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('image') image: TemplateRef<any>;
   @ViewChild('link') link: TemplateRef<any>;
   @ViewChild('number') number: TemplateRef<any>;
+  @ViewChild('parent') parent: TemplateRef<any>;
 
   annotationClass = Annotation.AnnotationClassEnum;
   annotationTypes = Annotation.TypeEnum;

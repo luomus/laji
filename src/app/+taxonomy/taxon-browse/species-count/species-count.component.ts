@@ -46,6 +46,12 @@ export class SpeciesCountComponent implements OnInit {
       this.subFetch.unsubscribe();
     }
 
+    if (this.searchQuery.query.taxonRanks && this.searchQuery.query.taxonRanks.indexOf('MX.species') === -1) {
+      this.count = 0;
+      this.loading = false;
+      return;
+    }
+
     this.loading = true;
     this.subFetch = this.taxonomyService
       .taxonomyFindSpecies(

@@ -5,11 +5,24 @@
     </h1>
     <div>
       <div class="block">
-        <div class="panel panel-default" laji-panel [title]="'taxonomy.card' | translate" [open]="true" [autoToggle]="true">
+        <div class="panel panel-default"
+             laji-panel
+             [title]="'taxonomy.card' | translate"
+             [open]="settings['taxon-info']?.open !== false"
+             [autoToggle]="true"
+             (activate)="updateSettings('taxon-info', $event.open)"
+        >
           <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
         </div>
 
-        <div *ngIf="hasDescription" class="panel panel-default" laji-panel [title]="'Kuvaukset'" [open]="true" [autoToggle]="true">
+        <div *ngIf="hasDescription"
+             class="panel panel-default"
+             laji-panel
+             [title]="'Kuvaukset'"
+             [open]="settings['taxon-descriptions']?.open !== false"
+             [autoToggle]="true"
+             (activate)="updateSettings('taxon-descriptions', $event.open)"
+        >
           <laji-taxon-descriptions
             [taxonDescription]="taxonDescription"
             [context]="context"
@@ -17,21 +30,49 @@
           ></laji-taxon-descriptions>
         </div>
 
-        <div *ngIf="taxon.misspelledNames" class="panel panel-default" laji-panel [title]="'Synonyymit'" [open]="true" [autoToggle]="true">
+        <div *ngIf="taxon.misspelledNames"
+             class="panel panel-default"
+             laji-panel
+             [title]="'Synonyymit'"
+             [open]="settings['taxon-synonyms']?.open !== false"
+             [autoToggle]="true"
+             (activate)="updateSettings('taxon-synonyms', $event.open)"
+        >
           <laji-taxon-synonyms [taxon]="taxon"></laji-taxon-synonyms>
         </div>
 
-        <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName" class="panel panel-default" laji-panel [title]="'Muut nimet'" [open]="true" [autoToggle]="true">
+        <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName"
+             class="panel panel-default"
+             laji-panel
+             [title]="'Muut nimet'"
+             [open]="settings['taxon-names']?.open !== false"
+             [autoToggle]="true"
+             (activate)="updateSettings('taxon-names', $event.open)"
+        >
           <laji-taxon-names [taxon]="taxon"></laji-taxon-names>
         </div>
 
-        <div *ngIf="taxonConceptId" class="panel panel-default" laji-panel [title]="'taxonomy.taxonConcept' | translate" [open]="true" [autoToggle]="true">
+        <div *ngIf="taxonConceptId"
+             class="panel panel-default"
+             laji-panel
+             [title]="'taxonomy.taxonConcept' | translate"
+             [open]="settings['taxon-concept-info']?.open !== false"
+             [autoToggle]="true"
+             (activate)="updateSettings('taxon-concept-info', $event.open)"
+        >
           <laji-taxon-concept-info [taxonId]="taxon.id" [taxonConceptId]="taxonConceptId"></laji-taxon-concept-info>
         </div>
       </div>
 
       <div class="block">
-        <div *ngIf="isFromMasterChecklist" class="panel panel-default" laji-panel [title]="'taxonomy.map' | translate" [open]="true" [autoToggle]="true">
+        <div *ngIf="isFromMasterChecklist"
+             class="panel panel-default"
+             laji-panel
+             [title]="'taxonomy.map' | translate"
+             [open]="settings['taxon-map']?.open !== false"
+             [autoToggle]="true"
+             (activate)="updateSettings('taxon-map', $event.open)"
+        >
           <p class="disclaimer">
             {{ 'taxonomy.map.disclaimer' | translate }}
           </p>
@@ -44,7 +85,14 @@
           </laji-observation-map>
         </div>
 
-        <div class="panel panel-default taxon-images" laji-panel [hidden]="!hasTaxonImages && !hasCollectionImages" [title]="'taxonomy.images' | translate" [open]="true" [autoToggle]="true">
+        <div class="panel panel-default taxon-images"
+             laji-panel
+             [hidden]="!hasTaxonImages && !hasCollectionImages"
+             [title]="'taxonomy.images' | translate"
+             [open]="settings['taxon-images']?.open !== false"
+             [autoToggle]="true"
+             (activate)="updateSettings('taxon-images', $event.open)"
+        >
           <ul class="nav nav-tabs">
             <li role="presentation"
                 [ngClass]="{active: activeImageTab === 'taxon'}"
@@ -74,13 +122,26 @@
           </div>
         </div>
 
-        <div *ngIf="taxon.hasChildren" class="panel panel-default" laji-panel [title]="'taxonomy.speciesPieChartTitle' | translate" [open]="true" [autoToggle]="true">
+        <div *ngIf="taxon.hasChildren"
+             class="panel panel-default"
+             laji-panel
+             [title]="'taxonomy.speciesPieChartTitle' | translate"
+             [open]="settings['species-pie']?.open !== false"
+             [autoToggle]="true"
+             (activate)="updateSettings('species-pie', $event.open)"
+        >
           <laji-species-pie
             [taxonId]="taxon.id"
           ></laji-species-pie>
         </div>
 
-        <div class="panel panel-default" laji-panel [title]="'taxonomy.browse.title' | translate" [open]="true" [autoToggle]="true">
+        <div class="panel panel-default"
+             laji-panel
+             [title]="'taxonomy.browse.title' | translate"
+             [open]="settings['browse']?.open !== false"
+             [autoToggle]="true"
+             (activate)="updateSettings('browse', $event.open)"
+        >
           <ul class="br-list">
             <li>
               <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">

@@ -7,4 +7,5 @@ export interface TaxonomySearchQueryInterface {
   adminStatusFilters?: string[];
   typesOfOccurrenceFilters?: string[];
   typesOfOccurrenceNotFilters?: string[];
+  taxonRanks?: string[];
 }
