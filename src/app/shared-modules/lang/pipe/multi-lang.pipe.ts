@@ -18,10 +18,14 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
 
   }
 
-  transform(value: any, useFallback = true, lang?: string): string {
+  transform(value: any, useFallback = true, lang?: string): any {
     if (typeof value === 'string' || typeof value !== 'object') {
       return value;
     }
+    if (Array.isArray(value)) {
+      return value.map(v => this.transform(v, useFallback, lang));
+    }
+
     this.value = this.pickLang(value, useFallback, lang);
     if (!this.onLangChange) {
       this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {

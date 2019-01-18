@@ -8,9 +8,10 @@
       <div class="dragbar" (mousedown)="startDragging($event)"></div>
     </div>
     <div *ngIf="!showSidebar"
-         class="sidebar-toggle link"
+         class="sidebar-toggle open-toggle link"
          (click)="toggleSidebar()"
     >
+      <span style="margin-right: 8px">{{ 'species.taxa' | translate }}</span>
       <i class="glyphicon glyphicon-arrow-right"></i>
     </div>
     <div class="info-card-container" [style.width]="showSidebar ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'">
