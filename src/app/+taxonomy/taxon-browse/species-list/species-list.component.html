@@ -47,11 +47,14 @@
   </div>
 </div>
 
-<laji-species-download #speciesDownload
-                       [downloadLoading]="downloadLoading"
-                       (download)="download($event)">
-</laji-species-download>
-<laji-species-browse-observations [searchQuery]="searchQuery"></laji-species-browse-observations>
+<ng-container *ngIf="showDownloadAndBrowse">
+  <laji-species-download #speciesDownload
+                         [downloadLoading]="downloadLoading"
+                         (download)="download($event)">
+  </laji-species-download>
+  <laji-species-browse-observations [searchQuery]="searchQuery"
+  ></laji-species-browse-observations>
+</ng-container>
 
 <laji-species-list-options-modal #settingsModal
                                  (close)="onCloseModal()"

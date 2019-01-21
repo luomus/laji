@@ -43,6 +43,12 @@ import { TaxonSelectModule } from '../shared-modules/taxon-select/taxon-select.m
 import { TaxonDescriptionsComponent } from './taxonomy/taxon-descriptions/taxon-descriptions.component';
 import { TaxonSynonymsComponent } from './taxonomy/taxon-synonyms/taxon-synonyms.component';
 import { TaxonNamesComponent } from './taxonomy/taxon-names/taxon-names.component';
+import { BrowseSpeciesComponent } from './browse-species/browse-species.component';
+import { InformalGroupSelectComponent } from './browse-species/informal-group-select/informal-group-select.component';
+import { InformalListComponent } from './browse-species/informal-group-select/informal-list/informal-list.component';
+import {
+  InformalListBreadcrumbComponent
+} from './browse-species/informal-group-select/informal-list-breadcrumb/informal-list-breadcrumb.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -55,7 +61,8 @@ import { TaxonNamesComponent } from './taxonomy/taxon-names/taxon-names.componen
     InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
     SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
     SpeciesListOptionsModalComponent, BoldSynonymComponent,
-    SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonDescriptionsComponent, TaxonSynonymsComponent, TaxonNamesComponent
+    SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonDescriptionsComponent, TaxonSynonymsComponent,
+    TaxonNamesComponent, BrowseSpeciesComponent, InformalGroupSelectComponent, InformalListComponent, InformalListBreadcrumbComponent
   ],
 })
 export class TaxonomyModule {

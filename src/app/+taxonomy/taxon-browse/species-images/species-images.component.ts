@@ -48,7 +48,9 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subQueryUpdate.unsubscribe();
+    if (this.subQueryUpdate) {
+      this.subQueryUpdate.unsubscribe();
+    }
   }
 
   pageChanged(event) {

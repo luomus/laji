@@ -29,8 +29,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Input() searchQuery: TaxonomySearchQuery;
-  @Input() columnService: TaxonomyColumns;
   @Input() visible: boolean;
+  @Input() showDownloadAndBrowse = true;
 
   loading = false;
   downloadLoading = false;
@@ -61,7 +61,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef,
     private taxonExportService: TaxonExportService,
-    private dtUtil: DatatableUtil
+    private dtUtil: DatatableUtil,
+    private columnService: TaxonomyColumns
   ) { }
 
   ngOnInit() {

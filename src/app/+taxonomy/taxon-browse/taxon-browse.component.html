@@ -33,8 +33,7 @@
         <laji-species-list [hidden]="active !== 'list'"
                            *ngIf="activated['list']"
                            [visible]="active === 'list'"
-                           [searchQuery]="searchQuery"
-                           [columnService]="columnService">
+                           [searchQuery]="searchQuery">
         </laji-species-list>
         <laji-species-images [hidden]="active !== 'images'"
                              *ngIf="activated['images']"

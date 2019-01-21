@@ -1,0 +1,22 @@
+<div class="row poks">
+  <div *ngIf="showAll" class="col-xs-6 col-md-4 col-lg-3">
+    <a (click)="informalGroupSelect.emit('')" class="niks thumbnail panel panel-default link">
+      <div class="panel-heading">
+        <h3 style="height: 52px;" class="panel-title caption">{{ 'species.form.all' | translate }}</h3>
+      </div>
+      <div class="panel-body">
+        <div style="margin: 0 auto; width: 50px; height: 50px; background-image: url('/static/images/icons/species.svg');" class="informal-group-image"></div>
+      </div>
+    </a>
+  </div>
+  <div *ngFor="let group of tree.results" class="col-xs-6 col-md-4 col-lg-3">
+    <a (click)="informalGroupSelect.emit(group.id)" class="niks thumbnail panel panel-default link">
+      <div class="panel-heading">
+        <h3 style="height: 52px;" class="panel-title caption">{{ group.name }}</h3>
+      </div>
+      <div class="panel-body">
+        <div style="margin: 0 auto; width: 50px; height: 50px;" class="informal-group-image {{group.id}}"></div>
+      </div>
+    </a>
+  </div>
+</div>
