@@ -16,7 +16,7 @@
     <span [innerHTML]="variable.content | multiLang"></span>
   </div>
 </div>
-<ng-container *ngIf="taxonDescription[activeDescription]?.id !== 'default'">
+<ng-container *ngIf="taxonDescription[activeDescription]?.id && taxonDescription[activeDescription]?.id !== 'default'">
   {{ 'taxonomy.source' | translate }}: {{ taxonDescription[activeDescription]?.title | multiLang }}
 </ng-container>
 <div *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">

@@ -15,6 +15,7 @@ export class TaxonDescriptionsComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.activeDescription = 0;
     if (this.taxonDescription && this.context) {
       this.taxonDescription.forEach((description, idx) => {
         if (description.id === this.context) {

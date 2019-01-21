@@ -40,7 +40,7 @@
           <div class="row">
             <div class="col-md-6 first-col">
               <div style="margin-bottom: 10px">
-                <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()">
+                <a [routerLink]="['/taxon/' + taxon.key] | localize" [queryParams]="{showTree: false}" (click)="close()">
                   {{ 'Siirry lajikortille' }}
                   <i class="glyphicon glyphicon-tag"></i>
                 </a>

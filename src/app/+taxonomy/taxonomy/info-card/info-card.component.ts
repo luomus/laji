@@ -1,19 +1,20 @@
-
-import {catchError, concat, take, delay, retryWhen, combineLatest, map, switchMap, tap, share} from 'rxjs/operators';
-import { Observable, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
+import {catchError, concat, take, delay, retryWhen, map, tap} from 'rxjs/operators';
+import { Observable, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Inject,
   Input,
-  OnDestroy,
+  Output,
+  EventEmitter,
   OnInit,
+  OnChanges,
+  SimpleChanges,
   PLATFORM_ID,
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Logger } from '../../../shared/logger/logger.service';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
@@ -23,6 +24,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { CacheService } from '../../../shared/service/cache.service';
 
 const CACHE_KEY = 'info-card-boxes';
+interface Settings { [key: string]: {open: boolean}; }
 
 @Component({
   selector: 'laji-info-card',
@@ -30,8 +32,8 @@ const CACHE_KEY = 'info-card-boxes';
   styleUrls: ['./info-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InfoCardComponent implements OnInit, OnDestroy {
-  private static settings: any;
+export class InfoCardComponent implements OnInit, OnChanges {
+  private static settings: Settings;
 
   @ViewChild(ObservationMapComponent) map: ObservationMapComponent;
 
@@ -48,49 +50,39 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public loading = false;
 
   @Input() public taxonId: string;
-  public context: string;
-  public settings: any;
-
-  private subParam: Subscription;
+  @Input() public context: string;
+  @Output() descriptionChange = new EventEmitter<string>();
+  public settings: Settings;
 
   constructor(
     public translate: TranslateService,
     private taxonService: TaxonomyApi,
     private cacheService: CacheService,
-    private route: ActivatedRoute,
     private logger: Logger,
-    private router: Router,
     private title: Title,
     private cd: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: object,
   ) { }
 
   ngOnInit() {
-    this.taxonDescription = [];
-    this.taxonImages = [];
-    if (!this.taxonId) {
-      this.subParam = this.route.params.pipe(
-        combineLatest(this.route.queryParams),
-        map(data => {
-          this.taxonId = data[0]['id'];
-          this.context = data[0]['context'] || data[1]['context'] || 'default';
-          this.activeImage = 1;
-          return {...data[1], ...data[0]};
-        }),
-        switchMap(() => this.initTaxon())
-      )
-        .subscribe(() => {
-          this.cd.markForCheck();
-        });
-    }
-
     this.initSettings();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.taxonId) {
+      this.taxonDescription = [];
+      this.taxonImages = [];
+      this.activeImage = 1;
+      this.initTaxon().subscribe(() => {
+        this.cd.markForCheck();
+      });
+    }
   }
 
   private initSettings() {
     const settings$ = InfoCardComponent.settings ?
       ObservableOf(InfoCardComponent.settings) :
-      this.cacheService.getItem<any>(CACHE_KEY)
+      this.cacheService.getItem<Settings>(CACHE_KEY)
         .pipe(
           map(value => value || {}),
           tap(value => InfoCardComponent.settings = value)
@@ -98,6 +90,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
     settings$.subscribe(settings => {
       this.settings = settings;
+      this.cd.markForCheck();
     });
   }
 
@@ -119,19 +112,6 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
   setActiveImageTab(tab: string) {
     this.activeImageTab = tab;
-  }
-
-  ngOnDestroy() {
-    if (this.subParam) {
-      this.subParam.unsubscribe();
-    }
-  }
-
-  onDescriptionChange(context: string) {
-    this.router.navigate([], {
-      queryParams: (context === 'default' ? {} : {context: context}),
-      replaceUrl: true
-    });
   }
 
   get isFromMasterChecklist() {
