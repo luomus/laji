@@ -2,7 +2,7 @@
   <tbody>
   <tr>
     <th>TaxonID-{{ 'taxonomy.taxonConcept.id' | translate }}</th>
-    <td>{{ taxonConceptId }}</td>
+    <td><a [href]="'http://taxonid.org/' + taxonConceptId" target="_blank">{{ taxonConceptId }}</a></td>
   </tr>
   <tr *ngFor="let match of matches; let i = index">
     <th *ngIf="i === 0" [attr.rowspan]="matches.length">{{ 'taxonomy.taxonConcept.otherLists' | translate }}</th>
