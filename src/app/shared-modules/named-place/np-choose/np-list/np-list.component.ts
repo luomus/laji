@@ -85,7 +85,7 @@ export class NpListComponent {
       '$.municipality': {
         label: 'np.municipality'
       },
-      '$.invasiveControlOpen': {
+      '$.prepopulatedDocument.gatherings[0].invasiveControlOpen': {
         label: 'np.invasiveControlOpen',
         cellTemplate: 'boolToStrTpl'
       }
@@ -164,9 +164,6 @@ export class NpListComponent {
           map(areaLabel => [row, areaLabel]),
           take(1),
         ));
-      }
-      if ('$.invasiveControlOpen' in row) {
-        row['$.invasiveControlOpen'] = namedPlace.prepopulatedDocument.gatherings[0].invasiveControlOpen;
       }
       results.push(row);
     }
