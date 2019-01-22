@@ -27,7 +27,6 @@
   <div class="species-table-wrapper">
     <laji-datatable
       #dataTable
-      class="observation-table"
       (rowSelect)="onRowSelect($event)"
       [virtualScrolling]="true"
       [clientSideSorting]="false"
@@ -60,6 +59,5 @@
                                  (close)="onCloseModal()"
                                  (settingsLoaded)="onSettingsLoaded()"
                                  [searchQuery]="searchQuery"
-                                 [columnLookup]="columnService.columnLookup"
-                                 [listType]="'list'">
+                                 [columnLookup]="columnService.columnLookup">
 </laji-species-list-options-modal>

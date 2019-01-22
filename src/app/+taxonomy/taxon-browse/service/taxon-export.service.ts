@@ -56,7 +56,7 @@ export class TaxonExportService {
       aoa[0].push(cols[i].label);
       observables.push(
         this.translate.get(cols[i].label).pipe(tap((label) => {
-          aoa[0][i] = label;
+          aoa[0][i] = Array.isArray(cols[i].label) ? cols[i].label.map(key => label[key]).join(', ') : label;
         }))
       );
     }

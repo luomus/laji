@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
+import { TaxonomyTableColumn } from '../model/taxonomy-table-column';
 
 @Injectable()
 export class TaxonomyColumns {
-  allColumns: ObservationTableColumn[] = [
+  allColumns: TaxonomyTableColumn[] = [
     {
       name: 'id',
       label: 'taxonomy.card.id',
@@ -125,48 +125,39 @@ export class TaxonomyColumns {
     },
     {
       name: 'parent.domain',
-      selectField: 'parent',
-      cellTemplate: 'parent'
+      selectField: 'parent'
     },
     {
       name: 'parent.kingdom',
-      selectField: 'parent',
-      cellTemplate: 'parent'
+      selectField: 'parent'
     },
     {
       name: 'parent.phylum',
-      selectField: 'parent',
-      cellTemplate: 'parent'
+      selectField: 'parent'
     },
     {
       name: 'parent.division',
-      selectField: 'parent',
-      cellTemplate: 'parent'
+      selectField: 'parent'
     },
     {
       name: 'parent.class',
-      selectField: 'parent',
-      cellTemplate: 'parent'
+      selectField: 'parent'
     },
     {
       name: 'parent.order',
-      selectField: 'parent',
-      cellTemplate: 'parent'
+      selectField: 'parent'
     },
     {
       name: 'parent.family',
-      selectField: 'parent',
-      cellTemplate: 'parent'
+      selectField: 'parent'
     },
     {
       name: 'parent.tribe',
-      selectField: 'parent',
-      cellTemplate: 'parent'
+      selectField: 'parent'
     },
     {
       name: 'parent.genus',
-      selectField: 'parent',
-      cellTemplate: 'parent'
+      selectField: 'parent'
     }
   ];
 
@@ -176,16 +167,38 @@ export class TaxonomyColumns {
     this.allColumns = this.allColumns
       .map(column => {
         this.columnLookup[column.name] = column;
+
         if (!column.label) {
           column.label = 'taxonomy.' + column.name;
         }
+        if (column.selectField === 'parent') {
+          column.shownColumns = [
+            {
+              name: column.name + '.scientificName',
+              label: [column.label as string, 'taxonomy.scientific.name.lower']
+            },
+            {
+              name: column.name + '.scientificNameAuthorship',
+              label: [column.label as string, 'taxonomy.author.lower']
+            }
+          ];
+        }
+
         return column;
       });
   }
 
   getColumns(selected) {
-    return selected.map(name => {
-      return {...this.columnLookup[name]};
-    });
+    return selected.reduce((arr, name) => {
+      if (this.columnLookup[name].shownColumns) {
+        this.columnLookup[name].shownColumns.forEach(col => {
+          arr.push({...col});
+        });
+      } else {
+        arr.push({...this.columnLookup[name]});
+      }
+
+      return arr;
+    }, []);
   }
 }

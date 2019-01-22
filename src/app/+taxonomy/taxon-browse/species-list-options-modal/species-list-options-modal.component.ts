@@ -14,10 +14,6 @@ export class SpeciesListOptionsModalComponent implements OnInit {
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() columnLookup: any;
   @Input() requiredFields: string[] = [];
-  @Input() listType: 'list'|'tree';
-
-  private optionsKey: string;
-  private storeKey: string;
 
   @Output() close = new EventEmitter();
   @Output() settingsLoaded = new EventEmitter();
@@ -29,18 +25,10 @@ export class SpeciesListOptionsModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.listType === 'list') {
-      this.optionsKey = 'listOptions';
-      this.storeKey = UserService.SETTINGS_TAXONOMY_LIST;
-    } else {
-      this.optionsKey = 'treeOptions';
-      this.storeKey = UserService.SETTINGS_TAXONOMY_TREE;
-    }
-
-    this.userService.getItem<any>(this.storeKey)
+    this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
       .subscribe(data => {
         if (data && data.selected) {
-          this.searchQuery[this.optionsKey].selected = data.selected;
+          this.searchQuery.listOptions.selected = data.selected;
         }
         this.settingsLoaded.emit();
       });
@@ -63,20 +51,20 @@ export class SpeciesListOptionsModalComponent implements OnInit {
   }
 
   openModal() {
-    this._selected = [...this.searchQuery[this.optionsKey].selected];
+    this._selected = [...this.searchQuery.listOptions.selected];
     this.modalRef.show();
   }
 
   closeOkModal() {
-    this.searchQuery[this.optionsKey].selected = [...this._selected];
+    this.searchQuery.listOptions.selected = [...this._selected];
     this.saveSettings();
     this.close.emit();
     this.modalRef.hide();
   }
 
   private saveSettings() {
-    this.userService.setItem(this.storeKey, {
-      selected: this.searchQuery[this.optionsKey].selected
+    this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
+      selected: this.searchQuery.listOptions.selected
     }).subscribe(() => {}, () => {});
   }
 }
