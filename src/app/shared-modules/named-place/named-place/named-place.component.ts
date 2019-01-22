@@ -288,10 +288,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
     }
     this.editMode = false;
-    this.updateQueryParams();
     if (np) {
       this.setActiveNP(idx);
     }
+    this.updateQueryParams();
   }
 
   setErrorMessage(msg) {
