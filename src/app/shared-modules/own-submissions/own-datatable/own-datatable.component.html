@@ -6,6 +6,19 @@
       </button>
     </div>
 
+    <div class="print-actions" *ngIf="showPrintLabels">
+      <ng-container *ngIf="printState === 'none'">
+        <button type="button" class="btn btn-default inline-block" (click)="doLabels()">
+          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'haseka.print.select' | translate }}</span>
+        </button>
+      </ng-container>
+      <ng-container *ngIf="printState === 'select'">
+        <div class="form-control-static">
+          {{ 'haseka.print.intro' | translate }}
+        </div>
+      </ng-container>
+    </div>
+
     <input class="form-control inline-block"
            type='text'
            placeholder="{{'haseka.submissions.filter' | translate}}"
@@ -21,6 +34,9 @@
       pagerPrevious: 'glyphicon glyphicon-step-backward',
       pagerNext: 'glyphicon glyphicon-step-forward'
     }"
+    [selectionType]="selectionType"
+    (select)='onSelect($event)'
+    [selectAllRowsOnPage]="false"
     [rows]="visibleRows"
     [rowIdentity]="rowIdentity"
     [externalSorting]="true"
@@ -42,6 +58,17 @@
         </div>
       </ng-template>
     </ngx-datatable-row-detail>
+
+    <ngx-datatable-column
+      *ngIf="!!selectionType"
+      [width]="30"
+      [sortable]="false"
+      [canAutoResize]="false"
+      [draggable]="false"
+      [resizeable]="false"
+      [headerCheckboxable]="true"
+      [checkboxable]="true">
+    </ngx-datatable-column>
 
     <ngx-datatable-column [flexGrow]="1" [resizeable]="false"
                           [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
@@ -148,6 +175,21 @@
       </ng-template>
     </ngx-datatable-column>
   </ngx-datatable>
+  <ng-container *ngIf="printState === 'select'">
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-sm-2">
+        <select class="form-control">
+          <option *ngFor="let label of labels" [value]="label">{{ label }}</option>
+          <option value="">{{ 'new' | translate }}...</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <button type="button" class="btn btn-success" (click)="doLabels()" [disabled]="!selected || selected.length === 0">
+          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'haseka.print.pdf' | translate }}</span>
+        </button>
+      </div>
+    </div>
+  </ng-container>
 </ng-container>
 
 <div class="modal" tabindex="-1" role="dialog" bsModal #chooseFileTypeModal="bs-modal">
