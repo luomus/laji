@@ -1,156 +1,154 @@
-<laji-spinner [spinning]="!(_documents && rows)" [overlay]="false">
-  <div *ngIf="_documents && rows">
-    <div id="filter-row-container">
-      <div id="download-button-container" *ngIf="showDownloadAll">
-        <button type="button" class="btn btn-default inline-block" (click)="openChooseFileTypeModal(-1)">
-          <span><i class="glyphicon glyphicon-download-alt"></i> {{ "haseka.submissions.download" | translate }} {{ "haseka.submissions.submissions" | translate }}</span>
-        </button>
-      </div>
-
-      <input class="form-control inline-block"
-             type='text'
-             placeholder="{{'haseka.submissions.filter' | translate}}"
-             (keyup)='updateFilter($event)'/>
+<ng-container *ngIf="_documents && rows">
+  <div id="filter-row-container">
+    <div id="download-button-container" *ngIf="showDownloadAll">
+      <button type="button" class="btn btn-default inline-block" (click)="openChooseFileTypeModal()">
+        <span><i class="glyphicon glyphicon-download-alt"></i> {{ "haseka.submissions.download" | translate }} {{ "haseka.submissions.submissions" | translate }}</span>
+      </button>
     </div>
-    <ngx-datatable
-      class="material striped"
-      [cssClasses]="{
-        sortAscending: 'glyphicon glyphicon-chevron-down',
-        sortDescending: 'glyphicon glyphicon-chevron-up',
-        pagerLeftArrow: 'glyphicon glyphicon-chevron-left',
-        pagerRightArrow: 'glyphicon glyphicon-chevron-right',
-        pagerPrevious: 'glyphicon glyphicon-step-backward',
-        pagerNext: 'glyphicon glyphicon-step-forward'
-      }"
-      [rows]="rows"
-      [rowIdentity]="rowIdentity"
-      [externalSorting]="true"
-      [sorts]="defaultSort"
-      [columnMode]="'flex'"
-      [headerHeight]="38"
-      [rowHeight]="'auto'"
-      [limit]="20"
-      [footerHeight]="30"
-      [messages]="{emptyMessage: loadError, totalMessage: totalMessage}"
-      (sort)="onSort($event)"
-    >
 
-      <ngx-datatable-row-detail [rowHeight]="'auto'">
-        <ng-template let-row="row" ngx-datatable-row-detail-template>
-          <div *ngFor="let col of useColumns | filterColumns:this.displayMode:true" style="padding-left: 35px">
-            <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
-            <span>{{ row[col.prop] }}</span>
-          </div>
-        </ng-template>
-      </ngx-datatable-row-detail>
-
-      <ngx-datatable-column [flexGrow]="1" [resizeable]="false"
-                            [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
-        <ng-template ngx-datatable-header-template><span></span></ng-template>
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="link">
-            <i class="glyphicon"
-              [ngClass]="{'glyphicon-chevron-right': !row.$$expanded, 'glyphicon-chevron-down': row.$$expanded}"
-              (click)="toggleExpandRow(row)"></i>
-          </span>
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column *ngIf="actions" [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate" [cellClass]="'center-text'"
-                            [flexGrow]="1" [resizeable]="false" [draggable]="false" [headerClass]="'empty-header'" ngPreserveWhitespaces>
-        <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-          <span class="datatable-header-cell-wrapper link"><span></span></span>
-        </ng-template>
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-          <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
-            <span class="label label-success link inline-block"
-                  [tooltip]="'result.showViewer' | translate"
-                  [placement]="'right'"
-                  (click)="showViewer(row)">
-              <i class="glyphicon glyphicon-eye-open"></i>
-            </span>
-          </span>
-          <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
-            <span class="label label-warning link inline-block"
-                  [tooltip]="'result.showPrivateViewer' | translate"
-                  [placement]="'right'"
-                  (click)="showViewer(row)">
-              <i class="glyphicon glyphicon-eye-close"></i>
-            </span>
-          </span>
-          <a *ngIf="actions.indexOf('edit') > -1" class="label label-primary link inline-block"
-                [ngClass]="{
-                  'label-primary': !row.locked,
-                  'label-default': row.locked
-                }"
-                [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
-                [href]="row._editUrl"
-                [placement]="'right'">
-              <i class="glyphicon glyphicon-edit"></i>
-          </a>
-          <span *ngIf="showMakeTemplate(row)">
-            <span class="label label-warning link inline-block"
-                  (click)="makeTemplate(row)"
-                  [tooltip]="'haseka.form.saveTemplate' | translate"
-                  [placement]="'right'">
-              <i class="glyphicon glyphicon-floppy-disk"></i>
-            </span>
-          </span>
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column *ngFor="let col of useColumns | filterColumns:this.displayMode"
-                            [prop]="col.prop"
-                            [resizeable]="false"
-                            [draggable]="false"
-                            [name]="(columnNameMapping && columnNameMapping[col.prop])
-                                    ? columnNameMapping[col.prop]
-                                    : 'haseka.submissions.' + col.prop | translate"
-                            [flexGrow]="3"
-                            [cellClass]="'break-word'">
-        <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-          <span class="datatable-header-cell-wrapper"
-                (click)="sort()"
-                title="{{column.name}}">
-            <span class="datatable-header-cell-label draggable">
-              {{ column.name }}
-            </span>
-          </span>
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column *ngIf="actions && (actions.indexOf('download') > -1 || actions.indexOf('stats') > -1 || actions.indexOf('delete') > -1)" [flexGrow]="1" [draggable]="false" [resizeable]="false" [cellClass]="'center-text'">
-        <ng-template ngx-datatable-header-template><span></span></ng-template>
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-          <div ngPreserveWhitespaces>
-            <span *ngIf="actions.indexOf('download') > -1 && onlyTemplates === false" class="label label-default link inline-block"
-                  [tooltip]="('haseka.submissions.download' | translate) + ' ' + ('haseka.submissions.submission' | translate)"
-                  [placement]="'left'"
-                  [container]="'body'"
-                  (click)="openChooseFileTypeModal(row.index)">
-              <i class="glyphicon glyphicon-download-alt"></i>
-            </span>
-            <a *ngIf="actions.indexOf('stats') > -1 && formsById[_documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
-                  class="label label-warning link inline-block"
-                  [tooltip]="'haseka.submissions.toStatistics' | translate"
-                  [placement]="'left'"
-                  [container]="'body'"
-                  [href]="'/theme/linjalaskenta/statistics/' + row.id">
-              <i class="glyphicon glyphicon-stats"></i>
-            </a>
-            <span *ngIf="actions.indexOf('delete') > -1 && (row.creator === userId || admin)" class="label label-danger link inline-block"
-                  [tooltip]="'friend.remove' | translate"
-                  [placement]="'left'"
-                  [container]="'body'"
-                  (click)="deleteDialog(row)">
-              <i class="glyphicon glyphicon-remove"></i>
-            </span>
-          </div>
-        </ng-template>
-      </ngx-datatable-column>
-    </ngx-datatable>
+    <input class="form-control inline-block"
+           type='text'
+           placeholder="{{'haseka.submissions.filter' | translate}}"
+           (keyup)='updateFilter($event)'/>
   </div>
-</laji-spinner>
+  <ngx-datatable
+    class="material striped"
+    [cssClasses]="{
+      sortAscending: 'glyphicon glyphicon-chevron-down',
+      sortDescending: 'glyphicon glyphicon-chevron-up',
+      pagerLeftArrow: 'glyphicon glyphicon-chevron-left',
+      pagerRightArrow: 'glyphicon glyphicon-chevron-right',
+      pagerPrevious: 'glyphicon glyphicon-step-backward',
+      pagerNext: 'glyphicon glyphicon-step-forward'
+    }"
+    [rows]="rows"
+    [rowIdentity]="rowIdentity"
+    [externalSorting]="true"
+    [sorts]="defaultSort"
+    [columnMode]="'flex'"
+    [headerHeight]="38"
+    [rowHeight]="'auto'"
+    [limit]="20"
+    [footerHeight]="30"
+    [messages]="{emptyMessage: loadError, totalMessage: totalMessage}"
+    (sort)="onSort($event)"
+  >
+
+    <ngx-datatable-row-detail [rowHeight]="'auto'">
+      <ng-template let-row="row" ngx-datatable-row-detail-template>
+        <div *ngFor="let col of useColumns | filterColumns:this.displayMode:true" style="padding-left: 35px">
+          <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
+          <span>{{ row[col.prop] }}</span>
+        </div>
+      </ng-template>
+    </ngx-datatable-row-detail>
+
+    <ngx-datatable-column [flexGrow]="1" [resizeable]="false"
+                          [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
+      <ng-template ngx-datatable-header-template><span></span></ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <span class="link">
+          <i class="glyphicon"
+            [ngClass]="{'glyphicon-chevron-right': !row.$$expanded, 'glyphicon-chevron-down': row.$$expanded}"
+            (click)="toggleExpandRow(row)"></i>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column *ngIf="actions" [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate" [cellClass]="'center-text'"
+                          [flexGrow]="1" [resizeable]="false" [draggable]="false" [headerClass]="'empty-header'" ngPreserveWhitespaces>
+      <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span class="datatable-header-cell-wrapper link"><span></span></span>
+      </ng-template>
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
+          <span class="label label-success link inline-block"
+                [tooltip]="'result.showViewer' | translate"
+                [placement]="'right'"
+                (click)="showViewer(row.id)">
+            <i class="glyphicon glyphicon-eye-open"></i>
+          </span>
+        </span>
+        <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
+          <span class="label label-warning link inline-block"
+                [tooltip]="'result.showPrivateViewer' | translate"
+                [placement]="'right'"
+                (click)="showViewer(row.id)">
+            <i class="glyphicon glyphicon-eye-close"></i>
+          </span>
+        </span>
+        <a *ngIf="actions.indexOf('edit') > -1" class="label label-primary link inline-block"
+              [ngClass]="{
+                'label-primary': !row.locked,
+                'label-default': row.locked
+              }"
+              [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
+              [href]="row._editUrl"
+              [placement]="'right'">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <span *ngIf="showMakeTemplate(row)">
+          <span class="label label-warning link inline-block"
+                (click)="makeTemplate(row)"
+                [tooltip]="'haseka.form.saveTemplate' | translate"
+                [placement]="'right'">
+            <i class="glyphicon glyphicon-floppy-disk"></i>
+          </span>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column *ngFor="let col of useColumns | filterColumns:this.displayMode"
+                          [prop]="col.prop"
+                          [resizeable]="false"
+                          [draggable]="false"
+                          [name]="(columnNameMapping && columnNameMapping[col.prop])
+                                  ? columnNameMapping[col.prop]
+                                  : 'haseka.submissions.' + col.prop | translate"
+                          [flexGrow]="3"
+                          [cellClass]="'break-word'">
+      <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span class="datatable-header-cell-wrapper"
+              (click)="sort()"
+              title="{{column.name}}">
+          <span class="datatable-header-cell-label draggable">
+            {{ column.name }}
+          </span>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column *ngIf="actions && (actions.indexOf('download') > -1 || actions.indexOf('stats') > -1 || actions.indexOf('delete') > -1)" [flexGrow]="1" [draggable]="false" [resizeable]="false" [cellClass]="'center-text'">
+      <ng-template ngx-datatable-header-template><span></span></ng-template>
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        <div ngPreserveWhitespaces>
+          <span *ngIf="actions.indexOf('download') > -1 && onlyTemplates === false" class="label label-default link inline-block"
+                [tooltip]="('haseka.submissions.download' | translate) + ' ' + ('haseka.submissions.submission' | translate)"
+                [placement]="'left'"
+                [container]="'body'"
+                (click)="openChooseFileTypeModal(value.id)">
+            <i class="glyphicon glyphicon-download-alt"></i>
+          </span>
+          <a *ngIf="actions.indexOf('stats') > -1 && formsById[_documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
+                class="label label-warning link inline-block"
+                [tooltip]="'haseka.submissions.toStatistics' | translate"
+                [placement]="'left'"
+                [container]="'body'"
+                [href]="'/theme/linjalaskenta/statistics/' + row.id">
+            <i class="glyphicon glyphicon-stats"></i>
+          </a>
+          <span *ngIf="actions.indexOf('delete') > -1 && (row.creator === userId || admin)" class="label label-danger link inline-block"
+                [tooltip]="'friend.remove' | translate"
+                [placement]="'left'"
+                [container]="'body'"
+                (click)="deleteDialog(row)">
+            <i class="glyphicon glyphicon-remove"></i>
+          </span>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</ng-container>
 
 <div class="modal" tabindex="-1" role="dialog" bsModal #chooseFileTypeModal="bs-modal">
   <div class="modal-dialog modal-sm">
@@ -178,7 +176,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="download()">
+        <button type="button" class="btn btn-default" (click)="download.emit({fileType: fileType, documentId: downloadedDocumentId})">
           <span>{{ "haseka.submissions.download" | translate }}</span>
         </button>
       </div>
