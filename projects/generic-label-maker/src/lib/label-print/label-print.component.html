@@ -1,3 +1,6 @@
-<p>
-  label-print works!
-</p>
+<div [class]="btnClass" (click)="btnClick($event)">{{labelButton}}</div>
+<div #pagesContainer class="print-area">
+  <ng-container *ngIf="pages">
+    <ll-label-page *ngFor="let page of pages" [data]="page" [setup]="setup" [pageLayout]="pageLayout" (ready)="printReady()"></ll-label-page>
+  </ng-container>
+</div>

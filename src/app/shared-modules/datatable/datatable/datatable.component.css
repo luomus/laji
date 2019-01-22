@@ -1,7 +1,14 @@
 :host ::ng-deep .datatable-body-row.active {
-    background-color: #a0b6ce !important;
+  background-color: #a0b6ce !important;
+}
+
+/* Workaround for ngx-datatable bug where a black bar appears on some rows
+   https://github.com/swimlane/ngx-datatable/issues/1616
+*/
+:host ::ng-deep .datatable-body-row {
+  transform: translateZ(0);
 }
 
 :host ::ng-deep .datatable-body-row.active .datatable-row-center {
-    background-color: #a0b6ce !important; 
+  background-color: #a0b6ce !important;
 }

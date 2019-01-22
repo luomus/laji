@@ -34,12 +34,8 @@ export class NamedPlacesService {
   }
 
   getNamedPlace(id, userToken?: string): Observable<NamedPlace> {
-    if (this.cache) {
-      for (const place of this.cache) {
-        if (place.id === id) {
-          return ObservableOf(place);
-        }
-      }
+    if (!id) {
+      return ObservableOf(null);
     }
     return this.namedPlaceApi
       .findById(id, userToken);

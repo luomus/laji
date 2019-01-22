@@ -37,6 +37,7 @@ export class NpEditComponent {
 
   @Input() mapOptionsData: any;
   @Input() npFormData: any;
+  @Input() collectionId: string;
 
   @Input() editMode = false;
   @Input() allowEdit = true;

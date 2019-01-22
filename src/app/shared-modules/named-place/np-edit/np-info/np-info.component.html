@@ -72,10 +72,11 @@
                       (click)="releaseButtonClick.emit()">{{ formData.namedPlaceOptions?.releaseLabel || 'np.release' | translate }}</button>
             </div>
           </ng-container>
-         <laji-request *ngSwitchCase="'nouse'"
-          [collectionId]="collectionId"
-          [disableDescription]="true"
-         ></laji-request>
+          <ng-container *ngSwitchCase="'nouse'">
+            <laji-request [collectionId]="collectionId"
+                          [disableDescription]="true"
+            ></laji-request>
+          </ng-container>
           <ng-container *ngSwitchCase="'reservable'">
             <div class="row-container">
               <button type="button"

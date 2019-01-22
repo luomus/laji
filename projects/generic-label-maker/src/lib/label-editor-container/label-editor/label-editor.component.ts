@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, } from '@angular/core';
-import { Label, LabelItem, LabelItemSelectAction } from '../../generic-label-maker.interface';
+import { LabelItem, LabelItemSelectAction, Setup } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { LabelService } from '../../label.service';
 })
 export class LabelEditorComponent {
 
-  _label: Label;
+  _setup: Setup;
   _magnification = 2;
 
   height: number;
@@ -17,8 +17,7 @@ export class LabelEditorComponent {
   active: LabelItem;
   init = false;
 
-  @Input() labelItem: LabelItem[] = [];
-  @Output() labelItemChange = new EventEmitter<LabelItem[]>();
+  @Output() setupChange = new EventEmitter<Setup>();
   @Output() showSettings = new EventEmitter<LabelItemSelectAction>();
 
   constructor(labelService: LabelService) {
@@ -26,8 +25,8 @@ export class LabelEditorComponent {
   }
 
   @Input()
-  set label(label: Label) {
-    this._label = label;
+  set setup(setup: Setup) {
+    this._setup = setup;
     this.recalculate();
   }
 
@@ -38,18 +37,35 @@ export class LabelEditorComponent {
   }
 
   recalculate() {
-    if (!this._label) {
+    if (!this._setup) {
       return;
     }
-    this.height = this._label.height * this._magnification;
-    this.width = this._label.width * this._magnification;
+    this.height = this._setup.label['height.mm'];
+    this.width = this._setup.label['width.mm'];
   }
 
   onItemChange(originalItem: LabelItem, newItem: LabelItem) {
     const result = [];
-    this.labelItem.forEach(item => {
+    this._setup.labelItems.forEach(item => {
       result.push(item === originalItem ? newItem : item);
     });
-    this.labelItemChange.emit(result);
+    this._setup = {
+      ...this._setup,
+      labelItems: result
+    };
+    this.setupChange.emit(this._setup);
+
+  }
+
+  updateDimensions(event: Event, target: string, sec: 'page'|'label') {
+    const value = Number((event.target as HTMLInputElement).value);
+    this._setup = {
+      ...this._setup,
+      [sec]: {
+        ...this._setup[sec],
+        [target]: value
+      }
+    };
+    this.setupChange.emit(this._setup);
   }
 }

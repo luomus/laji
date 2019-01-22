@@ -19,6 +19,13 @@ export const Global = {
     namedPlace: 'MHL.36',
     collectionContest: 'MHL.25'
   },
+  canHaveTemplate: [
+    'JX.519',
+    'MHL.6',
+    'MHL.33',
+    'MHL.9',
+    'MHL.25'
+  ],
   collections: {
     nafi: 'HR.175',
     wbc: 'HR.39',

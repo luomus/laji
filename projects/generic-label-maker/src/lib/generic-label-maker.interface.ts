@@ -1,57 +1,25 @@
-interface Margin {
-  /**
-   * Top margin in mm
-   */
-  top?: number;
-
-  /**
-   * Left margin in mm
-   */
-  right?: number;
-
-  /**
-   * Bottom margin in mm
-   */
-  bottom?: number;
-
-
-  /**
-   * Left margin in mm
-   */
-  left?: number;
+export interface Style {
+  'height.mm'?: number;
+  'width.mm'?: number;
+  'marginTop.mm'?: number;
+  'marginLeft.mm'?: number;
+  'marginBottom.mm'?: number;
+  'marginRight.mm'?: number;
+  'paddingTop.mm'?: number;
+  'paddingLeft.mm'?: number;
+  'paddingBottom.mm'?: number;
+  'paddingRight.mm'?: number;
+  'font-size.pt'?: number;
+  'top.mm'?: number;
+  'left.mm'?: number;
 }
 
-interface Font {
-  face?: string;
-  size?: string;
-  'line-height'?: number;
-}
-
-export interface Size {
-
-  /**
-   * Width of the page in mm
-   */
-  width: number;
-
-  /**
-   * Height of the page in mm
-   */
-  height: number;
-
-  /**
-   * Page margins in mm
-   */
-  margin?: Margin;
-
-}
-
-export interface LabelItem extends Size {
+export interface LabelItem {
   x: number;
   y: number;
   type: string;
   fields: LabelField[];
-  font?: Font;
+  style?: Style;
   order?: number;
 }
 
@@ -63,15 +31,11 @@ export interface LabelItemSelectAction {
 export interface LabelField {
   field: string;
   label: string;
-  exampleTxt?: string;
+  content?: string;
   separator?: string;
   includeLabel?: boolean;
   isQRCode?: boolean;
-  font?: Font;
-}
-
-export interface Label extends Size {
-  items: LabelItem[];
+  style?: Style;
 }
 
 export interface Setup {
@@ -79,13 +43,13 @@ export interface Setup {
   /**
    * Pages size object
    */
-  page: Size;
+  page: Style;
 
 
   /**
    * Labels size object
    */
-  label: Size;
+  label: Style;
 
   /**
    * Items on the label

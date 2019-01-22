@@ -1,42 +1,54 @@
 import { Injectable } from '@angular/core';
-import { Setup } from './generic-label-maker.interface';
+import { Setup, Style } from './generic-label-maker.interface';
+
+export interface PageLayout {
+  cols: number;
+  rows: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class LabelService {
 
-  public static EmptySetup: Setup = {
-    page: {
-      height: 297,
-      width: 210,
-      margin: {
-        top: 10,
-        left: 10
-      }
-    },
-    label: {
-      height: 20,
-      width: 50,
-      margin: {
-        top: 3,
-        left: 3
-      }
-    },
-    labelItems: []
-  };
-
   private pixelToMMRation;
+
+  public static widthInner(style: Style) {
+    return style['width.mm'] - ((style['paddingRight.mm'] || 0) + (style['paddingLeft.mm'] || 0));
+  }
+
+  public static heightInner(style: Style) {
+    return style['height.mm'] - ((style['paddingTop.mm'] || 0) + (style['paddingBottom.mm'] || 0));
+  }
+
+  public static widthOuter(style: Style) {
+    return style['width.mm'] + ((style['marginRight.mm'] || 0) + (style['marginLeft.mm'] || 0));
+  }
+
+  public static heightOuter(style: Style) {
+    return style['height.mm'] + ((style['marginTop.mm'] || 0) + (style['marginBottom.mm'] || 0));
+  }
 
   constructor() {}
 
+  public countLabelsPerPage(setup: Setup): PageLayout {
+    const pageWidth = LabelService.widthInner(setup.page);
+    const pageHeight = LabelService.heightInner(setup.page);
+    const labelWidth = LabelService.widthOuter(setup.label);
+    const labelHeight = LabelService.heightOuter(setup.label);
+
+    return {
+      cols: Math.floor(pageWidth / labelWidth),
+      rows: Math.floor(pageHeight / labelHeight)
+    };
+  }
 
   public pixelToMm(pixels: number) {
-    return Math.floor(pixels / this.pixelToMMRation);
+    return pixels / this.pixelToMMRation;
   }
 
   public mmToPixel(mm: number) {
-    return Math.floor(mm * this.pixelToMMRation);
+    return mm * this.pixelToMMRation;
   }
 
   public initPixelMMRatio(elem100mmHigh: HTMLDivElement) {
@@ -48,6 +60,10 @@ export class LabelService {
 
   public hasRation() {
     return !!this.pixelToMMRation;
+  }
+
+  public hasValue(data: object, field: string) {
+    return !(typeof data[field] === 'undefined' || data[field] === '');
   }
 
 }

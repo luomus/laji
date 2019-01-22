@@ -113,6 +113,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.userID = data.user.id;
       this.formRights = data.formRights;
       this.namedPlaces = data.namedPlaces;
+      this.namedPlace = data.activeNP;
       this.birdAssociationArea = data.birdAssociationId;
       this.municipality = data.municipalityId;
       this.documentForm = data.documentForm;
@@ -260,12 +261,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   setActiveNP(idx: number) {
     this.activeNP = idx;
-    if (this.activeNP >= 0) {
-      if (this.namedPlaces) { this.namedPlace = this.namedPlaces[this.activeNP]; }
-      if (this.editView) { this.editView.npClick(); }
-    } else {
-      this.namedPlace = null;
-    }
   }
 
   toEditMode(create: boolean) {

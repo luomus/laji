@@ -111,8 +111,8 @@ export class FormPermissionService {
         if (!login) {
           return ObservableOf(notLoggedIn);
         } else if (!form.collectionID || !form.features || (
-            form.features.indexOf(Form.Feature.Restricted) === -1 &&
-            form.features.indexOf(Form.Feature.Administer) === -1
+          form.features.indexOf(Form.Feature.Restricted) === -1 &&
+          form.features.indexOf(Form.Feature.Administer) === -1
         )) {
           return ObservableOf(notRestricted);
         }

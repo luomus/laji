@@ -1,22 +1,30 @@
 <h4 *ngIf="header">{{ header | translate }}</h4>
 <alert *ngIf="yearInfoError" type="danger">{{ yearInfoError }}</alert>
-
-<div *ngIf="!yearInfoError">
-  <laji-year-slider *ngIf="!onlyTemplates && !!yearInfo" [year]="year" [showCounts]="!formID"
-                    (rangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
-  <laji-own-datatable
-    (documentClicked)="onDocumentClick($event)"
-    [actions]="actions"
-    [admin]="admin"
-    [columns]="onlyTemplates ? templateColumns : columns"
-    [columnNameMapping]="columnNameMapping"
-    [showDownloadAll]="showDownloadAll && !onlyTemplates"
-    [useInternalDocumentViewer]="useInternalDocumentViewer"
-    [loadError]="documentError"
-    [onlyTemplates]="onlyTemplates"
-    [year]="year"
-    [documents]="activeDocuments"></laji-own-datatable>
-</div>
+<ng-container *ngIf="!yearInfoError">
+  <ng-container *ngIf="!onlyTemplates">
+    <laji-year-slider [year]="year" [showCounts]="!formID"
+                      (rangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo$ | async"></laji-year-slider>
+  </ng-container>
+  <div class="own-submissions-container">
+    <laji-spinner [spinning]="loading" [overlay]="true">
+    </laji-spinner>
+    <laji-own-datatable
+      (documentClicked)="onDocumentClick($event)"
+      (download)="download($event)"
+      (template)="saveTemplate($event)"
+      (delete)="delete($event)"
+      [actions]="actions"
+      [admin]="admin"
+      [columns]="onlyTemplates ? templateColumns : columns"
+      [columnNameMapping]="columnNameMapping"
+      [showDownloadAll]="showDownloadAll && !onlyTemplates"
+      [loadError]="documentError"
+      [onlyTemplates]="onlyTemplates"
+      [year]="year"
+      [templateForm]="templateForm"
+      [documents]="documents$ | async"></laji-own-datatable>
+  </div>
+</ng-container>
 
 <div class="modal fade" bsModal #documentModal="bs-modal"
      (onHidden)="documentModalVisible = false"
@@ -28,13 +36,15 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
-        <laji-document *ngIf="shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
-                       [uri]="shownDocument.id"
-                       [own]="!admin">
-        </laji-document>
-        <laji-document-local *ngIf="shownDocument.publicityRestrictions !== publicity.publicityRestrictionsPublic"
-                             [document]="shownDocument">
-        </laji-document-local>
+        <ng-container *ngIf="shownDocument$ | async as shownDocument">
+          <laji-document *ngIf="shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
+                         [uri]="shownDocument.id"
+                         [own]="!admin">
+          </laji-document>
+          <laji-document-local *ngIf="shownDocument.publicityRestrictions !== publicity.publicityRestrictionsPublic"
+                               [document]="shownDocument">
+          </laji-document-local>
+        </ng-container>
       </div>
     </div>
   </div>

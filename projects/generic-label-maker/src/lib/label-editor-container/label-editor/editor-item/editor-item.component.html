@@ -17,7 +17,7 @@
     <div class="option-handle"><i class="glyphicon glyphicon-edit" (click)="showSettings.emit(_item)"></i></div>
     <ng-container *ngFor="let field of _item.fields; let l=last">
       <ng-container *ngIf="field.isQRCode; else plainText">
-        <qrcode [qrdata]="field.exampleTxt" [size]="size" [level]="'H'"></qrcode>
+        <qrcode [qrdata]="field.content" [size]="size" [level]="'H'"></qrcode>
       </ng-container>
       <ng-template #plainText>
         {{field.label}}<ng-container *ngIf="!l">{{field.separator || ', '}}</ng-container>

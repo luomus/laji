@@ -12,8 +12,6 @@ export class EditorItemComponent implements AfterViewInit {
 
   @Input() magnification: number;
   @Input() active: boolean;
-  @Input() maxWidth: number;
-  @Input() maxHeight: number;
   @ViewChild('item') elemRef: ElementRef<HTMLDivElement>;
 
   @Output() itemChange = new EventEmitter<LabelItem>();
@@ -29,11 +27,28 @@ export class EditorItemComponent implements AfterViewInit {
   y: number;
   origElementDimensions: DOMRect;
 
+  private maxWidthMm: number;
+  private maxWidthPx: number;
+  private maxHeightMm: number;
+  private maxHeightPx: number;
+
   private elem: HTMLDivElement;
 
   constructor(
     private labelService: LabelService
   ) {}
+
+  @Input()
+  set maxHeight(height: number) {
+    this.maxHeightMm = height * this.magnification;
+    this.maxHeightPx = this.labelService.mmToPixel(this.maxHeightMm);
+  }
+
+  @Input()
+  set maxWidth(width: number) {
+    this.maxWidthMm = width * this.magnification;
+    this.maxWidthPx = this.labelService.mmToPixel(this.maxWidthMm);
+  }
 
   @Input()
   set item(item: LabelItem) {
@@ -48,18 +63,18 @@ export class EditorItemComponent implements AfterViewInit {
   }
 
   recalculate() {
-    this.width = this._item.width * this.magnification;
-    this.height = this._item.height * this.magnification;
+    this.width = this._item.style['width.mm'] * this.magnification;
+    this.height = this._item.style['height.mm'] * this.magnification;
     this.size = this.labelService.mmToPixel(Math.min(this.width, this.height));
     this.x = this._item.x * this.magnification;
     this.y = this._item.y * this.magnification;
 
     // check that the item fits the label
-    if (this.x + this.width > this.maxWidth) {
-      this.x = Math.max(0, this.maxWidth - this.width);
+    if (this.x + this.width > this.maxWidthMm) {
+      this.x = Math.max(0, this.maxWidthMm - this.width);
     }
-    if (this.y + this.height > this.maxHeight) {
-      this.y = Math.max(0, this.maxHeight - this.height);
+    if (this.y + this.height > this.maxHeightMm) {
+      this.y = Math.max(0, this.maxHeightMm - this.height);
     }
   }
 
@@ -79,8 +94,14 @@ export class EditorItemComponent implements AfterViewInit {
   }
 
   onResize(event: CdkDragMove) {
-    this.elem.style.width = event.pointerPosition.x - this.origElementDimensions.x - 7 + 'px';
-    this.elem.style.height = event.pointerPosition.y - this.origElementDimensions.y - 7 + 'px';
+    const width = event.pointerPosition.x - this.origElementDimensions.x - 7;
+    const height = event.pointerPosition.y - this.origElementDimensions.y - 7;
+    const widthMaxMm = this.labelService.pixelToMm(width) + this.x;
+    const heightMaxMm = this.labelService.pixelToMm(height) + this.y;
+
+    this.elem.style.width = (widthMaxMm < this.maxWidthMm ? width : this.labelService.mmToPixel(this.maxWidthMm - this.x)) + 'px';
+    this.elem.style.height = (heightMaxMm < this.maxHeightMm ? height : this.labelService.mmToPixel(this.maxHeightMm - this.y)) + 'px';
+
     event.source.reset();
   }
 
@@ -88,8 +109,11 @@ export class EditorItemComponent implements AfterViewInit {
     event.source.reset();
     this.itemChange.emit({
       ...this._item,
-      width: this.labelService.pixelToMm(this.elem.offsetWidth) / this.magnification,
-      height: this.labelService.pixelToMm(this.elem.offsetHeight) / this.magnification
+      style: {
+        ...this._item.style,
+        'width.mm': this.labelService.pixelToMm(this.elem.offsetWidth) / this.magnification,
+        'height.mm': this.labelService.pixelToMm(this.elem.offsetHeight) / this.magnification
+      }
     });
   }
 }

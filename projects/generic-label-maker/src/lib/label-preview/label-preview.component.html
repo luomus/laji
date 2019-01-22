@@ -1,12 +1,12 @@
-<div class="ll-label"
-     *ngIf="init"
-     [class.preview]="preview"
-     [style.width.mm]="label.width"
-     [style.height.mm]="label.height"
+<div
+  *ngIf="init"
+  class="ll-label"
+  [ngStyle]="setup?.label"
 >
   <ll-label-item
-    *ngFor="let item of labelItem"
+    *ngFor="let item of setup?.labelItems"
     [item]="item"
+    [data]="data"
   ></ll-label-item>
 </div>
 <ll-ruler *ngIf="!init" (measured)="init = true"></ll-ruler>

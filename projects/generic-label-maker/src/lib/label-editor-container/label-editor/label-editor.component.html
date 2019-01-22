@@ -1,13 +1,28 @@
-<div id="label-editor" [style.width.mm]="width" [style.height.mm]="height" *ngIf="init">
-  <ll-editor-item
-    *ngFor="let item of labelItem; let i=index" [magnification]="_magnification"
-    [item]="item"
-    (itemChange)="onItemChange(item, $event)"
-    [active]="item === active"
-    [maxWidth]="width"
-    [maxHeight]="height"
-    (click)="active = item"
-    (showSettings)="showSettings.emit({item: $event, index: i})"
-  ></ll-editor-item>
-</div>
+<table>
+  <tr>
+    <td>
+      <div id="label-editor" [style.width.mm]="width * _magnification" [style.height.mm]="height * _magnification" *ngIf="init">
+        <ll-editor-item
+          *ngFor="let item of _setup.labelItems; let i=index" [magnification]="_magnification"
+          [item]="item"
+          (itemChange)="onItemChange(item, $event)"
+          [active]="item === active"
+          [maxWidth]="width"
+          [maxHeight]="height"
+          (click)="active = item"
+          (showSettings)="showSettings.emit({item: $event, index: i})"
+        ></ll-editor-item>
+      </div>
+    </td>
+    <td class="height-settings">
+      <input style="width: 30px" type="text" [value]="_setup.label['height.mm']" (change)="updateDimensions($event, 'height.mm', 'label')">mm.
+    </td>
+  </tr>
+  <tr>
+    <td class="width-settings">
+      <input style="width: 30px" type="text" [value]="_setup.label['width.mm']" (change)="updateDimensions($event, 'width.mm', 'label')">mm.
+    </td>
+    <td></td>
+  </tr>
+</table>
 <ll-ruler *ngIf="!init" (measured)="init = true"></ll-ruler>

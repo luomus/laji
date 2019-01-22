@@ -22,6 +22,10 @@ export class UserLoginGuard implements CanActivate {
     }
     this.location.replaceState('/', '');
     this.userService.login(route.queryParams['token']);
-    return this.router.parseUrl(this.userService.getReturnUrl());
+
+    // This work around and most of the code in the user-login component
+    // can be removed when https://github.com/angular/angular/issues/27845 is resolved.
+    const returnUrl = this.userService.getReturnUrl();
+    return returnUrl === '/' ? true : this.router.parseUrl(this.userService.getReturnUrl());
   }
 }

@@ -24,7 +24,7 @@ export class MunicipalityMonitoringFormComponent
   hasNS = false;
   private subParam: Subscription;
 
-  onSuccessUrl = '/theme/kunnat/places/HR.2049/'
+  onSuccessUrl = '/theme/kunnat/places/HR.2891/'
                + environment.municipalityMonitoringForm;
   onTmlLoadUrl = '/theme/kunnat/form/';
   onMissingNamedPlaceUrl = this.onSuccessUrl;
@@ -49,7 +49,7 @@ export class MunicipalityMonitoringFormComponent
       this.documentId = params['id'] || null;
       if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/kunnat/places/HR.2049', environment.municipalityMonitoringForm]),
+          this.localizeRouterService.translateRoute(['/theme/kunnat/places/HR.2891', environment.municipalityMonitoringForm]),
           { replaceUrl: true }
         );
       } else {

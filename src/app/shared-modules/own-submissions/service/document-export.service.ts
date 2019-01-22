@@ -32,8 +32,10 @@ export class DocumentExportService {
     private exportService: ExportService
   ) {}
 
-  public downloadDocuments(docs: Document[], year: number, type: string) {
-    this.getBuffer(docs, type).subscribe((buffer) => {
+  public downloadDocuments(docs$: Observable<Document[]>, year: number, type: string) {
+    docs$.pipe(
+      switchMap(docs => this.getBuffer(docs, type))
+    ).subscribe((buffer) => {
       this.translate.get('haseka.submissions.submissions').subscribe((msg) => {
         const fileName = msg + '_' + year;
         this.exportService.exportArrayBuffer(buffer, fileName, type);
@@ -41,11 +43,13 @@ export class DocumentExportService {
     });
   }
 
-  public downloadDocument(doc: Document, type: string) {
-    this.getBuffer([doc], type).subscribe((buffer) => {
+  public downloadDocument(doc$: Observable<Document>, type: string) {
+    doc$.pipe(
+      switchMap(doc => this.getBuffer([doc], type).pipe(map(buffer => ({doc, buffer}))))
+    ).subscribe((data) => {
       this.translate.get('haseka.submissions.submission').subscribe((msg) => {
-        const fileName = msg + '_' + doc.id.split('.')[1];
-        this.exportService.exportArrayBuffer(buffer, fileName, type);
+        const fileName = msg + '_' + data.doc.id.split('.')[1];
+        this.exportService.exportArrayBuffer(data.buffer, fileName, type);
       });
     });
   }

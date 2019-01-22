@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Observable, Observer, of as ObservableOf } from 'rxjs';
+import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { LocalStorage } from 'ngx-webstorage';
 import { UserService } from './user.service';
 import { Util } from './util.service';
@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
 import merge from 'deepmerge';
 import { DocumentService } from '../../shared-modules/own-submissions/service/document.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { combineLatest, map, share, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, concat, delay, map, retryWhen, share, switchMap, take, tap } from 'rxjs/operators';
 import { FormList } from '../../+haseka/form-list/haseka-form-list';
 import { Global } from '../../../environments/global';
 
@@ -181,15 +181,22 @@ export class FormService {
       return ObservableOf(this.formCache[formId]);
     } else if (!this.formPending[formId]) {
       this.formPending[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
+        retryWhen(errors => errors.pipe(delay(500), take(2), concat(observableThrowError(errors)))),
         tap((schema) => this.formCache[formId] = schema),
         share()
       );
     }
     return Observable.create((observer: Observer<string>) => {
-      this.formPending[formId].subscribe(data => {
-        observer.next(data);
-        observer.complete();
-      });
+      this.formPending[formId].subscribe(
+        data => {
+          observer.next(data);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+          observer.complete();
+        }
+        );
     } );
   }
 

@@ -83,6 +83,8 @@ import { MunicipalityMonitoringComponent } from './municipality-monitoring/munic
 import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
 import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/municipality-monitoring-form/municipality-monitoring-form.component';
 import { MunicipalityMonitoringInstructionsComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.component';
+import { ChecklistComponent } from './checklist/checklist.component';
+import { IucnSharedModule } from '../iucn/iucn-shared/shared.module';
 
 /* tslint:enable:max-line-length */
 
@@ -106,11 +108,13 @@ import { MunicipalityMonitoringInstructionsComponent } from './municipality-moni
     JwBootstrapSwitchNg2Module,
     FormPermissionModule,
     NavigationThumbnailModule,
-    LatestDocumentsModule
+    LatestDocumentsModule,
+    IucnSharedModule
   ],
   declarations: [
     NafiComponent,
     HerpetologyComponent,
+    ChecklistComponent,
     ThemeResultComponent,
     NafiResultComponent,
     FixedTableDirective,
