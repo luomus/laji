@@ -63,6 +63,12 @@ export interface TemplateEvent {
   documentID: string;
 }
 
+export interface LabelEvent {
+  documentIDs: string[];
+  year: number;
+  label: string;
+}
+
 @Component({
   selector: 'laji-own-datatable',
   templateUrl: './own-datatable.component.html',
@@ -73,10 +79,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy {
   @Input() year: number;
   @Input() loadError = '';
   @Input() showDownloadAll = true;
+  @Input() showPrintLabels = true;
   @Input() admin = false;
+  @Input() selected: RowDocument[] = [];
   @Input() columnNameMapping: any;
   @Input() onlyTemplates = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
+  @Input() labels: string[] = [];
   @Input() templateForm: TemplateForm = {
     name: '',
     description: '',
@@ -86,10 +95,12 @@ export class OwnDatatableComponent implements OnInit, OnDestroy {
   @Output() download = new EventEmitter<DownloadEvent>();
   @Output() template = new EventEmitter<TemplateEvent>();
   @Output() delete = new EventEmitter<string>();
+  @Output() label = new EventEmitter<LabelEvent>();
 
   deleteRow: any;
   deleting = false;
   templateDocumentID: string;
+  printState: 'none'|'select' = 'none';
 
   totalMessage = '';
   publicity = Document.PublicityRestrictionsEnum;
@@ -110,6 +121,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy {
   visibleRows: RowDocument[];
   userId;
   filterBy: string;
+  selectionType: string;
+  selectedLabel: string;
 
   displayMode: string;
   defaultSort: any;
@@ -361,6 +374,25 @@ export class OwnDatatableComponent implements OnInit, OnDestroy {
       this.displayMode = 'medium';
     } else {
       this.displayMode = 'small';
+    }
+  }
+
+  onSelect(event: any) {
+    this.selected = event.selected;
+  }
+
+  doLabels() {
+    if (this.printState === 'none') {
+      this.selectionType = 'checkbox';
+      this.printState = 'select';
+    } else if (this.printState === 'select') {
+      this.selectionType = undefined;
+      this.printState = 'none';
+      this.label.emit({
+        documentIDs: this.selected.map(doc => doc.id),
+        year: this.year,
+        label: this.selectedLabel
+      });
     }
   }
 }

@@ -16,8 +16,12 @@
 }
 
 @media only screen and (min-width : 768px) {
-  #download-button-container {
+  #download-button-container, .print-actions {
     float: right;
+  }
+
+  .print-actions {
+    margin-right: 5px;
   }
 
   .inline-block {
@@ -27,7 +31,7 @@
 }
 
 @media only screen and (max-width : 767px) {
-  #download-button-container {
+  #download-button-container, .print-actions{
     float: none;
     width: 100%;
   }
