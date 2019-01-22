@@ -10,8 +10,9 @@
     </laji-spinner>
     <laji-own-datatable
       (documentClicked)="onDocumentClick($event)"
-      (ready)="documentsReady()"
       (download)="download($event)"
+      (template)="saveTemplate($event)"
+      (delete)="delete($event)"
       [actions]="actions"
       [admin]="admin"
       [columns]="onlyTemplates ? templateColumns : columns"
@@ -20,6 +21,7 @@
       [loadError]="documentError"
       [onlyTemplates]="onlyTemplates"
       [year]="year"
+      [templateForm]="templateForm"
       [documents]="documents$ | async"></laji-own-datatable>
   </div>
 </ng-container>

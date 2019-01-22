@@ -1,14 +1,23 @@
-import { catchError, map, share, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeAll, share, switchMap, tap, toArray } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap';
 import { LocalStorage } from 'ngx-webstorage';
 import { DocumentExportService } from './service/document-export.service';
-import { DownloadEvent } from './own-datatable/own-datatable.component';
+import { DownloadEvent, RowDocument, TemplateEvent } from './own-datatable/own-datatable.component';
+import { DocumentInfoService } from '../../shared/service/document-info.service';
+import * as moment from 'moment';
+import { Person } from '../../shared/model/Person';
+import { FormService } from '../../shared/service/form.service';
+import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
+import { Logger } from '../../shared/logger';
+import { TemplateForm } from './models/template-form';
+import { ToastsService } from '../../shared/service/toasts.service';
+import { DocumentService } from './service/document.service';
 
 interface DocumentQuery {
   year?: number;
@@ -74,7 +83,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
 
   publicity = Document.PublicityRestrictionsEnum;
 
-  documents$: Observable<SearchDocument[]>;
+  documents$: Observable<RowDocument[]>;
   shownDocument$: Observable<Document>;
   loading = true;
 
@@ -84,16 +93,36 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   yearInfoError: string;
   documentError: string;
   documentModalVisible = false;
-  selectedFields = 'id,formID,gatherings[*].units[*],' +
-    'gatherings[*].namedPlaceID,gatheringEvent.dateEnd,gatheringEvent.dateBegin,namedPlaceID,gatheringEvent.leg,dateEdited,' +
-    'gatherings[*].id,gatherings[*].locality,publicityRestrictions,templateDescription,templateName,locked,creator,' +
-    'gatherings[*].dateBegin,gatherings[*].dateEnd';
+  selectedFields = 'creator,id,gatherings[*].id';
+
+  selectedMap = {
+    templateName: 'templateName',
+    templateDescription: 'templateDescription',
+    dateEdited: 'dateEdited',
+    form: 'formID',
+    dateObserved: 'gatheringEvent.dateEnd,gatheringEvent.dateBegin,gatherings[*].dateBegin,gatherings[*].dateEnd',
+    locality: 'gatherings[*].locality,namedPlaceID,gatherings[*].namedPlaceID',
+    unitCount: 'gatherings[*].units[*]',
+    observer: 'gatheringEvent.leg',
+    namedPlaceName: 'namedPlaceID,gatherings[*].namedPlaceID'
+  };
+
+  templateForm: TemplateForm = {
+    name: '',
+    description: '',
+    type: 'gathering'
+  };
 
   constructor(
-    private documentService: DocumentApi,
+    private documentApi: DocumentApi,
     private userService: UserService,
     private translate: TranslateService,
     private documentExportService: DocumentExportService,
+    private documentService: DocumentService,
+    private formService: FormService,
+    private labelService: TriplestoreLabelService,
+    private toastService: ToastsService,
+    private logger: Logger,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -112,8 +141,36 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   }
 
   onDocumentClick(docID: string) {
-    this.shownDocument$ = this.documentService.findById(docID, this.userService.getToken());
+    this.shownDocument$ = this.documentApi.findById(docID, this.userService.getToken());
     this.modal.show();
+  }
+
+  saveTemplate(event: TemplateEvent) {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+    this.documentApi.findById(event.documentID, this.userService.getToken()).pipe(
+      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document: document}))
+    ).subscribe(
+      () => {
+        this.translate.get('template.success')
+          .subscribe((value) => this.toastService.showSuccess(value));
+        this.templateForm = {
+          name: '',
+          description: '',
+          type: 'gathering'
+        };
+        this.loading = false;
+        this.cd.markForCheck();
+      },
+      (err) => {
+        this.translate.get('template.error')
+          .subscribe((value) => this.toastService.showError(value));
+        this.logger.error('Template saving failed', err);
+        this.loading = false;
+        this.cd.markForCheck();
+      });
   }
 
   private initDocuments(onlyDocuments = false) {
@@ -125,13 +182,16 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
         namedPlace: this.namedPlace,
         collectionID: this.collectionID,
         formID: this.formID,
-        selectedFields: this.selectedFields
-      });
+        selectedFields: this.getSelectedFields()
+      }).pipe(
+        switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
+        tap(() => this.loading = false)
+      );
       return;
     }
 
     if (!onlyDocuments) {
-      this.yearInfo$ = this.documentService.countByYear(this.userService.getToken(), {
+      this.yearInfo$ = this.documentApi.countByYear(this.userService.getToken(), {
         namedPlace: this.namedPlace,
         collectionID: this.collectionID,
         formID: this.formID
@@ -154,7 +214,6 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
         share()
       );
     }
-
     this.documents$ = (onlyDocuments ? ObservableOf([]) : this.yearInfo$).pipe(
       switchMap(() => this.getAllDocuments<SearchDocument>({
         year: this.onlyTemplates ? undefined : this.year,
@@ -162,9 +221,64 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
         namedPlace: this.namedPlace,
         collectionID: this.collectionID,
         formID: this.formID,
-        selectedFields: this.selectedFields
-      }))
+        selectedFields: this.getSelectedFields()
+      })),
+      switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
+      tap(() => this.loading = false)
     );
+  }
+
+  download(e: DownloadEvent) {
+    if (e.documentId) {
+      this.documentExportService.downloadDocument(
+        this.documentApi.findById(e.documentId, this.userService.getToken()), e.fileType
+      );
+    } else {
+      this.documentExportService.downloadDocuments(
+        this.getAllDocuments<Document>({year: this.year}), this.year, e.fileType
+      );
+    }
+  }
+
+  delete(docId: string) {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+    this.documentService.deleteDocument(docId)
+      .subscribe(
+        () => {
+          this.translate.get('delete.success')
+            .subscribe((value) => this.toastService.showSuccess(value));
+          this.loading = false;
+          this.cd.markForCheck();
+        },
+        (err) => {
+          this.translate.get('delete.error')
+            .subscribe((value) => this.toastService.showError(value));
+          this.initDocuments(this.onlyTemplates);
+          this.logger.error('Deleting failed', err);
+          this.loading = false;
+          this.cd.markForCheck();
+        }
+      );
+  }
+
+  private getSelectedFields() {
+    const selected = [this.selectedFields];
+    const cols = this.onlyTemplates ? this.templateColumns : this.columns;
+    cols.forEach(col => {
+      if (this.selectedMap[col]) {
+        this.selectedMap[col].split(',').forEach(field => {
+          if (selected.indexOf(field) === -1) {
+            selected.push(field);
+          }
+        });
+      } else {
+        this.logger.log('Cannot determinate which fields should be selected for "' + col + '" in OwnSubmissionsComponent');
+      }
+    });
+    return selected.join(',');
   }
 
   private getAllDocuments<T>(
@@ -172,7 +286,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     page = 1,
     documents = []
   ): Observable<T[]> {
-    return this.documentService.findAll(
+    return this.documentApi.findAll(
       this.userService.getToken(),
       String(page),
       String(10000),
@@ -203,19 +317,95 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     );
   }
 
-  documentsReady() {
-    this.loading = false;
+  private searchDocumentsToRowDocuments(documents: SearchDocument[]): Observable<RowDocument[]> {
+    return forkJoin(documents.map((doc, i) => this.setRowData(doc, i)));
   }
 
-  download(e: DownloadEvent) {
-    if (e.documentId) {
-      this.documentExportService.downloadDocument(
-        this.documentService.findById(e.documentId, this.userService.getToken()), e.fileType
-      );
-    } else {
-      this.documentExportService.downloadDocuments(
-        this.getAllDocuments<Document>({year: this.year}), this.year, e.fileType
-      );
+  private setRowData(document: SearchDocument, idx: number): Observable<RowDocument> {
+    return this.getForm(document.formID).pipe(
+      switchMap((form) => {
+        const gatheringInfo = DocumentInfoService.getGatheringInfoFromSearchDocument(document, form);
+
+        return ObservableForkJoin(
+          this.getLocality(gatheringInfo, document.namedPlaceID),
+          this.getObservers(document['gatheringEvent.leg']),
+          this.getNamedPlaceName(document.namedPlaceID)
+        ).pipe(
+          map<any, RowDocument>(data => {
+            const locality = data[0], observers = data[1], npName = data[2];
+            const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
+            let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
+            if (dateObservedEnd && dateObservedEnd !== dateObserved) {
+              dateObserved += ' - ' + dateObservedEnd;
+            }
+            return {
+              creator: document.creator,
+              templateName: document.templateName,
+              templateDescription: document.templateDescription,
+              publicity: document.publicityRestrictions,
+              dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
+              dateObserved: dateObserved,
+              namedPlaceName: npName,
+              locality: locality,
+              unitCount: gatheringInfo.unitList.length,
+              observer: observers,
+              formID: document.formID,
+              form: form.title || document.formID,
+              id: document.id,
+              locked: !!document.locked,
+              index: idx,
+              formViewerType: form.viewerType,
+              _editUrl: this.formService.getEditUrlPath(document.formID, document.id)
+            };
+          })
+        );
+      })
+    );
+  }
+
+  private getLocality(gatheringInfo: any, namedPlaceID): Observable<string> {
+    let locality$ = ObservableOf(gatheringInfo);
+    const npID = gatheringInfo.namedPlaceID || namedPlaceID;
+
+    if (!gatheringInfo.locality && npID) {
+      locality$ = this.labelService.get(npID, 'multi').pipe(
+        map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
     }
+
+    return locality$.pipe(
+      switchMap((gathering) => this.translate.get('haseka.users.latest.localityMissing').pipe(
+        map(missing => gathering.locality || missing))));
+  }
+
+  private getObservers(userArray: string[] = []): Observable<string> {
+    return ObservableFrom(userArray.map((userId) => {
+      if (userId.indexOf('MA.') === 0) {
+        return this.userService.getUser(userId).pipe(
+          map((user: Person) => {
+            return user.fullName;
+          }));
+      }
+      return ObservableOf(userId);
+    })).pipe(
+      mergeAll(),
+      toArray()
+    ).pipe(
+      map((array) => {
+        return array.join(', ');
+      }));
+  }
+
+  private getForm(formId: string): Observable<any> {
+    return this.formService.getForm(formId, this.translate.currentLang).pipe(
+      catchError((err) => {
+        this.logger.error('Failed to load form ' + formId, err);
+        return ObservableOf({id: formId});
+      }));
+  }
+
+  private getNamedPlaceName(npId: string): Observable<string> {
+    if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return ObservableOf(''); }
+
+    return this.labelService.get(npId, 'multi');
   }
 }

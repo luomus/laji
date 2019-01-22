@@ -75,7 +75,7 @@ export class DocumentInfoService {
     };
     info.locality = (document['gatherings[*].locality'] || []).join(', ');
     info.namedPlaceID = document['gatherings[*].gatherings[*].namedPlaceID'] ? document['gatherings[*].gatherings[*].namedPlaceID'][0] : '';
-    info.localityCount = document['gatherings[*].id'].length;
+    info.localityCount = document['gatherings[*].id'] ? document['gatherings[*].id'].length : 0;
 
     ['gatherings[*].dateBegin', 'gatherings[*].dateEnd'].forEach(spot => {
       if (document[spot]) {

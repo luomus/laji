@@ -1,4 +1,4 @@
-<ng-container *ngIf="_documents && rows">
+<ng-container *ngIf="visibleRows">
   <div id="filter-row-container">
     <div id="download-button-container" *ngIf="showDownloadAll">
       <button type="button" class="btn btn-default inline-block" (click)="openChooseFileTypeModal()">
@@ -21,7 +21,7 @@
       pagerPrevious: 'glyphicon glyphicon-step-backward',
       pagerNext: 'glyphicon glyphicon-step-forward'
     }"
-    [rows]="rows"
+    [rows]="visibleRows"
     [rowIdentity]="rowIdentity"
     [externalSorting]="true"
     [sorts]="defaultSort"
@@ -83,7 +83,7 @@
                 'label-default': row.locked
               }"
               [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
-              [href]="row._editUrl"
+              [routerLink]="row._editUrl | localize"
               [placement]="'right'">
             <i class="glyphicon glyphicon-edit"></i>
         </a>
@@ -126,15 +126,15 @@
                 [tooltip]="('haseka.submissions.download' | translate) + ' ' + ('haseka.submissions.submission' | translate)"
                 [placement]="'left'"
                 [container]="'body'"
-                (click)="openChooseFileTypeModal(value.id)">
+                (click)="openChooseFileTypeModal(row.id)">
             <i class="glyphicon glyphicon-download-alt"></i>
           </span>
-          <a *ngIf="actions.indexOf('stats') > -1 && formsById[_documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
+          <a *ngIf="actions.indexOf('stats') > -1 && row.formViewerType === 'MHL.viewerTypeLineTransect'"
                 class="label label-warning link inline-block"
                 [tooltip]="'haseka.submissions.toStatistics' | translate"
                 [placement]="'left'"
                 [container]="'body'"
-                [href]="'/theme/linjalaskenta/statistics/' + row.id">
+                [routerLink]="'/theme/linjalaskenta/statistics/' + row.id | localize">
             <i class="glyphicon glyphicon-stats"></i>
           </a>
           <span *ngIf="actions.indexOf('delete') > -1 && (row.creator === userId || admin)" class="label label-danger link inline-block"
