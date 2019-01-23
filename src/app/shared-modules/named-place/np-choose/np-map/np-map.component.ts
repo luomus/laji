@@ -137,7 +137,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
       };
     }
 
-    const {mapTileLayerName = 'maastokartta', mapOverlayNames} = this.formData.namedPlaceOptions || {};
+    const {mapTileLayerName = 'maastokartta', mapOverlayNames} = this.formData.namedPlaceOptions || {mapOverlayNames: undefined};
     this.tileLayerName = mapTileLayerName;
     this.overlayNames = mapOverlayNames;
 
