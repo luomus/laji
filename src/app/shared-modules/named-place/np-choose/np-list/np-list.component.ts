@@ -4,11 +4,10 @@ import { ObservationTableColumn } from '../../../observation-result/model/observ
 import { DatatableComponent } from '../../../datatable/datatable/datatable.component';
 import { DatatableColumn } from '../../../datatable/model/datatable-column';
 import { Util } from '../../../../shared/service/util.service';
-import { map, reduce, take } from 'rxjs/operators';
-import { forkJoin, from, of } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 import { BoolToStringPipe } from 'app/shared/pipe/bool-to-string.pipe';
 import { AreaNamePipe } from '../../../../shared/pipe/area-name.pipe';
-import { orderByComparator } from '@swimlane/ngx-datatable/release/utils';
 
 @Component({
   selector: 'laji-np-list',
@@ -160,10 +159,10 @@ export class NpListComponent {
       }
       const municipality = row['$.municipality'];
       if (municipality) {
-        municipalities$.push(this.areaNamePipe.updateValue(municipality).pipe(
-          map(areaLabel => [row, areaLabel]),
-          take(1),
-        ));
+        municipalities$.push(forkJoin(
+          ...municipality.map(_muni => this.areaNamePipe.updateValue(_muni)
+            .pipe(take(1)))
+        ).pipe(map(areaLabel => [row, areaLabel])));
       }
       results.push(row);
     }
@@ -175,7 +174,7 @@ export class NpListComponent {
     if (municipalities$.length) {
       forkJoin(...municipalities$).subscribe((municipalityTuples) => {
         municipalityTuples.forEach(([row, municipalityLabel]) => {
-          row['$.municipality'] = municipalityLabel;
+          row['$.municipality'] = municipalityLabel.join(', ');
         });
         this.data = results;
         this.cd.markForCheck();
