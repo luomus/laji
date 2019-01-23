@@ -4,13 +4,13 @@
   </div>
   <div class="value">
     <ng-container *ngIf="pipe === 'area'">
-      <span [innerHtml]="value | area | nlToBr | spaceAndComma"></span>
+      <span [innerHtml]="value | area | nlToBr | values"></span>
     </ng-container>
     <ng-container *ngIf="pipe === 'label'">
-      <span [innerHtml]="value | label | nlToBr | spaceAndComma"></span>
+      <span [innerHtml]="value | label | nlToBr | values"></span>
     </ng-container>
     <ng-container *ngIf="!pipe">
-      <span [innerHtml]="value | nlToBr | spaceAndComma"></span>
+      <span [innerHtml]="value | nlToBr | values"></span>
     </ng-container>
   </div>
 </ng-container>
