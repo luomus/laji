@@ -261,6 +261,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   setActiveNP(idx: number) {
     this.activeNP = idx;
+    if (this.activeNP >= 0 && this.editView) {
+      this.editView.npClick();
+    }
   }
 
   toEditMode(create: boolean) {
