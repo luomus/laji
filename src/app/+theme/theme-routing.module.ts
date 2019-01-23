@@ -168,7 +168,7 @@ const routes: Routes = [
         component: InvasiveControlInstructionsContainerComponent
       },
       {path: 'places', pathMatch: 'full', component: InvasiveControlFormComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'form', pathMatch: 'full', component: InvasiveControlFormComponent},
+      {path: 'form', pathMatch: 'full', component: InvasiveControlFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
         pathMatch: 'full',
@@ -182,6 +182,7 @@ const routes: Routes = [
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn],
         data: { noScrollToTop: true }
       }
     ]
@@ -197,7 +198,7 @@ const routes: Routes = [
         component: MunicipalityMonitoringInstructionsContainerComponent
       },
       {path: 'places', pathMatch: 'full', component: MunicipalityMonitoringFormComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'form', pathMatch: 'full', component: MunicipalityMonitoringFormComponent},
+      {path: 'form', pathMatch: 'full', component: MunicipalityMonitoringFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
         pathMatch: 'full',
@@ -211,6 +212,7 @@ const routes: Routes = [
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn],
         data: { noScrollToTop: true } }
     ]
   },
