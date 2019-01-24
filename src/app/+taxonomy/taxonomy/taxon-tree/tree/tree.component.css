@@ -12,7 +12,7 @@
   padding-left: 0;
 }
 .tree li, .tree > div {
-  line-height: 30px;
+  line-height: 25px;
   white-space: nowrap;
 }
 .tree li::before, .tree li::after {
@@ -28,7 +28,7 @@
 }
 .tree li::after {
   border-left: 1px solid lightgray;
-  height: calc(100% + 23px);
+  height: 100%;
   width: 0;
   top: -10px;
 }
