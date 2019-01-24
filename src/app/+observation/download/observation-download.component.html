@@ -21,12 +21,12 @@
   </div>
   <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
   <div class="form-group">
-    <div class="col-sm-12" *ngIf="loadLimit < count.private">
+    <div class="col-sm-12" *ngIf="loadLimit < count.count">
       {{ 'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}
     </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-12" *ngIf="loadLimit >= count.private">
+    <div class="col-sm-12" *ngIf="loadLimit >= count.count">
       <p [innerHtml]="'result.load.introPrivate' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')}"></p>
       <a [ngClass]="{disabled: requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading}" class="btn btn-default" (click)="makePrivateRequest()" style="margin-bottom: 15px;">{{ 'observation.download.loadPrivate' | translate }}</a>
     </div>
