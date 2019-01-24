@@ -1,5 +1,5 @@
 
-import {startWith, tap, map,  filter, switchMap, take } from 'rxjs/operators';
+import { startWith, tap, map, filter, switchMap, take, catchError, retryWhen, delay, concat } from 'rxjs/operators';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -13,7 +13,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { interval as ObservableInterval, Subscription } from 'rxjs';
+import { interval as ObservableInterval, Subscription, throwError as observableThrowError } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
@@ -102,11 +102,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       return;
     }
     const findDox$ = this.warehouseApi
-        .warehouseQuerySingleGet(this.uri, this.own ? {
-          editorOrObserverPersonToken: this.userService.getToken()
-        } : undefined).pipe(
-        map(doc => doc.document)).pipe(
-        tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight)));
+      .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
+        catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
+        map(doc => doc.document),
+        tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight))
+      );
     findDox$
       .subscribe(
         doc => this.parseDoc(doc, doc),

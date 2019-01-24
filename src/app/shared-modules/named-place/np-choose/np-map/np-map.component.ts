@@ -198,10 +198,3 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   }
 
 }
-
-function capitalizeFirst(s: string | Array<string>) {
-  if (Array.isArray(s)) {
-    return s.map(u => capitalizeFirst(u));
-  }
-  return s.substring(0, 1).toUpperCase().concat(s.substring(1, s.length));
-}

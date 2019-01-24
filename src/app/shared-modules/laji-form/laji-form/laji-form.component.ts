@@ -35,7 +35,6 @@ const GLOBAL_SETTINGS = '_global_form_settings_';
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
   @Input() lang: string;
   @Input() formData: any = {};
-  @Input() tick: number;
   @Input() settingsKey = '';
 
   @Output() dataSubmit = new EventEmitter();
