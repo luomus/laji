@@ -10,7 +10,6 @@ import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { environment } from '../../../environments/environment';
 import { HttpParams } from '@angular/common/http';
 
 
@@ -43,7 +42,6 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   public speciesCount = 0;
   public description = '';
   public csvParams = '';
-  public showRequest = true;
   private taxaDownloadAggregateBy = {
     'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
     'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
@@ -60,11 +58,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
               private warehouseService: WarehouseApi,
               private logger: Logger,
               private cd: ChangeDetectorRef
-  ) {
-    if (environment.production) {
-      this.showRequest = false;
-    }
-  }
+  ) { }
 
   @Input() set query(query: WarehouseQueryInterface) {
     if (!query) {

@@ -13,25 +13,22 @@
     <div class="col-sm-12" *ngIf="count.count == 0">
       {{ 'observation.export.tooLittle' | translate }}
     </div>
-    <div class="col-sm-12" *ngIf="loadLimit >= count.count && count.count > 0">
+    <div class="col-sm-12" *ngIf="loadLimit >= count.count && count.count > 0" style="margin-bottom: 15px;">
       <p [innerHtml]="'result.load.introPublic' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')} ">
       </p>
       <a [ngClass]="{disabled: requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading}" class="btn btn-default" (click)="makePublicRequest()">{{ 'observation.download.loadPublic' | translate }}</a>
     </div>
   </div>
   <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
-  <div *ngIf="!showRequest">
-    <span [innerHtml]="'observation.download.wip' | translate"></span>
+  <div class="form-group">
+    <div class="col-sm-12" *ngIf="loadLimit < count.private">
+      {{ 'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}
+    </div>
   </div>
-  <div [ngStyle]="{display: !showRequest ? 'none' : 'block'}">
-    <div class="form-group">
-      <div class="col-sm-12" *ngIf="loadLimit < count.private">
-        {{ 'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}
-      </div>
-      <div class="col-sm-12" *ngIf="loadLimit >= count.private">
-        <p [innerHtml]="'result.load.introPrivate' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')}"></p>
-        <a [ngClass]="{disabled: requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading}" class="btn btn-default" (click)="makePrivateRequest()">{{ 'observation.download.loadPrivate' | translate }}</a>
-      </div>
+  <div class="form-group">
+    <div class="col-sm-12" *ngIf="loadLimit >= count.private">
+      <p [innerHtml]="'result.load.introPrivate' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')}"></p>
+      <a [ngClass]="{disabled: requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading}" class="btn btn-default" (click)="makePrivateRequest()" style="margin-bottom: 15px;">{{ 'observation.download.loadPrivate' | translate }}</a>
     </div>
   </div>
   <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
