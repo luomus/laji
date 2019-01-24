@@ -1,15 +1,3 @@
-<div class="show-main-levels-wrapper">
-  <label>
-    <input
-      type="checkbox"
-      [(ngModel)]="showMainLevels"
-      (ngModelChange)="setSkipParams()"
-      name="showMainLevels"
-    >
-    {{ 'species.tree.showMainLevels' | translate }}
-  </label>
-  <laji-info [placement]="'right'">{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
-</div>
 <laji-tree
   [activeId]="activeId"
   [nodes]="nodes"
@@ -29,3 +17,16 @@
     </ng-template>
   </ng-template>
 </laji-tree>
+
+<div class="show-main-levels-wrapper">
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="showMainLevels"
+      (ngModelChange)="setSkipParams()"
+      name="showMainLevels"
+    >
+    {{ 'species.tree.showMainLevels' | translate }}
+  </label>
+  <laji-info [placement]="'right'">{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
+</div>

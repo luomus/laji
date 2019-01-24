@@ -26,6 +26,8 @@ export class TreeComponent implements OnChanges {
 
   nodeList: TreeNode[] = [];
 
+  private rootId: string;
+
   constructor(
     private cd: ChangeDetectorRef
   ) {}
@@ -78,6 +80,7 @@ export class TreeComponent implements OnChanges {
               .pipe(
                 map(nodeList => {
                   this.nodeList = nodeList;
+                  this.rootId = nodeList[nodeList.length - 1].id;
                   this.loading = false;
                   this.cd.markForCheck();
                 })
@@ -131,7 +134,7 @@ export class TreeComponent implements OnChanges {
     }
 
     parentList.push(foundNode);
-    if (!foundNode.hasChildren) { return of(parentList); }
+    if (!foundNode.hasChildren || foundNode.id === this.rootId) { return of(parentList); }
 
     return this.setOpen(foundNode, treeState)
       .pipe(switchMap(() => {
