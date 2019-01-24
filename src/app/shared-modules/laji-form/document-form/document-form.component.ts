@@ -58,7 +58,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
 
   public form: any;
   public lang: string;
-  public tick = 0;
   public status = '';
   public saveVisibility = 'hidden';
   public saving = false;

@@ -221,7 +221,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (formData && formData.features && Array.isArray(formData.features)) {
       this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
-      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1;
+      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1 || this.formRights.admin;
     }
   }
 
@@ -334,9 +334,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         }
       }
 
-      this.placeForm.formData = npData;
+      this.placeForm = {...this.placeForm, formData: npData};
     } else {
-      this.placeForm.formData = this.prepopulatedNamedPlace;
+      this.placeForm = {...this.placeForm, formData: this.prepopulatedNamedPlace};
     }
   }
 
