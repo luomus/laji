@@ -227,7 +227,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   updateAllowCreate() {
     this.allowCreate = this.formRights.admin ||
-      (!this.documentForm.features || this.documentForm.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1) ||
       (this.documentForm && this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.requireAdmin === false);
   }
 
