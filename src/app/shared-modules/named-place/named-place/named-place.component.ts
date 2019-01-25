@@ -294,6 +294,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (np) {
       this.setActiveNP(idx);
     }
+    this.namedPlaceService.invalidateCache();
     this.updateQueryParams();
   }
 
