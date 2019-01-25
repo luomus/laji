@@ -4929,10 +4929,10 @@ laji-form@^0.0.566:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.461, laji-map@^1.0.395, laji-map@^1.0.459, laji-map@^1.0.461:
-  version "1.0.461"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.461.tgz#b7e88d5e7156e49e8f00cde7001009b05e5f6cf2"
-  integrity sha512-Ckt8pkecc2OXWEdz1vajhi6yGWtIWuUkZ3KHj8bNO2+lBG//HvnfY1pImbEyxIYMW/oTSoLsBgwHgtj3+oy9TQ==
+laji-map@1.0.464, laji-map@^1.0.395, laji-map@^1.0.459, laji-map@^1.0.464:
+  version "1.0.464"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.464.tgz#72af4cf8586bd526c6eb0cbfa9ad5330290604a9"
+  integrity sha512-TC761IDhkBVf8TYqnoUByubG31U4feaR1+3uKFpKMnV+4paK95VVjNso7nbyWoA/ot3sK5YzazBJyEdPc4rFIw==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
@@ -5024,9 +5024,10 @@ leaflet.sync@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/leaflet.sync/-/leaflet.sync-0.2.4.tgz#76d4095a61470882d72e092190090d0a1fa55ca2"
 
-leaflet@*, leaflet@1.3.4, leaflet@1.4.0, leaflet@>=0.7.0, leaflet@^1.0.1:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.4.tgz#7f006ea5832603b53d7269ef5c595fd773060a40"
+leaflet@*, leaflet@1.4.0, leaflet@>=0.7.0, leaflet@^1.0.1:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.4.0.tgz#d5f56eeb2aa32787c24011e8be4c77e362ae171b"
+  integrity sha512-x9j9tGY1+PDLN9pcWTx9/y6C5nezoTMB8BLK5jTakx+H7bPlnbCHfi9Hjg+Qt36sgDz/cb9lrSpNQXmk45Tvhw==
 
 less-loader@4.1.0:
   version "4.1.0"

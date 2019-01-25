@@ -42,6 +42,7 @@ import { MunicipalityMonitoringInstructionsContainerComponent } from './municipa
 import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
 import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
 import { ChecklistComponent } from './checklist/checklist.component';
+import { HasFormPermission } from '../shared/route/has-form-permission';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -167,14 +168,27 @@ const routes: Routes = [
         pathMatch: 'full',
         component: InvasiveControlInstructionsContainerComponent
       },
-      {path: 'places', pathMatch: 'full', component: InvasiveControlFormComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'form', pathMatch: 'full', component: InvasiveControlFormComponent},
+      {
+        path: 'places',
+        pathMatch: 'full',
+        component: InvasiveControlFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33'}
+      },
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: InvasiveControlFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
+      },
       {
         path: 'form/:id',
         pathMatch: 'full',
         component: InvasiveControlFormComponent,
-        canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
       },
       {
         path: 'places/:collectionId/:formId',
@@ -182,7 +196,8 @@ const routes: Routes = [
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-        data: { noScrollToTop: true }
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true, formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
       }
     ]
   },
@@ -196,14 +211,27 @@ const routes: Routes = [
         pathMatch: 'full',
         component: MunicipalityMonitoringInstructionsContainerComponent
       },
-      {path: 'places', pathMatch: 'full', component: MunicipalityMonitoringFormComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'form', pathMatch: 'full', component: MunicipalityMonitoringFormComponent},
+      {
+        path: 'places',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/kunnat'}
+      },
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/kunnat'}
+      },
       {
         path: 'form/:id',
         pathMatch: 'full',
         component: MunicipalityMonitoringFormComponent,
-        canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: {formId: 'MHL.35', noFormPermissionRedirect: '/theme/kunnat'}
       },
       {
         path: 'places/:collectionId/:formId',
@@ -211,7 +239,9 @@ const routes: Routes = [
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-        data: { noScrollToTop: true } }
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true, formId: 'MHL.35', noFormPermissionRedirect: '/theme/kunnat' }
+      }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
