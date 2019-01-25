@@ -175,6 +175,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
         uiSchemaContext['municipalityEnum'] = this.municipalityEnums;
         this.apiClient.lang = this.lang;
         this.apiClient.personToken = this.userService.getToken();
+        this.apiClient.formID = this.formData.id;
         this.lajiFormWrapper = new LajiForm({
           staticImgPath: '/static/lajiForm/',
           rootElem: this.lajiFormRoot.nativeElement,
