@@ -933,5 +933,6 @@
   "yes": "Ja",
   "invasiveSpecies.title": "Invasiva arter",
   "invasiveSpecies.places": "Spela in kontrol aktioner",
-  "np.formOwnSubmissions": "Placerar tidigare dokument"
+  "np.formOwnSubmissions": "Placerar tidigare dokument",
+  "np.tag": "Filtrera efter ruttegenskaper"
 }

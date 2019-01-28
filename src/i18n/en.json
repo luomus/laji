@@ -939,5 +939,6 @@
   "yes": "Yes",
   "invasiveSpecies.title": "Invasive species",
   "invasiveSpecies.places": "Record control actions",
-  "np.formOwnSubmissions": "Places previous documents"
+  "np.formOwnSubmissions": "Places previous documents",
+  "np.tag": "Filter by route properties"
 }

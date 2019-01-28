@@ -58,10 +58,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   filterByMunicipality = false;
   filterByBirdAssociationArea = false;
+  filterByTags = false;
 
   birdAssociationArea = '';
   municipality = '';
   taxonID = '';
+  tags = '';
 
   errorMsg = '';
 
@@ -116,6 +118,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.namedPlace = data.activeNP;
       this.birdAssociationArea = data.birdAssociationId;
       this.municipality = data.municipalityId;
+      this.tags = data.tags;
       this.documentForm = data.documentForm;
       this.placeForm = data.placeForm;
 
@@ -178,6 +181,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
   }
 
+  onTagChange(tags) {
+    this.tags = tags.join('');
+
+    this.updateQueryParams();
+  }
+
   onRelease() {
     this.loading = true;
     this.namedPlaceService
@@ -221,6 +230,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (formData && formData.features && Array.isArray(formData.features)) {
       this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
+      this.filterByTags = formData.features.indexOf(Form.Feature.FilterNamedPlacesByTags) > -1;
       this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1 || this.formRights.admin;
     }
   }
@@ -244,6 +254,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     (this.birdAssociationArea || '').length > 0
       ? queryParams['birdAssociationArea'] = this.birdAssociationArea
       : delete queryParams['birdAssociationArea'];
+    (this.tags || '').length > 0
+      ? queryParams['tags'] = this.tags
+      : delete queryParams['tags'];
     queryParams['edit'] = this.editMode;
     this.router.navigate([], { queryParams: queryParams });
   }
@@ -261,9 +274,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   toEditMode(create: boolean) {
-    console.log('EDIT CLICKED');
     if (!this.allowCreate) {
-      console.log('NOT ALLOWED TO CREATE');
       return;
     }
     this.npEdit.setIsEdit(!create);

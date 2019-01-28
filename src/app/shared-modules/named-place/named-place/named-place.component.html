@@ -24,6 +24,17 @@
       </label>
       <laji-area-select [disabled]="editMode" [field]="areaTypes.BirdAssociationArea" (select)="onBirdAssociationAreaChange($event)" [value]="this.birdAssociationArea"></laji-area-select>
     </div>
+    <ng-container *ngIf="filterByTags && !editMode">
+      <laji-metadata-select
+        [alt]="'MNP.tagEnum'"
+        [onChange]="onTagChange.bind(this)"
+        [multiple]="true"
+        [useFilter]="false"
+        placeholder="np.tag"
+        [open]="true"
+        [value]="(tags || '').split(',')"
+        [lang]="lang"></laji-metadata-select>
+    </ng-container>
     <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">
       <span>{{documentForm.namedPlaceOptions?.createNewLabels?.desc
             || 'np.chooseLabel' | translate}}</span>
