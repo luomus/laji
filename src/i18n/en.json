@@ -695,6 +695,7 @@
   "selfUrl.introStart": "Viewing and editing user account information requires re-login for security reasons. After clicking the My account button below, please log in again.",
   "sending": "Sending",
   "showSpeciesCard": "Show species card",
+  "sourceOfCoordinates": "Source of coordinates",
   "species.browse": "Browse observations",
   "species.download": "Download species list",
   "species.download.textFile": "Text file",

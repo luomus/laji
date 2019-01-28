@@ -689,6 +689,7 @@
   "selfUrl.introStart": "Återinloggning krävs för att visa och redigera användarkontoinformation av säkerhetsskäl. När du har klickat på knappen Min användarkonto nedan, logga in igen.",
   "sending": "Sending",
   "showSpeciesCard": "Visa artkort",
+  "sourceOfCoordinates": "Koordinatkälla",
   "species.browse": "Bläddra observationer",
   "species.download": "Ladda ner artlistan",
   "species.download.textFile": "Textfil",

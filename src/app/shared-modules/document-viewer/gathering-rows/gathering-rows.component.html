@@ -28,6 +28,7 @@
       {{ gathering.locality }}</li>
   </ul>
 </laji-row>
+<laji-row [title]="'MY.coordinatesVerbatim' | label" [value]="gathering.coordinatesVerbatim"></laji-row>
 <laji-row [title]="'MY.notes' | label" [value]="gathering.notes"></laji-row>
 <laji-row [title]="'MY.taxonCensus' | label" *ngIf="gathering.taxonCensus">
   <ul class="comma-list">

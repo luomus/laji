@@ -3,6 +3,15 @@
     <laji-map [options]="mapOptions" [lang]="translate.currentLang"></laji-map>
   </div>
   <ng-container *ngIf="data">
-    <laji-viewer-coordinates [wgs84]="data[active].wgs84" [ykj]="data[active].ykj"></laji-viewer-coordinates>
+    <laji-viewer-coordinates
+      [sourceOfCoordinates]="data[active].sourceOfCoordinates"
+      [coordinateAccuracy]="data[active].coordinateAccuracy"
+      [wgs84]="data[active].wgs84"
+      [wgs84Center]="data[active].wgs84CenterPoint"
+      [ykj]="data[active].ykj"
+      [ykj1km]="data[active].ykj1km"
+      [ykj1kmCenter]="data[active].ykj1kmCenter"
+      [ykj10km]="data[active].ykj10km"
+      [ykj10kmCenter]="data[active].ykj10kmCenter"></laji-viewer-coordinates>
   </ng-container>
 </ng-container>
