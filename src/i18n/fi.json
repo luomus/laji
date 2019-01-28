@@ -965,5 +965,6 @@
   "yes": "Kyllä",
   "invasiveSpecies.title": "Vieraslajit",
   "invasiveSpecies.places": "Kirjaa torjuntatoimia",
-  "np.formOwnSubmissions": "Paikan aiemmat ilmoitukset"
+  "np.formOwnSubmissions": "Paikan aiemmat ilmoitukset",
+  "np.tag": "Rajaa reitin ominaisuuksien perusteella"
 }

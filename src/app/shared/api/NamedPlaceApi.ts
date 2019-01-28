@@ -37,6 +37,7 @@ export interface NamedPlaceQuery {
   municipality?: string;
   taxonIDs?: string;
   birdAssociationArea?: string;
+  tags?: string;
   includePublic?: boolean;
   includeUnits?: boolean;
   selectedFields?: string;
