@@ -11,10 +11,10 @@ import { Subscription, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'laji-taxonomy',
-  templateUrl: './taxonomy.component.html',
-  styleUrls: ['./taxonomy.component.css']
+  templateUrl: './taxon.component.html',
+  styleUrls: ['./taxon.component.css']
 })
-export class TaxonomyComponent implements OnInit, OnDestroy {
+export class TaxonComponent implements OnInit, OnDestroy {
   taxonId: string;
   infoCardContext: string;
 

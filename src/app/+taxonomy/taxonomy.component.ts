@@ -4,25 +4,14 @@ import { LocalizeRouterService } from '../locale/localize-router.service';
 
 @Component({
   selector: 'laji-taxonomy',
-  templateUrl: './taxon.component.html',
-  styleUrls: ['./taxon.component.css']
+  templateUrl: './taxonomy.component.html',
+  styleUrls: ['./taxonomy.component.css']
 })
-export class TaxonComponent {
+export class TaxonomyComponent {
   constructor(
     private router: Router,
     private localizeRouterService: LocalizeRouterService
   ) { }
-
-  goToBrowsePage(groupId?: string) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/taxon/list']),
-      {queryParams: {
-        informalGroupFilters: groupId,
-        onlyFinnish: true,
-        reset: true
-      }}
-    );
-  }
 
   toTaxonPage(taxonId: string) {
     if (taxonId) {

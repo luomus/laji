@@ -1,9 +1,9 @@
 import { Component, OnChanges, Input, ChangeDetectorRef } from '@angular/core';
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
+import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-species-pie',

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
+import { TaxonomyApi } from '../../../../../shared/api/TaxonomyApi';
 
 @Component({
   selector: 'laji-bold-sequence',

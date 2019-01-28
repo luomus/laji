@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { Taxonomy } from '../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-info',

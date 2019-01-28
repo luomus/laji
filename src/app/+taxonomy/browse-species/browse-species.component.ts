@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TaxonomySearchQuery } from '../taxon-browse/service/taxonomy-search-query';
+import { TaxonomySearchQuery } from '../species/service/taxonomy-search-query';
 import { Subscription } from 'rxjs';
 
 @Component({

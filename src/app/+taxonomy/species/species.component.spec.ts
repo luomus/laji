@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaxonBrowseComponent } from './taxon-browse.component';
+import { SpeciesComponent } from './species.component';
 
 describe('BrowseComponent', () => {
-  let component: TaxonBrowseComponent;
-  let fixture: ComponentFixture<TaxonBrowseComponent>;
+  let component: SpeciesComponent;
+  let fixture: ComponentFixture<SpeciesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaxonBrowseComponent ]
+      declarations: [ SpeciesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaxonBrowseComponent);
+    fixture = TestBed.createComponent(SpeciesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

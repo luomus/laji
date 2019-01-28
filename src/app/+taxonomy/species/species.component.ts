@@ -9,10 +9,10 @@ import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-taxon-browse',
-  templateUrl: './taxon-browse.component.html',
-  styleUrls: ['./taxon-browse.component.css']
+  templateUrl: './species.component.html',
+  styleUrls: ['./species.component.css']
 })
-export class TaxonBrowseComponent implements OnInit, OnDestroy {
+export class SpeciesComponent implements OnInit, OnDestroy {
   @ViewChild('header') headerRef: ElementRef;
 
   public active: string;

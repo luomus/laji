@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { Taxonomy } from '../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-synonyms',
