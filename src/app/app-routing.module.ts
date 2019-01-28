@@ -9,6 +9,7 @@ import { LocaleFiComponent } from './locale/locale-fi.component';
 import { mergeMap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { Global } from '../environments/global';
+import { LocalizeGuard } from './locale/localize.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -50,7 +51,7 @@ const routesWithLang: Routes = [
     {path: 'vieraslajit', redirectTo: '/en/theme/vieraslajit', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
-  ], component: LocaleEnComponent},
+  ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
     {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
@@ -60,8 +61,8 @@ const routesWithLang: Routes = [
     {path: 'vieraslajit', redirectTo: '/sv/theme/vieraslajit', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/sv/error/404'}
-  ], component: LocaleSvComponent},
-  {path: '', children: [
+  ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
+  {path: '', data: {lang: 'fi'}, children: [
     {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
@@ -73,7 +74,7 @@ const routesWithLang: Routes = [
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/error/404'}
-  ], component: LocaleFiComponent}
+  ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
 ];
 
 @NgModule({
