@@ -63,17 +63,17 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
           this.getFormRights$(data.documentForm),
           this.namedPlacesService.getNamedPlace(activeNPId)
         ).pipe(
-          map<any, NPResolverData>(join => ({
+          map<any, NPResolverData>(([namedPlaces, placeForm, formRights, activeNP]) => ({
             ...data,
-            formRights: join[2],
-            placeForm: join[1],
-            namedPlaces: this.npRequirementsNotMet(data.documentForm) ? undefined : join[0],
+            formRights,
+            placeForm,
+            namedPlaces: this.npRequirementsNotMet(data.documentForm) ? undefined : namedPlaces,
             edit: edit,
             collectionId: this.collectionId,
             municipalityId: this.municipalityId,
             birdAssociationId: this.birdAssociationId,
             activeNPId: activeNPId,
-            activeNP: join[3]
+            activeNP
           }))
         )
       )
@@ -112,6 +112,9 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
 
   getNamedPlaces$(documentForm): Observable<any> {
     const selected = (documentForm.options && documentForm.options.namedPlaceList || []).map((field: string) => field.replace('$.', ''));
+    if (documentForm.namedPlaceOptions && !documentForm.namedPlaceOptions.hideMapTab) {
+      selected.push('geometry');
+    }
     const query: NamedPlaceQuery = {
       collectionID: this.collectionId,
       municipality: this.municipalityId,

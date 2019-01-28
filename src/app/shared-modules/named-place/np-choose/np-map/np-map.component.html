@@ -1,7 +1,12 @@
 <div [ngStyle]="{height: height}">
   <laji-map [legend]="legend"
-            [options]="{zoom: 2, tileLayerName: this.tileLayerName, tileLayerOpacity: 0.5,
-                       controls: {location: false}, popupOnHover: true}"
+            [options]="{
+				      zoom: 2,
+				      tileLayerName: this.tileLayerName,
+				      overlayNames: this.overlayNames,
+		          tileLayerOpacity: 0.5,
+		          controls: {location: false}, popupOnHover: true
+				   }"
             [lang]="translate.currentLang"
             [onPopupClose]="onPopupClose"
   ></laji-map>

@@ -36,11 +36,13 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   @Input() reservable: boolean;
   @Input() npFormData: any;
   @Input() formData: any;
+  @Input() mapOptions: any;
   @Output() activePlaceChange = new EventEmitter<number>();
 
   legend;
   listItems: NpInfoRow[] = [];
   tileLayerName;
+  overlayNames;
   private _data: any;
   private _popupCallback: (elemOrString: HTMLElement | string) => void;
 
@@ -135,8 +137,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
       };
     }
 
-    const {mapTileLayerName = 'maastokartta'} = this.formData.namedPlaceOptions || {};
+    const {mapTileLayerName = 'maastokartta', mapOverlayNames} = this.formData.namedPlaceOptions || {mapOverlayNames: undefined};
     this.tileLayerName = mapTileLayerName;
+    this.overlayNames = mapOverlayNames;
 
     try {
       this._data = {
@@ -194,11 +197,4 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
     }
   }
 
-}
-
-function capitalizeFirst(s: string | Array<string>) {
-  if (Array.isArray(s)) {
-    return s.map(u => capitalizeFirst(u));
-  }
-  return s.substring(0, 1).toUpperCase().concat(s.substring(1, s.length));
 }

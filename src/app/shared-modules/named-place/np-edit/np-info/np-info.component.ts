@@ -192,7 +192,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       return;
     }
     this.userService.getUser().subscribe(person => {
-      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1);
+      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) || this.formRights.admin;
       this.formReservable = this.formData &&
         Array.isArray(this.formData.features) &&
         this.formData.features.indexOf(Form.Feature.Reserve) > -1;

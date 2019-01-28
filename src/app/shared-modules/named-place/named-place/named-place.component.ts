@@ -221,19 +221,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (formData && formData.features && Array.isArray(formData.features)) {
       this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
-      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1;
+      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1 || this.formRights.admin;
     }
   }
 
   updateAllowCreate() {
-    if (this.documentForm && this.documentForm.namedPlaceOptions
-        && this.documentForm.namedPlaceOptions.requireAdmin === false) {
-      this.allowCreate = true;
-    } else {
-      this.allowCreate = this.formRights.admin
-                         && (!this.documentForm.features
-                         || this.documentForm.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1);
-    }
+    this.allowCreate = this.formRights.admin ||
+      (!this.documentForm.features || this.documentForm.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1) ||
+      (this.documentForm && this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.requireAdmin === false);
   }
 
   updateQueryParams() {
@@ -261,10 +256,15 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   setActiveNP(idx: number) {
     this.activeNP = idx;
+    if (this.activeNP >= 0 && this.editView) {
+      this.editView.npClick();
+    }
   }
 
   toEditMode(create: boolean) {
+    console.log('EDIT CLICKED');
     if (!this.allowCreate) {
+      console.log('NOT ALLOWED TO CREATE');
       return;
     }
     this.npEdit.setIsEdit(!create);
@@ -288,10 +288,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
     }
     this.editMode = false;
-    this.updateQueryParams();
     if (np) {
       this.setActiveNP(idx);
     }
+    this.namedPlaceService.invalidateCache();
+    this.updateQueryParams();
   }
 
   setErrorMessage(msg) {
@@ -331,9 +332,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         }
       }
 
-      this.placeForm.formData = npData;
+      this.placeForm = {...this.placeForm, formData: npData};
     } else {
-      this.placeForm.formData = this.prepopulatedNamedPlace;
+      this.placeForm = {...this.placeForm, formData: this.prepopulatedNamedPlace};
     }
   }
 

@@ -10,6 +10,7 @@ export class FormApiClient {
   protected basePath = environment.apiBase;
   private _lang: string;
   private _personToken: string;
+  private _formID: string;
 
   constructor(protected http: HttpClient) {
   }
@@ -30,6 +31,14 @@ export class FormApiClient {
     return this._personToken;
   }
 
+  public set formID(id) {
+    this._formID = id;
+  }
+
+  public get formID() {
+    return this._formID;
+  }
+
   public fetch(
     resource: string,
     query: any,
@@ -39,12 +48,11 @@ export class FormApiClient {
 
     const queryParameters = {...Util.removeUndefinedFromObject(query)};
 
-    if (this._lang !== undefined) {
-      queryParameters['lang'] = this._lang;
-    }
-    if (this._personToken !== undefined) {
-      queryParameters['personToken'] = this._personToken;
-    }
+    ['lang', 'personToken', 'formID'].forEach(key => {
+      if (this[key] !== undefined) {
+        queryParameters[key] = this[key];
+      }
+    });
 
     if (!options) {
       options = {};

@@ -8,7 +8,7 @@ import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Obser
 import { ModalDirective } from 'ngx-bootstrap';
 import { LocalStorage } from 'ngx-webstorage';
 import { DocumentExportService } from './service/document-export.service';
-import { DownloadEvent, RowDocument, TemplateEvent } from './own-datatable/own-datatable.component';
+import { DownloadEvent, LabelEvent, RowDocument, TemplateEvent } from './own-datatable/own-datatable.component';
 import { DocumentInfoService } from '../../shared/service/document-info.service';
 import * as moment from 'moment';
 import { Person } from '../../shared/model/Person';
@@ -68,6 +68,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   @Input() collectionID;
   @Input() formID;
   @Input() showDownloadAll = true;
+  @Input() showPrintLabels = false;
   @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
@@ -93,7 +94,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   yearInfoError: string;
   documentError: string;
   documentModalVisible = false;
-  selectedFields = 'creator,id,gatherings[*].id';
+  selectedFields = 'creator,id,gatherings[*].id,publicityRestrictions';
 
   selectedMap = {
     templateName: 'templateName',
@@ -185,7 +186,10 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
         selectedFields: this.getSelectedFields()
       }).pipe(
         switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
-        tap(() => this.loading = false)
+        tap(() => {
+          this.loading = false;
+          this.cd.markForCheck();
+        })
       );
       return;
     }
@@ -224,7 +228,10 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
         selectedFields: this.getSelectedFields()
       })),
       switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
-      tap(() => this.loading = false)
+      tap(() => {
+        this.loading = false;
+        this.cd.markForCheck();
+      })
     );
   }
 
@@ -318,7 +325,9 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   }
 
   private searchDocumentsToRowDocuments(documents: SearchDocument[]): Observable<RowDocument[]> {
-    return forkJoin(documents.map((doc, i) => this.setRowData(doc, i)));
+    return Array.isArray(documents) && documents.length > 0 ?
+      forkJoin(documents.map((doc, i) => this.setRowData(doc, i))) :
+      ObservableOf([]);
   }
 
   private setRowData(document: SearchDocument, idx: number): Observable<RowDocument> {
@@ -407,5 +416,21 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return ObservableOf(''); }
 
     return this.labelService.get(npId, 'multi');
+  }
+
+  doLabels(event: LabelEvent) {
+    this.loading = true;
+    const documents$ = ObservableForkJoin(
+      event.documentIDs.map(id => this.documentApi.findById(id, this.userService.getToken()))
+    );
+    const year$ = this.getAllDocuments<Document>({year: event.year}).pipe(
+      map(documents => documents.filter(doc => event.documentIDs.indexOf(doc.id) > -1))
+    );
+    (event.documentIDs.length > 10 ? year$ : documents$).pipe(
+      tap(() => {
+        this.loading = false;
+        this.cd.markForCheck();
+      })
+    ).subscribe();
   }
 }
