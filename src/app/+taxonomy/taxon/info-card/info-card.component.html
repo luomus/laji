@@ -88,7 +88,7 @@
         <div class="panel panel-default taxon-images"
              laji-panel
              [hidden]="!hasTaxonImages && !hasCollectionImages"
-             [title]="'taxon.images' | translate"
+             [title]="'taxonomy.images' | translate"
              [open]="settings['taxon-images']?.open !== false"
              [autoToggle]="true"
              (activate)="updateSettings('taxon-images', $event.open)"

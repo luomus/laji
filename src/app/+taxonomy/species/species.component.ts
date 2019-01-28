@@ -2,7 +2,7 @@ import { WINDOW } from '@ng-toolkit/universal';
 import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { TaxonomySearchQuery } from './service/taxonomy-search-query';
 import { FooterService } from '../../shared/service/footer.service';
 import { isPlatformBrowser } from '@angular/common';
@@ -22,7 +22,7 @@ export class SpeciesComponent implements OnInit, OnDestroy {
   public showFilter = true;
 
   private subData: Subscription;
-  private subQuery: Subscription;
+  private subParams: Subscription;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -36,22 +36,16 @@ export class SpeciesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.footerService.footerVisible = false;
 
-    this.subQuery = this.route.params.pipe(
+    this.subParams = this.route.params.pipe(
       map(data => data['tab']),
-      withLatestFrom(this.route.queryParams)
     )
-      .subscribe(([tab, params]) => {
-        if (params['reset']) {
-          this.searchQuery.empty();
-        }
-        this.searchQuery.setQueryFromParams(params);
-        this.searchQuery.queryUpdate();
-
+      .subscribe(tab => {
         this.active = tab;
         this.activated[tab] = true;
         this.cd.markForCheck();
       });
 
+    this.searchQuery.setQueryFromParams(this.route.snapshot.queryParams);
     this.setFilterPosition();
   }
 
@@ -60,9 +54,18 @@ export class SpeciesComponent implements OnInit, OnDestroy {
     if (this.subData) {
       this.subData.unsubscribe();
     }
-    if (this.subQuery) {
-      this.subQuery.unsubscribe();
+    if (this.subParams) {
+      this.subParams.unsubscribe();
     }
+  }
+
+  @HostListener('window:popstate')
+  onPopState() {
+    // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
+    setTimeout(() => {
+      this.searchQuery.setQueryFromParams(this.route.snapshot.queryParams);
+      this.cd.markForCheck();
+    });
   }
 
   @HostListener('window:scroll')

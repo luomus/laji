@@ -24,7 +24,46 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   constructor(
     private router: Router
   ) {
-    this.empty();
+    this.init();
+  }
+
+  public init(): void {
+    this.query = {};
+    this.listOptions = {
+      page: 1,
+      sortOrder: 'taxonomic',
+      selected: ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
+        'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames']
+    };
+    this.imageOptions = {
+      page: 1
+    };
+  }
+
+  public setQueryFromParams(params: Params) {
+    const newQuery = {};
+
+    newQuery['informalGroupFilters'] = params['informalGroupFilters'];
+    newQuery['target'] = params['target'];
+    newQuery['onlyFinnish'] = params['onlyFinnish'] === 'true' ? true : undefined;
+
+    newQuery['invasiveSpeciesFilter'] =
+      params['invasiveSpeciesFilter'] === 'true' ? true : (params['invasiveSpeciesFilter'] === 'false' ? false : undefined);
+
+    const arrayKeys = ['redListStatusFilters', 'adminStatusFilters',
+      'typesOfOccurrenceFilters', 'typesOfOccurrenceNotFilters', 'taxonRanks'
+    ];
+    for (let i = 0; i < arrayKeys.length; i++) {
+      const key = arrayKeys[i];
+      newQuery[key] = this.getArrayParam(params, key);
+    }
+
+    if (JSON.stringify(this.query) !== JSON.stringify(newQuery)) {
+      this.init();
+      this.query = newQuery;
+    }
+
+    this.queryUpdate();
   }
 
   public updateUrl(): void {
@@ -51,41 +90,12 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
       [],
       extra
     );
+
+    this.queryUpdate();
   }
 
-  public empty(): void {
-    this.query = {};
-    this.listOptions = {
-      page: 1,
-      sortOrder: 'taxonomic',
-      selected: ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
-        'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames']
-    };
-    this.imageOptions = {
-      page: 1
-    };
-  }
-
-  public setQueryFromParams(params: Params) {
-    this.setQueryValue('informalGroupFilters', params['informalGroupFilters']);
-    this.setQueryValue('target', params['target']);
-    this.setQueryValue('onlyFinnish', params['onlyFinnish'] === 'true' ? true : undefined);
-
-    this.setQueryValue('invasiveSpeciesFilter',
-      params['invasiveSpeciesFilter'] === 'true' ? true : (params['invasiveSpeciesFilter'] === 'false' ? false : undefined)
-    );
-
-    const arrayKeys = ['redListStatusFilters', 'adminStatusFilters',
-      'typesOfOccurrenceFilters', 'typesOfOccurrenceNotFilters', 'taxonRanks'
-    ];
-    for (let i = 0; i < arrayKeys.length; i++) {
-      const key = arrayKeys[i];
-      this.setQueryValue(key, this.getArrayParam(params, key));
-    }
-  }
-
-  private setQueryValue(key: string, value: any) {
-    this.query[key] = value;
+  public queryUpdate(data = {}): void {
+    this.queryUpdatedSource.next(data);
   }
 
   private getArrayParam(params: Params, key: string) {
@@ -94,9 +104,5 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
       value = [value];
     }
     return value;
-  }
-
-  public queryUpdate(data = {}): void {
-    this.queryUpdatedSource.next(data);
   }
 }
