@@ -182,7 +182,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   onTagChange(tags) {
-    this.tags = tags.join('');
+    this.tags = tags.join(',');
 
     this.updateQueryParams();
   }
