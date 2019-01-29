@@ -10,24 +10,24 @@
 <div class="container">
   <div class="row">
     <laji-navigation-thumbnail
-      [name]="'Tutustu lajeihin'"
+      [name]="'taxonomy.browseSpeciesPage'"
       [icon]="'kotilo_1_sha'"
       [iconType]="'png'"
       [path]="'taxon/browse'"
-      [intro]="'Selaa lajien kuvia ja tietoja'"
+      [intro]="'taxonomy.browseSpeciesPage.intro' | translate"
       [bodyHeight]="'150px'"
     ></laji-navigation-thumbnail>
     <laji-navigation-thumbnail
-      [name]="'Lajiluettelo'"
+      [name]="'taxonomy.speciesPage'"
       [icon]="'table'"
       [iconType]="'png'"
       [path]="'taxon/list'"
       [query]="{onlyFinnish: true}"
-      [intro]="'Rajaa, selaa ja lataa lajiluetteloita'"
+      [intro]="'taxonomy.speciesPage.intro' | translate"
       [bodyHeight]="'150px'"
     ></laji-navigation-thumbnail>
     <laji-navigation-thumbnail
-      [name]="'Selaa taksonomiaa'"
+      [name]="'taxonomy.taxonPage'"
       [icon]="'tree'"
       [iconType]="'png'"
       [path]="'taxon/MX.37600'"
@@ -35,7 +35,7 @@
     >
       <div class="taxon-select">
         <laji-taxon-select
-          [placeholder]="'Kirjoita taksonin nimi'"
+          [placeholder]="'taxonomy.taxonPage.search' | translate"
           (taxonIdChange)="toTaxonPage($event)"></laji-taxon-select>
       </div>
     </laji-navigation-thumbnail>
