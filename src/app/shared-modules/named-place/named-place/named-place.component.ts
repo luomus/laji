@@ -63,7 +63,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   birdAssociationArea = '';
   municipality = '';
   taxonID = '';
-  tags = '';
+  tags = [];
 
   errorMsg = '';
 
@@ -182,8 +182,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   onTagChange(tags) {
-    this.tags = tags.join(',');
-
+    this.tags = tags;
     this.updateQueryParams();
   }
 
@@ -254,8 +253,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     (this.birdAssociationArea || '').length > 0
       ? queryParams['birdAssociationArea'] = this.birdAssociationArea
       : delete queryParams['birdAssociationArea'];
-    (this.tags || '').length > 0
-      ? queryParams['tags'] = this.tags
+    (this.tags || []).length > 0
+      ? queryParams['tags'] = this.tags.join(',')
       : delete queryParams['tags'];
     queryParams['edit'] = this.editMode;
     this.router.navigate([], { queryParams: queryParams });

@@ -27,12 +27,12 @@
     <ng-container *ngIf="filterByTags && !editMode">
       <laji-metadata-select
         [alt]="'MNP.tagEnum'"
-        [onChange]="onTagChange.bind(this)"
+        [ngModel]="tags"
+        (ngModelChange)="onTagChange($event)"
         [multiple]="true"
         [useFilter]="false"
         placeholder="np.tag"
         [open]="true"
-        [value]="(tags || '').split(',')"
         [lang]="lang"></laji-metadata-select>
     </ng-container>
     <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">

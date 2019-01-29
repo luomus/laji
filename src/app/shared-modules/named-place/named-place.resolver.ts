@@ -23,7 +23,7 @@ export interface NPResolverData {
 
   birdAssociationId?: string;
   municipalityId?: string;
-  tags?: string;
+  tags?: string[];
   activeNPId?: any;
   activeNP?: NamedPlace;
 }
@@ -34,7 +34,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
   private documentFormId;
   private birdAssociationId;
   private municipalityId;
-  private tags;
+  private tags: string[];
   private lang;
   constructor(private formService: FormService,
               private translate: TranslateService,
@@ -52,7 +52,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     const edit = queryParams['edit'] === 'true';
     this.birdAssociationId = queryParams['birdAssociationArea'];
     this.municipalityId = queryParams['municipality'];
-    this.tags = queryParams['tags'];
+    this.tags = (queryParams['tags'] || '').split(',');
     const activeNPId = queryParams['activeNP'];
 
     return this.getDocumentForm$().pipe(
@@ -123,7 +123,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
       collectionID: this.collectionId,
       municipality: this.municipalityId,
       birdAssociationArea: this.birdAssociationId,
-      tags: this.tags,
+      tags: this.tags.join(','),
       includeUnits: documentForm.namedPlaceOptions.includeUnits,
       selectedFields: selected.join(',')
     };
