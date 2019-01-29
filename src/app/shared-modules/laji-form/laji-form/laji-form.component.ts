@@ -47,6 +47,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   private settings: any;
   private errorSub: Subscription;
   private municipalityEnums: any;
+  private biogeographicalProvinceEnums: any;
 
   @ViewChild('errorModal') public errorModal: ModalDirective;
   @ViewChild('lajiForm') lajiFormRoot: ElementRef;
@@ -66,6 +67,17 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       this.municipalityEnums = municipalities.reduce((enums, municipality) => {
         enums.enum.push(municipality.id);
         enums.enumNames.push(municipality.value);
+        return enums;
+      }, {
+        enum: [],
+        enumNames: []
+      });
+      this.mountLajiForm();
+    });
+    this.areaService.getBiogeographicalProvinces(this.lang).subscribe(provinces => {
+      this.biogeographicalProvinceEnums = provinces.reduce((enums, province) => {
+        enums.enum.push(province.id);
+        enums.enumNames.push(province.value);
         return enums;
       }, {
         enum: [],
@@ -157,7 +169,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   mountLajiForm() {
-    if (!this.municipalityEnums || !this.settings) {
+    if (!this.municipalityEnums || !this.biogeographicalProvinceEnums || !this.settings) {
       return;
     }
     this.createNewLajiForm();
@@ -173,6 +185,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
         const uiSchemaContext = this.formData.uiSchemaContext || {};
         uiSchemaContext['creator'] = this.formData.formData.creator;
         uiSchemaContext['municipalityEnum'] = this.municipalityEnums;
+        uiSchemaContext['biogeographicalProvinceEnum'] = this.biogeographicalProvinceEnums;
         this.apiClient.lang = this.lang;
         this.apiClient.personToken = this.userService.getToken();
         this.apiClient.formID = this.formData.id;
