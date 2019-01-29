@@ -24,7 +24,13 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   _data: any;
   mapOptions: LajiMapOptions = {
     controls: {
-      coordinates: false
+      coordinates: false,
+      draw: {
+        copy: true
+      }
+    },
+    draw: {
+      editable: false
     },
     zoom: 4
   };

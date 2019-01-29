@@ -184,9 +184,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         doc.gatherings.map((gathering, idx) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
             mapData[idx] = {
+              ...gathering.conversions,
               geoJSON: gathering.conversions.wgs84Geo,
-              wgs84: gathering.conversions.wgs84,
-              ykj: gathering.conversions.ykj
+              coordinateAccuracy: gathering.interpretations && gathering.interpretations.coordinateAccuracy,
+              sourceOfCoordinates: gathering.interpretations && gathering.interpretations.sourceOfCoordinates
             };
             this.hasMapData = true;
           }

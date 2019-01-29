@@ -46,14 +46,28 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() info: string;
   @Input() skip: string[];
   @Input() skipBefore: string;
+  @Input() open: boolean;
 
   _options: {id: string, value: string}[] = [];
   active = [];
   selectedTitle = '';
   shouldSort = false;
-
   private subOptions: Subscription;
   private innerValue = '';
+
+  @Input() onChange = (_: any) => { };
+
+  @Input()
+  set value(v: any) {
+    if (v !== this.innerValue) {
+      this.innerValue = v;
+      this.onChange(v);
+    }
+  }
+
+  get value(): any {
+    return this.innerValue;
+  }
 
   constructor(public warehouseMapper: WarehouseValueMappingService,
               private metadataService: MetadataService,
@@ -65,19 +79,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   ) {
   }
 
-  onChange = (_: any) => {};
   onTouched = () => {};
-
-  get value(): any {
-    return this.innerValue;
-  }
-
-  set value(v: any) {
-    if (v !== this.innerValue) {
-      this.innerValue = v;
-      this.onChange(v);
-    }
-  }
 
   ngOnInit() {
     this.initOptions();

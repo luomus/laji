@@ -721,6 +721,7 @@
   "selfUrl.introStart": "Käyttäjätilin tietojen katselu ja muokkaus vaativat tietoturvasyistä uudelleenkirjautumisen. Painettuasi alla olevaa Käyttäjätilini painiketta, ole hyvä ja kirjaudu uudelleen sisään.",
   "sending": "Lähetetään",
   "showSpeciesCard": "Näytä lajikortti",
+  "sourceOfCoordinates": "Koordinaattien lähde",
   "species.browse": "Selaa havaintoja",
   "species.download": "Lataa lajiluettelo",
   "species.download.textFile": "Tekstitiedosto",
@@ -980,5 +981,6 @@
   "yes": "Kyllä",
   "invasiveSpecies.title": "Vieraslajit",
   "invasiveSpecies.places": "Kirjaa torjuntatoimia",
-  "np.formOwnSubmissions": "Paikan aiemmat ilmoitukset"
+  "np.formOwnSubmissions": "Paikan aiemmat ilmoitukset",
+  "np.tag": "Rajaa reitin ominaisuuksien perusteella"
 }

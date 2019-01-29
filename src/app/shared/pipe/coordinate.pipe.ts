@@ -19,6 +19,8 @@ export class CoordinatePipe implements PipeTransform {
         return this.makeMinMaxCoordinate(value);
       case 'wgs84':
         return this.makeMinMaxCoordinate(value);
+      case 'wgs84Center':
+        return this.joinCoordinate(value, ' ');
       case 'ykj10km':
         return this.joinCoordinate(value);
       case 'ykj10kmCenter':
@@ -43,9 +45,9 @@ export class CoordinatePipe implements PipeTransform {
     return locationCache[key];
   }
 
-  private joinCoordinate(value) {
+  private joinCoordinate(value, joinBy = ':') {
     if (value.lat && value.lon) {
-      return `${value.lat}:${value.lon}`;
+      return `${value.lat}${joinBy}${value.lon}`;
     }
     return '';
   }

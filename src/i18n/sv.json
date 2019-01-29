@@ -689,6 +689,7 @@
   "selfUrl.introStart": "Återinloggning krävs för att visa och redigera användarkontoinformation av säkerhetsskäl. När du har klickat på knappen Min användarkonto nedan, logga in igen.",
   "sending": "Sending",
   "showSpeciesCard": "Visa artkort",
+  "sourceOfCoordinates": "Koordinatkälla",
   "species.browse": "Bläddra observationer",
   "species.download": "Ladda ner artlistan",
   "species.download.textFile": "Textfil",
@@ -947,5 +948,6 @@
   "yes": "Ja",
   "invasiveSpecies.title": "Invasiva arter",
   "invasiveSpecies.places": "Spela in kontrol aktioner",
-  "np.formOwnSubmissions": "Placerar tidigare dokument"
+  "np.formOwnSubmissions": "Placerar tidigare dokument",
+  "np.tag": "Filtrera efter ruttegenskaper"
 }

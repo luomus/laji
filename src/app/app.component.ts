@@ -50,8 +50,6 @@ export class AppComponent {
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;
 
-    translateService.use(localizeRouterService.getLocationLang());
-
     router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
