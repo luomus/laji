@@ -55,9 +55,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   private subOptions: Subscription;
   private innerValue = '';
 
-  @Input() onChange = (_: any) => { };
+  onChange = (_: any) => { };
 
-  @Input()
   set value(v: any) {
     if (v !== this.innerValue) {
       this.innerValue = v;
