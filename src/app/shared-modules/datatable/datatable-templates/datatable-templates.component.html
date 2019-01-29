@@ -1,8 +1,8 @@
 <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template #headerTpl>
   <span class="datatable-header-cell-wrapper sort-full-width"
-        (click)="$event.target.classList.contains('no-propagation') ? return : sort()" title="{{column.label | translate}}">
+        (click)="$event.target.classList.contains('no-propagation') ? return : sort()" title="{{column.label | translate | values}}">
     <span class="datatable-header-cell-label draggable">
-      {{ column.label | translate }}
+      {{ column.label | translate | values }}
     </span>
     <laji-info *ngIf="column.info">{{ column.info | translate }}</laji-info>
   </span>

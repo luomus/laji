@@ -1,0 +1,32 @@
+<laji-tree
+  [activeId]="activeId"
+  [nodes]="nodes"
+  [getChildren]="getChildrenFunc"
+  [getParents]="getParentsFunc"
+  [skipParams]="skipParams"
+>
+  <ng-template #label let-node="node">
+    <a *ngIf="node.id !== activeId" [routerLink]="['..', node.id]">
+      <ng-container *ngTemplateOutlet="labelContent"></ng-container>
+    </a>
+    <strong *ngIf="node.id === activeId">
+      <ng-container *ngTemplateOutlet="labelContent"></ng-container>
+    </strong>
+    <ng-template #labelContent>
+      <laji-taxon-name [taxon]="node" [addLink]="false"></laji-taxon-name>
+    </ng-template>
+  </ng-template>
+</laji-tree>
+
+<div class="show-main-levels-wrapper">
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="showMainLevels"
+      (ngModelChange)="setSkipParams()"
+      name="showMainLevels"
+    >
+    {{ 'species.tree.showMainLevels' | translate }}
+  </label>
+  <laji-info [placement]="'right'">{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
+</div>

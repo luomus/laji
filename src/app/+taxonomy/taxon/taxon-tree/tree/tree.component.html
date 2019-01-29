@@ -1,0 +1,45 @@
+<laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
+  <div class="tree">
+    <ng-container *ngFor="let node of nodeList; let last = last">
+      <div *ngIf="last || !treeState.state[node.id].isSkipped">
+        <ng-container *ngTemplateOutlet="labelTpl; context: {'node': node}"></ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngTemplateOutlet="treeBranch; context: {nodes: nodeList[nodeList.length - 1]?.children}"></ng-container>
+  </div>
+</laji-spinner>
+
+<ng-template #treeBranch let-nodes="nodes">
+  <ng-container *ngIf="nodes && nodes.length > 0">
+    <ul>
+      <ng-container *ngTemplateOutlet="treeNodes; context: {nodes: nodes}"></ng-container>
+    </ul>
+  </ng-container>
+</ng-template>
+
+<ng-template #treeNodes let-nodes="nodes">
+  <ng-container *ngIf="nodes && nodes.length > 0">
+    <ng-container *ngFor="let node of nodes">
+      <ng-container
+        *ngTemplateOutlet="treeState.state[node.id].isSkipped ? treeNodes : treeNodeContent;
+        context: treeState.state[node.id].isSkipped ? {nodes: node.children} : {node: node}"
+      ></ng-container>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #treeNodeContent let-node="node">
+  <li>
+    <i class="glyphicon link toggle-triangle"
+       [ngClass]="{'glyphicon-triangle-right': !treeState.state[node.id].isExpanded, 'glyphicon-triangle-bottom': treeState.state[node.id].isExpanded}"
+       [ngStyle]="{visibility: node.hasChildren ? 'visible' : 'hidden'}"
+       (click)="toggle(node)"
+       *ngIf="treeState.state[node.id].loadingCount === 0"></i>
+    <laji-spinner *ngIf="treeState.state[node.id].loadingCount > 0"></laji-spinner>
+    <ng-container *ngTemplateOutlet="labelTpl; context: {'node': node}"></ng-container>
+
+    <ng-container *ngIf="treeState.state[node.id].isExpanded && treeState.state[node.id].loadingCount === 0">
+      <ng-container *ngTemplateOutlet="treeBranch; context: {nodes: node.children}"></ng-container>
+    </ng-container>
+  </li>
+</ng-template>

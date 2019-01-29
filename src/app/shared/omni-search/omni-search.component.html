@@ -32,43 +32,41 @@
                   (click)="activate(i)">
             {{ taxon.value }}
           </h5>
+          <hr class="hidden-md hidden-lg">
         </div>
-        <hr class="hidden-md hidden-lg">
-        <div class="col-md-5 first-col">
-          {{ 'omniSearch.matches' | translate }}
+        <div class="col-md-9 taxon-match">
+          <h3><laji-taxon-name [taxon]="taxon.payload"></laji-taxon-name></h3>
+
           <div class="row">
-            <div class="col-md-12 taxon-match informal-group-image {{taxon.informalTaxonGroupsClass}}">
-              <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()"><span class="vernacularName">{{ taxon.payload.vernacularName | multiLang }}</span></a><br>
-              <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()"><span
-                      class="scientificName" [ngClass]="{cursive: taxon.payload.cursiveName}">{{ taxon.payload.scientificName }}</span></a><br>
-              {{ 'omniSearch.rank'|translate }}: {{ taxon.payload.taxonRankId | label }}<br>
-              {{ 'omniSearch.groups'|translate }}:<br>
-              <ul>
-                <li *ngFor="let group of taxon.informalTaxonGroups">{{ group | multiLang }}</li>
-              </ul>
+            <div class="col-md-6 first-col">
+              <div style="margin-bottom: 10px">
+                <a [routerLink]="['/taxon/' + taxon.key] | localize" [queryParams]="{showTree: false}" (click)="close()">
+                  {{ 'Siirry lajikortille' }}
+                  <i class="glyphicon glyphicon-tag"></i>
+                </a>
+                <br>
+                <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()">
+                  {{ 'Selaa taksonomiaa' }}
+                </a>
+              </div>
+
+              <div style="margin-bottom: 10px">
+                <a [routerLink]="['/observation/map'] | localize" [queryParams]="{target: taxon.key }" (click)="close()">
+                  {{ 'navigation.observation' | translate }}
+                </a>
+                <br>
+                {{ taxon.count }}
+                {{ 'omniSearch.allObservation' | translate }}
+              </div>
+            </div>
+
+            <div class="col-md-6 second-col">
+              <div class="informal-group-image {{taxon.informalTaxonGroupsClass}}">
+                {{ 'omniSearch.rank' | translate }}: {{ taxon.payload.taxonRankId | label }}<br>
+                {{ 'omniSearch.groups' | translate }}: {{ taxon.informalTaxonGroups | multiLang | values }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-3 second-col">
-          {{ 'navigation.observation' | translate }}
-          <div class="row">
-            <div class="col-md-offset-1 col-md-11 observations" *ngIf="taxon">
-              <a [routerLink]="['/observation/map'] | localize" [queryParams]="{target: taxon.key }" (click)="close()">
-                {{ taxon?.count }}
-                {{ 'omniSearch.allObservation'|translate }}
-              </a>
-            </div>
-          </div>
-          <!--ng-container>
-          {{ 'omniSearch.links' | translate }}
-          <div class="row">
-            <div class="col-md-offset-1 col-md-11 taxonomy" *ngIf="taxon">
-              <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.value)}" (click)="close()">
-                {{'omniSearch.taxonList'|translate}}
-              </a>
-            </div>
-          </div>
-          </ng-container-->
         </div>
       </div>
     </div>

@@ -1,0 +1,68 @@
+:host {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
+.taxon-tree-container {
+  padding: 15px;
+  background-color: #ECF0F1;
+  position: relative;
+}
+
+@media only screen and (min-width : 768px) {
+  .row {
+    display: flex;
+  }
+
+  ::ng-deep .info-card-container .taxon-name-header {
+    margin-left: 30px;
+  }
+  ::ng-deep .info-card-container.sidebar-hidden .taxon-name-header {
+    margin-left: 120px;
+  }
+}
+@media only screen and (max-width : 767px) {
+  .taxon-tree-container, .info-card-container {
+    width: 100% !important;
+  }
+  .dragbar, .hide-sidebar-toggle {
+    display: none;
+  }
+}
+
+.dragbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 3px;
+  cursor: col-resize;
+  background-color: #e1e1e1;
+}
+
+.sidebar-toggle {
+  position: absolute;
+  top: 20px;
+  font-size: 16px;
+  color: #777;
+  margin-right: -24px;
+  background-color: #ECF0F1;
+  z-index: 1;
+  padding: 5px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top: 1px solid #e1e1e1;
+  border-right: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+}
+.sidebar-toggle.open-toggle {
+  top: 0;
+  padding: 15px;
+  border-top: none;
+  border-top-right-radius: 0;
+}
+
+.hide-sidebar-toggle {
+  right: 0;
+}

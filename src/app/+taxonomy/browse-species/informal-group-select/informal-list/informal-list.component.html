@@ -1,0 +1,19 @@
+<div class="row row-eq-height poks">
+  <!--div *ngIf="showAll" class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+    <a (click)="informalGroupSelect.emit('')" class="niks thumbnail panel panel-default link">
+      <div class="panel-heading">
+        <div style="background-image: url('/static/images/icons/species.svg');" class="informal-group-image">
+          <h3 style="height: 50px;" class="panel-title caption">{{ 'species.form.all' | translate }}</h3>
+        </div>
+      </div>
+    </a>
+  </div-->
+  <div *ngFor="let group of tree.results" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 small-padding">
+    <a (click)="informalGroupSelect.emit(group.id)" class="niks thumbnail panel panel-default link">
+      <div class="panel-heading" style="padding: 10px 10px; overflow: hidden">
+        <img style="float: left" class="group-image" alt="" [src]="'static/images/informalGroups/' + group.id + '.svg'">
+        <div style="overflow: hidden; padding: 0; font-size: 14px; font-weight: 500" class="panel-title caption">{{ group.name }}</div>
+      </div>
+    </a>
+  </div>
+</div>

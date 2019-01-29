@@ -1,0 +1,43 @@
+<div style="background-color: #ECF0F1; padding: 20px; margin-bottom: 40px;">
+  <h1 style="margin: 0">{{ 'species.search' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
+  <div style="margin-bottom: 10px;">{{ 'species.title.long' | translate }}</div>
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
+      <laji-omni-search [placeholder]="'species.search' | translate"></laji-omni-search>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <laji-navigation-thumbnail
+      [name]="'Tutustu lajeihin'"
+      [icon]="'kotilo_1_sha'"
+      [iconType]="'png'"
+      [path]="'taxon/browse'"
+      [intro]="'Selaa lajien kuvia ja tietoja'"
+      [bodyHeight]="'150px'"
+    ></laji-navigation-thumbnail>
+    <laji-navigation-thumbnail
+      [name]="'Lajiluettelo'"
+      [icon]="'table'"
+      [iconType]="'png'"
+      [path]="'taxon/list'"
+      [query]="{onlyFinnish: true}"
+      [intro]="'Rajaa, selaa ja lataa lajiluetteloita'"
+      [bodyHeight]="'150px'"
+    ></laji-navigation-thumbnail>
+    <laji-navigation-thumbnail
+      [name]="'Selaa taksonomiaa'"
+      [icon]="'tree'"
+      [iconType]="'png'"
+      [path]="'taxon/MX.37600'"
+      [bodyHeight]="'150px'"
+    >
+      <div class="taxon-select">
+        <laji-taxon-select
+          [placeholder]="'Kirjoita taksonin nimi'"
+          (taxonIdChange)="toTaxonPage($event)"></laji-taxon-select>
+      </div>
+    </laji-navigation-thumbnail>
+  </div>
+</div>

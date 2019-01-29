@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" [hidden]="!showTree">
+      <div class="sidebar-toggle hide-sidebar-toggle link" (click)="toggleSidebar()">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+      </div>
+      <laji-taxon-tree [activeId]="taxonId"></laji-taxon-tree>
+      <div class="dragbar" (mousedown)="startDragging($event)"></div>
+    </div>
+    <div *ngIf="!showTree"
+         class="sidebar-toggle open-toggle link"
+         (click)="toggleSidebar()"
+    >
+      <span style="margin-right: 8px">{{ 'species.taxa' | translate }}</span>
+      <i class="glyphicon glyphicon-arrow-right"></i>
+    </div>
+    <div class="info-card-container" [class.sidebar-hidden]="!showTree" [style.width]="showTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'">
+      <laji-info-card
+        [taxonId]="taxonId"
+        [context]="infoCardContext"
+        (descriptionChange)="onDescriptionChange($event)"
+      ></laji-info-card>
+    </div>
+  </div>
+</div>

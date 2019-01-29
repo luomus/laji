@@ -1,0 +1,25 @@
+<select style="margin-bottom: 8px;" class="form-control"
+        (change)="descriptionChange.emit($event.target.value)"
+        *ngIf="taxonDescription.length > 1">
+  <option *ngFor="let description of taxonDescription; let i = index"
+          [value]="description.id"
+          [selected]="activeDescription === i">
+    {{ description.title ? (description.title | multiLang) : description.id }}
+  </option>
+</select>
+<div *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index">
+  <h4>{{ group.title | multiLang }}</h4>
+  <div *ngFor="let variable of group.variables">
+    <h5 *ngIf="variable.title !== 'Ingressi'">
+      {{ variable.title | multiLang }}
+    </h5>
+    <span [innerHTML]="variable.content | multiLang"></span>
+  </div>
+</div>
+<ng-container *ngIf="taxonDescription[activeDescription]?.id && taxonDescription[activeDescription]?.id !== 'default'">
+  {{ 'taxonomy.source' | translate }}: {{ taxonDescription[activeDescription]?.title | multiLang }}
+</ng-container>
+<div *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
+  {{ taxonDescription[activeDescription]?.speciesCardAuthors.title | multiLang }}:
+  <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content | multiLang"></span>
+</div>

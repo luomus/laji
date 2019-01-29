@@ -1,0 +1,17 @@
+.block {
+  width: calc(100% - 10px);
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+@media only screen and (min-width : 992px) {
+  .block {
+    width: calc(50% - 10px);
+  }
+}
+
+::ng-deep .info-card .panel-body {
+  overflow-y: auto;
+}

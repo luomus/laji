@@ -45,6 +45,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() firstOptions = [];
   @Input() info: string;
   @Input() skip: string[];
+  @Input() skipBefore: string;
   @Input() open: boolean;
 
   _options: {id: string, value: string}[] = [];
@@ -237,7 +238,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     this.shouldSort = false;
     return this.metadataService.getRange(this.alt).pipe(
       map(range => range.map(options => ({id: options.id, value: MultiLangService.getValue(options.value, this.lang)}))),
-      map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options)
+      map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options),
+      map(options => this.skipBefore ? options.slice(options.findIndex(o => o.id === this.skipBefore)) : options)
     );
   }
 

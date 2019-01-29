@@ -219,6 +219,10 @@ export interface Taxonomy {
   additionalIds?: string[];
 
   redListEvaluation?: {[year: string]: RedListEvaluation};
+
+  alternativeVernacularName?: string[];
+
+  misspelledNames?: string[];
 }
 
 export interface RedListEvaluation {

@@ -39,6 +39,7 @@ import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
 import { ObservationGroupSelectComponent } from './group-select/group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
+import { ChecklistPipe } from './pipe/checklist.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 import { DatePickerComponent } from './datepicker/datepicker.component';
@@ -68,6 +69,7 @@ import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
     ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
     TaxonNameComponent,
+    ChecklistPipe,
     FactNotInPipe,
     ForTypesDirective,
     IucnFooterComponent,
@@ -98,7 +100,7 @@ import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, ServerOnlyDirective, BrowserOnlyDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent,
+    SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe
   ]

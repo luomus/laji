@@ -1,0 +1,15 @@
+<table class="table table-condensed" *ngIf="taxon">
+  <tbody>
+  <tr *ngIf="taxon.misspelledNames">
+    <th>{{ 'taxonomy.misspelled.names' | translate }}</th>
+    <td>
+      <ul>
+        <li *ngFor="let obj of taxon.misspelledNames">
+          <laji-taxon-name [taxon]="obj"></laji-taxon-name>
+        </li>
+      </ul>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
