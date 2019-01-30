@@ -33,12 +33,12 @@ export class NamedPlacesService {
       }));
   }
 
-  getNamedPlace(id, userToken?: string): Observable<NamedPlace> {
+  getNamedPlace(id, userToken?: string, includeUnits = false): Observable<NamedPlace> {
     if (!id) {
       return ObservableOf(null);
     }
     return this.namedPlaceApi
-      .findById(id, userToken);
+      .findById(id, userToken, {includeUnits});
   }
 
   createNamedPlace(data: NamedPlace, userToken: string) {
