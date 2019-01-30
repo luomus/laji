@@ -2,8 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'laji-taxon-image',
-  templateUrl: './taxon-image.component.html',
-  styleUrls: ['./taxon-image.component.css']
+  template: '<img [src]="image" *ngIf="image">'
 })
 export class TaxonImageComponent implements OnInit {
 

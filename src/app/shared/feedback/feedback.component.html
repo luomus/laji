@@ -18,9 +18,8 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-12">
-            <p>
-              {{ 'feedback.intro' | translate }}
-            </p>
+            <p *lajiForTypes="['dev', 'prod', 'vir']">{{ 'feedback.intro' | translate }}</p>
+            <p *lajiForTypes="['iucn']">Sähköpostiosoite ei ole pakollinen. Lisääthän sähköpostiosoitteesi, mikäli haluat vastauksen.</p>
           </div>
         </div>
         <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">

@@ -9,7 +9,7 @@ export interface FilterQuery {
   taxon?: string;
   redListGroup?: string;
   habitat?: string;
-  threads?: string;
+  threats?: string;
   reasons?: string;
   status?: string[];
 }

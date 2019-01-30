@@ -3,46 +3,33 @@ $red-list-color: rgb(255, 218, 218);
 $endangered-color: rgb(255, 144, 144);
 
 .selectable {
-  border: 1px solid #ddd;
-  background-color: #eee;
-  padding: 5px 10px;
+  padding: 0;
   width: 100%;
 }
 
 .table {
   border: 1px solid #ddd;
+  width: auto;
 }
-
+.table label {
+  font-weight: normal;
+}
 .explanation {
   vertical-align: top;
   alignment: left;
 }
 
-.evaluated {
+.evaluated, .evaluated .selectable {
   background-color: $evaluated-color;
 
-  .selectable {
-    background-color: darken($evaluated-color, 3%);
-    border-color:  darken($evaluated-color, 5%);
-  }
 }
 
-.redlist {
+.redlist, .redlist .selectable {
   background-color: $red-list-color;
-
-  .selectable {
-    background-color: darken($red-list-color, 3%);
-    border-color:  darken($red-list-color, 5%);
-  }
 }
 
-.endangered {
+.endangered, .endangered .selectable {
   background-color: $endangered-color;
-
-  .selectable {
-    background-color: darken($endangered-color, 3%);
-    border-color:  darken($endangered-color, 5%);
-  }
 }
 
 td {

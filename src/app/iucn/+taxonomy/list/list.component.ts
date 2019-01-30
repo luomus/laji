@@ -5,7 +5,7 @@ import { map, startWith } from 'rxjs/operators';
 import { FilterQuery, ResultService } from '../../iucn-shared/service/result.service';
 import {TranslateService} from '@ngx-translate/core';
 
-export type ListType = 'status'|'species'|'reasons'|'threads'|'habitat';
+export type ListType = 'status'|'species'|'reasons'|'threats'|'habitat';
 
 export interface QueryParams extends FilterQuery {
   year?: string;
@@ -22,7 +22,7 @@ export class ListComponent implements OnInit, OnDestroy {
     {label: 'Yhteenveto uhanalaisuusluokista', value: 'status'},
     {label: 'Lajiluettelo', value: 'species'},
     {label: 'Uhanalaisuuden syyt', value: 'reasons'},
-    {label: 'Uhkatekijät', value: 'threads'},
+    {label: 'Uhkatekijät', value: 'threats'},
     {label: 'Elinympäristöt', value: 'habitat'}
   ];
 

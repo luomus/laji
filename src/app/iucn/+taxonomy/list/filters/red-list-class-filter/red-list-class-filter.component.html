@@ -34,8 +34,8 @@
     </tr>
     <tr>
       <td class="evaluated"><label class="selectable"><input type="checkbox" [checked]="selected.RE" (change)="itemSelect('RE')"> RE</label></td>
-      <td class="endangered"><label class="selectable"><input type="checkbox" [checked]="selected.EN" (change)="itemSelect('EN')"> EN</label></td>
       <td class="endangered"><label class="selectable"><input type="checkbox" [checked]="selected.CR" (change)="itemSelect('CR')"> CR</label></td>
+      <td class="endangered"><label class="selectable"><input type="checkbox" [checked]="selected.EN" (change)="itemSelect('EN')"> EN</label></td>
       <td class="endangered"><label class="selectable"><input type="checkbox" [checked]="selected.VU" (change)="itemSelect('VU')"> VU</label></td>
       <td class="redlist"><label class="selectable"><input type="checkbox" [checked]="selected.DD" (change)="itemSelect('DD')"> DD</label></td>
       <td class="evaluated"><label class="selectable"><input type="checkbox" [checked]="selected.NT" (change)="itemSelect('NT')"> NT</label></td>
@@ -43,6 +43,7 @@
       <td><label class="selectable"><input type="checkbox" [checked]="selected.NA" (change)="itemSelect('NA')"> NA</label></td>
       <td><label class="selectable"><input type="checkbox" [checked]="selected.NE" (change)="itemSelect('NE')"> NE</label></td>
     </tr>
+    <!--
     <tr class="explanation">
       <td class="evaluated"><label>Kadonneet</label></td>
       <td class="endangered"><label>Äärimmäisen<br>uhanalaiset</label></td>
@@ -54,5 +55,6 @@
       <td><label>Arviointiin<br>soveltumattomat</label></td>
       <td><label>Arvioimatta<br>jätetyt</label></td>
     </tr>
+    -->
   </table>
 </div>

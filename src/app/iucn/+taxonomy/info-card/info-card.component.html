@@ -1,23 +1,12 @@
 <ng-container *ngIf="taxon">
   <h1><laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name></h1>
   <div class="row">
-    <div class="col-sm-4">
-      <laji-taxon-image [images]="taxon.multimedia"></laji-taxon-image>
-      <a href="https://laji.fi/taxon/{{ taxon.id }}" target="_blank" rel="noreferrer noopener">
-        <div class="to-laji">
-          Lisää lajitietoa tästä lajista löytyy
-          <h1>LAJI.FI</h1>
-          -portaalista
-        </div>
-      </a>
-    </div>
     <div class="col-sm-8">
       <div class="panel panel-default">
-        <div class="panel-heading">Uhanalaisuus</div>
         <div class="panel-body">
           <ng-container *ngIf="latestStatus">
             <laji-taxon-status [status]="latestStatus.status"></laji-taxon-status>
-            <label>Luokan perustelut</label><br>
+            <label>{{ 'MKV.criteriaForStatus' | label }}</label><br>
             <p>{{ latestStatus.criteria }} &mdash; {{ latestStatus.reasons | nlToBr:', ' }}</p>
           </ng-container>
           <label>Lajia koskevat hallinnolliset lajitiedot</label>
@@ -28,6 +17,16 @@
           </ul>
         </div>
       </div>
+    </div>
+    <div class="col-sm-4">
+      <laji-taxon-image [images]="taxon.multimedia"></laji-taxon-image>
+      <a href="https://laji.fi/taxon/{{ taxon.id }}" target="_blank" rel="noreferrer noopener">
+        <div class="to-laji">
+          Lisää lajitietoa tästä lajista löytyy
+          <h1>LAJI.FI</h1>
+          -portaalista
+        </div>
+      </a>
     </div>
   </div>
   <div class="row">
