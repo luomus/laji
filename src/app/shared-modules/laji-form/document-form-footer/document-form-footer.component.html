@@ -1,7 +1,7 @@
-<div class="form-footer" *ngIf="_admin || (_form && !_locked)">
+<div class="form-footer" *ngIf="_admin || (_form && _locked === false)">
   <div class="row">
     <div class="col-xs-3 col-sm-2" *ngIf="displaysSaveContainer()">
-      <div class="lock-button" *ngIf="_admin && _form.formData.hasOwnProperty('locked')">
+      <div class="lock-button" *ngIf="_admin && _locked !== undefined">
         <ng-container *ngIf="_locked; else open">
           <button type="button" class="btn btn-danger btn-sm" (click)="lock.emit(false)"><i class="fa fa-lock"></i></button>
         </ng-container>
@@ -9,7 +9,7 @@
           <button type="button" class="btn btn-success btn-sm" (click)="lock.emit(true)"><i class="fa fa-unlock"></i></button>
         </ng-template>
       </div>
-      <button *ngIf="show.save" class="btn btn-success btn-sm" [class.admin-success]="_admin && _form.formData.hasOwnProperty('locked')" [disabled]="saving" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
+      <button *ngIf="show.save" class="btn btn-success btn-sm" [class.admin-success]="_admin && _locked !== undefined" [disabled]="saving" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
     </div>
     <div [ngClass]="{'col-xs-3 col-sm-2': displaysSaveContainer(), 'col-xs-5 col-sm-3': !displaysSaveContainer()}">
       <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
