@@ -79,6 +79,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   @Input() namedPlace: string;
   @Input() header: string;
   @Input() documentViewerGatheringGeometryJSONPath: string;
+  @Input() forceLocalDocument = false;
 
   @ViewChild('documentModal') public modal: ModalDirective;
 

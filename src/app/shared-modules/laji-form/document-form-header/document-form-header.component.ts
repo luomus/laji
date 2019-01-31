@@ -3,6 +3,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-document-form-header',
@@ -20,6 +21,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() formData: any;
 
   form: any;
+  useLocalDocumentViewer = false;
 
   private subTrans: Subscription;
 
@@ -54,6 +56,9 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     this.formService.getForm(this.formID, this.translate.currentLang)
       .subscribe(form => {
         this.form = form;
+        this.useLocalDocumentViewer = this.form &&
+          Array.isArray(this.form.features) &&
+          this.form.features.indexOf(Form.Feature.DocumentsViewableForAll) > -1;
         this.title.setTitle(form.title + ' | ' + this.title.getTitle());
         this.cd.markForCheck();
       });
