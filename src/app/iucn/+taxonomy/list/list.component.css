@@ -1,5 +1,5 @@
 .year-select {
-  width: 9em;
+  width: 15em;
 }
 
 .type-select {
@@ -9,6 +9,10 @@
 .year-select, .type-select {
   margin-left: 1em;
   display: inline-block;
+}
+
+.well {
+  position: relative;
 }
 
 h1 {

@@ -18,6 +18,13 @@
   "checkAll": "Valitse kaikki",
   "checked": "valittu",
   "checkedPlural": "valittu",
+  "checklist": {
+    "current": "Laji.fi nykytaksonomian mukainen",
+    "2019": "2019 Punainen kirja",
+    "2015": "2015",
+    "2010": "2010",
+    "2000": "2000"
+  },
   "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
   "closed.title": "Suljettu",
   "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",

@@ -33,28 +33,15 @@
       <td colspan="2"></td>
     </tr>
     <tr>
-      <td class="evaluated"><label class="selectable"><input type="checkbox" [checked]="selected.RE" (change)="itemSelect('RE')"> RE</label></td>
-      <td class="endangered"><label class="selectable"><input type="checkbox" [checked]="selected.CR" (change)="itemSelect('CR')"> CR</label></td>
-      <td class="endangered"><label class="selectable"><input type="checkbox" [checked]="selected.EN" (change)="itemSelect('EN')"> EN</label></td>
-      <td class="endangered"><label class="selectable"><input type="checkbox" [checked]="selected.VU" (change)="itemSelect('VU')"> VU</label></td>
-      <td class="redlist"><label class="selectable"><input type="checkbox" [checked]="selected.DD" (change)="itemSelect('DD')"> DD</label></td>
-      <td class="evaluated"><label class="selectable"><input type="checkbox" [checked]="selected.NT" (change)="itemSelect('NT')"> NT</label></td>
-      <td class="evaluated"><label class="selectable"><input type="checkbox" [checked]="selected.LC" (change)="itemSelect('LC')"> LC</label></td>
-      <td><label class="selectable"><input type="checkbox" [checked]="selected.NA" (change)="itemSelect('NA')"> NA</label></td>
-      <td><label class="selectable"><input type="checkbox" [checked]="selected.NE" (change)="itemSelect('NE')"> NE</label></td>
+      <td class="evaluated"><label class="selectable" [tooltip]="'MX.iucnRE' | label"><input type="checkbox" [checked]="selected.RE" (change)="itemSelect('RE')"> RE</label></td>
+      <td class="endangered"><label class="selectable" [tooltip]="'MX.iucnCR' | label"><input type="checkbox" [checked]="selected.CR" (change)="itemSelect('CR')"> CR</label></td>
+      <td class="endangered"><label class="selectable" [tooltip]="'MX.iucnEN' | label"><input type="checkbox" [checked]="selected.EN" (change)="itemSelect('EN')"> EN</label></td>
+      <td class="endangered"><label class="selectable" [tooltip]="'MX.iucnVU' | label"><input type="checkbox" [checked]="selected.VU" (change)="itemSelect('VU')"> VU</label></td>
+      <td class="redlist"><label class="selectable" [tooltip]="'MX.iucnDD' | label"><input type="checkbox" [checked]="selected.DD" (change)="itemSelect('DD')"> DD</label></td>
+      <td class="evaluated"><label class="selectable" [tooltip]="'MX.iucnNT' | label"><input type="checkbox" [checked]="selected.NT" (change)="itemSelect('NT')"> NT</label></td>
+      <td class="evaluated"><label class="selectable" [tooltip]="'MX.iucnLC' | label"><input type="checkbox" [checked]="selected.LC" (change)="itemSelect('LC')"> LC</label></td>
+      <td><label class="selectable" [tooltip]="'MX.iucnNA' | label"><input type="checkbox" [checked]="selected.NA" (change)="itemSelect('NA')"> NA</label></td>
+      <td><label class="selectable" [tooltip]="'MX.iucnNE' | label"><input type="checkbox" [checked]="selected.NE" (change)="itemSelect('NE')"> NE</label></td>
     </tr>
-    <!--
-    <tr class="explanation">
-      <td class="evaluated"><label>Kadonneet</label></td>
-      <td class="endangered"><label>Äärimmäisen<br>uhanalaiset</label></td>
-      <td class="endangered"><label>Erittäin<br>uhanalaiset</label></td>
-      <td class="endangered"><label>Vaarantuneet</label></td>
-      <td class="redlist"><label>Riittämättömät<br>tiedot</label></td>
-      <td class="evaluated"><label>Silmälläpidettävät</label></td>
-      <td class="evaluated"><label>Elinvoimaiset</label></td>
-      <td><label>Arviointiin<br>soveltumattomat</label></td>
-      <td><label>Arvioimatta<br>jätetyt</label></td>
-    </tr>
-    -->
   </table>
 </div>

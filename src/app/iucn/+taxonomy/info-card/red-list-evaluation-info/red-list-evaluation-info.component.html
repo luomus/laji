@@ -1,13 +1,44 @@
-<laji-red-list-evaluation-info-rowset [values]="generalValues"></laji-red-list-evaluation-info-rowset>
-<ng-container *ngIf="habitatValues.length">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title caption">Yleistä</h3>
+  </div>
+  <div class="panel-body">
+    <laji-red-list-evaluation-info-rowset [values]="generalValues"></laji-red-list-evaluation-info-rowset>
+  </div>
+</div>
+<ng-container *ngIf="habitat.length">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title caption">Elinympäristö</h3>
+    </div>
+    <div class="panel-body">
+      <laji-red-list-evaluation-info-rowset [values]="habitat"></laji-red-list-evaluation-info-rowset>
+    </div>
+  </div>
   <div class="row">
     <div style="margin-top: 20px;" class="col-sm-5 text-bold"></div>
   </div>
-  <laji-red-list-evaluation-info-rowset [values]="habitatValues"></laji-red-list-evaluation-info-rowset>
+</ng-container>
+<ng-container *ngIf="evaluationBases.length">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title caption">Arvioinnin perusteet</h3>
+    </div>
+    <div class="panel-body">
+      <laji-red-list-evaluation-info-rowset [values]="evaluationBases"></laji-red-list-evaluation-info-rowset>
+    </div>
+  </div>
+  <div class="row">
+    <div style="margin-top: 20px;" class="col-sm-5 text-bold"></div>
+  </div>
 </ng-container>
 <ng-container *ngIf="occurrences.length">
-  <div class="row">
-    <div style="margin-top: 20px;" class="col-sm-5 text-bold">Esiintymisalueet ja alueellinen uhanalaisuus</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title caption">Esiintymisalueet ja alueellinen uhanalaisuus</h3>
+    </div>
+    <div class="panel-body">
+      <laji-red-list-evaluation-info-rowset [values]="occurrences"></laji-red-list-evaluation-info-rowset>
+    </div>
   </div>
-  <laji-red-list-evaluation-occurrences [occurrences]="occurrences"></laji-red-list-evaluation-occurrences>
 </ng-container>

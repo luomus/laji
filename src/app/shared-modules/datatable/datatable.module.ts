@@ -20,6 +20,6 @@ import { InfoModule } from '../info/info.module';
     InfoModule
   ],
   declarations: [DatatableComponent, DatatableTemplatesComponent, PublicationPipe, DataTableFooterComponent],
-  exports: [DatatableComponent, DatatableTemplatesComponent]
+  exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent]
 })
 export class DatatableModule { }

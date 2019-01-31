@@ -69,4 +69,9 @@ export class FiltersComponent implements OnInit {
   toggleStatus() {
     this.showStatusSelect = !this.showStatusSelect;
   }
+
+  clear() {
+    const {taxon, redListGroup, habitat, threats, reasons, status, ...rest} = this.query;
+    this.queryChange.emit(rest);
+  }
 }

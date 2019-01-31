@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
@@ -13,6 +13,7 @@ import { TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { RedListTaxonGroup } from '../../../../shared/model/RedListTaxonGroup';
 import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
 import { MetadataService } from '../../../../shared/service/metadata.service';
+import { IPageChange } from '../../../../shared-modules/datatable/data-table-footer/data-table-footer.component';
 
 @Component({
   selector: 'laji-results',
@@ -25,7 +26,8 @@ export class ResultsComponent implements OnChanges {
   @Input() type: ListType;
   @Input() query: FilterQuery;
   @Input() lang: string;
-  @Input() year: string;
+  @Input() checklist: string;
+  @Output() queryChange = new EventEmitter<FilterQuery>();
 
   redListStatusQuery$: Observable<RedListStatusData[]>;
   speciesQuery$: Observable<Taxonomy[]>;
@@ -41,6 +43,9 @@ export class ResultsComponent implements OnChanges {
   colors = ['#d81e05', '#fc7f3f', '#f9e814', '#cce226', '#60c659', '#bfbfbf', '#777', '#000'];
 
   colorSchema = [];
+  speciesPageSize = 1000;
+  speciesPage = 1;
+  speciesCount = 0;
 
   constructor(
     private taxonApi: TaxonomyApi,
@@ -61,7 +66,7 @@ export class ResultsComponent implements OnChanges {
 
   private initQueries() {
     this.baseQuery = Util.removeUndefinedFromObject({
-      checklistVersion: this.resultService.getChecklistVersion(this.year),
+      checklistVersion: this.checklist,
       id: this.query.taxon,
       redListEvaluationGroups: this.query.redListGroup,
       'latestRedListEvaluation.redListStatus': (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
@@ -268,13 +273,18 @@ export class ResultsComponent implements OnChanges {
     ];
     const query = {
       ...this.baseQuery,
+      page: this.query.page || '1',
       selectedFields: selectedFields.join(',')
     };
 
     const currentQuery = JSON.stringify(query);
     this.speciesQuery$ = this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
-      this.taxonApi.species(query, this.lang, '1', '1000').pipe(
+      this.taxonApi.species(query, this.lang, this.query.page || '1', '' + this.speciesPageSize).pipe(
+        tap(data => {
+          this.speciesPage = data.currentPage;
+          this.speciesCount = data.total;
+        }),
         map(data => data.results),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
@@ -389,4 +399,10 @@ export class ResultsComponent implements OnChanges {
     return !!(this.cache[key + '_query'] && this.cache[key + '_query'] === query);
   }
 
+  changeSpeciesPage(event: IPageChange) {
+    this.queryChange.emit({
+      ...this.query,
+      page: '' + event.page
+    });
+  }
 }

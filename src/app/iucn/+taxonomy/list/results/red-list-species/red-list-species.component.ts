@@ -8,13 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class RedListSpeciesComponent {
 
-  @Input()
-  species = [];
-
-  @Input()
-  year: string;
-
-  constructor() { }
-
+  @Input() species = [];
+  @Input() checklist: string;
 
 }

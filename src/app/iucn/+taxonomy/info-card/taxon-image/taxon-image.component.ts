@@ -2,7 +2,15 @@ import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'laji-taxon-image',
-  template: '<img [src]="image" *ngIf="image">'
+  template: '<div class="img-container" *ngIf="image"><img [src]="image"></div>',
+  styles: [`
+    .img-container {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 10px;
+      background-color: #2c2c2c;
+    }
+  `]
 })
 export class TaxonImageComponent implements OnInit {
 

@@ -6,6 +6,8 @@ h2 {
 .header {
   height: 250px;
   position: relative;
+  background-image: url("/static/images/redlist/laji_bg.png");
+  background-size: cover;
 }
 .header .intro {
   position: absolute;

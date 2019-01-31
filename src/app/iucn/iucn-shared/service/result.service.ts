@@ -3,6 +3,7 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { map, share, tap } from 'rxjs/operators';
 
+export const DEFAULT_YEAR = '2019';
 const AGG_STATUS = 'latestRedListEvaluation.redListStatus';
 
 export interface FilterQuery {
@@ -12,6 +13,7 @@ export interface FilterQuery {
   threats?: string;
   reasons?: string;
   status?: string[];
+  page?: string;
 }
 
 @Injectable({
@@ -55,20 +57,13 @@ export class ResultService {
   };
 
   redListStatuses: string[] = [
-    'MX.iucnEN',
     'MX.iucnCR',
+    'MX.iucnEN',
     'MX.iucnVU',
     'MX.iucnDD'
   ];
 
-  habitatStatuses: string[] = [
-    'MX.iucnRE',
-    'MX.iucnEN',
-    'MX.iucnCR',
-    'MX.iucnVU',
-    'MX.iucnNT',
-    'MX.iucnDD'
-  ];
+  habitatStatuses: string[] = [];
 
   private yearToChecklistVersion = {
     '2019': 'MR.424',
@@ -83,7 +78,7 @@ export class ResultService {
     return this.yearToChecklistVersion[year];
   }
 
-  getResults(year: number): Observable<{name: string, value: number}[]> {
+  getYearsStats(year: number): Observable<{name: string, value: number}[]> {
     if (this.resultCache[year]) {
       return ObservableOf(this.resultCache[year]);
     }
@@ -107,7 +102,7 @@ export class ResultService {
       return [];
     }
     return data.aggregations[AGG_STATUS]
-      .map(res => ({name: res.values[AGG_STATUS].replace('MX.iucn', ''), value: res.count}));
+      .map(res => ({name: this.shortLabel[res.values[AGG_STATUS]], value: res.count}));
   }
 
 }

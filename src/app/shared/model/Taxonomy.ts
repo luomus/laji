@@ -220,6 +220,8 @@ export interface Taxonomy {
 
   redListEvaluation?: {[year: string]: RedListEvaluation};
 
+  latestRedListEvaluation?: RedListEvaluation;
+
   alternativeVernacularName?: string[];
 
   misspelledNames?: string[];
