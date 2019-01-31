@@ -24,6 +24,7 @@ export class FiltersComponent implements OnInit {
   redListStatuses$: Observable<SelectOption[]>;
   threadReasons$: Observable<SelectOption[]>;
   habitats$: Observable<SelectOption[]>;
+  showStatusSelect = false;
 
   constructor(
     private taxonService: TaxonService,
@@ -65,4 +66,7 @@ export class FiltersComponent implements OnInit {
     return result;
   }
 
+  toggleStatus() {
+    this.showStatusSelect = !this.showStatusSelect;
+  }
 }
