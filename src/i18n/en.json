@@ -961,5 +961,6 @@
   "invasiveSpecies.title": "Invasive species",
   "invasiveSpecies.places": "Record control actions",
   "np.formOwnSubmissions": "Places previous documents",
-  "np.tag": "Filter by route properties"
+  "np.tag": "Filter by route properties",
+  "np.createPlace": "Create place"
 }

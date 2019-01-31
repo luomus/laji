@@ -12,7 +12,9 @@ export namespace Form {
     NoPrivate = <any> 'MHL.featureNoPrivate',
     Reserve = <any> 'MHL.featureReserve',
     Restricted = <any> 'MHL.featureRestrictAccess',
-    Administer = <any> 'MHL.featureAdminister'
+    Administer = <any> 'MHL.featureAdminister',
+    DocumentsViewableForAll = <any> 'MHL.featureDocumentsViewableForAll',
+    AdminLockable = <any> 'MHL.featureAdminLockable'
   }
   export interface List {
     id: string;

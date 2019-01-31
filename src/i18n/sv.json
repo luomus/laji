@@ -955,5 +955,6 @@
   "invasiveSpecies.title": "Invasiva arter",
   "invasiveSpecies.places": "Spela in kontrol aktioner",
   "np.formOwnSubmissions": "Placerar tidigare dokument",
-  "np.tag": "Filtrera efter ruttegenskaper"
+  "np.tag": "Filtrera efter ruttegenskaper",
+  "np.createPlace": "Skapa plats"
 }

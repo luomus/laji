@@ -114,37 +114,16 @@
         <laji-own-submissions
           [actions]="formRights.admin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
           [columns]="['dateObserved', 'observer', 'dateEdited']"
-          [columnNameMapping]="namedPlaceOptions?.columnNameMapping"
+          [columnNameMapping]="formData?.namedPlaceOptions?.columnNameMapping"
           [collectionID]="formData.collectionID"
           [formID]="formData.id"
           [namedPlace]="namedPlace.id"
           [showDownloadAll]="false"
           [admin]="formRights.admin"
+          [forceLocalDocument]="useLocalDocumentViewer"
+          [documentViewerGatheringGeometryJSONPath]="formData?.namedPlaceOptions?.documentViewerGatheringGeometryJSONPath"
         ></laji-own-submissions>
       </div>
     </div>
   </ng-template>
-
-  <div class="modal fade" bsModal #documentModal="bs-modal"
-       (onHidden)="documentModalVisible = false"
-       (onShow)="documentModalVisible = true"
-       tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-body" *ngIf="documentModalVisible">
-          <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
-            <i class="glyphicon glyphicon-remove"></i>
-          </button>
-          <laji-document *ngIf="!forceLocalViewer && shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
-                         [uri]="shownDocument.id"
-                         [own]="!admin">
-          </laji-document>
-          <laji-document-local *ngIf="forceLocalViewer || shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
-                               [gatheringGeometryJSONPath]="formData?.namedPlaceOptions?.documentViewerGatheringGeometryJSONPath"
-                               [document]="shownDocument">
-          </laji-document-local>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

@@ -72,11 +72,13 @@ export class DocumentLocalComponent implements OnChanges {
           }
 
           doc.gatherings.forEach((gathering, i) => {
-            const geoData = JSONPath({json: gathering, path: this.gatheringGeometryJSONPath});
-            // TODO There could be more than one hit... But in our current domain there isn't, so we ignore the issue.
-            if (geoData && geoData[0]) {
-              this.mapData[i] = {geoJSON: geoData[0]};
-            }
+            try {
+              const geoData = JSONPath({json: gathering, path: this.gatheringGeometryJSONPath});
+              // TODO There could be more than one hit... But in our current domain there isn't, so we ignore the issue.
+              if (geoData && geoData[0]) {
+                this.mapData[i] = {geoJSON: geoData[0]};
+              }
+            } catch (e) { }
             if (gathering.images && gathering.images.length > 0) {
               observables.push(this.getImages(gathering));
             }

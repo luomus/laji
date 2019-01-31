@@ -39,12 +39,14 @@
           <i class="glyphicon glyphicon-remove"></i>
         </button>
         <ng-container *ngIf="shownDocument$ | async as shownDocument">
-          <laji-document *ngIf="shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
+          <laji-document *ngIf="!forceLocalDocument && shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
                          [uri]="shownDocument.id"
                          [own]="!admin">
           </laji-document>
-          <laji-document-local *ngIf="shownDocument.publicityRestrictions !== publicity.publicityRestrictionsPublic"
-                               [document]="shownDocument">
+          <laji-document-local *ngIf="forceLocalDocument || shownDocument.publicityRestrictions !== publicity.publicityRestrictionsPublic"
+                               [document]="shownDocument"
+                               [gatheringGeometryJSONPath]="documentViewerGatheringGeometryJSONPath"
+          >
           </laji-document-local>
         </ng-container>
       </div>

@@ -29,7 +29,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./np-info.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
   @Input() npFormData: any;
   @Input() formData: any;
@@ -63,10 +63,8 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   resizeCanOpenModal = false;
   useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
   formReservable = false;
-  showViewerClick$: Subscription;
+  useLocalDocumentViewer = false;
   documentModalVisible = false;
-  forceLocalViewer = true;
-  shownDocument: Document;
 
   public static getListItems(npFormData: any, np: NamedPlace, form: any): any[] {
     const {namedPlaceOptions, collectionID: collectionId} = form;
@@ -128,9 +126,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   ngOnInit() {
     this.updateFields();
     this.updateButtons();
-    this.showViewerClick$ = this.eventService.showViewerClick$.subscribe((doc) => {
-      this.showDocumentViewer(doc);
-    });
   }
 
   ngAfterViewInit() {
@@ -140,10 +135,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.modal.show();
     }
     this.viewIsInitialized = true;
-  }
-
-  ngOnDestroy() {
-    this.showViewerClick$.unsubscribe();
   }
 
   windowReadyForModal(): boolean {
@@ -196,6 +187,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.formReservable = this.formData &&
         Array.isArray(this.formData.features) &&
         this.formData.features.indexOf(Form.Feature.Reserve) > -1;
+      this.useLocalDocumentViewer = this.formData &&
+        Array.isArray(this.formData.features) &&
+        this.formData.features.indexOf(Form.Feature.DocumentsViewableForAll) > -1;
       let btnStatus;
       if (!this.formRights.edit) {
         btnStatus = 'nouse';
@@ -221,10 +215,5 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   private updateFields() {
     this.listItems = NpInfoComponent.getListItems(this.npFormData, this.namedPlace, this.formData);
-  }
-
-  private showDocumentViewer(doc: Document) {
-    this.shownDocument = doc;
-    this.documentModal.show();
   }
 }
