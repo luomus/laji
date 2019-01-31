@@ -16,20 +16,20 @@ export class RedListClassFilterComponent implements OnInit {
   };
 
   groups = {
-    evaluated: ['RE', 'EN', 'CR', 'VU', 'DD', 'NT', 'LC'],
-    redlist: ['EN', 'CR', 'VU', 'DD'],
-    endangered: ['EN', 'CR', 'VU']
+    evaluated: ['RE', 'CR', 'EN', 'VU', 'DD', 'NT', 'LC'],
+    redlist: ['CR', 'EN', 'VU', 'DD'],
+    endangered: ['CR', 'EN', 'VU']
   };
 
   selected: {
     RE?: boolean,
+    CR?: boolean,
     EN?: boolean,
-    CR?: boolean
-    VU?: boolean
-    DD?: boolean
-    NT?: boolean
-    LC?: boolean
-    NA?: boolean
+    VU?: boolean,
+    DD?: boolean,
+    NT?: boolean,
+    LC?: boolean,
+    NA?: boolean,
     NE?: boolean
   } = {};
 

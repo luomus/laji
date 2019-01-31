@@ -32,16 +32,27 @@
       </div>
       <div class="col-sm-5 col-md-4">
         <laji-select2
-          [value]="query?.threads"
-          (valueChange)="change('threads', $event)"
+          [value]="query?.threats"
+          (valueChange)="change('threats', $event)"
           [options]="reasons"
           [placeholder]="'Uhkatekijöillä'"></laji-select2>
       </div>
     </div>
   </ng-container>
   <div class="form-group" *ngIf="type !== 'status'">
-    <div class="col-sm-offset-1 col-sm-11">
-      <laji-redlist-class-filter [value]="query?.status" (valueChange)="change('status', $event)"></laji-redlist-class-filter>
+    <div class="col-sm-offset-1 col-sm-5 col-md-4" style="position: relative;">
+      <div *ngIf="showStatusSelect; else statusDropDown">
+        <select class="form-control" (click)="toggleStatus()"></select>
+        <div style="position: absolute; top: 0; left: 15px; right: 15px;" (lajiClickOutSide)="toggleStatus()">
+          <select class="form-control" (click)="toggleStatus()"></select>
+          <laji-redlist-class-filter [value]="query?.status" (valueChange)="change('status', $event)"></laji-redlist-class-filter>
+        </div>
+      </div>
+      <ng-template #statusDropDown>
+        <select class="form-control" (click)="toggleStatus()">
+          <option value="">{{ query.status ? query.status.join(',') : 'Uhanalaisuusluokka' }}</option>
+        </select>
+      </ng-template>
     </div>
   </div>
 </form>

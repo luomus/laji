@@ -125,7 +125,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
       birdAssociationArea: this.birdAssociationId,
       tags: this.tags.join(','),
       includeUnits: documentForm.namedPlaceOptions.includeUnits,
-      selectedFields: selected.join(',')
+      selectedFields: selected.filter(field => field.charAt(0) !== '_').join(',')
     };
 
     if (this.npRequirementsNotMet(documentForm)) {

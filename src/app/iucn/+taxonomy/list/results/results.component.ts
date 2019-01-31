@@ -67,7 +67,7 @@ export class ResultsComponent implements OnChanges {
       'latestRedListEvaluation.redListStatus': (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
       'latestRedListEvaluation.endangermentReasons': this.query.reasons,
       'latestRedListEvaluation.primaryHabitat': this.query.habitat,
-      'latestRedListEvaluation.threats': this.query.threads,
+      'latestRedListEvaluation.threats': this.query.threats,
       hasLatestRedListEvaluation: true,
       includeHidden: true
     });
@@ -92,7 +92,7 @@ export class ResultsComponent implements OnChanges {
 
   private initThreads() {
     this.threadQuery$ = this.getGraph(
-      'threads',
+      'threats',
       this.baseQuery,
       'latestRedListEvaluation.primaryThreat',
       'latestRedListEvaluation.threats',
@@ -296,12 +296,13 @@ export class ResultsComponent implements OnChanges {
     this.redListStatusQuery$ = this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
       this.taxonService.getRedListStatusTree(this.lang).pipe(
-        map(tree => {
+        map<RedListTaxonGroup[], {groups: string[], aggregateBy: string[], hasKeys: boolean, isRoot?: boolean}>(tree => {
           if (!query[groupField]) {
             return {
               groups: tree.map(v => v.id),
               aggregateBy: [statusField, groupField],
-              hasKeys: true
+              hasKeys: true,
+              isRoot: true
             };
           }
           const node = this.taxonService.findGroupFromTree(tree, query[groupField]);
@@ -318,14 +319,14 @@ export class ResultsComponent implements OnChanges {
             hasKeys: false
           };
         }),
-        switchMap(red  => this.taxonApi.species({
+        switchMap(red  => this.taxonApi.species(Util.removeUndefinedFromObject({
           ...query,
-          [groupField]: red.groups.join(','),
+          [groupField]: red.isRoot ? undefined : red.groups.join(','),
           aggregateBy: red.aggregateBy.join(',') + '=a',
           aggregateSize: 100000,
           page: 1,
           pageSize: 0
-        }).pipe(
+        })).pipe(
           map(data => data.aggregations['a'].reduce((cumulative: {}, current) => {
             const val = current.values;
             const status = val[statusField];

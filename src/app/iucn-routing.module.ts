@@ -6,6 +6,7 @@ import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { mergeMap } from 'rxjs/operators';
+import { LocalizeGuard } from './locale/localize.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -31,15 +32,15 @@ const routesWithLang: Routes = [
   {path: 'en', children: [
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
-  ], component: LocaleEnComponent},
+  ], component: LocaleEnComponent, canActivate: [LocalizeGuard], data: {lang: 'en'}},
   {path: 'sv', children: [
     ...routes,
     {path: '**', redirectTo: '/sv/error/404'}
-  ], component: LocaleSvComponent},
+  ], component: LocaleSvComponent, canActivate: [LocalizeGuard], data: {lang: 'sv'}},
   {path: '', children: [
     ...routes,
     {path: '**', redirectTo: '/error/404'}
-  ], component: LocaleFiComponent}
+  ], component: LocaleFiComponent, canActivate: [LocalizeGuard], data: {lang: 'fi'}}
 ];
 
 @NgModule({
