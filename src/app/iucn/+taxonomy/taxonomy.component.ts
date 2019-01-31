@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-taxonomy',
   template: `
     <div class="container">
-      <laji-info-card [taxonId]="taxon"></laji-info-card>
+      <laji-info-card [taxonId]="taxon" [checklistId]="checklist"></laji-info-card>
     </div>
   `,
   styles: []
@@ -14,6 +15,7 @@ import { Subscription } from 'rxjs';
 export class TaxonomyComponent implements OnInit, OnDestroy {
 
   taxon: string;
+  checklist: string;
   private subParam: Subscription;
 
   constructor(
@@ -21,9 +23,11 @@ export class TaxonomyComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subParam = this.route.params
-      .subscribe((params) => {
+    this.subParam = this.route.queryParams.pipe(
+      map(query => ({...this.route.snapshot.params, ...query}))
+    ).subscribe((params) => {
         this.taxon = params['id'];
+        this.checklist = params['checklist'];
       });
   }
 

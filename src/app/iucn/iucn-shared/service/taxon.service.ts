@@ -19,8 +19,12 @@ export class TaxonService {
     private redList: RedListTaxonGroupApi
   ) { }
 
-  getTaxon(id: string, lang: string): Observable<Taxonomy> {
-    return this.taxonApi.taxonomyFindBySubject(id, lang, {includeMedia: true, includeRedListEvaluations: true});
+  getTaxon(id: string, lang: string, checklist?: string): Observable<Taxonomy> {
+    return this.taxonApi.taxonomyFindBySubject(id, lang, {
+      includeMedia: true,
+      includeRedListEvaluations: true,
+      checklistVersion: checklist
+    });
   }
 
   getRedListStatusTree(lang: string): Observable<RedListTaxonGroup[]> {

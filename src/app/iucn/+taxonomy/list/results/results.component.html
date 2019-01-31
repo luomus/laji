@@ -3,7 +3,8 @@
     <laji-red-list-status [data]="redListStatusQuery$ | async"></laji-red-list-status>
   </ng-container>
   <ng-container *ngSwitchCase="'species'">
-    <laji-red-list-species [year]="year" [species]="speciesQuery$ | async"></laji-red-list-species>
+    <laji-red-list-species [species]="speciesQuery$ | async" [checklist]="checklist"></laji-red-list-species>
+    <laji-data-table-footer [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
   </ng-container>
   <ng-container *ngSwitchCase="'reasons'">
     <div class="row">

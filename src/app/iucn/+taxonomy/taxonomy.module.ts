@@ -21,10 +21,10 @@ import { RedListChartComponent } from './list/results/red-list-chart/red-list-ch
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RedListEvaluationInfoComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info.component';
 import { RedListEvaluationInfoRowsetComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
-import { RedListEvaluationOccurrencesComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-occurrences/red-list-evaluation-occurrences.component';
 import { RedListHabitatComponent } from './list/results/red-list-habitat/red-list-habitat.component';
 import { RedListHabitatListComponent } from './list/results/red-list-habitat/red-list-habitat-list/red-list-habitat-list.component';
 import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-select.module';
+import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -33,7 +33,8 @@ import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-selec
     CommonModule,
     SharedModule,
     NgxChartsModule,
-    TaxonSelectModule
+    TaxonSelectModule,
+    DatatableModule
   ],
   declarations: [
     InfoCardComponent,
@@ -53,7 +54,6 @@ import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-selec
     RedListChartComponent,
     RedListEvaluationInfoComponent,
     RedListEvaluationInfoRowsetComponent,
-    RedListEvaluationOccurrencesComponent,
     RedListHabitatComponent,
     RedListHabitatListComponent
   ]

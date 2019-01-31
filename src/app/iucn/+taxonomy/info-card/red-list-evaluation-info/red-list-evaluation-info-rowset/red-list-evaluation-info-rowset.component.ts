@@ -1,5 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+export interface IRow {
+  key: string;
+  value: any;
+}
+
 @Component({
   selector: 'laji-red-list-evaluation-info-rowset',
   templateUrl: './red-list-evaluation-info-rowset.component.html',
@@ -8,7 +13,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class RedListEvaluationInfoRowsetComponent {
 
-  @Input() values: {key: string, value: any}[] = [];
+  @Input() values: IRow[] = [];
 
   constructor() { }
 

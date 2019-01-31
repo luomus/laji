@@ -23,7 +23,7 @@
     Uhanalaisuustarkastelussa käytettävät IUCN -luokat
   </h2>
   <div class="row well">
-    <div class="col-sm-12">
+    <div class="col-sm-12" style="margin-bottom: -15px; margin-top: -15px;">
       <laji-iucn-class></laji-iucn-class>
     </div>
   </div>
@@ -33,16 +33,32 @@
   </h2>
   <div class="row">
     <div class="col-md-3 col-sm-6">
-      <laji-iucn-result-pie [year]="2019" [data]="iucnService.getResults(2019) | async"></laji-iucn-result-pie>
+      <laji-iucn-result-pie
+        [routerLink]="'/taxon' | localize"
+        [queryParams]="{year: '2019'}"
+        [year]="2019"
+        [data]="iucnService.getYearsStats(2019) | async"></laji-iucn-result-pie>
     </div>
     <div class="col-md-3 col-sm-6">
-      <laji-iucn-result-pie [year]="2015" [data]="iucnService.getResults(2015) | async"></laji-iucn-result-pie>
+      <laji-iucn-result-pie
+        [routerLink]="'/taxon' | localize"
+        [queryParams]="{year: '2015'}"
+        [year]="2015"
+        [data]="iucnService.getYearsStats(2015) | async"></laji-iucn-result-pie>
     </div>
     <div class="col-md-3 col-sm-6">
-      <laji-iucn-result-pie [year]="2010" [data]="iucnService.getResults(2010) | async"></laji-iucn-result-pie>
+      <laji-iucn-result-pie
+        [routerLink]="'/taxon' | localize"
+        [queryParams]="{year: '2010'}"
+        [year]="2010"
+        [data]="iucnService.getYearsStats(2010) | async"></laji-iucn-result-pie>
     </div>
     <div class="col-md-3 col-sm-6">
-      <laji-iucn-result-pie [year]="2000" [data]="iucnService.getResults(2000) | async"></laji-iucn-result-pie>
+      <laji-iucn-result-pie
+        [routerLink]="'/taxon' | localize"
+        [queryParams]="{year: '2000'}"
+        [year]="2000"
+        [data]="iucnService.getYearsStats(2000) | async"></laji-iucn-result-pie>
     </div>
   </div>
   <a [routerLink]="'/taxon' | localize">Selaa tuloksia</a>
