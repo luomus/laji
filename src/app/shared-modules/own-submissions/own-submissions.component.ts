@@ -95,7 +95,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   yearInfoError: string;
   documentError: string;
   documentModalVisible = false;
-  selectedFields = 'creator,id,gatherings[*].id,publicityRestrictions';
+  selectedFields = 'creator,id,gatherings[*].id,publicityRestrictions,formID';
 
   selectedMap = {
     templateName: 'templateName',
