@@ -49,13 +49,13 @@ export class DocumentFormFooterComponent {
     });
   }
 
-  buttonLabel(place: 'save'|'temp'|'cancel') {
-    if (this.form && this.form.actions && this.form.actions[place]) {
-      return this.form.actions[place];
+  buttonLabel(prop: 'save'|'temp'|'cancel') {
+    if (this._form && this._form.actions && this._form.actions[prop]) {
+      return this._form.actions[prop];
     }
-    if (place === 'save') {
+    if (prop === 'save') {
       return 'haseka.form.savePublic';
-    } else if (place === 'temp') {
+    } else if (prop === 'temp') {
       return 'haseka.form.savePrivate';
     }
     return 'haseka.form.back';
