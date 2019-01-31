@@ -1,7 +1,7 @@
 <h4 *ngIf="header">{{ header | translate }}</h4>
 <alert *ngIf="yearInfoError" type="danger">{{ yearInfoError }}</alert>
 <ng-container *ngIf="!yearInfoError">
-  <ng-container *ngIf="!onlyTemplates">
+  <ng-container *ngIf="!onlyTemplates && !namedPlace">
     <laji-year-slider [year]="year" [showCounts]="!formID"
                       (rangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo$ | async"></laji-year-slider>
   </ng-container>
