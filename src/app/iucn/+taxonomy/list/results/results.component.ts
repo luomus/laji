@@ -296,7 +296,7 @@ export class ResultsComponent implements OnChanges {
     this.redListStatusQuery$ = this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
       this.taxonService.getRedListStatusTree(this.lang).pipe(
-        map(tree => {
+        map<RedListTaxonGroup[], {groups: string[], aggregateBy: string[], hasKeys: boolean, isRoot?: boolean}>(tree => {
           if (!query[groupField]) {
             return {
               groups: tree.map(v => v.id),
