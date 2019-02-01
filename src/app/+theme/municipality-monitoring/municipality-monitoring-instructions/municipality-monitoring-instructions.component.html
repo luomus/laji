@@ -1,10 +1,9 @@
 <div class="row">
   <div class="col-8">
-    <h3>Kuntalomake</h3>
-
-    <p>
-      Kuntalomake TODO
-    </p>
+    <h3>Lajistoselvityslomake</h3>
+	  <p>Tämä lomake on tarkoitettu ensisijaisesti kuntien ja muiden viranomaistoimijoiden käyttöön kaavoituksen tai muun maankäyttöön liittyvän toimenpiteen yhteydessä tehtävien eliölajistoselvitysten tuottaman lajitiedon tallentamiseen ja sen
+	   klvelun kautta.</p>
+	  <p>Lomakkeen käyttö edellyttää lupaa, jonka voi pyytää Suomen Lajitietokeskukselta lomaketta avattaessa näkyviin tulevan ohjeistuksen mukaan.</p>
 
     <laji-request *ngIf="rights === Rights.NotAllowed && loggedIn"
                   [collectionId]="'HR.2891'">

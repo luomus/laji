@@ -320,7 +320,7 @@
   "navigation.satelliitti": "Satellitspårning",
   "navigation.taxonomy": "Artlista",
   "navigation.invasiveSpecies": "Invasiva arter",
-  "navigation.municipalityMonitoring": "kommunens formulär",
+  "navigation.municipalityMonitoring": "Arter folkräkning form",
   "navigation.theme": "Teman",
   "navigation.user": "Användarinställning",
   "navigation.user.login": "Logga in | Registrera",
@@ -956,5 +956,6 @@
   "invasiveSpecies.places": "Spela in kontrol aktioner",
   "np.formOwnSubmissions": "Placerar tidigare dokument",
   "np.tag": "Filtrera efter ruttegenskaper",
-  "np.createPlace": "Skapa plats"
+  "np.createPlace": "Skapa plats",
+  "haseka.form.rights.description": "<h1>Formhanteringshantering</h1><p>Du kan hantera formulärbehörigheter här.</p>"
 }
