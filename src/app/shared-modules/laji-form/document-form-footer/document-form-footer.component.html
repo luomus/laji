@@ -1,4 +1,4 @@
-<div class="form-footer" *ngIf="_admin || (_form && _locked === false)">
+<div class="form-footer" *ngIf="_admin || (_form && !_locked)">
   <div class="row">
     <div class="col-xs-3 col-sm-2" *ngIf="displaysSaveContainer()">
       <div class="lock-button" *ngIf="_admin && _locked !== undefined">
