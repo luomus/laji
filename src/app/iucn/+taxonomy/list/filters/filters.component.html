@@ -41,15 +41,16 @@
   </ng-container>
   <div class="form-group" *ngIf="type !== 'status'">
     <div class="col-sm-offset-1 col-sm-5 col-md-4" style="position: relative;">
+      <div class="overlay-dropdown" (click)="toggleStatus()"></div>
       <div *ngIf="showStatusSelect; else statusDropDown">
-        <select class="form-control" (click)="toggleStatus()"></select>
+        <select class="form-control" tabindex="-1"></select>
         <div style="position: absolute; top: 0; left: 15px; right: 15px;" (lajiClickOutSide)="toggleStatus()">
-          <select class="form-control" (click)="toggleStatus()"></select>
+          <select class="form-control"  tabindex="-1"></select>
           <laji-redlist-class-filter [value]="query?.status" (valueChange)="change('status', $event)"></laji-redlist-class-filter>
         </div>
       </div>
       <ng-template #statusDropDown>
-        <select class="form-control" (click)="toggleStatus()">
+        <select class="form-control" (focus)="toggleStatus()">
           <option value="">{{ query.status ? query.status.join(',') : 'Uhanalaisuusluokka' }}</option>
         </select>
       </ng-template>
