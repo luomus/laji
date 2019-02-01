@@ -78,12 +78,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       displayed = (displayedById[collectionId] || displayedById['*'] || []).fields;
     }
 
-    let gData = null;
-
-    if (np.prepopulatedDocument && np.prepopulatedDocument.gatherings && np.prepopulatedDocument.gatherings.length >= 0) {
-      gData = np.prepopulatedDocument.gatherings[0];
-    }
-
     const listItems = [];
     for (const field of displayed) {
       if (!fields[field]) {
@@ -93,8 +87,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       let value;
       if (!isEmpty(np[field])) {
         value = np[field];
-      } else if (gData && !isEmpty(gData[field])) {
-        value = gData[field];
       }
 
       let pipe;
