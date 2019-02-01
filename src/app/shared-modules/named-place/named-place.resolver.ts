@@ -119,6 +119,9 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     if (documentForm.namedPlaceOptions && !documentForm.namedPlaceOptions.hideMapTab) {
       selected.push('geometry');
     }
+    if (documentForm.features && documentForm.features.indexOf('MHL.featureReserve') !== -1 && selected.indexOf('reserve') === -1) {
+      selected.push('reserve');
+    }
     const query: NamedPlaceQuery = {
       collectionID: this.collectionId,
       municipality: this.municipalityId,
