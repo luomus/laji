@@ -8,20 +8,11 @@
   <ng-container *ngIf="ykj1km">
     <strong>YKJ 1km:</strong> {{ ykj1km | coordinate: 'ykj1km' }}<br />
   </ng-container>
-  <ng-container *ngIf="ykj1kmCenter && !ykj1km">
-    <strong>{{ 'result.gathering.conversions.ykj10kmCenter' | translate }}:</strong> {{ ykj1kmCenter | coordinate: 'ykj1km' }}<br />
-  </ng-container>
   <ng-container *ngIf="ykj10km">
     <strong>YKJ 10km:</strong> {{ ykj10km | coordinate: 'ykj10km' }}<br />
   </ng-container>
-  <ng-container *ngIf="ykj10kmCenter && !ykj10km">
-    <strong>{{ 'result.gathering.conversions.ykj10kmCenter' | translate }}:</strong> {{ ykj10kmCenter | coordinate: 'ykj10km' }}<br />
-  </ng-container>
   <ng-container *ngIf="wgs84">
     <strong>WGS84:</strong> {{ wgs84 | coordinate: 'wgs84' }}<br />
-  </ng-container>
-  <ng-container *ngIf="wgs84Center && (wgs84Center | coordinate: 'wgs84Center') !== (wgs84 | coordinate: 'wgs84') ">
-    <strong>WGS84 ({{ 'center' | translate }}):</strong> {{ wgs84Center | coordinate: 'wgs84Center' }}<br />
   </ng-container>
   <ng-container *ngIf="coordinateAccuracy">
     <strong>{{ 'result.gathering.interpretations.coordinateAccuracy' | translate }}:</strong> {{ coordinateAccuracy }}<br />
