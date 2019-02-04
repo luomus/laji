@@ -1,11 +1,11 @@
 <div class="laji-form">
   <laji-form
-    [formData]="formData"
+    [formData]="documentForm"
     [lang]="lang"
     (dataChange)="onChange($event)"
     (dataSubmit)="onSubmit($event)"></laji-form>
   <laji-document-form-footer
-    [form]="formData"
+    [form]="documentForm"
     [status]="status"
     [saving]="saving"
     (submitPublic)="submitPublic()"

@@ -17,7 +17,7 @@ import { AreaService } from '../../../../shared/service/area.service';
 })
 export class NpEditFormComponent {
   @Input() lang: string;
-  @Input() formData: any;
+  @Input() documentForm: any;
   @Input() namedPlace: NamedPlace;
   @Input() namedPlaceOptions: any;
   @Output() editReady = new EventEmitter<{np?: NamedPlace, isEdit?: boolean}>();

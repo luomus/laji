@@ -21,13 +21,13 @@
   <ng-template #contentTemplate let-isModal="isModal">
     <div class="well well-sm np-info">
       <fieldset>
-        <legend *ngIf="(formData.printType && formData.printType.indexOf('MHL.printTypeLineTransect') > -1) || (allowEdit && editButtonVisible)">
+        <legend *ngIf="(documentForm.printType && documentForm.printType.indexOf('MHL.printTypeLineTransect') > -1) || (allowEdit && editButtonVisible)">
           <div id="btn-container">
-            <span [ngSwitch]="formData.printType">
+            <span [ngSwitch]="documentForm.printType">
               <a *ngSwitchCase="'MHL.printTypeLineTransect'"
                  class="btn btn-sm btn-default"
                  target="_blank"
-                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', formData.printType] | localize">{{ formData.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>
+                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', documentForm.printType] | localize">{{ documentForm.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>
             </span>
             <button *ngIf="allowEdit && editButtonVisible"
                     class="btn btn-sm btn-default"
@@ -40,7 +40,7 @@
           <laji-np-info-row [title]="i.title" [value]="i.value" [pipe]="i.pipe"></laji-np-info-row>
         </ng-container>
         <ng-container *ngIf="namedPlace?.prepopulatedDocument?.gatheringEvent?.dateBegin">
-          <laji-np-info-row [title]="formData.namedPlaceOptions?.lastCensusLabel || 'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
+          <laji-np-info-row [title]="documentForm.namedPlaceOptions?.lastCensusLabel || 'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
         </ng-container>
         <div *lajiLoggedIn="false" style="margin-top: 20px;">
           <strong>
@@ -57,7 +57,7 @@
             <div class="row-container">
               <button type="button"
                  class="btn btn-md btn-primary btn-block use-button"
-                 (click)="useClick()">{{ formData.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate }}</button>
+                 (click)="useClick()">{{ documentForm.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate }}</button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservedByYou'">
@@ -65,11 +65,11 @@
               <button type="button"
                       [disabled]="loading"
                       class="btn btn-md btn-primary btn-block use-button"
-                      (click)="useClick()">{{ formData.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate }}</button>
+                      (click)="useClick()">{{ documentForm.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate }}</button>
               <button type="button"
                       [disabled]="loading"
                       class="btn btn-md btn-primary btn-block use-button"
-                      (click)="releaseButtonClick.emit()">{{ formData.namedPlaceOptions?.releaseLabel || 'np.release' | translate }}</button>
+                      (click)="releaseButtonClick.emit()">{{ documentForm.namedPlaceOptions?.releaseLabel || 'np.release' | translate }}</button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'nouse'">
@@ -82,13 +82,13 @@
               <button type="button"
                       class="btn btn-md btn-primary btn-block use-button"
                       [disabled]="loading"
-                      (click)="reserveButtonClick.emit()">{{ formData.namedPlaceOptions?.reservableLabel || 'np.reserve' | translate }}</button>
+                      (click)="reserveButtonClick.emit()">{{ documentForm.namedPlaceOptions?.reservableLabel || 'np.reserve' | translate }}</button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservedByOther'">
             <div class="row-container">
               <button type="button"
-                 class="btn btn-md btn-primary btn-block use-button" [disabled]="true">{{ formData.namedPlaceOptions?.reservedLabel || 'np.reserved' | translate }}</button>
+                 class="btn btn-md btn-primary btn-block use-button" [disabled]="true">{{ documentForm.namedPlaceOptions?.reservedLabel || 'np.reserved' | translate }}</button>
               <ng-container *ngIf="formRights.admin">
                 <div class="key">
                   <strong>Varauksen omistaja:</strong>
@@ -99,12 +99,12 @@
                 <button type="button"
                         [disabled]="loading"
                         class="btn btn-md btn-primary btn-block use-button"
-                        (click)="releaseButtonClick.emit()">{{ formData.namedPlaceOptions?.releaseLabel || 'np.release' | translate }} (admin)</button>
+                        (click)="releaseButtonClick.emit()">{{ documentForm.namedPlaceOptions?.releaseLabel || 'np.release' | translate }} (admin)</button>
               </ng-container>
             </div>
           </ng-container>
         </div>
-        <div *ngIf="formRights.admin && formData.namedPlaceOptions.adminShowCopyLink" class="button-container">
+        <div *ngIf="formRights.admin && documentForm.namedPlaceOptions.adminShowCopyLink" class="button-container">
           <div class="row-container">
             <button type="button"
                     class="btn btn-md btn-primary btn-block use-button"
@@ -115,20 +115,20 @@
       <div class="own-submissions-container" *lajiLoggedIn="true">
         <strong>{{
 		        formRights.admin
-		          ? formData.namedPlaceOptions?.earlierLabel || ('np.earlier' | translate)
-		          : formData.namedPlaceOptions?.myEarlierLabel || ('np.myEarlier' | translate)
+		          ? documentForm.namedPlaceOptions?.earlierLabel || ('np.earlier' | translate)
+		          : documentForm.namedPlaceOptions?.myEarlierLabel || ('np.myEarlier' | translate)
           }}</strong>:
         <laji-own-submissions
           [actions]="formRights.admin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
           [columns]="['dateObserved', 'observer', 'dateEdited']"
-          [columnNameMapping]="formData?.namedPlaceOptions?.columnNameMapping"
-          [collectionID]="formData.collectionID"
-          [formID]="formData.id"
+          [columnNameMapping]="documentForm?.namedPlaceOptions?.columnNameMapping"
+          [collectionID]="documentForm.collectionID"
+          [formID]="documentForm.id"
           [namedPlace]="namedPlace.id"
           [showDownloadAll]="false"
           [admin]="formRights.admin"
           [forceLocalDocument]="useLocalDocumentViewer"
-          [documentViewerGatheringGeometryJSONPath]="formData?.namedPlaceOptions?.documentViewerGatheringGeometryJSONPath"
+          [documentViewerGatheringGeometryJSONPath]="documentForm?.namedPlaceOptions?.documentViewerGatheringGeometryJSONPath"
         ></laji-own-submissions>
       </div>
     </div>

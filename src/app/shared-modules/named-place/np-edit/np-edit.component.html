@@ -1,10 +1,10 @@
-<laji-spinner [spinning]="(namedPlace || editMode) && !npFormData" [overlay]="true"></laji-spinner>
-<ng-container *ngIf="npFormData">
+<laji-spinner [spinning]="(namedPlace || editMode) && !placeForm" [overlay]="true"></laji-spinner>
+<ng-container *ngIf="placeForm">
   <ng-container *ngIf="namedPlace && !editMode">
     <laji-np-info [namedPlace]="namedPlace"
                   [formRights]="formRights"
-                  [npFormData]="npFormData"
-                  [formData]="formData"
+                  [placeForm]="placeForm"
+                  [documentForm]="documentForm"
                   [collectionId]="collectionId"
                   [allowEdit]="allowEdit"
                   [loading]="loading"
@@ -15,10 +15,10 @@
                   (useButtonClick)="useClick()"></laji-np-info>
   </ng-container>
   <ng-container *ngIf="editMode">
-    <laji-np-edit-form *ngIf="npFormData"
-                       [namedPlaceOptions]="formData.namedPlaceOptions"
+    <laji-np-edit-form *ngIf="placeForm"
+                       [namedPlaceOptions]="documentForm.namedPlaceOptions"
                        [lang]="lang"
-                       [formData]="npFormData"
+                       [documentForm]="placeForm"
                        [namedPlace]="namedPlace"
                        (editReady)="editReady.emit($event)"></laji-np-edit-form>
   </ng-container>
