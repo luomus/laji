@@ -71,7 +71,18 @@ export class FiltersComponent implements OnInit {
   }
 
   clear() {
-    const {taxon, redListGroup, habitat, threats, reasons, status, ...rest} = this.query;
+    const {
+      taxon,
+      redListGroup,
+      habitat,
+      threats,
+      reasons,
+      status,
+      onlyPrimaryThreats,
+      onlyPrimaryReasons,
+      onlyPrimaryHabitat,
+      ...rest
+    } = this.query;
     this.queryChange.emit(rest);
   }
 }

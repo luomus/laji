@@ -13,6 +13,9 @@ export interface FilterQuery {
   threats?: string;
   reasons?: string;
   status?: string[];
+  onlyPrimaryHabitat?: boolean;
+  onlyPrimaryReasons?: boolean;
+  onlyPrimaryThreats?: boolean;
   page?: string;
 }
 

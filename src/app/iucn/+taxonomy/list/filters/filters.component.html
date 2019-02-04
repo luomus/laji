@@ -18,24 +18,39 @@
       ></laji-select2>
     </div>
     <div class="col-sm-5 col-md-4">
-      <laji-select2 [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async" [placeholder]="'Elinympäristö'"></laji-select2>
+      <div class="input-group">
+        <laji-select2 [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async" [placeholder]="'Elinympäristö'"></laji-select2>
+        <span class="input-group-addon">
+          <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'Vain ensisijaisella'">
+        </span>
+      </div>
     </div>
   </div>
   <ng-container *ngIf="threadReasons$ | async; let reasons">
     <div class="form-group">
       <div class="col-sm-offset-1 col-sm-5 col-md-4">
-        <laji-select2
-          [value]="query?.reasons"
-          (valueChange)="change('reasons', $event)"
-          [options]="reasons"
-          [placeholder]="'Uhanalaisuuden syyt'"></laji-select2>
+        <div class="input-group">
+          <laji-select2
+            [value]="query?.reasons"
+            (valueChange)="change('reasons', $event)"
+            [options]="reasons"
+            [placeholder]="'Uhanalaisuuden syyt'"></laji-select2>
+          <span class="input-group-addon">
+            <input type="checkbox" [checked]="query?.onlyPrimaryReasons" (change)="change('onlyPrimaryReasons', !query.onlyPrimaryReasons)" [tooltip]="'Vain ensisijaisella'">
+          </span>
+        </div>
       </div>
       <div class="col-sm-5 col-md-4">
-        <laji-select2
-          [value]="query?.threats"
-          (valueChange)="change('threats', $event)"
-          [options]="reasons"
-          [placeholder]="'Uhkatekijöillä'"></laji-select2>
+        <div class="input-group">
+          <laji-select2
+            [value]="query?.threats"
+            (valueChange)="change('threats', $event)"
+            [options]="reasons"
+            [placeholder]="'Uhkatekijöillä'"></laji-select2>
+          <span class="input-group-addon">
+            <input type="checkbox" [checked]="query?.onlyPrimaryThreats" (change)="change('onlyPrimaryThreats', !query.onlyPrimaryThreats)" [tooltip]="'Vain ensisijaisella'">
+          </span>
+        </div>
       </div>
     </div>
   </ng-container>
