@@ -131,7 +131,10 @@ export class TaxonomyColumns {
     for (const parent of ['domain', 'kingdom', 'phylum', 'division', 'class', 'order', 'family', 'tribe', 'genus']) {
       this.allColumns.push({
         name: 'parent.' + parent + '.scientificName',
-        label: ['taxonomy.parent.' + parent, 'taxonomy.scientific.name.lower']
+        prop: 'parent.' + parent,
+        label: ['taxonomy.parent.' + parent, 'taxonomy.scientific.name.lower'],
+        selectField: ['parent.' + parent + '.scientificName', 'parent.' + parent + '.cursiveName'],
+        cellTemplate: 'scientificName'
       });
       this.allColumns.push({
         name: 'parent.' + parent + '.scientificNameAuthorship',

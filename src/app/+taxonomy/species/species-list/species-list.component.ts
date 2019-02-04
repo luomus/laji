@@ -222,9 +222,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.subFetch = this.fetchPage(this.searchQuery.listOptions.page)
       .subscribe(data => {
-          console.log(data);
           this.columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
-          console.log(this.columns);
           this.sortValues = {};
 
           if (data.lastPage && data.lastPage === 1) {
@@ -335,9 +333,11 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       if (this.columnService.columnLookup[field] && this.columnService.columnLookup[field].selectField) {
         addedField = this.columnService.columnLookup[field].selectField;
       }
-      if (arr.indexOf(addedField) === -1) {
-        arr.push(addedField);
-      }
+      ((Array.isArray(addedField) ? addedField : [addedField]) as string[]).forEach(f => {
+        if (arr.indexOf(f) === -1) {
+          arr.push(f);
+        }
+      });
       return arr;
     }, []);
 
