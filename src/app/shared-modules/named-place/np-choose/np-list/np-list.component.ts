@@ -105,9 +105,9 @@ export class NpListComponent {
     this.initData();
   }
 
-  @Input() set formData(formData: any) {
-    this._fields = formData.options && formData.options.namedPlaceList
-      ? formData.options.namedPlaceList
+  @Input() set documentForm(documentForm: any) {
+    this._fields = documentForm.options && documentForm.options.namedPlaceList
+      ? documentForm.options.namedPlaceList
       : ['$.name'];
     const cols: ObservationTableColumn[] = [];
     for (const path of this._fields) {
@@ -129,8 +129,8 @@ export class NpListComponent {
     }
     this.sorts = cols[0] ? [{prop: cols[0].name, dir: 'asc'}] : [];
     this.columns = cols;
-    if (formData.namedPlaceOptions && formData.namedPlaceOptions) {
-      this.showLegendList = formData.namedPlaceOptions.showLegendList;
+    if (documentForm.namedPlaceOptions && documentForm.namedPlaceOptions) {
+      this.showLegendList = documentForm.namedPlaceOptions.showLegendList;
     }
     this.initData();
   }

@@ -46,8 +46,8 @@
       <div *ngIf="namedPlaces && documentForm && !errorMsg">
         <div [ngClass]="{'col-sm-12 col-md-12 col-lg-6': !editMode}">
           <laji-np-choose [namedPlaces]="namedPlaces"
-                          [formData]="documentForm"
-                          [npFormData]="placeForm"
+                          [documentForm]="documentForm"
+                          [placeForm]="placeForm"
                           [userID]="userID"
                           [visible]="!editMode"
                           [allowCreate]="allowCreate"
@@ -64,9 +64,9 @@
                         [prepopulatedNamedPlace]="prepopulatedNamedPlace"
                         [namedPlace]="namedPlace"
                         [formRights]="formRights"
-                        [formData]="documentForm"
+                        [documentForm]="documentForm"
                         [allowEdit]="allowEdit"
-                        [npFormData]="placeForm"
+                        [placeForm]="placeForm"
                         [mapOptionsData]="mapOptionsData"
                         [lang]="lang"
                         (reserve)="onReserve()"
