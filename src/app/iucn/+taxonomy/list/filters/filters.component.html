@@ -6,7 +6,7 @@
         (taxonIdChange)="change('taxon', $event)"
         [placeholder]="'species.form.specimen' | translate"
         [taxonId]="query.taxon"
-        [searchParams]="{}">
+        [searchParams]="{species: false}">
       </laji-taxon-select>
     </div>
   </div>
