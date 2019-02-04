@@ -1,4 +1,3 @@
-
 import {switchMap,  map, tap } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
@@ -17,6 +16,7 @@ import { TaxonExportService } from '../service/taxon-export.service';
 import { DatatableUtil } from '../service/datatable-util.service';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Util } from '../../../shared/service/util.service';
+import { UserService } from '../../../shared/service/user.service';
 
 @Component({
   selector: 'laji-species-list',
@@ -55,6 +55,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   private settingsLoaded = false;
 
   constructor(
+    private userService: UserService,
     private taxonomyService: TaxonomyApi,
     private logger: Logger,
     private router: Router,
@@ -74,6 +75,15 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
         this.refreshSpeciesList();
       }
     );
+
+    this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
+      .subscribe(data => {
+        if (data && data.selected) {
+          this.searchQuery.listOptions.selected = data.selected;
+        }
+        this.settingsLoaded = true;
+        this.refreshSpeciesList();
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -84,11 +94,6 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.subQueryUpdate.unsubscribe();
-  }
-
-  onSettingsLoaded() {
-    this.settingsLoaded = true;
-    this.refreshSpeciesList();
   }
 
   onRowSelect(event) {
@@ -112,6 +117,21 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(result => {
         this.speciesPage = result;
       });
+  }
+
+  onReorder(event) {
+    if (
+      !event.column ||
+      !event.column.name ||
+      this.searchQuery.listOptions.selected.indexOf(event.column.name) === -1 ||
+      typeof event.newValue !== 'number' ||
+      typeof event.prevValue !== 'number'
+    ) {
+      return;
+    }
+    this.searchQuery.listOptions.selected.splice(event.newValue, 0, this.searchQuery.listOptions.selected.splice(event.prevValue, 1)[0]);
+    this.saveSettings();
+    this.refreshSpeciesList();
   }
 
   private sort(sorts, page: PagedResult<Taxonomy>): Observable<PagedResult<Taxonomy>> {
@@ -202,7 +222,9 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.subFetch = this.fetchPage(this.searchQuery.listOptions.page)
       .subscribe(data => {
+          console.log(data);
           this.columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
+          console.log(this.columns);
           this.sortValues = {};
 
           if (data.lastPage && data.lastPage === 1) {
@@ -253,7 +275,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     this.settingsModal.openModal();
   }
 
-  onCloseModal() {
+  onSettingsChange() {
+    this.saveSettings();
     this.searchQuery.listOptions.page = 1;
     this.refreshSpeciesList();
   }
@@ -322,5 +345,11 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       selects.push('id');
     }
     return selects.join(',');
+  }
+
+  private saveSettings() {
+    this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
+      selected: this.searchQuery.listOptions.selected
+    }).subscribe(() => {}, () => {});
   }
 }

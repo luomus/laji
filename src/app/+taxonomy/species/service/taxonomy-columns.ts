@@ -122,66 +122,29 @@ export class TaxonomyColumns {
     },
     {
       name: 'notes'
-    },
-    {
-      name: 'parent.domain',
-      selectField: 'parent'
-    },
-    {
-      name: 'parent.kingdom',
-      selectField: 'parent'
-    },
-    {
-      name: 'parent.phylum',
-      selectField: 'parent'
-    },
-    {
-      name: 'parent.division',
-      selectField: 'parent'
-    },
-    {
-      name: 'parent.class',
-      selectField: 'parent'
-    },
-    {
-      name: 'parent.order',
-      selectField: 'parent'
-    },
-    {
-      name: 'parent.family',
-      selectField: 'parent'
-    },
-    {
-      name: 'parent.tribe',
-      selectField: 'parent'
-    },
-    {
-      name: 'parent.genus',
-      selectField: 'parent'
     }
   ];
 
   columnLookup = {};
 
   constructor() {
+    for (const parent of ['domain', 'kingdom', 'phylum', 'division', 'class', 'order', 'family', 'tribe', 'genus']) {
+      this.allColumns.push({
+        name: 'parent.' + parent + '.scientificName',
+        label: ['taxonomy.parent.' + parent, 'taxonomy.scientific.name.lower']
+      });
+      this.allColumns.push({
+        name: 'parent.' + parent + '.scientificNameAuthorship',
+        label: ['taxonomy.parent.' + parent, 'taxonomy.author.lower']
+      });
+    }
+
     this.allColumns = this.allColumns
       .map(column => {
         this.columnLookup[column.name] = column;
 
         if (!column.label) {
           column.label = 'taxonomy.' + column.name;
-        }
-        if (column.selectField === 'parent') {
-          column.shownColumns = [
-            {
-              name: column.name + '.scientificName',
-              label: [column.label as string, 'taxonomy.scientific.name.lower']
-            },
-            {
-              name: column.name + '.scientificNameAuthorship',
-              label: [column.label as string, 'taxonomy.author.lower']
-            }
-          ];
         }
 
         return column;
@@ -190,14 +153,7 @@ export class TaxonomyColumns {
 
   getColumns(selected) {
     return selected.reduce((arr, name) => {
-      if (this.columnLookup[name].shownColumns) {
-        this.columnLookup[name].shownColumns.forEach(col => {
-          arr.push({...col});
-        });
-      } else {
-        arr.push({...this.columnLookup[name]});
-      }
-
+      arr.push({...this.columnLookup[name]});
       return arr;
     }, []);
   }

@@ -2,5 +2,4 @@ import { DatatableColumn } from '../../../shared-modules/datatable/model/datatab
 
 export interface TaxonomyTableColumn extends DatatableColumn {
   selectField?: string;
-  shownColumns?: TaxonomyTableColumn[];
 }
