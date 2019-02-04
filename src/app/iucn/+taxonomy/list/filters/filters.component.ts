@@ -24,6 +24,7 @@ export class FiltersComponent implements OnInit {
   redListStatuses$: Observable<SelectOption[]>;
   threadReasons$: Observable<SelectOption[]>;
   habitats$: Observable<SelectOption[]>;
+  habitatsSpecific$: Observable<SelectOption[]>;
   showStatusSelect = false;
 
   constructor(
@@ -39,6 +40,9 @@ export class FiltersComponent implements OnInit {
       map(meta => this.mapMetadataToOptions(meta))
     );
     this.habitats$ = this.metadataService.getRange('MKV.habitatEnum').pipe(
+      map(meta => this.mapMetadataToOptions(meta))
+    );
+    this.habitatsSpecific$ = this.metadataService.getRange('MKV.habitatSpecificTypeEnum').pipe(
       map(meta => this.mapMetadataToOptions(meta))
     );
   }
@@ -75,6 +79,7 @@ export class FiltersComponent implements OnInit {
       taxon,
       redListGroup,
       habitat,
+      habitatSpecific,
       threats,
       reasons,
       status,

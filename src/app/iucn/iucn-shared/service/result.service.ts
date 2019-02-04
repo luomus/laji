@@ -10,6 +10,7 @@ export interface FilterQuery {
   taxon?: string;
   redListGroup?: string;
   habitat?: string;
+  habitatSpecific?: string;
   threats?: string;
   reasons?: string;
   status?: string[];

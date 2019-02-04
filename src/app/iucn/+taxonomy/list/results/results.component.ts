@@ -72,8 +72,10 @@ export class ResultsComponent implements OnChanges {
       'latestRedListEvaluation.redListStatus': (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
       [this.query.onlyPrimaryReasons ?
         'latestRedListEvaluation.primaryEndangermentReasons' : 'latestRedListEvaluation.endangermentReasons']: this.query.reasons,
-      [this.query.onlyPrimaryHabitat ? 'latestRedListEvaluation.primaryHabitat' : 'latestRedListEvaluation.anyHabitat']: this.query.habitat,
-      [this.query.onlyPrimaryThreats ? 'latestRedListEvaluation.primaryThreats' : 'latestRedListEvaluation.threats']: this.query.threats,
+      [this.query.onlyPrimaryHabitat ?
+        'latestRedListEvaluation.primaryHabitat' : 'latestRedListEvaluation.anyHabitat']: this.getHabitat(this.query),
+      [this.query.onlyPrimaryThreats ?
+        'latestRedListEvaluation.primaryThreats' : 'latestRedListEvaluation.threats']: this.query.threats,
       hasLatestRedListEvaluation: true,
       includeHidden: true
     });
@@ -82,6 +84,10 @@ export class ResultsComponent implements OnChanges {
     this.initThreads();
     this.initHabitat();
     this.initReasons();
+  }
+
+  private getHabitat(query: FilterQuery) {
+    return query.habitat ? (query.habitatSpecific ? query.habitat + '[' + query.habitatSpecific + ']' : query.habitat) : undefined;
   }
 
   private initReasons() {

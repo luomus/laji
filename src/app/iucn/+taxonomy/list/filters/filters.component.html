@@ -17,12 +17,13 @@
                     [placeholder]="'Lajiryhmä'"
       ></laji-select2>
     </div>
-    <div class="col-sm-5 col-md-4">
+    <div class="col-sm-6 col-md-6">
       <div class="input-group">
-        <laji-select2 [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async" [placeholder]="'Elinympäristö'"></laji-select2>
+        <laji-select2 [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async" [placeholder]="'MKV.habitat' | label"></laji-select2>
         <span class="input-group-addon">
           <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'Vain ensisijaisella'">
         </span>
+        <laji-select2 [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="'MKV.habitatSpecificType' | label"></laji-select2>
       </div>
     </div>
   </div>
