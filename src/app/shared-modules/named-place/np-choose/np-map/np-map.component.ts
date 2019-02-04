@@ -150,7 +150,13 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
             fillOpacity: 0.3,
             color: ''
           };
-          style.color = this.getFeatureColor(o.feature, this.activeNP);
+
+          if (o.feature.properties.lajiMapIdx === this.activeNP) {
+            style.color = this.getFeatureColor(o.feature);
+            style.weight = 10;
+          } else {
+            style.color = this.getFeatureColor(o.feature, this.activeNP);
+          }
           return style;
         },
         on: {
