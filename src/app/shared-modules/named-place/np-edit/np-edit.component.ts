@@ -28,15 +28,14 @@ export class NpEditComponent {
   @Input() formId: string;
   @Input() loading: boolean;
   @Input() prepopulatedNamedPlace: string;
-  @Input() formData: any;
-  @Input() namedPlaceOptions: any;
+  @Input() documentForm: any;
   @Input() formRights: Rights = {
     edit: false,
     admin: false
   };
 
   @Input() mapOptionsData: any;
-  @Input() npFormData: any;
+  @Input() placeForm: any;
   @Input() collectionId: string;
 
   @Input() editMode = false;
@@ -94,20 +93,20 @@ export class NpEditComponent {
       populate.gatheringEvent.namedPlaceNotes = this.namedPlace.notes;
     }
 
-    let removeList = this.formData.excludeFromCopy || DocumentService.removableGathering;
-    if (this.formData.namedPlaceOptions && this.formData.namedPlaceOptions.includeUnits) {
+    let removeList = this.documentForm.excludeFromCopy || DocumentService.removableGathering;
+    if (this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.includeUnits) {
       removeList = removeList.filter(item => item !== 'units');
     }
     this.formService.populate(this.documentService.removeMeta(populate, removeList));
   }
 
   setIsEdit(b: boolean) {
-    if (!this.npFormData) {
+    if (!this.placeForm) {
       return;
     }
-    if (!this.npFormData.uiSchemaContext) {
-      this.npFormData.uiSchemaContext = {};
+    if (!this.placeForm.uiSchemaContext) {
+      this.placeForm.uiSchemaContext = {};
     }
-    this.npFormData.uiSchemaContext.isEdit = b;
+    this.placeForm.uiSchemaContext.isEdit = b;
   }
 }

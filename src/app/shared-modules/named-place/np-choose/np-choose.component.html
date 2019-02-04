@@ -2,7 +2,7 @@
   <div id="navbar">
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation" [ngClass]="{active: active === 'list'}">
-        <a (click)="setActive('list')">{{ formData.namedPlaceOptions?.listLabel || 'np.list' | translate }}</a>
+        <a (click)="setActive('list')">{{ documentForm.namedPlaceOptions?.listLabel || 'np.list' | translate }}</a>
       </li>
       <li role="presentation" [ngClass]="{active: active === 'map'}" *ngIf="showMap()">
         <a (click)="setActive('map')">{{ 'np.map' | translate }}</a>
@@ -13,7 +13,7 @@
   <div *ngIf="active === 'list'" id="list-container">
     <laji-np-list [height]="height"
                   [namedPlaces]="_namedPlaces"
-                  [formData]="formData"
+                  [documentForm]="documentForm"
                   [activeNP]="_activeNP"
                   (activePlaceChange)="onActivePlaceChange($event)"
                   ></laji-np-list>
@@ -25,14 +25,14 @@
                  [activeNP]="_activeNP"
                  [userID]="userID"
                  [visible]="active === 'map' && visible"
-                 [reservable]="formData.features.indexOf(FEATURE_RESERVE) !== -1"
-                 [npFormData]="npFormData"
-                 [formData]="formData"
+                 [reservable]="documentForm.features.indexOf(FEATURE_RESERVE) !== -1"
+                 [placeForm]="placeForm"
+                 [documentForm]="documentForm"
                  (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
   </div>
 
   <button *ngIf="allowCreate"
           class="btn btn-md btn-default"
           id="create-new-button"
-          (click)="createButtonClick.emit()">{{ formData.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</button>
+          (click)="createButtonClick.emit()">{{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</button>
 </div>

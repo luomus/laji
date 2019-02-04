@@ -10,9 +10,13 @@ export interface FilterQuery {
   taxon?: string;
   redListGroup?: string;
   habitat?: string;
+  habitatSpecific?: string;
   threats?: string;
   reasons?: string;
   status?: string[];
+  onlyPrimaryHabitat?: boolean;
+  onlyPrimaryReasons?: boolean;
+  onlyPrimaryThreats?: boolean;
   page?: string;
 }
 
@@ -63,7 +67,14 @@ export class ResultService {
     'MX.iucnDD'
   ];
 
-  habitatStatuses: string[] = [];
+  habitatStatuses: string[] = [
+    'MX.iucnRE',
+    'MX.iucnCR',
+    'MX.iucnEN',
+    'MX.iucnVU',
+    'MX.iucnNT',
+    'MX.iucnDD'
+  ];
 
   private yearToChecklistVersion = {
     '2019': 'MR.424',

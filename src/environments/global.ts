@@ -23,6 +23,7 @@ export const Global = {
     'JX.519',
     'MHL.6',
     'MHL.33',
+    'MHL.35',
     'MHL.9',
     'MHL.25'
   ],
@@ -40,7 +41,8 @@ export const Global = {
     'MHL.27': '/linjalaskenta',
     'MHL.28': '/linjalaskenta',
     'MHL.3': '/talvilintu',
-    'MHL.33': '/vieraslajit'
+    'MHL.33': '/vieraslajit',
+    'MHL.35': '/kunnat',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {

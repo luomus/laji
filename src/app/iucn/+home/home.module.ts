@@ -7,6 +7,7 @@ import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { SharedModule } from '../../shared/shared.module';
 import { IucnResultPieComponent } from './iucn-result-pie/iucn-result-pie.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-select.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     HomeRoutingModule,
     IucnSharedModule,
     SharedModule,
+    TaxonSelectModule,
     NgxChartsModule
   ],
   declarations: [HomeComponent, IucnResultPieComponent]

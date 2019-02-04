@@ -34,8 +34,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   @Input() height: string;
   @Input() userID: string;
   @Input() reservable: boolean;
-  @Input() npFormData: any;
-  @Input() formData: any;
+  @Input() placeForm: any;
+  @Input() documentForm: any;
   @Input() mapOptions: any;
   @Output() activePlaceChange = new EventEmitter<number>();
 
@@ -137,7 +137,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
       };
     }
 
-    const {mapTileLayerName = 'maastokartta', mapOverlayNames} = this.formData.namedPlaceOptions || {mapOverlayNames: undefined};
+    const {mapTileLayerName = 'maastokartta', mapOverlayNames} = this.documentForm.namedPlaceOptions || {mapOverlayNames: undefined};
     this.tileLayerName = mapTileLayerName;
     this.overlayNames = mapOverlayNames;
 
@@ -178,7 +178,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
           }))
         },
         getPopup: (idx: number, geo, cb: (elem: string | HTMLElement) => void) => {
-          this.listItems = NpInfoComponent.getListItems(this.npFormData, this.namedPlaces[idx], this.formData);
+          this.listItems = NpInfoComponent.getListItems(this.placeForm, this.namedPlaces[idx], this.documentForm);
           this._popupCallback = cb;
           this.cdr.markForCheck();
         }

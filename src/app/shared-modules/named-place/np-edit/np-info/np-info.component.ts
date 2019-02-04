@@ -7,7 +7,6 @@ import {
   HostListener,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -21,7 +20,9 @@ import { Form } from '../../../../shared/model/Form';
 import { NpInfoRow } from './np-info-row/np-info-row.component';
 import { RouterChildrenEventService } from '../../../own-submissions/service/router-children-event.service';
 import { Document } from '../../../../shared/model/Document';
-import { Subscription } from 'rxjs';
+import { ClipboardService } from 'ngx-clipboard';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-np-info',
@@ -31,8 +32,8 @@ import { Subscription } from 'rxjs';
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
-  @Input() npFormData: any;
-  @Input() formData: any;
+  @Input() placeForm: any;
+  @Input() documentForm: any;
   @Input() collectionId: string;
   @Input() editMode: boolean;
   @Input() allowEdit: boolean;
@@ -66,15 +67,15 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   useLocalDocumentViewer = false;
   documentModalVisible = false;
 
-  public static getListItems(npFormData: any, np: NamedPlace, form: any): any[] {
+  public static getListItems(placeForm: any, np: NamedPlace, form: any): any[] {
     const {namedPlaceOptions, collectionID: collectionId} = form;
-    const fields = npFormData.schema.properties;
+    const fields = placeForm.schema.properties;
     let displayed = [];
     if (namedPlaceOptions.infoFields) {
       displayed = namedPlaceOptions.infoFields || [];
     } else {
       const displayedById =
-        npFormData.uiSchema['ui:options'].fieldScopes.collectionID;
+        placeForm.uiSchema['ui:options'].fieldScopes.collectionID;
       displayed = (displayedById[collectionId] || displayedById['*'] || []).fields;
     }
 
@@ -113,6 +114,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(private userService: UserService,
               private eventService: RouterChildrenEventService,
+              private clipboardService: ClipboardService,
+              private toastService: ToastrService,
+              private translate: TranslateService,
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -170,18 +174,23 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     this.useButtonClick.emit();
   }
 
+  copyLink() {
+    this.clipboardService.copyFromContent(document.location.href);
+    this.toastService.success(this.translate.instant('np.copyAddress.success'));
+  }
+
   private updateButtons() {
     if (!this.namedPlace) {
       return;
     }
     this.userService.getUser().subscribe(person => {
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) || this.formRights.admin;
-      this.formReservable = this.formData &&
-        Array.isArray(this.formData.features) &&
-        this.formData.features.indexOf(Form.Feature.Reserve) > -1;
-      this.useLocalDocumentViewer = this.formData &&
-        Array.isArray(this.formData.features) &&
-        this.formData.features.indexOf(Form.Feature.DocumentsViewableForAll) > -1;
+      this.formReservable = this.documentForm &&
+        Array.isArray(this.documentForm.features) &&
+        this.documentForm.features.indexOf(Form.Feature.Reserve) > -1;
+      this.useLocalDocumentViewer = this.documentForm &&
+        Array.isArray(this.documentForm.features) &&
+        this.documentForm.features.indexOf(Form.Feature.DocumentsViewableForAll) > -1;
       let btnStatus;
       if (!this.formRights.edit) {
         btnStatus = 'nouse';
@@ -206,6 +215,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private updateFields() {
-    this.listItems = NpInfoComponent.getListItems(this.npFormData, this.namedPlace, this.formData);
+    this.listItems = NpInfoComponent.getListItems(this.placeForm, this.namedPlace, this.documentForm);
   }
 }

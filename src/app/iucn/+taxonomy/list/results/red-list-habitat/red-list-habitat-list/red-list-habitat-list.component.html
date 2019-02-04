@@ -17,9 +17,9 @@
     <tr *ngFor="let row of data; let l=last" [class.title]="l">
       <th>{{ row.name }}</th>
       <td *ngFor="let status of statuses">{{ row.primary[status] || 0 }}</td>
-      <td>{{ row.primary.total }}</td>
+      <td class="total-col">{{ row.primary.total }}</td>
       <td *ngFor="let status of statuses">{{ row.secondary[status] || 0 }}</td>
-      <td>{{ row.secondary.total }}</td>
+      <td class="total-col">{{ row.secondary.total }}</td>
       <td>{{ row.secondary.total +  row.primary.total }}</td>
     </tr>
   </table>

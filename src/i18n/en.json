@@ -320,7 +320,7 @@
   "navigation.satelliitti": "Satellite tracking",
   "navigation.taxonomy": "Species",
   "navigation.invasiveSpecies": "Invasive species",
-  "navigation.municipalityMonitoring": "Municipality control",
+  "navigation.municipalityMonitoring": "Species census form",
   "navigation.theme": "Themes",
   "navigation.user": "User settings",
   "navigation.user.login": "Login | Register",
@@ -962,5 +962,8 @@
   "invasiveSpecies.places": "Record control actions",
   "np.formOwnSubmissions": "Places previous documents",
   "np.tag": "Filter by route properties",
-  "np.createPlace": "Create place"
+  "np.createPlace": "Create place",
+  "haseka.form.rights.description": " <h1>Form permission management</h1> <p>You can manage form permissions here.</p>",
+  "np.copyAddress": "Copy link",
+  "np.copyAddress.success": "Link was copied to the clipboard"
 }

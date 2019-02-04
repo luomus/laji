@@ -30,6 +30,7 @@ export class ListComponent implements OnInit, OnDestroy {
   checklist: string;
   queryParams: QueryParams;
   private querySub: Subscription;
+  private onlyFields = ['onlyPrimaryThreats', 'onlyPrimaryReasons', 'onlyPrimaryHabitat'];
 
   constructor(
     public translate: TranslateService,
@@ -57,6 +58,9 @@ export class ListComponent implements OnInit, OnDestroy {
         if (params['status'] && typeof params['status'] === 'string') {
           result['status'] = result['status'].split(',');
         }
+        this.onlyFields.forEach(key => {
+          result[key] = params[key] === 'true';
+        });
         return result;
       })
     ).subscribe(params => {
@@ -77,6 +81,11 @@ export class ListComponent implements OnInit, OnDestroy {
 
   queryChange(query: QueryParams, toFirstPage = true) {
     const queryParams: any = {...query};
+    this.onlyFields.forEach(key => {
+      if (queryParams[key] === false) {
+        delete queryParams[key];
+      }
+    });
     for (const i in queryParams) {
       if (queryParams.hasOwnProperty(i) && Array.isArray(queryParams[i])) {
         queryParams[i] = queryParams[i].join(',');

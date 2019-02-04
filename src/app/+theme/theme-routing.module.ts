@@ -216,14 +216,14 @@ const routes: Routes = [
         pathMatch: 'full',
         component: MunicipalityMonitoringFormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/kunnat'}
+        data: {formId: 'MHL.35', noFormPermissionRedirect: '/theme/kunnat'}
       },
       {
         path: 'form',
         pathMatch: 'full',
         component: MunicipalityMonitoringFormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/kunnat'}
+        data: {formId: 'MHL.35', noFormPermissionRedirect: '/theme/kunnat'}
       },
       {
         path: 'form/:id',

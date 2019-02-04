@@ -34,9 +34,8 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   _prevNamedPlacesMapRendered: ExtendedNamedPlace[] = [];
   _prevActive: string;
 
-  @Input() formData: any;
-  @Input() npFormData: any;
-  @Input() namedPlaceOptions: any;
+  @Input() documentForm: any;
+  @Input() placeForm: any;
   @Input() visible = true;
   @Input() allowCreate = true;
   @Input() userID: string;
@@ -65,8 +64,8 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['formData']) {
-      if (this.formData && this.formData.namedPlaceOptions && this.formData.namedPlaceOptions.startWithMap) {
+    if (changes['documentForm']) {
+      if (this.documentForm && this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.startWithMap) {
         this.setActive('map');
       } else {
         this.active = 'list';
@@ -133,10 +132,10 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
 
   showMap() {
     return !(
-      this.formData &&
-      this.formData.namedPlaceOptions &&
-      this.formData.namedPlaceOptions.hideMapTab &&
-      this.formData.namedPlaceOptions.hideMapTab === true
+      this.documentForm &&
+      this.documentForm.namedPlaceOptions &&
+      this.documentForm.namedPlaceOptions.hideMapTab &&
+      this.documentForm.namedPlaceOptions.hideMapTab === true
     );
   }
 
@@ -168,9 +167,10 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   private initEarliestAndLatest() {
-    if (this.formData.options && this.formData.options.season && this.formData.options.season.start && this.formData.options.season.end) {
-      this.seasonStart = new Date(this.analyseData(this.formData.options.season.start));
-      this.seasonEnd = new Date(this.analyseData(this.formData.options.season.end));
+    const {options: {season = {}} = {}} = this.documentForm;
+    if (season.start && season.end) {
+      this.seasonStart = new Date(this.analyseData(this.documentForm.options.season.start));
+      this.seasonEnd = new Date(this.analyseData(this.documentForm.options.season.end));
     } else {
       this.seasonStart = undefined;
       this.seasonEnd = undefined;
