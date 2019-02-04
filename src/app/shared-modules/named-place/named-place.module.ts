@@ -21,6 +21,7 @@ import { SearchFiltersModule } from '../search-filters/search-filters.module';
 import { TaxonAutocompleteModule } from '../taxon-autocomplete/taxon-autocomplete.module';
 import { FormPermissionModule } from 'app/+haseka/form-permission/form-permission.module';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   providers: [],
@@ -34,7 +35,8 @@ import { DocumentViewerModule } from '../document-viewer/document-viewer.module'
     LajiMapModule,
     TaxonAutocompleteModule,
     FormPermissionModule,
-    DocumentViewerModule
+    DocumentViewerModule,
+    ClipboardModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,

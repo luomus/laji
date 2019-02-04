@@ -997,5 +997,7 @@
   "np.formOwnSubmissions": "Paikan aiemmat ilmoitukset",
   "np.tag": "Rajaa reitin ominaisuuksien perusteella",
   "np.createPlace": "Luo paikka",
-  "haseka.form.rights.description": " <h1>Lomakkeen oikeuksien hallinta</h1> <p>Täältä voit hallinnoida sitä kuka pääsee käyttämään lomakketta.</p>"
+  "haseka.form.rights.description": " <h1>Lomakkeen oikeuksien hallinta</h1> <p>Täältä voit hallinnoida sitä kuka pääsee käyttämään lomakketta.</p>",
+  "np.copyAddress": "Kopioi linkki",
+  "np.copyAddress.success": "Linkki kopioitiin leikepöydälle"
 }

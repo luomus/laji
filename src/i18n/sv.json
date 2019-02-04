@@ -957,5 +957,7 @@
   "np.formOwnSubmissions": "Placerar tidigare dokument",
   "np.tag": "Filtrera efter ruttegenskaper",
   "np.createPlace": "Skapa plats",
-  "haseka.form.rights.description": "<h1>Formhanteringshantering</h1><p>Du kan hantera formulärbehörigheter här.</p>"
+  "haseka.form.rights.description": "<h1>Formhanteringshantering</h1><p>Du kan hantera formulärbehörigheter här.</p>",
+  "np.copyAddress": "Kopia link",
+  "np.copyAddress.success": "Länken kopierades till urklippet"
 }

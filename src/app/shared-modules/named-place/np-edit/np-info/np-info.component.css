@@ -23,9 +23,9 @@ laji-np-info-map {
   position: relative;
 }
 
-#use-button-container {
+.button-container {
   display: flex;
-  #margin: 0 0 6px -3px;
+  margin: 0 0 6px -3px;
 }
 
 .use-button {

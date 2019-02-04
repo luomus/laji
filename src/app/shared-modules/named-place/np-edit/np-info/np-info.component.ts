@@ -7,7 +7,6 @@ import {
   HostListener,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -21,7 +20,9 @@ import { Form } from '../../../../shared/model/Form';
 import { NpInfoRow } from './np-info-row/np-info-row.component';
 import { RouterChildrenEventService } from '../../../own-submissions/service/router-children-event.service';
 import { Document } from '../../../../shared/model/Document';
-import { Subscription } from 'rxjs';
+import { ClipboardService } from 'ngx-clipboard';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-np-info',
@@ -113,6 +114,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(private userService: UserService,
               private eventService: RouterChildrenEventService,
+              private clipboardService: ClipboardService,
+              private toastService: ToastrService,
+              private translate: TranslateService,
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -168,6 +172,11 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   useClick() {
     this.useButtonClick.emit();
+  }
+
+  copyLink() {
+    this.clipboardService.copyFromContent(document.location.href);
+    this.toastService.success(this.translate.instant('np.copyAddress.success'));
   }
 
   private updateButtons() {
