@@ -48,10 +48,6 @@ export class DatatableUtil {
       case 'user':
         observable = this.getUserName(value);
         break;
-      case 'parent':
-        const name = (value.scientificName || '') + (value.scientificNameAuthorship ? ' ' + value.scientificNameAuthorship : '');
-        observable = ObservableOf(name);
-        break;
       default:
         observable = ObservableOf(value);
         break;

@@ -34,6 +34,7 @@
       [height]="'calc(70vh - 30px)'"
       [rows]='speciesPage.results'
       (pageChange)="pageChanged($event)"
+      (reorder)="onReorder($event)"
       [loading]="loading"
       [count]="speciesPage.total"
       [page]="speciesPage.currentPage"
@@ -56,8 +57,7 @@
 </ng-container>
 
 <laji-species-list-options-modal #settingsModal
-                                 (close)="onCloseModal()"
-                                 (settingsLoaded)="onSettingsLoaded()"
+                                 (settingsChange)="onSettingsChange()"
                                  [searchQuery]="searchQuery"
                                  [columnLookup]="columnService.columnLookup">
 </laji-species-list-options-modal>

@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
-import { UserService } from '../../../shared/service/user.service';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 
 @Component({
@@ -8,37 +7,32 @@ import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
   templateUrl: './species-list-options-modal.component.html',
   styleUrls: ['./species-list-options-modal.component.css']
 })
-export class SpeciesListOptionsModalComponent implements OnInit {
+export class SpeciesListOptionsModalComponent {
   @ViewChild('settingsModal') modalRef: ModalDirective;
 
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() columnLookup: any;
   @Input() requiredFields: string[] = [];
 
-  @Output() close = new EventEmitter();
-  @Output() settingsLoaded = new EventEmitter();
+  @Output() settingsChange = new EventEmitter();
 
   _selected: string[] = [];
+  hasChanges = false;
 
-  constructor(
-    private userService: UserService
-  ) { }
-
-  ngOnInit() {
-    this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
-      .subscribe(data => {
-        if (data && data.selected) {
-          this.searchQuery.listOptions.selected = data.selected;
-        }
-        this.settingsLoaded.emit();
-      });
-  }
+  constructor() { }
 
   clear() {
     this._selected = [...this.requiredFields];
   }
 
+  toggleSelectedFields(fields: string[]) {
+    fields.forEach(field => {
+      this.toggleSelectedField(field);
+    });
+  }
+
   toggleSelectedField(field: string) {
+    this.hasChanges = true;
     const idx = this._selected.indexOf(field);
     if (idx === -1) {
       this._selected = [...this._selected, field];
@@ -52,19 +46,16 @@ export class SpeciesListOptionsModalComponent implements OnInit {
 
   openModal() {
     this._selected = [...this.searchQuery.listOptions.selected];
+    this.hasChanges = false;
     this.modalRef.show();
   }
 
   closeOkModal() {
-    this.searchQuery.listOptions.selected = [...this._selected];
-    this.saveSettings();
-    this.close.emit();
-    this.modalRef.hide();
-  }
+    if (this.hasChanges) {
+      this.searchQuery.listOptions.selected = [...this._selected];
+      this.settingsChange.emit();
+    }
 
-  private saveSettings() {
-    this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
-      selected: this.searchQuery.listOptions.selected
-    }).subscribe(() => {}, () => {});
+    this.modalRef.hide();
   }
 }

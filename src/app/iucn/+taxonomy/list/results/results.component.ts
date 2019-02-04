@@ -70,9 +70,12 @@ export class ResultsComponent implements OnChanges {
       id: this.query.taxon,
       redListEvaluationGroups: this.query.redListGroup,
       'latestRedListEvaluation.redListStatus': (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
-      'latestRedListEvaluation.endangermentReasons': this.query.reasons,
-      'latestRedListEvaluation.primaryHabitat': this.query.habitat,
-      'latestRedListEvaluation.threats': this.query.threats,
+      [this.query.onlyPrimaryReasons ?
+        'latestRedListEvaluation.primaryEndangermentReasons' : 'latestRedListEvaluation.endangermentReasons']: this.query.reasons,
+      [this.query.onlyPrimaryHabitat ?
+        'latestRedListEvaluation.primaryHabitat' : 'latestRedListEvaluation.anyHabitat']: this.getHabitat(this.query),
+      [this.query.onlyPrimaryThreats ?
+        'latestRedListEvaluation.primaryThreats' : 'latestRedListEvaluation.threats']: this.query.threats,
       hasLatestRedListEvaluation: true,
       includeHidden: true
     });
@@ -81,6 +84,10 @@ export class ResultsComponent implements OnChanges {
     this.initThreads();
     this.initHabitat();
     this.initReasons();
+  }
+
+  private getHabitat(query: FilterQuery) {
+    return query.habitat ? (query.habitatSpecific ? query.habitat + '[' + query.habitatSpecific + ']' : query.habitat) : undefined;
   }
 
   private initReasons() {
@@ -169,15 +176,15 @@ export class ResultsComponent implements OnChanges {
     const cacheKey = 'habitat';
     const primaryField = 'latestRedListEvaluation.primaryHabitat.habitat';
     const allField = 'latestRedListEvaluation.secondaryHabitats.habitat';
-    const statusField = 'latestRedListStatusFinland.status';
+    const statusField = 'latestRedListEvaluation.redListStatus';
     const query: any = {
       ...this.baseQuery,
-      'latestRedListStatusFinland.status':
-        (this.baseQuery as any)['latestRedListStatusFinland.status'] || this.resultService.habitatStatuses.join(','),
+      [statusField]: this.baseQuery[statusField] || this.resultService.habitatStatuses.join(','),
       aggregateBy: primaryField  + ',' + statusField + '=' + primaryField + ';' + allField + ',' + statusField + '=' + allField,
       aggregateSize: 10000
     };
     const currentQuery = JSON.stringify(query);
+    const hasHabitatQuery = !!query['latestRedListEvaluation.primaryHabitat'] || !!query['latestRedListEvaluation.anyHabitat'];
 
     this.habitatQuery$ = this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
@@ -187,6 +194,9 @@ export class ResultsComponent implements OnChanges {
           map(label => label.reduce((cumulative, current) => {
             const idx = data.findIndex(d => d.name === current.id);
             if (idx > -1) {
+              if (!hasHabitatQuery) {
+                data[idx].name = data[idx].name.substring(0, 12);
+              }
               cumulative.push(data[idx]);
             }
             return cumulative;
@@ -195,7 +205,7 @@ export class ResultsComponent implements OnChanges {
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
           map(translations => data.map(a => ({...a, name: translations[a.name]}))),
         )),
-        map(data => !!query.primaryHabitat ? data : this.combineHabitat(data)),
+        map(data => hasHabitatQuery ? data : this.combineHabitat(data)),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
     this.initHabitatChart();
@@ -215,7 +225,7 @@ export class ResultsComponent implements OnChanges {
   private combineHabitat(data) {
     const lookup = {};
     data.forEach(item => {
-      const key = item.name.charAt(0);
+      const key = item.name;
       if (!lookup[key]) {
         lookup[key] = item;
         return;

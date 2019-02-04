@@ -31,8 +31,8 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
     this.query = {};
     this.listOptions = {
       page: 1,
-      sortOrder: 'taxonomic',
-      selected: ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
+      sortOrder: this.listOptions ? this.listOptions.sortOrder : 'taxonomic',
+      selected: this.listOptions ? this.listOptions.selected : ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
         'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames']
     };
     this.imageOptions = {
