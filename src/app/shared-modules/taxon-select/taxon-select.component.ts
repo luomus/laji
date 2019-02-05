@@ -10,7 +10,7 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
     #typeahead
     [ngClass]="{loading: typeaheadLoading}"
     type="text"
-    class="form-control input-sm"
+    [class]="class"
     [name]="name"
     [placeholder]="placeholder"
     [(ngModel)]="_taxonId"
@@ -35,6 +35,7 @@ export class TaxonSelectComponent {
   @Input() placeholder = '';
   @Input() typeaheadItemTemplate;
   @Input() allowInvalid = true;
+  @Input() class = 'form-control input-sm';
   @Output() taxonIdChange = new EventEmitter<string>();
 
   @ViewChild('typeahead') typeahead;

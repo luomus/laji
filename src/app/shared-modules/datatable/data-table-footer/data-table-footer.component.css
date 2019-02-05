@@ -2,6 +2,13 @@
   display: block;
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.datatable-footer.top {
+  border-bottom: none;
+}
+
+.datatable-footer.bottom {
   border-top: none;
 }
 

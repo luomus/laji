@@ -17,6 +17,7 @@ export interface IPageChange {
 export class DataTableFooterComponent {
 
   @Input() totalMessage = '';
+  @Input() top = false;
   @Output() change = new EventEmitter<IPageChange>();
 
   _count: number;

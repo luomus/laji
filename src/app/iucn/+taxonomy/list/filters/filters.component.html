@@ -2,7 +2,21 @@
   <div class="form-group">
     <label class="col-sm-1 control-label">Rajaa</label>
     <div class="col-sm-5 col-md-4">
+      <!--
+      <select laji-dropdown [value]="query?.redListGroup" (valueChange)="change('redListGroup', $event)"
+              [options]="redListStatuses$ | async"
+              [placeholder]="'Lajiryhmä'"
+      ></select>
+      -->
+      <ng-select name="redListGroup" (change)="change('redListGroup', $event?.value)" [ngModel]="query?.redListGroup" [items]="redListStatuses$ | async" [placeholder]="'Lajiryhmä'" [notFoundText]="''" [bindLabel]="'label'" [bindValue]="'value'">
+        <ng-template ng-label-tmp let-item="item">
+          <span [innerHTML]="item.label"></span>
+        </ng-template>
+      </ng-select>
+    </div>
+    <div class="col-sm-5 col-md-4">
       <laji-taxon-select
+        [class]="'form-control'"
         (taxonIdChange)="change('taxon', $event)"
         [placeholder]="'species.form.specimen' | translate"
         [taxonId]="query.taxon"
@@ -12,19 +26,15 @@
   </div>
   <div class="form-group">
     <div class="col-sm-offset-1 col-sm-5 col-md-4">
-      <select laji-dropdown [value]="query?.redListGroup" (valueChange)="change('redListGroup', $event)"
-                    [options]="redListStatuses$ | async"
-                    [placeholder]="'Lajiryhmä'"
-      ></select>
-    </div>
-    <div class="col-sm-6 col-md-6">
       <div class="input-group">
         <select laji-dropdown [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async" [placeholder]="'MKV.habitat' | label"></select>
         <span class="input-group-addon">
           <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'Vain ensisijaisella'">
         </span>
-        <select laji-dropdown [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="'MKV.habitatSpecificType' | label"></select>
       </div>
+    </div>
+    <div class="col-sm-5 col-md-4">
+      <select [disabled]="!query?.habitat" laji-dropdown [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="'MKV.habitatSpecificType' | label"></select>
     </div>
   </div>
   <ng-container *ngIf="threadReasons$ | async; let reasons">
@@ -60,8 +70,10 @@
       <div class="overlay-dropdown" (click)="toggleStatus()"></div>
       <div *ngIf="showStatusSelect; else statusDropDown">
         <select class="form-control" tabindex="-1"></select>
-        <div style="position: absolute; top: 0; left: 15px; right: 15px;" (lajiClickOutSide)="toggleStatus()">
-          <select class="form-control"  tabindex="-1"></select>
+        <div style="position: absolute; top: 0; left: 15px; right: 15px; z-index: 10000" (lajiClickOutSide)="toggleStatus()">
+          <select class="form-control"  tabindex="-1">
+            <option value="">{{ query.status ? query.status.join(',') : 'Uhanalaisuusluokka' }}</option>
+          </select>
           <laji-redlist-class-filter [value]="query?.status" (valueChange)="change('status', $event)"></laji-redlist-class-filter>
         </div>
       </div>
