@@ -49,6 +49,7 @@ import { InformalListComponent } from './browse-species/informal-group-select/in
 import {
   InformalListBreadcrumbComponent
 } from './browse-species/informal-group-select/informal-list-breadcrumb/informal-list-breadcrumb.component';
+import { SelectedParentsComponent } from './species/species-list-options-modal/selected-parents/selected-parents.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -62,7 +63,8 @@ import {
     SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
     SpeciesListOptionsModalComponent, BoldSynonymComponent,
     SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonDescriptionsComponent, TaxonSynonymsComponent,
-    TaxonNamesComponent, BrowseSpeciesComponent, InformalGroupSelectComponent, InformalListComponent, InformalListBreadcrumbComponent
+    TaxonNamesComponent, BrowseSpeciesComponent, InformalGroupSelectComponent, InformalListComponent, InformalListBreadcrumbComponent,
+    SelectedParentsComponent
   ],
 })
 export class TaxonomyModule {
