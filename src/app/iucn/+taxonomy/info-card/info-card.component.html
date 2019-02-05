@@ -33,7 +33,7 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <h2>Arviointi {{ latestStatus.evaluationYear }}</h2>
+      <h2>Arviointi {{ latestStatus?.evaluationYear }}</h2>
     </div>
   </div>
   <div class="row">
@@ -41,8 +41,4 @@
       <laji-red-list-evaluation-info [evaluation]="taxon?.latestRedListEvaluation"></laji-red-list-evaluation-info>
     </div>
   </div>
-  <h1>DEBUG:</h1>
-  <pre>
- {{ taxon | json }}
-  </pre>
 </ng-container>
