@@ -1,14 +1,14 @@
 <div class="container" *ngIf="queryParams">
   <h1>Lajit ja tulokset</h1>
   <div class="year-select">
-    <laji-select2 [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></laji-select2>
+    <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
   </div>
 
   <div class="row" style="margin: 30px -15px;">
     <div class="col-sm-12">
       <label>Valitse tarkasteltava tieto</label>
       <div class="type-select">
-        <laji-select2 [options]="types" [value]="queryParams.type" (valueChange)="queryParamChange('type', $event)"></laji-select2>
+        <select laji-dropdown [options]="types" [value]="queryParams.type" (valueChange)="queryParamChange('type', $event)"></select>
       </div>
     </div>
   </div>

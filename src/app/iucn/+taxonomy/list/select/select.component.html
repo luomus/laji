@@ -1,6 +1,4 @@
 <ng-container *ngIf="options">
-  <select class="form-control" (change)="onChange($event)">
-    <option *ngIf="placeholder" value="" [selected]="!value || value === ''">{{ placeholder }}</option>
-    <option *ngFor="let option of options" [value]="option.value" [selected]="option.value === value" [innerHtml]="option.label"></option>
-  </select>
+  <option *ngIf="placeholder" value="" [selected]="!value || value === ''">{{ placeholder }}</option>
+  <option *ngFor="let option of options" [value]="option.value" [selected]="option.value === value" [innerHtml]="option.label"></option>
 </ng-container>

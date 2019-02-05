@@ -12,18 +12,18 @@
   </div>
   <div class="form-group">
     <div class="col-sm-offset-1 col-sm-5 col-md-4">
-      <laji-select2 [value]="query?.redListGroup" (valueChange)="change('redListGroup', $event)"
+      <select laji-dropdown [value]="query?.redListGroup" (valueChange)="change('redListGroup', $event)"
                     [options]="redListStatuses$ | async"
                     [placeholder]="'Lajiryhmä'"
-      ></laji-select2>
+      ></select>
     </div>
     <div class="col-sm-6 col-md-6">
       <div class="input-group">
-        <laji-select2 [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async" [placeholder]="'MKV.habitat' | label"></laji-select2>
+        <select laji-dropdown [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async" [placeholder]="'MKV.habitat' | label"></select>
         <span class="input-group-addon">
           <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'Vain ensisijaisella'">
         </span>
-        <laji-select2 [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="'MKV.habitatSpecificType' | label"></laji-select2>
+        <select laji-dropdown [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="'MKV.habitatSpecificType' | label"></select>
       </div>
     </div>
   </div>
@@ -31,11 +31,11 @@
     <div class="form-group">
       <div class="col-sm-offset-1 col-sm-5 col-md-4">
         <div class="input-group">
-          <laji-select2
+          <select laji-dropdown
             [value]="query?.reasons"
             (valueChange)="change('reasons', $event)"
             [options]="reasons"
-            [placeholder]="'Uhanalaisuuden syyt'"></laji-select2>
+            [placeholder]="'Uhanalaisuuden syyt'"></select>
           <span class="input-group-addon">
             <input type="checkbox" [checked]="query?.onlyPrimaryReasons" (change)="change('onlyPrimaryReasons', !query.onlyPrimaryReasons)" [tooltip]="'Vain ensisijaisella'">
           </span>
@@ -43,11 +43,11 @@
       </div>
       <div class="col-sm-5 col-md-4">
         <div class="input-group">
-          <laji-select2
+          <select laji-dropdown
             [value]="query?.threats"
             (valueChange)="change('threats', $event)"
             [options]="reasons"
-            [placeholder]="'Uhkatekijöillä'"></laji-select2>
+            [placeholder]="'Uhkatekijöillä'"></select>
           <span class="input-group-addon">
             <input type="checkbox" [checked]="query?.onlyPrimaryThreats" (change)="change('onlyPrimaryThreats', !query.onlyPrimaryThreats)" [tooltip]="'Vain ensisijaisella'">
           </span>
