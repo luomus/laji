@@ -61,7 +61,7 @@ export class FiltersComponent implements OnInit {
       if (typeof group === 'string') {
         group = {name: group, id: group};
       }
-      const label = '&nbsp;'.repeat(level * 4) + (group.name || group.id);
+      const label = String.fromCharCode(160).repeat(level * 4) + (group.name || group.id);
       result.push({value: group.id, label: label});
       if (group.hasIucnSubGroup) {
         this.mapStatusesToOptions(group.hasIucnSubGroup as RedListTaxonGroup[], result, level + 1);

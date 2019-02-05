@@ -337,6 +337,12 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@ng-select/ng-select@^2.15.2":
+  version "2.15.2"
+  resolved "https://registry.yarnpkg.com/@ng-select/ng-select/-/ng-select-2.15.2.tgz#736cb268b7b744be1025510e1a0793c6e99a3cc8"
+  dependencies:
+    tslib "^1.9.0"
+
 "@ng-toolkit/_utils@1.1.50", "@ng-toolkit/_utils@^1.1.50":
   version "1.1.50"
   resolved "https://registry.yarnpkg.com/@ng-toolkit/_utils/-/_utils-1.1.50.tgz#caeeac00c626ee9656851cf2e9b7a182fe3547bb"
@@ -4904,7 +4910,6 @@ klaw-sync@^4.0.0:
 laji-form@^0.0.570:
   version "0.0.570"
   resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.570.tgz#6d59bbce8e049b92f71eb97b5512e912fa778257"
-  integrity sha512-kUHq37L+jjkPFIv5g7D9zxP4Ef9E4Op9yxnpDeXgEDZ9jth6U4dDUBhufa2a2FD3s4cvBaNht9kh8bHfEwS3Mg==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -4932,7 +4937,6 @@ laji-form@^0.0.570:
 laji-map@1.0.467, laji-map@^1.0.395, laji-map@^1.0.459, laji-map@^1.0.467:
   version "1.0.467"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.467.tgz#664b0817450f27aaacdf6a6a1b9fde8474edd274"
-  integrity sha512-4KwYUJfzLXviFeG9Ahq/uv2LRGr1+unkXfQwwyGrK9nnh7OWQr1EOJFNyrPSIrFm7bESxFaSUEdPB1d81rPoCA==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
@@ -5027,7 +5031,6 @@ leaflet.sync@^0.2.4:
 leaflet@*, leaflet@1.4.0, leaflet@>=0.7.0, leaflet@^1.0.1:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.4.0.tgz#d5f56eeb2aa32787c24011e8be4c77e362ae171b"
-  integrity sha512-x9j9tGY1+PDLN9pcWTx9/y6C5nezoTMB8BLK5jTakx+H7bPlnbCHfi9Hjg+Qt36sgDz/cb9lrSpNQXmk45Tvhw==
 
 less-loader@4.1.0:
   version "4.1.0"
@@ -5649,7 +5652,6 @@ ngx-bootstrap@3.0.1:
 ngx-clipboard@^11.1.9:
   version "11.1.9"
   resolved "https://registry.yarnpkg.com/ngx-clipboard/-/ngx-clipboard-11.1.9.tgz#a391853dc49e436de407260863a2c814d73a9332"
-  integrity sha512-xF54Ibt/04g2B5SnYylNz7ESP1/thuC7odo+0bKkgbCC873NaqP1VTVx/umh/cnezlXKu8zuWNzzg05tvfgaJg==
   dependencies:
     ngx-window-token "^1.0.2"
     tslib "^1.9.0"
@@ -5669,7 +5671,6 @@ ngx-webstorage@^3.0.0-beta.14:
 ngx-window-token@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ngx-window-token/-/ngx-window-token-1.0.2.tgz#2ebadd300fee1f61eb8b851b0ad97b1f46f5e4cc"
-  integrity sha512-bFgvi7MYSK1p4b3Mqvn9+biXaO8QDEbpP2sEMSwr0Zgrwh6zCO3F92a6SIIzusqpZBAhxyfVSqj3mO5qIxlM5Q==
   dependencies:
     tslib "^1.9.0"
 

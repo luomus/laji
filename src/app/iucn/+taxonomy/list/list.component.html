@@ -4,15 +4,15 @@
     <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
   </div>
 
-  <div class="row" style="margin: 30px -15px;">
-    <div class="col-sm-12">
-      <label>Valitse tarkasteltava tieto</label>
-      <div class="type-select">
-        <select laji-dropdown [options]="types" [value]="queryParams.type" (valueChange)="queryParamChange('type', $event)"></select>
-      </div>
-    </div>
+  <div style="margin-top: 15px;">
+    <ul class="nav nav-tabs">
+      <li *ngFor="let option of types" role="presentation" [class]="'link'" [ngClass]="{active: option.value === queryParams.type}">
+        <a (click)="queryParamChange('type', option.value)">
+          {{ option.label }}
+        </a>
+      </li>
+    </ul>
   </div>
-
   <div class="well">
     <laji-filters [type]="queryParams.type" [lang]="translate.currentLang" [query]="queryParams" (queryChange)="queryChange($event)"></laji-filters>
   </div>

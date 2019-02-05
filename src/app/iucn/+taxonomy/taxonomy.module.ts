@@ -25,6 +25,7 @@ import { RedListHabitatComponent } from './list/results/red-list-habitat/red-lis
 import { RedListHabitatListComponent } from './list/results/red-list-habitat/red-list-habitat-list/red-list-habitat-list.component';
 import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-select.module';
 import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -34,7 +35,8 @@ import { DatatableModule } from '../../shared-modules/datatable/datatable.module
     SharedModule,
     NgxChartsModule,
     TaxonSelectModule,
-    DatatableModule
+    DatatableModule,
+    NgSelectModule
   ],
   declarations: [
     InfoCardComponent,
