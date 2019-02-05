@@ -37,7 +37,7 @@
             [options]="reasons"
             [placeholder]="'Uhanalaisuuden syyt'"></select>
           <span class="input-group-addon">
-            <input type="checkbox" [checked]="query?.onlyPrimaryReasons" (change)="change('onlyPrimaryReasons', !query.onlyPrimaryReasons)" [tooltip]="'Vain ensisijaisella'">
+            <input type="checkbox" [checked]="query?.onlyPrimaryReason" (change)="change('onlyPrimaryReason', !query.onlyPrimaryReason)" [tooltip]="'Vain ensisijaisella'">
           </span>
         </div>
       </div>
@@ -49,7 +49,7 @@
             [options]="reasons"
             [placeholder]="'Uhkatekijöillä'"></select>
           <span class="input-group-addon">
-            <input type="checkbox" [checked]="query?.onlyPrimaryThreats" (change)="change('onlyPrimaryThreats', !query.onlyPrimaryThreats)" [tooltip]="'Vain ensisijaisella'">
+            <input type="checkbox" [checked]="query?.onlyPrimaryThreat" (change)="change('onlyPrimaryThreat', !query.onlyPrimaryThreat)" [tooltip]="'Vain ensisijaisella'">
           </span>
         </div>
       </div>

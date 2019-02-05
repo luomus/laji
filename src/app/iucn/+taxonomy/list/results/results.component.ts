@@ -70,12 +70,12 @@ export class ResultsComponent implements OnChanges {
       id: this.query.taxon,
       redListEvaluationGroups: this.query.redListGroup,
       'latestRedListEvaluation.redListStatus': (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
-      [this.query.onlyPrimaryReasons ?
-        'latestRedListEvaluation.primaryEndangermentReasons' : 'latestRedListEvaluation.endangermentReasons']: this.query.reasons,
+      [this.query.onlyPrimaryReason ?
+        'latestRedListEvaluation.primaryEndangermentReason' : 'latestRedListEvaluation.endangermentReasons']: this.query.reasons,
       [this.query.onlyPrimaryHabitat ?
         'latestRedListEvaluation.primaryHabitat' : 'latestRedListEvaluation.anyHabitat']: this.getHabitat(this.query),
-      [this.query.onlyPrimaryThreats ?
-        'latestRedListEvaluation.primaryThreats' : 'latestRedListEvaluation.threats']: this.query.threats,
+      [this.query.onlyPrimaryThreat ?
+        'latestRedListEvaluation.primaryThreat' : 'latestRedListEvaluation.threats']: this.query.threats,
       hasLatestRedListEvaluation: true,
       includeHidden: true
     });

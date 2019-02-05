@@ -83,8 +83,8 @@ export class FiltersComponent implements OnInit {
       threats,
       reasons,
       status,
-      onlyPrimaryThreats,
-      onlyPrimaryReasons,
+      onlyPrimaryThreat,
+      onlyPrimaryReason,
       onlyPrimaryHabitat,
       ...rest
     } = this.query;

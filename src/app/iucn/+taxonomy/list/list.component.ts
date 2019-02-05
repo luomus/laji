@@ -30,7 +30,7 @@ export class ListComponent implements OnInit, OnDestroy {
   checklist: string;
   queryParams: QueryParams;
   private querySub: Subscription;
-  private onlyFields = ['onlyPrimaryThreats', 'onlyPrimaryReasons', 'onlyPrimaryHabitat'];
+  private onlyFields = ['onlyPrimaryThreat', 'onlyPrimaryReason', 'onlyPrimaryHabitat'];
 
   constructor(
     public translate: TranslateService,
