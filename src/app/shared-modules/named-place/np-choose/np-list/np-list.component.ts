@@ -158,7 +158,7 @@ export class NpListComponent {
         row[path] = value;
       }
       const municipality = row['$.municipality'];
-      if (municipality) {
+      if (municipality && municipality.length) {
         municipalities$.push(forkJoin(
           ...municipality.map(_muni => this.areaNamePipe.updateValue(_muni)
             .pipe(take(1)))
