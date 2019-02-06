@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -10,14 +9,12 @@ import {
   OnInit,
   Output,
   PLATFORM_ID,
-  SimpleChanges,
-  ViewChild
+  SimpleChanges
 } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { ExtendedNamedPlace } from '../model/extended-named-place';
 import { isPlatformBrowser } from '@angular/common';
-import { NpMapComponent } from './np-map/np-map.component';
 
 @Component({
   selector: 'laji-np-choose',
@@ -25,21 +22,17 @@ import { NpMapComponent } from './np-map/np-map.component';
   styleUrls: ['./np-choose.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
-  @ViewChild(NpMapComponent) lajiMap: NpMapComponent;
+export class NpChooseComponent implements OnInit, OnChanges {
   active = 'list';
   height = '600px';
   mapIsActivated = false;
   _namedPlaces: ExtendedNamedPlace[] = [];
-  _prevNamedPlacesMapRendered: ExtendedNamedPlace[] = [];
-  _prevActive: string;
 
   @Input() documentForm: any;
   @Input() placeForm: any;
   @Input() visible = true;
   @Input() allowCreate = true;
   @Input() userID: string;
-  @Input() zoomToData: boolean;
 
   @Output() activePlaceChange = new EventEmitter<number>();
   @Output() createButtonClick = new EventEmitter();
@@ -66,27 +59,11 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentForm']) {
       if (this.documentForm && this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.startWithMap) {
-        this.setActive('map');
+        this.active = 'map';
+        this.mapIsActivated = true;
       } else {
         this.active = 'list';
       }
-    }
-  }
-
-  ngAfterViewChecked() {
-    if (!this.zoomToData) {
-      return;
-    }
-    const activeChanged = this._prevActive !== this.active;
-    const namedPlacesChanged = this._prevNamedPlacesMapRendered !== this._namedPlaces;
-    const map = this.lajiMap && this.lajiMap.lajiMap.map;
-    if (map && this.active === 'map' && activeChanged && namedPlacesChanged) {
-      if (!(this._namedPlaces || []).length) {
-        map._initializeView();
-      } else {
-        map.zoomToData();
-      }
-      this._prevNamedPlacesMapRendered = this._namedPlaces;
     }
   }
 
@@ -113,7 +90,6 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   setActive(newActive: string) {
-    this._prevActive = this.active;
     this.active = newActive;
     if (newActive === 'map') {
       this.mapIsActivated = true;
