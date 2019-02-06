@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { LabelField, Setup } from 'generic-label-maker';
-import { Presets } from 'generic-label-maker';
+import { Presets, LabelField, Setup } from 'generic-label-maker';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
@@ -39,7 +38,23 @@ export class LabelDesignerComponent implements OnInit {
 
   ngOnInit() {
     this.setup = {
-      ...Presets.A4,
+      page: {
+        ...Presets.A4,
+        'paddingTop.mm': 10,
+        'paddingLeft.mm': 10,
+        'paddingBottom.mm': 10,
+        'paddingRight.mm': 10
+      },
+      label: {
+        'height.mm': 20,
+        'width.mm': 50,
+        'marginTop.mm': 1.5,
+        'marginLeft.mm': 1.5,
+        'marginBottom.mm': 1.5,
+        'marginRight.mm': 1.5,
+        'font-family': 'Arial',
+        'font-size.pt': 10
+      },
       labelItems: this.labelFields.map((a, i) => ({
         type: 'field',
         y: i === 0 ? 0 : (i - 1) * 5,
@@ -47,7 +62,7 @@ export class LabelDesignerComponent implements OnInit {
         fields: i === 4 ? [a, this.labelFields[5]] : [a],
         style: {
           'width.mm': i === 0 ? 13 : 20,
-          'height.mm': i === 0 ? 13 : 4
+          'height.mm': i === 0 ? 13 : 5
         }
       })).splice(0, 5)
     };
