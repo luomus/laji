@@ -1,12 +1,12 @@
-import {ChangeDetectorRef, EventEmitter, OnDestroy, PipeTransform} from '@angular/core';
+import {ChangeDetectorRef, OnDestroy, PipeTransform} from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   value = '';
   lastKey: string;
   protected key: string;
-  onLangChange: EventEmitter<LangChangeEvent>;
+  onLangChange: Subscription;
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,
