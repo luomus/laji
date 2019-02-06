@@ -45,6 +45,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   overlayNames;
   private _data: any;
   private _popupCallback: (elemOrString: HTMLElement | string) => void;
+  private _zoomOnNextTick = false;
+  private _lastVisibleActiveNP: number;
 
   private placeColor = '#5294cc';
   private placeActiveColor = '#375577';
@@ -72,21 +74,37 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
       this.initMapData();
       this.setMapData();
     }
+    if (changes['visible'] && changes['visible'].currentValue === true && this._lastVisibleActiveNP !== this.activeNP) {
+      this._zoomOnNextTick = true;
+    }
     if (changes['activeNP']) {
-      const c = changes['activeNP'];
-      this.setNewActivePlace(c.previousValue, c.currentValue);
+      if (this.visible) {
+        this._lastVisibleActiveNP = this.activeNP;
+      }
+      this.setNewActivePlace(changes['activeNP'].currentValue);
     }
   }
 
   ngAfterViewInit() {
     this.setMapData();
-    this.setNewActivePlace(-1, this.activeNP);
   }
 
   ngAfterViewChecked() {
     const {nativeElement: popup} = this.popupComponent || {nativeElement: undefined};
     if (popup && this._popupCallback) {
       this._popupCallback(popup);
+    }
+    if (this._zoomOnNextTick) {
+      this._zoomOnNextTick = false;
+      if (this.activeNP !== undefined && this.activeNP !== -1) {
+        const layer = this.lajiMap.map.getLayerByIdxTuple([0, this.activeNP]);
+        if (!layer) {
+          return;
+        }
+        this.lajiMap.map.fitBounds(this.lajiMap.map.getBoundsForLayers([layer]));
+      } else if ((this.documentForm.namedPlaceOptions || {}).zoomToData) {
+        this.lajiMap.map.zoomToData();
+      }
     }
   }
 
@@ -96,32 +114,10 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
     }
   }
 
-  private setNewActivePlace(oldActive: number, newActive: number) {
+  private setNewActivePlace(newActive: number) {
     if (!this.lajiMap.map) { return; }
 
-    const geojsonLayer = this.lajiMap.map.data[0].group;
-
-    const that = this;
-    geojsonLayer.eachLayer(function (layer) {
-      let color = null;
-      let weight = 5;
-      if (layer.feature.properties.lajiMapIdx === newActive) {
-        color = that.getFeatureColor(layer.feature);
-        weight = 10;
-      } else if (layer.feature.properties.lajiMapIdx === oldActive) {
-        color = that.getFeatureColor(layer.feature, newActive);
-      }
-
-      if (color) {
-        if (layer.options.icon) {
-          const icon = layer.options.icon;
-          icon.options.markerColor = color;
-          layer.setIcon(icon);
-        } else {
-          layer.setStyle({color: color, weight: weight});
-        }
-      }
-    });
+    this.lajiMap.map.setActive(this.lajiMap.map.getLayerByIdxTuple([0, newActive]));
   }
 
   private initMapData() {
@@ -143,7 +139,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
 
     try {
       this._data = {
-        getFeatureStyle: (o) => {
+        getFeatureStyle: ({feature, featureIdx, dataIdx, active}) => {
           const style = {
             weight: 5,
             opacity: 1,
@@ -151,22 +147,24 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
             color: ''
           };
 
-          if (o.feature.properties.lajiMapIdx === this.activeNP) {
-            style.color = this.getFeatureColor(o.feature);
+          if (active) {
+            style.color = this.getFeatureColor(feature, true);
             style.weight = 10;
           } else {
-            style.color = this.getFeatureColor(o.feature, this.activeNP);
+            style.color = this.getFeatureColor(feature);
           }
           return style;
         },
-        on: {
-          click: (e, o) => {
-            this.activePlaceChange.emit(o.idx);
-          }
+        onChange: (events) => {
+          events.forEach(e => {
+            if (e.type === 'active') {
+              this.activePlaceChange.emit(e.idx);
+            }
+          });
         },
         featureCollection: {
           type: 'FeatureCollection',
-          features: this.namedPlaces.map((np, i) => ({
+          features: this.namedPlaces.map(np => ({
             type: 'Feature',
             geometry: np.geometry,
             properties: {
@@ -181,7 +179,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
           this.listItems = NpInfoComponent.getListItems(this.placeForm, this.namedPlaces[idx], this.documentForm);
           this._popupCallback = cb;
           this.cdr.markForCheck();
-        }
+        },
+        activeIdx: this.activeNP
       };
     } catch (e) { }
   }
@@ -193,13 +192,13 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   private getFeatureColor(feature, active?) {
     switch (feature.properties.reserved) {
       case 'sent':
-        return feature.featureIdx === active ? this.sentActiveColor : this.sentColor;
+        return active ? this.sentActiveColor : this.sentColor;
       case 'reserved':
-        return feature.featureIdx === active ? this.reservedActiveColor : this.reservedColor;
+        return active ? this.reservedActiveColor : this.reservedColor;
       case 'mine':
-        return feature.featureIdx === active ? this.mineActiveColor : this.mineColor;
+        return active ? this.mineActiveColor : this.mineColor;
       default:
-        return feature.featureIdx === active ? this.placeActiveColor : this.placeColor;
+        return active ? this.placeActiveColor : this.placeColor;
     }
   }
 
