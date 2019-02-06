@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { MultiLangService } from '../service/multi-lang.service';
-import { Subscription } from 'rxjs';
 
 @Pipe({
   name: 'multiLang',
@@ -12,7 +11,7 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
   public static lang;
   public value = '';
 
-  onLangChange: Subscription;
+  onLangChange: EventEmitter<LangChangeEvent>;
 
   constructor(private translate: TranslateService,
               private _ref: ChangeDetectorRef) {

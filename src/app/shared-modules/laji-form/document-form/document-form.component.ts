@@ -322,7 +322,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     }
     this.formService
       .load(this.formId, this.translate.currentLang, this.documentId).pipe(
-      switchMap<any, Observable<LoadResponse|boolean>>((data) => {
+      switchMap<any, LoadResponse>((data) => {
         if (data.formData._isTemplate && !this.formService.isTmpId(this.documentId)) {
           return this.formService.store(data.formData).pipe(
             tap(() => {

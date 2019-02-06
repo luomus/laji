@@ -1,7 +1,7 @@
 
 import {concat, take, delay, retryWhen, timeout, map} from 'rxjs/operators';
-import { Subscription, throwError as observableThrowError } from 'rxjs';
-import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { throwError as observableThrowError } from 'rxjs';
+import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
@@ -27,7 +27,7 @@ type labelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
 export class LabelPipe implements PipeTransform, OnDestroy {
   value = '';
   lastKey: string;
-  onLangChange: Subscription;
+  onLangChange: EventEmitter<LangChangeEvent>;
 
   constructor(private translate: TranslateService,
               private warehouseService: WarehouseValueMappingService,

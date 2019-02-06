@@ -1,8 +1,7 @@
-import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { PublicationService } from '../../../shared/service/publication.service';
 import { Publication } from '../../../shared/model/Publication';
-import { Subscription } from 'rxjs';
 
 @Pipe({
   name: 'publication',
@@ -12,7 +11,7 @@ export class PublicationPipe implements PipeTransform, OnDestroy {
   value = '';
   lastKey = '';
 
-  onLangChange: Subscription;
+  onLangChange: EventEmitter<LangChangeEvent>;
 
   constructor(private translate: TranslateService,
               private publicationService: PublicationService,
