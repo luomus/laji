@@ -9,7 +9,7 @@
           [active]="item === active"
           [maxWidth]="width"
           [maxHeight]="height"
-          (click)="active = item"
+          (click)="setActiveItem(item)"
           (showSettings)="showSettings.emit({item: $event, index: i})"
         ></ll-editor-item>
       </div>

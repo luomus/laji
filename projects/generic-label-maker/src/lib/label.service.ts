@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Setup, Style } from './generic-label-maker.interface';
+import { Setup, ILabelStyle } from './generic-label-maker.interface';
 
 export interface PageLayout {
   cols: number;
@@ -13,19 +13,19 @@ export class LabelService {
 
   private pixelToMMRation;
 
-  public static widthInner(style: Style) {
+  public static widthInner(style: ILabelStyle) {
     return style['width.mm'] - ((style['paddingRight.mm'] || 0) + (style['paddingLeft.mm'] || 0));
   }
 
-  public static heightInner(style: Style) {
+  public static heightInner(style: ILabelStyle) {
     return style['height.mm'] - ((style['paddingTop.mm'] || 0) + (style['paddingBottom.mm'] || 0));
   }
 
-  public static widthOuter(style: Style) {
+  public static widthOuter(style: ILabelStyle) {
     return style['width.mm'] + ((style['marginRight.mm'] || 0) + (style['marginLeft.mm'] || 0));
   }
 
-  public static heightOuter(style: Style) {
+  public static heightOuter(style: ILabelStyle) {
     return style['height.mm'] + ((style['marginTop.mm'] || 0) + (style['marginBottom.mm'] || 0));
   }
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { LabelItem } from '../../../generic-label-maker.interface';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../../label.service';
@@ -6,7 +6,8 @@ import { LabelService } from '../../../label.service';
 @Component({
   selector: 'll-editor-item',
   templateUrl: './editor-item.component.html',
-  styleUrls: ['./editor-item.component.scss']
+  styleUrls: ['./editor-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditorItemComponent implements AfterViewInit {
 

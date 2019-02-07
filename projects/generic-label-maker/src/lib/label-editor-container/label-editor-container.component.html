@@ -1,6 +1,12 @@
 <div class="label-editor">
   <div class="editor-wrap" style="margin-top: 45px">
-    <ll-label-editor [setup]="_setup" (setupChange)="setupChanged($event)" [magnification]="2" (showSettings)="showSettings($event)"></ll-label-editor>
+    <ll-label-editor
+      [active]="_selectedLabelItem"
+      (activeChange)="setActiveLabelItem($event)"
+      [setup]="_setup"
+      (setupChange)="setupChanged($event)"
+      [magnification]="2"
+      (showSettings)="showSettings($event)"></ll-label-editor>
     <div style="margin-top: 15px;">
       <ll-label-preview [setup]="_setup"></ll-label-preview>
     </div>
@@ -12,7 +18,7 @@
     </ul>
     <div class="tab-content clearfix">
       <div [hidden]="_active !== 'settings'">
-        <ll-label-settings></ll-label-settings>
+        <ll-label-settings [setup]="_setup" (setupChange)="setupChanged($event)" [selectedLabelItem]="_selectedLabelItem"></ll-label-settings>
       </div>
       <div [hidden]="_active !== 'fields'">
         <ll-label-fields-available

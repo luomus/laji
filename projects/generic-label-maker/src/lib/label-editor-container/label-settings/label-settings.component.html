@@ -1,1 +1,23 @@
-Settings
+<ng-container *ngIf="selectedLabelItem">
+  <button (click)="remove(selectedLabelItem)" type="button" class="btn btn-danger btn-xs pull-right" tabindex="-1"><i class="glyphicon glyphicon-trash"></i></button>
+  <h3>Field
+    <br>
+    <small>
+      <ng-container *ngFor="let field of selectedLabelItem.fields; let l=last">
+          {{field.label}}<ng-container *ngIf="!l">{{field.separator || ', '}}</ng-container>
+      </ng-container>
+    </small>
+  </h3>
+  <ll-font-settings
+    *ngIf="showFieldFont"
+    [allowEmptyFontFamily]="true"
+    [fontSettings]="selectedLabelItem.style"
+    (fontSettingsChange)="changeSelectedItem('style', $event)"
+    [showUnderline]="true"
+  ></ll-font-settings>
+</ng-container>
+<h3>Label</h3>
+<ll-font-settings [fontSettings]="setup.label" (fontSettingsChange)="change('label', $event)"></ll-font-settings>
+<ll-margin-settings [style]="setup.label" (styleChange)="change('label', $event)"></ll-margin-settings>
+<h3>Page</h3>
+<ll-margin-settings [style]="setup.page" [type]="'padding'" (styleChange)="change('page', $event)"></ll-margin-settings>
