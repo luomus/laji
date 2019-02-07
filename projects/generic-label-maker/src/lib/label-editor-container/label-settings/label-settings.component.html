@@ -1,13 +1,6 @@
 <ng-container *ngIf="selectedLabelItem">
   <button (click)="remove(selectedLabelItem)" type="button" class="btn btn-danger btn-xs pull-right" tabindex="-1"><i class="glyphicon glyphicon-trash"></i></button>
-  <h3>Field
-    <br>
-    <small>
-      <ng-container *ngFor="let field of selectedLabelItem.fields; let l=last">
-          {{field.label}}<ng-container *ngIf="!l">{{field.separator || ', '}}</ng-container>
-      </ng-container>
-    </small>
-  </h3>
+  <h3>Field</h3>
   <ll-font-settings
     *ngIf="showFieldFont"
     [allowEmptyFontFamily]="true"
@@ -15,6 +8,19 @@
     (fontSettingsChange)="changeSelectedItem('style', $event)"
     [showUnderline]="true"
   ></ll-font-settings>
+  <div cdkDropList [cdkDropListLockAxis]="'y'" class="field-list" (cdkDropListDropped)="drop($event)">
+    <div cdkDrag class="field-item" *ngFor="let field of selectedLabelItem.fields; let i=index">
+      <div class="field-item-drag-handle" cdkDragHandle>
+        <svg width="24px" height="24px" viewBox="0 0 24 24">
+          <defs><path id="a" d="M0 0h24v24H0V0z"/></defs>
+          <clipPath id="b"><use xlink:href="#a" overflow="visible"/></clipPath>
+          <path clip-path="url(#b)" d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/>
+        </svg>
+      </div>
+      <ll-field-settings [allowDelete]="canDelete" [field]="field" (fieldChange)="fieldUpdate($event, i)" (fieldRemove)="fieldRemove(i)"></ll-field-settings>
+    </div>
+  </div>
+  <ll-field-add [availableFields]="availableFields" (add)="fieldAdd($event)"></ll-field-add>
 </ng-container>
 <h3>Label</h3>
 <ll-font-settings [fontSettings]="setup.label" (fontSettingsChange)="change('label', $event)"></ll-font-settings>

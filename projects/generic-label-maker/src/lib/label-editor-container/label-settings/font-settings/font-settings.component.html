@@ -46,5 +46,14 @@
         </select>
       </td>
     </tr>
+    <tr>
+      <td>line-spacing:</td>
+      <td>
+        <select class="form-control input-sm" style="width: 60px;" (change)="change('line-height', $event.target.value)">
+          <option value=""></option>
+          <option *ngFor="let size of lineHeight" [value]="size" [selected]="fontSettings && size === fontSettings['line-height']">{{size}}</option>
+        </select>
+      </td>
+    </tr>
   </table>
 </div>

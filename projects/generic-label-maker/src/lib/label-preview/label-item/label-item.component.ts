@@ -38,7 +38,9 @@ export class LabelItemComponent {
     const fields = this._item.fields;
     const result: LabelField[] = [];
     fields.forEach(field => {
-      if (this.labelService.hasValue(this._data, field.field)) {
+      if (field.type === 'text') {
+        result.push({...field});
+      } else if (this.labelService.hasValue(this._data, field.field)) {
         result.push({
           ...field,
           content: this._data[field.field]

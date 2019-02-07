@@ -16,6 +16,7 @@ import { FontSettingsComponent } from './label-editor-container/label-settings/f
 import { MarginSettingsComponent } from './label-editor-container/label-settings/margin-settings/margin-settings.component';
 import { FieldSettingsComponent } from './label-editor-container/label-settings/field-settings/field-settings.component';
 import { LabelFileComponent } from './label-editor-container/label-file/label-file.component';
+import { FieldAddComponent } from './label-editor-container/label-settings/field-add/field-add.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { LabelFileComponent } from './label-editor-container/label-file/label-fi
     FontSettingsComponent,
     MarginSettingsComponent,
     FieldSettingsComponent,
-    LabelFileComponent
+    LabelFileComponent,
+    FieldAddComponent
   ],
   imports: [
     CommonModule,

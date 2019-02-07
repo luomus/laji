@@ -49,7 +49,7 @@ $handlerSize: 17;
 
 .active {
   border-color: #333;
-
+  z-index: 1000;
   .drag-handle, .resize-handle, .option-handle, .done-handle {
     display: block;
   }

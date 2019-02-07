@@ -27,8 +27,8 @@ export class LabelFieldsAvailableComponent implements OnInit {
       x: 25,
       fields: [field],
       style: {
-        'height.mm': field.isQRCode ? 10 : 4,
-        'width.mm': field.isQRCode ? 10 : 20
+        'height.mm': field.type === 'qr-code' ? 10 : 4,
+        'width.mm': field.type === 'qr-code' ? 10 : 20
       }
     });
     event.source.reset();

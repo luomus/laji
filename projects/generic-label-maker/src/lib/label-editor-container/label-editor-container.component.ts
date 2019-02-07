@@ -11,7 +11,7 @@ export class LabelEditorContainerComponent {
 
   static id = 0;
 
-  _active: 'file'|'settings'|'fields' = 'fields';
+  _active: 'file'|'settings'|'fields' = 'file';
   _setup: Setup;
   _selectedLabelItem: LabelItem | undefined;
   @Input() availableFields: LabelField[];

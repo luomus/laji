@@ -12,8 +12,9 @@ import * as FileSaver from 'file-saver';
 export class LabelDesignerComponent implements OnInit {
 
   labelFields: LabelField[] = [
-    {field: 'id', content: 'http://id.luomus.fi/GV.1', label: 'Tunniste - QRCode', isQRCode: true},
+    {field: 'id', content: 'http://id.luomus.fi/GV.1', label: 'Tunniste - QRCode', type: 'qr-code'},
     {field: 'id', content: 'http://id.luomus.fi/GV.1', label: 'Tunniste'},
+    {field: 'text', content: '', label: 'Tekstiä', type: 'text'},
     {field: 'leg', content: 'Matti Meikäläinen', label: 'Kerääjä'},
     {field: 'taxon', content: 'Parus major', label: 'Laji'},
     {field: 'count', content: '10', label: 'Määrä'},

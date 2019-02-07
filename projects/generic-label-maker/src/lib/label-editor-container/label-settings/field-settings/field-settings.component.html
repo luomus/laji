@@ -1,3 +1,17 @@
-<p>
-  field-settings works!
-</p>
+<ng-container *ngIf="field.type === 'text'; else label">
+  <input type="text" [value]="field.content" (change)="textChange($event)">
+</ng-container>
+<ng-template #label>
+  {{field.label}}
+</ng-template>
+<select (change)="onChange($event)">
+  <option
+    *ngFor="let separator of separators"
+    [value]="separator.sep"
+    [selected]="separator.sep === field.separator"
+    [innerHTML]="separator.label || separator.sep"
+  ></option>
+</select>
+<div class="delete" *ngIf="allowDelete" (click)="remove()">
+  <i class="glyphicon glyphicon-trash"></i>
+</div>

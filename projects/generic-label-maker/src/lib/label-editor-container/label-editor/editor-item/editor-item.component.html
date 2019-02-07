@@ -18,11 +18,11 @@
     <div class="done-handle"><i class="glyphicon glyphicon-ok" (click)="done.emit()"></i></div>
     <div class="editor-item-content" (click)="itemClick.emit(_item)">
       <ng-container *ngFor="let field of _item.fields; let l=last">
-        <ng-container *ngIf="field.isQRCode; else plainText">
+        <ng-container *ngIf="field.type === 'qr-code'; else plainText">
           <qrcode [qrdata]="field.content" [size]="size" [level]="'H'"></qrcode>
         </ng-container>
         <ng-template #plainText>
-          {{field.label}}<ng-container *ngIf="!l">{{field.separator || ', '}}</ng-container>
+          {{field.label}}<span *ngIf="!l" [innerHTML]="field.separator || ', '"></span>
         </ng-template>
       </ng-container>
     </div>

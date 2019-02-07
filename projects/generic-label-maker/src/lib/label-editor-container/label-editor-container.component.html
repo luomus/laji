@@ -23,7 +23,12 @@
         <ll-label-file [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
       </div>
       <div [hidden]="_active !== 'settings'">
-        <ll-label-settings [setup]="_setup" (setupChange)="setupChanged($event)" [selectedLabelItem]="_selectedLabelItem"></ll-label-settings>
+        <ll-label-settings
+          [setup]="_setup"
+          (setupChange)="setupChanged($event)"
+          [selectedLabelItem]="_selectedLabelItem"
+          [availableFields]="availableFields"
+        ></ll-label-settings>
       </div>
       <div [hidden]="_active !== 'fields'">
         <ll-label-fields-available

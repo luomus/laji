@@ -20,6 +20,14 @@ export class FontSettingsComponent implements OnInit {
     'Verdana',
   ];
   fontSizes: number[] = [];
+  lineHeight: number[] = [
+    0.9,
+    1,
+    1.15,
+    1.5,
+    1.75,
+    2
+  ];
 
   @Input() allowEmptyFontFamily = false;
   @Input() showUnderline = false;

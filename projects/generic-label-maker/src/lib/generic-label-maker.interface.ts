@@ -5,6 +5,7 @@ export interface IFontStyle {
   'font-style'?: string;
   'text-decoration'?: string;
   'text-align'?: string;
+  'line-height'?: string;
 }
 
 export interface IPageStyle extends IFontStyle {
@@ -37,18 +38,13 @@ export interface LabelItem {
   order?: number;
 }
 
-export interface LabelItemSelectAction {
-  item: LabelItem;
-  index: number;
-}
-
 export interface LabelField {
   field: string;
   label: string;
   content?: string;
   separator?: string;
   includeLabel?: boolean;
-  isQRCode?: boolean;
+  type?: 'qr-code'|'text';
   style?: IFontStyle;
 }
 

@@ -1,15 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { LabelField } from '../../../generic-label-maker.interface';
 
 @Component({
-  selector: 'laji-field-settings',
+  selector: 'll-field-settings',
   templateUrl: './field-settings.component.html',
-  styleUrls: ['./field-settings.component.scss']
+  styleUrls: ['./field-settings.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FieldSettingsComponent implements OnInit {
+export class FieldSettingsComponent {
 
-  constructor() { }
+  @Input() field: LabelField;
+  @Input() allowDelete: boolean;
+  @Output() fieldChange = new EventEmitter<LabelField>();
+  @Output() fieldRemove = new EventEmitter<void>();
 
-  ngOnInit() {
+  separators: {sep: string, label?: string}[] = [
+    {sep: ', '},
+    {sep: '. '},
+    {sep: '-'},
+    {sep: ' - ', label: '&nbsp;-'},
+    {sep: '&ndash;'},
+    {sep: ' &ndash; ', label: '&nbsp;&ndash;'},
+    {sep: '&mdash;'},
+    {sep: ' &mdash; ', label: '&nbsp;&mdash;'},
+    {sep: ': '},
+    {sep: ' ', label: 'space'},
+    {sep: '<br>', label: 'new line'}
+  ];
+
+  onChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.fieldChange.emit({
+      ...this.field,
+      separator: select.value
+    });
   }
 
+  remove() {
+    if (confirm('Are you sure that you want to remove "' + this.field.label + '"')) {
+      this.fieldRemove.emit();
+    }
+  }
+
+  textChange(event: Event) {
+    const element = event.target as HTMLInputElement;
+    this.fieldChange.emit({
+      ...this.field,
+      content: element.value
+    });
+  }
 }
