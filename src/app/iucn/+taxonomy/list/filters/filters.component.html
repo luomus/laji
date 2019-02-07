@@ -2,12 +2,6 @@
   <div class="form-group">
     <label class="col-sm-1 control-label">Rajaa</label>
     <div class="col-sm-5 col-md-4">
-      <!--
-      <select laji-dropdown [value]="query?.redListGroup" (valueChange)="change('redListGroup', $event)"
-              [options]="redListStatuses$ | async"
-              [placeholder]="'Lajiryhmä'"
-      ></select>
-      -->
       <ng-select name="redListGroup" (change)="change('redListGroup', $event?.value)" [ngModel]="query?.redListGroup" [items]="redListStatuses$ | async" [placeholder]="'Lajiryhmä'" [notFoundText]="''" [bindLabel]="'label'" [bindValue]="'value'">
         <ng-template ng-label-tmp let-item="item">
           <span [innerHTML]="item.label"></span>

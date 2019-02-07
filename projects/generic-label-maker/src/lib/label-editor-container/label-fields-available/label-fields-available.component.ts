@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LabelField, LabelItem } from '../../generic-label-maker.interface';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'll-label-fields-available',
   templateUrl: './label-fields-available.component.html',
-  styleUrls: ['./label-fields-available.component.scss']
+  styleUrls: ['./label-fields-available.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LabelFieldsAvailableComponent implements OnInit {
 

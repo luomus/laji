@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { LabelField, LabelItem, LabelItemSelectAction, Setup } from '../generic-label-maker.interface';
-import { Presets } from '../presets';
+import { LabelField, LabelItem, Setup } from '../generic-label-maker.interface';
 
 @Component({
   selector: 'll-label-editor-container',
@@ -10,9 +9,11 @@ import { Presets } from '../presets';
 })
 export class LabelEditorContainerComponent {
 
+  static id = 0;
+
   _active: 'settings'|'fields' = 'fields';
-  _setup: Setup = Presets.A4;
-  _selectedLabelItem: LabelItemSelectAction;
+  _setup: Setup;
+  _selectedLabelItem: LabelItem;
   @Input() availableFields: LabelField[];
 
   @Output() setupChange = new EventEmitter<Setup>();
@@ -21,12 +22,26 @@ export class LabelEditorContainerComponent {
 
   @Input()
   set setup(setup: Setup) {
-    this._setup = setup;
+    this._setup = {
+      ...setup,
+      labelItems: setup.labelItems.map(item => ({
+        ...item,
+        _id: item._id || LabelEditorContainerComponent.id++
+      }))
+    };
+    if (this._selectedLabelItem) {
+      const idx = this._setup.labelItems.findIndex(i => i._id === this._selectedLabelItem._id);
+      this._selectedLabelItem = this._setup.labelItems[idx];
+    }
   }
 
-  showSettings(action: LabelItemSelectAction) {
-    this._selectedLabelItem = action;
+  showSettings(item: LabelItem) {
+    this.setActiveLabelItem(item);
     this._active = 'settings';
+  }
+
+  setActiveLabelItem(item: LabelItem) {
+    this._selectedLabelItem = item;
   }
 
   setupChanged(setup: Setup) {
@@ -35,6 +50,9 @@ export class LabelEditorContainerComponent {
   }
 
   addLabelItem(item: LabelItem) {
+    if (!item._id) {
+      item._id = LabelEditorContainerComponent.id++;
+    }
     this._setup = {...this._setup, labelItems: [...this._setup.labelItems, item]};
     this.setupChange.emit(this._setup);
   }

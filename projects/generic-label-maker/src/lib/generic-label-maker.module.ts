@@ -12,6 +12,9 @@ import { RulerComponent } from './ruler/ruler.component';
 import { LabelSettingsComponent } from './label-editor-container/label-settings/label-settings.component';
 import { LabelFieldsAvailableComponent } from './label-editor-container/label-fields-available/label-fields-available.component';
 import { LabelPageComponent } from './label-print/label-page/label-page.component';
+import { FontSettingsComponent } from './label-editor-container/label-settings/font-settings/font-settings.component';
+import { MarginSettingsComponent } from './label-editor-container/label-settings/margin-settings/margin-settings.component';
+import { FieldSettingsComponent } from './label-editor-container/label-settings/field-settings/field-settings.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { LabelPageComponent } from './label-print/label-page/label-page.componen
     RulerComponent,
     LabelSettingsComponent,
     LabelFieldsAvailableComponent,
-    LabelPageComponent
+    LabelPageComponent,
+    FontSettingsComponent,
+    MarginSettingsComponent,
+    FieldSettingsComponent
   ],
   imports: [
     CommonModule,

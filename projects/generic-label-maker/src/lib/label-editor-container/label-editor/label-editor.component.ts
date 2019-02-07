@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output, } from '@angular/core';
-import { LabelItem, LabelItemSelectAction, Setup } from '../../generic-label-maker.interface';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
+import { LabelItem, Setup } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 
 @Component({
   selector: 'll-label-editor',
   templateUrl: './label-editor.component.html',
-  styleUrls: ['./label-editor.component.scss']
+  styleUrls: ['./label-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LabelEditorComponent {
 
@@ -14,11 +15,12 @@ export class LabelEditorComponent {
 
   height: number;
   width: number;
-  active: LabelItem;
   init = false;
 
+  @Input() active: LabelItem;
+  @Output() activeChange = new EventEmitter<LabelItem>();
   @Output() setupChange = new EventEmitter<Setup>();
-  @Output() showSettings = new EventEmitter<LabelItemSelectAction>();
+  @Output() showSettings = new EventEmitter<LabelItem>();
 
   constructor(labelService: LabelService) {
     this.init = labelService.hasRation();
@@ -67,5 +69,9 @@ export class LabelEditorComponent {
       }
     };
     this.setupChange.emit(this._setup);
+  }
+
+  setActiveItem(item: LabelItem) {
+    this.activeChange.emit(item);
   }
 }

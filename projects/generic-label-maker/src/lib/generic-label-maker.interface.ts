@@ -1,25 +1,39 @@
-export interface Style {
+export interface IFontStyle {
+  'font-family'?: string;
+  'font-size.pt'?: number;
+  'font-weight'?: string;
+  'font-style'?: string;
+  'text-decoration'?: string;
+  'text-align'?: string;
+}
+
+export interface IPageStyle extends IFontStyle {
+  'height.mm'?: number;
+  'width.mm'?: number;
+  'paddingTop.mm'?: number;
+  'paddingLeft.mm'?: number;
+  'paddingBottom.mm'?: number;
+  'paddingRight.mm'?: number;
+}
+
+export interface ILabelStyle extends IFontStyle {
   'height.mm'?: number;
   'width.mm'?: number;
   'marginTop.mm'?: number;
   'marginLeft.mm'?: number;
   'marginBottom.mm'?: number;
   'marginRight.mm'?: number;
-  'paddingTop.mm'?: number;
-  'paddingLeft.mm'?: number;
-  'paddingBottom.mm'?: number;
-  'paddingRight.mm'?: number;
-  'font-size.pt'?: number;
   'top.mm'?: number;
   'left.mm'?: number;
 }
 
 export interface LabelItem {
+  _id?: number;
   x: number;
   y: number;
   type: string;
   fields: LabelField[];
-  style?: Style;
+  style?: ILabelStyle;
   order?: number;
 }
 
@@ -35,7 +49,7 @@ export interface LabelField {
   separator?: string;
   includeLabel?: boolean;
   isQRCode?: boolean;
-  style?: Style;
+  style?: IFontStyle;
 }
 
 export interface Setup {
@@ -43,13 +57,13 @@ export interface Setup {
   /**
    * Pages size object
    */
-  page: Style;
+  page: IPageStyle;
 
 
   /**
    * Labels size object
    */
-  label: Style;
+  label: ILabelStyle;
 
   /**
    * Items on the label
