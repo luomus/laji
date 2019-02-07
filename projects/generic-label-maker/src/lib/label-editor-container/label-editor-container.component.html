@@ -13,10 +13,14 @@
   </div>
   <div class="settings-wrap">
     <ul class="nav nav-tabs">
+      <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>File</a></li>
       <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>Settings</a></li>
       <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Fields</a></li>
     </ul>
     <div class="tab-content clearfix">
+      <div *ngIf="_active === 'file'">
+        <ll-label-file [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
+      </div>
       <div [hidden]="_active !== 'settings'">
         <ll-label-settings [setup]="_setup" (setupChange)="setupChanged($event)" [selectedLabelItem]="_selectedLabelItem"></ll-label-settings>
       </div>

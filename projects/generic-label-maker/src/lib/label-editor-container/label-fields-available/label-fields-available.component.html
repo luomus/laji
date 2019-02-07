@@ -1,2 +1,3 @@
+<h3>Available fields</h3>
 <div *ngFor="let field of availableFields" cdkDrag (cdkDragEnded)="onNewFieldDragEnd($event)" [cdkDragData]="field"
      class="new-field">{{field.label}}</div>

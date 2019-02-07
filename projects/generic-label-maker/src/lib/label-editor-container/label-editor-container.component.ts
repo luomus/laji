@@ -11,11 +11,13 @@ export class LabelEditorContainerComponent {
 
   static id = 0;
 
-  _active: 'settings'|'fields' = 'fields';
+  _active: 'file'|'settings'|'fields' = 'fields';
   _setup: Setup;
   _selectedLabelItem: LabelItem;
   @Input() availableFields: LabelField[];
+  @Input() data: object[];
 
+  @Output() html = new EventEmitter<string>();
   @Output() setupChange = new EventEmitter<Setup>();
 
   constructor() { }

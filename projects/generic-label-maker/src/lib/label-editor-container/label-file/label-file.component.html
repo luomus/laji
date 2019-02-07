@@ -1,0 +1,17 @@
+<h3>Setup</h3>
+<table>
+  <tr><td style="width: 24px"><i class="glyphicon glyphicon-folder-open"></i></td><td>
+    <label class="menu-item" for="file">Load</label>
+    <input class="inputfile" type="file" name="file" id="file" (change)="onFileChange($event)">
+  </td></tr>
+  <tr><td><i class="glyphicon glyphicon-save"></i></td><td class="menu-item" (click)="save()">Save...</td></tr>
+</table>
+<h3>Labels</h3>
+<table>
+  <tr>
+    <td style="width: 24px"></td>
+    <td>
+      <ll-label-print [class]="'menu-item'" [labelButton]="'Download labels (pdf)'" [setup]="setup" [data]="data" (html)="html.emit($event)"></ll-label-print>
+    </td>
+  </tr>
+</table>
