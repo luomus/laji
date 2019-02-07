@@ -13,7 +13,7 @@ export class LabelEditorContainerComponent {
 
   _active: 'file'|'settings'|'fields' = 'fields';
   _setup: Setup;
-  _selectedLabelItem: LabelItem;
+  _selectedLabelItem: LabelItem | undefined;
   @Input() availableFields: LabelField[];
   @Input() data: object[];
 
@@ -43,6 +43,7 @@ export class LabelEditorContainerComponent {
   }
 
   setActiveLabelItem(item: LabelItem) {
+    console.log('SETTING ITEM');
     this._selectedLabelItem = item;
   }
 
@@ -57,5 +58,9 @@ export class LabelEditorContainerComponent {
     }
     this._setup = {...this._setup, labelItems: [...this._setup.labelItems, item]};
     this.setupChange.emit(this._setup);
+  }
+
+  done() {
+    this._selectedLabelItem = undefined;
   }
 }

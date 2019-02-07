@@ -3,6 +3,7 @@
     <ll-label-editor
       [active]="_selectedLabelItem"
       (activeChange)="setActiveLabelItem($event)"
+      (done)="done()"
       [setup]="_setup"
       (setupChange)="setupChanged($event)"
       [magnification]="2"

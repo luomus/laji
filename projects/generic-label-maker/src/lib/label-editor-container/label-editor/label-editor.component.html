@@ -5,11 +5,12 @@
         <ll-editor-item
           *ngFor="let item of _setup.labelItems; let i=index" [magnification]="_magnification"
           [item]="item"
+          (done)="done.emit()"
+          (itemClick)="setActiveItem($event)"
           (itemChange)="onItemChange(item, $event)"
           [active]="item === active"
           [maxWidth]="width"
           [maxHeight]="height"
-          (click)="setActiveItem(item)"
           (showSettings)="showSettings.emit($event)"
         ></ll-editor-item>
       </div>

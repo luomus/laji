@@ -11,17 +11,20 @@
   [style.top.mm]="y"
   [style.left.mm]="x"
   >
-  <div class="editor-item-content">
+  <div class="editor-item-wrap">
     <div class="drag-handle"><i class="glyphicon glyphicon-move" cdkDragHandle></i></div>
     <div class="resize-handle" cdkDrag (cdkDragStarted)="recordElementDimensions()" (cdkDragEnded)="onResizeEnd($event)" (cdkDragMoved)="onResize($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
     <div class="option-handle"><i class="glyphicon glyphicon-edit" (click)="showSettings.emit(_item)"></i></div>
-    <ng-container *ngFor="let field of _item.fields; let l=last">
-      <ng-container *ngIf="field.isQRCode; else plainText">
-        <qrcode [qrdata]="field.content" [size]="size" [level]="'H'"></qrcode>
+    <div class="done-handle"><i class="glyphicon glyphicon-ok" (click)="done.emit()"></i></div>
+    <div class="editor-item-content" (click)="itemClick.emit(_item)">
+      <ng-container *ngFor="let field of _item.fields; let l=last">
+        <ng-container *ngIf="field.isQRCode; else plainText">
+          <qrcode [qrdata]="field.content" [size]="size" [level]="'H'"></qrcode>
+        </ng-container>
+        <ng-template #plainText>
+          {{field.label}}<ng-container *ngIf="!l">{{field.separator || ', '}}</ng-container>
+        </ng-template>
       </ng-container>
-      <ng-template #plainText>
-        {{field.label}}<ng-container *ngIf="!l">{{field.separator || ', '}}</ng-container>
-      </ng-template>
-    </ng-container>
+    </div>
   </div>
 </div>

@@ -21,6 +21,7 @@ export class LabelEditorComponent {
   @Output() activeChange = new EventEmitter<LabelItem>();
   @Output() setupChange = new EventEmitter<Setup>();
   @Output() showSettings = new EventEmitter<LabelItem>();
+  @Output() done = new EventEmitter<void>();
 
   constructor(labelService: LabelService) {
     this.init = labelService.hasRation();
@@ -72,6 +73,7 @@ export class LabelEditorComponent {
   }
 
   setActiveItem(item: LabelItem) {
+    console.log('NOOO');
     this.activeChange.emit(item);
   }
 }

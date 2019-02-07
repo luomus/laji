@@ -15,8 +15,10 @@ export class EditorItemComponent implements AfterViewInit {
   @Input() active: boolean;
   @ViewChild('item') elemRef: ElementRef<HTMLDivElement>;
 
+  @Output() done = new EventEmitter<void>();
   @Output() itemChange = new EventEmitter<LabelItem>();
   @Output() showSettings = new EventEmitter<LabelItem>();
+  @Output() itemClick = new EventEmitter<LabelItem>();
 
   _item: LabelItem;
 
