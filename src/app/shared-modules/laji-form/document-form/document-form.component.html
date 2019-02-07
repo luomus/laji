@@ -9,7 +9,6 @@
 <div class="laji-form" *ngIf="readyForForm">
   <laji-form
           [formData]="form"
-          [lang]="lang"
           [settingsKey]="formId"
           (dataChange)="onChange($event)"
           (dataSubmit)="onSubmit($event)"></laji-form>

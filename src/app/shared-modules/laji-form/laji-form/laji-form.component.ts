@@ -23,6 +23,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { Global } from '../../../../environments/global';
 import { AreaService } from '../../../shared/service/area.service';
+import { TranslateService } from '@ngx-translate/core';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -33,13 +34,13 @@ const GLOBAL_SETTINGS = '_global_form_settings_';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
-  @Input() lang: string;
   @Input() formData: any = {};
   @Input() settingsKey = '';
 
   @Output() dataSubmit = new EventEmitter();
   @Output() dataChange = new EventEmitter();
 
+  lang: string;
   lajiFormWrapper: any;
   reactElem: any;
   renderElem: any;
@@ -58,11 +59,13 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
               private ngZone: NgZone,
               private cd: ChangeDetectorRef,
               private toastsService: ToastsService,
-              private areaService: AreaService
+              private areaService: AreaService,
+              private translate: TranslateService
   ) {
   }
 
   ngOnInit(): void {
+    this.lang = this.translate.currentLang;
     this.areaService.getMunicipalities(this.lang).subscribe(municipalities => {
       this.municipalityEnums = municipalities.reduce((enums, municipality) => {
         enums.enum.push(municipality.id);
@@ -105,9 +108,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       return;
     }
     this.ngZone.runOutsideAngular(() => {
-      if (changes['lang']) {
-        this.lajiFormWrapper.setState({lang: this.lang});
-      }
       if (changes['formData']) {
         this.lajiFormWrapper.setState({
           schema: this.formData.schema,

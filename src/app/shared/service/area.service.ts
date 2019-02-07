@@ -19,7 +19,7 @@ export class AreaService {
   public types = AreaType;
 
   private areas;
-  private currentLang;
+  private currentLang = '';
   private pending: Observable<any>;
 
   constructor(private lajiApi: LajiApiService) {
