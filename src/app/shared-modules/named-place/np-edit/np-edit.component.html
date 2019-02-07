@@ -17,7 +17,6 @@
   <ng-container *ngIf="editMode">
     <laji-np-edit-form *ngIf="placeForm"
                        [namedPlaceOptions]="documentForm.namedPlaceOptions"
-                       [lang]="lang"
                        [documentForm]="placeForm"
                        [namedPlace]="namedPlace"
                        (editReady)="editReady.emit($event)"></laji-np-edit-form>

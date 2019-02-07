@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
@@ -14,6 +14,7 @@ import { RedListTaxonGroup } from '../../../../shared/model/RedListTaxonGroup';
 import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
 import { MetadataService } from '../../../../shared/service/metadata.service';
 import { IPageChange } from '../../../../shared-modules/datatable/data-table-footer/data-table-footer.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-results',
@@ -21,14 +22,14 @@ import { IPageChange } from '../../../../shared-modules/datatable/data-table-foo
   styleUrls: ['./results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResultsComponent implements OnChanges {
+export class ResultsComponent implements OnChanges, OnInit {
 
   @Input() type: ListType;
   @Input() query: FilterQuery;
-  @Input() lang: string;
   @Input() checklist: string;
   @Output() queryChange = new EventEmitter<FilterQuery>();
 
+  lang: string;
   redListStatusQuery$: Observable<RedListStatusData[]>;
   speciesQuery$: Observable<Taxonomy[]>;
   threadQuery$: Observable<ChartData[]>;
@@ -52,12 +53,17 @@ export class ResultsComponent implements OnChanges {
     private resultService: ResultService,
     private triplestoreLabelService: TriplestoreLabelService,
     private metadataService: MetadataService,
-    private taxonService: TaxonService
+    private taxonService: TaxonService,
+    private translate: TranslateService
   ) {
     this.statusMap = Object.keys(this.resultService.shortLabel).reduce((result, key) => {
       result[this.resultService.shortLabel[key]] = key;
       return result;
     }, {});
+  }
+
+  ngOnInit() {
+    this.lang = this.translate.currentLang;
   }
 
   ngOnChanges() {

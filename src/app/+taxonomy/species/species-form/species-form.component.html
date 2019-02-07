@@ -10,7 +10,6 @@
         <laji-observation-group-select
           [(ngModel)]="searchQuery.query.informalGroupFilters"
           name="informalTaxonGroupId"
-          [lang]="translate.currentLang"
           (select)="onQueryChange()">
           {{ 'observation.active.informalTaxonGroupAll'|translate }}
         </laji-observation-group-select>
@@ -55,7 +54,6 @@
           name="taxonRanks"
           [placeholder]="'taxonomy.active.taxonRanks'"
           [alt]="'MX.taxonRankEnum'"
-          [lang]="translate.currentLang"
           [skipBefore]="'MX.species'"
         ></laji-metadata-select>
       </div>
@@ -70,8 +68,7 @@
           [useFilter]="false"
           name="redListStatusFilters"
           [placeholder]="'observation.form.redListStatusId'"
-          [alt]="'MX.iucnStatuses'"
-          [lang]="translate.currentLang"></laji-metadata-select>
+          [alt]="'MX.iucnStatuses'"></laji-metadata-select>
       </div>
     </div>
 
@@ -83,8 +80,7 @@
           [multiple]="true"
           [placeholder]="'MX.hasAdminStatus' | label"
           name="adminStatusFilters"
-          [alt]="'MX.adminStatusEnum'"
-          [lang]="translate.currentLang"></laji-metadata-select>
+          [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
       </div>
     </div>
 
@@ -92,7 +88,6 @@
       <div class="col-sm-12">
         <laji-three-state-multi-switch
           [title]="'observation.form.typeOfOccurrenceId' | translate"
-          [lang]="translate.currentLang"
           [trueValue]="searchQuery.query.typesOfOccurrenceFilters"
           [falseValue]="searchQuery.query.typesOfOccurrenceNotFilters"
           [alt]="'MX.typeOfOccurrenceEnum'"

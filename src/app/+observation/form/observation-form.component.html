@@ -21,7 +21,6 @@
       <laji-observation-group-select
         [(ngModel)]="formQuery.informalTaxonGroupId"
         name="informalTaxonGroupId"
-        [lang]="lang"
         (select)="onFormQueryChange()">
         {{ 'observation.active.informalTaxonGroupAll'|translate }}
       </laji-observation-group-select>
@@ -120,8 +119,7 @@
               {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
               {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
               {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
-            ]"
-            [lang]="lang"></laji-select>
+            ]"></laji-select>
         </div>
       </div>
     </div>
@@ -228,8 +226,7 @@
           [firstOptions]="['ML.206']"
           [placeholder]="'result.gathering.country'"
           name="countryId"
-          [field]="areaType.Country"
-          [lang]="lang"></laji-metadata-select>
+          [field]="areaType.Country"></laji-metadata-select>
       </div>
     </div>
     <div class="form-group">
@@ -241,8 +238,7 @@
           [multiple]="true"
           [placeholder]="'result.gathering.biogeographicalProvince'"
           name="biogeographicalProvinceId"
-          [field]="areaType.Biogeographical"
-          [lang]="lang"></laji-metadata-select>
+          [field]="areaType.Biogeographical"></laji-metadata-select>
       </div>
     </div>
     <div class="form-group">
@@ -254,8 +250,7 @@
           [multiple]="true"
           [placeholder]="'observation.form.municipality'"
           name="finnishMunicipalityId"
-          [field]="areaType.Municipality"
-          [lang]="lang"></laji-metadata-select>
+          [field]="areaType.Municipality"></laji-metadata-select>
       </div>
     </div>
     <div class="form-group">
@@ -431,8 +426,7 @@
           (ngModelChange)="onQueryChange()"
           [mapToWarehouse]="true"
           [useFilter]="false"
-          name="sex"
-          [lang]="lang"></laji-metadata-select>
+          name="sex"></laji-metadata-select>
       </div>
     </div>
     <div class="form-group">
@@ -445,8 +439,7 @@
           [useFilter]="false"
           [placeholder]="'MY.lifeStage' | label"
           [mapToWarehouse]="true"
-          name="lifeStage"
-          [lang]="lang"></laji-metadata-select>
+          name="lifeStage"></laji-metadata-select>
       </div>
     </div>
     <div class="form-group">
@@ -459,8 +452,7 @@
           name="recordBasis"
           [mapToWarehouse]="true"
           [placeholder]="'MY.recordBasis' | label"
-          [alt]="'MY.recordBases'"
-          [lang]="lang"></laji-metadata-select>
+          [alt]="'MY.recordBases'"></laji-metadata-select>
       </div>
     </div>
     <div class="form-group">
@@ -475,8 +467,7 @@
           [options]="[
             {id: true, value: ('observation.form.nativeOccurrenceTrue' | translate)},
             {id: false, value: ('observation.form.nativeOccurrenceFalse' | translate)}
-          ]"
-          [lang]="lang"></laji-select>
+          ]"></laji-select>
       </div>
     </div>
     <div class="form-group">
@@ -491,8 +482,7 @@
           [options]="[
             {id: true, value: ('observation.form.breedingSiteTrue' | translate)},
             {id: false, value: ('observation.form.breedingSiteFalse' | translate)}
-          ]"
-          [lang]="lang"></laji-select>
+          ]"></laji-select>
       </div>
     </div>
     <div class="row">
@@ -547,8 +537,7 @@
           [mapToWarehouse]="true"
           [placeholder]="'reliability' | translate"
           [skip]="['MAN.annotationClassAcknowledged']"
-          [alt]="'MAN.annotationClassEnum'"
-          [lang]="lang"></laji-metadata-select>
+          [alt]="'MAN.annotationClassEnum'"></laji-metadata-select>
       </div>
     </div>
     <ng-container *ngIf="advancedMode || searchQuery.annotated">
@@ -563,8 +552,7 @@
             [options]="[
               {id: true, value: ('observation.form.annotatedTrue' | translate)},
               {id: false, value: ('observation.form.annotatedFalse' | translate)}
-            ]"
-            [lang]="lang"></laji-select>
+            ]"></laji-select>
         </div>
       </div>
     </ng-container>
@@ -582,8 +570,7 @@
               {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
               {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
               {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
-            ]"
-            [lang]="lang"></laji-select>
+            ]"></laji-select>
         </div>
       </div>
     </ng-container>
@@ -599,8 +586,7 @@
           [placeholder]="'observation.form.dataset' | translate"
           [info]="'observation.info.dataset' | translate"
           [mapToWarehouse]="false"
-          name="collectionID"
-          [lang]="lang"></laji-metadata-select>
+          name="collectionID"></laji-metadata-select>
       </div>
     </div>
     <div class="form-group">
@@ -618,8 +604,7 @@
             {id: '3', value: '★★★'},
             {id: '4', value: '★★★★'},
             {id: '5', value: '★★★★★'}
-          ]"
-          [lang]="lang"></laji-select>
+          ]"></laji-select>
       </div>
     </div>
     <div class="row">
@@ -631,8 +616,7 @@
           [placeholder]="'observation.form.system'"
           [multiple]="true"
           name="sourceId"
-          [field]="'KE.informationSystem'"
-          [lang]="lang"></laji-metadata-select>
+          [field]="'KE.informationSystem'"></laji-metadata-select>
       </div>
     </div>
   </div>
@@ -666,8 +650,7 @@
           [field]="'MY.collectionID'"
           [placeholder]="'MY.collectionID' | label"
           [mapToWarehouse]="false"
-          name="collectionID"
-          [lang]="lang"></laji-metadata-select>
+          name="collectionID"></laji-metadata-select>
       </div>
     </div>
   </div>
@@ -713,8 +696,7 @@
             [multiple]="true"
             [placeholder]="'MX.hasAdminStatus' | label"
             name="administrativeStatusId"
-            [alt]="'MX.adminStatusEnum'"
-            [lang]="lang"></laji-metadata-select>
+            [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
         </div>
       </div>
     </ng-container>
@@ -728,8 +710,7 @@
           [useFilter]="false"
           name="redListStatusId"
           [placeholder]="'observation.form.redListStatusId'"
-          [alt]="'MX.iucnStatuses'"
-          [lang]="lang"></laji-metadata-select>
+          [alt]="'MX.iucnStatuses'"></laji-metadata-select>
       </div>
     </div>
     <ng-container *ngIf="advancedMode || searchQuery.typeOfOccurrenceId">
@@ -741,7 +722,6 @@
           <laji-three-state-multi-switch
             [title]="'observation.form.typeOfOccurrenceId' | translate"
             [info]="'observation.info.typeOfOccurrenceId' | translate"
-            [lang]="lang"
             [trueValue]="searchQuery.typeOfOccurrenceId"
             [falseValue]="searchQuery.typeOfOccurrenceIdNot"
             [alt]="'MX.typeOfOccurrenceEnum'"
@@ -782,8 +762,7 @@
           [multiple]="true"
           name="invasiveControlEffectiveness"
           [placeholder]="'MY.invasiveControlEffectiveness' | label"
-          [alt]="'MY.invasiveControlEffectivenessEnum'"
-          [lang]="lang"></laji-metadata-select>
+          [alt]="'MY.invasiveControlEffectivenessEnum'"></laji-metadata-select>
       </div>
     </div>
     <hr *lajiForTypes="['vir']">
@@ -874,8 +853,7 @@
           [skip]="['MX.secureLevelNoShow']"
           [placeholder]="'observation.form.secureLevel'"
           name="secureLevel"
-          [alt]="'MX.secureLevels'"
-          [lang]="lang"></laji-metadata-select>
+          [alt]="'MX.secureLevels'"></laji-metadata-select>
       </div>
     </div>
   </div>

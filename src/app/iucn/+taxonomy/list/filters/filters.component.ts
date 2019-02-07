@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { RedListTaxonGroup } from '../../../../shared/model/RedListTaxonGroup';
 import { MetadataService } from '../../../../shared/service/metadata.service';
 import { MultiLangService } from '../../../../shared-modules/lang/service/multi-lang.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-filters',
@@ -16,11 +17,11 @@ import { MultiLangService } from '../../../../shared-modules/lang/service/multi-
 })
 export class FiltersComponent implements OnInit {
 
-  @Input() lang: string;
   @Input() type: ListType;
   @Input() query: FilterQuery;
   @Output() queryChange = new EventEmitter<FilterQuery>();
 
+  lang: string;
   redListStatuses$: Observable<SelectOption[]>;
   threadReasons$: Observable<SelectOption[]>;
   habitats$: Observable<SelectOption[]>;
@@ -29,10 +30,12 @@ export class FiltersComponent implements OnInit {
 
   constructor(
     private taxonService: TaxonService,
-    private metadataService: MetadataService
+    private metadataService: MetadataService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
+    this.lang = this.translate.currentLang;
     this.redListStatuses$ = this.taxonService.getRedListStatusTree(this.lang).pipe(
       map(tree => this.mapStatusesToOptions(tree))
     );

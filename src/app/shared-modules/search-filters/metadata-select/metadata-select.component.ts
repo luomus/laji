@@ -11,6 +11,7 @@ import { AreaService, AreaType } from '../../../shared/service/area.service';
 import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -36,7 +37,6 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() alt: string;
   @Input() name: string;
   @Input() multiple = true;
-  @Input() lang = 'fi';
   @Input() placeholder = 'select';
   @Input() mapToWarehouse = false;
   @Input() pick: MetadataSelectPick;
@@ -48,6 +48,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() skipBefore: string;
   @Input() open: boolean;
 
+  lang: string;
   _options: {id: string, value: string}[] = [];
   active = [];
   selectedTitle = '';
@@ -74,13 +75,15 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
               private areaService: AreaService,
               private sourceService: SourceService,
               private cd: ChangeDetectorRef,
-              private logger: Logger
+              private logger: Logger,
+              private translate: TranslateService
   ) {
   }
 
   onTouched = () => {};
 
   ngOnInit() {
+    this.lang = this.translate.currentLang;
     this.initOptions();
   }
 

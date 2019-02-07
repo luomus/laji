@@ -9,7 +9,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
+  OnDestroy, OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import * as LajiMap from 'laji-map';
 import { Global } from '../../../environments/global';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -37,13 +38,12 @@ import { Global } from '../../../environments/global';
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
+export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
 
   @Input() data: any = [];
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
-  @Input() lang: string;
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
   @Output() select = new EventEmitter();
 
@@ -53,6 +53,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() tileLayerChange =  new EventEmitter();
   @ViewChild('lajiMap') elemRef: ElementRef;
 
+  lang: string;
   map: any;
   _options: LajiMap.Options = {};
   _legend: {color: string, label: string}[];
@@ -64,8 +65,13 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   constructor(
     private userService: UserService,
     private cd: ChangeDetectorRef,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) { }
+
+  ngOnInit() {
+    this.lang = this.translate.currentLang;
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -157,9 +163,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   ngOnChanges(changes) {
     if (changes.data) {
       this.setData(this.data);
-    }
-    if (changes.lang && this.map) {
-      this.map.setOption('lang', (this.lang || 'fi'));
     }
   }
 

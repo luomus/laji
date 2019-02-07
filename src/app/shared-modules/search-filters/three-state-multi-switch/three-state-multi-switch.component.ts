@@ -3,6 +3,7 @@ import { MetadataService } from '../../../shared/service/metadata.service';
 import { map } from 'rxjs/operators';
 import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';
 import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-three-state-multi-switch',
@@ -13,19 +14,22 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
 
   @Input() title;
   @Input() info;
-  @Input() lang: string;
   @Input() trueValue: string[];
   @Input() falseValue: string[];
 
   @Output() update = new EventEmitter<{true: string[], false: string[]}>();
 
 
+  lang: string;
   options$: Observable<any>;
   open = false;
 
-  constructor(private metadataService: MetadataService) { }
+  constructor(
+    private metadataService: MetadataService,
+    private translate: TranslateService) { }
 
   ngOnInit() {
+    this.lang = this.translate.currentLang;
   }
 
   @Input()

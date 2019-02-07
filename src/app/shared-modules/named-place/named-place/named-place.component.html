@@ -32,8 +32,7 @@
         [multiple]="true"
         [useFilter]="false"
         placeholder="np.tag"
-        [open]="true"
-        [lang]="lang"></laji-metadata-select>
+        [open]="true"></laji-metadata-select>
     </ng-container>
     <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">
       <span>{{documentForm.namedPlaceOptions?.createNewLabels?.desc
@@ -67,7 +66,6 @@
                         [allowEdit]="allowEdit"
                         [placeForm]="placeForm"
                         [mapOptionsData]="mapOptionsData"
-                        [lang]="lang"
                         (reserve)="onReserve()"
                         (release)="onRelease()"
                         (editButtonClick)="toEditMode(false)"

@@ -14,7 +14,7 @@
     </ul>
   </div>
   <div class="well">
-    <laji-filters [type]="queryParams.type" [lang]="translate.currentLang" [query]="queryParams" (queryChange)="queryChange($event)"></laji-filters>
+    <laji-filters [type]="queryParams.type" [query]="queryParams" (queryChange)="queryChange($event)"></laji-filters>
   </div>
-  <laji-results [type]="queryParams.type" [query]="queryParams" [lang]="translate.currentLang" [checklist]="checklist" (queryChange)="queryChange($event, false)"></laji-results>
+  <laji-results [type]="queryParams.type" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event, false)"></laji-results>
 </div>

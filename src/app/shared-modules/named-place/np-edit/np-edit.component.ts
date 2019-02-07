@@ -40,7 +40,6 @@ export class NpEditComponent {
 
   @Input() editMode = false;
   @Input() allowEdit = true;
-  @Input() lang: string;
   @Output() reserve = new EventEmitter();
   @Output() release = new EventEmitter();
   @Output() editButtonClick = new EventEmitter();

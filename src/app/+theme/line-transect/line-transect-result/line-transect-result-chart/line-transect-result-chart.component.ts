@@ -18,7 +18,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   @Input() informalTaxonGroup: string;
   @Input() defaultTaxonId: string;
   @Input() collectionId: string;
-  @Input() lang = 'fi';
 
   loading = false;
   areaTypes = AreaType;
