@@ -13,7 +13,7 @@
     "start:prod": "ng serve --configuration=prod --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
     "start:embedded": "ng serve --configuration=embedded --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
     "start:vir": "ng serve --configuration=vir --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
-    "build:generic-label-maker": "ng build generic-label-maker",
+    "build:generic-label-maker": "ng build generic-label-maker --prod",
     "build:prod": "yarn run ng-high-memory build --prod --configuration=production --base-href https://laji.fi/",
     "build:local": "ng build --configuration=local --prod --base-href http://localhost:3000/",
     "build:embedded": "yarn run ng-high-memory build --configuration=embedded --prod",
