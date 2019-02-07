@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { LabelField, LabelItem, LabelItemSelectAction, Setup } from '../generic-label-maker.interface';
-import { Presets } from '../presets';
+import { LabelField, LabelItem, Setup } from '../generic-label-maker.interface';
 
 @Component({
   selector: 'll-label-editor-container',
@@ -13,7 +12,7 @@ export class LabelEditorContainerComponent {
   static id = 0;
 
   _active: 'settings'|'fields' = 'fields';
-  _setup: Setup = Presets.A4;
+  _setup: Setup;
   _selectedLabelItem: LabelItem;
   @Input() availableFields: LabelField[];
 

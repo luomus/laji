@@ -10,7 +10,7 @@
           [maxWidth]="width"
           [maxHeight]="height"
           (click)="setActiveItem(item)"
-          (showSettings)="showSettings.emit({item: $event, index: i})"
+          (showSettings)="showSettings.emit($event)"
         ></ll-editor-item>
       </div>
     </td>
