@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
@@ -15,13 +15,13 @@ import { AreaService } from '../../../../shared/service/area.service';
   templateUrl: './np-edit-form.component.html',
   styleUrls: ['./np-edit-form.component.css']
 })
-export class NpEditFormComponent {
-  @Input() lang: string;
+export class NpEditFormComponent implements OnInit {
   @Input() documentForm: any;
   @Input() namedPlace: NamedPlace;
   @Input() namedPlaceOptions: any;
   @Output() editReady = new EventEmitter<{np?: NamedPlace, isEdit?: boolean}>();
 
+  lang: string;
   saving = false;
   status = '';
   error = '';
@@ -39,6 +39,10 @@ export class NpEditFormComponent {
     private taxonomyApi: TaxonomyApi,
     private areaService: AreaService
   ) { }
+
+  ngOnInit() {
+    this.lang = this.translate.currentLang;
+  }
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event) {

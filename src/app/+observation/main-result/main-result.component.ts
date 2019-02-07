@@ -34,7 +34,6 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
-  @Input() lang: string;
 
   aggrQuery: WarehouseQueryInterface;
   mapQuery: WarehouseQueryInterface;

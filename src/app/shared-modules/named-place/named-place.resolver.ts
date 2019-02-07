@@ -42,7 +42,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
               private userService: UserService,
               private formPermissionService: FormPermissionService) {}
   resolve(route: ActivatedRouteSnapshot): Observable<NPResolverData> {
-    this.lang = this.findLangFromRoute(route);
+    this.lang = this.translate.currentLang;
 
     const routeParams = route.params;
     this.collectionId = routeParams['collectionId'];

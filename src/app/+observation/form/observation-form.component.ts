@@ -10,6 +10,7 @@ import { UserService } from '../../shared/service/user.service';
 import { Util } from '../../shared/service/util.service';
 import { LocalStorage } from 'ngx-webstorage';
 import * as moment from 'moment';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -22,7 +23,6 @@ import * as moment from 'moment';
 })
 export class ObservationFormComponent implements OnInit {
 
-  @Input() lang: string;
   @Input() invasiveStatuses: string[] = [];
   @Input() dateFormat = 'YYYY-MM-DD';
   @Output() queryUpdate = new EventEmitter<WarehouseQueryInterface>();
@@ -30,6 +30,7 @@ export class ObservationFormComponent implements OnInit {
 
   @LocalStorage('observationAdvancedMode', false) advancedMode;
 
+  lang: string;
   formQuery: ObservationFormQuery;
   emptyFormQuery: ObservationFormQuery = {
     taxon: '',
@@ -107,6 +108,7 @@ export class ObservationFormComponent implements OnInit {
   constructor(
     private lajiApi: LajiApiService,
     private userService: UserService,
+    private translate: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
     this.dataSource = Observable.create((observer: any) => {
@@ -124,6 +126,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.lang = this.translate.currentLang;
     this.updateVisibleSections();
   }
 

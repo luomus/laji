@@ -18,6 +18,7 @@ import { BsModalService, ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Logger } from '../../../shared/logger/logger.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -38,7 +39,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() height = '100%';
   @Input() showSettingsMenu = false;
   @Input() showPageSize = true;
-  @Input() lang = 'fi';
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() virtualScrolling = true;
@@ -65,6 +65,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Output() selectChange = new EventEmitter<string[]>();
   @Output() rowSelect = new EventEmitter<any>();
 
+  lang: string;
   cache: any = {};
   orderBy: string[] = [];
   columnLookup = {};
@@ -232,7 +233,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     private resultService: ObservationListService,
     private changeDetectorRef: ChangeDetectorRef,
     private modalService: BsModalService,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService,
   ) { }
 
   @Input() set selected(sel: string[]) {
@@ -254,6 +256,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.lang = this.translate.currentLang;
     this.initColumns();
     this.fetchPage(this.page);
   }

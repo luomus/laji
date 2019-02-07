@@ -8,7 +8,6 @@ export class LajiMapComponent {
 
   @Input() legend: any;
   @Input() options: any;
-  @Input() lang: string;
   @Input() settingsKey: string;
   @Input() data: any = [];
   @Input() loading = false;
@@ -24,6 +23,7 @@ export class LajiMapComponent {
   @Output() tileLayerChange =  new EventEmitter();
 
   map: any;
+  lang: string;
 
   drawToMap(type: string) {}
   invalidateSize() {}

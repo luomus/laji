@@ -3,7 +3,6 @@
     <h4>{{ 'observation.filterBy.recordBasis' | translate }}</h4>
     <laji-observation-table
       [visible]="visible"
-      [lang]="translate.currentLang"
       (rowSelect)="onRecordBasis($event)"
       [showHeader]="false"
       [showFooter]="false"
@@ -19,7 +18,6 @@
     <h4>{{ 'observation.filterBy.image' | translate }}</h4>
     <laji-observation-table
       [visible]="visible"
-      [lang]="translate.currentLang"
       (rowSelect)="onMediaSelect($event)"
       [showHeader]="false"
       [showFooter]="false"
@@ -37,7 +35,6 @@
     <h4>{{ 'observation.filterBy.collectionId' | translate }}</h4>
     <laji-observation-table
       [visible]="visible"
-      [lang]="translate.currentLang"
       (rowSelect)="onCollectionSelect($event)"
       [height]="'350px'"
       [pageSize]="100"

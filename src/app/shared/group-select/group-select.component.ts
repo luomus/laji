@@ -1,11 +1,22 @@
 /* tslint:disable:no-use-before-declare */
 import {switchMap, map} from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnChanges, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnChanges,
+  OnInit,
+  Output
+} from '@angular/core';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { of as ObservableOf } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -20,11 +31,11 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
   providers: [InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationGroupSelectComponent implements ControlValueAccessor, OnChanges {
-  @Input() lang = 'fi';
+export class ObservationGroupSelectComponent implements ControlValueAccessor, OnChanges, OnInit {
   @Input() position: 'right'|'left' = 'right';
   @Output() select = new EventEmitter();
 
+  lang: string;
   public groups: InformalTaxonGroup[] = [];
   public activeGroup: InformalTaxonGroup;
   public open = false;
@@ -35,6 +46,10 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
   private el: Element;
 
   private subLabel: any;
+
+  ngOnInit() {
+    this.lang = this.translate.currentLang;
+  }
 
   onChange = (_: any) => {
   }
@@ -55,7 +70,8 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
   constructor(
     private cd: ChangeDetectorRef,
     private informalTaxonService: InformalTaxonGroupApi,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) { }
 
   ngOnChanges() {
