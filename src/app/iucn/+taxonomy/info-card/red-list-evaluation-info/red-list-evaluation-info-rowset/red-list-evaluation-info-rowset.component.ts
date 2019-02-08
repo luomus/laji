@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export interface IRow {
   key: string;
   value: any;
+  translate?: string;
 }
 
 @Component({

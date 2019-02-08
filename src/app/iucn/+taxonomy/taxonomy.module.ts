@@ -26,6 +26,8 @@ import { RedListHabitatListComponent } from './list/results/red-list-habitat/red
 import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-select.module';
 import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ActiveFiltersComponent } from './list/active-filters/active-filters.component';
+import { ExplainCriteriaPipe } from './pipe/explain-criteria.pipe';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -57,7 +59,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     RedListEvaluationInfoComponent,
     RedListEvaluationInfoRowsetComponent,
     RedListHabitatComponent,
-    RedListHabitatListComponent
+    RedListHabitatListComponent,
+    ActiveFiltersComponent,
+    ExplainCriteriaPipe
   ]
 })
 export class TaxonomyModule { }

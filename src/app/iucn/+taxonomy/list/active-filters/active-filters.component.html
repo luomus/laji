@@ -1,0 +1,8 @@
+<p *ngIf="queryItems && queryItems.length > 0">
+  <ng-container *ngFor="let item of queryItems; let l=last">
+    <ng-container *ngIf="item.label">
+      {{ item.label | translate }}:
+    </ng-container>
+    {{ item.value | label }}<ng-container *ngIf="!l">; </ng-container>
+  </ng-container>
+</p>

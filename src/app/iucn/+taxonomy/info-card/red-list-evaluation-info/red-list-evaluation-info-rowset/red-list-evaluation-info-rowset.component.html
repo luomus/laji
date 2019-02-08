@@ -1,4 +1,7 @@
 <div class="row" *ngFor="let val of values">
-  <div class="col-sm-5">{{ val.key | label }}</div>
-  <div class="col-sm-7" [innerHtml]="val.value | label | values:'<br>'"></div>
+  <div class="col-sm-5">
+    <ng-container *ngIf="val.translate; else field">{{ val.translate | translate }}</ng-container>
+    <ng-template #field>{{ val.key | label }}</ng-template>
+  </div>
+  <div class="col-sm-7" [class]="'col-sm-7 ' + (val.value | values:' ') " [innerHtml]="val.value | label | values:'<br>'"></div>
 </div>

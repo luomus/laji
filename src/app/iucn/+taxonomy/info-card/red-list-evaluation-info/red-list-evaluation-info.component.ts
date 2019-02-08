@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RedListEvaluation } from '../../../../shared/model/Taxonomy';
 import { IRow } from './red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-red-list-evaluation-info',
@@ -10,7 +11,6 @@ import { IRow } from './red-list-evaluation-info-rowset/red-list-evaluation-info
 })
 export class RedListEvaluationInfoComponent {
 
-  generalValues: IRow[] = [];
   endanger: IRow[] = [];
   taxonInterpretation: IRow[] = [];
   occurrenceInfo: IRow[] = [];
@@ -21,7 +21,6 @@ export class RedListEvaluationInfoComponent {
   sources: IRow[] = [];
 
   private _evaluation: RedListEvaluation;
-  private skip = ['calculatedRedListIndex'];
   private keyMap = {
     'secondaryHabitats': 'secondaryHabitat',
     'endangermentReasons': 'hasEndangermentReason',
@@ -33,8 +32,7 @@ export class RedListEvaluationInfoComponent {
     'MKV.generationAgeNotes': 'evaluationBases',
     'MKV.evaluationPeriodLength': 'evaluationBases',
     'MKV.evaluationPeriodLengthNotes': 'evaluationBases',
-    'MKV.individualCountMin': 'evaluationBases',
-    'MKV.individualCountMax': 'evaluationBases',
+    'MKV.individualCount': 'evaluationBases',
     'MKV.individualCountNotes': 'evaluationBases',
     'MKV.populationSizePeriodBeginning': 'evaluationBases',
     'MKV.populationSizePeriodNotes': 'evaluationBases',
@@ -77,11 +75,9 @@ export class RedListEvaluationInfoComponent {
     'MKV.criteriaNotes': 'criteria',
     'MKV.publication': 'sources',
     'MKV.otherSources': 'sources',
-    'MKV.distributionAreaMin': 'occurrenceInfo',
-    'MKV.distributionAreaMax': 'occurrenceInfo',
+    'MKV.distributionArea': 'occurrenceInfo',
     'MKV.distributionAreaNotes': 'occurrenceInfo',
-    'MKV.occurrenceAreaMin': 'occurrenceInfo',
-    'MKV.occurrenceAreaMax': 'occurrenceInfo',
+    'MKV.occurrenceArea': 'occurrenceInfo',
     'MKV.occurrenceAreaNotes': 'occurrenceInfo',
     'MKV.occurrenceNotes': 'occurrenceInfo',
     'MKV.redListStatus': 'endanger',
@@ -107,27 +103,53 @@ export class RedListEvaluationInfoComponent {
     'MKV.percentageOfGlobalPopulationNotes': 'endanger',
   };
 
-  constructor() { }
+  minMax = {
+    'distributionAreaMin': {fields: ['distributionAreaMin', 'distributionAreaMax'], combineTo: 'distributionArea'},
+    'distributionAreaMax': {fields: ['distributionAreaMin', 'distributionAreaMax'], combineTo: 'distributionArea'},
+    'occurrenceAreaMin': {fields: ['occurrenceAreaMin', 'occurrenceAreaMax'], combineTo: 'occurrenceArea'},
+    'occurrenceAreaMax': {fields: ['occurrenceAreaMin', 'occurrenceAreaMax'], combineTo: 'occurrenceArea'},
+    'individualCountMin': {fields: ['individualCountMin', 'individualCountMax'], combineTo: 'individualCount'},
+    'individualCountMax': {fields: ['individualCountMin', 'individualCountMax'], combineTo: 'individualCount'}
+  };
+
+  constructor(
+    private translateService: TranslateService
+  ) { }
 
   @Input()
   set evaluation(evaluation: RedListEvaluation) {
-    this._evaluation = evaluation;
+    this._evaluation = {...evaluation};
     this.initValue();
   }
 
   private initValue() {
     this.occurrences = [];
     if (!this._evaluation) {
-      this.generalValues = [];
       this.habitat = [];
+      this.endanger = [];
+      this.taxonInterpretation = [];
+      this.occurrenceInfo = [];
+      this.habitat = [];
+      this.occurrences = [];
+      this.evaluationBases = [];
+      this.criteria = [];
+      this.sources = [];
       return;
     }
-    const generalResult = [];
     const results: {[key: string]: IRow[]} = {};
     const sortBy = Object.keys(this.fieldMap);
-    for (const key in this._evaluation) {
-      if (!this._evaluation.hasOwnProperty(key) || this.skip.indexOf(key) > -1) {
+    for (let key in this._evaluation) {
+      if (!this._evaluation.hasOwnProperty(key)) {
         continue;
+      }
+      let translate = '';
+      if (this.minMax[key]) {
+        const combine = this.minMax[key];
+        key = combine.combineTo;
+        this._evaluation[key] = (this._evaluation[combine.fields[0]] || '') + ' — ' + (this._evaluation[combine.fields[1]] || '');
+        translate = 'iucn.taxon.' + key;
+        delete this._evaluation[combine.fields[0]];
+        delete this._evaluation[combine.fields[1]];
       }
       if (key === 'occurrences') {
         this.occurrences = this._evaluation[key].map(o => ({key: o.area, value: o.status}));
@@ -138,23 +160,47 @@ export class RedListEvaluationInfoComponent {
         if (!results[this.fieldMap[fullKey]]) {
           results[this.fieldMap[fullKey]] = [];
         }
-        results[this.fieldMap[fullKey]].push({
-          key: fullKey,
-          value: Array.isArray(this._evaluation[key]) ?
-            this._evaluation[key].map(h => h.habitat || h) :
-            (this._evaluation[key].habitat || this._evaluation[key])
-        });
-        continue;
+        const values = [];
+        if (Array.isArray(this._evaluation[key])) {
+          this._evaluation[key].forEach(item => {
+            if (typeof item === 'object') {
+              values.push(...this.getValues(item));
+            } else {
+              values.push(item);
+            }
+          });
+        } else if (typeof this._evaluation[key] === 'object') {
+          values.push(...this.getValues(this._evaluation[key]));
+        } else {
+          if (typeof this._evaluation[key] === 'boolean') {
+            values.push(this.translateService.instant(this._evaluation[key] ? 'yes' : 'no'));
+          } else {
+            values.push(this._evaluation[key]);
+          }
+        }
+        if (values.length > 0) {
+          results[this.fieldMap[fullKey]].push({
+            key: fullKey,
+            value: values,
+            translate: translate
+          });
+        }
       }
-      generalResult.push({
-        key: fullKey,
-        value: this._evaluation[key]
-      });
     }
-    this.generalValues = generalResult;
     Object.keys(results).forEach(key => {
       this[key] = results[key].sort(this.getSortFunction(sortBy));
     });
+  }
+
+  private getValues(obj: any): string[] {
+    const values = [];
+    if (obj.habitat) {
+      values.push(obj.habitat);
+    }
+    if (obj.habitatSpecificTypes) {
+      values.push(...obj.habitatSpecificTypes);
+    }
+    return values;
   }
 
   private getSortFunction(order: string[]) {

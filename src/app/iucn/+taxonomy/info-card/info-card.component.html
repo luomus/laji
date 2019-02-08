@@ -7,10 +7,10 @@
           <ng-container *ngIf="latestStatus">
             <laji-taxon-status [status]="latestStatus.redListStatus"></laji-taxon-status>
             <label>{{ 'MKV.criteriaForStatus' | label }}</label><br>
-            <p>{{ latestStatus.criteriaForStatus }}</p>
+            <p [innerHTML]="latestStatus.criteriaForStatus | explainCriteria"></p>
           </ng-container>
           <ng-container *ngIf="taxon.administrativeStatuses && taxon.administrativeStatuses.length > 0">
-          <label>Lajia koskevat hallinnolliset lajitiedot</label>
+          <label>{{ 'iucn.taxon.administrativeStatuses' | translate }}</label>
           <ul>
             <li *ngFor="let status of taxon.administrativeStatuses">
               {{ status | label }}
@@ -23,17 +23,13 @@
     <div class="col-sm-4">
       <laji-taxon-image [images]="taxon.multimedia"></laji-taxon-image>
       <a href="https://laji.fi/taxon/{{ taxon.id }}" target="_blank" rel="noreferrer noopener">
-        <div class="to-laji">
-          Lisää lajitietoa tästä lajista löytyy
-          <h1>LAJI.FI</h1>
-          -portaalista
-        </div>
+        <div class="to-laji" [innerHTML]="'iucn.taxon.more' | translate"></div>
       </a>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <h2>Arviointi {{ latestStatus?.evaluationYear }}</h2>
+      <h2>{{ 'iucn.taxon.evaluation' | translate }} {{ latestStatus?.evaluationYear }}</h2>
     </div>
   </div>
   <div class="row">

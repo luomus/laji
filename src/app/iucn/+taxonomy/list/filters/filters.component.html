@@ -1,57 +1,62 @@
 <form class="form-horizontal">
   <div class="form-group">
-    <label class="col-sm-1 control-label">Rajaa</label>
     <div class="col-sm-5 col-md-4">
-      <ng-select name="redListGroup" (change)="change('redListGroup', $event?.value)" [ngModel]="query?.redListGroup" [items]="redListStatuses$ | async" [placeholder]="'Lajiryhmä'" [notFoundText]="''" [bindLabel]="'label'" [bindValue]="'value'">
+      <label>{{ 'iucn.filter.redListGroup' | translate }}</label>
+      <ng-select name="redListGroup" (change)="change('redListGroup', $event?.value)" [ngModel]="query?.redListGroup" [items]="redListStatuses$ | async" [placeholder]="''" [notFoundText]="''" [bindLabel]="'label'" [bindValue]="'value'">
         <ng-template ng-label-tmp let-item="item">
           <span [innerHTML]="item.label"></span>
         </ng-template>
       </ng-select>
     </div>
     <div class="col-sm-5 col-md-4">
+      <label>{{ 'species.form.specimen' | translate }}</label>
       <laji-taxon-select
         [class]="'form-control'"
         (taxonIdChange)="change('taxon', $event)"
-        [placeholder]="'species.form.specimen' | translate"
+        [placeholder]="''"
         [taxonId]="query.taxon"
         [searchParams]="{species: false}">
       </laji-taxon-select>
     </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-offset-1 col-sm-5 col-md-4">
+    <div class="col-sm-5 col-md-4">
+      <label>{{ 'iucn.filter.habitat' | translate }}</label>
       <div class="input-group">
-        <select laji-dropdown [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async" [placeholder]="'MKV.habitat' | label"></select>
+        <select laji-dropdown [placeholder]="''" [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async"></select>
         <span class="input-group-addon">
           <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'Vain ensisijaisella'">
         </span>
       </div>
     </div>
     <div class="col-sm-5 col-md-4">
-      <select [disabled]="!query?.habitat" laji-dropdown [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="'MKV.habitatSpecificType' | label"></select>
+      <label>{{ 'iucn.filter.habitatSpecific' | translate }}</label>
+      <select [disabled]="!query?.habitat" laji-dropdown [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="''"></select>
     </div>
   </div>
   <ng-container *ngIf="threadReasons$ | async; let reasons">
     <div class="form-group">
-      <div class="col-sm-offset-1 col-sm-5 col-md-4">
+      <div class="col-sm-5 col-md-4">
+        <label>{{ 'iucn.filter.reasons' | translate }}</label>
         <div class="input-group">
           <select laji-dropdown
             [value]="query?.reasons"
             (valueChange)="change('reasons', $event)"
-            [options]="reasons"
-            [placeholder]="'Uhanalaisuuden syyt'"></select>
+            [placeholder]="''"
+            [options]="reasons"></select>
           <span class="input-group-addon">
             <input type="checkbox" [checked]="query?.onlyPrimaryReason" (change)="change('onlyPrimaryReason', !query.onlyPrimaryReason)" [tooltip]="'Vain ensisijaisella'">
           </span>
         </div>
       </div>
       <div class="col-sm-5 col-md-4">
+        <label>{{ 'iucn.filter.threats' | translate }}</label>
         <div class="input-group">
           <select laji-dropdown
             [value]="query?.threats"
             (valueChange)="change('threats', $event)"
-            [options]="reasons"
-            [placeholder]="'Uhkatekijöillä'"></select>
+            [placeholder]="''"
+            [options]="reasons"></select>
           <span class="input-group-addon">
             <input type="checkbox" [checked]="query?.onlyPrimaryThreat" (change)="change('onlyPrimaryThreat', !query.onlyPrimaryThreat)" [tooltip]="'Vain ensisijaisella'">
           </span>
@@ -60,20 +65,22 @@
     </div>
   </ng-container>
   <div class="form-group" *ngIf="type !== 'status'">
-    <div class="col-sm-offset-1 col-sm-5 col-md-4" style="position: relative;">
+    <div class="col-sm-5 col-md-4" style="position: relative;">
       <div class="overlay-dropdown" (click)="toggleStatus()"></div>
+      <label>{{ 'iucn.filter.status' | translate }}</label>
       <div *ngIf="showStatusSelect; else statusDropDown">
         <select class="form-control" tabindex="-1"></select>
         <div style="position: absolute; top: 0; left: 15px; right: 15px; z-index: 10000" (lajiClickOutSide)="toggleStatus()">
+          <label>{{ 'iucn.filter.status' | translate }}</label>
           <select class="form-control"  tabindex="-1">
-            <option value="">{{ query.status ? query.status.join(',') : 'Uhanalaisuusluokka' }}</option>
+            <option value="">{{ query.status ? query.status.join(',') : '' }}</option>
           </select>
           <laji-redlist-class-filter [value]="query?.status" (valueChange)="change('status', $event)"></laji-redlist-class-filter>
         </div>
       </div>
       <ng-template #statusDropDown>
         <select class="form-control" (focus)="toggleStatus()">
-          <option value="">{{ query.status ? query.status.join(',') : 'Uhanalaisuusluokka' }}</option>
+          <option value="">{{ query.status ? query.status.join(',') : '' }}</option>
         </select>
       </ng-template>
     </div>
