@@ -724,7 +724,7 @@
   "result.gathering.municipality": "Eliömaakunta",
   "result.gathering.team": "Henkilö",
   "result.load.introPrivate": "<p>Rajaus kattaa <strong>{{private}}</strong> karkeistettua havaintoa. Lisäksi rajaus saattaa kattaa kokonaan salattuja havaintoja.</p><p>Voit tehdä aineistopyynnön saadaksesi käyttöösi karkeistetun ja salatun aineiston tarkat tiedot. Pyyntösi käsitellään yksilöllisesti ja saat lisäohjeita sähköpostitse. Perustelut datan käyttöön sekä käyttöehtojen hyväksyminen kysytään myöhemmässä vaiheessa.</p>",
-  "result.load.introPublic": "Rajauksesi kattaa <strong>{{count}}</strong> julkista havaintoa, joista <strong>{{private}}</strong> on karkeistettu. Voit ladata julkisen aineiston itsellesi tekstitiedostona (CSV). Klikkaa Lataa aineisto -nappia ja saat sähköpostiisi linkin aineiston lataussivulle, kun lataus on valmistunut. Latausaika riippuu aineiston koosta.",
+  "result.load.introPublic": "Rajauksesi kattaa <strong>{{count}}</strong> julkista havaintoa, joista <strong>{{private}}</strong> on karkeistettu. Voit ladata julkisen aineiston itsellesi tekstitiedostona (TSV). Klikkaa Lataa aineisto -nappia ja saat sähköpostiisi linkin aineiston lataussivulle, kun lataus on valmistunut. Latausaika riippuu aineiston koosta.",
   "result.load.introSpecies": "Havaintotilastossa on luettelo lajeista havaintomäärän mukaisessa järjestyksessä.",
   "result.load.personalData": "Huom! Tällä sivulla ei huomioida omat havainnot osion rajauksia.",
   "result.load.thanksPublic": "Kiitos, saat linkin aineistoon sähköpostitse.",
