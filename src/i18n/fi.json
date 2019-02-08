@@ -25,6 +25,13 @@
     "2010": "2010",
     "2000": "2000"
   },
+  "criteria": {
+    "A": "Yksilöiden määrä on vähentynyt merkittävästi",
+    "B": "Elää suppealla alueella tai elinalue pienentynyt, pirstoutunut tai epävakaa",
+    "C": "Yksilöitä on vähän, ja niiden määrä vähenee jatkuvasti",
+    "D": "Yksilöitä on hyvin vähän, tai ne esiintyvät hyvin suppealla alueella",
+    "E": "Analyysin perusteella on merkittävä todennäköisyys että laji katoaa"
+  },
   "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
   "closed.title": "Suljettu",
   "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",
@@ -297,6 +304,36 @@
   "invasive.latestRecord": "Uusin",
   "invasive.oldestRecord": "Vanhin",
   "invasive.title": "Vieraslajit",
+  "iucn": {
+    "filter": {
+      "title": "Laji ja tulokset",
+      "reasons": "Uhanalaisuuden syyt",
+      "threats": "Uhkatekijöillä",
+      "taxon": "Taksonominen rajaus",
+      "redListGroup": "Lajiryhmä",
+      "habitat": "Elinympäristö",
+      "habitatSpecific": "Elinympäristön tarkenne",
+      "status": "Uhanalaisuusluokka",
+      "onlyPrimaryHabitat": "vain ensisijaisella elinympäristöllä",
+      "onlyPrimaryReason": "vain ensisijaisella uhanalaisuuden syyllä",
+      "onlyPrimaryThreat": "vain ensisijaisella uhkatekijällä",
+      "empty": "Tyhjennä"
+    },
+    "taxon": {
+      "administrativeStatuses": "Lajia koskevat hallinnolliset lajitiedot",
+      "criteria": "Kriteerit",
+      "distributionArea": "Levinneisyysalueen koko",
+      "endanger": "Uhanalaisuus",
+      "evaluation": "Arviointi",
+      "evaluationBases": "Arvioinnin perusteet",
+      "individualCount": "Yksilömäärä",
+      "more": "Lisää lajitietoa tästä lajista löytyy <h1>LAJI.FI</h1>-portaalista",
+      "occurrenceArea": "Esiintymien määrä",
+      "occurrenceInfoTitle": "Esiintymistä koskevat tiedot",
+      "occurrenceTitle": "Esiintymisalueet ja alueellinen uhanalaisuus",
+      "source": "Lähteet"
+    }
+  },
   "lastCensus": "Edellinen laskenta",
   "line-transect-result.chart": "Lajimäärän kehitys",
   "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain",
@@ -1000,5 +1037,7 @@
   "np.createPlace": "Luo paikka",
   "haseka.form.rights.description": " <h1>Lomakkeen oikeuksien hallinta</h1> <p>Täältä voit hallinnoida sitä kuka pääsee käyttämään lomakketta.</p>",
   "np.copyAddress": "Kopioi linkki",
-  "np.copyAddress.success": "Linkki kopioitiin leikepöydälle"
+  "np.copyAddress.success": "Linkki kopioitiin leikepöydälle",
+  "save": "Tallenna",
+  "cancel": "Peruuta"
 }

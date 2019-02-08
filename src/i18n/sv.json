@@ -960,5 +960,7 @@
   "np.createPlace": "Skapa plats",
   "haseka.form.rights.description": "<h1>Formhanteringshantering</h1><p>Du kan hantera formulärbehörigheter här.</p>",
   "np.copyAddress": "Kopia link",
-  "np.copyAddress.success": "Länken kopierades till urklippet"
+  "np.copyAddress.success": "Länken kopierades till urklippet",
+  "save": "Spara",
+  "cancel": "Avbryt"
 }

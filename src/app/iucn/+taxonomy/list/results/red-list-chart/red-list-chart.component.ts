@@ -24,11 +24,16 @@ export class RedListChartComponent implements AfterViewInit {
   view: [number, number];
   height: number;
 
+  @Input() primaryColor = '#d62022';
+  @Input() secondaryColor = '#888';
+
   @Input()
   legend = true;
 
   @Input()
   label = '';
+
+  colorSchema: {name: string, value: string}[] = [];
 
   constructor(
     private el: ElementRef
@@ -43,7 +48,21 @@ export class RedListChartComponent implements AfterViewInit {
   @Input()
   set data(data: ChartData[]) {
     this._data = data;
-    this.height = data && data[0] && data[0].series ? ((data.length * Math.max(data[0].series.length * BAR_HEIGHT, 30)) + 70) : 0;
+    if (data && data[0] && data[0].series) {
+      this.height = (data.length * Math.max(data[0].series.length * BAR_HEIGHT, 30)) + 70;
+      this.colorSchema = [
+        {
+          name: data[0].series[0].name,
+          value: this.primaryColor
+        },
+        {
+          name: data[0].series[1].name,
+          value: this.secondaryColor
+        }
+      ];
+    } else {
+      this.height = 0;
+    }
     this.resize();
   }
 
@@ -54,111 +73,5 @@ export class RedListChartComponent implements AfterViewInit {
       this.height
     ];
   }
-
-  /* tslint:disable */
-  private mock: ChartData[] = [
-      {
-        'name': 'Juoksujlkaiset',
-        'series': [
-          {
-            'name': '2019',
-            'value': 40632
-          },
-          {
-            'name': '2010',
-            'value': 36953
-          },
-          {
-            'name': '2005',
-            'value': 33953
-          }
-        ]
-      },
-      {
-        'name': 'Kaksoisjalkaiset',
-        'series': [
-          {
-            'name': '2019',
-            'value': 49737
-          },
-          {
-            'name': '2010',
-            'value': 45986
-          },
-          {
-            'name': '2005',
-            'value': 43986
-          }
-        ]
-      },
-      {
-        'name': 'Harvajalkaiset',
-        'series': [
-          {
-            'name': '2019',
-            'value': 36745
-          },
-          {
-            'name': '2010',
-            'value': 34774
-          },
-          {
-            'name': '2005',
-            'value': 33774
-          }
-        ]
-      },
-      {
-        'name': 'Juoksujlkaiset, Chilopoda',
-        'series': [
-          {
-            'name': '2019',
-            'value': 36240
-          },
-          {
-            'name': '2010',
-            'value': 32543
-          },
-          {
-            'name': '2005',
-            'value': 30543
-          }
-        ]
-      },
-      {
-        'name': 'Kaksoisjalkaiset, Diplopoda',
-        'series': [
-          {
-            'name': '2019',
-            'value': 16240
-          },
-          {
-            'name': '2010',
-            'value': 10600
-          },
-          {
-            'name': '2005',
-            'value': 10000
-          }
-        ]
-      },
-      {
-        'name': 'Harvajalkaiset, Pauropoda',
-        'series': [
-          {
-            'name': '2019',
-            'value': 1240
-          },
-          {
-            'name': '2010',
-            'value': 1543
-          },
-          {
-            'name': '2005',
-            'value': 1043
-          }
-        ]
-      }
-    ];
 
 }

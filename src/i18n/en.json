@@ -966,5 +966,7 @@
   "np.createPlace": "Create place",
   "haseka.form.rights.description": " <h1>Form permission management</h1> <p>You can manage form permissions here.</p>",
   "np.copyAddress": "Copy link",
-  "np.copyAddress.success": "Link was copied to the clipboard"
+  "np.copyAddress.success": "Link was copied to the clipboard",
+  "save": "Save",
+  "cancel": "Cancel"
 }
