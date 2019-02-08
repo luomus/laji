@@ -19,3 +19,7 @@ h1 {
   display: inline-block;
   margin-top: 1em;
 }
+.dark-bg a, .dark-bg a:hover {
+  background-color: #f5f5f5;
+  border-bottom: none;
+}

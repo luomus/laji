@@ -1,5 +1,5 @@
 import { forkJoin as ObservableForkJoin, Observable, Observer, of as ObservableOf } from 'rxjs';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
 import { MetadataService } from './metadata.service';
@@ -14,8 +14,10 @@ import { UserService } from './user.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, delay, filter, map, merge, share, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, merge, share, take, tap } from 'rxjs/operators';
 import { AreaService } from './area.service';
+import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
+import { Publication } from '../model/Publication';
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -38,7 +40,8 @@ export class TriplestoreLabelService {
               private cacheService: CacheService,
               private lajiApi: LajiApiService,
               private userService: UserService,
-              private areaService: AreaService
+              private areaService: AreaService,
+              private redListTaxonGroupApi: RedListTaxonGroupApi
   ) {
     this.pending = this.getAllLabels();
     this.pending.subscribe();
@@ -92,6 +95,7 @@ export class TriplestoreLabelService {
         case 'MVL':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi').pipe(
+              catchError(() => this.redListTaxonGroupApi.redListTaxonGroupsFindById(key, 'multi')),
               map((group: InformalTaxonGroup) => group.name),
               tap(name => TriplestoreLabelService.cache[key] = name),
               map(name => MultiLangService.getValue((name as any), lang)),
@@ -104,6 +108,16 @@ export class TriplestoreLabelService {
             TriplestoreLabelService.requestCache[key] = this.userService.getUser(key).pipe(
               map(person => person.fullName),
               tap(name => TriplestoreLabelService.cache[key] = name),
+              share()
+            );
+          }
+          return TriplestoreLabelService.requestCache[key];
+        case 'MP':
+          if (!TriplestoreLabelService.requestCache[key]) {
+            TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.publications, key, {lang: 'multi'}).pipe(
+              map((publication: Publication) => publication['dc:bibliographicCitation']),
+              tap(name => TriplestoreLabelService.cache[key] = name),
+              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }

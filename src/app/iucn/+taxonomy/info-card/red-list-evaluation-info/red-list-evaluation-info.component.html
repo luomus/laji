@@ -1,7 +1,7 @@
 <ng-container *ngIf="occurrenceInfo.length">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title caption">Esiintymistä koskevat tiedot</h3>
+      <h3 class="panel-title caption">{{ 'iucn.taxon.occurrenceInfoTitle' | translate }}</h3>
     </div>
     <div class="panel-body">
       <laji-red-list-evaluation-info-rowset [values]="occurrenceInfo"></laji-red-list-evaluation-info-rowset>
@@ -11,7 +11,7 @@
 <ng-container *ngIf="occurrences.length">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title caption">Esiintymisalueet ja alueellinen uhanalaisuus</h3>
+      <h3 class="panel-title caption">{{ 'iucn.taxon.occurrenceTitle' | translate }}</h3>
     </div>
     <div class="panel-body">
       <laji-red-list-evaluation-info-rowset [values]="occurrences"></laji-red-list-evaluation-info-rowset>
@@ -21,7 +21,7 @@
 <ng-container *ngIf="habitat.length">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title caption">Elinympäristö</h3>
+      <h3 class="panel-title caption">{{ 'iucn.filter.habitat' | translate }}</h3>
     </div>
     <div class="panel-body">
       <laji-red-list-evaluation-info-rowset [values]="habitat"></laji-red-list-evaluation-info-rowset>
@@ -31,7 +31,7 @@
 <ng-container *ngIf="evaluationBases.length">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title caption">Arvioinnin perusteet</h3>
+      <h3 class="panel-title caption">{{ 'iucn.taxon.evaluationBases' | translate }}</h3>
     </div>
     <div class="panel-body">
       <laji-red-list-evaluation-info-rowset [values]="evaluationBases"></laji-red-list-evaluation-info-rowset>
@@ -41,7 +41,7 @@
 <ng-container *ngIf="criteria.length">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title caption">Kriteerit</h3>
+      <h3 class="panel-title caption">{{ 'iucn.taxon.criteria' | translate }}</h3>
     </div>
     <div class="panel-body">
       <laji-red-list-evaluation-info-rowset [values]="criteria"></laji-red-list-evaluation-info-rowset>
@@ -51,7 +51,7 @@
 <ng-container *ngIf="endanger.length">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title caption">Uhanalaisuus</h3>
+      <h3 class="panel-title caption">{{ 'iucn.taxon.endanger' | translate }}</h3>
     </div>
     <div class="panel-body">
       <laji-red-list-evaluation-info-rowset [values]="endanger"></laji-red-list-evaluation-info-rowset>
@@ -61,7 +61,7 @@
 <ng-container *ngIf="sources.length">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title caption">Lähteet</h3>
+      <h3 class="panel-title caption">{{ 'iucn.taxon.source' | translate }}</h3>
     </div>
     <div class="panel-body">
       <laji-red-list-evaluation-info-rowset [values]="sources"></laji-red-list-evaluation-info-rowset>
