@@ -17,6 +17,7 @@ import { Subscription, combineLatest } from 'rxjs';
 export class TaxonComponent implements OnInit, OnDestroy {
   taxonId: string;
   infoCardContext: string;
+  // infoCardTab: string;
 
   sidebarWidth = 225;
   showTree = true;
@@ -33,8 +34,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subParam = combineLatest(this.route.params, this.route.queryParams).subscribe(data => {
       this.taxonId = data[0]['id'];
-      this.infoCardContext = data[0]['context'] || data[1]['context'] || 'default';
-      this.showTree = data[1]['showTree'] === 'false' ? false : true;
+      // this.infoCardTab = data[1]['tab'] || 'overview';
+      this.infoCardContext = data[1]['context'] || 'default';
+      this.showTree = data[1]['showTree'] !== 'false';
       this.cd.markForCheck();
     });
   }

@@ -10,10 +10,10 @@ import { TaxonTreeComponent } from './taxon/taxon-tree/taxon-tree.component';
 import { SpeciesListComponent } from './species/species-list/species-list.component';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
-import { TaxonInfoComponent } from './taxon/info-card/taxon-info/taxon-info.component';
+import { TaxonInfoComponent } from './taxon/info-card/taxon-overview/taxon-info/taxon-info.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
-import { BoldSequenceComponent } from './taxon/info-card/taxon-info/bold-sequence/bold-sequence.component';
+import { BoldSequenceComponent } from './taxon/info-card/taxon-overview/taxon-info/bold-sequence/bold-sequence.component';
 import { SpeciesFormComponent } from './species/species-form/species-form.component';
 import { SpeciesComponent } from './species/species.component';
 import { ButtonsModule, TypeaheadModule } from 'ngx-bootstrap';
@@ -35,9 +35,9 @@ import { TaxonomyColumns } from './species/service/taxonomy-columns';
 import { TaxonExportService } from './species/service/taxon-export.service';
 import { DatatableUtil } from './species/service/datatable-util.service';
 import { InfoModule } from '../shared-modules/info/info.module';
-import { BoldSynonymComponent } from './taxon/info-card/taxon-info/bold-synonym/bold-synonym.component';
+import { BoldSynonymComponent } from './taxon/info-card/taxon-overview/taxon-info/bold-synonym/bold-synonym.component';
 import { SpeciesCountComponent } from './species/species-count/species-count.component';
-import { SpeciesPieComponent } from './taxon/info-card/species-pie/species-pie.component';
+import { SpeciesPieComponent } from './taxon/info-card/taxon-overview/species-pie/species-pie.component';
 import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { TaxonSelectModule } from '../shared-modules/taxon-select/taxon-select.module';
 import { TaxonDescriptionsComponent } from './taxon/info-card/taxon-descriptions/taxon-descriptions.component';
@@ -50,6 +50,8 @@ import {
   InformalListBreadcrumbComponent
 } from './browse-species/informal-group-select/informal-list-breadcrumb/informal-list-breadcrumb.component';
 import { SelectedParentsComponent } from './species/species-list-options-modal/selected-parents/selected-parents.component';
+import { TaxonOverviewComponent } from './taxon/info-card/taxon-overview/taxon-overview.component';
+import { TaxonImagesComponent } from './taxon/info-card/taxon-images/taxon-images.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -64,7 +66,9 @@ import { SelectedParentsComponent } from './species/species-list-options-modal/s
     SpeciesListOptionsModalComponent, BoldSynonymComponent,
     SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonDescriptionsComponent, TaxonSynonymsComponent,
     TaxonNamesComponent, BrowseSpeciesComponent, InformalGroupSelectComponent, InformalListComponent, InformalListBreadcrumbComponent,
-    SelectedParentsComponent
+    SelectedParentsComponent,
+    TaxonOverviewComponent,
+    TaxonImagesComponent
   ],
 })
 export class TaxonomyModule {

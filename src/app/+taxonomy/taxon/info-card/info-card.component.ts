@@ -6,8 +6,6 @@ import {
   Component,
   Inject,
   Input,
-  Output,
-  EventEmitter,
   OnInit,
   OnChanges,
   SimpleChanges,
@@ -23,8 +21,8 @@ import { Title } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 import { CacheService } from '../../../shared/service/cache.service';
 
-const CACHE_KEY = 'info-card-boxes';
-interface Settings { [key: string]: {open: boolean}; }
+// const CACHE_KEY = 'info-card-boxes';
+// interface Settings { [key: string]: {open: boolean}; }
 
 @Component({
   selector: 'laji-info-card',
@@ -33,26 +31,22 @@ interface Settings { [key: string]: {open: boolean}; }
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardComponent implements OnInit, OnChanges {
-  private static settings: Settings;
+  // private static settings: Settings;
 
   @ViewChild(ObservationMapComponent) map: ObservationMapComponent;
 
   public taxon: Taxonomy;
   public taxonDescription: Array<TaxonomyDescription>;
   public taxonImages: Array<TaxonomyImage>;
-  public taxonConceptId: string;
-  public activePanel = 0;
-  public activeImage = 1;
-  public activeImageTab: string;
-  public hasCollectionImages = false;
-  public hasTaxonImages = true;
-  public hasDescription = true;
+
   public loading = false;
 
   @Input() public taxonId: string;
   @Input() public context: string;
-  @Output() descriptionChange = new EventEmitter<string>();
-  public settings: Settings;
+
+  public activeTab: 'overview'|'images' = 'overview';
+  public activatedTabs = {'overview': true};
+  // public settings: Settings;
 
   constructor(
     public translate: TranslateService,
@@ -65,21 +59,28 @@ export class InfoCardComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.initSettings();
+    // this.initSettings();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxonId) {
       this.taxonDescription = [];
       this.taxonImages = [];
-      this.activeImage = 1;
       this.initTaxon().subscribe(() => {
         this.cd.markForCheck();
       });
     }
+    if (changes.activeTab) {
+      this.activatedTabs[this.activeTab] = true;
+    }
   }
 
-  private initSettings() {
+  setActiveTab(tab: 'overview'|'images') {
+    this.activeTab = tab;
+    this.activatedTabs[this.activeTab] = true;
+  }
+
+/*  private initSettings() {
     const settings$ = InfoCardComponent.settings ?
       ObservableOf(InfoCardComponent.settings) :
       this.cacheService.getItem<Settings>(CACHE_KEY)
@@ -100,30 +101,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
     this.cacheService.setItem<Settings>(CACHE_KEY, InfoCardComponent.settings)
       .subscribe(() => {}, () => {});
   }
-
-  onCollectionImagesLoaded(event) {
-    this.hasCollectionImages = event;
-    this.updateMap();
-  }
-
-  setActive(event) {
-    this.activePanel = this.activePanel === event.value ? null : event.value;
-  }
-
-  setActiveImageTab(tab: string) {
-    this.activeImageTab = tab;
-  }
-
-  get isFromMasterChecklist() {
-    const masterChecklist = 'MR.1';
-    if (!this.taxon) {
-      return false;
-    }
-    if (this.taxon.checklist) {
-      return this.taxon.checklist.indexOf(masterChecklist) > -1;
-    }
-    return this.taxon.nameAccordingTo === masterChecklist;
-  }
+*/
 
   private updateMap() {
     if (!this.map || !isPlatformBrowser(this.platformId)) {
@@ -155,16 +133,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
           }
           return prev;
         }, []);
-        this.hasDescription = this.taxonDescription.length > 0;
-        this.hasTaxonImages = this.taxonImages.length > 0;
-        this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
-        this.hasCollectionImages = false;
-        (this.taxon.additionalIds || []).map(id => {
-          const parts = id.split(':');
-          if (parts[0] === 'taxonid') {
-            this.taxonConceptId = parts[1];
-          }
-        });
+
         this.setTitle();
         this.updateMap();
       })

@@ -4,10 +4,10 @@
     <th>{{ 'taxonomy.nameAccordingTo' | translate }}</th>
     <td>{{ taxon.nameAccordingTo | checklist }}</td>
   </tr>
-  <!--tr *ngIf="taxon.originalPublication">
+  <tr *ngIf="taxon.originalPublication">
     <th>{{ 'taxonomy.originalPublication' | translate }}</th>
     <td>{{ taxon.originalPublication }}</td>
-  </tr-->
+  </tr>
   <tr>
     <th>{{ 'taxonomy.scientific.name' | translate }}</th>
     <td>
@@ -18,11 +18,11 @@
     <th>{{ 'taxonomy.author' | translate }}</th>
     <td>{{ taxon.scientificNameAuthorship }}</td>
   </tr>
-  <!--tr *ngIf="taxon.vernacularName">
+  <tr *ngIf="taxon.vernacularName">
     <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
     <td>{{ taxon.vernacularName | multiLang }}</td>
   </tr>
-  <tr *ngIf="taxon.synonyms">
+  <!--tr *ngIf="taxon.synonyms">
     <th>{{ 'taxonomy.synonyms' | translate }}</th>
     <td>
       <ul class="comma-list">
@@ -38,7 +38,7 @@
     <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
     <td>{{ taxon.occurrenceInFinland | label }}</td>
   </tr>
-  <!--tr *ngIf="taxon.invasiveSpecies">
+  <tr *ngIf="taxon.invasiveSpecies">
     <th>
       <img src="/static/images/vieraslaji.png" class="img-responsive"/>
     </th>
@@ -73,7 +73,7 @@
       </ul>
     </td>
   </tr>
-  <tr>
+  <!--tr>
     <th>{{ 'taxonomy.card.id' | translate }}</th>
     <td>
       http://tun.fi/{{ taxon.id }}
@@ -89,7 +89,7 @@
         </a>
       </div>
     </td>
-  </tr>
+  </tr-->
   <tr *ngIf="taxon.taxonExpert && taxon.taxonExpert.length > 0">
     <th>{{ (taxon.taxonExpert.length > 1 ? 'taxonomy.experts' : 'taxonomy.expert') | translate }}</th>
     <td>
@@ -110,6 +110,6 @@
       <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
       <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
     </td>
-  </tr-->
+  </tr>
   </tbody>
 </table>

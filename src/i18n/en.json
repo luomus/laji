@@ -817,6 +817,7 @@
   "taxonomy.species": "species",
   "taxonomy.species.singular": "species",
   "taxonomy.total": "Total",
+  "taxonomy.overview": "Yleiskuvaus",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Description",
