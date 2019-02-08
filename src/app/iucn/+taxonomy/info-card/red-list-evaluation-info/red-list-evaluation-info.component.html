@@ -1,11 +1,23 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title caption">Yleistä</h3>
+<ng-container *ngIf="occurrenceInfo.length">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title caption">Esiintymistä koskevat tiedot</h3>
+    </div>
+    <div class="panel-body">
+      <laji-red-list-evaluation-info-rowset [values]="occurrenceInfo"></laji-red-list-evaluation-info-rowset>
+    </div>
   </div>
-  <div class="panel-body">
-    <laji-red-list-evaluation-info-rowset [values]="generalValues"></laji-red-list-evaluation-info-rowset>
+</ng-container>
+<ng-container *ngIf="occurrences.length">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title caption">Esiintymisalueet ja alueellinen uhanalaisuus</h3>
+    </div>
+    <div class="panel-body">
+      <laji-red-list-evaluation-info-rowset [values]="occurrences"></laji-red-list-evaluation-info-rowset>
+    </div>
   </div>
-</div>
+</ng-container>
 <ng-container *ngIf="habitat.length">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -36,13 +48,13 @@
     </div>
   </div>
 </ng-container>
-<ng-container *ngIf="occurrences.length">
+<ng-container *ngIf="endanger.length">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title caption">Esiintymisalueet ja alueellinen uhanalaisuus</h3>
+      <h3 class="panel-title caption">Uhanalaisuus</h3>
     </div>
     <div class="panel-body">
-      <laji-red-list-evaluation-info-rowset [values]="occurrences"></laji-red-list-evaluation-info-rowset>
+      <laji-red-list-evaluation-info-rowset [values]="endanger"></laji-red-list-evaluation-info-rowset>
     </div>
   </div>
 </ng-container>

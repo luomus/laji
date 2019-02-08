@@ -7,7 +7,7 @@
           <ng-container *ngIf="latestStatus">
             <laji-taxon-status [status]="latestStatus.redListStatus"></laji-taxon-status>
             <label>{{ 'MKV.criteriaForStatus' | label }}</label><br>
-            <p>{{ latestStatus.criteriaForStatus }} &mdash; {{ latestStatus.reasonForStatusChange | label }}</p>
+            <p>{{ latestStatus.criteriaForStatus }}</p>
           </ng-container>
           <ng-container *ngIf="taxon.administrativeStatuses && taxon.administrativeStatuses.length > 0">
           <label>Lajia koskevat hallinnolliset lajitiedot</label>

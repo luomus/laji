@@ -13,7 +13,7 @@ export class RedListEvaluationInfoComponent {
   generalValues: IRow[] = [];
   endanger: IRow[] = [];
   taxonInterpretation: IRow[] = [];
-  occuranceInfo: IRow[] = [];
+  occurrenceInfo: IRow[] = [];
   habitat: IRow[] = [];
   occurrences: IRow[] = [];
   evaluationBases: IRow[] = [];
@@ -77,6 +77,34 @@ export class RedListEvaluationInfoComponent {
     'MKV.criteriaNotes': 'criteria',
     'MKV.publication': 'sources',
     'MKV.otherSources': 'sources',
+    'MKV.distributionAreaMin': 'occurrenceInfo',
+    'MKV.distributionAreaMax': 'occurrenceInfo',
+    'MKV.distributionAreaNotes': 'occurrenceInfo',
+    'MKV.occurrenceAreaMin': 'occurrenceInfo',
+    'MKV.occurrenceAreaMax': 'occurrenceInfo',
+    'MKV.occurrenceAreaNotes': 'occurrenceInfo',
+    'MKV.occurrenceNotes': 'occurrenceInfo',
+    'MKV.redListStatus': 'endanger',
+    'MKV.redListStatusNotes': 'endanger',
+    'MKV.ddReason': 'endanger',
+    'MKV.ddReasonNotes': 'endanger',
+    'MKV.ddReasonClass': 'endanger',
+    'MKV.criteriaForStatus': 'endanger',
+    'MKV.criteriaForStatusNotes': 'endanger',
+    'MKV.redListStatusMin': 'endanger',
+    'MKV.redListStatusMax': 'endanger',
+    'MKV.exteralPopulationImpactOnRedListStatus': 'endanger',
+    'MKV.exteralPopulationImpactOnRedListStatusNotes': 'endanger',
+    'MKV.reasonForStatusChange': 'endanger',
+    'MKV.reasonForStatusChangeNotes': 'endanger',
+    'MKV.possiblyRE': 'endanger',
+    'MKV.possiblyRENotes': 'endanger',
+    'MKV.lastSightingNotes': 'endanger',
+    'MKV.redListStatusAccuracyNotes': 'endanger',
+    'MKV.lsaRecommendation': 'endanger',
+    'MKV.lsaRecommendationNotes': 'endanger',
+    'MKV.percentageOfGlobalPopulation': 'endanger',
+    'MKV.percentageOfGlobalPopulationNotes': 'endanger',
   };
 
   constructor() { }
