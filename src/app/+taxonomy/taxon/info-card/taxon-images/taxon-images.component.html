@@ -7,7 +7,7 @@
 <laji-gallery
   [hidden]="hasTypeSpecimens === false"
   [shortPager]="true"
-  [query]="{taxonId: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3,KE.167', typeSpecimen: true}"
+  [query]="{taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: true}"
   [pageSize]="12"
   [showPaginatorOnlyWhenNeeded]="true"
   (hasData)="hasTypeSpecimens = $event"
@@ -17,7 +17,7 @@
 <laji-gallery
   [hidden]="hasCollectionImages === false"
   [shortPager]="true"
-  [query]="{taxonId: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3,KE.167', typeSpecimen: false}"
+  [query]="{taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false}"
   [pageSize]="12"
   [showPaginatorOnlyWhenNeeded]="true"
   (hasData)="hasCollectionImages = $event"
@@ -27,7 +27,7 @@
 <laji-gallery
   [hidden]="hasObservationImages === false"
   [shortPager]="true"
-  [query]="{taxonId: taxon.id, recordBasis: 'HUMAN_OBSERVATION_PHOTO', taxonReliability: 'RELIABLE'}"
+  [query]="{taxonId: [taxon.id], recordBasis: ['HUMAN_OBSERVATION_PHOTO'], taxonReliability: ['RELIABLE']}"
   [pageSize]="12"
   [showPaginatorOnlyWhenNeeded]="true"
   (hasData)="hasObservationImages = $event"

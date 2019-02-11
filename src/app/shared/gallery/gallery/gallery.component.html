@@ -3,7 +3,7 @@
     <div *ngIf="images.length === 0">{{ 'observation.form.noImages' | translate }}</div>
     <laji-image-gallery [showPopover]="showPopover" [showViewSwitch]="showViewSwitch" [view]="view" [modalImages]="images" [eventOnClick]="eventOnImageClick" (select)="selected.emit($event)"></laji-image-gallery>
   </ng-container>
-  <laji-paginator *ngIf="showPaginator && (!showPaginatorOnlyWhenNeeded || total > pageSize)"
+  <laji-paginator *ngIf="showPaginator && (!showPaginatorOnlyWhenNeeded || (!loading && total > pageSize))"
                   [page]="page" [count]="total"
                   [size]="pageSize"
                   (change)="pageChanged($event)"

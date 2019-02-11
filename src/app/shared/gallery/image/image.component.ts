@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import { ScriptService } from '../service/script.service';
+import { ScriptService } from '../../service/script.service';
 
 @Component({
   selector: 'laji-image',

@@ -69,10 +69,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
         this.initTaxonSub.unsubscribe();
       }
 
-      this.taxonDescription = [];
-      this.taxonImages = [];
       this.loading = true;
-
       this.initTaxonSub = this.initTaxon().subscribe(() => {
         this.loading = false;
         this.cd.markForCheck();

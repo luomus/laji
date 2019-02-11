@@ -6,7 +6,6 @@ import { FormService } from '../../../shared/service/form.service';
 import { Document } from '../../../shared/model/Document';
 import { Units } from '../../../shared/model/Units';
 import { TranslateService } from '@ngx-translate/core';
-import { Image } from '../../../shared/image-gallery/image.interface';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { Global } from '../../../../environments/global';
 const { JSONPath } = require('jsonpath-plus');

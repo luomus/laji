@@ -1,5 +1,9 @@
-import {Component, OnChanges, Input } from '@angular/core';
-import {Taxonomy, TaxonomyDescription, TaxonomyImage} from '../../../../shared/model/Taxonomy';
+import { Component, OnChanges, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../../../shared/model/Taxonomy';
+import { GalleryService } from '../../../../shared/gallery/service/gallery.service';
+import { Observable, of, Subscription } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
+import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-taxon-overview',
@@ -9,9 +13,12 @@ import {Taxonomy, TaxonomyDescription, TaxonomyImage} from '../../../../shared/m
 export class TaxonOverviewComponent implements OnChanges {
   @Input() taxon: Taxonomy;
   @Input() taxonImages: Array<TaxonomyImage>;
+  @Output() hasImageData = new EventEmitter<boolean>();
 
   images = [];
   ingress: any;
+
+  private imageSub: Subscription;
 
   @Input() set taxonDescription(taxonDescription: Array<TaxonomyDescription>) {
     this.ingress = undefined;
@@ -23,14 +30,13 @@ export class TaxonOverviewComponent implements OnChanges {
     }
   }
 
-  constructor() { }
+  constructor(
+    private galleryService: GalleryService,
+    private cd: ChangeDetectorRef
+  ) { }
 
   ngOnChanges() {
-    this.images = [];
-
-    if (this.taxonImages && this.taxonImages.length > 0) {
-      this.images = this.taxonImages.slice(0, 9);
-    }
+    this.setImages();
   }
 
   get isFromMasterChecklist() {
@@ -44,4 +50,52 @@ export class TaxonOverviewComponent implements OnChanges {
     return this.taxon.nameAccordingTo === masterChecklist;
   }
 
+  private setImages() {
+    if (this.imageSub) {
+      this.imageSub.unsubscribe();
+    }
+
+    this.images = [];
+
+    const taxonImages = (this.taxonImages || []).slice(0, 9);
+    let missingImages = (this.taxon.species ? 1 : 9) - taxonImages.length;
+
+    let imageObs: Observable<any>;
+    if (missingImages > 0) {
+      imageObs = this.getImages(
+        { taxonId: [this.taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'] },
+        missingImages
+      ).pipe(
+        switchMap(collectionImages => {
+          const images = taxonImages.concat(collectionImages);
+          missingImages = (this.taxon.species ? 1 : 9) - images.length;
+
+          if (missingImages > 0) {
+            return this.getImages(
+              { taxonId: [this.taxon.id], recordBasis: ['HUMAN_OBSERVATION_PHOTO'], taxonReliability: ['RELIABLE'] },
+              missingImages
+            ).pipe(
+              map(observationImages => images.concat(observationImages))
+            );
+          } else {
+            return of(images);
+          }
+        }));
+    } else {
+      imageObs = of(taxonImages);
+    }
+
+    this.imageSub = imageObs.subscribe(images => {
+      this.hasImageData.emit(images.length > 0);
+      this.images = images;
+      this.cd.markForCheck();
+    });
+  }
+
+  private getImages(query: WarehouseQueryInterface, limit: number): Observable<any[]> {
+    return this.galleryService.getList(
+      query,
+      undefined, limit, 1
+    ).pipe(map(res => this.galleryService.getImages(res, limit)));
+  }
 }

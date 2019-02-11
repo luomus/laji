@@ -28,7 +28,6 @@ import { SpeciesImagesComponent } from './species/species-images/species-images.
 import { TaxonConceptInfoComponent } from './taxon/info-card/taxon-concept-info/taxon-concept-info.component';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { TreeComponent } from './taxon/taxon-tree/tree/tree.component';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SpeciesListOptionsModalComponent } from './species/species-list-options-modal/species-list-options-modal.component';
 import { TaxonomyColumns } from './species/service/taxonomy-columns';
@@ -55,7 +54,7 @@ import { TaxonImagesComponent } from './taxon/info-card/taxon-images/taxon-image
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
-    SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, ObservationMapModule, NgxDatatableModule,
+    SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, ObservationMapModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
