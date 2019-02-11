@@ -1,5 +1,5 @@
 import {catchError, concat, take, delay, retryWhen, map, tap} from 'rxjs/operators';
-import { Observable, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
+import {Observable, of as ObservableOf, Subscription, throwError as observableThrowError} from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -35,18 +35,19 @@ export class InfoCardComponent implements OnInit, OnChanges {
 
   @ViewChild(ObservationMapComponent) map: ObservationMapComponent;
 
-  public taxon: Taxonomy;
-  public taxonDescription: Array<TaxonomyDescription>;
-  public taxonImages: Array<TaxonomyImage>;
+  taxon: Taxonomy;
+  taxonDescription: Array<TaxonomyDescription>;
+  taxonImages: Array<TaxonomyImage>;
 
-  public loading = false;
+  loading = false;
 
   @Input() public taxonId: string;
   @Input() public context: string;
 
-  public activeTab: 'overview'|'images' = 'overview';
-  public activatedTabs = {'overview': true};
+  activeTab: 'overview'|'images' = 'overview';
+  activatedTabs = {'overview': true};
   // public settings: Settings;
+  initTaxonSub: Subscription;
 
   constructor(
     public translate: TranslateService,
@@ -64,12 +65,20 @@ export class InfoCardComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxonId) {
+      if (this.initTaxonSub) {
+        this.initTaxonSub.unsubscribe();
+      }
+
       this.taxonDescription = [];
       this.taxonImages = [];
-      this.initTaxon().subscribe(() => {
+      this.loading = true;
+
+      this.initTaxonSub = this.initTaxon().subscribe(() => {
+        this.loading = false;
         this.cd.markForCheck();
       });
     }
+
     if (changes.activeTab) {
       this.activatedTabs[this.activeTab] = true;
     }
@@ -116,10 +125,8 @@ export class InfoCardComponent implements OnInit, OnChanges {
   }
 
   private initTaxon(): Observable<any> {
-    this.loading = true;
     return this.getTaxon(this.taxonId).pipe(
       tap(taxon => {
-        this.loading = false;
         this.taxon = taxon;
         this.taxonImages = (taxon.multimedia || []).map(img => {
           if (img.taxon) {

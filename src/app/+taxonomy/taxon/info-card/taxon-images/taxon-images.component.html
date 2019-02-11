@@ -1,4 +1,34 @@
-<h3>Valitut kuvat</h3>
-<laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
+<ng-container *ngIf="taxonImages && taxonImages.length > 0">
+  <h3>Valitut kuvat</h3>
+  <laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
+</ng-container>
 
-<!--laji-gallery [shortPager]="true" [query]="{taxonId: taxon.id, taxonRankId: taxon.taxonRank, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"></laji-gallery-->
+<h3 *ngIf="hasTypeSpecimens">Tyyppinäytteet</h3>
+<laji-gallery
+  [hidden]="hasTypeSpecimens === false"
+  [shortPager]="true"
+  [query]="{taxonId: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3,KE.167', typeSpecimen: true}"
+  [pageSize]="12"
+  [showPaginatorOnlyWhenNeeded]="true"
+  (hasData)="hasTypeSpecimens = $event"
+></laji-gallery>
+
+<h3 *ngIf="hasCollectionImages">Kokoelmanäytteet</h3>
+<laji-gallery
+  [hidden]="hasCollectionImages === false"
+  [shortPager]="true"
+  [query]="{taxonId: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3,KE.167', typeSpecimen: false}"
+  [pageSize]="12"
+  [showPaginatorOnlyWhenNeeded]="true"
+  (hasData)="hasCollectionImages = $event"
+></laji-gallery>
+
+<h3 *ngIf="hasObservationImages">Vahvistetut havaintokuvat</h3>
+<laji-gallery
+  [hidden]="hasObservationImages === false"
+  [shortPager]="true"
+  [query]="{taxonId: taxon.id, recordBasis: 'HUMAN_OBSERVATION_PHOTO', taxonReliability: 'RELIABLE'}"
+  [pageSize]="12"
+  [showPaginatorOnlyWhenNeeded]="true"
+  (hasData)="hasObservationImages = $event"
+></laji-gallery>

@@ -20,6 +20,7 @@ export class GalleryComponent implements OnChanges {
   @Input() pageSize = 50;
   @Input() limit = 1000;
   @Input() showPaginator = true;
+  @Input() showPaginatorOnlyWhenNeeded = false;
   @Input() shortPager = false;
   @Input() eventOnImageClick = false;
   @Input() showViewSwitch = false;

@@ -31,6 +31,7 @@
     ></laji-taxon-overview>
     <laji-taxon-images [hidden]="activeTab !== 'images'"
                          *ngIf="activatedTabs['images']"
+                       [taxon]="taxon"
                        [taxonImages]="taxonImages"
     ></laji-taxon-images>
   </div>
