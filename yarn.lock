@@ -4896,10 +4896,10 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.572:
-  version "0.0.572"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.572.tgz#bebdb2a59c73cb207dd9b0b944ae386a2253ec62"
-  integrity sha512-Aj4/gbh0hxAfK4nzP97R19b8uZXQosieR4C1VmLdjYdZXpNXUz3Nt6jl8x706YSmqmUtXKsyv28gaR5rhGcrQQ==
+laji-form@^0.0.573:
+  version "0.0.573"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.573.tgz#531650a6c5529b1d8c2f49d761624477fe29b4d1"
+  integrity sha512-n32AflM+OJpXw1VxWYhqrgJslINt9pWwE3K0xGu0snNrrTZedXaAug9ZEjnlPOJc/fPyePB5ObVapOdBFozmDw==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
