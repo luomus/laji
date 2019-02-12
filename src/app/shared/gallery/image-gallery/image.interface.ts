@@ -1,4 +1,4 @@
-import { TaxonomyImage } from '../model/Taxonomy';
+import { TaxonomyImage } from '../../model/Taxonomy';
 
 export interface Image extends TaxonomyImage {
 

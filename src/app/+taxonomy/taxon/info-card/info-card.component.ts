@@ -16,7 +16,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../../shared/logger/logger.service';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
-import { ObservationMapComponent } from '../../../shared-modules/observation-map/observation-map/observation-map.component';
 import { Title } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 import { CacheService } from '../../../shared/service/cache.service';
@@ -32,8 +31,6 @@ import { CacheService } from '../../../shared/service/cache.service';
 })
 export class InfoCardComponent implements OnInit, OnChanges {
   // private static settings: Settings;
-
-  @ViewChild(ObservationMapComponent) map: ObservationMapComponent;
 
   taxon: Taxonomy;
   taxonDescription: Array<TaxonomyDescription>;
@@ -69,10 +66,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
         this.initTaxonSub.unsubscribe();
       }
 
-      this.taxonDescription = [];
-      this.taxonImages = [];
       this.loading = true;
-
       this.initTaxonSub = this.initTaxon().subscribe(() => {
         this.loading = false;
         this.cd.markForCheck();
@@ -112,7 +106,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
   }
 */
 
-  private updateMap() {
+ /* private updateMap() {
     if (!this.map || !isPlatformBrowser(this.platformId)) {
       return;
     }
@@ -122,7 +116,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
         this.cd.markForCheck();
       }
     }, 100);
-  }
+  }*/
 
   private initTaxon(): Observable<any> {
     return this.getTaxon(this.taxonId).pipe(
@@ -142,7 +136,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
         }, []);
 
         this.setTitle();
-        this.updateMap();
+        // this.updateMap();
       })
     );
   }

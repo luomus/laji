@@ -111,5 +111,13 @@
       <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
     </td>
   </tr>
+  <tr *ngIf="taxon.informalTaxonGroups && taxon.informalTaxonGroups.length > 0">
+    <th>{{ 'taxonomy.informalTaxonGroups' | translate }}</th>
+    <td>
+      <ul>
+        <li *ngFor="let group of taxon.informalTaxonGroups">{{ group | label }}</li>
+      </ul>
+    </td>
+  </tr>
   </tbody>
 </table>

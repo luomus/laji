@@ -1,5 +1,5 @@
 import { Input, Component, OnInit } from '@angular/core';
-import { Image } from '../../../shared/image-gallery/image.interface';
+import { Image } from '../../../shared/model/Image';
 
 @Component({
   selector: 'laji-print-images',

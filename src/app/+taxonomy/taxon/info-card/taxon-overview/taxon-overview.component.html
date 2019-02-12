@@ -1,21 +1,40 @@
 <div class="block-container">
   <div class="block">
+
     <div class="panel no-box-shadow" *ngIf="images.length > 0 || ingress">
       <div class="panel-body">
         <div class="image-container" [ngClass]="{'image-grid': !taxon.species}">
-          <ng-container *ngIf="taxon.species else imageGrid">
-            <img src="{{ images[0].thumbnailURL }}"
-                 placement="bottom"
-                 triggers="mouseenter:mouseleave"
-                 class="ng-thumb compact"
-                 alt="Image" />
-          </ng-container>
-          <ng-template #imageGrid>
-            <laji-image-gallery [modalImages]="images"></laji-image-gallery>
-          </ng-template>
+          <laji-image-gallery
+            [modalImages]="images"
+            [view]="taxon.species ? 'full3' : 'compact'"
+            [showOverlay]="false"
+            [showPopover]="false"
+          ></laji-image-gallery>
         </div>
         <span *ngIf="ingress" [innerHTML]="ingress | multiLang"></span>
       </div>
+    </div>
+
+    <div *ngIf="isFromMasterChecklist"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.map' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-ykj-map
+        [query]="{taxonId: [taxon.id], countryId: ['ML.206']}"
+        [height]="'600px'"
+        [type]="'individualCountSum'"
+        [types]="['individualCountSum']"
+        [mapOptions]="{
+          controls: false,
+          zoom: 2
+        }"
+      ></laji-ykj-map>
     </div>
 
     <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0"
@@ -40,188 +59,23 @@
       <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
     </div>
 
-    <div *ngIf="isFromMasterChecklist"
-         class="panel panel-default"
+    <div class="panel panel-default"
          laji-panel
-         [title]="'taxonomy.map' | translate"
+         [title]="'taxonomy.card.download' | translate"
          [open]="true"
          [autoToggle]="true"
     >
-      <p class="disclaimer">
-        {{ 'taxonomy.map.disclaimer' | translate }}
-      </p>
-      <laji-observation-map [color]="'#009900'"
-                            [settingsKey]="'taxonMap'"
-                            [center]="[64.5, 25.0]"
-                            [query]="{taxonId: [taxon.id]}"
-                            [height]="300"
-                            [draw]="false">
-      </laji-observation-map>
+      <div class="download-formats">
+        <a href="/api/taxa/{{ taxon.id }}?locale={{ translate.currentLang }}" rel="noopener" target="_blank">
+          <span class="label label-default">json</span>
+        </a>
+        <a href="http://tun.fi/{{ taxon.id }}?format=rdfxml" rel="noopener" target="_blank">
+          <span class="label label-primary">rdf+xml</span>
+        </a>
+        <a href="http://tun.fi/{{ taxon.id }}?format=rdfxml_dwc" rel="noopener" target="_blank">
+          <span class="label label-success">dwc</span>
+        </a>
+      </div>
     </div>
   </div>
 </div>
-
-<!--div>
-  <div class="block">
-    <div class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.card' | translate"
-         [open]="settings['taxon-info']?.open !== false"
-         [autoToggle]="true"
-         (activate)="updateSettings('taxon-info', $event.open)"
-    >
-      <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
-    </div>
-
-    <div *ngIf="hasDescription"
-         class="panel panel-default"
-         laji-panel
-         [title]="'Kuvaukset'"
-         [open]="settings['taxon-descriptions']?.open !== false"
-         [autoToggle]="true"
-         (activate)="updateSettings('taxon-descriptions', $event.open)"
-    >
-      <laji-taxon-descriptions
-        [taxonDescription]="taxonDescription"
-        [context]="context"
-        (descriptionChange)="descriptionChange.emit($event)"
-      ></laji-taxon-descriptions>
-    </div>
-
-    <div *ngIf="taxon.misspelledNames"
-         class="panel panel-default"
-         laji-panel
-         [title]="'Synonyymit'"
-         [open]="settings['taxon-synonyms']?.open !== false"
-         [autoToggle]="true"
-         (activate)="updateSettings('taxon-synonyms', $event.open)"
-    >
-      <laji-taxon-synonyms [taxon]="taxon"></laji-taxon-synonyms>
-    </div>
-
-    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName"
-         class="panel panel-default"
-         laji-panel
-         [title]="'Muut nimet'"
-         [open]="settings['taxon-names']?.open !== false"
-         [autoToggle]="true"
-         (activate)="updateSettings('taxon-names', $event.open)"
-    >
-      <laji-taxon-names [taxon]="taxon"></laji-taxon-names>
-    </div>
-
-    <div *ngIf="taxonConceptId"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.taxonConcept' | translate"
-         [open]="settings['taxon-concept-info']?.open !== false"
-         [autoToggle]="true"
-         (activate)="updateSettings('taxon-concept-info', $event.open)"
-    >
-      <laji-taxon-concept-info [taxonId]="taxon.id" [taxonConceptId]="taxonConceptId"></laji-taxon-concept-info>
-    </div>
-  </div>
-
-  <div class="block">
-    <div *ngIf="isFromMasterChecklist"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.map' | translate"
-         [open]="settings['taxon-map']?.open !== false"
-         [autoToggle]="true"
-         (activate)="updateSettings('taxon-map', $event.open)"
-    >
-      <p class="disclaimer">
-        {{ 'taxonomy.map.disclaimer' | translate }}
-      </p>
-      <laji-observation-map [color]="'#009900'"
-                            [settingsKey]="'taxonMap'"
-                            [center]="[64.5, 25.0]"
-                            [query]="{taxonId: [taxon.id]}"
-                            [height]="300"
-                            [draw]="false">
-      </laji-observation-map>
-    </div>
-
-    <div class="panel panel-default taxon-images"
-         laji-panel
-         [hidden]="!hasTaxonImages && !hasCollectionImages"
-         [title]="'taxonomy.images' | translate"
-         [open]="settings['taxon-images']?.open !== false"
-         [autoToggle]="true"
-         (activate)="updateSettings('taxon-images', $event.open)"
-    >
-      <ul class="nav nav-tabs">
-        <li role="presentation"
-            [ngClass]="{active: activeImageTab === 'taxon'}"
-            *ngIf="hasTaxonImages">
-          <a (click)="setActiveImageTab('taxon')">
-            {{ 'taxonomy.images.taxon' | translate }}
-          </a>
-        </li>
-        <li role="presentation"
-            [ngClass]="{active: activeImageTab === 'collection'}"
-            *ngIf="hasCollectionImages">
-          <a (click)="setActiveImageTab('collection')">
-            {{ 'taxonomy.images.collection' | translate }}
-          </a>
-        </li>
-      </ul>
-      <div [hidden]="activeImageTab !== 'taxon'" *ngIf="hasTaxonImages">
-        <laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
-      </div>
-      <div *ngIf="isFromMasterChecklist" [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
-        <laji-gallery
-          *ngIf="taxon.species"
-          [shortPager]="true"
-          (hasData)="onCollectionImagesLoaded($event)"
-          [query]="{taxonId: taxon.id, taxonRankId: taxon.taxonRank, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"
-        ></laji-gallery>
-      </div>
-    </div>
-
-    <div *ngIf="taxon.hasChildren"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.speciesPieChartTitle' | translate"
-         [open]="settings['species-pie']?.open !== false"
-         [autoToggle]="true"
-         (activate)="updateSettings('species-pie', $event.open)"
-    >
-      <laji-species-pie
-        [taxonId]="taxon.id"
-      ></laji-species-pie>
-    </div>
-
-    <div class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.browse.title' | translate"
-         [open]="settings['browse']?.open !== false"
-         [autoToggle]="true"
-         (activate)="updateSettings('browse', $event.open)"
-    >
-      <ul class="br-list">
-        <li>
-          <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
-            {{ 'taxonomy.browse' | translate }}
-          </a>
-        </li>
-        <li>
-          <a [routerLink]="'/observation/load' | localize" [queryParams]="{target: taxon.id}">
-            {{ 'taxonomy.browse.download' | translate }}
-          </a>
-        </li>
-        <li [hidden]="!taxon.hasChildren">
-          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id)}">
-            {{ 'taxonomy.browse.downloadSpecies' | translate }}
-          </a>
-        </li>
-        <li [hidden]="!taxon.hasChildren">
-          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id), onlyFinnish: true}">
-            {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div-->
