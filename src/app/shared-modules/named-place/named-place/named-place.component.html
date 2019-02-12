@@ -14,7 +14,7 @@
     <ng-container *ngIf="filterByMunicipality && !editMode">
       <label>{{ 'MNP.municipality' | label }}</label>
       <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality"
-      [allOptionEnabled]='true' (select)="onMunicipalityChange($event)" [value]='municipality'></laji-area-select>
+      [allOptionEnabled]='true' [selectOptionEnabled]='false' (select)="onMunicipalityChange($event)" [value]="municipality"></laji-area-select>
     </ng-container>
     <div *ngIf="filterByBirdAssociationArea">
       <label [tooltip]="birdAssociationAreaHelp"

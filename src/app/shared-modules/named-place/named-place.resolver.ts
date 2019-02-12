@@ -51,7 +51,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     const queryParams = route.queryParams;
     const edit = queryParams['edit'] === 'true';
     this.birdAssociationId = queryParams['birdAssociationArea'];
-    this.municipalityId = queryParams['municipality'];
+    this.municipalityId = queryParams['municipality'] || 'all';
     this.tags = (queryParams['tags'] || '').split(',');
     const activeNPId = queryParams['activeNP'];
 
@@ -64,7 +64,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
             || environment.namedPlaceForm
           ),
           this.getFormRights$(data.documentForm),
-          this.namedPlacesService.getNamedPlace(activeNPId, undefined, (data.documentForm.namedPlaceOptions || {}).includeUnits)
+          this.namedPlacesService.getNamedPlace(activeNPId, undefined, (data.documentForm.namedPlaceOptions || {}).includeUnits),
         ).pipe(
           map<any, NPResolverData>(([namedPlaces, placeForm, formRights, activeNP]) => ({
             ...data,
@@ -145,18 +145,6 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
 
   getFormRights$(documentForm: any): Observable<Rights> {
     return this.formPermissionService.getRights(documentForm);
-  }
-
-  findLangFromRoute(_route: ActivatedRouteSnapshot) {
-    let lang = 'fi';
-    const routes: ActivatedRouteSnapshot[] = _route.pathFromRoot;
-    for (const route of routes) {
-      const data = route.data;
-      if (data.lang) {
-        lang = data.lang;
-      }
-    }
-    return lang;
   }
 
   npRequirementsNotMet(documentForm) {
