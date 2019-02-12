@@ -64,7 +64,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
             || environment.namedPlaceForm
           ),
           this.getFormRights$(data.documentForm),
-          this.namedPlacesService.getNamedPlace(activeNPId, undefined, (data.documentForm.namedPlaceOptions || {}).includeUnits),
+          this.namedPlacesService.getNamedPlace(activeNPId, undefined, (data.documentForm.namedPlaceOptions || {}).includeUnits)
         ).pipe(
           map<any, NPResolverData>(([namedPlaces, placeForm, formRights, activeNP]) => ({
             ...data,
