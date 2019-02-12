@@ -3,16 +3,12 @@
     <div class="panel no-box-shadow" *ngIf="images.length > 0 || ingress">
       <div class="panel-body">
         <div class="image-container" [ngClass]="{'image-grid': !taxon.species}">
-          <ng-container *ngIf="taxon.species else imageGrid">
-            <img src="{{ images[0].thumbnailURL }}"
-                 placement="bottom"
-                 triggers="mouseenter:mouseleave"
-                 class="ng-thumb compact"
-                 alt="Image" />
-          </ng-container>
-          <ng-template #imageGrid>
-            <laji-image-gallery [modalImages]="images"></laji-image-gallery>
-          </ng-template>
+          <laji-image-gallery
+            [modalImages]="images"
+            [view]="taxon.species ? 'full3' : 'compact'"
+            [showOverlay]="false"
+            [showPopover]="false"
+          ></laji-image-gallery>
         </div>
         <span *ngIf="ingress" [innerHTML]="ingress | multiLang"></span>
       </div>

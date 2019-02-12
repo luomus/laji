@@ -34,7 +34,7 @@
   cursor: pointer;
 }
 
-.fullContainer {
+.full-container {
   width: 360px;
   float:left;
   margin: 3px;
@@ -63,18 +63,18 @@ img.ng-thumb.full {
   margin: 0 5px 0 0;
 }
 
-.full-image-container {
+.full2-container {
   position: relative;
   float: left;
   width: 170px;
   height: 160px;
   margin: -5px 5px 0 0;
 }
-.full-image-container img.ng-thumb {
+.full2-container img.ng-thumb {
   width: 170px;
   height: 150px;
 }
-.full-image-container h4 {
+.full2-container h4 {
   font-size: .8em;
   background-color: rgba(0,0,0,.7);
   color: #fff;

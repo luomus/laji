@@ -6,7 +6,7 @@
   margin-right: 15px;
 }
 .image-container.image-grid {
-  width: calc(91px * 3);
+  max-width: calc(91px * 3);
 }
 
 .block-container {

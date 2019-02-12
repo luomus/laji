@@ -57,25 +57,31 @@ export class TaxonOverviewComponent implements OnChanges {
 
     this.images = [];
 
-    const taxonImages = (this.taxonImages || []).slice(0, 9);
-    let missingImages = (this.taxon.species ? 1 : 9) - taxonImages.length;
+    const nbrOfImages = this.taxon.species ? 1 : 9;
 
-    let imageObs: Observable<any>;
+    const taxonImages = (this.taxonImages || []).slice(0, nbrOfImages);
+    let missingImages = nbrOfImages - taxonImages.length;
+
+    let imageObs: Observable<any[]>;
     if (missingImages > 0) {
       imageObs = this.getImages(
-        { taxonId: [this.taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'] },
+        {
+          taxonId: [this.taxon.id],
+          recordBasis: ['HUMAN_OBSERVATION_PHOTO', 'HUMAN_OBSERVATION_UNSPECIFIED'],
+          taxonReliability: ['RELIABLE']
+        },
         missingImages
       ).pipe(
-        switchMap(collectionImages => {
-          const images = taxonImages.concat(collectionImages);
-          missingImages = (this.taxon.species ? 1 : 9) - images.length;
+        switchMap(observationImages => {
+          const images = taxonImages.concat(observationImages);
+          missingImages = nbrOfImages - images.length;
 
           if (missingImages > 0) {
             return this.getImages(
-              { taxonId: [this.taxon.id], recordBasis: ['HUMAN_OBSERVATION_PHOTO'], taxonReliability: ['RELIABLE'] },
+              { taxonId: [this.taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'] },
               missingImages
             ).pipe(
-              map(observationImages => images.concat(observationImages))
+              map(collectionImages => images.concat(collectionImages))
             );
           } else {
             return of(images);
