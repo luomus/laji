@@ -4,6 +4,7 @@ import { GalleryService } from '../../../../shared/gallery/service/gallery.servi
 import { Observable, of, Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-taxon-overview',
@@ -31,6 +32,7 @@ export class TaxonOverviewComponent implements OnChanges {
   }
 
   constructor(
+    public translate: TranslateService,
     private galleryService: GalleryService,
     private cd: ChangeDetectorRef
   ) { }

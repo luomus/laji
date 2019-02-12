@@ -4,6 +4,7 @@
       <div class="btn-group pull-right" role="group" aria-label="view type">
         <button *ngIf="views.indexOf('full') != -1" type="button" class="btn btn-default" (click)="setView('full')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
         <button *ngIf="views.indexOf('full2') != -1" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
+        <button *ngIf="views.indexOf('full3') != -1" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
         <button *ngIf="views.indexOf('compact') != -1" type="button" class="btn btn-default" (click)="setView('compact')" [class.active]="view === 'compact'"><i class="glyphicon glyphicon-th"></i></button>
       </div>
     </div>

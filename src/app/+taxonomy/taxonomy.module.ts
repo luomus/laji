@@ -26,7 +26,7 @@ import { SpeciesBrowseObservationsComponent } from './species/species-browse-obs
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
 import { SpeciesImagesComponent } from './species/species-images/species-images.component';
 import { TaxonConceptInfoComponent } from './taxon/info-card/taxon-concept-info/taxon-concept-info.component';
-import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
+import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { TreeComponent } from './taxon/taxon-tree/tree/tree.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SpeciesListOptionsModalComponent } from './species/species-list-options-modal/species-list-options-modal.component';
@@ -54,7 +54,7 @@ import { TaxonImagesComponent } from './taxon/info-card/taxon-images/taxon-image
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
-    SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, ObservationMapModule,
+    SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,

@@ -6,7 +6,7 @@
   margin-right: 15px;
 }
 .image-container.image-grid {
-  max-width: calc(91px * 3);
+  width: calc(91px * 3);
 }
 
 .block-container {
@@ -30,4 +30,8 @@
 
 ::ng-deep .info-card .panel-body {
   overflow-y: auto;
+}
+
+.download-formats a:hover {
+  text-decoration: none;
 }
