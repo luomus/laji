@@ -1,10 +1,10 @@
-import { TaxonomyModule } from './taxonomy.module';
+import { IucnTaxonomyModule } from './iucn-taxonomy.module';
 
-describe('TaxonomyModule', () => {
-  let taxonomyModule: TaxonomyModule;
+describe('IucnTaxonomyModule', () => {
+  let taxonomyModule: IucnTaxonomyModule;
 
   beforeEach(() => {
-    taxonomyModule = new TaxonomyModule();
+    taxonomyModule = new IucnTaxonomyModule();
   });
 
   it('should create an instance', () => {

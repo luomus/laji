@@ -64,4 +64,4 @@ import { IucnSharedModule } from '../iucn-shared/shared.module';
     ExplainCriteriaPipe
   ]
 })
-export class TaxonomyModule { }
+export class IucnTaxonomyModule { }

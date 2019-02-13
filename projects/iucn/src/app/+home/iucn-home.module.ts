@@ -20,4 +20,4 @@ import { TaxonSelectModule } from '../../../../../src/app/shared-modules/taxon-s
   ],
   declarations: [HomeComponent, IucnResultPieComponent]
 })
-export class HomeModule { }
+export class IucnHomeModule { }

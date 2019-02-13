@@ -7,8 +7,6 @@ import { LocaleSvComponent } from '../../../../src/app/locale/locale-sv.componen
 import { LocaleFiComponent } from '../../../../src/app/locale/locale-fi.component';
 import { mergeMap } from 'rxjs/operators';
 import { LocalizeGuard } from '../../../../src/app/locale/localize.guard';
-import { HomeModule } from './+home/home.module';
-import { TaxonomyModule } from './+taxonomy/taxonomy.module';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -19,12 +17,12 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
 }
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => HomeModule},
+  {path: '', pathMatch: 'full', loadChildren: './+home/iucn-home.module#IucnHomeModule'},
   {path: 'about', loadChildren: './+about/about.module#AboutModule'},
   {path: 'publications', loadChildren: './+publications/publications.module#PublicationsModule'},
   {path: 'user', loadChildren: '../../../../src/app/+user/user.module#UserModule', data: {noPreload: true}},
   {path: 'view', loadChildren: '../../../../src/app/+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
-  {path: 'taxon', loadChildren: () => TaxonomyModule, data: {title: 'navigation.taxonomy'}},
+  {path: 'taxon', loadChildren: './+taxonomy/iucn-taxonomy.module#IucnTaxonomyModule', data: {title: 'navigation.taxonomy'}},
   {path: 'error', loadChildren: '../../../../src/app/+error/error.module#ErrorModule', data: {noPreload: true}}
 ];
 
