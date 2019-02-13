@@ -42,6 +42,7 @@ export class UserService extends LocalDb {
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
   private defaultFormData: any;
+  private checked = false;
 
   private subUser: Subscription;
   private subLogout: Subscription;
@@ -65,15 +66,6 @@ export class UserService extends LocalDb {
               @Inject(PLATFORM_ID) private platformId: object,
               @Inject(WINDOW) private window: Window) {
     super('settings', isPlatformBrowser(platformId));
-    if (isPlatformBrowser(platformId)) {
-      if (this.token) {
-        this.loadUserInfo(this.token).subscribe(value => {
-          this.isLoggedIn = !!value;
-        });
-      } else {
-        this.isLoggedIn = false;
-      }
-    }
   }
 
   public set isLoggedIn(isIn: boolean) {
@@ -86,6 +78,10 @@ export class UserService extends LocalDb {
   }
 
   public get isLoggedIn$() {
+    if (!this.checked) {
+      this.checkLogin();
+      this.checked = true;
+    }
     return this._isLoggedIn$.asObservable();
   }
 
@@ -219,6 +215,22 @@ export class UserService extends LocalDb {
     this.setItem(this.currentUserId, {...this.userSettings, [key]: value}).pipe(
       tap((settings) => this.userSettings = settings))
       .subscribe(() => {}, () => {});
+  }
+
+  private checkLogin() {
+    if (isPlatformBrowser(this.platformId) && this.token) {
+      if (this.token) {
+        this.loadUserInfo(this.token).subscribe(
+          value => this.isLoggedIn = !!value,
+          () => this.isLoggedIn = false
+        );
+      } else {
+        this.isLoggedIn = true;
+      }
+    } else {
+      // On server render the pages just like the user would have been logged in
+      this.isLoggedIn = true;
+    }
   }
 
   private loadUserInfo(token: string): Observable<any> {
