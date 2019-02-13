@@ -9,8 +9,8 @@ import { ActivatedRoute } from '@angular/router';
       <div id="wrapper" class="row">
         <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
           <ol class="breadcrumb">
-            <li *ngFor="let parent of parents">
-              <a [routerLink]="['/about/' + parent.id] | localize">
+            <li *ngFor="let parent of parents; let f=first">
+              <a [routerLink]="[(f ? '/about' : '/about/' + parent.id)] | localize">
                 {{ parent.menuTitle }}
               </a>
             </li>

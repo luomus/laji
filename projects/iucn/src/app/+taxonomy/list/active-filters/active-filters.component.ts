@@ -41,7 +41,7 @@ export class ActiveFiltersComponent {
     this._query = q;
     const items = [];
     Object.keys(q).forEach(field => {
-      if (this.skip.indexOf(field) !== -1) {
+      if (this.skip.indexOf(field) !== -1 || !q[field]) {
         return;
       }
       items.push({
