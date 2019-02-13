@@ -1,14 +1,13 @@
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { LajiErrorHandler } from './shared/error/laji-error-handler';
-import { ConsoleLogger, HttpLogger, Logger } from './shared/logger/index';
-import { LoggerApi } from './shared/api/LoggerApi';
-import { ILogger } from './shared/logger/logger.interface';
-import { AppRoutingModule } from './app-routing.module';
-import { TranslateFileLoader } from './shared/translate/translate-file-loader';
+import { LajiErrorHandler } from '../../../../src/app/shared/error/laji-error-handler';
+import { ConsoleLogger, HttpLogger, Logger } from '../../../../src/app/shared/logger/index';
+import { LoggerApi } from '../../../../src/app/shared/api/LoggerApi';
+import { ILogger } from '../../../../src/app/shared/logger/logger.interface';
+import { TranslateFileLoader } from '../../../../src/app/shared/translate/translate-file-loader';
 import {
   AlertModule,
   BsDropdownModule,
@@ -21,14 +20,17 @@ import {
   TypeaheadModule
 } from 'ngx-bootstrap';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { LocalizeRouterService } from './locale/localize-router.service';
+import { LocalizeRouterService } from '../../../../src/app/locale/localize-router.service';
 import { environment } from '../environments/environment';
-import { DocumentService } from './shared-modules/own-submissions/service/document.service';
+import { DocumentService } from '../../../../src/app/shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppComponentModule } from './shared-modules/app-component/app-component.module';
+import { IucnRoutingModule } from './iucn-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppComponentModule } from '../../../../src/app/shared-modules/app-component/app-component.module';
+import { AppComponent } from '../../../../src/app/shared-modules/app-component/app.component';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -41,6 +43,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 @NgModule({
   imports: [
     AppComponentModule,
+    BrowserAnimationsModule,
     BrowserModule.withServerTransition({appId: 'laji-app'}),
     CommonModule,
     HttpClientModule,
@@ -63,7 +66,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
-    AppRoutingModule,
+    IucnRoutingModule,
     TransferHttpCacheModule
   ],
   exports: [
@@ -81,6 +84,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
       useFactory: createLoggerLoader
     }
   ],
+  bootstrap: [AppComponent]
 })
-export class AppModule {
+export class IucnModule {
 }

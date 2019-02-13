@@ -12,13 +12,7 @@
     "baseUrl": "",
     "paths": {
       "@laji-map/*": ["app/shared-modules/laji-map/*"],
-      "@laji-form/*": ["app/shared-modules/laji-form/*"],
-      "generic-label-maker": [
-        "../dist/generic-label-maker"
-      ],
-      "generic-label-maker/*": [
-        "../dist/generic-label-maker/*"
-      ]
+      "@laji-form/*": ["app/shared-modules/laji-form/*"]
     }
   },
   "exclude": [

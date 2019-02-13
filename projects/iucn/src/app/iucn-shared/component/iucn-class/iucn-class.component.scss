@@ -1,0 +1,88 @@
+/* #iucnboxes-tyylit voi poistaa ja käyttää laji.fi:n vastaavia */
+#iucnboxes {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 80%;
+}
+
+.group {
+  float: left;
+  text-align: center;
+  padding: 2.3em 0.3em 0.7em 0.3em;
+  margin: 0.3em;
+}
+.g2 {
+  background-color: #f0f0f0;
+}
+
+.redclass {
+  margin: 0.7em;
+  padding: 1.2em 0.7em;
+  float: left;
+  text-align: center;
+  width: 8em;
+  min-height: 9em;
+}
+
+h3, h4, p {
+  margin: 0;
+}
+
+h4, p {
+  font-weight: 700;
+}
+
+.group h3 {
+  margin-top: -1.2em;
+}
+h3 {
+  font-size: 130%;
+}
+h4 {
+  font-size: 140%;
+  margin-bottom: 0.5em;
+}
+
+.redclass-name {
+  word-break: break-word;
+  margin-bottom: 0.2em;
+  hyphens: manual;
+}
+
+.langen {
+  display: none;
+}
+
+.count {
+  margin-top: 0.5em;
+  display: none;
+}
+
+.re {
+  background-color: #000;
+  color: #fff;
+}
+.cr {
+  background-color: #d81e05;
+  color: #fff;
+}
+.en {
+  background-color: #fc7f3f;
+}
+.vu {
+  background-color: #f9e814;
+}
+.nt {
+  background-color: #cce226;
+}
+.lc {
+  background-color: #60c659;
+}
+.dd, .na, .ne {
+  background-color: #fff;
+}
+
+.notActive {
+  // background: none;
+  background-color: #868686;
+  color: #fff;
+}

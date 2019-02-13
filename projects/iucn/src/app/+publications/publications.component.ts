@@ -4,11 +4,10 @@ import { Component } from '@angular/core';
   selector: 'laji-publications',
   template: `
     <div class="container">
-      <hr>
-      <laji-info-page [rootPage]="{'fi': '2569', 'en': '2584', 'sv': '2578'}"></laji-info-page>
+      <laji-info-page [rootPage]="{'fi': 'r-13', 'en': 'r-15', 'sv': 'r-17'}"></laji-info-page>
     </div>
   `,
 })
-export class ChecklistComponent {
+export class PublicationsComponent {
 
 }

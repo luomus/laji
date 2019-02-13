@@ -77,14 +77,13 @@ import { ThemePageComponent } from './common/theme-page.component';
 import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
 import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
 import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
-import { ThemeFormComponent } from './common/theme-form.component';
 import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
 import { MunicipalityMonitoringComponent } from './municipality-monitoring/municipality-monitoring.component';
 import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
 import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/municipality-monitoring-form/municipality-monitoring-form.component';
 import { MunicipalityMonitoringInstructionsComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.component';
 import { ChecklistComponent } from './checklist/checklist.component';
-import { IucnSharedModule } from '../iucn/iucn-shared/shared.module';
+import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 
 /* tslint:enable:max-line-length */
 
@@ -109,7 +108,7 @@ import { IucnSharedModule } from '../iucn/iucn-shared/shared.module';
     FormPermissionModule,
     NavigationThumbnailModule,
     LatestDocumentsModule,
-    IucnSharedModule
+    InfoPageModule
   ],
   declarations: [
     NafiComponent,

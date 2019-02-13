@@ -19,8 +19,6 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
   }
 }
 
-const homeModule = environment.type === Global.type.iucn ? './iucn/+home/home.module#HomeModule' : './+home/home.module#HomeModule';
-
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},
   {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {noPreload: true, title: 'news.title'}},

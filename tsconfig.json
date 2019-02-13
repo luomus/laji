@@ -15,12 +15,6 @@
       ],
       "@laji-form/*": [
         "app/shared-modules/laji-form/*"
-      ],
-      "generic-label-maker": [
-        "dist/generic-label-maker"
-      ],
-      "generic-label-maker/*": [
-        "dist/generic-label-maker/*"
       ]
     },
     "typeRoots": [
