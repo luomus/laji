@@ -10,6 +10,7 @@ import { UserService } from 'app/shared/service/user.service';
 import { FormPermissionService, Rights } from 'app/+haseka/form-permission/form-permission.service';
 import { environment } from 'environments/environment';
 import { NamedPlace } from '../../shared/model/NamedPlace';
+import { Form } from '../../shared/model/Form';
 
 export interface NPResolverData {
   collectionId?: string;
@@ -51,35 +52,38 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     const queryParams = route.queryParams;
     const edit = queryParams['edit'] === 'true';
     this.birdAssociationId = queryParams['birdAssociationArea'];
-    this.municipalityId = queryParams['municipality'] || 'all';
     this.tags = (queryParams['tags'] || '').split(',');
+    const municipalityId = queryParams['municipality'];
     const activeNPId = queryParams['activeNP'];
 
     return this.getDocumentForm$().pipe(
       switchMap((documentForm) => this.userService.getUser().pipe(map((user) => ({documentForm, user})))),
-      switchMap(data => forkJoin(
-          this.getNamedPlaces$(data.documentForm),
-          this.getPlaceForm$(data.documentForm.namedPlaceOptions
-            && data.documentForm.namedPlaceOptions.formID
-            || environment.namedPlaceForm
-          ),
-          this.getFormRights$(data.documentForm),
-          this.namedPlacesService.getNamedPlace(activeNPId, undefined, (data.documentForm.namedPlaceOptions || {}).includeUnits)
-        ).pipe(
-          map<any, NPResolverData>(([namedPlaces, placeForm, formRights, activeNP]) => ({
-            ...data,
-            formRights,
-            placeForm,
-            namedPlaces: this.npRequirementsNotMet(data.documentForm) ? undefined : namedPlaces,
-            edit: edit,
-            collectionId: this.collectionId,
-            municipalityId: this.municipalityId,
-            birdAssociationId: this.birdAssociationId,
-            tags: this.tags,
-            activeNPId: activeNPId,
-            activeNP
-          }))
-        )
+      switchMap(data => {
+        this.setMunicipality(data.documentForm, municipalityId);
+        return forkJoin(
+            this.getNamedPlaces$(data.documentForm),
+            this.getPlaceForm$(data.documentForm.namedPlaceOptions
+              && data.documentForm.namedPlaceOptions.formID
+              || environment.namedPlaceForm
+            ),
+            this.getFormRights$(data.documentForm),
+            this.namedPlacesService.getNamedPlace(activeNPId, undefined, (data.documentForm.namedPlaceOptions || {}).includeUnits)
+          ).pipe(
+            map<any, NPResolverData>(([namedPlaces, placeForm, formRights, activeNP]) => ({
+              ...data,
+              formRights,
+              placeForm,
+              namedPlaces: this.npRequirementsNotMet(data.documentForm) ? undefined : namedPlaces,
+              edit: edit,
+              collectionId: this.collectionId,
+              municipalityId: this.municipalityId,
+              birdAssociationId: this.birdAssociationId,
+              tags: this.tags,
+              activeNPId: activeNPId,
+              activeNP
+            }))
+          );
+        }
       )
     );
   }
@@ -114,14 +118,21 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     );
   }
 
+  setMunicipality(documentForm, municipalityId): void {
+    this.municipalityId = (documentForm.features || []).indexOf(Form.Feature.FilterNamedPlacesByMunicipality) !== -1
+      ? municipalityId || 'all'
+      : '';
+  }
+
   getNamedPlaces$(documentForm): Observable<any> {
-    const selected = (documentForm.options && documentForm.options.namedPlaceList || []).map((field: string) => field.replace('$.', ''));
-    if (documentForm.namedPlaceOptions && !documentForm.namedPlaceOptions.hideMapTab) {
+    const selected = ((documentForm.options || {}).namedPlaceList || []).map(field => field.replace('$.', ''));
+    if (!(documentForm.namedPlaceOptions || {}).hideMapTab) {
       selected.push('geometry');
     }
-    if (documentForm.features && documentForm.features.indexOf('MHL.featureReserve') !== -1 && selected.indexOf('reserve') === -1) {
+    if ((documentForm.features || []).indexOf('MHL.featureReserve') !== -1 && selected.indexOf('reserve') === -1) {
       selected.push('reserve');
     }
+
     const query: NamedPlaceQuery = {
       collectionID: this.collectionId,
       municipality: this.municipalityId,
