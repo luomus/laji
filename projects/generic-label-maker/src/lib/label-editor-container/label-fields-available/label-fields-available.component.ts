@@ -37,14 +37,18 @@ export class LabelFieldsAvailableComponent implements OnInit {
       targetBounds.top <= elemBounds.top && (targetBounds.top + targetBounds.height) > elemBounds.top
     ) {
       const field: LabelField = JSON.parse(JSON.stringify(event.source.data));
+      const width = field.type === 'qr-code' ? 10 : 25;
+      const height = field.type === 'qr-code' ? 10 : 5;
+      const xPos = this.labelService.pixelToMm((elemBounds.left - targetBounds.left) / this.magnification);
+      const yPos = this.labelService.pixelToMm((elemBounds.top - targetBounds.top) / this.magnification);
       this.addLabelItem.emit({
         type: 'field',
-        y: this.labelService.pixelToMm((elemBounds.top - targetBounds.top) / this.magnification),
-        x: this.labelService.pixelToMm((elemBounds.left - targetBounds.left) / this.magnification),
+        y: yPos,
+        x: xPos,
         fields: [field],
         style: {
-          'height.mm': field.type === 'qr-code' ? 10 : 4,
-          'width.mm': field.type === 'qr-code' ? 10 : 20
+          'height.mm': Math.min(height, this.labelService.pixelToMm(targetBounds.height / this.magnification) - yPos),
+          'width.mm': Math.min(width, this.labelService.pixelToMm(targetBounds.width / this.magnification) - xPos)
         }
       });
     }
