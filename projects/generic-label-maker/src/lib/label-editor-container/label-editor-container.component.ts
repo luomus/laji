@@ -14,6 +14,7 @@ export class LabelEditorContainerComponent {
   _active: 'file'|'settings'|'fields' = 'file';
   _setup: Setup;
   _selectedLabelItem: LabelItem | undefined;
+  @Input() magnification = 2;
   @Input() availableFields: LabelField[];
   @Input() data: object[];
 

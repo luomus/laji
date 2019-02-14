@@ -30,8 +30,8 @@ export interface ILabelStyle extends IFontStyle {
 
 export interface LabelItem {
   _id?: number;
-  x: number;
-  y: number;
+  x: number; // x position in mm
+  y: number; // y position in mm
   type: string;
   fields: LabelField[];
   style?: ILabelStyle;

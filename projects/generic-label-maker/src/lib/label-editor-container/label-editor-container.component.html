@@ -6,9 +6,9 @@
       (done)="done()"
       [setup]="_setup"
       (setupChange)="setupChanged($event)"
-      [magnification]="2"
+      [magnification]="magnification"
       (showSettings)="showSettings($event)"></ll-label-editor>
-    <div style="margin-top: 15px;">
+    <div style="margin-top: 15px; border: 1px solid #999; display: inline-block">
       <ll-label-preview [setup]="_setup"></ll-label-preview>
     </div>
   </div>
@@ -32,6 +32,7 @@
       </div>
       <div [hidden]="_active !== 'fields'">
         <ll-label-fields-available
+          [magnification]="magnification"
           [availableFields]="availableFields"
           (addLabelItem)="addLabelItem($event)"
         ></ll-label-fields-available>

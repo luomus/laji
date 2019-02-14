@@ -73,7 +73,6 @@ export class LabelEditorComponent {
   }
 
   setActiveItem(item: LabelItem) {
-    console.log('NOOO');
     this.activeChange.emit(item);
   }
 }

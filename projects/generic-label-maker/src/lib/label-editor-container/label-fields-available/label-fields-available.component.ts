@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { LabelField, LabelItem } from '../../generic-label-maker.interface';
-import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { CdkDragRelease } from '@angular/cdk/drag-drop';
+import { LabelService } from '../../label.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'll-label-fields-available',
@@ -11,26 +13,41 @@ import { CdkDragEnd } from '@angular/cdk/drag-drop';
 export class LabelFieldsAvailableComponent implements OnInit {
 
   @Input() availableFields: LabelField[] = [];
+  @Input() magnification = 2;
 
   @Output() addLabelItem = new EventEmitter<LabelItem>();
 
-  constructor() { }
+  constructor(
+    @Inject(PLATFORM_ID) protected platformId,
+    private labelService: LabelService
+  ) { }
 
   ngOnInit() {
   }
 
-  onNewFieldDragEnd(event: CdkDragEnd) {
-    const field: LabelField = JSON.parse(JSON.stringify(event.source.data));
-    this.addLabelItem.emit({
-      type: 'field',
-      y: 10,
-      x: 25,
-      fields: [field],
-      style: {
-        'height.mm': field.type === 'qr-code' ? 10 : 4,
-        'width.mm': field.type === 'qr-code' ? 10 : 20
-      }
-    });
+  onNewFieldDragEnd(event: CdkDragRelease) {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    const targetElem = document.getElementById('label-editor');
+    const targetBounds = targetElem.getBoundingClientRect();
+    const elemBounds = event.source.element.nativeElement.getBoundingClientRect();
+    if (
+      targetBounds.left <= elemBounds.left && (targetBounds.left + targetBounds.width) > elemBounds.left &&
+      targetBounds.top <= elemBounds.top && (targetBounds.top + targetBounds.height) > elemBounds.top
+    ) {
+      const field: LabelField = JSON.parse(JSON.stringify(event.source.data));
+      this.addLabelItem.emit({
+        type: 'field',
+        y: this.labelService.pixelToMm((elemBounds.top - targetBounds.top) / this.magnification),
+        x: this.labelService.pixelToMm((elemBounds.left - targetBounds.left) / this.magnification),
+        fields: [field],
+        style: {
+          'height.mm': field.type === 'qr-code' ? 10 : 4,
+          'width.mm': field.type === 'qr-code' ? 10 : 20
+        }
+      });
+    }
     event.source.reset();
   }
 
