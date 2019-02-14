@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { AlertModule } from 'ngx-bootstrap';
-import { DocumentApi } from '../shared/api/DocumentApi';
 import { NamedPlaceModule } from '../shared-modules/named-place/named-place.module';
 import { FormPermissionModule } from './form-permission/form-permission.module';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';

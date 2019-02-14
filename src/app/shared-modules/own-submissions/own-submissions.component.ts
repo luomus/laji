@@ -18,6 +18,9 @@ import { Logger } from '../../shared/logger';
 import { TemplateForm } from './models/template-form';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { DocumentService } from './service/document.service';
+import { PdfLabelService } from '../../shared/service/pdf-label.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { Router } from '@angular/router';
 
 interface DocumentQuery {
   year?: number;
@@ -125,7 +128,10 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     private labelService: TriplestoreLabelService,
     private toastService: ToastsService,
     private logger: Logger,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private pdfLabelService: PdfLabelService,
+    private localizeRouterService: LocalizeRouterService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -428,9 +434,10 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
       map(documents => documents.filter(doc => event.documentIDs.indexOf(doc.id) > -1))
     );
     (event.documentIDs.length > 10 ? year$ : documents$).pipe(
-      tap(() => {
+      tap((docs) => {
+        this.pdfLabelService.setData(docs);
         this.loading = false;
-        this.cd.markForCheck();
+        this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/tools/label']));
       })
     ).subscribe();
   }
