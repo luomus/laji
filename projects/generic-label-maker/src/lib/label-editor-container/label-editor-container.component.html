@@ -15,12 +15,19 @@
   <div class="settings-wrap">
     <ul class="nav nav-tabs">
       <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>File</a></li>
+      <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>Edit</a></li>
       <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>Settings</a></li>
       <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Fields</a></li>
     </ul>
     <div class="tab-content clearfix">
       <div *ngIf="_active === 'file'">
         <ll-label-file [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
+      </div>
+      <div [hidden]="_active !== 'edit'">
+        <div class="undo-button link" [class.disabled]="!hasUndo()" (click)="undo()">
+          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+          Undo
+        </div>
       </div>
       <div [hidden]="_active !== 'settings'">
         <ll-label-settings

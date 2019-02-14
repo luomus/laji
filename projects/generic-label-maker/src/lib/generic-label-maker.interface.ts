@@ -50,6 +50,8 @@ export interface LabelField {
 
 export interface Setup {
 
+  version?: number;
+
   /**
    * Pages size object
    */

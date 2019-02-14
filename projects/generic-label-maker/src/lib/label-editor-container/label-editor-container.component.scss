@@ -3,11 +3,11 @@
 }
 
 .settings-wrap {
-  width: 256px;
+  width: 300px;
 }
 
 .tab-content {
-  padding: 5px;
+  padding: 15px;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
@@ -17,4 +17,8 @@
 .editor-wrap {
   flex: 1 1 auto;
   flex-grow: 1;
+}
+
+.disabled {
+  color: #aaa;
 }

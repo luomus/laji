@@ -38,7 +38,7 @@ export class LabelFileComponent implements OnInit {
       this.setupChange.emit(data.setup);
     };
     this.filename = target.files[0].name;
-    if (this.filename.endsWith('.label')) {
+    if (this.filename.endsWith('.label') || this.filename.endsWith('.label.txt')) {
       reader.readAsArrayBuffer(target.files[0]);
     } else {
       evt.target.value = '';
@@ -48,7 +48,7 @@ export class LabelFileComponent implements OnInit {
 
   save() {
     let filename = prompt('Enter the label name');
-    if (filename !== null || filename !== '') {
+    if (filename !== null && filename !== '') {
       filename += '.label';
       const element = document.createElement('a');
       element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify({

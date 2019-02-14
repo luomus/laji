@@ -11,7 +11,7 @@ export class LabelEditorContainerComponent {
 
   static id = 0;
 
-  _active: 'file'|'settings'|'fields' = 'file';
+  _active: 'file'|'edit'|'settings'|'fields' = 'file';
   _setup: Setup;
   _selectedLabelItem: LabelItem | undefined;
   @Input() magnification = 2;
@@ -20,6 +20,8 @@ export class LabelEditorContainerComponent {
 
   @Output() html = new EventEmitter<string>();
   @Output() setupChange = new EventEmitter<Setup>();
+
+  private _undo: Setup[] = [];
 
   constructor() { }
 
@@ -44,13 +46,18 @@ export class LabelEditorContainerComponent {
   }
 
   setActiveLabelItem(item: LabelItem) {
-    console.log('SETTING ITEM');
     this._selectedLabelItem = item;
   }
 
-  setupChanged(setup: Setup) {
+  setupChanged(setup: Setup, addToUndo = true) {
+    if (addToUndo) {
+      this._undo.push(this._setup);
+    }
     this._setup = setup;
     this.setupChange.emit(this._setup);
+    if (this._undo.length > 20) {
+      this._undo.shift();
+    }
   }
 
   addLabelItem(item: LabelItem) {
@@ -63,5 +70,15 @@ export class LabelEditorContainerComponent {
 
   done() {
     this._selectedLabelItem = undefined;
+  }
+
+  undo() {
+    if (this._undo.length) {
+      this.setupChanged(this._undo.pop(), false);
+    }
+  }
+
+  hasUndo() {
+    return this._undo.length > 0;
   }
 }
