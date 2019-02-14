@@ -41,11 +41,13 @@ export interface LabelItem {
 export interface LabelField {
   field: string;
   label: string;
+  join?: string;
   content?: string;
   separator?: string;
   includeLabel?: boolean;
   type?: 'qr-code'|'text';
   style?: IFontStyle;
+  _menuOpen?: boolean;
 }
 
 export interface Setup {

@@ -14,6 +14,8 @@ export class FieldSettingsComponent {
   @Output() fieldChange = new EventEmitter<LabelField>();
   @Output() fieldRemove = new EventEmitter<void>();
 
+  more = false;
+
   separators: {sep: string, label?: string}[] = [
     {sep: ', '},
     {sep: '. '},
@@ -28,11 +30,12 @@ export class FieldSettingsComponent {
     {sep: '<br>', label: 'new line'}
   ];
 
-  onChange(event: Event) {
+  onChange(event: Event, place = 'separator') {
     const select = event.target as HTMLSelectElement;
     this.fieldChange.emit({
       ...this.field,
-      separator: select.value
+      [place]: select.value,
+      _menuOpen: this.more || this.field._menuOpen
     });
   }
 
@@ -48,5 +51,10 @@ export class FieldSettingsComponent {
       ...this.field,
       content: element.value
     });
+  }
+
+  toggleMore() {
+    this.more = !(this.more || this.field._menuOpen);
+    delete this.field._menuOpen;
   }
 }

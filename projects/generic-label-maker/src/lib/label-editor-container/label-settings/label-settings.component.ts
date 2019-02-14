@@ -164,4 +164,23 @@ export class LabelSettingsComponent implements OnInit {
       ]
     });
   }
+
+  round(value: any) {
+    return Math.round(value * 1000) / 1000;
+  }
+
+  changePosition(pos: string, value: any) {
+    const dim = pos === 'x' ? 'width.mm' : 'height.mm';
+    if (this._selectedLabelItem[pos] + this._selectedLabelItem.style[dim] > this.setup.label[dim]) {
+    } else {
+      this.changeSelectedItem(pos, Number(value));
+    }
+  }
+
+  changeActiveStyle(style: string, value: any) {
+    this.changeSelectedItem('style', {
+      ...this._selectedLabelItem.style,
+      [style]: Number(value)
+    });
+  }
 }

@@ -4,14 +4,52 @@
 <ng-template #label>
   {{field.label}}
 </ng-template>
-<select (change)="onChange($event)">
-  <option
-    *ngFor="let separator of separators"
-    [value]="separator.sep"
-    [selected]="separator.sep === field.separator"
-    [innerHTML]="separator.label || separator.sep"
-  ></option>
-</select>
-<div class="delete" *ngIf="allowDelete" (click)="remove()">
-  <i class="glyphicon glyphicon-trash"></i>
+<div class="more" (click)="toggleMore()">
+  <i *ngIf="field._menuOpen || more; else up" class="glyphicon glyphicon-chevron-down"></i>
+  <ng-template #up>
+    <i class="glyphicon glyphicon-chevron-up"></i>
+  </ng-template>
+</div>
+
+<div class="more-container" *ngIf="field._menuOpen || more">
+  <table>
+    <tr>
+      <td>
+        Separator:
+      </td>
+      <td>
+        <select (change)="onChange($event)">
+          <option
+            *ngFor="let separator of separators"
+            [value]="separator.sep"
+            [selected]="separator.sep === field.separator"
+            [innerHTML]="separator.label || separator.sep"
+          ></option>
+        </select>
+      </td>
+      <td>
+        <div class="delete" *ngIf="allowDelete" (click)="remove()">
+          <i class="glyphicon glyphicon-trash"></i>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Join by:
+      </td>
+      <td>
+        <select (change)="onChange($event, 'join')">
+          <option
+            *ngFor="let separator of separators"
+            [value]="separator.sep"
+            [selected]="separator.sep === field.join"
+            [innerHTML]="separator.label || separator.sep"
+          ></option>
+        </select>
+      </td>
+      <td>
+      </td>
+    </tr>
+  </table>
+
 </div>
