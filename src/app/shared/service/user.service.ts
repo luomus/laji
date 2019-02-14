@@ -218,14 +218,14 @@ export class UserService extends LocalDb {
   }
 
   private checkLogin() {
-    if (isPlatformBrowser(this.platformId) && this.token) {
+    if (isPlatformBrowser(this.platformId)) {
       if (this.token) {
         this.loadUserInfo(this.token).subscribe(
           value => this.isLoggedIn = !!value,
           () => this.isLoggedIn = false
         );
       } else {
-        this.isLoggedIn = true;
+        this.isLoggedIn = false;
       }
     } else {
       // On server render the pages just like the user would have been logged in
