@@ -5,7 +5,7 @@
       <th>Arvioitujen lajien määrä</th>
       <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
       <th>Punaisen listan lajeja</th>
-      <th>Punaisen listan lajien osuus arvioidusta</th>
+      <th>Punaisen listan lajien osuus arvioiduista</th>
     </tr>
     <tr *ngFor="let data of _data; let l=last" [class.title]="l">
       <th>{{ data.species }}</th>

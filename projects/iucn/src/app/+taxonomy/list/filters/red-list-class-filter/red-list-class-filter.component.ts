@@ -17,7 +17,7 @@ export class RedListClassFilterComponent implements OnInit {
 
   groups = {
     evaluated: ['RE', 'CR', 'EN', 'VU', 'DD', 'NT', 'LC'],
-    redlist: ['CR', 'EN', 'VU', 'DD'],
+    redlist: ['RE', 'CR', 'EN', 'VU', 'DD', 'NT'],
     endangered: ['CR', 'EN', 'VU']
   };
 

@@ -61,10 +61,12 @@ export class ResultService {
   };
 
   redListStatuses: string[] = [
+    'MX.iucnRE',
     'MX.iucnCR',
     'MX.iucnEN',
     'MX.iucnVU',
-    'MX.iucnDD'
+    'MX.iucnDD',
+    'MX.iucnNT',
   ];
 
   habitatStatuses: string[] = [
