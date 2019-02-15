@@ -170,17 +170,30 @@ export class LabelSettingsComponent implements OnInit {
   }
 
   changePosition(pos: string, value: any) {
-    const dim = pos === 'x' ? 'width.mm' : 'height.mm';
-    if (this._selectedLabelItem[pos] + this._selectedLabelItem.style[dim] > this.setup.label[dim]) {
-    } else {
-      this.changeSelectedItem(pos, Number(value));
+    if (!value) {
+      return;
     }
+    const dim = pos === 'x' ? 'width.mm' : 'height.mm';
+    value = Number(value);
+    if (value + this._selectedLabelItem.style[dim] > this.setup.label[dim]) {
+      return alert('Field cannot fit the label');
+    }
+    this.changeSelectedItem(pos, value);
   }
 
   changeActiveStyle(style: string, value: any) {
+    if (!value) {
+      return;
+    }
+    const pos = style === 'width.mm' ? 'x' : 'y';
+    value = Number(value);
+    if (value + this._selectedLabelItem[pos] > this.setup.label[style]) {
+      return alert('Field cannot fit the label');
+    }
+
     this.changeSelectedItem('style', {
       ...this._selectedLabelItem.style,
-      [style]: Number(value)
+      [style]: value
     });
   }
 }
