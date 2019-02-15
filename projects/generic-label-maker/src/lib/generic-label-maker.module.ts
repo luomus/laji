@@ -17,6 +17,7 @@ import { MarginSettingsComponent } from './label-editor-container/label-settings
 import { FieldSettingsComponent } from './label-editor-container/label-settings/field-settings/field-settings.component';
 import { LabelFileComponent } from './label-editor-container/label-file/label-file.component';
 import { FieldAddComponent } from './label-editor-container/label-settings/field-add/field-add.component';
+import { SearchFieldsPipe } from './label-editor-container/label-fields-available/search-fields.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { FieldAddComponent } from './label-editor-container/label-settings/field
     MarginSettingsComponent,
     FieldSettingsComponent,
     LabelFileComponent,
-    FieldAddComponent
+    FieldAddComponent,
+    SearchFieldsPipe
   ],
   imports: [
     CommonModule,

@@ -1,8 +1,21 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  PLATFORM_ID
+} from '@angular/core';
 import { LabelField, LabelItem } from '../../generic-label-maker.interface';
 import { CdkDragRelease } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../label.service';
 import { isPlatformBrowser } from '@angular/common';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'll-label-fields-available',
@@ -10,19 +23,39 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrls: ['./label-fields-available.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelFieldsAvailableComponent implements OnInit {
+export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 
   @Input() availableFields: LabelField[] = [];
   @Input() magnification = 2;
 
   @Output() addLabelItem = new EventEmitter<LabelItem>();
 
+  filterBy = '';
+  filterSubject = new Subject<string>();
+  filterSubscription: Subscription;
+
   constructor(
     @Inject(PLATFORM_ID) protected platformId,
-    private labelService: LabelService
+    private labelService: LabelService,
+    private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.filterSubscription = this.filterSubject.asObservable().pipe(
+      debounceTime(200),
+      distinctUntilChanged()
+    ).subscribe(value => {
+      this.filterBy = value;
+      this.cdr.markForCheck();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.filterSubscription.unsubscribe();
+  }
+
+  filter(value) {
+    this.filterSubject.next(value);
   }
 
   onNewFieldDragEnd(event: CdkDragRelease) {
