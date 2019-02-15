@@ -5,6 +5,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from '@ngx-translate/core';
+import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 
 @Component({
   selector: 'laji-taxon-overview',
@@ -13,12 +14,16 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class TaxonOverviewComponent implements OnChanges {
   @Input() taxon: Taxonomy;
-  @Input() taxonImages: Array<TaxonomyImage>;
-  @Output() hasImageData = new EventEmitter<boolean>();
+  @Input() taxonImages: TaxonomyImage[];
 
+  @Output() hasImageData = new EventEmitter<boolean>();
+  @Output() taxonSelect = new EventEmitter<string>();
+
+  taxonChildren: Taxonomy[] = [];
   images = [];
   ingress: any;
 
+  private childrenSub: Subscription;
   private imageSub: Subscription;
 
   @Input() set taxonDescription(taxonDescription: Array<TaxonomyDescription>) {
@@ -34,11 +39,15 @@ export class TaxonOverviewComponent implements OnChanges {
   constructor(
     public translate: TranslateService,
     private galleryService: GalleryService,
+    private taxonService: TaxonomyApi,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnChanges() {
     this.setImages();
+    if (!this.taxon.species) {
+      this.getChildren();
+    }
   }
 
   get isFromMasterChecklist() {
@@ -105,5 +114,19 @@ export class TaxonOverviewComponent implements OnChanges {
       query,
       undefined, limit, 1
     ).pipe(map(res => this.galleryService.getImages(res, limit)));
+  }
+
+  private getChildren() {
+    if (this.childrenSub) {
+      this.childrenSub.unsubscribe();
+    }
+    this.childrenSub = this.taxonService
+      .taxonomyFindChildren(this.taxon.id, this.translate.currentLang, '1', {
+        selectedFields: 'id,vernacularName,scientificName,cursiveName,countOfFinnishSpecies'
+      })
+      .subscribe((data) => {
+        this.taxonChildren = data;
+        this.cd.markForCheck();
+      });
   }
 }

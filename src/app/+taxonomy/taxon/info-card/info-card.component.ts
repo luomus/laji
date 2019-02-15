@@ -19,6 +19,8 @@ import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Title } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 import { CacheService } from '../../../shared/service/cache.service';
+import {Router} from '@angular/router';
+import {LocalizeRouterService} from '../../../locale/localize-router.service';
 
 // const CACHE_KEY = 'info-card-boxes';
 // interface Settings { [key: string]: {open: boolean}; }
@@ -53,6 +55,8 @@ export class InfoCardComponent implements OnInit, OnChanges {
     private logger: Logger,
     private title: Title,
     private cd: ChangeDetectorRef,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) { }
 
@@ -81,6 +85,14 @@ export class InfoCardComponent implements OnInit, OnChanges {
   setActiveTab(tab: 'overview'|'images') {
     this.activeTab = tab;
     this.activatedTabs[this.activeTab] = true;
+  }
+
+  onTaxonSelect(id: string) {
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(
+        ['/taxon', id]
+      )
+    );
   }
 
 /*  private initSettings() {
