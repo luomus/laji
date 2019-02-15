@@ -76,7 +76,7 @@
     "deep-equal": "^1.0.1",
     "deepmerge": "^2.2.1",
     "file-saver": "^2.0.0",
-    "generic-label-maker": "^0.0.3",
+    "generic-label-maker": "^0.0.4",
     "ie-shim": "^0.1.0",
     "intl": "^1.2.5",
     "jsonpath-plus": "^0.18.0",
