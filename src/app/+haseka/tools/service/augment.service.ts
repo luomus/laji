@@ -5,7 +5,7 @@ import { NamedPlaceApi } from '../../../shared/api/NamedPlaceApi';
 import { UserService } from '../../../shared/service/user.service';
 import { Document } from '../../../shared/model/Document';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, toArray } from 'rxjs/operators';
 
 @Injectable()
 export class AugmentService {
@@ -38,7 +38,9 @@ export class AugmentService {
     }
     return ObservableFrom(namedPlaces).pipe(
       mergeMap(id => this.getNamedPlace(id)),
-      map(namedPlace => this.addNamedPlaceData(document, namedPlace, idxLookup, excluded))
+      map(namedPlace => this.addNamedPlaceData(document, namedPlace, idxLookup, excluded)),
+      toArray(),
+      map(() => document)
     )
   }
 
