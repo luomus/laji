@@ -1,5 +1,5 @@
 
-import {share,  map, mergeMap } from 'rxjs/operators';
+import { share, map, mergeMap, toArray } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
@@ -39,7 +39,9 @@ export class AugmentService {
     }
     return ObservableFrom(namedPlaces).pipe(
       mergeMap(id => this.getNamedPlace(id)),
-      map(namedPlace => this.addNamedPlaceData(document, namedPlace, idxLookup, excluded))
+      map(namedPlace => this.addNamedPlaceData(document, namedPlace, idxLookup, excluded)),
+      toArray(),
+      map(() => document)
     );
   }
 
