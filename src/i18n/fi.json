@@ -328,6 +328,17 @@
       "evaluationBases": "Arvioinnin perusteet",
       "individualCount": "Yksilömäärä",
       "more": "Lisää tietoa <h1>LAJI.FI</h1>-portaalissa",
+      "MX": {
+        "iucnRE": "Suomesta hävinnyt",
+        "iucnCR": "Äärimmäisen uhanalainen",
+        "iucnEN": "Erittäin uhanalainen",
+        "iucnVU": "Vaarantunut",
+        "iucnDD": "Puuttellisesti tunnetu",
+        "iucnNT": "Silmällä pidettävä",
+        "iucnLC": "Elinvoimainen",
+        "iucnNA": "Arviointiin soveltumaton",
+        "iucnNE": "Arvioimatta jätetty"
+      },
       "occurrenceArea": "Esiintymien määrä",
       "occurrenceInfoTitle": "Esiintymistä koskevat tiedot",
       "occurrenceTitle": "Esiintymisalueet ja alueellinen uhanalaisuus",

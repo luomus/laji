@@ -24,7 +24,7 @@ import { ActivatedRoute } from '@angular/router';
             (children)="children = $event"
           ></laji-info-page>
         </div>
-        <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 more-info" *ngIf="children.length > 0">
+        <div class="col-sm-4 col-md-3 col-lg-2 more-info" *ngIf="children.length > 0">
           <div class="media">
             <div class="media-body" style="background-color: #f5f5f5; max-width: 300px; padding: 10px;">
               <h4 class="media-heading">
