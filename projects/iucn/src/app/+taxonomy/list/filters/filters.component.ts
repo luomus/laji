@@ -93,4 +93,13 @@ export class FiltersComponent implements OnInit {
     } = this.query;
     this.queryChange.emit(rest);
   }
+
+  habitatChange(value: any) {
+    if (!value) {
+      const newQuery = {...this.query, habitat: '', habitatSpecific: ''};
+      this.queryChange.emit(newQuery);
+    } else {
+      this.change('habitat', value);
+    }
+  }
 }
