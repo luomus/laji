@@ -44,7 +44,7 @@ export class ResultsComponent implements OnChanges, OnInit {
   colors = ['#d81e05', '#fc7f3f', '#f9e814', '#cce226', '#60c659', '#bfbfbf', '#777', '#000'];
 
   colorSchema = [];
-  speciesPageSize = 1000;
+  speciesPageSize = 100;
   speciesPage = 1;
   speciesCount = 0;
 
