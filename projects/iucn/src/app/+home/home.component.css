@@ -10,9 +10,7 @@ h2 {
   background-size: cover;
 }
 .header .intro {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  margin-top: 10px;
   min-width: 350px;
 }
 
@@ -43,8 +41,7 @@ h2 {
 }
 @media only screen and (min-width : 768px) {
   .header .intro {
-    top: 60px;
-    left: 100px;
+    margin-top: 90px;
   }
   .header {
     height: 330px;
