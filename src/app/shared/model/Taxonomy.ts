@@ -232,6 +232,7 @@ export interface RedListEvaluation {
   evaluationYear?: string;
   redListStatus?: string;
   criteriaForStatus?: string;
+  externalPopulationImpactOnRedListStatus?: string;
 }
 
 export interface LatestRedListStatusFinland {

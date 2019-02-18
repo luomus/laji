@@ -27,29 +27,34 @@ export class RedListEvaluationInfoComponent {
     'threats': 'hasThreat',
   };
 
+  private localTranslate = {
+    'MKV.hasEndangermentReason': 'iucn.hasEndangermentReason',
+    'MKV.hasThreat': 'iucn.hasThreat'
+  };
+
   private fieldMap = {
-    'MKV.generationAge': 'evaluationBases',
-    'MKV.generationAgeNotes': 'evaluationBases',
-    'MKV.evaluationPeriodLength': 'evaluationBases',
-    'MKV.evaluationPeriodLengthNotes': 'evaluationBases',
-    'MKV.individualCount': 'evaluationBases',
-    'MKV.individualCountNotes': 'evaluationBases',
-    'MKV.populationSizePeriodBeginning': 'evaluationBases',
-    'MKV.populationSizePeriodNotes': 'evaluationBases',
-    'MKV.populationSizePeriodEnd': 'evaluationBases',
-    'MKV.decreaseDuringPeriod': 'evaluationBases',
-    'MKV.decreaseDuringPeriodNotes': 'evaluationBases',
-    'MKV.populationVaries': 'evaluationBases',
-    'MKV.populationVariesNotes': 'evaluationBases',
-    'MKV.fragmentedHabitats': 'evaluationBases',
-    'MKV.fragmentedHabitatsNotes': 'evaluationBases',
-    'MKV.borderGain': 'evaluationBases',
-    'MKV.borderGainNotes': 'evaluationBases',
+    // 'MKV.generationAge': 'evaluationBases',
+    // 'MKV.generationAgeNotes': 'evaluationBases',
+    // 'MKV.evaluationPeriodLength': 'evaluationBases',
+    // 'MKV.evaluationPeriodLengthNotes': 'evaluationBases',
+    // 'MKV.individualCount': 'evaluationBases',
+    // 'MKV.individualCountNotes': 'evaluationBases',
+    // 'MKV.populationSizePeriodBeginning': 'evaluationBases',
+    // 'MKV.populationSizePeriodNotes': 'evaluationBases',
+    // 'MKV.populationSizePeriodEnd': 'evaluationBases',
+    // 'MKV.decreaseDuringPeriod': 'evaluationBases',
+    // 'MKV.decreaseDuringPeriodNotes': 'evaluationBases',
+    // 'MKV.populationVaries': 'evaluationBases',
+    // 'MKV.populationVariesNotes': 'evaluationBases',
+    // 'MKV.fragmentedHabitats': 'evaluationBases',
+    // 'MKV.fragmentedHabitatsNotes': 'evaluationBases',
+    // 'MKV.borderGain': 'evaluationBases',
+    // 'MKV.borderGainNotes': 'evaluationBases',
     'MKV.hasEndangermentReason': 'evaluationBases',
-    'MKV.endangermentReasonNotes': 'evaluationBases',
+    // 'MKV.endangermentReasonNotes': 'evaluationBases',
     'MKV.hasThreat': 'evaluationBases',
-    'MKV.threatNotes': 'evaluationBases',
-    'MKV.groundsForEvaluationNotes': 'evaluationBases',
+    // 'MKV.threatNotes': 'evaluationBases',
+    // 'MKV.groundsForEvaluationNotes': 'evaluationBases',
     'MKV.primaryHabitat': 'habitat',
     'MKV.secondaryHabitat': 'habitat',
     'MKV.criteriaA': 'criteria',
@@ -80,27 +85,27 @@ export class RedListEvaluationInfoComponent {
     'MKV.occurrenceArea': 'occurrenceInfo',
     'MKV.occurrenceAreaNotes': 'occurrenceInfo',
     'MKV.occurrenceNotes': 'occurrenceInfo',
-    'MKV.redListStatus': 'endanger',
-    'MKV.redListStatusNotes': 'endanger',
-    'MKV.ddReason': 'endanger',
-    'MKV.ddReasonNotes': 'endanger',
-    'MKV.ddReasonClass': 'endanger',
-    'MKV.criteriaForStatus': 'endanger',
-    'MKV.criteriaForStatusNotes': 'endanger',
-    'MKV.redListStatusMin': 'endanger',
-    'MKV.redListStatusMax': 'endanger',
-    'MKV.exteralPopulationImpactOnRedListStatus': 'endanger',
-    'MKV.exteralPopulationImpactOnRedListStatusNotes': 'endanger',
-    'MKV.reasonForStatusChange': 'endanger',
-    'MKV.reasonForStatusChangeNotes': 'endanger',
-    'MKV.possiblyRE': 'endanger',
-    'MKV.possiblyRENotes': 'endanger',
-    'MKV.lastSightingNotes': 'endanger',
-    'MKV.redListStatusAccuracyNotes': 'endanger',
-    'MKV.lsaRecommendation': 'endanger',
-    'MKV.lsaRecommendationNotes': 'endanger',
-    'MKV.percentageOfGlobalPopulation': 'endanger',
-    'MKV.percentageOfGlobalPopulationNotes': 'endanger',
+    // 'MKV.redListStatus': 'endanger',
+    // 'MKV.redListStatusNotes': 'endanger',
+    // 'MKV.ddReason': 'endanger',
+    // 'MKV.ddReasonNotes': 'endanger',
+    // 'MKV.ddReasonClass': 'endanger',
+    // 'MKV.criteriaForStatus': 'endanger',
+    // 'MKV.criteriaForStatusNotes': 'endanger',
+    // 'MKV.redListStatusMin': 'endanger',
+    // 'MKV.redListStatusMax': 'endanger',
+    // 'MKV.exteralPopulationImpactOnRedListStatus': 'endanger',
+    // 'MKV.exteralPopulationImpactOnRedListStatusNotes': 'endanger',
+    // 'MKV.reasonForStatusChange': 'endanger',
+    // 'MKV.reasonForStatusChangeNotes': 'endanger',
+    // 'MKV.possiblyRE': 'endanger',
+    // 'MKV.possiblyRENotes': 'endanger',
+    // 'MKV.lastSightingNotes': 'endanger',
+    // 'MKV.redListStatusAccuracyNotes': 'endanger',
+    // 'MKV.lsaRecommendation': 'endanger',
+    // 'MKV.lsaRecommendationNotes': 'endanger',
+    // 'MKV.percentageOfGlobalPopulation': 'endanger',
+    // 'MKV.percentageOfGlobalPopulationNotes': 'endanger',
   };
 
   minMax = {
@@ -156,6 +161,9 @@ export class RedListEvaluationInfoComponent {
         continue;
       }
       const fullKey = 'MKV.' + (this.keyMap[key] || key);
+      if (this.localTranslate[fullKey]) {
+        translate = this.localTranslate[fullKey];
+      }
       if (this.fieldMap[fullKey]) {
         if (!results[this.fieldMap[fullKey]]) {
           results[this.fieldMap[fullKey]] = [];

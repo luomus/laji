@@ -25,6 +25,11 @@
     </div>
   </div>
   <div class="group g3">
+    <div class="redclass dd" [class.notActive]="highlight && highlight !== 'MX.iucnDD'">
+      <h4>DD</h4>
+      <p class="redclass-name" >{{ 'MX.iucnDD' | label | iucnStatus }}</p>
+      <p class="count">15167 lajia</p>
+    </div>
     <div class="redclass nt" [class.notActive]="highlight && highlight !== 'MX.iucnNT'">
       <h4>NT</h4>
       <p class="redclass-name" [innerHTML]="'MX.iucnNT' | label | iucnStatus | iucnHyphens"></p>
@@ -37,11 +42,6 @@
     </div>
   </div>
   <div class="group g4" *ngIf="includeOther">
-    <div class="redclass dd">
-      <h4>DD</h4>
-      <p class="redclass-name">{{ 'MX.iucnDD' | label | iucnStatus }}</p>
-      <p class="count">15167 lajia</p>
-    </div>
     <div class="redclass na">
       <h4>NA</h4>
       <p class="redclass-name" [innerHTML]="'MX.iucnNA' | label | iucnStatus | iucnHyphens"></p>

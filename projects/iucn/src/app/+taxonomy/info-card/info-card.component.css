@@ -16,11 +16,6 @@ a:hover {
   color: #2e6da4;
 }
 
-ul {
-  margin: 0;
-  padding-left: 1em;
-}
-
 .taxon-select {
   margin-top: 15px;
   max-width: 15em;
