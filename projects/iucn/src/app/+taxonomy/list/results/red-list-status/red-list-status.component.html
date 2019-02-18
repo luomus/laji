@@ -7,7 +7,7 @@
       <th>Punaisen listan lajeja</th>
       <th>Punaisen listan lajien osuus arvioiduista</th>
     </tr>
-    <tr *ngFor="let data of _data; let l=last" [class.title]="l">
+    <tr *ngFor="let data of _data; let f=first; let l=last" [class.title]="f || l">
       <th>{{ data.species }}</th>
       <td>{{ data.count }}</td>
       <td *ngFor="let status of statuses">{{ data[status] || 0 }}</td>
