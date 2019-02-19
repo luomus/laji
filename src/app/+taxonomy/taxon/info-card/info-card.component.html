@@ -16,7 +16,7 @@
           {{ "taxonomy.overview" | translate }}
         </a>
       </li>
-      <li role="presentation" [ngClass]="{active: activeTab === 'images'}">
+      <li role="presentation" [ngClass]="{active: activeTab === 'images'}" *ngIf="hasImageData">
         <a (click)="setActiveTab('images')">
           {{ "species.images" | translate }}
         </a>
@@ -29,9 +29,10 @@
                          [taxonDescription]="taxonDescription"
                          [taxonImages]="taxonImages"
                          (taxonSelect)="onTaxonSelect($event)"
+                         (hasImageData)="hasImageData = $event"
     ></laji-taxon-overview>
     <laji-taxon-images [hidden]="activeTab !== 'images'"
-                         *ngIf="activatedTabs['images']"
+                         *ngIf="activatedTabs['images'] && hasImageData"
                        [taxon]="taxon"
                        [taxonImages]="taxonImages"
     ></laji-taxon-images>

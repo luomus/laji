@@ -769,6 +769,7 @@
   "taxonomy.invasiveSpecies": "Invasiva arter",
   "taxonomy.latestRedListStatusFinland": "Rödlistning klassificering",
   "taxonomy.map": "Kartan av observationer",
+  "taxonomy.map.finland": "Havainnot Suomesta",
   "taxonomy.map.disclaimer": "Kartan visar observationer av denna taxonen, men den får inte användas som en utbredningskarta.",
   "taxonomy.map.summary": "Sammanfattande karta",
   "taxonomy.notFound": "Arter hittades inte",

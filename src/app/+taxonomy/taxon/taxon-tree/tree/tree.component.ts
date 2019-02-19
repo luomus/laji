@@ -65,7 +65,9 @@ export class TreeComponent implements OnChanges {
     }
 
     if (openId && this.nodes.length > 0) {
-      this.loading = true;
+      if (!this.rootId) {
+        this.loading = true;
+      }
       const nodes = this.nodes;
       const treeState = this.treeState;
 
@@ -118,7 +120,7 @@ export class TreeComponent implements OnChanges {
     });
   }
 
-  private setView(nodes: TreeNode[], treeState: TreeState, parentIds: any[], parentList = []): Observable<TreeNode[]> {
+  private setView(nodes: TreeNode[], treeState: TreeState, parentIds: any[], parentList = [], rootFound = false): Observable<TreeNode[]> {
     if (parentIds.length === 0) {
       return of(parentList);
     }
@@ -128,17 +130,27 @@ export class TreeComponent implements OnChanges {
       const node = nodes[i];
       if (node.id === parentIds[0].id) {
         foundNode = node;
-      } else {
+      } else if (!rootFound) {
         this.hideChildren(node, treeState);
       }
     }
 
-    parentList.push(foundNode);
-    if (!foundNode.hasChildren || foundNode.id === this.rootId) { return of(parentList); }
+    if (!rootFound) {
+      parentList.push(foundNode);
+    }
+    if (!foundNode.hasChildren) { return of(parentList); }
+    if (foundNode.id === this.rootId) {
+      rootFound = true;
+    }
+
+    if (parentIds.length === 1 && rootFound) {
+      this.toggleChildrenOpen(foundNode, treeState);
+      return of(parentList);
+    }
 
     return this.setOpen(foundNode, treeState)
       .pipe(switchMap(() => {
-        return this.setView(foundNode.children, treeState, parentIds.slice(1), parentList);
+        return this.setView(foundNode.children, treeState, parentIds.slice(1), parentList, rootFound);
       }));
   }
 

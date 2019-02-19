@@ -775,6 +775,7 @@
   "taxonomy.invasiveSpecies": "Invasive species",
   "taxonomy.latestRedListStatusFinland": "Finnish Red List category",
   "taxonomy.map": "Map of observations",
+  "taxonomy.map.finland": "Havainnot Suomesta",
   "taxonomy.map.disclaimer": "The map represents observations of this taxon, but it may not be used as a distribution map.",
   "taxonomy.map.summary": "Summary map",
   "taxonomy.notFound": "Species not found",
