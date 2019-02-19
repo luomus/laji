@@ -37,6 +37,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
   taxon: Taxonomy;
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<TaxonomyImage>;
+  hasImageData = false;
 
   loading = false;
 
@@ -147,6 +148,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
           return prev;
         }, []);
 
+        this.hasImageData = this.taxonImages.length > 0;
         this.setTitle();
         // this.updateMap();
       })
