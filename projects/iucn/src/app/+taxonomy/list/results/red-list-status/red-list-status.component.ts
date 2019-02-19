@@ -58,7 +58,11 @@ export class RedListStatusComponent {
       });
       return this.dataToInternal(row);
     });
-    results.push(this.dataToInternal(total));
+    const totalRow = this.dataToInternal(total);
+    if (results.length > 1) {
+      results.unshift(totalRow);
+    }
+    results.push(totalRow);
     this._data = results;
   }
 

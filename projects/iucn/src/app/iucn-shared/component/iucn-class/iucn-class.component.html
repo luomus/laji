@@ -30,6 +30,11 @@
       <p class="redclass-name" [innerHTML]="'MX.iucnNT' | label | iucnStatus | iucnHyphens"></p>
       <p class="count">1835 lajia</p>
     </div>
+    <div class="redclass dd" [class.notActive]="highlight && highlight !== 'MX.iucnDD'">
+      <h4>DD</h4>
+      <p class="redclass-name" >{{ 'MX.iucnDD' | label | iucnStatus }}</p>
+      <p class="count">15167 lajia</p>
+    </div>
     <div class="redclass lc" [class.notActive]="highlight && highlight !== 'MX.iucnLC'">
       <h4>LC</h4>
       <p class="redclass-name">{{ 'MX.iucnLC' | label | iucnStatus }}</p>
@@ -37,11 +42,6 @@
     </div>
   </div>
   <div class="group g4" *ngIf="includeOther">
-    <div class="redclass dd">
-      <h4>DD</h4>
-      <p class="redclass-name">{{ 'MX.iucnDD' | label | iucnStatus }}</p>
-      <p class="count">15167 lajia</p>
-    </div>
     <div class="redclass na">
       <h4>NA</h4>
       <p class="redclass-name" [innerHTML]="'MX.iucnNA' | label | iucnStatus | iucnHyphens"></p>

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { forkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { TaxonomyApi } from '../../../../../../src/app/shared/api/TaxonomyApi';
-import { map, share, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs/operators';
+import { TriplestoreLabelService } from '../../../../../../src/app/shared/service/triplestore-label.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export const DEFAULT_YEAR = '2019';
 const AGG_STATUS = 'latestRedListEvaluation.redListStatus';
@@ -85,13 +87,17 @@ export class ResultService {
     '2000': 'MR.427',
   };
 
-  constructor(private taxonomyApi: TaxonomyApi) { }
+  constructor(
+    private taxonomyApi: TaxonomyApi,
+    private triplestoreLabelService: TriplestoreLabelService,
+    private translationService: TranslateService
+  ) { }
 
   getChecklistVersion(year: string): string {
     return this.yearToChecklistVersion[year];
   }
 
-  getYearsStats(year: number): Observable<{name: string, value: number}[]> {
+  getYearsStats(year: number): Observable<{name: string, value: number, key: string}[]> {
     if (this.resultCache[year]) {
       return ObservableOf(this.resultCache[year]);
     }
@@ -103,6 +109,9 @@ export class ResultService {
         aggregateBySize: 1000
       }, 'multi', '1', '0').pipe(
         map(data => this.mapAgg(data)),
+        switchMap(data => forkJoin(data.map(res => this.triplestoreLabelService.get(res.name, this.translationService.currentLang))).pipe(
+          map(translations => data.map((res, idx) => ({...res, name: translations[idx]})))
+        )),
         tap(data => this.resultCache[year] = data),
         share()
       );
@@ -115,7 +124,7 @@ export class ResultService {
       return [];
     }
     return data.aggregations[AGG_STATUS]
-      .map(res => ({name: this.shortLabel[res.values[AGG_STATUS]], value: res.count}));
+      .map(res => ({name: res.values[AGG_STATUS], value: res.count, key: res.values[AGG_STATUS]}));
   }
 
 }

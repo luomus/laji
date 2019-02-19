@@ -12,16 +12,16 @@ export class ExplainCriteriaPipe implements PipeTransform {
 
   }
 
-  transform(value: any, args?: any): any {
+  transform(value: any, args?: string): any {
     if (typeof value === 'string') {
       const parts = value.split(';');
       const explain = [];
 
       parts.forEach(criteria => {
         const first = criteria.trim().charAt(0);
-        explain.push(this.translateService.instant('criteria.' + first));
+        explain.push('<li>' + criteria + ' &ndash; ' + this.translateService.instant('criteria.' + first) + '</li>');
       });
-      return value + '<br>' + explain.join('; ');
+      return '<ul class="' + args + '">' + explain.join('') + '</ul>';
     }
     return value;
   }

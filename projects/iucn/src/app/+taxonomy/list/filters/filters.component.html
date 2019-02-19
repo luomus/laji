@@ -23,7 +23,7 @@
     <div class="col-sm-5 col-md-4">
       <label>{{ 'iucn.filter.habitat' | translate }}</label>
       <div class="input-group">
-        <select laji-dropdown [placeholder]="''" [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="habitats$ | async"></select>
+        <select laji-dropdown [placeholder]="''" [value]="query?.habitat" (valueChange)="habitatChange($event)" [options]="habitats$ | async"></select>
         <span class="input-group-addon">
           <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'Vain ensisijaisella'">
         </span>
