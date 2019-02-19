@@ -44,18 +44,22 @@ export class RedListStatusComponent {
       this._data = [];
       return;
     }
-    const total: RedListStatusData = {species: 'Total', count: 0
-    };
+    const total: RedListStatusData = { species: 'Total', count: 0 };
     this.statuses.forEach(status => {
       total[status] = 0;
     });
     const results = data.map<RedListStatusDataInternal>(row => {
-      total.count += row.count;
+      let rlCnt = 0;
       this.statuses.forEach(status => {
         if (row[status]) {
           total[status] += row[status];
+          if (this.resultService.evaluatedStatuses.includes(status)) {
+            rlCnt += row[status];
+          }
         }
       });
+      row.count = rlCnt;
+      total.count += row.count;
       return this.dataToInternal(row);
     });
     const totalRow = this.dataToInternal(total);
@@ -68,7 +72,7 @@ export class RedListStatusComponent {
 
   private dataToInternal(data: RedListStatusData): RedListStatusDataInternal {
     let cnt = 0;
-    this.resultService.redListStatuses.forEach(status => cnt += data[status] || 0);
+    this.resultService.endangered.forEach(status => cnt += data[status] || 0);
     return {...data, redListCnt: cnt, redListPct: data.count > 0 ? Math.round((cnt / data.count) * 100 * 10) / 10 : 0};
   }
 

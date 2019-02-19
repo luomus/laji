@@ -20,6 +20,7 @@ export interface FilterQuery {
   onlyPrimaryReason?: boolean;
   onlyPrimaryThreat?: boolean;
   page?: string;
+  speciesFields?: string;
 }
 
 @Injectable({
@@ -62,6 +63,16 @@ export class ResultService {
     'MX.iucnNE': 'NE'
   };
 
+  evaluatedStatuses: string[] = [
+    'MX.iucnRE',
+    'MX.iucnCR',
+    'MX.iucnEN',
+    'MX.iucnVU',
+    'MX.iucnDD',
+    'MX.iucnNT',
+    'MX.iucnLC',
+  ];
+
   redListStatuses: string[] = [
     'MX.iucnRE',
     'MX.iucnCR',
@@ -69,6 +80,12 @@ export class ResultService {
     'MX.iucnVU',
     'MX.iucnDD',
     'MX.iucnNT',
+  ];
+
+  endangered: string[] = [
+    'MX.iucnCR',
+    'MX.iucnEN',
+    'MX.iucnVU'
   ];
 
   habitatStatuses: string[] = [

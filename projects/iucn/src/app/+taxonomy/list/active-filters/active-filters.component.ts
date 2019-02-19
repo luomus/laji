@@ -20,10 +20,10 @@ export class ActiveFiltersComponent {
     'onlyPrimaryHabitat'
   ];
 
-  includeLabel = [
-    'reasons',
-    'threats'
-  ];
+  useLabel = {
+    'reasons': 'iucn.hasEndangermentReason',
+    'threats': 'iucn.hasThreat'
+  };
 
   order = [
     'redListGroup',
@@ -47,7 +47,7 @@ export class ActiveFiltersComponent {
       items.push({
         field: field,
         value: q[field],
-        label: this.includeLabel.indexOf(field) > -1 ? 'iucn.filter.' + field : ''
+        label: this.useLabel[field] || ''
       });
     });
     items.sort((a, b) => this.order.indexOf(a.field) - this.order.indexOf(b.field));

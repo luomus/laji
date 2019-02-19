@@ -99,11 +99,4 @@ export class ListComponent implements OnInit, OnDestroy {
     this.router.navigate([], {queryParams: queryParams});
   }
 
-  taxonSelect(event: string) {
-    if (event) {
-      this.router.navigate(this.localizeRouterService.translateRoute(['/taxon', event]), {queryParams: {
-        checklist: this.checklist
-      }});
-    }
-  }
 }

@@ -37,7 +37,7 @@
   <ng-container *ngIf="threadReasons$ | async; let reasons">
     <div class="form-group">
       <div class="col-sm-5 col-md-4">
-        <label>{{ 'iucn.filter.reasons' | translate }}</label>
+        <label>{{ 'iucn.hasEndangermentReason' | translate }}</label>
         <div class="input-group">
           <select laji-dropdown
             [value]="query?.reasons"
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="col-sm-5 col-md-4">
-        <label>{{ 'iucn.filter.threats' | translate }}</label>
+        <label>{{ 'iucn.hasThreat' | translate }}</label>
         <div class="input-group">
           <select laji-dropdown
             [value]="query?.threats"

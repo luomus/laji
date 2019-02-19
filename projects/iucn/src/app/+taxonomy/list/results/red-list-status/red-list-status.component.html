@@ -1,11 +1,15 @@
 <div class="table-responsive">
   <table class="table table-hover">
     <tr class="title">
-      <th></th>
-      <th>Arvioitujen lajien määrä</th>
-      <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
-      <th>Punaisen listan lajeja</th>
-      <th>Punaisen listan lajien osuus arvioiduista</th>
+      <th rowspan="2"></th>
+      <th rowspan="2">Arvioituja lajeja</th>
+      <th colspan="7" class="evaluated">Arvioidut</th>
+      <th colspan="2" class="no-border-bottom"></th>
+      <th rowspan="2">Uhanalaisia lajeja</th>
+      <th rowspan="2">Uhanalaisten lajien osuus arvioiduista</th>
+    </tr>
+    <tr class="title">
+      <th class="no-border-top" *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
     </tr>
     <tr *ngFor="let data of _data; let f=first; let l=last" [class.title]="f || l">
       <th>{{ data.species }}</th>

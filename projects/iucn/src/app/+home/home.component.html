@@ -9,19 +9,7 @@
     </div>
   </div>
 </div>
-<div class="searchBar">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-8">
-        <laji-taxon-select
-          [searchParams]="{onlySpecies: true}"
-          (taxonIdChange)="taxonSelect($event)"
-          [placeholder]="'species.search' | translate">
-        </laji-taxon-select>
-      </div>
-    </div>
-  </div>
-</div>
+<laji-simple-omni></laji-simple-omni>
 <div class="container">
   <p style="margin-top: 15px;">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet viverra erat. Quisque mattis magna justo. Cras tempor arcu eget augue elementum gravida. Duis tellus lacus, gravida a congue vel, lacinia vestibulum mi. Nullam et molestie sed.
