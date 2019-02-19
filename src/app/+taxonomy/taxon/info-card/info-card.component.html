@@ -12,12 +12,12 @@
 
     <ul style="margin: 25px 0 20px 0;" class="nav nav-tabs nav-justified">
       <li role="presentation"  [ngClass]="{active: activeTab === 'overview'}">
-        <a (click)="setActiveTab('overview')">
+        <a [routerLink]="'/taxon/' + taxonId | localize">
           {{ "taxonomy.overview" | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: activeTab === 'images'}" *ngIf="hasImageData">
-        <a (click)="setActiveTab('images')">
+        <a [routerLink]="'/taxon/' + taxonId + '/images' | localize">
           {{ "species.images" | translate }}
         </a>
       </li>
@@ -27,9 +27,8 @@
                          *ngIf="activatedTabs['overview']"
                          [taxon]="taxon"
                          [taxonDescription]="taxonDescription"
-                         [taxonImages]="taxonImages"
+                         [images]="images"
                          (taxonSelect)="onTaxonSelect($event)"
-                         (hasImageData)="hasImageData = $event"
     ></laji-taxon-overview>
     <laji-taxon-images [hidden]="activeTab !== 'images'"
                          *ngIf="activatedTabs['images'] && hasImageData"

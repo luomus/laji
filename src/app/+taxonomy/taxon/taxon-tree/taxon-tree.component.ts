@@ -9,6 +9,7 @@ import { tap } from 'rxjs/operators';
 })
 export class TaxonTreeComponent implements OnInit {
   @Input() activeId: string;
+  @Input() activeTab: string;
 
   nodes: any[] = [];
 

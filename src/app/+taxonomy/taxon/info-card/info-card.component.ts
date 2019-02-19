@@ -1,5 +1,5 @@
-import {catchError, concat, take, delay, retryWhen, map, tap} from 'rxjs/operators';
-import {Observable, of as ObservableOf, Subscription, throwError as observableThrowError} from 'rxjs';
+import {catchError, concat, take, delay, retryWhen, map, tap, switchMap} from 'rxjs/operators';
+import {Observable, of, Subscription, throwError} from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,17 +10,17 @@ import {
   OnChanges,
   SimpleChanges,
   PLATFORM_ID,
-  ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../../shared/logger/logger.service';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Title } from '@angular/platform-browser';
-import { isPlatformBrowser } from '@angular/common';
 import { CacheService } from '../../../shared/service/cache.service';
 import {Router} from '@angular/router';
 import {LocalizeRouterService} from '../../../locale/localize-router.service';
+import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
+import {GalleryService} from '../../../shared/gallery/service/gallery.service';
 
 // const CACHE_KEY = 'info-card-boxes';
 // interface Settings { [key: string]: {open: boolean}; }
@@ -37,17 +37,20 @@ export class InfoCardComponent implements OnInit, OnChanges {
   taxon: Taxonomy;
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<TaxonomyImage>;
-  hasImageData = false;
+
+  hasImageData: boolean;
+  images = [];
 
   loading = false;
 
   @Input() public taxonId: string;
   @Input() public context: string;
 
-  activeTab: 'overview'|'images' = 'overview';
-  activatedTabs = {'overview': true};
+  @Input() activeTab: 'overview'|'images';
+  private activatedTabs = {};
   // public settings: Settings;
-  initTaxonSub: Subscription;
+  private initTaxonSub: Subscription;
+  private imageSub: Subscription;
 
   constructor(
     public translate: TranslateService,
@@ -58,10 +61,12 @@ export class InfoCardComponent implements OnInit, OnChanges {
     private cd: ChangeDetectorRef,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
+    private galleryService: GalleryService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) { }
 
   ngOnInit() {
+    this.hasImageData = this.activeTab === 'images';
     // this.initSettings();
   }
 
@@ -83,15 +88,14 @@ export class InfoCardComponent implements OnInit, OnChanges {
     }
   }
 
-  setActiveTab(tab: 'overview'|'images') {
-    this.activeTab = tab;
-    this.activatedTabs[this.activeTab] = true;
-  }
-
-  onTaxonSelect(id: string) {
+  onTaxonSelect(id: string, tab = this.activeTab) {
+    const route = ['taxon', id];
+    if (tab !== 'overview') {
+      route.push(tab);
+    }
     this.router.navigate(
       this.localizeRouterService.translateRoute(
-        ['/taxon', id]
+        route
       )
     );
   }
@@ -148,8 +152,8 @@ export class InfoCardComponent implements OnInit, OnChanges {
           return prev;
         }, []);
 
-        this.hasImageData = this.taxonImages.length > 0;
         this.setTitle();
+        this.setImages();
         // this.updateMap();
       })
     );
@@ -164,11 +168,76 @@ export class InfoCardComponent implements OnInit, OnChanges {
   private getTaxon(id) {
     return this.taxonService
       .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true}).pipe(
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), ))).pipe(
       catchError(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
-        return ObservableOf({});
+        return of({});
       }));
+  }
+
+  private setImages() {
+    if (this.imageSub) {
+      this.imageSub.unsubscribe();
+    }
+
+    this.images = [];
+
+    const nbrOfImages = this.taxon.species ? 1 : 9;
+
+    const taxonImages = (this.taxonImages || []).slice(0, nbrOfImages);
+    if (taxonImages.length > 0) {
+      this.hasImageData = true;
+    }
+    let missingImages = nbrOfImages - taxonImages.length;
+
+    let imageObs: Observable<any[]>;
+    if (missingImages > 0) {
+      imageObs = this.getImages(
+        {
+          taxonId: [this.taxon.id],
+          recordBasis: ['HUMAN_OBSERVATION_PHOTO', 'HUMAN_OBSERVATION_UNSPECIFIED'],
+          taxonReliability: ['RELIABLE']
+        },
+        missingImages
+      ).pipe(
+        switchMap(observationImages => {
+          const images = taxonImages.concat(observationImages);
+          if (images.length > 0) {
+            this.hasImageData = true;
+          }
+          missingImages = nbrOfImages - images.length;
+
+          if (missingImages > 0) {
+            return this.getImages(
+              { taxonId: [this.taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'] },
+              missingImages
+            ).pipe(
+              map(collectionImages => images.concat(collectionImages))
+            );
+          } else {
+            return of(images);
+          }
+        }));
+    } else {
+      imageObs = of(taxonImages);
+    }
+
+    this.imageSub = imageObs.subscribe(images => {
+      this.hasImageData = images.length > 0;
+      this.images = images;
+      this.cd.markForCheck();
+
+      if (!this.hasImageData && this.activeTab === 'images') {
+        this.onTaxonSelect(this.taxonId, 'overview');
+      }
+    });
+  }
+
+  private getImages(query: WarehouseQueryInterface, limit: number): Observable<any[]> {
+    return this.galleryService.getList(
+      query,
+      undefined, limit, 1
+    ).pipe(map(res => this.galleryService.getImages(res, limit)));
   }
 }
 

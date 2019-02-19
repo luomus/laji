@@ -4,7 +4,7 @@
       <div class="sidebar-toggle hide-sidebar-toggle link" (click)="toggleSidebar()">
         <i class="glyphicon glyphicon-arrow-left"></i>
       </div>
-      <laji-taxon-tree [activeId]="taxonId"></laji-taxon-tree>
+      <laji-taxon-tree [activeId]="taxonId" [activeTab]="infoCardTab"></laji-taxon-tree>
       <div class="dragbar" (mousedown)="startDragging($event)"></div>
     </div>
     <div *ngIf="!showTree"
@@ -17,8 +17,8 @@
     <div class="info-card-container" [class.sidebar-hidden]="!showTree" [style.width]="showTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'">
       <laji-info-card
         [taxonId]="taxonId"
+        [activeTab]="infoCardTab"
         [context]="infoCardContext"
-        (descriptionChange)="onDescriptionChange($event)"
       ></laji-info-card>
     </div>
   </div>
