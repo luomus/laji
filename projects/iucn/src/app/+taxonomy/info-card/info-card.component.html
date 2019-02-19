@@ -2,14 +2,6 @@
   <div class="row">
     <div class="col-sm-push-8 col-sm-4" style="text-align: right">
       <h1 class="hidden-xs" style="display: inline-block">&nbsp;</h1>
-      <div class="taxon-select">
-        <laji-taxon-select
-          [(taxonId)]="taxonAutocomplete"
-          [searchParams]="{onlySpecies: true}"
-          (taxonIdChange)="taxonSelect($event)"
-          [placeholder]="'species.search' | translate">
-        </laji-taxon-select>
-      </div>
     </div>
     <div class="col-sm-pull-4 col-sm-8">
       <h1><laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name></h1>

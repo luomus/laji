@@ -35,6 +35,7 @@ export class TaxonSelectComponent {
   @Input() placeholder = '';
   @Input() typeaheadItemTemplate;
   @Input() allowInvalid = true;
+  @Input() convertIdToName = true;
   @Input() class = 'form-control input-sm';
   @Output() taxonIdChange = new EventEmitter<string>();
 
@@ -82,7 +83,7 @@ export class TaxonSelectComponent {
     if (!id) {
       this._taxonId = id;
     }
-    if (this._taxonId) {
+    if (this._taxonId || !this.convertIdToName) {
       return;
     }
     this.getTaxa(id).pipe(

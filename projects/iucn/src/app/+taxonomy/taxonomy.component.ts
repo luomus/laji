@@ -6,6 +6,7 @@ import { map, mergeMap } from 'rxjs/operators';
 @Component({
   selector: 'laji-taxonomy',
   template: `
+    <laji-simple-omni></laji-simple-omni>
     <div class="container">
       <laji-info-card [taxonId]="taxon" [checklistId]="checklist"></laji-info-card>
     </div>

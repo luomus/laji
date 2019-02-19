@@ -5,9 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'laji-about',
   template: `
+    <laji-simple-omni></laji-simple-omni>
     <div class="container">
       <div id="wrapper" class="row">
-        <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
+        <div class="col-sm-6 col-md-7 col-lg-8">
           <ol class="breadcrumb">
             <li *ngFor="let parent of parents; let f=first">
               <a [routerLink]="[(f ? '/about' : '/about/' + parent.id)] | localize">
@@ -24,7 +25,7 @@ import { ActivatedRoute } from '@angular/router';
             (children)="children = $event"
           ></laji-info-page>
         </div>
-        <div class="col-sm-4 col-md-3 col-lg-2 more-info" *ngIf="children.length > 0">
+        <div class="col-sm-6 col-md-5 col-lg-4 more-info" *ngIf="children.length > 0">
           <div class="media">
             <div class="media-body" style="background-color: #f5f5f5; max-width: 300px; padding: 10px;">
               <h4 class="media-heading">
