@@ -62,6 +62,16 @@ export class ResultService {
     'MX.iucnNE': 'NE'
   };
 
+  evaluatedStatuses: string[] = [
+    'MX.iucnRE',
+    'MX.iucnCR',
+    'MX.iucnEN',
+    'MX.iucnVU',
+    'MX.iucnDD',
+    'MX.iucnNT',
+    'MX.iucnLC',
+  ];
+
   redListStatuses: string[] = [
     'MX.iucnRE',
     'MX.iucnCR',
