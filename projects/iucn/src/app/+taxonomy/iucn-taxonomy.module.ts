@@ -28,6 +28,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ActiveFiltersComponent } from './list/active-filters/active-filters.component';
 import { ExplainCriteriaPipe } from './pipe/explain-criteria.pipe';
 import { IucnSharedModule } from '../iucn-shared/shared.module';
+import { SelectFieldsModule } from '../../../../../src/app/shared-modules/select-fields/select-fields.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -39,7 +40,8 @@ import { IucnSharedModule } from '../iucn-shared/shared.module';
     NgxChartsModule,
     TaxonSelectModule,
     DatatableModule,
-    NgSelectModule
+    NgSelectModule,
+    SelectFieldsModule
   ],
   declarations: [
     InfoCardComponent,

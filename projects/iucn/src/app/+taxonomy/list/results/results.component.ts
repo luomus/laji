@@ -15,6 +15,7 @@ import { RedListHabitatData } from './red-list-habitat/red-list-habitat.componen
 import { MetadataService } from '../../../../../../../src/app/shared/service/metadata.service';
 import { IPageChange } from '../../../../../../../src/app/shared-modules/datatable/data-table-footer/data-table-footer.component';
 import { TranslateService } from '@ngx-translate/core';
+import { ISelectFields } from '../../../../../../../src/app/shared-modules/select-fields/select-fields/select-fields.component';
 
 @Component({
   selector: 'laji-results',
@@ -47,6 +48,16 @@ export class ResultsComponent implements OnChanges, OnInit {
   speciesPageSize = 100;
   speciesPage = 1;
   speciesCount = 0;
+
+  selectedSpeciesFields = [];
+  speciesAllFields = [
+    {label: 'tieteellinen nimi', key: 'scientificName'},
+    {label: 'kansankielinen nimi', key: 'vernacularName'},
+    {label: 'muutoksen syy', key: 'latestRedListEvaluation.reasonForStatusChange'},
+    {label: 'luokkaan johtaneet kriteerit', key: 'latestRedListEvaluation.criteriaForStatus'},
+    {label: 'luokka 2015', key: 'latestRedListEvaluation.redListStatus'},
+    {label: 'luokka 2010', key: 'latestRedListEvaluation.redListStatus'}
+  ];
 
   constructor(
     private taxonApi: TaxonomyApi,
@@ -85,6 +96,12 @@ export class ResultsComponent implements OnChanges, OnInit {
       hasLatestRedListEvaluation: true,
       includeHidden: true
     });
+    if (this.query.speciesFields) {
+      this.selectedSpeciesFields = this.query.speciesFields.split(',').map(field => {
+        const idx = this.speciesAllFields.findIndex(item => item.key === field);
+        return this.speciesAllFields[idx];
+      }).filter(item => !!item);
+    }
     this.initStatusQuery();
     this.initSpeciesListQuery();
     this.initThreads();
@@ -279,6 +296,7 @@ export class ResultsComponent implements OnChanges, OnInit {
       'vernacularName.' + this.lang,
       'cursiveName',
       'latestRedListEvaluation.redListStatus',
+      'latestRedListEvaluation.criteriaForStatus',
       'latestRedListEvaluation.endangermentReasons',
       'latestRedListEvaluation.redListStatusNotes',
       'latestRedListEvaluation.reasonForStatusChange',
@@ -419,6 +437,13 @@ export class ResultsComponent implements OnChanges, OnInit {
     this.queryChange.emit({
       ...this.query,
       page: '' + event.page
+    });
+  }
+
+  newFields(event: ISelectFields[]) {
+    this.queryChange.emit({
+      ...this.query,
+      speciesFields: (event || []).map(e => e.key).join(',')
     });
   }
 }

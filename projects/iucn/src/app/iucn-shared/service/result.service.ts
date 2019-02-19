@@ -20,6 +20,7 @@ export interface FilterQuery {
   onlyPrimaryReason?: boolean;
   onlyPrimaryThreat?: boolean;
   page?: string;
+  speciesFields?: string;
 }
 
 @Injectable({
