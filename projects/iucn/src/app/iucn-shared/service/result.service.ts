@@ -71,6 +71,12 @@ export class ResultService {
     'MX.iucnNT',
   ];
 
+  endangered: string[] = [
+    'MX.iucnCR',
+    'MX.iucnEN',
+    'MX.iucnVU'
+  ];
+
   habitatStatuses: string[] = [
     'MX.iucnRE',
     'MX.iucnCR',

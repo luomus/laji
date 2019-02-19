@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TaxonService } from '../../iucn-shared/service/taxon.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../../../../src/app/locale/localize-router.service';
+import { ResultService } from '../../iucn-shared/service/result.service';
 
 @Component({
   selector: 'laji-info-card',
@@ -15,6 +16,7 @@ export class InfoCardComponent implements OnChanges {
   public taxon: Taxonomy;
   public taxonAutocomplete: string;
   public latestStatus: RedListEvaluation;
+  public isEndangered: boolean;
   public activeIucnYear: number;
 
   @Input() private taxonId: string;
@@ -22,6 +24,7 @@ export class InfoCardComponent implements OnChanges {
 
   constructor(
     private taxonService: TaxonService,
+    private resultService: ResultService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private translateService: TranslateService
@@ -41,6 +44,7 @@ export class InfoCardComponent implements OnChanges {
       .subscribe(taxon => {
         this.activeIucnYear = taxon.latestRedListStatusFinland && taxon.latestRedListStatusFinland.year || null;
         this.latestStatus = taxon.latestRedListEvaluation || null;
+        this.isEndangered = this.latestStatus && this.resultService.endangered.includes(this.latestStatus.redListStatus);
         this.taxon = taxon;
       });
   }

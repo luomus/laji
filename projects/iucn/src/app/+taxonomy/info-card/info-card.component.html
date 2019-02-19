@@ -13,7 +13,14 @@
     </div>
     <div class="col-sm-pull-4 col-sm-8">
       <h1><laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name></h1>
-      <h2>Uhanalainen {{('iucn.taxon.' + latestStatus.redListStatus) | translate}}</h2>
+      <h3>
+        <ng-container *ngIf="isEndangered; else notEndangeredTitle">
+          Uhanalainen: {{ ('iucn.taxon.' + latestStatus.redListStatus) | translate | lowercase }}
+        </ng-container>
+        <ng-template #notEndangeredTitle>
+          {{ ('iucn.taxon.' + latestStatus.redListStatus) | translate }}
+        </ng-template>
+      </h3>
     </div>
   </div>
   <div class="row">
