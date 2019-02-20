@@ -39,7 +39,6 @@ import { SpeciesCountComponent } from './species/species-count/species-count.com
 import { SpeciesPieComponent } from './taxon/info-card/taxon-overview/species-pie/species-pie.component';
 import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { TaxonSelectModule } from '../shared-modules/taxon-select/taxon-select.module';
-import { TaxonDescriptionsComponent } from './taxon/info-card/taxon-biology/taxon-descriptions/taxon-descriptions.component';
 import { TaxonSynonymsComponent } from './taxon/info-card/taxon-taxonomy/taxon-synonyms/taxon-synonyms.component';
 import { TaxonNamesComponent } from './taxon/info-card/taxon-taxonomy/taxon-names/taxon-names.component';
 import { BrowseSpeciesComponent } from './browse-species/browse-species.component';
@@ -65,7 +64,7 @@ import { TaxonTaxonomyComponent } from './taxon/info-card/taxon-taxonomy/taxon-t
     InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
     SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
     SpeciesListOptionsModalComponent, BoldSynonymComponent,
-    SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonDescriptionsComponent, TaxonSynonymsComponent,
+    SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonSynonymsComponent,
     TaxonNamesComponent, BrowseSpeciesComponent, InformalGroupSelectComponent, InformalListComponent, InformalListBreadcrumbComponent,
     SelectedParentsComponent,
     TaxonOverviewComponent,

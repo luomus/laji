@@ -6,10 +6,11 @@ import {
   Component,
   Inject,
   Input,
+  Output,
   OnInit,
   OnChanges,
   SimpleChanges,
-  PLATFORM_ID,
+  PLATFORM_ID, EventEmitter,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -17,8 +18,6 @@ import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../../shared/mo
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Title } from '@angular/platform-browser';
 import { CacheService } from '../../../shared/service/cache.service';
-import {Router} from '@angular/router';
-import {LocalizeRouterService} from '../../../locale/localize-router.service';
 import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
 import {GalleryService} from '../../../shared/gallery/service/gallery.service';
 
@@ -33,24 +32,25 @@ import {GalleryService} from '../../../shared/gallery/service/gallery.service';
 })
 export class InfoCardComponent implements OnInit, OnChanges {
   // private static settings: Settings;
+  @Input() taxonId: string;
+  @Input() context: string;
+  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy';
 
   taxon: Taxonomy;
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<TaxonomyImage>;
 
   hasImageData: boolean;
+  hasBiologyData: boolean;
   images = [];
 
   loading = false;
-
-  @Input() public taxonId: string;
-  @Input() public context: string;
-
-  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy';
   activatedTabs = {};
   // public settings: Settings;
   private initTaxonSub: Subscription;
   private imageSub: Subscription;
+
+  @Output() routeUpdate = new EventEmitter();
 
   constructor(
     public translate: TranslateService,
@@ -59,8 +59,6 @@ export class InfoCardComponent implements OnInit, OnChanges {
     private logger: Logger,
     private title: Title,
     private cd: ChangeDetectorRef,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
     private galleryService: GalleryService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) { }
@@ -88,16 +86,8 @@ export class InfoCardComponent implements OnInit, OnChanges {
     }
   }
 
-  onTaxonSelect(id: string, tab = this.activeTab) {
-    const route = ['taxon', id];
-    if (tab !== 'overview') {
-      route.push(tab);
-    }
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(
-        route
-      )
-    );
+  updateRoute(id: string, tab = this.activeTab, context = this.context) {
+    this.routeUpdate.emit({id: id, tab: tab, context: context});
   }
 
 /*  private initSettings() {
@@ -151,6 +141,11 @@ export class InfoCardComponent implements OnInit, OnChanges {
           }
           return prev;
         }, []);
+
+        this.hasBiologyData = !!this.taxon.primaryHabitat || !!this.taxon.secondaryHabitats || this.taxonDescription.length > 0;
+        if (!this.hasBiologyData && this.activeTab === 'biology') {
+          this.updateRoute(this.taxonId, 'overview');
+        }
 
         this.setTitle();
         this.setImages();
@@ -228,7 +223,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
       this.cd.markForCheck();
 
       if (!this.hasImageData && this.activeTab === 'images') {
-        this.onTaxonSelect(this.taxonId, 'overview');
+        this.updateRoute(this.taxonId, 'overview');
       }
     });
   }

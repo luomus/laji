@@ -8,6 +8,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-taxonomy',
@@ -28,6 +29,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -73,23 +75,29 @@ export class TaxonComponent implements OnInit, OnDestroy {
     this.updateRoute();
   }
 
-  onDescriptionChange(context: string) {
-    this.infoCardContext = context;
-    this.updateRoute();
-  }
-
-  updateRoute() {
+  updateRoute(id = this.taxonId, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree) {
+    const route = ['taxon', id];
     const params = {};
-    if (this.infoCardContext !== 'default') {
-      params['context'] = this.infoCardContext;
+    const extra = {};
+
+    if (tab !== 'overview') {
+      route.push(tab);
     }
-    if (!this.showTree) {
+    if (context !== 'default' && id === this.taxonId) {
+      params['context'] = context;
+    }
+    if (!showTree) {
       params['showTree'] = false;
     }
+    if (Object.keys(params).length > 0) {
+      extra['queryParams'] = params;
+    }
 
-    this.router.navigate([], {
-      queryParams: params,
-      replaceUrl: true
-    });
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(
+        route
+      ),
+      extra
+    );
   }
 }

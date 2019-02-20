@@ -13,6 +13,8 @@ export class InfoComponent {
 
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' | 'auto' = 'left';
   @Input() html: string;
+  @Input() glyphicon: string;
+  @Input() labelType = 'info';
   @ViewChild('modal') public modal: ModalDirective;
   @ViewChild('pop') public popover: PopoverDirective;
 

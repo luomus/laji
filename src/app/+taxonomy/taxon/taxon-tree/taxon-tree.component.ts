@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { tap } from 'rxjs/operators';
 
@@ -9,7 +9,7 @@ import { tap } from 'rxjs/operators';
 })
 export class TaxonTreeComponent implements OnInit {
   @Input() activeId: string;
-  @Input() activeTab: string;
+  @Output() taxonSelect = new EventEmitter<string>();
 
   nodes: any[] = [];
 
