@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default"
+         laji-panel
+         *ngIf="taxon.primaryHabitat || taxon.secondaryHabitats"
+         [title]="'taxonomy.habitat' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <table class="table taxon-table table-condensed">
+        <tbody>
+          <tr *ngIf="taxon.primaryHabitat">
+            <th>{{ 'taxonomy.habitat.primary' | translate }}</th>
+            <td>{{ taxon.primaryHabitat.habitat | label }}</td>
+          </tr>
+          <tr *ngIf="taxon.secondaryHabitats">
+            <th>{{ 'taxonomy.habitat.secondary' | translate }}</th>
+            <td>
+              <ul>
+                <li *ngFor="let habitat of taxon.secondaryHabitats">
+                  {{ habitat.habitat | label }}
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-container *ngIf="taxonDescription.length > 0">
+      <select style="margin-bottom: 8px;" class="form-control"
+              (change)="contextChange.emit($event.target.value)"
+              *ngIf="taxonDescription.length > 1">
+        <option *ngFor="let description of taxonDescription; let i = index"
+                [value]="description.id"
+                [selected]="activeDescription === i">
+          {{ description.title ? (description.title | multiLang) : description.id }}
+        </option>
+      </select>
+      <div class="panel-group" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default"
+             *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index"
+             [title]="group.title | multiLang"
+             [open]="true"
+             [autoToggle]="true"
+             [index]="i"
+             laji-panel>
+          <div *ngFor="let variable of group.variables">
+            <h4>
+              {{ variable.title | multiLang }}
+            </h4>
+            <span [innerHTML]="variable.content | multiLang"></span>
+          </div>
+        </div>
+      </div>
+      <div class="source">
+        <laji-info [glyphicon]="'user'" [placement]="'right'" [labelType]="'default'">
+          {{ 'taxonomy.source' | translate }}: {{ taxonDescription[activeDescription]?.title | multiLang }}
+          <ng-container *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
+            <br>
+            {{ taxonDescription[activeDescription]?.speciesCardAuthors.title | multiLang }}:
+            <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content | multiLang"></span>
+          </ng-container>
+        </laji-info>
+      </div>
+    </ng-container>
+  </div>
+</div>

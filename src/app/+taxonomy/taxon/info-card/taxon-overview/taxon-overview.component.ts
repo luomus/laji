@@ -21,7 +21,7 @@ export class TaxonOverviewComponent implements OnChanges {
 
   private childrenSub: Subscription;
 
-  @Input() set taxonDescription(taxonDescription: Array<TaxonomyDescription>) {
+  @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
     this.ingress = undefined;
     if (taxonDescription && taxonDescription.length > 0 && taxonDescription[0].id === 'default' && taxonDescription[0].groups.length > 0) {
       const desc = taxonDescription[0].groups[0];

@@ -1,4 +1,4 @@
-<table class="table table-condensed" *ngIf="taxon">
+<table class="table taxon-table table-condensed" *ngIf="taxon">
   <tbody>
   <tr>
     <th>{{ 'taxonomy.nameAccordingTo' | translate }}</th>
@@ -73,23 +73,6 @@
       </ul>
     </td>
   </tr>
-  <!--tr>
-    <th>{{ 'taxonomy.card.id' | translate }}</th>
-    <td>
-      http://tun.fi/{{ taxon.id }}
-      <div class="download-formats">
-        <a href="/api/taxa/{{taxon.id}}?locale={{translate.currentLang}}" rel="noopener" target="_blank">
-          <span class="label label-default">json</span>
-        </a>
-        <a href="http://tun.fi/{{taxon.id}}?format=rdfxml" rel="noopener" target="_blank">
-          <span class="label label-primary">rdf+xml</span>
-        </a>
-        <a href="http://tun.fi/{{taxon.id}}?format=rdfxml_dwc" rel="noopener" target="_blank">
-          <span class="label label-success">dwc</span>
-        </a>
-      </div>
-    </td>
-  </tr-->
   <tr *ngIf="taxon.taxonExpert && taxon.taxonExpert.length > 0">
     <th>{{ (taxon.taxonExpert.length > 1 ? 'taxonomy.experts' : 'taxonomy.expert') | translate }}</th>
     <td>

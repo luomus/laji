@@ -4,7 +4,10 @@
       <div class="sidebar-toggle hide-sidebar-toggle link" (click)="toggleSidebar()">
         <i class="glyphicon glyphicon-arrow-left"></i>
       </div>
-      <laji-taxon-tree [activeId]="taxonId" [activeTab]="infoCardTab"></laji-taxon-tree>
+      <laji-taxon-tree
+        [activeId]="taxonId"
+        (taxonSelect)="updateRoute($event)"
+      ></laji-taxon-tree>
       <div class="dragbar" (mousedown)="startDragging($event)"></div>
     </div>
     <div *ngIf="!showTree"
@@ -19,6 +22,7 @@
         [taxonId]="taxonId"
         [activeTab]="infoCardTab"
         [context]="infoCardContext"
+        (routeUpdate)="updateRoute($event.id, $event.tab, $event.context)"
       ></laji-info-card>
     </div>
   </div>

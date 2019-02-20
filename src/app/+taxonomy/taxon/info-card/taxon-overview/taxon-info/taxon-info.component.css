@@ -1,8 +1,1 @@
-.table tr:first-child th, .table tr:first-child td {
-  border-top: none;
-}
 
-ul {
-  padding-left: 20px;
-  margin-left: 0;
-}
