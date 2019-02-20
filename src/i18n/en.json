@@ -971,5 +971,7 @@
   "np.copyAddress": "Copy link",
   "np.copyAddress.success": "Link was copied to the clipboard",
   "save": "Save",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "navigation.lolife": "LOLIFE",
+  "theme.lolife.intro": "Flying-Squirrel-Life"
 }

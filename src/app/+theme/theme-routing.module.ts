@@ -244,6 +244,49 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: 'lolife',
+    component: MunicipalityMonitoringContainerComponent,
+    children: [
+      {path: '', pathMatch: 'full', component: MunicipalityMonitoringInstructionsContainerComponent},
+      {
+        path: 'instructions',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringInstructionsContainerComponent
+      },
+      {
+        path: 'places',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.45', noFormPermissionRedirect: '/theme/lolife'}
+      },
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.45', noFormPermissionRedirect: '/theme/lolife'}
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: {formId: 'MHL.45', noFormPermissionRedirect: '/theme/lolife'}
+      },
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true, formId: 'MHL.45', noFormPermissionRedirect: '/theme/lolife' }
+      }
+    ]
+  },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},

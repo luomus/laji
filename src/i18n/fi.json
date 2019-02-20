@@ -1040,5 +1040,7 @@
   "np.copyAddress": "Kopioi linkki",
   "np.copyAddress.success": "Linkki kopioitiin leikepöydälle",
   "save": "Tallenna",
-  "cancel": "Peruuta"
+  "cancel": "Peruuta",
+  "navigation.lolife": "LOLIFE",
+  "theme.lolife.intro": "Liito-Orava-Life"
 }

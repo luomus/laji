@@ -173,6 +173,16 @@
             {{ 'theme.municipalityMonitoring.intro' | translate }}
           </td>
         </tr>
+        <tr *lajiForTypes="['dev']">
+          <th>
+            <a [routerLink]="['/theme/lolife'] | localize">
+              {{ 'navigation.lolife' | translate }}
+            </a>
+          </th>
+          <td>
+            {{ 'theme.lolife.intro' | translate }}
+          </td>
+        </tr>
       </table>
     </div>
   </div>

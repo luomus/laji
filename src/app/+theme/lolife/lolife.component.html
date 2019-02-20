@@ -1,0 +1,20 @@
+<laji-theme-page [title]="'wtf'"
+  [navLinks]="[
+    {
+      routerLink: ['../lolife', 'instructions'],
+      label: 'instructions' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../lolife', 'places'],
+      label: 'invasiveSpecies.places' | translate,
+      visible: rights?.edit || rights?.admin
+    },
+    {
+      routerLink: ['/vihko/fp/HR.2951/admin'],
+      label: 'form.administer' | translate,
+      visible: rights?.admin
+    }
+  ]">
+  <router-outlet></router-outlet>
+</laji-theme-page>
