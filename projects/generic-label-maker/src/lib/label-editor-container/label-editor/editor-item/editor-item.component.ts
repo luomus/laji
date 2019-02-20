@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { LabelItem } from '../../../generic-label-maker.interface';
+import { ILabelItem } from '../../../generic-label-maker.interface';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../../label.service';
 
@@ -13,16 +13,16 @@ export class EditorItemComponent implements AfterViewInit {
 
   @Input() magnification: number;
   @Input() active: boolean;
+  @Input() boundary = '#label-editor';
   @ViewChild('item') elemRef: ElementRef<HTMLDivElement>;
 
   @Output() done = new EventEmitter<void>();
-  @Output() itemChange = new EventEmitter<LabelItem>();
-  @Output() showSettings = new EventEmitter<LabelItem>();
-  @Output() itemClick = new EventEmitter<LabelItem>();
+  @Output() itemChange = new EventEmitter<ILabelItem>();
+  @Output() showSettings = new EventEmitter<ILabelItem>();
+  @Output() itemClick = new EventEmitter<ILabelItem>();
 
-  _item: LabelItem;
+  _item: ILabelItem;
 
-  boundary = '#label-editor';
   width: number;
   height: number;
   size: number;
@@ -54,7 +54,7 @@ export class EditorItemComponent implements AfterViewInit {
   }
 
   @Input()
-  set item(item: LabelItem) {
+  set item(item: ILabelItem) {
     this._item = item;
     if (this._item) {
       this.recalculate();

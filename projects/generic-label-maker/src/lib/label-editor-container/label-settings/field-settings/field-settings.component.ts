@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { LabelField } from '../../../generic-label-maker.interface';
+import { ILabelField } from '../../../generic-label-maker.interface';
 
 @Component({
   selector: 'll-field-settings',
@@ -9,9 +9,9 @@ import { LabelField } from '../../../generic-label-maker.interface';
 })
 export class FieldSettingsComponent {
 
-  @Input() field: LabelField;
+  @Input() field: ILabelField;
   @Input() allowDelete: boolean;
-  @Output() fieldChange = new EventEmitter<LabelField>();
+  @Output() fieldChange = new EventEmitter<ILabelField>();
   @Output() fieldRemove = new EventEmitter<void>();
 
   more = false;

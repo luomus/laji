@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { LabelField } from '../../generic-label-maker.interface';
+import { ILabelField } from '../../generic-label-maker.interface';
 
 @Pipe({
   name: 'searchFields'
 })
 export class SearchFieldsPipe implements PipeTransform {
 
-  transform(value: LabelField[], args?: string): any {
+  transform(value: ILabelField[], args?: string): any {
     if (!args) {
       return value;
     }

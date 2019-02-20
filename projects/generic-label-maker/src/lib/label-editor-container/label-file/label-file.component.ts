@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Setup } from '../../generic-label-maker.interface';
+import { ISetup } from '../../generic-label-maker.interface';
 
 @Component({
   selector: 'll-label-file',
@@ -9,11 +9,11 @@ import { Setup } from '../../generic-label-maker.interface';
 })
 export class LabelFileComponent implements OnInit {
 
-  @Input() setup: Setup;
+  @Input() setup: ISetup;
   @Input() data: object[];
 
   @Output() html = new EventEmitter<string>();
-  @Output() setupChange = new EventEmitter<Setup>();
+  @Output() setupChange = new EventEmitter<ISetup>();
 
   filename = '';
 

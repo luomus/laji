@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { LabelField, LabelItem } from '../../generic-label-maker.interface';
+import { ILabelField, ILabelItem } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { LabelService } from '../../label.service';
 export class LabelItemComponent {
 
 
-  _item: LabelItem;
+  _item: ILabelItem;
   _data: object;
 
   size;
@@ -19,7 +19,7 @@ export class LabelItemComponent {
   constructor(private labelService: LabelService) { }
 
   @Input()
-  set item(item: LabelItem) {
+  set item(item: ILabelItem) {
     this._item = item;
     this.size = this.labelService.mmToPixel(Math.min(item.style['height.mm'], item.style['width.mm']));
     this.initContent();
@@ -36,7 +36,7 @@ export class LabelItemComponent {
       return;
     }
     const fields = this._item.fields;
-    const result: LabelField[] = [];
+    const result: ILabelField[] = [];
     fields.forEach(field => {
       if (field.type === 'text') {
         result.push({...field});

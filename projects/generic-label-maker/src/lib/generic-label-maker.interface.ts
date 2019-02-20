@@ -1,3 +1,5 @@
+export type TLabelLocation = 'labelItems' | 'backSideLabelItems';
+
 export interface IFontStyle {
   'font-family'?: string;
   'font-size.pt'?: number;
@@ -28,17 +30,17 @@ export interface ILabelStyle extends IFontStyle {
   'left.mm'?: number;
 }
 
-export interface LabelItem {
+export interface ILabelItem {
   _id?: number;
   x: number; // x position in mm
   y: number; // y position in mm
   type: string;
-  fields: LabelField[];
+  fields: ILabelField[];
   style?: ILabelStyle;
   order?: number;
 }
 
-export interface LabelField {
+export interface ILabelField {
   field: string;
   label: string;
   join?: string;
@@ -50,7 +52,7 @@ export interface LabelField {
   _menuOpen?: boolean;
 }
 
-export interface Setup {
+export interface ISetup {
 
   version?: number;
 
@@ -59,6 +61,16 @@ export interface Setup {
    */
   page: IPageStyle;
 
+  /**
+   * true - print odd pages using labelItems and even pages using backSideLabelItems
+   * false - print all pages using labelItems
+   */
+  twoSided?: boolean;
+
+  /**
+   * Skip this many items from the start
+   */
+  skip?: number;
 
   /**
    * Labels size object
@@ -68,5 +80,15 @@ export interface Setup {
   /**
    * Items on the label
    */
-  labelItems: LabelItem[];
+  labelItems: ILabelItem[];
+
+  /**
+   * Label items on the back side
+   */
+  backSideLabelItems?: ILabelItem[];
+}
+
+export interface IAddLabelEvent {
+  item: ILabelItem;
+  location: TLabelLocation;
 }

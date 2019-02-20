@@ -1,6 +1,6 @@
 <ng-container *ngIf="selectedLabelItem">
   <button (click)="remove(selectedLabelItem)" type="button" class="btn btn-danger btn-xs pull-right" tabindex="-1"><i class="glyphicon glyphicon-trash"></i></button>
-  <h3>Field</h3>
+  <h3 class="first">Field</h3>
   <ll-font-settings
     *ngIf="showFieldFont"
     [allowEmptyFontFamily]="true"
@@ -62,8 +62,12 @@
   </div>
   <ll-field-add [availableFields]="availableFields" (add)="fieldAdd($event)"></ll-field-add>
 </ng-container>
-<h3>Label</h3>
+<h3 [class.first]="!selectedLabelItem">Label</h3>
 <ll-font-settings [fontSettings]="setup.label" (fontSettingsChange)="change('label', $event)"></ll-font-settings>
 <ll-margin-settings [style]="setup.label" (styleChange)="change('label', $event)"></ll-margin-settings>
 <h3>Page</h3>
 <ll-margin-settings [style]="setup.page" [type]="'padding'" (styleChange)="change('page', $event)"></ll-margin-settings>
+<label>
+  <input type="checkbox" [checked]="setup.twoSided" (change)="change('twoSided', !setup.twoSided)" />
+  Two sided (flip horizontal)
+</label>
