@@ -48,6 +48,17 @@
           <svg width="14" height="14" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg>
           Redo
         </div>
+        <h3>Generate data</h3>
+        <table style="width: 100%">
+          <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
+          <tr><td>Range start:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
+          <tr><td>Range end:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
+          <tr><td colspan="2">&nbsp;</td></tr>
+          <tr *ngFor="let field of fields">
+            <td>{{field.label}}:</td><td><input (change)="updateGenerate(field.field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
+          </tr>
+        </table>
+        <button (click)="generateData()" style="margin-top: 5px;" class="btn btn-default btn-sm pull-right">Generate</button>
       </div>
       <div [hidden]="_active !== 'settings'">
         <ll-label-settings

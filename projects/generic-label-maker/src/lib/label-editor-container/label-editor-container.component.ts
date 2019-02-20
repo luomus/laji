@@ -14,12 +14,25 @@ export class LabelEditorContainerComponent {
   _active: 'file'|'edit'|'settings'|'fields' = 'file';
   _setup: ISetup;
   _selectedLabelItem: ILabelItem | undefined;
+  fields: ILabelField[];
   @Input() magnification = 2;
   @Input() availableFields: ILabelField[];
   @Input() data: object[];
 
   @Output() html = new EventEmitter<string>();
   @Output() setupChange = new EventEmitter<ISetup>();
+
+  generate: {
+    uri: string;
+    rangeStart: number;
+    rangeEnd: number;
+    data: {[key: string]: string}
+  } = {
+    uri: '',
+    rangeStart: 1,
+    rangeEnd: 10,
+    data: {}
+  };
 
   private _undo: ISetup[] = [];
   private _redo: ISetup[] = [];
@@ -28,17 +41,36 @@ export class LabelEditorContainerComponent {
 
   @Input()
   set setup(setup: ISetup) {
+    const hasField = {};
+    const allFields = [];
     this._setup = {
       ...setup,
-      labelItems: setup.labelItems.map(item => ({
+      labelItems: setup.labelItems.map(item => {
+        item.fields.forEach(field => {
+          if (!hasField[field.field] && !field.type && field.field !== 'id') {
+            hasField[field.field] = true;
+            allFields.push(field);
+          }
+        });
+        return {
         ...item,
-        _id: item._id || LabelEditorContainerComponent.id++
-      })),
-      backSideLabelItems: (setup.backSideLabelItems || []).map(item => ({
-        ...item,
-        _id: item._id || LabelEditorContainerComponent.id++
-      }))
+          _id: item._id || LabelEditorContainerComponent.id++
+        };
+      }),
+      backSideLabelItems: (setup.backSideLabelItems || []).map(item => {
+        item.fields.forEach(field => {
+          if (!hasField[field.field] && !field.type && field.field !== 'id') {
+            hasField[field.field] = true;
+            allFields.push(field);
+          }
+        });
+        return {
+          ...item,
+          _id: item._id || LabelEditorContainerComponent.id++
+        };
+      })
     };
+    this.fields = allFields;
     if (this._selectedLabelItem) {
       let idx = this._setup.labelItems.findIndex(i => i._id === this._selectedLabelItem._id);
       if (idx !== -1) {
@@ -105,5 +137,42 @@ export class LabelEditorContainerComponent {
 
   hasRedo() {
     return this._redo.length > 0;
+  }
+
+  updateGenerate(key: string, value: string, inData = false) {
+    if (inData) {
+      this.generate = {
+        ...this.generate,
+        data: {
+          ...this.generate.data,
+          [key]: value
+        }
+      };
+    } else {
+      this.generate = {
+        ...this.generate,
+        [key]: key === 'uri' ? value : Number(value)
+      };
+    }
+  }
+
+  generateData() {
+    const uri = this.generate.uri + (this.generate.uri.indexOf('%id%') > -1 ? '' : '%id%');
+    const data = [];
+    const start = this.generate.rangeStart < this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
+    const end = this.generate.rangeStart > this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
+    const MAX = 100000;
+    let current = 0;
+    for (let i = start; i <= end; i++) {
+      current++;
+      if (current > MAX) {
+        break;
+      }
+      data.push({
+        ...this.generate.data,
+        id: uri.replace('%id%', '' + i)
+      });
+    }
+    this.data = data;
   }
 }
