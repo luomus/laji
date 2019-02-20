@@ -1042,5 +1042,6 @@
   "save": "Tallenna",
   "cancel": "Peruuta",
   "navigation.lolife": "LOLIFE",
-  "theme.lolife.intro": "Liito-Orava-Life"
+  "theme.lolife.intro": "Liito-Orava-Life",
+  "theme.lolife.places": "Kirjaa seurantatietoja"
 }

@@ -15,7 +15,7 @@ import { NamedPlacesService } from 'app/shared-modules/named-place/named-places.
   selector: 'laji-lolife-form',
   templateUrl: './../../common/theme-form.component.html'
 })
-export class InvasiveControlFormComponent
+export class LolifeFormComponent
        extends ThemeFormComponent
        implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;

@@ -51,9 +51,6 @@ import { LineTransectFormKartoitusComponent } from './line-transect/line-transec
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { InvasiveControlComponent } from './invasive-control/invasive-control.component';
-import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
-import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
 import { WbcSpeciesComponent } from './wbc/wbc-result/wbc-species/wbc-species.component';
 import { WbcRoutesComponent } from './wbc/wbc-result/wbc-routes/wbc-routes.component';
 import { WbcCensusesComponent } from './wbc/wbc-result/wbc-censuses/wbc-censuses.component';
@@ -75,6 +72,9 @@ import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-l
 import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
 import { ThemePageComponent } from './common/theme-page.component';
 import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
+import { InvasiveControlComponent } from './invasive-control/invasive-control.component';
+import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
+import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
 import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
 import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
 import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
@@ -82,6 +82,11 @@ import { MunicipalityMonitoringComponent } from './municipality-monitoring/munic
 import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
 import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/municipality-monitoring-form/municipality-monitoring-form.component';
 import { MunicipalityMonitoringInstructionsComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.component';
+import { LolifeComponent } from './lolife/lolife.component';
+import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
+import { LolifeFormComponent } from './lolife/lolife-form/lolife-form.component';
+import { LolifeContainerComponent } from './lolife/lolife.container';
+import { LolifeInstructionsContainerComponent } from './lolife/lolife-instructions/lolife-instructions.container';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 
@@ -171,6 +176,11 @@ import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
     MunicipalityMonitoringInstructionsContainerComponent,
     MunicipalityMonitoringInstructionsComponent,
     MunicipalityMonitoringFormComponent,
+    LolifeContainerComponent,
+    LolifeComponent,
+    LolifeInstructionsContainerComponent,
+    LolifeInstructionsComponent,
+    LolifeFormComponent,
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })

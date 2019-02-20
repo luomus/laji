@@ -18,7 +18,7 @@ import { MonitoringThemeBaseComponent } from '../common/monitoring-theme-base.co
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InvasiveControlContainerComponent
+export class LolifeContainerComponent
       extends MonitoringThemeBaseComponent
       implements OnInit {
   rights$: Observable<Rights>;

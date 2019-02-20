@@ -40,6 +40,9 @@ import { InvasiveControlInstructionsContainerComponent } from './invasive-contro
 import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/municipality-monitoring-form/municipality-monitoring-form.component';
 import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
 import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
+import { LolifeFormComponent } from './lolife/lolife-form/lolife-form.component';
+import { LolifeInstructionsContainerComponent } from './lolife/lolife-instructions/lolife-instructions.container';
+import { LolifeContainerComponent } from './lolife/lolife.container';
 import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { HasFormPermission } from '../shared/route/has-form-permission';
@@ -246,32 +249,32 @@ const routes: Routes = [
   },
   {
     path: 'lolife',
-    component: MunicipalityMonitoringContainerComponent,
+    component: LolifeContainerComponent,
     children: [
-      {path: '', pathMatch: 'full', component: MunicipalityMonitoringInstructionsContainerComponent},
+      {path: '', pathMatch: 'full', component: LolifeInstructionsContainerComponent},
       {
         path: 'instructions',
         pathMatch: 'full',
-        component: MunicipalityMonitoringInstructionsContainerComponent
+        component: LolifeInstructionsContainerComponent
       },
       {
         path: 'places',
         pathMatch: 'full',
-        component: MunicipalityMonitoringFormComponent,
+        component: LolifeFormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         data: {formId: 'MHL.45', noFormPermissionRedirect: '/theme/lolife'}
       },
       {
         path: 'form',
         pathMatch: 'full',
-        component: MunicipalityMonitoringFormComponent,
+        component: LolifeFormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         data: {formId: 'MHL.45', noFormPermissionRedirect: '/theme/lolife'}
       },
       {
         path: 'form/:id',
         pathMatch: 'full',
-        component: MunicipalityMonitoringFormComponent,
+        component: LolifeFormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
         data: {formId: 'MHL.45', noFormPermissionRedirect: '/theme/lolife'}

@@ -8,6 +8,6 @@ import { Rights } from '../../+haseka/form-permission/form-permission.service';
   styleUrls: ['./lolife.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InvasiveControlComponent {
+export class LolifeComponent {
   @Input() rights: Rights;
 }

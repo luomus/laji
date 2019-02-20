@@ -20,7 +20,7 @@ export enum Rights {
     [rights]="rights$ | async">
   </laji-lolife-instructions>`
 })
-export class InvasiveControlInstructionsContainerComponent
+export class LolifeInstructionsContainerComponent
       implements OnInit {
   loggedIn$: Observable<boolean>;
   rights$: Observable<Rights>;

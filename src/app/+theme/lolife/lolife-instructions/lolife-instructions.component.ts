@@ -6,7 +6,7 @@ import { Rights } from './lolife-instructions.container';
   templateUrl: './lolife-instructions.component.html',
   styleUrls: ['./lolife-instructions.component.css']
 })
-export class InvasiveControlInstructionsComponent {
+export class LolifeInstructionsComponent {
   Rights = Rights;
 
   @Input() rights: Rights = Rights.NotDefined;

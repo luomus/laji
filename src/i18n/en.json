@@ -973,5 +973,7 @@
   "save": "Save",
   "cancel": "Cancel",
   "navigation.lolife": "LOLIFE",
-  "theme.lolife.intro": "Flying-Squirrel-Life"
+  "theme.lolife.intro": "Flying-Squirrel-Life",
+  "theme.lolife.places": "Record census actions"
+
 }
