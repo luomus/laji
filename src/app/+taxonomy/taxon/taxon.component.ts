@@ -33,7 +33,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subParam = combineLatest(this.route.params, this.route.queryParams).subscribe(data => {
-      console.log(data);
       this.taxonId = data[0]['id'];
       this.infoCardTab = data[0]['tab'] || 'overview';
       this.infoCardContext = data[1]['context'] || 'default';

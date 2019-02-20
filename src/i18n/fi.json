@@ -907,6 +907,8 @@
   "taxonomy.species.singular": "laji",
   "taxonomy.total": "Yhteensä",
   "taxonomy.overview": "Yleiskuvaus",
+  "taxonomy.biology": "Biologia",
+  "taxonomy.taxonomy": "Taksonomia",
   "technical": "tekninen",
   "template.chooseType": "Talteen",
   "template.description": "Kuvaus",

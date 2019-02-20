@@ -816,6 +816,8 @@
   "taxonomy.species.singular": "art",
   "taxonomy.total": "Total",
   "taxonomy.overview": "Yleiskuvaus",
+  "taxonomy.biology": "Biologia",
+  "taxonomy.taxonomy": "Taksonomia",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Beskrivning",

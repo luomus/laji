@@ -46,8 +46,8 @@ export class InfoCardComponent implements OnInit, OnChanges {
   @Input() public taxonId: string;
   @Input() public context: string;
 
-  @Input() activeTab: 'overview'|'images';
-  private activatedTabs = {};
+  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy';
+  activatedTabs = {};
   // public settings: Settings;
   private initTaxonSub: Subscription;
   private imageSub: Subscription;

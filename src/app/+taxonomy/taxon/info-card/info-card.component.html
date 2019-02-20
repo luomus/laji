@@ -21,6 +21,16 @@
           {{ "species.images" | translate }}
         </a>
       </li>
+      <li role="presentation" [ngClass]="{active: activeTab === 'biology'}">
+        <a [routerLink]="'/taxon/' + taxonId + '/biology' | localize">
+          {{ "taxonomy.biology" | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{active: activeTab === 'taxonomy'}">
+        <a [routerLink]="'/taxon/' + taxonId + '/taxonomy' | localize">
+          {{ "taxonomy.taxonomy" | translate }}
+        </a>
+      </li>
     </ul>
 
     <laji-taxon-overview [hidden]="activeTab !== 'overview'"
@@ -31,10 +41,16 @@
                          (taxonSelect)="onTaxonSelect($event)"
     ></laji-taxon-overview>
     <laji-taxon-images [hidden]="activeTab !== 'images'"
-                         *ngIf="activatedTabs['images'] && hasImageData"
+                       *ngIf="activatedTabs['images'] && hasImageData"
                        [taxon]="taxon"
                        [taxonImages]="taxonImages"
     ></laji-taxon-images>
+    <laji-taxon-biology [hidden]="activeTab !== 'biology'"
+                        *ngIf="activatedTabs['biology']"
+    ></laji-taxon-biology>
+    <laji-taxon-taxonomy [hidden]="activeTab !== 'taxonomy'"
+                         *ngIf="activatedTabs['taxonomy']"
+    ></laji-taxon-taxonomy>
   </div>
   <div class="container" *ngIf="taxon === false">
     <h1>
