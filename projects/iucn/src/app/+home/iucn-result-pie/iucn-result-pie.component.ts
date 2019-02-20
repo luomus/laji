@@ -10,27 +10,16 @@ export class IucnResultPieComponent implements OnInit {
   @Input() year;
   _data: {name: string, value: number}[];
   total = 0;
-  colorSchema = [
-    {
-      name: 're',
-      value: '#000'
-    }, {
-      name: 'cr',
-      value: '#d81e05'
-    }, {
-      name: 'en',
-      value: '#fc7f3f'
-    }, {
-      name: 'vu',
-      value: '#f9e814'
-    }, {
-      name: 'nt',
-      value: '#cce226'
-    }, {
-      name: 'lc',
-      value: '#60c659'
-    }
-  ];
+  _colors = {
+    'MX.iucnRE': '#000',
+    'MX.iucnCR': '#600',
+    'MX.iucnEN': '#f00',
+    'MX.iucnVU': '#e65c00',
+    'MX.iucnDD': '#bfbfbf',
+    'MX.iucnNT': '#f2da30',
+    'MX.iucnLC': '#8fcc00'
+  };
+  colorSchema = [];
 
   constructor() { }
 
@@ -38,12 +27,19 @@ export class IucnResultPieComponent implements OnInit {
   }
 
   @Input()
-  set data(data: {name: string, value: number}[]) {
+  set data(data: {name: string, value: number, key: string}[]) {
     if (!data) {
       return;
     }
     this._data = data;
-    this.total = data.reduce((cumulative, current) => cumulative + current.value, 0);
+    const colors = [];
+    let cumulative = 0;
+    data.forEach(row => {
+      cumulative += row.value;
+      colors.push({name: row.name, value: this._colors[row.key]});
+    });
+    this.total = cumulative;
+    this.colorSchema = colors;
   }
 
   valueFormat(value) {

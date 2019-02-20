@@ -6,7 +6,7 @@
   [skipParams]="skipParams"
 >
   <ng-template #label let-node="node">
-    <a *ngIf="node.id !== activeId" [routerLink]="['..', node.id]">
+    <a *ngIf="node.id !== activeId" (click)="taxonSelect.emit(node.id)">
       <ng-container *ngTemplateOutlet="labelContent"></ng-container>
     </a>
     <strong *ngIf="node.id === activeId">

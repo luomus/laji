@@ -6,6 +6,10 @@ export interface IRow {
   translate?: string;
 }
 
+interface IInternalRow extends IRow {
+  value: any[];
+}
+
 @Component({
   selector: 'laji-red-list-evaluation-info-rowset',
   templateUrl: './red-list-evaluation-info-rowset.component.html',
@@ -14,9 +18,15 @@ export interface IRow {
 })
 export class RedListEvaluationInfoRowsetComponent {
 
-  @Input() values: IRow[] = [];
+  @Input() _values: IInternalRow[] = [];
 
   constructor() { }
 
+  @Input() set values(val: IRow[]) {
+    this._values = val.map(v => ({
+      ...v,
+      value: Array.isArray(v.value) ? v.value : [v.value]
+    }));
+  }
 
 }

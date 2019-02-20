@@ -12,13 +12,23 @@
 
     <ul style="margin: 25px 0 20px 0;" class="nav nav-tabs nav-justified">
       <li role="presentation"  [ngClass]="{active: activeTab === 'overview'}">
-        <a (click)="setActiveTab('overview')">
+        <a (click)="updateRoute(taxonId, 'overview')">
           {{ "taxonomy.overview" | translate }}
         </a>
       </li>
-      <li role="presentation" [ngClass]="{active: activeTab === 'images'}">
-        <a (click)="setActiveTab('images')">
+      <li role="presentation" [ngClass]="{active: activeTab === 'images'}" *ngIf="hasImageData">
+        <a (click)="updateRoute(taxonId, 'images')">
           {{ "species.images" | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{active: activeTab === 'biology'}" *ngIf="hasBiologyData">
+        <a (click)="updateRoute(taxonId, 'biology')">
+          {{ "taxonomy.biology" | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{active: activeTab === 'taxonomy'}">
+        <a (click)="updateRoute(taxonId, 'taxonomy')">
+          {{ "taxonomy.taxonomy" | translate }}
         </a>
       </li>
     </ul>
@@ -27,13 +37,24 @@
                          *ngIf="activatedTabs['overview']"
                          [taxon]="taxon"
                          [taxonDescription]="taxonDescription"
-                         [taxonImages]="taxonImages"
+                         [images]="images"
+                         (taxonSelect)="updateRoute($event)"
     ></laji-taxon-overview>
     <laji-taxon-images [hidden]="activeTab !== 'images'"
-                         *ngIf="activatedTabs['images']"
+                       *ngIf="activatedTabs['images'] && hasImageData"
                        [taxon]="taxon"
                        [taxonImages]="taxonImages"
     ></laji-taxon-images>
+    <laji-taxon-biology [hidden]="activeTab !== 'biology'"
+                        *ngIf="activatedTabs['biology'] && hasBiologyData"
+                        [taxon]="taxon"
+                        [taxonDescription]="taxonDescription"
+                        [context]="context"
+                        (contextChange)="updateRoute(taxonId, activeTab, $event)"
+    ></laji-taxon-biology>
+    <laji-taxon-taxonomy [hidden]="activeTab !== 'taxonomy'"
+                         *ngIf="activatedTabs['taxonomy']"
+    ></laji-taxon-taxonomy>
   </div>
   <div class="container" *ngIf="taxon === false">
     <h1>

@@ -44,6 +44,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   currentNotificationPage = 1;
   visibleNotificationPage = 1;
   notificationPageSize = 5;
+  env = environment.type;
 
   private subParams: Subscription;
   private subUser: Subscription;

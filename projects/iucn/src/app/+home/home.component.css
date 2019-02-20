@@ -10,9 +10,7 @@ h2 {
   background-size: cover;
 }
 .header .intro {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  margin-top: 10px;
   min-width: 350px;
 }
 
@@ -33,18 +31,12 @@ h2 {
   line-height: 30px;
 }
 
-.searchBar {
-  height: 58px;
-  background-color: #1b2523;
-  padding-top: 14px;
-}
 .row {
   margin-bottom: 15px;
 }
 @media only screen and (min-width : 768px) {
   .header .intro {
-    top: 60px;
-    left: 100px;
+    margin-top: 90px;
   }
   .header {
     height: 330px;

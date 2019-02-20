@@ -15,10 +15,15 @@ export function decideSpeciesTab(url: UrlSegment[]) {
   return null;
 }
 
-export function decideTaxon(url: UrlSegment[]) {
+export function decideTaxonTab(url: UrlSegment[]) {
   if (url.length === 1) {
     if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0) {
       return { consumed: url, posParams: {id: url[0]} };
+    }
+  } else if (url.length === 2) {
+    if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0 &&
+      (url[1].path === 'images' || url[1].path === 'biology' || url[1].path === 'taxonomy')) {
+      return { consumed: url, posParams: {id: url[0], tab: url[1]} };
     }
   }
   return null;
@@ -51,8 +56,7 @@ export const taxonomyRoutes: Routes = [
     component: InformalGroupRedirectComponent
   },
   {
-    matcher: decideTaxon,
-    pathMatch: 'full',
+    matcher: decideTaxonTab,
     component: TaxonComponent
   },
 ];

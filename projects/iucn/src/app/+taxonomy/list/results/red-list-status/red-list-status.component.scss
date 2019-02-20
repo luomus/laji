@@ -1,4 +1,14 @@
 .title td, .title th {
   border-top: 1px solid #333;
   border-bottom: 1px solid #333;
+  vertical-align: bottom;
+}
+.evaluated {
+  text-align: center;
+}
+.no-border-top {
+  border-top: none !important;
+}
+.no-border-bottom {
+  border-bottom: none !important;
 }

@@ -3,7 +3,7 @@
 <ll-label-editor-container
   [data]="data"
   [setup]="setup"
-  [availableFields]="labelFields"
+  [availableFields]="labelFields$ | async"
   (setupChange)="setup = $event"
   (html)="htmlToPdf($event)"
 ></ll-label-editor-container>

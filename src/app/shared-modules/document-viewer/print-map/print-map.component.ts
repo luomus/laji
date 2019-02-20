@@ -12,7 +12,7 @@ export class PrintMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() data: any;
 
   _data: any;
-  mapOptions: LajiMapOptions = {};
+  mapOptions: LajiMapOptions = {viewLocked: true};
 
   constructor() { }
 
@@ -26,17 +26,6 @@ export class PrintMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.lajiMap.map.setData([this._data || {}]);
-    this.lajiMap.map.map.options.maxZoom = 10;
-    this.lajiMap.map.zoomToData({padding: [20, 20]});
-    this.lajiMap.map.map.dragging.disable();
-    this.lajiMap.map.map.touchZoom.disable();
-    this.lajiMap.map.map.doubleClickZoom.disable();
-    this.lajiMap.map.map.scrollWheelZoom.disable();
-    this.lajiMap.map.map.boxZoom.disable();
-    this.lajiMap.map.map.keyboard.disable();
-    if (this.lajiMap.map.map.tap) {
-      this.lajiMap.map.map.tap.disable();
-    }
   }
 
   private initData() {

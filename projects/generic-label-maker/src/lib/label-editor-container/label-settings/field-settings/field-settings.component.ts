@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { LabelField } from '../../../generic-label-maker.interface';
+import { ILabelField } from '../../../generic-label-maker.interface';
 
 @Component({
   selector: 'll-field-settings',
@@ -9,10 +9,12 @@ import { LabelField } from '../../../generic-label-maker.interface';
 })
 export class FieldSettingsComponent {
 
-  @Input() field: LabelField;
+  @Input() field: ILabelField;
   @Input() allowDelete: boolean;
-  @Output() fieldChange = new EventEmitter<LabelField>();
+  @Output() fieldChange = new EventEmitter<ILabelField>();
   @Output() fieldRemove = new EventEmitter<void>();
+
+  more = false;
 
   separators: {sep: string, label?: string}[] = [
     {sep: ', '},
@@ -28,11 +30,12 @@ export class FieldSettingsComponent {
     {sep: '<br>', label: 'new line'}
   ];
 
-  onChange(event: Event) {
+  onChange(event: Event, place = 'separator') {
     const select = event.target as HTMLSelectElement;
     this.fieldChange.emit({
       ...this.field,
-      separator: select.value
+      [place]: select.value,
+      _menuOpen: this.more || this.field._menuOpen
     });
   }
 
@@ -48,5 +51,10 @@ export class FieldSettingsComponent {
       ...this.field,
       content: element.value
     });
+  }
+
+  toggleMore() {
+    this.more = !(this.more || this.field._menuOpen);
+    delete this.field._menuOpen;
   }
 }

@@ -1,3 +1,6 @@
-<h3>Available fields</h3>
-<div *ngFor="let field of availableFields" cdkDrag (cdkDragEnded)="onNewFieldDragEnd($event)" [cdkDragData]="field"
+<h3 class="first">Available fields</h3>
+<input type="search" placeholder="search..." style="margin-bottom: 10px;" class="form-control" (keyup)="filter($event.target.value)">
+<div *ngFor="let field of (availableFields | searchFields:filterBy )"
+     cdkDrag (cdkDragReleased)="onNewFieldDragEnd($event)"
+     [cdkDragData]="field"
      class="new-field">{{field.label}}</div>

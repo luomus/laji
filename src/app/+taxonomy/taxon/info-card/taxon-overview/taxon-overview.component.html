@@ -1,5 +1,5 @@
-<div class="block-container">
-  <div class="block">
+<div class="row">
+  <div class="col-xs-12 col-sm-6">
 
     <div class="panel no-box-shadow" *ngIf="images.length > 0 || ingress">
       <div class="panel-body">
@@ -18,7 +18,7 @@
     <div *ngIf="isFromMasterChecklist"
          class="panel panel-default"
          laji-panel
-         [title]="'taxonomy.map' | translate"
+         [title]="'taxonomy.map.finland' | translate"
          [open]="true"
          [autoToggle]="true"
     >
@@ -32,24 +32,13 @@
         [types]="['individualCountSum']"
         [mapOptions]="{
           controls: false,
-          zoom: 2
+          zoom: 2,
+          viewLocked: true
         }"
       ></laji-ykj-map>
     </div>
-
-    <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.speciesPieChartTitle' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-species-pie
-        [taxonId]="taxon.id"
-      ></laji-species-pie>
-    </div>
   </div>
-  <div class="block">
+  <div class="col-xs-12 col-sm-6">
     <div class="panel panel-default"
          laji-panel
          [title]="'taxonomy.card' | translate"
@@ -76,6 +65,52 @@
           <span class="label label-success">dwc</span>
         </a>
       </div>
+    </div>
+  </div>
+  <div class="col-xs-12" *ngIf="taxon.hasChildren">
+    <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.speciesPieChartTitle' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-species-pie
+        [children]="taxonChildren"
+        (taxonSelect)="taxonSelect.emit($event)"
+      ></laji-species-pie>
+    </div>
+
+    <div *ngIf="taxon.hasChildren"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.belongs.to' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-datatable
+        (rowSelect)="taxonSelect.emit($event.row.id)"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [clientSideSorting]="true"
+        [rows]="taxonChildren"
+        [count]="taxonChildren.length"
+        [page]="1"
+        [pageSize]="taxonChildren.length"
+        [columns]="[
+          {
+            name: 'vernacularName',
+            label: 'taxonomy.vernacular.name',
+            sortable: true
+          },
+          {
+            name: 'scientificName',
+            label: 'taxonomy.scientific.name',
+            cellTemplate: 'taxonScientificName',
+            sortable: true
+          }
+        ]">
+      </laji-datatable>
     </div>
   </div>
 </div>

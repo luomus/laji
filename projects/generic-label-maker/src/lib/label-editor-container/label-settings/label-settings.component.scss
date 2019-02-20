@@ -5,6 +5,20 @@
   display: inline-block;
 }
 
+::ng-deep h3 {
+  margin: 10px -15px 0 -15px;
+  font-size: 100%;
+  font-weight: 900;
+  display: block;
+  padding: 5px 15px;
+  border-top: 1px solid #ddd;
+}
+
+::ng-deep h3.first {
+  border-top: none;
+  margin-top: 0;
+}
+
 .field-list {
   width: 100%;
   border: solid 1px #ccc;
@@ -44,4 +58,12 @@
 
 .field-list.cdk-drop-list-dragging .field-item:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.position {
+  margin-bottom: 15px;
+}
+
+table td:first-child {
+  text-align: right;
 }

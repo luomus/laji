@@ -1,4 +1,3 @@
-<h3>Setup</h3>
 <table>
   <tr><td style="width: 24px"><i class="glyphicon glyphicon-folder-open"></i></td><td>
     <label class="menu-item" for="file">Load</label>
@@ -6,6 +5,16 @@
   </td></tr>
   <tr><td><i class="glyphicon glyphicon-save"></i></td><td class="menu-item" (click)="save()">Save...</td></tr>
 </table>
+<ng-container *ngIf="recentFiles.length > 0">
+  <h3>Recent files</h3>
+  <table style="width: 100%">
+    <tr *ngFor="let recent of recentFiles; let i=index">
+      <td style="width: 24px"></td>
+      <td class="link" (click)="setupChange.emit(recent.setup)">{{ recent.filename | removeSuffix }}</td>
+      <td style="width: 24px" class="link" (click)="removeRecent(i)"><i style="font-size: 80%; color: #ccc" class="glyphicon glyphicon-remove"></i></td>
+    </tr>
+  </table>
+</ng-container>
 <h3>Labels</h3>
 <table>
   <tr>

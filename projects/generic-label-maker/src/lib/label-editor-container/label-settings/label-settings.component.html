@@ -1,6 +1,6 @@
 <ng-container *ngIf="selectedLabelItem">
   <button (click)="remove(selectedLabelItem)" type="button" class="btn btn-danger btn-xs pull-right" tabindex="-1"><i class="glyphicon glyphicon-trash"></i></button>
-  <h3>Field</h3>
+  <h3 class="first">Field</h3>
   <ll-font-settings
     *ngIf="showFieldFont"
     [allowEmptyFontFamily]="true"
@@ -8,6 +8,46 @@
     (fontSettingsChange)="changeSelectedItem('style', $event)"
     [showUnderline]="true"
   ></ll-font-settings>
+  <div class="position">
+    <table style="width: 150px;">
+      <tr>
+        <td>
+          left:
+        </td>
+        <td>
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.x)" (change)="changePosition('x', $event.target.value)">
+        </td>
+        <td>mm.</td>
+      </tr>
+      <tr>
+        <td>
+          top:
+        </td>
+        <td>
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.y)" (change)="changePosition('y', $event.target.value)">
+        </td>
+        <td>mm.</td>
+      </tr>
+      <tr>
+        <td>
+          width:
+        </td>
+        <td>
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.style['width.mm'])" (change)="changeActiveStyle('width.mm', $event.target.value)">
+        </td>
+        <td>mm.</td>
+      </tr>
+      <tr>
+        <td>
+          height:
+        </td>
+        <td>
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.style['height.mm'])" (change)="changeActiveStyle('height.mm', $event.target.value)">
+        </td>
+        <td>mm.</td>
+      </tr>
+    </table>
+  </div>
   <div cdkDropList [cdkDropListLockAxis]="'y'" class="field-list" (cdkDropListDropped)="drop($event)">
     <div cdkDrag class="field-item" *ngFor="let field of selectedLabelItem.fields; let i=index">
       <div class="field-item-drag-handle" cdkDragHandle>
@@ -22,8 +62,12 @@
   </div>
   <ll-field-add [availableFields]="availableFields" (add)="fieldAdd($event)"></ll-field-add>
 </ng-container>
-<h3>Label</h3>
+<h3 [class.first]="!selectedLabelItem">Label</h3>
 <ll-font-settings [fontSettings]="setup.label" (fontSettingsChange)="change('label', $event)"></ll-font-settings>
 <ll-margin-settings [style]="setup.label" (styleChange)="change('label', $event)"></ll-margin-settings>
 <h3>Page</h3>
 <ll-margin-settings [style]="setup.page" [type]="'padding'" (styleChange)="change('page', $event)"></ll-margin-settings>
+<label>
+  <input type="checkbox" [checked]="setup.twoSided" (change)="change('twoSided', !setup.twoSided)" />
+  Two sided (flip horizontal)
+</label>

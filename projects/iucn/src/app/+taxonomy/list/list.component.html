@@ -1,16 +1,7 @@
-<div class="container" *ngIf="queryParams">
+<laji-simple-omni></laji-simple-omni>
+<div class="container-fluid" *ngIf="queryParams">
   <div class="row">
-    <div class="col-sm-push-8 col-sm-4" style="text-align: right">
-      <h1 class="hidden-xs">&nbsp;</h1>
-      <div class="taxon-select">
-        <laji-taxon-select
-          [searchParams]="{onlySpecies: true}"
-          (taxonIdChange)="taxonSelect($event)"
-          [placeholder]="'species.search' | translate">
-        </laji-taxon-select>
-      </div>
-    </div>
-    <div class="col-sm-pull-4 col-sm-8">
+    <div class="col-sm-8">
       <h1>Lajit ja tulokset</h1>
       <div class="year-select">
         <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>

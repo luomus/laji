@@ -1,6 +1,6 @@
 <span
   (click)="show()"
-  class="label label-info laji-form-help-glyph link no-propagation"
+  [className]="'label label-' + labelType + ' link no-propagation' + (glyphicon ? '' : ' laji-form-help-glyph')"
 ><strong
   [popover]="content"
   [outsideClick]="true"
@@ -9,7 +9,12 @@
   #pop="bs-popover"
   containerClass="popover-lg"
   container="body"
-  class="no-propagation">?</strong></span>
+  class="no-propagation"
+>
+  <span [className]="'glyphicon glyphicon-' + glyphicon" *ngIf="glyphicon"></span>
+  <ng-container *ngIf="!glyphicon">?</ng-container>
+</strong></span>
+
 <div class="modal fade no-propagation" bsModal #modal="bs-modal" [config]="{backdrop: false}" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">

@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input, EventEmitter, Output } from '@angular/core';
-import { LabelItem, Setup } from '../../generic-label-maker.interface';
+import { IPageStyle, ISetup } from '../../generic-label-maker.interface';
 import { PageLayout } from '../../label.service';
 
 @Component({
@@ -10,16 +10,30 @@ import { PageLayout } from '../../label.service';
 })
 export class LabelPageComponent implements AfterViewInit {
 
-  @Input() setup: Setup;
-  @Input() labelItems: LabelItem[][];
   @Input() data: object[];
-
   @Output() ready = new EventEmitter<void>();
 
   cols = '';
   rows = '';
+  backStyle: IPageStyle;
+  private _setup: ISetup;
 
   constructor() { }
+
+  @Input() set setup(val: ISetup) {
+    this._setup = val;
+    if (val.twoSided) {
+      const style = {...val.page};
+      const swp = style['paddingLeft.mm'];
+      style['paddingLeft.mm'] = style['paddingRight.mm'];
+      style['paddingRight.mm'] = swp;
+      this.backStyle = style;
+    }
+  }
+
+  get setup() {
+    return this._setup;
+  }
 
   ngAfterViewInit() {
     // QRCodes will not be included if there is no setTimeout here

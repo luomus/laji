@@ -3,6 +3,8 @@ import { Presets, LabelField, Setup } from 'generic-label-maker';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
+import { PdfLabelService } from '../../../shared/service/pdf-label.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-label-designer',
@@ -11,33 +13,18 @@ import * as FileSaver from 'file-saver';
 })
 export class LabelDesignerComponent implements OnInit {
 
-  labelFields: LabelField[] = [
-    {field: 'id', content: 'http://id.luomus.fi/GV.1', label: 'Tunniste - QRCode', type: 'qr-code'},
-    {field: 'id', content: 'http://id.luomus.fi/GV.1', label: 'Tunniste'},
-    {field: 'text', content: '', label: 'Tekstiä', type: 'text'},
-    {field: 'leg', content: 'Matti Meikäläinen', label: 'Kerääjä'},
-    {field: 'taxon', content: 'Parus major', label: 'Laji'},
-    {field: 'count', content: '10', label: 'Määrä'},
-    {field: 'sex', content: 'uros', label: 'Sukupuoli'},
-    {field: 'locality', content: 'Kuusen alla', label: 'Sijainti'},
-    {field: 'country', content: 'Suomi', label: 'Maa'},
-    {field: 'coordinates', content: '338:665', label: 'Koordinaatit'},
-    {field: 'notes', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas risus magna, vulputate eu ' +
-        'sodales sed, ornare sagittis sapien. Sed eu vestibulum metus, ac blandit elit. Nunc at elit posuere, vestibulum metus in, ' +
-        'aliquet velit. Aenean ornare nunc scelerisque felis pulvinar, in dignissim quam dignissim. Donec eleifend at nulla ac iaculis. ' +
-        'Ut ac volutpat nisl, et interdum urna. Quisque bibendum luctus consectetur.', label: 'Muistiipanot'
-    }
-  ];
-
+  labelFields$: Observable<LabelField[]>;
   setup: Setup;
   data: any;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private lajiApiService: LajiApiService
+    private lajiApiService: LajiApiService,
+    private pdfLabelService: PdfLabelService
   ) { }
 
   ngOnInit() {
+    this.labelFields$ = this.pdfLabelService.allPossibleFields();
     this.setup = {
       page: {
         ...Presets.A4,
@@ -54,18 +41,18 @@ export class LabelDesignerComponent implements OnInit {
         'marginBottom.mm': 1.5,
         'marginRight.mm': 1.5,
         'font-family': 'Arial',
-        'font-size.pt': 10
+        'font-size.pt': 9
       },
-      labelItems: this.labelFields.map((a, i) => ({
+      labelItems: this.pdfLabelService.possibleFields.map((a, i) => ({
         type: 'field',
         y: i === 0 ? 0 : (i - 1) * 5,
         x: i === 0 ? 0 : 15,
-        fields: i === 4 ? [a, this.labelFields[5]] : [a],
+        fields: [a],
         style: {
-          'width.mm': i === 0 ? 13 : 20,
+          'width.mm': i === 0 ? 13 : 33,
           'height.mm': i === 0 ? 13 : 5
         }
-      })).splice(0, 5)
+      })).splice(0, 2)
     };
     this.data = this.getMockData();
   }

@@ -1,26 +1,64 @@
 <div class="label-editor">
   <div class="editor-wrap" style="margin-top: 45px">
-    <ll-label-editor
+   <ll-label-editor
       [active]="_selectedLabelItem"
       (activeChange)="setActiveLabelItem($event)"
       (done)="done()"
       [setup]="_setup"
       (setupChange)="setupChanged($event)"
-      [magnification]="2"
+      [magnification]="magnification"
       (showSettings)="showSettings($event)"></ll-label-editor>
-    <div style="margin-top: 15px;">
-      <ll-label-preview [setup]="_setup"></ll-label-preview>
+    <div *ngIf="_setup.twoSided" style="margin-top: 10px;">
+      <ll-label-editor
+        [backSide]="true"
+        [active]="_selectedLabelItem"
+        (activeChange)="setActiveLabelItem($event)"
+        (done)="done()"
+        [setup]="_setup"
+        (setupChange)="setupChanged($event)"
+        [magnification]="magnification"
+        (showSettings)="showSettings($event)"></ll-label-editor>
+    </div>
+    <div>
+      <div style="margin-top: 15px; border: 1px solid #999; display: inline-block">
+        <ll-label-preview [setup]="_setup"></ll-label-preview>
+      </div>
+    </div>
+    <div *ngIf="_setup.twoSided" style="margin-top: 15px; border: 1px solid #999; display: inline-block">
+      <ll-label-preview [setup]="_setup" [backSide]="true"></ll-label-preview>
     </div>
   </div>
   <div class="settings-wrap">
     <ul class="nav nav-tabs">
       <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>File</a></li>
+      <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>Edit</a></li>
       <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>Settings</a></li>
       <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Fields</a></li>
     </ul>
     <div class="tab-content clearfix">
       <div *ngIf="_active === 'file'">
         <ll-label-file [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
+      </div>
+      <div [hidden]="_active !== 'edit'">
+        <div class="undo-button link" [class.disabled]="!hasUndo()" (click)="undo()">
+          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+          Undo
+        </div>
+        <div class="redo-button link" [class.disabled]="!hasRedo()" (click)="redo()">
+          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg>
+          Redo
+        </div>
+        <h3>Generate data</h3>
+        <table style="width: 100%">
+          <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
+          <tr><td>Range start:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
+          <tr><td>Range end:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
+          <tr><td colspan="2">&nbsp;</td></tr>
+          <tr *ngFor="let field of fields">
+            <td>{{field.label}}:</td><td><input (change)="updateGenerate(field.field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
+          </tr>
+        </table>
+        <button (click)="generateData()" style="margin-top: 5px;" class="btn btn-default btn-sm pull-right">Generate</button>
       </div>
       <div [hidden]="_active !== 'settings'">
         <ll-label-settings
@@ -32,6 +70,7 @@
       </div>
       <div [hidden]="_active !== 'fields'">
         <ll-label-fields-available
+          [magnification]="magnification"
           [availableFields]="availableFields"
           (addLabelItem)="addLabelItem($event)"
         ></ll-label-fields-available>

@@ -225,6 +225,10 @@ export interface Taxonomy {
   alternativeVernacularName?: string[];
 
   misspelledNames?: string[];
+
+  primaryHabitat?: Habitat;
+
+  secondaryHabitats?: Habitat[];
 }
 
 export interface RedListEvaluation {
@@ -232,6 +236,7 @@ export interface RedListEvaluation {
   evaluationYear?: string;
   redListStatus?: string;
   criteriaForStatus?: string;
+  externalPopulationImpactOnRedListStatus?: string;
 }
 
 export interface LatestRedListStatusFinland {
@@ -286,5 +291,15 @@ export interface TaxonomyImage {
   source?: string;
 
   thumbnailURL?: string;
+
+}
+
+export interface  Habitat {
+
+  habitat: string;
+
+  id: string;
+
+  order: number;
 
 }

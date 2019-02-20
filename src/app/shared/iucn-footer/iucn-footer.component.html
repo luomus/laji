@@ -1,8 +1,8 @@
 <footer class="red" *ngIf="footerService.footerVisible">
   <div class="partners-footer">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
-        <div class="col-sm-offset-1 col-sm-11 partners front" [ngClass]="{hidden: !onFrontPage}">
+        <div class="col-sm-12 partners front" [ngClass]="{hidden: !onFrontPage}">
           <ul>
             <li>
               <a href="http://www.ym.fi" target="_blank">
@@ -19,12 +19,17 @@
                 <img src="https://cdn.laji.fi/images/partners/luomus_fi_blue_smaller.gif" alt="LUOMUS - Luonnontieteellinen keskusmuseo">
               </a>
             </li>
+            <li>
+              <a href="http://laji.fi" target="_blank">
+                <img src="https://cdn.laji.fi/images/logos/LAJI_FI_sin.png" alt="Laji.fi - Suomen Lajitietokeskus">
+              </a>
+            </li>
           </ul>
         </div>
       </div>
     </div>
   </div>
-  <div class="container-fluid info-footer">
+  <div class="container info-footer">
     <div class="row">
       <div class="col-sm-4">
         <h3>Sisältö suunnittelematta</h3>

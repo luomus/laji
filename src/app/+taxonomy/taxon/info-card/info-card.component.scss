@@ -1,1 +1,8 @@
+::ng-deep .taxon-table tr:first-child th, ::ng-deep .taxon-table tr:first-child td {
+  border-top: none;
+}
 
+::ng-deep .taxon-table ul {
+  padding-left: 20px;
+  margin-left: 0;
+}
