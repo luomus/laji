@@ -145,6 +145,8 @@ export interface Taxonomy {
 
   occurrences?: Array<any>;
 
+  synonymNames?: Array<string>;
+
   synonyms?: Array<Taxonomy>;
 
   basionyms?: Array<Taxonomy>;

@@ -12,22 +12,22 @@
 
     <ul style="margin: 25px 0 20px 0;" class="nav nav-tabs nav-justified">
       <li role="presentation"  [ngClass]="{active: activeTab === 'overview'}">
-        <a (click)="updateRoute(taxonId, 'overview')">
+        <a [routerLink]="['/taxon', taxonId]" [queryParamsHandling]="'preserve'">
           {{ "taxonomy.overview" | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: activeTab === 'images'}" *ngIf="hasImageData">
-        <a (click)="updateRoute(taxonId, 'images')">
+        <a [routerLink]="['/taxon', taxonId, 'images']" [queryParamsHandling]="'preserve'">
           {{ "species.images" | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: activeTab === 'biology'}" *ngIf="hasBiologyData">
-        <a (click)="updateRoute(taxonId, 'biology')">
+        <a [routerLink]="['/taxon', taxonId, 'biology']" [queryParamsHandling]="'preserve'">
           {{ "taxonomy.biology" | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: activeTab === 'taxonomy'}">
-        <a (click)="updateRoute(taxonId, 'taxonomy')">
+        <a [routerLink]="['/taxon', taxonId, 'taxonomy']" [queryParamsHandling]="'preserve'">
           {{ "taxonomy.taxonomy" | translate }}
         </a>
       </li>
@@ -54,6 +54,8 @@
     ></laji-taxon-biology>
     <laji-taxon-taxonomy [hidden]="activeTab !== 'taxonomy'"
                          *ngIf="activatedTabs['taxonomy']"
+                         [taxon]="taxon"
+                         [taxonDescription]="taxonDescription"
     ></laji-taxon-taxonomy>
   </div>
   <div class="container" *ngIf="taxon === false">

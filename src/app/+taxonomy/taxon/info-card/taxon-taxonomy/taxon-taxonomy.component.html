@@ -1,3 +1,35 @@
-<p>
-  taxonomy works!
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <div *ngIf="taxon.synonymNames && taxon.synonymNames.length > 0"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.synonyms' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-taxon-synonyms [taxon]="taxon" (taxonSelect)="taxonSelect.emit($event)"></laji-taxon-synonyms>
+    </div>
+
+    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.otherNames' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-taxon-names [taxon]="taxon"></laji-taxon-names>
+    </div>
+
+    <div *ngIf="taxonConceptId"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.taxonConcept' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-taxon-concept-info
+        [taxonId]="taxon.id"
+        [taxonConceptId]="taxonConceptId"></laji-taxon-concept-info>
+    </div>
+  </div>
+</div>

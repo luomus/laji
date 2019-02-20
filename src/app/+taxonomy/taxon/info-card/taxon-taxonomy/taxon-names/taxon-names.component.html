@@ -20,6 +20,16 @@
       </ul>
     </td>
   </tr>
+  <tr *ngIf="availableLangs.obsoleteVernacularName.length > 0">
+    <th>{{ 'taxonomy.obsolete.vernacular.name' | translate }}</th>
+    <td>
+      <ul>
+        <li *ngFor="let lang of availableLangs.obsoleteVernacularName">
+          {{ _taxon.obsoleteVernacularName | multiLang: false:lang | values }} ({{ lang }})
+        </li>
+      </ul>
+    </td>
+  </tr>
   <tr *ngIf="availableLangs.tradeName.length > 0">
     <th>{{ 'taxonomy.trade.name' | translate }}</th>
     <td>

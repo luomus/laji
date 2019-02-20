@@ -35,6 +35,7 @@ export class TaxonomyColumns {
     },
     {
       name: 'synonymNames',
+      label: 'taxonomy.synonyms',
       cellTemplate: 'cursive',
       width: 200
     },

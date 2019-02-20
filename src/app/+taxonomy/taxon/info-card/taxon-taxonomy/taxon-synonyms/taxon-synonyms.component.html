@@ -1,15 +1,32 @@
 <table class="table taxon-table table-condensed" *ngIf="taxon">
   <tbody>
-  <tr *ngIf="taxon.misspelledNames">
-    <th>{{ 'taxonomy.misspelled.names' | translate }}</th>
-    <td>
-      <ul>
-        <li *ngFor="let obj of taxon.misspelledNames">
-          <laji-taxon-name [taxon]="obj"></laji-taxon-name>
-        </li>
-      </ul>
-    </td>
-  </tr>
+  <ng-container *ngFor="let synonymType of [
+    'synonymOf',
+    'basionyms',
+    'objectiveSynonyms',
+    'subjectiveSynonyms',
+    'homotypicSynonyms',
+    'heterotypicSynonyms',
+    'synonyms',
+    'misspelledNames',
+    'orthographicVariants',
+    'uncertainSynonyms',
+    'misappliedNames',
+    'alternativeNames'
+  ]">
+    <tr *ngIf="taxon[synonymType]">
+      <th>{{ 'taxonomy.' + synonymType | translate }}</th>
+      <td>
+        <ul>
+          <li *ngFor="let obj of taxon[synonymType]">
+            <a [routerLink]="['/taxon', obj.id, 'taxonomy']" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+              <laji-taxon-name [taxon]="obj" [addLink]="false"></laji-taxon-name>
+            </a>
+          </li>
+        </ul>
+      </td>
+    </tr>
+  </ng-container>
   </tbody>
 </table>
 
