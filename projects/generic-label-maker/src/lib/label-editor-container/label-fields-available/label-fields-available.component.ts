@@ -66,7 +66,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
     const targetBackElem = document.getElementById('back-side-label-editor');
     let targetBounds: any;
     const targetFrontBounds = targetElem.getBoundingClientRect();
-    const targetBackBounds = targetBackElem.getBoundingClientRect();
+    const targetBackBounds = targetBackElem ? targetBackElem.getBoundingClientRect() : false;
     const elemBounds = event.source.element.nativeElement.getBoundingClientRect();
     if (
       targetFrontBounds.left <= elemBounds.left && (targetFrontBounds.left + targetFrontBounds.width) > elemBounds.left &&
@@ -74,6 +74,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
     ) {
       targetBounds = targetFrontBounds;
     } else if (
+      targetBackBounds &&
       targetBackBounds.left <= elemBounds.left && (targetBackBounds.left + targetBackBounds.width) > elemBounds.left &&
       targetBackBounds.top <= elemBounds.top && (targetBackBounds.top + targetBackBounds.height) > elemBounds.top
     ) {
