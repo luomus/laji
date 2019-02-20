@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ILabelItem, ILabelStyle, ISetup } from '../generic-label-maker.interface';
 import { LabelService } from '../label.service';
 
@@ -8,7 +8,7 @@ import { LabelService } from '../label.service';
   styleUrls: ['../../styles/ll-label.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelPreviewComponent implements OnInit {
+export class LabelPreviewComponent {
 
   @Input() preview = true;
   @Input() data: object;
