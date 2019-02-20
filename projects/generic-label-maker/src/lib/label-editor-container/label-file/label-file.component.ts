@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ISetup } from '../../generic-label-maker.interface';
+import { LocalStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'll-label-file',
@@ -7,10 +8,12 @@ import { ISetup } from '../../generic-label-maker.interface';
   styleUrls: ['./label-file.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelFileComponent implements OnInit {
+export class LabelFileComponent {
 
   @Input() setup: ISetup;
   @Input() data: object[];
+
+  @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string}[];
 
   @Output() html = new EventEmitter<string>();
   @Output() setupChange = new EventEmitter<ISetup>();
@@ -18,9 +21,6 @@ export class LabelFileComponent implements OnInit {
   filename = '';
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
   onFileChange(evt: any) {
     const target: DataTransfer = <DataTransfer>(evt.target);
@@ -35,6 +35,7 @@ export class LabelFileComponent implements OnInit {
       if (!data || data.version !== 1 || !data.setup) {
         return alert('Could not find label information from the file');
       }
+      this.updateResentFiles(data.setup, this.filename);
       this.setupChange.emit(data.setup);
     };
     this.filename = target.files[0].name;
@@ -64,5 +65,28 @@ export class LabelFileComponent implements OnInit {
 
       document.body.removeChild(element);
     }
+  }
+
+  private updateResentFiles(setup: ISetup, filename: string) {
+    const idx = this.recentFiles.findIndex(i => i.filename === filename);
+    if (idx === -1) {
+      this.recentFiles = [
+        {setup, filename},
+        ...this.recentFiles.slice(-2)
+      ];
+    } else {
+      this.recentFiles = [
+        {setup, filename},
+        ...this.recentFiles.slice(0, idx),
+        ...this.recentFiles.slice(idx + 1),
+      ];
+    }
+  }
+
+  removeRecent(idx: number) {
+    this.recentFiles = [
+      ...this.recentFiles.slice(0, idx),
+      ...this.recentFiles.slice(idx + 1),
+    ];
   }
 }

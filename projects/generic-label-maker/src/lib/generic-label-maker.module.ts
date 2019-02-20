@@ -18,6 +18,8 @@ import { FieldSettingsComponent } from './label-editor-container/label-settings/
 import { LabelFileComponent } from './label-editor-container/label-file/label-file.component';
 import { FieldAddComponent } from './label-editor-container/label-settings/field-add/field-add.component';
 import { SearchFieldsPipe } from './label-editor-container/label-fields-available/search-fields.pipe';
+import { NgxWebstorageModule } from 'ngx-webstorage';
+import { RemoveSuffixPipe } from './label-editor-container/label-file/remove-suffix.pipe';
 
 @NgModule({
   declarations: [
@@ -36,12 +38,14 @@ import { SearchFieldsPipe } from './label-editor-container/label-fields-availabl
     FieldSettingsComponent,
     LabelFileComponent,
     FieldAddComponent,
-    SearchFieldsPipe
+    SearchFieldsPipe,
+    RemoveSuffixPipe
   ],
   imports: [
     CommonModule,
     DragDropModule,
-    QRCodeModule
+    QRCodeModule,
+    NgxWebstorageModule
   ],
   exports: [LabelEditorContainerComponent, LabelPreviewComponent, LabelPrintComponent]
 })
