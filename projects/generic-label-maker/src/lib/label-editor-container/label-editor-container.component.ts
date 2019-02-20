@@ -22,6 +22,7 @@ export class LabelEditorContainerComponent {
   @Output() setupChange = new EventEmitter<ISetup>();
 
   private _undo: ISetup[] = [];
+  private _redo: ISetup[] = [];
 
   constructor() { }
 
@@ -60,6 +61,7 @@ export class LabelEditorContainerComponent {
 
   setupChanged(setup: ISetup, addToUndo = true) {
     if (addToUndo) {
+      this._redo = [];
       this._undo.push(this._setup);
     }
     this._setup = setup;
@@ -74,6 +76,7 @@ export class LabelEditorContainerComponent {
     if (!item._id) {
       item._id = LabelEditorContainerComponent.id++;
     }
+    this._undo.push(this._setup);
     this._setup = {...this._setup, [event.location]: [...this._setup[event.location], item]};
     this.setupChange.emit(this._setup);
   }
@@ -83,12 +86,24 @@ export class LabelEditorContainerComponent {
   }
 
   undo() {
-    if (this._undo.length) {
+    if (this.hasUndo()) {
+      this._redo.push(this._setup);
       this.setupChanged(this._undo.pop(), false);
+    }
+  }
+
+  redo() {
+    if (this.hasRedo()) {
+      this._undo.push(this._setup);
+      this.setupChanged(this._redo.pop(), false);
     }
   }
 
   hasUndo() {
     return this._undo.length > 0;
+  }
+
+  hasRedo() {
+    return this._redo.length > 0;
   }
 }

@@ -22,3 +22,7 @@
 .disabled {
   color: #aaa;
 }
+
+::ng-deep .settings-wrap {
+  user-select: none;
+}
