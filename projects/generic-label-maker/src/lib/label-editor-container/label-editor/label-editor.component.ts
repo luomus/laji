@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
-import { LabelItem, Setup } from '../../generic-label-maker.interface';
+import { ILabelItem, ISetup, TLabelLocation } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 
 @Component({
@@ -10,17 +10,18 @@ import { LabelService } from '../../label.service';
 })
 export class LabelEditorComponent {
 
-  _setup: Setup;
+  _setup: ISetup;
   _magnification = 2;
 
   height: number;
   width: number;
   init = false;
 
-  @Input() active: LabelItem;
-  @Output() activeChange = new EventEmitter<LabelItem>();
-  @Output() setupChange = new EventEmitter<Setup>();
-  @Output() showSettings = new EventEmitter<LabelItem>();
+  @Input() active: ILabelItem;
+  @Input() backSide = false;
+  @Output() activeChange = new EventEmitter<ILabelItem>();
+  @Output() setupChange = new EventEmitter<ISetup>();
+  @Output() showSettings = new EventEmitter<ILabelItem>();
   @Output() done = new EventEmitter<void>();
 
   constructor(labelService: LabelService) {
@@ -28,7 +29,7 @@ export class LabelEditorComponent {
   }
 
   @Input()
-  set setup(setup: Setup) {
+  set setup(setup: ISetup) {
     this._setup = setup;
     this.recalculate();
   }
@@ -47,14 +48,15 @@ export class LabelEditorComponent {
     this.width = this._setup.label['width.mm'];
   }
 
-  onItemChange(originalItem: LabelItem, newItem: LabelItem) {
+  onItemChange(originalItem: ILabelItem, newItem: ILabelItem) {
     const result = [];
-    this._setup.labelItems.forEach(item => {
+    const items: TLabelLocation = this.backSide ? 'backSideLabelItems' : 'labelItems';
+    this._setup[items].forEach(item => {
       result.push(item === originalItem ? newItem : item);
     });
     this._setup = {
       ...this._setup,
-      labelItems: result
+      [items]: result
     };
     this.setupChange.emit(this._setup);
 
@@ -72,7 +74,7 @@ export class LabelEditorComponent {
     this.setupChange.emit(this._setup);
   }
 
-  setActiveItem(item: LabelItem) {
+  setActiveItem(item: ILabelItem) {
     this.activeChange.emit(item);
   }
 }

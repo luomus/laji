@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { Setup } from '../generic-label-maker.interface';
+import { ISetup } from '../generic-label-maker.interface';
 import { LabelService, PageLayout } from '../label.service';
 const style = `
 .ll-print-content {
@@ -40,9 +40,9 @@ const style = `
   styleUrls: ['./label-print.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelPrintComponent implements OnInit {
+export class LabelPrintComponent {
 
-  @Input() setup: Setup;
+  @Input() setup: ISetup;
   @Input() data: object[];
   @Input() labelButton = 'PDF';
   // tslint:disable-next-line:no-input-rename
@@ -60,10 +60,6 @@ export class LabelPrintComponent implements OnInit {
   constructor(
     private labelService: LabelService
   ) { }
-
-  ngOnInit() {
-  }
-
 
   btnClick(event: MouseEvent) {
     event.preventDefault();

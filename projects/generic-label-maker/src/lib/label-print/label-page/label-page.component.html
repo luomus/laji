@@ -3,3 +3,10 @@
     <ll-label-preview [setup]="setup" *ngFor="let item of data" [data]="item"></ll-label-preview>
   </div>
 </div>
+<ng-container *ngIf="setup.twoSided">
+  <div [ngStyle]="backStyle">
+    <div class="ll-print-content" [ngStyle]="{'grid-template-columns': cols, 'grid-template-rows': rows, 'direction': 'rtl'}">
+      <ll-label-preview [backSide]="true" [setup]="setup" *ngFor="let item of data" [data]="item"></ll-label-preview>
+    </div>
+  </div>
+</ng-container>

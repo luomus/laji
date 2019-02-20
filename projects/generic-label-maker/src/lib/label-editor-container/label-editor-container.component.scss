@@ -22,3 +22,9 @@
 .disabled {
   color: #aaa;
 }
+table td:first-child {
+  text-align: right;
+}
+::ng-deep .settings-wrap {
+  user-select: none;
+}

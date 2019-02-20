@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Setup, ILabelStyle } from './generic-label-maker.interface';
+import { ISetup, ILabelStyle } from './generic-label-maker.interface';
 
 export interface PageLayout {
   cols: number;
@@ -31,7 +31,7 @@ export class LabelService {
 
   constructor() {}
 
-  public countLabelsPerPage(setup: Setup): PageLayout {
+  public countLabelsPerPage(setup: ISetup): PageLayout {
     const pageWidth = LabelService.widthInner(setup.page);
     const pageHeight = LabelService.heightInner(setup.page);
     const labelWidth = LabelService.widthOuter(setup.label);

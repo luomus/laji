@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { LabelField } from '../../../generic-label-maker.interface';
+import { ILabelField } from '../../../generic-label-maker.interface';
 
 @Component({
   selector: 'll-field-add',
@@ -9,9 +9,9 @@ import { LabelField } from '../../../generic-label-maker.interface';
 })
 export class FieldAddComponent {
 
-  @Input() availableFields: LabelField[];
+  @Input() availableFields: ILabelField[];
 
-  @Output() add = new EventEmitter<LabelField>();
+  @Output() add = new EventEmitter<ILabelField>();
 
 
   doAdd(event: Event) {

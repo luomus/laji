@@ -1,10 +1,10 @@
 <div
   *ngIf="init"
   class="ll-label"
-  [ngStyle]="setup?.label"
+  [ngStyle]="labelStyle"
 >
   <ll-label-item
-    *ngFor="let item of setup?.labelItems"
+    *ngFor="let item of items"
     [item]="item"
     [data]="data"
   ></ll-label-item>

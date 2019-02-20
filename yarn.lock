@@ -3603,9 +3603,9 @@ gaze@^1.0.0:
   dependencies:
     globule "^1.0.0"
 
-generic-label-maker@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-0.0.4.tgz#8ae88f251b6f3d146b82e92aa91231fc4fc6b70d"
+generic-label-maker@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-0.0.5.tgz#c98f970e346478757cfa0c016efadd1876c02e3c"
   dependencies:
     tslib "^1.9.0"
 
@@ -4899,7 +4899,6 @@ klaw-sync@^4.0.0:
 laji-form@^0.0.576:
   version "0.0.576"
   resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.576.tgz#1cced5908d525fc5a4900ab2dc086d9660325b78"
-  integrity sha512-PrJsDkK5eXlEaUsfT7bvMrjuAvof3ZBrVAH/2ParhUXZsmuQiIaOakaun7uBZ13n0kdMLurgjnhLyW3WvdL4Fw==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -4927,7 +4926,6 @@ laji-form@^0.0.576:
 laji-map@1.0.470, laji-map@^1.0.395, laji-map@^1.0.459, laji-map@^1.0.470:
   version "1.0.470"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.470.tgz#9f34addf31cfa843894c6ad7e53ba1cde9cfd162"
-  integrity sha512-llqJ2hUPzbWmWWtUvbNi3mP+bh4pTAfRAPyfJarkIXigysQ7MjWsTLuOaHx44HAEMPs/0T3cwgqUeIq5D3gB9Q==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
