@@ -1,42 +1,75 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
     <tr>
-      <th>Laji</th>
-      <th>Luokka</th>
-      <th>Elinympäristöt</th>
-      <th>Uhanalaisuuden syyt</th>
-      <th>Uhkatekijät</th>
-      <th>Muutoksen syy</th>
+      <th *ngFor="let field of fields">{{ field.label }}</th>
     </tr>
     <tr *ngFor="let taxon of species">
-      <th>
-        <a [routerLink]="[taxon.id]" [queryParams]="{checklist: checklist}">
-          <span *ngIf="taxon.scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}<br></span>
-          {{ taxon.vernacularName }}
-        </a>
-      </th>
-      <td>
-        {{ taxon.latestRedListEvaluation?.redListStatus | label }}
-      </td>
-      <td>
-        <ng-container *ngIf="taxon.latestRedListEvaluation">
-          <span *ngIf="taxon.latestRedListEvaluation?.primaryHabitat">
-            {{ taxon.latestRedListEvaluation?.primaryHabitat?.habitat | label }}<br>
-          </span>
-          <ng-container *ngFor="let sec of taxon.latestRedListEvaluation?.secondaryHabitats">
-            <span>{{ sec.habitat | label }}<br></span>
-          </ng-container>
+      <ng-container *ngFor="let field of fields">
+        <ng-container [ngSwitch]="field.key">
+          <th *ngSwitchCase="'species'">
+            <a [routerLink]="[taxon.id]" [queryParams]="{checklist: checklist}">
+              <span *ngIf="taxon.scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}<br></span>
+              {{ taxon.vernacularName }}
+            </a>
+          </th>
+          <th *ngSwitchCase="'scientificName'">
+            <a [routerLink]="[taxon.id]" [queryParams]="{checklist: checklist}">
+              <span *ngIf="taxon.scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
+            </a>
+          </th>
+          <th *ngSwitchCase="'vernacularName'">
+            <a [routerLink]="[taxon.id]" [queryParams]="{checklist: checklist}">
+              {{ taxon.vernacularName }}
+            </a>
+          </th>
+          <td *ngSwitchCase="'status'">
+            {{ taxon.latestRedListEvaluation?.redListStatus | label }}
+          </td>
+          <td *ngSwitchCase="'habitat'">
+            <ng-container *ngIf="taxon.latestRedListEvaluation">
+              <span *ngIf="taxon.latestRedListEvaluation?.primaryHabitat">
+                {{ taxon.latestRedListEvaluation?.primaryHabitat?.habitat | label }}<br>
+              </span>
+              <ng-container *ngFor="let sec of taxon.latestRedListEvaluation?.secondaryHabitats">
+                <span>{{ sec.habitat | label }}<br></span>
+              </ng-container>
+            </ng-container>
+          </td>
+          <td *ngSwitchCase="'reasons'">
+            <span [innerHTML]="taxon.latestRedListEvaluation?.endangermentReasons | label | values:'<br>'"></span>
+          </td>
+          <td *ngSwitchCase="'threats'">
+            <span [innerHTML]="taxon.latestRedListEvaluation?.threats | label | values:'<br>'"></span>
+          </td>
+          <td *ngSwitchCase="'reasonForStatusChange'">
+            <span [innerHTML]="taxon.latestRedListEvaluation?.reasonForStatusChange | label | values:'<br>'"></span>
+          </td>
+          <td *ngSwitchCase="'criteriaForStatus'">
+            <span [innerHTML]="taxon.latestRedListEvaluation?.criteriaForStatus | label | values:'<br>'"></span>
+          </td>
+          <td *ngSwitchCase="'2015'">
+            <ng-container *ngIf="taxon.redListStatusesInFinland">
+              <ng-container *ngFor="let status of taxon.redListStatusesInFinland">
+                <ng-container *ngIf="status.year === 2015">
+                  {{status.status | label}}
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </td>
+          <td *ngSwitchCase="'2010'">
+            <ng-container *ngIf="taxon.redListStatusesInFinland">
+              <ng-container *ngFor="let status of taxon.redListStatusesInFinland">
+                <ng-container *ngIf="status.year === 2010">
+                  {{status.status | label}}
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </td>
+          <td *ngSwitchDefault>
+            No column found for "{{field.key}}"
+          </td>
         </ng-container>
-      </td>
-      <td>
-        <span [innerHTML]="taxon.latestRedListEvaluation?.endangermentReasons | label | values:'<br>'"></span>
-      </td>
-      <td>
-        <span [innerHTML]="taxon.latestRedListEvaluation?.threats | label | values:'<br>'"></span>
-      </td>
-      <td>
-        <span [innerHTML]="taxon.latestRedListEvaluation?.reasonForStatusChange | label | values:'<br>'"></span>
-      </td>
+      </ng-container>
     </tr>
   </table>
 </div>

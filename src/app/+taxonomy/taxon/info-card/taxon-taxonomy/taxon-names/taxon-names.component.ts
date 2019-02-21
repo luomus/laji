@@ -8,10 +8,10 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 })
 export class TaxonNamesComponent implements OnInit {
   _taxon: Taxonomy;
-  availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'tradeName': []};
+  availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
 
   @Input() set taxon(taxon: Taxonomy) {
-    this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'tradeName': []};
+    this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
 
     for (const lang of ['fi', 'sv', 'en']) {
       if (taxon.vernacularName && taxon.vernacularName[lang]) {
@@ -19,6 +19,9 @@ export class TaxonNamesComponent implements OnInit {
       }
       if (taxon.alternativeVernacularName && taxon.alternativeVernacularName[lang]) {
         this.availableLangs.alternativeVernacularName.push(lang);
+      }
+      if (taxon.obsoleteVernacularName && taxon.obsoleteVernacularName[lang]) {
+        this.availableLangs.obsoleteVernacularName.push(lang);
       }
       if (taxon.tradeName && taxon.tradeName[lang]) {
         this.availableLangs.tradeName.push(lang);

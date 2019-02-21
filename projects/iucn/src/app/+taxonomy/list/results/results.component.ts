@@ -1,8 +1,17 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output, ViewChild
+} from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { TaxonomyApi } from '../../../../../../../src/app/shared/api/TaxonomyApi';
-import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin, of } from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../../../../src/app/shared/service/util.service';
@@ -16,6 +25,10 @@ import { MetadataService } from '../../../../../../../src/app/shared/service/met
 import { IPageChange } from '../../../../../../../src/app/shared-modules/datatable/data-table-footer/data-table-footer.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ISelectFields } from '../../../../../../../src/app/shared-modules/select-fields/select-fields/select-fields.component';
+import { TaxonExportService } from '../../../../../../../src/app/+taxonomy/species/service/taxon-export.service';
+import { TaxonomyColumns } from '../../../../../../../src/app/+taxonomy/species/service/taxonomy-columns';
+import { DatatableColumn } from '../../../../../../../src/app/shared-modules/datatable/model/datatable-column';
+import { DownloadComponent } from '../../../../../../../src/app/shared-modules/download/download.component';
 
 @Component({
   selector: 'laji-results',
@@ -24,6 +37,9 @@ import { ISelectFields } from '../../../../../../../src/app/shared-modules/selec
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResultsComponent implements OnChanges, OnInit {
+
+
+  @ViewChild(DownloadComponent) speciesDownload: DownloadComponent;
 
   @Input() type: ListType;
   @Input() query: FilterQuery;
@@ -49,15 +65,38 @@ export class ResultsComponent implements OnChanges, OnInit {
   speciesPage = 1;
   speciesCount = 0;
 
-  selectedSpeciesFields = [];
+  defaultSpeciesFields = [
+    {label: 'Laji', key: 'species'},
+    {label: 'Luokka', key: 'status'},
+    {label: 'Elinympäristöt', key: 'habitat'},
+    {label: 'Uhanalaisuuden syyt', key: 'reasons'},
+    {label: 'Uhkatekijät', key: 'threats'},
+  ];
+  selectedSpeciesFields;
   speciesAllFields = [
+    {label: 'Laji', key: 'species'},
+    {label: 'Luokka', key: 'status'},
+    {label: 'Elinympäristöt', key: 'habitat'},
+    {label: 'Uhanalaisuuden syyt', key: 'reasons'},
+    {label: 'Uhkatekijät', key: 'threats'},
     {label: 'tieteellinen nimi', key: 'scientificName'},
     {label: 'kansankielinen nimi', key: 'vernacularName'},
-    {label: 'muutoksen syy', key: 'latestRedListEvaluation.reasonForStatusChange'},
-    {label: 'luokkaan johtaneet kriteerit', key: 'latestRedListEvaluation.criteriaForStatus'},
-    {label: 'luokka 2015', key: 'latestRedListEvaluation.redListStatus'},
-    {label: 'luokka 2010', key: 'latestRedListEvaluation.redListStatus'}
+    {label: 'muutoksen syy', key: 'reasonForStatusChange'},
+    {label: 'luokkaan johtaneet kriteerit', key: 'criteriaForStatus'},
+    {label: 'luokka 2015', key: '2015'},
+    {label: 'luokka 2010', key: '2010'}
   ];
+  labels = {
+    'redListStatusesInFinland': 'Luokat Suomessa',
+    'latestRedListEvaluation.redListStatus': 'Luokka',
+    'latestRedListEvaluation.criteriaForStatus': 'Luokkaan johtaneet kriteerit',
+    'latestRedListEvaluation.endangermentReasons': 'Uhanalaisuuden syyt',
+    'latestRedListEvaluation.reasonForStatusChange': 'Muutoksen syy',
+    'latestRedListEvaluation.primaryHabitat.habitat': 'Ensisijainen elinympäristöt',
+    'latestRedListEvaluation.secondaryHabitats.habitat': 'Muut elinympäristöt',
+    'latestRedListEvaluation.threats': 'Uhkatekijät'
+  };
+  downloadLoading = false;
 
   constructor(
     private taxonApi: TaxonomyApi,
@@ -65,7 +104,10 @@ export class ResultsComponent implements OnChanges, OnInit {
     private triplestoreLabelService: TriplestoreLabelService,
     private metadataService: MetadataService,
     private taxonService: TaxonService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cdr: ChangeDetectorRef,
+    private taxonExportService: TaxonExportService,
+    private taxonomyColumns: TaxonomyColumns
   ) {
     this.statusMap = Object.keys(this.resultService.shortLabel).reduce((result, key) => {
       result[this.resultService.shortLabel[key]] = key;
@@ -101,6 +143,9 @@ export class ResultsComponent implements OnChanges, OnInit {
         const idx = this.speciesAllFields.findIndex(item => item.key === field);
         return this.speciesAllFields[idx];
       }).filter(item => !!item);
+    }
+    if (!this.selectedSpeciesFields || this.selectedSpeciesFields.length === 0) {
+      this.selectedSpeciesFields = this.defaultSpeciesFields;
     }
     this.initStatusQuery();
     this.initSpeciesListQuery();
@@ -288,28 +333,34 @@ export class ResultsComponent implements OnChanges, OnInit {
     return Object.keys(lookup).map(name => lookup[name]);
   }
 
-  private initSpeciesListQuery() {
-    const cacheKey = 'species';
-    const selectedFields = [
+  private getSpeciesFields() {
+    return [
       'id',
       'scientificName',
       'vernacularName.' + this.lang,
       'cursiveName',
+      'redListStatusesInFinland',
       'latestRedListEvaluation.redListStatus',
       'latestRedListEvaluation.criteriaForStatus',
       'latestRedListEvaluation.endangermentReasons',
-      'latestRedListEvaluation.redListStatusNotes',
       'latestRedListEvaluation.reasonForStatusChange',
       'latestRedListEvaluation.primaryHabitat.habitat',
       'latestRedListEvaluation.secondaryHabitats.habitat',
-      'latestRedListEvaluation.threats',
-      'redListEvaluation.*.redListStatus'
+      'latestRedListEvaluation.threats'
     ];
-    const query = {
+  }
+
+  private getSpeciesQuery(page = '1') {
+    return {
       ...this.baseQuery,
-      page: this.query.page || '1',
-      selectedFields: selectedFields.join(',')
+      page: page,
+      selectedFields: this.getSpeciesFields().join(',')
     };
+  }
+
+  private initSpeciesListQuery(): void  {
+    const cacheKey = 'species';
+    const query = this.getSpeciesQuery(this.query.page || '1');
 
     const currentQuery = JSON.stringify(query);
     this.speciesQuery$ = this.hasCache(cacheKey, currentQuery) ?
@@ -322,6 +373,20 @@ export class ResultsComponent implements OnChanges, OnInit {
         map(data => data.results),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
+  }
+
+  private getAllSpecies(data: Taxonomy[] = [], page = '1', pageSize = '10000'): Observable<Taxonomy[]> {
+    const query = this.getSpeciesQuery(page);
+    return this.taxonApi.species(query, this.lang, page, pageSize).pipe(
+      switchMap(result => {
+        data.push(...result.results);
+        if (result.lastPage > result.currentPage) {
+          return this.getAllSpecies(data, '' + (result.currentPage + 1));
+        } else {
+          return of(data);
+        }
+      })
+    );
   }
 
   private initStatusQuery() {
@@ -445,5 +510,32 @@ export class ResultsComponent implements OnChanges, OnInit {
       ...this.query,
       speciesFields: (event || []).map(e => e.key).join(',')
     });
+  }
+
+  download(type: string) {
+    this.downloadLoading = true;
+    const skip = ['cursiveName'];
+    const columns: DatatableColumn[] = this.getSpeciesFields()
+      .reduce((cumulative, current) => {
+        if (!skip.includes(current)) {
+          cumulative.push(this.taxonomyColumns.getColumn(current) || {
+            name: current,
+            cellTemplate: 'label',
+            label: this.labels[current] || current
+          });
+        }
+        return cumulative;
+      }, []);
+    const criteria = document.getElementById('enabled-filters');
+    const first = criteria ? [criteria.innerText] : undefined;
+    this.getAllSpecies()
+      .subscribe(data =>  {
+        this.taxonExportService.downloadTaxons(columns, data, type, first)
+          .subscribe(() => {
+            this.downloadLoading = false;
+            this.speciesDownload.modal.hide();
+            this.cdr.markForCheck();
+          });
+      });
   }
 }

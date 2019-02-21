@@ -48,10 +48,20 @@
 </div>
 
 <ng-container *ngIf="showDownloadAndBrowse">
-  <laji-species-download #speciesDownload
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">{{ 'species.download' | translate }}</h4>
+        </div>
+        <div class="panel-body">
+          <laji-download #speciesDownload
                          [downloadLoading]="downloadLoading"
-                         (download)="download($event)">
-  </laji-species-download>
+                         (download)="download($event)">{{ 'species.download' | translate }}</laji-download>
+        </div>
+      </div>
+    </div>
+  </div>
   <laji-species-browse-observations [searchQuery]="searchQuery"
   ></laji-species-browse-observations>
 </ng-container>

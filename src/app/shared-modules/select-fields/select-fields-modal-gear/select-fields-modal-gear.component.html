@@ -1,4 +1,4 @@
-<div class="link {{btnClass}}" (click)="fieldsModal.show()">
+<div class="link {{ btnClass }}" (click)="fieldsModal.show()">
   <i class="glyphicon glyphicon-cog"></i>
 </div>
 <div bsModal #fieldsModal="bs-modal" (onHide)="selectedFieldsChange.emit(selectedCache)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -13,8 +13,12 @@
           [allSelectableFieldsTitle]="allSelectableFieldsTitle"
           [allSelectableFields]="allSelectableFields"
           [selectedFields]="selectedFields"
-          (selectedFieldsChange)="selectedCache = $event"
+          (selectedFieldsChange)="updateSelected($event)"
         ></laji-select-fields>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="defaultFields" type="button" class="btn btn-default" (click)="reset()">{{ labelReset }}</button>
+        <button type="button" class="btn btn-default" (click)="fieldsModal.hide()">{{ labelClose }}</button>
       </div>
     </div>
   </div>

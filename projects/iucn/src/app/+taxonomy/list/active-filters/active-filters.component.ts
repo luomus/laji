@@ -15,6 +15,8 @@ export class ActiveFiltersComponent {
   skip = [
     'type',
     'year',
+    'page',
+    'speciesFields',
     'onlyPrimaryThreat',
     'onlyPrimaryReason',
     'onlyPrimaryHabitat'

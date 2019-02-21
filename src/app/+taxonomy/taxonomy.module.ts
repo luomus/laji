@@ -21,7 +21,6 @@ import { SearchFiltersModule } from '../shared-modules/search-filters/search-fil
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './species/service/taxonomy-search-query';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
-import { SpeciesDownloadComponent } from './species/species-download/species-download.component';
 import { SpeciesBrowseObservationsComponent } from './species/species-browse-observations/species-browse-observations.component';
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
 import { SpeciesImagesComponent } from './species/species-images/species-images.component';
@@ -30,9 +29,6 @@ import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { TreeComponent } from './taxon/taxon-tree/tree/tree.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SpeciesListOptionsModalComponent } from './species/species-list-options-modal/species-list-options-modal.component';
-import { TaxonomyColumns } from './species/service/taxonomy-columns';
-import { TaxonExportService } from './species/service/taxon-export.service';
-import { DatatableUtil } from './species/service/datatable-util.service';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { BoldSynonymComponent } from './taxon/info-card/taxon-overview/taxon-info/bold-synonym/bold-synonym.component';
 import { SpeciesCountComponent } from './species/species-count/species-count.component';
@@ -52,16 +48,17 @@ import { TaxonOverviewComponent } from './taxon/info-card/taxon-overview/taxon-o
 import { TaxonImagesComponent } from './taxon/info-card/taxon-images/taxon-images.component';
 import { TaxonBiologyComponent } from './taxon/info-card/taxon-biology/taxon-biology.component';
 import { TaxonTaxonomyComponent } from './taxon/info-card/taxon-taxonomy/taxon-taxonomy.component';
+import { DownloadModule } from '../shared-modules/download/download.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
-    NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule ],
-  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
+    NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule ],
+  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
     TaxonTreeComponent, SpeciesListComponent, TaxonComponent,
     BoldSequenceComponent, SpeciesFormComponent, SpeciesComponent,
-    InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
+    InformalGroupRedirectComponent, SpeciesBrowseObservationsComponent,
     SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
     SpeciesListOptionsModalComponent, BoldSynonymComponent,
     SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonSynonymsComponent,

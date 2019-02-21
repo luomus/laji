@@ -15,7 +15,7 @@ import { Global } from '../../../environments/global';
 
 declare const ga: Function;
 
-const MAIN_TITLE = 'home.main-page.title';
+const MAIN_TITLE = environment.type === Global.type.iucn ? 'iucn.page.title' : 'home.main-page.title';
 const MAIN_DESCRIPTION = 'footer.intro1';
 
 const ALL_META_KEYS = [

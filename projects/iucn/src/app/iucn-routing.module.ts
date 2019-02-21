@@ -18,8 +18,8 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/iucn-home.module#IucnHomeModule'},
-  {path: 'about', loadChildren: './+about/about.module#AboutModule'},
-  {path: 'publications', loadChildren: './+publications/publications.module#PublicationsModule'},
+  {path: 'about', loadChildren: './+about/about.module#AboutModule', data: {title: 'iucn.about.title'}},
+  {path: 'publications', loadChildren: './+publications/publications.module#PublicationsModule', data: {title: 'iucn.publications.title'}},
   {path: 'user', loadChildren: '../../../../src/app/+user/user.module#UserModule', data: {noPreload: true}},
   {path: 'view', loadChildren: '../../../../src/app/+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
   {path: 'taxon', loadChildren: './+taxonomy/iucn-taxonomy.module#IucnTaxonomyModule', data: {title: 'navigation.taxonomy'}},

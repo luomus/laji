@@ -305,6 +305,9 @@
   "invasive.oldestRecord": "Vanhin",
   "invasive.title": "Vieraslajit",
   "iucn": {
+    "about": {
+      "title": "Tietoa"
+    },
     "filter": {
       "title": "Laji ja tulokset",
       "reasons": "Uhanalaisuuden syyt",
@@ -318,6 +321,12 @@
       "onlyPrimaryReason": "vain ensisijaisella uhanalaisuuden syyllä",
       "onlyPrimaryThreat": "vain ensisijaisella uhkatekijällä",
       "empty": "Tyhjennä"
+    },
+    "page": {
+      "title": "Punaisen kirjan tietopalvelu"
+    },
+    "publications": {
+      "title": "Julkaisut ja lataukset"
     },
     "taxon": {
       "administrativeStatuses": "Lajia koskevat hallinnolliset lajitiedot",
@@ -342,7 +351,8 @@
       "occurrenceArea": "Esiintymien määrä",
       "occurrenceInfoTitle": "Esiintymistä koskevat tiedot",
       "occurrenceTitle": "Esiintymisalueet ja alueellinen uhanalaisuus",
-      "source": "Lähteet"
+      "source": "Lähteet",
+      "title": "Lajit ja tulokset"
     },
     "hasEndangermentReason": "Uhanalaisuuteen johtaneet syyt",
     "hasThreat": "Uhkatekijät tulevaisuudessa"
@@ -877,8 +887,8 @@
   "taxonomy.scientific.name.lower": "tieteellinen nimi",
   "taxonomy.source": "Lähde",
   "taxonomy.speciesList.found": "lajia löytyi",
-  "taxonomy.synonymNames": "Synonyymit",
   "taxonomy.synonyms": "Synonyymit",
+  "taxonomy.misappliedNames": "Misapplied names",
   "taxonomy.taxonConcept": "Taksonikäsite",
   "taxonomy.taxonConcept.id": "tunniste",
   "taxonomy.taxonConcept.otherLists": "Muut luettelot",
@@ -913,6 +923,7 @@
   "taxonomy.habitat.primary": "Ensisijainen",
   "taxonomy.habitat.secondary": "Toissijaiset",
   "taxonomy.description": "Kuvaukset",
+  "taxonomy.otherNames": "Muut nimet",
   "technical": "tekninen",
   "template.chooseType": "Talteen",
   "template.description": "Kuvaus",
@@ -1063,6 +1074,8 @@
   "np.copyAddress.success": "Linkki kopioitiin leikepöydälle",
   "save": "Tallenna",
   "cancel": "Peruuta",
+  "close": "Sulje",
+  "reset": "Palauta oletus asetukset",
   "navigation.lolife": "LOLIFE",
   "theme.lolife.intro": "Liito-Orava-Life",
   "theme.lolife.places": "Kirjaa seurantatietoja"

@@ -3,6 +3,7 @@ import { RedListEvaluation, Taxonomy } from '../../../../../../src/app/shared/mo
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonService } from '../../iucn-shared/service/taxon.service';
 import { ResultService } from '../../iucn-shared/service/result.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'laji-info-card',
@@ -23,7 +24,8 @@ export class InfoCardComponent implements OnChanges {
   constructor(
     private taxonService: TaxonService,
     private resultService: ResultService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private title: Title
   ) { }
 
   ngOnChanges() {
@@ -42,6 +44,21 @@ export class InfoCardComponent implements OnChanges {
         this.latestStatus = taxon.latestRedListEvaluation || null;
         this.isEndangered = this.latestStatus && this.resultService.endangered.includes(this.latestStatus.redListStatus);
         this.taxon = taxon;
+        this.setTitle();
       });
+  }
+
+  private setTitle() {
+    let title = this.taxon.vernacularName;
+    if (!title) {
+      title = this.taxon.scientificName;
+    }
+    if (this.isEndangered) {
+      title += ' - ' + 'Uhanalainen:';
+    }
+    title += ' ' + (this.latestStatus ? this.translateService.instant('iucn.taxon.' + this.latestStatus.redListStatus) : '');
+    title = title.toLocaleLowerCase();
+    title = title.charAt(0).toLocaleUpperCase() + title.slice(1);
+    this.title.setTitle(title + ' | ' + this.title.getTitle());
   }
 }

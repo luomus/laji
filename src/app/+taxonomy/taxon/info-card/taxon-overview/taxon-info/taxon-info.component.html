@@ -22,14 +22,6 @@
     <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
     <td>{{ taxon.vernacularName | multiLang }}</td>
   </tr>
-  <!--tr *ngIf="taxon.synonyms">
-    <th>{{ 'taxonomy.synonyms' | translate }}</th>
-    <td>
-      <ul class="comma-list">
-        <li *ngFor="let synonym of taxon.synonyms"><span class="scientificName" [class.cursive]="synonym.cursiveName">{{ synonym.scientificName }}</span></li>
-      </ul>
-    </td>
-  </tr-->
   <tr>
     <th>{{ 'MX.taxonRank' | label }}</th>
     <td>{{ taxon.taxonRank | label }}</td>

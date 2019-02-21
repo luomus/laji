@@ -6,7 +6,7 @@
       </div>
       <laji-taxon-tree
         [activeId]="taxonId"
-        (taxonSelect)="updateRoute($event)"
+        [activeTab]="infoCardTab"
       ></laji-taxon-tree>
       <div class="dragbar" (mousedown)="startDragging($event)"></div>
     </div>
