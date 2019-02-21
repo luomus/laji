@@ -29,6 +29,7 @@ import { ActiveFiltersComponent } from './list/active-filters/active-filters.com
 import { ExplainCriteriaPipe } from './pipe/explain-criteria.pipe';
 import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { SelectFieldsModule } from '../../../../../src/app/shared-modules/select-fields/select-fields.module';
+import { DownloadModule } from '../../../../../src/app/shared-modules/download/download.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -41,7 +42,8 @@ import { SelectFieldsModule } from '../../../../../src/app/shared-modules/select
     TaxonSelectModule,
     DatatableModule,
     NgSelectModule,
-    SelectFieldsModule
+    SelectFieldsModule,
+    DownloadModule
   ],
   declarations: [
     InfoCardComponent,

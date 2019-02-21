@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TaxonomyTableColumn } from '../model/taxonomy-table-column';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TaxonomyColumns {
   allColumns: TaxonomyTableColumn[] = [
     {
@@ -155,10 +157,16 @@ export class TaxonomyColumns {
       });
   }
 
-  getColumns(selected) {
+  getColumns(selected: string[]): TaxonomyTableColumn[] {
     return selected.reduce((arr, name) => {
-      arr.push({...this.columnLookup[name]});
+      if (this.columnLookup[name]) {
+        arr.push({...this.columnLookup[name]});
+      }
       return arr;
     }, []);
+  }
+
+  getColumn(name: string): TaxonomyTableColumn {
+    return this.columnLookup[name];
   }
 }

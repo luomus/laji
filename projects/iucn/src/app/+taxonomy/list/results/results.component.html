@@ -3,18 +3,26 @@
     <laji-red-list-status [data]="redListStatusQuery$ | async"></laji-red-list-status>
   </ng-container>
   <ng-container *ngSwitchCase="'species'">
-    <laji-select-fields-modal-gear
-      [btnClass]="'btn btn-sm btn-default pull-right'"
-      [allSelectableFields]="speciesAllFields"
-      [selectedFields]="selectedSpeciesFields"
-      [defaultFields]="defaultSpeciesFields"
-      [labelClose]="'close' | translate"
-      [labelReset]="'reset' | translate"
-      [modalTitle]="'Valitse listassa näkyvät kentät'"
-      [allSelectableFieldsTitle]="'Kaikki kentät'"
-      [selectedFieldsTitle]="'Valitut kentät'"
-      (selectedFieldsChange)="newFields($event)"
-    ></laji-select-fields-modal-gear>
+    <div class="pull-right" style="margin-left: 5px">
+      <laji-select-fields-modal-gear
+        [btnClass]="'btn btn-sm btn-default pull-right'"
+        [allSelectableFields]="speciesAllFields"
+        [selectedFields]="selectedSpeciesFields"
+        [defaultFields]="defaultSpeciesFields"
+        [labelClose]="'close' | translate"
+        [labelReset]="'reset' | translate"
+        [modalTitle]="'Valitse listassa näkyvät kentät'"
+        [allSelectableFieldsTitle]="'Kaikki kentät'"
+        [selectedFieldsTitle]="'Valitut kentät'"
+        (selectedFieldsChange)="newFields($event)"
+      ></laji-select-fields-modal-gear>
+    </div>
+    <laji-download
+      #speciesDownload
+      linkClass="link btn btn-default btn-sm pull-right"
+      [downloadLoading]="downloadLoading"
+      (download)="download($event)"
+    >{{ 'species.download' | translate }}</laji-download>
     <laji-data-table-footer [top]="true" [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
     <laji-red-list-species [fields]="selectedSpeciesFields" [species]="speciesQuery$ | async" [checklist]="checklist"></laji-red-list-species>
     <laji-data-table-footer [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>

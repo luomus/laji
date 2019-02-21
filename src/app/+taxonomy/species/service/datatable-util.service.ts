@@ -9,7 +9,9 @@ import { UserService } from '../../../shared/service/user.service';
 import { Person } from '../../../shared/model/Person';
 import { TranslateService } from '@ngx-translate/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DatatableUtil {
   constructor(
     private labelService: TriplestoreLabelService,

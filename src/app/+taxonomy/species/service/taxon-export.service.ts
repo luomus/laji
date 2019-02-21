@@ -6,8 +6,12 @@ import { ExportService } from '../../../shared/service/export.service';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { DatatableUtil } from './datatable-util.service';
 import { Util } from '../../../shared/service/util.service';
+import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TaxonExportService {
   constructor(
     private translate: TranslateService,
@@ -15,8 +19,8 @@ export class TaxonExportService {
     private dtUtil: DatatableUtil
   ) {}
 
-  public downloadTaxons(columns, data, type = 'tsv'): Observable<boolean> {
-    return this.getBuffer(columns, data, type)
+  public downloadTaxons(columns: DatatableColumn[], data: Taxonomy[], type = 'tsv', firstRow?: string[]): Observable<boolean> {
+    return this.getBuffer(columns, data, type, firstRow)
       .pipe(
         switchMap((buffer) => {
           return this.translate.get('taxon-export')
@@ -30,8 +34,8 @@ export class TaxonExportService {
       );
   }
 
-  private getBuffer(cols, data, type): Observable<string> {
-    return this.getAoa(cols, data)
+  private getBuffer(cols: DatatableColumn[], data: Taxonomy[], type, firstRow?: string[]): Observable<string> {
+    return this.getAoa(cols, data, firstRow)
       .pipe(
         map((aoa) => {
           const sheet = XLSX.utils.aoa_to_sheet(aoa);
@@ -48,15 +52,15 @@ export class TaxonExportService {
       );
   }
 
-  private getAoa(cols, data): Observable<string[][]> {
-    const aoa = [[]];
-
+  private getAoa(cols: DatatableColumn[], data: Taxonomy[], firstRow?: string[]): Observable<string[][]> {
+    const aoa: any = firstRow ? [firstRow, []] : [[]];
+    const labelRow = firstRow ? 1 : 0;
     const observables = [];
     for (let i = 0; i < cols.length; i++) {
-      aoa[0].push(cols[i].label);
+      aoa[labelRow].push(cols[i].label);
       observables.push(
         this.translate.get(cols[i].label).pipe(tap((label) => {
-          aoa[0][i] = Array.isArray(cols[i].label) ? cols[i].label.map(key => label[key]).join(', ') : label;
+          aoa[labelRow][i] = Array.isArray(cols[i].label) ? (cols[i].label as string[]).map(key => label[key]).join(', ') : label;
         }))
       );
     }
@@ -64,11 +68,12 @@ export class TaxonExportService {
       aoa.push([]);
       for (let j = 0; j < cols.length; j++) {
         const value = Util.parseJSONPath(data[i], cols[j].name);
+        const key = i + (firstRow ? 2 : 1);
 
         const template = cols[j].cellTemplate;
-        aoa[i + 1].push(value);
+        aoa[key].push(value);
 
-        if (value === undefined || value === null || !template) {
+        if (value === undefined || value === null || !template || (Array.isArray(value) && value.length === 0)) {
           continue;
         }
 
@@ -76,12 +81,11 @@ export class TaxonExportService {
 
         if (observable) {
           observables.push(observable.pipe(tap(((val) => {
-            aoa[i + 1][j] = val;
+            aoa[key][j] = val;
           }))));
         }
       }
     }
-
     return observables.length > 0 ? ObservableForkJoin(observables).pipe(
       map(() => aoa)
     ) : ObservableOf(aoa);

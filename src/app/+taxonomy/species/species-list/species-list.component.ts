@@ -5,11 +5,9 @@ import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { Logger } from '../../../shared/logger/logger.service';
-import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
-import { SpeciesDownloadComponent } from '../species-download/species-download.component';
 import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { TaxonExportService } from '../service/taxon-export.service';
@@ -17,6 +15,8 @@ import { DatatableUtil } from '../service/datatable-util.service';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Util } from '../../../shared/service/util.service';
 import { UserService } from '../../../shared/service/user.service';
+import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
+import { DownloadComponent } from '../../../shared-modules/download/download.component';
 
 @Component({
   selector: 'laji-species-list',
@@ -24,7 +24,7 @@ import { UserService } from '../../../shared/service/user.service';
   styleUrls: ['./species-list.component.css']
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('speciesDownload') speciesDownload: SpeciesDownloadComponent;
+  @ViewChild('speciesDownload') speciesDownload: DownloadComponent;
   @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
@@ -35,7 +35,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   loading = false;
   downloadLoading = false;
 
-  columns: ObservationTableColumn[] = [];
+  columns: DatatableColumn[] = [];
   speciesPage: PagedResult<Taxonomy> = {
     currentPage: 1,
     lastPage: 1,
