@@ -310,6 +310,7 @@ export class ResultsComponent implements OnChanges, OnInit {
       'scientificName',
       'vernacularName.' + this.lang,
       'cursiveName',
+      'redListStatusesInFinland',
       'latestRedListEvaluation.redListStatus',
       'latestRedListEvaluation.criteriaForStatus',
       'latestRedListEvaluation.endangermentReasons',

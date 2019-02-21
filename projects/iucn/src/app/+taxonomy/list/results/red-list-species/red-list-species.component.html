@@ -48,10 +48,22 @@
             <span [innerHTML]="taxon.latestRedListEvaluation?.criteriaForStatus | label | values:'<br>'"></span>
           </td>
           <td *ngSwitchCase="'2015'">
-            2015 status
+            <ng-container *ngIf="taxon.redListStatusesInFinland">
+              <ng-container *ngFor="let status of taxon.redListStatusesInFinland">
+                <ng-container *ngIf="status.year === 2015">
+                  {{status.status | label}}
+                </ng-container>
+              </ng-container>
+            </ng-container>
           </td>
           <td *ngSwitchCase="'2010'">
-            2010 status
+            <ng-container *ngIf="taxon.redListStatusesInFinland">
+              <ng-container *ngFor="let status of taxon.redListStatusesInFinland">
+                <ng-container *ngIf="status.year === 2010">
+                  {{status.status | label}}
+                </ng-container>
+              </ng-container>
+            </ng-container>
           </td>
           <td *ngSwitchDefault>
             No column found for "{{field.key}}"
