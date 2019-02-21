@@ -7,13 +7,16 @@
       [btnClass]="'btn btn-sm btn-default pull-right'"
       [allSelectableFields]="speciesAllFields"
       [selectedFields]="selectedSpeciesFields"
+      [defaultFields]="defaultSpeciesFields"
+      [labelClose]="'close' | translate"
+      [labelReset]="'reset' | translate"
       [modalTitle]="'Valitse listassa näkyvät kentät'"
       [allSelectableFieldsTitle]="'Kaikki kentät'"
-      [selectedFieldsTitle]="'näykyvät kentät'"
+      [selectedFieldsTitle]="'Valitut kentät'"
       (selectedFieldsChange)="newFields($event)"
     ></laji-select-fields-modal-gear>
     <laji-data-table-footer [top]="true" [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
-    <laji-red-list-species [species]="speciesQuery$ | async" [checklist]="checklist"></laji-red-list-species>
+    <laji-red-list-species [fields]="selectedSpeciesFields" [species]="speciesQuery$ | async" [checklist]="checklist"></laji-red-list-species>
     <laji-data-table-footer [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
   </ng-container>
   <ng-container *ngSwitchCase="'reasons'">

@@ -1,4 +1,4 @@
-<p *ngIf="queryItems && queryItems.length > 0">
+<p id="enabled-filters" *ngIf="queryItems && queryItems.length > 0">
   Käytetyt rajaukset:
   <ng-container *ngFor="let item of queryItems; let l=last">
     <ng-container *ngIf="item.label">

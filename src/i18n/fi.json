@@ -1063,5 +1063,7 @@
   "np.copyAddress": "Kopioi linkki",
   "np.copyAddress.success": "Linkki kopioitiin leikepöydälle",
   "save": "Tallenna",
-  "cancel": "Peruuta"
+  "cancel": "Peruuta",
+  "close": "Sulje",
+  "reset": "Palauta oletus asetukset"
 }

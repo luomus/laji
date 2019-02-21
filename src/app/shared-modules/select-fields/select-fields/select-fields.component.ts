@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 export interface ISelectFields {
@@ -9,9 +9,10 @@ export interface ISelectFields {
 @Component({
   selector: 'laji-select-fields',
   templateUrl: './select-fields.component.html',
-  styleUrls: ['./select-fields.component.scss']
+  styleUrls: ['./select-fields.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectFieldsComponent implements OnInit {
+export class SelectFieldsComponent {
 
   @Input() selectedFields: ISelectFields[] = [];
   @Input() allSelectableFields: ISelectFields[] = [];
@@ -23,9 +24,6 @@ export class SelectFieldsComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
   drop(event: CdkDragDrop<ISelectFields[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -35,8 +33,6 @@ export class SelectFieldsComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
     }
-    if (event.container.data === this.selectedFields) {
-      this.selectedFieldsChange.emit(event.container.data);
-    }
+    this.selectedFieldsChange.emit(this.selectedFields);
   }
 }

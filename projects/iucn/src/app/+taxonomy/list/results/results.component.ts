@@ -49,14 +49,26 @@ export class ResultsComponent implements OnChanges, OnInit {
   speciesPage = 1;
   speciesCount = 0;
 
-  selectedSpeciesFields = [];
+  defaultSpeciesFields = [
+    {label: 'Laji', key: 'species'},
+    {label: 'Luokka', key: 'status'},
+    {label: 'Elinympäristöt', key: 'habitat'},
+    {label: 'Uhanalaisuuden syyt', key: 'reasons'},
+    {label: 'Uhkatekijät', key: 'threats'},
+  ];
+  selectedSpeciesFields;
   speciesAllFields = [
+    {label: 'Laji', key: 'species'},
+    {label: 'Luokka', key: 'status'},
+    {label: 'Elinympäristöt', key: 'habitat'},
+    {label: 'Uhanalaisuuden syyt', key: 'reasons'},
+    {label: 'Uhkatekijät', key: 'threats'},
     {label: 'tieteellinen nimi', key: 'scientificName'},
     {label: 'kansankielinen nimi', key: 'vernacularName'},
-    {label: 'muutoksen syy', key: 'latestRedListEvaluation.reasonForStatusChange'},
-    {label: 'luokkaan johtaneet kriteerit', key: 'latestRedListEvaluation.criteriaForStatus'},
-    {label: 'luokka 2015', key: 'latestRedListEvaluation.redListStatus'},
-    {label: 'luokka 2010', key: 'latestRedListEvaluation.redListStatus'}
+    {label: 'muutoksen syy', key: 'reasonForStatusChange'},
+    {label: 'luokkaan johtaneet kriteerit', key: 'criteriaForStatus'},
+    {label: 'luokka 2015', key: '2015'},
+    {label: 'luokka 2010', key: '2010'}
   ];
 
   constructor(
@@ -101,6 +113,9 @@ export class ResultsComponent implements OnChanges, OnInit {
         const idx = this.speciesAllFields.findIndex(item => item.key === field);
         return this.speciesAllFields[idx];
       }).filter(item => !!item);
+    }
+    if (!this.selectedSpeciesFields || this.selectedSpeciesFields.length === 0) {
+      this.selectedSpeciesFields = this.defaultSpeciesFields;
     }
     this.initStatusQuery();
     this.initSpeciesListQuery();
