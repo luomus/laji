@@ -56,7 +56,9 @@ export class InfoCardComponent implements OnChanges {
     if (this.isEndangered) {
       title += ' - ' + 'Uhanalainen:';
     }
-    title += ' ' + this.translateService.instant('iucn.taxon.' + this.latestStatus.redListStatus).toLocaleLowerCase();
+    title += ' ' + (this.latestStatus ? this.translateService.instant('iucn.taxon.' + this.latestStatus.redListStatus) : '');
+    title = title.toLocaleLowerCase();
+    title = title.charAt(0).toLocaleUpperCase() + title.slice(1);
     this.title.setTitle(title + ' | ' + this.title.getTitle());
   }
 }

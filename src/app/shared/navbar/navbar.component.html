@@ -27,13 +27,13 @@
           <ul class="nav navbar-nav">
             <ng-container *lajiForTypes="['iucn']">
               <li [routerLinkActive]="['active']">
-                <a (click)="closeMenu()" [routerLink]="['/taxon'] | localize">Lajit ja tulokset</a>
+                <a (click)="closeMenu()" [routerLink]="['/taxon'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
               </li>
               <li [routerLinkActive]="['active']">
-                <a (click)="closeMenu()" [routerLink]="['/publications'] | localize">Julkaisut ja lataukset</a>
+                <a (click)="closeMenu()" [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>
               </li>
               <li [routerLinkActive]="['active']">
-                <a (click)="closeMenu()" [routerLink]="['/about'] | localize">Tietoa</a>
+                <a (click)="closeMenu()" [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
               </li>
             </ng-container>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">

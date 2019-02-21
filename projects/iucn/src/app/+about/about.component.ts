@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'laji-about',
@@ -20,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
           <laji-info-page
             [rootPage]="{'fi': 'r-19', 'en': 'r-21', 'sv': 'r-23'}"
             [child]="activePage"
-            (title)="title = $event"
+            (title)="setTitle($event)"
             (parents)="parents = $event"
             (children)="children = $event"
           ></laji-info-page>
@@ -79,7 +80,8 @@ export class AboutComponent implements OnInit, OnDestroy {
   private querySub: Subscription;
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private titleService: Title
   ) { }
 
   ngOnInit() {
@@ -92,4 +94,8 @@ export class AboutComponent implements OnInit, OnDestroy {
     this.querySub.unsubscribe();
   }
 
+  setTitle(title: string) {
+    this.title = title;
+    this.titleService.setTitle(title + ' | ' + this.titleService.getTitle());
+  }
 }

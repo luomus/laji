@@ -305,6 +305,9 @@
   "invasive.oldestRecord": "Vanhin",
   "invasive.title": "Vieraslajit",
   "iucn": {
+    "about": {
+      "title": "Tietoa"
+    },
     "filter": {
       "title": "Laji ja tulokset",
       "reasons": "Uhanalaisuuden syyt",
@@ -318,6 +321,12 @@
       "onlyPrimaryReason": "vain ensisijaisella uhanalaisuuden syyllä",
       "onlyPrimaryThreat": "vain ensisijaisella uhkatekijällä",
       "empty": "Tyhjennä"
+    },
+    "page": {
+      "title": "Punaisen kirjan tietopalvelu"
+    },
+    "publications": {
+      "title": "Julkaisut ja lataukset"
     },
     "taxon": {
       "administrativeStatuses": "Lajia koskevat hallinnolliset lajitiedot",
@@ -342,7 +351,8 @@
       "occurrenceArea": "Esiintymien määrä",
       "occurrenceInfoTitle": "Esiintymistä koskevat tiedot",
       "occurrenceTitle": "Esiintymisalueet ja alueellinen uhanalaisuus",
-      "source": "Lähteet"
+      "source": "Lähteet",
+      "title": "Lajit ja tulokset"
     },
     "hasEndangermentReason": "Uhanalaisuuteen johtaneet syyt",
     "hasThreat": "Uhkatekijät tulevaisuudessa"
