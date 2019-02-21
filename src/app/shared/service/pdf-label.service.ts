@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LabelField } from 'generic-label-maker';
+import { ILabelField } from 'generic-label-maker';
 import { Observable, of } from 'rxjs';
 import { Document } from '../model/Document';
 import { map } from 'rxjs/operators';
@@ -13,7 +13,7 @@ export interface IFlatDocument {
 })
 export class PdfLabelService {
 
-  possibleFields: LabelField[] = [
+  possibleFields: ILabelField[] = [
     {field: 'id', content: 'http://id.luomus.fi/GV.1', label: 'Tunniste - QRCode', type: 'qr-code'},
     {field: 'id', content: 'http://id.luomus.fi/GV.1', label: 'Tunniste'},
     {field: 'text', content: '', label: 'Tekstiä', type: 'text'},
@@ -58,7 +58,7 @@ export class PdfLabelService {
   }
 
 
-  allPossibleFields(): Observable<LabelField[]> {
+  allPossibleFields(): Observable<ILabelField[]> {
     if (!this.data || this.data.length === 0) {
       return of(this.possibleFields);
     }
@@ -68,7 +68,7 @@ export class PdfLabelService {
     );
   }
 
-  private flatToContent(doc: IFlatDocument, fields: LabelField[]): LabelField[] {
+  private flatToContent(doc: IFlatDocument, fields: ILabelField[]): ILabelField[] {
     if (!doc) {
       return fields;
     }

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { Presets, LabelField, Setup } from 'generic-label-maker';
+import { Presets, ILabelField, ISetup } from 'generic-label-maker';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
@@ -13,8 +13,8 @@ import { Observable } from 'rxjs';
 })
 export class LabelDesignerComponent implements OnInit {
 
-  labelFields$: Observable<LabelField[]>;
-  setup: Setup;
+  labelFields$: Observable<ILabelField[]>;
+  setup: ISetup;
   data: any;
 
   constructor(
