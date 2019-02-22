@@ -1,5 +1,20 @@
 <div class="row">
   <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p *ngIf="taxon.nameAccordingTo">{{ taxon.nameAccordingTo | checklist }}</p>
+        <p>
+          <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
+          <ng-container *ngIf="taxon.scientificNameAuthorship">, {{ taxon.scientificNameAuthorship }}</ng-container>
+        </p>
+        <p *ngIf="taxon.nameAccordingTo" class="green-text">{{ 'taxonomy.acceptedName' | translate }}</p>
+        <ul *ngIf="taxon.originalPublication">
+          <li *ngFor="let publication of taxon.originalPublication">
+            {{ publication | publication }}
+          </li>
+        </ul>
+      </div>
+    </div>
     <div *ngIf="taxon.synonymNames && taxon.synonymNames.length > 0"
          class="panel panel-default"
          laji-panel
@@ -9,7 +24,6 @@
     >
       <laji-taxon-synonyms [taxon]="taxon" (taxonSelect)="taxonSelect.emit($event)"></laji-taxon-synonyms>
     </div>
-
     <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName"
          class="panel panel-default"
          laji-panel
@@ -19,7 +33,6 @@
     >
       <laji-taxon-names [taxon]="taxon"></laji-taxon-names>
     </div>
-
     <div *ngIf="taxonConceptId"
          class="panel panel-default"
          laji-panel
@@ -30,6 +43,30 @@
       <laji-taxon-concept-info
         [taxonId]="taxon.id"
         [taxonConceptId]="taxonConceptId"></laji-taxon-concept-info>
+    </div>
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.bold' | translate"
+         [open]="true"
+         [autoToggle]="true">
+      <laji-bold-sequence [scientificName]="taxon.scientificName" [cursive]="taxon.cursiveName"></laji-bold-sequence>
+      <laji-bold-synonym [taxa]="taxon.basionyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.heterotypicSynonyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.homotypicSynonyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.objectiveSynonyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.orthographicVariants || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
+    </div>
+    <div class="panel panel-default"
+         *ngIf="taxon.taxonExpert"
+         laji-panel
+         [title]="'taxonomy.taxonExpert' | translate"
+         [open]="true"
+         [autoToggle]="true">
+      <div *ngFor="let expert of taxon.taxonExpert">
+        {{ expert | users }}
+      </div>
     </div>
   </div>
 </div>

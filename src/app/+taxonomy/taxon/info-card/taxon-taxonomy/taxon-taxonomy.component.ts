@@ -15,9 +15,11 @@ export class TaxonTaxonomyComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
+
   }
 
   ngOnChanges() {
+    this.taxonConceptId = undefined;
     (this.taxon.additionalIds || []).map(id => {
       const parts = id.split(':');
       if (parts[0] === 'taxonid') {
