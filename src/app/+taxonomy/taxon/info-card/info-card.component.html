@@ -3,14 +3,14 @@
     <h1 class="taxon-name-header">
       <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
     </h1>
-    <!--div>
+    <div class="omni-search-container pull-right">
       <laji-omni-search
         [placeholder]="'species.search' | translate"
         [expand]="'right'">
       </laji-omni-search>
-    </div-->
+    </div>
 
-    <ul style="margin: 25px 0 20px 0;" class="nav nav-tabs nav-justified">
+    <ul style="margin: 25px 0 20px 0; clear: both" class="nav nav-tabs nav-justified">
       <li role="presentation"  [ngClass]="{active: activeTab === 'overview'}">
         <a [routerLink]="['/taxon', taxonId]" [queryParamsHandling]="'preserve'">
           {{ "taxonomy.overview" | translate }}

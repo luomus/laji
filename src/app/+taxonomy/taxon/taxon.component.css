@@ -18,10 +18,11 @@
   ::ng-deep .info-card-container .taxon-name-header {
     margin-left: 30px;
   }
-  ::ng-deep .info-card-container.sidebar-hidden .taxon-name-header {
-    margin-left: 120px;
-  }
 }
+::ng-deep .info-card-container.sidebar-hidden .taxon-name-header {
+  margin-left: 120px;
+}
+
 @media only screen and (max-width : 767px) {
   .taxon-tree-container, .info-card-container {
     width: 100% !important;
