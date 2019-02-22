@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { PublicationService } from '../../../shared/service/publication.service';
-import { Publication } from '../../../shared/model/Publication';
+import { PublicationService } from '../service/publication.service';
+import { Publication } from '../model/Publication';
 import { Subscription } from 'rxjs';
 
 @Pipe({

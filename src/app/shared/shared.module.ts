@@ -54,6 +54,7 @@ import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
 import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
+import { PublicationPipe } from './pipe/publication.pipe';
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
     CapitalizePipe,
     CoordinatePipe,
     FilterPipe,
-    BoolToStringPipe
+    BoolToStringPipe,
+    PublicationPipe
   ],
   imports: [
     FormsModule,
@@ -102,7 +104,7 @@ import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe
+    FilterPipe, BoolToStringPipe, PublicationPipe
   ]
 })
 export class SharedModule {

@@ -924,6 +924,7 @@
   "taxonomy.habitat.secondary": "Toissijaiset",
   "taxonomy.description": "Kuvaukset",
   "taxonomy.otherNames": "Muut nimet",
+  "taxonomy.acceptedName": "HYVÄKSYTTY NIMI",
   "technical": "tekninen",
   "template.chooseType": "Talteen",
   "template.description": "Kuvaus",

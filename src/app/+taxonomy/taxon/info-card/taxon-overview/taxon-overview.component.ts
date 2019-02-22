@@ -18,17 +18,26 @@ export class TaxonOverviewComponent implements OnChanges {
 
   taxonChildren: Taxonomy[] = [];
   ingress: any;
+  description: any;
+  _taxonDescription: TaxonomyDescription;
 
   private childrenSub: Subscription;
 
   @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
     this.ingress = undefined;
-    if (taxonDescription && taxonDescription.length > 0 && taxonDescription[0].id === 'default' && taxonDescription[0].groups.length > 0) {
+    this.description = undefined;
+    if (taxonDescription && taxonDescription.length > 0 && taxonDescription[0].groups.length > 0) {
       const desc = taxonDescription[0].groups[0];
-      if (desc.variables.length > 0 && desc.variables[0].title && desc.variables[0].title['en'] === 'Ingress') {
-        this.ingress = desc.variables[0].content;
-      }
+      (desc.variables || []).forEach(variable => {
+        if (variable.title && variable.title['en'] === 'Ingress') {
+          this.ingress = variable.content;
+        }
+        if (variable.title && variable.title['en'] === 'Description') {
+          this.description = variable.content;
+        }
+      });
     }
+    this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription[0] : undefined;
   }
 
   constructor(

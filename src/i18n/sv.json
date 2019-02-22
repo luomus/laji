@@ -823,6 +823,7 @@
   "taxonomy.habitat.secondary": "Toissijaiset",
   "taxonomy.description": "Kuvaukset",
   "taxonomy.otherNames": "Muut nimet",
+  "taxonomy.acceptedName": "HYVÄKSYTTY NIMI",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Beskrivning",

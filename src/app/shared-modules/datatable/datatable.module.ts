@@ -5,7 +5,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
 import { SpinnerModule } from '../spinner/spinner.module';
 import { SharedModule } from '../../shared/shared.module';
-import { PublicationPipe } from './pipe/publication.pipe';
 import { DataTableFooterComponent } from './data-table-footer/data-table-footer.component';
 import { DatatableTemplatesComponent } from './datatable-templates/datatable-templates.component';
 import { InfoModule } from '../info/info.module';
@@ -19,7 +18,7 @@ import { InfoModule } from '../info/info.module';
     SharedModule,
     InfoModule
   ],
-  declarations: [DatatableComponent, DatatableTemplatesComponent, PublicationPipe, DataTableFooterComponent],
+  declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent],
   exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent]
 })
 export class DatatableModule { }

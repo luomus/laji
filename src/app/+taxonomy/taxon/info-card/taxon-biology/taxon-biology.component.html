@@ -54,14 +54,7 @@
         </div>
       </div>
       <div class="source">
-        <laji-info [glyphicon]="'user'" [placement]="'right'" [labelType]="'default'">
-          {{ 'taxonomy.source' | translate }}: {{ taxonDescription[activeDescription]?.title | multiLang }}
-          <ng-container *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
-            <br>
-            {{ taxonDescription[activeDescription]?.speciesCardAuthors.title | multiLang }}:
-            <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content | multiLang"></span>
-          </ng-container>
-        </laji-info>
+        <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
       </div>
     </ng-container>
   </div>

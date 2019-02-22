@@ -1,6 +1,6 @@
 <table class="table taxon-table table-condensed" *ngIf="taxon">
   <tbody>
-  <tr>
+  <tr *ngIf="taxon.nameAccordingTo">
     <th>{{ 'taxonomy.nameAccordingTo' | translate }}</th>
     <td>{{ taxon.nameAccordingTo | checklist }}</td>
   </tr>
