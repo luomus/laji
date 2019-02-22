@@ -45,7 +45,7 @@
                   <i class="glyphicon glyphicon-tag"></i>
                 </a>
                 <br>
-                <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()">
+                <a [routerLink]="['/taxon/' + taxon.key + '/taxonomy'] | localize" (click)="close()">
                   {{ 'Selaa taksonomiaa' }}
                 </a>
               </div>

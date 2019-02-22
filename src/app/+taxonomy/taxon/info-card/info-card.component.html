@@ -31,6 +31,11 @@
           {{ "taxonomy.taxonomy" | translate }}
         </a>
       </li>
+      <!--li role="presentation" [ngClass]="{active: activeTab === 'occurrence'}">
+        <a [routerLink]="['/taxon', taxonId, 'occurrence']" [queryParamsHandling]="'preserve'">
+          {{ "taxonomy.occurrence" | translate }}
+        </a>
+      </li-->
     </ul>
 
     <laji-taxon-overview [hidden]="activeTab !== 'overview'"
@@ -57,6 +62,10 @@
                          [taxon]="taxon"
                          [taxonDescription]="taxonDescription"
     ></laji-taxon-taxonomy>
+    <laji-taxon-occurrence [hidden]="activeTab !== 'occurrence'"
+                           *ngIf="activatedTabs['occurrence']"
+                           [taxon]="taxon"
+    ></laji-taxon-occurrence>
   </div>
   <div class="container" *ngIf="taxon === false">
     <h1>

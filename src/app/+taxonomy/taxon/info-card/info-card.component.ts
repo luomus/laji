@@ -34,7 +34,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
   // private static settings: Settings;
   @Input() taxonId: string;
   @Input() context: string;
-  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy';
+  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence';
 
   taxon: Taxonomy;
   taxonDescription: Array<TaxonomyDescription>;

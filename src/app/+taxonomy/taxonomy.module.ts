@@ -52,6 +52,7 @@ import { DownloadModule } from '../shared-modules/download/download.module';
 import {
   TaxonDescriptionSourceComponent
 } from './taxon/info-card/taxon-biology/taxon-description-source/taxon-description-source.component';
+import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -71,7 +72,8 @@ import {
     TaxonImagesComponent,
     TaxonBiologyComponent,
     TaxonTaxonomyComponent,
-    TaxonDescriptionSourceComponent
+    TaxonDescriptionSourceComponent,
+    TaxonOccurrenceComponent
   ],
 })
 export class TaxonomyModule {

@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <table class="table taxon-table table-condensed" *ngIf="taxon">
+          <tbody>
+          <tr>
+            <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
+            <td>{{ taxon.occurrenceInFinland | label }}</td>
+          </tr>
+          <tr *ngIf="taxon.typeOfOccurrenceInFinland">
+            <th>{{ 'taxonomy.typeOfOccurrenceInFinland' | translate }}</th>
+            <td>
+              <ul>
+                <li *ngFor="let type of taxon.typeOfOccurrenceInFinland">
+                  {{ type | label }}
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr *ngIf="taxon.occurrenceInFinlandPublication">
+            <th>{{ 'taxonomy.occurrenceInFinlandPublication' | translate }}</th>
+            <td>
+              <ul>
+                <li *ngFor="let publication of taxon.occurrenceInFinlandPublication">
+                  {{ publication | publication }}
+                </li>
+              </ul>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
