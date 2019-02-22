@@ -49,6 +49,9 @@ import { TaxonImagesComponent } from './taxon/info-card/taxon-images/taxon-image
 import { TaxonBiologyComponent } from './taxon/info-card/taxon-biology/taxon-biology.component';
 import { TaxonTaxonomyComponent } from './taxon/info-card/taxon-taxonomy/taxon-taxonomy.component';
 import { DownloadModule } from '../shared-modules/download/download.module';
+import {
+  TaxonDescriptionSourceComponent
+} from './taxon/info-card/taxon-biology/taxon-description-source/taxon-description-source.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -67,7 +70,8 @@ import { DownloadModule } from '../shared-modules/download/download.module';
     TaxonOverviewComponent,
     TaxonImagesComponent,
     TaxonBiologyComponent,
-    TaxonTaxonomyComponent
+    TaxonTaxonomyComponent,
+    TaxonDescriptionSourceComponent
   ],
 })
 export class TaxonomyModule {

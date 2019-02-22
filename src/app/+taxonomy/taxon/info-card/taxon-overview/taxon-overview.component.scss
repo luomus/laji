@@ -5,7 +5,13 @@
   float: left;
   margin-right: 15px;
 }
-.image-container.image-grid {
+.image-container.image-grid-1 {
+  width: calc(91px * 1);
+}
+.image-container.image-grid-2 {
+  width: calc(91px * 2);
+}
+.image-container.image-grid-3 {
   width: calc(91px * 3);
 }
 

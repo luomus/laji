@@ -1,9 +1,13 @@
 <div class="row">
   <div class="col-xs-12 col-sm-6">
 
-    <div class="panel no-box-shadow" *ngIf="images.length > 0 || ingress">
+    <div class="panel no-box-shadow" *ngIf="images.length > 0 || ingress || description">
       <div class="panel-body">
-        <div class="image-container" [ngClass]="{'image-grid': !taxon.species}">
+        <div class="image-container" *ngIf="images.length > 0" [ngClass]="{
+            'image-grid-1': !taxon.species && images.length === 1,
+            'image-grid-2': !taxon.species && images.length === 2,
+            'image-grid-3': !taxon.species && images.length > 2
+          }">
           <laji-image-gallery
             [modalImages]="images"
             [view]="taxon.species ? 'full3' : 'compact'"
@@ -11,7 +15,11 @@
             [showPopover]="false"
           ></laji-image-gallery>
         </div>
-        <span *ngIf="ingress" [innerHTML]="ingress | multiLang"></span>
+        <strong *ngIf="ingress" [innerHTML]="ingress | multiLang"></strong>
+        <span *ngIf="description" [innerHTML]="description | multiLang"></span>
+        <div *ngIf="ingress || description">
+          <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
+        </div>
       </div>
     </div>
 
