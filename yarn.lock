@@ -5438,16 +5438,16 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.576:
-  version "0.0.576"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.576.tgz#1cced5908d525fc5a4900ab2dc086d9660325b78"
-  integrity sha512-PrJsDkK5eXlEaUsfT7bvMrjuAvof3ZBrVAH/2ParhUXZsmuQiIaOakaun7uBZ13n0kdMLurgjnhLyW3WvdL4Fw==
+laji-form@^0.0.578:
+  version "0.0.578"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.578.tgz#ec2b97168e61c561cfdc12ca54d8f8ca7c90c0a8"
+  integrity sha512-/E3CdNyDlc+pZ3h3kvZhsqPJrOEi3Ms4SSO3kKr2xPp47wLc4cJuZELUtxSFP1vyY/CV8SZkCsc1bp6L2uan8g==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.459"
+    laji-map "^1.0.474"
     laji-validate "0.0.73"
     moment "*"
     prop-types "^15.5.8"
@@ -5466,10 +5466,10 @@ laji-form@^0.0.576:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.470, laji-map@^1.0.395, laji-map@^1.0.459:
-  version "1.0.470"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.470.tgz#9f34addf31cfa843894c6ad7e53ba1cde9cfd162"
-  integrity sha512-llqJ2hUPzbWmWWtUvbNi3mP+bh4pTAfRAPyfJarkIXigysQ7MjWsTLuOaHx44HAEMPs/0T3cwgqUeIq5D3gB9Q==
+laji-map@1.0.474, laji-map@^1.0.395, laji-map@^1.0.474:
+  version "1.0.474"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.474.tgz#34915cc1e4ba88f83d6f7833be652f7aab37e67b"
+  integrity sha512-eLS51dl+kFN6Do1QOvYDZK4lWqfJdi4woT6c5gf26zUGikKwbdHzTCAqa2gDXbq5xwSLayJ3FWvJ9EgfiB5fMA==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
@@ -5480,31 +5480,7 @@ laji-map@1.0.470, laji-map@^1.0.395, laji-map@^1.0.459:
     leaflet-mml-layers "2.0.1"
     leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#7fd168f22e2b1a52bdf62d473237f01caaa01e95"
     leaflet.markercluster "1.3.0"
-    nouislider "10.0.0"
-    proj4 "2.3.16"
-    proj4leaflet "1.0.2"
-  optionalDependencies:
-    "@types/geojson" "*"
-    "@types/leaflet" "*"
-    "@types/leaflet-draw" "*"
-    "@types/leaflet.markercluster" "*"
-    "@types/node" "*"
-
-laji-map@^1.0.470:
-  version "1.0.471"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.471.tgz#130988dc5d55c5ad24826a96e52c0d59911e1134"
-  integrity sha512-fF6096DC8Q9AdC4N57gntIfGxbHvOpCjG7kpAdeVmdkqNqCNQ3bbQVNu5olfrBpoCy4MCmFnvJtRiFQgbvsYtQ==
-  dependencies:
-    Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    leaflet "1.4.0"
-    leaflet-contextmenu "1.4.0"
-    leaflet-draw "1.0.3"
-    leaflet-geometryutil "0.8.0"
-    leaflet-geosearch "git+https://git@github.com/olzraiti/leaflet-geosearch.git#d0fb4384742e22799074355a99094adcc2416577"
-    leaflet-mml-layers "2.0.1"
-    leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#7fd168f22e2b1a52bdf62d473237f01caaa01e95"
-    leaflet.markercluster "1.3.0"
-    nouislider "10.0.0"
+    nouislider "13.1.0"
     proj4 "2.3.16"
     proj4leaflet "1.0.2"
   optionalDependencies:
@@ -6520,10 +6496,10 @@ normalize-range@^0.1.2:
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
   integrity sha1-LRDAa9/TEuqXd2laTShDlFa3WUI=
 
-nouislider@10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-10.0.0.tgz#166145168bc05701ef5168c17d171f79154c174e"
-  integrity sha1-FmFFFovAVwHvUWjBfRcfeRVMF04=
+nouislider@13.1.0:
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-13.1.0.tgz#23a57f25e5302117dc8f7e391954c9f111e8cf84"
+  integrity sha512-XNayuw//xm5pVYXvXKr9IOSxFgbyPkRXZC99xnNMysJ+5nZaiIxOe2WK1QM3VpHOBKktI/Q1TikisH4HjXpw0w==
 
 npm-bundled@^1.0.1:
   version "1.0.6"
