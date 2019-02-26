@@ -5,7 +5,7 @@
   display: inline-block;
 }
 
-::ng-deep h3 {
+::ng-deep .label-editor h3 {
   margin: 10px -15px 0 -15px;
   font-size: 100%;
   font-weight: 900;
@@ -14,7 +14,7 @@
   border-top: 1px solid #ddd;
 }
 
-::ng-deep h3.first {
+::ng-deep .label-editor h3.first {
   border-top: none;
   margin-top: 0;
 }
