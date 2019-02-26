@@ -24,7 +24,7 @@ export class LabelEditorComponent {
   @Output() showSettings = new EventEmitter<ILabelItem>();
   @Output() done = new EventEmitter<void>();
 
-  constructor(labelService: LabelService) {
+  constructor(private labelService: LabelService) {
     this.init = labelService.hasRation();
   }
 
@@ -64,6 +64,11 @@ export class LabelEditorComponent {
 
   updateDimensions(event: Event, target: string, sec: 'page'|'label') {
     const value = Number((event.target as HTMLInputElement).value);
+    const {width, height} = this.labelService.countMinLabelSize(this._setup);
+    if ((target === 'height.mm' && value < height) || (target === 'width.mm' && value < width)) {
+      return alert('Field within the label is blocking the resize.\nRemove or resize the field in the label!');
+    }
+
     this._setup = {
       ...this._setup,
       [sec]: {
