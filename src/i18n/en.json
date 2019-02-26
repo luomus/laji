@@ -820,7 +820,7 @@
   "taxonomy.parent.family": "Family",
   "taxonomy.parent.tribe": "Tribe",
   "taxonomy.parent.genus": "Genus",
-  "taxonomy.speciesPieChartTitle": "Lajien määrän jakautuminen alemmille taksoneille",
+  "taxonomy.speciesPieChartTitle": "Suomalaisten lajien määrän jakautuminen alemmille taksoneille",
   "taxonomy.species": "species",
   "taxonomy.species.singular": "species",
   "taxonomy.total": "Total",
