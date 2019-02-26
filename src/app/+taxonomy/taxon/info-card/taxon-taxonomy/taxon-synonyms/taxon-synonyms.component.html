@@ -15,7 +15,10 @@
     'alternativeNames'
   ]">
     <tr *ngIf="taxon[synonymType]">
-      <th>{{ 'taxonomy.' + synonymType | translate }}</th>
+      <th>{{ synonymType === 'synonymOf' ? ('taxonomy.synonymOf' | translate) : (
+        ('MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1)) | label
+      ) }}
+      </th>
       <td>
         <ul>
           <li *ngFor="let obj of taxon[synonymType]">
