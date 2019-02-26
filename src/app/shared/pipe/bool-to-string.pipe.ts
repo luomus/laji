@@ -6,23 +6,17 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class BoolToStringPipe implements PipeTransform {
     constructor (private translate: TranslateService) {}
-    transform(value: boolean) {
-      const _value = typeof value === 'boolean'
-        ? value
-        : typeof value === 'string'
-          ? value === 'true' || value === 'false'
-            ? value === 'true'
-            : value
-          : undefined;
+    transform(value: any) {
+      let asBoolean;
+      if (typeof value === 'boolean') {
+        asBoolean = value;
+      } else if (typeof value === 'string' && (value === 'true' || value === 'false')) {
+        asBoolean = value === 'true';
+      }
 
-        if (_value === undefined) {
-          return value;
-        }
-
-        if (value) {
-            return this.translate.instant('yes');
-        } else {
-            return this.translate.instant('no');
-        }
+      if (asBoolean === undefined) {
+        return value;
+      }
+      return this.translate.instant(asBoolean ? 'yes' : 'no');
     }
 }
