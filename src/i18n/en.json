@@ -978,6 +978,7 @@
   "np.formOwnSubmissions": "Places previous documents",
   "np.tag": "Filter by route properties",
   "np.createPlace": "Create place",
+  "np.editPlace": "Save changes",
   "haseka.form.rights.description": " <h1>Form permission management</h1> <p>You can manage form permissions here.</p>",
   "np.copyAddress": "Copy link",
   "np.copyAddress.success": "Link was copied to the clipboard",
