@@ -852,6 +852,7 @@
   "taxonomy.browse.title": "Selaus ja lataus",
   "taxonomy.card": "Tietokortti",
   "taxonomy.card.id": "Tunniste",
+  "taxonomy.card.search": "Hae taksonia",
   "taxonomy.card.download": "Taksonin tiedot koneluettavassa muodossa",
   "taxonomy.checklist": "Lajiluettelo",
   "taxonomy.distribution": "Jakauma",

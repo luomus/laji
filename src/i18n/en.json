@@ -758,6 +758,7 @@
   "taxonomy.browse.title": "Browse and download",
   "taxonomy.card": "Species card",
   "taxonomy.card.id": "ID",
+  "taxonomy.card.search": "Hae taksonia",
   "taxonomy.card.download": "Taksonin tiedot koneluettavassa muodossa",
   "taxonomy.checklist": "Checklist",
   "taxonomy.distribution": "Distribution",

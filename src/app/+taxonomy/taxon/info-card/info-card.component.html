@@ -4,10 +4,10 @@
       <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
     </h1>
     <div class="omni-search-container pull-right">
-      <laji-omni-search
-        [placeholder]="'species.search' | translate"
-        [expand]="'right'">
-      </laji-omni-search>
+      <laji-taxon-select
+        [placeholder]="'taxonomy.card.search' | translate"
+        (taxonIdChange)="updateRoute($event)"
+      ></laji-taxon-select>
     </div>
 
     <ul style="margin: 25px 0 20px 0; clear: both" class="nav nav-tabs nav-justified">
