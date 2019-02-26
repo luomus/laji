@@ -66,4 +66,22 @@ export class LabelService {
     return !(typeof data[field] === 'undefined' || data[field] === '');
   }
 
+  public countMinLabelSize(setup: ISetup): {width: number, height: number} {
+    let width = 0, height = 0;
+
+    const max = (item => {
+      if (item.x + item.style['width.mm'] > width) {
+        width = item.x + item.style['width.mm'];
+      }
+      if (item.y + item.style['height.mm'] > height) {
+        height = item.y + item.style['height.mm'];
+      }
+    });
+
+    setup.labelItems.forEach(max);
+    setup.backSideLabelItems.forEach(max);
+
+    return {width, height};
+  }
+
 }
