@@ -11,6 +11,13 @@
       visible: rights?.edit || rights?.admin
     },
     {
+      routerLink: ['../vieraslajit', 'ownSubmissions'],
+      label: rights?.admin ?
+             ('theme.admin.submissions' | translate):
+             ('haseka.ownSubmissions.title' | translate),
+      visible: rights?.edit || rights?.admin
+    },
+    {
       routerLink: ['/vihko/fp/HR.2049/admin'],
       label: 'form.administer' | translate,
       visible: rights?.admin
