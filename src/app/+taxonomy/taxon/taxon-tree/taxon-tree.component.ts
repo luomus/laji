@@ -1,5 +1,6 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
+import { TranslateService } from '@ngx-translate/core';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -21,6 +22,7 @@ export class TaxonTreeComponent implements OnInit {
 
   constructor(
     private taxonService: TaxonomyApi,
+    private translate: TranslateService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -30,7 +32,7 @@ export class TaxonTreeComponent implements OnInit {
 
   getRoot() {
     this.taxonService
-      .taxonomyFindBySubject('MX.37600', 'multi', {
+      .taxonomyFindBySubject('MX.37600', this.translate.currentLang, {
         selectedFields: this.getSelectedFields(),
         onlyFinnish: true
       })
@@ -46,7 +48,7 @@ export class TaxonTreeComponent implements OnInit {
 
   getChildren(id: string) {
     return this.taxonService
-      .taxonomyFindChildren(id, 'multi', undefined, {
+      .taxonomyFindChildren(id, this.translate.currentLang, undefined, {
         selectedFields: this.getSelectedFields(),
         onlyFinnish: true
       });
@@ -54,7 +56,7 @@ export class TaxonTreeComponent implements OnInit {
 
   getParents(id: string) {
     return this.taxonService
-      .taxonomyFindParents(id, 'multi', {
+      .taxonomyFindParents(id, this.translate.currentLang, {
         selectedFields: 'id',
         onlyFinnish: true
       });

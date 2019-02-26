@@ -10,7 +10,7 @@
         <p *ngIf="taxon.nameAccordingTo" class="green-text">{{ 'taxonomy.acceptedName' | translate }}</p>
         <p *ngIf="!taxon.nameAccordingTo">
           <span class="red-text">{{ 'taxonomy.unacceptedName' | translate }} </span>
-          <a [routerLink]="['/taxon', taxon.synonymOf.id, 'taxonomy']" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+          <a [routerLink]="['/taxon', taxon.synonymOf.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
             <laji-taxon-name [taxon]="taxon.synonymOf" [addLink]="false"></laji-taxon-name>
           </a>
         </p>

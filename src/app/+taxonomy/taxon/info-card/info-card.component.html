@@ -12,22 +12,22 @@
 
     <ul style="margin: 25px 0 20px 0; clear: both" class="nav nav-tabs nav-justified">
       <li role="presentation"  [ngClass]="{active: activeTab === 'overview'}">
-        <a [routerLink]="['/taxon', taxonId]" [queryParamsHandling]="'preserve'">
+        <a [routerLink]="['/taxon', taxonId] | localize" [queryParamsHandling]="'preserve'">
           {{ "taxonomy.overview" | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: activeTab === 'images'}" *ngIf="hasImageData">
-        <a [routerLink]="['/taxon', taxonId, 'images']" [queryParamsHandling]="'preserve'">
+        <a [routerLink]="['/taxon', taxonId, 'images'] | localize" [queryParamsHandling]="'preserve'">
           {{ "species.images" | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: activeTab === 'biology'}" *ngIf="hasBiologyData">
-        <a [routerLink]="['/taxon', taxonId, 'biology']" [queryParamsHandling]="'preserve'">
+        <a [routerLink]="['/taxon', taxonId, 'biology'] | localize" [queryParamsHandling]="'preserve'">
           {{ "taxonomy.biology" | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: activeTab === 'taxonomy'}">
-        <a [routerLink]="['/taxon', taxonId, 'taxonomy']" [queryParamsHandling]="'preserve'">
+        <a [routerLink]="['/taxon', taxonId, 'taxonomy'] | localize" [queryParamsHandling]="'preserve'">
           {{ "taxonomy.taxonomy" | translate }}
         </a>
       </li>

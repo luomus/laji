@@ -22,7 +22,7 @@
       <td>
         <ul>
           <li *ngFor="let obj of taxon[synonymType]">
-            <a [routerLink]="['/taxon', obj.id, 'taxonomy']" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+            <a [routerLink]="['/taxon', obj.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
               <laji-taxon-name [taxon]="obj" [addLink]="false"></laji-taxon-name>
             </a>
           </li>
