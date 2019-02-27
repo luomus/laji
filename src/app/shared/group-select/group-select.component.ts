@@ -1,6 +1,6 @@
 /* tslint:disable:no-use-before-declare */
 import { map, switchMap } from 'rxjs/operators';
-import { ChangeDetectorRef, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { ControlValueAccessor } from '@angular/forms';
 import { Observable, of as ObservableOf } from 'rxjs';
@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Group } from '../model/Group';
 import { PagedResult } from '../model/PagedResult';
 
-export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges, OnInit {
+export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
   @Input() position: 'right'|'left' = 'right';
   @Output() select = new EventEmitter();
 
@@ -24,10 +24,6 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   private el: Element;
 
   protected subLabel: any;
-
-  ngOnInit() {
-    this.lang = this.translate.currentLang;
-  }
 
   onChange = (_: any) => {
   }
@@ -45,11 +41,13 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     }
   }
 
-  constructor(
+  protected constructor(
     protected cd: ChangeDetectorRef,
     protected logger: Logger,
     protected translate: TranslateService
-  ) { }
+  ) {
+    this.lang = this.translate.currentLang;
+  }
 
   ngOnChanges() {
     this.initGroups();
