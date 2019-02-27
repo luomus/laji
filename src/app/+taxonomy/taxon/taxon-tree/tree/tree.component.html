@@ -2,10 +2,13 @@
   <div class="tree">
     <ng-container *ngFor="let node of nodeList; let last = last">
       <div *ngIf="last || !treeState.state[node.id].isSkipped">
+        <laji-spinner *ngIf="last && treeState.state[node.id].loadingCount > 0"></laji-spinner>
         <ng-container *ngTemplateOutlet="labelTpl; context: {'node': node}"></ng-container>
       </div>
     </ng-container>
-    <ng-container *ngTemplateOutlet="treeBranch; context: {nodes: nodeList[nodeList.length - 1]?.children}"></ng-container>
+    <ng-container *ngIf="nodeList.length === 0 || treeState.state[nodeList[nodeList.length - 1].id].loadingCount === 0">
+      <ng-container *ngTemplateOutlet="treeBranch; context: {nodes: nodeList[nodeList.length - 1]?.children}"></ng-container>
+    </ng-container>
   </div>
 </laji-spinner>
 

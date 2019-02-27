@@ -76,7 +76,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   }
 
   updateRoute(id = this.taxonId, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree) {
-    const route = ['taxon', id];
+    const route = ['/taxon', id];
     const params = {};
     const extra = {};
 

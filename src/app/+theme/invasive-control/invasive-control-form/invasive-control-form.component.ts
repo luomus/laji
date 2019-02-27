@@ -85,7 +85,7 @@ export class InvasiveControlFormComponent
     .subscribe((np) => {
       super.navigate([this.onSuccessUrl],
                      {queryParams: {activeNP: event.document.namedPlaceID,
-                      municipality: np.municipality}});
+                      municipality: np.municipality instanceof Array ? np.municipality[0] : 'all'}});
     });
   }
 }
