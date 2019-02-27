@@ -37,7 +37,8 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
-import { ObservationGroupSelectComponent } from './group-select/group-select.component';
+import { ObservationGroupSelectComponent } from './group-select/observation-group-select.component';
+import { IucnGroupSelectComponent } from './group-select/iucn-group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
 import { ChecklistPipe } from './pipe/checklist.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
@@ -68,7 +69,8 @@ import { PublicationPipe } from './pipe/publication.pipe';
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, NlToBrPipe,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
+    ObservationGroupSelectComponent, IucnGroupSelectComponent,
+    SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
     TaxonNameComponent,
     ChecklistPipe,
     FactNotInPipe,
@@ -101,7 +103,8 @@ import { PublicationPipe } from './pipe/publication.pipe';
     FormattedNumber, ObservationCountComponent, GalleryComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, ServerOnlyDirective, BrowserOnlyDirective,
-    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
+    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, IucnGroupSelectComponent,
+    ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe

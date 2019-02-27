@@ -2,11 +2,13 @@
   <div class="form-group">
     <div class="col-sm-5 col-md-4">
       <label>{{ 'iucn.filter.redListGroup' | translate }}</label>
-      <ng-select name="redListGroup" (change)="change('redListGroup', $event?.value)" [ngModel]="query?.redListGroup" [items]="redListStatuses$ | async" [placeholder]="''" [notFoundText]="''" [bindLabel]="'label'" [bindValue]="'value'">
-        <ng-template ng-label-tmp let-item="item">
-          <span [innerHTML]="item.label"></span>
-        </ng-template>
-      </ng-select>
+      <laji-iucn-group-select
+        [ngModel]="query?.redListGroup"
+        (ngModelChange)="change('redListGroup', $event)"
+        [position]="'left'"
+        name="informalTaxonGroupId">
+        {{ 'observation.active.informalTaxonGroupAll'|translate }}
+      </laji-iucn-group-select>
     </div>
     <div class="col-sm-5 col-md-4">
       <label>{{ 'species.form.specimen' | translate }}</label>
