@@ -4,7 +4,7 @@
       <label>{{ 'iucn.filter.redListGroup' | translate }}</label>
       <laji-iucn-group-select
         [ngModel]="query?.redListGroup"
-        (ngModelChange)="change('redListGroup', $event)"
+        (select)="change('redListGroup', $event)"
         [position]="'left'"
         name="informalTaxonGroupId">
         {{ 'observation.active.informalTaxonGroupAll'|translate }}
