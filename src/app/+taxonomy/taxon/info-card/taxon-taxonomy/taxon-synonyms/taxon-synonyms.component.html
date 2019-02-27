@@ -15,11 +15,14 @@
     'alternativeNames'
   ]">
     <tr *ngIf="taxon[synonymType]">
-      <th>{{ 'taxonomy.' + synonymType | translate }}</th>
+      <th>{{ synonymType === 'synonymOf' ? ('taxonomy.synonymOf' | translate) : (
+        ('MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1)) | label
+      ) }}
+      </th>
       <td>
         <ul>
           <li *ngFor="let obj of taxon[synonymType]">
-            <a [routerLink]="['/taxon', obj.id, 'taxonomy']" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+            <a [routerLink]="['/taxon', obj.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
               <laji-taxon-name [taxon]="obj" [addLink]="false"></laji-taxon-name>
             </a>
           </li>

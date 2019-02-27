@@ -53,12 +53,14 @@
           <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
           <tr><td>Range start:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
           <tr><td>Range end:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
-          <tr><td colspan="2">&nbsp;</td></tr>
-          <tr *ngFor="let field of fields">
-            <td>{{field.label}}:</td><td><input (change)="updateGenerate(field.field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
+          <tr *ngIf="fields.length > 0"><td colspan="2">&nbsp;</td></tr>
+          <tr *ngFor="let field of fields;">
+            <td>{{field.label}}:</td><td><input [value]="generate.data[field.field] || ''" (change)="updateGenerate(field.field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
           </tr>
         </table>
-        <button (click)="generateData()" style="margin-top: 5px;" class="btn btn-default btn-sm pull-right">Generate</button>
+        <div style="margin-top: 15px;">
+          <button (click)="generateData()" style="margin-top: 5px;" class="btn btn-default btn-sm pull-right">Generate</button>
+        </div>
       </div>
       <div [hidden]="_active !== 'settings'">
         <ll-label-settings

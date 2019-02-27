@@ -1,6 +1,6 @@
 
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -44,11 +44,10 @@ export class LabelPrintComponent {
 
   @Input() setup: ISetup;
   @Input() data: object[];
-  @Input() labelButton = 'PDF';
   // tslint:disable-next-line:no-input-rename
-  @Input('class') btnClass = 'btn btn-default';
+  @Input() btnClass = 'btn btn-default';
 
-  @Output() click = new EventEmitter<void>();
+  @Output() pressed = new EventEmitter<void>();
   @Output() html = new EventEmitter<string>();
 
   @ViewChild('pagesContainer') public pageContainer: ElementRef<HTMLDivElement>;
@@ -56,14 +55,17 @@ export class LabelPrintComponent {
   pages: object[][] = [];
   pageLayout: PageLayout;
   nroPages: number;
+  printing = false;
 
   constructor(
-    private labelService: LabelService
+    private labelService: LabelService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   btnClick(event: MouseEvent) {
     event.preventDefault();
-    this.click.emit();
+    this.pressed.emit();
+    this.printing = true;
     this.pageLayout = this.labelService.countLabelsPerPage(this.setup);
     const perPage = this.pageLayout.rows * this.pageLayout.cols;
     const pages = [];
@@ -80,17 +82,19 @@ export class LabelPrintComponent {
     }
     this.pages = pages;
     this.nroPages = pages.length;
+    this.cdr.markForCheck();
   }
 
   printReady() {
     this.nroPages--;
     if (this.nroPages <= 0) {
-        const html = `<!DOCTYPE html>
+      const html = `<!DOCTYPE html>
 <html>
   <head><meta charset="utf-8"><title>Labels</title><style>${style}</style></head>
   <body style="margin: 0; padding: 0;">${this.pageContainer.nativeElement.innerHTML}</body>
 </html>`;
-        this.html.emit(html);
+      this.printing = false;
+      this.html.emit(html);
     }
   }
 }

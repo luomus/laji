@@ -174,5 +174,23 @@ export class LabelEditorContainerComponent {
       });
     }
     this.data = data;
+    if  (this.data[0]) {
+      this.setAsExample(this.data[0]);
+    }
+  }
+
+  private setAsExample(doc: any) {
+    this._setup = {
+      ...this._setup,
+      labelItems: this.setExampleInLabelItems(doc, this._setup.labelItems),
+      backSideLabelItems: this.setExampleInLabelItems(doc, this._setup.backSideLabelItems)
+    };
+  }
+
+  private setExampleInLabelItems(doc: any, items: ILabelItem[]): ILabelItem[] {
+    return items.map(item => ({
+      ...item,
+      fields: item.fields.map(field => ({...field, content: doc[field.field]}))
+    }));
   }
 }

@@ -20,7 +20,9 @@
   <tr>
     <td style="width: 24px"></td>
     <td>
-      <ll-label-print [class]="'menu-item'" [labelButton]="'Download labels (pdf)'" [setup]="setup" [data]="data" (html)="html.emit($event)"></ll-label-print>
+      <ll-label-print [btnClass]="'menu-item'" [setup]="setup" [data]="data" (html)="html.emit($event)">
+        Download labels (pdf)
+      </ll-label-print>
     </td>
   </tr>
 </table>
