@@ -131,7 +131,8 @@ export class DocumentInfoService {
         unit.pairCount ||
         unit.abundanceString ||
         unit.maleIndividualCount ||
-        unit.femaleIndividualCount
+        unit.femaleIndividualCount ||
+        unit.areaInSquareMeters
       );
     }
 

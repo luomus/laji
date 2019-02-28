@@ -251,6 +251,9 @@ export interface Units {
      */
     wingLengthMin?: number;
 
+
+    areaInSquareMeters?: number;
+
 }
 export namespace Units {
     export enum AtlasCodeEnum {
