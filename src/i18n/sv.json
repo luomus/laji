@@ -204,6 +204,7 @@
   "haseka.submissions.toStatistics": "Gå till statistik",
   "haseka.submissions.total": "Total",
   "haseka.submissions.unitCount": "Observationer",
+  "haseka.submissions.taxon": "Art",
   "haseka.templates.intro": "Du kan skapa en mall från sidan \"Mina observationer\". Välj en observation för mallen och tryck på \"Spara som mall\" -knappen.",
   "haseka.templates.title": "Mallar",
   "haseka.terms": "Användarvillkor",

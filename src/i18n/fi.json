@@ -220,6 +220,7 @@
   "haseka.submissions.toStatistics": "Siirry tilastosivulle",
   "haseka.submissions.total": "Yhteensä",
   "haseka.submissions.unitCount": "Havaintolkm",
+  "haseka.submissions.taxon": "Laji",
   "haseka.template.loadError": "Lomakepohjien lataus epäonnistui. Yritä hetken kuluttua uudelleen.",
   "haseka.templates.intro": "Voit luoda uusia lomakepohjia \"Omat havaintoeräni\" sivulta. Valitse havaintoerä josta haluat luoda lomakepohjan ja paina \"Tallenna lomakepohjaksi\" -painiketta.",
   "haseka.templates.title": "Lomakepohjat",

@@ -109,7 +109,8 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     locality: 'gatherings[*].locality,namedPlaceID,gatherings[*].namedPlaceID',
     unitCount: 'gatherings[*].units[*]',
     observer: 'gatheringEvent.leg',
-    namedPlaceName: 'namedPlaceID,gatherings[*].namedPlaceID'
+    namedPlaceName: 'namedPlaceID,gatherings[*].namedPlaceID',
+    taxon: 'gatherings[*].units[*].identifications[*].taxonID',
   };
 
   templateForm: TemplateForm = {
@@ -345,10 +346,10 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
         return ObservableForkJoin(
           this.getLocality(gatheringInfo, document.namedPlaceID),
           this.getObservers(document['gatheringEvent.leg']),
-          this.getNamedPlaceName(document.namedPlaceID)
+          this.getNamedPlaceName(document.namedPlaceID),
+          this.getTaxon(document['gatherings[*].units[*].identifications[*].taxonID'])
         ).pipe(
-          map<any, RowDocument>(data => {
-            const locality = data[0], observers = data[1], npName = data[2];
+          map<any, RowDocument>(([locality, observers, npName, taxon]) => {
             const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
             let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
             if (dateObservedEnd && dateObservedEnd !== dateObserved) {
@@ -365,13 +366,14 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
               locality: locality,
               unitCount: gatheringInfo.unitList.length,
               observer: observers,
+              taxon,
               formID: document.formID,
               form: form.title || document.formID,
               id: document.id,
               locked: !!document.locked,
               index: idx,
               formViewerType: form.viewerType,
-              _editUrl: this.formService.getEditUrlPath(document.formID, document.id)
+              _editUrl: this.formService.getEditUrlPath(document.formID, document.id),
             };
           })
         );
@@ -420,9 +422,15 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   }
 
   private getNamedPlaceName(npId: string): Observable<string> {
-    if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return ObservableOf(''); }
-
+    if (!npId || this.columns.indexOf('namedPlaceName') === -1) { return ObservableOf(''); }
     return this.labelService.get(npId, 'multi');
+  }
+
+  private getTaxon(taxonId: string[]): Observable<string> {
+    if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1) { return ObservableOf(''); }
+    return this.labelService.get(taxonId[0], 'multi').pipe(
+      map(langResult => langResult[this.translate.currentLang])
+    );
   }
 
   doLabels(event: LabelEvent) {

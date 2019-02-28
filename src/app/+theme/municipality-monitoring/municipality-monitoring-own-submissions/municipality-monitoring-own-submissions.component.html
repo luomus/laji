@@ -3,4 +3,6 @@
   [admin]="(rights | async)?.admin"
   [columns]="['dateEdited', 'dateObserved', 'namedPlaceName', 'unitCount', 'observer', 'id']"
   [collectionID]="collectionID"
+  [forceLocalDocument]="true"
+  [documentViewerGatheringGeometryJSONPath]="gatheringGeometryJSONPath"
   [showDownloadAll]="false"></laji-own-submissions>

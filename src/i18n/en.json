@@ -204,6 +204,7 @@
   "haseka.submissions.toStatistics": "Go to statistics page",
   "haseka.submissions.total": "Total",
   "haseka.submissions.unitCount": "Observations",
+  "haseka.submissions.taxon": "Species",
   "haseka.templates.intro": "You can create a template from \"Own submissions\" page. Choose an observation for the template and press \"Save as template\" -button.",
   "haseka.templates.title": "Templates",
   "haseka.terms": "Terms of use",
