@@ -190,7 +190,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
       imageObs = this.getImages(
         {
           taxonId: [this.taxon.id],
-          recordBasis: ['HUMAN_OBSERVATION_PHOTO', 'HUMAN_OBSERVATION_UNSPECIFIED'],
+          superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
           taxonReliability: ['RELIABLE']
         },
         missingImages

@@ -31,7 +31,8 @@ export class GalleryService {
     }
     */
     return this.warehouseApi.warehouseQueryUnitMediaListGet(query, [
-      'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
+      'unit.taxonVerbatim,unit.linkings.taxon.id,unit.linkings.taxon.vernacularName,' +
+      'unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
       imgField,
       // 'gathering.media',
       // 'document.media',
@@ -55,6 +56,10 @@ export class GalleryService {
         media['documentId'] = items['document']['documentId'];
         media['unitId'] = items['unit']['unitId'];
         if (imgField === 'media') {
+          media['taxonId'] = items.unit
+            && items.unit.linkings
+            && items.unit.linkings.taxon
+            && items.unit.linkings.taxon.id || '';
           media['vernacularName'] = items.unit
             && items.unit.linkings
             && items.unit.linkings.taxon
