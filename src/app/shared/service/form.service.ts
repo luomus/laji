@@ -210,7 +210,7 @@ export class FormService {
       return ObservableOf(this.jsonFormCache[formId]);
     } else {
       return this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'}).pipe(
-        tap((jsonForm) => this.formCache[formId] = jsonForm));
+        tap((jsonForm) => this.jsonFormCache[formId] = jsonForm));
     }
   }
 
