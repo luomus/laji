@@ -1,37 +1,15 @@
 /* tslint:disable:no-use-before-declare */
-import {switchMap, map} from 'rxjs/operators';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  forwardRef,
-  Input,
-  OnChanges,
-  OnInit,
-  Output
-} from '@angular/core';
-import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
-import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { of as ObservableOf } from 'rxjs';
-import { Logger } from '../../shared/logger/logger.service';
+import { map, switchMap } from 'rxjs/operators';
+import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
+import { ControlValueAccessor } from '@angular/forms';
+import { Observable, of as ObservableOf } from 'rxjs';
+import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Group } from '../model/Group';
+import { PagedResult } from '../model/PagedResult';
 
-export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => ObservationGroupSelectComponent),
-  multi: true
-};
-
-@Component({
-  selector: 'laji-observation-group-select',
-  templateUrl: './group-select.component.html',
-  styleUrls: ['./group-select.component.css'],
-  providers: [InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class ObservationGroupSelectComponent implements ControlValueAccessor, OnChanges, OnInit {
+export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
   @Input() position: 'right'|'left' = 'right';
   @Output() select = new EventEmitter();
 
@@ -45,11 +23,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
   public range: number[];
   private el: Element;
 
-  private subLabel: any;
-
-  ngOnInit() {
-    this.lang = this.translate.currentLang;
-  }
+  protected subLabel: any;
 
   onChange = (_: any) => {
   }
@@ -67,12 +41,13 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     }
   }
 
-  constructor(
-    private cd: ChangeDetectorRef,
-    private informalTaxonService: InformalTaxonGroupApi,
-    private logger: Logger,
-    private translate: TranslateService
-  ) { }
+  protected constructor(
+    protected cd: ChangeDetectorRef,
+    protected logger: Logger,
+    protected translate: TranslateService
+  ) {
+    this.lang = this.translate.currentLang;
+  }
 
   ngOnChanges() {
     this.initGroups();
@@ -86,14 +61,14 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     }
     this.currentValue = newValue;
     (newValue ?
-      this.informalTaxonService.informalTaxonGroupGetChildren(newValue, this.lang) :
-      this.informalTaxonService.informalTaxonGroupFindRoots(this.lang)).pipe(
+      this.getChildren(newValue, this.lang) :
+      this.findRoots(this.lang)).pipe(
       switchMap(data => {
         return (!data.results || data.results.length === 0) ?
-          this.informalTaxonService.informalTaxonGroupGetWithSiblings(newValue, this.lang) :
+          this.getWithSiblings(newValue, this.lang) :
           ObservableOf(data);
       })).pipe(
-      map(data => data.results.map(item => ({id: item.id, name: item.name, hasSubGroup: item.hasSubGroup}))))
+      map(data => data.results.map(item => this.convertToInformalTaxonGroup(item))))
       .subscribe(
         groups => {
           this.groups = groups;
@@ -153,7 +128,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
       return;
     }
     let found = false;
-    this.groups.map(group => {
+    this.groups.map((group) => {
       if (group.id === groupId) {
         found = true;
         this.label = group.name;
@@ -163,7 +138,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
       if (this.subLabel) {
         this.subLabel.unsubscribe();
       }
-      this.subLabel = this.informalTaxonService.informalTaxonGroupFindById(groupId, this.lang).pipe(
+      this.subLabel = this.findById(groupId, this.lang).pipe(
         map(group => group.name))
         .subscribe(
           name => {
@@ -177,6 +152,12 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
         );
     }
   }
+
+  abstract findById(groupId, lang): Observable<T>;
+  abstract getWithSiblings(groupId, lang): Observable<PagedResult<T>>;
+  abstract getChildren(groupId, lang): Observable<PagedResult<T>>;
+  abstract findRoots(lang): Observable<PagedResult<T>>;
+  abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
 
   empty() {
     if (this.value === '') {

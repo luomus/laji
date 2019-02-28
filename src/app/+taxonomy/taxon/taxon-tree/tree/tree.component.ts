@@ -65,14 +65,17 @@ export class TreeComponent implements OnChanges {
     }
 
     if (openId && this.nodes.length > 0) {
-      if (!this.rootId) {
-        this.loading = true;
-      }
       const nodes = this.nodes;
       const treeState = this.treeState;
 
-      const getParents: Observable<{id: string}[]> =
-        treeState.state[openId] ? of(this.findParents(openId, nodes)) : this.getParents(openId);
+      let getParents: Observable<{id: string}[]>;
+      if (treeState.state[openId]) {
+        getParents = of(this.findParents(openId, nodes));
+      } else {
+        this.rootId = undefined;
+        this.loading = true;
+        getParents = this.getParents(openId);
+      }
 
       this.initialViewSubs = getParents
         .pipe(
