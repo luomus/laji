@@ -5,13 +5,14 @@
         <p *ngIf="taxon.nameAccordingTo">{{ taxon.nameAccordingTo | checklist }}</p>
         <p>
           <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
-          <ng-container *ngIf="taxon.scientificNameAuthorship">, {{ taxon.scientificNameAuthorship }}</ng-container>
+          <span *ngIf="taxon.scientificNameAuthorship">&nbsp;{{ taxon.scientificNameAuthorship }}</span>
         </p>
         <p *ngIf="taxon.nameAccordingTo" class="green-text">{{ 'taxonomy.acceptedName' | translate }}</p>
         <p *ngIf="!taxon.nameAccordingTo">
           <span class="red-text">{{ 'taxonomy.unacceptedName' | translate }} </span>
           <a [routerLink]="['/taxon', taxon.synonymOf.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
             <laji-taxon-name [taxon]="taxon.synonymOf" [addLink]="false"></laji-taxon-name>
+            <span *ngIf="taxon.synonymOf.scientificNameAuthorship">&nbsp;{{ taxon.synonymOf.scientificNameAuthorship }}</span>
           </a>
         </p>
         <ul *ngIf="taxon.originalPublication">
@@ -28,7 +29,7 @@
          [open]="true"
          [autoToggle]="true"
     >
-      <laji-taxon-synonyms [taxon]="taxon" (taxonSelect)="taxonSelect.emit($event)"></laji-taxon-synonyms>
+      <laji-taxon-synonyms [taxon]="taxon"></laji-taxon-synonyms>
     </div>
     <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName"
          class="panel panel-default"
