@@ -98,7 +98,9 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
   onRowSelect(event) {
     if (event.row && event.row.id) {
-      this.router.navigate(this.localizeRouterService.translateRoute(['/taxon', event.row.id]));
+      this.router.navigate(
+        this.localizeRouterService.translateRoute(['/taxon', event.row.id])
+      );
     }
   }
 

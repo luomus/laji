@@ -250,6 +250,8 @@ export interface LatestRedListStatusFinland {
 
 export interface TaxonomyDescriptionVariable {
 
+  variable: string;
+
   title?: string;
 
   content?: string;

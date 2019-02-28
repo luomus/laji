@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { GalleryService } from '../service/gallery.service';
 import { Util } from '../../service/util.service';
@@ -27,16 +27,20 @@ export class GalleryComponent implements OnChanges {
   @Input() showPopover = false;
   @Input() showOverlay = true;
   @Input() showExtraInfo = true;
+  @Input() showLinkToSpeciesCard = false;
   @Input() sort: string[];
   @Input() view: 'compact'|'full'|'full2' = 'compact';
   @Input() views = ['compact', 'full'];
   @Output() selected = new EventEmitter<boolean>();
   @Output() hasData = new EventEmitter<boolean>();
 
-  images$: Observable<TaxonomyImage[]>;
   page = 1;
   total = 0;
   loading = false;
+  paginatorNeeded = false;
+
+  images: TaxonomyImage[];
+  private imagesSub: Subscription;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -56,15 +60,20 @@ export class GalleryComponent implements OnChanges {
   }
 
   updateImages() {
+    if (this.imagesSub) {
+      this.imagesSub.unsubscribe();
+    }
+
     if (!this.query) {
       return;
     }
 
     this.loading = true;
 
-    this.images$ = this.galleryService.getList(Util.clone(this.query), this.sort, this.pageSize, this.page)
+    this.imagesSub = this.galleryService.getList(Util.clone(this.query), this.sort, this.pageSize, this.page)
       .pipe(map(result => {
         this.total = Math.min(result.total, this.limit);
+        this.paginatorNeeded = this.total > this.pageSize;
         return this.galleryService.getImages(result, this.limit);
       }),
       catchError(err => {
@@ -72,10 +81,11 @@ export class GalleryComponent implements OnChanges {
         return [];
       }),
       tap((images: any[]) => {
+        this.images = images;
         this.loading = false;
         this.hasData.emit(images.length > 0);
         this.cd.detectChanges();
       })
-    );
+    ).subscribe();
   }
 }

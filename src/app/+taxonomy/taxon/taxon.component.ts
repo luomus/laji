@@ -38,7 +38,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       this.taxonId = data[0]['id'];
       this.infoCardTab = data[0]['tab'] || 'overview';
       this.infoCardContext = data[1]['context'] || 'default';
-      this.showTree = data[1]['showTree'] !== 'false';
+      this.showTree = data[1]['showTree'] === 'true';
       this.cd.markForCheck();
     });
   }
@@ -86,8 +86,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
     if (context !== 'default' && id === this.taxonId) {
       params['context'] = context;
     }
-    if (!showTree) {
-      params['showTree'] = false;
+    if (showTree) {
+      params['showTree'] = true;
     }
     if (Object.keys(params).length > 0) {
       extra['queryParams'] = params;

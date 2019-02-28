@@ -16,7 +16,8 @@ export class TaxonomyComponent {
   toTaxonPage(taxonId: string) {
     if (taxonId) {
       this.router.navigate(
-        this.localizeRouterService.translateRoute(['/taxon', taxonId])
+        this.localizeRouterService.translateRoute(['/taxon', taxonId, 'taxonomy']),
+        { queryParams: { showTree: true } }
       );
     }
   }

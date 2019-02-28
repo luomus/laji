@@ -24,7 +24,7 @@
           <li *ngFor="let obj of taxon[synonymType]">
             <a [routerLink]="['/taxon', obj.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
               <laji-taxon-name [taxon]="obj" [addLink]="false"></laji-taxon-name>
-              <span>&nbsp;{{ obj.scientificNameAuthorship }}</span>
+              <span class="author">{{ obj.scientificNameAuthorship }}</span>
             </a>
           </li>
         </ul>

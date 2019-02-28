@@ -10,7 +10,7 @@
       <ul>
         <li *ngFor="let match of matches">
           <a [href]="match.id" target="_blank">{{ match.scientificName }}</a>
-          <ng-container *ngIf="match.scientificNameAuthorship"> {{ match.scientificNameAuthorship }}</ng-container>
+          <span *ngIf="match.scientificNameAuthorship" class="author">{{ match.scientificNameAuthorship }}</span>
           <br/>
           <a [href]="match.inScheme" target="_blank">{{ match.inSchemeLabel | multiLang }}</a>
         </li>
