@@ -38,7 +38,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       this.taxonId = data[0]['id'];
       this.infoCardTab = data[0]['tab'] || 'overview';
       this.infoCardContext = data[1]['context'] || 'default';
-      this.showTree = data[1]['showTree'] !== 'false';
+      this.showTree = data[1]['showTree'] === 'true';
       this.cd.markForCheck();
     });
   }

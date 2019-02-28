@@ -36,7 +36,9 @@
       <div class="taxon-select">
         <laji-taxon-select
           [placeholder]="'taxonomy.taxonPage.search' | translate"
-          (taxonIdChange)="toTaxonPage($event)"></laji-taxon-select>
+          [searchParams]="{ species: false }"
+          (taxonIdChange)="toTaxonPage($event)"
+        ></laji-taxon-select>
       </div>
     </laji-navigation-thumbnail>
   </div>

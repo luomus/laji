@@ -5,7 +5,8 @@
   </ng-container>
   <ng-container [ngTemplateOutlet]="showScientificNameFirst ? vernacularName : scientificName"></ng-container>
   <ng-container *ngIf="addLink && (taxon.id || taxon.qname || taxonID)">
-    <a [routerLink]="['/taxon/' + ((taxon.id || taxon.qname || taxonID) | toQName)] | localize" target="_blank" [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
+    <a [routerLink]="['/taxon/' + ((taxon.id || taxon.qname || taxonID) | toQName)] | localize" target="_blank"
+       [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
       <i class="glyphicon glyphicon-tag"></i>
     </a>
   </ng-container>
