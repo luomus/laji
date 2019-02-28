@@ -86,8 +86,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
     if (context !== 'default' && id === this.taxonId) {
       params['context'] = context;
     }
-    if (!showTree) {
-      params['showTree'] = false;
+    if (showTree) {
+      params['showTree'] = true;
     }
     if (Object.keys(params).length > 0) {
       extra['queryParams'] = params;

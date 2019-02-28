@@ -1,3 +1,11 @@
 .green-text {
   color: green;
 }
+.red-text {
+  color: red;
+}
+::ng-deep .author {
+  font-size: 85%;
+  font-variant: small-caps;
+  padding-left: 10px;
+}
