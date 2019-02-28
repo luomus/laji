@@ -178,6 +178,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecke
     this._columns = cols;
     if (Array.isArray(this._columns)) {
       this.initColumns();
+      this.updateFilteredRows();
     }
   }
 
