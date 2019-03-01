@@ -4693,10 +4693,10 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.580:
-  version "0.0.580"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.580.tgz#8b9a638c60da2eae6d8690ef0514a00c3749e880"
-  integrity sha512-QzYfMCDIVNjB6JpeiI7CoJLYQPrUnLA6vHqcq6vNdZnOBJJlYMlfRk1DA0L08FD/SJUabi859STfoz3MlWGWMQ==
+laji-form@^0.0.581:
+  version "0.0.581"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.581.tgz#2d024b92e1eaeced7511684b55201abc544f6ccd"
+  integrity sha512-iRRKkWsgYAw+c8EJLfVeWwqG3PNMK3XdyHOrgUDW46zNDcyL+i9UjJoh87ZF4E9nh+oq40nhgAwJ3GY1oZzpVQ==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -4721,9 +4721,10 @@ laji-form@^0.0.580:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.474, laji-map@^1.0.395, laji-map@^1.0.474:
-  version "1.0.474"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.474.tgz#34915cc1e4ba88f83d6f7833be652f7aab37e67b"
+laji-map@1.0.476, laji-map@^1.0.395, laji-map@^1.0.474, laji-map@^1.0.476:
+  version "1.0.476"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.476.tgz#e8516daac98c3cbd6307c03e6eef5c98ef91594d"
+  integrity sha512-s4HdvsFyD5RMsl8zzHje5rGQ0QrteWmbR6BqWgOD0yb0l4oL+EKit+gAmyvRAwwAZOU2Jrk8BoGVFVmZ+qV/IQ==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
@@ -4734,7 +4735,7 @@ laji-map@1.0.474, laji-map@^1.0.395, laji-map@^1.0.474:
     leaflet-mml-layers "2.0.1"
     leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#7fd168f22e2b1a52bdf62d473237f01caaa01e95"
     leaflet.markercluster "1.3.0"
-    nouislider "13.1.0"
+    nouislider "10.0.0"
     proj4 "2.3.16"
     proj4leaflet "1.0.2"
   optionalDependencies:
@@ -5628,9 +5629,10 @@ normalize-range@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
 
-nouislider@13.1.0:
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-13.1.0.tgz#23a57f25e5302117dc8f7e391954c9f111e8cf84"
+nouislider@10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-10.0.0.tgz#166145168bc05701ef5168c17d171f79154c174e"
+  integrity sha1-FmFFFovAVwHvUWjBfRcfeRVMF04=
 
 npm-bundled@^1.0.1:
   version "1.0.6"
