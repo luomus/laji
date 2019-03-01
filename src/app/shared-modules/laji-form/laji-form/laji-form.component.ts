@@ -244,7 +244,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       if (this.lajiFormWrapper) {
         this.ngZone.runOutsideAngular(() => {
           this.lajiFormWrapper.unmount();
-          this.lajiFormWrapper = undefined;
         });
       }
     } catch (err) {
