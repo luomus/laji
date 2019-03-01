@@ -11,7 +11,18 @@
         <tbody>
           <tr *ngIf="taxon.primaryHabitat">
             <th>{{ 'taxonomy.habitat.primary' | translate }}</th>
-            <td>{{ taxon.primaryHabitat.habitat | label }}</td>
+            <td>
+              <ul>
+                <li>
+                  {{ taxon.primaryHabitat.habitat | label }}
+                  <ul *ngIf="taxon.primaryHabitat.habitatSpecificTypes">
+                    <li *ngFor="let type of taxon.primaryHabitat.habitatSpecificTypes">
+                      {{ type | label }}
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
           </tr>
           <tr *ngIf="taxon.secondaryHabitats">
             <th>{{ 'taxonomy.habitat.secondary' | translate }}</th>
@@ -19,6 +30,11 @@
               <ul>
                 <li *ngFor="let habitat of taxon.secondaryHabitats">
                   {{ habitat.habitat | label }}
+                  <ul *ngIf="habitat.habitatSpecificTypes">
+                    <li *ngFor="let type of habitat.habitatSpecificTypes">
+                      {{ type | label }}
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </td>
