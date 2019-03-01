@@ -107,8 +107,8 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #toSemicolon>
-  <span *ngIf="value" title="{{value.join('; ')}}">
-    {{ value.join('; ') }}
+  <span *ngIf="value" title="{{value | values:'; '}}">
+    {{ value | values }}
   </span>
 </ng-template>
 <ng-template let-value="value" #numeric>

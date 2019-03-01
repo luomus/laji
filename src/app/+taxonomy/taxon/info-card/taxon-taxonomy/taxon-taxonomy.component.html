@@ -15,9 +15,12 @@
           </a>
           <span *ngIf="taxon.synonymOf.scientificNameAuthorship" class="author">{{ taxon.synonymOf.scientificNameAuthorship }}</span>
         </p>
-        <ul *ngIf="taxon.originalPublication">
-          <li *ngFor="let publication of taxon.originalPublication">
+        <label *ngIf="taxon.originalPublications">{{ 'taxonomy.originalPublications' | translate }}</label>
+        <ul>
+          <li *ngFor="let publication of taxon.originalPublications">
             {{ publication | publication }}
+            <br>
+            <a [href]="publication | publication:'URI'" target="_blank">LINKKI</a>
           </li>
         </ul>
       </div>
