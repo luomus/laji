@@ -72,7 +72,7 @@
       <label>{{ 'iucn.filter.status' | translate }}</label>
       <div *ngIf="showStatusSelect; else statusDropDown">
         <select class="form-control" tabindex="-1"></select>
-        <div style="position: absolute; top: 0; left: 15px; right: 15px; z-index: 10000" (lajiClickOutSide)="toggleStatus()">
+        <div style="position: absolute; top: 0; left: 15px; right: 15px; z-index: 999" (lajiClickOutSide)="toggleStatus()">
           <label style="color: transparent">{{ 'iucn.filter.status' | translate }}</label>
           <select class="form-control"  tabindex="-1">
             <option value="">{{ query.status ? query.status.join(',') : '' }}</option>

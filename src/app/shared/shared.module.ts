@@ -50,12 +50,12 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ServerOnlyDirective } from './directive/server-only.directive';
 import { BrowserOnlyDirective } from './directive/browser-only.directive';
 import { ForTypesDirective } from './directive/for-types.directive';
-import { IucnFooterComponent } from './iucn-footer/footer.component';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
 import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
 import { PublicationPipe } from './pipe/publication.pipe';
+import { HabitatComponent } from './habitat/habitat.component';
 
 
 @NgModule({
@@ -75,12 +75,12 @@ import { PublicationPipe } from './pipe/publication.pipe';
     ChecklistPipe,
     FactNotInPipe,
     ForTypesDirective,
-    IucnFooterComponent,
     CapitalizePipe,
     CoordinatePipe,
     FilterPipe,
     BoolToStringPipe,
-    PublicationPipe
+    PublicationPipe,
+    HabitatComponent
   ],
   imports: [
     FormsModule,
@@ -106,8 +106,8 @@ import { PublicationPipe } from './pipe/publication.pipe';
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, IucnGroupSelectComponent,
     ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
-    FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe, PublicationPipe
+    FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent
   ]
 })
 export class SharedModule {

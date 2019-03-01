@@ -5,7 +5,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output, ViewChild
 } from '@angular/core';
 import { ListType } from '../list.component';
@@ -36,7 +35,7 @@ import { DownloadComponent } from '../../../../../../../src/app/shared-modules/d
   styleUrls: ['./results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResultsComponent implements OnChanges, OnInit {
+export class ResultsComponent implements OnChanges {
 
 
   @ViewChild(DownloadComponent) speciesDownload: DownloadComponent;
@@ -115,11 +114,8 @@ export class ResultsComponent implements OnChanges, OnInit {
     }, {});
   }
 
-  ngOnInit() {
-    this.lang = this.translate.currentLang;
-  }
-
   ngOnChanges() {
+    this.lang = this.translate.currentLang;
     this.initQueries();
   }
 
