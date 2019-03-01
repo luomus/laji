@@ -27,7 +27,7 @@
           <ul class="nav navbar-nav">
             <ng-container *lajiForTypes="['iucn']">
               <li [routerLinkActive]="['active']">
-                <a (click)="closeMenu()" [routerLink]="['/taxon'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
+                <a (click)="closeMenu()" [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
               </li>
               <li [routerLinkActive]="['active']">
                 <a (click)="closeMenu()" [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>

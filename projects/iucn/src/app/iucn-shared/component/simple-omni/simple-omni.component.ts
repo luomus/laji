@@ -24,7 +24,7 @@ export class SimpleOmniComponent implements OnInit {
 
   taxonSelect(taxonID: string) {
     if (taxonID) {
-      this.router.navigate(this.localizeRouterService.translateRoute(['/taxon', taxonID]), {
+      this.router.navigate(this.localizeRouterService.translateRoute(['/results', taxonID]), {
         queryParams: {checklist: this.resultService.getChecklistVersion(DEFAULT_YEAR)}
       });
     }
