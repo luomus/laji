@@ -1,29 +1,39 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" [hidden]="!showTree">
-      <div class="sidebar-toggle hide-sidebar-toggle link" (click)="toggleSidebar()">
-        <i class="glyphicon glyphicon-arrow-left"></i>
+<laji-spinner [spinning]="loading" [overlay]="true">
+  <div class="container-fluid" *ngIf="taxon">
+    <div class="row">
+      <ng-container *ngIf="isFromMasterChecklist">
+        <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" [hidden]="!showTree">
+          <laji-taxon-tree
+            [activeId]="taxon.id"
+            [activeTab]="infoCardTab"
+          ></laji-taxon-tree>
+          <div class="dragbar" (mousedown)="startDragging($event)"></div>
+          <div class="sidebar-toggle hide-sidebar-toggle link" (click)="toggleSidebar()">
+            <i class="glyphicon glyphicon-arrow-left"></i>
+          </div>
+        </div>
+        <div *ngIf="!showTree"
+             class="sidebar-toggle open-toggle link"
+             (click)="toggleSidebar()"
+        >
+          <span style="margin-right: 8px">{{ 'species.taxa' | translate }}</span>
+          <i class="glyphicon glyphicon-arrow-right"></i>
+        </div>
+      </ng-container>
+      <div class="info-card-container" [class.sidebar-hidden]="!showTree" [style.width]="showTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'">
+        <laji-info-card
+          [taxon]="taxon"
+          [isFromMasterChecklist]="isFromMasterChecklist"
+          [activeTab]="infoCardTab"
+          [context]="infoCardContext"
+          (routeUpdate)="updateRoute($event.id, $event.tab, $event.context)"
+        ></laji-info-card>
       </div>
-      <laji-taxon-tree
-        [activeId]="taxonId"
-        [activeTab]="infoCardTab"
-      ></laji-taxon-tree>
-      <div class="dragbar" (mousedown)="startDragging($event)"></div>
-    </div>
-    <div *ngIf="!showTree"
-         class="sidebar-toggle open-toggle link"
-         (click)="toggleSidebar()"
-    >
-      <span style="margin-right: 8px">{{ 'species.taxa' | translate }}</span>
-      <i class="glyphicon glyphicon-arrow-right"></i>
-    </div>
-    <div class="info-card-container" [class.sidebar-hidden]="!showTree" [style.width]="showTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'">
-      <laji-info-card
-        [taxonId]="taxonId"
-        [activeTab]="infoCardTab"
-        [context]="infoCardContext"
-        (routeUpdate)="updateRoute($event.id, $event.tab, $event.context)"
-      ></laji-info-card>
     </div>
   </div>
-</div>
+  <div class="container" *ngIf="taxon === false">
+    <h1>
+      {{ 'taxonomy.notFound' | translate }}
+    </h1>
+  </div>
+</laji-spinner>

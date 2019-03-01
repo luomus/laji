@@ -11,6 +11,7 @@ import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 })
 export class TaxonOverviewComponent implements OnChanges {
   @Input() taxon: Taxonomy;
+  @Input() isFromMasterChecklist: boolean;
   @Input() images: any[];
 
   @Output() hasImageData = new EventEmitter<boolean>();
@@ -50,17 +51,6 @@ export class TaxonOverviewComponent implements OnChanges {
     if (!this.taxon.species) {
       this.getChildren();
     }
-  }
-
-  get isFromMasterChecklist() {
-    const masterChecklist = 'MR.1';
-    if (!this.taxon) {
-      return false;
-    }
-    if (this.taxon.checklist) {
-      return this.taxon.checklist.indexOf(masterChecklist) > -1;
-    }
-    return this.taxon.nameAccordingTo === masterChecklist;
   }
 
   private getChildren() {

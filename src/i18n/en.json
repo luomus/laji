@@ -834,7 +834,6 @@
   "taxonomy.otherNames": "Muut nimet",
   "taxonomy.acceptedName": "ACCEPTED NAME",
   "taxonomy.unacceptedName": "SYNONYM OF",
-  "taxonomy.synonymOf": "Synonym of",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Description",
