@@ -7,18 +7,18 @@
       <ng-container *ngFor="let field of fields">
         <ng-container [ngSwitch]="field.key">
           <th *ngSwitchCase="'species'">
-            <a [routerLink]="[taxon.id]" [queryParams]="{checklist: checklist}">
+            <a [routerLink]="[taxon.id]" [queryParams]="{year: year}">
               <span *ngIf="taxon.scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}<br></span>
               {{ taxon.vernacularName }}
             </a>
           </th>
           <th *ngSwitchCase="'scientificName'">
-            <a [routerLink]="[taxon.id]" [queryParams]="{checklist: checklist}">
+            <a [routerLink]="[taxon.id]" [queryParams]="{year: year}">
               <span *ngIf="taxon.scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
             </a>
           </th>
           <th *ngSwitchCase="'vernacularName'">
-            <a [routerLink]="[taxon.id]" [queryParams]="{checklist: checklist}">
+            <a [routerLink]="[taxon.id]" [queryParams]="{year: year}">
               {{ taxon.vernacularName }}
             </a>
           </th>
