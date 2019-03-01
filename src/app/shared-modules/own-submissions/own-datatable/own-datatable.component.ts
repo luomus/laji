@@ -113,6 +113,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecke
     {prop: 'dateObserved', mode: 'small'},
     {prop: 'namedPlaceName', mode: 'small'},
     {prop: 'locality', mode: 'small'},
+    {prop: 'taxon', mode: 'small'},
     {prop: 'unitCount', mode: 'medium'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
@@ -133,7 +134,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecke
   downloadedDocumentId: string;
   fileType = 'csv';
 
-  _columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
+  _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'unitCount', 'observer', 'form', 'id'];
   _goToStartAfterViewCheck = false;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
@@ -177,6 +178,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecke
     this._columns = cols;
     if (Array.isArray(this._columns)) {
       this.initColumns();
+      this.updateFilteredRows();
     }
   }
 

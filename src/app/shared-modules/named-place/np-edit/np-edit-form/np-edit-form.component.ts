@@ -32,7 +32,7 @@ export class NpEditFormComponent implements OnInit {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
   constructor(@Inject(WINDOW) private window: Window,
-    private  userService: UserService,
+    private userService: UserService,
     private namedPlaceService: NamedPlacesService,
     private translate: TranslateService,
     private toastsService: ToastsService,

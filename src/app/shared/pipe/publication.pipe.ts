@@ -1,18 +1,18 @@
-import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PublicationService } from '../service/publication.service';
 import { Publication } from '../model/Publication';
-import { Subscription } from 'rxjs';
+import { of, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Pipe({
   name: 'publication',
-  pure: true
+  pure: false
 })
-export class PublicationPipe implements PipeTransform, OnDestroy {
-  value = '';
-  lastKey = '';
-
-  onLangChange: Subscription;
+export class PublicationPipe implements PipeTransform {
+  value: any;
+  lastKey: string;
+  lastField: string;
 
   constructor(private translate: TranslateService,
               private publicationService: PublicationService,
@@ -20,43 +20,34 @@ export class PublicationPipe implements PipeTransform, OnDestroy {
 
   }
 
-  transform(value: any): any {
-    if (Array.isArray(value)) {
-      return value.map(v => this.transform(v));
-    }
-    if (!value || typeof value !== 'string' || value.length === 0) {
-      return value;
-    }
-
-    if (value === this.lastKey) {
+  transform(value: any, field: 'bibliographicCitation'|'URI' = 'bibliographicCitation'): any {
+    if (value === this.lastKey && field === this.lastField) {
       return this.value;
     }
 
     this.lastKey = value;
+    this.lastField = field;
 
-    this.updateValue(value);
-    if (!this.onLangChange) {
-      this.onLangChange = this.translate.onLangChange.subscribe(() => {
-        this.updateValue(value);
+    return this.updateValue(value, field);
+  }
+
+  private updateValue(value: any, field: string): void {
+    (Array.isArray(value) ? forkJoin(value.map(v => this.getValueObservable(v, field))) : this.getValueObservable(value, field))
+      .subscribe(res => {
+        this.value = res;
+        this._ref.markForCheck();
       });
-    }
-    return this.value;
   }
 
-  ngOnDestroy() {
-    if (this.onLangChange) {
-      this.onLangChange.unsubscribe();
-      this.onLangChange = undefined;
+  private getValueObservable(value, field) {
+    if (!value || typeof value !== 'string' || value.length === 0) {
+      return of(value);
     }
-  }
 
-  private updateValue(key: string): void {
-    const obs = this.publicationService.getPublication(key, this.translate.currentLang);
-
-    obs.subscribe((res: Publication) => {
-      this.value = res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : key;
-      this._ref.markForCheck();
-    });
+    return this.publicationService.getPublication(value, this.translate.currentLang)
+      .pipe(map((res: Publication) => {
+        return res && res['dc:' + field] ? res['dc:' + field] : value;
+      }));
   }
 }
 

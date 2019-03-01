@@ -15,8 +15,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class MunicipalityMonitoringOwnSubmissionsComponent implements OnInit {
 
-  collectionID = Global.collections.invasiveControl;
+  collectionID = Global.collections.municipalityMonitoring;
   rights: Observable<Rights>;
+  useLocalDocumentViewer = false;
+  gatheringGeometryJSONPath;
 
   constructor(
     private formService: FormService,
@@ -26,7 +28,12 @@ export class MunicipalityMonitoringOwnSubmissionsComponent implements OnInit {
 
   ngOnInit() {
     this.rights = this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang).pipe(
-      switchMap(form => this.formPermissionService.getRights(form))).pipe(
+      switchMap(form => {
+        const {namedPlaceOptions = {}} = form;
+        this.useLocalDocumentViewer = !!namedPlaceOptions.documentListUseLocalDocumentViewer;
+        this.gatheringGeometryJSONPath = namedPlaceOptions.documentViewerGatheringGeometryJSONPath;
+        return this.formPermissionService.getRights(form);
+      })).pipe(
       catchError(() => ObservableOf({edit: false, admin: false})));
   }
 

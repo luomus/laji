@@ -46,10 +46,11 @@
              [index]="i"
              laji-panel>
           <div *ngFor="let variable of group.variables">
-            <h4>
+            <h4 *ngIf="variable.variable !== 'MX.ingressText'">
               {{ variable.title | multiLang }}
             </h4>
-            <span [innerHTML]="variable.content | multiLang"></span>
+            <strong *ngIf="variable.variable === 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></strong>
+            <span *ngIf="variable.variable !== 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></span>
           </div>
         </div>
       </div>

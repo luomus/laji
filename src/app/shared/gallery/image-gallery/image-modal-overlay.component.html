@@ -13,7 +13,7 @@
       class="effect"></laji-image>
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
     <span class="info-text" *ngIf="img">
-      <ng-container *ngIf="showLinkToSpeciesCard; else name">
+      <ng-container *ngIf="showLinkToSpeciesCard && img.taxonId; else name">
         <a class="link" [routerLink]="'/taxon/' + img.taxonId | localize"><ng-container *ngTemplateOutlet="name"></ng-container></a>
       </ng-container>
       <ng-template #name>

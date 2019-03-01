@@ -1,6 +1,9 @@
 <h3>{{ 'haseka.ownSubmissions.title' | translate }}</h3>
 <laji-own-submissions
   [admin]="(rights | async)?.admin"
-  [columns]="['dateEdited', 'dateObserved', 'namedPlaceName', 'unitCount', 'observer', 'id']"
+  [columns]="['dateEdited', 'dateObserved', 'taxon', 'namedPlaceName', 'unitCount', 'observer', 'id']"
+  [actions]="['edit', 'view', 'download', 'stats', 'delete']"
   [collectionID]="collectionID"
+  [forceLocalDocument]="true"
+  [documentViewerGatheringGeometryJSONPath]="gatheringGeometryJSONPath"
   [showDownloadAll]="false"></laji-own-submissions>
