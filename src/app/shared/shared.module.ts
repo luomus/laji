@@ -56,6 +56,7 @@ import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
 import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
 import { PublicationPipe } from './pipe/publication.pipe';
+import { HabitatComponent } from './habitat/habitat.component';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import { PublicationPipe } from './pipe/publication.pipe';
     CoordinatePipe,
     FilterPipe,
     BoolToStringPipe,
-    PublicationPipe
+    PublicationPipe,
+    HabitatComponent
   ],
   imports: [
     FormsModule,
@@ -107,7 +109,7 @@ import { PublicationPipe } from './pipe/publication.pipe';
     ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe, PublicationPipe
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent
   ]
 })
 export class SharedModule {

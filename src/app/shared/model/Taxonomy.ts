@@ -241,6 +241,8 @@ export interface RedListEvaluation {
   redListStatus?: string;
   criteriaForStatus?: string;
   externalPopulationImpactOnRedListStatus?: string;
+  primaryHabitat?: Habitat;
+  secondaryHabitats?: Habitat[];
 }
 
 export interface LatestRedListStatusFinland {
@@ -301,6 +303,8 @@ export interface TaxonomyImage {
 export interface  Habitat {
 
   habitat: string;
+
+  habitatSpecificTypes: string[];
 
   id: string;
 

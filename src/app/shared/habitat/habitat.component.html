@@ -1,0 +1,21 @@
+<ng-container *ngIf="isMany; else singleHab">
+  <ul>
+    <li *ngFor="let value of _habitat">
+      <ng-container [ngTemplateOutlet]="habitatTpl" [ngTemplateOutletContext]="{habitat: value}"></ng-container>
+    </li>
+  </ul>
+</ng-container>
+<ng-template #singleHab>
+  <ul *ngIf="_habitat">
+    <li>
+      <ng-container [ngTemplateOutlet]="habitatTpl" [ngTemplateOutletContext]="{habitat: _habitat}"></ng-container>
+    </li>
+  </ul>
+</ng-template>
+<ng-template #habitatTpl let-habitat="habitat">
+  {{ habitat.habitat | label }}
+  <ng-container *ngIf="habitat.habitatSpecificTypes">
+    (<ng-container *ngFor="let spe of habitat.habitatSpecificTypes; let l = last">{{ spe | label }}<ng-container *ngIf="!l">, </ng-container>
+  </ng-container>)
+  </ng-container>
+</ng-template>
