@@ -9,11 +9,14 @@ import { LocaleEnComponent } from '../../locale/locale-en.component';
 import { LocaleFiComponent } from '../../locale/locale-fi.component';
 import { LocaleSvComponent } from '../../locale/locale-sv.component';
 import { SharedModule } from '../../shared/shared.module';
+import { IucnFooterComponent } from '../../shared/iucn-footer/footer.component';
+import { LangModule } from '../lang/lang.module';
 
 @NgModule({
   declarations: [
     NavbarComponent,
     FooterComponent,
+    IucnFooterComponent,
     FeedbackComponent,
     ForumComponent,
     LocaleEnComponent,
@@ -22,12 +25,14 @@ import { SharedModule } from '../../shared/shared.module';
     AppComponent
   ],
   imports: [
+    LangModule,
     CommonModule,
     SharedModule
   ],
   exports: [
     NavbarComponent,
     FooterComponent,
+    IucnFooterComponent,
     FeedbackComponent,
     ForumComponent,
     LocaleEnComponent,

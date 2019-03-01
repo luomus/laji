@@ -107,9 +107,16 @@ laji-locale-sv > div,
 
 .footer footer {
   flex: none;
-  color: #fff;
   background-color: #3498DB;
   width: 100%;
+}
+
+.footer footer a,
+.footer footer li,
+.footer footer h3,
+.footer .intro,
+.footer .info {
+  color: #fff;
 }
 
 .breadcrumb {

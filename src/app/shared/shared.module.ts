@@ -50,7 +50,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ServerOnlyDirective } from './directive/server-only.directive';
 import { BrowserOnlyDirective } from './directive/browser-only.directive';
 import { ForTypesDirective } from './directive/for-types.directive';
-import { IucnFooterComponent } from './iucn-footer/footer.component';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
@@ -76,7 +75,6 @@ import { HabitatComponent } from './habitat/habitat.component';
     ChecklistPipe,
     FactNotInPipe,
     ForTypesDirective,
-    IucnFooterComponent,
     CapitalizePipe,
     CoordinatePipe,
     FilterPipe,
@@ -108,7 +106,7 @@ import { HabitatComponent } from './habitat/habitat.component';
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, IucnGroupSelectComponent,
     ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
-    FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
+    FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent
   ]
 })
