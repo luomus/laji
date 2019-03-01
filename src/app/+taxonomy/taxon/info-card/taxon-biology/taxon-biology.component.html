@@ -12,31 +12,13 @@
           <tr *ngIf="taxon.primaryHabitat">
             <th>{{ 'taxonomy.habitat.primary' | translate }}</th>
             <td>
-              <ul>
-                <li>
-                  {{ taxon.primaryHabitat.habitat | label }}
-                  <ul *ngIf="taxon.primaryHabitat.habitatSpecificTypes">
-                    <li *ngFor="let type of taxon.primaryHabitat.habitatSpecificTypes">
-                      {{ type | label }}
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+              <laji-habitat [habitat]="taxon.primaryHabitat"></laji-habitat>
             </td>
           </tr>
           <tr *ngIf="taxon.secondaryHabitats">
             <th>{{ 'taxonomy.habitat.secondary' | translate }}</th>
             <td>
-              <ul>
-                <li *ngFor="let habitat of taxon.secondaryHabitats">
-                  {{ habitat.habitat | label }}
-                  <ul *ngIf="habitat.habitatSpecificTypes">
-                    <li *ngFor="let type of habitat.habitatSpecificTypes">
-                      {{ type | label }}
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+              <laji-habitat [habitat]="taxon.secondaryHabitats"></laji-habitat>
             </td>
           </tr>
         </tbody>
