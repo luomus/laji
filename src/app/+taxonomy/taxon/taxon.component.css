@@ -1,4 +1,4 @@
-:host {
+:host, laji-spinner {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;

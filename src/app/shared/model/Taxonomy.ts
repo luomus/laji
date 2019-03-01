@@ -306,7 +306,7 @@ export interface  Habitat {
 
   habitat: string;
 
-  habitatSpecificTypes: string[];
+  habitatSpecificTypes?: string[];
 
   id: string;
 
