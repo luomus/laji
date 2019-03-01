@@ -2,6 +2,7 @@
 <laji-own-submissions
   [admin]="(rights | async)?.admin"
   [columns]="['dateEdited', 'dateObserved', 'taxon', 'namedPlaceName', 'unitCount', 'observer', 'id']"
+  [actions]="['edit', 'view', 'download', 'stats', 'delete']"
   [collectionID]="collectionID"
   [forceLocalDocument]="true"
   [documentViewerGatheringGeometryJSONPath]="gatheringGeometryJSONPath"
