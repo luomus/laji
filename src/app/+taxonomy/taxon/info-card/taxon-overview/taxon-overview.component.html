@@ -1,6 +1,5 @@
 <div class="row">
   <div class="col-xs-12 col-sm-6">
-
     <div class="panel no-box-shadow" *ngIf="images.length > 0 || ingress || description">
       <div class="panel-body">
         <div class="image-container" *ngIf="images.length > 0" [ngClass]="{
@@ -22,6 +21,10 @@
         </div>
       </div>
     </div>
+
+    <ng-container *ngIf="!isFromMasterChecklist">
+      <ng-container [ngTemplateOutlet]="taxonInfo"></ng-container>
+    </ng-container>
 
     <div *ngIf="isFromMasterChecklist"
          class="panel panel-default"
@@ -47,14 +50,9 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <div class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.card' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
-    </div>
+    <ng-container *ngIf="isFromMasterChecklist">
+      <ng-container [ngTemplateOutlet]="taxonInfo"></ng-container>
+    </ng-container>
 
     <div class="panel panel-default"
          laji-panel
@@ -122,3 +120,14 @@
     </div>
   </div>
 </div>
+
+<ng-template #taxonInfo>
+  <div class="panel panel-default"
+       laji-panel
+       [title]="'taxonomy.card' | translate"
+       [open]="true"
+       [autoToggle]="true"
+  >
+    <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
+  </div>
+</ng-template>
