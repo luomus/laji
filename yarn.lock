@@ -4721,10 +4721,10 @@ laji-form@^0.0.581:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.476, laji-map@^1.0.395, laji-map@^1.0.474, laji-map@^1.0.476:
-  version "1.0.476"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.476.tgz#e8516daac98c3cbd6307c03e6eef5c98ef91594d"
-  integrity sha512-s4HdvsFyD5RMsl8zzHje5rGQ0QrteWmbR6BqWgOD0yb0l4oL+EKit+gAmyvRAwwAZOU2Jrk8BoGVFVmZ+qV/IQ==
+laji-map@1.0.477, laji-map@^1.0.395, laji-map@^1.0.474, laji-map@^1.0.477:
+  version "1.0.477"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.477.tgz#23b66b60a5838ccc98573e4e33f8b484074fdabd"
+  integrity sha512-RfkatHFHLD+9WVatENSO5oqPbMw7DaN6jEeTW+y3pUSU4eIMTPYH+nR4cw9YFA8mk64HuxK7qYSWesXkCrrKZA==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
