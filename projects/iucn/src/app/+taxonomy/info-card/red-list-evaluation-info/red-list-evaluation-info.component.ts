@@ -19,8 +19,8 @@ export class RedListEvaluationInfoComponent {
   evaluationBases: IRow[] = [];
   criteria: IRow[] = [];
   sources: IRow[] = [];
+  _evaluation: RedListEvaluation;
 
-  private _evaluation: RedListEvaluation;
   private keyMap = {
     'secondaryHabitats': 'secondaryHabitat',
     'endangermentReasons': 'hasEndangermentReason',
