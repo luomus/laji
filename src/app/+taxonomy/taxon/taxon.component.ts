@@ -72,6 +72,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
+    if (this.initTaxonSub) {
+      this.initTaxonSub.unsubscribe();
+    }
   }
 
 
