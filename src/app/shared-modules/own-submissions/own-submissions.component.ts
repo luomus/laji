@@ -75,7 +75,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
-  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
+  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'observer', 'form', 'id'];
   @Input() columnNameMapping: any;
   @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
   @Input() onlyTemplates = false;
