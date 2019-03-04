@@ -220,6 +220,8 @@ export interface Taxonomy {
 
   descriptions?: any[];
 
+  taxonConceptId?: string[];
+
   additionalIds?: string[];
 
   redListEvaluation?: {[year: string]: RedListEvaluation};
