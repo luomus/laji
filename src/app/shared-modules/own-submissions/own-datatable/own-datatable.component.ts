@@ -1,5 +1,7 @@
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
-  AfterViewInit,
+  AfterViewChecked,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -7,25 +9,18 @@ import {
   HostListener,
   Inject,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
-import { environment } from '../../../../environments/environment';
 import { Document } from '../../../shared/model/Document';
-import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
-import { forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { Person } from '../../../shared/model/Person';
 import { FormService } from '../../../shared/service/form.service';
-import { RouterChildrenEventService } from '../service/router-children-event.service';
 import { Router } from '@angular/router';
 import { DocumentExportService } from '../service/document-export.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
@@ -34,42 +29,79 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
-import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
-import { map } from 'rxjs/operators';
-import * as moment from 'moment';
 import { isPlatformBrowser } from '@angular/common';
+import { Global } from '../../../../environments/global';
 
+export interface RowDocument {
+  creator: string;
+  templateName: string;
+  templateDescription: string;
+  publicity: string;
+  dateEdited: string;
+  dateObserved: string;
+  namedPlaceName: string;
+  locality: string;
+  unitCount: number;
+  observer: string;
+  formID: string;
+  form: string;
+  formViewerType: string;
+  id: string;
+  locked: boolean;
+  index: number;
+  _editUrl: string;
+}
+
+export interface DownloadEvent {
+  fileType: string;
+  documentId?: string;
+}
+
+export interface TemplateEvent {
+  name: string;
+  description: string;
+  type: 'gathering'|'unit';
+  documentID: string;
+}
+
+export interface LabelEvent {
+  documentIDs: string[];
+  year: number;
+  label: string;
+}
 
 @Component({
   selector: 'laji-own-datatable',
   templateUrl: './own-datatable.component.html',
   styleUrls: ['./own-datatable.component.css'],
-  providers: [DocumentExportService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
+export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() year: number;
-  @Input() documents: Document[];
   @Input() loadError = '';
   @Input() showDownloadAll = true;
+  @Input() showPrintLabels = true;
   @Input() admin = false;
-  @Input() useInternalDocumentViewer = false;
-  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
+  @Input() selected: RowDocument[] = [];
   @Input() columnNameMapping: any;
   @Input() onlyTemplates = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
-  @Output() documentClicked = new EventEmitter<Document>();
-
-  formsById = {};
-  namedPlaceNames = {};
-  deleteRow: any;
-  deleting = false;
-
-  templateForm: TemplateForm = {
+  @Input() labels: string[] = [];
+  @Input() templateForm: TemplateForm = {
     name: '',
     description: '',
     type: 'gathering'
   };
+  @Output() documentClicked = new EventEmitter<string>();
+  @Output() download = new EventEmitter<DownloadEvent>();
+  @Output() template = new EventEmitter<TemplateEvent>();
+  @Output() delete = new EventEmitter<string>();
+  @Output() label = new EventEmitter<LabelEvent>();
+
+  deleteRow: any;
+  deleting = false;
+  templateDocumentID: string;
+  printState: 'none'|'select' = 'none';
 
   totalMessage = '';
   publicity = Document.PublicityRestrictionsEnum;
@@ -81,25 +113,29 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     {prop: 'dateObserved', mode: 'small'},
     {prop: 'namedPlaceName', mode: 'small'},
     {prop: 'locality', mode: 'small'},
+    {prop: 'taxon', mode: 'small'},
     {prop: 'unitCount', mode: 'medium'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
     {prop: 'id', mode: 'large'}
   ];
-  temp = [];
-  rows: any[];
+  allRows: RowDocument[] = [];
+  visibleRows: RowDocument[];
   userId;
+  filterBy: string;
+  selectionType: string;
+  selectedLabel: string;
 
   displayMode: string;
   defaultSort: any;
 
-  rowData$: Subscription;
-  saveTemplate$: Subscription;
-  delete$: Subscription;
   usersId$: Subscription;
 
-  downloadedDocumentIdx: number;
+  downloadedDocumentId: string;
   fileType = 'csv';
+
+  _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'unitCount', 'observer', 'form', 'id'];
+  _goToStartAfterViewCheck = false;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
@@ -113,23 +149,45 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private userService: UserService,
     private formService: FormService,
-    private eventService: RouterChildrenEventService,
     private localizeRouterService: LocalizeRouterService,
     private documentExportService: DocumentExportService,
     private documentService: DocumentService,
     private toastService: ToastsService,
     private logger: Logger,
-    private cd: ChangeDetectorRef,
-    private labelService: TriplestoreLabelService
+    private cd: ChangeDetectorRef
   ) {}
 
+  @Input()
+  set documents(docs: RowDocument[]) {
+    if (!docs) {
+      this.allRows = [];
+      this.visibleRows = [];
+      return;
+    }
+    this.allRows = docs;
+    this.updateFilteredRows();
+
+    // Table is not sorted with external sorter on initial load. So this is here to make sure that when data is received it's sorted.
+    setTimeout(() => {
+      this.table.onColumnSort({sorts: this.defaultSort});
+    });
+  }
+
+  @Input()
+  set columns(cols: string[]) {
+    this._columns = cols;
+    if (Array.isArray(this._columns)) {
+      this.initColumns();
+      this.updateFilteredRows();
+    }
+  }
+
   ngOnInit() {
-    this.initColumns();
     this.updateTranslations();
 
     this.updateDisplayMode();
-    this.usersId$ = this.userService.getUser()
-      .map(user => user.id)
+    this.usersId$ = this.userService.getUser().pipe(
+      map(user => user.id))
       .subscribe(userId => {
         this.userId = userId;
         this.cd.markForCheck();
@@ -140,12 +198,21 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.usersId$.unsubscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['documents'] && !changes['documents'].isFirstChange()) {
-      this.updateRows();
+  ngAfterViewChecked() {
+    if (this._goToStartAfterViewCheck) {
+      this._goToStartAfterViewCheck = false;
+      this.table.offset = 0;
     }
-    if (changes['column'] && !changes['column'].isFirstChange()) {
-      this.initColumns();
+  }
+
+  goToStart(goToStart = true) {
+    if (!goToStart) {
+      return;
+    }
+    if (this.table) {
+      this.table.offset = 0;
+    } else {
+      this._goToStartAfterViewCheck = true;
     }
   }
 
@@ -154,129 +221,46 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.updateDisplayMode();
   }
 
-  private initRows() {
-    this.updateRows();
-    this.updateTranslations();
-  }
-
-  private initColumns() {
-    if (!Array.isArray(this.columns)) {
-      return;
-    }
-    const useCols = [];
-    this.columns.map(col => {
-      const column = this.allColumns.find((value) => value.prop === col);
-      if (column) {
-        useCols.push(column);
-      }
-    });
-    this.useColumns = useCols;
-    this.defaultSort = this.getDefaultSort();
-  }
-
-  private updateDisplayMode() {
-    if (!isPlatformBrowser(this.platformID)) {
-      return;
-    }
-    const width = this.window.innerWidth;
-
-    if (width > 1150) {
-      if (this.table) {
-        this.table.rowDetail.collapseAllRows();
-      }
-      this.displayMode = 'large';
-    } else if (width > 570) {
-      this.displayMode = 'medium';
-    } else {
-      this.displayMode = 'small';
-    }
-  }
-
   updateFilter(event) {
-    const val = event.target.value.toLowerCase();
+    this.filterBy = event.target.value.toLowerCase();
+    this.updateFilteredRows();
+  }
+
+  updateFilteredRows(goToStart = true) {
+    const val = this.filterBy;
     const columns = this.useColumns;
 
-    this.rows = this.temp.filter(function (row) {
+    this.visibleRows = this.allRows.reduce((cumulative, row, idx) => {
       for (let i = 0; i < columns.length; i++) {
         const rowValue = String(row[columns[i].prop]);
         if (rowValue && (rowValue.toLowerCase().indexOf(val) !== -1 || !val)) {
-          return true;
+          cumulative.push({...row, index: idx});
+          break;
         }
       }
-      return false;
-    });
+      return cumulative;
+    }, []);
 
-    this.table.offset = 0;
+    this.goToStart(goToStart);
   }
 
-  showMakeTemplate(row): boolean {
-    if (this.actions === false || this.onlyTemplates === true) {
-      return false;
-    }
-    if (row && row.formID && row.formID === environment.wbcForm) {
+  showMakeTemplate(row: RowDocument): boolean {
+    if (this.actions === false || this.onlyTemplates === true || this.actions.indexOf('template') === -1) {
       return false;
     }
-    return this.actions.indexOf('template') > -1;
+    return row && row.formID && Global.canHaveTemplate.indexOf(row.formID) > -1;
   }
 
-  private updateRows() {
-    if (!this.documents) {
-      this.temp = [];
-      this.rows = [];
-      return;
-    }
-
-    this.rows = null;
-    if (this.rowData$) {
-      this.rowData$.unsubscribe();
-    }
-
-    this.rowData$ = ObservableFrom(this.documents.map((doc, i) => {
-      return this.setRowData(doc, i);
-    }))
-      .mergeAll()
-      .toArray()
-      .subscribe((array) => {
-        this.temp = array;
-        this.rows = this.temp;
-        this.cd.markForCheck();
-        // Table is not sorted with external sorter on initial load. So this is here to make sure that when data is received it's sorted.
-        setTimeout(() => {
-          this.table.onColumnSort({sorts: this.defaultSort});
-        });
-      });
-  }
-
-  private updateTranslations() {
-    this.translate.get('haseka.submissions.total').subscribe((value) => {
-      this.totalMessage = value;
-      this.cd.markForCheck();
-    });
-  }
-
-  rowIdentity(row) {
+  rowIdentity(row: RowDocument) {
     return row.id;
   }
 
-  showViewer(row: any) {
-    const doc = this.documents[row.index];
-    if (!this.useInternalDocumentViewer) {
-      this.eventService.showViewerClicked(doc);
-    } else {
-      this.documentClicked.emit(doc);
-    }
+  showViewer(docId: string) {
+    this.documentClicked.emit(docId);
   }
 
-  toEditPage(row: any) {
-    const formId = this.documents[row.index].formID;
-    this.router.navigate(
-      this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, row.id)])
-    );
-  }
-
-  deleteDialog(row: any) {
-    const document: any = this.documents[row.index] || {};
-    if (document.id && row.id === document.id) {
+  deleteDialog(row: RowDocument) {
+    if (row.id) {
       this.deleteRow = row;
       this.deleting = false;
       this.deleteModal.show();
@@ -287,108 +271,60 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   deleteDocument() {
-    if (this.delete$) {
-      return;
-    }
-    this.deleting = true;
-    this.delete$ = this.documentService.deleteDocument(this.deleteRow.id)
-      .subscribe(
-        () => {
-          this.documents = [
-            ...this.documents.slice(0, this.deleteRow.index),
-            ...this.documents.slice(this.deleteRow.index + 1)
-          ];
-          this.initRows();
-          this.translate.get('delete.success')
-            .subscribe((value) => this.toastService.showSuccess(value));
-          this.deleteModal.hide();
-          this.delete$ = null;
-          this.cd.markForCheck();
-        },
-        (err) => {
-          this.translate.get('delete.error')
-            .subscribe((value) => this.toastService.showError(value));
-          this.logger.error('Deleting failed', err);
-          this.deleteModal.hide();
-          this.delete$ = null;
-          this.cd.markForCheck();
-        }
-      )
+    this.allRows = [
+      ...this.allRows.slice(0, this.deleteRow.index),
+      ...this.allRows.slice(this.deleteRow.index + 1)
+    ];
+    this.updateFilteredRows(false);
+    this.cd.markForCheck();
+    this.deleteModal.hide();
+    this.delete.emit(this.deleteRow.id);
   }
 
-  makeTemplate(row: any) {
-    this.templateForm.document = this.documents[row.index] || null;
+  makeTemplate(row: RowDocument) {
+    if (!row.id) {
+      return;
+    }
+    this.templateDocumentID = row.id;
     this.templateModal.show();
   }
 
   saveTemplate() {
     this.templateModal.hide();
-    if (this.saveTemplate$) {
-      return;
-    }
-    if (!this.templateForm.document) {
+    if (!this.templateDocumentID) {
       this.translate.get('template.missingDocument')
         .subscribe((value) => this.toastService.showError(value));
       return;
     }
-    this.saveTemplate$ = this.documentService.saveTemplate(this.templateForm)
-      .subscribe(
-        () => {
-          this.translate.get('template.success')
-            .subscribe((value) => this.toastService.showSuccess(value));
-          this.templateForm = {
-            name: '',
-            description: '',
-            type: 'gathering'
-          };
-          this.saveTemplate$ = null;
-          this.cd.markForCheck();
-        },
-        (err) => {
-          this.translate.get('template.error')
-            .subscribe((value) => this.toastService.showError(value));
-          this.logger.error('Template saving failed', err);
-          this.saveTemplate$ = null;
-          this.cd.markForCheck();
-        });
+    this.template.emit({
+      ...this.templateForm,
+      documentID: this.templateDocumentID
+    });
   }
 
-  openChooseFileTypeModal(docIdx: number) {
-    this.downloadedDocumentIdx = docIdx;
+  openChooseFileTypeModal(docId?: string) {
+    this.downloadedDocumentId = docId;
     this.modal.show();
   }
 
-  download() {
-    if (this.downloadedDocumentIdx === -1) {
-      this.documentExportService.downloadDocuments(this.documents, this.year, this.fileType);
-    } else {
-      this.documentExportService.downloadDocument(this.documents[this.downloadedDocumentIdx], this.fileType);
-    }
-  }
-
-  toStatisticsPage(docId: string) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/statistics/' + docId]));
-  }
-
-  toggleExpandRow(row: any) {
+  toggleExpandRow(row: RowDocument) {
     this.table.rowDetail.toggleExpandRow(row);
   }
 
   onSort(event) {
-    const rows = [...this.rows];
+    const rows = [...this.visibleRows];
     event.sorts.forEach((sort) => {
       const comparator = this.comparator(sort.prop);
       const dir = sort.dir === 'asc' ? 1 : -1;
-      rows.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]))
+      rows.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]));
     });
-    this.rows = rows;
+    this.visibleRows = rows;
   }
 
   /**
    * When using comparator input these functions are called all the time! Preventing buttons and events from firing
    *
-   * @param prop
-   * @returns {any}
+   * @returns any
    */
   comparator(prop) {
     if (prop === 'dateObserved') {
@@ -424,92 +360,59 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     return [{ prop: 'dateEdited', dir: 'asc' }];
   }
 
-  private setRowData(document: Document, idx: number): Observable<any> {
-    return this.getForm(document.formID).switchMap((form) => {
-      const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
-
-      return ObservableForkJoin(
-        this.getLocality(gatheringInfo, document.namedPlaceID),
-        this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
-        this.getNamedPlaceName(document.namedPlaceID)
-      ).pipe(
-        map(data => {
-          const locality = data[0], observers = data[1], npName = data[2];
-          const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
-          let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
-
-          if (dateObservedEnd && dateObservedEnd !== dateObserved) {
-            dateObserved += ' - ' + dateObservedEnd;
-          }
-
-          return {
-            creator: document.creator,
-            templateName: document.templateName,
-            templateDescription: document.templateDescription,
-            publicity: document.publicityRestrictions,
-            dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
-            dateObserved: dateObserved,
-            namedPlaceName: npName,
-            locality: locality,
-            unitCount: gatheringInfo.unitList.length,
-            observer: observers,
-            formID: document.formID,
-            form: form.title || document.formID,
-            id: document.id,
-            locked: !!document.locked,
-            index: idx
-          };
-        })
-      )
+  private updateTranslations() {
+    this.translate.get('haseka.submissions.total').subscribe((value) => {
+      this.totalMessage = value;
+      this.cd.markForCheck();
     });
   }
 
-  private getLocality(gatheringInfo: any, namedPlaceID): Observable<string> {
-    let locality$ = ObservableOf(gatheringInfo);
-    const npID = gatheringInfo.namedPlaceID || namedPlaceID;
-
-    if (!gatheringInfo.locality && npID) {
-      locality$ = this.labelService.get(npID, 'multi')
-        .map(namedPlace => ({...gatheringInfo, locality: namedPlace}));
-    }
-
-    return locality$
-      .switchMap((gathering) => this.translate.get('haseka.users.latest.localityMissing')
-        .map(missing => gathering.locality || missing));
-  }
-
-  private getObservers(userArray: string[] = []): Observable<string> {
-    return ObservableFrom(userArray.map((userId) => {
-      if (userId.indexOf('MA.') === 0) {
-        return this.userService.getUser(userId)
-          .map((user: Person) => {
-            return user.fullName;
-          });
+  private initColumns() {
+    const useCols = [];
+    this._columns.map(col => {
+      const column = this.allColumns.find((value) => value.prop === col);
+      if (column) {
+        useCols.push(column);
       }
-      return ObservableOf(userId);
-    }))
-      .mergeAll()
-      .toArray()
-      .map((array) => {
-        return array.join(', ');
-      });
+    });
+    this.useColumns = useCols;
+    this.defaultSort = this.getDefaultSort();
   }
 
-  private getForm(formId: string): Observable<any> {
-    if (this.formsById[formId]) { return ObservableOf(this.formsById[formId]); }
+  private updateDisplayMode() {
+    if (!isPlatformBrowser(this.platformID)) {
+      return;
+    }
+    const width = this.window.innerWidth;
 
-    return this.formService
-      .getForm(formId, this.translate.currentLang)
-      .do((res: any) => {
-        this.formsById[formId] = res;
-      });
+    if (width > 1150) {
+      if (this.table) {
+        this.table.rowDetail.collapseAllRows();
+      }
+      this.displayMode = 'large';
+    } else if (width > 570) {
+      this.displayMode = 'medium';
+    } else {
+      this.displayMode = 'small';
+    }
   }
 
-  private getNamedPlaceName(npId: string): Observable<string> {
-    if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return ObservableOf(''); }
+  onSelect(event: any) {
+    this.selected = event.selected;
+  }
 
-    if (this.namedPlaceNames[npId]) { return ObservableOf(this.namedPlaceNames[npId]); }
-
-    return this.labelService.get(npId, 'multi');
+  doLabels() {
+    if (this.printState === 'none') {
+      this.selectionType = 'checkbox';
+      this.printState = 'select';
+    } else if (this.printState === 'select') {
+      this.selectionType = undefined;
+      this.printState = 'none';
+      this.label.emit({
+        documentIDs: this.selected.map(doc => doc.id),
+        year: this.year,
+        label: this.selectedLabel
+      });
+    }
   }
 }

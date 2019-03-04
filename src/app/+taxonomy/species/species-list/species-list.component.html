@@ -1,0 +1,73 @@
+<div id="species-table">
+  <div class="form-group">
+    <div>
+      <label for="speciesOrder">
+        {{ 'species.order' | translate }}:
+      </label>
+      <select id="speciesOrder" class="form-control" style="width: auto" [ngModel]="searchQuery.listOptions.sortOrder" (ngModelChange)="sortOrderChanged($event)">
+        <option [value]="'taxonomic'">
+          {{ 'species.order.taxonomicOrder' | translate }}
+        </option>
+        <option [value]="'scientific_name'">
+          {{ 'species.order.scientificName' | translate }}
+        </option>
+        <option [value]="'finnish_name'">
+          {{ 'species.order.finnishName' | translate }}
+        </option>
+      </select>
+    </div>
+    <div class="counts">
+      <strong>
+        {{ 'species.list.count1' | translate }}
+        <laji-species-count [searchQuery]="searchQuery"></laji-species-count>
+        {{ 'species.list.count2' | translate }}
+      </strong>
+    </div>
+  </div>
+  <div class="species-table-wrapper">
+    <laji-datatable
+      #dataTable
+      (rowSelect)="onRowSelect($event)"
+      [virtualScrolling]="true"
+      [clientSideSorting]="false"
+      (sortChange)="onSort($event)"
+      [height]="'calc(70vh - 30px)'"
+      [rows]='speciesPage.results'
+      (pageChange)="pageChanged($event)"
+      (reorder)="onReorder($event)"
+      [loading]="loading"
+      [count]="speciesPage.total"
+      [page]="speciesPage.currentPage"
+      [pageSize]="speciesPage.pageSize"
+      [columns]="columns">
+    </laji-datatable>
+    <div class="setting-menu link" (click)="openModal()">
+      <i class="glyphicon glyphicon-cog"></i>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="showDownloadAndBrowse">
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">{{ 'species.download' | translate }}</h4>
+        </div>
+        <div class="panel-body">
+          <laji-download #speciesDownload
+                         [downloadLoading]="downloadLoading"
+                         (download)="download($event)">{{ 'species.download' | translate }}</laji-download>
+        </div>
+      </div>
+    </div>
+  </div>
+  <laji-species-browse-observations [searchQuery]="searchQuery"
+  ></laji-species-browse-observations>
+</ng-container>
+
+<laji-species-list-options-modal #settingsModal
+                                 (settingsChange)="onSettingsChange()"
+                                 [searchQuery]="searchQuery"
+                                 [columnLookup]="columnService.columnLookup">
+</laji-species-list-options-modal>

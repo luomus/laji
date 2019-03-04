@@ -1,6 +1,5 @@
-<h3>{{'haseka.ownSubmissions.title' | translate}}</h3>
+<h3>{{ 'haseka.ownSubmissions.title' | translate }}</h3>
 <laji-own-submissions
-  [columns]="['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'id']"
+  [columns]="['dateEdited', 'dateObserved', 'locality', 'observer', 'id']"
   [collectionID]="collectionID"
-  [useInternalDocumentViewer]="true"
   [showDownloadAll]="false"></laji-own-submissions>

@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { MultiLangService } from '../service/multi-lang.service';
+import { Subscription } from 'rxjs';
 
 @Pipe({
   name: 'multiLang',
@@ -11,21 +12,25 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
   public static lang;
   public value = '';
 
-  onLangChange: EventEmitter<LangChangeEvent>;
+  onLangChange: Subscription;
 
   constructor(private translate: TranslateService,
               private _ref: ChangeDetectorRef) {
 
   }
 
-  transform(value: any, useFallback = true): string {
+  transform(value: any, useFallback = true, lang?: string): any {
     if (typeof value === 'string' || typeof value !== 'object') {
       return value;
     }
-    this.value = this.pickLang(value, useFallback);
+    if (Array.isArray(value)) {
+      return value.map(v => this.transform(v, useFallback, lang));
+    }
+
+    this.value = this.pickLang(value, useFallback, lang);
     if (!this.onLangChange) {
       this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-        this.value = this.pickLang(value, useFallback);
+        this.value = this.pickLang(value, useFallback, lang);
         this._ref.markForCheck();
       });
     }
@@ -39,8 +44,8 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  private pickLang(value, useFallback) {
-    const lang = this.translate.currentLang;
+  private pickLang(value, useFallback, lang?: string) {
+    lang = lang || this.translate.currentLang;
     const hasLang = MultiLangService.hasValue(value, lang);
     if (!hasLang && !useFallback) {
       return '';

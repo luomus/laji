@@ -3,10 +3,10 @@
     <div class="col-sm-7">
       <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
         <h3 ngPreserveWhitespaces>
-          {{'viewer.document' | translate }}
+          {{ 'viewer.document' | translate }}
           <small>
             <a [routerLink]="['/view'] | localize" [queryParams]="{uri: document.documentId}" target="_blank">
-              {{document.documentId}}
+              {{ document.documentId }}
             </a>
           </small>
           <a type="button"
@@ -15,7 +15,7 @@
              [queryParams]="(document.formId | toQName) === collectionContestFormId ? {id: (document.documentId | toQName)} : {uri: document.documentId, own: own}"
              target="_blank"
              [tooltip]="'haseka.submissions.toPrint' | translate">
-            {{'print' | translate}}
+            {{ 'print' | translate }}
             <img src="/static/images/icons/pdf_16x16.png">
           </a>
           <laji-edit-link
@@ -28,7 +28,7 @@
       </div>
       <laji-issues [data]="document"></laji-issues>
       <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName" ngPreserveWhitespaces>
-        <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{document.collectionId}}</a></span>
+        <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
       </laji-row>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
@@ -40,7 +40,7 @@
         <div class="col-sm-12 doc-meta" *ngIf="!hideHeader">
           <ng-template #docMeta>
             <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName">
-              {{document.linkings.editors | values:', ':'fullName' }}
+              {{ document.linkings.editors | values:', ':'fullName' }}
             </laji-row>
             <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
@@ -60,29 +60,29 @@
           </button>
           <button class="btn btn-default btn-xs pull-right"
                   (click)="toggleFacts()">
-            {{showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)}}
+            {{ showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate) }}
             <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
           </button>
           <div style="margin-top: 35px;">
             <alert [type]="document.secured ?  'warning' : 'info'">
               <span *ngIf="!document.secured; else isSecured">
-                {{'viewer.secured.none' | translate}}
+                {{ 'viewer.secured.none' | translate }}
               </span>
               <ng-template #isSecured>
                 <span *ngIf="document.public">
                   <span *ngIf="document.secureLevel !== 'NONE' || (document.secureReasons && document.secureReasons.length > 0)">
-                    {{'viewer.secured.secured' | translate}}
+                    {{ 'viewer.secured.secured' | translate }}
                   </span>
                   <span *ngIf="document.partial">
-                    {{'viewer.secured.partial' | translate}}
+                    {{ 'viewer.secured.partial' | translate }}
                   </span>
                 </span>
                 <span *ngIf="!document.public">
-                  {{'viewer.secured.own1' | translate}}
+                  {{ 'viewer.secured.own1' | translate }}
                   (<a [routerLink]="['/view'] | localize" [queryParams]="{
                     uri: document.documentId,
                     highlight: highlight
-                   }" target="_blank">{{'viewer.secured.own2' | translate}}</a>).
+                   }" target="_blank">{{ 'viewer.secured.own2' | translate }}</a>).
                 </span>
               </ng-template>
               <div *ngIf="document.secured">
@@ -91,7 +91,7 @@
                   [secureReasons]="document.secureReasons"
                 ></laji-secure-info>
                 <ng-container *ngIf="document.secureReasons && document.secureReasons.indexOf('DEFAULT_TAXON_CONSERVATION') > -1">
-                  <br><a [routerLink]="'/about/709'" target="_blank">{{'information.more' | translate}}</a>
+                  <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
                 </ng-container>
               </div>
             </alert>
@@ -109,7 +109,7 @@
     <ul class="nav nav-tabs link">
       <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
         <a (click)="setActive(i)">
-         {{i + 1}}
+         {{ i + 1 }}
         </a>
       </li>
     </ul>
@@ -128,7 +128,7 @@
 </ng-container>
 <ng-container *ngIf="hasDoc === false">
   <div class="page-header">
-    <h2>{{'viewer.notFound' | translate}}</h2>
+    <h2>{{ 'viewer.notFound' | translate }}</h2>
   </div>
 </ng-container>
 <!--<pre>{{document | json}}</pre>-->

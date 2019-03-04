@@ -1,6 +1,6 @@
 <strong class="title link" (click)="toggleActiveList()" [ngClass]="{link: active.length > 0}">
-  {{'observation.active' | translate}}
-  <span class="badge" [ngClass]="{has: active.length > 0}">{{active.length}}</span>
+  {{ 'observation.active' | translate }}
+  <span class="badge" [ngClass]="{has: active.length > 0}">{{ active.length }}</span>
 </strong>
 <div class="active-list" *ngIf="showList">
   <ul>

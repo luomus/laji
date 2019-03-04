@@ -1,9 +1,8 @@
 <div class="lj-obj-list">
-  <strong>{{'theme.grid' | translate:{grid: query.ykj10kmCenter || ''} }}</strong>
-  <a (click)="onListClose.emit(query)" class="badge pull-right link">x</a>
+  <strong>{{ 'theme.grid' | translate:{grid: query.ykj10kmCenter || ''} }}</strong>
+  <a (click)="listClose.emit(query)" class="badge pull-right link">x</a>
   <laji-observation-table
     [height]="height"
-    [lang]="translate.currentLang"
     (rowSelect)="showDocument($event)"
     (selectChange)="selectChange.emit($event)"
     [pageSize]="1000"

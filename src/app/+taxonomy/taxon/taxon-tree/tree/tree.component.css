@@ -1,0 +1,44 @@
+.tree {
+  overflow: auto;
+}
+.tree, .tree ul, .tree li {
+  position: relative;
+}
+.tree ul {
+  list-style: none;
+  padding-left: 10px;
+}
+.tree > ul {
+  padding-left: 0;
+}
+.tree li, .tree > div {
+  line-height: 25px;
+  white-space: nowrap;
+}
+.tree li::before, .tree li::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+}
+.tree li::before {
+  border-top: 1px solid lightgray;
+  top: 13px;
+  width: 5px;
+  height: 0;
+}
+.tree li::after {
+  border-left: 1px solid lightgray;
+  height: 100%;
+  width: 0;
+  top: -10px;
+}
+.tree ul > li:last-child::after {
+  height: 23px;
+}
+.tree > ul > li::before, .tree > ul > li::after {
+  content: none;
+}
+
+.toggle-triangle {
+  margin-right: 5px;
+}

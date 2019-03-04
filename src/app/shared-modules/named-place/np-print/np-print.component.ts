@@ -1,3 +1,5 @@
+
+import {startWith,  catchError, map, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as FileSaver from 'file-saver';
@@ -10,7 +12,6 @@ import { FooterService } from '../../../shared/service/footer.service';
 import { Person } from '../../../shared/model/Person';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
-import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-np-print',
@@ -43,8 +44,8 @@ export class NpPrintComponent implements OnInit, OnDestroy {
     this.subData = ObservableCombineLatest(
       this.userService.getUser(),
       this.route.params,
-      this.translate.onLangChange
-        .startWith({lang: this.translate.currentLang}))
+      this.translate.onLangChange.pipe(
+        startWith({lang: this.translate.currentLang})))
       .pipe(
         map(data => ({
           person: data[0],

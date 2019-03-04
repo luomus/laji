@@ -68,7 +68,7 @@ export class WbcCensusesComponent implements OnInit  {
           this.rows = list;
           this.loading = false;
           this.cd.markForCheck();
-        })
+        });
     }
   }
 

@@ -5,7 +5,7 @@
     </laji-spinner>
   </div>
   <div class="print-wrap no-print">
-    <button type="button" [disabled]="loading" class="btn btn-default" (click)="print()">{{'print' | translate}} <i class="glyphicon glyphicon-print"></i></button>
+    <button type="button" [disabled]="loading" class="btn btn-default" (click)="print()">{{ 'print' | translate }} <i class="glyphicon glyphicon-print"></i></button>
   </div>
   <laji-document-local [document]="document"
                        [view]="'print'"
@@ -20,7 +20,7 @@
     </laji-spinner>
   </div>
   <div class="print-wrap no-print">
-    <button type="button" [disabled]="loading" class="btn btn-default" (click)="print()">{{'print' | translate}} <i class="glyphicon glyphicon-print"></i></button>
+    <button type="button" [disabled]="loading" class="btn btn-default" (click)="print()">{{ 'print' | translate }} <i class="glyphicon glyphicon-print"></i></button>
   </div>
   <!--div class="settings-wrap no-print">
     <button class="btn btn-default btn-xs"

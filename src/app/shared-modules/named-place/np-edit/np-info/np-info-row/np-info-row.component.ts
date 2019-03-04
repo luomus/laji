@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 
 export interface NpInfoRow {
-  title: string,
-  value: any,
-  isLabel?: boolean
+  title: string;
+  value: any;
+  pipe?: 'label' | 'area';
 }
 
 @Component({
@@ -14,5 +14,5 @@ export interface NpInfoRow {
 export class NpInfoRowComponent implements NpInfoRow {
   @Input() title: string;
   @Input() value: any;
-  @Input() isLabel?: boolean;
+  @Input() pipe?: 'label' | 'area';
 }

@@ -1,3 +1,4 @@
+/* tslint:disable:no-redundant-jsdoc */
 /**
  * Query interface for warehouse
  *

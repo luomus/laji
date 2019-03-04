@@ -8,26 +8,37 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ThemeFormComponent } from 'app/+theme/common/theme-form.component';
 
 @Component({
   selector: 'laji-line-transect-form-ei-vakio',
   templateUrl: './line-transect-form-ei-vakio.component.html'
 })
-export class LineTransectFormEiVakioComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+export class LineTransectFormEiVakioComponent
+       extends ThemeFormComponent
+       implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   documentId;
   hasNS = false;
   private subParam: Subscription;
 
+  onSuccessUrl = '/theme/linjalaskenta/statistics';
+  onTmlLoadUrl = '/theme/linjalaskenta/ei-vakiolinjat/';
+  onMissingNamedPlaceUrl = this.onTmlLoadUrl;
+  onErrorUrl = '/theme/linjalaskenta/stats';
+  onCancelUrl = this.onErrorUrl;
+
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected localizeRouterService: LocalizeRouterService,
     private formService: FormService,
     private toastService: ToastsService,
     private translateService: TranslateService
-  ) { }
+  ) {
+    super(route, router, localizeRouterService);
+  }
 
   ngOnInit() {
     this.formId = environment.lineTransectEiVakioForm;
@@ -44,7 +55,9 @@ export class LineTransectFormEiVakioComponent implements OnInit, OnDestroy, Comp
   }
 
   ngOnDestroy() {
-    this.subParam.unsubscribe();
+    if (this.subParam) {
+      this.subParam.unsubscribe();
+    }
   }
 
   canDeactivate() {
@@ -52,32 +65,6 @@ export class LineTransectFormEiVakioComponent implements OnInit, OnDestroy, Comp
       return true;
     }
     return this.documentForm.canDeactivate();
-  }
-
-  onTmlLoad(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/ei-vakiolinjat/', data.tmpID]),
-      { replaceUrl: true }
-    );
-  }
-
-  onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/statistics', data.document.id]));
-  }
-
-  onError() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/stats']));
-  }
-
-  onCancel() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/stats']));
-  }
-
-  onMissingNamedplace(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/ei-vakiolinjat']),
-      { replaceUrl: true }
-    );
   }
 
   onAccessDenied() {
@@ -89,5 +76,9 @@ export class LineTransectFormEiVakioComponent implements OnInit, OnDestroy, Comp
           { replaceUrl: true }
         );
       });
+  }
+
+  onSuccess(data) {
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/statistics', data.document.id]));
   }
 }

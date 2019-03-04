@@ -1,3 +1,5 @@
+
+import {startWith, delay, tap, map,  filter, switchMap, take } from 'rxjs/operators';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -21,7 +23,6 @@ import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { PagedResult } from '../model/PagedResult';
 import { Notification } from '../model/Notification';
 import { isPlatformBrowser } from '@angular/common';
-import { filter, switchMap, take } from 'rxjs/operators';
 import { Global } from '../../../environments/global';
 
 @Component({
@@ -43,6 +44,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   currentNotificationPage = 1;
   visibleNotificationPage = 1;
   notificationPageSize = 5;
+  env = environment.type;
 
   private subParams: Subscription;
   private subUser: Subscription;
@@ -71,24 +73,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
     this.subParams = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.showSearch = ['/', '/sv', '/en'].indexOf(event.urlAfterRedirects) === -1;
+        // this.showSearch = ['/', '/sv', '/en'].indexOf(event.urlAfterRedirects) === -1;
         this.changeDetector.markForCheck();
       }
     });
     this.subNotification = this.appRef.isStable.pipe(
         filter(stable => stable),
         take(1),
-        switchMap(() => ObservableInterval(60000)
-          .startWith(0)
-          .delay(5000)
-          .switchMap(() => this.userService.isLoggedIn$.take(1))
-          .filter((loggedIn) => loggedIn)
-          .switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+        switchMap(() => ObservableInterval(60000).pipe(
+          startWith(0),
+          delay(5000), ).pipe(
+          switchMap(() => this.userService.isLoggedIn$.pipe(take(1))),
+          filter((loggedIn) => loggedIn),
+          switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
               personToken: this.userService.getToken(),
               page: this.currentNotificationPage,
               pageSize: this.notificationPageSize
-            })
-              .switchMap((notifications) => notifications.total <= this.notificationPageSize ?
+            }).pipe(
+              switchMap((notifications) => notifications.total <= this.notificationPageSize ?
                 ObservableOf({
                   ...notifications,
                   unseen: notifications.results.reduce((cumulative, current) => cumulative + (current.seen ? 0 : 1), 0)
@@ -98,10 +100,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
                   page: 1,
                   pageSize: 1,
                   onlyUnSeen: true
-                })
-                  .map(unseen => ({...notifications, unseen: unseen.total || 0}))
-              )
-          )
+                }).pipe(
+                  map(unseen => ({...notifications, unseen: unseen.total || 0})))
+              ))
+          ), )
         )
     ).subscribe(
         (notifications: any) => {
@@ -112,14 +114,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
         err => console.log(err)
       );
     let notificationsCache;
-    this.sublangChange = this.translate.onLangChange
-      .filter(() => !!this.notifications)
-      .switchMap(() => this.userService.isLoggedIn$.take(1))
-      .filter((loggedIn) => loggedIn)
-      .do(() => notificationsCache = [...this.notifications.results])
-      .do(() => this.notifications.results = [])
-      .do(() => this.changeDetector.markForCheck())
-      .delay(10)
+    this.sublangChange = this.translate.onLangChange.pipe(
+      filter(() => !!this.notifications),
+      switchMap(() => this.userService.isLoggedIn$.pipe(take(1))),
+      filter((loggedIn) => loggedIn), ).pipe(
+      tap(() => notificationsCache = [...this.notifications.results]),
+      tap(() => this.notifications.results = []),
+      tap(() => this.changeDetector.markForCheck()), ).pipe(
+      delay(10))
       .subscribe(() => {
         this.notifications.results = notificationsCache;
         this.changeDetector.markForCheck();
@@ -219,8 +221,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (!notification || !notification.id) {
       return;
     }
-    this.translate.get('notification.delete')
-      .switchMap(msg => notification.seen ? ObservableOf(true) : this.dialogService.confirm(msg))
+    this.translate.get('notification.delete').pipe(
+      switchMap(msg => notification.seen ? ObservableOf(true) : this.dialogService.confirm(msg)))
       .subscribe(result => {
         this.dropDown.autoClose = false;
         setTimeout(() => {
@@ -232,12 +234,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
           }
           this.changeDetector.markForCheck();
           this.lajiApi
-            .remove(LajiApi.Endpoints.notifications, notification.id, {personToken: this.userService.getToken()})
-            .switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+            .remove(LajiApi.Endpoints.notifications, notification.id, {personToken: this.userService.getToken()}).pipe(
+            switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
               personToken: this.userService.getToken(),
               page: this.currentNotificationPage,
               pageSize: this.notificationPageSize
-            }))
+            })))
             .subscribe((notifications) => {
               this.notifications = notifications;
               this.changeDetector.markForCheck();

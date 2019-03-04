@@ -1,5 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
+export interface IPageChange {
+  count: number;
+  pageSize: number;
+  limit: number;
+  offset: number;
+  page: number;
+}
+
 @Component({
   selector: 'laji-data-table-footer',
   templateUrl: './data-table-footer.component.html',
@@ -9,7 +17,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class DataTableFooterComponent {
 
   @Input() totalMessage = '';
-  @Output() change = new EventEmitter();
+  @Input() top = false;
+  @Output() change = new EventEmitter<IPageChange>();
 
   _count: number;
   _pageSize: number;
@@ -41,12 +50,12 @@ export class DataTableFooterComponent {
 
   onChange(event) {
     this.change.emit({
-      count: this.count,
-      pageSize: this.pageSize,
-      limit: this.pageSize,
+      count: this._count,
+      pageSize: this._pageSize,
+      limit: this._pageSize,
       offset: event.page - 1,
       page: event.page
-    })
+    });
   }
 
 }

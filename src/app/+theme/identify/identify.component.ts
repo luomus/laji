@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { SourceService } from '../../shared/service/source.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -31,8 +33,8 @@ export class IdentifyComponent implements OnInit {
   ngOnInit() {
     this.formId = environment.whichSpeciesForm;
     this.modal.config = {animated: false};
-    this.sourceService.getAllAsLookUp()
-      .map(sources => Object.keys(sources).filter((source) => source !== Global.sources.kotka))
+    this.sourceService.getAllAsLookUp().pipe(
+      map(sources => Object.keys(sources).filter((source) => source !== Global.sources.kotka)))
       .subscribe(sources => {
         this.query = {
           sourceId: sources,

@@ -1,0 +1,15 @@
+<h5 *ngIf="header">{{ header | translate }}</h5>
+<ul class="list-group">
+  <li class="list-group-item link"
+      *ngFor="let parent of parents"
+      (click)="onToggle(parent)"
+      [ngClass]="{active: selected.indexOf('parent.' + parent + '.scientificName') > -1}">
+    <ng-container>
+      <ng-container *ngIf="selected.indexOf('parent.' + parent + '.scientificName') > -1">
+        {{ selected.indexOf('parent.' + parent + '.scientificName') + 1 }}.,
+        {{ selected.indexOf('parent.' + parent + '.scientificNameAuthorship') + 1 }}.
+      </ng-container>
+      {{ 'taxonomy.parent.' + parent | translate }}
+    </ng-container>
+  </li>
+</ul>

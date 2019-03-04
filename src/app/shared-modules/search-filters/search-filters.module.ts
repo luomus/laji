@@ -5,7 +5,7 @@ import { MetadataSelectComponent } from './metadata-select/metadata-select.compo
 import { ObservationActiveComponent } from './active/observation-active.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { ThreeStateSwitchComponent } from './three-state-switch/three-state-switch.component';
 import { ThreeStateMultiSwitchComponent } from './three-state-multi-switch/three-state-multi-switch.component';
 import { SwitchRowComponent } from './three-state-multi-switch/switch-row/switch-row.component';
@@ -19,7 +19,7 @@ import { IncludesPipe } from './includes.pipe';
   imports: [
     CommonModule,
     SharedModule,
-    JWBootstrapSwitchModule,
+    JwBootstrapSwitchNg2Module,
     InfoModule
   ],
   declarations: [

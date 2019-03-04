@@ -1,3 +1,4 @@
+/* tslint:disable:max-classes-per-file */
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';
@@ -8,6 +9,7 @@ import { LocaleFiComponent } from './locale/locale-fi.component';
 import { mergeMap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { Global } from '../environments/global';
+import { LocalizeGuard } from './locale/localize.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -16,8 +18,6 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
     );
   }
 }
-
-const homeModule = environment.type === Global.type.iucn ? './iucn/+home/home.module#HomeModule' : './+home/home.module#HomeModule';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},
@@ -40,39 +40,42 @@ const routes: Routes = [
 ];
 
 const routesWithLang: Routes = [
-  {path: 'en', children: [
+  {path: 'en', data: {lang: 'en'}, children: [
     {path: 'nafi', redirectTo: '/en/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
     {path: 'linjalaskenta', redirectTo: '/en/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/en/theme/talvilintulaskenta', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/en/theme/vieraslajit', pathMatch: 'full'},
+    {path: 'kunnat', redirectTo: '/en/theme/kunnat', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
-  ], component: LocaleEnComponent},
-  {path: 'sv', children: [
+  ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
+  {path: 'sv', data: {lang: 'sv'}, children: [
     {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
     {path: 'linjalaskenta', redirectTo: '/sv/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/sv/theme/talvilintulaskenta', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/sv/theme/vieraslajit', pathMatch: 'full'},
+    {path: 'kunnat', redirectTo: '/sv/theme/kunnat', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/sv/error/404'}
-  ], component: LocaleSvComponent},
-  {path: '', children: [
+  ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
+  {path: '', data: {lang: 'fi'}, children: [
     {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
     {path: 'linjalaskenta', redirectTo: '/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/theme/talvilintulaskenta', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/theme/vieraslajit', pathMatch: 'full'},
+    {path: 'kunnat', redirectTo: '/theme/kunnat', pathMatch: 'full'},
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/error/404'}
-  ], component: LocaleFiComponent}
+  ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
 ];
 
 @NgModule({

@@ -1,10 +1,23 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit, ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { ExtendedNamedPlace } from '../../model/extended-named-place';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from 'app/shared/logger';
 import { LabelPipe } from 'app/shared/pipe';
 import { AreaNamePipe } from 'app/shared/pipe/area-name.pipe';
+import { NpInfoComponent } from '../../np-edit/np-info/np-info.component';
+import { NpInfoRow } from '../../np-edit/np-info/np-info-row/np-info-row.component';
 
 @Component({
   selector: 'laji-np-map',
@@ -12,17 +25,28 @@ import { AreaNamePipe } from 'app/shared/pipe/area-name.pipe';
   styleUrls: ['./np-map.component.css'],
   providers: [ LabelPipe, AreaNamePipe ]
 })
-export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
+export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild('popup') popupComponent;
   @Input() visible = false;
   @Input() namedPlaces: ExtendedNamedPlace[];
   @Input() activeNP: number;
   @Input() height: string;
   @Input() userID: string;
-  @Output() onActivePlaceChange = new EventEmitter<number>();
-  legend;
+  @Input() reservable: boolean;
+  @Input() placeForm: any;
+  @Input() documentForm: any;
+  @Input() mapOptions: any;
+  @Output() activePlaceChange = new EventEmitter<number>();
 
+  legend;
+  listItems: NpInfoRow[] = [];
+  tileLayerName;
+  overlayNames;
   private _data: any;
+  private _popupCallback: (elemOrString: HTMLElement | string) => void;
+  private _zoomOnNextTick = false;
+  private _lastVisibleActiveNP: number;
 
   private placeColor = '#5294cc';
   private placeActiveColor = '#375577';
@@ -37,7 +61,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     public translate: TranslateService,
     private logger: Logger,
     private labelPipe: LabelPipe,
-    private areaNamePipe: AreaNamePipe
+    private areaNamePipe: AreaNamePipe,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -49,15 +74,38 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
       this.initMapData();
       this.setMapData();
     }
+    if (changes['visible'] && changes['visible'].currentValue === true && this._lastVisibleActiveNP !== this.activeNP) {
+      this._zoomOnNextTick = true;
+    }
     if (changes['activeNP']) {
-      const c = changes['activeNP'];
-      this.setNewActivePlace(c.previousValue, c.currentValue);
+      if (this.visible) {
+        this._lastVisibleActiveNP = this.activeNP;
+      }
+      this.setNewActivePlace(changes['activeNP'].currentValue);
     }
   }
 
   ngAfterViewInit() {
     this.setMapData();
-    this.setNewActivePlace(-1, this.activeNP);
+  }
+
+  ngAfterViewChecked() {
+    const {nativeElement: popup} = this.popupComponent || {nativeElement: undefined};
+    if (popup && this._popupCallback) {
+      this._popupCallback(popup);
+    }
+    if (this._zoomOnNextTick) {
+      this._zoomOnNextTick = false;
+      if (this.activeNP !== undefined && this.activeNP !== -1) {
+        const layer = this.lajiMap.map.getLayerByIdxTuple([0, this.activeNP]);
+        if (!layer) {
+          return;
+        }
+        this.lajiMap.map.fitBounds(this.lajiMap.map.getBoundsForLayers([layer]));
+      } else if ((this.documentForm.namedPlaceOptions || {}).zoomToData) {
+        this.lajiMap.map.zoomToData();
+      }
+    }
   }
 
   setMapData() {
@@ -66,65 +114,57 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  private setNewActivePlace(oldActive: number, newActive: number) {
+  private setNewActivePlace(newActive: number) {
     if (!this.lajiMap.map) { return; }
 
-    const geojsonLayer = this.lajiMap.map.data[0].group;
-
-    const that = this;
-    geojsonLayer.eachLayer(function (layer) {
-      let color = null;
-      let weight = 5;
-      if (layer.feature.properties.lajiMapIdx === newActive) {
-        color = that.getFeatureColor(layer.feature);
-        weight = 10;
-      } else if (layer.feature.properties.lajiMapIdx === oldActive) {
-        color = that.getFeatureColor(layer.feature, newActive);
-      }
-
-      if (color) {
-        if (layer.options.icon) {
-          const icon = layer.options.icon;
-          icon.options.markerColor = color;
-          layer.setIcon(icon);
-        } else {
-          layer.setStyle({color: color, weight: weight});
-        }
-      }
-    });
+    this.lajiMap.map.setActive(this.lajiMap.map.getLayerByIdxTuple([0, newActive]));
   }
 
   private initMapData() {
     if (!this.namedPlaces) {
       return;
     }
-    this.legend = {
-      [this.placeColor]: 'Vapaa',
-      [this.reservedColor]: 'Varattu',
-      [this.mineColor]: 'Itselle varattu',
-      [this.sentColor]: 'Ilmoitettu'
-    };
+    if (this.reservable) {
+      this.legend = {
+        [this.placeColor]: 'Vapaa',
+        [this.reservedColor]: 'Varattu',
+        [this.mineColor]: 'Itselle varattu',
+        [this.sentColor]: 'Ilmoitettu'
+      };
+    }
+
+    const {mapTileLayerName = 'maastokartta', mapOverlayNames} = this.documentForm.namedPlaceOptions || {mapOverlayNames: undefined};
+    this.tileLayerName = mapTileLayerName;
+    this.overlayNames = mapOverlayNames;
 
     try {
       this._data = {
-        getFeatureStyle: (o) => {
+        getFeatureStyle: ({feature, featureIdx, dataIdx, active}) => {
           const style = {
             weight: 5,
             opacity: 1,
             fillOpacity: 0.3,
             color: ''
           };
-          style.color = this.getFeatureColor(o.feature, this.activeNP);
+
+          if (active) {
+            style.color = this.getFeatureColor(feature, true);
+            style.weight = 10;
+          } else {
+            style.color = this.getFeatureColor(feature);
+          }
           return style;
         },
-        on: {
-          click: (e, o) => {
-            this.onActivePlaceChange.emit(o.idx);
-          }
+        onChange: (events) => {
+          events.forEach(e => {
+            if (e.type === 'active') {
+              this.activePlaceChange.emit(e.idx);
+            }
+          });
         },
         featureCollection: {
           type: 'FeatureCollection',
-          features: this.namedPlaces.map((np, i) => ({
+          features: this.namedPlaces.map(np => ({
             type: 'Feature',
             geometry: np.geometry,
             properties: {
@@ -135,46 +175,31 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
             }
           }))
         },
-        getPopup: (idx: number, geo, cb: Function) => {
-          try {
-            const properties = this._data.featureCollection.features[idx].properties;
-            let s = '';
-            if (properties.name) {
-              s += '<div>' + capitalizeFirst(properties.name) + '</div>';
-            }
-            if (properties.municipality) {
-              s += '<div>' + capitalizeFirst(this.areaNamePipe.transform(properties.municipality, 'name')) + '</div>';
-            }
-            if (properties.taxon) {
-              s += '<div>' + capitalizeFirst(this.labelPipe.transform(properties.taxon)) + '</div>';
-            }
-            cb(s);
-          } catch (e) {
-            this.logger.log('Failed to display popup for the map', e);
-          }
-        }
+        getPopup: (idx: number, geo, cb: (elem: string | HTMLElement) => void) => {
+          this.listItems = NpInfoComponent.getListItems(this.placeForm, this.namedPlaces[idx], this.documentForm);
+          this._popupCallback = cb;
+          this.cdr.markForCheck();
+        },
+        activeIdx: this.activeNP
       };
     } catch (e) { }
+  }
+
+  onPopupClose() {
+    this._popupCallback = undefined;
   }
 
   private getFeatureColor(feature, active?) {
     switch (feature.properties.reserved) {
       case 'sent':
-        return feature.featureIdx === active ? this.sentActiveColor : this.sentColor;
+        return active ? this.sentActiveColor : this.sentColor;
       case 'reserved':
-        return feature.featureIdx === active ? this.reservedActiveColor : this.reservedColor;
+        return active ? this.reservedActiveColor : this.reservedColor;
       case 'mine':
-        return feature.featureIdx === active ? this.mineActiveColor : this.mineColor;
+        return active ? this.mineActiveColor : this.mineColor;
       default:
-        return feature.featureIdx === active ? this.placeActiveColor : this.placeColor;
+        return active ? this.placeActiveColor : this.placeColor;
     }
   }
 
-}
-
-function capitalizeFirst(s: string | Array<string>) {
-  if (Array.isArray(s)) {
-    return s.map(u => capitalizeFirst(u));
-  }
-  return s.substring(0, 1).toUpperCase().concat(s.substring(1, s.length));
 }

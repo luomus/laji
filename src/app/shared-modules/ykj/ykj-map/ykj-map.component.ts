@@ -20,7 +20,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
 import { map } from 'rxjs/operators';
 
-export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount';
+export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|
+  'individualCountSumPer10km';
 
 @Component({
   selector: 'laji-ykj-map',
@@ -41,8 +42,8 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() type: MapBoxTypes = 'count';
   @Input() types = ['count', 'individualCount', 'newest'];
   @Input() typeLabels: any = {};
-  @Input() colorRange: string[] = ['violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
-  @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
+  @Input() colorRange: string[] = ['violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
+  @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
   @Input() individualBreak: number[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
   @Input() countBreak: number[] = [1, 10, 100, 1000, 10000, 100000];
   @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];
@@ -54,7 +55,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this._mapOptions = {
       ...this._mapOptions,
       ...(mapOptions || {})
-    }
+    };
   }
   get mapOptions() {
     return this._mapOptions;
@@ -63,8 +64,8 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() useStatistics = false;
   @Input() loading = false;
 
-  @Output() onGridClick = new EventEmitter<WarehouseQueryInterface>();
-  @Output() onBoundsChange = new EventEmitter<any>();
+  @Output() gridClick = new EventEmitter<WarehouseQueryInterface>();
+  @Output() boundsChange = new EventEmitter<any>();
 
   geoJsonLayer;
   mapInit = false;
@@ -80,7 +81,8 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       draw: false
     },
     center: [64.709804, 25],
-    zoom: 2
+    zoom: 2,
+    tileLayerOpacity: 0.5
   };
 
   constructor(
@@ -154,7 +156,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.subQuery = geoJson$
       .subscribe(geoJson => {
           this.geoJsonLayer.addData(geoJson);
-          this.onBoundsChange.emit(this.geoJsonLayer.getBounds());
+          this.boundsChange.emit(this.geoJsonLayer.getBounds());
           this.currentColor = '';
           this.loading = false;
           this.initColor();
@@ -178,6 +180,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         break;
       case 'individualCount':
       case 'individualCountSum':
+      case 'individualCountSumPer10km':
       case 'individualCountMax':
         labelSrc = 'individualLabel';
         rangeSrc = 'individualBreak';
@@ -205,7 +208,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         }
         const query = JSON.parse(JSON.stringify(this.query || {}));
         query.ykj10kmCenter = evt.layer.feature.properties.grid;
-        this.onGridClick.emit(query);
+        this.gridClick.emit(query);
       });
     }
   }
@@ -223,6 +226,9 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       case 'individualCountSum':
       case 'individualCountMax':
         col = this.individualsColor.bind(this);
+        break;
+      case 'individualCountSumPer10km':
+        col = this.individualsPer10kmColor.bind(this);
         break;
       case 'oldest':
       case 'newest':
@@ -265,13 +271,18 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     return this.countColor(feature, 'individualCountSum', this.individualBreak, this.individualColorRange);
   }
 
+  individualsPer10kmColor(feature) {
+    const divisor = feature.properties.lineLengthSum / 10000;
+    return this.countColor(feature, 'individualCountSum', this.individualBreak, this.individualColorRange, divisor);
+  }
+
   pairCountColor(feature) {
     return this.countColor(feature, 'pairCountSum');
   }
 
-  countColor(feature, prop = 'count', breaks = this.countBreak, range = this.colorRange) {
+  countColor(feature, prop = 'count', breaks = this.countBreak, range = this.colorRange, divisor = 1) {
     const isDefined = typeof feature.properties[prop] !== 'undefined';
-    const cnt = isDefined ? feature.properties[prop] : 1;
+    const cnt = (isDefined ? feature.properties[prop] : 1) / divisor;
     let newColor = '#ffffff';
     for (const idx in breaks) {
       if (!breaks.hasOwnProperty(idx)) {

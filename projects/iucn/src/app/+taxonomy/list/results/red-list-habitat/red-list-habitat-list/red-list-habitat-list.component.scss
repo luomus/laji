@@ -1,0 +1,17 @@
+table {
+  border-top: 1px solid #333;
+}
+.title td, .title th {
+  border-top: none;
+  border-bottom: 1px solid #333;
+}
+
+.no-border-bottom {
+  border-bottom: none !important;
+}
+.center {
+  text-align: center;
+}
+.total-col {
+  background-color: #eee;
+}

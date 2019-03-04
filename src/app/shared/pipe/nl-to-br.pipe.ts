@@ -5,11 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NlToBrPipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
+  transform(value: any, separator: string = '<br />'): any {
     if (typeof value !== 'string') {
       return value;
     }
-    return value.replace(/\n/g, '<br />');
+    return value.replace(/\n/g, separator);
   }
 
 }

@@ -7,14 +7,14 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Ou
 })
 export class LajiFormComponent {
 
-  @Input() lang: string;
   @Input() formData: any = {};
   @Input() tick: number;
   @Input() settingsKey = '';
 
-  @Output() onSubmit = new EventEmitter();
-  @Output() onChange = new EventEmitter();
+  @Output() dataSubmit = new EventEmitter();
+  @Output() dataChange = new EventEmitter();
 
+  lang: string;
   elem: ElementRef;
   lajiFormWrapper: any;
   reactElem: any;

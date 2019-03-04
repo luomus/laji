@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
-import { Units } from '../../../shared/model/Units';
 import { Util } from '../../../shared/service/util.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { UserService } from '../../../shared/service/user.service';
@@ -33,8 +32,10 @@ export class DocumentExportService {
     private exportService: ExportService
   ) {}
 
-  public downloadDocuments(docs: Document[], year: number, type: string) {
-    this.getBuffer(docs, type).subscribe((buffer) => {
+  public downloadDocuments(docs$: Observable<Document[]>, year: number, type: string) {
+    docs$.pipe(
+      switchMap(docs => this.getBuffer(docs, type))
+    ).subscribe((buffer) => {
       this.translate.get('haseka.submissions.submissions').subscribe((msg) => {
         const fileName = msg + '_' + year;
         this.exportService.exportArrayBuffer(buffer, fileName, type);
@@ -42,11 +43,13 @@ export class DocumentExportService {
     });
   }
 
-  public downloadDocument(doc: Document, type: string) {
-    this.getBuffer([doc], type).subscribe((buffer) => {
+  public downloadDocument(doc$: Observable<Document>, type: string) {
+    doc$.pipe(
+      switchMap(doc => this.getBuffer([doc], type).pipe(map(buffer => ({doc, buffer}))))
+    ).subscribe((data) => {
       this.translate.get('haseka.submissions.submission').subscribe((msg) => {
-        const fileName = msg + '_' + doc.id.split('.')[1];
-        this.exportService.exportArrayBuffer(buffer, fileName, type);
+        const fileName = msg + '_' + data.doc.id.split('.')[1];
+        this.exportService.exportArrayBuffer(data.buffer, fileName, type);
       });
     });
   }
@@ -57,7 +60,7 @@ export class DocumentExportService {
         switchMap(jsonForms => {
           return this.getAllFields(jsonForms)
             .pipe(
-              switchMap(({fields: fields, fieldStructure: fieldStructure}) => {
+              switchMap(({fields, fieldStructure}) => {
                 const dataObservables = [];
                 docs.reduce((arr: Observable<any>[], doc: any) => {
                   if (!this.isEmpty('', doc, jsonForms[doc.formID])) {
@@ -125,7 +128,7 @@ export class DocumentExportService {
       aoa.push([]);
 
       for (let j = 0; j < fields.length; j++) {
-        aoa[i + 1].push(Util.parseJSONPath(obj, fields[j]['value']));
+        aoa[i + 1].push(Util.parseJSONPath(obj, fields[j]['value'] as string));
       }
     }
 
@@ -324,7 +327,7 @@ export class DocumentExportService {
 
               while (true) {
                 for (let i = 0; i < next.fields.length; i++) {
-                  queue.push({...next.fields[i], path: fieldName + '.'})
+                  queue.push({...next.fields[i], path: fieldName + '.'});
                 }
 
                 if (queue.length < 1) {
@@ -429,7 +432,7 @@ export class DocumentExportService {
         );
     }
 
-    return ObservableOf(fieldName.charAt(0).toUpperCase() + fieldName.slice(1))
+    return ObservableOf(fieldName.charAt(0).toUpperCase() + fieldName.slice(1));
   }
 
   private isEmpty(path: string, obj: any, form: any): boolean {

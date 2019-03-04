@@ -18,6 +18,11 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { Rights } from '../../../../+haseka/form-permission/form-permission.service';
 import { Form } from '../../../../shared/model/Form';
 import { NpInfoRow } from './np-info-row/np-info-row.component';
+import { RouterChildrenEventService } from '../../../own-submissions/service/router-children-event.service';
+import { Document } from '../../../../shared/model/Document';
+import { ClipboardService } from 'ngx-clipboard';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-np-info',
@@ -27,9 +32,8 @@ import { NpInfoRow } from './np-info-row/np-info-row.component';
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
-  @Input() npFormData: any;
-  @Input() namedPlaceOptions: any;
-  @Input() targetForm: any;
+  @Input() placeForm: any;
+  @Input() documentForm: any;
   @Input() collectionId: string;
   @Input() editMode: boolean;
   @Input() allowEdit: boolean;
@@ -42,13 +46,16 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   editButtonVisible: boolean;
 
-  @Output() onEditButtonClick = new EventEmitter();
-  @Output() onUseButtonClick = new EventEmitter();
-  @Output() onReserveButtonClick = new EventEmitter();
-  @Output() onReleaseButtonClick = new EventEmitter();
+  @Output() editButtonClick = new EventEmitter();
+  @Output() useButtonClick = new EventEmitter();
+  @Output() reserveButtonClick = new EventEmitter();
+  @Output() releaseButtonClick = new EventEmitter();
 
   @ViewChild('infoModal') public modal: ModalDirective;
   @ViewChild('infoBox') infoBox;
+  @ViewChild('documentModal') public documentModal: ModalDirective;
+
+  publicity = Document.PublicityRestrictionsEnum;
 
   listItems: NpInfoRow[] = [];
 
@@ -57,8 +64,59 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   resizeCanOpenModal = false;
   useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
   formReservable = false;
+  useLocalDocumentViewer = false;
+  documentModalVisible = false;
+
+  public static getListItems(placeForm: any, np: NamedPlace, form: any): any[] {
+    const {namedPlaceOptions, collectionID: collectionId} = form;
+    const fields = placeForm.schema.properties;
+    let displayed = [];
+    if (namedPlaceOptions.infoFields) {
+      displayed = namedPlaceOptions.infoFields || [];
+    } else {
+      const displayedById =
+        placeForm.uiSchema['ui:options'].fieldScopes.collectionID;
+      displayed = (displayedById[collectionId] || displayedById['*'] || []).fields;
+    }
+
+    const listItems = [];
+    for (const field of displayed) {
+      if (!fields[field]) {
+        continue;
+      }
+
+      let value;
+      if (!isEmpty(np[field])) {
+        value = np[field];
+      }
+
+      let pipe;
+      if (field === 'taxonIDs') {
+        pipe = 'label';
+      } else if (field === 'municipality') {
+        pipe = 'area';
+      }
+
+      if (value) {
+        listItems.push({
+          title: fields[field].title,
+          value,
+          pipe
+        });
+      }
+    }
+    return listItems;
+
+    function isEmpty(value: string) {
+      return value == null || value === '';
+    }
+  }
 
   constructor(private userService: UserService,
+              private eventService: RouterChildrenEventService,
+              private clipboardService: ClipboardService,
+              private toastService: ToastrService,
+              private translate: TranslateService,
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -109,11 +167,16 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   editClick() {
-    this.onEditButtonClick.emit();
+    this.editButtonClick.emit();
   }
 
   useClick() {
-    this.onUseButtonClick.emit();
+    this.useButtonClick.emit();
+  }
+
+  copyLink() {
+    this.clipboardService.copyFromContent(document.location.href);
+    this.toastService.success(this.translate.instant('np.copyAddress.success'));
   }
 
   private updateButtons() {
@@ -121,10 +184,13 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       return;
     }
     this.userService.getUser().subscribe(person => {
-      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1);
-      this.formReservable = this.targetForm &&
-        Array.isArray(this.targetForm.features) &&
-        this.targetForm.features.indexOf(Form.Feature.Reserve) > -1;
+      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) || this.formRights.admin;
+      this.formReservable = this.documentForm &&
+        Array.isArray(this.documentForm.features) &&
+        this.documentForm.features.indexOf(Form.Feature.Reserve) > -1;
+      this.useLocalDocumentViewer = this.documentForm &&
+        Array.isArray(this.documentForm.features) &&
+        this.documentForm.features.indexOf(Form.Feature.DocumentsViewableForAll) > -1;
       let btnStatus;
       if (!this.formRights.edit) {
         btnStatus = 'nouse';
@@ -149,54 +215,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private updateFields() {
-    const fields = this.npFormData.schema.properties.namedPlace.items.properties;
-
-    let displayed = [];
-    if (this.namedPlaceOptions.infoFields) {
-      displayed = this.namedPlaceOptions.infoFields || [];
-    } else {
-      const displayedById =
-        this.npFormData.uiSchema.namedPlace.uiSchema.items['ui:options'].fieldScopes.collectionID;
-      displayed = (displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*']).fields;
-    }
-
-    let gData = null;
-    const np = this.namedPlace;
-
-    if (np.prepopulatedDocument && np.prepopulatedDocument.gatherings && np.prepopulatedDocument.gatherings.length >= 0) {
-      gData = np.prepopulatedDocument.gatherings[0];
-    }
-
-    const listItems = [];
-    for (const field of displayed) {
-      if (!fields[field]) {
-        continue;
-      }
-
-      let value = undefined;
-      if (!this.isEmpty(this.namedPlace[field])) {
-        value = this.namedPlace[field];
-      } else if (gData && !this.isEmpty(gData[field])) {
-        value = gData[field];
-      }
-
-      let label = false;
-      if (field === 'taxonIDs') {
-        label = true;
-      }
-
-      if (value) {
-        listItems.push({
-          title: fields[field].title,
-          value,
-          isLabel: label
-        });
-      }
-    }
-    this.listItems = listItems;
-  }
-
-  private isEmpty(value: string) {
-    return value == null || value === '';
+    this.listItems = NpInfoComponent.getListItems(this.placeForm, this.namedPlace, this.documentForm);
   }
 }

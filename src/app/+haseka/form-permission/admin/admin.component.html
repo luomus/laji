@@ -1,7 +1,7 @@
 <div class="container-fluid form-admin">
   <div class="row" id="wrapper">
     <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-2 col-lg-2">
-      <h3 class="menu-title">{{collectionId | collectionName}}</h3>
+      <h3 class="menu-title">{{ collectionId | collectionName }}</h3>
       <ul class="sidebar-nav">
         <li><a [routerLink]="['./']">
           Ohje
@@ -11,7 +11,7 @@
           <span
               *ngIf="formPermission && formPermission.permissionRequests && formPermission.permissionRequests.length > 0"
               class="badge pull-right">
-            {{formPermission.permissionRequests.length}}
+            {{ formPermission.permissionRequests.length }}
           </span>
         </a></li>
         <li><a [routerLink]="['manage/editors']">
@@ -19,7 +19,7 @@
           <span
                   *ngIf="formPermission && formPermission.editors && formPermission.editors.length > 0"
                   class="badge pull-right">
-            {{formPermission.editors.length}}
+            {{ formPermission.editors.length }}
           </span>
         </a></li>
         <li><a [routerLink]="['manage/admins']">
@@ -27,10 +27,10 @@
           <span
             *ngIf="formPermission && formPermission.admins && formPermission.admins.length > 0"
             class="badge pull-right">
-            {{formPermission.admins.length}}
+            {{ formPermission.admins.length }}
           </span>
         </a></li>
-        <li *ngIf="back"><a [routerLink]="[back]">
+        <li *ngIf="backPath"><a [routerLink]="[backPath]" [queryParams]="backQuery">
           Takaisin
         </a></li>
       </ul>

@@ -1,36 +1,37 @@
 <laji-row [title]="'viewer.field.observer' | translate" [value]="gathering.team | values:'; '"></laji-row>
 <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime">
-  {{gathering.displayDateTime}}
+  {{ gathering.displayDateTime }}
 </laji-row>
 <laji-row [title]="'MY.locality' | label">
   <ul class="comma-list">
     <li *ngIf="gathering.higherGeography" [tooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
-      {{gathering.higherGeography}}</li>
+      {{ gathering.higherGeography }}</li>
     <li *ngIf="gathering.interpretations?.country" [tooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
-      {{gathering.interpretations.country | toQName | area}}</li>
+      {{ gathering.interpretations.country | toQName | area }}</li>
     <li *ngIf="!gathering.interpretations?.country && gathering.country" [tooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
-      {{gathering.country}}</li>
+      {{ gathering.country }}</li>
     <li *ngIf="gathering.province" [tooltip]="'MY.province' | label" [isDisabled]="hideTooltips">
-      {{gathering.province}}</li>
-    <li *ngIf="gathering.interpretations?.biogeographicalProvince" [tooltip]="'MY.biologicalProvince' | label" [isDisabled]="hideTooltips">{{gathering.interpretations.biogeographicalProvince | toQName | area}}
-      ({{gathering.interpretations.biogeographicalProvince | toQName | area:'provinceCode'}})</li>
+      {{ gathering.province }}</li>
+    <li *ngIf="gathering.interpretations?.biogeographicalProvince" [tooltip]="'MY.biologicalProvince' | label" [isDisabled]="hideTooltips">{{ gathering.interpretations.biogeographicalProvince | toQName | area }}
+      ({{ gathering.interpretations.biogeographicalProvince | toQName | area:'provinceCode' }})</li>
     <li [tooltip]="'MY.biologicalProvince' | label"
         [isDisabled]="hideTooltips"
         *ngIf="!gathering.interpretations?.biogeographicalProvince && gathering.biogeographicalProvince">
-      {{gathering.biogeographicalProvince}}</li>
+      {{ gathering.biogeographicalProvince }}</li>
     <li *ngIf="gathering.interpretations?.finnishMunicipalities; else municipality" [tooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
-      {{gathering.interpretations.finnishMunicipalities | toQName | area | values}}</li>
+      {{ gathering.interpretations.finnishMunicipalities | toQName | area | values }}</li>
     <ng-template #municipality>
       <li *ngIf="gathering.municipality" [tooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
-        {{gathering.municipality}}</li>
+        {{ gathering.municipality }}</li>
     </ng-template>
     <li *ngIf="gathering.locality" [tooltip]="'MY.locality' | label" [isDisabled]="hideTooltips">
-      {{gathering.locality}}</li>
+      {{ gathering.locality }}</li>
   </ul>
 </laji-row>
+<laji-row [title]="'MY.coordinatesVerbatim' | label" [value]="gathering.coordinatesVerbatim"></laji-row>
 <laji-row [title]="'MY.notes' | label" [value]="gathering.notes"></laji-row>
 <laji-row [title]="'MY.taxonCensus' | label" *ngIf="gathering.taxonCensus">
   <ul class="comma-list">
-    <li *ngFor="let census of gathering.taxonCensus" [tooltip]="census.type | toQName | label" [isDisabled]="hideTooltips">{{census.taxonId | toQName | taxon}}</li>
+    <li *ngFor="let census of gathering.taxonCensus" [tooltip]="census.type | toQName | label" [isDisabled]="hideTooltips">{{ census.taxonId | toQName | taxon }}</li>
   </ul>
 </laji-row>

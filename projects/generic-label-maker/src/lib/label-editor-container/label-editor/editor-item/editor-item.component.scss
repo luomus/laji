@@ -1,0 +1,56 @@
+$handlerSize: 17;
+
+.editor-item {
+  position: absolute;
+  border: 1px solid #eee;
+  background-color: #fff;
+}
+
+.editor-item-wrap {
+  position: relative;
+}
+
+.editor-item-content, .editor-item-wrap {
+  width: 100%;
+  height: 100%;
+}
+
+.drag-handle, .resize-handle, .option-handle, .done-handle {
+  position: absolute;
+  display: none;
+  width: $handlerSize + px;
+  height: $handlerSize + px;
+}
+
+.drag-handle {
+  margin-top: -$handlerSize + px;
+  margin-left: -$handlerSize + px;
+}
+
+.option-handle {
+  bottom: 0;
+  left: 0;
+  margin-bottom: -$handlerSize + px;
+  margin-left: -$handlerSize + px;
+}
+
+.done-handle {
+  right: 0;
+  margin-top: -$handlerSize + px;
+  margin-right: -$handlerSize + px;
+}
+
+.resize-handle {
+  bottom: 0;
+  right: 0;
+  margin-bottom: -$handlerSize + px;
+  margin-right: -$handlerSize + px;
+}
+
+.active {
+  border-color: #333;
+  z-index: 1000;
+  .drag-handle, .resize-handle, .option-handle, .done-handle {
+    display: block;
+  }
+}

@@ -9,10 +9,10 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 export type SEASON = 'spring'|'fall'|'winter';
 
 interface ObservationStats {
-  [s: string]: {speciesStats: any[], otherStats: any[], years: number[]}
+  [s: string]: {speciesStats: any[], otherStats: any[], years: number[]};
 }
 interface CountsPerYearForTaxon {
-  [s: string]: {[s: string]: {count: string, censusCount: string}}
+  [s: string]: {[s: string]: {count: string, censusCount: string}};
 }
 
 @Injectable()
@@ -41,7 +41,7 @@ export class WbcResultService {
       birdAssociationAreaId: [birdAssociationArea],
       yearMonth: yearMonth,
       taxonId: onlyBirdsAndMammals ? this.birdsAndMammals : []
-    }
+    };
   }
 
   getPreviousTenYears(year: number): number[] {
@@ -99,7 +99,7 @@ export class WbcResultService {
         }
         return result;
       })
-    )
+    );
   }
 
   getRouteCount(year: number, season?: SEASON, birdAssociationArea?: string): Observable<number> {
@@ -111,7 +111,7 @@ export class WbcResultService {
       1
     ).pipe(
       map(res => res.total)
-    )
+    );
   }
 
   getRouteLengthSum(year: number|number[], season?: SEASON, birdAssociationArea?: string): Observable<any> {
@@ -125,7 +125,7 @@ export class WbcResultService {
       false
     ).pipe(
       map(res => res.results[0].lineLengthSum)
-    )
+    );
   }
 
   getIndividualCountSumBySpecies(year?: number|number[], season?: SEASON, birdAssociationArea?: string) {
@@ -146,7 +146,7 @@ export class WbcResultService {
         }
         return result;
       })
-    )
+    );
   }
 
   getSpeciesList(year?: number, season?: SEASON, birdAssociationArea?: string, onlyCount = true, useCache = false): Observable<any[]> {
@@ -165,7 +165,7 @@ export class WbcResultService {
         undefined,
         onlyCount
       )
-    ).pipe(tap(list => { if (useCache) { this.speciesListCache = list } }));
+    ).pipe(tap(list => { if (useCache) { this.speciesListCache = list; } }));
   }
 
   getRouteList(): Observable<any[]> {
@@ -186,7 +186,7 @@ export class WbcResultService {
 
   getCensusList(year?: number, season?: SEASON): Observable<any[]> {
     return this.getList(
-      this.warehouseApi.warehouseQueryAggregateGet(
+      this.warehouseApi.warehouseQueryStatisticsGet(
         this.getFilterParams(year, season),
         ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
           'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon',
@@ -197,12 +197,12 @@ export class WbcResultService {
         undefined,
         false
       )
-    )
+    );
   }
 
   getCensusListForRoute(routeId: string): Observable<any[]> {
     return this.getList(
-      this.warehouseApi.warehouseQueryAggregateGet(
+      this.warehouseApi.warehouseQueryStatisticsGet(
         {...this.getFilterParams(), namedPlaceId: [routeId]},
         ['document.documentId', 'gathering.eventDate.begin', 'gathering.team'],
         ['gathering.eventDate.begin DESC'],
@@ -215,7 +215,7 @@ export class WbcResultService {
   }
 
   getObservationStatsForRoute(routeId: string): Observable<ObservationStats> {
-    return this.warehouseApi.warehouseQueryAggregateGet(
+    return this.warehouseApi.warehouseQueryStatisticsGet(
       {...this.getFilterParams(undefined, undefined, undefined, true), namedPlaceId: [routeId]},
       ['unit.linkings.taxon.speciesId', 'unit.linkings.taxon.speciesNameFinnish', 'gathering.conversions.year',
         'gathering.conversions.month', 'document.documentId', 'unit.linkings.taxon.speciesTaxonomicOrder'],
@@ -231,7 +231,7 @@ export class WbcResultService {
         this.addStatisticsToObservationStats(result);
         return result;
       })
-    )
+    );
   }
 
   getCountsByYearForSpecies(taxonId: string, birdAssociationArea?: string, taxonCensus?: string): Observable<CountsPerYearForTaxon> {
@@ -257,7 +257,7 @@ export class WbcResultService {
       this.addCounts(data[1].results, 'count', result, false, 'individualCountSum');
       this.addCounts(data[0].results, 'censusCount', result, true);
       return result;
-    }))
+    }));
   }
 
   private parseObservationStatsList(resultList): ObservationStats {
@@ -401,7 +401,7 @@ export class WbcResultService {
       map(res => res.map(r => {
         return {...r, aggregateBy: undefined, ...r.aggregateBy};
       }))
-    )
+    );
   }
 
   private getCensusStartYear(year: number, month: number) {

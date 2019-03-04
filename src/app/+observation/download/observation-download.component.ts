@@ -1,3 +1,5 @@
+
+import {switchMap, startWith, combineLatest} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
@@ -9,6 +11,8 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
+
+
 
 enum RequestStatus {
   error = <any> 'error',
@@ -82,13 +86,13 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subLang = this.translate.onLangChange
-      .startWith({})
-      .switchMap(() => this.translate.get([
+    this.subLang = this.translate.onLangChange.pipe(
+      startWith({}),
+      switchMap(() => this.translate.get([
           'observation.download.error',
           'result.load.thanksPublic',
           'result.load.thanksRequest'
-        ]))
+        ])), )
       .subscribe((translations) => {
         this.messages = translations;
         this.updateCsvLink();
@@ -118,9 +122,9 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     speciesQuery.includeNonValidTaxa = false;
 
     ObservableForkJoin(
-      this.warehouseService.warehouseQueryCountGet(this._query)
-        .combineLatest(this.warehouseService.warehouseQueryCountGet(secretQuery),
-          (count, priva) => ({'count': count.total, 'private': priva.total})),
+      this.warehouseService.warehouseQueryCountGet(this._query).pipe(
+        combineLatest(this.warehouseService.warehouseQueryCountGet(secretQuery),
+          (count, priva) => ({'count': count.total, 'private': priva.total}))),
       this.warehouseService.warehouseQueryAggregateGet(
         speciesQuery, ['unit.linkings.taxon.id'], undefined, 1
       )

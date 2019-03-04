@@ -1,0 +1,14 @@
+<div class="searchBar">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <laji-taxon-select
+          [convertIdToName]="false"
+          [searchParams]="{onlySpecies: true}"
+          (taxonIdChange)="taxonSelect($event)"
+          [placeholder]="'species.search' | translate">
+        </laji-taxon-select>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.label-editor {
+  display: flex;
+}
+
+.settings-wrap {
+  width: 300px;
+}
+
+.tab-content {
+  padding: 15px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  min-height: 200px;
+}
+
+.editor-wrap {
+  flex: 1 1 auto;
+  flex-grow: 1;
+}
+
+.disabled {
+  color: #aaa;
+}
+table td:first-child {
+  text-align: right;
+}
+::ng-deep .settings-wrap {
+  user-select: none;
+}

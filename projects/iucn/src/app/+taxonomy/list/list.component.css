@@ -1,0 +1,30 @@
+.year-select {
+  width: 15em;
+}
+
+.type-select {
+  width: 20em;
+}
+
+.year-select, .type-select {
+  margin-left: 1em;
+  display: inline-block;
+}
+
+.taxon-select {
+  margin-top: 15px;
+  max-width: 15em;
+  display: inline-block;
+}
+
+.well {
+  position: relative;
+}
+
+h1 {
+  display: inline-block;
+}
+.dark-bg a, .dark-bg a:hover {
+  background-color: #f5f5f5;
+  border-bottom: none;
+}

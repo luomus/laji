@@ -10,7 +10,7 @@ export class FactNotInPipe implements PipeTransform {
       return value;
     }
     if (Array.isArray(value)) {
-      return value.filter(val => args.indexOf(val.fact) === -1)
+      return value.filter(val => args.indexOf(val.fact) === -1);
     }
     return value;
   }

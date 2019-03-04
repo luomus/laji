@@ -1,8 +1,14 @@
+/**
+ * TODO: Change this to use taxon-select component
+ */
+import {switchMap, distinctUntilChanged, tap, map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Autocomplete } from '../../shared/model/Autocomplete';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import 'rxjs-compat/add/operator/distinctUntilChanged';
+import 'rxjs-compat/add/operator/switchMap';
 
 @Component({
   selector: 'laji-taxon-autocomplete',
@@ -36,15 +42,16 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.value);
-    })
-      .distinctUntilChanged()
-      .switchMap((token: string) => this.getTaxa(token))
-      .switchMap((data) => {
+    });
+    this.dataSource = this.dataSource.pipe(
+      distinctUntilChanged(),
+      switchMap((token: string) => this.getTaxa(token)),
+      switchMap((data) => {
         if (this.value) {
           return ObservableOf(data);
         }
         return ObservableOf([]);
-      });
+      }), );
   }
 
   ngAfterViewInit() {
@@ -83,8 +90,8 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
       informalTaxonGroup: this.informalTaxonGroup,
       onlyFinnish: this.onlyFinnish,
       onlyInvasive: this.onlyInvasive
-    })
-      .map(data => {
+    }).pipe(
+      map(data => {
         if (onlyExact) {
           if (data[0] && data[0].payload.matchType && data[0].payload.matchType === 'exactMatches' && (
             !data[1] || data[1].payload.matchType && data[1].payload.matchType !== 'exactMatches'
@@ -103,11 +110,11 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
           item['groups'] = groups;
           return item;
         });
-      })
-      .do(() => {
+      })).pipe(
+      tap(() => {
         this.loading = false;
         this.cdr.markForCheck();
-      });
+      }));
   }
 
   onTaxonSelect(result: any, keepValue = false) {

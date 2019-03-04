@@ -1,23 +1,29 @@
 import { RouterModule, Routes, UrlSegment } from '@angular/router';
-import { TaxonComponent } from './taxon.component';
-import { TaxonBrowseComponent } from './taxon-browse/taxon-browse.component';
-import { InfoCardComponent } from './info-card/info-card.component';
+import { TaxonomyComponent } from './taxonomy.component';
+import { SpeciesComponent } from './species/species.component';
+import { TaxonComponent } from './taxon/taxon.component';
 import { ModuleWithProviders } from '@angular/core';
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
+import { BrowseSpeciesComponent } from './browse-species/browse-species.component';
 
-export function decideTaxonTab(url: UrlSegment[]) {
+export function decideSpeciesTab(url: UrlSegment[]) {
   if (url.length === 1) {
-    if (url[0].path === 'list' || url[0].path === 'images' || url[0].path === 'tree') {
+    if (url[0].path === 'list' || url[0].path === 'images') {
       return { consumed: url, posParams: {tab: url[0]} };
     }
   }
   return null;
 }
 
-export function decideTaxon(url: UrlSegment[]) {
+export function decideTaxonTab(url: UrlSegment[]) {
   if (url.length === 1) {
     if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0) {
       return { consumed: url, posParams: {id: url[0]} };
+    }
+  } else if (url.length === 2) {
+    if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0 &&
+      (url[1].path === 'images' || url[1].path === 'biology' || url[1].path === 'taxonomy')) {
+      return { consumed: url, posParams: {id: url[0], tab: url[1]} };
     }
   }
   return null;
@@ -27,11 +33,16 @@ export const taxonomyRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: TaxonComponent
+    component: TaxonomyComponent
   },
   {
-    matcher: decideTaxonTab,
-    component: TaxonBrowseComponent,
+    path: 'browse',
+    pathMatch: 'full',
+    component: BrowseSpeciesComponent
+  },
+  {
+    matcher: decideSpeciesTab,
+    component: SpeciesComponent,
     data: {
       noScrollToTop: true
     }
@@ -45,9 +56,8 @@ export const taxonomyRoutes: Routes = [
     component: InformalGroupRedirectComponent
   },
   {
-    matcher: decideTaxon,
-    pathMatch: 'full',
-    component: InfoCardComponent
+    matcher: decideTaxonTab,
+    component: TaxonComponent
   },
 ];
 export const routing: ModuleWithProviders = RouterModule.forChild(taxonomyRoutes);

@@ -1,0 +1,33 @@
+#species-table {
+  margin-bottom: 30px;
+}
+
+#species-table .form-group > div {
+  display: inline-block;
+  vertical-align: center;
+}
+
+.counts {
+  padding: 10px 0 0 20px;
+  color: #777;
+}
+
+.species-table-wrapper {
+  position: relative;
+}
+
+.setting-menu {
+  height: 37px;
+  width: 28px;
+  position: absolute;
+  right: 0;
+  top: 1px;
+  padding: 10px 7px;
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+.setting-menu:hover {
+  background-color: #dfdfdf;
+}

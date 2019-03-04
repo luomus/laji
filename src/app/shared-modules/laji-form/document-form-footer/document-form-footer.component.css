@@ -45,4 +45,6 @@
 
 .admin-success {
   margin-left: 35px;
+  position: absolute;
+  z-index: 1;
 }

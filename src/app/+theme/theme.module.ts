@@ -39,7 +39,7 @@ import { LineTransectFormComponent } from './line-transect/line-transect-form/li
 import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
 import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
 import { StatisticsModule } from '../shared-modules/statistics/statistics.module';
-import { DatatableModule } from '../shared-modules/datatable/datatable.module'
+import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 import { QualityService } from './service/quality.service';
 import { QualityComponent } from './quality/quality.component';
 import { MostActiveUsersTableComponent } from './quality/most-active-users-table/most-active-users-table.component';
@@ -59,7 +59,7 @@ import { WbcRoutesComponent } from './wbc/wbc-result/wbc-routes/wbc-routes.compo
 import { WbcCensusesComponent } from './wbc/wbc-result/wbc-censuses/wbc-censuses.component';
 import { WbcSpeciesListComponent } from './wbc/wbc-result/wbc-species/wbc-species-list/wbc-species-list.component';
 import { WbcResultService } from './wbc/wbc-result/wbc-result.service';
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { WbcResultFiltersComponent } from './wbc/wbc-result/wbc-result-filters/wbc-result-filters.component';
 import { WbcSpeciesChartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-charts.component';
 import { WbcSpeciesMapsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-maps/wbc-species-maps.component';
@@ -73,8 +73,19 @@ import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest
 import { WbcTableFilterComponent } from './wbc/wbc-result/wbc-table-filter/wbc-table-filter.component';
 import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-list/wbc-routes-list.component';
 import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
+import { ThemePageComponent } from './common/theme-page.component';
+import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
+import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
+import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
+import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
+import { MunicipalityMonitoringComponent } from './municipality-monitoring/municipality-monitoring.component';
+import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
+import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/municipality-monitoring-form/municipality-monitoring-form.component';
+import { MunicipalityMonitoringInstructionsComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.component';
 import { ChecklistComponent } from './checklist/checklist.component';
-import { IucnSharedModule } from '../iucn/iucn-shared/shared.module';
+import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
+import { InvasiveControlOwnSubmissionsComponent } from './invasive-control/invasive-control-own-submissions/invasive-control-own-submissions.component';
+import { MunicipalityMonitoringOwnSubmissionsComponent } from './municipality-monitoring/municipality-monitoring-own-submissions/municipality-monitoring-own-submissions.component';
 
 /* tslint:enable:max-line-length */
 
@@ -95,11 +106,11 @@ import { IucnSharedModule } from '../iucn/iucn-shared/shared.module';
     LajiFormModule,
     ObservationMapModule,
     NgxChartsModule,
-    JWBootstrapSwitchModule,
+    JwBootstrapSwitchNg2Module,
     FormPermissionModule,
     NavigationThumbnailModule,
     LatestDocumentsModule,
-    IucnSharedModule
+    InfoPageModule
   ],
   declarations: [
     NafiComponent,
@@ -136,9 +147,12 @@ import { IucnSharedModule } from '../iucn/iucn-shared/shared.module';
     QualityFiltersComponent,
     LineTransectFormEiVakioComponent,
     LineTransectFormKartoitusComponent,
+    InvasiveControlContainerComponent,
     InvasiveControlComponent,
+    InvasiveControlInstructionsContainerComponent,
     InvasiveControlInstructionsComponent,
     InvasiveControlFormComponent,
+    InvasiveControlOwnSubmissionsComponent,
     WbcSpeciesComponent,
     WbcRoutesComponent,
     WbcCensusesComponent,
@@ -152,7 +166,15 @@ import { IucnSharedModule } from '../iucn/iucn-shared/shared.module';
     WbcRouteTableComponent,
     WbcTableFilterComponent,
     WbcRoutesListComponent,
-    WbcRoutesMapComponent
+    WbcRoutesMapComponent,
+    ThemePageComponent,
+    MonitoringThemeBaseComponent,
+    MunicipalityMonitoringContainerComponent,
+    MunicipalityMonitoringComponent,
+    MunicipalityMonitoringInstructionsContainerComponent,
+    MunicipalityMonitoringInstructionsComponent,
+    MunicipalityMonitoringFormComponent,
+    MunicipalityMonitoringOwnSubmissionsComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })

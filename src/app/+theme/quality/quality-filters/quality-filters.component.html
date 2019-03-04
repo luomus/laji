@@ -1,17 +1,16 @@
 <div class="row">
   <div class="col-sm-4" id="group-select-container">
-    <label>{{'filter.informalTaxonGroup' | translate}}:</label>
+    <label>{{ 'filter.informalTaxonGroup' | translate }}:</label>
     <laji-observation-group-select
       name="group'"
-      (onSelect)="onSelectChange()"
+      (select)="onSelectChange()"
       [position]="'left'"
-      [(ngModel)]="filters.group"
-      [lang]="translateService.currentLang">
-      {{'observation.active.informalTaxonGroupAll'|translate}}
+      [(ngModel)]="filters.group">
+      {{ 'observation.active.informalTaxonGroupAll'|translate }}
     </laji-observation-group-select>
   </div>
   <div class="col-sm-5 col-md-4 pull-right" id="datepicker-container">
-    <label>{{'quality.filterByDate' | translate}}:</label>
+    <label>{{ 'quality.filterByDate' | translate }}:</label>
     <div class="form-inline">
       <laji-datepicker
         [(ngModel)]="filters.timeStart"
@@ -19,7 +18,7 @@
         [otherFormats]="['D.M.YYYY', 'YYYY']"
         [format]="'YYYY-MM-DD'"
         [addonText]="'quality.timeStart' | translate"
-        (onSelect)="onSelectChange()"
+        (select)="onSelectChange()"
         (change)="onSelectChange()"
         name="timeStart"></laji-datepicker>
       <laji-datepicker
@@ -29,7 +28,7 @@
         [toLastOfYear]="true"
         [format]="'YYYY-MM-DD'"
         [addonText]="'quality.timeEnd' | translate"
-        (onSelect)="onSelectChange()"
+        (select)="onSelectChange()"
         (change)="onSelectChange()"
         name="timeEnd"></laji-datepicker>
     </div>

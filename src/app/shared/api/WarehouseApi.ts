@@ -328,6 +328,25 @@ export class WarehouseApi {
   }
 
   /**
+   * Get list of unit media using given filter
+   * @param query to make to the warehouse
+   * @param selected Define what fields to include to the result. Defaults to [document.documentId, gathering.gatheringId, unit.unitId, document.sourceId, document.collectionId, document.namedPlaceId, document.secureLevel, document.secureReason, document.keywords, gathering.team, gathering.eventDate.begin, gathering.eventDate.end, gathering.timeBegin, gathering.timeEnd, gathering.higherGeography, gathering.country, gathering.province, gathering.municipality, gathering.locality, gathering.conversions.wgs84CenterPoint.lat, gathering.conversions.wgs84CenterPoint.lon, gathering.interpretations.coordinateAccuracy, gathering.interpretations.sourceOfCoordinates, unit.linkings.taxon.qname, unit.linkings.taxon.species, unit.linkings.taxon.scientificName, unit.linkings.taxon.vernacularName, unit.taxonVerbatim, unit.abundanceString, unit.recordBasis, unit.mediaCount, unit.notes] Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
+   * @param orderBy Define what fields to use when sorting results. If using default select, defaults to [gathering.eventDate.begin DESC, document.loadDate DESC, unit.taxonVerbatim ASC]. If using custom select there is no default order. Each fieldname given as parameter defaults to ASC - if you want to sort using descending order, add \&quot; DESC\&quot; to the end of the field name. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
+   * @param pageSize Set number of results in one page.
+   * @param page Set current page.
+   */
+  public warehouseQueryUnitMediaListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
+    const path = this.basePath + '/warehouse/query/unitMedia/list';
+
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+
+    this.addMetaToQuery(selected, orderBy, pageSize, page);
+    this.addQueryToQueryParams(query, queryParameters);
+
+    return this.http.get<PagedResult<any>>(path, {params: queryParameters});
+  }
+
+  /**
    * Enumeration labels.
    * Get descriptions of enumerations that are used in query parameters and responses.
    */

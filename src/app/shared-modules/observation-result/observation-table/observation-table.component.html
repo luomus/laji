@@ -29,7 +29,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">{{isAggregate ? ('result.settings.aggregate' | translate) : ('result.settings.list' | translate)}}</h4>
+        <h4 class="modal-title pull-left">{{ isAggregate ? ('result.settings.aggregate' | translate) : ('result.settings.list' | translate) }}</h4>
       </div>
       <div class="modal-body">
         <div class="row" *ngIf="isAggregate">
@@ -188,7 +188,7 @@
           </div>
           <div class="col-sm-6 clear-btn">
             <div class="pull-right">
-              <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="clear()">{{'result.clear' | translate}}</button>
+              <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="clear()">{{ 'result.clear' | translate }}</button>
               <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="closeOkModal()">Ok</button>
             </div>
           </div>

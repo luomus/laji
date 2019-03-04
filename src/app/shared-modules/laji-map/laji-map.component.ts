@@ -1,3 +1,5 @@
+
+import {merge, switchMap, filter} from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -7,8 +9,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
+  OnDestroy, OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -17,6 +18,8 @@ import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import * as LajiMap from 'laji-map';
 import { Global } from '../../../environments/global';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'laji-map',
@@ -27,7 +30,7 @@ import { Global } from '../../../environments/global';
   <ng-content></ng-content>
   <ul class="legend" *ngIf="_legend && _legend.length > 0" [ngStyle]="{'margin-top': 0 }">
     <li *ngFor="let leg of _legend">
-      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
+      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
     </li>
   </ul>
 </div>`,
@@ -35,22 +38,22 @@ import { Global } from '../../../environments/global';
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
 
   @Input() data: any = [];
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
-  @Input() tileLayerOpacity: number;
-  @Input() lang: string;
+  @Input() onPopupClose: (elem: string | HTMLElement) => void;
   @Output() select = new EventEmitter();
 
-  @Output() onCreate = new EventEmitter();
-  @Output() onMove = new EventEmitter();
-  @Output() onFailure =  new EventEmitter();
-  @Output() onTileLayerChange =  new EventEmitter();
+  @Output() create = new EventEmitter();
+  @Output() move = new EventEmitter();
+  @Output() failure =  new EventEmitter();
+  @Output() tileLayerChange =  new EventEmitter();
   @ViewChild('lajiMap') elemRef: ElementRef;
 
+  lang: string;
   map: any;
   _options: LajiMap.Options = {};
   _legend: {color: string, label: string}[];
@@ -62,8 +65,13 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   constructor(
     private userService: UserService,
     private cd: ChangeDetectorRef,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) { }
+
+  ngOnInit() {
+    this.lang = this.translate.currentLang;
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -76,7 +84,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     if (!options.on) {
       options = {...options, on: {
           tileLayerChange: (event) => {
-            this.onTileLayerChange.emit((<any> event).tileLayerName);
+            this.tileLayerChange.emit((<any> event).tileLayerName);
 
             if (this._settingsKey) {
               this.userSettings.tileLayerName = (<any> event).tileLayerName as LajiMap.TileLayerName;
@@ -95,7 +103,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
               this.userService.setUserSetting(this._settingsKey, this.userSettings);
             }
           }
-        }}
+        }};
     }
     if (typeof options.draw === 'object' && !options.draw.onChange) {
       options = {
@@ -104,7 +112,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
           ...options.draw,
           onChange: e => this.onChange(e)
         }
-      }
+      };
     }
     this._options = options;
     this.initMap();
@@ -116,15 +124,15 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       this.subSet.unsubscribe();
     }
     if (key) {
-      this.subSet = this.userService.getUserSetting(this._settingsKey)
-        .merge(this.userService.action$
-          .filter(action => action === USER_INFO)
-          .switchMap(() => this.userService.getUserSetting(this._settingsKey))
-        )
+      this.subSet = this.userService.getUserSetting(this._settingsKey).pipe(
+        merge(this.userService.action$.pipe(
+          filter(action => action === USER_INFO),
+          switchMap(() => this.userService.getUserSetting(this._settingsKey)), )
+        ))
         .subscribe(settings => {
           this.userSettings = settings || {};
           if (this.userSettings.tileLayerName) {
-            this.onTileLayerChange.emit(this.userSettings.tileLayerName);
+            this.tileLayerChange.emit(this.userSettings.tileLayerName);
           }
           this.initMap();
           this.cd.markForCheck();
@@ -132,15 +140,15 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     }
   }
 
-  @Input() set legend(legend: {[color: string]: string}) {
+  @Input() set legend(legend: {[color: string]: string} | undefined) {
+    if (!legend) {
+      return;
+    }
     const leg = [];
     Object.keys(legend).forEach(color => {
       leg.push({color, label: legend[color]});
     });
     this._legend = leg;
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy() {
@@ -156,12 +164,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     if (changes.data) {
       this.setData(this.data);
     }
-    if (changes.tileLayerOpacity && this.map && this.map.tileLayer) {
-      this.map.setTileLayerOpacity(typeof this.tileLayerOpacity === 'undefined' ? this.tileLayerOpacity : 1);
-    }
-    if (changes.lang && this.map) {
-      this.map.setOption('lang', (this.lang || 'fi'));
-    }
   }
 
   initMap() {
@@ -174,7 +176,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       ...(this.userSettings || {}),
       rootElem: this.elemRef.nativeElement,
       googleApiKey: Global.googleApiKey,
-      tileLayerOpacity: this.tileLayerOpacity,
       data: this.data
     };
     try {
@@ -192,7 +193,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   }
 
   moveEvent(type: string) {
-    this.onMove.emit({
+    this.move.emit({
       zoom: this.map.getNormalizedZoom(),
       bounds: this.map.map.getBounds(),
       type: type
@@ -219,10 +220,10 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     events.map(event => {
       switch (event.type) {
         case 'create':
-          this.onCreate.emit(event.feature.geometry);
+          this.create.emit(event.feature.geometry);
           break;
         case 'delete':
-          this.onCreate.emit();
+          this.create.emit();
           break;
         default:
       }

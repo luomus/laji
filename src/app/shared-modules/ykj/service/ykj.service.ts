@@ -1,5 +1,5 @@
+import { concat, take, delay, retryWhen,  map } from 'rxjs/operators';
 import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
@@ -51,7 +51,7 @@ export class YkjService {
       });
     }
     this.pendingKey = key;
-    const sourceMethod = zeroObservations
+    const sourceMethod: (query, aggregate, orderBy, pageSize, page, geoJson, onlyCount) => Observable<any> = zeroObservations
       ? this.warehouseApi.warehouseQueryGatheringStatisticsGet.bind(this.warehouseApi) : useStatistics
       ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
       : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
@@ -62,31 +62,48 @@ export class YkjService {
         10000,
         1,
         false,
-        !!zeroObservations
-      )
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .map(data => data.results);
+        false
+      ).pipe(
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
+        map(data => data.results)
+      );
     return this.pending;
   }
 
   combineGeoJsons(geoJson, zeroObsGeoJson) {
     const grids = geoJson.map(g => (g.properties.grid));
-    zeroObsGeoJson = zeroObsGeoJson.filter(z => (grids.indexOf(z.properties.grid) === -1));
-    return geoJson.concat(zeroObsGeoJson);
+    const filteredGeoJson = [];
+
+    const filteredZeroObsGeoJson = zeroObsGeoJson.filter(z => {
+      if (z.properties.lineLengthSum === 0) {
+        return false;
+      }
+
+      const idx = grids.indexOf(z.properties.grid);
+      if (idx === -1) {
+        return true;
+      }
+
+      filteredGeoJson.push({...geoJson[idx], properties: {...geoJson[idx].properties, lineLengthSum: z.properties.lineLengthSum}});
+      return false;
+    });
+
+    return filteredGeoJson.concat(filteredZeroObsGeoJson);
   }
 
-  resultToGeoJson(data, grid, setCountsToZero = false) {
+  resultToGeoJson(data, grid, zeroObservations = false) {
     const features = [];
     data.map(result => {
       features.push(this.convertYkjToGeoJsonFeature(
         result.aggregateBy[`gathering.conversions.ykj${grid}.lat`],
         result.aggregateBy[`gathering.conversions.ykj${grid}.lon`],
         {
-          count: setCountsToZero ? 0 : result.count || 0,
-          individualCountSum: setCountsToZero ? 0 : result.individualCountSum,
-          pairCountSum: setCountsToZero ? 0 : result.pairCountSum,
+          count: zeroObservations ? 0 : result.count || 0,
+          individualCountSum: zeroObservations ? 0 : result.individualCountSum,
+          pairCountSum: zeroObservations ? 0 : result.pairCountSum,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
+          lineLengthSum: zeroObservations ? result.lineLengthSum || 0 : undefined,
           grid: parseInt(result.aggregateBy[`gathering.conversions.ykj${grid}.lat`], 10) + ':'
           + parseInt(result.aggregateBy[`gathering.conversions.ykj${grid}.lon`], 10)
         }

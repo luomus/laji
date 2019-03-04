@@ -1,9 +1,9 @@
 <div class="page">
   <div class="pager">
-    <h2>{{namedPlace.name}}&nbsp;&nbsp;<span>1/{{total}}</span></h2>
+    <h2>{{ namedPlace.name }}&nbsp;&nbsp;<span>1/{{ total }}</span></h2>
   </div>
   <div class="title">
-    <h1>{{namedPlace.name}}</h1>
+    <h1>{{ namedPlace.name }}</h1>
   </div>
   <div class="short-hand">
     <strong>Kirjoita pikakirjoitukseen LAJI (a) (Lukumäärä) Koodi (A/P)</strong>
@@ -109,34 +109,34 @@
 
   <table class="info">
     <tr *ngFor="let row of info">
-      <td>{{row.key}}</td>
+      <td>{{ row.key }}</td>
       <td [innerHtml]="row.data | nlToBr"></td>
     </tr>
     <tr *ngIf="ykjGrid">
       <td>Yhtenäiskoordinaatit:</td>
-      <td>{{ykjGrid}}</td>
+      <td>{{ ykjGrid }}</td>
     </tr>
     <tr>
       <td>Aloituspisteen koordinaatit:</td>
-      <td>{{startPoint.lat}}:{{startPoint.lng}}:ykj</td>
+      <td>{{ startPoint.lat }}:{{ startPoint.lng }}:ykj</td>
     </tr>
     <tr>
       <td>Reitin kulmapisteet:</td>
-      <td>{{bounds.sw.lat}}:{{bounds.sw.lng}}:{{bounds.ne.lat}}:{{bounds.ne.lng}}:ykj</td>
+      <td>{{ bounds.sw.lat }}:{{ bounds.sw.lng }}:{{ bounds.ne.lat }}:{{ bounds.ne.lng }}:ykj</td>
     </tr>
     <tr>
       <td>Koillisnurkan etäisyys aloituspisteestä:</td>
-      <td>{{neDistance}}m</td>
+      <td>{{ neDistance }}m</td>
     </tr>
     <tr>
       <td>Reitin pituus:</td>
-      <td>{{routeLength}}m</td>
+      <td>{{ routeLength }}m</td>
     </tr>
     <tr *ngIf="person">
       <td>Havainnoja:</td>
       <td>
-        {{person.id | users:'fullname'}} ({{person.id}})<br>
-        {{person.emailAddress}}
+        {{ person.id | users:'fullname' }} ({{ person.id }})<br>
+        {{ person.emailAddress }}
       </td>
     </tr>
     <tr>
@@ -152,7 +152,7 @@
 <div class="page">
   <div class="no-page-break page-break-after" [ngClass]="{'page-landscape': landscape}" *ngIf="lajiMapOptions">
     <div class="pager">
-      <h2>{{namedPlace.name}}&nbsp;&nbsp;<span>2/{{total}}</span></h2>
+      <h2>{{ namedPlace.name }}&nbsp;&nbsp;<span>2/{{ total }}</span></h2>
     </div>
     <div class="map-wrap">
       <laji-map [options]="lajiMapOptions"></laji-map>
@@ -162,7 +162,7 @@
 <div *ngIf="pages">
   <div class="page no-page-break page-break-after table-page" *ngFor="let page of pages; let i = index">
     <div class="pager">
-      <h2>{{namedPlace.name}}&nbsp;&nbsp;<span>{{i + 3}}/{{total + 2}}</span></h2>
+      <h2>{{ namedPlace.name }}&nbsp;&nbsp;<span>{{ i + 3 }}/{{ total + 2 }}</span></h2>
     </div>
     <table class="line-table">
       <tr>
@@ -174,25 +174,25 @@
       <ng-container *ngFor="let distance of page; let j = index">
         <ng-container *ngIf="biotopes[(distance - formSplit)]; else noBiotopes">
           <tr *ngFor="let biotope of biotopes[(distance - formSplit)]; first as isFirst" class="biotopes-{{biotopes[(distance - formSplit)].length}}">
-            <td><div class="distance" *ngIf="isFirst">{{distance}}</div></td>
+            <td><div class="distance" *ngIf="isFirst">{{ distance }}</div></td>
             <td></td>
             <td></td>
             <td></td>
             <td class="biotope-container">
               <ul class="biotopelist">
-                <li>{{biotope}}</li>
+                <li>{{ biotope }}</li>
               </ul>
-              <div class="distance" *ngIf="isFirst">{{distance}}</div>
+              <div class="distance" *ngIf="isFirst">{{ distance }}</div>
             </td>
           </tr>
         </ng-container>
         <ng-template #noBiotopes>
           <tr class="biotopes-0">
-            <td><div class="distance">{{distance}}</div></td>
+            <td><div class="distance">{{ distance }}</div></td>
             <td></td>
             <td></td>
             <td></td>
-            <td><div class="distance">{{distance}}</div></td>
+            <td><div class="distance">{{ distance }}</div></td>
           </tr>
         </ng-template>
       </ng-container>

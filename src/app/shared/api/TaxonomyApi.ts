@@ -60,7 +60,6 @@ export class TaxonomyApi {
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
-
     return this.http.get(path, {params: queryParameters});
   }
 
@@ -224,6 +223,30 @@ export class TaxonomyApi {
       queryParameters['invasiveSpeciesFilter'] = invasiveSpeciesFilter ? 'true' : 'false'
     }
 
+    if (page !== undefined) {
+      queryParameters['page'] = page
+    }
+
+    if (pageSize !== undefined) {
+      queryParameters['pageSize'] = pageSize
+    }
+
+    if (sortOrder !== undefined) {
+      queryParameters['sortOrder'] = sortOrder
+    }
+
+    return this.http.get<PagedResult<Taxonomy>>(path, {params: queryParameters});
+  }
+
+  public species(query: any = {}, lang?: string, page?: string, pageSize?: string, sortOrder?: string): Observable<PagedResult<Taxonomy>> {
+    const path = this.basePath + '/taxa' + (query && query.id ? '/' + query.id : '') + '/species';
+
+    const queryParameters: any = {...Util.removeUndefinedFromObject(query)};
+    delete queryParameters.id;
+
+    if (lang !== undefined) {
+      queryParameters['lang'] = lang;
+    }
     if (page !== undefined) {
       queryParameters['page'] = page
     }

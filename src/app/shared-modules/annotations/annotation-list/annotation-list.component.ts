@@ -10,7 +10,7 @@ export class AnnotationListComponent implements OnInit {
 
   @Input() annotations: Annotation[];
   @Input() personID: string;
-  @Output() onDelete = new EventEmitter<Annotation>();
+  @Output() remove = new EventEmitter<Annotation>();
 
   types = Annotation.TypeEnum;
   annotationClass = Annotation.AnnotationClassEnum;

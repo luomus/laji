@@ -1,0 +1,17 @@
+.editor {
+  outline: 4px solid #999;
+  outline-offset: 0;
+  position: relative;
+}
+
+.height-settings, .width-settings {
+  padding: 5px;
+}
+
+.height-settings {
+  vertical-align: center;
+}
+
+.width-settings {
+  text-align: center;
+}

@@ -1,9 +1,9 @@
 <div class="filters" *ngIf="showFilter">
-  <laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
+  <laji-wbc-table-filter (valueChange)="filterBy = $event"></laji-wbc-table-filter>
 </div>
 <laji-datatable
   #dataTable
-  (rowSelect)="onRowSelect.emit($event.row)"
+  (rowSelect)="rowSelect.emit($event.row)"
   [sorts]="sorts"
   [clientSideSorting]="true"
   [showRowAsLink]="true"

@@ -5,55 +5,30 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  mode: 'none',
   entry: {
     server: './server.ts',
   },
   target: 'node',
   resolve: { extensions: ['.ts', '.js'] },
-  externals: [/(node_modules|main\..*\.js)/,],
+  optimization: {
+    minimize: false
+  },
   output: {
-    libraryTarget: 'commonjs2',
+    // Puts the output at the root of the dist folder
     path: path.join(__dirname, 'dist'),
     filename: '[name].js'
-  },
-  node: {
-    __dirname: false,
-    __filename: false,
   },
   module: {
     rules: [
       { test: /\.ts$/, loader: 'ts-loader' },
       {
-        test:/\.(ts|js)$/,
-        loader:'regexp-replace-loader',
-        options:{
-          match:{
-            pattern:'\\[(Mouse|Keyboard)Event\\]',
-            flags:'g'
-          },
-          replaceWith:'[]'
-        }
+        // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
+        // Removing this will cause deprecation warnings to appear.
+        test: /(\\|\/)@angular(\\|\/)core(\\|\/).+\.js$/,
+        parser: { system: true },
       },
-      {
-        test: /\.(ts|js)$/, use: {
-          loader: 'string-replace-loader', options: {
-            multiple: [{
-              search: '(window || global)',
-              replace: '((typeof window !== \'undefined\' && window) || global)'
-            }, {
-              search: '(window || global)',
-              replace: '((typeof window !== \'undefined\' && window) || global)'
-            }, {
-              search: '(window || global)',
-              replace: '((typeof window !== \'undefined\' && window) || global)'
-            }]
-          }
-        }
-      }
     ]
-  },
-  optimization: {
-    minimize: false
   },
   plugins: [
     new webpack.ContextReplacementPlugin(

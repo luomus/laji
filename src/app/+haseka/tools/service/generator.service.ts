@@ -57,14 +57,14 @@ export class GeneratorService {
         userToken: this.userService.getToken(),
         includePublic: false
       }),
-      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).map(result => result.results),
-      this.translateService.get(allTranslations, {separator: MappingService.valueSplitter})
-        .map(translated => Object.keys(this.instructionMapping).reduce((cumulative, current) => {
+      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(map(result => result.results)),
+      this.translateService.get(allTranslations, {separator: MappingService.valueSplitter}).pipe(
+        map(translated => Object.keys(this.instructionMapping).reduce((cumulative, current) => {
           if (translated[this.instructionMapping[current]]) {
             cumulative[current] = translated[this.instructionMapping[current]];
           }
           return cumulative;
-        }, {[this.instructionArray]: translated[this.instructionArray]}))
+        }, {[this.instructionArray]: translated[this.instructionArray]})))
     ).pipe(
       map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2], translations: data[3]}))
     )
@@ -102,7 +102,7 @@ export class GeneratorService {
         const valueIdx = field.enum.indexOf(field.default);
         value = field.enumNames[valueIdx];
       } else if (field.type === 'boolean') {
-        value = this.mappingService.reverseMap(value, field)
+        value = this.mappingService.reverseMap(value, field);
       }
       result[0][idx] = field.fullLabel;
       result[1][idx] = value;

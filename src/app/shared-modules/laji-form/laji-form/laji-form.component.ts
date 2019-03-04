@@ -23,6 +23,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { Global } from '../../../../environments/global';
 import { AreaService } from '../../../shared/service/area.service';
+import { TranslateService } from '@ngx-translate/core';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -33,14 +34,13 @@ const GLOBAL_SETTINGS = '_global_form_settings_';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
-  @Input() lang: string;
   @Input() formData: any = {};
-  @Input() tick: number;
   @Input() settingsKey = '';
 
-  @Output() onSubmit = new EventEmitter();
-  @Output() onChange = new EventEmitter();
+  @Output() dataSubmit = new EventEmitter();
+  @Output() dataChange = new EventEmitter();
 
+  lang: string;
   lajiFormWrapper: any;
   reactElem: any;
   renderElem: any;
@@ -48,6 +48,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   private settings: any;
   private errorSub: Subscription;
   private municipalityEnums: any;
+  private biogeographicalProvinceEnums: any;
 
   @ViewChild('errorModal') public errorModal: ModalDirective;
   @ViewChild('lajiForm') lajiFormRoot: ElementRef;
@@ -58,15 +59,28 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
               private ngZone: NgZone,
               private cd: ChangeDetectorRef,
               private toastsService: ToastsService,
-              private areaService: AreaService
+              private areaService: AreaService,
+              private translate: TranslateService
   ) {
   }
 
   ngOnInit(): void {
+    this.lang = this.translate.currentLang;
     this.areaService.getMunicipalities(this.lang).subscribe(municipalities => {
       this.municipalityEnums = municipalities.reduce((enums, municipality) => {
         enums.enum.push(municipality.id);
         enums.enumNames.push(municipality.value);
+        return enums;
+      }, {
+        enum: [],
+        enumNames: []
+      });
+      this.mountLajiForm();
+    });
+    this.areaService.getBiogeographicalProvinces(this.lang).subscribe(provinces => {
+      this.biogeographicalProvinceEnums = provinces.reduce((enums, province) => {
+        enums.enum.push(province.id);
+        enums.enumNames.push(province.value);
         return enums;
       }, {
         enum: [],
@@ -94,9 +108,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       return;
     }
     this.ngZone.runOutsideAngular(() => {
-      if (changes['lang']) {
-        this.lajiFormWrapper.setState({lang: this.lang});
-      }
       if (changes['formData']) {
         this.lajiFormWrapper.setState({
           schema: this.formData.schema,
@@ -150,13 +161,15 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     if (this.errorSub) {
       this.errorSub.unsubscribe();
     }
-    this.errorSub = this.ngZone.onError.subscribe(() => {
+    this.errorSub = this.ngZone.onError.subscribe((error) => {
+      this.logger.error('LajiForm crashed', {error, userSetting: this.settings});
+      throw error;
       this.errorModal.show();
     });
   }
 
   mountLajiForm() {
-    if (!this.municipalityEnums || !this.settings) {
+    if (!this.municipalityEnums || !this.biogeographicalProvinceEnums || !this.settings) {
       return;
     }
     this.createNewLajiForm();
@@ -172,8 +185,10 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
         const uiSchemaContext = this.formData.uiSchemaContext || {};
         uiSchemaContext['creator'] = this.formData.formData.creator;
         uiSchemaContext['municipalityEnum'] = this.municipalityEnums;
+        uiSchemaContext['biogeographicalProvinceEnum'] = this.biogeographicalProvinceEnums;
         this.apiClient.lang = this.lang;
         this.apiClient.personToken = this.userService.getToken();
+        this.apiClient.formID = this.formData.id;
         this.lajiFormWrapper = new LajiForm({
           staticImgPath: '/static/lajiForm/',
           rootElem: this.lajiFormRoot.nativeElement,
@@ -202,7 +217,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
         });
       });
     } catch (err) {
-      this.logger.error('Failed to load lajiForm', {error: err, userSetting: this.settings});
+      this.logger.error('Failed to load LajiForm', {error: err, userSetting: this.settings});
     }
   }
 
@@ -211,12 +226,12 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   _onChange(formData) {
-    this.onChange.emit(formData);
+    this.dataChange.emit(formData);
   }
 
   _onSubmit(data) {
     this.ngZone.run(() => {
-      this.onSubmit.emit({
+      this.dataSubmit.emit({
         data: data,
         makeBlock: this.lajiFormWrapper.pushBlockingLoader,
         clearBlock: this.lajiFormWrapper.popBlockingLoader

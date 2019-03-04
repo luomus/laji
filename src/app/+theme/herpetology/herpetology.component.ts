@@ -1,3 +1,5 @@
+
+import {filter, merge, tap, switchMap, map} from 'rxjs/operators';
 /**
  * Created by mjtahtin on 18.4.2017.
  */
@@ -58,39 +60,39 @@ export class HerpetologyComponent implements OnInit {
         .taxonomyFindSpecies(
           'MX.37609', 'multi', 'MVL.26',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation', undefined, '1', '10', undefined,
           {selectedFields: 'id,alternativeVernacularName,vernacularName'}
-        )
-        .map(species => species.results)
-        .switchMap(data => {
+        ).pipe(
+        map(species => species.results)).pipe(
+        switchMap(data => {
           return ObservableForkJoin(data.map(taxon => this.taxonomyApi
-            .taxonomyFindMedia(taxon.id, 'multi')
-            .map(images => ({taxon: taxon, images: images[0] || {} }))
+            .taxonomyFindMedia(taxon.id, 'multi').pipe(
+            map(images => ({taxon: taxon, images: images[0] || {} })))
           ));
-        }),
+        })),
       this.taxonomyApi
-        .taxonomyFindSpecies('MX.37610', 'multi', 'MVL.162',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation')
-        .map(species => species.results)
-        .switchMap(data => {
+        .taxonomyFindSpecies('MX.37610', 'multi', 'MVL.162',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation').pipe(
+        map(species => species.results)).pipe(
+        switchMap(data => {
           return ObservableForkJoin(data.map(taxon => this.taxonomyApi
-            .taxonomyFindMedia(taxon.id, 'multi')
-            .map(images => ({taxon: taxon, images: images[0] || {}}))
+            .taxonomyFindMedia(taxon.id, 'multi').pipe(
+            map(images => ({taxon: taxon, images: images[0] || {}})))
           ));
-        }),
+        })),
       this.taxonomyApi
         .taxonomyFindSpecies('MX.37608', 'multi', 'MVL.26',  undefined, undefined,
-          'MX.typeOfOccurrenceAnthropogenic,MX.typeOfOccurrenceRareVagrant,MX.typeOfOccurrenceVagrant')
-        .map(species => species.results)
-        .switchMap(data => {
+          'MX.typeOfOccurrenceAnthropogenic,MX.typeOfOccurrenceRareVagrant,MX.typeOfOccurrenceVagrant').pipe(
+        map(species => species.results)).pipe(
+        switchMap(data => {
           return ObservableForkJoin(data.map(taxon => this.taxonomyApi
-            .taxonomyFindMedia(taxon.id, 'multi')
-            .map(images => ({taxon: taxon, images: images[0] || {}}))
+            .taxonomyFindMedia(taxon.id, 'multi').pipe(
+            map(images => ({taxon: taxon, images: images[0] || {}})))
           ));
-        })
+        }))
     );
 
     const cacheKey = 'herpetology';
-    this.cacheService.getItem<any[]>(cacheKey)
-      .merge(fetchData$.do(data => this.cacheService.setItem(cacheKey, data).subscribe(() => {}, () => {})))
-      .filter(data => !!data)
+    this.cacheService.getItem<any[]>(cacheKey).pipe(
+      merge(fetchData$.pipe(tap(data => this.cacheService.setItem(cacheKey, data).subscribe(() => {}, () => {})))),
+      filter(data => !!data), )
       .subscribe(data => {
           this.amphibianTaxa = data[0];
           this.reptileTaxa = data[1];

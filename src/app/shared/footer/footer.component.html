@@ -2,11 +2,11 @@
   <div class="container-fluid info-footer">
     <div class="row">
       <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
-        <h3><a [routerLink]="'/about/' + item.id | localize">{{item.title}}</a></h3>
-        <p *ngIf="i === 0"><strong>{{'footer.intro1' | translate}}</strong></p>
+        <h3><a [routerLink]="'/about/' + item.id | localize">{{ item.title }}</a></h3>
+        <p class="intro" *ngIf="i === 0"><strong>{{ 'footer.intro1' | translate }}</strong></p>
         <ul *ngIf="item.children">
           <li *ngFor="let child of item.children">
-            <a [routerLink]="'/about/' + child.id | localize">{{child.title}}</a>
+            <a [routerLink]="'/about/' + child.id | localize">{{ child.title }}</a>
           </li>
           <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
         </ul>
@@ -14,8 +14,8 @@
     </div>
     <div class="row" *ngIf="onFrontPage">
       <div class="col-sm-11 col-sm-offset-1">
-        <div class="pull-right">
-          {{'footer.image.attribution' | translate}}:
+        <div class="pull-right info">
+          {{ 'footer.image.attribution' | translate }}:
           <!-- Talvi
           -->
           <a href="https://www.flickr.com/photos/timo_w2s/15517459434/">Timo Newton-Syms</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/"> Creative Commons BY-SA 2.0</a>
@@ -34,7 +34,7 @@
       <div class="row">
         <div class="col-sm-offset-1 col-sm-11 partners front"
              [ngClass]="{hidden: !onFrontPage}">
-          <span class="title">{{'footer.partners' | translate }}</span>
+          <span class="title">{{ 'footer.partners' | translate }}</span>
           <ul>
             <li>
               <a href="http://luomus.fi" target="_blank">
@@ -43,7 +43,7 @@
             </li>
             <li>
               <a href="http://www.syke.fi" target="_blank">
-                <img src="https://cdn.laji.fi/images/partners/syke_logo.png" alt="SYKE">
+                <img src="https://cdn.laji.fi/images/partners/syke_logo_2019.png" alt="SYKE">
               </a>
             </li>
             <li>
@@ -53,7 +53,7 @@
             </li>
             <li>
               <a href="http://www.mmm.fi" target="_blank">
-                <img src="https://cdn.laji.fi/images/partners/mmm_logo.jpg" alt="MMM">
+                <img src="https://cdn.laji.fi/images/partners/mmm_logo.png" alt="MMM">
               </a>
             </li>
             <li>

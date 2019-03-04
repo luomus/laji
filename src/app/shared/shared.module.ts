@@ -13,18 +13,18 @@ import { ObservationCountComponent } from '../+observation/count/observation-cou
 import { PanelComponent } from './panel/panel.component';
 import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';
-import { ImageModalComponent } from './image-gallery/image-modal.component';
+import { ImageModalComponent } from './gallery/image-gallery/image-modal.component';
 import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { ToFullUriPipe } from './pipe/to-full-uri';
-import { GalleryComponent } from '../+observation/gallery/gallery.component';
+import { GalleryComponent } from './gallery/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
-import { Ng2Webstorage } from 'ngx-webstorage';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 import { AuthenticatedHttpInterceptor } from './service/authenticated-http.interceptor';
-import { ImageComponent } from './image/image.component';
+import { ImageComponent } from './gallery/image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
 import { AreaNamePipe } from './pipe/area-name.pipe';
-import { ImageModalOverlayComponent } from './image-gallery/image-modal-overlay.component';
+import { ImageModalOverlayComponent } from './gallery/image-gallery/image-modal-overlay.component';
 import { MomentModule } from 'angular2-moment';
 import { FormNamePipe } from './pipe/form-name.pipe';
 import { NlToBrPipe } from './pipe/nl-to-br.pipe';
@@ -37,21 +37,25 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
-import { ObservationGroupSelectComponent } from './group-select/group-select.component';
+import { ObservationGroupSelectComponent } from './group-select/observation-group-select.component';
+import { IucnGroupSelectComponent } from './group-select/iucn-group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
+import { ChecklistPipe } from './pipe/checklist.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
-import { DatePickerComponent } from './datepicker/datepicker.component'
+import { DatePickerComponent } from './datepicker/datepicker.component';
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ServerOnlyDirective } from './directive/server-only.directive';
 import { BrowserOnlyDirective } from './directive/browser-only.directive';
 import { ForTypesDirective } from './directive/for-types.directive';
-import { IucnFooterComponent } from './iucn-footer/footer.component';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
+import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
+import { PublicationPipe } from './pipe/publication.pipe';
+import { HabitatComponent } from './habitat/habitat.component';
 
 
 @NgModule({
@@ -65,14 +69,18 @@ import { FilterPipe } from './pipe/filter.pipe';
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, NlToBrPipe,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
+    ObservationGroupSelectComponent, IucnGroupSelectComponent,
+    SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
     TaxonNameComponent,
+    ChecklistPipe,
     FactNotInPipe,
     ForTypesDirective,
-    IucnFooterComponent,
     CapitalizePipe,
     CoordinatePipe,
-    FilterPipe
+    FilterPipe,
+    BoolToStringPipe,
+    PublicationPipe,
+    HabitatComponent
   ],
   imports: [
     FormsModule,
@@ -84,7 +92,7 @@ import { FilterPipe } from './pipe/filter.pipe';
     MomentModule,
     SpinnerModule,
     PaginatorModule,
-    TooltipModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule, ProgressbarModule
+    TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule
   ],
   providers: [ ], // keep this empty!
   exports: [
@@ -95,10 +103,11 @@ import { FilterPipe } from './pipe/filter.pipe';
     FormattedNumber, ObservationCountComponent, GalleryComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, ServerOnlyDirective, BrowserOnlyDirective,
-    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent,
-    FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
-    FilterPipe
+    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, IucnGroupSelectComponent,
+    ObservationGroupSelectComponent,
+    SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
+    FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent
   ]
 })
 export class SharedModule {
@@ -106,7 +115,7 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        Ng2Webstorage,
+        NgxWebstorageModule,
         DateFormatPipe,
         FormattedNumber,
         ToQNamePipe,

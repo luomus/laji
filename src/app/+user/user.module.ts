@@ -4,8 +4,12 @@ import { FriendsComponent, ProfileComponent, routing, UserComponent, UserLoginCo
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { FindPersonModule } from '../shared-modules/find-person/find-person.module';
+import { UserLoginGuard } from './login/user-login.guard';
 
 @NgModule({
+  providers: [
+    UserLoginGuard
+  ],
   imports: [
     routing,
     SharedModule,

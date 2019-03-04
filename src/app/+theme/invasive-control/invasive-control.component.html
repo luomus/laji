@@ -1,19 +1,27 @@
-<div class="container-fluid line">
-  <div class="row" id="wrapper">
-    <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-2 col-lg-2">
-      <h1>Vieras&shy;lajit</h1>
-      <ul class="sidebar-nav">
-        <li><a routerLinkActive="laji-sidebar-active" [routerLink]="['../vieraslajit', 'instructions']">{{'instructions' | translate}}</a></li>
-        <ng-container *ngIf="(rights | async)?.edit || (rights | async)?.admin">
-          <li><a routerLinkActive="laji-sidebar-active" [routerLink]="['../vieraslajit', 'places']">{{'invasiveSpecies.places' | translate}}</a></li>
-        </ng-container>
-        <ng-container *ngIf="(rights | async)?.admin">
-          <li *ngIf="(rights | async)?.admin"><a [routerLink]="['/vihko/fp/HR.2049/admin']">{{'form.administer' | translate}}</a></li>
-        </ng-container>
-      </ul>
-    </div>
-    <div class="col-sm-9 col-md-10 col-lg-10 main-content" class="col-sm-9 col-md-10 col-lg-10">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div>
+<laji-theme-page [title]="'Vieras&shy;lajit'"
+  [navLinks]="[
+    {
+      routerLink: ['../vieraslajit', 'instructions'],
+      label: 'instructions' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../vieraslajit', 'places'],
+      label: 'invasiveSpecies.places' | translate,
+      visible: rights?.edit || rights?.admin
+    },
+    {
+      routerLink: ['../vieraslajit', 'ownSubmissions'],
+      label: rights?.admin ?
+             ('theme.admin.submissions' | translate):
+             ('haseka.ownSubmissions.title' | translate),
+      visible: rights?.edit || rights?.admin
+    },
+    {
+      routerLink: ['/vihko/fp/HR.2049/admin'],
+      label: 'form.administer' | translate,
+      visible: rights?.admin
+    }
+  ]">
+  <router-outlet></router-outlet>
+</laji-theme-page>

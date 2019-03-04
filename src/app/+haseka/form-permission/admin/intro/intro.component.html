@@ -1,6 +1,5 @@
 <div class="row">
   <div class="col-sm-6">
-    <h1>Lomakkeen oikeuksien hallinta</h1>
-    <p>Täältä voit hallinnoida sitä kuka pääsee käyttämään lomakketta.</p>
+    <div *ngIf="loaded" [innerHtml]="form?.options?.formPermissionDescription ? form.options.formPermissionDescription : 'haseka.form.rights.description' | translate"></div>
   </div>
 </div>

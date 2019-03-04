@@ -1,3 +1,4 @@
+import {tap, combineLatest, debounceTime} from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,6 +18,7 @@ import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
+
 
 @Component({
   selector: 'laji-omni-search',
@@ -58,9 +60,9 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.inputChange = this.searchControl.valueChanges
-      .do(value => this.search = value)
-      .debounceTime(this.delay)
+    this.inputChange = this.searchControl.valueChanges.pipe(
+      tap(value => this.search = value)).pipe(
+      debounceTime(this.delay))
       .subscribe(value => {
         this.updateTaxa();
       });
@@ -91,12 +93,12 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.taxon.informalTaxonGroups = this.taxon.payload.informalTaxonGroups
         .map(group => group.name);
       this.subCnt =
-        ObservableOf(this.taxon.key).combineLatest(
+        ObservableOf(this.taxon.key).pipe(combineLatest(
           this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key}),
           (id, cnt) => {
             return {id: id, cnt: cnt.total};
           }
-        ).subscribe(data => {
+        )).subscribe(data => {
           this.taxa.map(auto => {
             if (auto.key === data.id ) {
               auto['count'] = data.cnt;
@@ -154,6 +156,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       })
       .subscribe(
         data => {
+          console.log(data);
           this.taxa = data;
           this.loading = false;
           this.activate(0);

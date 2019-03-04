@@ -1,6 +1,9 @@
+
+import {debounceTime} from 'rxjs/operators';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'laji-quality-filters',
@@ -8,7 +11,7 @@ import { Subject, Subscription } from 'rxjs';
   styleUrls: ['./quality-filters.component.css']
 })
 export class QualityFiltersComponent implements OnInit, OnDestroy {
-  @Output() onSelect = new EventEmitter();
+  @Output() select = new EventEmitter();
 
   filters = {
     group: '',
@@ -26,10 +29,10 @@ export class QualityFiltersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subSearch = this.delayedSearch
-      .debounceTime(this.debouchAfterChange)
+    this.subSearch = this.delayedSearch.pipe(
+      debounceTime(this.debouchAfterChange))
       .subscribe(() => {
-          this.onSelect.emit(this.filters);
+          this.select.emit(this.filters);
       });
   }
 

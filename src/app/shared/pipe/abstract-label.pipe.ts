@@ -1,16 +1,28 @@
-import { EventEmitter, OnDestroy, PipeTransform } from '@angular/core';
+import {ChangeDetectorRef, OnDestroy, PipeTransform} from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Observable, Subscription } from 'rxjs';
 
-export abstract class AbsractLabelPipe implements PipeTransform, OnDestroy {
+export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   value = '';
   lastKey: string;
-  onLangChange: EventEmitter<LangChangeEvent>;
+  protected key: string;
+  onLangChange: Subscription;
 
-  constructor(protected translate: TranslateService) {
+  constructor(protected translate: TranslateService,
+              protected _ref: ChangeDetectorRef,
+  ) {
   }
 
-  updateValue(key: string): void {
-    this._updateValue(key);
+  updateValue(key: string): Observable<string> {
+    return Observable.create(observer => {
+      this.key = key;
+      this._updateValue(key).subscribe(value => {
+        const _value = this._parseValue(value);
+        this.value = _value;
+        observer.next(this.value);
+        this._ref.markForCheck();
+      });
+    });
   }
 
   transform(value: string): any {
@@ -28,7 +40,7 @@ export abstract class AbsractLabelPipe implements PipeTransform, OnDestroy {
     this.lastKey = value;
 
     // set the value
-    this.updateValue(value);
+    this.updateValue(value).subscribe();
 
     // if there is a subscription to onLangChange, clean it
     this._dispose();
@@ -37,26 +49,26 @@ export abstract class AbsractLabelPipe implements PipeTransform, OnDestroy {
     if (!this.onLangChange) {
       this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
         this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
-        this.updateValue(value);
+        this.updateValue(value).subscribe();
       });
     }
     return this.value;
-  }
-
-  /**
-   * Clean any existing subscription to onLangChange events
-   * @private
-   */
-  _dispose(): void {
-    if (this.onLangChange) {
-      this.onLangChange.unsubscribe();
-      this.onLangChange = undefined;
-    }
   }
 
   ngOnDestroy(): void {
     this._dispose();
   }
 
-  protected abstract _updateValue(key: string): void;
+  /**
+   * Clean any existing subscription to onLangChange events
+   */
+  protected _dispose(): void {
+    if (this.onLangChange) {
+      this.onLangChange.unsubscribe();
+      this.onLangChange = undefined;
+    }
+  }
+
+  protected abstract _updateValue(key: string): Observable<any>;
+  protected abstract _parseValue(key: any): string;
 }

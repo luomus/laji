@@ -12,9 +12,7 @@ export class SearchFiltersComponent implements OnInit {
   @Input() showFilter = true;
   @Input() searchQuery: SearchQueryInterface;
 
-  @Input() hasInvasiveControlRights = false;
-  @Output() onShowFilterChange = new EventEmitter<boolean>();
-  @Output() onInvasiveControlClick = new EventEmitter();
+  @Output() showFilterChange = new EventEmitter<boolean>();
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -26,7 +24,7 @@ export class SearchFiltersComponent implements OnInit {
 
   toggleFilters() {
     this.showFilter = !this.showFilter;
-    this.onShowFilterChange.emit(this.showFilter);
+    this.showFilterChange.emit(this.showFilter);
     if (!isPlatformBrowser(this.platformID)) {
       return;
     }
@@ -41,9 +39,5 @@ export class SearchFiltersComponent implements OnInit {
         }
       }, 50);
     } catch (e) {}
-  }
-
-  toInvasiveControlForm() {
-    this.onInvasiveControlClick.emit();
   }
 }

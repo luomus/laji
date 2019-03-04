@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <laji-informal-group-select
+        [id]="searchQuery.query.informalGroupFilters"
+        (informalGroupSelect)="informalGroupChange($event)"
+      ></laji-informal-group-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
+        <li role="presentation"  [ngClass]="{active: active === 'images'}">
+          <a (click)="setActive('images')">
+            {{ "species.images" | translate }}
+          </a>
+        </li>
+        <li role="presentation" [ngClass]="{active: active === 'list'}">
+          <a (click)="setActive('list')">
+            {{ "species.list" | translate }}
+          </a>
+        </li>
+      </ul>
+
+      <laji-species-images [hidden]="active !== 'images'"
+                           *ngIf="activated['images']"
+                           [searchQuery]="searchQuery"
+      ></laji-species-images>
+      <laji-species-list [hidden]="active !== 'list'"
+                         *ngIf="activated['list']"
+                         [visible]="active === 'list'"
+                         [searchQuery]="searchQuery"
+                         [showDownloadAndBrowse]="false"
+      ></laji-species-list>
+    </div>
+  </div>
+</div>

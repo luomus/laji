@@ -1,0 +1,93 @@
+<form class="form-horizontal">
+  <div class="form-group">
+    <div class="col-sm-5 col-md-4">
+      <label>{{ 'iucn.filter.redListGroup' | translate }}</label>
+      <laji-iucn-group-select
+        [ngModel]="query?.redListGroup"
+        (select)="change('redListGroup', $event)"
+        [position]="'left'"
+        name="informalTaxonGroupId">
+        {{ 'observation.active.informalTaxonGroupAll'|translate }}
+      </laji-iucn-group-select>
+    </div>
+    <div class="col-sm-5 col-md-4">
+      <label>{{ 'species.form.specimen' | translate }}</label>
+      <laji-taxon-select
+        [class]="'form-control'"
+        (taxonIdChange)="change('taxon', $event)"
+        [placeholder]="''"
+        [taxonId]="query.taxon"
+        [searchParams]="{species: false}">
+      </laji-taxon-select>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-5 col-md-4">
+      <label>{{ 'iucn.filter.habitat' | translate }}</label>
+      <div class="input-group">
+        <select laji-dropdown [placeholder]="''" [value]="query?.habitat" (valueChange)="habitatChange($event)" [options]="habitats$ | async"></select>
+        <span class="input-group-addon">
+          <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'Vain ensisijaisella'">
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-5 col-md-4">
+      <label>{{ 'iucn.filter.habitatSpecific' | translate }}</label>
+      <select [disabled]="!query?.habitat" laji-dropdown [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="''"></select>
+    </div>
+  </div>
+  <ng-container *ngIf="threadReasons$ | async; let reasons">
+    <div class="form-group">
+      <div class="col-sm-5 col-md-4">
+        <label>{{ 'iucn.hasEndangermentReason' | translate }}</label>
+        <div class="input-group">
+          <select laji-dropdown
+            [value]="query?.reasons"
+            (valueChange)="change('reasons', $event)"
+            [placeholder]="''"
+            [options]="reasons"></select>
+          <span class="input-group-addon">
+            <input type="checkbox" [checked]="query?.onlyPrimaryReason" (change)="change('onlyPrimaryReason', !query.onlyPrimaryReason)" [tooltip]="'Vain ensisijaisella'">
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-5 col-md-4">
+        <label>{{ 'iucn.hasThreat' | translate }}</label>
+        <div class="input-group">
+          <select laji-dropdown
+            [value]="query?.threats"
+            (valueChange)="change('threats', $event)"
+            [placeholder]="''"
+            [options]="reasons"></select>
+          <span class="input-group-addon">
+            <input type="checkbox" [checked]="query?.onlyPrimaryThreat" (change)="change('onlyPrimaryThreat', !query.onlyPrimaryThreat)" [tooltip]="'Vain ensisijaisella'">
+          </span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="form-group" *ngIf="type !== 'status'">
+    <div class="col-sm-5 col-md-4" style="position: relative;">
+      <div class="overlay-dropdown" (click)="toggleStatus()"></div>
+      <label>{{ 'iucn.filter.status' | translate }}</label>
+      <div *ngIf="showStatusSelect; else statusDropDown">
+        <select class="form-control" tabindex="-1"></select>
+        <div style="position: absolute; top: 0; left: 15px; right: 15px; z-index: 999" (lajiClickOutSide)="toggleStatus()">
+          <label style="color: transparent">{{ 'iucn.filter.status' | translate }}</label>
+          <select class="form-control"  tabindex="-1">
+            <option value="">{{ query.status ? query.status.join(',') : '' }}</option>
+          </select>
+          <laji-redlist-class-filter [value]="query?.status" (valueChange)="change('status', $event)"></laji-redlist-class-filter>
+        </div>
+      </div>
+      <ng-template #statusDropDown>
+        <select class="form-control" (focus)="toggleStatus()">
+          <option value="">{{ query.status ? query.status.join(',') : '' }}</option>
+        </select>
+      </ng-template>
+    </div>
+  </div>
+  <div class="clear-container">
+    <button type="button" class="btn btn-default btn-sm" (click)="clear()">Tyhjennä</button>
+  </div>
+</form>

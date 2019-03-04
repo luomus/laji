@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-document-form-footer',
@@ -9,12 +10,14 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class DocumentFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
-  @Output() onSubmitPublic = new EventEmitter();
-  @Output() onSubmitPrivate = new EventEmitter();
-  @Output() onCancel = new EventEmitter();
-  @Output() onLock = new EventEmitter<boolean>();
+  @Input() readonly = false;
+  @Input() edit = false;
+  @Output() submitPublic = new EventEmitter();
+  @Output() submitPrivate = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+  @Output() lock = new EventEmitter<boolean>();
   _form: any;
-  _locked: false;
+  _locked: boolean;
   _admin: false;
   show = {
     save: false,
@@ -24,30 +27,42 @@ export class DocumentFormFooterComponent {
 
   constructor() { }
 
+  isString(val) { return typeof val === 'string'; }
+
+  displaysSaveContainer() { return this._admin || this.show.save; }
+
   @Input()
   set form(form: any) {
     this._form = form;
     this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
-    this._locked = form && form.formData && form.formData.locked;
-    ['save', 'temp', 'cancel'].forEach(place => {
+    this._locked = form && form && (form.features || []).indexOf(Form.Feature.AdminLockable) > -1
+      ? !!form.formData.locked
+      : undefined;
+    ['save', 'temp', 'cancel'].forEach(prop => {
       let show: boolean;
 
       if (!form || !form.actions) {
         show = true;
       } else {
-        show = place in form.actions;
+        show = prop in form.actions;
       }
-      this.show[place] = show;
+      if (this.readonly && (prop === 'save' || prop === 'temp')) {
+        show = false;
+      }
+      this.show[prop] = show;
     });
   }
 
-  buttonLabel(place: 'save'|'temp'|'cancel') {
-    if (this.form && this.form.actions && this.form.actions[place]) {
-      return this.form.actions[place];
+  buttonLabel(prop: 'save'|'temp'|'cancel') {
+    if (this._form && this._form.actions && this._form.actions[prop]) {
+      if (prop === 'save' && this.edit && this._form.actions.edit) {
+        return this._form.actions.edit;
+      }
+      return this._form.actions[prop];
     }
-    if (place === 'save') {
+    if (prop === 'save') {
       return 'haseka.form.savePublic';
-    } else if (place === 'temp') {
+    } else if (prop === 'temp') {
       return 'haseka.form.savePrivate';
     }
     return 'haseka.form.back';

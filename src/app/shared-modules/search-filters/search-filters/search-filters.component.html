@@ -13,18 +13,13 @@
   <div class="form-group">
     <div class="col-xs-12 form-title">
       <strong>
-        {{'observation.form.title' | translate}}
+        {{ 'observation.form.title' | translate }}
         <laji-observation-active [searchQuery]="searchQuery"></laji-observation-active>
       </strong>
     </div>
   </div>
   <div class="lj-filter-wrap">
     <ng-content></ng-content>
-    <div style="padding-top: 10px" *ngIf="hasInvasiveControlRights">
-      <button type="button" class="btn btn-default" (click)="toInvasiveControlForm()">
-        {{'toICForm' | translate}}
-      </button>
-    </div>
     <div class="form-filters-fill"></div>
   </div>
 </div>

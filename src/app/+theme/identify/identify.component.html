@@ -1,21 +1,21 @@
 <div class="container-fluid">
   <div class="row identify-intro">
     <div class="col-sm-12">
-      <h1>{{'navigation.identify' | translate}}</h1>
+      <h1>{{ 'navigation.identify' | translate }}</h1>
       <p>
-        {{'identify.intro' | translate}}
+        {{ 'identify.intro' | translate }}
       </p>
       <p>
-        {{'identify.reportIntro' | translate}}
+        {{ 'identify.reportIntro' | translate }}
         <br/>
-        <a class="link btn btn-primary" [routerLink]="['/vihko/' + formId | localize]">{{'identify.report' | translate}}</a>
-        <span *lajiLoggedIn="false">({{'identify.requiresAuthentication' | translate}})</span>
+        <a class="link btn btn-primary" [routerLink]="['/vihko/' + formId | localize]">{{ 'identify.report' | translate }}</a>
+        <span *lajiLoggedIn="false">({{ 'identify.requiresAuthentication' | translate }})</span>
       </p>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-4">
-      <label>{{'filter.informalTaxonGroup' | translate}}:</label>
+      <label>{{ 'filter.informalTaxonGroup' | translate }}:</label>
     </div>
   </div>
   <div class="row">
@@ -23,16 +23,15 @@
       <form>
         <laji-observation-group-select
           name="group'"
-          (onSelect)="onSelectGroup()"
+          (select)="onSelectGroup()"
           [position]="'left'"
-          [(ngModel)]="group"
-          [lang]="translateService.currentLang">
-          {{'observation.active.informalTaxonGroupAll'|translate}}
+          [(ngModel)]="group">
+          {{ 'observation.active.informalTaxonGroupAll'|translate }}
         </laji-observation-group-select>
       </form>
     </div>
     <div class="col-sm-8 select-intro">
-      <small>{{'identify.selectIntro' | translate}}</small>
+      <small>{{ 'identify.selectIntro' | translate }}</small>
     </div>
   </div>
   <div class="row">
@@ -44,9 +43,9 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <h2>{{'identify.mostActiveTitle' | translate}}</h2>
+      <h2>{{ 'identify.mostActiveTitle' | translate }}</h2>
       <laji-most-active-users-table [maxLength]="5" [group]="query ? query.informalTaxonGroupId: ''"></laji-most-active-users-table>
-      <p><a [routerLink]="['/theme/quality' | localize]">{{'identify.toQualityPage' | translate}}</a></p>
+      <p><a [routerLink]="['/theme/quality' | localize]">{{ 'identify.toQualityPage' | translate }}</a></p>
     </div>
   </div>
 </div>

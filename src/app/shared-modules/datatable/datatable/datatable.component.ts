@@ -1,3 +1,5 @@
+
+import {take,  map, tap, share, debounceTime } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -12,8 +14,7 @@ import {
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
-import { interval as ObservableInterval, of as ObservableOf, Subject, Subscription, Observable } from 'rxjs';
-import { map, tap, share, debounceTime } from 'rxjs/operators';
+import { of as ObservableOf, Subject, Subscription, Observable } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
@@ -21,9 +22,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 
-const CACHE_COLUMN_SETINGS = 'datatable-col-width';
+const CACHE_COLUMN_SETTINGS = 'datatable-col-width';
 
-interface Settings {[key: string]: DatatableColumn}
+interface Settings {[key: string]: DatatableColumn; }
 
 @Component({
   selector: 'laji-datatable',
@@ -91,12 +92,12 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   ) {
     this.settings$ = DatatableComponent.settings ?
       ObservableOf(DatatableComponent.settings).pipe(share()) :
-      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETINGS)
+      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETTINGS)
         .pipe(
           map(value => value || {}),
           tap(value => DatatableComponent.settings = value),
           share()
-        )
+        );
   }
 
   @Input() set count(cnt: number) {
@@ -116,14 +117,19 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this.updateFilteredRows();
     } else {
       this._rows = this._originalRows;
-      this.scrollTo();
+      if (this._preselectedRowIndex === undefined) {
+        this.scrollTo();
+      }
+    }
+    if (this._preselectedRowIndex !== undefined) {
+      this.preselectedRowIndex = this._preselectedRowIndex;
     }
   }
 
   @Input() set page(page: number) {
     this._page = page;
     this._offset = page - 1;
-  };
+  }
 
   @Input() set columns(columns: DatatableColumn[]) {
     this.settings$.subscribe(settings => {
@@ -151,29 +157,35 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;
-    if (this.initialized) {
-      this.selected = [this._rows[this._preselectedRowIndex]] || [];
-      if (this.selected.length > 0) {
-        // wait until datatable initialization is complete (monkey patched) before scrolling
-        this.datatable.initializationState.take(1).subscribe({next: () => {
-          // find the index in datatable internal sorted array that corresponds to selected index in input data
-          const postSortIndex = this.datatable._internalRows.findIndex((element) => {
-            return element.preSortIndex === this._preselectedRowIndex;
-          });
-          // Calculate relative position of selected row and scroll to it
-          const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * postSortIndex;
-          this.scrollTo(scrollAmount);
-        }});
-      }
+    if (!this.initialized) {
+      return;
     }
+    this.selected = [this._rows[this._preselectedRowIndex]] || [];
+    if (!this.selected.length) {
+      return;
+    }
+    // wait until datatable initialization is complete (monkey patched) before scrolling
+    this.datatable.initializationState.pipe(take(1)).subscribe({next: () => {
+      // find the index in datatable internal sorted array that corresponds to selected index in input data
+      const postSortIndex = this.datatable._internalRows.findIndex((element) => {
+        return element.preSortIndex === this._preselectedRowIndex;
+      });
+      // Don't scroll if row is visible in initial viewport. Should be scrolled to top initially.
+      if (postSortIndex < this.datatable.bodyComponent._pageSize) {
+        return;
+      }
+      // Calculate relative position of selected row and scroll to it
+      const scrollAmount = (<number> this.datatable.bodyComponent.rowHeight) * postSortIndex;
+      if (!isNaN(scrollAmount)) {
+        this.scrollTo(scrollAmount);
+      }
+    }});
   }
 
   /**
    * Filters data in the table.
    *
    * Please note that this should not be used when external pagination is used!
-   *
-   * @param filterBy
    */
   @Input() set filterBy(filterBy: FilterByType) {
     this._filterBy = filterBy;
@@ -186,7 +198,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     ).subscribe(() => {
       this.updateFilteredRows();
       this.changeDetectorRef.markForCheck();
-    })
+    });
   }
 
   ngAfterViewInit() {
@@ -261,7 +273,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   onResize(event) {
     if (event && event.column && event.column.name && event.newValue) {
       DatatableComponent.settings[event.column.name] = {width: event.newValue};
-      this.cacheService.setItem<Settings>(CACHE_COLUMN_SETINGS, DatatableComponent.settings)
+      this.cacheService.setItem<Settings>(CACHE_COLUMN_SETTINGS, DatatableComponent.settings)
         .subscribe(() => {}, () => {});
     }
   }
@@ -285,7 +297,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
           this.datatable.bodyComponent.onBodyScroll({scrollYPos: offsetY, scrollXPos: this.datatable.bodyComponent.offsetX || 0});
         }
       } catch (e) {
-        this.logger.info('selected row index failed', e)
+        this.logger.info('selected row index failed', e);
       }
     });
   }

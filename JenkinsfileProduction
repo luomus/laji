@@ -1,5 +1,5 @@
 node {
-   nvm('v8.12.0') {
+   nvm('v11.3.0') {
      stage('Prepare environment') {
       git branch: 'master', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
       sh 'npm install -g yarn'

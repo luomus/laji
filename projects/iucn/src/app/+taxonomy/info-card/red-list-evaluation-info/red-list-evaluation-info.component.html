@@ -1,0 +1,35 @@
+<ng-container *ngIf="criteria.length">
+  <!--
+  <laji-red-list-evaluation-info-rowset [values]="criteria"></laji-red-list-evaluation-info-rowset>
+  -->
+</ng-container>
+<ng-container *ngIf="endanger.length">
+  <laji-red-list-evaluation-info-rowset [values]="endanger"></laji-red-list-evaluation-info-rowset>
+</ng-container>
+<ng-container *ngIf="occurrenceInfo.length">
+  <!--
+  <laji-red-list-evaluation-info-rowset [values]="occurrenceInfo"></laji-red-list-evaluation-info-rowset>
+  -->
+</ng-container>
+<ng-container *ngIf="occurrences.length">
+  <!--
+  <laji-red-list-evaluation-info-rowset [values]="occurrences"></laji-red-list-evaluation-info-rowset>
+  -->
+</ng-container>
+<ng-container *ngIf="_evaluation.primaryHabitat">
+  <h3>{{'MKV.primaryHabitat' | label}}</h3>
+  <laji-habitat [habitat]="_evaluation.primaryHabitat"></laji-habitat>
+</ng-container>
+<ng-container *ngIf="_evaluation.secondaryHabitats">
+  <h3>{{'MKV.secondaryHabitat' | label}}</h3>
+  <laji-habitat [habitat]="_evaluation.secondaryHabitats"></laji-habitat>
+</ng-container>
+<ng-container *ngIf="evaluationBases.length">
+  <laji-red-list-evaluation-info-rowset [values]="evaluationBases"></laji-red-list-evaluation-info-rowset>
+</ng-container>
+
+<ng-container *ngIf="sources.length">
+  <!--
+  <laji-red-list-evaluation-info-rowset [values]="sources"></laji-red-list-evaluation-info-rowset>
+  -->
+</ng-container>

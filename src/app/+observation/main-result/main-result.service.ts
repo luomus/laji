@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -61,9 +63,9 @@ export class MainResultService {
       1,
       false,
       false
-    ))
-      .map(data => data.results)
-      .map(data => {
+    )).pipe(
+      map(data => data.results),
+      map(data => {
         return data.map(row => {
           row.aggregateBy['vernacularName'] =
             row.aggregateBy['unit.linkings.taxon.nameFinnish'] ||
@@ -71,7 +73,7 @@ export class MainResultService {
             row.aggregateBy['unit.linkings.taxon.nameSwedish'];
           return row;
         });
-      });
+      }), );
   }
 
   getList(query: WarehouseQueryInterface, page: number, pageSize: number): Observable<PagedResult<any>> {

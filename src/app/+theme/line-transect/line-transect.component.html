@@ -1,31 +1,51 @@
-<div class="container-fluid line">
-  <div class="row" id="wrapper">
-    <div *ngIf="showNav" style="background-color: #ECF0F1;" class="col-sm-3 col-md-2 col-lg-2">
-      <h1>Linja&shy;laskenta</h1>
-      <ul class="sidebar-nav">
-        <li><a [routerLink]="['../linjalaskenta', 'instructions']">{{'instructions' | translate}}</a></li>
-        <li><a [routerLink]="['../linjalaskenta', 'stats']">{{'nafi.stats' | translate}}</a></li>
-        <li><a [routerLink]="['../linjalaskenta', 'form']">{{'linjalaskenta.form1' | translate}}</a></li>
-        <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ei-vakiolinjat']">{{'linjalaskenta.form2' | translate}}</a></li>
-        <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
-          <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'kartoitus']">{{'linjalaskenta.form3' | translate}}</a></li>
-          <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
-          <li><a [routerLink]="['/vihko/fp/' + collectionID + '/admin']">{{'form.administer' | translate}}</a></li>
-        </ng-container>
-        <ng-template #normalUsers>
-          <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
-        </ng-template>
-      </ul>
-      <laji-haseka-latest [userToken]="userService.getToken()"
-                          [forms]="forms"
-                          [tmpOnly]="true"
-                          *ngIf="userService.isLoggedIn$ | async"></laji-haseka-latest>
-    </div>
-    <div class="col-sm-9 col-md-10 col-lg-10 main-content" [ngClass]="{
-      'col-sm-9 col-md-10 col-lg-10': showNav,
-      'col-sm-12': !showNav
-    }">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div>
+<laji-theme-page
+  [title]="'Linja&shy;laskenta'"
+  [showNav]="showNav"
+  [navLinks]="[
+    {
+      routerLink: ['../linjalaskenta', 'instructions'],
+      label: 'instructions' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../linjalaskenta', 'stats'],
+      label: 'nafi.stats' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../linjalaskenta', 'form'],
+      label: 'linjalaskenta.form1' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../linjalaskenta', 'ei-vakiolinjat'],
+      label: 'linjalaskenta.form2' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../linjalaskenta', 'kartoitus'],
+      label: 'linjalaskenta.form3' | translate,
+      visible: (rights | async)?.admin && showForm
+    },
+    {
+      routerLink: ['../linjalaskenta', 'ownSubmissions'],
+      label: (rights | async)?.admin ?
+             ('theme.admin.submissions' | translate):
+             ('haseka.ownSubmissions.title' | translate),
+      visible: showForm
+    },
+    {
+      routerLink: ['/vihko/fp/' + collectionID + '/admin'],
+      label: 'form.administer' | translate,
+      visible: (rights | async)?.admin
+    }
+  ]">
+  <nav>
+    <laji-haseka-latest [userToken]="userService.getToken()"
+                        [forms]="forms"
+                        [tmpOnly]="true"
+                        *ngIf="userService.isLoggedIn$ | async">
+    </laji-haseka-latest>
+  </nav>
+  <router-outlet></router-outlet>
+</laji-theme-page>

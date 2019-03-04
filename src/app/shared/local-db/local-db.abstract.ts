@@ -1,6 +1,6 @@
 import * as localForage from 'localforage';
 import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 export abstract class LocalDb {
 
@@ -16,8 +16,9 @@ export abstract class LocalDb {
     if (!this.isPlatformBrowser) {
       return ObservableOf(value);
     }
-    return ObservableFrom<T>(this.db.setItem(key, value)).pipe(
-      catchError(() => ObservableOf(value))
+    return ObservableFrom(this.db.setItem(key, value)).pipe(
+      map<any, T>(v => v),
+      catchError(() => ObservableOf<T>(value))
     );
   }
 
@@ -25,7 +26,7 @@ export abstract class LocalDb {
     if (!this.isPlatformBrowser) {
       return ObservableOf(null);
     }
-    return ObservableFrom<T>(this.db.getItem(key)).pipe(
+    return ObservableFrom(this.db.getItem(key)).pipe(
       catchError(() => ObservableOf(null))
     );
   }

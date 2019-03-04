@@ -28,7 +28,8 @@ export class PanelComponent {
       this.open = !this.open;
     }
     this.activate.emit({
-      value: this.index
+      value: this.index,
+      open: this.open
     });
   }
 

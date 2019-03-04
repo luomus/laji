@@ -34,7 +34,6 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
-  @Input() lang: string;
 
   aggrQuery: WarehouseQueryInterface;
   mapQuery: WarehouseQueryInterface;
@@ -187,7 +186,7 @@ export class MainResultComponent implements OnInit, OnChanges {
             title.push(value);
           }
         });
-    } catch (e) { console.log(e)}
+    } catch (e) { console.log(e); }
     this.title = title.join('<br>');
     this.mapQuery = mapQuery;
     this.listQuery = {...mapQuery};

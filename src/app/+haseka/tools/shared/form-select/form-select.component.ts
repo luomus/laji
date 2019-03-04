@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -26,12 +28,12 @@ export class FormSelectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.formSub = this.formService.getAllForms(this.translateService.currentLang)
-      .map(forms => forms.sort((a, b) => a.title.localeCompare(b.title)))
+    this.formSub = this.formService.getAllForms(this.translateService.currentLang).pipe(
+      map(forms => forms.sort((a, b) => a.title.localeCompare(b.title))))
       .subscribe(forms => {
         this.forms = forms.filter(form => environment.massForms.indexOf(form.id) > -1);
         this.cdr.markForCheck();
-      })
+      });
   }
 
   ngOnDestroy() {

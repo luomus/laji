@@ -1,0 +1,43 @@
+<div class="ng-overlay" *ngIf="modalImages">
+  <div class="ng-gallery-content">
+    <a href="{{img.fullURL || img.largeURL}}" target="_blank" download="{{img.fullURL || img.largeURL}}" class="download-img">
+      <i class="glyphicon glyphicon-download-alt"></i>
+    </a>
+    <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
+    <a class="nav-left" *ngIf="modalImages.length >1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    <laji-image
+      id="openseadragon-wrapper"
+      *ngIf="img"
+      (loading)="handleLoading($event)"
+      [src]="img.fullURL || img.largeURL"
+      class="effect"></laji-image>
+    <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
+    <span class="info-text" *ngIf="img">
+      <ng-container *ngIf="showLinkToSpeciesCard && img.taxonId; else name">
+        <a class="link" [routerLink]="'/taxon/' + img.taxonId | localize"><ng-container *ngTemplateOutlet="name"></ng-container></a>
+      </ng-container>
+      <ng-template #name>
+        <ng-container *ngIf="img.vernacularName">{{ img.vernacularName | multiLang }}</ng-container>
+        <ng-container *ngIf="img.vernacularName && img.scientificName"> - </ng-container>
+        <ng-container *ngIf="img.scientificName"><em class="scientificName">{{ img.scientificName | label:'fullUri' }}</em></ng-container>
+        <ng-container *ngIf="img.taxonId && !img.vernacularName && !img.scientificName">{{ img.taxonId | label }}</ng-container>
+      </ng-template>
+      <br>
+      <ng-container *ngIf="img.caption">
+        {{ img.caption | multiLang }}
+        <br>
+      </ng-container>
+      <span *ngIf="img.author">{{ img.author }},</span>
+      <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">
+        {{ img.copyrightOwner }},
+      </span>
+      <span *ngIf="img.licenseId">{{ img.licenseId | toQName | label }}</span>
+      <span *ngIf="img.licenseAbbreviation && !img.licenseId" [innerHtml]="img.licenseAbbreviation"></span>
+      <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
+      <a *ngIf="img.documentId" target="_blank" [routerLink]="'/view' | localize" [queryParams]="{'uri':img.documentId, highlight: img.unitId}">
+        {{ 'more' | translate }}
+      </a>
+     ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
+     </span>
+  </div>
+</div>

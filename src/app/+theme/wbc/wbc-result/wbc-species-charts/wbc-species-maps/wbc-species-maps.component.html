@@ -17,8 +17,8 @@
       [data]="data[idx]"
       [loading]="loading"
       [height]="'calc(80vh - 50px)'"
-      [type]="'individualCountSum'"
-      [types]="['individualCountSum']"
+      [type]="(showSeasonComparison || idx != 2) ? 'individualCountSumPer10km' : 'individualCountSum'"
+      [types]="(showSeasonComparison || idx != 2) ? ['individualCountSumPer10km'] : ['individualCountSum']"
       [individualBreak]="(showSeasonComparison || idx != 2) ? breaks : differenceBreaks"
       [individualLabel]="(showSeasonComparison || idx != 2) ? labels : differenceLabels"
       [individualColorRange]="(showSeasonComparison || idx != 2) ? colorRange : differenceColorRange"
@@ -31,8 +31,8 @@
           'googleSatellite'
         ]
       }"
-      [typeLabels]="(showSeasonComparison || idx != 2) ? {} : {'individualCountSum': 'Yksilömäärän ero'}"
-      (onBoundsChange)="boundsChange($event)"
+      [typeLabels]="(showSeasonComparison || idx != 2) ? {} : {'individualCountSum': 'wbc.stats.difference'}"
+      (boundsChange)="boundsChange($event)"
     ></laji-ykj-map>
   </div>
 </div>

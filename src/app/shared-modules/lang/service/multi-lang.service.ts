@@ -7,9 +7,7 @@ export class MultiLangService {
 
   /**
    * Return true only if given multiLang object has the language value.
-   * @param multi
-   * @param lang
-   * @returns {boolean}
+   * @returns boolean
    */
   static hasValue(multi: object, lang: string): boolean {
     return !!multi[lang];
@@ -21,10 +19,7 @@ export class MultiLangService {
    * If fallback element is given then it can have following string %value% and %lang%. These are replaced
    * by the given values by this function
    *
-   * @param multi
-   * @param lang
-   * @param fallback
-   * @returns {any}
+   * @returns any
    */
   static getValue(multi: object, lang: string, fallback = ''): string|any {
     if (typeof multi !== 'object' || lang === 'multi') {

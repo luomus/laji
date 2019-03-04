@@ -1,10 +1,10 @@
 <h3>
-  {{'excel.import' | translate}}
+  {{ 'excel.import' | translate }}
 </h3>
 <div class="row">
   <div class="col-sm-12">
     <p>
-      {{'excel.import.intro' | translate:{maxUnits: maxUnits} }}
+      {{ 'excel.import.intro' | translate:{maxUnits: maxUnits} }}
     </p>
   </div>
 </div>
@@ -12,7 +12,7 @@
 
 <div class="row data-container">
   <div class="col-sm-10">
-    <span *ngIf="filename">{{'excel.import.workingOn' | translate}} <strong>{{filename}}</strong></span>&nbsp;
+    <span *ngIf="filename">{{ 'excel.import.workingOn' | translate }} <strong>{{ filename }}</strong></span>&nbsp;
   </div>
 </div>
 
@@ -23,7 +23,7 @@
                 (title)="currentTitle = $event"
   ></laji-stepper>
 
-  <h2>{{currentTitle}}</h2>
+  <h2>{{ currentTitle }}</h2>
 
   <alert [type]="'danger'" *ngIf="status === 'fileAlreadyUploadedPartially'">
     <div [innerHtml]="'excel.import.error.alreadyUploadedPartially' | translate"></div>
@@ -39,12 +39,12 @@
   </alert>
 
   <ng-container *ngIf="['empty', 'importingFile', 'fileAlreadyUploaded', 'fileAlreadyUploadedPartially', 'invalidFileType', 'ambiguousColumns'].indexOf(status) > -1">
-    <div><p>{{'excel.import.step1.intro' | translate}}</p></div>
+    <div><p>{{ 'excel.import.step1.intro' | translate }}</p></div>
     <div class="row data-container spacer">
       <div class="col-sm-9">
         <span *ngIf="hasUserMapping" [innerHtml]="'excel.import.step1.hasUserMapping' | translate"></span>
         <input type="file" class="form-control" (change)="onFileChange($event)" />
-        <span *ngIf="fileLoading">{{'loading' | translate}}</span>
+        <span *ngIf="fileLoading">{{ 'loading' | translate }}</span>
       </div>
       <div class="col-sm-3 map-buttons">
         <div class="btn btn-default pull-right" *ngIf="hasUserMapping" (click)="clearUserMapping()" [tooltip]="'excel.import.step1.removeUserMapping' | translate" placement="left">
@@ -84,24 +84,24 @@
     <div class="row">
       <div class="col-sm-12 spacer">
         <ng-container *ngIf="status === 'validating'">
-          <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{current}}/{{total}}</progressbar>
+          <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{ current }}/{{ total }}</progressbar>
         </ng-container>
         <ng-container *ngIf="status === 'invalidData'">
-          <p>{{'excel.import.step4.invalidData' | translate}}</p>
+          <p>{{ 'excel.import.step4.invalidData' | translate }}</p>
           <div class="row">
             <div class="col-sm-9">
               <input type="file" class="form-control" (change)="onFileChange($event)" />
-              <span *ngIf="fileLoading">{{'loading' | translate}}</span>
+              <span *ngIf="fileLoading">{{ 'loading' | translate }}</span>
             </div>
           </div>
         </ng-container>
         <ng-container *ngIf="status === 'importReady'">
-          <button type="button" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
-          <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
+          <button type="button" (click)="save(publ)" class="btn btn-success pull-right action">{{ buttonLabel('save') | translate }}</button>
+          <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action">{{ buttonLabel('temp') | translate }}</button>
           <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
             <i class="glyphicon glyphicon-open"></i>
           </div>
-          <p class="action">{{'excel.import.step4.importReady' | translate}}</p>
+          <p class="action">{{ 'excel.import.step4.importReady' | translate }}</p>
         </ng-container>
       </div>
     </div>
@@ -125,8 +125,8 @@
   </ng-container>
 
   <ng-container *ngIf="status === 'importing'">
-    <h4>{{'sending' | translate}}</h4>
-    <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{current}}/{{total}}</progressbar>
+    <h4>{{ 'sending' | translate }}</h4>
+    <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{ current }}/{{ total }}</progressbar>
   </ng-container>
 
   <ng-container *ngIf="status === 'doneOk' || status === 'doneWithErrors'">
@@ -136,7 +136,7 @@
           <i class="glyphicon glyphicon-open"></i>
         </div>
         <p *ngIf="status === 'doneOk'">
-          {{'excel.import.done' | translate}}
+          {{ 'excel.import.done' | translate }}
         </p>
       </div>
     </div>
@@ -164,14 +164,14 @@
 </div>
 
 <ng-template let-rowIndex="rowIndex" #rowNumber>
-  {{rowIndex + 2}}
+  {{ rowIndex + 2 }}
 </ng-template>
 
 <ng-template let-value="value" let-column="column" #valueCol>
   <ng-container *ngIf="column.externalLabel; else valueAsIs">
-    {{value | label:'withKey' | values:separator}}
+    {{ value | label:'withKey' | values:separator }}
   </ng-container>
-  <ng-template #valueAsIs>{{value | values:separator}}</ng-template>
+  <ng-template #valueAsIs>{{ value | values:separator }}</ng-template>
 </ng-template>
 
 <ng-template let-value="value" #statusCol>
@@ -205,7 +205,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <div [innerHtml]="'excel.userMapping.get' | translate"></div>
-        <textarea rows="10" class="form-control">{{userMappings | json}}</textarea>
+        <textarea rows="10" class="form-control">{{ userMappings | json }}</textarea>
       </div>
     </div>
   </div>

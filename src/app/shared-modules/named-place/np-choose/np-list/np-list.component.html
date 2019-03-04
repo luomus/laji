@@ -27,26 +27,26 @@
     [pageSize]="data.length"
     [columns]="columns"
     [selectionType]="'single'"
-    [preselectedRowIndex]="preselectedNPIndex"
+    [preselectedRowIndex]="activeNP"
     >
   </laji-datatable>
   <div class="test"></div>
   <ul class="legend" *ngIf="showLegendList">
     <li *ngFor="let leg of legendList">
-      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
+      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
     </li>
   </ul>
 </div>
 
 <ng-template let-value="value" ngx-datatable-cell-template #label>
   <span *ngIf="value">
-    {{value | label}}
+    {{ value | label }}
   </span>
 </ng-template>
 
-<ng-template let-value="value" ngx-datatable-cell-template #area>
+<ng-template let-value="value" ngx-datatable-cell-template #boolToStr>
   <span *ngIf="value">
-    {{value | area }}
+    {{ value | boolToString }}
   </span>
 </ng-template>
 

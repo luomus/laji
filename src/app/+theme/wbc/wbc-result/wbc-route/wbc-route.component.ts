@@ -55,7 +55,7 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
             this.rows = censuses;
             this.loadingCensusList = false;
             this.cd.markForCheck();
-          })
+          });
       }
 
       if (this.season && !this.observationStats && !this.loadingObservationStats) {
@@ -65,7 +65,7 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
             this.observationStats = data;
             this.loadingObservationStats = false;
             this.cd.markForCheck();
-          })
+          });
       }
     });
   }

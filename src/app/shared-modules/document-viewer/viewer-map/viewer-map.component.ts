@@ -24,7 +24,13 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   _data: any;
   mapOptions: LajiMapOptions = {
     controls: {
-      coordinates: false
+      coordinates: false,
+      draw: {
+        copy: true
+      }
+    },
+    draw: {
+      editable: false
     },
     zoom: 4
   };
@@ -84,7 +90,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
           geometry: feat.geometry,
           properties: {}
         }))
-      }
+      };
     } else {
       return {
         type: 'FeatureCollection',
@@ -92,7 +98,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
           type: 'Feature',
           geometry: data,
         }]
-      }
+      };
     }
   }
 }

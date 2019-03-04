@@ -22,6 +22,7 @@
             ],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/@swimlane/ngx-datatable/release/index.css",
               "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
@@ -48,6 +49,23 @@
                 }
               ]
             },
+            "dev-embedded": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev-embedded.ts"
+                }
+              ]
+            },
             "embedded": {
               "optimization": true,
               "outputHashing": "all",
@@ -62,23 +80,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.embedded.ts"
-                }
-              ]
-            },
-            "iucn": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.iucn.ts"
                 }
               ]
             },
@@ -111,13 +112,13 @@
             },
             "dev": {
               "optimization": true,
-              "extractCss": true,
               "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": false,
               "namedChunks": true,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "sourceMap": false,
               "buildOptimizer": true
             }
           }
@@ -130,6 +131,9 @@
           "configurations": {
             "production": {
               "browserTarget": "laji:build:production"
+            },
+            "dev-embedded": {
+              "browserTarget": "laji:build:dev-embedded"
             },
             "embedded": {
               "browserTarget": "laji:build:embedded"
@@ -261,6 +265,156 @@
               "e2e/tsconfig.e2e.json"
             ],
             "exclude": []
+          }
+        }
+      }
+    },
+    "generic-label-maker": {
+      "root": "projects/generic-label-maker",
+      "sourceRoot": "projects/generic-label-maker/src",
+      "projectType": "library",
+      "prefix": "ll",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/generic-label-maker/tsconfig.lib.json",
+            "project": "projects/generic-label-maker/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/generic-label-maker/src/test.ts",
+            "tsConfig": "projects/generic-label-maker/tsconfig.spec.json",
+            "karmaConfig": "projects/generic-label-maker/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/generic-label-maker/tsconfig.lib.json",
+              "projects/generic-label-maker/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "iucn": {
+      "root": "projects/iucn/",
+      "sourceRoot": "projects/iucn/src",
+      "projectType": "application",
+      "prefix": "laji",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/iucn",
+            "index": "projects/iucn/src/index.html",
+            "main": "projects/iucn/src/main.ts",
+            "polyfills": "projects/iucn/src/polyfills.ts",
+            "tsConfig": "projects/iucn/tsconfig.app.json",
+            "assets": [
+              "projects/iucn/src/favicon.ico",
+              { "glob": "**/*", "input": "src/static", "output": "/static/" }
+            ],
+            "styles": [
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "node_modules/@swimlane/ngx-datatable/release/index.css",
+              "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
+              "node_modules/nouislider/distribute/nouislider.min.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "src/styles/laji.css",
+              "projects/iucn/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/iucn/src/environments/environment.ts",
+                  "with": "projects/iucn/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "projects/iucn/src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "projects/iucn/src/environments/environment.ts"
+                }
+              ],
+              "extractCss": false,
+              "vendorChunk": false
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "iucn:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "iucn:build:production"
+            },
+            "dev": {
+              "browserTarget": "iucn:build:dev"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "iucn:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/iucn/src/test.ts",
+            "polyfills": "projects/iucn/src/polyfills.ts",
+            "tsConfig": "projects/iucn/tsconfig.spec.json",
+            "karmaConfig": "projects/iucn/karma.conf.js",
+            "styles": [
+              "projects/iucn/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/iucn/src/favicon.ico",
+              "projects/iucn/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/iucn/tsconfig.app.json",
+              "projects/iucn/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }

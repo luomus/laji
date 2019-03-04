@@ -1,0 +1,9 @@
+<ng-container *ngFor="let val of _values">
+  <h3>
+    <ng-container *ngIf="val.translate; else field">{{ val.translate | translate }}</ng-container>
+    <ng-template #field>{{ val.key | label }}</ng-template>
+  </h3>
+  <ul class="{{val.key}}">
+    <li *ngFor="let v of val.value" [innerHTML]="v | label"></li>
+  </ul>
+</ng-container>

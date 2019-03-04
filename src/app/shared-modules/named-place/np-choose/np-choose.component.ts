@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -10,14 +9,12 @@ import {
   OnInit,
   Output,
   PLATFORM_ID,
-  SimpleChanges,
-  ViewChild
+  SimpleChanges
 } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { ExtendedNamedPlace } from '../model/extended-named-place';
 import { isPlatformBrowser } from '@angular/common';
-import { NpMapComponent } from './np-map/np-map.component';
 
 @Component({
   selector: 'laji-np-choose',
@@ -25,25 +22,21 @@ import { NpMapComponent } from './np-map/np-map.component';
   styleUrls: ['./np-choose.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
-  @ViewChild(NpMapComponent) lajiMap: NpMapComponent;
+export class NpChooseComponent implements OnInit, OnChanges {
   active = 'list';
   height = '600px';
   mapIsActivated = false;
   _namedPlaces: ExtendedNamedPlace[] = [];
-  _prevNamedPlacesMapRendered: ExtendedNamedPlace[] = [];
-  _prevActive: string;
 
-  @Input() formData: any;
+  @Input() documentForm: any;
+  @Input() placeForm: any;
   @Input() visible = true;
   @Input() allowCreate = true;
   @Input() userID: string;
-  @Input() zoomToData: boolean;
-  @Input() preselectedNPIndex = -1;
 
-  @Output() onActivePlaceChange = new EventEmitter<number>();
-  @Output() onCreateButtonClick = new EventEmitter();
-  @Output() onTabChange = new EventEmitter();
+  @Output() activePlaceChange = new EventEmitter<number>();
+  @Output() createButtonClick = new EventEmitter();
+  @Output() tabChange = new EventEmitter();
 
   sent = this.isSent.bind(this);
 
@@ -51,6 +44,8 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   private seasonEnd;
 
   _activeNP = -1;
+
+  private FEATURE_RESERVE = 'MHL.featureReserve';
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -62,29 +57,13 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['formData']) {
-      if (this.formData && this.formData.namedPlaceOptions && this.formData.namedPlaceOptions.startWithMap) {
-        this.setActive('map');
+    if (changes['documentForm']) {
+      if (this.documentForm && this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.startWithMap) {
+        this.active = 'map';
+        this.mapIsActivated = true;
       } else {
         this.active = 'list';
       }
-    }
-  }
-
-  ngAfterViewChecked() {
-    if (!this.zoomToData) {
-      return;
-    }
-    const activeChanged = this._prevActive !== this.active;
-    const namedPlacesChanged = this._prevNamedPlacesMapRendered !== this._namedPlaces;
-    const map = this.lajiMap && this.lajiMap.lajiMap.map;
-    if (map && this.active === 'map' && activeChanged && namedPlacesChanged) {
-      if (!(this._namedPlaces || []).length) {
-        map._initializeView();
-      } else {
-        map.zoomToData();
-      }
-      this._prevNamedPlacesMapRendered = this._namedPlaces;
     }
   }
 
@@ -94,7 +73,7 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
     }
     const extendedNamedPlaces: ExtendedNamedPlace[] = [];
     for (const namedPlace of namedPlaces) {
-      extendedNamedPlaces.push({...namedPlace, _status: this.getNamedPlaceStatus(namedPlace)})
+      extendedNamedPlaces.push({...namedPlace, _status: this.getNamedPlaceStatus(namedPlace)});
     }
     this._namedPlaces = extendedNamedPlaces;
   }
@@ -111,33 +90,28 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   setActive(newActive: string) {
-    this._prevActive = this.active;
     this.active = newActive;
     if (newActive === 'map') {
       this.mapIsActivated = true;
     }
-    this.onTabChange.emit(newActive);
+    this.tabChange.emit(newActive);
   }
 
   @Input() set activeNP(idx: number) {
     this._activeNP = idx;
   }
 
-  setActiveNP(idx: number) {
+  onActivePlaceChange(idx: number) {
     this.activeNP = idx;
-    this.onActivePlaceChange.emit(this._activeNP);
-  }
-
-  createButtonClick() {
-    this.onCreateButtonClick.emit();
+    this.activePlaceChange.emit(this._activeNP);
   }
 
   showMap() {
     return !(
-      this.formData &&
-      this.formData.namedPlaceOptions &&
-      this.formData.namedPlaceOptions.hideMapTab &&
-      this.formData.namedPlaceOptions.hideMapTab === true
+      this.documentForm &&
+      this.documentForm.namedPlaceOptions &&
+      this.documentForm.namedPlaceOptions.hideMapTab &&
+      this.documentForm.namedPlaceOptions.hideMapTab === true
     );
   }
 
@@ -156,22 +130,23 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
       return 'sent';
     }
     if (!np.reserve) {
-      return 'free'
+      return 'free';
     }
     const now = new Date();
     const until = new Date(np.reserve.until);
     if (now > until) {
       return 'free';
     } else if (np.reserve.reserver === this.userID) {
-      return 'mine'
+      return 'mine';
     }
     return 'reserved';
   }
 
   private initEarliestAndLatest() {
-    if (this.formData.options && this.formData.options.season && this.formData.options.season.start && this.formData.options.season.end) {
-      this.seasonStart = new Date(this.analyseData(this.formData.options.season.start));
-      this.seasonEnd = new Date(this.analyseData(this.formData.options.season.end));
+    const {options: {season = {}} = {}} = this.documentForm;
+    if (season.start && season.end) {
+      this.seasonStart = new Date(this.analyseData(this.documentForm.options.season.start));
+      this.seasonEnd = new Date(this.analyseData(this.documentForm.options.season.end));
     } else {
       this.seasonStart = undefined;
       this.seasonEnd = undefined;
@@ -180,7 +155,6 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
 
   private analyseData(date: string): string {
     const now = new Date();
-    return date.replace('${year}', '' + now.getFullYear())
+    return date.replace('${year}', '' + now.getFullYear());
   }
-
 }

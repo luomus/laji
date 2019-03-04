@@ -1,3 +1,5 @@
+
+import {catchError, combineLatest, map} from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,7 +8,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -43,14 +44,14 @@ interface LineTransectCount {
   styleUrls: ['./line-transect.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
+export class LineTransectComponent implements OnChanges, AfterViewInit {
   @ViewChild(LajiMapComponent)
   lajiMap: LajiMapComponent;
 
   @Input() document: Document;
   @Input() namedPlace: NamedPlace;
 
-  @Output() onNamedPlaceChange = new EventEmitter();
+  @Output() namedPlaceChange = new EventEmitter();
 
   counts: LineTransectCount;
   lajiMapOptions: LajiMapOptions;
@@ -86,8 +87,6 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   warnings: {message: string; cnt: number}[] = [];
   stats$: Observable<string>;
 
-  mapZoomInitialized = false;
-
   placesDiff = false;
   isAdmin = false;
   activeMapLine = 'document';
@@ -122,30 +121,26 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
         this.missingNS = false;
         this.isAdmin = this.formPermissionService.isAdmin(data.formPermission, data.user);
         this.initPlacesDiff();
-        this.initMapZoom();
+        this.updateMapZoom();
         this.cdr.markForCheck();
       });
   }
 
-  ngOnInit() {
-
-  }
-
   ngAfterViewInit() {
-    this.initMapZoom();
+    this.updateMapZoom();
   }
 
-  initMapZoom() {
-    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.map || this.mapZoomInitialized) {
+  updateMapZoom() {
+    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.map) {
       return;
     }
-
-    this.lajiMap.map.zoomToData({paddingInMeters: 100});
-    this.mapZoomInitialized = true;
+    // Map is hidden during initialization since admin check is done async, so we have to initialize the view manually.
+    this.lajiMap.map.map.invalidateSize();
+    this.lajiMap.map._initializeView();
   }
 
   private initEditLink() {
-    this.path = this.formService.getEditUrlPath(this.document.formID, this.document.id)
+    this.path = this.formService.getEditUrlPath(this.document.formID, this.document.id);
   }
 
   private initCounts() {
@@ -162,9 +157,9 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     };
     const species = {};
     this.stats$ = this.lajiApiService.getList(LajiApi.Endpoints.documentStats,
-      {personToken: this.userSerivce.getToken(), namedPlace: this.namedPlace.id})
-      .map(stats => this.dateDiffFromDoc(stats.dateMedian))
-      .catch(() => ObservableOf(''));
+      {personToken: this.userSerivce.getToken(), namedPlace: this.namedPlace.id}).pipe(
+      map(stats => this.dateDiffFromDoc(stats.dateMedian))).pipe(
+      catchError(() => ObservableOf('')));
     if (this.document.gatherings) {
       this.document.gatherings.map(gathering => {
         if (gathering.units) {
@@ -254,7 +249,9 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
         feature: {type: 'Feature', properties: {}, geometry: this.getGeometry(this.activeMapLine)},
         editable: false
       },
-      tileLayerOpacity: 0.5
+      tileLayerOpacity: 0.5,
+      zoomToData: {paddingInMeters: 100},
+      controls: true
     };
   }
 
@@ -288,16 +285,16 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     if (!this.namedPlace || !this.namedPlace.collectionID) {
       return ObservableOf(null);
     }
-    return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken())
-      .combineLatest(
+    return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken()).pipe(
+      combineLatest(
         this.userSerivce.getUser(),
         (formPermission, user) => ({formPermission, user})
-      );
+      ));
   }
 
   setActiveMapLine(activeMapLine) {
     this.activeMapLine = activeMapLine;
-    this.lajiMap.map.setLineTransect({...this.lajiMapOptions.lineTransect, feature: {geometry: this.getGeometry(this.activeMapLine)}})
+    this.lajiMap.map.setLineTransect({...this.lajiMapOptions.lineTransect, feature: {geometry: this.getGeometry(this.activeMapLine)}});
   }
 
   acceptNamedPlaceChanges() {
@@ -306,7 +303,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
       {...this.namedPlace, acceptedDocument: this.document},
       this.userSerivce.getToken()
     ).subscribe((np: NamedPlace) => {
-      this.onNamedPlaceChange.emit(np);
+      this.namedPlaceChange.emit(np);
       this.toastsService.showSuccess(
         'Linjan päivitys onnistui. Tämän laskennan karttaa käytetään pohjana tämän linjan laskennoille jatkossa'
       );

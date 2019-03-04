@@ -1,0 +1,48 @@
+<div class="table-responsive">
+  <table class="table">
+    <tr>
+      <td class="evaluated" colspan="7">
+        <label class="selectable">
+          <input type="checkbox" [checked]="selectedGroups.evaluated" (change)="groupSelect('evaluated')">
+          Arvioidut lajit
+        </label>
+      </td>
+      <td colspan="2"></td>
+    </tr>
+    <tr>
+      <td class="redlist" colspan="5">
+        <label class="selectable">
+          <input type="checkbox" [checked]="selectedGroups.redlist" (change)="groupSelect('redlist')">
+          Punaisen listan lajit
+        </label>
+      </td>
+      <td class="redlist"></td>
+      <td class="evaluated"></td>
+      <td colspan="2"></td>
+    </tr>
+    <tr>
+      <td class="redlist"></td>
+      <td class="endangered" colspan="3">
+        <label class="selectable">
+          <input type="checkbox"  [checked]="selectedGroups.endangered" (change)="groupSelect('endangered')">
+          Uhanalaiset
+        </label>
+      </td>
+      <td class="redlist"></td>
+      <td class="redlist"></td>
+      <td class="evaluated"></td>
+      <td colspan="2"></td>
+    </tr>
+    <tr>
+      <td class="redlist"><label class="selectable" [tooltip]="'MX.iucnRE' | label"><input type="checkbox" [checked]="selected.RE" (change)="itemSelect('RE')"> RE</label></td>
+      <td class="endangered"><label class="selectable" [tooltip]="'MX.iucnCR' | label"><input type="checkbox" [checked]="selected.CR" (change)="itemSelect('CR')"> CR</label></td>
+      <td class="endangered"><label class="selectable" [tooltip]="'MX.iucnEN' | label"><input type="checkbox" [checked]="selected.EN" (change)="itemSelect('EN')"> EN</label></td>
+      <td class="endangered"><label class="selectable" [tooltip]="'MX.iucnVU' | label"><input type="checkbox" [checked]="selected.VU" (change)="itemSelect('VU')"> VU</label></td>
+      <td class="redlist"><label class="selectable" [tooltip]="'MX.iucnNT' | label"><input type="checkbox" [checked]="selected.NT" (change)="itemSelect('NT')"> NT</label></td>
+      <td class="redlist"><label class="selectable" [tooltip]="'MX.iucnDD' | label"><input type="checkbox" [checked]="selected.DD" (change)="itemSelect('DD')"> DD</label></td>
+      <td class="evaluated"><label class="selectable" [tooltip]="'MX.iucnLC' | label"><input type="checkbox" [checked]="selected.LC" (change)="itemSelect('LC')"> LC</label></td>
+      <td><label class="selectable" [tooltip]="'MX.iucnNA' | label"><input type="checkbox" [checked]="selected.NA" (change)="itemSelect('NA')"> NA</label></td>
+      <td><label class="selectable" [tooltip]="'MX.iucnNE' | label"><input type="checkbox" [checked]="selected.NE" (change)="itemSelect('NE')"> NE</label></td>
+    </tr>
+  </table>
+</div>

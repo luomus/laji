@@ -16,7 +16,7 @@ export class AnnotationsComponent implements OnInit {
   @Input() identifying = false;
   @Input() annotations: Annotation[] = [];
   @Output() close = new EventEmitter<any>();
-  @Output() onChange = new EventEmitter<any>();
+  @Output() change = new EventEmitter<any>();
   error = false;
   adding = false;
   type: Annotation.TypeEnum;
@@ -65,7 +65,7 @@ export class AnnotationsComponent implements OnInit {
   }
 
   private saveDone(annotation?: Annotation) {
-    this.onChange.emit(annotation);
+    this.change.emit(annotation);
     this.closeAddForm();
     this.initEmptyAnnotation();
   }

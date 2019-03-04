@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 type FilterBaseType = number|boolean|string;
 
-interface FilterObjType {by: FilterBaseType, properties: string[]}
+interface FilterObjType {by: FilterBaseType; properties: string[]; }
 
 export type FilterByType = FilterBaseType|FilterObjType;
 
@@ -14,13 +14,13 @@ export class FilterService {
   /**
    * Filters the given value
    * @param value array of values
-   * @param filterBy
+   * @param filterBy filter by these values
    */
   filter(value: any, filterBy: FilterByType): any {
     if (!Array.isArray(value) || !filterBy) {
       return value;
     }
-    let needle = filterBy;
+    let needle: any = filterBy;
     let properties = null;
     switch (typeof filterBy) {
       case 'object':
@@ -36,9 +36,9 @@ export class FilterService {
 
   /**
    * Checks whether the needle is found from the haystack
-   * @param needle
-   * @param haystack
-   * @param properties
+   * @param needle search for this value
+   * @param haystack search from these values
+   * @param properties check for match only from these properties
    */
   private contains(needle: FilterBaseType, haystack: any, properties: string[]) {
     switch (typeof haystack) {

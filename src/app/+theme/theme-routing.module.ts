@@ -34,10 +34,17 @@ import { LineTransectMyDocumentListComponent } from './line-transect/line-transe
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
-import { InvasiveControlComponent } from './invasive-control/invasive-control.component';
-import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
 import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
+import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
+import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
+import { MunicipalityMonitoringFormComponent } from './municipality-monitoring/municipality-monitoring-form/municipality-monitoring-form.component';
+import { MunicipalityMonitoringInstructionsContainerComponent } from './municipality-monitoring/municipality-monitoring-instructions/municipality-monitoring-instructions.container';
+import { MunicipalityMonitoringContainerComponent } from './municipality-monitoring/municipality-monitoring.container';
+import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
 import { ChecklistComponent } from './checklist/checklist.component';
+import { HasFormPermission } from '../shared/route/has-form-permission';
+import { InvasiveControlOwnSubmissionsComponent } from './invasive-control/invasive-control-own-submissions/invasive-control-own-submissions.component';
+import { MunicipalityMonitoringOwnSubmissionsComponent } from './municipality-monitoring/municipality-monitoring-own-submissions/municipality-monitoring-own-submissions.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -65,7 +72,14 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: WbcOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent}
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        data: { noScrollToTop: true }
+      }
     ]
   },
   {
@@ -135,25 +149,115 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: LineTransectMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent },
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        data: { noScrollToTop: true }
+      },
       {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ]
   },
   {
     path: 'vieraslajit',
-    component: InvasiveControlComponent,
+    component: InvasiveControlContainerComponent,
     children: [
-      {path: '', pathMatch: 'full', component: InvasiveControlInstructionsComponent, data: { title: 'invasiveSpecies.title' }},
-      {path: 'instructions', pathMatch: 'full', component: InvasiveControlInstructionsComponent, data: { title: 'invasiveSpecies.title' } },
-      {path: 'places', pathMatch: 'full', component: InvasiveControlFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: '', pathMatch: 'full', component: InvasiveControlInstructionsContainerComponent},
+      {
+        path: 'instructions',
+        pathMatch: 'full',
+        component: InvasiveControlInstructionsContainerComponent
+      },
+      {
+        path: 'places',
+        pathMatch: 'full',
+        component: InvasiveControlFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33'}
+      },
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: InvasiveControlFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
+      },
       {
         path: 'form/:id',
         pathMatch: 'full',
         component: InvasiveControlFormComponent,
-        canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
       },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {noScrollToTop: true, formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
+      },
+      {
+        path: 'ownSubmissions',
+        pathMatch: 'full',
+        component: InvasiveControlOwnSubmissionsComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
+      },
+    ]
+  },
+  {
+    path: 'kunnat',
+    component: MunicipalityMonitoringContainerComponent,
+    children: [
+      {path: '', pathMatch: 'full', component: MunicipalityMonitoringInstructionsContainerComponent},
+      {
+        path: 'instructions',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringInstructionsContainerComponent
+      },
+      {
+        path: 'places',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.35', noFormPermissionRedirect: '/theme/kunnat'}
+      },
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.35', noFormPermissionRedirect: '/theme/kunnat'}
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringFormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: {formId: 'MHL.35', noFormPermissionRedirect: '/theme/kunnat'}
+      },
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true, formId: 'MHL.35', noFormPermissionRedirect: '/theme/kunnat' }
+      },
+      {
+        path: 'ownSubmissions',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringOwnSubmissionsComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/kunnat'}
+      },
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
@@ -167,6 +271,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: []
+  providers: [NamedPlaceResolver]
 })
 export class ThemeRoutingModule { }

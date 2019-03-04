@@ -1,0 +1,41 @@
+<ng-container *ngIf="taxonImages && taxonImages.length > 0">
+  <laji-image-gallery
+    [modalImages]="taxonImages"
+    [view]="'full2'"
+    [showExtraInfo]="false"
+    [showOverlay]="!taxon.species"
+    [showLinkToSpeciesCard]="!taxon.species"
+  ></laji-image-gallery>
+  <hr>
+</ng-container>
+
+<ng-container *ngFor="let item of [
+{
+  title: 'taxonomy.images.typeSpecimens',
+  hasData: 'hasTypeSpecimens',
+  query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: true}
+}, {
+  title: 'taxonomy.images.collection',
+  hasData: 'hasCollectionImages',
+  query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false}
+}, {
+  title: 'taxonomy.images.observations',
+  hasData: 'hasObservationImages',
+  query: {taxonId: [taxon.id], superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'], taxonReliability: ['RELIABLE']}
+}]">
+  <h3 *ngIf="this[item.hasData]">{{ item.title | translate }}</h3>
+  <div class="gallery-container" [hidden]="this[item.hasData] === false">
+    <laji-gallery
+      [shortPager]="true"
+      [query]="item.query"
+      [pageSize]="12"
+      [view]="'full2'"
+      [showExtraInfo]="false"
+      [showOverlay]="!taxon.species"
+      [showPaginatorOnlyWhenNeeded]="true"
+      [showLinkToSpeciesCard]="!taxon.species"
+      (hasData)="this[item.hasData] = $event"
+    ></laji-gallery>
+  </div>
+  <hr *ngIf="this[item.hasData]">
+</ng-container>

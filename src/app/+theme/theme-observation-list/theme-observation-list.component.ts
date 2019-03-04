@@ -16,8 +16,7 @@ export class ThemeObservationListComponent implements OnInit {
   @Input() height;
   @Input() showSettings = false;
   @Input() selected = ['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'gathering.displayDateTime', 'gathering.team'];
-  @Output() onListClose = new EventEmitter<WarehouseQueryInterface>();
-  @Output() onPageChange = new EventEmitter<number>();
+  @Output() listClose = new EventEmitter<WarehouseQueryInterface>();
   @Output() selectChange = new EventEmitter();
 
   loading = false;
@@ -43,9 +42,4 @@ export class ThemeObservationListComponent implements OnInit {
       this.modal.show();
     }
   }
-
-  pageChanged(pager) {
-    this.onPageChange.emit(pager.page);
-  }
-
 }

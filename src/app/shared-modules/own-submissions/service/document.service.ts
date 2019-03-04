@@ -5,53 +5,54 @@ import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
 import { Observable } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
+const { JSONPath } = require('jsonpath-plus');
 
 @Injectable()
 export class DocumentService {
 
   public static readonly removableUnit = [
-    'images',
-    'dateBegin',
-    'dateEnd',
-    'timeStart',
-    'timeEnd',
-    'notes',
-    'observationDays',
-    'observationMinutes',
-    'weather',
-    'abundanceString',
-    'count',
-    'maleIndividualcount',
-    'femaleIndividualcount',
-    'sex',
-    'hostID',
-    'taste',
-    'tasteNotes',
-    'smell',
-    'smellNotes',
-    'plantStatusCode',
-    'movingStatus'
+    '$..images',
+    '$..dateBegin',
+    '$..dateEnd',
+    '$..timeStart',
+    '$..timeEnd',
+    '$..notes',
+    '$..observationDays',
+    '$..observationMinutes',
+    '$..weather',
+    '$..abundanceString',
+    '$..count',
+    '$..maleIndividualcount',
+    '$..femaleIndividualcount',
+    '$..sex',
+    '$..hostID',
+    '$..taste',
+    '$..tasteNotes',
+    '$..smell',
+    '$..smellNotes',
+    '$..plantStatusCode',
+    '$..movingStatus'
   ];
 
   public static readonly removableGathering = [
-    'units',
-    'images',
-    'dateBegin',
-    'dateEnd',
-    'timeStart',
-    'timeEnd',
-    'notes',
-    'observationDays',
-    'observationMinutes',
-    'iceCover',
-    'cloudAndRain',
-    'meanTemperature',
-    'snowAndIceOnTrees',
-    'snowCover',
-    'typeOfSnowCover',
-    'visibility',
-    'weather',
-    'wind'
+    '$..units',
+    '$..images',
+    '$..dateBegin',
+    '$..dateEnd',
+    '$..timeStart',
+    '$..timeEnd',
+    '$..notes',
+    '$..observationDays',
+    '$..observationMinutes',
+    '$..iceCover',
+    '$..cloudAndRain',
+    '$..meanTemperature',
+    '$..snowAndIceOnTrees',
+    '$..snowCover',
+    '$..typeOfSnowCover',
+    '$..visibility',
+    '$..weather',
+    '$..wind'
   ];
 
   constructor(private documentApi: DocumentApi, private userService: UserService) { }
@@ -70,21 +71,33 @@ export class DocumentService {
   }
 
   removeMeta(document: any, remove = []): any {
-    if (remove.indexOf('id') === -1) {
-      remove = remove.concat(['id', 'dateEdited', 'dateCreated', 'publicityRestrictions', 'locked']);
+    if (['$.id', '$..id'].every(idField => remove.indexOf(idField) === -1)) {
+      remove = [...remove, '$..id', '$..dateEdited', '$..dateCreated', '$..publicityRestrictions', '$..locked'];
     }
-    if (Array.isArray(document)) {
-      return document.map((value) => this.removeMeta(value, remove));
-    } else if (typeof document === 'object') {
-      Object.keys(document).map(key => {
-        if (key.startsWith('@') || remove.indexOf(key) > -1) {
-          delete document[key];
-          return;
+    remove.forEach(path => JSONPath({
+        json: document, path, callback: (v, t, payload) => {
+          delete payload.parent[payload.parentProperty];
         }
-        document[key] = this.removeMeta(document[key], remove);
-      });
-    }
+      })
+    );
+    removeAtRecursively(document);
     return document;
+
+    function removeAtRecursively(_document: any) {
+      if (Array.isArray(_document)) {
+        return _document.map(removeAtRecursively);
+      } else if (typeof _document === 'object') {
+        Object.keys(_document).map(key => {
+          if (key.startsWith('@')) {
+            delete _document[key];
+            return;
+          }
+          removeAtRecursively(_document[key]);
+        });
+      }
+
+      return document;
+    }
   }
 
   combine(to: any, from: any) {
@@ -93,7 +106,7 @@ export class DocumentService {
         if (typeof to[key] === 'undefined') {
           to[key] = from[key];
         }
-      })
+      });
     }
     return to;
   }

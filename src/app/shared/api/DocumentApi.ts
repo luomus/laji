@@ -29,6 +29,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { Document } from '../model/Document';
 import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators';
 
 'use strict';
 
@@ -180,14 +181,15 @@ export class DocumentApi {
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
 
-    return this.http.post(path, data, {params: queryParameters, observe: 'response'})
-      .map((response: HttpResponse<any>) => {
+    return this.http.post(path, data, {params: queryParameters, observe: 'response'}).pipe(
+      map((response: HttpResponse<any>) => {
         if (response.status === 204) {
           return undefined;
         } else {
           return response.body;
         }
-      });
+      })
+    );
   }
 
   public delete(id: string, personToken: string, extraHttpRequestParams?: any ): Observable<any> {

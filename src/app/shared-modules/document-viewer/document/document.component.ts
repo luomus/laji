@@ -1,3 +1,5 @@
+
+import { startWith, tap, map, filter, switchMap, take, catchError, retryWhen, delay, concat } from 'rxjs/operators';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -11,13 +13,13 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { interval as ObservableInterval, Subscription } from 'rxjs';
+import { interval as ObservableInterval, Subscription, throwError as observableThrowError } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
-import { filter, switchMap, take } from 'rxjs/operators';
 import { Global } from '../../../../environments/global';
+
 
 @Component({
   selector: 'laji-document',
@@ -65,9 +67,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   ) { }
 
   ngOnInit() {
-    this.metaFetch = this.userService.action$
-      .startWith('')
-      .switchMap(() => this.userService.getUser())
+    this.metaFetch = this.userService.action$.pipe(
+      startWith('')).pipe(
+      switchMap(() => this.userService.getUser()))
       .subscribe(person => {
         this.personID = person.id;
         this.cd.markForCheck();
@@ -100,11 +102,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       return;
     }
     const findDox$ = this.warehouseApi
-        .warehouseQuerySingleGet(this.uri, this.own ? {
-          editorOrObserverPersonToken: this.userService.getToken()
-        } : undefined)
-        .map(doc => doc.document)
-        .do((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight));
+      .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
+        catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
+        map(doc => doc.document),
+        tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight))
+      );
     findDox$
       .subscribe(
         doc => this.parseDoc(doc, doc),
@@ -130,7 +132,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
             return hasHighlight;
           }
           hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
-        })
+        });
       }
     });
     return hasHighlight;
@@ -182,10 +184,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         doc.gatherings.map((gathering, idx) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
             mapData[idx] = {
+              ...gathering.conversions,
               geoJSON: gathering.conversions.wgs84Geo,
-              wgs84: gathering.conversions.wgs84,
-              ykj: gathering.conversions.ykj
-            }
+              coordinateAccuracy: gathering.interpretations && gathering.interpretations.coordinateAccuracy,
+              sourceOfCoordinates: gathering.interpretations && gathering.interpretations.sourceOfCoordinates
+            };
             this.hasMapData = true;
           }
           if (this.highlight && gathering.gatheringId === this.highlight) {

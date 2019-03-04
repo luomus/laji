@@ -12,16 +12,19 @@ import {
   NgxCircleSeriesComponent,
   NgxTimelineComponent
 } from './ngx-charts-chart/ngx-charts-chart.component';
+import { NgxChartsTreeMapComponent } from './ngx-charts-tree-map/ngx-charts-tree-map.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [NgxChartsLineChartComponent, NgxChartsPieChartComponent, NgxChartsAdvancedPieChartComponent, NgxChartsChartComponent,
-    NgxXAxisComponent, NgxYAxisComponent, NgxLineSeriesComponent, NgxTooltipAreaComponent, NgxCircleSeriesComponent, NgxTimelineComponent],
+    NgxXAxisComponent, NgxYAxisComponent, NgxLineSeriesComponent, NgxTooltipAreaComponent, NgxCircleSeriesComponent, NgxTimelineComponent,
+    NgxChartsTreeMapComponent],
   exports: [NgxChartsLineChartComponent, NgxChartsPieChartComponent, NgxChartsAdvancedPieChartComponent, NgxChartsChartComponent,
-    NgxXAxisComponent, NgxYAxisComponent, NgxLineSeriesComponent, NgxTooltipAreaComponent, NgxCircleSeriesComponent, NgxTimelineComponent]
+    NgxXAxisComponent, NgxYAxisComponent, NgxLineSeriesComponent, NgxTooltipAreaComponent, NgxCircleSeriesComponent, NgxTimelineComponent,
+    NgxChartsTreeMapComponent]
 })
 export class NgxChartsModule { }
 
-export { NgxChartsLineChartComponent as LineChartComponent }
+export { NgxChartsLineChartComponent as LineChartComponent };

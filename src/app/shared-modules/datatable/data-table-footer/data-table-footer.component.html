@@ -1,4 +1,4 @@
-<div class="datatable-footer">
+<div class="datatable-footer" [ngClass]="{'top': top, 'bottom': !top}">
   <div class="datatable-footer-inner">
     <div class="page-count ng-star-inserted"
          [ngStyle]="{
@@ -12,7 +12,7 @@
       </ng-container>
       <span [innerHtml]="_count | formattedNumber:'&nbsp;'"></span>
       <ng-container *ngIf="!(_page && _pageSize)">
-        <span> {{totalMessage}}</span>
+        <span> {{ totalMessage }}</span>
       </ng-container>
     </div>
     <laji-paginator *ngIf="_page && _pageSize"

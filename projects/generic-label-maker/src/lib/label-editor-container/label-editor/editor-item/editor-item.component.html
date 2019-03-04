@@ -1,0 +1,30 @@
+<div
+  #item
+  class="editor-item"
+  [class.active]="active"
+  cdkDrag
+  [cdkDragBoundary]="boundary"
+  (cdkDragStarted)="recordElementDimensions()"
+  (cdkDragEnded)="onMoveEnd()"
+  [style.width.mm]="width"
+  [style.height.mm]="height"
+  [style.top.mm]="y"
+  [style.left.mm]="x"
+  >
+  <div class="editor-item-wrap">
+    <div class="drag-handle"><i class="glyphicon glyphicon-move" cdkDragHandle></i></div>
+    <div class="resize-handle" cdkDrag (cdkDragStarted)="recordElementDimensions()" (cdkDragEnded)="onResizeEnd($event)" (cdkDragMoved)="onResize($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
+    <div class="option-handle"><i class="glyphicon glyphicon-edit" (click)="showSettings.emit(_item)"></i></div>
+    <div class="done-handle"><i class="glyphicon glyphicon-ok" (click)="done.emit()"></i></div>
+    <div class="editor-item-content" (click)="itemClick.emit(_item)">
+      <ng-container *ngFor="let field of _item.fields; let l=last">
+        <ng-container *ngIf="field.type === 'qr-code'; else plainText">
+          <qrcode [qrdata]="field.content" [size]="size" [level]="'H'" [usesvg]="true"></qrcode>
+        </ng-container>
+        <ng-template #plainText>
+          {{field.label}}<span *ngIf="!l" [innerHTML]="field.separator || ', '"></span>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+</div>

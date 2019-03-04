@@ -1,3 +1,5 @@
+
+import {switchMap, tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { NamedPlaceApi, NamedPlaceQuery } from '../../shared/api/NamedPlaceApi';
 import { NamedPlace } from '../../shared/model/NamedPlace';
@@ -24,23 +26,19 @@ export class NamedPlacesService {
     if (this.cacheKey === key) {
       return ObservableOf(this.cache);
     }
-    return this._getAllNamePlaces(query)
-      .do(data => {
+    return this._getAllNamePlaces(query).pipe(
+      tap(data => {
         this.cacheKey = key;
         this.cache = data;
-      });
+      }));
   }
 
-  getNamedPlace(id, userToken?: string): Observable<NamedPlace> {
-    if (this.cache) {
-      for (const place of this.cache) {
-        if (place.id === id) {
-          return ObservableOf(place);
-        }
-      }
+  getNamedPlace(id, userToken?: string, includeUnits = false): Observable<NamedPlace> {
+    if (!id) {
+      return ObservableOf(null);
     }
     return this.namedPlaceApi
-      .findById(id, userToken);
+      .findById(id, userToken, {includeUnits});
   }
 
   createNamedPlace(data: NamedPlace, userToken: string) {
@@ -79,8 +77,8 @@ export class NamedPlacesService {
         },
         '' + page,
         '1000'
-      )
-      .switchMap(
+      ).pipe(
+      switchMap(
         result => {
           namedPlaces.push(...result.results);
           if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
@@ -89,6 +87,6 @@ export class NamedPlacesService {
             return ObservableOf(namedPlaces);
           }
         }
-      );
+      ));
   }
 }

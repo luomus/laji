@@ -1,0 +1,44 @@
+h2 {
+  margin-top: 30px;
+  font-size: 20px;
+  color: #727272;
+}
+.header {
+  height: 250px;
+  position: relative;
+  background-image: url("/static/images/redlist/laji_bg.png");
+  background-size: cover;
+}
+.header .intro {
+  margin-top: 10px;
+  min-width: 350px;
+}
+
+.header .intro h1 {
+  margin: 0;
+}
+
+.header .intro h1, .header .intro p {
+  color: #fff;
+  text-shadow: 0 2px 5px #000;
+}
+
+
+.header p {
+  margin: 15px 0 0 30px;
+  max-width: 550px;
+  font-size: 18px;
+  line-height: 30px;
+}
+
+.row {
+  margin-bottom: 15px;
+}
+@media only screen and (min-width : 768px) {
+  .header .intro {
+    margin-top: 90px;
+  }
+  .header {
+    height: 330px;
+  }
+}

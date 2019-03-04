@@ -1,0 +1,216 @@
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ILabelField, ILabelItem, ISetup, TLabelLocation } from '../../generic-label-maker.interface';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
+@Component({
+  selector: 'll-label-settings',
+  templateUrl: './label-settings.component.html',
+  styleUrls: ['./label-settings.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class LabelSettingsComponent implements OnInit {
+
+  @Input() setup: ISetup;
+  @Input() availableFields: ILabelField[];
+  @Output() setupChange = new EventEmitter<ISetup>();
+  showFieldFont = false;
+  canDelete = false;
+  private _selectedLabelItem: ILabelItem;
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+  @Input() set selectedLabelItem(item: ILabelItem) {
+    this._selectedLabelItem = item;
+    if (item && item.fields) {
+      this.canDelete = item.fields.length > 1;
+      this.showFieldFont = item.fields[0] && item.fields[0].type !== 'qr-code';
+    } else {
+      this.canDelete = false;
+      this.showFieldFont = false;
+    }
+  }
+
+  get selectedLabelItem() {
+    return this._selectedLabelItem;
+  }
+
+  change(field: string, value: any) {
+    if (typeof value === 'object' && !Array.isArray(value)) {
+      this.setupChange.emit({
+        ...this.setup,
+        [field]: {
+          ...this.setup[field],
+          ...value
+        }
+      });
+    }
+    this.setupChange.emit({
+      ...this.setup,
+      [field]: value
+    });
+  }
+
+  changeSelectedItem(field: string, item: any) {
+    const {itemIdx, location} = this.findItem();
+    if (itemIdx === -1) {
+      return;
+    }
+    this.setupChange.emit({
+      ...this.setup,
+      [location]: [
+        ...this.setup[location].slice(0, itemIdx),
+        {
+          ...this.setup[location][itemIdx],
+          [field]: item
+        },
+        ...this.setup[location].slice(itemIdx + 1)
+      ]
+    });
+  }
+
+  remove(selectedLabelItem: ILabelItem) {
+    const {itemIdx, location} = this.findItem(selectedLabelItem);
+    if (itemIdx === -1) {
+      return;
+    }
+    if (confirm('Are you sure that you want to remove this field?')) {
+      this.setupChange.emit({
+        ...this.setup,
+        [location]: [
+          ...this.setup[location].slice(0, itemIdx),
+          ...this.setup[location].slice(itemIdx + 1)
+        ]
+      });
+    }
+  }
+
+  fieldRemove(idx: number) {
+    const {itemIdx, location} = this.findItem();
+    if (itemIdx === -1) {
+      return;
+    }
+    this.setupChange.emit({
+      ...this.setup,
+      [location]: [
+        ...this.setup[location].slice(0, itemIdx),
+        {
+          ...this.setup[location][itemIdx],
+          fields: [
+            ...this.setup[location][itemIdx].fields.slice(0, idx),
+            ...this.setup[location][itemIdx].fields.slice(idx + 1)
+          ]
+        },
+        ...this.setup[location].slice(itemIdx + 1)
+      ]
+    });
+  }
+
+  fieldAdd(labelField: ILabelField) {
+    const {itemIdx, location} = this.findItem();
+    if (itemIdx === -1) {
+      return;
+    }
+    this.setupChange.emit({
+      ...this.setup,
+      [location]: [
+        ...this.setup[location].slice(0, itemIdx),
+        {
+          ...this.setup[location][itemIdx],
+          fields: [
+            ...this.setup[location][itemIdx].fields,
+            labelField
+          ]
+        },
+        ...this.setup[location].slice(itemIdx + 1)
+      ]
+    });
+  }
+
+  fieldUpdate(labelField: ILabelField, idx: number) {
+    const {itemIdx, location} = this.findItem();
+    if (itemIdx === -1) {
+      return;
+    }
+    this.setupChange.emit({
+      ...this.setup,
+      [location]: [
+        ...this.setup[location].slice(0, itemIdx),
+        {
+          ...this.setup[location][itemIdx],
+          fields: [
+            ...this.setup[location][itemIdx].fields.slice(0, idx),
+            labelField,
+            ...this.setup[location][itemIdx].fields.slice(idx + 1)
+          ]
+        },
+        ...this.setup[location].slice(itemIdx + 1)
+      ]
+    });
+  }
+
+  drop(event: CdkDragDrop<ILabelField[]>) {
+    const {itemIdx, location} = this.findItem();
+    if (itemIdx === -1) {
+      return;
+    }
+    const list = [...this._selectedLabelItem.fields];
+    moveItemInArray(list, event.previousIndex, event.currentIndex);
+    this.setupChange.emit({
+      ...this.setup,
+      [location]: [
+        ...this.setup[location].slice(0, itemIdx),
+        {
+          ...this.setup[location][itemIdx],
+          fields: list
+        },
+        ...this.setup[location].slice(itemIdx + 1)
+      ]
+    });
+  }
+
+  round(value: any) {
+    return Math.round(value * 1000) / 1000;
+  }
+
+  changePosition(pos: string, value: any) {
+    if (!value) {
+      return;
+    }
+    const dim = pos === 'x' ? 'width.mm' : 'height.mm';
+    value = Number(value);
+    if (value + this._selectedLabelItem.style[dim] > this.setup.label[dim]) {
+      return alert('Field cannot fit the label');
+    }
+    this.changeSelectedItem(pos, value);
+  }
+
+  changeActiveStyle(style: string, value: any) {
+    if (!value) {
+      return;
+    }
+    const pos = style === 'width.mm' ? 'x' : 'y';
+    value = Number(value);
+    if (value + this._selectedLabelItem[pos] > this.setup.label[style]) {
+      return alert('Field cannot fit the label');
+    }
+
+    this.changeSelectedItem('style', {
+      ...this._selectedLabelItem.style,
+      [style]: value
+    });
+  }
+
+  private findItem(item?: ILabelItem): {location: TLabelLocation, itemIdx: number} {
+    const labelItem = item || this._selectedLabelItem;
+    let location: TLabelLocation = 'labelItems';
+    let itemIdx = this.setup.labelItems.findIndex(i => i === labelItem);
+    if (itemIdx === -1) {
+      location = 'backSideLabelItems';
+      itemIdx = (this.setup.backSideLabelItems || []).findIndex(i => i === labelItem);
+    }
+    return {location, itemIdx};
+  }
+}

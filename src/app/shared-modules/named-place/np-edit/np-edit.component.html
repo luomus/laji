@@ -1,26 +1,24 @@
-<laji-spinner [spinning]="(namedPlace || editMode) && !npFormData" [overlay]="true"></laji-spinner>
-<ng-container *ngIf="npFormData">
+<laji-spinner [spinning]="(namedPlace || editMode) && !placeForm" [overlay]="true"></laji-spinner>
+<ng-container *ngIf="placeForm">
   <ng-container *ngIf="namedPlace && !editMode">
     <laji-np-info [namedPlace]="namedPlace"
-                  [namedPlaceOptions]="formData.namedPlaceOptions"
                   [formRights]="formRights"
-                  [npFormData]="npFormData"
-                  [targetForm]="formData"
+                  [placeForm]="placeForm"
+                  [documentForm]="documentForm"
+                  [collectionId]="collectionId"
                   [allowEdit]="allowEdit"
                   [loading]="loading"
-                  [collectionId]="formData.collectionID"
                   [editMode]="editMode"
-                  (onReleaseButtonClick)="onRelease.emit()"
-                  (onReserveButtonClick)="onReserve.emit()"
-                  (onEditButtonClick)="editClick()"
-                  (onUseButtonClick)="useClick()"></laji-np-info>
+                  (releaseButtonClick)="release.emit()"
+                  (reserveButtonClick)="reserve.emit()"
+                  (editButtonClick)="editClick()"
+                  (useButtonClick)="useClick()"></laji-np-info>
   </ng-container>
   <ng-container *ngIf="editMode">
-    <laji-np-edit-form *ngIf="npFormData"
-                       [namedPlaceOptions]="formData.namedPlaceOptions"
-                       [lang]="lang"
-                       [formData]="npFormData"
+    <laji-np-edit-form *ngIf="placeForm"
+                       [namedPlaceOptions]="documentForm.namedPlaceOptions"
+                       [documentForm]="placeForm"
                        [namedPlace]="namedPlace"
-                       (onEditReady)="editReady($event)"></laji-np-edit-form>
+                       (editReady)="editReady.emit($event)"></laji-np-edit-form>
   </ng-container>
 </ng-container>

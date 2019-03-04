@@ -5,6 +5,7 @@ import { IdService } from '../shared/service/id.service';
 import { Collection } from '../shared/model/Collection';
 import { TranslateService } from '@ngx-translate/core';
 import { MultiLangService } from '../shared-modules/lang/service/multi-lang.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-collection',
@@ -41,16 +42,17 @@ export class CollectionComponent implements OnInit {
 
   initCollectionTree() {
     this.collections$ = this.collectionApi
-      .findAll('multi', undefined, '1', '10000')
-      .map(result => result.results)
-      .map(collections => collections.map((collection: Collection) => {
-        collection.onlineUrl = this.emptyMultiLang(collection.onlineUrl);
-        return collection;
-      }))
-      .map(collections => {
-        collections.sort(this.compare.bind(this));
-        return collections;
-      });
+      .findAll('multi', undefined, '1', '10000').pipe(
+        map(result => result.results),
+        map(collections => collections.map((collection: Collection) => {
+          collection.onlineUrl = this.emptyMultiLang(collection.onlineUrl);
+          return collection;
+        })),
+        map(collections => {
+          collections.sort(this.compare.bind(this));
+          return collections;
+        })
+      );
   }
 
   private emptyMultiLang(obj) {

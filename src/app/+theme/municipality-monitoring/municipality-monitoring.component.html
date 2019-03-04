@@ -1,0 +1,27 @@
+<laji-theme-page [title]="'Kunta&shy;lomake'"
+  [navLinks]="[
+    {
+      routerLink: ['../kunnat', 'instructions'],
+      label: 'instructions' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../kunnat', 'places'],
+      label: 'nafi.form' | translate,
+      visible: rights?.edit || rights?.admin
+    },
+    {
+      routerLink: ['/vihko/fp/HR.2891/admin'],
+      label: 'form.administer' | translate,
+      visible: rights?.admin
+    },
+    {
+      routerLink: ['../kunnat', 'ownSubmissions'],
+      label: rights?.admin ?
+             ('theme.admin.submissions' | translate):
+             ('haseka.ownSubmissions.title' | translate),
+      visible: rights?.edit || rights?.admin
+    }
+  ]">
+  <router-outlet></router-outlet>
+</laji-theme-page>

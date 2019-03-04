@@ -19,7 +19,7 @@
 <ng-template let-row="row" #scientificName>
   <a *ngIf="row['unit.linkings.taxon.speciesScientificName']" title="{{row['unit.linkings.taxon.speciesScientificName']}}">
     <span class="cursive">
-    {{row['unit.linkings.taxon.speciesScientificName']}}
+    {{ row['unit.linkings.taxon.speciesScientificName'] }}
     </span>
   </a>
 </ng-template>

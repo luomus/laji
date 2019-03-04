@@ -1,0 +1,18 @@
+::ng-deep .taxon-table tr:first-child th, ::ng-deep .taxon-table tr:first-child td {
+  border-top: none;
+}
+
+::ng-deep .taxon-table ul {
+  padding-left: 20px;
+  margin-left: 0;
+}
+
+.info-card {
+
+}
+.taxon-name-header {
+  display: inline-block;
+}
+.omni-search-container {
+  margin: 10px 0 10px 10px;
+}

@@ -1,3 +1,4 @@
+import { debounceTime, filter, throttleTime, distinctUntilChanged, tap, switchMap,  catchError, map, mergeMap } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -28,7 +29,6 @@ import { FormPermissionService } from '../../../+haseka/form-permission/form-per
 import { NamedPlacesService } from '../../named-place/named-places.service';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Annotation } from '../../../shared/model/Annotation';
-import { catchError, map, mergeMap } from 'rxjs/operators';
 
 /*
  * Change tamplateUrl to close or open the Vihko
@@ -46,32 +46,33 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
   @Input() formId: string;
   @Input() documentId: string;
-  @Output() onSuccess = new EventEmitter<{document: Document, form: any}>();
-  @Output() onError = new EventEmitter();
-  @Output() onCancel = new EventEmitter();
-  @Output() onAccessDenied = new EventEmitter();
-  @Output() onMissingNamedplace = new EventEmitter();
-  @Output() onTmpLoad = new EventEmitter();
+  @Output() success = new EventEmitter<{document: Document, form: any}>();
+  @Output() error = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+  @Output() accessDenied = new EventEmitter();
+  @Output() missingNamedplace = new EventEmitter();
+  @Output() tmpLoad = new EventEmitter();
 
   private changeSource = new Subject<any>();
   private changeEvent$ = this.changeSource.asObservable();
 
   public form: any;
   public lang: string;
-  public tick = 0;
   public status = '';
   public saveVisibility = 'hidden';
   public saving = false;
   public errorMsg: string;
   public namedPlace;
   public readyForForm = false;
+  public readonly: boolean | string;
+  public isAdmin = false;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
   private subForm: Subscription;
   private subChanges: Subscription;
-  private success = '';
-  private error: any;
+  private _success = '';
+  private _error: any;
   private isEdit = false;
   private leaveMsg;
   private publicityRestrictions;
@@ -100,11 +101,11 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       () => this.onLangChange()
     );
     this.subChanges = ObservableMerge(
-        this.changeEvent$.throttleTime(3000),
-        this.changeEvent$.debounceTime(3000)
-      )
-      .distinctUntilChanged()
-      .subscribe((formData) => {
+        this.changeEvent$.pipe(throttleTime(3000)),
+        this.changeEvent$.pipe(debounceTime(3000))
+      ).pipe(
+        distinctUntilChanged()
+      ).subscribe((formData) => {
         this.saveVisibility = 'shown';
         this.status = 'unsaved';
         this.saving = false;
@@ -147,13 +148,14 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       return true;
     }
     return this.translate
-      .get(confirmKey)
-      .switchMap(txt => this.dialogService.confirm(txt))
-      .do((result) => {
-        if (result) {
-          this.formService.discard();
-        }
-      });
+      .get(confirmKey).pipe(
+        switchMap(txt => this.dialogService.confirm(txt)),
+        tap((result) => {
+          if (result) {
+            this.formService.discard();
+          }
+        })
+      );
   }
 
   hasChanges() {
@@ -188,7 +190,14 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   lock(lock) {
-    this.form = {...this.form, formData: {...this.form.formData, locked: lock}};
+    this.form = {
+      ...this.form,
+      formData: {...this.form.formData, locked: lock},
+      uiSchema: {...this.form.uiSchema, 'ui:disabled': lock}
+    };
+    this.updateReadonly().subscribe(() => {
+      this.changeDetector.markForCheck();
+    });
   }
 
   onSubmit(event) {
@@ -224,13 +233,13 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             this.changeDetector.markForCheck();
           });
         this.namedPlaceService.invalidateCache();
-        this.onSuccess.emit({document: result, form: this.form});
+        this.success.emit({document: result, form: this.form});
       },
       (err) => {
         this.lajiForm.unBlock();
         this.saving = false;
         this.saveVisibility = 'shown';
-        this.error = this.parseErrorMessage(err);
+        this._error = this.parseErrorMessage(err);
         this.status = 'unsaved';
         this.logger.error('UNABLE TO SAVE DOCUMENT', {
           data: JSON.stringify(data),
@@ -269,7 +278,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         data => {
           this.formService
             .store(data.formData)
-            .subscribe(id => this.onTmpLoad.emit({
+            .subscribe(id => this.tmpLoad.emit({
               formID: this.formId,
               tmpID: id
             }));
@@ -280,6 +289,24 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             .subscribe(data => this.errorMsg = data);
         }
       );
+  }
+
+  updateReadonly(): Observable<boolean> {
+    const {formData = {}} = this.form || {};
+    return Observable.create(observer => {
+      if (this.isAdmin) {
+        this.readonly = false;
+        return observer.next(this.readonly);
+      }
+      this.userService.getUser().subscribe(user => {
+        if (formData.id && formData.creator !== user.id && (!formData.editors || formData.editors.indexOf(user.id) === -1)) {
+          this.readonly = 'haseka.form.readonly';
+        } else {
+          this.readonly = formData.locked;
+        }
+        observer.next(this.readonly || false);
+      });
+    });
   }
 
   fetchFormAndDocument() {
@@ -294,30 +321,30 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       this.subFetch.unsubscribe();
     }
     this.formService
-      .load(this.formId, this.translate.currentLang, this.documentId)
-      .switchMap<any, LoadResponse>((data) => {
+      .load(this.formId, this.translate.currentLang, this.documentId).pipe(
+      switchMap<any, Observable<LoadResponse|boolean>>((data) => {
         if (data.formData._isTemplate && !this.formService.isTmpId(this.documentId)) {
-          return this.formService.store(data.formData)
-            .do(() => {
-              this.onTmpLoad.emit({
+          return this.formService.store(data.formData).pipe(
+            tap(() => {
+              this.tmpLoad.emit({
                 formID: this.formId,
                 tmpID: data.currentId
               });
-            })
-            .map(() => false);
+            })).pipe(
+            map(() => false));
         }
         return ObservableOf(data);
-      })
-      .filter((value: any) => value !== false)
-      .switchMap(
+      })).pipe(
+      filter((value: any) => value !== false),
+      switchMap(
         data => (data.formData.namedPlaceID ? this.namedPlaceService
-          .getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
-          .catch(() => ObservableOf({})) : ObservableOf(undefined)).map(namedPace => ({data, namedPace})),
-      )
-      .switchMap(result => ObservableForkJoin(
+          .getNamedPlace(data.formData.namedPlaceID, this.userService.getToken()).pipe(
+          catchError(() => ObservableOf({}))) : ObservableOf(undefined)).pipe(map(namedPace => ({data, namedPace}))),
+      ),
+      switchMap(result => ObservableForkJoin(
         this.formPermissionService.getRights(result.data),
-          this.fetchAnnotations(this.documentId)
-            .map(annotations => {
+          this.fetchAnnotations(this.documentId).pipe(
+            map(annotations => {
               const lookup = {};
               if (Array.isArray(annotations) && annotations.length > 0) {
                 annotations.forEach(annotation => {
@@ -330,11 +357,11 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
                 });
               }
               return lookup;
-            })
+            }))
         ).pipe(
           map(data => ({...result, rights: data[0], annotations: data[1]}))
         )
-      )
+      ))
       .subscribe(
         result => {
           const data = result.data;
@@ -342,7 +369,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           this.isEdit = true;
           if (data.features) {
             if (data.features.indexOf(Form.Feature.NamedPlace) > -1 && !this.namedPlace) {
-              this.onMissingNamedplace.emit({
+              this.missingNamedplace.emit({
                 collectionID: data.collectionID,
                 formID: data.id
               });
@@ -350,7 +377,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             }
           }
           if (result.rights.edit === false) {
-            this.onAccessDenied.emit(data.collectionID);
+            this.accessDenied.emit(data.collectionID);
             return;
           }
           if (this.formService.isTmpId(this.documentId)) {
@@ -365,20 +392,24 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             data.uiSchemaContext.placeholderGeometry = this.namedPlace.geometry;
           }
           data.uiSchemaContext.formID = this.formId;
-          data.uiSchemaContext.isAdmin = result.rights.admin;
+          this.isAdmin = result.rights.admin;
+          data.uiSchemaContext.isAdmin = this.isAdmin;
           data.uiSchemaContext.annotations = result.annotations;
           this.form = data;
-          this.lang = this.translate.currentLang;
-          this.readyForForm = true;
-          if (this.hasChanges()) {
-            this.saveVisibility = 'shown';
-            this.status = 'unsaved';
-          }
-          this.changeDetector.markForCheck();
+          this.updateReadonly().subscribe((readonly) => {
+            this.lang = this.translate.currentLang;
+            this.form.uiSchema['ui:disabled'] = readonly;
+            this.readyForForm = true;
+            if (this.hasChanges()) {
+              this.saveVisibility = 'shown';
+              this.status = 'unsaved';
+            }
+            this.changeDetector.markForCheck();
+          });
         },
         err => {
           this.formService.isTmpId(this.documentId) ?
-            this.onError.emit(true) :
+            this.error.emit(true) :
             this.translate
               .get(err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError', {documentId: this.documentId})
               .subscribe(msg => {
@@ -424,7 +455,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           this.fetchAnnotations(this.documentId, result.currentPage + 1, [...results, ...result.results]) :
           ObservableOf([...results, ...result.results])),
         catchError(() => ObservableOf([]))
-      )
+      );
   }
 
   private parseErrorMessage(err) {

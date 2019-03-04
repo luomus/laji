@@ -1,8 +1,20 @@
 <div>
+  <ng-container *ngIf="sourceOfCoordinates">
+    <strong>{{ 'sourceOfCoordinates' | translate }}:</strong> {{ sourceOfCoordinates | label:'warehouse' }}<br />
+  </ng-container>
   <ng-container *ngIf="ykj">
-    <strong>YKJ:</strong> {{ykj | coordinate: 'ykj'}}<br />
+    <strong>YKJ:</strong> {{ ykj | coordinate: 'ykj' }}<br />
+  </ng-container>
+  <ng-container *ngIf="ykj1km">
+    <strong>YKJ 1km:</strong> {{ ykj1km | coordinate: 'ykj1km' }}<br />
+  </ng-container>
+  <ng-container *ngIf="ykj10km">
+    <strong>YKJ 10km:</strong> {{ ykj10km | coordinate: 'ykj10km' }}<br />
   </ng-container>
   <ng-container *ngIf="wgs84">
-    <strong>WGS84:</strong> {{wgs84 | coordinate: 'wgs84'}}
+    <strong>WGS84:</strong> {{ wgs84 | coordinate: 'wgs84' }}<br />
+  </ng-container>
+  <ng-container *ngIf="coordinateAccuracy">
+    <strong>{{ 'result.gathering.interpretations.coordinateAccuracy' | translate }}:</strong> {{ coordinateAccuracy }}<br />
   </ng-container>
 </div>

@@ -1,22 +1,22 @@
 <div *lajiLoggedIn="false">
-  {{'force.login' | translate}}
+  {{ 'force.login' | translate }}
 </div>
 <div *lajiLoggedIn="true">
   <alert *ngIf="hasPersonalData">
-    <strong>{{'result.load.personalData' | translate}}</strong>
+    <strong>{{ 'result.load.personalData' | translate }}</strong>
   </alert>
-  <h3>{{'observation.download.publicTitle' | translate}}</h3>
+  <h3>{{ 'observation.download.publicTitle' | translate }}</h3>
   <div class="form-group">
     <div class="col-sm-12" *ngIf="loadLimit < count.count">
-      {{'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}
+      {{ 'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}
     </div>
     <div class="col-sm-12" *ngIf="count.count == 0">
-      {{'observation.export.tooLittle' | translate}}
+      {{ 'observation.export.tooLittle' | translate }}
     </div>
     <div class="col-sm-12" *ngIf="loadLimit >= count.count && count.count > 0" style="margin-bottom: 15px;">
       <p [innerHtml]="'result.load.introPublic' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')} ">
       </p>
-      <a [ngClass]="{disabled: requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading}" class="btn btn-default" (click)="makePublicRequest()">{{'observation.download.loadPublic' | translate}}</a>
+      <a [ngClass]="{disabled: requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading}" class="btn btn-default" (click)="makePublicRequest()">{{ 'observation.download.loadPublic' | translate }}</a>
     </div>
   </div>
   <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
@@ -31,13 +31,13 @@
       <a [ngClass]="{disabled: requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading}" class="btn btn-default" (click)="makePrivateRequest()" style="margin-bottom: 15px;">{{ 'observation.download.loadPrivate' | translate }}</a>
     </div>
   </div>
-  <h3>{{'observation.download.specimenTitle' | translate}}</h3>
+  <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
   <div class="form-group">
     <div class="col-sm-12" *ngIf="taxaLimit < speciesCount">
-      {{'observation.export.tooManySpecies' | translate:{max:(taxaLimit | formattedNumber:'&nbsp;')} }}
+      {{ 'observation.export.tooManySpecies' | translate:{max:(taxaLimit | formattedNumber:'&nbsp;')} }}
     </div>
     <div class="col-sm-12" *ngIf="speciesCount == 0">
-      {{'observation.export.tooLittle' | translate}}
+      {{ 'observation.export.tooLittle' | translate }}
     </div>
     <div class="col-sm-12" *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
       <p [innerHtml]="'result.load.introSpecies' | translate">
@@ -45,7 +45,7 @@
       <a [ngClass]="{disabled: requests['species'] === requestStatus.loading}"
          class="btn btn-default"
          href="/api/warehouse/query/aggregate?{{csvParams}}&format=csv">
-        {{'observation.download.loadSpecies' | translate}}
+        {{ 'observation.download.loadSpecies' | translate }}
       </a>
     </div>
   </div>

@@ -57,6 +57,15 @@ laji-locale-sv > div,
   max-width: 100%;
 }
 
+/** Common helpers */
+.text-right {
+  text-align: right;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
 .red {
   background-color: #d62022 !important;
 }
@@ -94,11 +103,20 @@ laji-locale-sv > div,
   background-color: #ECF0F1;
 }
 
+/** /Common helpers */
+
 .footer footer {
   flex: none;
-  color: #fff;
   background-color: #3498DB;
   width: 100%;
+}
+
+.footer footer a,
+.footer footer li,
+.footer footer h3,
+.footer .intro,
+.footer .info {
+  color: #fff;
 }
 
 .breadcrumb {
@@ -120,7 +138,7 @@ laji-locale-sv > div,
 
 .loading {
   background-color: #ffffff;
-  background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+  background-image: url("/static/images/loading.gif");
   background-size: 23px 23px;
   background-position: right center;
   background-repeat: no-repeat;
@@ -632,10 +650,6 @@ body > .ui-select-bootstrap.open {
   list-style: none;
 }
 
-.sidebar-nav li {
-  margin: 0 -15px;
-}
-
 .sidebar-nav li a {
   padding: 10px 10px 10px 20px;
   display: block;
@@ -656,12 +670,8 @@ body > .ui-select-bootstrap.open {
   list-style: none;
 }
 
-.sidebar-nav ul li {
-  margin-right: 0;
-}
-
-.sidebar-nav ul li a {
-  padding-left: 55px;
+.laji-sidebar-active {
+  background: white;
 }
 
 .dropdown-menu {

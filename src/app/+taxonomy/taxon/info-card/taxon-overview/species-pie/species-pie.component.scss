@@ -1,0 +1,13 @@
+.species-pie-chart {
+  margin: auto;
+  width: 100%;
+  height: 350px;
+  max-height: calc(100vh - 61px);
+  max-width: 1000px;
+}
+
+::ng-deep {
+  .ngx-charts {
+    overflow: visible !important;
+  }
+}

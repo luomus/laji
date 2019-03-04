@@ -1,31 +1,35 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AbsractLabelPipe } from './abstract-label.pipe';
+import { AbstractLabelPipe } from './abstract-label.pipe';
 import { SourceService } from '../service/source.service';
+import { Observable } from 'rxjs';
 
 @Pipe({
   name: 'source',
   pure: false
 })
-export class SourcePipe extends AbsractLabelPipe implements PipeTransform {
+export class SourcePipe extends AbstractLabelPipe implements PipeTransform {
   private sources;
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,
               protected sourceService: SourceService) {
-    super(translate);
+    super(translate, _ref);
   }
 
-  protected _updateValue(key: string): void {
+  protected _updateValue(key: string): Observable<any> {
     if (this.sources) {
       this.value = this.sources[key] || key;
       return;
     }
-    this.sourceService.getAllAsLookUp(this.translate.currentLang)
-      .subscribe(sources => {
-        this.sources = sources;
-        this.value = sources[key] || key;
-        this._ref.markForCheck();
-      });
+    const value$ = this.sourceService.getAllAsLookUp(this.translate.currentLang);
+    value$.subscribe(sources => {
+      this.sources = sources;
+    });
+    return value$;
+  }
+
+  protected _parseValue(sources: any): string {
+    return sources[this.key] || this.key;
   }
 }

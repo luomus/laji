@@ -1,5 +1,5 @@
 import { forkJoin as ObservableForkJoin, Observable, Observer, of as ObservableOf } from 'rxjs';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
 import { MetadataService } from './metadata.service';
@@ -14,10 +14,13 @@ import { UserService } from './user.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, delay, filter, map, merge, retryWhen, share, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, merge, share, take, tap } from 'rxjs/operators';
+import { AreaService } from './area.service';
+import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
+import { Publication } from '../model/Publication';
 
 @Injectable({providedIn: 'root'})
-export class TriplestoreLabelService implements OnInit {
+export class TriplestoreLabelService {
 
   static cache = {};
   static requestCache: any = {};
@@ -36,13 +39,12 @@ export class TriplestoreLabelService implements OnInit {
               private sourceService: SourceService,
               private cacheService: CacheService,
               private lajiApi: LajiApiService,
-              private userService: UserService
-  ) { };
-
-  ngOnInit() {
-    if (!this.pending) {
-      this.pending = this.getAllLabels();
-    }
+              private userService: UserService,
+              private areaService: AreaService,
+              private redListTaxonGroupApi: RedListTaxonGroupApi
+  ) {
+    this.pending = this.getAllLabels();
+    this.pending.subscribe();
   }
 
   public getAll(keys: string[], lang): Observable<{[key: string]: string}> {
@@ -93,6 +95,7 @@ export class TriplestoreLabelService implements OnInit {
         case 'MVL':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi').pipe(
+              catchError(() => this.redListTaxonGroupApi.redListTaxonGroupsFindById(key, 'multi')),
               map((group: InformalTaxonGroup) => group.name),
               tap(name => TriplestoreLabelService.cache[key] = name),
               map(name => MultiLangService.getValue((name as any), lang)),
@@ -109,6 +112,18 @@ export class TriplestoreLabelService implements OnInit {
             );
           }
           return TriplestoreLabelService.requestCache[key];
+        case 'MP':
+          if (!TriplestoreLabelService.requestCache[key]) {
+            TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.publications, key, {lang: 'multi'}).pipe(
+              map((publication: Publication) => publication['dc:bibliographicCitation']),
+              tap(name => TriplestoreLabelService.cache[key] = name),
+              map(name => MultiLangService.getValue((name as any), lang)),
+              share()
+            );
+          }
+          return TriplestoreLabelService.requestCache[key];
+        case 'ML':
+          return this.areaService.getName(key, lang);
         case 'KE':
           return this.sourceService.getName(key, lang);
         case 'MX':
@@ -148,15 +163,15 @@ export class TriplestoreLabelService implements OnInit {
         merge(apiCall.pipe(
             tap(data => {
               if (!Util.isEmptyObj(data)) {
-                this.cacheService.setItem(cacheKey, data).subscribe()
+                this.cacheService.setItem(cacheKey, data).subscribe();
               }
             })
           )
         ),
         filter(result => {
-          return !Util.isEmptyObj(result)
+          return !Util.isEmptyObj(result);
         })
-      )
+      );
     };
 
     const fromApi$ = ObservableForkJoin(
@@ -167,10 +182,6 @@ export class TriplestoreLabelService implements OnInit {
         TriplestoreLabelService.cacheProps,
         this.metadataApi.metadataAllProperties('multi').pipe(
           take(1),
-          retryWhen(errors => errors.pipe(
-            delay(1000),
-            take(3)
-          )),
           map(data => {
             const props = {};
             if (data && data.results) {

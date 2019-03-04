@@ -32,7 +32,7 @@
 }
 
 .taxon-match {
-  padding-left: 65px;
+
 }
 
 .btn-default {
@@ -47,13 +47,17 @@
   border-bottom: 1px solid #ccc;
 }
 
-.taxon-match, .observations, .taxonomy {
+.taxon-match {
   color: #2c2c2c;
 }
 
 .omni-search-results .informal-group-image {
-  background-size: auto 65px;
-  background-position: top left;
+  display: inline-block;
+  max-width: 100%;
+  padding-right: 70px;
+  height: 65px;
+  background-size: 65px 65px;
+  background-position: top right;
 }
 
 @media only screen and (min-width : 992px) {
@@ -61,7 +65,7 @@
     min-width: 727px;
   }
 
-  .omni-search-results .first-col {
+  .omni-search-results .taxon-match {
     border-left: 1px solid #999;
   }
 }

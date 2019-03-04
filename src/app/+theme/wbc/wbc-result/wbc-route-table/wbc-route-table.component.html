@@ -2,7 +2,7 @@
   <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
 </div>
 <alert *ngIf="showWbcRouteTableInfo" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-  <p>Punainen tausta: lintuja ainakin 50 % vähemmän kuin keskimäärin (lasketaan vain lajeille, joita keskimäärin ainakin 5 yksilöä); vihreä tausta: lintuja ainakin 100 % enemmän kuin keskimäärin; vihreä numero: ennätys; punainen numero: vähyysennätys.</p>
+  <p>{{ 'wbc.stats.route.table.info' | translate }}</p>
 </alert>
 
 <laji-datatable
@@ -24,23 +24,23 @@
 
 <ng-template let-value="value" let-row="row" #textOrTranslationKey>
   <ng-container *ngIf="row.name !== 'speciesCount' && row.name !== 'individualCount' && row.name !== 'documentIds'; else translationKey">
-    <span *ngIf="value" [title]="value">{{value}}</span>
+    <span *ngIf="value" [title]="value">{{ value }}</span>
   </ng-container>
   <ng-template #translationKey>
     <span *ngIf="value" [title]="'species.stats.route.' + value | translate">
-      {{'wbc.stats.route.' + value | translate}}
+      {{ 'wbc.stats.route.' + value | translate }}
     </span>
   </ng-template>
 </ng-template>
 
 <ng-template let-value="value" let-row="row" #numberOrDocumentIds>
   <ng-container *ngIf="row.name !== 'documentIds'; else documentIds">
-    <span *ngIf="value || value === 0" [title]="roundNumber(value)">{{roundNumber(value)}}</span>
+    <span *ngIf="value || value === 0" [title]="roundNumber(value)">{{ roundNumber(value) }}</span>
   </ng-container>
   <ng-template #documentIds>
     <span *ngIf="value && value.length > 0" ngPreserveWhitespaces style="display: inline-block">
       <ng-container *ngFor="let doc of value">
-        <a (click)="onDocumentClick.emit(doc)" title="{{doc}}" class="link">Katso</a>
+        <a (click)="documentClick.emit(doc)" title="{{doc}}" class="link">{{ 'wbc.stats.route.table.link' | translate }}</a>
       </ng-container>
     </span>
   </ng-template>

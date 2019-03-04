@@ -1,16 +1,15 @@
 <div class="laji-form">
   <laji-form
-    [formData]="formData"
-    [lang]="lang"
-    [tick]="tick"
-    (onChange)="onChange($event)"
-    (onSubmit)="onSubmit($event)"></laji-form>
+    [formData]="documentForm"
+    (dataChange)="onChange($event)"
+    (dataSubmit)="onSubmit($event)"></laji-form>
   <laji-document-form-footer
-    [form]="formData"
+    [form]="documentForm"
     [status]="status"
     [saving]="saving"
-    (onSubmitPublic)="submitPublic()"
-    (onSubmitPrivate)="submitPrivate()"
-    (onCancel)="discard()"
+    [edit]="namedPlace"
+    (submitPublic)="submitPublic()"
+    (submitPrivate)="submitPrivate()"
+    (cancel)="discard()"
     ></laji-document-form-footer>
 </div>

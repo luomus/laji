@@ -6,8 +6,8 @@
     </tr>
     </thead>
     <tr *ngFor="let item of facts">
-      <th class="title"><span>{{item.fact | label:'fullUri'}}</span></th>
-      <td class="value">{{item.value | label: 'fullUri' | values}}</td>
+      <th class="title"><span>{{ item.fact | label:'fullUri' }}</span></th>
+      <td class="value">{{ item.value | label: 'fullUri' | values | boolToString }}</td>
     </tr>
   </table>
 </div>

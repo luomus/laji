@@ -1,13 +1,16 @@
 <ng-container *ngIf="value">
   <div class="key">
-    <span>{{title}}:</span>
+    <span>{{ title }}:</span>
   </div>
   <div class="value">
-    <ng-container *ngIf="isLabel; else noLabel">
-      <span [innerHtml]="value | label | nlToBr"></span>
+    <ng-container *ngIf="pipe === 'area'">
+      <span [innerHtml]="value | area | nlToBr | values"></span>
     </ng-container>
-    <ng-template #noLabel>
-      <span [innerHtml]="value | nlToBr"></span>
-    </ng-template>
+    <ng-container *ngIf="pipe === 'label'">
+      <span [innerHtml]="value | label | nlToBr | values"></span>
+    </ng-container>
+    <ng-container *ngIf="!pipe">
+      <span [innerHtml]="value | nlToBr | values"></span>
+    </ng-container>
   </div>
 </ng-container>
