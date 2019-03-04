@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { GalleryService } from '../service/gallery.service';
 import { Util } from '../../service/util.service';
 import { TaxonomyImage } from '../../model/Taxonomy';
@@ -13,7 +13,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   templateUrl: './gallery.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GalleryComponent implements OnChanges {
+export class GalleryComponent implements OnChanges, OnDestroy {
   @Input() query: WarehouseQueryInterface;
   @Input() extendedInfo = false;
   @Input() tick;
@@ -52,6 +52,12 @@ export class GalleryComponent implements OnChanges {
   ngOnChanges() {
     this.page = 1;
     this.updateImages();
+  }
+
+  ngOnDestroy(): void {
+    if (this.imagesSub) {
+      this.imagesSub.unsubscribe();
+    }
   }
 
   pageChanged(event) {
