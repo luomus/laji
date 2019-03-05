@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnChanges, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,7 +9,7 @@ import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
   templateUrl: './taxon-overview.component.html',
   styleUrls: ['./taxon-overview.component.scss']
 })
-export class TaxonOverviewComponent implements OnChanges {
+export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() images: any[];
@@ -49,6 +49,12 @@ export class TaxonOverviewComponent implements OnChanges {
   ngOnChanges() {
     if (!this.taxon.species) {
       this.getChildren();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.childrenSub) {
+      this.childrenSub.unsubscribe();
     }
   }
 

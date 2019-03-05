@@ -116,7 +116,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         {
           taxonId: [this.taxon.id],
           superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
-          taxonReliability: ['RELIABLE']
+          taxonReliability: ['RELIABLE'],
+          cache: true
         },
         missingImages
       ).pipe(
@@ -130,7 +131,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
           if (missingImages > 0) {
             return this.getImages(
-              { taxonId: [this.taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'] },
+              { taxonId: [this.taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], cache: true },
               missingImages
             ).pipe(
               map(collectionImages => images.concat(collectionImages))
