@@ -220,7 +220,7 @@ export interface Taxonomy {
 
   descriptions?: any[];
 
-  taxonConceptId?: string[];
+  taxonConceptIds?: string[];
 
   additionalIds?: string[];
 
