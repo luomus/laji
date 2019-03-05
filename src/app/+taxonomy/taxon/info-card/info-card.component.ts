@@ -10,7 +10,7 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  PLATFORM_ID, EventEmitter,
+  PLATFORM_ID, EventEmitter, OnDestroy,
 } from '@angular/core';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../../shared/model/Taxonomy';
 import {GalleryService} from '../../../shared/gallery/service/gallery.service';
@@ -23,7 +23,7 @@ import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInter
   styleUrls: ['./info-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InfoCardComponent implements OnInit, OnChanges {
+export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
@@ -49,7 +49,12 @@ export class InfoCardComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.hasImageData = this.activeTab === 'images';
+    if (this.hasImageData === undefined) {
+      this.hasImageData = this.activeTab === 'images';
+    }
+    if (this.hasBiologyData === undefined) {
+      this.hasBiologyData = this.activeTab === 'biology';
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -77,6 +82,12 @@ export class InfoCardComponent implements OnInit, OnChanges {
       }
 
       this.setImages();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.imageSub) {
+      this.imageSub.unsubscribe();
     }
   }
 
@@ -113,6 +124,7 @@ export class InfoCardComponent implements OnInit, OnChanges {
           const images = taxonImages.concat(observationImages);
           if (images.length > 0) {
             this.hasImageData = true;
+            this.cd.markForCheck();
           }
           missingImages = nbrOfImages - images.length;
 
