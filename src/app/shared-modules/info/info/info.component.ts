@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, HostListener, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  Inject,
+  Input,
+  PLATFORM_ID,
+  ViewChild
+} from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import { ModalDirective, PopoverDirective } from 'ngx-bootstrap';
 import { isPlatformBrowser } from '@angular/common';
@@ -15,6 +23,8 @@ export class InfoComponent {
   @Input() html: string;
   @Input() glyphicon: string;
   @Input() labelType = 'info';
+  @Input() showOnHover = false;
+
   @ViewChild('modal') public modal: ModalDirective;
   @ViewChild('pop') public popover: PopoverDirective;
 
@@ -34,7 +44,7 @@ export class InfoComponent {
     if (!isPlatformBrowser(this.platformID)) {
       return;
     }
-    const useModal = this.window.innerWidth <= 767;
+    const useModal = this.useModal();
     if (this.isVisible() && ((useModal && this.modal.isShown) || (!useModal && this.popover.isOpen))) {
       return;
     }
@@ -55,8 +65,23 @@ export class InfoComponent {
     }
   }
 
+  mouseEnter() {
+    if (!this.useModal() && this.showOnHover) {
+      this.show();
+    }
+  }
+
+  mouseLeave() {
+    if (!this.useModal() && this.showOnHover) {
+      this.hide();
+    }
+  }
+
   private isVisible() {
     return this.modal.isShown || this.popover.isOpen;
   }
 
+  private useModal() {
+    return this.window.innerWidth <= 767;
+  }
 }

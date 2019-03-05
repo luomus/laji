@@ -1,5 +1,7 @@
 <span
   (click)="show()"
+  (mouseenter)="mouseEnter()"
+  (mouseleave)="mouseLeave()"
   [className]="'label label-' + labelType + ' link no-propagation' + (glyphicon ? '' : ' laji-form-help-glyph')"
 ><strong
   [popover]="content"
