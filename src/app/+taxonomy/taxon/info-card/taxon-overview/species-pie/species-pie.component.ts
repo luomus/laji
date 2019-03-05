@@ -1,5 +1,4 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
-import { TaxonomyApi } from '../../../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -22,7 +21,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   @Output() taxonSelect = new EventEmitter<string>();
 
   constructor(
-    private taxonomyService: TaxonomyApi,
     private translate: TranslateService
   ) { }
 

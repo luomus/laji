@@ -42,13 +42,22 @@
       <div class="col-sm-4">
         <h3>&nbsp;</h3>
         <ul style="margin-bottom: 15px;">
-          <li><a href="https://www.syke.fi" rel="noopener">Suomen ympäristökeskus</a></li>
+          <li><a href="https://www.ymparisto.fi/punainenlista" rel="noopener">Suomen ympäristökeskus</a></li>
           <li><a href="https://laji.fi" rel="noopener">Suomen lajitietokeskus</a></li>
+          <li><a href="https://www.iucnredlist.org/" rel="noopener">IUCN</a></li>
         </ul>
         <ul>
           <li><a>Punainen kirja PDF-muodossa</a></li>
-          <li><a>Avoin data</a></li>
+          <li><a [routerLink]="['/publications'] | localize">Avoin data</a></li>
         </ul>
+      </div>
+    </div>
+    <div class="row" *ngIf="onFrontPage">
+      <div class="col-sm-11 col-sm-offset-1">
+        <div class="pull-right info">
+          {{ 'footer.image.attribution' | translate }}:
+          Vappu Ormio
+        </div>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, ContentChild, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, ContentChild, TemplateRef } from '@angular/core';
 import {forkJoin, Observable, of, Subscription} from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { TreeNode } from './model/tree-node.interface';
@@ -9,7 +9,7 @@ import { TreeState } from './service/tree-state';
   templateUrl: './tree.component.html',
   styleUrls: ['./tree.component.css']
 })
-export class TreeComponent implements OnChanges {
+export class TreeComponent implements OnChanges, OnDestroy {
   @Input() nodes: TreeNode[] = [];
   @Input() getChildren: (id: string) => Observable<any[]>;
   @Input() getParents: (id: string) => Observable<any[]>;
@@ -44,6 +44,12 @@ export class TreeComponent implements OnChanges {
 
     if (changes.nodes || changes.activeId) {
       this.setInitialView(this.activeId);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.initialViewSubs) {
+      this.initialViewSubs.unsubscribe();
     }
   }
 

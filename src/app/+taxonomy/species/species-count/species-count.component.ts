@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {TaxonomySearchQuery} from '../service/taxonomy-search-query';
 import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
 import {Subscription} from 'rxjs';
@@ -8,7 +8,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './species-count.component.html',
   styleUrls: ['./species-count.component.scss']
 })
-export class SpeciesCountComponent implements OnInit {
+export class SpeciesCountComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() hasMediaFilter: boolean;
 
@@ -30,6 +30,15 @@ export class SpeciesCountComponent implements OnInit {
       }
     );
     this.updateCount();
+  }
+
+  ngOnDestroy() {
+    if (this.subQueryUpdate) {
+      this.subQueryUpdate.unsubscribe();
+    }
+    if (this.subFetch) {
+      this.subFetch.unsubscribe();
+    }
   }
 
   private updateCount() {

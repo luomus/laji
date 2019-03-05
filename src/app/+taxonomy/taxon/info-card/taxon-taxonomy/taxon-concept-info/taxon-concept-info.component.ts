@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { TaxonConceptService } from './taxon-concept.service';
 import { TaxonMatch } from './taxon-match.model';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./taxon-concept-info.component.css'],
   providers: [TaxonConceptService]
 })
-export class TaxonConceptInfoComponent implements OnChanges {
+export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
   @Input() taxonId: string;
   @Input() taxonConceptId: string;
 
@@ -26,12 +26,12 @@ export class TaxonConceptInfoComponent implements OnChanges {
     this.fetchList();
   }
 
+  ngOnDestroy() {
+    this.unsubscribeSubs();
+  }
+
   fetchList() {
-    for (let i = 0; i < this.subs.length; i++) {
-      if (this.subs[i]) {
-        this.subs[i].unsubscribe();
-      }
-    }
+    this.unsubscribeSubs();
     this.matches = [];
     this.subs = [];
 
@@ -51,4 +51,11 @@ export class TaxonConceptInfoComponent implements OnChanges {
     }));
   }
 
+  private unsubscribeSubs() {
+    for (let i = 0; i < this.subs.length; i++) {
+      if (this.subs[i]) {
+        this.subs[i].unsubscribe();
+      }
+    }
+  }
 }

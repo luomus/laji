@@ -1,4 +1,4 @@
-<laji-info [glyphicon]="'user'" [placement]="'right'" [labelType]="'primary'">
+<laji-info [glyphicon]="'user'" [placement]="'right'" [labelType]="'primary'" [showOnHover]="true">
   <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title | multiLang }}
   <ng-container *ngIf="taxonDescription?.speciesCardAuthors">
     <br>

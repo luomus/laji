@@ -93,7 +93,12 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subQueryUpdate.unsubscribe();
+    if (this.subQueryUpdate) {
+      this.subQueryUpdate.unsubscribe();
+    }
+    if (this.subFetch) {
+      this.subFetch.unsubscribe();
+    }
   }
 
   onRowSelect(event) {

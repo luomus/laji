@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnChanges, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,12 +9,11 @@ import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
   templateUrl: './taxon-overview.component.html',
   styleUrls: ['./taxon-overview.component.scss']
 })
-export class TaxonOverviewComponent implements OnChanges {
+export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() images: any[];
 
-  @Output() hasImageData = new EventEmitter<boolean>();
   @Output() taxonSelect = new EventEmitter<string>();
 
   taxonChildren: Taxonomy[] = [];
@@ -53,13 +52,20 @@ export class TaxonOverviewComponent implements OnChanges {
     }
   }
 
+  ngOnDestroy() {
+    if (this.childrenSub) {
+      this.childrenSub.unsubscribe();
+    }
+  }
+
   private getChildren() {
     if (this.childrenSub) {
       this.childrenSub.unsubscribe();
     }
     this.childrenSub = this.taxonService
       .taxonomyFindChildren(this.taxon.id, this.translate.currentLang, '1', {
-        selectedFields: 'id,vernacularName,scientificName,cursiveName,countOfFinnishSpecies'
+        selectedFields: 'id,vernacularName,scientificName,cursiveName,countOfFinnishSpecies',
+        onlyFinnish: false
       })
       .subscribe((data) => {
         this.taxonChildren = data;

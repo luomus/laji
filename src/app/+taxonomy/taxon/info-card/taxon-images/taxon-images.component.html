@@ -13,15 +13,15 @@
 {
   title: 'taxonomy.images.typeSpecimens',
   hasData: 'hasTypeSpecimens',
-  query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: true}
+  query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: true, cache: true}
 }, {
   title: 'taxonomy.images.collection',
   hasData: 'hasCollectionImages',
-  query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false}
+  query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false, cache: true}
 }, {
   title: 'taxonomy.images.observations',
   hasData: 'hasObservationImages',
-  query: {taxonId: [taxon.id], superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'], taxonReliability: ['RELIABLE']}
+  query: {taxonId: [taxon.id], superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'], taxonReliability: ['RELIABLE'], cache: true}
 }]">
   <h3 *ngIf="this[item.hasData]">{{ item.title | translate }}</h3>
   <div class="gallery-container" [hidden]="this[item.hasData] === false">

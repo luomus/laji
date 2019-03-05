@@ -37,7 +37,7 @@
         {{ 'taxonomy.map.disclaimer' | translate }}
       </p>
       <laji-ykj-map
-        [query]="{taxonId: [taxon.id], countryId: ['ML.206']}"
+        [query]="{taxonId: [taxon.id], countryId: ['ML.206'], cache: true}"
         [height]="'600px'"
         [type]="'count'"
         [types]="['count']"
