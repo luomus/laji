@@ -81,6 +81,6 @@ export class TaxonTreeComponent implements OnInit {
   }
 
   private getSelectedFields() {
-    return ['id', 'hasChildren', 'vernacularName', 'scientificName', 'cursiveName'].join(',');
+    return ['id', 'hasChildren', 'vernacularName', 'scientificName', 'cursiveName', 'taxonRank'].join(',');
   }
 }

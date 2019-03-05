@@ -47,7 +47,7 @@ export class TreeState {
     this.updateNodeStates(nodes, parentId, (node: TreeNode, state: TreeNodeState) => {
       if (node.children) {
         this.updateAndCheckMissing(node.children, missingList, node.id, state.isSkipped ? virtualParent : node);
-      } else if (state.isExpanded && missingList.indexOf(virtualParent) === -1) {
+      } else if (state.isExpanded && missingList.indexOf(virtualParent) === -1 && virtualParent) {
         missingList.push(virtualParent);
       }
     });
@@ -59,7 +59,7 @@ export class TreeState {
     const parentState = parentId ? this.state[parentId] : undefined;
 
     this.state[node.id] = {
-      isExpanded: skipped && parentState.isExpanded ? true : expanded,
+      isExpanded: skipped && parentState && parentState.isExpanded ? true : expanded,
       isSkipped: skipped,
       loadingCount: this.state[node.id] ? this.state[node.id].loadingCount : 0
     };
