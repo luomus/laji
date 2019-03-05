@@ -14,7 +14,6 @@ export class TaxonOverviewComponent implements OnChanges {
   @Input() isFromMasterChecklist: boolean;
   @Input() images: any[];
 
-  @Output() hasImageData = new EventEmitter<boolean>();
   @Output() taxonSelect = new EventEmitter<string>();
 
   taxonChildren: Taxonomy[] = [];

@@ -27,9 +27,13 @@
   },
   "criteria": {
     "A": "Yksilöiden määrä on vähentynyt merkittävästi",
-    "B": "Elää suppealla alueella tai elinalue pienentynyt, pirstoutunut tai epävakaa",
-    "C": "Yksilöitä on vähän, ja niiden määrä vähenee jatkuvasti",
-    "D": "Yksilöitä on hyvin vähän, tai ne esiintyvät hyvin suppealla alueella",
+    "B1": "Suppea levinneisyysalue ja taantuminen tai esiintyminen voimakas pirstoutuminen tai erittäin suuret kannanvaihtelut",
+    "B2": "Suppea esiintymisalue ja taantuminen tai esiintyminen voimakas pirstoutuminen tai erittäin suuret kannanvaihtelut",
+    "C1": "Pieni populaatiokoko ja jatkuva taantuminen",
+    "C2": "Pieni populaatiokoko ja jatkuva taantuminen ja pirstoutuminen tai voimakkaat vaihtelut",
+    "D": "Pieni populaatiokoko",
+    "D1": "Pieni populaatiokoko",
+    "D2": "Hyvin pieni populaatiokoko tai rajoittunut esiintymisalue ja alttius voimakkaalle vähenemiselle",
     "E": "Analyysin perusteella on merkittävä todennäköisyys että laji katoaa"
   },
   "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
