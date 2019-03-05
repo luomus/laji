@@ -14,8 +14,8 @@ export class TaxonTaxonomyComponent implements OnChanges {
 
   ngOnChanges() {
     this.taxonConceptId = undefined;
-    if (this.taxon.taxonConceptId && this.taxon.taxonConceptId[0]) {
-      this.taxonConceptId = this.taxon.taxonConceptId[0].replace('taxonid:', '');
+    if (this.taxon.taxonConceptIds && this.taxon.taxonConceptIds[0]) {
+      this.taxonConceptId = this.taxon.taxonConceptIds[0].replace('taxonid:', '');
     }
   }
 }
