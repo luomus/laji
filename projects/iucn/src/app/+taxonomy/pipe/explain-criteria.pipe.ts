@@ -18,12 +18,30 @@ export class ExplainCriteriaPipe implements PipeTransform {
       const explain = [];
 
       parts.forEach(criteria => {
-        const first = criteria.trim().charAt(0);
-        explain.push('<li>' + criteria + ' &ndash; ' + this.translateService.instant('criteria.' + first) + '</li>');
+        const trimmedCriteria = criteria.trim();
+        const firstLetter = trimmedCriteria.charAt(0);
+        const useSecond = ['B', 'C', 'D'].includes(firstLetter);
+        if (useSecond) {
+          trimmedCriteria.split('+').forEach((sub, idx) => {
+            const second = sub.charAt(idx === 0 ? 1 : 0);
+            this.addTranslation((idx === 0 ? '' : firstLetter) + sub, firstLetter + second, explain);
+          });
+        } else {
+          this.addTranslation(criteria, firstLetter, explain);
+        }
       });
       return '<ul class="' + args + '">' + explain.join('') + '</ul>';
     }
     return value;
+  }
+
+  private addTranslation(criteria, key, content: string[]) {
+    const translateKey = 'criteria.' + key;
+    const translation = this.translateService.instant(translateKey);
+    content.push(translateKey === translation ?
+      '<li>' + criteria + '</li>' :
+      '<li>' + criteria + ' &ndash; ' + translation + '</li>'
+    );
   }
 
 }
