@@ -52,5 +52,13 @@
         </ul>
       </div>
     </div>
+    <div class="row" *ngIf="onFrontPage">
+      <div class="col-sm-11 col-sm-offset-1">
+        <div class="pull-right info">
+          {{ 'footer.image.attribution' | translate }}:
+          Vappu Ormio
+        </div>
+      </div>
+    </div>
   </div>
 </footer>
