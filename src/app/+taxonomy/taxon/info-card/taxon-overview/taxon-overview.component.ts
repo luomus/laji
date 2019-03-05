@@ -64,7 +64,8 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     }
     this.childrenSub = this.taxonService
       .taxonomyFindChildren(this.taxon.id, this.translate.currentLang, '1', {
-        selectedFields: 'id,vernacularName,scientificName,cursiveName,countOfFinnishSpecies'
+        selectedFields: 'id,vernacularName,scientificName,cursiveName,countOfFinnishSpecies',
+        onlyFinnish: false
       })
       .subscribe((data) => {
         this.taxonChildren = data;

@@ -33,7 +33,8 @@ export class TaxonTreeComponent implements OnInit {
   getRoot() {
     this.taxonService
       .taxonomyFindBySubject('MX.37600', this.translate.currentLang, {
-        selectedFields: this.getSelectedFields()
+        selectedFields: this.getSelectedFields(),
+        onlyFinnish: false
       })
       .pipe(
         tap((data) => {
@@ -48,14 +49,16 @@ export class TaxonTreeComponent implements OnInit {
   getChildren(id: string) {
     return this.taxonService
       .taxonomyFindChildren(id, this.translate.currentLang, undefined, {
-        selectedFields: this.getSelectedFields()
+        selectedFields: this.getSelectedFields(),
+        onlyFinnish: false
       });
   }
 
   getParents(id: string) {
     return this.taxonService
       .taxonomyFindParents(id, this.translate.currentLang, {
-        selectedFields: 'id'
+        selectedFields: 'id',
+        onlyFinnish: false
       });
   }
 
