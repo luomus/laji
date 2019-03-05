@@ -31,7 +31,9 @@ export const Global = {
   collections: {
     nafi: 'HR.175',
     wbc: 'HR.39',
-    lineTransect: 'HR.61'
+    lineTransect: 'HR.61',
+    invasiveControl: 'HR.2049',
+    municipalityMonitoring: 'HR.2891'
   },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'

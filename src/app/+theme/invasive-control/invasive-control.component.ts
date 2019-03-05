@@ -1,5 +1,5 @@
 /* tslint:disable:component-selector */
-import { ChangeDetectionStrategy, Component, OnInit, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Rights } from '../../+haseka/form-permission/form-permission.service';
 
 @Component({

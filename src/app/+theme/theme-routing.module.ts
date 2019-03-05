@@ -46,6 +46,8 @@ import { LolifeContainerComponent } from './lolife/lolife.container';
 import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { HasFormPermission } from '../shared/route/has-form-permission';
+import { InvasiveControlOwnSubmissionsComponent } from './invasive-control/invasive-control-own-submissions/invasive-control-own-submissions.component';
+import { MunicipalityMonitoringOwnSubmissionsComponent } from './municipality-monitoring/municipality-monitoring-own-submissions/municipality-monitoring-own-submissions.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -200,8 +202,15 @@ const routes: Routes = [
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        data: { noScrollToTop: true, formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
-      }
+        data: {noScrollToTop: true, formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
+      },
+      {
+        path: 'ownSubmissions',
+        pathMatch: 'full',
+        component: InvasiveControlOwnSubmissionsComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/vieraslajit'}
+      },
     ]
   },
   {
@@ -244,7 +253,14 @@ const routes: Routes = [
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         canActivate: [OnlyLoggedIn, HasFormPermission],
         data: { noScrollToTop: true, formId: 'MHL.35', noFormPermissionRedirect: '/theme/kunnat' }
-      }
+      },
+      {
+        path: 'ownSubmissions',
+        pathMatch: 'full',
+        component: MunicipalityMonitoringOwnSubmissionsComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: {formId: 'MHL.33', noFormPermissionRedirect: '/theme/kunnat'}
+      },
     ]
   },
   {

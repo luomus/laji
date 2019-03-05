@@ -114,6 +114,14 @@ export class ResultService {
     return this.yearToChecklistVersion[year];
   }
 
+  getYearFromChecklistVersion(checklistVersion: string) {
+    if (!checklistVersion) {
+      return DEFAULT_YEAR;
+    }
+
+    return Object.keys(this.yearToChecklistVersion).find(key => this.yearToChecklistVersion[key] === checklistVersion);
+  }
+
   getYearsStats(year: number): Observable<{name: string, value: number, key: string}[]> {
     if (this.resultCache[year]) {
       return ObservableOf(this.resultCache[year]);

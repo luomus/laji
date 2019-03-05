@@ -49,6 +49,23 @@
                 }
               ]
             },
+            "dev-embedded": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev-embedded.ts"
+                }
+              ]
+            },
             "embedded": {
               "optimization": true,
               "outputHashing": "all",
@@ -114,6 +131,9 @@
           "configurations": {
             "production": {
               "browserTarget": "laji:build:production"
+            },
+            "dev-embedded": {
+              "browserTarget": "laji:build:dev-embedded"
             },
             "embedded": {
               "browserTarget": "laji:build:embedded"

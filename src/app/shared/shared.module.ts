@@ -37,7 +37,8 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
-import { ObservationGroupSelectComponent } from './group-select/group-select.component';
+import { ObservationGroupSelectComponent } from './group-select/observation-group-select.component';
+import { IucnGroupSelectComponent } from './group-select/iucn-group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
 import { ChecklistPipe } from './pipe/checklist.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
@@ -49,11 +50,12 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ServerOnlyDirective } from './directive/server-only.directive';
 import { BrowserOnlyDirective } from './directive/browser-only.directive';
 import { ForTypesDirective } from './directive/for-types.directive';
-import { IucnFooterComponent } from './iucn-footer/footer.component';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
 import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
+import { PublicationPipe } from './pipe/publication.pipe';
+import { HabitatComponent } from './habitat/habitat.component';
 
 
 @NgModule({
@@ -67,16 +69,18 @@ import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, NlToBrPipe,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
+    ObservationGroupSelectComponent, IucnGroupSelectComponent,
+    SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
     TaxonNameComponent,
     ChecklistPipe,
     FactNotInPipe,
     ForTypesDirective,
-    IucnFooterComponent,
     CapitalizePipe,
     CoordinatePipe,
     FilterPipe,
-    BoolToStringPipe
+    BoolToStringPipe,
+    PublicationPipe,
+    HabitatComponent
   ],
   imports: [
     FormsModule,
@@ -99,10 +103,11 @@ import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
     FormattedNumber, ObservationCountComponent, GalleryComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, ServerOnlyDirective, BrowserOnlyDirective,
-    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
+    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, IucnGroupSelectComponent,
+    ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
-    FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe
+    FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent
   ]
 })
 export class SharedModule {

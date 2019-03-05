@@ -90,12 +90,12 @@ export class TaxonomyColumns {
       name: 'typeOfOccurrenceInFinlandNotes'
     },
     {
-      name: 'occurrenceInFinlandPublication',
+      name: 'occurrenceInFinlandPublications',
       cellTemplate: 'publicationArray',
       width: 200
     },
     {
-      name: 'originalPublication',
+      name: 'originalPublications',
       cellTemplate: 'publication',
       width: 200
     },

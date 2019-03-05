@@ -22,7 +22,7 @@
       [icon]="'table'"
       [iconType]="'png'"
       [path]="'taxon/list'"
-      [query]="{onlyFinnish: true}"
+      [query]="{ onlyFinnish: true }"
       [intro]="'taxonomy.speciesPage.intro' | translate"
       [bodyHeight]="'150px'"
     ></laji-navigation-thumbnail>
@@ -30,13 +30,16 @@
       [name]="'taxonomy.taxonPage'"
       [icon]="'tree'"
       [iconType]="'png'"
-      [path]="'taxon/MX.37600'"
+      [path]="'taxon/MX.37600/taxonomy'"
+      [query]="{ showTree: true }"
       [bodyHeight]="'150px'"
     >
       <div class="taxon-select">
         <laji-taxon-select
           [placeholder]="'taxonomy.taxonPage.search' | translate"
-          (taxonIdChange)="toTaxonPage($event)"></laji-taxon-select>
+          [searchParams]="{ species: false }"
+          (taxonIdChange)="toTaxonPage($event)"
+        ></laji-taxon-select>
       </div>
     </laji-navigation-thumbnail>
   </div>

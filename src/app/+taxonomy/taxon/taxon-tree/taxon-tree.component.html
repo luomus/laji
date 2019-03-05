@@ -6,18 +6,18 @@
   [skipParams]="skipParams"
 >
   <ng-template #label let-node="node">
-    <a *ngIf="node.id !== activeId" [routerLink]="'/taxon/' + node.id + (activeTab === 'overview' ? '' : '/' + activeTab)" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+    <a *ngIf="node.id !== activeId" [routerLink]="'/taxon/' + node.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
       <ng-container *ngTemplateOutlet="labelContent"></ng-container>
     </a>
     <strong *ngIf="node.id === activeId">
       <ng-container *ngTemplateOutlet="labelContent"></ng-container>
     </strong>
     <ng-template #labelContent>
-      <laji-taxon-name [taxon]="node" [addLink]="false"></laji-taxon-name>
+      <laji-taxon-name [taxon]="node" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
     </ng-template>
   </ng-template>
 </laji-tree>
-
+<!--
 <div class="show-main-levels-wrapper">
   <label>
     <input
@@ -30,3 +30,4 @@
   </label>
   <laji-info [placement]="'right'">{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
 </div>
+-->

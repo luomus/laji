@@ -55,9 +55,9 @@ export interface Taxonomy {
 
   reproduction?: string;
 
-  originalPublication?: Array<string>;
+  originalPublications?: Array<string>;
 
-  occurrenceInFinlandPublication?: Array<string>;
+  occurrenceInFinlandPublications?: Array<string>;
 
   /**
    *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
@@ -145,6 +145,8 @@ export interface Taxonomy {
 
   occurrences?: Array<any>;
 
+  synonymOf?: Taxonomy;
+
   synonymNames?: Array<string>;
 
   synonyms?: Array<Taxonomy>;
@@ -218,6 +220,8 @@ export interface Taxonomy {
 
   descriptions?: any[];
 
+  taxonConceptId?: string[];
+
   additionalIds?: string[];
 
   redListEvaluation?: {[year: string]: RedListEvaluation};
@@ -239,6 +243,8 @@ export interface RedListEvaluation {
   redListStatus?: string;
   criteriaForStatus?: string;
   externalPopulationImpactOnRedListStatus?: string;
+  primaryHabitat?: Habitat;
+  secondaryHabitats?: Habitat[];
 }
 
 export interface LatestRedListStatusFinland {
@@ -247,6 +253,8 @@ export interface LatestRedListStatusFinland {
 }
 
 export interface TaxonomyDescriptionVariable {
+
+  variable: string;
 
   title?: string;
 
@@ -299,6 +307,8 @@ export interface TaxonomyImage {
 export interface  Habitat {
 
   habitat: string;
+
+  habitatSpecificTypes?: string[];
 
   id: string;
 

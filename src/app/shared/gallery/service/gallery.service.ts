@@ -17,7 +17,7 @@ export class GalleryService {
 
     // TODO: think about this little more units are still basic search for this so might have to drop this
     // or target gathering and document endpoints
-    const imgField = 'unit.media';
+    const imgField = 'media';
     query.hasUnitMedia = true;
     /*
     if (query.hasUnitMedia) {
@@ -30,8 +30,9 @@ export class GalleryService {
       query.hasUnitMedia = true;
     }
     */
-    return this.warehouseApi.warehouseQueryListGet(query, [
-      'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
+    return this.warehouseApi.warehouseQueryUnitMediaListGet(query, [
+      'unit.taxonVerbatim,unit.linkings.taxon.id,unit.linkings.taxon.vernacularName,' +
+      'unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
       imgField,
       // 'gathering.media',
       // 'document.media',
@@ -41,34 +42,34 @@ export class GalleryService {
   }
 
   getImages(list: PagedResult<any>, limit = 1000): any[] {
-    const imgField = 'unit.media';
+    const imgField = 'media';
     const images = [];
     if (list.results) {
       list.results.map(items => {
         const group = (items['unit'] && items['unit']['reportedInformalTaxonGroup']) ? items['unit']['reportedInformalTaxonGroup'] : '';
         const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
-        ['unit', 'gathering', 'document'].map((key) => {
-          if (items[key] && items[key].media) {
-            items[key].media.map(media => {
-              if (images.length >= limit) {
-                return;
-              }
-              media['documentId'] = items['document']['documentId'];
-              media['unitId'] = items['unit']['unitId'];
-              if (imgField === 'unit.media') {
-                media['vernacularName'] = items.unit
-                  && items.unit.linkings
-                  && items.unit.linkings.taxon
-                  && items.unit.linkings.taxon.vernacularName || '';
-                media['scientificName'] = items['unit']
-                  && items['unit']['linkings']
-                  && items['unit']['linkings']['taxon']
-                  && items['unit']['linkings']['taxon']['scientificName'] || verbatim || group || '';
-              }
-              images.push(media);
-            });
-          }
-        });
+
+        if (images.length >= limit) {
+          return images;
+        }
+        const media = items.media;
+        media['documentId'] = items['document']['documentId'];
+        media['unitId'] = items['unit']['unitId'];
+        if (imgField === 'media') {
+          media['taxonId'] = items.unit
+            && items.unit.linkings
+            && items.unit.linkings.taxon
+            && items.unit.linkings.taxon.id || '';
+          media['vernacularName'] = items.unit
+            && items.unit.linkings
+            && items.unit.linkings.taxon
+            && items.unit.linkings.taxon.vernacularName || '';
+          media['scientificName'] = items['unit']
+            && items['unit']['linkings']
+            && items['unit']['linkings']['taxon']
+            && items['unit']['linkings']['taxon']['scientificName'] || verbatim || group || '';
+        }
+        images.push(media);
       });
     }
     return images;

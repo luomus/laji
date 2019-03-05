@@ -15,3 +15,7 @@ a:hover {
 .to-laji h1 {
   color: #2e6da4;
 }
+.year-select {
+  display: inline-block;
+  vertical-align: middle;
+}

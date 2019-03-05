@@ -14,6 +14,13 @@
       routerLink: ['/vihko/fp/HR.2891/admin'],
       label: 'form.administer' | translate,
       visible: rights?.admin
+    },
+    {
+      routerLink: ['../kunnat', 'ownSubmissions'],
+      label: rights?.admin ?
+             ('theme.admin.submissions' | translate):
+             ('haseka.ownSubmissions.title' | translate),
+      visible: rights?.edit || rights?.admin
     }
   ]">
   <router-outlet></router-outlet>

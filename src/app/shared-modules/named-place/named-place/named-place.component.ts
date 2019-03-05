@@ -107,8 +107,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.subParam = this.route.data.pipe(catchError((err) => {
       this.setErrorMessage(err);
       return of({data: {}});
-    })).subscribe((d) => {
-      const data: NPResolverData = d.data;
+    })).subscribe(({data}: {data: NPResolverData}) => {
       this.editMode = data.edit;
       this.collectionId = data.collectionId;
       this.formId = data.documentForm.id;

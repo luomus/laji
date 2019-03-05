@@ -73,7 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
     this.subParams = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.showSearch = ['/', '/sv', '/en'].indexOf(event.urlAfterRedirects) === -1;
+        // this.showSearch = ['/', '/sv', '/en'].indexOf(event.urlAfterRedirects) === -1;
         this.changeDetector.markForCheck();
       }
     });

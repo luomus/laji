@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
+  AfterViewChecked,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -75,7 +76,7 @@ export interface LabelEvent {
   styleUrls: ['./own-datatable.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OwnDatatableComponent implements OnInit, OnDestroy {
+export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() year: number;
   @Input() loadError = '';
   @Input() showDownloadAll = true;
@@ -112,6 +113,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy {
     {prop: 'dateObserved', mode: 'small'},
     {prop: 'namedPlaceName', mode: 'small'},
     {prop: 'locality', mode: 'small'},
+    {prop: 'taxon', mode: 'small'},
     {prop: 'unitCount', mode: 'medium'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
@@ -132,7 +134,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy {
   downloadedDocumentId: string;
   fileType = 'csv';
 
-  _columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
+  _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'unitCount', 'observer', 'form', 'id'];
+  _goToStartAfterViewCheck = false;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
@@ -175,6 +178,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy {
     this._columns = cols;
     if (Array.isArray(this._columns)) {
       this.initColumns();
+      this.updateFilteredRows();
     }
   }
 
@@ -192,6 +196,24 @@ export class OwnDatatableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.usersId$.unsubscribe();
+  }
+
+  ngAfterViewChecked() {
+    if (this._goToStartAfterViewCheck) {
+      this._goToStartAfterViewCheck = false;
+      this.table.offset = 0;
+    }
+  }
+
+  goToStart(goToStart = true) {
+    if (!goToStart) {
+      return;
+    }
+    if (this.table) {
+      this.table.offset = 0;
+    } else {
+      this._goToStartAfterViewCheck = true;
+    }
   }
 
   @HostListener('window:resize')
@@ -219,9 +241,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy {
       return cumulative;
     }, []);
 
-    if (goToStart) {
-      this.table.offset = 0;
-    }
+    this.goToStart(goToStart);
   }
 
   showMakeTemplate(row: RowDocument): boolean {

@@ -32,15 +32,22 @@
   <div class="container info-footer">
     <div class="row">
       <div class="col-sm-4">
-        <h3>Sisältö suunnittelematta</h3>
+        <h3>Punaisen kirjan nettipalvelu</h3>
+        <p class="intro"><strong>{{ 'iucn.footer.intro' | translate }}</strong></p>
         <ul>
-          <li>Yhteystiedot</li>
-          <li>Blaa blaa</li>
-          <li>Blaa blaa</li>
-          <li>&nbsp;</li>
-          <li>&nbsp;</li>
-          <li>&nbsp;</li>
-          <li>&nbsp;</li>
+          <li><a [routerLink]="[{'fi': '/about/713', 'en': '/en/about/848'} | multiLang]">Tietosuojaseloste</a></li>
+          <li><laji-feedback></laji-feedback></li>
+        </ul>
+      </div>
+      <div class="col-sm-4">
+        <h3>&nbsp;</h3>
+        <ul style="margin-bottom: 15px;">
+          <li><a href="https://www.syke.fi" rel="noopener">Suomen ympäristökeskus</a></li>
+          <li><a href="https://laji.fi" rel="noopener">Suomen lajitietokeskus</a></li>
+        </ul>
+        <ul>
+          <li><a>Punainen kirja PDF-muodossa</a></li>
+          <li><a>Avoin data</a></li>
         </ul>
       </div>
     </div>

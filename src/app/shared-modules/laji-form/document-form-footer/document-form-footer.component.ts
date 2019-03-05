@@ -11,6 +11,7 @@ export class DocumentFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
   @Input() readonly = false;
+  @Input() edit = false;
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
   @Output() cancel = new EventEmitter();
@@ -54,6 +55,9 @@ export class DocumentFormFooterComponent {
 
   buttonLabel(prop: 'save'|'temp'|'cancel') {
     if (this._form && this._form.actions && this._form.actions[prop]) {
+      if (prop === 'save' && this.edit && this._form.actions.edit) {
+        return this._form.actions.edit;
+      }
       return this._form.actions[prop];
     }
     if (prop === 'save') {

@@ -5,8 +5,6 @@ import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { Logger } from '../../../shared/logger/logger.service';
-import { Router } from '@angular/router';
-import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
@@ -31,9 +29,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
     private taxonomyService: TaxonomyApi,
     private cd: ChangeDetectorRef,
     private logger: Logger,
-    private translate: TranslateService,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -56,10 +52,6 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   pageChanged(event) {
     this.searchQuery.imageOptions.page = event.page;
     this.refreshImages();
-  }
-
-  onImageSelect(event) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/taxon', event.taxonId]));
   }
 
   refreshImages() {

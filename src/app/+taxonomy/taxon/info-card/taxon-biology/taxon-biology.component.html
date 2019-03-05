@@ -3,7 +3,7 @@
     <div class="panel panel-default"
          laji-panel
          *ngIf="taxon.primaryHabitat || taxon.secondaryHabitats"
-         [title]="'taxonomy.habitat' | translate"
+         [title]="'MKV.habitat' | label"
          [open]="true"
          [autoToggle]="true"
     >
@@ -11,16 +11,14 @@
         <tbody>
           <tr *ngIf="taxon.primaryHabitat">
             <th>{{ 'taxonomy.habitat.primary' | translate }}</th>
-            <td>{{ taxon.primaryHabitat.habitat | label }}</td>
+            <td>
+              <laji-habitat [habitat]="taxon.primaryHabitat"></laji-habitat>
+            </td>
           </tr>
           <tr *ngIf="taxon.secondaryHabitats">
             <th>{{ 'taxonomy.habitat.secondary' | translate }}</th>
             <td>
-              <ul>
-                <li *ngFor="let habitat of taxon.secondaryHabitats">
-                  {{ habitat.habitat | label }}
-                </li>
-              </ul>
+              <laji-habitat [habitat]="taxon.secondaryHabitats"></laji-habitat>
             </td>
           </tr>
         </tbody>
@@ -46,22 +44,16 @@
              [index]="i"
              laji-panel>
           <div *ngFor="let variable of group.variables">
-            <h4>
+            <h4 *ngIf="variable.variable !== 'MX.ingressText'">
               {{ variable.title | multiLang }}
             </h4>
-            <span [innerHTML]="variable.content | multiLang"></span>
+            <strong *ngIf="variable.variable === 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></strong>
+            <span *ngIf="variable.variable !== 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></span>
           </div>
         </div>
       </div>
       <div class="source">
-        <laji-info [glyphicon]="'user'" [placement]="'right'" [labelType]="'default'">
-          {{ 'taxonomy.source' | translate }}: {{ taxonDescription[activeDescription]?.title | multiLang }}
-          <ng-container *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
-            <br>
-            {{ taxonDescription[activeDescription]?.speciesCardAuthors.title | multiLang }}:
-            <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content | multiLang"></span>
-          </ng-container>
-        </laji-info>
+        <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
       </div>
     </ng-container>
   </div>

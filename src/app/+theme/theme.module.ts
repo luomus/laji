@@ -89,6 +89,8 @@ import { LolifeContainerComponent } from './lolife/lolife.container';
 import { LolifeInstructionsContainerComponent } from './lolife/lolife-instructions/lolife-instructions.container';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
+import { InvasiveControlOwnSubmissionsComponent } from './invasive-control/invasive-control-own-submissions/invasive-control-own-submissions.component';
+import { MunicipalityMonitoringOwnSubmissionsComponent } from './municipality-monitoring/municipality-monitoring-own-submissions/municipality-monitoring-own-submissions.component';
 
 /* tslint:enable:max-line-length */
 
@@ -155,6 +157,7 @@ import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
     InvasiveControlInstructionsContainerComponent,
     InvasiveControlInstructionsComponent,
     InvasiveControlFormComponent,
+    InvasiveControlOwnSubmissionsComponent,
     WbcSpeciesComponent,
     WbcRoutesComponent,
     WbcCensusesComponent,
@@ -176,11 +179,12 @@ import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
     MunicipalityMonitoringInstructionsContainerComponent,
     MunicipalityMonitoringInstructionsComponent,
     MunicipalityMonitoringFormComponent,
+    MunicipalityMonitoringOwnSubmissionsComponent,
     LolifeContainerComponent,
     LolifeComponent,
     LolifeInstructionsContainerComponent,
     LolifeInstructionsComponent,
-    LolifeFormComponent,
+    LolifeFormComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })
