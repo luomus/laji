@@ -56,6 +56,36 @@
 
     <div class="panel panel-default"
          laji-panel
+         [title]="'taxonomy.browse.title' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <ul class="br-list">
+        <li>
+          <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
+            {{ 'taxonomy.browse' | translate }}
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="'/observation/load' | localize" [queryParams]="{target: taxon.id}">
+            {{ 'taxonomy.browse.download' | translate }}
+          </a>
+        </li>
+        <li [hidden]="!taxon.hasChildren">
+          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id)}">
+            {{ 'taxonomy.browse.downloadSpecies' | translate }}
+          </a>
+        </li>
+        <li [hidden]="!taxon.hasChildren">
+          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id), onlyFinnish: true}">
+            {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="panel panel-default"
+         laji-panel
          [title]="'taxonomy.card.download' | translate"
          [open]="true"
          [autoToggle]="true"
