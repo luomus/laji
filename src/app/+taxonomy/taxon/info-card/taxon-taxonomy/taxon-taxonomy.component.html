@@ -43,16 +43,15 @@
     >
       <laji-taxon-names [taxon]="taxon"></laji-taxon-names>
     </div>
-    <div *ngIf="taxonConceptId"
-         class="panel panel-default"
+    <div class="panel panel-default"
          laji-panel
          [title]="'taxonomy.taxonConcept' | translate"
          [open]="true"
          [autoToggle]="true"
     >
       <laji-taxon-concept-info
-        [taxonId]="taxon.id"
-        [taxonConceptId]="taxonConceptId"></laji-taxon-concept-info>
+        [taxon]="taxon"
+      ></laji-taxon-concept-info>
     </div>
     <div class="panel panel-default"
          laji-panel

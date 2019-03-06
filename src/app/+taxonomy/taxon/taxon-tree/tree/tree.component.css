@@ -1,5 +1,5 @@
 .tree {
-  overflow: auto;
+  margin-bottom: 10px;
 }
 .tree, .tree ul, .tree li {
   position: relative;
@@ -10,6 +10,7 @@
 }
 .tree > ul {
   padding-left: 0;
+  margin-bottom: 0;
 }
 .tree li, .tree > div {
   line-height: 25px;

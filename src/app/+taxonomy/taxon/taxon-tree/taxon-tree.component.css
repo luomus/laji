@@ -1,7 +1,28 @@
+.tree-wrapper {
+  padding: 15px 15px 0 15px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 .show-main-levels-wrapper {
-  margin-bottom: 15px;
+  border-top: 1px solid #e1e1e1;
+  padding: 10px 15px 15px 15px;
 }
 .show-main-levels-wrapper label {
   display: inline;
   font-weight: normal;
+}
+
+@media only screen and (min-width : 768px) {
+  :host {
+    width: 100%;
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+  }
+  .tree-wrapper {
+    flex: 0 1 auto;
+  }
+  .show-main-levels-wrapper {
+    flex: 1 0 auto;
+  }
 }

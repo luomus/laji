@@ -15,6 +15,7 @@ import {TaxonomyApi} from '../../shared/api/TaxonomyApi';
 import {Logger} from '../../shared/logger';
 import {Title} from '@angular/platform-browser';
 import {TranslateService} from '@ngx-translate/core';
+import {FooterService} from '../../shared/service/footer.service';
 
 @Component({
   selector: 'laji-taxonomy',
@@ -45,10 +46,13 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private logger: Logger,
     private title: Title,
     private translate: TranslateService,
+    private footerService: FooterService,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
+    this.footerService.footerVisible = false;
+
     this.subParam = combineLatest(this.route.params, this.route.queryParams).subscribe(data => {
       this.infoCardTab = data[0]['tab'] || 'overview';
       this.infoCardContext = data[1]['context'] || 'default';
@@ -69,6 +73,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.footerService.footerVisible = false;
     if (this.subParam) {
       this.subParam.unsubscribe();
     }

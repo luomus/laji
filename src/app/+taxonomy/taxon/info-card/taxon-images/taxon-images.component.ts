@@ -1,5 +1,6 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { Taxonomy, TaxonomyImage } from '../../../../shared/model/Taxonomy';
+import { Taxonomy } from '../../../../shared/model/Taxonomy';
+import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
 
 @Component({
   selector: 'laji-taxon-images',
@@ -8,7 +9,7 @@ import { Taxonomy, TaxonomyImage } from '../../../../shared/model/Taxonomy';
 })
 export class TaxonImagesComponent implements OnChanges {
   @Input() taxon: Taxonomy;
-  @Input() taxonImages: Array<TaxonomyImage>;
+  @Input() taxonImages: Array<Image>;
 
   hasTypeSpecimens: boolean;
   hasCollectionImages: boolean;

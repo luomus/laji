@@ -5,14 +5,20 @@
 }
 
 .taxon-tree-container {
-  padding: 15px;
   background-color: #ECF0F1;
   position: relative;
+  z-index: 1;
 }
 
 @media only screen and (min-width : 768px) {
-  .row {
+  .row, .taxon-tree-container {
     display: flex;
+  }
+
+  .taxon-tree-container {
+    position: fixed;
+    top: 50px;
+    height: calc(100vh - 50px);
   }
 
   ::ng-deep .info-card-container .taxon-name-header {
@@ -26,6 +32,9 @@
 @media only screen and (max-width : 767px) {
   .taxon-tree-container, .info-card-container {
     width: 100% !important;
+  }
+  .info-card-container {
+    margin-left: 0 !important;
   }
   .dragbar, .hide-sidebar-toggle {
     display: none;
