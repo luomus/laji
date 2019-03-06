@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 
 @Component({
@@ -6,16 +6,7 @@ import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy
   templateUrl: './taxon-taxonomy.component.html',
   styleUrls: ['./taxon-taxonomy.component.scss']
 })
-export class TaxonTaxonomyComponent implements OnChanges {
+export class TaxonTaxonomyComponent {
   @Input() taxon: Taxonomy;
   @Input() taxonDescription: TaxonomyDescription[];
-
-  taxonConceptId: string;
-
-  ngOnChanges() {
-    this.taxonConceptId = undefined;
-    if (this.taxon.taxonConceptIds && this.taxon.taxonConceptIds[0]) {
-      this.taxonConceptId = this.taxon.taxonConceptIds[0].replace('taxonid:', '');
-    }
-  }
 }

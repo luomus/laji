@@ -1,6 +1,18 @@
 <table class="table taxon-table table-condensed">
   <tbody>
   <tr>
+    <th>{{ 'taxonomy.card.id' | translate }}</th>
+    <td>{{ taxon.id | toFullUri }}</td>
+  </tr>
+  <tr *ngIf="taxon.additionalIds">
+    <th>{{ 'MX.additionalID' | label }}</th>
+    <td>
+      <ul>
+        <li *ngFor="let id of taxon.additionalIds">{{ id }}</li>
+      </ul>
+    </td>
+  </tr>
+  <tr *ngIf="taxonConceptId">
     <th>TaxonID-{{ 'taxonomy.taxonConcept.id' | translate }}</th>
     <td><a [href]="'https://taxonid.org/' + taxonConceptId" target="_blank">{{ taxonConceptId }}</a></td>
   </tr>
