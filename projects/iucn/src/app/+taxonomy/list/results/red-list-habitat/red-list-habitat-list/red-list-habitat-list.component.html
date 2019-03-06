@@ -1,18 +1,18 @@
 <div class="table-responsive">
   <table class="table table-hover">
     <tr class="title">
-      <th rowspan="2">Elinympäristö</th>
-      <th class="center" [colSpan]="statuses.length">Ensisijainen</th>
+      <th rowspan="2">{{'iucn.results.habitat.title' | translate}}</th>
+      <th class="center" [colSpan]="statuses.length">{{'iucn.results.habitat.primary' | translate}}</th>
       <th class="no-border-bottom"></th>
-      <th class="center" [colSpan]="statuses.length">Toissijainen</th>
+      <th class="center" [colSpan]="statuses.length">{{'iucn.results.habitat.secondary' | translate}}</th>
       <th class="no-border-bottom"></th>
-      <th rowspan="2">Kaikki yhteensä</th>
+      <th rowspan="2">{{'iucn.results.habitat.totalAll' | translate}}</th>
     </tr>
     <tr class="title">
       <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
-      <th>Total</th>
+      <th>{{'iucn.results.habitat.total' | translate}}</th>
       <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
-      <th>Total</th>
+      <th>{{'iucn.results.habitat.total' | translate}}</th>
     </tr>
     <tr class="link" (click)="rowSelect(row.id)" *ngFor="let row of data; let l=last" [class.title]="l">
       <th>{{ row.name }}</th>

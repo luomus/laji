@@ -1,10 +1,10 @@
 <table class="table table-bordered">
   <tr>
-    <th>Arviointikausi</th>
-    <th>Luokka</th>
-    <th>Kriteerit</th>
-    <th>Uhanalaisuuden syyt</th>
-    <th>Uhkatekijät</th>
+    <th>{{'iucn.taxon.history.period' | translate}}</th>
+    <th>{{'iucn.taxon.history.class' | translate}}</th>
+    <th>{{'iucn.taxon.history.criteria' | translate}}</th>
+    <th>{{'iucn.taxon.history.endanger' | translate}}</th>
+    <th>{{'iucn.taxon.history.threats' | translate}}</th>
   </tr>
   <tr *ngFor="let row of history">
     <td>{{ row.year }}</td>

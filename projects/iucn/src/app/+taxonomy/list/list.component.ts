@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { delay, map, startWith, switchMap } from 'rxjs/operators';
 import { DEFAULT_YEAR, FilterQuery, ResultService } from '../../iucn-shared/service/result.service';
 import {TranslateService} from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../../../../../src/app/locale/localize-router.service';
+import { Title } from '@angular/platform-browser';
 
 export type ListType = 'status'|'species'|'reasons'|'threats'|'habitat';
 
@@ -20,11 +21,11 @@ export interface QueryParams extends FilterQuery {
 })
 export class ListComponent implements OnInit, OnDestroy {
   types: {label: string, value: ListType}[] = [
-    {label: 'Yhteenveto uhanalaisuusluokista', value: 'status'},
-    {label: 'Lajiluettelo', value: 'species'},
-    {label: 'Uhanalaisuuden syyt', value: 'reasons'},
-    {label: 'Uhkatekijät', value: 'threats'},
-    {label: 'Elinympäristöt', value: 'habitat'}
+    {label: 'iucn.results.tab.status', value: 'status'},
+    {label: 'iucn.results.tab.species', value: 'species'},
+    {label: 'iucn.results.tab.reasons', value: 'reasons'},
+    {label: 'iucn.results.tab.threats', value: 'threats'},
+    {label: 'iucn.results.tab.habitat', value: 'habitat'}
   ];
 
   years$: Observable<{label: string, value: string}[]>;
@@ -32,13 +33,15 @@ export class ListComponent implements OnInit, OnDestroy {
   queryParams: QueryParams;
   private querySub: Subscription;
   private onlyFields = ['onlyPrimaryThreat', 'onlyPrimaryReason', 'onlyPrimaryHabitat'];
+  private currentTitle = '';
 
   constructor(
     public translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private resultService: ResultService
+    private resultService: ResultService,
+    private title: Title
   ) {}
 
   ngOnInit() {
@@ -64,10 +67,15 @@ export class ListComponent implements OnInit, OnDestroy {
           result[key] = params[key] === 'true';
         });
         return result;
-      })
+      }),
+      delay(0) // need to delay execution a pit so that app component has enough time to set the base title
     ).subscribe(params => {
       this.checklist = this.resultService.getChecklistVersion(params.year);
       this.queryParams = params as QueryParams;
+      const idx = this.types.findIndex(val => val.value === params.type);
+      if (idx !== -1) {
+        this.setTitle(this.translate.instant(this.types[idx].label));
+      }
     });
   }
 
@@ -97,6 +105,14 @@ export class ListComponent implements OnInit, OnDestroy {
       delete queryParams['page'];
     }
     this.router.navigate([], {queryParams: queryParams});
+  }
+
+  private setTitle(title: string) {
+    if (this.currentTitle === title) {
+      return;
+    }
+    this.currentTitle = title;
+    this.title.setTitle(title + ' | ' + this.title.getTitle());
   }
 
 }

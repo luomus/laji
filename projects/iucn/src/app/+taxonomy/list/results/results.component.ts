@@ -67,37 +67,38 @@ export class ResultsComponent implements OnChanges {
   speciesCount = 0;
 
   defaultSpeciesFields = [
-    {label: 'Laji', key: 'species'},
-    {label: 'Luokka', key: 'status'},
-    {label: 'Elinympäristöt', key: 'habitat'},
-    {label: 'Uhanalaisuuden syyt', key: 'reasons'},
-    {label: 'Uhkatekijät', key: 'threats'},
+    {label: 'iucn.results.column.species', key: 'species'},
+    {label: 'iucn.results.column.status', key: 'status'},
+    {label: 'iucn.results.column.habitat', key: 'habitat'},
+    {label: 'iucn.results.column.reasons', key: 'reasons'},
+    {label: 'iucn.results.tab.threats', key: 'threats'},
   ];
   selectedSpeciesFields;
   speciesAllFields = [
-    {label: 'Laji', key: 'species'},
-    {label: 'Luokka', key: 'status'},
-    {label: 'Elinympäristöt', key: 'habitat'},
-    {label: 'Uhanalaisuuden syyt', key: 'reasons'},
-    {label: 'Uhkatekijät', key: 'threats'},
-    {label: 'tieteellinen nimi', key: 'scientificName'},
-    {label: 'kansankielinen nimi', key: 'vernacularName'},
-    {label: 'muutoksen syy', key: 'reasonForStatusChange'},
-    {label: 'luokkaan johtaneet kriteerit', key: 'criteriaForStatus'},
-    {label: 'luokka 2015', key: '2015'},
-    {label: 'luokka 2010', key: '2010'}
+    {label: 'iucn.results.column.species', key: 'species'},
+    {label: 'iucn.results.column.status', key: 'status'},
+    {label: 'iucn.results.column.species', key: 'habitat'},
+    {label: 'iucn.results.column.reasons', key: 'reasons'},
+    {label: 'iucn.results.tab.threats', key: 'threats'},
+    {label: 'result.scientificName', key: 'scientificName'},
+    {label: 'iucn.results.column.vernacularName', key: 'vernacularName'},
+    {label: 'iucn.results.column.reasonForStatusChange', key: 'reasonForStatusChange'},
+    {label: 'iucn.results.column.criteriaForStatus', key: 'criteriaForStatus'},
+    {label: 'iucn.results.column.class2015', key: '2015'},
+    {label: 'iucn.results.column.class2010', key: '2010'}
   ];
   labels = {
-    'redListStatusesInFinland': 'Luokat Suomessa',
-    'latestRedListEvaluation.redListStatus': 'Luokka',
-    'latestRedListEvaluation.criteriaForStatus': 'Luokkaan johtaneet kriteerit',
-    'latestRedListEvaluation.endangermentReasons': 'Uhanalaisuuden syyt',
-    'latestRedListEvaluation.reasonForStatusChange': 'Muutoksen syy',
-    'latestRedListEvaluation.primaryHabitat.habitat': 'Ensisijainen elinympäristöt',
-    'latestRedListEvaluation.secondaryHabitats.habitat': 'Muut elinympäristöt',
-    'latestRedListEvaluation.threats': 'Uhkatekijät'
+    'redListStatusesInFinland': 'iucn.results.redListStatusesInFinland',
+    'latestRedListEvaluation.redListStatus': 'iucn.results.column.status',
+    'latestRedListEvaluation.criteriaForStatus': 'iucn.results.column.criteriaForStatus',
+    'latestRedListEvaluation.endangermentReasons': 'iucn.results.column.reasons',
+    'latestRedListEvaluation.reasonForStatusChange': 'iucn.results.column.reasonForStatusChange',
+    'latestRedListEvaluation.primaryHabitat.habitat': 'iucn.results.habitat.primaryFull',
+    'latestRedListEvaluation.secondaryHabitats.habitat': 'iucn.results.habitat.other',
+    'latestRedListEvaluation.threats': 'iucn.results.tab.threats'
   };
   downloadLoading = false;
+  init = false;
 
   constructor(
     private taxonApi: TaxonomyApi,
@@ -117,7 +118,10 @@ export class ResultsComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.lang = this.translate.currentLang;
+    if (!this.init) {
+      this.lang = this.translate.currentLang;
+      this.init = true;
+    }
     this.initQueries();
   }
 
@@ -165,25 +169,29 @@ export class ResultsComponent implements OnChanges {
   }
 
   private initReasons() {
+    const primary = this.translate.instant('iucn.threatPrimary');
+    const any = this.translate.instant('iucn.threatAny');
     this.reasonsQuery$ = this.getGraph(
       'reasons',
       this.baseQuery,
       'latestRedListEvaluation.primaryEndangermentReason',
       'latestRedListEvaluation.endangermentReasons',
-      'Ensisijainen uhka',
-      'Yksi uhista',
+      primary,
+      any,
       ['MKV.endangermentReasonMuu', 'MKV.endangermentReasonT']
     );
   }
 
   private initThreads() {
+    const primary = this.translate.instant('iucn.threatPrimary');
+    const any = this.translate.instant('iucn.threatAny');
     this.threadQuery$ = this.getGraph(
       'threats',
       this.baseQuery,
       'latestRedListEvaluation.primaryThreat',
       'latestRedListEvaluation.threats',
-      'Ensisijainen uhka',
-      'Yksi uhista',
+      primary,
+      any,
       ['MKV.endangermentReasonMuu', 'MKV.endangermentReasonT']
     );
   }
@@ -532,10 +540,14 @@ export class ResultsComponent implements OnChanges {
     const columns: DatatableColumn[] = this.getSpeciesFields()
       .reduce((cumulative, current) => {
         if (!skip.includes(current)) {
+          let label = current;
+          if (this.labels[current]) {
+            label = this.translate.instant(this.labels[current]);
+          }
           cumulative.push(this.taxonomyColumns.getColumn(current) || {
             name: current,
             cellTemplate: 'label',
-            label: this.labels[current] || current
+            label: label
           });
         }
         return cumulative;

@@ -1,7 +1,7 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
     <tr>
-      <th *ngFor="let field of fields">{{ field.label }}</th>
+      <th *ngFor="let field of fields">{{ field.label | translate }}</th>
     </tr>
     <tr *ngFor="let taxon of species">
       <ng-container *ngFor="let field of fields">

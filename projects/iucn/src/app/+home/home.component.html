@@ -1,7 +1,7 @@
 <div class="header red">
   <div class="container">
     <div class="intro">
-      <h1>Suomen lajien uhanalaisuus</h1>
+      <h1>{{'iucn.page.title' | translate}}</h1>
       <p [innerHTML]="'iucn.page.intro' | translate">
       </p>
     </div>
@@ -11,10 +11,10 @@
 <div class="container">
   <p style="margin-top: 15px;">
     {{'iucn.home.intro' | translate}}
-    <a href="/">Lue lisää arvioinnin toteutuksesta Suomessa</a>
+    <a [routerLink]="({'fi': '/about/r-27'} | multiLang)">{{'iucn.home.evaluation' | translate}}</a>
   </p>
   <h2>
-    Uhanalaisuustarkastelussa käytettävät IUCN -luokat
+    {{'iucn.home.iucnCategories' | translate}}
   </h2>
   <div class="row">
     <div class="col-sm-12" style="margin-bottom: -15px;">
@@ -22,7 +22,7 @@
     </div>
   </div>
   <h2>
-    Tulokset
+    {{'iucn.home.results' | translate}}
   </h2>
   <div class="row">
     <div class="col-sm-4">
@@ -31,19 +31,11 @@
         [year]="2019"
         [data]="iucnService.getYearsStats(2019) | async"></laji-iucn-result-pie>
     </div>
-    <div class="col-sm-8" [innerHTML]="'iucn.home.results' | translate"></div>
+    <div class="col-sm-8" [innerHTML]="'iucn.home.resultsIntro' | translate"></div>
   </div>
-  <a [routerLink]="'/results' | localize">Selaa tuloksia</a>
+  <a [routerLink]="'/results' | localize">{{'iucn.home.browseResults' | translate}}</a>
   <h2>
-    Julkaistut punaiset kirjat
+    {{'iucn.home.book.title' | translate}}
   </h2>
-  <a [routerLink]="['/publications']">Selaile julkaisuja ja saatavilla olevia datalatauksia</a>
-  <h2>
-    Kiitokset
-  </h2>
-  <div class="row">
-    <div class="col-sm-12">
-      <p>Punainen kirja on toteutettu ympäristöministeriön rahoittamana...</p>
-    </div>
-  </div>
+  <a [routerLink]="['/publications']">{{'iucn.home.book.browse' | translate}}</a>
 </div>

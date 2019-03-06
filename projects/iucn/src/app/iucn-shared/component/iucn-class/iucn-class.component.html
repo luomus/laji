@@ -3,32 +3,27 @@
     <div class="redclass re" [class.notActive]="highlight && highlight !== 'MX.iucnRE'">
       <h4>RE</h4>
       <p class="redclass-name">{{ 'MX.iucnRE' | label | iucnStatus }}</p>
-      <p class="count">311 <span class="countlabel">lajia</span></p>
     </div>
   </div>
   <div class="group g2">
-    <h3>Uhanalaiset</h3>
+    <h3>{{'iucn.endangered' | translate}}</h3>
     <div class="redclass cr" [class.notActive]="highlight && highlight !== 'MX.iucnCR'">
       <h4>CR</h4>
       <p class="redclass-name">{{ 'MX.iucnCR' | label | iucnStatus }}</p>
-      <p class="count">355 lajia</p>
     </div>
     <div class="redclass en" [class.notActive]="highlight && highlight !== 'MX.iucnEN'">
       <h4>EN</h4>
       <p class="redclass-name">{{ 'MX.iucnEN' | label | iucnStatus }}</p>
-      <p class="count">825 lajia</p>
     </div>
     <div class="redclass vu" [class.notActive]="highlight && highlight !== 'MX.iucnVU'">
       <h4>VU</h4>
       <p class="redclass-name">{{ 'MX.iucnVU' | label | iucnStatus }}</p>
-      <p class="count">1165 lajia</p>
     </div>
   </div>
   <div class="group g3">
     <div class="redclass nt" [class.notActive]="highlight && highlight !== 'MX.iucnNT'">
       <h4>NT</h4>
       <p class="redclass-name" [innerHTML]="'MX.iucnNT' | label | iucnStatus | iucnHyphens"></p>
-      <p class="count">1835 lajia</p>
     </div>
     <div class="redclass dd" [class.notActive]="highlight && highlight !== 'MX.iucnDD'">
       <h4>DD</h4>
@@ -38,19 +33,16 @@
     <div class="redclass lc" [class.notActive]="highlight && highlight !== 'MX.iucnLC'">
       <h4>LC</h4>
       <p class="redclass-name">{{ 'MX.iucnLC' | label | iucnStatus }}</p>
-      <p class="count">1714 lajia</p>
     </div>
   </div>
   <div class="group g4" *ngIf="includeOther">
     <div class="redclass na">
       <h4>NA</h4>
       <p class="redclass-name" [innerHTML]="'MX.iucnNA' | label | iucnStatus | iucnHyphens"></p>
-      <p class="count">2566 lajia</p>
     </div>
     <div class="redclass ne">
       <h4>NE</h4>
       <p class="redclass-name">{{ 'MX.iucnNE' | label | iucnStatus }}</p>
-      <p class="count">11607 lajia</p>
     </div>
   </div>
 </div>
