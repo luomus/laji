@@ -540,14 +540,10 @@ export class ResultsComponent implements OnChanges {
     const columns: DatatableColumn[] = this.getSpeciesFields()
       .reduce((cumulative, current) => {
         if (!skip.includes(current)) {
-          let label = current;
-          if (this.labels[current]) {
-            label = this.translate.instant(this.labels[current]);
-          }
           cumulative.push(this.taxonomyColumns.getColumn(current) || {
             name: current,
             cellTemplate: 'label',
-            label: label
+            label: this.labels[current] ? this.translate.instant(this.labels[current]) : current
           });
         }
         return cumulative;
