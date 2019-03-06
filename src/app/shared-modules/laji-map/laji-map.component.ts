@@ -9,7 +9,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy, OnInit,
+  OnDestroy,
   Output,
   ViewChild
 } from '@angular/core';
@@ -38,7 +38,7 @@ import { TranslateService } from '@ngx-translate/core';
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
+export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   @Input() data: any = [];
   @Input() loading = false;
@@ -68,10 +68,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit, On
     private logger: Logger,
     private translate: TranslateService
   ) { }
-
-  ngOnInit() {
-    this.lang = this.translate.currentLang;
-  }
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -161,6 +157,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit, On
   }
 
   ngOnChanges(changes) {
+    this.lang = this.translate.currentLang;
     if (changes.data) {
       this.setData(this.data);
     }
