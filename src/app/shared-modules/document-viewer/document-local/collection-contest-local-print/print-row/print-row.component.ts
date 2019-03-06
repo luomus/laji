@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 const EMPTY_VALUE = ' ';
 
@@ -8,7 +8,7 @@ const EMPTY_VALUE = ' ';
   styleUrls: ['./print-row.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PrintRowComponent implements OnInit, OnChanges {
+export class PrintRowComponent implements OnChanges {
 
   @Input() title: string;
   @Input() value: string = EMPTY_VALUE;
@@ -17,10 +17,6 @@ export class PrintRowComponent implements OnInit, OnChanges {
   public show = false;
 
   constructor() {
-  }
-
-  ngOnInit() {
-    this.initRow();
   }
 
   ngOnChanges() {

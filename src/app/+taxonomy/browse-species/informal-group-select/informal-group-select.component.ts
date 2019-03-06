@@ -31,7 +31,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.id) {
+    if (changes.id && !changes.id.isFirstChange()) {
       this.refreshInformalGroups();
     }
   }

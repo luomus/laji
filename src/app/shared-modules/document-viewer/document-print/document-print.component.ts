@@ -7,7 +7,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
@@ -23,7 +22,7 @@ import { Global } from '../../../../environments/global';
   styleUrls: ['../styles/document-print.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
+export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() uri: string;
   @Input() own: boolean;
   @Input() showFacts = false;
@@ -46,8 +45,6 @@ export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnInit,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef
   ) { }
-
-  ngOnInit() {}
 
   ngAfterViewInit() {
     this.isViewInited = true;

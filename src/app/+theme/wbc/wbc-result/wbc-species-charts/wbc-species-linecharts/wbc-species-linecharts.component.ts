@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnChanges, Input, ChangeDetectorRef } from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 
@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './wbc-species-linecharts.component.html',
   styleUrls: ['./wbc-species-linecharts.component.css']
 })
-export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
+export class WbcSpeciesLinechartsComponent implements OnChanges {
   @Input() taxonId: string;
   @Input() taxonCensus = undefined;
   @Input() birdAssociationArea: string;
@@ -30,9 +30,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     private resultService: WbcResultService,
     private cd: ChangeDetectorRef
   ) { }
-
-  ngOnInit() {
-  }
 
   ngOnChanges() {
     this.counts = undefined;

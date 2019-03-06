@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewChild } from '@angular/core';
 
 const EMPTY_VALUE = ' ';
 
@@ -8,7 +8,7 @@ const EMPTY_VALUE = ' ';
   styleUrls: ['./row.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RowComponent implements OnInit, OnChanges {
+export class RowComponent implements OnChanges {
 
   @ViewChild('valueRow') valueRow;
   @Input() title: string;
@@ -24,10 +24,6 @@ export class RowComponent implements OnInit, OnChanges {
   public show = false;
 
   constructor() {
-  }
-
-  ngOnInit() {
-    this.initRow();
   }
 
   ngOnChanges() {
