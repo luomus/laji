@@ -264,6 +264,8 @@ export interface TaxonomyDescriptionVariable {
 
 export interface TaxonomyDescriptionGroup {
 
+  group: string;
+
   title?: string;
 
   variables?: Array<TaxonomyDescriptionVariable>;

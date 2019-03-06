@@ -67,6 +67,20 @@
       <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
       <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
     </div>
+    <div *ngIf="taxonomyDescriptions"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.description' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <div *ngFor="let variable of taxonomyDescriptions.variables">
+        <h4>
+          {{ variable.title | multiLang }}
+        </h4>
+        <span [innerHTML]="variable.content | multiLang"></span>
+      </div>
+    </div>
     <div class="panel panel-default"
          *ngIf="taxon.taxonExpert"
          laji-panel
