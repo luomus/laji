@@ -74,6 +74,7 @@ export class TaxonExportService {
         aoa[key].push(value);
 
         if (value === undefined || value === null || !template || (Array.isArray(value) && value.length === 0)) {
+          aoa[key][j] = '';
           continue;
         }
 
