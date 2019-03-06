@@ -97,6 +97,9 @@ export class ResultsComponent implements OnChanges {
     'latestRedListEvaluation.secondaryHabitats.habitat': 'iucn.results.habitat.other',
     'latestRedListEvaluation.threats': 'iucn.results.tab.threats'
   };
+  exportTemplates = {
+    'latestRedListEvaluation.secondaryHabitats.habitat': 'secondaryHabitat'
+  };
   downloadLoading = false;
   init = false;
 
@@ -542,7 +545,7 @@ export class ResultsComponent implements OnChanges {
         if (!skip.includes(current)) {
           cumulative.push(this.taxonomyColumns.getColumn(current) || {
             name: current,
-            cellTemplate: 'label',
+            cellTemplate: this.exportTemplates[current] || 'label',
             label: this.labels[current] ? this.translate.instant(this.labels[current]) : current
           });
         }
