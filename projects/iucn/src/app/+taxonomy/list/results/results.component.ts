@@ -53,6 +53,8 @@ export class ResultsComponent implements OnChanges {
   habitatChartQuery$: Observable<SimpleChartData[]>;
   reasonsQuery$: Observable<ChartData[]>;
 
+  habitats: SimpleChartData[] = [];
+
   cache: any = {};
   baseQuery = {};
   statusMap = {};
@@ -117,6 +119,14 @@ export class ResultsComponent implements OnChanges {
   ngOnChanges() {
     this.lang = this.translate.currentLang;
     this.initQueries();
+  }
+
+  habitatPieSelect(event) {
+    const idx = this.habitats.findIndex(val => val.name === event.name);
+    if (idx === -1) {
+      return;
+    }
+    this.changeQuery('habitat', this.habitats[idx].id);
   }
 
   private initQueries() {
@@ -230,7 +240,7 @@ export class ResultsComponent implements OnChanges {
           return result;
         }),
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-          map(translations => data.map(a => ({...a, name: translations[a.name]})))
+          map(translations => data.map(a => ({...a, name: translations[a.name], id: a.name})))
         )),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
@@ -267,7 +277,7 @@ export class ResultsComponent implements OnChanges {
           }, []))
         )),
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-          map(translations => data.map(a => ({...a, name: translations[a.name]}))),
+          map(translations => data.map(a => ({...a, name: translations[a.name], id: a.name}))),
         )),
         map(data => hasHabitatQuery ? data : this.combineHabitat(data)),
         tap(data => this.setCache(cacheKey, data, currentQuery))
@@ -281,8 +291,9 @@ export class ResultsComponent implements OnChanges {
       map(habitat => habitat.map((h, index) => {
         const color = this.colors[index % this.colors.length];
         this.colorSchema.push({name: h.name, value: color});
-        return {name: h.name, value: h.primary.total};
-      }))
+        return {name: h.name, value: h.primary.total, id: h.id};
+      })),
+      tap(val => this.habitats = val)
     );
   }
 
@@ -444,7 +455,7 @@ export class ResultsComponent implements OnChanges {
               return cumulative;
             }
             if (!cumulative[name]) {
-              cumulative[name] = {species: name, count: 0};
+              cumulative[name] = {species: name, count: 0, group: val[groupField]};
             }
             if (!cumulative[name][status]) {
               cumulative[name][status] = 0;
@@ -492,6 +503,13 @@ export class ResultsComponent implements OnChanges {
 
   private hasCache(key: string, query: string) {
     return !!(this.cache[key + '_query'] && this.cache[key + '_query'] === query);
+  }
+
+  changeQuery(field: string, value: any) {
+    this.queryChange.emit({
+      ...this.query,
+      [field]: value
+    });
   }
 
   changeSpeciesPage(event: IPageChange) {

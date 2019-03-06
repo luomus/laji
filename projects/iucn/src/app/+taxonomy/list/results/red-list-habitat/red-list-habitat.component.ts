@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 interface StatusCnt {
   'MX.iucnRE'?: number;
@@ -12,6 +12,7 @@ interface StatusCnt {
 
 
 export interface RedListHabitatData {
+  id: string;
   name: string;
   primary: StatusCnt;
   secondary: StatusCnt;
@@ -24,6 +25,8 @@ export interface RedListHabitatData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RedListHabitatComponent {
+
+  @Output() habitatSelect = new EventEmitter<string>();
 
   _data: RedListHabitatData[];
 

@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ResultService } from '../../../../iucn-shared/service/result.service';
 
 export interface RedListStatusData {
   species: string;
   count: number;
+  group?: string;
   'MX.iucnRE'?: number;
   'MX.iucnCR'?: number;
   'MX.iucnEN'?: number;
@@ -31,6 +32,8 @@ export class RedListStatusComponent {
   statuses: string[];
   statusLabel: any;
 
+  @Output() groupSelect = new EventEmitter<string>();
+
   constructor(
     private resultService: ResultService
   ) {
@@ -40,6 +43,7 @@ export class RedListStatusComponent {
 
   @Input()
   set data(data: RedListStatusData[]) {
+    console.log(data);
     if (!data) {
       this._data = [];
       return;
@@ -68,6 +72,13 @@ export class RedListStatusComponent {
     }
     results.push(totalRow);
     this._data = results;
+  }
+
+  rowClick(group) {
+    if (!group) {
+      return;
+    }
+    this.groupSelect.emit(group);
   }
 
   private dataToInternal(data: RedListStatusData): RedListStatusDataInternal {

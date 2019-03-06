@@ -1,13 +1,15 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, Input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 const BAR_HEIGHT = 20;
 
 export interface ChartData {
+  'id'?: string;
   'name': string;
   'series': {name: string, value: number}[];
 }
 
 export interface SimpleChartData {
+  'id': string;
   'name': string;
   'value': number;
 }
@@ -32,6 +34,8 @@ export class RedListChartComponent implements AfterViewInit {
 
   @Input()
   label = '';
+
+  @Output() select = new EventEmitter<string>();
 
   colorSchema: {name: string, value: string}[] = [];
 
@@ -74,4 +78,11 @@ export class RedListChartComponent implements AfterViewInit {
     ];
   }
 
+  itemSelect(event) {
+    const idx = this._data.findIndex(val => val.name === event.series);
+    if (idx === -1) {
+      return;
+    }
+    this.select.emit(this._data[idx].id);
+  }
 }

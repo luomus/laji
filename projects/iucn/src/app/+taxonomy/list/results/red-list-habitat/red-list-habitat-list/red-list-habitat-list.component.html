@@ -14,7 +14,7 @@
       <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
       <th>Total</th>
     </tr>
-    <tr *ngFor="let row of data; let l=last" [class.title]="l">
+    <tr class="link" (click)="rowSelect(row.id)" *ngFor="let row of data; let l=last" [class.title]="l">
       <th>{{ row.name }}</th>
       <td *ngFor="let status of statuses">{{ row.primary[status] || 0 }}</td>
       <td class="total-col">{{ row.primary.total }}</td>
