@@ -49,7 +49,12 @@
     </div>
     <div class="row">
       <div class="col-sm-8" style="height: 400px">
-        <ngx-charts-pie-chart (select)="habitatPieSelect($event)" [results]="habitatChartQuery$ | async" [tooltipDisabled]="false" [labels]="true" [customColors]="colorSchema"></ngx-charts-pie-chart>
+        <ngx-charts-pie-chart
+          (select)="habitatPieSelect($event)"
+          [results]="habitatChartQuery$ | async"
+          [tooltipDisabled]="false"
+          [trimLabels]="false"
+          [labels]="true" [customColors]="colorSchema"></ngx-charts-pie-chart>
       </div>
     </div>
   </ng-container>
