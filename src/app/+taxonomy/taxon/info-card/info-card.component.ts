@@ -12,9 +12,10 @@ import {
   SimpleChanges,
   PLATFORM_ID, EventEmitter, OnDestroy,
 } from '@angular/core';
-import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../../shared/model/Taxonomy';
+import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
 import {GalleryService} from '../../../shared/gallery/service/gallery.service';
 import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
+import {Image} from '../../../shared/gallery/image-gallery/image.interface';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence';
 
   taxonDescription: Array<TaxonomyDescription>;
-  taxonImages: Array<TaxonomyImage>;
+  taxonImages: Array<Image>;
 
   hasImageData: boolean;
   hasBiologyData: boolean;
@@ -65,7 +66,9 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.taxon) {
       this.taxonImages = (this.taxon.multimedia || []).map(img => {
         if (img['taxon']) {
-          img = {...img['taxon'], ...img};
+          img['taxonId'] = img['taxon']['id'];
+          img['vernacularName'] = img['taxon']['vernacularName'];
+          img['scientificName'] = img['taxon']['scientificName'];
         }
         return img;
       });
