@@ -316,6 +316,9 @@
     "evaluated": "Arvioituja lajeja",
     "endangered": "Uhanalaiset",
     "endangeredSingle": "Uhanalainen",
+    "feedback": {
+      "intro": "Sähköpostiosoite ei ole pakollinen. Lisääthän sähköpostiosoitteesi, mikäli haluat vastauksen."
+    },
     "filter": {
       "evaluated": "Arvioidut lajit",
       "redList": "Punaisen listan lajit",
@@ -361,6 +364,10 @@
     },
     "results": {
       "activeFilters": "Käytetyt rajaukset",
+      "evaluated": "Arvioidut",
+      "evaluatedSpecies": "Arvioituja lajeja",
+      "endangered": "Uhanalaisten lajien osuus arvioiduista",
+      "endangeredSpecies": "Uhanalaisia lajeja",
       "fieldsAll": "Kaikki kentät",
       "fieldsSelected": "Valitut kentät",
       "selectColumns": "Valitse luettelossa näkyvät kentät",

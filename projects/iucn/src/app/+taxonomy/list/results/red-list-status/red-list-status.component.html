@@ -2,11 +2,11 @@
   <table class="table table-hover">
     <tr class="title">
       <th rowspan="2"></th>
-      <th rowspan="2">Arvioituja lajeja</th>
-      <th colspan="7" class="evaluated">Arvioidut</th>
+      <th rowspan="2">{{ 'iucn.results.evaluatedSpecies' | translate }}</th>
+      <th colspan="7" class="evaluated">{{ 'iucn.results.evaluated' | translate }}</th>
       <th colspan="2" class="no-border-bottom"></th>
-      <th rowspan="2">Uhanalaisia lajeja</th>
-      <th rowspan="2">Uhanalaisten lajien osuus arvioiduista</th>
+      <th rowspan="2">{{ 'iucn.results.endangeredSpecies' | translate }}</th>
+      <th rowspan="2">{{ 'iucn.results.endangered' | translate }}</th>
     </tr>
     <tr class="title">
       <th class="no-border-top" *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
