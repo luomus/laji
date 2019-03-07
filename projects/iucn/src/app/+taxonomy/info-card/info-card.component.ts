@@ -21,9 +21,9 @@ export class InfoCardComponent implements OnChanges, OnInit {
   public isEndangered: boolean;
   public activeIucnYear: number;
 
+  @Input() public year: string;
   @Input() private taxonId: string;
   @Input() private checklistId: string;
-  @Input() private year: string;
 
   years$: Observable<{label: string, value: string}[]>;
 
