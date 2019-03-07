@@ -64,6 +64,12 @@
           </span>
         </div>
       </div>
+      <div class="col-sm-2 col-md-4" *ngIf="type === 'status'">
+        <div class="pull-right">
+          <label>&nbsp;</label>
+          <a [routerLink]="['/about'] | localize" style="display: block; margin-top: 7px;">{{'iucn.more' | translate}}</a>
+        </div>
+      </div>
     </div>
   </ng-container>
   <div class="form-group" *ngIf="type !== 'status'">
@@ -85,6 +91,12 @@
           <option value="">{{ query.status ? query.status.join(',') : '' }}</option>
         </select>
       </ng-template>
+    </div>
+    <div class="col-ms-offset-5 col-md-offset-4 col-sm-2 col-md-4">
+      <div class="pull-right">
+        <label>&nbsp;</label>
+        <a [routerLink]="['/about'] | localize" style="display: block; margin-top: 7px;">{{'iucn.more' | translate}}</a>
+      </div>
     </div>
   </div>
   <div class="clear-container">
