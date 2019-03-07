@@ -95,10 +95,18 @@ export class ResultsComponent implements OnChanges {
     'latestRedListEvaluation.reasonForStatusChange': 'iucn.results.column.reasonForStatusChange',
     'latestRedListEvaluation.primaryHabitat.habitat': 'iucn.results.habitat.primaryFull',
     'latestRedListEvaluation.secondaryHabitats.habitat': 'iucn.results.habitat.other',
-    'latestRedListEvaluation.threats': 'iucn.results.tab.threats'
+    'latestRedListEvaluation.threats': 'iucn.results.tab.threats',
+    'vernacularName.fi': 'iucn.results.column.vernacularName',
+    'vernacularName.en': 'iucn.results.column.vernacularName',
+    'vernacularName.sv': 'iucn.results.column.vernacularName',
   };
   exportTemplates = {
-    'latestRedListEvaluation.secondaryHabitats.habitat': 'secondaryHabitat'
+    'latestRedListEvaluation.secondaryHabitats.habitat': 'latestRedListEvaluation.secondaryHabitats',
+    'redListStatusesInFinland': 'redListStatusesInFinland',
+    'vernacularName.fi': 'vernacularName',
+    'vernacularName.en': 'vernacularName',
+    'vernacularName.sv': 'vernacularName',
+    'latestRedListEvaluation.criteriaForStatus': 'latestRedListEvaluation.criteriaForStatus'
   };
   downloadLoading = false;
   init = false;
@@ -594,13 +602,18 @@ export class ResultsComponent implements OnChanges {
 
   download(type: string) {
     this.downloadLoading = true;
-    const skip = ['cursiveName'];
+    const skip = [
+      'cursiveName',
+      'latestRedListEvaluation.possiblyRE',
+      'latestRedListEvaluation.externalPopulationImpactOnRedListStatus',
+      'redListStatusesInFinland'
+    ];
     const columns: DatatableColumn[] = this.getSpeciesFields()
       .reduce((cumulative, current) => {
         if (!skip.includes(current)) {
-          cumulative.push(this.taxonomyColumns.getColumn(current) || {
-            name: current,
-            cellTemplate: this.exportTemplates[current] || 'label',
+          cumulative.push((!this.exportTemplates[current] ? this.taxonomyColumns.getColumn(current) : false) || {
+            name: this.exportTemplates[current] || current,
+            cellTemplate: this.exportTemplates[current] || 'label',
             label: this.labels[current] ? this.translate.instant(this.labels[current]) : current
           });
         }
@@ -608,14 +621,12 @@ export class ResultsComponent implements OnChanges {
       }, []);
     const criteria = document.getElementById('enabled-filters');
     const first = criteria ? [criteria.innerText] : undefined;
-    this.getAllSpecies()
-      .subscribe(data =>  {
-        this.taxonExportService.downloadTaxons(columns, data, type, first)
-          .subscribe(() => {
-            this.downloadLoading = false;
-            this.speciesDownload.modal.hide();
-            this.cdr.markForCheck();
-          });
-      });
+    this.getAllSpecies().pipe(
+      switchMap(data => this.taxonExportService.downloadTaxons(columns, data, type, first))
+    ).subscribe(() => {
+      this.downloadLoading = false;
+      this.speciesDownload.modal.hide();
+      this.cdr.markForCheck();
+    });
   }
 }
