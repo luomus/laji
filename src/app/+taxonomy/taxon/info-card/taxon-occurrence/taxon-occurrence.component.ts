@@ -12,7 +12,7 @@ export class TaxonOccurrenceComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.taxon);
+
   }
 
 }

@@ -43,7 +43,6 @@ export class RedListStatusComponent {
 
   @Input()
   set data(data: RedListStatusData[]) {
-    console.log(data);
     if (!data) {
       this._data = [];
       return;
