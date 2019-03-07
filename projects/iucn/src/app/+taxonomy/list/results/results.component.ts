@@ -514,7 +514,7 @@ export class ResultsComponent implements OnChanges {
             const status = val[statusField];
             const name = val[groupField] || (
               val[scientificNameField] && val[vernacularNameField] ?
-                val[scientificNameField] + ', ' + val[vernacularNameField] :
+                val[vernacularNameField] + ', ' + val[scientificNameField] :
                 val[scientificNameField] || val[vernacularNameField]
             );
             if (current.values[groupField] && red.groups.indexOf(name) === -1) {
