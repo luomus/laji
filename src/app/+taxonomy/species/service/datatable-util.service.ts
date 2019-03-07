@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';
@@ -21,7 +21,6 @@ export class DatatableUtil {
   ) { }
 
   getVisibleValue(value, template): Observable<string> {
-    console.log(template, value);
     let observable;
     switch (template) {
       case 'label':
@@ -46,7 +45,7 @@ export class DatatableUtil {
         observable = this.getPublications(value);
         break;
       case 'latestRedListEvaluation.secondaryHabitats':
-        observable = forkJoin(value.map(v => this.getLabels(v.habitat))).pipe(
+        observable = ObservableForkJoin(value.map(v => this.getLabels(v.habitat))).pipe(
           map(data => data.join('; '))
         );
         break;
