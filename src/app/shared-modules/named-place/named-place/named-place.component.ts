@@ -136,12 +136,15 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.updateSettings(data.documentForm);
 
       if (this.mapOptionsData) {
-        data.placeForm['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
+        try {
+          data.placeForm['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
+        } catch (e) {
+          console.warn('Setting uiSchema map options failed.');
+        }
       }
       this.setFormData();
 
       this.updateAllowCreate();
-
       this.cdr.markForCheck();
     });
 
@@ -342,6 +345,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
       this.placeForm = {...this.placeForm, formData: npData};
     } else {
+      if ((this.documentForm.namedPlaceOptions || {}).defaultPrepopulatedDocument) {
+        this.prepopulatedNamedPlace['prepopulatedDocument'] = this.documentForm.namedPlaceOptions.defaultPrepopulatedDocument;
+      }
       this.placeForm = {...this.placeForm, formData: this.prepopulatedNamedPlace};
     }
   }
