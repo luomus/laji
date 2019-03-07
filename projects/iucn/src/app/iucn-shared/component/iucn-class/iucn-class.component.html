@@ -32,7 +32,7 @@
     </div>
     <div class="redclass lc" [class.notActive]="highlight && highlight !== 'MX.iucnLC'">
       <h4>LC</h4>
-      <p class="redclass-name">{{ 'MX.iucnLC' | label | iucnStatus }}</p>
+      <p class="redclass-name" [innerHTML]="'MX.iucnLC' | label | iucnStatus | iucnHyphens"></p>
     </div>
   </div>
   <div class="group g4" *ngIf="includeOther">

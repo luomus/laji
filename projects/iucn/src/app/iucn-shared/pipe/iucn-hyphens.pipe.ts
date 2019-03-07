@@ -7,7 +7,8 @@ export class IucnHyphensPipe implements PipeTransform {
 
   private map = {
     'Silmälläpidettävät': 'Silmällä&shy;pidettävät',
-    'Arviointiin soveltumattomat': 'Arviointiin soveltu&shy;mattomat'
+    'Arviointiin soveltumattomat': 'Arviointiin soveltu&shy;mattomat',
+    'Elinvoimaiset': 'Elinvoi&shy;maiset'
   };
 
   transform(value: any, args?: any): any {
