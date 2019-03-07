@@ -362,6 +362,8 @@ export class ResultsComponent implements OnChanges {
       'latestRedListEvaluation.criteriaForStatus',
       'latestRedListEvaluation.endangermentReasons',
       'latestRedListEvaluation.reasonForStatusChange',
+      'latestRedListEvaluation.possiblyRE',
+      'latestRedListEvaluation.externalPopulationImpactOnRedListStatus',
       'latestRedListEvaluation.primaryHabitat.habitat',
       'latestRedListEvaluation.secondaryHabitats.habitat',
       'latestRedListEvaluation.threats'

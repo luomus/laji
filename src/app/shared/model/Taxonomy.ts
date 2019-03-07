@@ -243,6 +243,7 @@ export interface RedListEvaluation {
   redListStatus?: string;
   criteriaForStatus?: string;
   externalPopulationImpactOnRedListStatus?: string;
+  possiblyRE?: object;
   primaryHabitat?: Habitat;
   secondaryHabitats?: Habitat[];
 }

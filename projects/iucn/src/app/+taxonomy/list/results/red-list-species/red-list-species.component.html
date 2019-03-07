@@ -23,7 +23,8 @@
             </a>
           </th>
           <td *ngSwitchCase="'status'">
-            {{ taxon.latestRedListEvaluation?.redListStatus | label }}
+            {{ taxon.latestRedListEvaluation?.redListStatus | label | iucnStatus:true }}
+            <laji-status-mark [evaluation]="taxon.latestRedListEvaluation"></laji-status-mark>
           </td>
           <td *ngSwitchCase="'habitat'">
             <ng-container *ngIf="taxon.latestRedListEvaluation">
@@ -51,7 +52,7 @@
             <ng-container *ngIf="taxon.redListStatusesInFinland">
               <ng-container *ngFor="let status of taxon.redListStatusesInFinland">
                 <ng-container *ngIf="status.year === 2015">
-                  {{status.status | label}}
+                  {{ status.status | label | iucnStatus:true }}
                 </ng-container>
               </ng-container>
             </ng-container>
@@ -60,7 +61,7 @@
             <ng-container *ngIf="taxon.redListStatusesInFinland">
               <ng-container *ngFor="let status of taxon.redListStatusesInFinland">
                 <ng-container *ngIf="status.year === 2010">
-                  {{status.status | label}}
+                  {{ status.status | label | iucnStatus:true }}
                 </ng-container>
               </ng-container>
             </ng-container>

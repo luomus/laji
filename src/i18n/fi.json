@@ -455,8 +455,11 @@
   "m-10": "lokakuu",
   "m-11": "marraskuu",
   "m-12": "joulukuu",
-  "MKV.exteralPopulationImpactOnRedListStatusEnumMinus1": "Luokkaa on alennettu yhdellä, koska populaatio saa vahvistusta Suomen rajojen ulkopuolelta.",
-  "MKV.exteralPopulationImpactOnRedListStatusEnumMinus2": "Luokkaa on alennettu kahdella, koska populaatio saa vahvistusta Suomen rajojen ulkopuolelta.",
+  "MKV": {
+    "externalPopulationImpactOnRedListStatusEnumMinus1": "Arviointikriteerien perusteella saatua uhanalaisuusluokkaa on laskettu yhdellä luokalla Suomen ulkopuolelta saatavan täydennyksen vuoksi.",
+    "externalPopulationImpactOnRedListStatusEnumMinus2": "Arviointikriteerien perusteella saatua uhanalaisuusluokkaa on laskettu kahdella luokalla Suomen ulkopuolelta saatavan täydennyksen vuoksi.",
+    "possiblyRE": "Mahdollisesti hävinnyt laji"
+  },
   "more": "Näytä lisätiedot",
   "nafi.form": "Ilmoita",
   "nafi.myObservations": "Omat havaintoni",

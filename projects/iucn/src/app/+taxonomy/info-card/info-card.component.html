@@ -30,6 +30,7 @@
         <div style="margin-left: -15px; margin-right: -15px; margin-bottom: 15px;">
           <laji-iucn-class [includeOther]="false" [highlight]="latestStatus.redListStatus"></laji-iucn-class>
           <div style="clear: both;"></div>
+          <laji-status-mark [showLabels]="true" [evaluation]="{possiblyRE: latestStatus.possiblyRE}"></laji-status-mark>
         </div>
         <ng-container *ngIf="latestStatus.criteriaForStatus">
           <h3>{{ 'MKV.criteriaForStatus' | label }}</h3>
