@@ -10,8 +10,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ValuesPipe implements PipeTransform {
   transform(value: string, sep = ', ', objKey = ''): string {
-    if (!value) {
-      return value;
+    if (typeof value === 'undefined' || value === null) {
+      return '';
     }
     const type = typeof value;
     const values = [];
