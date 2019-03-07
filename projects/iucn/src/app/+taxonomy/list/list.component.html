@@ -25,7 +25,7 @@
     <ng-container *ngFor="let option of types">
       <ng-container *ngIf="option.value === queryParams.type">
         <h3 role="presentation" class="active" >
-          {{ option.label | translate }}
+          {{ (option.labelLong || option.label) | translate }}
         </h3>
         <laji-active-filters [query]="queryParams"></laji-active-filters>
       </ng-container>

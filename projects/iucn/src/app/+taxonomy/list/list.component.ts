@@ -20,11 +20,11 @@ export interface QueryParams extends FilterQuery {
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit, OnDestroy {
-  types: {label: string, value: ListType}[] = [
+  types: {label: string, value: ListType, labelLong?: string}[] = [
     {label: 'iucn.results.tab.status', value: 'status'},
     {label: 'iucn.results.tab.species', value: 'species'},
-    {label: 'iucn.results.tab.reasons', value: 'reasons'},
-    {label: 'iucn.results.tab.threats', value: 'threats'},
+    {label: 'iucn.results.tab.reasons', labelLong: 'iucn.hasEndangermentReason', value: 'reasons'},
+    {label: 'iucn.results.tab.threats', labelLong: 'iucn.hasThreat', value: 'threats'},
     {label: 'iucn.results.tab.habitat', value: 'habitat'}
   ];
 
