@@ -12,7 +12,7 @@ import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.
 import { TaxonomyApi } from '../../../../../../../src/app/shared/api/TaxonomyApi';
 import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin, of } from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../../../../src/app/shared/service/util.service';
 import { Taxonomy } from '../../../../../../../src/app/shared/model/Taxonomy';
 import { ChartData, SimpleChartData } from './red-list-chart/red-list-chart.component';
@@ -287,11 +287,61 @@ export class ResultsComponent implements OnChanges {
             return cumulative;
           }, []))
         )),
+        map(data => {
+          if (!hasHabitatQuery) {
+            return data;
+          }
+          const parents = {};
+          const changeIdx = {};
+          data.forEach((h, idx) => {
+            const parent = h.name.substring(0, 12);
+            if (parents[parent]) {
+              ['primary', 'secondary'].forEach(spot => {
+                Object.keys(h[spot]).forEach(key => {
+                  if (!parents[parent][spot][key]) {
+                    parents[parent][spot][key] = h[spot][key];
+                  } else {
+                    parents[parent][spot][key] += h[spot][key];
+                  }
+                });
+              });
+            } else {
+              changeIdx[parent] = idx;
+              parents[parent] = {
+                name: parent,
+                isTotal: true,
+                primary: {
+                  ...h.primary
+                },
+                secondary: {
+                  ...h.secondary
+                }
+              };
+            }
+          });
+          const spots = [];
+          Object.keys(changeIdx).forEach(parent => {
+            spots.push({parent: parent, spot: changeIdx[parent]});
+          });
+          spots.sort((a, b) => b.spot - a.spot);
+          let curSpot = data.length;
+          spots.forEach(s => {
+            data.splice(curSpot, 0, parents[s.parent]);
+            curSpot = s.spot;
+          });
+          return data;
+        }),
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-          map(translations => data.map(a => ({...a, name: translations[a.name], id: a.name}))),
+          map(translations => data.map(a => ({
+            ...a,
+            name: translations[a.name],
+            id: a.name,
+            unspecified: hasHabitatQuery && a.name.length === 12
+          }))),
         )),
         map(data => hasHabitatQuery ? data : this.combineHabitat(data)),
-        tap(data => this.setCache(cacheKey, data, currentQuery))
+        tap(data => this.setCache(cacheKey, data, currentQuery)),
+        share()
       );
     this.initHabitatChart();
   }
@@ -299,11 +349,14 @@ export class ResultsComponent implements OnChanges {
   private initHabitatChart() {
     this.colorSchema = [];
     this.habitatChartQuery$ = this.habitatQuery$.pipe(
-      map(habitat => habitat.map((h, index) => {
-        const color = this.colors[index % this.colors.length];
-        this.colorSchema.push({name: h.name, value: color});
-        return {name: h.name, value: h.primary.total, id: h.id};
-      })),
+      map(habitat => habitat
+        .filter(h => !h.isTotal)
+        .map((h, index) => {
+          const color = this.colors[index % this.colors.length];
+          this.colorSchema.push({name: h.name, value: color});
+          return {name: h.name, value: h.primary.total, id: h.id};
+        })
+      ),
       tap(val => this.habitats = val)
     );
   }

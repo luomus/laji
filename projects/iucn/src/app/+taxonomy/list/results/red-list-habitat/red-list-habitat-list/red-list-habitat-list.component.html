@@ -14,8 +14,12 @@
       <th *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
       <th>{{'iucn.results.habitat.total' | translate}}</th>
     </tr>
-    <tr class="link" (click)="rowSelect(row.id)" *ngFor="let row of data; let l=last" [class.title]="l">
-      <th>{{ row.name }}</th>
+    <tr [class.link]="!!row.id" [class.total-col]="row.isTotal" (click)="rowSelect(row.id)" *ngFor="let row of data; let l=last" [class.title]="l">
+      <th>
+        {{ row.name }}
+        <ng-container *ngIf="!row.isTotal && row.unspecified">({{ 'iucn.results.unspecified' | translate }})</ng-container>
+        <ng-container *ngIf="row.isTotal">({{ 'iucn.results.habitat.total' | translate | lowercase }})</ng-container>
+      </th>
       <td *ngFor="let status of statuses">{{ row.primary[status] || 0 }}</td>
       <td class="total-col">{{ row.primary.total }}</td>
       <td *ngFor="let status of statuses">{{ row.secondary[status] || 0 }}</td>

@@ -12,10 +12,12 @@ interface StatusCnt {
 
 
 export interface RedListHabitatData {
-  id: string;
+  id?: string;
   name: string;
   primary: StatusCnt;
   secondary: StatusCnt;
+  unspecified?: boolean;
+  isTotal?: boolean;
 }
 
 @Component({
