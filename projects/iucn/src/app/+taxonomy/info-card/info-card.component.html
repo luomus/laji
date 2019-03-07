@@ -1,3 +1,6 @@
+<ng-container *ngIf="missing">
+  <h1>{{'iucn.taxon.missing' | translate}}</h1>
+</ng-container>
 <ng-container *ngIf="taxon">
   <div class="row">
     <div class="col-sm-push-8 col-sm-4" style="text-align: right">

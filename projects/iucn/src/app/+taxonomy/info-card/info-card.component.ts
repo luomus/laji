@@ -20,6 +20,7 @@ export class InfoCardComponent implements OnChanges, OnInit {
   public latestStatus: RedListEvaluation;
   public isEndangered: boolean;
   public activeIucnYear: number;
+  public missing: boolean;
 
   @Input() public year: string;
   @Input() private taxonId: string;
@@ -52,6 +53,7 @@ export class InfoCardComponent implements OnChanges, OnInit {
       this.taxon = null;
       return;
     }
+    this.missing = false;
     this.taxonAutocomplete = '';
     this.taxonService.getTaxon(this.taxonId, this.translateService.currentLang, this.checklistId)
       .subscribe(taxon => {
@@ -60,6 +62,12 @@ export class InfoCardComponent implements OnChanges, OnInit {
         this.isEndangered = this.latestStatus && this.resultService.endangered.includes(this.latestStatus.redListStatus);
         this.taxon = taxon;
         this.setTitle();
+      }, (e) => {
+        if (e.status === 404) {
+          this.missing = true;
+        } else {
+          throw e;
+        }
       });
   }
 
