@@ -4,7 +4,7 @@
       <div class="col-sm-8">
         <laji-taxon-select
           [convertIdToName]="false"
-          [searchParams]="{onlySpecies: true}"
+          [searchParams]="{onlySpecies: true, onlyFinnish: true}"
           (taxonIdChange)="taxonSelect($event)"
           [placeholder]="'species.search' | translate">
         </laji-taxon-select>
