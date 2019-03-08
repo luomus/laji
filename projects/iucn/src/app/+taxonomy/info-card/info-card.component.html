@@ -16,10 +16,12 @@
       </h2>
       <h3>
         <ng-container *ngIf="isEndangered; else notEndangeredTitle">
-          {{'iucn.endangeredSingle' | translate}}: {{ ('iucn.taxon.' + latestStatus.redListStatus) | translate | lowercase }}
+          {{'iucn.endangeredSingle' | translate}}: {{ ('iucn.taxon.' + latestStatus?.redListStatus) | translate | lowercase }}
         </ng-container>
         <ng-template #notEndangeredTitle>
-          {{ ('iucn.taxon.' + latestStatus.redListStatus) | translate }}
+          <ng-container *ngIf="!!latestStatus?.redListStatus">
+            {{ ('iucn.taxon.' + latestStatus?.redListStatus) | translate }}
+          </ng-container>
         </ng-template>
       </h3>
     </div>
@@ -28,7 +30,7 @@
     <div class="col-sm-9">
       <ng-container *ngIf="latestStatus">
         <div style="margin-left: -15px; margin-right: -15px; margin-bottom: 15px;">
-          <laji-iucn-class [includeOther]="false" [highlight]="latestStatus.redListStatus"></laji-iucn-class>
+          <laji-iucn-class [includeOther]="false" [highlight]="latestStatus?.redListStatus"></laji-iucn-class>
           <div style="clear: both;"></div>
           <laji-status-mark [showLabels]="true" [evaluation]="{possiblyRE: latestStatus.possiblyRE}"></laji-status-mark>
         </div>
