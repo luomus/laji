@@ -10,6 +10,7 @@ import { Image } from '../../../../shared/gallery/image-gallery/image.interface'
 export class TaxonImagesComponent implements OnChanges {
   @Input() taxon: Taxonomy;
   @Input() taxonImages: Array<Image>;
+  @Input() isFromMasterChecklist: boolean;
 
   hasTypeSpecimens: boolean;
   hasCollectionImages: boolean;
