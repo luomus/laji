@@ -26,12 +26,17 @@
       <laji-species-images [hidden]="active !== 'images'"
                            *ngIf="activated['images']"
                            [searchQuery]="searchQuery"
+                           [showSpeciesTotalCount]="true"
+                           [countStartText]="'species.browse.images.count1' | translate"
+                           [countEndText]="'species.browse.images.count2' | translate"
       ></laji-species-images>
       <laji-species-list [hidden]="active !== 'list'"
                          *ngIf="activated['list']"
                          [visible]="active === 'list'"
                          [searchQuery]="searchQuery"
                          [showDownloadAndBrowse]="false"
+                         [countStartText]="'species.browse.list.count1' | translate"
+                         [countEndText]="'species.browse.list.count2' | translate"
       ></laji-species-list>
     </div>
   </div>

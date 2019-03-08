@@ -21,7 +21,7 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.searchQuery.setQueryFromParams(this.route.snapshot.queryParams);
+    this.searchQuery.setQueryFromParams({...this.route.snapshot.queryParams, onlyFinnish: 'true'});
   }
 
   ngOnDestroy() {
@@ -32,14 +32,14 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
 
   informalGroupChange(id: string) {
     this.searchQuery.query.informalGroupFilters = id;
-    this.searchQuery.updateUrl();
+    this.searchQuery.updateUrl(['onlyFinnish']);
   }
 
   @HostListener('window:popstate')
   onPopState() {
     // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
     setTimeout(() => {
-      this.searchQuery.setQueryFromParams(this.route.snapshot.queryParams);
+      this.searchQuery.setQueryFromParams({...this.route.snapshot.queryParams, onlyFinnish: 'true'});
       this.cd.markForCheck();
     });
   }
