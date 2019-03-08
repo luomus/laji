@@ -32,7 +32,8 @@ export class InfoCardComponent implements OnChanges, OnInit {
     'MX.53141': 'MX.325026',
     'MX.53121': 'MX.324995',
     'MX.53137': 'MX.325028',
-    'MX.53123': 'MX.53124'
+    'MX.53123': 'MX.53124',
+    'MX.53132': 'MX.53134'
   };
 
   constructor(
