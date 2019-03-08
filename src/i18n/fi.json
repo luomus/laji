@@ -42,7 +42,7 @@
   "delete.noId": "Havaintoerän tunnistetta ei löytynyt. Lataa sivu uudelleen ja koita hetken kuluttua uudelleen.",
   "delete.success": "Poisto onnistui.",
   "document.locked": "Tämä havaintoerä on lukittu, eikä sitä voi muokata.",
-  "email": "Sähköpostiosoitte",
+  "email": "Sähköpostiosoite",
   "error": "Virhe",
   "error.404.intro": "Tarkista, että kirjoitit osoitteen oikein.",
   "error.404.title": "Sivua ei löydy",
