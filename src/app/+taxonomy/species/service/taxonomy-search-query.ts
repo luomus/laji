@@ -66,12 +66,12 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
     this.queryUpdate();
   }
 
-  public updateUrl(): void {
+  public updateUrl(skipParams?: string[]): void {
     const extra = {skipLocationChange: false};
     const queryParams = {};
 
     for (const key in this.query) {
-      if (!this.query.hasOwnProperty(key)) {
+      if (!this.query.hasOwnProperty(key) || (skipParams && skipParams.indexOf(key) !== -1)) {
         continue;
       }
       if (this.query[key] === '' || (Array.isArray(this.query[key]) && this.query[key].length === 0)) {

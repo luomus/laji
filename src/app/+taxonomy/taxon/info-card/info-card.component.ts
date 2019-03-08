@@ -114,7 +114,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     let missingImages = nbrOfImages - taxonImages.length;
 
     let imageObs: Observable<any[]>;
-    if (missingImages > 0) {
+    if (missingImages > 0 && this.isFromMasterChecklist) {
       imageObs = this.getImages(
         {
           taxonId: [this.taxon.id],
