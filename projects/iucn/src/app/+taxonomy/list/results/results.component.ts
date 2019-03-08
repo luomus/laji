@@ -426,7 +426,9 @@ export class ResultsComponent implements OnChanges {
       'latestRedListEvaluation.possiblyRE',
       'latestRedListEvaluation.externalPopulationImpactOnRedListStatus',
       'latestRedListEvaluation.primaryHabitat.habitat',
+      'latestRedListEvaluation.primaryHabitat.habitatSpecificTypes',
       'latestRedListEvaluation.secondaryHabitats.habitat',
+      'latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes',
       'latestRedListEvaluation.threats'
     ];
   }
@@ -606,6 +608,8 @@ export class ResultsComponent implements OnChanges {
       'cursiveName',
       'latestRedListEvaluation.possiblyRE',
       'latestRedListEvaluation.externalPopulationImpactOnRedListStatus',
+      'latestRedListEvaluation.primaryHabitat.habitatSpecificTypes',
+      'latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes',
       'redListStatusesInFinland'
     ];
     const columns: DatatableColumn[] = this.getSpeciesFields()

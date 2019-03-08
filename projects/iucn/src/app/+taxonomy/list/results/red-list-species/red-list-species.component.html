@@ -26,14 +26,10 @@
             {{ taxon.latestRedListEvaluation?.redListStatus | label | iucnStatus:true }}
             <laji-status-mark [evaluation]="taxon.latestRedListEvaluation"></laji-status-mark>
           </td>
-          <td *ngSwitchCase="'habitat'">
+          <td *ngSwitchCase="'habitat'" class="habitat">
             <ng-container *ngIf="taxon.latestRedListEvaluation">
-              <span *ngIf="taxon.latestRedListEvaluation?.primaryHabitat">
-                {{ taxon.latestRedListEvaluation?.primaryHabitat?.habitat | label }}<br>
-              </span>
-              <ng-container *ngFor="let sec of taxon.latestRedListEvaluation?.secondaryHabitats">
-                <span>{{ sec.habitat | label }}<br></span>
-              </ng-container>
+              <laji-habitat [habitat]="taxon.latestRedListEvaluation?.primaryHabitat"></laji-habitat>
+              <laji-habitat [habitat]="taxon.latestRedListEvaluation?.secondaryHabitats"></laji-habitat>
             </ng-container>
           </td>
           <td *ngSwitchCase="'reasons'">
