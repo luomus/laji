@@ -2,7 +2,7 @@
   <strong>
     {{ countStartText }}
     <laji-species-count [searchQuery]="searchQuery" [hasMediaFilter]="true"></laji-species-count>
-    <ng-container *ngIf="showSpeciesTotalCount">/<laji-species-count [searchQuery]="searchQuery"></laji-species-count></ng-container>
+    <ng-container *ngIf="showSpeciesTotalCount"> / <laji-species-count [searchQuery]="searchQuery"></laji-species-count></ng-container>
     {{ countEndText }}
   </strong>
 </div>
