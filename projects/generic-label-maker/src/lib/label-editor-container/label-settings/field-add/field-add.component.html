@@ -1,4 +1,4 @@
-<select (change)="doAdd($event)">
-  <option value="">add..</option>
+<select (change)="doAdd($event)" class="form-control">
+  <option value="">add...</option>
   <option *ngFor="let field of availableFields; let i=index" [value]="i">{{field.label}}</option>
 </select>

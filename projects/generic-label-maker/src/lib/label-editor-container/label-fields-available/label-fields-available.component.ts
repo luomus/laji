@@ -29,6 +29,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
   @Input() magnification = 2;
 
   @Output() addLabelItem = new EventEmitter<IAddLabelEvent>();
+  @Output() dragging = new EventEmitter<boolean>();
 
   filterBy = '';
   filterSubject = new Subject<string>();
