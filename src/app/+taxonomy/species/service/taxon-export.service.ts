@@ -71,9 +71,9 @@ export class TaxonExportService {
         const key = i + (firstRow ? 2 : 1);
 
         const template = cols[j].cellTemplate;
-        aoa[key].push(value);
+        aoa[key][j] = (value === undefined || value === null || (Array.isArray(value) && value.length === 0)) ? '' : value;
 
-        if (value === undefined || value === null || !template || (Array.isArray(value) && value.length === 0)) {
+        if (!template || aoa[key][j] === '') {
           continue;
         }
 

@@ -1,5 +1,5 @@
 <p id="enabled-filters" *ngIf="queryItems && queryItems.length > 0">
-  Käytetyt rajaukset:
+  {{'iucn.results.activeFilters' | translate}}:
   <ng-container *ngFor="let item of queryItems; let l=last">
     <ng-container *ngIf="item.label">
       {{ item.label | translate }}:

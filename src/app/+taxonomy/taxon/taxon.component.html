@@ -2,7 +2,7 @@
   <div class="container-fluid" *ngIf="taxon">
     <div class="row">
       <ng-container *ngIf="isFromMasterChecklist">
-        <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" [hidden]="!showTree">
+        <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" [class.hidden]="!showTree">
           <laji-taxon-tree
             [activeId]="taxon.id"
             [activeTab]="infoCardTab"
@@ -20,7 +20,11 @@
           <i class="glyphicon glyphicon-arrow-right"></i>
         </div>
       </ng-container>
-      <div class="info-card-container" [class.sidebar-hidden]="!showTree" [style.width]="showTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'">
+      <div class="info-card-container"
+           [class.sidebar-hidden]="!showTree"
+           [style.width]="showTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'"
+           [style.margin-left]="showTree ? sidebarWidth + 'px' : '0'"
+      >
         <laji-info-card
           [taxon]="taxon"
           [isFromMasterChecklist]="isFromMasterChecklist"

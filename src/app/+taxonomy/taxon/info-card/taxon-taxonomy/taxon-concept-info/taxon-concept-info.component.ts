@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angu
 import { TaxonConceptService } from './taxon-concept.service';
 import { TaxonMatch } from './taxon-match.model';
 import { Subscription } from 'rxjs';
+import {Taxonomy} from '../../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-concept-info',
@@ -10,9 +11,9 @@ import { Subscription } from 'rxjs';
   providers: [TaxonConceptService]
 })
 export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
-  @Input() taxonId: string;
-  @Input() taxonConceptId: string;
+  @Input() taxon: Taxonomy;
 
+  taxonConceptId: string;
   matches: TaxonMatch[];
 
   private subs: Subscription[] = [];
@@ -23,6 +24,10 @@ export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
   ) { }
 
   ngOnChanges() {
+    this.taxonConceptId = undefined;
+    if (this.taxon.taxonConceptIds && this.taxon.taxonConceptIds[0]) {
+      this.taxonConceptId = this.taxon.taxonConceptIds[0].replace('taxonid:', '');
+    }
     this.fetchList();
   }
 
@@ -35,7 +40,11 @@ export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
     this.matches = [];
     this.subs = [];
 
-    this.subs.push(this.taxonConceptService.getMatches(this.taxonId, this.taxonConceptId).subscribe(matches => {
+    if (!this.taxonConceptId) {
+      return;
+    }
+
+    this.subs.push(this.taxonConceptService.getMatches(this.taxon.id, this.taxonConceptId).subscribe(matches => {
       if (matches.length === 0) {
         this.cd.markForCheck();
       }

@@ -6,6 +6,7 @@ import { IucnStatusPipe } from './pipe/iucn-status.pipe';
 import { IucnHyphensPipe } from './pipe/iucn-hyphens.pipe';
 import { SimpleOmniComponent } from './component/simple-omni/simple-omni.component';
 import { TaxonSelectModule } from '../../../../../src/app/shared-modules/taxon-select/taxon-select.module';
+import { StatusMarkComponent } from './component/status-mark/status-mark.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { TaxonSelectModule } from '../../../../../src/app/shared-modules/taxon-s
     CommonModule,
     TaxonSelectModule
   ],
-  declarations: [IucnClassComponent, IucnStatusPipe, IucnHyphensPipe, SimpleOmniComponent],
-  exports: [IucnClassComponent, IucnStatusPipe, SimpleOmniComponent]
+  declarations: [IucnClassComponent, IucnStatusPipe, IucnHyphensPipe, SimpleOmniComponent, StatusMarkComponent],
+  exports: [IucnClassComponent, IucnStatusPipe, SimpleOmniComponent, StatusMarkComponent]
 })
 export class IucnSharedModule { }

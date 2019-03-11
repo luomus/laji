@@ -1,7 +1,7 @@
 
 import {switchMap, catchError,  map } from 'rxjs/operators';
 /* tslint:disable:no-use-before-declare */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
@@ -32,7 +32,7 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
   providers: [METADATA_SELECT_VALUE_ACCESSOR],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
+export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlValueAccessor {
   @Input() field: string;
   @Input() alt: string;
   @Input() name: string;
@@ -82,12 +82,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
 
   onTouched = () => {};
 
-  ngOnInit() {
-    this.lang = this.translate.currentLang;
-    this.initOptions();
-  }
-
   ngOnChanges(changes) {
+    this.lang = this.translate.currentLang;
     this.initOptions();
   }
 

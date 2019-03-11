@@ -26,18 +26,21 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
     this.ingress = undefined;
     this.description = undefined;
-    if (taxonDescription && taxonDescription.length > 0 && taxonDescription[0].groups.length > 0) {
-      const desc = taxonDescription[0].groups[0];
-      (desc.variables || []).forEach(variable => {
-        if (variable.variable === 'MX.ingressText') {
-          this.ingress = variable.content;
-        }
-        if (variable.variable === 'MX.descriptionText') {
-          this.description = variable.content;
-        }
-      });
-    }
     this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription[0] : undefined;
+
+    if (this._taxonDescription && this._taxonDescription.groups.length > 0) {
+      const group = taxonDescription[0].groups[0];
+      if (group.group === 'MX.SDVG1') {
+        (group.variables || []).forEach(variable => {
+          if (variable.variable === 'MX.ingressText') {
+            this.ingress = variable.content;
+          }
+          if (variable.variable === 'MX.descriptionText') {
+            this.description = variable.content;
+          }
+        });
+      }
+    }
   }
 
   constructor(

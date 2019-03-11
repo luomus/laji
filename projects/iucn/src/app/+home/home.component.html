@@ -1,10 +1,8 @@
 <div class="header red">
   <div class="container">
     <div class="intro">
-      <h1>Suomen lajien uhanalaisuus</h1>
-      <p>
-        Punaisessa kirjassa esitellään Suomen lajiston uhanalaisuusarvioinnin tuloksia.
-        Arviointi tehdään kansainvälisen luonnonsuojeluliiton IUCN:n luokittelun mukaisesti.
+      <h1>{{'iucn.page.title' | translate}}</h1>
+      <p [innerHTML]="'iucn.page.intro' | translate">
       </p>
     </div>
   </div>
@@ -12,11 +10,11 @@
 <laji-simple-omni></laji-simple-omni>
 <div class="container">
   <p style="margin-top: 15px;">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet viverra erat. Quisque mattis magna justo. Cras tempor arcu eget augue elementum gravida. Duis tellus lacus, gravida a congue vel, lacinia vestibulum mi. Nullam et molestie sed.
-    <a href="/">Lue lisää arvioinnin toteutuksesta Suomessa</a>
+    {{'iucn.home.intro' | translate}}
+    <a [routerLink]="({'fi': '/about/r-27'} | multiLang)">{{'iucn.home.evaluation' | translate}}</a>
   </p>
   <h2>
-    Uhanalaisuustarkastelussa käytettävät IUCN -luokat
+    {{'iucn.home.iucnCategories' | translate}}
   </h2>
   <div class="row">
     <div class="col-sm-12" style="margin-bottom: -15px;">
@@ -24,35 +22,20 @@
     </div>
   </div>
   <h2>
-    Tulokset
+    {{'iucn.home.results' | translate}}
   </h2>
   <div class="row">
     <div class="col-sm-4">
       <laji-iucn-result-pie
-        [routerLink]="'/taxon' | localize"
-        [queryParams]="{year: '2019'}"
+        [routerLink]="'/results' | localize"
         [year]="2019"
         [data]="iucnService.getYearsStats(2019) | async"></laji-iucn-result-pie>
     </div>
-    <div class="col-sm-8">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium nulla ut feugiat suscipit. Nam varius ante vel risus sollicitudin maximus. Nam venenatis nunc purus, at fermentum est gravida id. Morbi id dapibus diam, eu imperdiet mi. Aliquam vitae semper mauris. Vivamus ut posuere erat, eu ullamcorper eros. Duis venenatis felis ut nulla viverra, nec sagittis lectus tristique. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris id purus eget velit eleifend ultrices in sit amet odio. Cras nec nisi eu libero bibendum mollis. Nullam luctus erat ut ante molestie mattis. Fusce sed ultrices ante. Phasellus est purus, dapibus ut dignissim pharetra, convallis eget diam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-
-        <p>Aenean at ex ultrices, ultrices leo pretium, dictum enim. Sed elementum lectus dui, vitae convallis mauris hendrerit eu. Vivamus vitae nisi convallis, vulputate diam quis, imperdiet ipsum. Cras accumsan nunc sed dui consectetur vehicula. Nulla in elit lacinia lacus vehicula dapibus tincidunt vel nisl. Suspendisse pharetra magna ac blandit blandit. Phasellus sit amet laoreet magna. Duis vel dignissim odio, sed lacinia ex. Donec enim ex, viverra nec gravida sit amet, tempor et sem. Interdum et malesuada fames ac ante ipsum primis in faucibus. In scelerisque dolor in nisi feugiat, id ullamcorper lectus fermentum. Sed tristique elit consectetur vestibulum lobortis. Curabitur eget velit orci. Nullam eu risus augue. Proin vitae lectus at felis hendrerit porttitor ut vitae ligula.
-      </p>
-    </div>
+    <div class="col-sm-8" [innerHTML]="'iucn.home.resultsIntro' | translate"></div>
   </div>
-  <a [routerLink]="'/taxon' | localize">Selaa tuloksia</a>
+  <a [routerLink]="'/results' | localize">{{'iucn.home.browseResults' | translate}}</a>
   <h2>
-    Julkaistut punaiset kirjat
+    {{'iucn.home.book.title' | translate}}
   </h2>
-  <a [routerLink]="['/publications']">Selaile julkaisuja ja saatavilla olevia datalatauksia</a>
-  <h2>
-    Kiitokset
-  </h2>
-  <div class="row">
-    <div class="col-sm-12">
-      <p>Punainen kirja on toteutettu ympäristöministeriön rahoittamana...</p>
-    </div>
-  </div>
+  <a [routerLink]="['/publications']">{{'iucn.home.book.browse' | translate}}</a>
 </div>

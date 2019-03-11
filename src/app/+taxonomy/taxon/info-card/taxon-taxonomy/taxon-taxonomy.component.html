@@ -43,16 +43,15 @@
     >
       <laji-taxon-names [taxon]="taxon"></laji-taxon-names>
     </div>
-    <div *ngIf="taxonConceptId"
-         class="panel panel-default"
+    <div class="panel panel-default"
          laji-panel
          [title]="'taxonomy.taxonConcept' | translate"
          [open]="true"
          [autoToggle]="true"
     >
       <laji-taxon-concept-info
-        [taxonId]="taxon.id"
-        [taxonConceptId]="taxonConceptId"></laji-taxon-concept-info>
+        [taxon]="taxon"
+      ></laji-taxon-concept-info>
     </div>
     <div class="panel panel-default"
          laji-panel
@@ -68,6 +67,24 @@
       <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
       <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
     </div>
+    <ng-container *ngIf="taxonomyDescriptions">
+      <div class="panel panel-default taxonomy-description-panel"
+           laji-panel
+           [title]="'taxonomy.description' | translate"
+           [open]="true"
+           [autoToggle]="true"
+      >
+        <div *ngFor="let variable of taxonomyDescriptions.variables">
+          <h4>
+            {{ variable.title | multiLang }}
+          </h4>
+          <span [innerHTML]="variable.content | multiLang"></span>
+        </div>
+      </div>
+      <div class="source">
+        <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
+      </div>
+    </ng-container>
     <div class="panel panel-default"
          *ngIf="taxon.taxonExpert"
          laji-panel

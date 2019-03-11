@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 const QualityErrors = [
   'issue',
@@ -12,17 +12,13 @@ const QualityErrors = [
   styleUrls: ['./issues.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IssuesComponent implements OnInit, OnChanges {
+export class IssuesComponent implements OnChanges {
 
   @Input() data: any;
   @Input() hideTooltips = false;
   hasIssue: boolean;
 
   constructor() { }
-
-  ngOnInit() {
-    this.initIssue();
-  }
 
   ngOnChanges() {
     this.initIssue();

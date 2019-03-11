@@ -1,6 +1,6 @@
 
 import {filter} from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
@@ -59,8 +59,8 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
     this.updateData();
   }
 
-  ngOnChanges(changes) {
-    if (!changes.visible) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes.visible && !changes.visible.isFirstChange()) {
       this.updateData();
     }
   }

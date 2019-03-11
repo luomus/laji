@@ -20,12 +20,21 @@ export class InfoCardComponent implements OnChanges, OnInit {
   public latestStatus: RedListEvaluation;
   public isEndangered: boolean;
   public activeIucnYear: number;
+  public missing: boolean;
 
+  @Input() public year: string;
   @Input() private taxonId: string;
   @Input() private checklistId: string;
-  @Input() private year: string;
 
   years$: Observable<{label: string, value: string}[]>;
+
+  private taxonMap = {
+    'MX.53141': 'MX.325026',
+    'MX.53121': 'MX.324995',
+    'MX.53137': 'MX.325028',
+    'MX.53123': 'MX.53124',
+    'MX.53132': 'MX.53134'
+  };
 
   constructor(
     private taxonService: TaxonService,
@@ -52,14 +61,21 @@ export class InfoCardComponent implements OnChanges, OnInit {
       this.taxon = null;
       return;
     }
+    this.missing = false;
     this.taxonAutocomplete = '';
-    this.taxonService.getTaxon(this.taxonId, this.translateService.currentLang, this.checklistId)
+    this.taxonService.getTaxon(this.taxonMap[this.taxonId] || this.taxonId, this.translateService.currentLang, this.checklistId)
       .subscribe(taxon => {
         this.activeIucnYear = taxon.latestRedListStatusFinland && taxon.latestRedListStatusFinland.year || null;
         this.latestStatus = taxon.latestRedListEvaluation || null;
         this.isEndangered = this.latestStatus && this.resultService.endangered.includes(this.latestStatus.redListStatus);
         this.taxon = taxon;
         this.setTitle();
+      }, (e) => {
+        if (e.status === 404) {
+          this.missing = true;
+        } else {
+          throw e;
+        }
       });
   }
 

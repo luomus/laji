@@ -7,7 +7,7 @@
         (select)="change('redListGroup', $event)"
         [position]="'left'"
         name="informalTaxonGroupId">
-        {{ 'observation.active.informalTaxonGroupAll'|translate }}
+        {{ 'observation.active.informalTaxonGroupAll' | translate }}
       </laji-iucn-group-select>
     </div>
     <div class="col-sm-5 col-md-4">
@@ -27,7 +27,7 @@
       <div class="input-group">
         <select laji-dropdown [placeholder]="''" [value]="query?.habitat" (valueChange)="habitatChange($event)" [options]="habitats$ | async"></select>
         <span class="input-group-addon">
-          <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'Vain ensisijaisella'">
+          <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'iucn.results.onlyPrimary' | translate">
         </span>
       </div>
     </div>
@@ -47,7 +47,7 @@
             [placeholder]="''"
             [options]="reasons"></select>
           <span class="input-group-addon">
-            <input type="checkbox" [checked]="query?.onlyPrimaryReason" (change)="change('onlyPrimaryReason', !query.onlyPrimaryReason)" [tooltip]="'Vain ensisijaisella'">
+            <input type="checkbox" [checked]="query?.onlyPrimaryReason" (change)="change('onlyPrimaryReason', !query.onlyPrimaryReason)" [tooltip]="'iucn.results.onlyPrimary' | translate">
           </span>
         </div>
       </div>
@@ -60,8 +60,14 @@
             [placeholder]="''"
             [options]="reasons"></select>
           <span class="input-group-addon">
-            <input type="checkbox" [checked]="query?.onlyPrimaryThreat" (change)="change('onlyPrimaryThreat', !query.onlyPrimaryThreat)" [tooltip]="'Vain ensisijaisella'">
+            <input type="checkbox" [checked]="query?.onlyPrimaryThreat" (change)="change('onlyPrimaryThreat', !query.onlyPrimaryThreat)" [tooltip]="'iucn.results.onlyPrimary' | translate">
           </span>
+        </div>
+      </div>
+      <div class="col-sm-2 col-md-4" *ngIf="type === 'status'">
+        <div class="pull-right">
+          <label>&nbsp;</label><br>
+          <a [routerLink]="['/about'] | localize" style="display: inline-block; margin-top: 7px;">{{'iucn.more' | translate}}</a>
         </div>
       </div>
     </div>
@@ -86,8 +92,14 @@
         </select>
       </ng-template>
     </div>
+    <div class="col-ms-offset-5 col-md-offset-4 col-sm-2 col-md-4">
+      <div class="pull-right">
+        <label>&nbsp;</label><br>
+        <a [routerLink]="['/about'] | localize" style="display: inline-block; margin-top: 7px;">{{'iucn.more' | translate}}</a>
+      </div>
+    </div>
   </div>
   <div class="clear-container">
-    <button type="button" class="btn btn-default btn-sm" (click)="clear()">Tyhjennä</button>
+    <button type="button" class="btn btn-default btn-sm" (click)="clear()">{{'iucn.filter.empty' | translate}}</button>
   </div>
 </form>

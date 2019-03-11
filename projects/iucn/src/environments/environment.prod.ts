@@ -21,5 +21,5 @@ export const environment = {
   apiBase: '/api',
   production: true,
   forceLogin: true,
-  disableAnalytics: true
+  disableAnalytics: false
 };

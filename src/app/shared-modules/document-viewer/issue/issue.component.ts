@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 export interface Issue {
   issue: string;
@@ -12,17 +12,13 @@ export interface Issue {
   styleUrls: ['./issue.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IssueComponent implements OnInit, OnChanges {
+export class IssueComponent implements OnChanges {
 
   @Input() issue: any;
   @Input() hideTooltip = false;
   error: Issue;
 
   constructor() { }
-
-  ngOnInit() {
-    this.prepareIssue();
-  }
 
   ngOnChanges() {
     this.prepareIssue();

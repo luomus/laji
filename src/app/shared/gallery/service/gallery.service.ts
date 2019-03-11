@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { WarehouseApi } from '../../api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
 import {PagedResult} from '../../model/PagedResult';
+import {Image} from '../image-gallery/image.interface';
 
 
 @Injectable({providedIn: 'root'})
@@ -41,7 +42,7 @@ export class GalleryService {
     ], sort, pageSize, page);
   }
 
-  getImages(list: PagedResult<any>, limit = 1000): any[] {
+  getImages(list: PagedResult<any>, limit = 1000): Image[] {
     const imgField = 'media';
     const images = [];
     if (list.results) {

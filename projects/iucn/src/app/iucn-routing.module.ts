@@ -22,7 +22,7 @@ const routes: Routes = [
   {path: 'publications', loadChildren: './+publications/publications.module#PublicationsModule', data: {title: 'iucn.publications.title'}},
   {path: 'user', loadChildren: '../../../../src/app/+user/user.module#UserModule', data: {noPreload: true}},
   {path: 'view', loadChildren: '../../../../src/app/+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
-  {path: 'results', loadChildren: './+taxonomy/iucn-taxonomy.module#IucnTaxonomyModule', data: {title: 'navigation.taxonomy'}},
+  {path: 'results', loadChildren: './+taxonomy/iucn-taxonomy.module#IucnTaxonomyModule'},
   {path: 'error', loadChildren: '../../../../src/app/+error/error.module#ErrorModule', data: {noPreload: true}}
 ];
 

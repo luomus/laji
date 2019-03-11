@@ -12,7 +12,7 @@ import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.
 import { TaxonomyApi } from '../../../../../../../src/app/shared/api/TaxonomyApi';
 import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin, of } from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../../../../src/app/shared/service/util.service';
 import { Taxonomy } from '../../../../../../../src/app/shared/model/Taxonomy';
 import { ChartData, SimpleChartData } from './red-list-chart/red-list-chart.component';
@@ -53,6 +53,8 @@ export class ResultsComponent implements OnChanges {
   habitatChartQuery$: Observable<SimpleChartData[]>;
   reasonsQuery$: Observable<ChartData[]>;
 
+  habitats: SimpleChartData[] = [];
+
   cache: any = {};
   baseQuery = {};
   statusMap = {};
@@ -65,37 +67,49 @@ export class ResultsComponent implements OnChanges {
   speciesCount = 0;
 
   defaultSpeciesFields = [
-    {label: 'Laji', key: 'species'},
-    {label: 'Luokka', key: 'status'},
-    {label: 'Elinympäristöt', key: 'habitat'},
-    {label: 'Uhanalaisuuden syyt', key: 'reasons'},
-    {label: 'Uhkatekijät', key: 'threats'},
+    {label: 'iucn.results.column.species', key: 'species'},
+    {label: 'iucn.results.column.status', key: 'status'},
+    {label: 'iucn.results.column.habitat', key: 'habitat'},
+    {label: 'iucn.results.column.reasons', key: 'reasons'},
+    {label: 'iucn.results.tab.threats', key: 'threats'},
   ];
   selectedSpeciesFields;
   speciesAllFields = [
-    {label: 'Laji', key: 'species'},
-    {label: 'Luokka', key: 'status'},
-    {label: 'Elinympäristöt', key: 'habitat'},
-    {label: 'Uhanalaisuuden syyt', key: 'reasons'},
-    {label: 'Uhkatekijät', key: 'threats'},
-    {label: 'tieteellinen nimi', key: 'scientificName'},
-    {label: 'kansankielinen nimi', key: 'vernacularName'},
-    {label: 'muutoksen syy', key: 'reasonForStatusChange'},
-    {label: 'luokkaan johtaneet kriteerit', key: 'criteriaForStatus'},
-    {label: 'luokka 2015', key: '2015'},
-    {label: 'luokka 2010', key: '2010'}
+    {label: 'iucn.results.column.species', key: 'species'},
+    {label: 'iucn.results.column.status', key: 'status'},
+    {label: 'iucn.results.column.species', key: 'habitat'},
+    {label: 'iucn.results.column.reasons', key: 'reasons'},
+    {label: 'iucn.results.tab.threats', key: 'threats'},
+    {label: 'result.scientificName', key: 'scientificName'},
+    {label: 'iucn.results.column.vernacularName', key: 'vernacularName'},
+    {label: 'iucn.results.column.reasonForStatusChange', key: 'reasonForStatusChange'},
+    {label: 'iucn.results.column.criteriaForStatus', key: 'criteriaForStatus'},
+    {label: 'iucn.results.column.class2015', key: '2015'},
+    {label: 'iucn.results.column.class2010', key: '2010'}
   ];
   labels = {
-    'redListStatusesInFinland': 'Luokat Suomessa',
-    'latestRedListEvaluation.redListStatus': 'Luokka',
-    'latestRedListEvaluation.criteriaForStatus': 'Luokkaan johtaneet kriteerit',
-    'latestRedListEvaluation.endangermentReasons': 'Uhanalaisuuden syyt',
-    'latestRedListEvaluation.reasonForStatusChange': 'Muutoksen syy',
-    'latestRedListEvaluation.primaryHabitat.habitat': 'Ensisijainen elinympäristöt',
-    'latestRedListEvaluation.secondaryHabitats.habitat': 'Muut elinympäristöt',
-    'latestRedListEvaluation.threats': 'Uhkatekijät'
+    'redListStatusesInFinland': 'iucn.results.redListStatusesInFinland',
+    'latestRedListEvaluation.redListStatus': 'iucn.results.column.status',
+    'latestRedListEvaluation.criteriaForStatus': 'iucn.results.column.criteriaForStatus',
+    'latestRedListEvaluation.endangermentReasons': 'iucn.results.column.reasons',
+    'latestRedListEvaluation.reasonForStatusChange': 'iucn.results.column.reasonForStatusChange',
+    'latestRedListEvaluation.primaryHabitat.habitat': 'iucn.results.habitat.primaryFull',
+    'latestRedListEvaluation.secondaryHabitats.habitat': 'iucn.results.habitat.other',
+    'latestRedListEvaluation.threats': 'iucn.results.tab.threats',
+    'vernacularName.fi': 'iucn.results.column.vernacularName',
+    'vernacularName.en': 'iucn.results.column.vernacularName',
+    'vernacularName.sv': 'iucn.results.column.vernacularName',
+  };
+  exportTemplates = {
+    'latestRedListEvaluation.secondaryHabitats.habitat': 'latestRedListEvaluation.secondaryHabitats',
+    'redListStatusesInFinland': 'redListStatusesInFinland',
+    'vernacularName.fi': 'vernacularName',
+    'vernacularName.en': 'vernacularName',
+    'vernacularName.sv': 'vernacularName',
+    'latestRedListEvaluation.criteriaForStatus': 'latestRedListEvaluation.criteriaForStatus'
   };
   downloadLoading = false;
+  init = false;
 
   constructor(
     private taxonApi: TaxonomyApi,
@@ -115,8 +129,19 @@ export class ResultsComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.lang = this.translate.currentLang;
+    if (!this.init) {
+      this.lang = this.translate.currentLang;
+      this.init = true;
+    }
     this.initQueries();
+  }
+
+  habitatPieSelect(event) {
+    const idx = this.habitats.findIndex(val => val.name === event.name);
+    if (idx === -1) {
+      return;
+    }
+    this.changeQuery('habitat', this.habitats[idx].id);
   }
 
   private initQueries() {
@@ -155,25 +180,29 @@ export class ResultsComponent implements OnChanges {
   }
 
   private initReasons() {
+    const primary = this.translate.instant('iucn.threatPrimary');
+    const any = this.translate.instant('iucn.threatAny');
     this.reasonsQuery$ = this.getGraph(
       'reasons',
       this.baseQuery,
       'latestRedListEvaluation.primaryEndangermentReason',
       'latestRedListEvaluation.endangermentReasons',
-      'Ensisijainen uhka',
-      'Yksi uhista',
+      primary,
+      any,
       ['MKV.endangermentReasonMuu', 'MKV.endangermentReasonT']
     );
   }
 
   private initThreads() {
+    const primary = this.translate.instant('iucn.threatPrimary');
+    const any = this.translate.instant('iucn.threatAny');
     this.threadQuery$ = this.getGraph(
       'threats',
       this.baseQuery,
       'latestRedListEvaluation.primaryThreat',
       'latestRedListEvaluation.threats',
-      'Ensisijainen uhka',
-      'Yksi uhista',
+      primary,
+      any,
       ['MKV.endangermentReasonMuu', 'MKV.endangermentReasonT']
     );
   }
@@ -230,7 +259,7 @@ export class ResultsComponent implements OnChanges {
           return result;
         }),
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-          map(translations => data.map(a => ({...a, name: translations[a.name]})))
+          map(translations => data.map(a => ({...a, name: translations[a.name], id: a.name})))
         )),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
@@ -266,11 +295,61 @@ export class ResultsComponent implements OnChanges {
             return cumulative;
           }, []))
         )),
+        map(data => {
+          if (!hasHabitatQuery) {
+            return data;
+          }
+          const parents = {};
+          const changeIdx = {};
+          data.forEach((h, idx) => {
+            const parent = h.name.substring(0, 12);
+            if (parents[parent]) {
+              ['primary', 'secondary'].forEach(spot => {
+                Object.keys(h[spot]).forEach(key => {
+                  if (!parents[parent][spot][key]) {
+                    parents[parent][spot][key] = h[spot][key];
+                  } else {
+                    parents[parent][spot][key] += h[spot][key];
+                  }
+                });
+              });
+            } else {
+              changeIdx[parent] = idx;
+              parents[parent] = {
+                name: parent,
+                isTotal: true,
+                primary: {
+                  ...h.primary
+                },
+                secondary: {
+                  ...h.secondary
+                }
+              };
+            }
+          });
+          const spots = [];
+          Object.keys(changeIdx).forEach(parent => {
+            spots.push({parent: parent, spot: changeIdx[parent]});
+          });
+          spots.sort((a, b) => b.spot - a.spot);
+          let curSpot = data.length;
+          spots.forEach(s => {
+            data.splice(curSpot, 0, parents[s.parent]);
+            curSpot = s.spot;
+          });
+          return data;
+        }),
         switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-          map(translations => data.map(a => ({...a, name: translations[a.name]}))),
+          map(translations => data.map(a => ({
+            ...a,
+            name: translations[a.name],
+            id: a.name,
+            unspecified: hasHabitatQuery && a.name.length === 12
+          }))),
         )),
         map(data => hasHabitatQuery ? data : this.combineHabitat(data)),
-        tap(data => this.setCache(cacheKey, data, currentQuery))
+        tap(data => this.setCache(cacheKey, data, currentQuery)),
+        share()
       );
     this.initHabitatChart();
   }
@@ -278,11 +357,15 @@ export class ResultsComponent implements OnChanges {
   private initHabitatChart() {
     this.colorSchema = [];
     this.habitatChartQuery$ = this.habitatQuery$.pipe(
-      map(habitat => habitat.map((h, index) => {
-        const color = this.colors[index % this.colors.length];
-        this.colorSchema.push({name: h.name, value: color});
-        return {name: h.name, value: h.primary.total};
-      }))
+      map(habitat => habitat
+        .filter(h => !h.isTotal)
+        .map((h, index) => {
+          const color = this.colors[index % this.colors.length];
+          this.colorSchema.push({name: h.name, value: color});
+          return {name: h.name, value: h.primary.total, id: h.id};
+        })
+      ),
+      tap(val => this.habitats = val)
     );
   }
 
@@ -340,8 +423,12 @@ export class ResultsComponent implements OnChanges {
       'latestRedListEvaluation.criteriaForStatus',
       'latestRedListEvaluation.endangermentReasons',
       'latestRedListEvaluation.reasonForStatusChange',
+      'latestRedListEvaluation.possiblyRE',
+      'latestRedListEvaluation.externalPopulationImpactOnRedListStatus',
       'latestRedListEvaluation.primaryHabitat.habitat',
+      'latestRedListEvaluation.primaryHabitat.habitatSpecificTypes',
       'latestRedListEvaluation.secondaryHabitats.habitat',
+      'latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes',
       'latestRedListEvaluation.threats'
     ];
   }
@@ -437,14 +524,14 @@ export class ResultsComponent implements OnChanges {
             const status = val[statusField];
             const name = val[groupField] || (
               val[scientificNameField] && val[vernacularNameField] ?
-                val[scientificNameField] + ', ' + val[vernacularNameField] :
+                val[vernacularNameField] + ', ' + val[scientificNameField] :
                 val[scientificNameField] || val[vernacularNameField]
             );
             if (current.values[groupField] && red.groups.indexOf(name) === -1) {
               return cumulative;
             }
             if (!cumulative[name]) {
-              cumulative[name] = {species: name, count: 0};
+              cumulative[name] = {species: name, count: 0, group: val[groupField]};
             }
             if (!cumulative[name][status]) {
               cumulative[name][status] = 0;
@@ -494,6 +581,13 @@ export class ResultsComponent implements OnChanges {
     return !!(this.cache[key + '_query'] && this.cache[key + '_query'] === query);
   }
 
+  changeQuery(field: string, value: any) {
+    this.queryChange.emit({
+      ...this.query,
+      [field]: value
+    });
+  }
+
   changeSpeciesPage(event: IPageChange) {
     this.queryChange.emit({
       ...this.query,
@@ -510,28 +604,33 @@ export class ResultsComponent implements OnChanges {
 
   download(type: string) {
     this.downloadLoading = true;
-    const skip = ['cursiveName'];
+    const skip = [
+      'cursiveName',
+      'latestRedListEvaluation.possiblyRE',
+      'latestRedListEvaluation.externalPopulationImpactOnRedListStatus',
+      'latestRedListEvaluation.primaryHabitat.habitatSpecificTypes',
+      'latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes',
+      'redListStatusesInFinland'
+    ];
     const columns: DatatableColumn[] = this.getSpeciesFields()
       .reduce((cumulative, current) => {
         if (!skip.includes(current)) {
-          cumulative.push(this.taxonomyColumns.getColumn(current) || {
-            name: current,
-            cellTemplate: 'label',
-            label: this.labels[current] || current
+          cumulative.push((!this.exportTemplates[current] ? this.taxonomyColumns.getColumn(current) : false) || {
+            name: this.exportTemplates[current] || current,
+            cellTemplate: this.exportTemplates[current] || 'label',
+            label: this.labels[current] ? this.translate.instant(this.labels[current]) : current
           });
         }
         return cumulative;
       }, []);
     const criteria = document.getElementById('enabled-filters');
     const first = criteria ? [criteria.innerText] : undefined;
-    this.getAllSpecies()
-      .subscribe(data =>  {
-        this.taxonExportService.downloadTaxons(columns, data, type, first)
-          .subscribe(() => {
-            this.downloadLoading = false;
-            this.speciesDownload.modal.hide();
-            this.cdr.markForCheck();
-          });
-      });
+    this.getAllSpecies().pipe(
+      switchMap(data => this.taxonExportService.downloadTaxons(columns, data, type, first))
+    ).subscribe(() => {
+      this.downloadLoading = false;
+      this.speciesDownload.modal.hide();
+      this.cdr.markForCheck();
+    });
   }
 }

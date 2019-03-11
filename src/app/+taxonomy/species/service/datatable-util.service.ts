@@ -44,6 +44,11 @@ export class DatatableUtil {
       case 'publicationArray':
         observable = this.getPublications(value);
         break;
+      case 'latestRedListEvaluation.secondaryHabitats':
+        observable = ObservableForkJoin(value.map(v => this.getLabels(v.habitat))).pipe(
+          map(data => data.join('; '))
+        );
+        break;
       case 'iucnStatus':
         observable = ObservableOf(value.status.replace('MX.iucn', '') + ' (' + value.year + ')');
         break;

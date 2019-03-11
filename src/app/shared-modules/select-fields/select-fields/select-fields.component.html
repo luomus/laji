@@ -7,7 +7,7 @@
         [cdkDropListData]="all"
         [cdkDropListConnectedTo]="[selectedList]"
         (cdkDropListDropped)="drop($event)"
-    ><li cdkDrag *ngFor="let field of all" class="item-box">{{ field.label }}</li></ul>
+    ><li cdkDrag *ngFor="let field of all" class="item-box">{{ field.label | translate }}</li></ul>
   </div>
   <div class="list-container">
     <h4>{{ selectedFieldsTitle }}</h4>
@@ -17,6 +17,6 @@
         [cdkDropListData]="selectedFields"
         [cdkDropListConnectedTo]="[allFieldsList]"
         (cdkDropListDropped)="drop($event)"
-    ><li cdkDrag *ngFor="let field of selectedFields" class="item-box">{{ field.label }}</li></ul>
+    ><li cdkDrag *ngFor="let field of selectedFields" class="item-box">{{ field.label | translate }}</li></ul>
   </div>
 </ng-container>

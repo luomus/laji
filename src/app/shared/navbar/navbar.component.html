@@ -117,7 +117,7 @@
                 </a>
               </li>
             </ng-container>
-            <li dropdown>
+            <li dropdown *lajiForTypes="['dev', 'prod', 'vir']">
               <a dropdownToggle class="link language-toggle">
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">

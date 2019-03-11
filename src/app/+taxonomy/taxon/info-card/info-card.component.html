@@ -49,6 +49,7 @@
                      *ngIf="activatedTabs['images'] && hasImageData"
                      [taxon]="taxon"
                      [taxonImages]="taxonImages"
+                     [isFromMasterChecklist]="isFromMasterChecklist"
   ></laji-taxon-images>
   <laji-taxon-biology [hidden]="activeTab !== 'biology'"
                       *ngIf="activatedTabs['biology'] && hasBiologyData"

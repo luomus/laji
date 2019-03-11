@@ -32,11 +32,11 @@ export class ResultService {
   private resultCache: {[key: string]: any} = {};
 
   years: string[] = [
-    'current',
+    // 'current',
     '2019',
     '2015',
-    '2010',
-    '2000'
+    // '2010',
+    // '2000'
   ];
 
   statuses: string[] = [

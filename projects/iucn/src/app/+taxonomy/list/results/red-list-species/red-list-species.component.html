@@ -1,7 +1,7 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
     <tr>
-      <th *ngFor="let field of fields">{{ field.label }}</th>
+      <th *ngFor="let field of fields">{{ field.label | translate }}</th>
     </tr>
     <tr *ngFor="let taxon of species">
       <ng-container *ngFor="let field of fields">
@@ -23,16 +23,13 @@
             </a>
           </th>
           <td *ngSwitchCase="'status'">
-            {{ taxon.latestRedListEvaluation?.redListStatus | label }}
+            {{ taxon.latestRedListEvaluation?.redListStatus | label | iucnStatus:true }}
+            <laji-status-mark [evaluation]="taxon.latestRedListEvaluation"></laji-status-mark>
           </td>
-          <td *ngSwitchCase="'habitat'">
+          <td *ngSwitchCase="'habitat'" class="habitat">
             <ng-container *ngIf="taxon.latestRedListEvaluation">
-              <span *ngIf="taxon.latestRedListEvaluation?.primaryHabitat">
-                {{ taxon.latestRedListEvaluation?.primaryHabitat?.habitat | label }}<br>
-              </span>
-              <ng-container *ngFor="let sec of taxon.latestRedListEvaluation?.secondaryHabitats">
-                <span>{{ sec.habitat | label }}<br></span>
-              </ng-container>
+              <laji-habitat [habitat]="taxon.latestRedListEvaluation?.primaryHabitat"></laji-habitat>
+              <laji-habitat [habitat]="taxon.latestRedListEvaluation?.secondaryHabitats"></laji-habitat>
             </ng-container>
           </td>
           <td *ngSwitchCase="'reasons'">
@@ -51,7 +48,7 @@
             <ng-container *ngIf="taxon.redListStatusesInFinland">
               <ng-container *ngFor="let status of taxon.redListStatusesInFinland">
                 <ng-container *ngIf="status.year === 2015">
-                  {{status.status | label}}
+                  {{ status.status | label | iucnStatus:true }}
                 </ng-container>
               </ng-container>
             </ng-container>
@@ -60,7 +57,7 @@
             <ng-container *ngIf="taxon.redListStatusesInFinland">
               <ng-container *ngFor="let status of taxon.redListStatusesInFinland">
                 <ng-container *ngIf="status.year === 2010">
-                  {{status.status | label}}
+                  {{ status.status | label | iucnStatus:true }}
                 </ng-container>
               </ng-container>
             </ng-container>
