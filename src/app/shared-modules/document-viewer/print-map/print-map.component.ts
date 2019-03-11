@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, AfterViewInit, ViewChild, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, Input, AfterViewInit, ViewChild, SimpleChanges } from '@angular/core';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions } from '@laji-map/laji-map.interface';
 
@@ -7,7 +7,7 @@ import { LajiMapOptions } from '@laji-map/laji-map.interface';
   templateUrl: './print-map.component.html',
   styleUrls: ['./print-map.component.css']
 })
-export class PrintMapComponent implements OnInit, OnChanges, AfterViewInit {
+export class PrintMapComponent implements OnChanges, AfterViewInit {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @Input() data: any;
 
@@ -15,8 +15,6 @@ export class PrintMapComponent implements OnInit, OnChanges, AfterViewInit {
   mapOptions: LajiMapOptions = {viewLocked: true};
 
   constructor() { }
-
-  ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {

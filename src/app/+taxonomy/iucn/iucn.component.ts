@@ -51,7 +51,6 @@ export class IUCNComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.initColor();
     this.onResize();
   }
 

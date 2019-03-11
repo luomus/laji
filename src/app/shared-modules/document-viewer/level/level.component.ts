@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'laji-level',
@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@a
   styleUrls: ['./level.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LevelComponent implements OnInit, OnChanges {
+export class LevelComponent implements OnChanges {
 
   @Input() item: Object;
   @Input() skip: string[] = [];
@@ -17,10 +17,6 @@ export class LevelComponent implements OnInit, OnChanges {
   items: ViewRow[] = [];
 
   constructor() { }
-
-  ngOnInit() {
-    this.initDocument();
-  }
 
   ngOnChanges() {
     this.initDocument();

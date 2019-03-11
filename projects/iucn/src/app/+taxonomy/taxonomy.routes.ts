@@ -8,12 +8,13 @@ export const taxonomyRoutes: Routes = [
     path: '',
     pathMatch: 'full',
     component: ListComponent,
-    data: { noScrollToTop: true }
+    data: { noScrollToTop: true, title: 'iucn.results.title' }
   },
   {
     path: ':id',
     pathMatch: 'full',
-    component: TaxonomyComponent
+    component: TaxonomyComponent,
+    data: { title: 'iucn.results.title' }
   },
 ];
 export const routing: ModuleWithProviders = RouterModule.forChild(taxonomyRoutes);

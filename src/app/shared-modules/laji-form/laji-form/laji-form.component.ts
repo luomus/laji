@@ -65,7 +65,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   ngOnInit(): void {
-    this.lang = this.translate.currentLang;
     this.areaService.getMunicipalities(this.lang).subscribe(municipalities => {
       this.municipalityEnums = municipalities.reduce((enums, municipality) => {
         enums.enum.push(municipality.id);
@@ -104,6 +103,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.lang = this.translate.currentLang;
     if (!this.lajiFormWrapper) {
       return;
     }

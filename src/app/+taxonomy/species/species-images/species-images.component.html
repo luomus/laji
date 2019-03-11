@@ -1,8 +1,9 @@
 <div class="counts">
   <strong>
-    {{ 'species.images.count1' | translate }}
+    {{ countStartText }}
     <laji-species-count [searchQuery]="searchQuery" [hasMediaFilter]="true"></laji-species-count>
-    {{ 'species.images.count2' | translate }}
+    <ng-container *ngIf="showSpeciesTotalCount"> / <laji-species-count [searchQuery]="searchQuery"></laji-species-count></ng-container>
+    {{ countEndText }}
   </strong>
 </div>
 <laji-spinner [spinning]="loading" [overlay]="true">

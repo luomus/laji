@@ -156,7 +156,6 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       })
       .subscribe(
         data => {
-          console.log(data);
           this.taxa = data;
           this.loading = false;
           this.activate(0);

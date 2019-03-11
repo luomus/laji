@@ -10,10 +10,12 @@
   [showYAxisLabel]="true"
   [xAxis]="true"
   [yAxis]="true"
+  [trimYAxisTicks]="false"
   [xAxisLabel]="label"
   [showDataLabel]="true"
   [barPadding]="3"
   [roundEdges]="false"
   [showGridLines]="true"
+  (select)="itemSelect($event)"
 ></ngx-charts-bar-horizontal-2d>
 

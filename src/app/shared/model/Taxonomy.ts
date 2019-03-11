@@ -243,6 +243,7 @@ export interface RedListEvaluation {
   redListStatus?: string;
   criteriaForStatus?: string;
   externalPopulationImpactOnRedListStatus?: string;
+  possiblyRE?: object;
   primaryHabitat?: Habitat;
   secondaryHabitats?: Habitat[];
 }
@@ -263,6 +264,8 @@ export interface TaxonomyDescriptionVariable {
 }
 
 export interface TaxonomyDescriptionGroup {
+
+  group: string;
 
   title?: string;
 

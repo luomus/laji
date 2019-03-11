@@ -4,7 +4,7 @@
       <td class="evaluated" colspan="7">
         <label class="selectable">
           <input type="checkbox" [checked]="selectedGroups.evaluated" (change)="groupSelect('evaluated')">
-          Arvioidut lajit
+          {{'iucn.filter.evaluated' | translate}}
         </label>
       </td>
       <td colspan="2"></td>
@@ -13,7 +13,7 @@
       <td class="redlist" colspan="5">
         <label class="selectable">
           <input type="checkbox" [checked]="selectedGroups.redlist" (change)="groupSelect('redlist')">
-          Punaisen listan lajit
+          {{'iucn.filter.redList' | translate}}
         </label>
       </td>
       <td class="redlist"></td>
@@ -25,7 +25,7 @@
       <td class="endangered" colspan="3">
         <label class="selectable">
           <input type="checkbox"  [checked]="selectedGroups.endangered" (change)="groupSelect('endangered')">
-          Uhanalaiset
+          {{'iucn.endangered' | translate}}
         </label>
       </td>
       <td class="redlist"></td>

@@ -2,7 +2,7 @@
 <div class="container-fluid" *ngIf="queryParams">
   <div class="row">
     <div class="col-sm-8">
-      <h1>Lajit ja tulokset</h1>
+      <h1>{{'iucn.results.title' | translate}}</h1>
       <div class="year-select">
         <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
       </div>
@@ -13,7 +13,7 @@
     <ul class="nav nav-tabs">
       <li *ngFor="let option of types" role="presentation" class="link" [ngClass]="{'active dark-bg': option.value === queryParams.type}">
         <a (click)="queryParamChange('type', option.value)">
-          {{ option.label }}
+          {{ option.label | translate }}
         </a>
       </li>
     </ul>
@@ -25,7 +25,7 @@
     <ng-container *ngFor="let option of types">
       <ng-container *ngIf="option.value === queryParams.type">
         <h3 role="presentation" class="active" >
-          {{ option.label }}
+          {{ (option.labelLong || option.label) | translate }}
         </h3>
         <laji-active-filters [query]="queryParams"></laji-active-filters>
       </ng-container>

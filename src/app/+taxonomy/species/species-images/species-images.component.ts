@@ -14,6 +14,9 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class SpeciesImagesComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
+  @Input() showSpeciesTotalCount = false;
+  @Input() countStartText = '';
+  @Input() countEndText = '';
   loading = false;
 
   images = [];

@@ -142,7 +142,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       this.updateFields();
       this.updateButtons();
     }
-    if (changes['accessRequested']) {
+    if (changes['accessRequested'] && !changes['accessRequested'].firstChange) {
       this.updateButtons();
     }
   }

@@ -32,23 +32,23 @@
   <div class="container info-footer">
     <div class="row">
       <div class="col-sm-4">
-        <h3>Punaisen kirjan nettipalvelu</h3>
-        <p class="intro"><strong>{{ 'iucn.footer.intro' | translate }}</strong></p>
+        <h3>{{ 'iucn.home.title' | translate }}</h3>
+        <p class="intro"><strong>{{ 'iucn.home.intro' | translate }}</strong></p>
         <ul>
-          <li><a [routerLink]="[{'fi': '/about/713', 'en': '/en/about/848'} | multiLang]">Tietosuojaseloste</a></li>
+          <li><a [routerLink]="[{'fi': '/about/713', 'en': '/en/about/848'} | multiLang]">{{ 'iucn.footer.privacyPolicy' | translate }}</a></li>
           <li><laji-feedback></laji-feedback></li>
         </ul>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-offset-1 col-sm-4">
         <h3>&nbsp;</h3>
         <ul style="margin-bottom: 15px;">
-          <li><a href="https://www.ymparisto.fi/punainenlista" rel="noopener">Suomen ympäristökeskus</a></li>
-          <li><a href="https://laji.fi" rel="noopener">Suomen lajitietokeskus</a></li>
-          <li><a href="https://www.iucnredlist.org/" rel="noopener">IUCN</a></li>
+          <li><a href="https://www.ymparisto.fi/punainenlista" rel="noopener" target="_blank">{{ 'iucn.footer.syke' | translate }}</a></li>
+          <li><a href="https://laji.fi" rel="noopener" target="_blank">{{ 'home.main-page.title' | translate }}</a></li>
+          <li><a href="https://www.iucnredlist.org/" rel="noopener" target="_blank">IUCN</a></li>
         </ul>
         <ul>
-          <li><a>Punainen kirja PDF-muodossa</a></li>
-          <li><a [routerLink]="['/publications'] | localize">Avoin data</a></li>
+          <li><a href="http://hdl.handle.net/10138/299501" rel="noopener">{{ 'iucn.footer.pdf' | translate }}</a></li>
+          <li><a [routerLink]="['/publications'] | localize">{{ 'iucn.footer.openData' | translate }}</a></li>
         </ul>
       </div>
     </div>

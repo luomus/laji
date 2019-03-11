@@ -1,5 +1,5 @@
 import { catchError, map, mergeAll, share, switchMap, tap, toArray } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
@@ -66,7 +66,7 @@ export interface SearchDocument {
   providers: [DocumentExportService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OwnSubmissionsComponent implements OnInit, OnChanges {
+export class OwnSubmissionsComponent implements OnChanges {
 
   @Input() collectionID;
   @Input() formID;
@@ -135,12 +135,8 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     private router: Router
   ) { }
 
-  ngOnInit() {
-    this.modal.config = {animated: false};
-    this.initDocuments(this.onlyTemplates);
-  }
-
   ngOnChanges(changes: SimpleChanges) {
+    this.modal.config = {animated: false};
     this.initDocuments(this.onlyTemplates);
   }
 
@@ -187,7 +183,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
 
     if (this.namedPlace) {
       this.documents$ = this.getAllDocuments<SearchDocument>({
-        year: this.year,
+        year: !this.namedPlace && !this.onlyTemplates ? this.year : undefined,
         namedPlace: this.namedPlace,
         collectionID: this.collectionID,
         formID: this.formID,

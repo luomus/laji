@@ -1,6 +1,6 @@
 <ng-container [ngSwitch]="type">
   <ng-container *ngSwitchCase="'status'">
-    <laji-red-list-status [data]="redListStatusQuery$ | async"></laji-red-list-status>
+    <laji-red-list-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="redListStatusQuery$ | async"></laji-red-list-status>
   </ng-container>
   <ng-container *ngSwitchCase="'species'">
     <div class="pull-right" style="margin-left: 5px">
@@ -11,9 +11,9 @@
         [defaultFields]="defaultSpeciesFields"
         [labelClose]="'close' | translate"
         [labelReset]="'reset' | translate"
-        [modalTitle]="'Valitse listassa näkyvät kentät'"
-        [allSelectableFieldsTitle]="'Kaikki kentät'"
-        [selectedFieldsTitle]="'Valitut kentät'"
+        [modalTitle]="'iucn.results.selectColumns' | translate"
+        [allSelectableFieldsTitle]="'iucn.results.fieldsAll' | translate"
+        [selectedFieldsTitle]="'iucn.results.fieldsSelected' | translate"
         (selectedFieldsChange)="newFields($event)"
       ></laji-select-fields-modal-gear>
     </div>
@@ -30,26 +30,31 @@
   <ng-container *ngSwitchCase="'reasons'">
     <div class="row">
       <div class="col-sm-10">
-        <laji-red-list-chart [data]="reasonsQuery$ | async" [label]="'lajia'"></laji-red-list-chart>
+        <laji-red-list-chart (select)="changeQuery('reasons', $event)" [data]="reasonsQuery$ | async" [label]="'taxonomy.species' | translate"></laji-red-list-chart>
       </div>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'threats'">
     <div class="row">
       <div class="col-sm-10">
-        <laji-red-list-chart [data]="threadQuery$ | async" [label]="'lajia'"></laji-red-list-chart>
+        <laji-red-list-chart (select)="changeQuery('threats', $event)" [data]="threadQuery$ | async" [label]="'taxonomy.species' | translate"></laji-red-list-chart>
       </div>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'habitat'">
     <div class="row">
       <div class="col-sm-10">
-        <laji-red-list-habitat [data]="habitatQuery$ | async"></laji-red-list-habitat>
+        <laji-red-list-habitat (habitatSelect)="changeQuery('habitat', $event)" [data]="habitatQuery$ | async"></laji-red-list-habitat>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-8" style="height: 400px">
-        <ngx-charts-pie-chart [results]="habitatChartQuery$ | async" [tooltipDisabled]="false" [labels]="true" [customColors]="colorSchema"></ngx-charts-pie-chart>
+        <ngx-charts-pie-chart
+          (select)="habitatPieSelect($event)"
+          [results]="habitatChartQuery$ | async"
+          [tooltipDisabled]="false"
+          [trimLabels]="false"
+          [labels]="true" [customColors]="colorSchema"></ngx-charts-pie-chart>
       </div>
     </div>
   </ng-container>

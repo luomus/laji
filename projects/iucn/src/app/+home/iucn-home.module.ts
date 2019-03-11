@@ -7,6 +7,7 @@ import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { SharedModule } from '../../../../../src/app/shared/shared.module';
 import { IucnResultPieComponent } from './iucn-result-pie/iucn-result-pie.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { LangModule } from '../../../../../src/app/shared-modules/lang/lang.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     HomeRoutingModule,
     IucnSharedModule,
     SharedModule,
-    NgxChartsModule
+    NgxChartsModule,
+    LangModule
   ],
   declarations: [HomeComponent, IucnResultPieComponent]
 })
