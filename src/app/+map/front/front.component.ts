@@ -51,7 +51,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'FeatureCollection',
       features: []
     },
-    getTooltip: (i, {geometry}) => {
+    getTooltip: ({feature: {geometry}}) => {
       switch (geometry.type) {
           case 'LineString': {
             let prevLatLng;
