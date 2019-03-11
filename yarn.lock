@@ -4696,7 +4696,6 @@ klaw-sync@^4.0.0:
 laji-form@^0.0.584:
   version "0.0.584"
   resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.584.tgz#50143c63e513f6a5822a3bed7e4e6a20eacdf94d"
-  integrity sha512-XHj3P8gOcA1u7EncnuKAmb7aQibqAsh0eCy76ZH0pyuX+BbZuoy9NmEX7KsX6x0X/MJn3CndmfmIQSatfgxWTQ==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -4724,7 +4723,6 @@ laji-form@^0.0.584:
 laji-map@1.0.478, laji-map@^1.0.395, laji-map@^1.0.477, laji-map@^1.0.478:
   version "1.0.478"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.478.tgz#8c7d161b95584bc5a7861ab1fb50feaf083d0b8f"
-  integrity sha512-6kEw5pSO0bW0jon2BF9oDTE6M2Q8NhJvuZgsOp79AARPXGjoIZHGswWbmfxnildCOGXDKWFjPqnCsuDfAivlpg==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
@@ -5430,7 +5428,7 @@ ngx-toastr@^9.1.1:
   dependencies:
     tslib "^1.9.0"
 
-ngx-webstorage@^3.0.0-beta.14:
+ngx-webstorage@3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/ngx-webstorage/-/ngx-webstorage-3.0.2.tgz#407d3a908ad598a22c544d5f0b760f81e5d301fd"
   dependencies:
@@ -5632,7 +5630,6 @@ normalize-range@^0.1.2:
 nouislider@10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-10.0.0.tgz#166145168bc05701ef5168c17d171f79154c174e"
-  integrity sha1-FmFFFovAVwHvUWjBfRcfeRVMF04=
 
 npm-bundled@^1.0.1:
   version "1.0.6"
