@@ -499,11 +499,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  private getPopup(idx: number, geometry: any, cb: Function) {
+  private getPopup({featureIdx}, cb: Function) {
     this.translate.get('more')
       .subscribe((moreInfo) => {
         try {
-          const properties = this.mapData[0].featureCollection.features[idx].properties;
+          const properties = this.mapData[0].featureCollection.features[featureIdx].properties;
           const cnt = properties.count;
           let description = '';
           this.itemFields.map(field => {

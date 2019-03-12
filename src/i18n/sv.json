@@ -981,5 +981,9 @@
   "np.copyAddress": "Kopia link",
   "np.copyAddress.success": "Länken kopierades till urklippet",
   "save": "Spara",
-  "cancel": "Avbryt"
+  "cancel": "Avbryt",
+  "navigation.lolife": "LOLIFE",
+  "theme.lolife.intro": "Flygekorre-Life",
+  "theme.lolife.places": "Spela in folkräkningsåtgärder"
+
 }

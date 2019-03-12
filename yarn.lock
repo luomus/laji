@@ -4693,15 +4693,16 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.584:
-  version "0.0.584"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.584.tgz#50143c63e513f6a5822a3bed7e4e6a20eacdf94d"
+laji-form@^0.0.586:
+  version "0.0.586"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.586.tgz#75e0998e572750827e6d4f29dd7a1925f045905f"
+  integrity sha512-QZMy7v6C8PmrgOz26n5pYBsBDNWhsYjnWiXz/zZlqy8PubShkI2McdaymRDA3IZPA/bWO4vMRKinrsSjAvAmPg==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.477"
+    laji-map "^1.0.480"
     laji-validate "0.0.73"
     moment "*"
     prop-types "^15.5.8"
@@ -4720,9 +4721,10 @@ laji-form@^0.0.584:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.478, laji-map@^1.0.395, laji-map@^1.0.477, laji-map@^1.0.478:
-  version "1.0.478"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.478.tgz#8c7d161b95584bc5a7861ab1fb50feaf083d0b8f"
+laji-map@^1.0.480, laji-map@1.0.480, laji-map@^1.0.395:
+  version "1.0.480"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.480.tgz#8cafc5b9f569c2c04b479246a9f6bc49664a56f7"
+  integrity sha512-9bicVk9iYVIYBIae7OEpYU5Y02j+keWW1G+8DM39i0OYxHXiJfETbaoqPaMTnuNbqSyoKtDHu4Yt9P+1xnXrLg==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
@@ -5630,6 +5632,11 @@ normalize-range@^0.1.2:
 nouislider@10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-10.0.0.tgz#166145168bc05701ef5168c17d171f79154c174e"
+
+nouislider@13.1.0:
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-13.1.0.tgz#23a57f25e5302117dc8f7e391954c9f111e8cf84"
+  integrity sha512-XNayuw//xm5pVYXvXKr9IOSxFgbyPkRXZC99xnNMysJ+5nZaiIxOe2WK1QM3VpHOBKktI/Q1TikisH4HjXpw0w==
 
 npm-bundled@^1.0.1:
   version "1.0.6"

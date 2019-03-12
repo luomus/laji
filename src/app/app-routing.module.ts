@@ -48,6 +48,7 @@ const routesWithLang: Routes = [
     {path: 'talvilintu', redirectTo: '/en/theme/talvilintulaskenta', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/en/theme/vieraslajit', pathMatch: 'full'},
     {path: 'kunnat', redirectTo: '/en/theme/kunnat', pathMatch: 'full'},
+    {path: 'lolife', redirectTo: '/en/theme/lolife', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
@@ -59,6 +60,7 @@ const routesWithLang: Routes = [
     {path: 'talvilintu', redirectTo: '/sv/theme/talvilintulaskenta', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/sv/theme/vieraslajit', pathMatch: 'full'},
     {path: 'kunnat', redirectTo: '/sv/theme/kunnat', pathMatch: 'full'},
+    {path: 'lolife', redirectTo: '/sv/theme/lolife', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/sv/error/404'}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
@@ -70,6 +72,7 @@ const routesWithLang: Routes = [
     {path: 'talvilintu', redirectTo: '/theme/talvilintulaskenta', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/theme/vieraslajit', pathMatch: 'full'},
     {path: 'kunnat', redirectTo: '/theme/kunnat', pathMatch: 'full'},
+    {path: 'lolife', redirectTo: '/theme/lolife', pathMatch: 'full'},
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
