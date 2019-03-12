@@ -3470,9 +3470,9 @@ gaze@^1.0.0:
   dependencies:
     globule "^1.0.0"
 
-generic-label-maker@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-0.0.6.tgz#486de56d9e797a85b0d0c933ae0e89ec3283e2dc"
+generic-label-maker@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-0.0.7.tgz#30f787bc6586804a0dede61eb1bcd430e425e486"
   dependencies:
     tslib "^1.9.0"
 
