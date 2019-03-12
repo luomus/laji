@@ -1,16 +1,29 @@
 diff --git a/node_modules/ngx-webstorage/fesm5/ngx-webstorage.js b/node_modules/ngx-webstorage/fesm5/ngx-webstorage.js
-index fed2201..f283034 100644
+index fed2201..6952467 100644
 --- a/node_modules/ngx-webstorage/fesm5/ngx-webstorage.js
 +++ b/node_modules/ngx-webstorage/fesm5/ngx-webstorage.js
 @@ -407,7 +407,11 @@ var LOCAL_STORAGE = new InjectionToken('window_local_storage');
   * @return {?}
   */
  function getLocalStorage() {
+-    return (typeof window !== 'undefined') ? window.localStorage : null;
 +  try {
-     return (typeof window !== 'undefined') ? window.localStorage : null;
++    return (typeof window !== 'undefined') ? window.localStorage : getSessionStorage();
++  } catch (e) {
++    return getSessionStorage();
++  }
+ }
+ /** @type {?} */
+ var LocalStorageProvider = { provide: LOCAL_STORAGE, useFactory: getLocalStorage };
+@@ -417,7 +421,11 @@ var SESSION_STORAGE = new InjectionToken('window_session_storage');
+  * @return {?}
+  */
+ function getSessionStorage() {
++  try {
+     return (typeof window !== 'undefined') ? window.sessionStorage : null;
 +  } catch (e) {
 +    return null;
 +  }
  }
  /** @type {?} */
- var LocalStorageProvider = { provide: LOCAL_STORAGE, useFactory: getLocalStorage };
+ var SessionStorageProvider = { provide: SESSION_STORAGE, useFactory: getSessionStorage };

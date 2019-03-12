@@ -1,30 +1,125 @@
-.label-editor {
-  display: flex;
+$menu-height: 24px;
+$menu-color: #999;
+$menu-border-color: #333;
+$menu-text-color: #111;
+$settings-border-color: #ddd;
+$settings-bg-color: #efefef;
+
+:host {
+  height: 100%;
+  width: 100%;
 }
 
-.settings-wrap {
-  width: 300px;
-}
-
-.tab-content {
-  padding: 15px;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  min-height: 200px;
-}
-
-.editor-wrap {
-  flex: 1 1 auto;
-  flex-grow: 1;
-}
-
-.disabled {
-  color: #aaa;
-}
-table td:first-child {
-  text-align: right;
-}
-::ng-deep .settings-wrap {
+::ng-deep .label-editor-window {
+  height: 100%;
+  width: 100%;
   user-select: none;
+  overflow: hidden;
+  border: 1px solid $menu-border-color;
+
+  .menubar {
+    height: $menu-height;
+    width: 100%;
+    background: $menu-color;
+    z-index: 22;
+    border-bottom: 1px solid $menu-border-color;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      li {
+        display: block;
+        float: left;
+        padding: 2px 15px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: darken($menu-color, 20%);
+
+          a {
+            color: lighten($menu-text-color, 90%);
+            text-decoration: none;
+          }
+
+        }
+
+        a {
+          color: $menu-text-color;
+        }
+
+        &.active {
+          border-left: 1px solid lighten($menu-border-color, 30%);
+          border-right: 1px solid lighten($menu-border-color, 30%);
+          background-color: lighten($menu-color, 20%);
+        }
+
+      }
+    }
+  }
+
+  .window-content {
+    display: flex;
+    width: 100%;
+    height: calc(100% - #{$menu-height});
+  }
+
+  h3 {
+    margin: 10px -15px 0 -15px;
+    font-size: 100%;
+    font-weight: 900;
+    display: block;
+    padding: 5px 15px;
+    border-top: 1px solid $settings-border-color;
+
+    &.first {
+      border-top: none;
+      margin-top: 0;
+    }
+  }
+
+  .settings-wrap {
+    flex-basis: 300px;
+    flex-shrink: 0;
+    height: 100%;
+    overflow-y: auto;
+    border-right: 1px solid $settings-border-color;
+    padding: 15px;
+    background-color: $settings-bg-color;
+  }
+
+  .settings-wrap.dragging {
+    overflow-y: unset;
+  }
+
+  .tab-content {
+    height: 100%;
+  }
+
+  .editor-wrap {
+    flex: 1 1 auto;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  .editor-space, .preview-space {
+    padding: 45px 10px 45px 45px;
+  }
+
+  .editor-space {
+    border-bottom: 1px solid $settings-border-color;
+  }
+
+  .disabled {
+    color: #aaa;
+  }
+
+  .settings-wrap {
+    user-select: none;
+  }
+
+  .editor-end {
+    width: 100%;
+  }
+
 }

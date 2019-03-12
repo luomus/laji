@@ -3,4 +3,9 @@
 <div *ngFor="let field of (availableFields | searchFields:filterBy )"
      cdkDrag (cdkDragReleased)="onNewFieldDragEnd($event)"
      [cdkDragData]="field"
-     class="new-field">{{field.label}}</div>
+     (cdkDragStarted)="dragging.emit(true)"
+     (cdkDragEnded)="dragging.emit(false)"
+     class="new-field">
+  <div class="example-custom-placeholder" *cdkDragPlaceholder>foobar</div>
+  {{field.label}}
+</div>

@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 import { IAddLabelEvent, ILabelField, ILabelItem, ISetup } from '../generic-label-maker.interface';
+import { IPageLayout, LabelService } from '../label.service';
 
 @Component({
   selector: 'll-label-editor-container',
@@ -11,10 +12,11 @@ export class LabelEditorContainerComponent {
 
   static id = 0;
 
-  _active: 'file'|'edit'|'settings'|'fields' = 'file';
+  _active: 'file'|'edit'|'settings'|'fields'|'help' = 'file';
   _setup: ISetup;
   _selectedLabelItem: ILabelItem | undefined;
   fields: ILabelField[];
+  dragging = false;
   @Input() magnification = 2;
   @Input() availableFields: ILabelField[];
   @Input() data: object[];
@@ -34,10 +36,15 @@ export class LabelEditorContainerComponent {
     data: {}
   };
 
+  dimensions: IPageLayout;
+
   private _undo: ISetup[] = [];
   private _redo: ISetup[] = [];
 
-  constructor() { }
+  constructor(
+    private labelService: LabelService,
+    private renderer2: Renderer2
+  ) { }
 
   @Input()
   set setup(setup: ISetup) {
@@ -70,6 +77,7 @@ export class LabelEditorContainerComponent {
         };
       })
     };
+    this.dimensions = this.labelService.countLabelsPerPage(this._setup);
     this.fields = allFields;
     if (this._selectedLabelItem) {
       let idx = this._setup.labelItems.findIndex(i => i._id === this._selectedLabelItem._id);
@@ -192,5 +200,20 @@ export class LabelEditorContainerComponent {
       ...item,
       fields: item.fields.map(field => ({...field, content: doc[field.field]}))
     }));
+  }
+
+  newFieldDragging(event: boolean, settings: HTMLDivElement) {
+    if (event) {
+      this.renderer2.setStyle(settings, 'margin-top', '-' + settings.scrollTop + 'px');
+      this.renderer2.setStyle(settings, 'padding-bottom', settings.scrollTop + 'px');
+      this.renderer2.setStyle(settings, 'height', 'calc(100% + ' + settings.scrollTop + 'px)');
+      this.renderer2.setStyle(settings, 'z-index', '-1');
+    } else {
+      this.renderer2.setStyle(settings, 'margin-top', '0px');
+      this.renderer2.removeStyle(settings, 'z-index');
+      this.renderer2.removeStyle(settings, 'padding-bottom');
+      this.renderer2.setStyle(settings, 'height', '100%');
+    }
+    this.dragging = event;
   }
 }
