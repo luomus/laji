@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 import { IAddLabelEvent, ILabelField, ILabelItem, ISetup } from '../generic-label-maker.interface';
+import { IPageLayout, LabelService } from '../label.service';
 
 @Component({
   selector: 'll-label-editor-container',
@@ -35,10 +36,13 @@ export class LabelEditorContainerComponent {
     data: {}
   };
 
+  dimensions: IPageLayout;
+
   private _undo: ISetup[] = [];
   private _redo: ISetup[] = [];
 
   constructor(
+    private labelService: LabelService,
     private renderer2: Renderer2
   ) { }
 
@@ -73,6 +77,7 @@ export class LabelEditorContainerComponent {
         };
       })
     };
+    this.dimensions = this.labelService.countLabelsPerPage(this._setup);
     this.fields = allFields;
     if (this._selectedLabelItem) {
       let idx = this._setup.labelItems.findIndex(i => i._id === this._selectedLabelItem._id);

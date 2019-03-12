@@ -3,7 +3,7 @@
     <ul>
       <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>File</a></li>
       <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>Edit</a></li>
-      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Fields</a></li>
+      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Label fields</a></li>
       <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>Settings</a></li>
       <li [class.active]="_active === 'help'" (click)="_active = 'help'"><a>Help</a></li>
     </ul>
@@ -57,17 +57,8 @@
       </div>
     </div>
     <div class="editor-wrap">
-     <ll-label-editor
-        [active]="_selectedLabelItem"
-        (activeChange)="setActiveLabelItem($event)"
-        (done)="done()"
-        [setup]="_setup"
-        (setupChange)="setupChanged($event)"
-        [magnification]="magnification"
-        (showSettings)="showSettings($event)"></ll-label-editor>
-      <div *ngIf="_setup.twoSided" style="margin-top: 10px;">
+      <div class="editor-space">
         <ll-label-editor
-          [backSide]="true"
           [active]="_selectedLabelItem"
           (activeChange)="setActiveLabelItem($event)"
           (done)="done()"
@@ -75,14 +66,31 @@
           (setupChange)="setupChanged($event)"
           [magnification]="magnification"
           (showSettings)="showSettings($event)"></ll-label-editor>
-      </div>
-      <div>
-        <div style="margin-top: 15px; border: 1px solid #999; display: inline-block">
-          <ll-label-preview [setup]="_setup"></ll-label-preview>
+        <div *ngIf="_setup.twoSided" style="margin-top: 10px; display: inline-block;">
+          <ll-label-editor
+            [backSide]="true"
+            [active]="_selectedLabelItem"
+            (activeChange)="setActiveLabelItem($event)"
+            (done)="done()"
+            [setup]="_setup"
+            (setupChange)="setupChanged($event)"
+            [magnification]="magnification"
+            (showSettings)="showSettings($event)"></ll-label-editor>
         </div>
       </div>
-      <div *ngIf="_setup.twoSided" style="margin-top: 15px; border: 1px solid #999; display: inline-block">
-        <ll-label-preview [setup]="_setup" [backSide]="true"></ll-label-preview>
+      <div class="preview-space">
+        <strong>Preview</strong>
+        <div style="margin-bottom: 5px;">
+          <div style="margin: 5px 15px 0 0; border: 1px solid #999; display: inline-block">
+            <ll-label-preview [setup]="_setup"></ll-label-preview>
+          </div>
+          <div *ngIf="_setup.twoSided" style="margin-top: 5px; border: 1px solid #999; display: inline-block">
+            <ll-label-preview [setup]="_setup" [backSide]="true"></ll-label-preview>
+          </div>
+        </div>
+        <small *ngIf="dimensions">
+          There can be a total of {{dimensions.cols * dimensions.rows}} labels on a single page (in {{dimensions.cols}} columns and {{dimensions.rows}} rows).
+        </small>
       </div>
     </div>
   </div>

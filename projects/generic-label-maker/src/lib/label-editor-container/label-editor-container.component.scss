@@ -2,6 +2,8 @@ $menu-height: 24px;
 $menu-color: #999;
 $menu-border-color: #333;
 $menu-text-color: #111;
+$settings-border-color: #ddd;
+$settings-bg-color: #efefef;
 
 :host {
   height: 100%;
@@ -13,7 +15,7 @@ $menu-text-color: #111;
   width: 100%;
   user-select: none;
   overflow: hidden;
-  border: 1px solid #222;
+  border: 1px solid $menu-border-color;
 
   .menubar {
     height: $menu-height;
@@ -68,7 +70,7 @@ $menu-text-color: #111;
     font-weight: 900;
     display: block;
     padding: 5px 15px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid $settings-border-color;
 
     &.first {
       border-top: none;
@@ -77,12 +79,13 @@ $menu-text-color: #111;
   }
 
   .settings-wrap {
-    width: 300px;
+    flex-basis: 300px;
+    flex-shrink: 0;
     height: 100%;
     overflow-y: auto;
-    border-right: 1px solid #ddd;
+    border-right: 1px solid $settings-border-color;
     padding: 15px;
-    background-color: #efefef;
+    background-color: $settings-bg-color;
   }
 
   .settings-wrap.dragging {
@@ -95,10 +98,16 @@ $menu-text-color: #111;
 
   .editor-wrap {
     flex: 1 1 auto;
-    flex-grow: 1;
-    padding: 45px 0 0 45px;
     max-height: 100%;
     overflow-y: auto;
+  }
+
+  .editor-space, .preview-space {
+    padding: 45px 10px 45px 45px;
+  }
+
+  .editor-space {
+    border-bottom: 1px solid $settings-border-color;
   }
 
   .disabled {
@@ -107,6 +116,10 @@ $menu-text-color: #111;
 
   .settings-wrap {
     user-select: none;
+  }
+
+  .editor-end {
+    width: 100%;
   }
 
 }
