@@ -56,7 +56,7 @@ export class FeedbackComponent {
         LajiApi.Endpoints.feedback,
         {
           subject,
-          message: !!user ? this.feedback.message : this.feedback.message + '\n\n---\n' + this.feedback.email,
+          message: this.feedback.message + '\n\n---\n' + this.feedback.email,
           meta
         },
         {personToken: user && user.emailAddress ? this.userService.getToken() : undefined})
