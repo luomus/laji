@@ -16,6 +16,7 @@ export const environment = {
   namedPlaceForm: 'MHL.36',
   invasiveControlForm: '',
   municipalityMonitoringForm: '',
+  lolifeForm: 'MHL.45',
   loginUrl: 'https://login.laji.fi/login',
   selfPage: 'https://login.laji.fi/self',
   apiBase: '/api',
