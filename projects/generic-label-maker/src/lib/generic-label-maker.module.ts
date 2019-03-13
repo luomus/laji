@@ -20,6 +20,7 @@ import { FieldAddComponent } from './label-editor-container/label-settings/field
 import { SearchFieldsPipe } from './label-editor-container/label-fields-available/search-fields.pipe';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { RemoveSuffixPipe } from './label-editor-container/label-file/remove-suffix.pipe';
+import { InfoWindowComponent } from './info-window/info-window.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { RemoveSuffixPipe } from './label-editor-container/label-file/remove-suf
     LabelFileComponent,
     FieldAddComponent,
     SearchFieldsPipe,
-    RemoveSuffixPipe
+    RemoveSuffixPipe,
+    InfoWindowComponent
   ],
   imports: [
     CommonModule,

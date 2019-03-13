@@ -1,0 +1,15 @@
+<ng-container *ngIf="visible$ | async">
+  <div class="info-window" *ngIf="data$ | async; let data">
+    <div class="title" *ngIf="data.title" [innerHTML]="data.title"></div>
+    <div class="content" [innerHTML]="data.content"></div>
+    <div class="actions" *ngIf="data.action">
+      <ng-container *ngSwitchCase="data.action">
+        <ng-container *ngSwitchCase="'yesno'">
+          <div class="bnt bnt-default" (click)="">Yes</div>
+          <div class="bnt bnt-default">No</div>
+        </ng-container>
+
+      </ng-container>
+    </div>
+  </div>
+</ng-container>

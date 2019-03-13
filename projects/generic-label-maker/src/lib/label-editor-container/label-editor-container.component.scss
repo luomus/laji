@@ -1,6 +1,6 @@
 $menu-height: 24px;
 $menu-color: #999;
-$menu-border-color: #333;
+$menu-border-color: #777;
 $menu-text-color: #111;
 $settings-border-color: #ddd;
 $settings-bg-color: #efefef;
@@ -29,6 +29,7 @@ $settings-bg-color: #efefef;
       padding: 0;
       list-style: none;
       li {
+        height: $menu-height;
         display: block;
         float: left;
         padding: 2px 15px;
@@ -49,9 +50,8 @@ $settings-bg-color: #efefef;
         }
 
         &.active {
-          border-left: 1px solid lighten($menu-border-color, 30%);
-          border-right: 1px solid lighten($menu-border-color, 30%);
           background-color: lighten($menu-color, 20%);
+          border-bottom: 1px solid $menu-border-color;
         }
 
       }
