@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, TemplateRef } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 export interface IInfoWindow {
   title?: string;
-  content: string;
-  actionTypes: 'ok'|'yesno'|'close';
+  content: string | TemplateRef<any>;
+  actionTypes: 'ok'|'yesNo'|'close';
 }
 
 @Injectable({
@@ -14,7 +14,7 @@ export class InfoWindowService {
 
   private visibilitySource = new BehaviorSubject<boolean>(false);
   private dataSource = new BehaviorSubject<IInfoWindow>({content: '', actionTypes: 'ok'});
-  private closeSubject;
+  private closeSubject: Subject<any>;
 
   open(data: IInfoWindow) {
     this.dataSource.next(data);
@@ -24,11 +24,11 @@ export class InfoWindowService {
   }
 
   close(value?: any) {
+    this.closeSubject.next(value);
     this.visibilitySource.next(false);
-    this.closeSubject.emit(value);
   }
 
-  visiblilityAsObservable() {
+  visibilityAsObservable() {
     return this.visibilitySource.asObservable();
   }
 

@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { IAddLabelEvent, ILabelField, ILabelItem, ISetup } from '../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../label.service';
+import { InfoWindowService } from '../info-window/info-window.service';
 
 @Component({
   selector: 'll-label-editor-container',
@@ -8,9 +9,11 @@ import { IPageLayout, LabelService } from '../label.service';
   styleUrls: ['./label-editor-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelEditorContainerComponent {
+export class LabelEditorContainerComponent implements OnInit {
 
   static id = 0;
+
+  @ViewChild('intro') intro;
 
   _active: 'file'|'edit'|'settings'|'fields'|'help' = 'file';
   _setup: ISetup;
@@ -20,6 +23,7 @@ export class LabelEditorContainerComponent {
   @Input() magnification = 2;
   @Input() availableFields: ILabelField[];
   @Input() data: object[];
+  @Input() showIntro = true;
 
   @Output() html = new EventEmitter<string>();
   @Output() setupChange = new EventEmitter<ISetup>();
@@ -43,8 +47,19 @@ export class LabelEditorContainerComponent {
 
   constructor(
     private labelService: LabelService,
-    private renderer2: Renderer2
+    private renderer2: Renderer2,
+    private infoWindowService: InfoWindowService
   ) { }
+
+  ngOnInit(): void {
+    if (this.showIntro) {
+      this.infoWindowService.open({
+        title: 'Generic label editor',
+        actionTypes: 'ok',
+        content: this.intro
+      });
+    }
+  }
 
   @Input()
   set setup(setup: ISetup) {
