@@ -37,11 +37,13 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   hasBiologyData: boolean;
   images = [];
   parent: Taxonomy;
+  siblings: Taxonomy[];
 
   activatedTabs = {};
 
   private imageSub: Subscription;
   private parentSub: Subscription;
+  private siblingSub: Subscription;
   loadingParent = false;
 
   @Output() routeUpdate = new EventEmitter();
@@ -89,6 +91,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       }
 
       this.setParent();
+      this.setSiblings();
       this.setImages();
     }
   }
@@ -103,6 +106,26 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     this.routeUpdate.emit({id: id, tab: tab, context: context});
   }
 
+  selectRightSibling() {
+    let idx = 0;
+    for (let i = 0; i < this.siblings.length - 1; i++) {
+      if (this.siblings[i].id === this.taxon.id) {
+        idx = i + 1;
+      }
+    }
+    this.updateRoute(this.siblings[idx].id);
+  }
+
+  selectLeftSibling() {
+    let idx = this.siblings.length - 1;
+    for (let i = 1; i < this.siblings.length; i++) {
+      if (this.siblings[i].id === this.taxon.id) {
+        idx = i - 1;
+      }
+    }
+    this.updateRoute(this.siblings[idx].id);
+  }
+
   private setParent() {
     if (this.parentSub) {
       this.parentSub.unsubscribe();
@@ -113,6 +136,18 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(parent => {
         this.parent = parent;
         this.loadingParent = false;
+        this.cd.markForCheck();
+      });
+  }
+
+  private setSiblings() {
+    if (this.siblingSub) {
+      this.siblingSub.unsubscribe();
+    }
+
+    this.siblingSub = this.taxonomyService.getSiblings(this.taxon.id)
+      .subscribe(siblings => {
+        this.siblings = siblings;
         this.cd.markForCheck();
       });
   }

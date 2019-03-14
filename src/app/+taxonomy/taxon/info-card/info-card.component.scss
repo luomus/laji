@@ -12,10 +12,21 @@
 }
 .taxon-parent {
   margin-top: 10px;
+  display: inline-block;
 }
 .taxon-name-header {
   margin-top: 5px;
+  margin-right: 15px;
   display: inline-block;
+}
+.sibling-select-container {
+  display: inline-block;
+  vertical-align: bottom;
+  margin: 0 10px 10px 0;
+}
+.sibling-select-container select {
+  display: inline-block;
+  width: 200px;
 }
 .omni-search-container {
   margin: 10px 0 10px 10px;

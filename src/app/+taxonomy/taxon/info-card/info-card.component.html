@@ -8,14 +8,25 @@
         </a>
       </div>
     </laji-spinner>
-    <h1 class="taxon-name-header">
-      <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
-    </h1>
     <div class="omni-search-container pull-right">
       <laji-taxon-select
         [placeholder]="'taxonomy.card.search' | translate"
         (taxonIdChange)="updateRoute($event)"
       ></laji-taxon-select>
+    </div>
+    <div>
+      <h1 class="taxon-name-header">
+        <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
+      </h1>
+      <div class="sibling-select-container">
+        <a (click)="selectLeftSibling()" class="link"><i class="glyphicon glyphicon-chevron-left"></i></a>
+        <select class="form-control input-sm" [ngModel]="taxon.id" (ngModelChange)="updateRoute($event)">
+          <option *ngFor="let sibling of siblings" [value]="sibling.id">
+            <laji-taxon-name [taxon]="sibling" [addLink]="false"></laji-taxon-name>
+          </option>
+        </select>
+        <a (click)="selectRightSibling()" class="link"><i class="glyphicon glyphicon-chevron-right"></i></a>
+      </div>
     </div>
   </div>
 

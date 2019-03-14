@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Observable, of } from 'rxjs';
-import { tap, share, map } from 'rxjs/operators';
+import {tap, share, map, switchMap} from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
@@ -131,6 +131,17 @@ export class TaxonTaxonomyService {
   getParent(id: string): Observable<Taxonomy> {
     return this.getParents(id)
       .pipe(map(parents => parents.length > 0 ? parents[parents.length - 1] : undefined));
+  }
+
+  getSiblings(id: string): Observable<Taxonomy[]> {
+    return this.getParent(id)
+      .pipe(switchMap(parent => {
+        if (!parent) {
+          return this.getTaxon(id).pipe(map(taxon => [taxon]));
+        }
+
+        return this.getChildren(parent.id);
+      }));
   }
 
   private getParentsFromCache(id: string, result: Taxonomy[] = []): Taxonomy[] {
