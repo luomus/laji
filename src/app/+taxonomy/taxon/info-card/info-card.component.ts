@@ -16,7 +16,7 @@ import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
 import {GalleryService} from '../../../shared/gallery/service/gallery.service';
 import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
 import {Image} from '../../../shared/gallery/image-gallery/image.interface';
-
+import {TaxonTaxonomyService} from '../service/taxon-taxonomy.service';
 
 @Component({
   selector: 'laji-info-card',
@@ -36,16 +36,22 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   hasImageData: boolean;
   hasBiologyData: boolean;
   images = [];
+  parent: Taxonomy;
+  siblings: Taxonomy[];
 
   activatedTabs = {};
 
   private imageSub: Subscription;
+  private parentSub: Subscription;
+  private siblingSub: Subscription;
+  loadingParent = false;
 
   @Output() routeUpdate = new EventEmitter();
 
   constructor(
     private cd: ChangeDetectorRef,
     private galleryService: GalleryService,
+    private taxonomyService: TaxonTaxonomyService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) { }
 
@@ -84,6 +90,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         this.updateRoute(this.taxon.id, 'overview');
       }
 
+      this.setParent();
+      this.setSiblings();
       this.setImages();
     }
   }
@@ -96,6 +104,52 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   updateRoute(id: string, tab = this.activeTab, context = this.context) {
     this.routeUpdate.emit({id: id, tab: tab, context: context});
+  }
+
+  selectRightSibling() {
+    let idx = 0;
+    for (let i = 0; i < this.siblings.length - 1; i++) {
+      if (this.siblings[i].id === this.taxon.id) {
+        idx = i + 1;
+      }
+    }
+    this.updateRoute(this.siblings[idx].id);
+  }
+
+  selectLeftSibling() {
+    let idx = this.siblings.length - 1;
+    for (let i = 1; i < this.siblings.length; i++) {
+      if (this.siblings[i].id === this.taxon.id) {
+        idx = i - 1;
+      }
+    }
+    this.updateRoute(this.siblings[idx].id);
+  }
+
+  private setParent() {
+    if (this.parentSub) {
+      this.parentSub.unsubscribe();
+    }
+
+    this.loadingParent = true;
+    this.parentSub = this.taxonomyService.getParent(this.taxon.id)
+      .subscribe(parent => {
+        this.parent = parent;
+        this.loadingParent = false;
+        this.cd.markForCheck();
+      });
+  }
+
+  private setSiblings() {
+    if (this.siblingSub) {
+      this.siblingSub.unsubscribe();
+    }
+
+    this.siblingSub = this.taxonomyService.getSiblings(this.taxon.id)
+      .subscribe(siblings => {
+        this.siblings = siblings;
+        this.cd.markForCheck();
+      });
   }
 
   private setImages() {
