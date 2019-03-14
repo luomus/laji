@@ -10,23 +10,29 @@ export class Tree {
   private getData: (id: string) => Observable<any>;
   private getChildren: (id: string) => Observable<any[]>;
   private getParents: (id: string) => Observable<any[]>;
+
   private skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
 
+  private activeId: string;
   private rootId: string;
 
   constructor(
     getData: (id: string) => Observable<any>,
     getChildren: (id: string) => Observable<any[]>,
-    getParents: (id: string) => Observable<any[]>,
-    skipParams: TreeSkipParameter[]
+    getParents: (id: string) => Observable<any[]>
   ) {
     this.getData = getData;
     this.getChildren = getChildren;
     this.getParents = getParents;
-    this.skipParams = skipParams;
   }
 
-  setView(activeId: string): Observable<boolean> {
+  setView(activeId: string, skipParams: TreeSkipParameter[]): Observable<boolean> {
+    if (skipParams !== this.skipParams) {
+      this.skipParams = skipParams;
+      this.parentNodeList = [];
+    }
+
+    this.activeId = activeId;
     this.loadingParentNodeList = true;
 
     return forkJoin([
@@ -38,22 +44,9 @@ export class Tree {
           const parentList = data[1];
           parentList.push(data[0]);
 
-          this.updateRootId(parentList);
           return this.updateNodes(parentList);
         })
       );
-  }
-
-  setSkipParams(skipParams: TreeSkipParameter[]): Observable<boolean> {
-    this.skipParams = skipParams;
-    const nodesMissingChildren = TreeStateService.updateAllStates(this.parentNodeList, this.skipParams);
-
-    if (nodesMissingChildren.length === 0) {
-      return of(true);
-    }
-
-    return forkJoin(nodesMissingChildren.map(node => this.openNode(node)))
-      .pipe(map((returnValues) => returnValues.every(Boolean)));
   }
 
   openNode(node: TreeNode): Observable<boolean> {
@@ -76,53 +69,48 @@ export class Tree {
     }
   }
 
-  private updateRootId(parentList: any[]): string {
-    for (let i = 0; i < parentList.length; i++) {
-      if (parentList[i].id === this.rootId) {
-        return;
-      }
-    }
-    this.rootId = parentList[parentList.length - 1].id;
-  }
-
   private updateNodes(parentList: any[]): Observable<boolean> {
     const oldParentNodeList = this.parentNodeList;
     const newParentNodeList = [];
-    const childIds = [];
+    let lastParent: TreeNode;
 
-    let rootFound = false;
-    let prevParent: TreeNode;
+    for (let i = 0; i < parentList.length; i++) {
+      const parent = parentList[i];
+      const isRoot = (parent.id === this.rootId || i === parentList.length - 1);
 
-    parentList.forEach((parent, idx) => {
-      const isRoot = parent.id === this.rootId;
-
-      if (!rootFound) {
-        let node: TreeNode;
-
-        if (isRoot && oldParentNodeList.length > idx && oldParentNodeList[idx].value.id === parent.id) {
-          node = oldParentNodeList[idx];
-        } else {
-          node = {
-            value: parent,
-            state: TreeStateService.getInitialState(parent, this.skipParams, prevParent)
-          };
-        }
-
-        newParentNodeList.push(node);
+      let node;
+      if (isRoot && oldParentNodeList.length > i && oldParentNodeList[i].value.id === parent.id) {
+        node = oldParentNodeList[i];
       } else {
-        childIds.push(parent.id);
+        node = {
+          value: parent,
+          state: TreeStateService.getInitialState(parent, this.skipParams, lastParent)
+        };
       }
+
+      newParentNodeList.push(node);
+      lastParent = node;
 
       if (isRoot) {
-        rootFound = true;
+        break;
       }
-      prevParent = parent;
-    });
+    }
+
+    while (lastParent.state.isSkipped && lastParent.value.id !== this.activeId) {
+      newParentNodeList.pop();
+      lastParent = newParentNodeList[newParentNodeList.length - 1];
+    }
+
+    const childIds = [];
+    for (let i = newParentNodeList.length; i < parentList.length; i++) {
+      childIds.push(parentList[i].id);
+    }
 
     this.parentNodeList = newParentNodeList;
+    this.rootId = lastParent.value.id;
     this.loadingParentNodeList = false;
 
-    return this.openNodes(this.parentNodeList[this.parentNodeList.length - 1], childIds);
+    return this.openNodes(lastParent, childIds);
   }
 
   private openNodes(node: TreeNode, childIds: string[]): Observable<boolean> {
@@ -151,7 +139,7 @@ export class Tree {
           const child = children[i];
           if (!child.value.hasChildren) { continue; }
 
-          if (child.state.isSkipped) {
+          if (child.state.isSkipped && child.value.id !== this.activeId) {
             obs.push(this.setOpen(child));
           }
         }

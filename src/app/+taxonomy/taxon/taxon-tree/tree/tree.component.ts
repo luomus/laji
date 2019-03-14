@@ -29,19 +29,15 @@ export class TreeComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.getData || changes.getChildren || changes.getParents) {
-      this.tree = new Tree(this.getData, this.getChildren, this.getParents, this.skipParams);
-    } else if (changes.skipParams) {
-      this.tree.setSkipParams(this.skipParams)
-        .subscribe(() => {
-          this.cd.markForCheck();
-        });
+      this.tree = new Tree(this.getData, this.getChildren, this.getParents);
     }
 
-    if (changes.activeId) {
+    if (changes.activeId || changes.skipParams) {
       if (this.initialViewSub) {
         this.initialViewSub.unsubscribe();
       }
-      this.initialViewSub = this.tree.setView(this.activeId)
+
+      this.initialViewSub = this.tree.setView(this.activeId, this.skipParams)
         .subscribe(() => {
           this.cd.markForCheck();
         });
