@@ -128,6 +128,11 @@ export class TaxonTaxonomyService {
     return this.pendingParents[id];
   }
 
+  getParent(id: string): Observable<Taxonomy> {
+    return this.getParents(id)
+      .pipe(map(parents => parents.length > 0 ? parents[parents.length - 1] : undefined));
+  }
+
   private getParentsFromCache(id: string, result: Taxonomy[] = []): Taxonomy[] {
     if (this.cacheById[id] && this.cacheById[id].parentId) {
       const parentId = this.cacheById[id].parentId;
@@ -142,6 +147,15 @@ export class TaxonTaxonomyService {
   }
 
   private getSelectedFields() {
-    return ['id', 'hasChildren', 'hasParent', 'vernacularName', 'scientificName', 'cursiveName', 'taxonRank'].join(',');
+    return [
+      'id',
+      'hasChildren',
+      'hasParent',
+      'vernacularName',
+      'scientificName',
+      'cursiveName',
+      'taxonRank',
+      'countOfFinnishSpecies'
+    ].join(',');
   }
 }

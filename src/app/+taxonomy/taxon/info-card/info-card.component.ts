@@ -16,7 +16,7 @@ import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
 import {GalleryService} from '../../../shared/gallery/service/gallery.service';
 import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
 import {Image} from '../../../shared/gallery/image-gallery/image.interface';
-
+import {TaxonTaxonomyService} from '../service/taxon-taxonomy.service';
 
 @Component({
   selector: 'laji-info-card',
@@ -36,16 +36,20 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   hasImageData: boolean;
   hasBiologyData: boolean;
   images = [];
+  parent: Taxonomy;
 
   activatedTabs = {};
 
   private imageSub: Subscription;
+  private parentSub: Subscription;
+  loadingParent = false;
 
   @Output() routeUpdate = new EventEmitter();
 
   constructor(
     private cd: ChangeDetectorRef,
     private galleryService: GalleryService,
+    private taxonomyService: TaxonTaxonomyService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) { }
 
@@ -84,6 +88,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         this.updateRoute(this.taxon.id, 'overview');
       }
 
+      this.setParent();
       this.setImages();
     }
   }
@@ -96,6 +101,20 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   updateRoute(id: string, tab = this.activeTab, context = this.context) {
     this.routeUpdate.emit({id: id, tab: tab, context: context});
+  }
+
+  private setParent() {
+    if (this.parentSub) {
+      this.parentSub.unsubscribe();
+    }
+
+    this.loadingParent = true;
+    this.parentSub = this.taxonomyService.getParent(this.taxon.id)
+      .subscribe(parent => {
+        this.parent = parent;
+        this.loadingParent = false;
+        this.cd.markForCheck();
+      });
   }
 
   private setImages() {
