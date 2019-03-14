@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ISetup } from '../../generic-label-maker.interface';
 import { LocalStorage } from 'ngx-webstorage';
+import { LabelPrintComponent } from '../../label-print/label-print.component';
 
 @Component({
   selector: 'll-label-file',
@@ -17,6 +18,7 @@ export class LabelFileComponent {
 
   @Output() html = new EventEmitter<string>();
   @Output() setupChange = new EventEmitter<ISetup>();
+  @ViewChild('printBtn') printBtn: LabelPrintComponent;
 
   filename = '';
 
@@ -65,6 +67,10 @@ export class LabelFileComponent {
 
       document.body.removeChild(element);
     }
+  }
+
+  print() {
+    this.printBtn.renderPages();
   }
 
   private updateResentFiles(setup: ISetup, filename: string) {

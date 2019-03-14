@@ -15,20 +15,34 @@
         <ll-view-settings [viewSettings]="_viewSettings" (viewSettingsChange)="viewSettingsChange.emit($event)"></ll-view-settings>
       </div>
       <div *ngIf="_active === 'help'">
+        <table class="icon">
+          <tr class="link" (click)="openIntro()">
+            <td>
+              <ll-icon [size]="14" [type]="'logo'"></ll-icon>
+            </td>
+            <td>About</td>
+          </tr>
+        </table>
         <h3 class="first">TODO: help content and videos</h3>
       </div>
       <div *ngIf="_active === 'file'">
         <ll-label-file [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
       </div>
       <div [hidden]="_active !== 'edit'">
-        <div class="undo-button link" [class.disabled]="!hasUndo()" (click)="undo()">
-          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
-          Undo
-        </div>
-        <div class="redo-button link" [class.disabled]="!hasRedo()" (click)="redo()">
-          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg>
-          Redo
-        </div>
+        <table class="icon">
+          <tr class="link" [class.disabled]="!hasUndo()" (click)="undo()">
+            <td>
+              <ll-icon [size]="14" [type]="'undo'"></ll-icon>
+            </td>
+            <td>Undo</td>
+          </tr>
+          <tr class="link" [class.disabled]="!hasRedo()" (click)="redo()">
+            <td>
+              <ll-icon [size]="14" [type]="'redo'"></ll-icon>
+            </td>
+            <td>Redo</td>
+          </tr>
+        </table>
         <h3>Generate data</h3>
         <table>
           <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" type="text" class="form-control input-sm"></td></tr>

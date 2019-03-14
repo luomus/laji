@@ -62,8 +62,7 @@ export class LabelPrintComponent {
     private cdr: ChangeDetectorRef
   ) { }
 
-  btnClick(event: MouseEvent) {
-    event.preventDefault();
+  renderPages() {
     this.pressed.emit();
     this.printing = true;
     this.pageLayout = this.labelService.countLabelsPerPage(this.setup);

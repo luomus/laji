@@ -1,26 +1,41 @@
-<table style="width: 100%">
-  <tr><td style="width: 24px"><i class="glyphicon glyphicon-folder-open"></i></td><td>
-    <label class="menu-item" for="file" style="display: block;">Load</label>
-    <input class="inputfile" type="file" name="file" id="file" (change)="onFileChange($event)">
-  </td></tr>
-  <tr><td><i class="glyphicon glyphicon-save"></i></td><td class="menu-item" (click)="save()">Save...</td></tr>
+<table class="icon">
+  <tr class="link">
+    <td>
+      <label class="menu-item" for="file" style="display: block;"><i class="glyphicon glyphicon-folder-open"></i></label>
+    </td>
+    <td>
+      <label class="menu-item" for="file" style="display: block;">Load</label>
+      <input class="inputfile" type="file" name="file" id="file" (change)="onFileChange($event)">
+    </td>
+  </tr>
+  <tr class="link" (click)="save()">
+    <td>
+      <i class="glyphicon glyphicon-save"></i>
+    </td>
+    <td>
+      Save...
+    </td>
+  </tr>
 </table>
 <ng-container *ngIf="recentFiles.length > 0">
   <h3>Recent files</h3>
-  <table style="width: 100%">
-    <tr *ngFor="let recent of recentFiles; let i=index">
-      <td style="width: 24px"></td>
-      <td class="link" (click)="setupChange.emit(recent.setup)">{{ recent.filename | removeSuffix }}</td>
-      <td style="width: 24px" class="link" (click)="removeRecent(i)"><i style="font-size: 80%; color: #ccc" class="glyphicon glyphicon-remove"></i></td>
+  <table class="icon">
+    <tr class="link" *ngFor="let recent of recentFiles; let i=index">
+      <td (click)="setupChange.emit(recent.setup)"></td>
+      <td (click)="setupChange.emit(recent.setup)">{{ recent.filename | removeSuffix }}</td>
+      <td style="width: 24px" class="link" (click)="removeRecent(i)">
+        <ll-icon type="close" size="14"></ll-icon>
+      </td>
     </tr>
   </table>
 </ng-container>
 <h3>Labels</h3>
-<table>
-  <tr>
-    <td style="width: 24px"></td>
+<table class="icon">
+  <tr class="link" (click)="print()">
     <td>
-      <ll-label-print [btnClass]="'menu-item'" [setup]="setup" [data]="data" (html)="html.emit($event)">
+    </td>
+    <td>
+      <ll-label-print #printBtn [btnClass]="'menu-item'" [setup]="setup" [data]="data" (html)="html.emit($event)">
         Download labels (pdf)
       </ll-label-print>
     </td>

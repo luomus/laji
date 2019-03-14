@@ -157,8 +157,12 @@ export class EditorItemComponent implements AfterViewInit {
     let w = this.labelService.pixelToMm(this.elem.offsetWidth) / this._magnification;
     let h = this.labelService.pixelToMm(this.elem.offsetHeight) / this._magnification;
     if (this._grid) {
-      w = Math.round(w / this._grid) * this._grid;
-      h = Math.round(h / this._grid) * this._grid;
+      const move = {
+        x: this._item.x - (Math.round(this._item.x / this._grid) * this._grid),
+        y: this._item.y - (Math.round(this._item.y / this._grid) * this._grid)
+      };
+      w = Math.round(w / this._grid) * this._grid + move.x;
+      h = Math.round(h / this._grid) * this._grid + move.y;
     }
     this.itemChange.emit({
       ...this._item,

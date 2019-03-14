@@ -72,11 +72,7 @@ export class LabelEditorContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.showIntro) {
-      this.subIntro = this.infoWindowService.open({
-        title: 'Generic label editor',
-        actionTypes: 'ok',
-        content: this.intro
-      }).subscribe(() => this.introClosed.emit());
+      this.openIntro();
     }
   }
 
@@ -248,6 +244,14 @@ export class LabelEditorContainerComponent implements OnInit, OnDestroy {
     if  (this.data[0]) {
       this.setAsExample(this.data[0]);
     }
+  }
+
+  openIntro() {
+    this.subIntro = this.infoWindowService.open({
+      title: 'Generic label editor',
+      actionTypes: 'ok',
+      content: this.intro
+    }).subscribe(() => this.introClosed.emit());
   }
 
   private setAsExample(doc: any) {

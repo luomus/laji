@@ -1,4 +1,4 @@
-<table style="width: 180px;" class="icon">
+<table style="width: 220px;" class="icon">
   <tr>
     <td></td>
     <td>Magnify editor by:</td>
@@ -8,11 +8,13 @@
       </select>
     </td>
   </tr>
+</table>
+<table class="icon">
   <tr class="link" (click)="change('fullscreen', !viewSettings.fullscreen)">
     <td>
       <ll-icon [type]="'check'" *ngIf="viewSettings.fullscreen"></ll-icon>
     </td>
-    <td colspan="2">Fullscreen</td>
+    <td>Fullscreen</td>
   </tr>
 </table>
 <h3>Grid</h3>
