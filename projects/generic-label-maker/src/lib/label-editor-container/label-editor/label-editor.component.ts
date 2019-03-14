@@ -17,6 +17,8 @@ export class LabelEditorComponent {
   width: number;
   init = false;
 
+  @Input() grid: number;
+  @Input() gridVisible: boolean;
   @Input() active: ILabelItem;
   @Input() backSide = false;
   @Output() activeChange = new EventEmitter<ILabelItem>();

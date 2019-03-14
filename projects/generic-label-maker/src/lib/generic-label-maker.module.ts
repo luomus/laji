@@ -23,6 +23,7 @@ import { RemoveSuffixPipe } from './label-editor-container/label-file/remove-suf
 import { InfoWindowComponent } from './info-window/info-window.component';
 import { IconComponent } from './icon/icon.component';
 import { ViewSettingsComponent } from './label-editor-container/view-settings/view-settings.component';
+import { EditorGridComponent } from './label-editor-container/label-editor/editor-grid/editor-grid.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { ViewSettingsComponent } from './label-editor-container/view-settings/vi
     RemoveSuffixPipe,
     InfoWindowComponent,
     IconComponent,
-    ViewSettingsComponent
+    ViewSettingsComponent,
+    EditorGridComponent
   ],
   imports: [
     CommonModule,

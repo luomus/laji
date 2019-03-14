@@ -2,9 +2,11 @@
   <tr>
     <td>
       <div class="editor" id="{{backSide ? 'back-side-label-editor' : 'label-editor'}}" [style.width.mm]="width * _magnification" [style.height.mm]="height * _magnification" *ngIf="init">
+        <ll-editor-grid *ngIf="gridVisible" [grid]="grid" [magnification]="_magnification"></ll-editor-grid>
         <ng-container *ngIf="backSide; else frontSide">
           <ll-editor-item
             *ngFor="let item of _setup.backSideLabelItems; let i=index"
+            [grid]="grid"
             [magnification]="_magnification"
             [item]="item"
             [boundary]="'#back-side-label-editor'"
@@ -20,6 +22,7 @@
         <ng-template #frontSide>
           <ll-editor-item
             *ngFor="let item of _setup.labelItems; let i=index"
+            [grid]="grid"
             [magnification]="_magnification"
             [item]="item"
             (done)="done.emit()"

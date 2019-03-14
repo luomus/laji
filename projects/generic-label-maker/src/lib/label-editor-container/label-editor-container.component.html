@@ -68,6 +68,8 @@
           (done)="done()"
           [setup]="_setup"
           (setupChange)="setupChanged($event)"
+          [grid]="_viewSettings.grid"
+          [gridVisible]="_viewSettings.gridVisible"
           [magnification]="_viewSettings.magnification"
           (showSettings)="showSettings($event)"></ll-label-editor>
         <div *ngIf="_setup.twoSided" style="margin-top: 10px; display: inline-block;">
@@ -78,6 +80,8 @@
             (done)="done()"
             [setup]="_setup"
             (setupChange)="setupChanged($event)"
+            [grid]="_viewSettings.grid"
+            [gridVisible]="_viewSettings.gridVisible"
             [magnification]="_viewSettings.magnification"
             (showSettings)="showSettings($event)"></ll-label-editor>
         </div>

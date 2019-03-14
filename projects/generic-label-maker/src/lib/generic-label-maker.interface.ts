@@ -55,6 +55,7 @@ export interface ILabelField {
 export interface IViewSettings {
   magnification: number;
   grid?: number;
+  gridVisible?: boolean;
   fullscreen?: boolean;
 }
 

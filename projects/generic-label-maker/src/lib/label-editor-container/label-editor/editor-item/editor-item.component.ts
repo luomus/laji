@@ -5,7 +5,6 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
   ViewChild
 } from '@angular/core';
@@ -32,6 +31,7 @@ export class EditorItemComponent implements AfterViewInit {
   @ViewChild('item') elemRef: ElementRef<HTMLDivElement>;
 
   _item: ILabelItem;
+  _grid: number;
   _magnification: number;
   _maxWidth: number;
   _maxHeight: number;
@@ -53,6 +53,12 @@ export class EditorItemComponent implements AfterViewInit {
   constructor(
     private labelService: LabelService
   ) {}
+
+  @Input()
+  set grid(grid: number) {
+    this._grid = grid;
+    this.recalculateMinMax();
+  }
 
   @Input()
   set magnification(amount: number) {
@@ -121,10 +127,16 @@ export class EditorItemComponent implements AfterViewInit {
     const bounds = this.elem.getBoundingClientRect() as DOMRect;
     const deltaX = this.labelService.pixelToMm(bounds.x - this.origElementDimensions.x) / this._magnification;
     const deltaY = this.labelService.pixelToMm(bounds.y - this.origElementDimensions.y) / this._magnification;
+    let x = this._item.x + deltaX;
+    let y = this._item.y + deltaY;
+    if (this._grid) {
+      x = Math.round(x / this._grid) * this._grid;
+      y = Math.round(y / this._grid) * this._grid;
+    }
     this.itemChange.emit({
       ...this._item,
-      x: this._item.x + deltaX,
-      y: this._item.y + deltaY,
+      x: Math.max(Math.min(x, this._maxWidth - this._item.style['width.mm']), 0),
+      y: Math.max(Math.min(y, this._maxHeight - this._item.style['height.mm']), 0),
     });
   }
 
@@ -134,20 +146,26 @@ export class EditorItemComponent implements AfterViewInit {
     const widthMaxMm = this.labelService.pixelToMm(width) + this.x;
     const heightMaxMm = this.labelService.pixelToMm(height) + this.y;
 
-    this.elem.style.width = (widthMaxMm < this.maxWidthMm ? width : this.labelService.mmToPixel(this.maxWidthMm - this.x)) + 'px';
-    this.elem.style.height = (heightMaxMm < this.maxHeightMm ? height : this.labelService.mmToPixel(this.maxHeightMm - this.y)) + 'px';
+    this.elem.style.width = (widthMaxMm <= this.maxWidthMm ? width : this.labelService.mmToPixel(this.maxWidthMm - this.x)) + 'px';
+    this.elem.style.height = (heightMaxMm <= this.maxHeightMm ? height : this.labelService.mmToPixel(this.maxHeightMm - this.y)) + 'px';
 
     event.source.reset();
   }
 
   onResizeEnd(event: CdkDragEnd) {
     event.source.reset();
+    let w = this.labelService.pixelToMm(this.elem.offsetWidth) / this._magnification;
+    let h = this.labelService.pixelToMm(this.elem.offsetHeight) / this._magnification;
+    if (this._grid) {
+      w = Math.round(w / this._grid) * this._grid;
+      h = Math.round(h / this._grid) * this._grid;
+    }
     this.itemChange.emit({
       ...this._item,
       style: {
         ...this._item.style,
-        'width.mm': this.labelService.pixelToMm(this.elem.offsetWidth) / this._magnification,
-        'height.mm': this.labelService.pixelToMm(this.elem.offsetHeight) / this._magnification
+        'width.mm': Math.max(Math.min(w, this._maxWidth - this._item.x), 1),
+        'height.mm': Math.max(Math.min(h, this._maxHeight - this._item.y), 1)
       }
     });
   }

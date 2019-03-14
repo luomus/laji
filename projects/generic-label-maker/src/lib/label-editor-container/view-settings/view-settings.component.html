@@ -17,13 +17,20 @@
 </table>
 <h3>Grid</h3>
 <table class="icon">
+  <tr class="link" (click)="change('gridVisible', !viewSettings.gridVisible)">
+    <td>
+      <ll-icon [type]="'check'" *ngIf="viewSettings.gridVisible"></ll-icon>
+    </td>
+    <td colspan="3">
+      Show grid
+    </td>
+  </tr>
   <tr class="link" *ngFor="let g of grid" (click)="change('grid', viewSettings.grid === g ? undefined : g)">
     <td>
       <ll-icon [type]="'check'" *ngIf="viewSettings.grid === g"></ll-icon>
     </td>
     <td style="text-align: right">{{g}}</td>
     <td>&nbsp;mm</td>
-    <td style="width: 184px;">
-    </td>
+    <td style="width: 184px;"></td>
   </tr>
 </table>

@@ -81,7 +81,9 @@ export class LabelEditorContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subIntro.unsubscribe();
+    if (this.subIntro) {
+      this.subIntro.unsubscribe();
+    }
   }
 
   @Input()
