@@ -1,7 +1,20 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { IAddLabelEvent, ILabelField, ILabelItem, ISetup } from '../generic-label-maker.interface';
+import {
+  ChangeDetectionStrategy,
+  Component, ElementRef,
+  EventEmitter, Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
+import { IAddLabelEvent, ILabelField, ILabelItem, ISetup, IViewSettings } from '../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../label.service';
 import { InfoWindowService } from '../info-window/info-window.service';
+import { Subscription } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'll-label-editor-container',
@@ -9,24 +22,29 @@ import { InfoWindowService } from '../info-window/info-window.service';
   styleUrls: ['./label-editor-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelEditorContainerComponent implements OnInit {
+export class LabelEditorContainerComponent implements OnInit, OnDestroy {
 
   static id = 0;
 
   @ViewChild('intro') intro;
 
-  _active: 'file'|'edit'|'settings'|'fields'|'help' = 'file';
+  _active: 'file'|'edit'|'view'|'settings'|'fields'|'help' = 'file';
   _setup: ISetup;
   _selectedLabelItem: ILabelItem | undefined;
   fields: ILabelField[];
   dragging = false;
-  @Input() magnification = 2;
+  version = '0.0.8';
   @Input() availableFields: ILabelField[];
   @Input() data: object[];
   @Input() showIntro = true;
+  _viewSettings: IViewSettings = {magnification: 2};
 
   @Output() html = new EventEmitter<string>();
+  @Output() viewSettingsChange = new EventEmitter<IViewSettings>();
   @Output() setupChange = new EventEmitter<ISetup>();
+  @Output() introClosed = new EventEmitter();
+  @ViewChild('editor') editor: ElementRef<HTMLDivElement>;
+  subIntro: Subscription;
 
   generate: {
     uri: string;
@@ -48,17 +66,45 @@ export class LabelEditorContainerComponent implements OnInit {
   constructor(
     private labelService: LabelService,
     private renderer2: Renderer2,
-    private infoWindowService: InfoWindowService
+    private infoWindowService: InfoWindowService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
     if (this.showIntro) {
-      this.infoWindowService.open({
+      this.subIntro = this.infoWindowService.open({
         title: 'Generic label editor',
         actionTypes: 'ok',
         content: this.intro
-      });
+      }).subscribe(() => this.introClosed.emit());
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subIntro.unsubscribe();
+  }
+
+  @Input()
+  set viewSettings(settings: IViewSettings) {
+    if (isPlatformBrowser(this.platformId) && settings.fullscreen !== this._viewSettings.fullscreen) {
+      try {
+        if (settings.fullscreen) {
+          const elem: any = this.editor.nativeElement;
+          const enterMethod = elem.requestFullScreen || elem.webkitRequestFullScreen ||
+            elem.mozRequestFullScreen || elem.msRequestFullScreen;
+          if (enterMethod) {
+            enterMethod.call(elem);
+          }
+        } else {
+          const doc: any = document;
+          const exitMethod = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
+          if (exitMethod) {
+            exitMethod.call(doc);
+          }
+        }
+      } catch (e) {}
+    }
+    this._viewSettings = settings;
   }
 
   @Input()

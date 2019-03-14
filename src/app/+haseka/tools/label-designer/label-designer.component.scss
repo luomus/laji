@@ -7,5 +7,15 @@
   background-color: #fff;
   min-width: 500px;
   min-height: 500px;
-  z-index: 10;
+}
+
+.editor-container.fullscreen {
+  position: fixed;
+  height: 100vh;
+  z-index: 100000;
+}
+
+.editor-placeholder {
+  z-index: -1;
+  height: calc(100vh - 50px);
 }

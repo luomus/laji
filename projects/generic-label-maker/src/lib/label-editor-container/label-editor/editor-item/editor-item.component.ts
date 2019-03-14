@@ -1,4 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { ILabelItem } from '../../../generic-label-maker.interface';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../../label.service';
@@ -11,17 +21,20 @@ import { LabelService } from '../../../label.service';
 })
 export class EditorItemComponent implements AfterViewInit {
 
-  @Input() magnification: number;
   @Input() active: boolean;
   @Input() boundary = '#label-editor';
-  @ViewChild('item') elemRef: ElementRef<HTMLDivElement>;
-
   @Output() done = new EventEmitter<void>();
   @Output() itemChange = new EventEmitter<ILabelItem>();
+
   @Output() showSettings = new EventEmitter<ILabelItem>();
   @Output() itemClick = new EventEmitter<ILabelItem>();
 
+  @ViewChild('item') elemRef: ElementRef<HTMLDivElement>;
+
   _item: ILabelItem;
+  _magnification: number;
+  _maxWidth: number;
+  _maxHeight: number;
 
   width: number;
   height: number;
@@ -42,35 +55,54 @@ export class EditorItemComponent implements AfterViewInit {
   ) {}
 
   @Input()
+  set magnification(amount: number) {
+    this._magnification = amount;
+    this.recalculateMinMax();
+    this.recalculate();
+  }
+
+  @Input()
   set maxHeight(height: number) {
-    this.maxHeightMm = height * this.magnification;
-    this.maxHeightPx = this.labelService.mmToPixel(this.maxHeightMm);
+    this._maxHeight = height;
+    this.recalculateMinMax();
   }
 
   @Input()
   set maxWidth(width: number) {
-    this.maxWidthMm = width * this.magnification;
-    this.maxWidthPx = this.labelService.mmToPixel(this.maxWidthMm);
+    this._maxWidth = width;
+    this.recalculateMinMax();
   }
 
   @Input()
   set item(item: ILabelItem) {
     this._item = item;
-    if (this._item) {
-      this.recalculate();
-    }
+    this.recalculate();
   }
 
   ngAfterViewInit(): void {
     this.elem = this.elemRef.nativeElement;
   }
 
-  recalculate() {
-    this.width = this._item.style['width.mm'] * this.magnification;
-    this.height = this._item.style['height.mm'] * this.magnification;
+  private recalculateMinMax() {
+    if (this._maxWidth) {
+      this.maxWidthMm = this._maxWidth * this._magnification;
+      this.maxWidthPx = this.labelService.mmToPixel(this.maxWidthMm);
+    }
+    if (this._maxHeight) {
+      this.maxHeightMm = this._maxHeight * this._magnification;
+      this.maxHeightPx = this.labelService.mmToPixel(this.maxHeightMm);
+    }
+  }
+
+  private recalculate() {
+    if (!this._item) {
+      return;
+    }
+    this.width = this._item.style['width.mm'] * this._magnification;
+    this.height = this._item.style['height.mm'] * this._magnification;
     this.size = this.labelService.mmToPixel(Math.min(this.width, this.height));
-    this.x = this._item.x * this.magnification;
-    this.y = this._item.y * this.magnification;
+    this.x = this._item.x * this._magnification;
+    this.y = this._item.y * this._magnification;
 
     // check that the item fits the label
     if (this.x + this.width > this.maxWidthMm) {
@@ -87,8 +119,8 @@ export class EditorItemComponent implements AfterViewInit {
 
   onMoveEnd() {
     const bounds = this.elem.getBoundingClientRect() as DOMRect;
-    const deltaX = this.labelService.pixelToMm(bounds.x - this.origElementDimensions.x) / this.magnification;
-    const deltaY = this.labelService.pixelToMm(bounds.y - this.origElementDimensions.y) / this.magnification;
+    const deltaX = this.labelService.pixelToMm(bounds.x - this.origElementDimensions.x) / this._magnification;
+    const deltaY = this.labelService.pixelToMm(bounds.y - this.origElementDimensions.y) / this._magnification;
     this.itemChange.emit({
       ...this._item,
       x: this._item.x + deltaX,
@@ -114,8 +146,8 @@ export class EditorItemComponent implements AfterViewInit {
       ...this._item,
       style: {
         ...this._item.style,
-        'width.mm': this.labelService.pixelToMm(this.elem.offsetWidth) / this.magnification,
-        'height.mm': this.labelService.pixelToMm(this.elem.offsetHeight) / this.magnification
+        'width.mm': this.labelService.pixelToMm(this.elem.offsetWidth) / this._magnification,
+        'height.mm': this.labelService.pixelToMm(this.elem.offsetHeight) / this._magnification
       }
     });
   }

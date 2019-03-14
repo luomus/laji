@@ -51,11 +51,7 @@
   <div cdkDropList [cdkDropListLockAxis]="'y'" class="field-list" (cdkDropListDropped)="drop($event)">
     <div cdkDrag class="field-item" *ngFor="let field of selectedLabelItem.fields; let i=index">
       <div class="field-item-drag-handle" cdkDragHandle>
-        <svg width="24px" height="24px" viewBox="0 0 24 24">
-          <defs><path id="a" d="M0 0h24v24H0V0z"/></defs>
-          <clipPath id="b"><use xlink:href="#a" overflow="visible"/></clipPath>
-          <path clip-path="url(#b)" d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/>
-        </svg>
+          <ll-icon type="drag-handle"></ll-icon>
       </div>
       <ll-field-settings [allowDelete]="canDelete" [field]="field" (fieldChange)="fieldUpdate($event, i)" (fieldRemove)="fieldRemove(i)"></ll-field-settings>
     </div>

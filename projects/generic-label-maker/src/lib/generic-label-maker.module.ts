@@ -22,6 +22,7 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
 import { RemoveSuffixPipe } from './label-editor-container/label-file/remove-suffix.pipe';
 import { InfoWindowComponent } from './info-window/info-window.component';
 import { IconComponent } from './icon/icon.component';
+import { ViewSettingsComponent } from './label-editor-container/view-settings/view-settings.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { IconComponent } from './icon/icon.component';
     SearchFieldsPipe,
     RemoveSuffixPipe,
     InfoWindowComponent,
-    IconComponent
+    IconComponent,
+    ViewSettingsComponent
   ],
   imports: [
     CommonModule,

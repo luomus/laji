@@ -1,7 +1,7 @@
 $menu-height: 24px;
-$menu-color: #999;
+$menu-color: #555;
 $menu-border-color: #777;
-$menu-text-color: #111;
+$menu-text-color: #eee;
 $settings-border-color: #ddd;
 $settings-bg-color: #efefef;
 
@@ -11,15 +11,19 @@ $settings-bg-color: #efefef;
 }
 
 ::ng-deep .label-editor-window {
+  position: relative;
   height: 100%;
   width: 100%;
   user-select: none;
   overflow: hidden;
   border: 1px solid $menu-border-color;
+  background-color: #fefefe;
+  z-index: 10;
 
   .menubar {
     height: $menu-height;
     width: 100%;
+    color: #333;
     background: $menu-color;
     z-index: 22;
     border-bottom: 1px solid $menu-border-color;
@@ -36,7 +40,7 @@ $settings-bg-color: #efefef;
         cursor: pointer;
 
         &:hover {
-          background-color: darken($menu-color, 20%);
+          background-color: darken($menu-color, 10%);
 
           a {
             color: lighten($menu-text-color, 90%);
@@ -50,7 +54,7 @@ $settings-bg-color: #efefef;
         }
 
         &.active {
-          background-color: lighten($menu-color, 20%);
+          background-color: lighten($menu-color, 10%);
           border-bottom: 1px solid $menu-border-color;
         }
 
@@ -83,9 +87,27 @@ $settings-bg-color: #efefef;
     flex-shrink: 0;
     height: 100%;
     overflow-y: auto;
+    color: #555;
     border-right: 1px solid $settings-border-color;
     padding: 15px;
     background-color: $settings-bg-color;
+
+    table {
+      width: 100%;
+      td {
+        height: 30px;
+      }
+      td:first-child {
+        text-align: right;
+        margin-right: 5px;
+      }
+      &.icon {
+        td:first-child {
+          width: 30px;
+          text-align: left;
+        }
+      }
+    }
   }
 
   .settings-wrap.dragging {
@@ -120,6 +142,10 @@ $settings-bg-color: #efefef;
 
   .editor-end {
     width: 100%;
+  }
+
+  .link {
+    cursor: pointer;
   }
 
 }

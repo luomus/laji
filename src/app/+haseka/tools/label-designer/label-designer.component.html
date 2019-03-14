@@ -1,11 +1,13 @@
-<h2>Design your own label</h2>
-<p>With this tool you can make a label design that can be used to print labels to Notebook observations</p>
-<div class="editor-container">
+<div class="editor-container" [class.fullscreen]="viewSettings.fullscreen">
   <ll-label-editor-container
+    [showIntro]="false"
     [data]="data"
+    [viewSettings]="viewSettings"
+    (viewSettingsChange)="viewSettings = $event"
     [setup]="setup"
     [availableFields]="labelFields$ | async"
     (setupChange)="setup = $event"
     (html)="htmlToPdf($event)"
   ></ll-label-editor-container>
 </div>
+<div class="editor-placeholder"></div>

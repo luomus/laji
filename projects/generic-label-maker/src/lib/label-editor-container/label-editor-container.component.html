@@ -1,8 +1,9 @@
-<div class="label-editor-window">
+<div class="label-editor-window" #editor>
   <div class="menubar">
     <ul>
       <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>File</a></li>
       <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>Edit</a></li>
+      <li [class.active]="_active === 'view'" (click)="_active = 'view'"><a>View</a></li>
       <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Label fields</a></li>
       <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>Settings</a></li>
       <li [class.active]="_active === 'help'" (click)="_active = 'help'"><a>Help</a></li>
@@ -10,6 +11,9 @@
   </div>
   <div class="window-content">
     <div class="settings-wrap" [class.dragging]="dragging" #settings>
+      <div *ngIf="_active === 'view'">
+        <ll-view-settings [viewSettings]="_viewSettings" (viewSettingsChange)="viewSettingsChange.emit($event)"></ll-view-settings>
+      </div>
       <div *ngIf="_active === 'help'">
         <h3 class="first">TODO: help content and videos</h3>
       </div>
@@ -26,7 +30,7 @@
           Redo
         </div>
         <h3>Generate data</h3>
-        <table style="width: 100%">
+        <table>
           <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
           <tr><td>Range start:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
           <tr><td>Range end:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
@@ -50,7 +54,7 @@
       <div [hidden]="_active !== 'fields'">
         <ll-label-fields-available
           (dragging)="newFieldDragging($event, settings)"
-          [magnification]="magnification"
+          [magnification]="_viewSettings.magnification"
           [availableFields]="availableFields"
           (addLabelItem)="addLabelItem($event)"
         ></ll-label-fields-available>
@@ -64,7 +68,7 @@
           (done)="done()"
           [setup]="_setup"
           (setupChange)="setupChanged($event)"
-          [magnification]="magnification"
+          [magnification]="_viewSettings.magnification"
           (showSettings)="showSettings($event)"></ll-label-editor>
         <div *ngIf="_setup.twoSided" style="margin-top: 10px; display: inline-block;">
           <ll-label-editor
@@ -74,7 +78,7 @@
             (done)="done()"
             [setup]="_setup"
             (setupChange)="setupChanged($event)"
-            [magnification]="magnification"
+            [magnification]="_viewSettings.magnification"
             (showSettings)="showSettings($event)"></ll-label-editor>
         </div>
       </div>
@@ -97,8 +101,11 @@
 </div>
 <ll-info-window></ll-info-window>
 <ng-template #intro>
-  <div style="text-align: center; margin: 0 0 40px 0">
-    <ll-icon [type]="'logo'" [size]="50"></ll-icon>
+  <div style="text-align: center; margin: 0 0 20px 0">
+    <ll-icon [type]="'logo'" [size]="72"></ll-icon>
+    <div style="margin-top: -5px">
+      <small>Version {{version}}</small>
+    </div>
   </div>
 
   <p>With this tool you can make a specimen label design that can be used to print labels for Notebook observations.</p>

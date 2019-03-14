@@ -52,6 +52,12 @@ export interface ILabelField {
   _menuOpen?: boolean;
 }
 
+export interface IViewSettings {
+  magnification: number;
+  grid?: number;
+  fullscreen?: boolean;
+}
+
 export interface ISetup {
 
   version?: number;

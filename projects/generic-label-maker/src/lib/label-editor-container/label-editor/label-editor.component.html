@@ -4,7 +4,8 @@
       <div class="editor" id="{{backSide ? 'back-side-label-editor' : 'label-editor'}}" [style.width.mm]="width * _magnification" [style.height.mm]="height * _magnification" *ngIf="init">
         <ng-container *ngIf="backSide; else frontSide">
           <ll-editor-item
-            *ngFor="let item of _setup.backSideLabelItems; let i=index" [magnification]="_magnification"
+            *ngFor="let item of _setup.backSideLabelItems; let i=index"
+            [magnification]="_magnification"
             [item]="item"
             [boundary]="'#back-side-label-editor'"
             (done)="done.emit()"
@@ -18,7 +19,8 @@
         </ng-container>
         <ng-template #frontSide>
           <ll-editor-item
-            *ngFor="let item of _setup.labelItems; let i=index" [magnification]="_magnification"
+            *ngFor="let item of _setup.labelItems; let i=index"
+            [magnification]="_magnification"
             [item]="item"
             (done)="done.emit()"
             (itemClick)="setActiveItem($event)"
