@@ -30,6 +30,7 @@ export class FormService {
     [environment.lineTransectForm]: '/theme/linjalaskenta/form',
     [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/ei-vakiolinjat',
     [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/kartoitus',
+    [environment.lolifeForm]: '/theme/lolife/form',
     default: '/vihko'
   };
 

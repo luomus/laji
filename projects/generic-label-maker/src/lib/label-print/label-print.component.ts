@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { ISetup } from '../generic-label-maker.interface';
-import { LabelService, PageLayout } from '../label.service';
+import { LabelService, IPageLayout } from '../label.service';
 const style = `
 .ll-print-content {
   display: grid;
@@ -53,7 +53,7 @@ export class LabelPrintComponent {
   @ViewChild('pagesContainer') public pageContainer: ElementRef<HTMLDivElement>;
 
   pages: object[][] = [];
-  pageLayout: PageLayout;
+  pageLayout: IPageLayout;
   nroPages: number;
   printing = false;
 

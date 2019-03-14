@@ -425,7 +425,7 @@
         "iucnCR": "Äärimmäisen uhanalainen",
         "iucnEN": "Erittäin uhanalainen",
         "iucnVU": "Vaarantunut",
-        "iucnDD": "Puuttellisesti tunnetu",
+        "iucnDD": "Puutteellisesti tunnettu",
         "iucnNT": "Silmälläpidettävä",
         "iucnLC": "Elinvoimainen",
         "iucnNA": "Arviointiin soveltumaton",
@@ -1170,5 +1170,9 @@
   "save": "Tallenna",
   "cancel": "Peruuta",
   "close": "Sulje",
+  "reset": "Palauta oletus asetukset",
+  "navigation.lolife": "LOLIFE",
+  "theme.lolife.intro": "Liito-Orava-Life",
+  "theme.lolife.places": "Kirjaa seurantatietoja",
   "reset": "Palauta oletusasetukset"
 }

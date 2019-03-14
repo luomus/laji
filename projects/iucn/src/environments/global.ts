@@ -17,7 +17,8 @@ export const Global = {
     lineTransectKartoitus: 'MHL.28',
     whichSpecies: 'MHL.9',
     namedPlace: 'MHL.36',
-    collectionContest: 'MHL.25'
+    collectionContest: 'MHL.25',
+    lolifeForm: 'MHL.45',
   },
   canHaveTemplate: [
     'JX.519',

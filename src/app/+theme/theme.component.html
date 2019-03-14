@@ -153,7 +153,7 @@
             {{ 'theme.satellite.intro' | translate }}
           </td>
         </tr>
-        <tr *lajiForTypes="['dev']">
+        <tr>
           <th>
             <a [routerLink]="['/theme/vieraslajit'] | localize">
               {{ 'navigation.invasiveSpecies' | translate }}
@@ -171,6 +171,16 @@
           </th>
           <td>
             {{ 'theme.municipalityMonitoring.intro' | translate }}
+          </td>
+        </tr>
+        <tr *lajiForTypes="['dev']">
+          <th>
+            <a [routerLink]="['/theme/lolife'] | localize">
+              {{ 'navigation.lolife' | translate }}
+            </a>
+          </th>
+          <td>
+            {{ 'theme.lolife.intro' | translate }}
           </td>
         </tr>
       </table>

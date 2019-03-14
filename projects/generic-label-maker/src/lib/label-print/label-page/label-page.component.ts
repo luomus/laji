@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input, EventEmitter, Output } from '@angular/core';
 import { IPageStyle, ISetup } from '../../generic-label-maker.interface';
-import { PageLayout } from '../../label.service';
+import { IPageLayout } from '../../label.service';
 
 @Component({
   selector: 'll-label-page',
@@ -43,7 +43,7 @@ export class LabelPageComponent implements AfterViewInit {
   }
 
   @Input()
-  set pageLayout(dim: PageLayout) {
+  set pageLayout(dim: IPageLayout) {
     this.cols = Array(dim.cols).fill('1fr').join(' ');
     this.rows = Array(dim.rows).fill('1fr').join(' ');
   }

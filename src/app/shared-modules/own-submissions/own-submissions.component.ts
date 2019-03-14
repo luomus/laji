@@ -183,7 +183,7 @@ export class OwnSubmissionsComponent implements OnChanges {
 
     if (this.namedPlace) {
       this.documents$ = this.getAllDocuments<SearchDocument>({
-        year: this.year,
+        year: !this.namedPlace && !this.onlyTemplates ? this.year : undefined,
         namedPlace: this.namedPlace,
         collectionID: this.collectionID,
         formID: this.formID,

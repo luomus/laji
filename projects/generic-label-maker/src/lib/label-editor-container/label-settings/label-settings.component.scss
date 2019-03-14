@@ -5,20 +5,6 @@
   display: inline-block;
 }
 
-::ng-deep .label-editor h3 {
-  margin: 10px -15px 0 -15px;
-  font-size: 100%;
-  font-weight: 900;
-  display: block;
-  padding: 5px 15px;
-  border-top: 1px solid #ddd;
-}
-
-::ng-deep .label-editor h3.first {
-  border-top: none;
-  margin-top: 0;
-}
-
 .field-list {
   width: 100%;
   border: solid 1px #ccc;

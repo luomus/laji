@@ -11,6 +11,7 @@ export const Global = {
     nafi: 'MHL.6',
     invasiveControl: 'MHL.33',
     municipalityMonitoringForm: 'MHL.35',
+    lolifeForm: 'MHL.45',
     wbc: 'MHL.3',
     lineTransect: 'MHL.1',
     lineTransectEiVakio: 'MHL.27',
@@ -45,6 +46,7 @@ export const Global = {
     'MHL.3': '/talvilintu',
     'MHL.33': '/vieraslajit',
     'MHL.35': '/kunnat',
+    'MHL.45': '/lolife',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {

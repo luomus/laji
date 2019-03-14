@@ -1,0 +1,11 @@
+.editor-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(100vh - 50px);
+  background-color: #fff;
+  min-width: 500px;
+  min-height: 500px;
+  z-index: 10;
+}
