@@ -1,65 +1,37 @@
-import {ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
-import { TranslateService } from '@ngx-translate/core';
-import { tap } from 'rxjs/operators';
+import { Component, Input } from '@angular/core';
+import { TaxonTaxonomyService } from '../service/taxon-taxonomy.service';
+import { TreeSkipParameter } from './tree/model/tree.interface';
 
 @Component({
   selector: 'laji-taxon-tree',
   templateUrl: './taxon-tree.component.html',
   styleUrls: ['./taxon-tree.component.css']
 })
-export class TaxonTreeComponent implements OnInit {
+export class TaxonTreeComponent {
   @Input() activeId: string;
   @Input() activeTab: string;
 
-  nodes: any[] = [];
-
+  getDataFunc = this.getData.bind(this);
   getChildrenFunc = this.getChildren.bind(this);
   getParentsFunc = this.getParents.bind(this);
-  skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
+  skipParams: TreeSkipParameter[];
 
   showMainLevels = false;
 
   constructor(
-    private taxonService: TaxonomyApi,
-    private translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private taxonomyService: TaxonTaxonomyService
   ) {}
 
-  ngOnInit() {
-    this.getRoot();
-  }
-
-  getRoot() {
-    this.taxonService
-      .taxonomyFindBySubject('MX.37600', this.translate.currentLang, {
-        selectedFields: this.getSelectedFields(),
-        onlyFinnish: false
-      })
-      .pipe(
-        tap((data) => {
-          this.nodes = [data];
-        })
-      )
-      .subscribe(() => {
-        this.cd.markForCheck();
-      });
+  getData(id: string) {
+    return this.taxonomyService.getTaxon(id);
   }
 
   getChildren(id: string) {
-    return this.taxonService
-      .taxonomyFindChildren(id, this.translate.currentLang, undefined, {
-        selectedFields: this.getSelectedFields(),
-        onlyFinnish: false
-      });
+    return this.taxonomyService.getChildren(id);
   }
 
   getParents(id: string) {
-    return this.taxonService
-      .taxonomyFindParents(id, this.translate.currentLang, {
-        selectedFields: 'id',
-        onlyFinnish: false
-      });
+    return this.taxonomyService.getParents(id);
   }
 
   setSkipParams() {
@@ -78,9 +50,5 @@ export class TaxonTreeComponent implements OnInit {
     } else {
       this.skipParams = undefined;
     }
-  }
-
-  private getSelectedFields() {
-    return ['id', 'hasChildren', 'vernacularName', 'scientificName', 'cursiveName', 'taxonRank'].join(',');
   }
 }

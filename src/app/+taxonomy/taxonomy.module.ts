@@ -53,12 +53,13 @@ import {
   TaxonDescriptionSourceComponent
 } from './taxon/info-card/taxon-biology/taxon-description-source/taxon-description-source.component';
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
+import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule ],
-  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
+  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonTaxonomyService],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
     TaxonTreeComponent, SpeciesListComponent, TaxonComponent,
     BoldSequenceComponent, SpeciesFormComponent, SpeciesComponent,

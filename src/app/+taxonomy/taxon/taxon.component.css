@@ -21,11 +21,11 @@
     height: calc(100vh - 50px);
   }
 
-  ::ng-deep .info-card-container .taxon-name-header {
+  ::ng-deep .info-card-container .info-card-header {
     margin-left: 30px;
   }
 }
-::ng-deep .info-card-container.sidebar-hidden .taxon-name-header {
+::ng-deep .info-card-container.sidebar-hidden .info-card-header {
   margin-left: 120px;
 }
 
