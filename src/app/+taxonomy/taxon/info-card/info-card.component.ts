@@ -131,13 +131,17 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.parentSub.unsubscribe();
     }
 
-    this.loadingParent = true;
-    this.parentSub = this.taxonomyService.getParent(this.taxon.id)
-      .subscribe(parent => {
-        this.parent = parent;
-        this.loadingParent = false;
-        this.cd.markForCheck();
-      });
+    if (this.taxon.hasParent) {
+      this.loadingParent = true;
+      this.parentSub = this.taxonomyService.getParent(this.taxon.id)
+        .subscribe(parent => {
+          this.parent = parent;
+          this.loadingParent = false;
+          this.cd.markForCheck();
+        });
+    } else {
+      this.loadingParent = false;
+    }
   }
 
   private setSiblings() {
@@ -145,11 +149,13 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.siblingSub.unsubscribe();
     }
 
-    this.siblingSub = this.taxonomyService.getSiblings(this.taxon.id)
-      .subscribe(siblings => {
-        this.siblings = siblings;
-        this.cd.markForCheck();
-      });
+    if (this.taxon.hasParent || this.taxon.hasChildren) {
+      this.siblingSub = this.taxonomyService.getSiblings(this.taxon.id)
+        .subscribe(siblings => {
+          this.siblings = siblings;
+          this.cd.markForCheck();
+        });
+    }
   }
 
   private setImages() {

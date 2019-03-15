@@ -31,6 +31,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   sidebarWidth = 225;
   showTree = true;
+  canShowTree = true;
 
   loading = false;
   private initTaxonSub: Subscription;
@@ -73,7 +74,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.footerService.footerVisible = false;
+    this.footerService.footerVisible = true;
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
@@ -139,6 +140,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       tap(taxon => {
         this.taxon = taxon;
         this.isFromMasterChecklist = this.getIsFromMasterChecklist();
+        this.canShowTree = this.taxon.hasParent || this.taxon.hasChildren;
 
         this.setTitle();
       })
