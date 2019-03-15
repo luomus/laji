@@ -15,7 +15,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   taxonomyDescriptions: TaxonomyDescriptionGroup;
   _taxonDescription: TaxonomyDescription;
 
-  synonymType = '';
+  synonymType: string;
   synonymTypes = [
     'basionyms',
     'objectiveSynonyms',
@@ -56,7 +56,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
       if (this.synonymSub) {
         this.synonymSub.unsubscribe();
       }
-      this.synonymType = '';
+      this.synonymType = undefined;
 
       if (!this.taxon.nameAccordingTo) {
         this.synonymSub = this.taxonService.taxonomyFindBySubject(

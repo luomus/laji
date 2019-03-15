@@ -830,6 +830,7 @@
   "taxonomy.acceptedName": "ACCEPTERAD NAMN",
   "taxonomy.ofTaxon": "AV",
   "taxonomy.link": "LÄNK",
+  "taxonomy.noOccurrenceInFinland": "Ei esiinny Suomessa",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Beskrivning",

@@ -1018,6 +1018,7 @@
   "taxonomy.acceptedName": "HYVÄKSYTTY NIMI",
   "taxonomy.ofTaxon": "TAKSONILLE",
   "taxonomy.link": "LINKKI",
+  "taxonomy.noOccurrenceInFinland": "Ei esiinny Suomessa",
   "technical": "tekninen",
   "template.chooseType": "Talteen",
   "template.description": "Kuvaus",

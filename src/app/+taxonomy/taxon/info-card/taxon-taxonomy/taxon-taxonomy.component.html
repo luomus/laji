@@ -9,7 +9,7 @@
         </p>
         <p *ngIf="taxon.nameAccordingTo" class="green-text">{{ 'taxonomy.acceptedName' | translate }}</p>
         <p *ngIf="!taxon.nameAccordingTo">
-          <span class="red-text">{{ 'MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1) | label | uppercase }} {{ 'taxonomy.ofTaxon' | translate }} </span>
+          <span class="red-text" *ngIf="synonymType">{{ 'MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1) | label | uppercase }} {{ 'taxonomy.ofTaxon' | translate }} </span>
           <a [routerLink]="['/taxon', taxon.synonymOf.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'" target="_blank">
             <laji-taxon-name [taxon]="taxon.synonymOf" [addLink]="false"></laji-taxon-name>
           </a>
@@ -20,7 +20,7 @@
           <li *ngFor="let publication of taxon.originalPublications">
             {{ publication | publication }}
             <br>
-            <a [href]="publication | publication:'URI'" target="_blank">LINKKI</a>
+            <a [href]="publication | publication:'URI'" target="_blank">{{ 'taxonomy.link' | translate }}</a>
           </li>
         </ul>
       </div>
