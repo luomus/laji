@@ -828,7 +828,7 @@
   "taxonomy.description": "Beskrivningar",
   "taxonomy.otherNames": "Andra namn",
   "taxonomy.acceptedName": "ACCEPTERAD NAMN",
-  "taxonomy.unacceptedName": "SYNONYM AV",
+  "taxonomy.ofTaxon": "AV",
   "taxonomy.link": "LÄNK",
   "technical": "technical",
   "template.chooseType": "Store",

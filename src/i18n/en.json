@@ -835,7 +835,7 @@
   "taxonomy.description": "Descriptions",
   "taxonomy.otherNames": "Other names",
   "taxonomy.acceptedName": "ACCEPTED NAME",
-  "taxonomy.unacceptedName": "SYNONYM OF",
+  "taxonomy.ofTaxon": "OF",
   "taxonomy.link": "LINK",
   "technical": "technical",
   "template.chooseType": "Store",

@@ -1016,7 +1016,7 @@
   "taxonomy.description": "Kuvaukset",
   "taxonomy.otherNames": "Muut nimet",
   "taxonomy.acceptedName": "HYVÄKSYTTY NIMI",
-  "taxonomy.unacceptedName": "SYNONYYMI TAKSONILLE",
+  "taxonomy.ofTaxon": "TAKSONILLE",
   "taxonomy.link": "LINKKI",
   "technical": "tekninen",
   "template.chooseType": "Talteen",
