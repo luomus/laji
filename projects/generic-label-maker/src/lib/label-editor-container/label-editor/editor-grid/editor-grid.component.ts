@@ -23,7 +23,6 @@ export class EditorGridComponent implements OnChanges {
       return;
     }
     this.size = this.labelService.mmToPixel(this.grid * this.magnification);
-    console.log(this.size);
   }
 
 }

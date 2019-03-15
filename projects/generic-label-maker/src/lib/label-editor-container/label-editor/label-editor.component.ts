@@ -65,9 +65,11 @@ export class LabelEditorComponent {
   }
 
   updateDimensions(event: Event, target: string, sec: 'page'|'label') {
-    const value = Number((event.target as HTMLInputElement).value);
+    const element = event.target as HTMLInputElement;
+    const value = Number(element.value);
     const {width, height} = this.labelService.countMinLabelSize(this._setup);
     if ((target === 'height.mm' && value < height) || (target === 'width.mm' && value < width)) {
+      element.value = '' + this._setup[sec][target];
       return alert('Field within the label is blocking the resize.\nRemove or resize the field in the label!');
     }
 

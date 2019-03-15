@@ -24,6 +24,7 @@ import { InfoWindowComponent } from './info-window/info-window.component';
 import { IconComponent } from './icon/icon.component';
 import { ViewSettingsComponent } from './label-editor-container/view-settings/view-settings.component';
 import { EditorGridComponent } from './label-editor-container/label-editor/editor-grid/editor-grid.component';
+import { LabelItemFieldComponent } from './label-preview/label-item/label-item-field/label-item-field.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { EditorGridComponent } from './label-editor-container/label-editor/edito
     InfoWindowComponent,
     IconComponent,
     ViewSettingsComponent,
-    EditorGridComponent
+    EditorGridComponent,
+    LabelItemFieldComponent
   ],
   imports: [
     CommonModule,

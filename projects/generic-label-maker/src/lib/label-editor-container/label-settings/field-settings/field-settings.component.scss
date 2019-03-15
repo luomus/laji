@@ -32,10 +32,11 @@ table td:nth-child(2) {
 .more-container {
   position: relative;
   min-height: 30px;
+  padding: 0 15px;
 }
 
 .delete {
-  padding: 5px;
+  padding: 5px 0 5px 5px;
   cursor: pointer;
 }
 

@@ -175,25 +175,29 @@ export class LabelSettingsComponent implements OnInit {
     return Math.round(value * 1000) / 1000;
   }
 
-  changePosition(pos: string, value: any) {
+  changePosition(pos: string, event: Event) {
+    const element = event.target as HTMLInputElement;
+    const value = Number(element.value);
     if (!value) {
       return;
     }
     const dim = pos === 'x' ? 'width.mm' : 'height.mm';
-    value = Number(value);
     if (value + this._selectedLabelItem.style[dim] > this.setup.label[dim]) {
+      element.value = this._selectedLabelItem[pos];
       return alert('Field cannot fit the label');
     }
     this.changeSelectedItem(pos, value);
   }
 
-  changeActiveStyle(style: string, value: any) {
+  changeActiveStyle(style: string, event: Event) {
+    const element = event.target as HTMLInputElement;
+    const value = Number(element.value);
     if (!value) {
       return;
     }
     const pos = style === 'width.mm' ? 'x' : 'y';
-    value = Number(value);
     if (value + this._selectedLabelItem[pos] > this.setup.label[style]) {
+      element.value = this._selectedLabelItem.style[style];
       return alert('Field cannot fit the label');
     }
 

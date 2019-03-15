@@ -31,6 +31,7 @@ export class FontSettingsComponent implements OnInit {
 
   @Input() allowEmptyFontFamily = false;
   @Input() showUnderline = false;
+  @Input() minimal = false;
   @Input() fontSettings: IFontStyle;
   @Output() fontSettingsChange = new EventEmitter<IFontStyle>();
 

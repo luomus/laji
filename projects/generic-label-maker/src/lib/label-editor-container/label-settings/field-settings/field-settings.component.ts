@@ -32,9 +32,13 @@ export class FieldSettingsComponent {
 
   onChange(event: Event, place = 'separator') {
     const select = event.target as HTMLSelectElement;
+    this.change(select.value, place);
+  }
+
+  change(value, place = 'separator') {
     this.fieldChange.emit({
       ...this.field,
-      [place]: select.value,
+      [place]: value,
       _menuOpen: this.more || this.field._menuOpen
     });
   }
