@@ -11,6 +11,7 @@ import { LabelPrintComponent } from '../../label-print/label-print.component';
 })
 export class LabelFileComponent {
 
+  @Input() newSetup: ISetup;
   @Input() setup: ISetup;
   @Input() data: object[];
 
@@ -94,5 +95,11 @@ export class LabelFileComponent {
       ...this.recentFiles.slice(0, idx),
       ...this.recentFiles.slice(idx + 1),
     ];
+  }
+
+  makeNew() {
+    if (confirm('Are you sure that you want to start a new empty label?')) {
+      this.setupChange.emit(JSON.parse(JSON.stringify(this.newSetup)));
+    }
   }
 }

@@ -34,6 +34,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   fields: ILabelField[];
   dragging = false;
   version = '0.0.8';
+  @Input() newSetup: ISetup;
   @Input() availableFields: ILabelField[];
   @Input() data: object[];
   @Input() showIntro = true;
@@ -296,14 +297,13 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   private updateLocalId(setup: ISetup) {
     let id = 0;
-    setup.labelItems.map(item => {
-      if (item._id > id) {
-        id = item._id;
-      }
-    });
-    setup.backSideLabelItems.map(item => {
-      if (item._id > id) {
-        id = item._id;
+    ['labelItems', 'backSideLabelItems'].forEach(items => {
+      if (setup[items]) {
+        setup[items].map(item => {
+          if (item._id > id) {
+            id = item._id;
+          }
+        });
       }
     });
     LabelMakerComponent.id = id + 1;

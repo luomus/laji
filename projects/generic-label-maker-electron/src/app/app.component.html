@@ -2,4 +2,19 @@
   [availableFields]="availableFields$ | async"
   [(viewSettings)]="viewSetting"
   [(setup)]="setup"
-  [showIntro]="false"></ll-label-maker>
+  [newSetup]="newSetup"
+  (html)="htmlToPdf($event)"
+  [showIntro]="false">
+  <div class="file">
+    <h3>Import data</h3>
+    <table class="icon">
+      <tr class="link" (click)="importData()"><td></td><td>From Notebook...</td></tr>
+    </table>
+  </div>
+</ll-label-maker>
+<ng-template #notebookImport>
+  <div>Select YEAR</div>
+</ng-template>
+<ng-template #notebookImportActions>
+  <div class="btn btn-default" (click)="infoWindowService.close()">Import</div>
+</ng-template>

@@ -14,6 +14,9 @@
         <div [innerHTML]="data.content" *ngIf="isTemplate"></div>
       </ng-template>
     </div>
+    <div class="actions" *ngIf="data.actions">
+      <ng-container *ngTemplateOutlet="data.actions"></ng-container>
+    </div>
     <div class="actions" *ngIf="data.actionTypes">
       <ng-container [ngSwitch]="data.actionTypes">
         <ng-container *ngSwitchCase="'yesNo'">

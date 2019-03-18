@@ -26,7 +26,8 @@
         <h3 class="first">TODO: help content and videos</h3>
       </div>
       <div *ngIf="_active === 'file'">
-        <ll-label-file [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
+        <ll-label-file [newSetup]="newSetup" [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
+        <ng-content select=".file"></ng-content>
       </div>
       <div [hidden]="_active !== 'edit'">
         <table class="icon">

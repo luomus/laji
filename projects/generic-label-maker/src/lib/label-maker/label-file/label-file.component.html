@@ -1,4 +1,11 @@
 <table class="icon">
+  <tr class="link" (click)="makeNew()" *ngIf="newSetup">
+    <td>
+    </td>
+    <td>
+      New
+    </td>
+  </tr>
   <tr class="link">
     <td>
       <label class="menu-item" for="file" style="display: block;"><i class="glyphicon glyphicon-folder-open"></i></label>
@@ -31,7 +38,7 @@
 </ng-container>
 <h3>Labels</h3>
 <table class="icon">
-  <tr class="link" (click)="print()">
+  <tr class="link" (click)="print()" [class.disabled]="!data">
     <td>
     </td>
     <td>

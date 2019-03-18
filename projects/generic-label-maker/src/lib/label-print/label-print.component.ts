@@ -63,6 +63,9 @@ export class LabelPrintComponent {
   ) { }
 
   renderPages() {
+    if (!this.data || this.data.length === 0) {
+      return;
+    }
     this.pressed.emit();
     this.printing = true;
     this.pageLayout = this.labelService.countLabelsPerPage(this.setup);
