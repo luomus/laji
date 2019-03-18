@@ -837,6 +837,7 @@
   "taxonomy.acceptedName": "ACCEPTED NAME",
   "taxonomy.ofTaxon": "OF",
   "taxonomy.link": "LINK",
+  "taxonomy.noOccurrenceInFinland": "Ei esiinny Suomessa",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Description",

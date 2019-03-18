@@ -89,6 +89,9 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       if (!this.hasBiologyData && this.activeTab === 'biology') {
         this.updateRoute(this.taxon.id, 'overview');
       }
+      if (!this.isFromMasterChecklist && this.activeTab === 'occurrence') {
+        this.updateRoute(this.taxon.id, 'overview');
+      }
 
       this.setParent();
       this.setSiblings();
