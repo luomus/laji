@@ -4,7 +4,8 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export interface IInfoWindow {
   title?: string;
   content: string | TemplateRef<any>;
-  actionTypes: 'ok'|'yesNo'|'close';
+  actions?: TemplateRef<any>;
+  actionTypes?: 'ok'|'yesNo'|'close';
 }
 
 @Injectable({

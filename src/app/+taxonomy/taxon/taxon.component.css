@@ -75,4 +75,5 @@
 
 .hide-sidebar-toggle {
   right: 0;
+  border-left: 1px solid #ECF0F1;
 }

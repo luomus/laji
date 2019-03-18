@@ -321,7 +321,11 @@
             "tsConfig": "projects/iucn/tsconfig.app.json",
             "assets": [
               "projects/iucn/src/favicon.ico",
-              { "glob": "**/*", "input": "src/static", "output": "/static/" }
+              {
+                "glob": "**/*",
+                "input": "src/static",
+                "output": "/static/"
+              }
             ],
             "styles": [
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
@@ -411,6 +415,105 @@
             "tsConfig": [
               "projects/iucn/tsconfig.app.json",
               "projects/iucn/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "generic-label-maker-electron": {
+      "root": "projects/generic-label-maker-electron/",
+      "sourceRoot": "projects/generic-label-maker-electron/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/generic-label-maker-electron",
+            "index": "projects/generic-label-maker-electron/src/index.html",
+            "main": "projects/generic-label-maker-electron/src/main.ts",
+            "polyfills": "projects/generic-label-maker-electron/src/polyfills.ts",
+            "tsConfig": "projects/generic-label-maker-electron/tsconfig.app.json",
+            "assets": [
+              "projects/generic-label-maker-electron/src/favicon.ico",
+              "projects/generic-label-maker-electron/src/assets"
+            ],
+            "styles": [
+              "projects/generic-label-maker-electron/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/generic-label-maker-electron/src/environments/environment.ts",
+                  "with": "projects/generic-label-maker-electron/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "generic-label-maker-electron:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "generic-label-maker-electron:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "generic-label-maker-electron:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/generic-label-maker-electron/src/test.ts",
+            "polyfills": "projects/generic-label-maker-electron/src/polyfills.ts",
+            "tsConfig": "projects/generic-label-maker-electron/tsconfig.spec.json",
+            "karmaConfig": "projects/generic-label-maker-electron/karma.conf.js",
+            "styles": [
+              "projects/generic-label-maker-electron/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/generic-label-maker-electron/src/favicon.ico",
+              "projects/generic-label-maker-electron/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/generic-label-maker-electron/tsconfig.app.json",
+              "projects/generic-label-maker-electron/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

@@ -1,9 +1,9 @@
-<div class="label-editor-window" #editor>
+<div class="label-editor-window" #editor *ngIf="_setup; else missingSetup">
   <div class="menubar">
     <ul>
       <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>File</a></li>
       <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>Edit</a></li>
-      <li [class.active]="_active === 'view'" (click)="_active = 'view'"><a>View</a></li>
+      <li [class.active]="_active === 'view'" (click)="_active = 'view'" *ngIf="_viewSettings"><a>View</a></li>
       <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Label fields</a></li>
       <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>Settings</a></li>
       <li [class.active]="_active === 'help'" (click)="_active = 'help'"><a>Help</a></li>
@@ -12,7 +12,7 @@
   <div class="window-content">
     <div class="settings-wrap" [class.dragging]="dragging" #settings>
       <div *ngIf="_active === 'view'">
-        <ll-view-settings [viewSettings]="_viewSettings" (viewSettingsChange)="viewSettingsChange.emit($event)"></ll-view-settings>
+        <ll-view-settings [viewSettings]="_viewSettings" (viewSettingsChange)="onViewSettingsChange($event)"></ll-view-settings>
       </div>
       <div *ngIf="_active === 'help'">
         <table class="icon">
@@ -26,7 +26,8 @@
         <h3 class="first">TODO: help content and videos</h3>
       </div>
       <div *ngIf="_active === 'file'">
-        <ll-label-file [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
+        <ll-label-file [newSetup]="newSetup" [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
+        <ng-content select=".file"></ng-content>
       </div>
       <div [hidden]="_active !== 'edit'">
         <table class="icon">
@@ -44,7 +45,7 @@
           </tr>
         </table>
         <h3>Generate data</h3>
-        <table>
+        <table class="generate">
           <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
           <tr><td>Range start:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
           <tr><td>Range end:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" type="text" class="form-control input-sm"></td></tr>
@@ -134,4 +135,7 @@
     Under Files you can save your label desing templates, load previously saved templates,
     see your recent label template files and download the label pdf.
   </p>
+</ng-template>
+<ng-template #missingSetup>
+  Missing required setup parameter
 </ng-template>

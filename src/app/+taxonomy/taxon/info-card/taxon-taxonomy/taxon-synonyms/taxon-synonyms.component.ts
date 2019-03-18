@@ -8,6 +8,7 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 })
 export class TaxonSynonymsComponent implements OnInit {
   @Input() taxon: Taxonomy;
+  @Input() synonymTypes: string[] = [];
 
   constructor() { }
 

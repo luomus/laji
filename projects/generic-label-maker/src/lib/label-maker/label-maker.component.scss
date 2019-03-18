@@ -1,9 +1,10 @@
 $menu-height: 24px;
-$menu-color: #555;
+$menu-color: #333;
 $menu-border-color: #777;
 $menu-text-color: #eee;
 $settings-border-color: #ddd;
 $settings-bg-color: #efefef;
+$settings-text-color: #333;
 
 :host {
   height: 100%;
@@ -41,6 +42,7 @@ $settings-bg-color: #efefef;
 
         &:hover {
           background-color: darken($menu-color, 10%);
+          border-bottom: 1px solid $menu-border-color;
 
           a {
             color: lighten($menu-text-color, 90%);
@@ -87,7 +89,7 @@ $settings-bg-color: #efefef;
     flex-shrink: 0;
     height: 100%;
     overflow-y: auto;
-    color: #555;
+    color: $settings-text-color;
     border-right: 1px solid $settings-border-color;
     padding: 15px;
     background-color: $settings-bg-color;
@@ -114,6 +116,11 @@ $settings-bg-color: #efefef;
           &:hover {
             background-color: darken($settings-bg-color, 10%);
           }
+        }
+      }
+      &.generate {
+        td:last-child {
+          padding-right: 15px;
         }
       }
     }

@@ -1,3 +1,6 @@
+::ng-deep .taxon-table {
+  margin-bottom: 0;
+}
 ::ng-deep .taxon-table tr:first-child th, ::ng-deep .taxon-table tr:first-child td {
   border-top: none;
 }
@@ -23,10 +26,22 @@
   display: inline-block;
   vertical-align: bottom;
   margin: 0 10px 10px 0;
+  white-space: nowrap;
 }
 .sibling-select-container select {
   display: inline-block;
   width: 200px;
+}
+.arrow-link {
+  text-decoration: none;
+}
+.arrow-link.arrow-link-right {
+  padding-left: 2px;
+  margin-left: 2px;
+}
+.arrow-link.arrow-link-left {
+  padding-right: 2px;
+  margin-right: 2px;
 }
 .omni-search-container {
   margin: 10px 0 10px 10px;

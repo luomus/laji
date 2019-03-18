@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="panel panel-default">
+    <div class="panel panel-default" *ngIf="taxon.occurrenceInFinland || taxon.typeOfOccurrenceInFinland || taxon.occurrenceInFinlandPublications || !taxon.finnish">
       <div class="panel-body">
-        <table class="table taxon-table table-condensed" *ngIf="taxon">
+        <table class="table taxon-table table-condensed" *ngIf="taxon.finnish">
           <tbody>
-          <tr>
+          <tr *ngIf="taxon.occurrenceInFinland">
             <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
             <td>{{ taxon.occurrenceInFinland | label }}</td>
           </tr>
@@ -18,19 +18,40 @@
               </ul>
             </td>
           </tr>
-          <tr *ngIf="taxon.occurrenceInFinlandPublication">
-            <th>{{ 'taxonomy.occurrenceInFinlandPublication' | translate }}</th>
+          <tr *ngIf="taxon.occurrenceInFinlandPublications">
+            <th>{{ 'taxonomy.occurrenceInFinlandPublications' | translate }}</th>
             <td>
               <ul>
-                <li *ngFor="let publication of taxon.occurrenceInFinlandPublication">
+                <li *ngFor="let publication of taxon.occurrenceInFinlandPublications">
                   {{ publication | publication }}
+                  <br>
+                  <a [href]="publication | publication:'URI'" target="_blank">{{ 'taxonomy.link' | translate }}</a>
                 </li>
               </ul>
             </td>
           </tr>
           </tbody>
         </table>
+        <p *ngIf="!taxon.finnish">{{ 'taxonomy.noOccurrenceInFinland' | translate }}</p>
       </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.map.finland' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-ykj-map
+        [query]="{taxonId: [taxon.id], countryId: ['ML.206'], cache: true}"
+        [height]="'600px'"
+        [type]="'count'"
+        [types]="['count']"
+      ></laji-ykj-map>
     </div>
   </div>
 </div>

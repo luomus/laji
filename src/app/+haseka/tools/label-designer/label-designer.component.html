@@ -1,5 +1,5 @@
 <div class="editor-container" [class.fullscreen]="viewSettings.fullscreen">
-  <ll-label-editor-container
+  <ll-label-maker
     [showIntro]="false"
     [data]="data"
     [viewSettings]="viewSettings"
@@ -8,6 +8,6 @@
     [availableFields]="labelFields$ | async"
     (setupChange)="setup = $event"
     (html)="htmlToPdf($event)"
-  ></ll-label-editor-container>
+  ></ll-label-maker>
 </div>
 <div class="editor-placeholder"></div>

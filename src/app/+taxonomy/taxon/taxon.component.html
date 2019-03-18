@@ -1,7 +1,7 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
   <div class="container-fluid" *ngIf="taxon">
     <div class="row">
-      <ng-container *ngIf="isFromMasterChecklist">
+      <ng-container *ngIf="canShowTree">
         <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" [class.hidden]="!showTree">
           <laji-taxon-tree
             [activeId]="taxon.id"
@@ -21,9 +21,9 @@
         </div>
       </ng-container>
       <div class="info-card-container"
-           [class.sidebar-hidden]="!showTree"
-           [style.width]="showTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'"
-           [style.margin-left]="showTree ? sidebarWidth + 'px' : '0'"
+           [class.sidebar-hidden]="!showTree && canShowTree"
+           [style.width]="showTree && canShowTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'"
+           [style.margin-left]="showTree && canShowTree ? sidebarWidth + 'px' : '0'"
       >
         <laji-info-card
           [taxon]="taxon"
