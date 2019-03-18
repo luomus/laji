@@ -52,7 +52,7 @@ export interface ILabelField {
   isArray?: boolean;
   type?: 'qr-code'|'text';
   style?: IFontStyle;
-  styleAppliesTo: 'content'|'prefix'|'suffix'|'all'|'contentPrefix'|'contentSuffix'|'prefixSuffix';
+  styleAppliesTo?: 'content'|'prefix'|'suffix'|'all'|'contentPrefix'|'contentSuffix'|'prefixSuffix';
   _menuOpen?: boolean;
 }
 

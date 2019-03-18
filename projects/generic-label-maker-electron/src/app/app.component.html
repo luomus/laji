@@ -1,1 +1,5 @@
-<ll-label-maker [(viewSettings)]="viewSetting" [(setup)]="setup" [showIntro]="false"></ll-label-maker>
+<ll-label-maker
+  [availableFields]="availableFields$ | async"
+  [(viewSettings)]="viewSetting"
+  [(setup)]="setup"
+  [showIntro]="false"></ll-label-maker>

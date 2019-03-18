@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { GenericLabelMakerModule } from '../../../generic-label-maker/src/lib/generic-label-maker.module';
 import { NgxWebstorageModule } from 'ngx-webstorage';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
   imports: [
     BrowserModule,
     NgxWebstorageModule.forRoot({prefix: 'LM-', separator: ''}),
-    GenericLabelMakerModule
+    GenericLabelMakerModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

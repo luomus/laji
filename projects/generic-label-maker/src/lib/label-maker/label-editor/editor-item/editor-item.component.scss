@@ -15,6 +15,12 @@ $handlerSize: 17;
   height: 100%;
 }
 
+.editor-item-content {
+  overflow: hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
+}
+
 .drag-handle, .resize-handle, .option-handle, .done-handle {
   position: absolute;
   display: none;

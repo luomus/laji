@@ -113,6 +113,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   set setup(setup: ISetup) {
     const hasField = {};
     const allFields = [];
+    this.updateLocalId(setup);
     this._setup = {
       ...setup,
       labelItems: setup.labelItems.map(item => {
@@ -291,5 +292,20 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   onViewSettingsChange(event: IViewSettings) {
     this.viewSettings = event;
     this.viewSettingsChange.emit(event);
+  }
+
+  private updateLocalId(setup: ISetup) {
+    let id = 0;
+    setup.labelItems.map(item => {
+      if (item._id > id) {
+        id = item._id;
+      }
+    });
+    setup.backSideLabelItems.map(item => {
+      if (item._id > id) {
+        id = item._id;
+      }
+    });
+    LabelMakerComponent.id = id + 1;
   }
 }

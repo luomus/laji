@@ -7,8 +7,9 @@
        [cdkDragData]="field"
        (cdkDragStarted)="dragging.emit(true)"
        (cdkDragEnded)="dragging.emit(false)"
-       class="new-field">
-    <div class="example-custom-placeholder" *cdkDragPlaceholder>foobar</div>
+       class="new-field"
+       [title]="field.label"
+  >
     {{field.label}}
   </div>
 </ng-container>
