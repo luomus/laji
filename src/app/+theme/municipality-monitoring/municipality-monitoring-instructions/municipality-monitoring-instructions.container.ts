@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { UserService } from 'app/shared/service/user.service';
 import { FormService } from 'app/shared/service/form.service';
 import { environment } from 'environments/environment';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { FormPermissionService } from 'app/+haseka/form-permission/form-permission.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -30,13 +30,13 @@ export class MunicipalityMonitoringInstructionsContainerComponent
               private translateService: TranslateService) {}
 
   ngOnInit() {
-    this.loggedIn$ = this.userService.isLoggedIn$.take(1);
+    this.loggedIn$ = this.userService.isLoggedIn$.pipe(take(1));
 
     this.rights$ = this.formService
     .getForm(environment.municipalityMonitoringForm,
              this.translateService.currentLang)
-    .switchMap(form => this.formPermissionService.getRights(form))
     .pipe(
+      switchMap(form => this.formPermissionService.getRights(form)),
       catchError(() => of({edit: false, admin: false})),
       map((rights) => {
         if (rights.edit === true) {

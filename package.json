@@ -79,7 +79,7 @@
     "deep-equal": "^1.0.1",
     "deepmerge": "^2.2.1",
     "file-saver": "^2.0.0",
-    "generic-label-maker": "^0.0.7",
+    "generic-label-maker": "^0.0.9",
     "ie-shim": "^0.1.0",
     "intl": "^1.2.5",
     "jsonpath-plus": "^0.18.0",
@@ -104,7 +104,7 @@
     "zone.js": "^0.8.18"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.10.0",
+    "@angular-devkit/build-angular": "^0.13.6",
     "@angular-devkit/build-ng-packagr": "~0.10.0",
     "@angular/cli": "^7.1.0",
     "@angular/compiler-cli": "^7.1.1",
