@@ -17,12 +17,12 @@ import { Subscription } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
-  selector: 'll-label-editor-container',
-  templateUrl: './label-editor-container.component.html',
-  styleUrls: ['./label-editor-container.component.scss'],
+  selector: 'll-label-maker',
+  templateUrl: './label-maker.component.html',
+  styleUrls: ['./label-maker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelEditorContainerComponent implements OnInit, OnDestroy {
+export class LabelMakerComponent implements OnInit, OnDestroy {
 
   static id = 0;
 
@@ -105,6 +105,10 @@ export class LabelEditorContainerComponent implements OnInit, OnDestroy {
     this._viewSettings = settings;
   }
 
+  get viewSettings() {
+    return this._viewSettings;
+  }
+
   @Input()
   set setup(setup: ISetup) {
     const hasField = {};
@@ -120,7 +124,7 @@ export class LabelEditorContainerComponent implements OnInit, OnDestroy {
         });
         return {
         ...item,
-          _id: item._id || LabelEditorContainerComponent.id++
+          _id: item._id || LabelMakerComponent.id++
         };
       }),
       backSideLabelItems: (setup.backSideLabelItems || []).map(item => {
@@ -132,7 +136,7 @@ export class LabelEditorContainerComponent implements OnInit, OnDestroy {
         });
         return {
           ...item,
-          _id: item._id || LabelEditorContainerComponent.id++
+          _id: item._id || LabelMakerComponent.id++
         };
       })
     };
@@ -173,7 +177,7 @@ export class LabelEditorContainerComponent implements OnInit, OnDestroy {
   addLabelItem(event: IAddLabelEvent) {
     const item = event.item;
     if (!item._id) {
-      item._id = LabelEditorContainerComponent.id++;
+      item._id = LabelMakerComponent.id++;
     }
     this._undo.push(this._setup);
     this._setup = {...this._setup, [event.location]: [...this._setup[event.location], item]};
@@ -282,5 +286,10 @@ export class LabelEditorContainerComponent implements OnInit, OnDestroy {
       this.renderer2.setStyle(settings, 'height', '100%');
     }
     this.dragging = event;
+  }
+
+  onViewSettingsChange(event: IViewSettings) {
+    this.viewSettings = event;
+    this.viewSettingsChange.emit(event);
   }
 }

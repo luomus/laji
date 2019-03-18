@@ -1,0 +1,14 @@
+<slot></slot>
+<ng-container *ngIf="availableFields && availableFields.length">
+  <h3 class="first">Available fields</h3>
+  <input type="search" placeholder="search..." style="margin-bottom: 10px;" class="form-control" (keyup)="filter($event.target.value)">
+  <div *ngFor="let field of (availableFields | searchFields:filterBy )"
+       cdkDrag (cdkDragReleased)="onNewFieldDragEnd($event)"
+       [cdkDragData]="field"
+       (cdkDragStarted)="dragging.emit(true)"
+       (cdkDragEnded)="dragging.emit(false)"
+       class="new-field">
+    <div class="example-custom-placeholder" *cdkDragPlaceholder>foobar</div>
+    {{field.label}}
+  </div>
+</ng-container>
