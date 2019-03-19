@@ -2,9 +2,10 @@ $menu-height: 24px;
 $menu-color: #333;
 $menu-border-color: #777;
 $menu-text-color: #eee;
-$settings-border-color: #ddd;
+$settings-border-color: #aaa;
 $settings-bg-color: #efefef;
 $settings-text-color: #333;
+$settings-row-height: 33px;
 
 :host {
   height: 100%;
@@ -71,11 +72,11 @@ $settings-text-color: #333;
   }
 
   h3 {
-    margin: 10px -15px 0 -15px;
+    margin: 15px -15px 0 -15px;
     font-size: 100%;
     font-weight: 900;
     display: block;
-    padding: 5px 15px;
+    padding: 15px 15px 5px 15px;
     border-top: 1px solid $settings-border-color;
 
     &.first {
@@ -98,7 +99,7 @@ $settings-text-color: #333;
       margin-left: -15px;
       width: calc(100% + 30px);
       td {
-        height: 30px;
+        height: $settings-row-height;
       }
       td:first-child {
         text-align: right;
@@ -116,11 +117,6 @@ $settings-text-color: #333;
           &:hover {
             background-color: darken($settings-bg-color, 10%);
           }
-        }
-      }
-      &.generate {
-        td:last-child {
-          padding-right: 15px;
         }
       }
     }
@@ -162,6 +158,16 @@ $settings-text-color: #333;
 
   .link {
     cursor: pointer;
+  }
+
+  table.generate {
+    td {
+      height: $settings-row-height;
+
+      &:first-child {
+        text-align: right;
+      }
+    }
   }
 
 }

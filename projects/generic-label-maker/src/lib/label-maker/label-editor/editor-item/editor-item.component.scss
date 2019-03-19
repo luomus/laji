@@ -2,7 +2,7 @@ $handlerSize: 17;
 
 .editor-item {
   position: absolute;
-  border: 1px solid #eee;
+  border: 1px dashed #999;
   background-color: #fff;
 }
 
@@ -26,6 +26,7 @@ $handlerSize: 17;
   display: none;
   width: $handlerSize + px;
   height: $handlerSize + px;
+  font-size: 12px;
 }
 
 .drag-handle {
@@ -54,7 +55,7 @@ $handlerSize: 17;
 }
 
 .active {
-  border-color: #777;
+  border: 1px solid #4b5977;
   z-index: 1000;
   .drag-handle, .resize-handle, .option-handle, .done-handle {
     display: block;
