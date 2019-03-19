@@ -45,10 +45,10 @@ export class FontSettingsComponent implements OnInit {
     this.fontSizes = sizes;
   }
 
-  change(field: string, value: string|number) {
+  change(field: string, value: string|number, forceNumeric = false) {
     this.fontSettingsChange.emit({
       ...this.fontSettings,
-      [field]: value
+      [field]: forceNumeric ? Number(value) : value
     });
   }
 

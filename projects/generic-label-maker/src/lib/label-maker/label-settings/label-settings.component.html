@@ -1,5 +1,5 @@
-<ng-container *ngIf="selectedLabelItem">
-  <div (click)="remove(selectedLabelItem)" class="pull-right"><ll-icon size="20" type="close"></ll-icon></div>
+<ng-container *ngIf="selectedLabelItem; else missingField">
+  <div (click)="remove(selectedLabelItem)" style="margin-top: 10px;" class="pull-right"><ll-icon size="20" type="close"></ll-icon></div>
   <h3 class="first">Field</h3>
   <ll-font-settings
     *ngIf="showFieldFont"
@@ -58,7 +58,11 @@
   </div>
   <ll-field-add *ngIf="showFieldFont" [availableFields]="availableFields" (add)="fieldAdd($event)"></ll-field-add>
 </ng-container>
-<h3 [class.first]="!selectedLabelItem">Label</h3>
+<ng-template #missingField>
+  <h3 class="first">Field</h3>
+  No active field selected
+</ng-template>
+<h3>Label</h3>
 <ll-font-settings [fontSettings]="setup.label" (fontSettingsChange)="change('label', $event)"></ll-font-settings>
 <ll-margin-settings [style]="setup.label" (styleChange)="change('label', $event)"></ll-margin-settings>
 <h3>Page</h3>

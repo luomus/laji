@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
-import { ILabelItem, ISetup, TLabelLocation } from '../../generic-label-maker.interface';
+import { ILabelItem, ILabelStyle, ISetup, TLabelLocation } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 
 @Component({
@@ -12,9 +12,7 @@ export class LabelEditorComponent {
 
   _setup: ISetup;
   _magnification = 2;
-
-  height: number;
-  width: number;
+  _magnifiedStyle: ILabelStyle;
   init = false;
 
   @Input() grid: number;
@@ -46,8 +44,15 @@ export class LabelEditorComponent {
     if (!this._setup) {
       return;
     }
-    this.height = this._setup.label['height.mm'];
-    this.width = this._setup.label['width.mm'];
+    const resultStyle = {};
+    Object.keys(this._setup.label).forEach(prop => {
+      if (typeof this._setup.label[prop] === 'number' && prop !== 'line-height') {
+        resultStyle[prop] = this._setup.label[prop] * this._magnification;
+      } else {
+        resultStyle[prop] = this._setup.label[prop];
+      }
+    });
+    this._magnifiedStyle = resultStyle;
   }
 
   onItemChange(originalItem: ILabelItem, newItem: ILabelItem) {

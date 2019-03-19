@@ -7,7 +7,7 @@ import {
   OnInit,
   Output,
   PLATFORM_ID,
-  Renderer2,
+  Renderer2, TemplateRef,
   ViewChild
 } from '@angular/core';
 import { IAddLabelEvent, ILabelField, ILabelItem, ISetup, IViewSettings } from '../generic-label-maker.interface';
@@ -45,6 +45,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() introClosed = new EventEmitter();
   @ViewChild('editor') editor: ElementRef<HTMLDivElement>;
+  @ViewChild('generateTpl') generateTpl: TemplateRef<any>;
+  @ViewChild('generateActionsTpl') generateActionsTpl: TemplateRef<any>;
   subIntro: Subscription;
 
   generate: {
@@ -54,8 +56,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     data: {[key: string]: string}
   } = {
     uri: '',
-    rangeStart: 1,
-    rangeEnd: 10,
+    rangeStart: undefined,
+    rangeEnd: undefined,
     data: {}
   };
 
@@ -230,6 +232,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   }
 
   generateData() {
+    this.infoWindowService.close();
     const uri = this.generate.uri + (this.generate.uri.indexOf('%id%') > -1 ? '' : '%id%');
     const data = [];
     const start = this.generate.rangeStart < this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
@@ -254,10 +257,19 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   openIntro() {
     this.subIntro = this.infoWindowService.open({
-      title: 'Generic label editor',
+      title: 'Label Maker',
       actionTypes: 'ok',
       content: this.intro
     }).subscribe(() => this.introClosed.emit());
+  }
+
+
+  openGenerate() {
+    this.infoWindowService.open({
+      title: 'Generate label data',
+      content: this.generateTpl,
+      actions: this.generateActionsTpl
+    });
   }
 
   private setAsExample(doc: any) {
