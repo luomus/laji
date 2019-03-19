@@ -23,13 +23,19 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
     zoom: 0,
     draw: false,
     center: [40, 25],
-    tileLayerName: LajiMapTileLayerName.openStreetMap
+    tileLayerName: LajiMapTileLayerName.openStreetMap,
+    availableTileLayerNamesWhitelist: [
+      LajiMapTileLayerName.openStreetMap,
+      LajiMapTileLayerName.googleSatellite
+    ],
+    availableOverlayNameWhitelist: []
   };
   loading = false;
 
   private layer: any;
 
-  private layerUrl = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?style=classic.point&taxonKey=';
+  private layerUrl = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?' +
+    'style=classic.poly&bin=hex&taxonKey=';
   private speciesApiUrl = 'http://api.gbif.org/v1/species/suggest';
 
   private getTaxonKeySub: Subscription;
