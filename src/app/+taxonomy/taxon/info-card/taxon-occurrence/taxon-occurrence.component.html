@@ -54,4 +54,20 @@
       ></laji-ykj-map>
     </div>
   </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'GBIF'"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-gbif-map
+        [scientificName]="taxon.scientificName"
+        [height]="'600px'"
+      ></laji-gbif-map>
+    </div>
+  </div>
 </div>

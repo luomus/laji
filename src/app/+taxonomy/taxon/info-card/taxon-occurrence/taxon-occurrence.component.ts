@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Taxonomy} from '../../../../shared/model/Taxonomy';
+import {Taxonomy, TaxonomyDescription, TaxonomyDescriptionGroup} from '../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-occurrence',
@@ -8,6 +8,23 @@ import { Taxonomy} from '../../../../shared/model/Taxonomy';
 })
 export class TaxonOccurrenceComponent implements OnInit {
   @Input() taxon: Taxonomy;
+
+  occurrenceDescriptions: TaxonomyDescriptionGroup;
+  _taxonDescription: TaxonomyDescription;
+
+  @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
+    this.occurrenceDescriptions = undefined;
+    this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription[0] : undefined;
+
+    if (this._taxonDescription) {
+      (this._taxonDescription.groups || []).forEach(group => {
+        console.log(group);
+        /*if (group.group === 'MX.SDVG14') {
+          this.occurrenceDescriptions = group;
+        }*/
+      });
+    }
+  }
 
   constructor() { }
 
