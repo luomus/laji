@@ -50,9 +50,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   ) { }
 
   ngOnChanges() {
-    if (!this.taxon.species) {
-      this.getChildren();
-    }
+    this.getChildren();
   }
 
   ngOnDestroy() {
