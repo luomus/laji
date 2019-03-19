@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-xs-12">
+    <a class="btn btn-primary browse-button" [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
+      {{ 'taxonomy.browseAndDownload' | translate }}
+    </a>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.map.finland' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-ykj-map
+        [query]="{taxonId: [taxon.id], countryId: ['ML.206'], cache: true}"
+        [height]="'600px'"
+        [type]="'count'"
+        [types]="['count']"
+      ></laji-ykj-map>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'GBIF'"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-gbif-map
+        [scientificName]="taxon.scientificName"
+        [height]="'600px'"
+      ></laji-gbif-map>
+    </div>
+  </div>
+</div>
+

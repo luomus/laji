@@ -56,6 +56,11 @@
         {{ "taxonomy.occurrence" | translate }}
       </a>
     </li>
+    <li role="presentation" [ngClass]="{active: activeTab === 'observations'}" *ngIf="isFromMasterChecklist">
+      <a [routerLink]="['/taxon', taxon.id, 'observations'] | localize" [queryParamsHandling]="'preserve'">
+        {{ "taxonomy.observations" | translate }}
+      </a>
+    </li>
   </ul>
 
   <laji-taxon-overview [hidden]="activeTab !== 'overview'"
@@ -89,5 +94,9 @@
                          [taxon]="taxon"
                          [taxonDescription]="taxonDescription"
   ></laji-taxon-occurrence>
+  <laji-taxon-observations [hidden]="activeTab !== 'observations'"
+                           *ngIf="activatedTabs['observations'] && isFromMasterChecklist"
+                           [taxon]="taxon"
+  ></laji-taxon-observations>
 </div>
 

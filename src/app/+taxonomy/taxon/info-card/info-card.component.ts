@@ -28,7 +28,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence';
+  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations';
 
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<Image>;

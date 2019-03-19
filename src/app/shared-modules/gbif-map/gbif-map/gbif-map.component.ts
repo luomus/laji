@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {LajiMapOptions, LajiMapTileLayerName} from '@laji-map/laji-map.interface';
 import {LajiMapComponent} from '@laji-map/laji-map.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -20,7 +20,7 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
     controls: {
       draw: false
     },
-    zoom: 0,
+    zoom: 2,
     draw: false,
     center: [40, 25],
     tileLayerName: LajiMapTileLayerName.openStreetMap,
@@ -41,7 +41,8 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
   private getTaxonKeySub: Subscription;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -95,6 +96,7 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
             this.addLayerToMap();
           }
           this.loading = false;
+          this.cd.markForCheck();
         });
     } else {
       this.loading = false;
