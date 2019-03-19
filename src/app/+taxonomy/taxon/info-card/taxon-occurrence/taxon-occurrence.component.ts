@@ -18,10 +18,9 @@ export class TaxonOccurrenceComponent implements OnInit {
 
     if (this._taxonDescription) {
       (this._taxonDescription.groups || []).forEach(group => {
-        console.log(group);
-        /*if (group.group === 'MX.SDVG14') {
+        if (group.group === 'MX.SDVG2') {
           this.occurrenceDescriptions = group;
-        }*/
+        }
       });
     }
   }
