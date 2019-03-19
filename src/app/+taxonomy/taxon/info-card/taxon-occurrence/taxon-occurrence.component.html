@@ -54,4 +54,40 @@
       ></laji-ykj-map>
     </div>
   </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'GBIF'"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-gbif-map
+        [scientificName]="taxon.scientificName"
+        [height]="'600px'"
+      ></laji-gbif-map>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <ng-container *ngIf="occurrenceDescriptions">
+      <div class="panel panel-default occurrence-description-panel"
+           laji-panel
+           [title]="occurrenceDescriptions.title | multiLang"
+           [open]="true"
+           [autoToggle]="true"
+      >
+        <div *ngFor="let variable of occurrenceDescriptions.variables">
+          <h4>
+            {{ variable.title | multiLang }}
+          </h4>
+          <span [innerHTML]="variable.content | multiLang"></span>
+        </div>
+      </div>
+      <div class="source">
+        <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
+      </div>
+    </ng-container>
+  </div>
 </div>

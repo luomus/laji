@@ -70,6 +70,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes.taxon) {
+      this.activatedTabs = {[this.activeTab]: true};
+
       this.taxonImages = (this.taxon.multimedia || []).map(img => {
         if (img['taxon']) {
           img['taxonId'] = img['taxon']['id'];
