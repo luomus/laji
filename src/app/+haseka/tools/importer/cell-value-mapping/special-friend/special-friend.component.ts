@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField, VALUE_AS_IS, VALUE_IGNORE } from '../../../model/form-field';
+import { IFormField, VALUE_AS_IS, VALUE_IGNORE } from '../../../model/excel';
 import { FriendService } from '../../../../../shared/service/friend.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { FriendService } from '../../../../../shared/service/friend.service';
 export class SpecialFriendComponent implements OnInit {
 
   @Input() invalidValues: string[];
-  _field: FormField;
+  _field: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
   _mapping: {[value: string]: any};
   validValues = [];
@@ -24,7 +24,7 @@ export class SpecialFriendComponent implements OnInit {
   ) {}
 
   @Input()
-  set field(field: FormField) {
+  set field(field: IFormField) {
     this._field = field;
     this.initCurrentValue();
   }

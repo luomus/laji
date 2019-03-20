@@ -39,11 +39,18 @@
   </alert>
 
   <ng-container *ngIf="['empty', 'importingFile', 'fileAlreadyUploaded', 'fileAlreadyUploadedPartially', 'invalidFileType', 'ambiguousColumns'].indexOf(status) > -1">
-    <div><p>{{ 'excel.import.step1.intro' | translate }}</p></div>
-    <div class="row data-container spacer">
+     <div class="row data-container spacer">
       <div class="col-sm-9">
-        <span *ngIf="hasUserMapping" [innerHtml]="'excel.import.step1.hasUserMapping' | translate"></span>
-        <input type="file" class="form-control" (change)="onFileChange($event)" />
+        <div><p>{{ 'excel.import.step1.intro' | translate }}</p></div>
+        <ng-container *ngIf="hasUserMapping">
+          <span [innerHtml]="'excel.import.step1.hasUserMapping' | translate"></span><br>
+        </ng-container>
+        <ng-container *ngIf="!filename; else fileExists">
+          <input type="file" class="form-control" (change)="onFileChange($event)" />
+        </ng-container>
+        <ng-template #fileExists>
+          <strong>{{ filename }}</strong>&nbsp;&nbsp;<i class="link glyphicon glyphicon-remove" (click)="clearFile()"></i>
+        </ng-template>
         <span *ngIf="fileLoading">{{ 'loading' | translate }}</span>
       </div>
       <div class="col-sm-3 map-buttons">
@@ -51,13 +58,18 @@
           <i class="glyphicon glyphicon-remove"></i>
         </div>
         <div class="btn btn-default pull-right" (click)="userMapModal.show()" [tooltip]="'excel.import.step1.addUserMapping' | translate" placement="left">
-          <i class="glyphicon glyphicon-save"></i>
+          <i class="glyphicon glyphicon-open"></i>
         </div>
       </div>
     </div>
-    <div class="row data-container" *ngIf="!formID && !!bstr">
+    <div class="row data-container">
       <div class="col-sm-5">
-        <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
+        <ng-container *ngIf="!formID && !!bstr">
+          <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
+        </ng-container>
+      </div>
+      <div class="col-sm-7">
+        <button class="btn btn-primary pull-right" [disabled]="!formID || !filename" (click)="status = 'colMapping'">{{ 'paginator.next' | translate }}</button>
       </div>
     </div>
   </ng-container>
@@ -133,7 +145,7 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
-          <i class="glyphicon glyphicon-open"></i>
+          <i class="glyphicon glyphicon-save"></i>
         </div>
         <p *ngIf="status === 'doneOk'">
           {{ 'excel.import.done' | translate }}

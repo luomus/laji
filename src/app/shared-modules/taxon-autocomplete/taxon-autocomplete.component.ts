@@ -23,6 +23,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
   @Input() allowInvalid = false;
   @Input() informalTaxonGroup = '';
   @Input() onlyFinnish = false;
+  @Input() excludeNameTypes = '';
   @Input() onlyInvasive = false;
   @Input() showResult = true;
   @Input() clearValueOnSelect = true;
@@ -88,6 +89,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
       lang: this.translateService.currentLang,
       matchType: LajiApi.AutocompleteMatchType.partial,
       informalTaxonGroup: this.informalTaxonGroup,
+      excludeNameTypes: this.excludeNameTypes,
       onlyFinnish: this.onlyFinnish,
       onlyInvasive: this.onlyInvasive
     }).pipe(

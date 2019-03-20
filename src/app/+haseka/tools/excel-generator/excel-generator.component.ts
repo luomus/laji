@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { FormField } from '../model/form-field';
+import { IFormField } from '../model/excel';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { GeneratorService } from '../service/generator.service';
 
@@ -18,7 +18,7 @@ export class ExcelGeneratorComponent implements OnInit {
   forms$: Observable<any>;
   formID = '';
   formTitle: string;
-  fields: FormField[] = [];
+  fields: IFormField[] = [];
   parents: string[] = [];
   selected: string[] = [];
   useLabels = true;
@@ -56,7 +56,7 @@ export class ExcelGeneratorComponent implements OnInit {
       });
   }
 
-  toggleField(field: FormField | FormField[]) {
+  toggleField(field: IFormField | IFormField[]) {
     if (this.generating) {
       return;
     }

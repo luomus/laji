@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormField } from '../../model/form-field';
+import { IFormField } from '../../model/excel';
 import { ImportService } from '../../service/import.service';
 import { MappingService, SpecialTypes } from '../../service/mapping.service';
 
@@ -12,7 +12,7 @@ import { MappingService, SpecialTypes } from '../../service/mapping.service';
 export class CellValueMappingComponent implements OnInit, OnChanges {
 
   @Input() data: any[] = [];
-  @Input() fields: {[key: string]: FormField} = {};
+  @Input() fields: {[key: string]: IFormField} = {};
   @Input() colMapping: {[key: string]: string} = {};
   @Input() valueMap: {[key: string]: {[value: string]: any}} = {};
 
@@ -23,7 +23,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   invalid: string[] = [];
   currentKey: string;
   allMapped = false;
-  field: FormField;
+  field: IFormField;
 
   constructor(
     private importService: ImportService,

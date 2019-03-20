@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { Document } from '../../../shared/model/Document';
 import { UserService } from '../../../shared/service/user.service';
-import { DOCUMENT_LEVEL, FormField, GATHERING_LEVEL, VALUE_IGNORE } from '../model/form-field';
+import { DOCUMENT_LEVEL, IFormField, GATHERING_LEVEL, VALUE_IGNORE } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { Util } from '../../../shared/service/util.service';
 
@@ -44,7 +44,7 @@ export class ImportService {
     private translateService: TranslateService
   ) { }
 
-  hasInvalidValue(value: any, field: FormField) {
+  hasInvalidValue(value: any, field: IFormField) {
     const mappedValue = this.mappingService.map(value, field);
     return Array.isArray(mappedValue) ? mappedValue.indexOf(null) > -1 : mappedValue === null;
   }
@@ -68,7 +68,7 @@ export class ImportService {
   flatFieldsToDocuments(
     data: {[col: string]: any}[],
     mapping: {[col: string]: string},
-    fields: {[key: string]: FormField},
+    fields: {[key: string]: IFormField},
     formID: string
   ): {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[] {
     const cols = Object.keys(mapping);
@@ -93,7 +93,7 @@ export class ImportService {
     return value !== VALUE_IGNORE && value !== '' && value !== null;
   }
 
-  private resetPreviousValue(fields: {[key: string]: FormField}, level?: string) {
+  private resetPreviousValue(fields: {[key: string]: IFormField}, level?: string) {
     Object.keys(fields).map(key => {
       if ((level && fields[key].parent === level) || !level) {
         fields[key].previousValue = null;
@@ -101,7 +101,7 @@ export class ImportService {
     });
   }
 
-  private getParent(field: FormField) {
+  private getParent(field: IFormField) {
     if (this.fieldToNewParent[field.key]) {
       return this.fieldToNewParent[field.key];
     }
@@ -111,7 +111,7 @@ export class ImportService {
   private rowsToDocument(
     rows: {[col: string]: any}[],
     mapping: {[col: string]: string},
-    fields: {[key: string]: FormField},
+    fields: {[key: string]: IFormField},
     spot: {[level: string]: number},
     formID: string
   ): {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[] {

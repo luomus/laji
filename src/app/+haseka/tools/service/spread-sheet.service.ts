@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
-import { DOCUMENT_LEVEL, FormField, VALUE_IGNORE } from '../model/form-field';
+import { DOCUMENT_LEVEL, IFormField, VALUE_IGNORE } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 
@@ -86,7 +86,7 @@ export class SpreadSheetService {
     this.hiddenFields = fields;
   }
 
-  formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: FormField} {
+  formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: IFormField} {
     const result = {};
     this.formToFlatFields(form, addIgnore)
       .map(field => {
@@ -95,8 +95,8 @@ export class SpreadSheetService {
     return result;
   }
 
-  formToFlatFields(form: any, addIgnore = false): FormField[] {
-    const result: FormField[] = [];
+  formToFlatFields(form: any, addIgnore = false): IFormField[] {
+    const result: IFormField[] = [];
     if (addIgnore) {
       result.push({
         parent: '',
@@ -142,7 +142,7 @@ export class SpreadSheetService {
     }
   }
 
-  getColMapFromSheet(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}, len: number) {
+  getColMapFromSheet(sheet: XLSX.WorkSheet, fields: {[key: string]: IFormField}, len: number) {
     const colMap = {};
     let idx = -1, col;
 
@@ -201,7 +201,7 @@ export class SpreadSheetService {
   private parserFields(
     form: any,
     validators: any,
-    result: FormField[],
+    result: IFormField[],
     root,
     parent,
     unitSubGroups = {},

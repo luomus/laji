@@ -4,7 +4,7 @@ import { from as ObservableFrom, of as ObservableOf } from 'rxjs';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
-import { FormField } from '../model/form-field';
+import { IFormField } from '../model/excel';
 import { ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadSheetService } from '../service/spread-sheet.service';
@@ -55,7 +55,7 @@ export class ImporterComponent implements OnInit {
   mappedData: {[key: string]: any}[];
   parsedData: {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[];
   header: {[key: string]: string};
-  fields: {[key: string]: FormField};
+  fields: {[key: string]: IFormField};
   dataColumns: ImportTableColumn[];
   origColMap: {[key: string]: string};
   colMap: {[key: string]: string};
@@ -70,6 +70,7 @@ export class ImporterComponent implements OnInit {
   status: States = 'empty';
   filename = '';
   excludedFromCopy: string[] = [];
+  mappingID: string;
   userMappings: any;
   hasUserMapping = false;
   ambiguousColumns = [];
@@ -482,4 +483,8 @@ export class ImporterComponent implements OnInit {
     return result;
   }
 
+  clearFile() {
+    this.filename = '';
+    this.bstr = undefined;
+  }
 }

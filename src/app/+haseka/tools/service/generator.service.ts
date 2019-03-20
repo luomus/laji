@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { FormField } from '../model/form-field';
+import { IFormField } from '../model/excel';
 import { UserService } from '../../../shared/service/user.service';
 import { MappingService, SpecialTypes } from './mapping.service';
 import { Person } from '../../../shared/model/Person';
@@ -48,7 +48,7 @@ export class GeneratorService {
     private exportService: ExportService
   ) { }
 
-  generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx', next: () => void = () => {}) {
+  generate(filename: string, fields: IFormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx', next: () => void = () => {}) {
     const allTranslations = Object.keys(this.instructionMapping).map(key => this.instructionMapping[key]);
     allTranslations.push(this.instructionArray);
     ObservableForkJoin(
@@ -85,7 +85,7 @@ export class GeneratorService {
 
   }
 
-  private fieldsToAOA(fields: FormField[], useLabels: boolean, specials: {person: Person}) {
+  private fieldsToAOA(fields: IFormField[], useLabels: boolean, specials: {person: Person}) {
     const result = [[], []];
     fields.map((field, idx) => {
       const special = this.mappingService.getSpecial(field);
@@ -111,7 +111,7 @@ export class GeneratorService {
   }
 
   private addMetaDataToSheet(
-    fields: FormField[],
+    fields: IFormField[],
     sheet: XLSX.WorkSheet,
     extra: {person: Person, namedPlaces: NamedPlace[], informalTaxonGroups: InformalTaxonGroup[]},
     useLabels: boolean
@@ -175,7 +175,7 @@ export class GeneratorService {
     return XLSX.utils.aoa_to_sheet(vSheet);
   }
 
-  private getInstructionSheet(fields: FormField[], translations: {[key: string]: string}) {
+  private getInstructionSheet(fields: IFormField[], translations: {[key: string]: string}) {
     const vSheet = [];
     const given = {};
     let labelColLen = 10;

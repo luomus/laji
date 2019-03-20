@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormField } from '../../model/form-field';
+import { IFormField } from '../../model/excel';
 
 @Component({
   selector: 'laji-col-mapper',
@@ -9,7 +9,7 @@ import { FormField } from '../../model/form-field';
 })
 export class ColMapperComponent implements OnInit, OnChanges {
 
-  @Input() fields: {[key: string]: FormField};
+  @Input() fields: {[key: string]: IFormField};
   @Input() headers: {[key: string]: string} = {};
   @Input() colMapping: {[col: string]: string} = {};
   @Output() fieldSelected = new EventEmitter<{col: string, key: string, userValue: string}>();

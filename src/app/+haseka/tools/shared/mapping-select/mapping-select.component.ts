@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField, VALUE_AS_IS, VALUE_IGNORE } from '../../model/form-field';
+import { IFormField, VALUE_AS_IS, VALUE_IGNORE } from '../../model/excel';
 import { SpreadSheetService } from '../../service/spread-sheet.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class MappingSelectComponent implements OnInit {
   fieldGroups: string[] = [];
   groups: {[group: string]: string[]};
   fieldGroupsLabel: {[group: string]: string} = {};
-  _fields: {[key: string]: FormField};
+  _fields: {[key: string]: IFormField};
 
   constructor() {}
 
@@ -34,7 +34,7 @@ export class MappingSelectComponent implements OnInit {
   }
 
   @Input()
-  set fields(fields: {[key: string]: FormField}) {
+  set fields(fields: {[key: string]: IFormField}) {
     this._fields = fields;
     const groups = {};
     Object.keys(fields).forEach(key => {

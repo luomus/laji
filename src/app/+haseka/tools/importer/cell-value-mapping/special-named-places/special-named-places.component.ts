@@ -1,7 +1,7 @@
 
 import {map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField, VALUE_IGNORE } from '../../../model/form-field';
+import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { NamedPlacesService } from '../../../../../shared-modules/named-place/named-places.service';
 import { UserService } from '../../../../../shared/service/user.service';
 import { MappingService } from '../../../service/mapping.service';
@@ -16,7 +16,7 @@ export class SpecialNamedPlacesComponent implements OnInit {
 
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
-  @Input() field: FormField;
+  @Input() field: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
   namedPlaces: string[];

@@ -7,7 +7,7 @@ export enum FieldMap {
   ignore = <any>VALUE_IGNORE
 }
 
-export interface FormField {
+export interface IFormField {
   label: string;
   fullLabel: string;
   key: string;
@@ -21,4 +21,28 @@ export interface FormField {
   default?: any;
   col?: string;
   previousValue?: any;
+}
+
+
+export interface IColMap {
+  [key: string]: string;
+}
+
+export interface IValueMerge {
+  _merge_: {
+    [path: string]: any;
+  };
+}
+
+export type TUserValueMap = string|number|boolean|IValueMerge;
+
+export interface IValueMap {
+  [key: string]: {
+    [value: string]: TUserValueMap;
+  };
+}
+
+export interface IUserMappings {
+  col: IColMap;
+  value: IValueMap;
 }

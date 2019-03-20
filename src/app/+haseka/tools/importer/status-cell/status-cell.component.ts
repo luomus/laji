@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormField } from '../../model/form-field';
+import { IFormField } from '../../model/excel';
 
 @Component({
   selector: 'laji-status-cell',
@@ -13,7 +13,7 @@ export class StatusCellComponent implements OnInit {
     status: 'ok'|'invalid'|'fail'|'ignore',
     error: any
   };
-  @Input() fields: {[key: string]: FormField};
+  @Input() fields: {[key: string]: IFormField};
 
   constructor() { }
 

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField, VALUE_IGNORE } from '../../../model/form-field';
+import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { MappingService } from '../../../service/mapping.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class SpecialTaxonNameComponent implements OnInit {
 
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
-  @Input() field: FormField;
+  @Input() field: IFormField;
   @Input() addTaxonIDTo = 'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID';
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
