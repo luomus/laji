@@ -54,5 +54,109 @@
       ></laji-taxon-year-graph>
     </div>
   </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'observation.filterBy.recordBasis' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-observation-table
+        [showHeader]="false"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [isAggregate]="true"
+        [selected]="['unit.superRecordBasis']"
+        [query]="{taxonId: taxon.id}"
+        [showRowAsLink]="false"
+      ></laji-observation-table>
+    </div>
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'MY.lifeStage' | label"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-observation-table
+        [showHeader]="false"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [isAggregate]="true"
+        [selected]="['unit.lifeStage']"
+        [query]="{taxonId: taxon.id}"
+        [showRowAsLink]="false"
+      ></laji-observation-table>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'MY.sex' | label"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-observation-table
+        [showHeader]="false"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [isAggregate]="true"
+        [selected]="['unit.sex']"
+        [query]="{taxonId: taxon.id}"
+        [showRowAsLink]="false"
+      ></laji-observation-table>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'observation.filterBy.collectionId' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-observation-table
+        [height]="'350px'"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [showHeader]="false"
+        [isAggregate]="true"
+        [selected]="['document.collectionId']"
+        [query]="{taxonId: taxon.id}"
+        [showRowAsLink]="false"
+      ></laji-observation-table>
+    </div>
+  </div>
+  <div
+    class="col-xs-12 col-sm-6"
+    *ngIf="taxon.secureLevel || taxon.breedingSecureLevel || taxon.naturaAreaSecureLevel || taxon.nestSiteSecureLevel || taxon.winteringSecureLevel"
+  >
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.observations.secureLevels' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <table class="table taxon-table table-condensed">
+        <tbody>
+        <ng-container *ngFor="let secureLevelType of [
+          'secureLevel',
+          'breedingSecureLevel',
+          'naturaAreaSecureLevel',
+          'nestSiteSecureLevel',
+          'winteringSecureLevel']">
+          <tr *ngIf="taxon[secureLevelType]">
+            <th>{{ 'MX.' + secureLevelType | label }}</th>
+            <td>{{ taxon[secureLevelType] | label }}</td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 

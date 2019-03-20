@@ -839,6 +839,7 @@
   "taxonomy.observations.yearChart.hideHistory": "Piilota vanhimmat vuodet",
   "taxonomy.observations.yearChart.xAxis": "Vuodet",
   "taxonomy.observations.yearChart.yAxis": "Havaintomäärä",
+  "taxonomy.observations.secureLevels": "Salausperusteet",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Beskrivning",
