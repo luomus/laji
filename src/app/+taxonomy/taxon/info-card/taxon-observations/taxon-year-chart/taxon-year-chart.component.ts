@@ -62,7 +62,7 @@ export class TaxonYearChartComponent implements OnChanges, OnDestroy {
 
           return {name: year, value: count};
       });
-      this.data = this.allData.slice(this.splitIdx, this.allData.length - 1);
+      this.data = this.allData.slice(this.splitIdx, this.allData.length);
       this.hasData.emit(this.allData.length > 0);
 
       this.cd.markForCheck();
@@ -77,7 +77,7 @@ export class TaxonYearChartComponent implements OnChanges, OnDestroy {
     if (this.data.length < this.allData.length) {
       this.data = this.allData;
     } else {
-      this.data = this.allData.slice(this.splitIdx, this.allData.length - 1);
+      this.data = this.allData.slice(this.splitIdx, this.allData.length);
     }
   }
 }
