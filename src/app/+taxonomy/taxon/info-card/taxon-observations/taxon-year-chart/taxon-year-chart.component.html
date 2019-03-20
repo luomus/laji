@@ -9,7 +9,12 @@
       [yAxisLabel]="'taxonomy.observations.yearChart.yAxis' | translate"
       [showXAxisLabel]="true"
       [showYAxisLabel]="true"
-    ></ngx-charts-bar-vertical>
+    >
+      <ng-template #tooltipTemplate let-model="model">
+        <span class="tooltip-label">{{ model.name }}</span>
+        <span class="tooltip-val">{{ model.value.toLocaleString("fi") }}</span>
+      </ng-template>
+    </ngx-charts-bar-vertical>
   </div>
   <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="splitIdx > 0">
     {{ 'taxonomy.observations.yearChart.' + (data.length < allData.length ? 'showHistory' : 'hideHistory') | translate }}
