@@ -92,7 +92,13 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
         )
         .subscribe(key => {
           if (key) {
-            this.layer = L.tileLayer(this.layerUrl + key, {zIndex: 1000});
+            this.layer = L.tileLayer(
+              this.layerUrl + key,
+              {
+                zIndex: 1000,
+                attribution: '<a target="_blank" href="https://www.gbif.org/citation-guidelines">GBIF</a>'
+              }
+            );
             this.addLayerToMap();
           }
           this.loading = false;
