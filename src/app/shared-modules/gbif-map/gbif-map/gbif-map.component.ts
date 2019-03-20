@@ -23,7 +23,7 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
     },
     zoom: 2,
     draw: false,
-    center: [40, 25],
+    center: [0, 0],
     tileLayerName: LajiMapTileLayerName.openStreetMap,
     availableTileLayerNamesWhitelist: [
       LajiMapTileLayerName.openStreetMap,
@@ -37,7 +37,7 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
 
   private layerUrl = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?' +
     'style=classic.poly&bin=hex&taxonKey=';
-  private speciesApiUrl = 'http://api.gbif.org/v1/species/match';
+  private speciesApiUrl = 'https://api.gbif.org/v1/species/match';
 
   private getTaxonKeySub: Subscription;
 
