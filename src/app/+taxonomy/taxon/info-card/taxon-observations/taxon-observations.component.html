@@ -38,5 +38,21 @@
       ></laji-gbif-map>
     </div>
   </div>
+  <div class="col-xs-12" *ngIf="hasYearData !== false" [hidden]="!hasYearData">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.observations.yearChart' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
+      </p>
+      <laji-taxon-year-graph
+        [taxonId]="taxon.id"
+        (hasData)="hasYearData = $event"
+      ></laji-taxon-year-graph>
+    </div>
+  </div>
 </div>
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 
 @Component({
@@ -6,12 +6,15 @@ import {Taxonomy} from '../../../../shared/model/Taxonomy';
   templateUrl: './taxon-observations.component.html',
   styleUrls: ['./taxon-observations.component.scss']
 })
-export class TaxonObservationsComponent implements OnInit {
+export class TaxonObservationsComponent implements OnChanges {
   @Input() taxon: Taxonomy;
+
+  hasYearData: boolean;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges() {
+    this.hasYearData = undefined;
   }
 
 }
