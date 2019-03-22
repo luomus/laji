@@ -526,7 +526,7 @@
       "root": "projects/generic-label-maker-element/",
       "sourceRoot": "projects/generic-label-maker-element/src",
       "projectType": "application",
-      "prefix": "laji",
+      "prefix": "",
       "schematics": {},
       "architect": {
         "build": {

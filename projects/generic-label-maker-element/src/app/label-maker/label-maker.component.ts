@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ISetup } from 'generic-label-maker';
 
 @Component({
-  selector: 'laji-label-maker',
+  selector: 'label-maker',
   templateUrl: './label-maker.component.html',
   styleUrls: ['./label-maker.component.scss']
 })
