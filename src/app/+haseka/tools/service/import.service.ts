@@ -7,6 +7,31 @@ import { UserService } from '../../../shared/service/user.service';
 import { DOCUMENT_LEVEL, IFormField, GATHERING_LEVEL, VALUE_IGNORE } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { Util } from '../../../shared/service/util.service';
+import * as Hash from 'object-hash';
+
+const LEVEL_DOCUMENT = 'document';
+const LEVEL_GATHERING = 'gatherings';
+const LEVEL_UNIT = 'units';
+const LEVEL_TAXON_CENSUS = 'taxonCensus';
+
+interface ILevelData {
+  [parent: string]: {
+    rowIdx: number;
+    hash: string;
+    data: object;
+  };
+}
+
+interface IDocumentData {
+  document: Document;
+  rows: {[row: number]: boolean};
+  skipped: number[];
+  ref: {
+    [hash: string]: {
+      [parentLevel: string]: number
+    }
+  };
+}
 
 @Injectable()
 export class ImportService {
@@ -23,18 +48,16 @@ export class ImportService {
   ];
 
   private readonly newToParent = {
-    'identifications': 'units',
-    'gatheringEvent': 'document',
-    'gatheringFact': 'gatherings',
-    'unitFact': 'units',
-    'unitGathering': 'units'
+    'identifications': LEVEL_UNIT,
+    'gatheringEvent': LEVEL_DOCUMENT,
+    'gatheringFact': LEVEL_GATHERING,
+    'unitFact': LEVEL_UNIT,
+    'unitGathering': LEVEL_UNIT
   };
 
   private readonly fieldToNewParent = {
-    // 'gatherings[*].dateBegin': 'document', Changing gatheringEvent date already makes new gathering
-    // 'gatherings[*].dateEnd': 'document',
-    'gatherings[*].geometry': 'document',
-    'gatherings[*].namedPlaceID': 'document'
+    'gatherings[*].geometry': LEVEL_DOCUMENT,
+    'gatherings[*].namedPlaceID': LEVEL_DOCUMENT
   };
 
   constructor(
@@ -70,19 +93,8 @@ export class ImportService {
     mapping: {[col: string]: string},
     fields: {[key: string]: IFormField},
     formID: string
-  ): {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[] {
-    const cols = Object.keys(mapping);
-    const parents = cols.reduce((previous, current) => {
-      const field = fields[mapping[current]];
-      if (previous.indexOf(field.parent) === -1) {
-        previous.push(field.parent);
-      }
-      return previous;
-    }, []);
-    const spot = parents.reduce((previous, current) => ({...previous, [current]: 0}), {});
-    this.resetPreviousValue(fields);
-
-    return this.rowsToDocument(data, mapping, fields, spot, formID);
+  ): {document: Document, skipped: number[], rows: {[row: number]: boolean}}[] {
+    return this.rowsToDocument(data, mapping, fields, formID);
   }
 
   hasValue(value): boolean {
@@ -90,137 +102,140 @@ export class ImportService {
       value = value.filter(this.hasValue);
       return value.filter(this.hasValue).length !== 0;
     }
-    return value !== VALUE_IGNORE && value !== '' && value !== null;
+    return value !== VALUE_IGNORE && value !== '' && value !== null && value !== undefined;
   }
 
-  private resetPreviousValue(fields: {[key: string]: IFormField}, level?: string) {
-    Object.keys(fields).map(key => {
-      if ((level && fields[key].parent === level) || !level) {
-        fields[key].previousValue = null;
-      }
-    });
-  }
-
-  private getParent(field: IFormField) {
-    if (this.fieldToNewParent[field.key]) {
+  private getParent(field: IFormField, parentBy: 'eachRow'|'newLocation'|'allInSame' = 'newLocation') {
+    if (parentBy === 'eachRow') {
+      return LEVEL_DOCUMENT;
+    }
+    if (parentBy === 'newLocation' && this.fieldToNewParent[field.key]) {
       return this.fieldToNewParent[field.key];
     }
     return this.newToParent[field.parent] ? this.newToParent[field.parent] : field.parent;
+  }
+
+  private getRootHash(parentData: ILevelData) {
+    if (parentData[LEVEL_DOCUMENT]) {
+      return parentData[LEVEL_DOCUMENT].hash;
+    } else if (parentData[LEVEL_GATHERING]) {
+      return parentData[LEVEL_GATHERING].hash;
+    }
+    return parentData[LEVEL_UNIT].hash;
+  }
+
+  private findParentHash(row: ILevelData, level: string) {
+    switch (level) {
+      case LEVEL_UNIT:
+      case LEVEL_TAXON_CENSUS:
+        return this.findLevelHash(row, LEVEL_GATHERING);
+    }
+    return this.findLevelHash(row, LEVEL_DOCUMENT);
+  }
+
+  private findLevelHash(row: ILevelData, level) {
+    return row[level] ? row[level].hash : '';
   }
 
   private rowsToDocument(
     rows: {[col: string]: any}[],
     mapping: {[col: string]: string},
     fields: {[key: string]: IFormField},
-    spot: {[level: string]: number},
     formID: string
-  ): {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[] {
+  ): {document: Document, skipped: number[], rows: {[row: number]: boolean}}[] {
     const cols = Object.keys(mapping);
-    const result: {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[] = [];
     const allLevels = [];
-    let unitCnt = 0;
-    let unitsInGathering = this.cntUnitsInGathering(rows, cols, fields, mapping);
-    let skipped = [];
-    let document: any = {};
-    let rowSpots: {[row: number]: {[level: string]: number}} = {};
+
+    // Fetch all columns that are not marked and IGNORE
+    const allCols = [];
     cols.map(col => {
       const field = fields[mapping[col]];
-      const parent = this.getParent(field);
       if (field.key === VALUE_IGNORE) {
         return;
       }
+      allCols.push(col);
+      const parent = this.getParent(field);
       if (allLevels.indexOf(parent) === -1) {
         allLevels.push(parent);
       }
     });
+
+    const documents: {[hash: string]: ILevelData[]} = {};
     rows.forEach((row, rowIdx) => {
-      const newLevels = [];
-      const values = {'formID': formID};
-      const possible = {};
-      cols.forEach((col) => {
+      const parentData: ILevelData = {};
+      allCols.forEach(col => {
         const field = fields[mapping[col]];
-        if (!row[col] || field.key === VALUE_IGNORE) {
-          return;
-        }
-        const parent = this.getParent(field);
         let value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
         if (!this.hasValue(value)) {
           return;
         }
+        const parent = this.getParent(field);
+        if (!parentData[parent]) {
+          parentData[parent] = {
+            rowIdx: rowIdx,
+            hash: '' + rowIdx,
+            data: {}
+          };
+        }
+
+        // Check if array value has values that should be ignored
         if (Array.isArray(value)) {
           value = value.filter(val => val !== VALUE_IGNORE && val !== '');
         }
+
+        // Check if there is are values that should be merged instead
         if (typeof value === 'object' && value[MappingService.mergeKey]) {
           Object.keys(value[MappingService.mergeKey]).forEach(location => {
-            possible[location] = value[MappingService.mergeKey][location];
+            parentData[parent].data[location] = value[MappingService.mergeKey][location];
           });
         } else {
-          possible[field.key] = value;
-        }
-        if (this.hasNewLevel(field, row[col], newLevels, parent)) {
-          newLevels.push(this.getParent(field));
+          parentData[parent].data[field.key] = value;
         }
       });
-      if (!this.hasCountValue(possible)) {
-        skipped.push(rowIdx);
-        return;
-      } else {
-        Object.keys(possible).forEach(key => {
-          values[key] = possible[key];
-        });
-      }
-      cols.forEach((col) => {
-        if (!row[col]) {
-          return;
-        }
-        const field = fields[mapping[col]];
-        const value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
-        if (!this.hasValue(value)) {
-          return;
-        }
-        field.previousValue = row[col];
-      });
-      unitCnt++;
-      unitsInGathering--;
-      if (newLevels.indexOf(DOCUMENT_LEVEL) !== -1 || (unitCnt + Math.max(unitsInGathering, 0)) > ImportService.maxPerDocument) {
-        Object.keys(spot).map(level => spot[level] = 0);
-        result.push({document: document, rows: rowSpots, skipped: skipped});
-        unitCnt = 1;
-        document = {};
-        rowSpots = {};
-        skipped = [];
-        unitsInGathering = rows[rowIdx + 1] ? this.cntUnitsInGathering(rows.slice(rowIdx + 1), cols, fields, mapping) - 1 : 1;
-      } else {
-        if (unitsInGathering < 0) {
-          unitsInGathering = this.cntUnitsInGathering(rows.slice(rowIdx), cols, fields, mapping);
-        }
-        const toZero = [];
-        newLevels.forEach(level => {
-          cols.forEach(col => {
-            const field = fields[mapping[col]];
-            allLevels.forEach(subLevel => {
-              if (subLevel === level || toZero.indexOf(subLevel) > -1) {
-                return;
-              }
-              const subLevelRegExp = new RegExp(`\\b${level}\\[\\*\\].*\\b${subLevel}\\[\\*\\]`, 'g');
-              if (subLevelRegExp.test(field.key)) {
-                toZero.push(subLevel);
-              }
-            });
-          });
-          spot[level]++;
-        });
-        toZero.forEach(subLevel => {
-          spot[subLevel] = 0;
-          this.resetPreviousValue(fields, subLevel);
-        });
-      }
-      rowSpots[rowIdx] = {...spot};
-      this.valuesToDocument(this.relativePathToAbsolute(values, spot), document);
-    });
-    result.push({document: document, rows: rowSpots, skipped: skipped});
 
-    return result;
+      // Count the hash to different levels in the document. This needs to be done only if prentBy !== eachRow
+      Object.keys(parentData).forEach(key => {
+        parentData[key].hash = Hash(parentData[key].data, {algorithm: 'sha1'});
+      });
+      const rootHash = this.getRootHash(parentData);
+      if (!documents[rootHash]) {
+        documents[rootHash] = [];
+      }
+      documents[rootHash].push(parentData);
+    });
+
+    // TODO: Check to see if any of the documents have more than the limit and split accordingly
+
+    // Build the documents
+    const docs: {[hash: string]: IDocumentData} = {};
+    Object.keys(documents).forEach(hash => {
+      if (!docs[hash]) {
+        docs[hash] = {document: {'formID': formID}, ref: {[hash]: {}}, rows: {}, skipped: []};
+        this.valuesToDocument(
+          this.relativePathToAbsolute(documents[hash][0].document.data),
+          docs[hash].document
+        );
+      }
+      documents[hash].forEach(row => {
+        [LEVEL_GATHERING, LEVEL_TAXON_CENSUS, LEVEL_UNIT].forEach(level => {
+          const levelHash = this.findLevelHash(row, level);
+          if ((!docs[hash].ref[levelHash] || level === LEVEL_UNIT) && row[level] && row[level].data) {
+            if (level === LEVEL_UNIT && this.hasCountValue(row[level].data)) {
+              docs[hash].skipped.push(row[level].rowIdx);
+              return;
+            }
+            const parentHash = this.findParentHash(row, level);
+            const parentRef = docs[hash].ref[parentHash];
+            parentRef[level] = typeof parentRef[level] === 'undefined' ? 0 : parentRef[level] + 1;
+            docs[hash].ref[levelHash] = {...parentRef};
+            docs[hash].rows[row[level].rowIdx] = true;
+            this.valuesToDocument(this.relativePathToAbsolute(row[level].data, parentRef), docs[hash].document);
+          }
+        });
+      });
+    });
+
+    return Object.keys(docs).map((hash) => ({document: docs[hash].document, rows: docs[hash].rows, skipped: docs[hash].skipped}));
   }
 
   private cntUnitsInGathering(rows, cols, rawFields, mapping) {
@@ -277,15 +292,17 @@ export class ImportService {
     return !isNaN(Number(value));
   }
 
-  private relativePathToAbsolute(values: {[key: string]: any}, spot: {[level: string]: number}): {[key: string]: any} {
+  private relativePathToAbsolute(values: {[key: string]: any}, spot?: {[level: string]: number}): {[key: string]: any} {
     const replaces: {from: string, to: string}[] = [];
     const result = {};
-    Object.keys(spot).map(level => {
-      if (level === DOCUMENT_LEVEL || level === '') {
-        return;
-      }
-      replaces.push({from: `\\b${level}\\[\\*\\]`, to: `${level}[${spot[level]}]`});
-    });
+    if (spot) {
+      Object.keys(spot).map(level => {
+        if (level === DOCUMENT_LEVEL || level === '') {
+          return;
+        }
+        replaces.push({from: `\\b${level}\\[\\*\\]`, to: `${level}[${spot[level]}]`});
+      });
+    }
     Object.keys(values).map(key => {
       let targetKey = key;
       replaces.map(replace => {
