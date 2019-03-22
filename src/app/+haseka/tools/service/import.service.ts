@@ -22,11 +22,11 @@ interface ILevelData {
   };
 }
 
-interface IDocumentData {
+export interface IDocumentData {
   document: Document;
   rows: {[row: number]: boolean};
   skipped: number[];
-  ref: {
+  ref?: {
     [hash: string]: {
       [parentLevel: string]: number
     }
@@ -142,7 +142,7 @@ export class ImportService {
     mapping: {[col: string]: string},
     fields: {[key: string]: IFormField},
     formID: string
-  ): {document: Document, skipped: number[], rows: {[row: number]: boolean}}[] {
+  ): IDocumentData[] {
     const cols = Object.keys(mapping);
     const allLevels = [];
 

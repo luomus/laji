@@ -5,7 +5,7 @@ import { DatatableComponent } from '../../../shared-modules/datatable/datatable/
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
 import { IFormField } from '../model/excel';
-import { ImportService } from '../service/import.service';
+import { IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -53,7 +53,7 @@ export class ImporterComponent implements OnInit {
 
   data: {[key: string]: any}[];
   mappedData: {[key: string]: any}[];
-  parsedData: {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[];
+  parsedData: IDocumentData[];
   header: {[key: string]: string};
   fields: {[key: string]: IFormField};
   dataColumns: ImportTableColumn[];
