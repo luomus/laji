@@ -34,25 +34,25 @@ const NEW_SETUP: ISetup = {
     {
       type: 'field',
       style: {
-        'width.mm': 15,
-        'height.mm': 15,
+        'width.mm': 13,
+        'height.mm': 13,
       },
       x: 0,
       y: 0,
       fields: [
-        {field: 'id', content: 'http://id.luomus.fi/GV.1', label: 'Tunniste - QRCode', type: 'qr-code'}
+        {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: 'qr-code'}
       ]
     },
     {
       type: 'field',
       style: {
-        'width.mm': 25,
+        'width.mm': 35,
         'height.mm': 5,
       },
-      x: 16,
+      x: 15,
       y: 0,
       fields: [
-        {field: 'id', content: 'http://id.luomus.fi/GV.1', label: 'Tunniste'}
+        {field: 'id', content: 'http://example.com/ID', label: 'ID'}
       ]
     }
   ]
