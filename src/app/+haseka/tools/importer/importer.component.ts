@@ -5,7 +5,7 @@ import { DatatableComponent } from '../../../shared-modules/datatable/datatable/
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
 import { IFormField } from '../model/excel';
-import { ImportService } from '../service/import.service';
+import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -50,13 +50,16 @@ export class ImporterComponent implements OnInit {
 
   @LocalStorage() uploadedFiles;
   @LocalStorage() partiallyUploadedFiles;
+  @LocalStorage('importCombineBy', CombineToDocument.gathering) combineBy: CombineToDocument;
+  @LocalStorage('importIncludeOnlyWithCount', true) onlyWithCount: boolean;
 
   data: {[key: string]: any}[];
   mappedData: {[key: string]: any}[];
-  parsedData: {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[];
+  parsedData: IDocumentData[];
   header: {[key: string]: string};
   fields: {[key: string]: IFormField};
   dataColumns: ImportTableColumn[];
+  docCnt = 0;
   origColMap: {[key: string]: string};
   colMap: {[key: string]: string};
   valueMap: {[key: string]: {[value: string]: any}} = {};
@@ -70,7 +73,6 @@ export class ImporterComponent implements OnInit {
   status: States = 'empty';
   filename = '';
   excludedFromCopy: string[] = [];
-  mappingID: string;
   userMappings: any;
   hasUserMapping = false;
   ambiguousColumns = [];
@@ -81,6 +83,12 @@ export class ImporterComponent implements OnInit {
   fileLoading = false;
   total = 0;
   current = 0;
+
+  combineOptions = [
+    CombineToDocument.gathering,
+    CombineToDocument.all,
+    CombineToDocument.none
+  ];
 
   private externalLabel = [
     'editors[*]',
@@ -245,21 +253,27 @@ export class ImporterComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  rowMappingDone(mappings) {
+  rowMappingDone(mappings?) {
     this.status = 'importReady';
-    this.mappingService.addUserValueMapping(mappings);
+    if (mappings) {
+      this.mappingService.addUserValueMapping(mappings);
+    }
     this.hasUserMapping = this.mappingService.hasUserMapping();
     this.initParsedData();
     const skipped = [];
     const docs = {};
     if (this.parsedData) {
+      let removed = 0;
       this.parsedData.forEach((data, idx) => {
         skipped.push(...data.skipped);
         const docNum = idx + 1;
+        removed += data.document === null ? 1 : 0;
         Object.keys(data.rows).forEach(row => {
           docs[row] = docNum;
         });
       });
+
+      this.docCnt = this.parsedData.length - removed;
     }
     this.mappedData = [
       ...this.data.map((row, idx) => ({
@@ -274,12 +288,22 @@ export class ImporterComponent implements OnInit {
     this.validate();
   }
 
+  changeImportType(value: any) {
+    if (value === false || value === true || value === 'true' || value === 'false') {
+      this.onlyWithCount = value === true || value === 'true';
+    } else {
+      this.combineBy = value;
+    }
+    this.parsedData = undefined;
+    this.rowMappingDone();
+  }
+
   validate() {
     this.status = 'validating';
     let success = true;
     this.total = this.parsedData.length;
     this.current = 1;
-    ObservableFrom(this.parsedData).pipe(
+    ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
       mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
         concatMap(document => this.importService.validateData(document).pipe(
           switchMap(result => ObservableOf({result: result, source: data})),
@@ -301,8 +325,6 @@ export class ImporterComponent implements OnInit {
               status: 'invalid',
               error: data.result._error
             });
-          } else {
-            Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {});
           }
           this.mappedData = [...this.mappedData];
           this.cdr.markForCheck();
@@ -331,8 +353,7 @@ export class ImporterComponent implements OnInit {
     let hadSuccess = false;
     this.total = this.parsedData.length;
     this.current = 1;
-    ObservableFrom(this.parsedData);
-    ObservableFrom(this.parsedData).pipe(
+    ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
       mergeMap(data => this.augmentService.augmentDocument(data.document).pipe(
         concatMap(document => this.importService.sendData(document, publicityRestrictions).pipe(
           switchMap(result => ObservableOf({result: result, source: data})),
@@ -391,7 +412,14 @@ export class ImporterComponent implements OnInit {
 
   initParsedData() {
     if (!this.parsedData) {
-      this.parsedData = this.importService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
+      this.parsedData = this.importService.flatFieldsToDocuments(
+        this.data,
+        this.colMap,
+        this.fields,
+        this.formID,
+        this.onlyWithCount,
+        this.combineBy
+      );
     }
   }
 
