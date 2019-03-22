@@ -1007,6 +1007,7 @@
   "cancel": "Cancel",
   "navigation.lolife": "LOLIFE",
   "theme.lolife.intro": "Flying-Squirrel-Life",
-  "theme.lolife.places": "Record census actions"
-
+  "theme.lolife.places": "Record census actions",
+  "map.fullScreen": "Open the map in fullscreen",
+  "map.exitFullScreen": "Exit fullscreen mode"
 }

@@ -994,6 +994,7 @@
   "cancel": "Avbryt",
   "navigation.lolife": "LOLIFE",
   "theme.lolife.intro": "Flygekorre-Life",
-  "theme.lolife.places": "Spela in folkräkningsåtgärder"
-
+  "theme.lolife.places": "Spela in folkräkningsåtgärder",
+  "map.fullScreen": "Öppet stenografi läge",
+  "map.exitFullScreen": "Avsluta helskärmsläge"
 }
