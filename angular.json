@@ -521,6 +521,106 @@
           }
         }
       }
+    },
+    "generic-label-maker-element": {
+      "root": "projects/generic-label-maker-element/",
+      "sourceRoot": "projects/generic-label-maker-element/src",
+      "projectType": "application",
+      "prefix": "laji",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/generic-label-maker-element",
+            "index": "projects/generic-label-maker-element/src/index.html",
+            "main": "projects/generic-label-maker-element/src/main.ts",
+            "polyfills": "projects/generic-label-maker-element/src/polyfills.ts",
+            "tsConfig": "projects/generic-label-maker-element/tsconfig.app.json",
+            "assets": [
+              "projects/generic-label-maker-element/src/favicon.ico",
+              "projects/generic-label-maker-element/src/assets"
+            ],
+            "styles": [
+              "projects/generic-label-maker-element/src/styles.css"
+            ],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/generic-label-maker-element/src/environments/environment.ts",
+                  "with": "projects/generic-label-maker-element/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "generic-label-maker-element:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "generic-label-maker-element:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "generic-label-maker-element:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/generic-label-maker-element/src/test.ts",
+            "polyfills": "projects/generic-label-maker-element/src/polyfills.ts",
+            "tsConfig": "projects/generic-label-maker-element/tsconfig.spec.json",
+            "karmaConfig": "projects/generic-label-maker-element/karma.conf.js",
+            "styles": [
+              "projects/generic-label-maker-element/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/generic-label-maker-element/src/favicon.ico",
+              "projects/generic-label-maker-element/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/generic-label-maker-element/tsconfig.app.json",
+              "projects/generic-label-maker-element/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "laji",
