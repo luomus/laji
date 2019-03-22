@@ -1,5 +1,5 @@
 <div class="ll-setting-row">
-  <table class="">
+  <table class="input">
     <tr>
       <td colspan="2">
         <div style="text-align: right">
@@ -37,7 +37,7 @@
     <tr>
       <td>font:</td>
       <td>
-        <select class="form-control input-sm" (change)="change('font-family', $event.target.value)">
+        <select style="width: 100%" class="form-control input-sm" (change)="change('font-family', $event.target.value)">
           <option value="" *ngIf="allowEmptyFontFamily"></option>
           <option *ngFor="let family of fontFamily" [value]="family" [selected]="fontSettings && family === fontSettings['font-family']">{{family}}</option>
         </select>

@@ -1,29 +1,33 @@
 <div class="ll-setting-row">
   <strong>Margins</strong>
-  <table>
+  <table class="margins">
     <tr>
-      <td>Top:</td>
+      <td>top:</td>
       <td>
-        <input class="form-control input-sm" type="text" style="width: 50px" [value]="top" (change)="change('top', $event.target.value)">mm.
+        <input class="form-control input-sm md-input" type="text" [value]="top" (change)="change('top', $event.target.value)">
       </td>
+      <td>mm.</td>
     </tr>
     <tr>
-      <td>Right:</td>
+      <td>right:</td>
       <td>
-        <input class="form-control input-sm" type="text" style="width: 50px" [value]="right" (change)="change('right', $event.target.value)">mm.
+        <input class="form-control input-sm md-input" type="text" [value]="right" (change)="change('right', $event.target.value)">
       </td>
+      <td>mm.</td>
     </tr>
     <tr>
-      <td>Bottom:</td>
+      <td>bottom:</td>
       <td>
-        <input class="form-control input-sm" type="text" style="width: 50px" [value]="bottom" (change)="change('bottom', $event.target.value)">mm.
+        <input class="form-control input-sm md-input" type="text" [value]="bottom" (change)="change('bottom', $event.target.value)">
       </td>
+      <td>mm.</td>
     </tr>
     <tr>
-      <td>Left:</td>
+      <td>left:</td>
       <td>
-        <input class="form-control input-sm" type="text" style="width: 50px" [value]="left" (change)="change('left', $event.target.value)">mm.
+        <input class="form-control input-sm md-input" type="text" [value]="left" (change)="change('left', $event.target.value)">
       </td>
+      <td>mm.</td>
     </tr>
   </table>
 </div>

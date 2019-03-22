@@ -9,38 +9,30 @@
     [showUnderline]="true"
   ></ll-font-settings>
   <div class="position">
-    <table style="width: 150px; margin-left: 40px;">
+    <table class="margins">
       <tr>
-        <td>
-          left:
-        </td>
+        <td>left:</td>
         <td>
           <input class="form-control" type="text" [value]="round(selectedLabelItem.x)" (change)="changePosition('x', $event)">
         </td>
         <td>mm.</td>
       </tr>
       <tr>
-        <td>
-          top:
-        </td>
+        <td>top:</td>
         <td>
           <input class="form-control" type="text" [value]="round(selectedLabelItem.y)" (change)="changePosition('y', $event)">
         </td>
         <td>mm.</td>
       </tr>
       <tr>
-        <td>
-          width:
-        </td>
+        <td>width:</td>
         <td>
           <input class="form-control" type="text" [value]="round(selectedLabelItem.style['width.mm'])" (change)="changeActiveStyle('width.mm', $event)">
         </td>
         <td>mm.</td>
       </tr>
       <tr>
-        <td>
-          height:
-        </td>
+        <td>height:</td>
         <td>
           <input class="form-control" type="text" [value]="round(selectedLabelItem.style['height.mm'])" (change)="changeActiveStyle('height.mm', $event)">
         </td>
