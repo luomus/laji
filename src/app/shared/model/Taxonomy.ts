@@ -235,6 +235,8 @@ export interface Taxonomy {
   primaryHabitat?: Habitat;
 
   secondaryHabitats?: Habitat[];
+
+  parent?: any;
 }
 
 export interface RedListEvaluation {

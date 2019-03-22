@@ -1,9 +1,10 @@
-import {AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {LajiMapOptions, LajiMapTileLayerName} from '@laji-map/laji-map.interface';
 import {LajiMapComponent} from '@laji-map/laji-map.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
+import {Taxonomy} from '../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-gbif-map',
@@ -13,16 +14,16 @@ import {Subscription} from 'rxjs';
 export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
   @ViewChild(LajiMapComponent) mapComponent: LajiMapComponent;
 
-  @Input() scientificName: string;
+  @Input() taxon: Taxonomy;
   @Input() height = '605px';
 
   mapOptions: LajiMapOptions = {
     controls: {
       draw: false
     },
-    zoom: 0,
+    zoom: 2,
     draw: false,
-    center: [40, 25],
+    center: [0, 0],
     tileLayerName: LajiMapTileLayerName.openStreetMap,
     availableTileLayerNamesWhitelist: [
       LajiMapTileLayerName.openStreetMap,
@@ -36,16 +37,17 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
 
   private layerUrl = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?' +
     'style=classic.poly&bin=hex&taxonKey=';
-  private speciesApiUrl = 'http://api.gbif.org/v1/species/suggest';
+  private speciesApiUrl = 'https://api.gbif.org/v1/species/match';
 
   private getTaxonKeySub: Subscription;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.scientificName) {
+    if (changes.taxon) {
       this.updateData();
     }
   }
@@ -72,33 +74,54 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
       this.layer = undefined;
     }
 
-    if (this.scientificName) {
+    if (this.taxon && this.taxon.scientificName) {
       this.loading = true;
 
       this.getTaxonKeySub = this.http.get(this.speciesApiUrl, {
         headers: new HttpHeaders({'Accept': 'application/json'}),
         responseType: 'text',
-        params: {q: this.scientificName}
+        params: this.getTaxonSearchParams()
       })
         .pipe(
           map(data => {
             data = JSON.parse(data);
-
-            if (data.length > 0 && data[0]['canonicalName'] === this.scientificName) {
-              return data[0]['key'];
+            if (data && data['matchType'] === 'EXACT') {
+              return data['usageKey'];
             }
           })
         )
         .subscribe(key => {
           if (key) {
-            this.layer = L.tileLayer(this.layerUrl + key, {zIndex: 1000});
+            this.layer = L.tileLayer(
+              this.layerUrl + key,
+              {
+                zIndex: 1000,
+                attribution: '<a target="_blank" href="https://www.gbif.org/citation-guidelines">GBIF</a>'
+              }
+            );
             this.addLayerToMap();
           }
           this.loading = false;
+          this.cd.markForCheck();
         });
     } else {
       this.loading = false;
     }
+  }
+
+  private getTaxonSearchParams(): any {
+    const params = {
+      name: this.taxon.scientificName,
+      strict: true
+    };
+
+    for (const parent of ['kingdom', 'phylum', 'class', 'order', 'family', 'genus']) {
+      if (this.taxon.parent && this.taxon.parent[parent]) {
+        params[parent] = this.taxon.parent[parent].scientificName;
+      }
+    }
+
+    return params;
   }
 
   private addLayerToMap() {

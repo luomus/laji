@@ -55,6 +55,9 @@ import {
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
 import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
 import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
+import { TaxonObservationsComponent } from './taxon/info-card/taxon-observations/taxon-observations.component';
+import { InfoCardHeaderComponent } from './taxon/info-card/info-card-header/info-card-header.component';
+import { TaxonYearChartComponent } from './taxon/info-card/taxon-observations/taxon-year-chart/taxon-year-chart.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -75,7 +78,10 @@ import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
     TaxonBiologyComponent,
     TaxonTaxonomyComponent,
     TaxonDescriptionSourceComponent,
-    TaxonOccurrenceComponent
+    TaxonOccurrenceComponent,
+    TaxonObservationsComponent,
+    InfoCardHeaderComponent,
+    TaxonYearChartComponent
   ],
 })
 export class TaxonomyModule {
