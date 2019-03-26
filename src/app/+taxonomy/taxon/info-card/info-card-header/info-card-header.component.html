@@ -21,7 +21,11 @@
       <a (click)="selectLeftSibling()" class="link arrow-link arrow-link-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
       <select class="form-control input-sm" [ngModel]="taxon.id" (ngModelChange)="taxonSelect.emit($event)">
         <option *ngFor="let sibling of siblings" [value]="sibling.id">
-          <laji-taxon-name [taxon]="sibling" [addLink]="false"></laji-taxon-name>
+          {{ sibling.vernacularName | multiLang }}
+          <ng-container *ngIf="sibling.vernacularName && sibling.scientificName">
+            &ndash;
+          </ng-container>
+          <ng-container>{{sibling.scientificName}}</ng-container>
         </option>
       </select>
       <a (click)="selectRightSibling()" class="link arrow-link arrow-link-right"><i class="glyphicon glyphicon-chevron-right"></i></a>
