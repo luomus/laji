@@ -71,7 +71,7 @@
         [showSettingsMenu]="false"
         [isAggregate]="true"
         [selected]="['unit.superRecordBasis']"
-        [query]="{taxonId: taxon.id}"
+        [query]="{taxonId: [taxon.id], cache: true}"
         [showRowAsLink]="false"
       ></laji-observation-table>
     </div>
@@ -89,7 +89,7 @@
         [showSettingsMenu]="false"
         [isAggregate]="true"
         [selected]="['unit.lifeStage']"
-        [query]="{taxonId: taxon.id}"
+        [query]="{taxonId: [taxon.id], cache: true}"
         [showRowAsLink]="false"
       ></laji-observation-table>
     </div>
@@ -109,7 +109,7 @@
         [showSettingsMenu]="false"
         [isAggregate]="true"
         [selected]="['unit.sex']"
-        [query]="{taxonId: taxon.id}"
+        [query]="{taxonId: [taxon.id], cache: true}"
         [showRowAsLink]="false"
       ></laji-observation-table>
     </div>
@@ -128,7 +128,7 @@
         [showHeader]="false"
         [isAggregate]="true"
         [selected]="['document.collectionId']"
-        [query]="{taxonId: taxon.id}"
+        [query]="{taxonId: [taxon.id], cache: true}"
         [showRowAsLink]="false"
       ></laji-observation-table>
     </div>

@@ -23,7 +23,7 @@ export function decideTaxonTab(url: UrlSegment[]) {
   } else if (url.length === 2) {
     if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0 &&
       (url[1].path === 'images' || url[1].path === 'biology' || url[1].path === 'taxonomy' || url[1].path === 'occurrence' ||
-        url[1].path === 'observations')) {
+        url[1].path === 'observations' || url[1].path === 'specimens' || url[1].path === 'endangerment' || url[1].path === 'invasive')) {
       return { consumed: url, posParams: {id: url[0], tab: url[1]} };
     }
   }

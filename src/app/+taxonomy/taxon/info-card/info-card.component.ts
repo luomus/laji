@@ -27,13 +27,14 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations';
+  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive';
 
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<Image>;
 
   hasImageData: boolean;
   hasBiologyData: boolean;
+  isEndangered: boolean;
   images = [];
 
   activatedTabs = {};
@@ -51,9 +52,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     if (this.hasImageData === undefined) {
       this.hasImageData = this.activeTab === 'images';
-    }
-    if (this.hasBiologyData === undefined) {
-      this.hasBiologyData = this.activeTab === 'biology';
     }
   }
 
@@ -81,10 +79,14 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       }, []);
 
       this.hasBiologyData = !!this.taxon.primaryHabitat || !!this.taxon.secondaryHabitats || this.taxonDescription.length > 0;
-      if (!this.hasBiologyData && this.activeTab === 'biology') {
-        this.updateRoute(this.taxon.id, 'overview');
-      }
-      if (!this.isFromMasterChecklist && (this.activeTab === 'occurrence' || this.activeTab === 'observations')) {
+      this.isEndangered = this.getIsEndangered(this.taxon);
+
+      if (
+        (!this.hasBiologyData && this.activeTab === 'biology') ||
+        (!this.isFromMasterChecklist && (this.activeTab === 'occurrence' || this.activeTab === 'observations')) ||
+        (!this.isEndangered && this.activeTab === 'endangerment') ||
+        (!this.taxon.invasiveSpecies && this.activeTab === 'invasive')
+      ) {
         this.updateRoute(this.taxon.id, 'overview');
       }
 
@@ -167,5 +169,21 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       query,
       undefined, limit, 1
     ).pipe(map(res => this.galleryService.getImages(res, limit)));
+  }
+
+  private getIsEndangered(taxon: Taxonomy): boolean {
+    if (!taxon.latestRedListStatusFinland) {
+      return false;
+    }
+
+    const status = taxon.latestRedListStatusFinland.status;
+
+    for (const type of ['EX', 'EW', 'RE', 'CR', 'EN', 'VU', 'NT', 'DD']) {
+      if (status === 'MX.iucn' + type) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
