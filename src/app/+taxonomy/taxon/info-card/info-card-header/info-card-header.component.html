@@ -25,7 +25,7 @@
           <ng-container *ngIf="sibling.vernacularName && sibling.scientificName">
             &ndash;
           </ng-container>
-          <ng-container>{{sibling.scientificName}}</ng-container>
+          {{ sibling.scientificName }}
         </option>
       </select>
       <a (click)="selectRightSibling()" class="link arrow-link arrow-link-right"><i class="glyphicon glyphicon-chevron-right"></i></a>
