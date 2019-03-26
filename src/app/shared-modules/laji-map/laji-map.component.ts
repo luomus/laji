@@ -58,8 +58,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   map: any;
   _options: LajiMap.Options = {};
   _legend: {color: string, label: string}[];
-
-  private fullScreen = false;
+  fullScreen = false;
 
   private _settingsKey: string;
   private subSet: Subscription;
