@@ -449,6 +449,7 @@
     "threatAny": "Yksi uhista"
   },
   "lastCensus": "Edellinen laskenta",
+  "line": "rivi",
   "line-transect-result.chart": "Lajimäärän kehitys",
   "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain",
   "lineTransect.title": "Linjalaskenta",
@@ -511,6 +512,7 @@
   "news.title": "Uutiset",
   "news.updated": "päivitetty",
   "no": "Ei",
+  "No errors": "Ei virheitä",
   "notification.annotation": "{{person}} on kommentoinut havaintoerääsi.",
   "notification.annotationCommented": "{{person}} on kommentoinut havaintoerää.",
   "notification.delete": "Haluatko varmasti poistaa ilmoituksen",

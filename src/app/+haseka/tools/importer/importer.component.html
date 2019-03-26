@@ -109,10 +109,10 @@
         </ng-container>
         <ng-container *ngIf="status === 'importReady'">
           <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-6">
               <p class="action">{{ 'excel.import.step4.importReady' | translate }}</p>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-6">
               <button type="button" (click)="save(publ)" class="btn btn-success pull-right action">
                 {{ buttonLabel('save') | translate }}
               </button>

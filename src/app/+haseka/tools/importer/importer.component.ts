@@ -206,10 +206,11 @@ export class ImporterComponent implements OnInit {
     }
     this.translateService.get('excel.batch')
       .subscribe(label => {
+        const rowLabel = this.translateService.instant('line');
         const columns: ImportTableColumn[] = [
           {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
           {prop: '_doc', label: label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
-          {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
+          {prop: '_idx', label: rowLabel, sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
         ];
         Object.keys(this.header).map(address => {
           columns.push({
@@ -278,7 +279,7 @@ export class ImporterComponent implements OnInit {
     this.mappedData = [
       ...this.data.map((row, idx) => ({
         ...this.getMappedValues(row, this.colMap, this.fields),
-        _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : undefined,
+        _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : {status: 'valid'},
         _doc: docs[idx]
       }))
     ];

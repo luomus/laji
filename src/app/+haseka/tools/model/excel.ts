@@ -1,5 +1,8 @@
-export const DOCUMENT_LEVEL = 'document';
-export const GATHERING_LEVEL = 'gatherings';
+export const LEVEL_DOCUMENT = 'document';
+export const LEVEL_GATHERING = 'gatherings';
+export const LEVEL_UNIT = 'units';
+export const LEVEL_TAXON_CENSUS = 'taxonCensus';
+
 export const VALUE_IGNORE = '__IGNORE__';
 export const VALUE_AS_IS = '__VALUE_AS_IS__';
 

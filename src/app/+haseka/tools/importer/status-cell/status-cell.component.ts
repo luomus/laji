@@ -10,7 +10,7 @@ import { IFormField } from '../../model/excel';
 export class StatusCellComponent implements OnInit {
 
   @Input() value: {
-    status: 'ok'|'invalid'|'fail'|'ignore',
+    status: 'ok'|'valid'|'invalid'|'fail'|'ignore',
     error: any
   };
   @Input() fields: {[key: string]: IFormField};

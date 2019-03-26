@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
-import { DOCUMENT_LEVEL, IFormField, VALUE_IGNORE } from '../model/excel';
+import { IFormField, LEVEL_DOCUMENT, VALUE_IGNORE } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 
@@ -109,7 +109,7 @@ export class SpreadSheetService {
       });
     }
     if (form && form.schema && form.schema.properties) {
-      this.parserFields(form.schema, {properties: form.validators}, result, '', DOCUMENT_LEVEL, this.findUnitSubGroups(form.uiSchema));
+      this.parserFields(form.schema, {properties: form.validators}, result, '', LEVEL_DOCUMENT, this.findUnitSubGroups(form.uiSchema));
     }
     return result;
   }

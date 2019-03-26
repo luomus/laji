@@ -4,15 +4,9 @@ import { Observable } from 'rxjs';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { Document } from '../../../shared/model/Document';
 import { UserService } from '../../../shared/service/user.service';
-import { DOCUMENT_LEVEL, IFormField, GATHERING_LEVEL, VALUE_IGNORE } from '../model/excel';
+import { IFormField, LEVEL_DOCUMENT, LEVEL_GATHERING, LEVEL_TAXON_CENSUS, LEVEL_UNIT, VALUE_IGNORE } from '../model/excel';
 import { MappingService } from './mapping.service';
-import { Util } from '../../../shared/service/util.service';
 import * as Hash from 'object-hash';
-
-const LEVEL_DOCUMENT = 'document';
-const LEVEL_GATHERING = 'gatherings';
-const LEVEL_UNIT = 'units';
-const LEVEL_TAXON_CENSUS = 'taxonCensus';
 
 interface IData {
   rowIdx: number;
@@ -212,9 +206,13 @@ export class ImportService {
       });
 
       // Count the hash to different levels in the document. This needs to be done only if prentBy !== eachRow
-      Object.keys(parentData).forEach(key => {
-        parentData[key].hash = Hash(parentData[key].data, {algorithm: 'sha1'});
-      });
+      if (combineBy !== CombineToDocument.none) {
+        Object.keys(parentData).forEach(key => {
+          // Unit rows don't require hash counting since all of them need to have different hashes
+          // (otherwise identical rows would be skipped and this was not desired byt the PO)
+          parentData[key].hash = key === LEVEL_UNIT ? '' + rowIdx : Hash(parentData[key].data, {algorithm: 'sha1'});
+        });
+      }
       const rootHash = this.getRootHash(parentData);
       if (!documents[rootHash]) {
         documents[rootHash] = [];
@@ -307,7 +305,7 @@ export class ImportService {
     const result = {};
     if (spot) {
       Object.keys(spot).map(level => {
-        if (level === DOCUMENT_LEVEL || level === '') {
+        if (level === LEVEL_DOCUMENT || level === '') {
           return;
         }
         replaces.push({from: `\\b${level}\\[\\*\\]`, to: `${level}[${spot[level]}]`});
