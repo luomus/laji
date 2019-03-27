@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { IFormField } from '../../model/excel';
 
 @Component({
@@ -7,7 +7,7 @@ import { IFormField } from '../../model/excel';
   styleUrls: ['./col-mapper.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ColMapperComponent implements OnInit, OnChanges {
+export class ColMapperComponent implements OnChanges {
 
   @Input() fields: {[key: string]: IFormField};
   @Input() headers: {[key: string]: string} = {};
@@ -16,35 +16,45 @@ export class ColMapperComponent implements OnInit, OnChanges {
   @Output() mappingDone = new EventEmitter<{[key: string]: string}>();
 
   allFields: string[] = [];
-  missingMapping = [];
+  allCols: string[] = [];
+  missingMapping: string[] = [];
+  hasInitMapping: {[col: string]: boolean} = {};
+  init = false;
+  linkedVisible = false;
 
   cols: string[];
 
   constructor() { }
 
-  ngOnInit() {
-    this.initCols();
+  ngOnChanges(changes: SimpleChanges) {
+    if (!this.headers) {
+      return;
+    }
+    if (!this.init) {
+      this.initCols();
+      if (!this.missingMappings()) {
+        this.mappingDone.emit(this.colMapping);
+      }
+      this.init = true;
+    }
     this.initAllFields();
-    if (!this.missingMappings()) {
-      this.mappingDone.emit(this.colMapping);
-    }
-  }
-
-  ngOnChanges(change: SimpleChanges) {
-    if (change['fields'] && change['fields'].isFirstChange() === false) {
-      this.initAllFields();
-    }
   }
 
   initCols() {
+    const all = [];
     const missing = [];
+    const hasMapping = {};
     this.cols = Object.keys(this.headers);
     this.cols.map(col => {
-      if (!this.colMapping[col]) {
+      all.push(col);
+      hasMapping[col] = !!this.colMapping[col];
+      if (!hasMapping[col]) {
         missing.push(col);
       }
     });
+    this.allCols = all;
     this.missingMapping = missing;
+    this.hasInitMapping = hasMapping;
   }
 
   initAllFields() {
@@ -52,7 +62,7 @@ export class ColMapperComponent implements OnInit, OnChanges {
   }
 
   missingMappings() {
-    return this.cols.length === 0 || this.cols.length !== Object.keys(this.colMapping).length;
+    return this.cols && (this.cols.length === 0 || this.cols.length !== Object.keys(this.colMapping).length);
   }
 
   saveMapping() {

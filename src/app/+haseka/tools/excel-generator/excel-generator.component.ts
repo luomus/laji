@@ -82,6 +82,7 @@ export class ExcelGeneratorComponent implements OnInit {
   generate() {
     this.generating = true;
     this.generatorService.generate(
+      this.formID,
       'Vihko - ' + this.formTitle + ' (' + this.formID + ')',
       this.fields.filter(field => this.selected.indexOf(field.key) > -1 || field.required),
       this.useLabels,

@@ -48,7 +48,14 @@ export class GeneratorService {
     private exportService: ExportService
   ) { }
 
-  generate(filename: string, fields: IFormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx', next: () => void = () => {}) {
+  generate(
+    formID: string,
+    filename: string,
+    fields: IFormField[],
+    useLabels = true,
+    type: 'ods' | 'xlsx' = 'xlsx',
+    next: () => void = () => {}
+  ) {
     const allTranslations = Object.keys(this.instructionMapping).map(key => this.instructionMapping[key]);
     allTranslations.push(this.instructionArray);
     ObservableForkJoin(

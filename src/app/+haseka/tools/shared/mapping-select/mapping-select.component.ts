@@ -10,7 +10,7 @@ import { SpreadSheetService } from '../../service/spread-sheet.service';
 })
 export class MappingSelectComponent implements OnInit {
 
-  @Input() options: string[] = [];
+  @Input() options: string[];
   _value: string;
   @Input() disabled = false;
   @Output() selected = new EventEmitter<string>();
@@ -26,7 +26,7 @@ export class MappingSelectComponent implements OnInit {
 
   @Input()
   set value(value: string) {
-    if (value && this.options.indexOf(value) === -1 && !this._fields) {
+    if (value && this.options && this.options.indexOf(value) === -1 && !this._fields) {
       this._value = VALUE_AS_IS;
     } else {
       this._value = value;

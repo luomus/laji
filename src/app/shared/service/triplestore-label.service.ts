@@ -18,6 +18,7 @@ import { catchError, filter, map, merge, share, take, tap } from 'rxjs/operators
 import { AreaService } from './area.service';
 import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
 import { Publication } from '../model/Publication';
+import { NamedPlaceApi } from '../api/NamedPlaceApi';
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -35,7 +36,7 @@ export class TriplestoreLabelService {
               private metadataService: MetadataService,
               private logger: Logger,
               private informalTaxonService: InformalTaxonGroupApi,
-              private namedPlacesService: NamedPlacesService,
+              private namedPlaceApi: NamedPlaceApi,
               private sourceService: SourceService,
               private cacheService: CacheService,
               private lajiApi: LajiApiService,
@@ -87,12 +88,16 @@ export class TriplestoreLabelService {
       switch (parts[0]) {
         case 'MNP':
           if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {
-            TriplestoreLabelService.requestCache[key] = this.namedPlacesService.getNamedPlace(key, this.userService.getToken()).pipe(
-              map((np: NamedPlace) => np.name),
-              catchError(() => ObservableOf('')),
-              tap(name => TriplestoreLabelService.cache[key] = name),
-              share()
-            );
+            TriplestoreLabelService.requestCache[key] = this.namedPlaceApi.findById(
+              key,
+              this.userService.getToken(),
+              {selectedFields: 'name'}
+              ).pipe(
+                map((np: NamedPlace) => np.name),
+                catchError(() => ObservableOf('')),
+                tap(name => TriplestoreLabelService.cache[key] = name),
+                share()
+              );
           }
           return TriplestoreLabelService.requestCache[key];
         case 'MVL':
