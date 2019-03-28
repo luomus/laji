@@ -1,3 +1,51 @@
-<p>
-  TODO
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-push-9 col-sm-3">
+      <img src="https://cdn.laji.fi/images/vieraslaji_200x160.png">
+    </div>
+    <div class="col-sm-pull-3 col-sm-9">
+      <a class="btn btn-primary browse-button" href="http://vieraslajit.fi/fi/lajit/{{ taxon.id }}/show" target="_blank">
+        {{ 'taxonomy.invasive.invasiveLink' | translate }}
+      </a>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <table class="table taxon-table table-condensed">
+            <tbody>
+            <tr>
+              <th>{{ 'MX.invasiveSpeciesEstablishment' | label }}</th>
+              <td>{{ taxon.invasiveSpeciesEstablishment | label }}</td>
+            </tr>
+            <tr>
+              <th>{{ 'MX.administrativeStatus' | label }}</th>
+              <td>
+                <ul>
+                  <li *ngFor="let status of taxon.administrativeStatuses">
+                    {{ status | label }}
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <ng-container *ngIf="invasiveDescriptions">
+        <div class="panel panel-default invasive-description-panel"
+             laji-panel
+             [title]="invasiveDescriptions.title | multiLang"
+             [open]="true"
+             [autoToggle]="true"
+        >
+          <div *ngFor="let variable of invasiveDescriptions.variables">
+            <h4>
+              {{ variable.title | multiLang }}
+            </h4>
+            <span [innerHTML]="variable.content | multiLang"></span>
+          </div>
+        </div>
+        <div class="source">
+          <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
