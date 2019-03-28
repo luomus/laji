@@ -51,7 +51,7 @@ export class ImporterComponent implements OnInit {
   @LocalStorage() uploadedFiles;
   @LocalStorage() partiallyUploadedFiles;
   @LocalStorage('importCombineBy', CombineToDocument.gathering) combineBy: CombineToDocument;
-  @LocalStorage('importIncludeOnlyWithCount', true) onlyWithCount: boolean;
+  @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
 
   data: {[key: string]: any}[];
   mappedData: {[key: string]: any}[];
