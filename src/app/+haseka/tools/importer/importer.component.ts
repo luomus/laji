@@ -76,7 +76,6 @@ export class ImporterComponent implements OnInit {
   userMappings: any;
   hasUserMapping = false;
   ambiguousColumns = [];
-  maxUnits = ImportService.maxPerDocument;
   separator = MappingService.valueSplitter;
   hash;
   currentTitle: string;
@@ -148,6 +147,7 @@ export class ImporterComponent implements OnInit {
     }
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe(form => {
+        this.form = form;
         const [data, sheet] = this.spreadSheetService.loadSheet(this.bstr);
         this.bstr = undefined;
         this.hash = Hash.sha1(data);
@@ -231,6 +231,13 @@ export class ImporterComponent implements OnInit {
   formSelected(event) {
     this.formID = event.id;
     this.initForm();
+  }
+
+  hasButton(place: 'temp') {
+    if (this.form && this.form.actions) {
+      return typeof this.form.actions[place] !== 'undefined';
+    }
+    return true;
   }
 
   buttonLabel(place: 'save'|'temp') {

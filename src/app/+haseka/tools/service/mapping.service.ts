@@ -42,6 +42,7 @@ export class MappingService {
 
   private specials = {
     'editors[*]': SpecialTypes.person,
+    'namedPlaceID': SpecialTypes.namedPlaceID,
     'gatheringEvent.leg[*]': SpecialTypes.person,
     'gatheringEvent.dateBegin': SpecialTypes.dateOptionalTime,
     'gatheringEvent.dateEnd': SpecialTypes.dateOptionalTime,
