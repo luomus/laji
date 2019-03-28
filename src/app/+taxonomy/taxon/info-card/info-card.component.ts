@@ -87,7 +87,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         (!this.isEndangered && this.activeTab === 'endangerment') ||
         (!this.taxon.invasiveSpecies && this.activeTab === 'invasive')
       ) {
-        this.updateRoute(this.taxon.id, 'overview');
+        this.updateRoute(this.taxon.id, 'overview', this.context, true);
       }
 
       this.setImages();
@@ -100,8 +100,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  updateRoute(id: string, tab = this.activeTab, context = this.context) {
-    this.routeUpdate.emit({id: id, tab: tab, context: context});
+  updateRoute(id: string, tab = this.activeTab, context = this.context, replaceUrl = false) {
+    this.routeUpdate.emit({id: id, tab: tab, context: context, replaceUrl: replaceUrl});
   }
 
   private setImages() {
@@ -159,7 +159,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.cd.markForCheck();
 
       if (!this.hasImageData && this.activeTab === 'images') {
-        this.updateRoute(this.taxon.id, 'overview');
+        this.updateRoute(this.taxon.id, 'overview', this.context, true);
       }
     });
   }

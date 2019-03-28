@@ -9,3 +9,9 @@
   padding-left: 20px;
   margin-left: 0;
 }
+::ng-deep .browse-button {
+  margin-bottom: 20px;
+}
+::ng-deep .container {
+  max-width: 100%;
+}

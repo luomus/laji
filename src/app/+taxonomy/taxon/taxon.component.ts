@@ -109,7 +109,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     this.updateRoute();
   }
 
-  updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree) {
+  updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false) {
     const route = ['/taxon', id];
     const params = {};
     const extra = {};
@@ -125,6 +125,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
     }
     if (Object.keys(params).length > 0) {
       extra['queryParams'] = params;
+    }
+    if (replaceUrl) {
+      extra['replaceUrl'] = true;
     }
 
     this.router.navigate(

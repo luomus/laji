@@ -107,6 +107,8 @@
   <laji-taxon-invasive
     [hidden]="activeTab !== 'invasive'"
     *ngIf="activatedTabs['invasive'] && taxon.invasiveSpecies"
+    [taxon]="taxon"
+    [taxonDescription]="taxonDescription"
   ></laji-taxon-invasive>
 </div>
 

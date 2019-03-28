@@ -30,7 +30,7 @@
           [isFromMasterChecklist]="isFromMasterChecklist"
           [activeTab]="infoCardTab"
           [context]="infoCardContext"
-          (routeUpdate)="updateRoute($event.id, $event.tab, $event.context)"
+          (routeUpdate)="updateRoute($event.id, $event.tab, $event.context, showTree, $event.replaceUrl)"
         ></laji-info-card>
       </div>
     </div>
