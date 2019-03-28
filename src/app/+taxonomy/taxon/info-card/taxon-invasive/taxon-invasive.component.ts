@@ -27,8 +27,6 @@ export class TaxonInvasiveComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.taxon);
-  }
+  ngOnInit() { }
 
 }
