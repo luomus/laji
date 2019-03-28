@@ -8,7 +8,6 @@ import { routing } from './taxonomy.routes';
 import { SharedModule } from '../../../../../src/app/shared/shared.module';
 import { TaxonImageComponent } from './info-card/taxon-image/taxon-image.component';
 import { TaxonStatusComponent } from './info-card/taxon-status/taxon-status.component';
-import { TaxonStatusHistoryComponent } from './info-card/taxon-status-history/taxon-status-history.component';
 import { RedlistYearSelectComponent } from './info-card/redlist-year-select/redlist-year-select.component';
 import { FiltersComponent } from './list/filters/filters.component';
 import { SelectComponent } from './list/select/select.component';
@@ -26,7 +25,6 @@ import { TaxonSelectModule } from '../../../../../src/app/shared-modules/taxon-s
 import { DatatableModule } from '../../../../../src/app/shared-modules/datatable/datatable.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ActiveFiltersComponent } from './list/active-filters/active-filters.component';
-import { ExplainCriteriaPipe } from './pipe/explain-criteria.pipe';
 import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { SelectFieldsModule } from '../../../../../src/app/shared-modules/select-fields/select-fields.module';
 import { DownloadModule } from '../../../../../src/app/shared-modules/download/download.module';
@@ -51,7 +49,6 @@ import { DownloadModule } from '../../../../../src/app/shared-modules/download/d
     ListComponent,
     TaxonImageComponent,
     TaxonStatusComponent,
-    TaxonStatusHistoryComponent,
     RedlistYearSelectComponent,
     FiltersComponent,
     SelectComponent,
@@ -64,8 +61,7 @@ import { DownloadModule } from '../../../../../src/app/shared-modules/download/d
     RedListEvaluationInfoRowsetComponent,
     RedListHabitatComponent,
     RedListHabitatListComponent,
-    ActiveFiltersComponent,
-    ExplainCriteriaPipe
+    ActiveFiltersComponent
   ]
 })
 export class IucnTaxonomyModule { }

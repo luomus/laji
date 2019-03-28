@@ -155,7 +155,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private getTaxon(id) {
     return this.taxonService
-      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true}).pipe(
+      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true, includeRedListEvaluations: true}).pipe(
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), ))).pipe(
         catchError(err => {
           this.logger.warn('Failed to fetch taxon by id', err);

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { LatestRedListStatusFinland } from '../../../../../../../src/app/shared/model/Taxonomy';
+import { LatestRedListStatusFinland } from '../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-status-history',

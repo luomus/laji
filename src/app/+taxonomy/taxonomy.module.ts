@@ -62,12 +62,13 @@ import { TaxonSpecimensComponent } from './taxon/info-card/taxon-specimens/taxon
 import { TaxonEndangermentComponent } from './taxon/info-card/taxon-endangerment/taxon-endangerment.component';
 import { TaxonInvasiveComponent } from './taxon/info-card/taxon-invasive/taxon-invasive.component';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
+import { IucnCommonModule } from '../shared-modules/iucn/iucn.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
-    DocumentViewerModule
+    DocumentViewerModule, IucnCommonModule
   ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonTaxonomyService],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RedListEvaluation } from '../../../../../../../src/app/shared/model/Taxonomy';
+import { RedListEvaluation } from '../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-status-mark',

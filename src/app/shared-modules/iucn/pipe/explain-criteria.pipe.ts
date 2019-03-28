@@ -20,7 +20,7 @@ export class ExplainCriteriaPipe implements PipeTransform {
       parts.forEach(criteria => {
         const trimmedCriteria = criteria.trim();
         const firstLetter = trimmedCriteria.charAt(0);
-        const useSecond = ['B', 'C', 'D'].includes(firstLetter);
+        const useSecond = ['B', 'C', 'D'].indexOf(firstLetter) !== -1;
         if (useSecond) {
           trimmedCriteria.split('+').forEach((sub, idx) => {
             const second = sub.charAt(idx === 0 ? 1 : 0);
