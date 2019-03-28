@@ -12,6 +12,7 @@ import { LajiApi, LajiApiService } from './laji-api.service';
 import { combineLatest, concat, delay, map, retryWhen, share, switchMap, take, tap } from 'rxjs/operators';
 import { FormList } from '../../+haseka/form-list/haseka-form-list';
 import { Global } from '../../../environments/global';
+import { Form } from '../model/Form';
 
 
 export interface LoadResponse extends FormList {
@@ -61,6 +62,10 @@ export class FormService {
     if (!this.tmpDocId) {
       this.tmpDocId = 0;
     }
+  }
+
+  static hasFeature(form: FormList, feature: Form.Feature) {
+    return form && Array.isArray(form.features) && form.features.indexOf(feature) !== -1;
   }
 
   hasNamedPlace(): boolean {

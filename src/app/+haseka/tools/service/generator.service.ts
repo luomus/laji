@@ -7,11 +7,11 @@ import { Person } from '../../../shared/model/Person';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { forkJoin as ObservableForkJoin } from 'rxjs';
 import { NamedPlacesService } from '../../../shared-modules/named-place/named-places.service';
-import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 import { ExportService } from '../../../shared/service/export.service';
 import { map } from 'rxjs/operators';
+import { ExcelToolService } from './excel-tool.service';
 
 @Injectable()
 export class GeneratorService {
@@ -45,7 +45,8 @@ export class GeneratorService {
     private namedPlaces: NamedPlacesService,
     private translateService: TranslateService,
     private informalTaxonApi: InformalTaxonGroupApi,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private excelToolService: ExcelToolService
   ) { }
 
   generate(
@@ -60,10 +61,7 @@ export class GeneratorService {
     allTranslations.push(this.instructionArray);
     ObservableForkJoin(
       this.userService.getUser(),
-      this.namedPlaces.getAllNamePlaces({
-        userToken: this.userService.getToken(),
-        includePublic: false
-      }),
+      this.excelToolService.getNamedPlacesList(formID),
       this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(map(result => result.results)),
       this.translateService.get(allTranslations, {separator: MappingService.valueSplitter}).pipe(
         map(translated => Object.keys(this.instructionMapping).reduce((cumulative, current) => {
@@ -120,7 +118,7 @@ export class GeneratorService {
   private addMetaDataToSheet(
     fields: IFormField[],
     sheet: XLSX.WorkSheet,
-    extra: {person: Person, namedPlaces: NamedPlace[], informalTaxonGroups: InformalTaxonGroup[]},
+    extra: {person: Person, namedPlaces: string[], informalTaxonGroups: InformalTaxonGroup[]},
     useLabels: boolean
   ) {
     const validation = [];
@@ -149,7 +147,7 @@ export class GeneratorService {
         switch (special) {
           case SpecialTypes.namedPlaceID:
             if (Array.isArray(extra.namedPlaces) && extra.namedPlaces.length > 0) {
-              validValues = MappingService.namedPlacesToList(extra.namedPlaces);
+              validValues = extra.namedPlaces;
             }
             break;
           case SpecialTypes.informalTaxonGroupID:

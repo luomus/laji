@@ -4,7 +4,6 @@ import { IColMap, IFormField, IUserMappings, IValueMap, TUserValueMap, VALUE_IGN
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
-import { NamedPlace } from '../../../shared/model/NamedPlace';
 
 export enum SpecialTypes {
   geometry = 'geometry',
@@ -25,17 +24,10 @@ export class MappingService {
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
 
+  // from boolean to translation key
   private readonly booleanMap = {
-    'true': {
-      'fi': 'Kyllä',
-      'en': 'Yes',
-      'sv': 'Ja'
-    },
-    'false': {
-      'fi': 'Ei',
-      'en': 'No',
-      'sv': 'Nej'
-    }
+    'true': 'yes',
+    'false': 'no'
   };
 
   private mapping = {
@@ -66,10 +58,6 @@ export class MappingService {
     'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon
   };
-
-  static namedPlacesToList(namedPlaces: NamedPlace[]) {
-    return namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`);
-  }
 
   static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
     groups.forEach(group => {
@@ -278,9 +266,7 @@ export class MappingService {
     if (typeof value !== 'boolean') {
       return value;
     }
-    const lang = this.translationService.currentLang;
-    const key = value ? 'true' : 'false';
-    return this.booleanMap[key][lang];
+    return this.translationService.instant(value ? this.booleanMap.true : this.booleanMap.false);
   }
 
   mapUnitTaxon(value) {
@@ -446,16 +432,10 @@ export class MappingService {
       return;
     }
     this.mapping.boolean = {};
-    for (const key in this.booleanMap.true) {
-      if (this.booleanMap.true.hasOwnProperty(key)) {
-        this.mapping.boolean[this.booleanMap.true[key].toLowerCase()] = true;
-      }
-    }
-    for (const key in this.booleanMap.false) {
-      if (this.booleanMap.true.hasOwnProperty(key)) {
-        this.mapping.boolean[this.booleanMap.false[key].toLowerCase()] = false;
-      }
-    }
+    const trueLabel = this.translationService.instant(this.booleanMap.true).toLowerCase();
+    const falseLabel = this.translationService.instant(this.booleanMap.false).toLowerCase();
+    this.mapping.boolean[trueLabel] = true;
+    this.mapping.boolean[falseLabel] = false;
   }
 
 }
