@@ -16,6 +16,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../model/import-table-column';
 import { catchError, concatMap, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { ExcelToolService } from '../service/excel-tool.service';
 
 export type States
   = 'empty'
@@ -83,7 +84,7 @@ export class ImporterComponent implements OnInit {
   total = 0;
   current = 0;
 
-  combineOptions = [
+  combineOptions: CombineToDocument[] = [
     CombineToDocument.gathering,
     CombineToDocument.all,
     CombineToDocument.none
@@ -103,7 +104,8 @@ export class ImporterComponent implements OnInit {
     private mappingService: MappingService,
     private toastsService: ToastsService,
     private augmentService: AugmentService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private excelToolService: ExcelToolService
   ) { }
 
   ngOnInit() {
@@ -148,6 +150,7 @@ export class ImporterComponent implements OnInit {
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe(form => {
         this.form = form;
+        this.combineOptions = this.excelToolService.getCombineOptions(form);
         const [data, sheet] = this.spreadSheetService.loadSheet(this.bstr);
         this.bstr = undefined;
         this.hash = Hash.sha1(data);

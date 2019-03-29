@@ -6,6 +6,7 @@ import { NamedPlacesService } from '../../../shared-modules/named-place/named-pl
 import { UserService } from '../../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { CombineToDocument } from './import.service';
 const { JSONPath } = require('jsonpath-plus');
 
 @Injectable({
@@ -54,4 +55,26 @@ export class ExcelToolService {
       map(places => places.sort())
     );
   }
+
+  getCombineOptions(form: any): CombineToDocument[] {
+    if (form && form.schema && form.schema.properties && form.schema.properties && form.schema.properties.gatherings) {
+      if (form.schema.properties.gatherings.properties && form.schema.properties.gatherings.properties.units &&
+        form.schema.properties.gatherings.properties.units.maxItems === 1) {
+        return [
+          CombineToDocument.none
+        ];
+      } else if (form.schema.properties.gatherings.maxItems === 1) {
+        return [
+          CombineToDocument.gathering,
+          CombineToDocument.none
+        ];
+      }
+    }
+    return [
+      CombineToDocument.gathering,
+      CombineToDocument.all,
+      CombineToDocument.none
+    ];
+  }
+
 }

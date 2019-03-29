@@ -57,7 +57,8 @@ export class MappingService {
     'gatherings[*].dateBegin': SpecialTypes.dateOptionalTime,
     'gatherings[*].dateEnd': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
-    'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon
+    'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon,
+    'gatherings[*].units[*].identifications[*].taxonID': SpecialTypes.taxonID
   };
 
   static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
