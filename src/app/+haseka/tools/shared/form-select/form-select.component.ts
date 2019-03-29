@@ -1,10 +1,14 @@
-
-import {map} from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { map, mergeMap, tap, toArray } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { FormService } from '../../../../shared/service/form.service';
+
+interface FormList {
+  id: string;
+  title: string;
+}
 
 @Component({
   selector: 'laji-form-select',
@@ -12,41 +16,34 @@ import { FormService } from '../../../../shared/service/form.service';
   styleUrls: ['./form-select.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormSelectComponent implements OnInit, OnDestroy {
+export class FormSelectComponent implements OnInit {
 
   @Input() formID = '';
   @Input() disabled = false;
   @Output() selected = new EventEmitter<any>();
 
-  formSub: Subscription;
-  forms = [];
+  forms$: Observable<FormList[]>;
+  loaded = false;
 
   constructor(
     private formService: FormService,
-    private translateService: TranslateService,
-    private cdr: ChangeDetectorRef
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
-    this.formSub = this.formService.getAllForms(this.translateService.currentLang).pipe(
-      map(forms => forms.sort((a, b) => a.title.localeCompare(b.title))))
-      .subscribe(forms => {
-        this.forms = forms.filter(form => environment.massForms.indexOf(form.id) > -1);
-        this.cdr.markForCheck();
-      });
-  }
-
-  ngOnDestroy() {
-    if (this.formSub) {
-      this.formSub.unsubscribe();
-    }
+    this.forms$ = from(environment.massForms).pipe(
+      mergeMap((formID) => this.formService.getForm(formID, this.translateService.currentLang).pipe(
+        map(form => ({id: form.id, title: form.title}))
+      )),
+      toArray(),
+      map(forms => forms.sort((a, b) => a.title.localeCompare(b.title))),
+      tap(() => this.loaded = true)
+    );
   }
 
   formSelected(id) {
-    const forms = this.forms.filter(value => value.id === id);
-    if (Array.isArray(forms) && forms.length === 1) {
-      this.selected.emit(forms[0]);
-    }
+    console.log('SELECTING FORM', id);
+    this.selected.emit(id);
   }
 
 }

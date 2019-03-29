@@ -231,8 +231,8 @@ export class ImporterComponent implements OnInit {
       });
   }
 
-  formSelected(event) {
-    this.formID = event.id;
+  formSelected(formID) {
+    this.formID = formID;
     this.initForm();
   }
 

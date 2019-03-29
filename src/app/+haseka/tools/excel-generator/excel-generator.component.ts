@@ -41,7 +41,7 @@ export class ExcelGeneratorComponent implements OnInit {
   }
 
   formSelected(event) {
-    this.formID = event.id;
+    this.formID = event;
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe((form: any) => {
         this.formTitle = form.title;
