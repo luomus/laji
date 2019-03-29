@@ -449,9 +449,9 @@
     d3-shape "^1.2.0"
     d3-time-format "^2.1.0"
 
-"@swimlane/ngx-datatable@13.1.0":
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-13.1.0.tgz#a79edc7eaed762a2f7868209a2ff597bbfc7137b"
+"@swimlane/ngx-datatable@git+https://git@github.com/vixriihi/laji-datatable":
+  version "14.0.0"
+  resolved "git+https://git@github.com/vixriihi/laji-datatable#8125b49eacf7554a1979fed00017babc7cd6cd32"
 
 "@types/bluebird@*":
   version "3.5.26"
@@ -4766,7 +4766,6 @@ klaw-sync@^4.0.0:
 laji-form@^0.0.592:
   version "0.0.592"
   resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.592.tgz#138af1a9b34bb3068b6b8bdfe828579561876524"
-  integrity sha512-sUWrUpKvgQHluRSpGxbgN9tzfwe791s3o2e2SuEMkAa4TPpaHwQdZ1876tMkw37RpBWwFBTrryqpGphNZOc/pA==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -4794,7 +4793,6 @@ laji-form@^0.0.592:
 laji-map@1.0.487, laji-map@^1.0.395, laji-map@^1.0.487:
   version "1.0.487"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.487.tgz#ecb72cb91cecf411257fdc21ab57d1a56f20a6b9"
-  integrity sha512-ARJDH4XgxMHeZ99nRxZS52/VofTqdczD6Wl6C4+AIN8VH2f8Gt7CnBPnCbMKSp8GJpVsevANCIVFKuYezmIOLQ==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"

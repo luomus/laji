@@ -66,7 +66,7 @@
     "@nguniversal/module-map-ngfactory-loader": "^7.0.2",
     "@ngx-translate/core": "^11.0.1",
     "@swimlane/ngx-charts": "^10.0.0",
-    "@swimlane/ngx-datatable": "13.1.0",
+    "@swimlane/ngx-datatable": "git+https://git@github.com/vixriihi/laji-datatable",
     "angular2-moment": "^1.8.0",
     "angularx-qrcode": "^1.5.1",
     "classlist.js": "^1.1.20150312",

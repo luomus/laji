@@ -6,7 +6,7 @@ import {
   ChangeDetectorRef,
   QueryList,
   ViewChildren,
-  SimpleChanges
+  SimpleChanges, Inject, PLATFORM_ID
 } from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQueryInterface';
@@ -14,7 +14,7 @@ import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.servic
 import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import 'leaflet.sync';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-wbc-species-maps',
@@ -50,8 +50,13 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   constructor(
     private resultService: WbcResultService,
     private ykjService: YkjService,
-    private cd: ChangeDetectorRef
-  ) { }
+    private cd: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      require('leaflet.sync');
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.taxonId && this.year) {
@@ -60,10 +65,12 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.maps = this.mapComponents.map(mapComponent => {
-      return mapComponent.mapComponent.map;
-    });
-    this.maps.forEach(m => this.initEventListeners(m));
+    if (isPlatformBrowser(this.platformId)) {
+      this.maps = this.mapComponents.map(mapComponent => {
+        return mapComponent.mapComponent.map;
+      });
+      this.maps.forEach(m => this.initEventListeners(m));
+    }
   }
 
   private updateMapData() {
