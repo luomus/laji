@@ -26,7 +26,7 @@
         {{ "taxonomy.taxonomy" | translate }}
       </a>
     </li>
-    <li role="presentation" [ngClass]="{active: activeTab === 'occurrence'}" *ngIf="isFromMasterChecklist">
+    <!--li role="presentation" [ngClass]="{active: activeTab === 'occurrence'}" *ngIf="isFromMasterChecklist">
       <a [routerLink]="['/taxon', taxon.id, 'occurrence'] | localize" [queryParamsHandling]="'preserve'">
         {{ "taxonomy.occurrence" | translate }}
       </a>
@@ -50,7 +50,7 @@
       <a [routerLink]="['/taxon', taxon.id, 'invasive'] | localize" [queryParamsHandling]="'preserve'">
         {{ "taxonomy.invasive" | translate }}
       </a>
-    </li>
+    </li-->
   </ul>
 
   <laji-taxon-overview
@@ -83,7 +83,7 @@
     [taxon]="taxon"
     [taxonDescription]="taxonDescription"
   ></laji-taxon-taxonomy>
-  <laji-taxon-occurrence
+  <!--laji-taxon-occurrence
     [class.hidden]="activeTab !== 'occurrence'"
     *ngIf="activatedTabs['occurrence'] && isFromMasterChecklist"
     [taxon]="taxon"
@@ -109,6 +109,6 @@
     *ngIf="activatedTabs['invasive'] && taxon.invasiveSpecies"
     [taxon]="taxon"
     [taxonDescription]="taxonDescription"
-  ></laji-taxon-invasive>
+  ></laji-taxon-invasive-->
 </div>
 
