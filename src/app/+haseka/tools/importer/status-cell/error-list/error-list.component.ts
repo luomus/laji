@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { IFormField } from '../../../model/excel';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-error-list',
@@ -13,7 +14,7 @@ export class ErrorListComponent implements OnInit {
 
   _errors: {field: string, errors: string[]}[] = [];
 
-  constructor() { }
+  constructor(private translateService: TranslateService) { }
 
   ngOnInit() {
   }
@@ -22,12 +23,29 @@ export class ErrorListComponent implements OnInit {
   set errors(data) {
     if (typeof data === 'object' && !Array.isArray(data)) {
       const errors = [];
-      Object.keys(data).forEach(field => {
-        errors.push({
-          field: this.pathToKey(field),
-          errors: Array.isArray(data[field]) ? data[field] : this.pickErrors(data[field])
+      if (data.status || data.status === 0) {
+        switch (data.status) {
+          case 403:
+            errors.push({
+              field: 'id',
+              errors: [this.translateService.instant('form.permission.no-access')]
+            });
+            break;
+          case 422:
+          default:
+            errors.push({
+              field: 'id',
+              errors: [data.statusText || this.translateService.instant('haseka.form.genericError')]
+            });
+        }
+      } else {
+        Object.keys(data).forEach(field => {
+          errors.push({
+            field: this.pathToKey(field),
+            errors: Array.isArray(data[field]) ? data[field] : this.pickErrors(data[field])
+          });
         });
-      });
+      }
       this._errors = errors;
     }
   }
