@@ -1,19 +1,23 @@
-<div class="info-card-header">
-  <laji-spinner [spinning]="loadingParent">
-    <div class="taxon-parent">
-      <a *ngIf="!loadingParent && parent && taxon.hasParent" [routerLink]="'/taxon/' + parent.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
-        <laji-taxon-name [taxon]="parent" [addLink]="false"></laji-taxon-name>
-        <i class="glyphicon glyphicon-chevron-right"></i>
-      </a>
+<div class="row info-card-header-first-row">
+  <div class="col-xs-12">
+    <div class="taxon-search-container">
+      <laji-taxon-select
+        [placeholder]="'taxonomy.card.search' | translate"
+        (taxonIdChange)="taxonSelect.emit($event)"
+      ></laji-taxon-select>
     </div>
-  </laji-spinner>
-  <div class="omni-search-container pull-right">
-    <laji-taxon-select
-      [placeholder]="'taxonomy.card.search' | translate"
-      (taxonIdChange)="taxonSelect.emit($event)"
-    ></laji-taxon-select>
+    <laji-spinner [spinning]="loadingParent">
+      <div class="taxon-parent">
+        <a *ngIf="!loadingParent && parent && taxon.hasParent" [routerLink]="'/taxon/' + parent.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+          <laji-taxon-name [taxon]="parent" [addLink]="false"></laji-taxon-name>
+          <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+      </div>
+    </laji-spinner>
   </div>
-  <div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
     <h1 class="taxon-name-header">
       <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
     </h1>

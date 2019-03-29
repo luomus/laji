@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, HostBinding} from '@angular/core';
 import {Taxonomy, TaxonomyDescription, TaxonomyDescriptionGroup} from '../../../../shared/model/Taxonomy';
 import {Subscription} from 'rxjs';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';

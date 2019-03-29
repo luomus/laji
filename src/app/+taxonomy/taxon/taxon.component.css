@@ -10,6 +10,10 @@
   z-index: 1;
 }
 
+laji-info-card {
+  display: block;
+}
+
 @media only screen and (min-width : 768px) {
   .row, .taxon-tree-container {
     display: flex;
@@ -21,19 +25,19 @@
     height: calc(100vh - 50px);
   }
 
-  ::ng-deep .info-card-container .info-card-header {
-    margin-left: 30px;
+  ::ng-deep laji-info-card .info-card-header-first-row {
+    margin-left: 10px;
   }
 }
-::ng-deep .info-card-container.sidebar-hidden .info-card-header {
-  margin-left: 120px;
+::ng-deep laji-info-card.sidebar-hidden .info-card-header-first-row {
+  margin-left: 110px;
 }
 
 @media only screen and (max-width : 767px) {
-  .taxon-tree-container, .info-card-container {
+  .taxon-tree-container, laji-info-card {
     width: 100% !important;
   }
-  .info-card-container {
+  laji-info-card {
     margin-left: 0 !important;
   }
   .dragbar, .hide-sidebar-toggle {
