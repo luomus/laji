@@ -20,19 +20,16 @@
           <i class="glyphicon glyphicon-arrow-right"></i>
         </div>
       </ng-container>
-      <div class="info-card-container"
-           [class.sidebar-hidden]="!showTree && canShowTree"
-           [style.width]="showTree && canShowTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'"
-           [style.margin-left]="showTree && canShowTree ? sidebarWidth + 'px' : '0'"
-      >
-        <laji-info-card
-          [taxon]="taxon"
-          [isFromMasterChecklist]="isFromMasterChecklist"
-          [activeTab]="infoCardTab"
-          [context]="infoCardContext"
-          (routeUpdate)="updateRoute($event.id, $event.tab, $event.context, showTree, $event.replaceUrl)"
-        ></laji-info-card>
-      </div>
+      <laji-info-card
+        [taxon]="taxon"
+        [isFromMasterChecklist]="isFromMasterChecklist"
+        [activeTab]="infoCardTab"
+        [context]="infoCardContext"
+        (routeUpdate)="updateRoute($event.id, $event.tab, $event.context, showTree, $event.replaceUrl)"
+        [class.sidebar-hidden]="!showTree && canShowTree"
+        [style.width]="showTree && canShowTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'"
+        [style.margin-left]="showTree && canShowTree ? sidebarWidth + 'px' : '0'"
+      ></laji-info-card>
     </div>
   </div>
   <div class="container" *ngIf="taxon === false">
