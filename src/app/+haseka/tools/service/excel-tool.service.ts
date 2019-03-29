@@ -58,8 +58,9 @@ export class ExcelToolService {
 
   getCombineOptions(form: any): CombineToDocument[] {
     if (form && form.schema && form.schema.properties && form.schema.properties && form.schema.properties.gatherings) {
-      if (form.schema.properties.gatherings.properties && form.schema.properties.gatherings.properties.units &&
-        form.schema.properties.gatherings.properties.units.maxItems === 1) {
+      if (form.schema.properties.gatherings.items &&
+        form.schema.properties.gatherings.items.properties && form.schema.properties.gatherings.items.properties.units &&
+        form.schema.properties.gatherings.items.properties.units.maxItems === 1) {
         return [
           CombineToDocument.none
         ];

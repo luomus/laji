@@ -155,6 +155,10 @@ export class ImporterComponent implements OnInit {
         this.bstr = undefined;
         this.hash = Hash.sha1(data);
 
+        if (this.combineOptions && this.combineOptions.length > 0 && this.combineOptions.indexOf(this.combineBy) === -1) {
+          this.combineBy = this.combineOptions[0];
+        }
+
         if (this.partiallyUploadedFiles && this.partiallyUploadedFiles.indexOf(this.hash) > -1) {
           this.status = 'fileAlreadyUploadedPartially';
           this.cdr.markForCheck();
