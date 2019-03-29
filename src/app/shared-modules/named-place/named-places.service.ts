@@ -1,4 +1,4 @@
-import { map, mergeMap, switchMap, take, tap, toArray } from 'rxjs/operators';
+import { map, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { NamedPlaceApi, NamedPlaceQuery } from '../../shared/api/NamedPlaceApi';
 import { NamedPlace } from '../../shared/model/NamedPlace';
