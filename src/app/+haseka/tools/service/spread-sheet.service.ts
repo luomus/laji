@@ -22,18 +22,20 @@ export class SpreadSheetService {
 
   private requiredFields = {};
 
-  private hiddenFields: string[] = [
-    'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
-    'gatherings[*].images[*]',
-    'gatherings[*].units[*].images[*]',
-    'gatherings[*].dateBegin',
-    'gatherings[*].dateEnd',
-    'gatherings[*].units[*].unitGathering.dateBegin',
-    'gatherings[*].units[*].unitGathering.dateEnd',
-    'gatherings[*].units[*].unitGathering.geometry',
-    'gatherings[*].units[*].checklistID',
-    'gatherings[*].units[*].hostID',
-  ];
+  private hiddenFields: {[formID: string]: string[]} = {
+    '*': [
+      'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
+      'gatherings[*].images[*]',
+      'gatherings[*].units[*].images[*]',
+      'gatherings[*].dateBegin',
+      'gatherings[*].dateEnd',
+      'gatherings[*].units[*].unitGathering.dateBegin',
+      'gatherings[*].units[*].unitGathering.dateEnd',
+      'gatherings[*].units[*].unitGathering.geometry',
+      'gatherings[*].units[*].checklistID',
+      'gatherings[*].units[*].hostID',
+    ]
+  };
 
   constructor(
     private mappingService: MappingService,
@@ -78,12 +80,12 @@ export class SpreadSheetService {
     return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
   }
 
-  setRequiredFields(fields: object) {
-    this.requiredFields = fields;
+  setRequiredFields(formID: string, fields: object) {
+    this.requiredFields[formID] = fields;
   }
 
-  setHiddenFeilds(fields: string[]) {
-    this.hiddenFields = fields;
+  setHiddenFeilds(formID: string, fields: string[]) {
+    this.hiddenFields[formID] = fields;
   }
 
   formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: IFormField} {
@@ -231,7 +233,7 @@ export class SpreadSheetService {
             );
           });
           if (!found) {
-            if (this.hiddenFields.indexOf(root) > -1) {
+            if (this.isHiddenField(form.id, root)) {
               return;
             }
             result.push({
@@ -241,7 +243,7 @@ export class SpreadSheetService {
               key: root,
               parent: parent,
               isArray: root.endsWith('[*]'),
-              required: this.hasRequiredValidator(lastKey, validators, required, root),
+              required: this.hasRequiredValidator(form.id, lastKey, validators, required, root),
               subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
               enum: form.enum,
               enumNames: form.enumNames,
@@ -267,7 +269,7 @@ export class SpreadSheetService {
         }
         break;
       default:
-        if (this.hiddenFields.indexOf(root) > -1) {
+        if (this.isHiddenField(form.id, root)) {
           return;
         }
         result.push({
@@ -277,7 +279,7 @@ export class SpreadSheetService {
           key: root,
           parent: parent,
           isArray: root.endsWith('[*]'),
-          required: this.hasRequiredValidator(lastKey, validators, required, root),
+          required: this.hasRequiredValidator(form.id, lastKey, validators, required, root),
           subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
           enum: form.enum,
           enumNames: form.enumNames,
@@ -286,9 +288,12 @@ export class SpreadSheetService {
     }
   }
 
-  private hasRequiredValidator(lastKey, validator, required, key) {
-    if (typeof this.requiredFields[key] !== 'undefined') {
-      return this.requiredFields[key];
+  private hasRequiredValidator(formID: string, lastKey, validator, required, key) {
+    if (this.requiredFields[formID] && typeof this.requiredFields[formID][key] !== 'undefined') {
+      return this.requiredFields[formID][key];
+    }
+    if (this.requiredFields['*'] && typeof this.requiredFields['*'][key] !== 'undefined') {
+      return this.requiredFields['*'][key];
     }
     return !!validator.presence || (validator.geometry && validator.geometry.requireShape) || required.indexOf(lastKey) > -1;
   }
@@ -301,6 +306,11 @@ export class SpreadSheetService {
       }
     }
     return undefined;
+  }
+
+  private isHiddenField(formID: string, field: string): boolean {
+    return (this.hiddenFields['*']    && this.hiddenFields['*'].indexOf(field) > -1) ||
+           (this.hiddenFields[formID] && this.hiddenFields[formID].indexOf(field) > -1);
   }
 
   private findUnitSubGroups(form) {

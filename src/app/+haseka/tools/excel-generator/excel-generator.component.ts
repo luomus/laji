@@ -33,7 +33,7 @@ export class ExcelGeneratorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.spreadSheetService.setRequiredFields({
+    this.spreadSheetService.setRequiredFields('*', {
       'gatherings[*].taxonCensus[*].censusTaxonID': false,
       'gatherings[*].taxonCensus[*].taxonCensusType': false,
       'gatherings[*].units[*].identifications[*].taxon': true
