@@ -59,17 +59,8 @@ export class SpreadSheetService {
           this.labelService.get('MZ.unitGathering', lang)
         ])
       ),
-      map(data => ({
-        document: data[0],
-        gatheringEvent: data[1],
-        taxonCensus: data[2],
-        gatherings: data[3],
-        gatheringFact: data[4],
-        identifications: data[5],
-        units: data[6],
-        unitFact: data[7],
-        unitGathering: data[8]
-      })
+      map(([document, gatheringEvent, taxonCensus, gatherings, gatheringFact, identifications, units, unitFact, unitGathering]) =>
+         ({ document, gatheringEvent, taxonCensus, gatherings, gatheringFact, identifications, units, unitFact, unitGathering })
       )
     )
       .subscribe(translations => this.translations = translations);
