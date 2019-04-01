@@ -2,10 +2,8 @@ import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
 import { renderModuleFactory } from '@angular/platform-server';
 import { enableProdMode } from '@angular/core';
-import { ngExpressEngine } from '@nguniversal/express-engine';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
-import { Response } from 'express';
 
 import * as redis from 'redis';
 import * as Redlock from 'redlock';
@@ -15,13 +13,22 @@ import * as cors from 'cors';
 import * as compression from 'compression';
 import { join } from 'path';
 import { readFileSync } from 'fs';
+const domino = require('domino');
 
 enableProdMode();
 
-export const app = express();
+const app = express();
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 const DIST_FOLDER = join(process.cwd(), 'dist');
+const BROWSER_PATH = join(DIST_FOLDER, 'browser');
+const template = readFileSync(join(BROWSER_PATH, 'index.html')).toString();
+const win = domino.createWindow(template);
+
+global['window'] = win;
+global['document'] = win.document;
+Object.assign(global, domino.impl);
+global['KeyboardEvent'] = domino.impl.Event;
 
 const RedisClient = redis.createClient();
 const Lock = new Redlock([RedisClient]);
@@ -30,11 +37,7 @@ app.use(compression());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main');
-const BROWSER_PATH = join(DIST_FOLDER, 'browser');
-
-const template = readFileSync(join(BROWSER_PATH, 'index.html')).toString();
 
 app.engine('html', (_, options, callback) => {
   renderModuleFactory(AppServerModuleNgFactory, {
@@ -142,3 +145,6 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Node server listening on http://localhost:${PORT}`);
 });
+
+
+exports.app = app;

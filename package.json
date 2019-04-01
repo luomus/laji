@@ -37,7 +37,7 @@
     "build:ssr:prod": "yarn run build:server:prod && yarn run build:prod",
     "build:ssr:dev": "yarn run build:server:dev && yarn run build:dev",
     "build:ssr:local": "yarn run build:server:local && yarn run build:local",
-    "server": "node local.js",
+    "server": "node dist/server",
     "msg-a": "node ./scripts/echo.js \"\nLint check!\n**Please note that warnings can be ignored, only errors will prevent the commit!**\n\n\""
   },
   "contributors": [
@@ -79,6 +79,7 @@
     "d3-shape": "^1.2.0",
     "deep-equal": "^1.0.1",
     "deepmerge": "^2.2.1",
+    "domino": "^2.1.3",
     "file-saver": "^2.0.0",
     "generic-label-maker": "^0.0.9",
     "ie-shim": "^0.1.0",
