@@ -1,29 +1,34 @@
 import { NgModule } from '@angular/core';
-import { LabelEditorContainerComponent } from './label-editor-container/label-editor-container.component';
+import { LabelMakerComponent } from './label-maker/label-maker.component';
 import { LabelPreviewComponent } from './label-preview/label-preview.component';
 import { LabelPrintComponent } from './label-print/label-print.component';
-import { LabelEditorComponent } from './label-editor-container/label-editor/label-editor.component';
+import { LabelEditorComponent } from './label-maker/label-editor/label-editor.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { EditorItemComponent } from './label-editor-container/label-editor/editor-item/editor-item.component';
+import { EditorItemComponent } from './label-maker/label-editor/editor-item/editor-item.component';
 import { LabelItemComponent } from './label-preview/label-item/label-item.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { RulerComponent } from './ruler/ruler.component';
-import { LabelSettingsComponent } from './label-editor-container/label-settings/label-settings.component';
-import { LabelFieldsAvailableComponent } from './label-editor-container/label-fields-available/label-fields-available.component';
+import { LabelSettingsComponent } from './label-maker/label-settings/label-settings.component';
+import { LabelFieldsAvailableComponent } from './label-maker/label-fields-available/label-fields-available.component';
 import { LabelPageComponent } from './label-print/label-page/label-page.component';
-import { FontSettingsComponent } from './label-editor-container/label-settings/font-settings/font-settings.component';
-import { MarginSettingsComponent } from './label-editor-container/label-settings/margin-settings/margin-settings.component';
-import { FieldSettingsComponent } from './label-editor-container/label-settings/field-settings/field-settings.component';
-import { LabelFileComponent } from './label-editor-container/label-file/label-file.component';
-import { FieldAddComponent } from './label-editor-container/label-settings/field-add/field-add.component';
-import { SearchFieldsPipe } from './label-editor-container/label-fields-available/search-fields.pipe';
+import { FontSettingsComponent } from './label-maker/label-settings/font-settings/font-settings.component';
+import { MarginSettingsComponent } from './label-maker/label-settings/margin-settings/margin-settings.component';
+import { FieldSettingsComponent } from './label-maker/label-settings/field-settings/field-settings.component';
+import { LabelFileComponent } from './label-maker/label-file/label-file.component';
+import { FieldAddComponent } from './label-maker/label-settings/field-add/field-add.component';
+import { SearchFieldsPipe } from './label-maker/label-fields-available/search-fields.pipe';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { RemoveSuffixPipe } from './label-editor-container/label-file/remove-suffix.pipe';
+import { RemoveSuffixPipe } from './label-maker/label-file/remove-suffix.pipe';
+import { InfoWindowComponent } from './info-window/info-window.component';
+import { IconComponent } from './icon/icon.component';
+import { ViewSettingsComponent } from './label-maker/view-settings/view-settings.component';
+import { EditorGridComponent } from './label-maker/label-editor/editor-grid/editor-grid.component';
+import { LabelItemFieldComponent } from './label-preview/label-item/label-item-field/label-item-field.component';
 
 @NgModule({
   declarations: [
-    LabelEditorContainerComponent,
+    LabelMakerComponent,
     LabelPreviewComponent,
     LabelPrintComponent,
     LabelEditorComponent,
@@ -39,7 +44,12 @@ import { RemoveSuffixPipe } from './label-editor-container/label-file/remove-suf
     LabelFileComponent,
     FieldAddComponent,
     SearchFieldsPipe,
-    RemoveSuffixPipe
+    RemoveSuffixPipe,
+    InfoWindowComponent,
+    IconComponent,
+    ViewSettingsComponent,
+    EditorGridComponent,
+    LabelItemFieldComponent
   ],
   imports: [
     CommonModule,
@@ -47,6 +57,6 @@ import { RemoveSuffixPipe } from './label-editor-container/label-file/remove-suf
     QRCodeModule,
     NgxWebstorageModule
   ],
-  exports: [LabelEditorContainerComponent, LabelPreviewComponent, LabelPrintComponent]
+  exports: [LabelMakerComponent, LabelPreviewComponent, LabelPrintComponent]
 })
 export class GenericLabelMakerModule { }

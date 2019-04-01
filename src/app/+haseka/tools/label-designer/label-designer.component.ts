@@ -15,6 +15,7 @@ export class LabelDesignerComponent implements OnInit {
 
   labelFields$: Observable<ILabelField[]>;
   setup: ISetup;
+  viewSettings: any = {magnification: 2};
   data: any;
 
   constructor(

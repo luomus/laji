@@ -5,11 +5,6 @@
   [style.left.mm]="_item.x"
 >
   <ng-container *ngFor="let field of _item.fields; let l=last">
-    <ng-container *ngIf="field.type === 'qr-code'; else plainText">
-      <qrcode [qrdata]="field.content" [size]="size" [level]="'H'" [usesvg]="true"></qrcode>
-    </ng-container>
-    <ng-template #plainText>
-      {{field.content}}<span *ngIf="!l" [innerHTML]="field.separator || ', '"></span>
-    </ng-template>
+    <ll-label-item-field [size]="size" [field]="field" [isLast]="l"></ll-label-item-field>
   </ng-container>
 </div>

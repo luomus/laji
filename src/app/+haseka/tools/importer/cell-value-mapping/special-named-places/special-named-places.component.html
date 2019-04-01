@@ -3,7 +3,7 @@
     <th class="value-col">
       {{ 'excel.map.value-user' | translate }}
     </th>
-    <th class="map-col">>
+    <th class="map-col">
       {{ 'excel.map.value-mapped' | translate }}
     </th>
   </tr>
@@ -15,9 +15,9 @@
     </td>
     <td>
       <laji-mapping-select
-        [disabled]="!namedPlaces"
+        [disabledWhenNoOptions]="true"
         [value]="mapping && mapping[value] || ''"
-        [options]="namedPlaces"
+        [options]="namedPlaces$ | async"
         (selected)="valueMapped(value, $event)"></laji-mapping-select>
     </td>
   </tr>

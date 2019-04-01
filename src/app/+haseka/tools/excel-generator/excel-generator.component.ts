@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { FormField } from '../model/form-field';
+import { IFormField } from '../model/excel';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { GeneratorService } from '../service/generator.service';
 
@@ -18,7 +18,7 @@ export class ExcelGeneratorComponent implements OnInit {
   forms$: Observable<any>;
   formID = '';
   formTitle: string;
-  fields: FormField[] = [];
+  fields: IFormField[] = [];
   parents: string[] = [];
   selected: string[] = [];
   useLabels = true;
@@ -33,7 +33,7 @@ export class ExcelGeneratorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.spreadSheetService.setRequiredFields({
+    this.spreadSheetService.setRequiredFields('*', {
       'gatherings[*].taxonCensus[*].censusTaxonID': false,
       'gatherings[*].taxonCensus[*].taxonCensusType': false,
       'gatherings[*].units[*].identifications[*].taxon': true
@@ -41,7 +41,7 @@ export class ExcelGeneratorComponent implements OnInit {
   }
 
   formSelected(event) {
-    this.formID = event.id;
+    this.formID = event;
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe((form: any) => {
         this.formTitle = form.title;
@@ -56,7 +56,7 @@ export class ExcelGeneratorComponent implements OnInit {
       });
   }
 
-  toggleField(field: FormField | FormField[]) {
+  toggleField(field: IFormField | IFormField[]) {
     if (this.generating) {
       return;
     }
@@ -82,6 +82,7 @@ export class ExcelGeneratorComponent implements OnInit {
   generate() {
     this.generating = true;
     this.generatorService.generate(
+      this.formID,
       'Vihko - ' + this.formTitle + ' (' + this.formID + ')',
       this.fields.filter(field => this.selected.indexOf(field.key) > -1 || field.required),
       this.useLabels,

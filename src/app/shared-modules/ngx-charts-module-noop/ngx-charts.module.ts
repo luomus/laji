@@ -13,6 +13,7 @@ import {
   NgxTimelineComponent
 } from './ngx-charts-chart/ngx-charts-chart.component';
 import { NgxChartsTreeMapComponent } from './ngx-charts-tree-map/ngx-charts-tree-map.component';
+import { NgxChartsBarVerticalComponent } from './ngx-charts-bar-vertical/ngx-charts-bar-vertical.component';
 
 @NgModule({
   imports: [
@@ -20,10 +21,11 @@ import { NgxChartsTreeMapComponent } from './ngx-charts-tree-map/ngx-charts-tree
   ],
   declarations: [NgxChartsLineChartComponent, NgxChartsPieChartComponent, NgxChartsAdvancedPieChartComponent, NgxChartsChartComponent,
     NgxXAxisComponent, NgxYAxisComponent, NgxLineSeriesComponent, NgxTooltipAreaComponent, NgxCircleSeriesComponent, NgxTimelineComponent,
-    NgxChartsTreeMapComponent],
+    NgxChartsTreeMapComponent,
+    NgxChartsBarVerticalComponent],
   exports: [NgxChartsLineChartComponent, NgxChartsPieChartComponent, NgxChartsAdvancedPieChartComponent, NgxChartsChartComponent,
     NgxXAxisComponent, NgxYAxisComponent, NgxLineSeriesComponent, NgxTooltipAreaComponent, NgxCircleSeriesComponent, NgxTimelineComponent,
-    NgxChartsTreeMapComponent]
+    NgxChartsTreeMapComponent, NgxChartsBarVerticalComponent]
 })
 export class NgxChartsModule { }
 

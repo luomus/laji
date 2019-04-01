@@ -2,7 +2,7 @@ import { Component, OnChanges, OnDestroy, Input, Output, EventEmitter, ChangeDet
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
+import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 
 @Component({
   selector: 'laji-taxon-overview',
@@ -45,14 +45,12 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
 
   constructor(
     public translate: TranslateService,
-    private taxonService: TaxonomyApi,
+    private taxonomyService: TaxonTaxonomyService,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnChanges() {
-    if (!this.taxon.species) {
-      this.getChildren();
-    }
+    this.getChildren();
   }
 
   ngOnDestroy() {
@@ -65,12 +63,9 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     if (this.childrenSub) {
       this.childrenSub.unsubscribe();
     }
-    this.childrenSub = this.taxonService
-      .taxonomyFindChildren(this.taxon.id, this.translate.currentLang, '1', {
-        selectedFields: 'id,vernacularName,scientificName,cursiveName,countOfFinnishSpecies',
-        onlyFinnish: false
-      })
-      .subscribe((data) => {
+    this.childrenSub = this.taxonomyService
+      .getChildren(this.taxon.id)
+      .subscribe(data => {
         this.taxonChildren = data;
         this.cd.markForCheck();
       });

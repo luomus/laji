@@ -1,0 +1,149 @@
+<div class="label-editor-window" #editor *ngIf="_setup; else missingSetup">
+  <div class="menubar">
+    <ul>
+      <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>File</a></li>
+      <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>Edit</a></li>
+      <li [class.active]="_active === 'view'" (click)="_active = 'view'" *ngIf="_viewSettings"><a>View</a></li>
+      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Label fields</a></li>
+      <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>Settings</a></li>
+      <li [class.active]="_active === 'help'" (click)="_active = 'help'"><a>Help</a></li>
+    </ul>
+  </div>
+  <div class="window-content">
+    <div class="settings-wrap" [class.dragging]="dragging" #settings>
+      <div *ngIf="_active === 'view'">
+        <ll-view-settings [viewSettings]="_viewSettings" (viewSettingsChange)="onViewSettingsChange($event)"></ll-view-settings>
+      </div>
+      <div *ngIf="_active === 'help'">
+        <table class="icon">
+          <tr class="link" (click)="openIntro()">
+            <td>
+              <ll-icon [size]="14" [type]="'logo'"></ll-icon>
+            </td>
+            <td>About</td>
+          </tr>
+        </table>
+        <h3 class="first">TODO: help content and videos</h3>
+      </div>
+      <div *ngIf="_active === 'file'">
+        <ll-label-file [newSetup]="newSetup" [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
+        <h3>Data</h3>
+        <table class="icon">
+          <tr class="link" (click)="openGenerate()">
+            <td></td>
+            <td>Generate...</td>
+          </tr>
+        </table>
+        <ng-content select=".file-data"></ng-content>
+      </div>
+      <div [hidden]="_active !== 'edit'">
+        <table class="icon">
+          <tr class="link" [class.disabled]="!hasUndo()" (click)="undo()">
+            <td>
+              <ll-icon [size]="14" [type]="'undo'"></ll-icon>
+            </td>
+            <td>Undo</td>
+          </tr>
+          <tr class="link" [class.disabled]="!hasRedo()" (click)="redo()">
+            <td>
+              <ll-icon [size]="14" [type]="'redo'"></ll-icon>
+            </td>
+            <td>Redo</td>
+          </tr>
+        </table>
+      </div>
+      <div [hidden]="_active !== 'settings'">
+        <ll-label-settings
+          [setup]="_setup"
+          (setupChange)="setupChanged($event)"
+          [selectedLabelItem]="_selectedLabelItem"
+          [availableFields]="availableFields"
+        ></ll-label-settings>
+      </div>
+      <div [hidden]="_active !== 'fields'">
+        <ll-label-fields-available
+          (dragging)="newFieldDragging($event, settings)"
+          [magnification]="_viewSettings.magnification"
+          [availableFields]="availableFields"
+          (addLabelItem)="addLabelItem($event)"
+        ></ll-label-fields-available>
+      </div>
+    </div>
+    <div class="editor-wrap">
+      <div class="editor-space">
+        <ll-label-editor
+          [active]="_selectedLabelItem"
+          (activeChange)="setActiveLabelItem($event)"
+          (done)="done()"
+          [setup]="_setup"
+          (setupChange)="setupChanged($event)"
+          [grid]="_viewSettings.grid"
+          [gridVisible]="_viewSettings.gridVisible"
+          [magnification]="_viewSettings.magnification"
+          (showSettings)="showSettings($event)"></ll-label-editor>
+        <div *ngIf="_setup.twoSided" style="margin-top: 10px; display: inline-block;">
+          <ll-label-editor
+            [backSide]="true"
+            [active]="_selectedLabelItem"
+            (activeChange)="setActiveLabelItem($event)"
+            (done)="done()"
+            [setup]="_setup"
+            (setupChange)="setupChanged($event)"
+            [grid]="_viewSettings.grid"
+            [gridVisible]="_viewSettings.gridVisible"
+            [magnification]="_viewSettings.magnification"
+            (showSettings)="showSettings($event)"></ll-label-editor>
+        </div>
+      </div>
+      <div class="preview-space">
+        <strong>Preview</strong>
+        <div style="margin-bottom: 5px;">
+          <div style="margin: 5px 15px 0 0; border: 1px solid #999; display: inline-block">
+            <ll-label-preview [setup]="_setup"></ll-label-preview>
+          </div>
+          <div *ngIf="_setup.twoSided" style="margin-top: 5px; border: 1px solid #999; display: inline-block">
+            <ll-label-preview [setup]="_setup" [backSide]="true"></ll-label-preview>
+          </div>
+        </div>
+        <small *ngIf="dimensions">
+          There can be a total of {{dimensions.cols * dimensions.rows}} labels on a single page (in {{dimensions.cols}} columns and {{dimensions.rows}} rows).
+        </small>
+      </div>
+    </div>
+  </div>
+  <ll-info-window></ll-info-window>
+</div>
+<ng-template #intro>
+  <div style="text-align: center; margin: 0 0 20px 0">
+    <ll-icon [type]="'logo'" [size]="72"></ll-icon>
+    <div style="margin-top: -5px">
+      <small>Version {{version}}</small>
+    </div>
+  </div>
+
+  <p>With this tool you can make a specimen label design that can be used to print labels for Notebook observations.</p>
+  <p>You can start from scratch and design an entirely new label. You can also use pre-defined label templates as they are or as a starting point for your design.</p>
+  <p>
+    Under Fields you find all the data fields available for labels.
+    Under settings you can adjust both general label settings and separate field settings.
+    Under Files you can save your label desing templates, load previously saved templates,
+    see your recent label template files and download the label pdf.
+  </p>
+</ng-template>
+<ng-template #missingSetup>
+  Missing required setup parameter
+</ng-template>
+<ng-template #generateTpl>
+  <table class="generate">
+    <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" [value]="generate.uri" type="text" class="form-control input-sm"></td></tr>
+    <tr><td>Range start:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" [value]="generate.rangeStart || ''" type="text" class="form-control input-sm"></td></tr>
+    <tr><td>Range end:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" [value]="generate.rangeEnd || ''" type="text" class="form-control input-sm"></td></tr>
+    <tr *ngIf="fields.length > 0"><td colspan="2">&nbsp;</td></tr>
+    <tr *ngFor="let field of fields;">
+      <td>{{field.label}}:</td><td><input [value]="generate.data[field.field] || ''" (change)="updateGenerate(field.field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
+    </tr>
+  </table>
+</ng-template>
+<ng-template #generateActionsTpl>
+  <button (click)="generateData()" style="margin-top: 5px;" class="btn btn-default btn-sm pull-right">Generate</button>
+</ng-template>

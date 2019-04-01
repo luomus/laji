@@ -17,7 +17,6 @@ import {GalleryService} from '../../../shared/gallery/service/gallery.service';
 import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
 import {Image} from '../../../shared/gallery/image-gallery/image.interface';
 
-
 @Component({
   selector: 'laji-info-card',
   templateUrl: './info-card.component.html',
@@ -28,13 +27,14 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence';
+  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive';
 
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<Image>;
 
   hasImageData: boolean;
   hasBiologyData: boolean;
+  isEndangered: boolean;
   images = [];
 
   activatedTabs = {};
@@ -53,9 +53,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     if (this.hasImageData === undefined) {
       this.hasImageData = this.activeTab === 'images';
     }
-    if (this.hasBiologyData === undefined) {
-      this.hasBiologyData = this.activeTab === 'biology';
-    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -64,6 +61,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes.taxon) {
+      this.activatedTabs = {[this.activeTab]: true};
+
       this.taxonImages = (this.taxon.multimedia || []).map(img => {
         if (img['taxon']) {
           img['taxonId'] = img['taxon']['id'];
@@ -80,8 +79,15 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       }, []);
 
       this.hasBiologyData = !!this.taxon.primaryHabitat || !!this.taxon.secondaryHabitats || this.taxonDescription.length > 0;
-      if (!this.hasBiologyData && this.activeTab === 'biology') {
-        this.updateRoute(this.taxon.id, 'overview');
+      this.isEndangered = this.getIsEndangered(this.taxon);
+
+      if (
+        (!this.hasBiologyData && this.activeTab === 'biology') ||
+        (!this.isFromMasterChecklist && (this.activeTab === 'occurrence' || this.activeTab === 'observations')) ||
+        (!this.isEndangered && this.activeTab === 'endangerment') ||
+        (!this.taxon.invasiveSpecies && this.activeTab === 'invasive')
+      ) {
+        this.updateRoute(this.taxon.id, 'overview', this.context, true);
       }
 
       this.setImages();
@@ -94,8 +100,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  updateRoute(id: string, tab = this.activeTab, context = this.context) {
-    this.routeUpdate.emit({id: id, tab: tab, context: context});
+  updateRoute(id: string, tab = this.activeTab, context = this.context, replaceUrl = false) {
+    this.routeUpdate.emit({id: id, tab: tab, context: context, replaceUrl: replaceUrl});
   }
 
   private setImages() {
@@ -153,7 +159,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.cd.markForCheck();
 
       if (!this.hasImageData && this.activeTab === 'images') {
-        this.updateRoute(this.taxon.id, 'overview');
+        this.updateRoute(this.taxon.id, 'overview', this.context, true);
       }
     });
   }
@@ -163,5 +169,21 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       query,
       undefined, limit, 1
     ).pipe(map(res => this.galleryService.getImages(res, limit)));
+  }
+
+  private getIsEndangered(taxon: Taxonomy): boolean {
+    if (!taxon.latestRedListStatusFinland) {
+      return false;
+    }
+
+    const status = taxon.latestRedListStatusFinland.status;
+
+    for (const type of ['EX', 'EW', 'RE', 'CR', 'EN', 'VU', 'NT', 'DD']) {
+      if (status === 'MX.iucn' + type) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

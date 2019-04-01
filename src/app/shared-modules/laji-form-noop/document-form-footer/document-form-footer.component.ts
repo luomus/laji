@@ -9,6 +9,7 @@ export class DocumentFormFooterComponent {
   @Input() form: any;
   @Input() status = '';
   @Input() saving = false;
+  @Input() edit: any;
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
   @Output() cancel = new EventEmitter();

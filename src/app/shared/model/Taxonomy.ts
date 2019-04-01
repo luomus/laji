@@ -235,6 +235,8 @@ export interface Taxonomy {
   primaryHabitat?: Habitat;
 
   secondaryHabitats?: Habitat[];
+
+  parent?: any;
 }
 
 export interface RedListEvaluation {
@@ -246,6 +248,8 @@ export interface RedListEvaluation {
   possiblyRE?: object;
   primaryHabitat?: Habitat;
   secondaryHabitats?: Habitat[];
+  endangermentReasons?: string[];
+  primaryThreat?: string;
 }
 
 export interface LatestRedListStatusFinland {

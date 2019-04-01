@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField } from '../../model/form-field';
+import { IFormField } from '../../model/excel';
 
 @Component({
   selector: 'laji-field-list',
@@ -12,12 +12,12 @@ export class FieldListComponent implements OnInit {
   @Input() selected: string[] = [];
   @Input() title = '';
   @Input() showTitle = true;
-  @Output() toggle = new EventEmitter<FormField|FormField[]>();
+  @Output() toggle = new EventEmitter<IFormField|IFormField[]>();
   visibleFields: {
     subGroup: string;
-    fields: FormField[]
+    fields: IFormField[]
   }[];
-  _fields: FormField[];
+  _fields: IFormField[];
   _parent: string;
 
   constructor() { }
@@ -25,7 +25,7 @@ export class FieldListComponent implements OnInit {
   ngOnInit() {
   }
 
-  onClick(field: FormField) {
+  onClick(field: IFormField) {
     if (!field.required) {
       this.toggle.emit(field);
     }
@@ -48,7 +48,7 @@ export class FieldListComponent implements OnInit {
   }
 
   @Input()
-  set fields(fields: FormField[]) {
+  set fields(fields: IFormField[]) {
     this._fields = fields;
     this.initVisibleFields();
   }

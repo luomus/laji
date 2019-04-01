@@ -1,4 +1,4 @@
-<div [class]="btnClass" (click)="btnClick($event)"><ng-content></ng-content></div>
+<div [class]="btnClass"><ng-content></ng-content></div>
 <div #pagesContainer class="print-area">
   <ng-container *ngIf="printing && pages">
     <ll-label-page *ngFor="let page of pages" [data]="page" [setup]="setup" [pageLayout]="pageLayout" (ready)="printReady()"></ll-label-page>

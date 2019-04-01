@@ -1,12 +1,9 @@
-.map-wrap {
-  position: relative;
-}
-
 .title {
   position: absolute;
   z-index: 401;
   left: 0;
   right: 0;
+  top: 0;
   text-align: center;
   margin: 0 auto;
 }

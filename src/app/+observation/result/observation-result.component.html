@@ -10,7 +10,7 @@
     </a>
   </li>
   <li class="counts">
-    <strong [hidden]="active === 'finnish'">
+    <strong *ngIf="active !== 'finnish'">
       <laji-observation-count
         [timeout]="30000"
         [query]="searchQuery.query"
@@ -25,7 +25,7 @@
       </laji-observation-count>
       {{ 'observation.results.species' | translate }}
     </strong>
-    <strong [hidden]="active !== 'finnish'">
+    <strong *ngIf="active === 'finnish'">
       <laji-observation-count
         [timeout]="30000"
         [overrideInQuery]="{countryId: 'ML.206'}"

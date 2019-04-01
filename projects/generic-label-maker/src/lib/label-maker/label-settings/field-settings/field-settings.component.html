@@ -1,0 +1,85 @@
+<ng-container *ngIf="field.type === 'text'; else label">
+  <input type="text" [value]="field.content" (change)="textChange($event)">
+</ng-container>
+<ng-template #label>
+  {{field.label}}
+</ng-template>
+<div class="more" (click)="toggleMore()" *ngIf="field.type !== 'qr-code'">
+  <i *ngIf="field._menuOpen || more; else up" class="glyphicon glyphicon-chevron-down"></i>
+  <ng-template #up>
+    <i class="glyphicon glyphicon-chevron-up"></i>
+  </ng-template>
+</div>
+
+<div class="more-container" *ngIf="field._menuOpen || more">
+  <table>
+    <tr>
+      <td></td>
+      <td></td>
+      <td style="width: 24px;">
+        <div class="delete" *ngIf="allowDelete" (click)="remove()">
+          <ll-icon size="20" type="close"></ll-icon>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Separator:
+      </td>
+      <td>
+        <select (change)="onChange($event)" class="form-control">
+          <option
+            *ngFor="let separator of separators"
+            [value]="separator.sep"
+            [selected]="separator.sep === field.separator"
+            [innerHTML]="separator.label || separator.sep"
+          ></option>
+        </select>
+      </td>
+      <td style="padding: 5px;">
+        <input type="checkbox" title="Include separator even when there is no value" [checked]="field.separatorAlways" (change)="change(!field.separatorAlways, 'separatorAlways')">
+      </td>
+    </tr>
+    <tr *ngIf="field.isArray">
+      <td>
+        Join by:
+      </td>
+      <td>
+        <select (change)="onChange($event, 'join')" class="form-control">
+          <option
+            *ngFor="let separator of separators"
+            [value]="separator.sep"
+            [selected]="separator.sep === field.join"
+            [innerHTML]="separator.label || separator.sep"
+          ></option>
+        </select>
+      </td>
+      <td></td>
+    </tr>
+    <ng-container *ngIf="field.type !== 'text'">
+      <tr>
+        <td>Prefix:</td>
+        <td><input type="text" (change)="onChange($event, 'prefix')" [value]="field.prefix || ''" class="form-control"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Suffix:</td>
+        <td><input type="text" (change)="onChange($event, 'suffix')" [value]="field.suffix || ''" class="form-control"></td>
+        <td></td>
+      </tr>
+    </ng-container>
+  </table>
+  <div style="margin-top: 15px">
+    <ll-font-settings [allowEmptyFontFamily]="true" [minimal]="true" [showUnderline]="true" [fontSettings]="field.style" (fontSettingsChange)="change($event, 'style')"></ll-font-settings>
+  </div>
+  <span>Style applies to:</span>
+  <select class="form-control" (change)="onChange($event, 'styleAppliesTo')">
+    <option value="all" [selected]="field.styleAppliesTo === 'all'">All</option>
+    <option value="prefix" [selected]="field.styleAppliesTo === 'prefix'">Prefix only</option>
+    <option value="content" [selected]="field.styleAppliesTo === 'content'">Value only</option>
+    <option value="suffix" [selected]="field.styleAppliesTo === 'suffix'">Suffix only</option>
+    <option value="contentPrefix" [selected]="field.styleAppliesTo === 'contentPrefix'">Prefix and value</option>
+    <option value="contentSuffix" [selected]="field.styleAppliesTo === 'contentSuffix'">Value and suffix</option>
+    <option value="prefixSuffix" [selected]="field.styleAppliesTo === 'prefixSuffix'">Prefix and suffix</option>
+  </select>
+</div>

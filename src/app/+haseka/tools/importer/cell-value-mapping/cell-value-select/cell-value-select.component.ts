@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField, VALUE_IGNORE } from '../../../model/form-field';
+import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 
 @Component({
   selector: 'laji-cell-value-select',
@@ -13,14 +13,14 @@ export class CellValueSelectComponent implements OnInit {
   @Input() mapping: {[value: string]: any} = {};
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
-  _field: FormField;
+  _field: IFormField;
   labels: string[] = [];
   ignore = VALUE_IGNORE;
   booleanValues = [VALUE_IGNORE, 'true', 'false'];
 
   constructor() { }
 
-  @Input() set field(field: FormField) {
+  @Input() set field(field: IFormField) {
     this._field = field;
     this.labels = [];
 

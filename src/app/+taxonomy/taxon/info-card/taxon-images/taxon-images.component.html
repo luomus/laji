@@ -12,15 +12,15 @@
 <ng-container *ngIf="isFromMasterChecklist">
   <ng-container *ngFor="let item of [
 {
-  title: 'taxonomy.images.typeSpecimens',
+  title: 'taxonomy.typeSpecimens',
   hasData: 'hasTypeSpecimens',
   query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: true, cache: true}
 }, {
-  title: 'taxonomy.images.collection',
+  title: 'taxonomy.collectionSpecimens',
   hasData: 'hasCollectionImages',
   query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false, cache: true}
 }, {
-  title: 'taxonomy.images.observations',
+  title: 'taxonomy.confirmedObservations',
   hasData: 'hasObservationImages',
   query: {taxonId: [taxon.id], superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'], taxonReliability: ['RELIABLE'], cache: true}
 }]">

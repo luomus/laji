@@ -31,6 +31,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   sidebarWidth = 225;
   showTree = true;
+  canShowTree = true;
 
   loading = false;
   private initTaxonSub: Subscription;
@@ -73,7 +74,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.footerService.footerVisible = false;
+    this.footerService.footerVisible = true;
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
@@ -108,7 +109,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     this.updateRoute();
   }
 
-  updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree) {
+  updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false) {
     const route = ['/taxon', id];
     const params = {};
     const extra = {};
@@ -125,6 +126,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
     if (Object.keys(params).length > 0) {
       extra['queryParams'] = params;
     }
+    if (replaceUrl) {
+      extra['replaceUrl'] = true;
+    }
 
     this.router.navigate(
       this.localizeRouterService.translateRoute(
@@ -139,6 +143,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       tap(taxon => {
         this.taxon = taxon;
         this.isFromMasterChecklist = this.getIsFromMasterChecklist();
+        this.canShowTree = this.taxon.hasParent || this.taxon.hasChildren;
 
         this.setTitle();
       })
@@ -153,7 +158,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private getTaxon(id) {
     return this.taxonService
-      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true}).pipe(
+      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true, includeRedListEvaluations: true}).pipe(
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), ))).pipe(
         catchError(err => {
           this.logger.warn('Failed to fetch taxon by id', err);

@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
-import { DOCUMENT_LEVEL, FormField, VALUE_IGNORE } from '../model/form-field';
+import { IFormField, LEVEL_DOCUMENT, VALUE_IGNORE } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 
@@ -22,18 +22,20 @@ export class SpreadSheetService {
 
   private requiredFields = {};
 
-  private hiddenFields: string[] = [
-    'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
-    'gatherings[*].images[*]',
-    'gatherings[*].units[*].images[*]',
-    'gatherings[*].dateBegin',
-    'gatherings[*].dateEnd',
-    'gatherings[*].units[*].unitGathering.dateBegin',
-    'gatherings[*].units[*].unitGathering.dateEnd',
-    'gatherings[*].units[*].unitGathering.geometry',
-    'gatherings[*].units[*].checklistID',
-    'gatherings[*].units[*].hostID',
-  ];
+  private hiddenFields: {[formID: string]: string[]} = {
+    '*': [
+      'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
+      'gatherings[*].images[*]',
+      'gatherings[*].units[*].images[*]',
+      'gatherings[*].dateBegin',
+      'gatherings[*].dateEnd',
+      'gatherings[*].units[*].unitGathering.dateBegin',
+      'gatherings[*].units[*].unitGathering.dateEnd',
+      'gatherings[*].units[*].unitGathering.geometry',
+      'gatherings[*].units[*].checklistID',
+      'gatherings[*].units[*].hostID',
+    ]
+  };
 
   constructor(
     private mappingService: MappingService,
@@ -57,17 +59,8 @@ export class SpreadSheetService {
           this.labelService.get('MZ.unitGathering', lang)
         ])
       ),
-      map(data => ({
-        document: data[0],
-        gatheringEvent: data[1],
-        taxonCensus: data[2],
-        gatherings: data[3],
-        gatheringFact: data[4],
-        identifications: data[5],
-        units: data[6],
-        unitFact: data[7],
-        unitGathering: data[8]
-      })
+      map(([document, gatheringEvent, taxonCensus, gatherings, gatheringFact, identifications, units, unitFact, unitGathering]) =>
+         ({ document, gatheringEvent, taxonCensus, gatherings, gatheringFact, identifications, units, unitFact, unitGathering })
       )
     )
       .subscribe(translations => this.translations = translations);
@@ -78,15 +71,15 @@ export class SpreadSheetService {
     return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
   }
 
-  setRequiredFields(fields: object) {
-    this.requiredFields = fields;
+  setRequiredFields(formID: string, fields: object) {
+    this.requiredFields[formID] = fields;
   }
 
-  setHiddenFeilds(fields: string[]) {
-    this.hiddenFields = fields;
+  setHiddenFeilds(formID: string, fields: string[]) {
+    this.hiddenFields[formID] = fields;
   }
 
-  formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: FormField} {
+  formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: IFormField} {
     const result = {};
     this.formToFlatFields(form, addIgnore)
       .map(field => {
@@ -95,8 +88,8 @@ export class SpreadSheetService {
     return result;
   }
 
-  formToFlatFields(form: any, addIgnore = false): FormField[] {
-    const result: FormField[] = [];
+  formToFlatFields(form: any, addIgnore = false): IFormField[] {
+    const result: IFormField[] = [];
     if (addIgnore) {
       result.push({
         parent: '',
@@ -109,7 +102,7 @@ export class SpreadSheetService {
       });
     }
     if (form && form.schema && form.schema.properties) {
-      this.parserFields(form.schema, {properties: form.validators}, result, '', DOCUMENT_LEVEL, this.findUnitSubGroups(form.uiSchema));
+      this.parserFields(form.schema, {properties: form.validators}, result, '', LEVEL_DOCUMENT, this.findUnitSubGroups(form.uiSchema));
     }
     return result;
   }
@@ -142,7 +135,7 @@ export class SpreadSheetService {
     }
   }
 
-  getColMapFromSheet(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}, len: number) {
+  getColMapFromSheet(sheet: XLSX.WorkSheet, fields: {[key: string]: IFormField}, len: number) {
     const colMap = {};
     let idx = -1, col;
 
@@ -201,7 +194,7 @@ export class SpreadSheetService {
   private parserFields(
     form: any,
     validators: any,
-    result: FormField[],
+    result: IFormField[],
     root,
     parent,
     unitSubGroups = {},
@@ -231,7 +224,7 @@ export class SpreadSheetService {
             );
           });
           if (!found) {
-            if (this.hiddenFields.indexOf(root) > -1) {
+            if (this.isHiddenField(form.id, root)) {
               return;
             }
             result.push({
@@ -241,7 +234,7 @@ export class SpreadSheetService {
               key: root,
               parent: parent,
               isArray: root.endsWith('[*]'),
-              required: this.hasRequiredValidator(lastKey, validators, required, root),
+              required: this.hasRequiredValidator(form.id, lastKey, validators, required, root),
               subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
               enum: form.enum,
               enumNames: form.enumNames,
@@ -267,7 +260,7 @@ export class SpreadSheetService {
         }
         break;
       default:
-        if (this.hiddenFields.indexOf(root) > -1) {
+        if (this.isHiddenField(form.id, root)) {
           return;
         }
         result.push({
@@ -277,7 +270,7 @@ export class SpreadSheetService {
           key: root,
           parent: parent,
           isArray: root.endsWith('[*]'),
-          required: this.hasRequiredValidator(lastKey, validators, required, root),
+          required: this.hasRequiredValidator(form.id, lastKey, validators, required, root),
           subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
           enum: form.enum,
           enumNames: form.enumNames,
@@ -286,9 +279,12 @@ export class SpreadSheetService {
     }
   }
 
-  private hasRequiredValidator(lastKey, validator, required, key) {
-    if (typeof this.requiredFields[key] !== 'undefined') {
-      return this.requiredFields[key];
+  private hasRequiredValidator(formID: string, lastKey, validator, required, key) {
+    if (this.requiredFields[formID] && typeof this.requiredFields[formID][key] !== 'undefined') {
+      return this.requiredFields[formID][key];
+    }
+    if (this.requiredFields['*'] && typeof this.requiredFields['*'][key] !== 'undefined') {
+      return this.requiredFields['*'][key];
     }
     return !!validator.presence || (validator.geometry && validator.geometry.requireShape) || required.indexOf(lastKey) > -1;
   }
@@ -301,6 +297,11 @@ export class SpreadSheetService {
       }
     }
     return undefined;
+  }
+
+  private isHiddenField(formID: string, field: string): boolean {
+    return (this.hiddenFields['*']    && this.hiddenFields['*'].indexOf(field) > -1) ||
+           (this.hiddenFields[formID] && this.hiddenFields[formID].indexOf(field) > -1);
   }
 
   private findUnitSubGroups(form) {

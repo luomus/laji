@@ -1,0 +1,189 @@
+$menu-height: 24px;
+$menu-color: #333;
+$menu-border-color: #777;
+$menu-text-color: #eee;
+$settings-border-color: #aaa;
+$settings-bg-color: #efefef;
+$settings-text-color: #333;
+$settings-row-height: 33px;
+
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+::ng-deep .label-editor-window {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  user-select: none;
+  overflow: hidden;
+  border: 1px solid $menu-border-color;
+  background-color: #fefefe;
+  z-index: 10;
+
+  .menubar {
+    height: $menu-height;
+    width: 100%;
+    color: #333;
+    background: $menu-color;
+    z-index: 22;
+    border-bottom: 1px solid $menu-border-color;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      li {
+        height: $menu-height;
+        display: block;
+        float: left;
+        padding: 2px 15px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: darken($menu-color, 10%);
+          border-bottom: 1px solid $menu-border-color;
+
+          a {
+            color: lighten($menu-text-color, 90%);
+            text-decoration: none;
+          }
+
+        }
+
+        a {
+          color: $menu-text-color;
+        }
+
+        &.active {
+          background-color: lighten($menu-color, 10%);
+          border-bottom: 1px solid $menu-border-color;
+        }
+
+      }
+    }
+  }
+
+  .window-content {
+    display: flex;
+    width: 100%;
+    height: calc(100% - #{$menu-height});
+  }
+
+  h3 {
+    margin: 15px -15px 0 -15px;
+    font-size: 100%;
+    font-weight: 900;
+    display: block;
+    padding: 15px 15px 5px 15px;
+    border-top: 1px solid $settings-border-color;
+
+    &.first {
+      border-top: none;
+      margin-top: 0;
+    }
+  }
+
+  .settings-wrap {
+    flex-basis: 300px;
+    flex-shrink: 0;
+    height: 100%;
+    overflow-y: auto;
+    color: $settings-text-color;
+    border-right: 1px solid $settings-border-color;
+    padding: 15px;
+    background-color: $settings-bg-color;
+    table {
+      td {
+        height: $settings-row-height;
+      }
+      td:first-child {
+        text-align: right;
+      }
+      td:nth-child(2) {
+        padding-left: 5px;
+      }
+      &.input {
+        width: 100%;
+
+        .btn-group:last-child {
+          padding-right: 0;
+        }
+
+      }
+      &.icon {
+        margin-left: -15px;
+        width: calc(100% + 30px);
+        td:first-child {
+          width: 40px;
+          text-align: right;
+          margin-right: 5px;
+        }
+      }
+      &.margins {
+        width: 155px;
+        margin-left: 40px;
+      }
+      &.md-input {
+        width: 50px;
+      }
+      tr {
+        &.link {
+          &:hover {
+            background-color: darken($settings-bg-color, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  .settings-wrap.dragging {
+    overflow-y: unset;
+  }
+
+  .tab-content {
+    height: 100%;
+  }
+
+  .editor-wrap {
+    flex: 1 1 auto;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  .editor-space, .preview-space {
+    padding: 45px 10px 45px 45px;
+  }
+
+  .editor-space {
+    border-bottom: 1px solid $settings-border-color;
+  }
+
+  .disabled {
+    color: #aaa;
+  }
+
+  .settings-wrap {
+    user-select: none;
+  }
+
+  .editor-end {
+    width: 100%;
+  }
+
+  .link {
+    cursor: pointer;
+  }
+
+  table.generate {
+    td {
+      height: $settings-row-height;
+
+      &:first-child {
+        text-align: right;
+      }
+    }
+  }
+
+}

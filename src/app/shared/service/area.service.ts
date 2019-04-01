@@ -42,7 +42,7 @@ export class AreaService {
       }
     }
     this.pending = this.lajiApi
-      .getList(LajiApi.Endpoints.areas, {lang, page: 1, pageSize: 1000}).pipe(
+      .getList(LajiApi.Endpoints.areas, {lang, page: 1, pageSize: 10000}).pipe(
       map(paged => paged.results),
       map(areas => {
         const lkObject = {};

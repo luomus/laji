@@ -1,0 +1,164 @@
+<div class="row">
+  <div class="col-xs-12">
+    <a class="btn btn-primary browse-button" [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
+      {{ 'taxonomy.browseAndDownload' | translate }}
+    </a>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.map.finland' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-ykj-map
+        [query]="{taxonId: [taxon.id], countryId: ['ML.206'], cache: true}"
+        [height]="'600px'"
+        [type]="'count'"
+        [types]="['count']"
+        [showFullScreenControl]="true"
+      ></laji-ykj-map>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'GBIF'"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-gbif-map
+        [taxon]="taxon"
+        [showFullScreenControl]="true"
+        [height]="'600px'"
+      ></laji-gbif-map>
+    </div>
+  </div>
+  <div class="col-xs-12" *ngIf="hasYearData !== false" [hidden]="!hasYearData">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.observations.yearChart' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
+      </p>
+      <laji-taxon-year-graph
+        [taxonId]="taxon.id"
+        (hasData)="hasYearData = $event"
+      ></laji-taxon-year-graph>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'observation.filterBy.recordBasis' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-observation-table
+        [showHeader]="false"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [isAggregate]="true"
+        [selected]="['unit.superRecordBasis']"
+        [query]="{taxonId: [taxon.id], cache: true}"
+        [showRowAsLink]="false"
+      ></laji-observation-table>
+    </div>
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'MY.lifeStage' | label"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-observation-table
+        [showHeader]="false"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [isAggregate]="true"
+        [selected]="['unit.lifeStage']"
+        [query]="{taxonId: [taxon.id], cache: true}"
+        [showRowAsLink]="false"
+      ></laji-observation-table>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'MY.sex' | label"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-observation-table
+        [showHeader]="false"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [isAggregate]="true"
+        [selected]="['unit.sex']"
+        [query]="{taxonId: [taxon.id], cache: true}"
+        [showRowAsLink]="false"
+      ></laji-observation-table>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'observation.filterBy.collectionId' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-observation-table
+        [height]="'350px'"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [showHeader]="false"
+        [isAggregate]="true"
+        [selected]="['document.collectionId']"
+        [query]="{taxonId: [taxon.id], cache: true}"
+        [showRowAsLink]="false"
+      ></laji-observation-table>
+    </div>
+  </div>
+  <div
+    class="col-xs-12 col-sm-6"
+    *ngIf="taxon.secureLevel || taxon.breedingSecureLevel || taxon.naturaAreaSecureLevel || taxon.nestSiteSecureLevel || taxon.winteringSecureLevel"
+  >
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.observations.secureLevels' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <table class="table taxon-table table-condensed">
+        <tbody>
+        <ng-container *ngFor="let secureLevelType of [
+          'secureLevel',
+          'breedingSecureLevel',
+          'naturaAreaSecureLevel',
+          'nestSiteSecureLevel',
+          'winteringSecureLevel']">
+          <tr *ngIf="taxon[secureLevelType]">
+            <th>{{ 'MX.' + secureLevelType | label }}</th>
+            <td>{{ taxon[secureLevelType] | label }}</td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

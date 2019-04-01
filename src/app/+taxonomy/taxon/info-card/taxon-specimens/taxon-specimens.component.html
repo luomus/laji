@@ -1,0 +1,52 @@
+<h3 style="margin-top: 0">{{ 'taxonomy.typeSpecimens' | translate }}</h3>
+<laji-observation-table
+  [height]="'350px'"
+  [pageSize]="100"
+  [showSettingsMenu]="false"
+  [isAggregate]="false"
+  [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime', 'document.collectionId']"
+  [query]="{taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: true, cache: true}"
+  [showRowAsLink]="true"
+  (rowSelect)="showDocument($event)"
+></laji-observation-table>
+<h3>{{ 'taxonomy.collections' | translate }}</h3>
+<laji-observation-table
+  [height]="'350px'"
+  [pageSize]="100"
+  [showSettingsMenu]="false"
+  [showHeader]="false"
+  [isAggregate]="true"
+  [selected]="['document.collectionId']"
+  [query]="{taxonId: taxon.id, superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false, cache: true}"
+  [showRowAsLink]="true"
+  (rowSelect)="setCollectionId($event)"
+></laji-observation-table>
+<ng-container *ngIf="collectionId">
+  <h3 id="collectionSpecimens">{{ 'taxonomy.specimens' | translate }}: {{ collectionId | collectionName }}</h3>
+  <laji-observation-table
+    *ngIf="collectionId"
+    [height]="'350px'"
+    [pageSize]="100"
+    [showSettingsMenu]="false"
+    [isAggregate]="false"
+    [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime']"
+    [query]="{taxonId: [taxon.id], collectionId: [collectionId], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false, cache: true}"
+    [showRowAsLink]="true"
+    (rowSelect)="showDocument($event)"
+  ></laji-observation-table>
+</ng-container>
+
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     (onHidden)="onHideDocument()"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" *ngIf="documentModalVisible">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [uri]="documentId" [highlight]="highlightId"></laji-document>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FormField } from '../../model/form-field';
+import { IFormField } from '../../model/excel';
 
 @Pipe({
   name: 'levelFilter'
 })
 export class LevelFilterPipe implements PipeTransform {
 
-  transform(value: FormField[], level: string): any {
+  transform(value: IFormField[], level: string): any {
     if (!value || !Array.isArray(value) || value.length === 0) {
       return value;
     }

@@ -5,3 +5,11 @@
 .mapping-col {
   width: 50%;
 }
+.toggle-linked {
+  position: absolute;
+  top: 15px;
+  right: 0;
+}
+.cell-col-map-wrap {
+  position: relative;
+}

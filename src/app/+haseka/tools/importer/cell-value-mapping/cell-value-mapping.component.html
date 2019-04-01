@@ -48,6 +48,7 @@
     </ng-container>
     <ng-container *ngSwitchCase="specials.namedPlaceID">
       <laji-special-named-places
+        [formID]="formID"
         [field]="field"
         [invalidValues]="invalid"
         [mapping]="valueMap[field.key]"

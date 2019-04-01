@@ -1,0 +1,65 @@
+<ng-container *ngIf="selectedLabelItem; else missingField">
+  <div (click)="remove(selectedLabelItem)" style="margin-top: 10px;" class="pull-right"><ll-icon size="20" type="close"></ll-icon></div>
+  <h3 class="first">Field</h3>
+  <ll-font-settings
+    *ngIf="showFieldFont"
+    [allowEmptyFontFamily]="true"
+    [fontSettings]="selectedLabelItem.style"
+    (fontSettingsChange)="changeSelectedItem('style', $event)"
+    [showUnderline]="true"
+  ></ll-font-settings>
+  <div class="position">
+    <table class="margins">
+      <tr>
+        <td>left:</td>
+        <td>
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.x)" (change)="changePosition('x', $event)">
+        </td>
+        <td>mm.</td>
+      </tr>
+      <tr>
+        <td>top:</td>
+        <td>
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.y)" (change)="changePosition('y', $event)">
+        </td>
+        <td>mm.</td>
+      </tr>
+      <tr>
+        <td>width:</td>
+        <td>
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.style['width.mm'])" (change)="changeActiveStyle('width.mm', $event)">
+        </td>
+        <td>mm.</td>
+      </tr>
+      <tr>
+        <td>height:</td>
+        <td>
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.style['height.mm'])" (change)="changeActiveStyle('height.mm', $event)">
+        </td>
+        <td>mm.</td>
+      </tr>
+    </table>
+  </div>
+  <div cdkDropList [cdkDropListLockAxis]="'y'" class="field-list" (cdkDropListDropped)="drop($event)">
+    <div cdkDrag class="field-item" *ngFor="let field of selectedLabelItem.fields; let i=index">
+      <div class="field-item-drag-handle" cdkDragHandle>
+          <ll-icon type="drag-handle"></ll-icon>
+      </div>
+      <ll-field-settings [allowDelete]="canDelete" [field]="field" (fieldChange)="fieldUpdate($event, i)" (fieldRemove)="fieldRemove(i)"></ll-field-settings>
+    </div>
+  </div>
+  <ll-field-add *ngIf="showFieldFont" [availableFields]="availableFields" (add)="fieldAdd($event)"></ll-field-add>
+</ng-container>
+<ng-template #missingField>
+  <h3 class="first">Field</h3>
+  No active field selected
+</ng-template>
+<h3>Label</h3>
+<ll-font-settings [fontSettings]="setup.label" (fontSettingsChange)="change('label', $event)"></ll-font-settings>
+<ll-margin-settings [style]="setup.label" (styleChange)="change('label', $event)"></ll-margin-settings>
+<h3>Page</h3>
+<ll-margin-settings [style]="setup.page" [type]="'padding'" (styleChange)="change('page', $event)"></ll-margin-settings>
+<label>
+  <input type="checkbox" [checked]="setup.twoSided" (change)="change('twoSided', !setup.twoSided)" />
+  Two sided (flip horizontal)
+</label>

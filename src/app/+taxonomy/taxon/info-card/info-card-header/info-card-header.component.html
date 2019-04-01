@@ -1,0 +1,38 @@
+<div class="row info-card-header-first-row">
+  <div class="col-xs-12">
+    <div class="taxon-search-container">
+      <laji-taxon-select
+        [placeholder]="'taxonomy.card.search' | translate"
+        (taxonIdChange)="taxonSelect.emit($event)"
+      ></laji-taxon-select>
+    </div>
+    <laji-spinner [spinning]="loadingParent">
+      <div class="taxon-parent">
+        <a *ngIf="!loadingParent && parent && taxon.hasParent" [routerLink]="'/taxon/' + parent.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+          <laji-taxon-name [taxon]="parent" [addLink]="false"></laji-taxon-name>
+          <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+      </div>
+    </laji-spinner>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h1 class="taxon-name-header">
+      <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
+    </h1>
+    <div class="sibling-select-container" *ngIf="taxon.hasParent || taxon.hasChildren">
+      <a (click)="selectLeftSibling()" class="link arrow-link arrow-link-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+      <select class="form-control input-sm" [ngModel]="taxon.id" (ngModelChange)="taxonSelect.emit($event)">
+        <option *ngFor="let sibling of siblings" [value]="sibling.id">
+          {{ sibling.vernacularName | multiLang }}
+          <ng-container *ngIf="sibling.vernacularName && sibling.scientificName">
+            &ndash;
+          </ng-container>
+          {{ sibling.scientificName }}
+        </option>
+      </select>
+      <a (click)="selectRightSibling()" class="link arrow-link arrow-link-right"><i class="glyphicon glyphicon-chevron-right"></i></a>
+    </div>
+  </div>
+</div>

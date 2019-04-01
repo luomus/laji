@@ -5,6 +5,11 @@
         Ok
       </span>
     </ng-container>
+    <ng-container *ngSwitchCase="'valid'">
+      <span class="label label-default" [popover]="'No errors' | translate" triggers="hover" container="body" placement="right">
+        {{ 'No errors' | translate }}
+      </span>
+    </ng-container>
     <ng-container *ngSwitchCase="'invalid'">
       <span class="label label-danger link" [popover]="error" triggers="hover" container="body" placement="right">
         {{ 'error' | translate }}
@@ -16,7 +21,7 @@
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'ignore'">
-      <span class="label label-default link" [popover]="'excel.skip-row' | translate" triggers="hover" container="body" placement="right">
+      <span class="label label-warning link" [popover]="'excel.skip-row' | translate" triggers="hover" container="body" placement="right">
         {{ 'excel.skip-status' | translate }}
       </span>
     </ng-container>
