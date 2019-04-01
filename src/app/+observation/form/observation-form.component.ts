@@ -152,7 +152,8 @@ export class ObservationFormComponent implements OnInit {
       limit: '' + this.autocompleteLimit,
       includePayload: true,
       lang: this.lang,
-      informalTaxonGroup: this.formQuery.informalTaxonGroupId
+      informalTaxonGroup: this.formQuery.informalTaxonGroupId,
+      excludeNameTypes: 'MX.hasMisspelledName,MX.hasMisappliedName'
     } as LajiApi.Query.AutocompleteQuery).pipe(
       map(data => {
         return data.map(item => {
