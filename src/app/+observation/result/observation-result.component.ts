@@ -25,7 +25,6 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   public activated = {};
   public queryParams = {};
   public lastAllActive = 'map';
-  public showStatsInfo = false;
 
   private subQueryUpdate: Subscription;
   private _active;
@@ -64,6 +63,11 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
     return this._active;
   }
 
+  resetActivated() {
+    const active = {[this._active]: true};
+    this.activated = active;
+  }
+
   ngOnInit() {
     this.updateQueryParams();
     this.activated[this._active] = true;
@@ -83,7 +87,6 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
       this.activate(this._active, true);
     }
   }
-
 
   pickLocation(e) {
     if (!e) {

@@ -119,6 +119,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.searchQuery.query = {...this.searchQuery.query};
     this.lastQuery = cacheKey;
     this.searchQuery.tack++;
+    this.results.resetActivated();
     this.searchQuery.updateUrl([
       'selected',
       'pageSize',
