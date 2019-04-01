@@ -11,7 +11,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" (click)="closeMenu()" [routerLink]="['/'] | localize">
+          <a class="navbar-brand" [routerLink]="['/'] | localize">
             <span *lajiForTypes="['dev', 'prod', 'vir']">LAJI.FI</span>
             <span *lajiForTypes="['iucn']">PUNAINEN KIRJA</span>
           </a>
@@ -27,29 +27,29 @@
           <ul class="nav navbar-nav">
             <ng-container *lajiForTypes="['iucn']">
               <li [routerLinkActive]="['active']">
-                <a (click)="closeMenu()" [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
+                <a [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
               </li>
               <li [routerLinkActive]="['active']">
-                <a (click)="closeMenu()" [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>
+                <a [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>
               </li>
               <li [routerLinkActive]="['active']">
-                <a (click)="closeMenu()" [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
+                <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
               </li>
             </ng-container>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
-              <a (click)="closeMenu()" [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
+              <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
-              <a (click)="closeMenu()" [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
+              <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['vir']">
-              <a (click)="closeMenu()" [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
+              <a [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
-              <a (click)="closeMenu()" [routerLink]="['/vihko'] | localize">{{ 'navigation.haseka' | translate }}</a>
+              <a [routerLink]="['/vihko'] | localize">{{ 'navigation.haseka' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
-              <a (click)="closeMenu()" [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
+              <a [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
             </li>
             <li [ngClass]="{'hidden-sm': showSearch}" *lajiForTypes="['dev', 'prod']">
               <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{ 'Forum' | translate }}</a>
@@ -72,10 +72,10 @@
                 </a>
                 <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
                   <li role="menuitem">
-                    <a (click)="closeMenu()" [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
+                    <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
                   </li>
                   <li role="menuitem">
-                    <a (click)="closeMenu()" [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
+                    <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
                   </li>
                   <li role="separator" class="divider"></li>
                   <li class="dropdown-header">
@@ -85,6 +85,7 @@
                     </span>
                   </li>
                   <li role="menuitem"
+                      class="notifications"
                       *ngFor="let notification of notifications?.results; trackBy: trackNotification"
                       laji-notification
                       (notificationSeen)="markAsSeen($event)"
@@ -132,13 +133,13 @@
               </a>
               <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
                 <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
-                  <a (click)="closeMenu()" rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" preserveQueryParams>Suomeksi</a>
+                  <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" preserveQueryParams>Suomeksi</a>
                 </li>
                 <li *ngIf="'sv' !== translate.currentLang" role="menuitem">
-                  <a (click)="closeMenu()" rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" preserveQueryParams>På svenska</a>
+                  <a rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" preserveQueryParams>På svenska</a>
                 </li>
                 <li *ngIf="'en' !== translate.currentLang" role="menuitem">
-                  <a (click)="closeMenu()" rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" preserveQueryParams>In English</a>
+                  <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" preserveQueryParams>In English</a>
                 </li>
               </ul>
             </li>

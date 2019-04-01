@@ -10,7 +10,8 @@
 }
 
 .notification:hover {
-  background: #dfdfdf;
+  color: #333 !important;
+  background: #dfdfdf !important;
 }
 
 .unseen {
