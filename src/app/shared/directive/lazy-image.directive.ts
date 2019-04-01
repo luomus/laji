@@ -16,7 +16,7 @@ import { isPlatformBrowser } from '@angular/common';
   selector: 'img[lajiLazyImage]'
 })
 export class LazyImageDirective implements AfterViewInit, OnDestroy {
-  @HostBinding('attr.src') srcAttr = null;
+  @HostBinding('attr.src') srcAttr = '/static/images/empty.gif';
   @Input() src: string;
   intersectionObsOptions = {
     rootMargin: '200px',
