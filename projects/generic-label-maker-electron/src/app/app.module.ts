@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { GenericLabelMakerModule } from '../../../generic-label-maker/src/lib/generic-label-maker.module';
+import { GenericLabelMakerModule } from 'generic-label-maker';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { HttpClientModule } from '@angular/common/http';
 

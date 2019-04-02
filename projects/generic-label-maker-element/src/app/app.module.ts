@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { GenericLabelMakerModule } from '../../../generic-label-maker/src/lib/generic-label-maker.module';
+import { GenericLabelMakerModule } from 'generic-label-maker';
 import { LabelMakerComponent } from './label-maker/label-maker.component';
 
 @NgModule({

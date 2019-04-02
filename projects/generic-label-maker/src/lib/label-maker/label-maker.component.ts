@@ -33,7 +33,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _selectedLabelItem: ILabelItem | undefined;
   fields: ILabelField[];
   dragging = false;
-  version = '0.0.8';
+  version = '0.0.10';
   @Input() newSetup: ISetup;
   @Input() availableFields: ILabelField[];
   @Input() data: object[];
