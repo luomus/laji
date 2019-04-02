@@ -3,7 +3,8 @@ import {
   OnInit,
   OnDestroy,
   ChangeDetectorRef,
-  HostListener
+  HostListener,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -20,7 +21,8 @@ import {FooterService} from '../../shared/service/footer.service';
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
-  styleUrls: ['./taxon.component.css']
+  styleUrls: ['./taxon.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonComponent implements OnInit, OnDestroy {
   taxon: Taxonomy;

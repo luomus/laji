@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy} from '@angular/core';
 import { TaxonConceptService } from './taxon-concept.service';
 import { TaxonMatch } from './taxon-match.model';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,8 @@ import {Taxonomy} from '../../../../../shared/model/Taxonomy';
   selector: 'laji-taxon-concept-info',
   templateUrl: './taxon-concept-info.component.html',
   styleUrls: ['./taxon-concept-info.component.css'],
-  providers: [TaxonConceptService]
+  providers: [TaxonConceptService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;

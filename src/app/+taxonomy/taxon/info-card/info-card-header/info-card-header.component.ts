@@ -1,4 +1,4 @@
-import {Component, OnChanges, Input, SimpleChanges, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import {Component, OnChanges, Input, SimpleChanges, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 import {Subscription} from 'rxjs';
 import {TaxonTaxonomyService} from '../../service/taxon-taxonomy.service';
@@ -6,7 +6,8 @@ import {TaxonTaxonomyService} from '../../service/taxon-taxonomy.service';
 @Component({
   selector: 'laji-info-card-header',
   templateUrl: './info-card-header.component.html',
-  styleUrls: ['./info-card-header.component.scss']
+  styleUrls: ['./info-card-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardHeaderComponent implements OnChanges {
   @Input() taxon: Taxonomy;

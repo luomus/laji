@@ -1,4 +1,4 @@
-import {Component, OnChanges, Input, ViewChild} from '@angular/core';
+import {Component, OnChanges, Input, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import {ModalDirective} from 'ngx-bootstrap';
 import { IdService } from '../../../../shared/service/id.service';
@@ -6,7 +6,8 @@ import { IdService } from '../../../../shared/service/id.service';
 @Component({
   selector: 'laji-taxon-specimens',
   templateUrl: './taxon-specimens.component.html',
-  styleUrls: ['./taxon-specimens.component.scss']
+  styleUrls: ['./taxon-specimens.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonSpecimensComponent implements OnChanges {
   @ViewChild('documentModal') public modal: ModalDirective;

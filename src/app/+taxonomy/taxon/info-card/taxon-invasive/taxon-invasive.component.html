@@ -31,24 +31,10 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <ng-container *ngIf="invasiveDescriptions">
-      <div class="panel panel-default invasive-description-panel"
-           laji-panel
-           [title]="invasiveDescriptions.title | multiLang"
-           [open]="true"
-           [autoToggle]="true"
-      >
-        <div *ngFor="let variable of invasiveDescriptions.variables">
-          <h4>
-            {{ variable.title | multiLang }}
-          </h4>
-          <span [innerHTML]="variable.content | multiLang"></span>
-        </div>
-      </div>
-      <div class="source">
-        <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
-      </div>
-    </ng-container>
+    <laji-taxon-description
+      [taxonDescriptions]="taxonDescription"
+      [groupId]="'MX.SDVG13'"
+    ></laji-taxon-description>
   </div>
 </div>
 

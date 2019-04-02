@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import { Router } from '@angular/router';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
@@ -7,7 +7,8 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 @Component({
   selector: 'laji-species-browse-observations',
   templateUrl: './species-browse-observations.component.html',
-  styleUrls: ['./species-browse-observations.component.css']
+  styleUrls: ['./species-browse-observations.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesBrowseObservationsComponent {
   @Input() searchQuery: TaxonomySearchQuery;

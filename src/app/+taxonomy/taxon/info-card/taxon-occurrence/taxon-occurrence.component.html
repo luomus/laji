@@ -73,23 +73,9 @@
     </div>
   </div>
   <div class="col-xs-12">
-    <ng-container *ngIf="occurrenceDescriptions">
-      <div class="panel panel-default occurrence-description-panel"
-           laji-panel
-           [title]="occurrenceDescriptions.title | multiLang"
-           [open]="true"
-           [autoToggle]="true"
-      >
-        <div *ngFor="let variable of occurrenceDescriptions.variables">
-          <h4>
-            {{ variable.title | multiLang }}
-          </h4>
-          <span [innerHTML]="variable.content | multiLang"></span>
-        </div>
-      </div>
-      <div class="source">
-        <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
-      </div>
-    </ng-container>
+    <laji-taxon-description
+      [taxonDescriptions]="taxonDescription"
+      [groupId]="'MX.SDVG2'"
+    ></laji-taxon-description>
   </div>
 </div>

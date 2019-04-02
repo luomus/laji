@@ -1,29 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {Taxonomy, TaxonomyDescription, TaxonomyDescriptionGroup} from '../../../../shared/model/Taxonomy';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-occurrence',
   templateUrl: './taxon-occurrence.component.html',
-  styleUrls: ['./taxon-occurrence.component.scss']
+  styleUrls: ['./taxon-occurrence.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonOccurrenceComponent implements OnInit {
   @Input() taxon: Taxonomy;
-
-  occurrenceDescriptions: TaxonomyDescriptionGroup;
-  _taxonDescription: TaxonomyDescription;
-
-  @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
-    this.occurrenceDescriptions = undefined;
-    this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription[0] : undefined;
-
-    if (this._taxonDescription) {
-      (this._taxonDescription.groups || []).forEach(group => {
-        if (group.group === 'MX.SDVG2') {
-          this.occurrenceDescriptions = group;
-        }
-      });
-    }
-  }
+  @Input() taxonDescription: TaxonomyDescription[];
 
   constructor() { }
 
