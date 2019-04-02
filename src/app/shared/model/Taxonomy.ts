@@ -250,6 +250,7 @@ export interface RedListEvaluation {
   secondaryHabitats?: Habitat[];
   endangermentReasons?: string[];
   primaryThreat?: string;
+  threats?: string[];
 }
 
 export interface LatestRedListStatusFinland {

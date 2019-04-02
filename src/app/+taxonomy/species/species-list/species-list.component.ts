@@ -264,6 +264,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
           this.speciesPage = data;
           this.loading = false;
+          this.datatable.refreshTable();
           this.cd.markForCheck();
         },
         err => {

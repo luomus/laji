@@ -20,7 +20,7 @@
             <td [innerHTML]="taxon.latestRedListEvaluation.criteriaForStatus | explainCriteria"></td>
           </tr>
           <tr>
-            <th>{{ 'MKV.hasEndangermentReason' | label }}</th>
+            <th>{{ 'iucn.hasEndangermentReason' | translate }}</th>
             <td>
               <ul>
                 <li *ngFor="let reason of taxon.latestRedListEvaluation.endangermentReasons" [innerHTML]="reason | label"></li>
@@ -28,8 +28,12 @@
             </td>
           </tr>
           <tr>
-            <th>{{ 'MKV.hasThreat' | label }}</th>
-            <td>{{ taxon.latestRedListEvaluation.primaryThreat | label }}</td>
+            <th>{{ 'iucn.hasThreat' | translate }}</th>
+            <td>
+              <ul>
+                <li *ngFor="let threat of taxon.latestRedListEvaluation.threats" [innerHTML]="threat | label"></li>
+              </ul>
+            </td>
           </tr>
           </tbody>
         </table>

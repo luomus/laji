@@ -1,12 +1,11 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 
 @Component({
   selector: 'laji-species-list-options-modal',
   templateUrl: './species-list-options-modal.component.html',
-  styleUrls: ['./species-list-options-modal.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./species-list-options-modal.component.css']
 })
 export class SpeciesListOptionsModalComponent {
   @ViewChild('settingsModal') modalRef: ModalDirective;
