@@ -34,14 +34,14 @@ export class TaxonYearChartComponent implements OnChanges, OnDestroy {
     }
   }
 
-  updateData() {
+  private updateData() {
     if (this.getDataSub) {
       this.getDataSub.unsubscribe();
     }
 
     this.data = undefined;
     this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
-      { taxonId: [this.taxonId] },
+      { taxonId: [this.taxonId], cache: true },
       ['gathering.conversions.year'],
       ['gathering.conversions.year'],
       10000,

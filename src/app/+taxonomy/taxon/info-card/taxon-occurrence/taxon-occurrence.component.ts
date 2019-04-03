@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges} from '@angular/core';
 import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
 
 @Component({
@@ -7,14 +7,16 @@ import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
   styleUrls: ['./taxon-occurrence.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonOccurrenceComponent implements OnInit {
+export class TaxonOccurrenceComponent implements OnChanges {
   @Input() taxon: Taxonomy;
   @Input() taxonDescription: TaxonomyDescription[];
 
+  hasMonthDayData: boolean;
+
   constructor() { }
 
-  ngOnInit() {
-
+  ngOnChanges() {
+    this.hasMonthDayData = undefined;
   }
 
 }

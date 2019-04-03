@@ -1,22 +1,23 @@
 <ng-container *ngIf="data && data.length > 0">
   <div class="info-card-chart">
-    <ngx-charts-bar-vertical
+    <ngx-charts-bar-vertical-2d
       [results]="data"
       [xAxis]="true"
       [yAxis]="true"
       [yAxisTickFormatting]="yAxisTickFormatting"
-      [xAxisLabel]="'taxonomy.observations.yearChart.xAxis' | translate"
       [yAxisLabel]="'taxonomy.observations.yearChart.yAxis' | translate"
       [showXAxisLabel]="true"
       [showYAxisLabel]="true"
+      [legend]="true"
+      [legendTitle]="'MY.lifeStage' | label"
+      [barPadding]="2"
+      [groupPadding]="4"
+      (select)="onSelect($event)"
     >
       <ng-template #tooltipTemplate let-model="model">
         <span class="tooltip-label">{{ model.name }}</span>
         <span class="tooltip-val">{{ model.value.toLocaleString("fi") }}</span>
       </ng-template>
-    </ngx-charts-bar-vertical>
+    </ngx-charts-bar-vertical-2d>
   </div>
-  <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="splitIdx > 0">
-    {{ 'taxonomy.observations.yearChart.' + (data.length < allData.length ? 'showHistory' : 'hideHistory') | translate }}
-  </button>
 </ng-container>
