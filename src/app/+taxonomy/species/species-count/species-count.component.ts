@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {TaxonomySearchQuery} from '../service/taxonomy-search-query';
 import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
 import {Subscription} from 'rxjs';
@@ -6,7 +6,8 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'laji-species-count',
   templateUrl: './species-count.component.html',
-  styleUrls: ['./species-count.component.scss']
+  styleUrls: ['./species-count.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesCountComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
@@ -20,7 +21,8 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
   private lastQuery: string;
 
   constructor(
-    private taxonomyService: TaxonomyApi
+    private taxonomyService: TaxonomyApi,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -84,6 +86,7 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.count = res.total;
         this.loading = false;
+        this.cd.markForCheck();
       });
   }
 }

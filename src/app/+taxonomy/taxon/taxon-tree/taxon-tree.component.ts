@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import { TaxonTaxonomyService } from '../service/taxon-taxonomy.service';
 import { TreeSkipParameter } from './tree/model/tree.interface';
 
 @Component({
   selector: 'laji-taxon-tree',
   templateUrl: './taxon-tree.component.html',
-  styleUrls: ['./taxon-tree.component.css']
+  styleUrls: ['./taxon-tree.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonTreeComponent {
   @Input() activeId: string;

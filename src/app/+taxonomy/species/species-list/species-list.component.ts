@@ -1,5 +1,15 @@
 import {switchMap,  map, tap } from 'rxjs/operators';
-import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
@@ -21,7 +31,8 @@ import { DownloadComponent } from '../../../shared-modules/download/download.com
 @Component({
   selector: 'laji-species-list',
   templateUrl: './species-list.component.html',
-  styleUrls: ['./species-list.component.css']
+  styleUrls: ['./species-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('speciesDownload') speciesDownload: DownloadComponent;
@@ -253,6 +264,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
           this.speciesPage = data;
           this.loading = false;
+          this.datatable.refreshTable();
           this.cd.markForCheck();
         },
         err => {

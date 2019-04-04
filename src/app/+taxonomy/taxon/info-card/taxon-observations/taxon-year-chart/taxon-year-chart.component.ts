@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, Input, Output, ChangeDetectorRef, EventEmitter} from '@angular/core';
+import {Component, OnChanges, OnDestroy, Input, Output, ChangeDetectorRef, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { WarehouseApi } from '../../../../../shared/api/WarehouseApi';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -6,7 +6,8 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'laji-taxon-year-graph',
   templateUrl: './taxon-year-chart.component.html',
-  styleUrls: ['./taxon-year-chart.component.scss']
+  styleUrls: ['./taxon-year-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonYearChartComponent implements OnChanges, OnDestroy {
   @Input() taxonId: string;
@@ -33,14 +34,14 @@ export class TaxonYearChartComponent implements OnChanges, OnDestroy {
     }
   }
 
-  updateData() {
+  private updateData() {
     if (this.getDataSub) {
       this.getDataSub.unsubscribe();
     }
 
     this.data = undefined;
     this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
-      { taxonId: [this.taxonId] },
+      { taxonId: [this.taxonId], cache: true },
       ['gathering.conversions.year'],
       ['gathering.conversions.year'],
       10000,

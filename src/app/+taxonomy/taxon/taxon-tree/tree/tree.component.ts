@@ -1,13 +1,23 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, ContentChild, TemplateRef } from '@angular/core';
-import {forkJoin, Observable, of, Subscription} from 'rxjs';
-import { map, share, switchMap, tap } from 'rxjs/operators';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  ContentChild,
+  TemplateRef,
+  ChangeDetectionStrategy
+} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
 import { TreeNode, TreeSkipParameter } from './model/tree.interface';
 import { Tree } from './service/tree';
 
 @Component({
   selector: 'laji-tree',
   templateUrl: './tree.component.html',
-  styleUrls: ['./tree.component.css']
+  styleUrls: ['./tree.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TreeComponent implements OnChanges, OnDestroy {
   @Input() getData: (id: string) => Observable<any>;

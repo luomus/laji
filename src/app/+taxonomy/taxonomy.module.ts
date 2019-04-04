@@ -51,7 +51,7 @@ import { TaxonTaxonomyComponent } from './taxon/info-card/taxon-taxonomy/taxon-t
 import { DownloadModule } from '../shared-modules/download/download.module';
 import {
   TaxonDescriptionSourceComponent
-} from './taxon/info-card/taxon-biology/taxon-description-source/taxon-description-source.component';
+} from './taxon/info-card/shared/taxon-description-source/taxon-description-source.component';
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
 import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
 import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
@@ -63,6 +63,8 @@ import { TaxonEndangermentComponent } from './taxon/info-card/taxon-endangerment
 import { TaxonInvasiveComponent } from './taxon/info-card/taxon-invasive/taxon-invasive.component';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { IucnCommonModule } from '../shared-modules/iucn/iucn.module';
+import { TaxonDescriptionComponent } from './taxon/info-card/shared/taxon-description/taxon-description.component';
+import { TaxonMonthDayChartComponent } from './taxon/info-card/shared/taxon-month-day-chart/taxon-month-day-chart.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -91,7 +93,9 @@ import { IucnCommonModule } from '../shared-modules/iucn/iucn.module';
     TaxonYearChartComponent,
     TaxonSpecimensComponent,
     TaxonEndangermentComponent,
-    TaxonInvasiveComponent
+    TaxonInvasiveComponent,
+    TaxonDescriptionComponent,
+    TaxonMonthDayChartComponent
   ],
 })
 export class TaxonomyModule {

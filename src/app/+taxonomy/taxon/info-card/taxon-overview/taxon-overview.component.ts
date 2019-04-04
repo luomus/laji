@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import {Component, OnChanges, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,7 +7,8 @@ import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 @Component({
   selector: 'laji-taxon-overview',
   templateUrl: './taxon-overview.component.html',
-  styleUrls: ['./taxon-overview.component.scss']
+  styleUrls: ['./taxon-overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;

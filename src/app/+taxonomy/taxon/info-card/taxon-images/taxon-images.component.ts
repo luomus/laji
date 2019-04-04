@@ -1,11 +1,12 @@
-import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
+import {Component, OnChanges, Input, SimpleChanges, ChangeDetectionStrategy} from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
 
 @Component({
   selector: 'laji-taxon-images',
   templateUrl: './taxon-images.component.html',
-  styleUrls: ['./taxon-images.component.scss']
+  styleUrls: ['./taxon-images.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonImagesComponent implements OnChanges {
   @Input() taxon: Taxonomy;
