@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-8">
+    <ng-container *ngIf="instructionsData$ | async as data">
+      <laji-info-page *ngIf="data.instructions"
+                      [child]="data.instructions"
+        ></laji-info-page>
+      <laji-request *ngIf="data.collectionID && data.rights === Rights.NotAllowed && data.loggedIn"
+                    [collectionId]="data.collectionID">
+      </laji-request>
+      <h3 *ngIf="data.loggedIn === false">
+        Kirjaudu ensin sisään käyttääksesi tätä palvelua.
+      </h3>
+    </ng-container>
+  </div>
+</div>
+

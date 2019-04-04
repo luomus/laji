@@ -35,14 +35,14 @@ export class InfoPageComponent implements OnChanges {
   }
 
   private updatePage() {
-    const rootPageID = this.rootPage[this.translateService.currentLang];
-    const roots = Object.keys(this.rootPage).map(key => this.rootPage[key]);
+    const rootPageID = this.rootPage && this.rootPage[this.translateService.currentLang];
+    const roots = this.rootPage && Object.keys(this.rootPage).map(key => this.rootPage[key]);
     this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.child || rootPageID, {}).pipe(
       tap(result => {
         let afterRoot = false;
         this.title.emit(result.menuTitle);
         this.parents.emit((result.parents || []).filter(item => {
-          if (roots.indexOf(item.id) !== -1) {
+          if (roots && roots.indexOf(item.id) !== -1) {
             afterRoot = true;
           }
           return afterRoot;

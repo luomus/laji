@@ -1,7 +1,0 @@
-<h3>{{ 'haseka.ownSubmissions.title' | translate }}</h3>
-<laji-own-submissions
-  [columns]="['dateEdited', 'dateObserved', 'locality', 'observer', 'id']"
-  [actions]="['edit', 'view', 'download', 'stats', 'delete']"
-  [collectionID]="collectionID"
-  [admin]="(rights | async)?.admin"
-  [showDownloadAll]="false"></laji-own-submissions>
