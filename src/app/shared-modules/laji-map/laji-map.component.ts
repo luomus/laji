@@ -8,6 +8,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   Output,
@@ -70,7 +71,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private logger: Logger,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private zone: NgZone
   ) { }
 
   ngAfterViewInit() {
@@ -84,7 +86,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!options.on) {
       options = {...options, on: {
           tileLayerChange: (event) => {
-            this.tileLayerChange.emit((<any> event).tileLayerName);
+            this.zone.run(() => {
+              this.tileLayerChange.emit((<any> event).tileLayerName);
+            });
 
             if (this._settingsKey) {
               this.userSettings.tileLayerName = (<any> event).tileLayerName as LajiMap.TileLayerName;
@@ -171,36 +175,40 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   initMap() {
-    if (this.map) {
-      this.map.destroy();
-    }
-    const options: any = {
-      lang: (this.lang || 'fi'),
-      ...this._options,
-      ...(this.userSettings || {}),
-      rootElem: this.elemRef.nativeElement,
-      googleApiKey: Global.googleApiKey,
-      data: this.data
-    };
-    try {
-      this.map = new LajiMap.LajiMap(options);
-      this.map.map.on('moveend', _ => {
+    this.zone.runOutsideAngular(() => {
+      if (this.map) {
+        this.map.destroy();
+      }
+      const options: any = {
+        lang: (this.lang || 'fi'),
+        ...this._options,
+        ...(this.userSettings || {}),
+        rootElem: this.elemRef.nativeElement,
+        googleApiKey: Global.googleApiKey,
+        data: this.data
+      };
+      try {
+        this.map = new LajiMap.LajiMap(options);
+        this.map.map.on('moveend', _ => {
+          this.moveEvent('moveend');
+        });
+        this.map.map.on('movestart', _ => {
+          this.moveEvent('movestart');
+        });
         this.moveEvent('moveend');
-      });
-      this.map.map.on('movestart', _ => {
-        this.moveEvent('movestart');
-      });
-      this.moveEvent('moveend');
-    } catch (e) {
-      this.logger.error('Map initialization failed', e);
-    }
+      } catch (e) {
+        this.logger.error('Map initialization failed', e);
+      }
+    });
   }
 
   moveEvent(type: string) {
-    this.move.emit({
-      zoom: this.map.getNormalizedZoom(),
-      bounds: this.map.map.getBounds(),
-      type: type
+    this.zone.run(() => {
+      this.move.emit({
+        zoom: this.map.getNormalizedZoom(),
+        bounds: this.map.map.getBounds(),
+        type: type
+      });
     });
   }
 
@@ -224,10 +232,14 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     events.map(event => {
       switch (event.type) {
         case 'create':
-          this.create.emit(event.feature.geometry);
+          this.zone.run(() => {
+            this.create.emit(event.feature.geometry);
+          });
           break;
         case 'delete':
-          this.create.emit();
+          this.zone.run(() => {
+            this.create.emit();
+          });
           break;
         default:
       }
