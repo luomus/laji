@@ -40,8 +40,21 @@
       ></laji-gbif-map>
     </div>
   </div>
-  <div class="col-xs-12" *ngIf="hasYearData !== false" [hidden]="!hasYearData">
-    <div class="panel panel-default"
+  <div class="col-xs-12">
+    <div *ngIf="hasMonthDayData !== false" [hidden]="!hasMonthDayData"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.observations.monthDayChart' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-taxon-month-day-chart
+        [taxonId]="taxon.id"
+        (hasData)="hasMonthDayData = $event"
+      ></laji-taxon-month-day-chart>
+    </div>
+    <div *ngIf="hasYearData !== false" [hidden]="!hasYearData"
+         class="panel panel-default"
          laji-panel
          [title]="'taxonomy.observations.yearChart' | translate"
          [open]="true"

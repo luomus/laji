@@ -53,21 +53,37 @@ export class TaxonYearChartComponent implements OnChanges, OnDestroy {
     ).subscribe(res => {
       this.splitIdx = 0;
 
-      this.allData = res.map(r => {
-          const year = r.aggregateBy['gathering.conversions.year'];
-          const count = r.count;
+      this.allData = [];
+      let prevYear: number;
+      res.map(r => {
+        const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
+        const count = r.count;
 
-          if (parseInt(year, 10) < 1970) {
-            this.splitIdx++;
+        if (prevYear) {
+          for (let i = prevYear + 1; i < year; i++) {
+            this.allData.push({name: i, value: 0});
+            if (i < 1970) {
+              this.splitIdx++;
+            }
           }
+        }
 
-          return {name: year, value: count};
+        this.allData.push({name: year, value: count});
+        if (year < 1970) {
+          this.splitIdx++;
+        }
+
+        prevYear = year;
       });
       this.data = this.allData.slice(this.splitIdx, this.allData.length);
       this.hasData.emit(this.allData.length > 0);
 
       this.cd.markForCheck();
     });
+  }
+
+  xAxisTickFormatting(value: number) {
+    return value + '';
   }
 
   yAxisTickFormatting(value: number) {

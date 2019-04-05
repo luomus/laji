@@ -10,11 +10,13 @@ import {Taxonomy} from '../../../../shared/model/Taxonomy';
 export class TaxonObservationsComponent implements OnChanges {
   @Input() taxon: Taxonomy;
 
+  hasMonthDayData: boolean;
   hasYearData: boolean;
 
   constructor() { }
 
   ngOnChanges() {
+    this.hasMonthDayData = undefined;
     this.hasYearData = undefined;
   }
 
