@@ -44,12 +44,8 @@ export class AppComponent {
     translateService: TranslateService,
     localizeRouterService: LocalizeRouterService,
     metaService: Meta,
-    routingStateService: RoutingStateService, // Need to include this here so that history recording starts
-    zone: NgZone
+    routingStateService: RoutingStateService // Need to include this here so that history recording starts
   ) {
-    zone.onUnstable.subscribe(() => {
-      console.log('zone!');
-    });
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;

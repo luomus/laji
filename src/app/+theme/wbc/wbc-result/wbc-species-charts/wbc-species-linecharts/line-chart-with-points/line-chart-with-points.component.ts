@@ -14,7 +14,7 @@ import { LineChartComponent } from '@swimlane/ngx-charts';
   styleUrls: ['../../../../../../../../node_modules/@swimlane/ngx-charts/release/common/base-chart.component.css'],
   /* tslint:disable:use-view-encapsulation */
   encapsulation: ViewEncapsulation.None,
-  /* tslint:disable:use-view-encapsulation */
+  /* tslint:enable:use-view-encapsulation */
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('animationState', [
