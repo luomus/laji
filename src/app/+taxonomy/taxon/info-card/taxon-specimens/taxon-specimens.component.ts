@@ -1,7 +1,8 @@
-import {Component, OnChanges, Input, ViewChild, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnChanges, Input, ViewChild, ChangeDetectionStrategy, Inject} from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import {ModalDirective} from 'ngx-bootstrap';
 import { IdService } from '../../../../shared/service/id.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'laji-taxon-specimens',
@@ -19,7 +20,9 @@ export class TaxonSpecimensComponent implements OnChanges {
   highlightId: string;
   documentModalVisible = false;
 
-  constructor() { }
+  constructor(
+    @Inject(DOCUMENT) private document: Document
+  ) { }
 
   ngOnChanges() {
     this.collectionId = undefined;
@@ -44,7 +47,7 @@ export class TaxonSpecimensComponent implements OnChanges {
     if (row.document && row.document.collectionId) {
       this.collectionId = IdService.getId(row.document.collectionId);
       setTimeout(() => {
-        const el = document.getElementById('collectionSpecimens');
+        const el = this.document.getElementById('collectionSpecimens');
         if (el) {
           el.scrollIntoView();
         }
