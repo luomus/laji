@@ -1,5 +1,5 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, PLATFORM_ID, ViewContainerRef } from '@angular/core';
+import {Component, Inject, NgZone, PLATFORM_ID, ViewContainerRef} from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { isPlatformBrowser, Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
@@ -44,8 +44,12 @@ export class AppComponent {
     translateService: TranslateService,
     localizeRouterService: LocalizeRouterService,
     metaService: Meta,
-    routingStateService: RoutingStateService // Need to include this here so that history recording starts
+    routingStateService: RoutingStateService, // Need to include this here so that history recording starts
+    zone: NgZone
   ) {
+    zone.onUnstable.subscribe(() => {
+      console.log('zone!');
+    });
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;
