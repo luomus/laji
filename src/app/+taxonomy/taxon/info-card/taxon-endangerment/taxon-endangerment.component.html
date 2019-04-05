@@ -13,30 +13,19 @@
 
     <div class="panel panel-default">
       <div class="panel-body">
-        <table class="table taxon-table table-condensed">
-          <tbody>
-          <tr>
-            <th>{{ 'MKV.criteriaForStatus' | label }}</th>
-            <td [innerHTML]="taxon.latestRedListEvaluation.criteriaForStatus | explainCriteria"></td>
-          </tr>
-          <tr>
-            <th>{{ 'iucn.hasEndangermentReason' | translate }}</th>
-            <td>
-              <ul>
-                <li *ngFor="let reason of taxon.latestRedListEvaluation.endangermentReasons" [innerHTML]="reason | label"></li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <th>{{ 'iucn.hasThreat' | translate }}</th>
-            <td>
-              <ul>
-                <li *ngFor="let threat of taxon.latestRedListEvaluation.threats" [innerHTML]="threat | label"></li>
-              </ul>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <laji-taxon-info-row [label]="'MKV.criteriaForStatus' | label">
+          <div [innerHTML]="taxon.latestRedListEvaluation.criteriaForStatus | explainCriteria"></div>
+        </laji-taxon-info-row>
+        <laji-taxon-info-row [label]="'iucn.hasEndangermentReason' | translate">
+          <ul>
+            <li *ngFor="let reason of taxon.latestRedListEvaluation.endangermentReasons" [innerHTML]="reason | label"></li>
+          </ul>
+        </laji-taxon-info-row>
+        <laji-taxon-info-row [label]="'iucn.hasThreat' | translate">
+          <ul>
+            <li *ngFor="let threat of taxon.latestRedListEvaluation.threats" [innerHTML]="threat | label"></li>
+          </ul>
+        </laji-taxon-info-row>
       </div>
     </div>
 

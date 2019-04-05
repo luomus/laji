@@ -156,21 +156,17 @@
          [open]="true"
          [autoToggle]="true"
     >
-      <table class="table taxon-table table-condensed">
-        <tbody>
+
         <ng-container *ngFor="let secureLevelType of [
           'secureLevel',
           'breedingSecureLevel',
           'naturaAreaSecureLevel',
           'nestSiteSecureLevel',
           'winteringSecureLevel']">
-          <tr *ngIf="taxon[secureLevelType]">
-            <th>{{ 'MX.' + secureLevelType | label }}</th>
-            <td>{{ taxon[secureLevelType] | label }}</td>
-          </tr>
+          <laji-taxon-info-row *ngIf="taxon[secureLevelType]" [label]="'MX.' + secureLevelType | label">
+            {{ taxon[secureLevelType] | label }}
+          </laji-taxon-info-row>
         </ng-container>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>
