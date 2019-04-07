@@ -39,7 +39,7 @@ export class FontSettingsComponent implements OnInit {
 
   ngOnInit() {
     const sizes = [];
-    for (let i = 6; i <= 20; i++) {
+    for (let i = 4; i <= 20; i++) {
       sizes.push(i);
     }
     this.fontSizes = sizes;

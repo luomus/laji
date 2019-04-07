@@ -8,10 +8,10 @@
   </tr>
   <tr class="link">
     <td>
-      <label class="menu-item" for="file" style="display: block;"><i class="glyphicon glyphicon-folder-open"></i></label>
+      <label class="link fill" for="file"><i class="glyphicon glyphicon-folder-open"></i></label>
     </td>
     <td>
-      <label class="menu-item" for="file" style="display: block;">Load</label>
+      <label class="link fill" for="file">Load</label>
       <input class="inputfile" type="file" name="file" id="file" (change)="onFileChange($event)">
     </td>
   </tr>
@@ -28,8 +28,8 @@
   <h3>Recent files</h3>
   <table class="icon">
     <tr class="link" *ngFor="let recent of recentFiles; let i=index">
-      <td (click)="setupChange.emit(recent.setup)"></td>
-      <td (click)="setupChange.emit(recent.setup)">{{ recent.filename | removeSuffix }}</td>
+      <td (click)="loadRecent(recent)"></td>
+      <td (click)="loadRecent(recent)">{{ recent.filename | removeSuffix }}</td>
       <td style="width: 24px" class="link" (click)="removeRecent(i)">
         <ll-icon type="close" size="14"></ll-icon>
       </td>
@@ -48,3 +48,25 @@
     </td>
   </tr>
 </table>
+<ng-template #saveTpl>
+  <table class="save user-input">
+    <tr><td><label for="saveFile">Filename:</label></td><td><input id="saveFile" (keyup)="updateSaveData('file', $event.target.value)" [value]="saveData.file || ''" type="text" class="form-control input-sm"></td></tr>
+    <tr>
+      <td></td>
+      <td><label>
+        <input (change)="updateSaveData('includeFields', !saveData.includeFields)" [checked]="saveData.includeFields" type="checkbox">
+        Include label fields
+      </label></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><label>
+        <input (change)="updateSaveData('includeData', !saveData.includeData)" [checked]="saveData.includeData" type="checkbox">
+        Include data
+      </label></td>
+    </tr>
+  </table>
+</ng-template>
+<ng-template #saveActionsTpl>
+  <button (click)="doSave()" [disabled]="!saveData.file" class="btn btn-default btn-sm pull-right">Save</button>
+</ng-template>

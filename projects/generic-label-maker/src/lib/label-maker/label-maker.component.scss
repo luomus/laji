@@ -6,6 +6,7 @@ $settings-border-color: #aaa;
 $settings-bg-color: #efefef;
 $settings-text-color: #333;
 $settings-row-height: 33px;
+$small-screen: 900px;
 
 :host {
   height: 100%;
@@ -22,6 +23,22 @@ $settings-row-height: 33px;
   background-color: #fefefe;
   z-index: 10;
 
+  .ellipsis {
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+  }
+
+
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
   .menubar {
     height: $menu-height;
     width: 100%;
@@ -35,10 +52,11 @@ $settings-row-height: 33px;
       padding: 0;
       list-style: none;
       li {
+        font-size: smaller;
         height: $menu-height;
         display: block;
         float: left;
-        padding: 2px 15px;
+        padding: 4px 15px;
         cursor: pointer;
 
         &:hover {
@@ -86,14 +104,37 @@ $settings-row-height: 33px;
   }
 
   .settings-wrap {
-    flex-basis: 300px;
-    flex-shrink: 0;
+    .close-settings {
+      padding: 15px;
+      border-bottom: 1px solid $menu-border-color;;
+      margin: -15px -15px 15px -15px;
+      display: none;
+
+      &:hover {
+        background-color: darken($settings-bg-color, 10%);
+      }
+    }
+
+    @media screen and (max-width: $small-screen)  {
+      .close-settings {
+        display: block;
+      }
+    }
+
+    &.main {
+      flex-basis: 300px;
+      flex-shrink: 0;
+      border-right: 1px solid $settings-border-color;
+      padding: 15px;
+      background-color: $settings-bg-color;
+    }
     height: 100%;
     overflow-y: auto;
     color: $settings-text-color;
-    border-right: 1px solid $settings-border-color;
-    padding: 15px;
-    background-color: $settings-bg-color;
+    user-select: none;
+    label {
+      font-weight: normal;
+    }
     table {
       td {
         height: $settings-row-height;
@@ -164,24 +205,32 @@ $settings-row-height: 33px;
     color: #aaa;
   }
 
-  .settings-wrap {
-    user-select: none;
-  }
-
   .editor-end {
     width: 100%;
   }
 
   .link {
     cursor: pointer;
+    font-weight: normal;
   }
 
-  table.generate {
+  .fill {
+    display: block;
+    height: $settings-row-height;
+    margin: 0;
+    padding: 5px 0;
+  }
+
+  table.generate, table.file, table.user-input {
     td {
       height: $settings-row-height;
-
+      label {
+        font-weight: normal;
+        margin: 0;
+      }
       &:first-child {
         text-align: right;
+        padding-right: 5px;
       }
     }
   }

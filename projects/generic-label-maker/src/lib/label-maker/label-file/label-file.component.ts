@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { ISetup } from '../../generic-label-maker.interface';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { ILabelField, ISetup } from '../../generic-label-maker.interface';
 import { LocalStorage } from 'ngx-webstorage';
 import { LabelPrintComponent } from '../../label-print/label-print.component';
+import { InfoWindowService } from '../../info-window/info-window.service';
+import { saveAs } from 'file-saver';
+import * as JSZip from 'jszip';
 
 @Component({
   selector: 'll-label-file',
@@ -14,76 +17,109 @@ export class LabelFileComponent {
   @Input() newSetup: ISetup;
   @Input() setup: ISetup;
   @Input() data: object[];
+  @Input() availableFields: ILabelField[];
 
-  @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string}[];
+  @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string, availableFields?: ILabelField[]}[];
 
   @Output() html = new EventEmitter<string>();
+  @Output() dataChange = new EventEmitter<object[]>();
   @Output() setupChange = new EventEmitter<ISetup>();
+  @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
   @ViewChild('printBtn') printBtn: LabelPrintComponent;
+  @ViewChild('saveTpl') saveTpl: TemplateRef<any>;
+  @ViewChild('saveActionsTpl') saveActionsTpl: TemplateRef<any>;
 
   filename = '';
+  saveData = {
+    file: '',
+    includeData: false,
+    includeFields: false
+  };
 
-  constructor() { }
+  constructor(private infoWindowService: InfoWindowService) { }
 
   onFileChange(evt: any) {
     const target: DataTransfer = <DataTransfer>(evt.target);
-    if (target.files.length !== 1) {
+    if (target.files.length < 1) {
       return;
     }
-    const reader: FileReader = new FileReader();
-    reader.onload = (e: any) => {
-      evt.target.value = '';
-      const enc = new TextDecoder('utf-8');
-      const data = JSON.parse(enc.decode(e.target.result));
-      if (!data || data.version !== 1 || !data.setup) {
-        return alert('Could not find label information from the file');
-      }
-      this.updateResentFiles(data.setup, this.filename);
-      this.setupChange.emit(data.setup);
-    };
+    const genericError = 'Could not find label information from the file!';
     this.filename = target.files[0].name;
-    if (this.filename.endsWith('.label') || this.filename.endsWith('.label.txt')) {
-      reader.readAsArrayBuffer(target.files[0]);
+    if (this.filename.endsWith('.label')) {
+      JSZip.loadAsync(target.files[0])
+        .then(content => content.files['data.json'].async('text'))
+        .then(jsonString => {
+          evt.target.value = '';
+          const data = JSON.parse(jsonString);
+          if (data && data.setup) {
+            this.setupChange.emit(data.setup);
+            this.updateResentFiles({setup: data.setup, availableFields: data.fields}, this.filename);
+            if (data.fields && Array.isArray(data.fields)) {
+              this.availableFieldsChange.emit(data.fields);
+            }
+            if (data.data && Array.isArray(data.data)) {
+              this.dataChange.emit(data.data);
+            }
+          } else {
+            evt.target.value = '';
+            alert(genericError);
+          }
+        })
+        .catch(() => {
+          evt.target.value = '';
+          alert(genericError);
+        });
     } else {
       evt.target.value = '';
-      alert('Not a label setup');
+      alert(genericError);
     }
   }
 
   save() {
-    let filename = prompt('Enter the label name');
-    if (filename !== null && filename !== '') {
-      filename += '.label';
-      const element = document.createElement('a');
-      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify({
-        version: 1,
-        setup: this.setup
-      })));
-      element.setAttribute('download', filename);
+    this.infoWindowService.open({
+      title: 'Save to file',
+      content: this.saveTpl,
+      actions: this.saveActionsTpl
+    });
+  }
 
-      element.style.display = 'none';
-      document.body.appendChild(element);
-
-      element.click();
-
-      document.body.removeChild(element);
+  doSave() {
+    this.infoWindowService.close();
+    if (this.saveData.file) {
+      const filename = this.saveData.file + (this.saveData.file.endsWith('.label') ? '' : '.label');
+      const zip = new JSZip();
+      const data = {
+        setup: this.setup,
+        fields: this.saveData.includeFields && this.availableFields ? this.availableFields : undefined,
+        data: this.saveData.includeData && this.data ? this.data : undefined
+      };
+      zip.file('data.json', JSON.stringify(data));
+      zip.generateAsync({type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 9 }})
+        .then(function (blob) {
+          saveAs(blob, filename);
+        });
     }
+    this.saveData = {
+      file: '',
+      includeFields: false,
+      includeData: false
+    };
   }
 
   print() {
     this.printBtn.renderPages();
   }
 
-  private updateResentFiles(setup: ISetup, filename: string) {
+  private updateResentFiles(data: {setup: ISetup, availableFields?: ILabelField[]}, filename: string) {
     const idx = this.recentFiles.findIndex(i => i.filename === filename);
     if (idx === -1) {
       this.recentFiles = [
-        {setup, filename},
+        {...data, filename},
         ...this.recentFiles.slice(-2)
       ];
     } else {
       this.recentFiles = [
-        {setup, filename},
+        {...data, filename},
         ...this.recentFiles.slice(0, idx),
         ...this.recentFiles.slice(idx + 1),
       ];
@@ -100,6 +136,20 @@ export class LabelFileComponent {
   makeNew() {
     if (confirm('Are you sure that you want to start a new empty label?')) {
       this.setupChange.emit(JSON.parse(JSON.stringify(this.newSetup)));
+    }
+  }
+
+  updateSaveData(key: string, value: any) {
+    this.saveData = {
+      ...this.saveData,
+      [key]: value
+    };
+  }
+
+  loadRecent(recent: { setup: ISetup; filename: string; availableFields?: ILabelField[] }) {
+    this.setupChange.emit(recent.setup);
+    if (recent.availableFields) {
+      this.availableFieldsChange.emit(recent.availableFields);
     }
   }
 }

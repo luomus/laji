@@ -10,7 +10,13 @@
     </ul>
   </div>
   <div class="window-content">
-    <div class="settings-wrap" [class.dragging]="dragging" #settings>
+    <div class="settings-wrap main" [class.dragging]="dragging" #settings *ngIf="_active !== 'close'">
+      <div (click)="_active = 'close'" class="close-settings">
+        Close menu
+        <div style="float: right">
+          <ll-icon [type]="'close'"></ll-icon>
+        </div>
+      </div>
       <div *ngIf="_active === 'view'">
         <ll-view-settings [viewSettings]="_viewSettings" (viewSettingsChange)="onViewSettingsChange($event)"></ll-view-settings>
       </div>
@@ -26,13 +32,23 @@
         <h3 class="first">TODO: help content and videos</h3>
       </div>
       <div *ngIf="_active === 'file'">
-        <ll-label-file [newSetup]="newSetup" [setup]="_setup" (setupChange)="setupChanged($event)" [data]="data" (html)="html.emit($event)"></ll-label-file>
+        <ll-label-file
+          [availableFields]="newAvailableFields !== availableFields ? availableFields : undefined"
+          (availableFieldsChange)="availableFieldsChange.emit($event)"
+          (dataChange)="data = $event"
+          [newSetup]="newSetup"
+          [setup]="_setup"
+          (setupChange)="setupChanged($event)"
+          [data]="data"
+          (html)="html.emit($event)"
+        ></ll-label-file>
         <h3>Data</h3>
         <table class="icon">
           <tr class="link" (click)="openGenerate()">
             <td></td>
             <td>Generate...</td>
           </tr>
+          <tr class="link" (click)="importExcel()"><td></td><td>Import from file...</td></tr>
         </table>
         <ng-content select=".file-data"></ng-content>
       </div>
@@ -63,8 +79,11 @@
       <div [hidden]="_active !== 'fields'">
         <ll-label-fields-available
           (dragging)="newFieldDragging($event, settings)"
+          [setup]="_setup"
           [magnification]="_viewSettings.magnification"
           [availableFields]="availableFields"
+          (availableFieldsChange)="availableFieldsChange.emit($event)"
+          [newAvailableFields]="newAvailableFields"
           (addLabelItem)="addLabelItem($event)"
         ></ll-label-fields-available>
       </div>
@@ -97,6 +116,7 @@
       </div>
       <div class="preview-space">
         <strong>Preview</strong>
+        <ll-label-preview-pager [active]="previewActive" (activeChange)="setPreviewActive($event)" [data]="data"></ll-label-preview-pager>
         <div style="margin-bottom: 5px;">
           <div style="margin: 5px 15px 0 0; border: 1px solid #999; display: inline-block">
             <ll-label-preview [setup]="_setup"></ll-label-preview>
@@ -134,8 +154,8 @@
   Missing required setup parameter
 </ng-template>
 <ng-template #generateTpl>
-  <table class="generate">
-    <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" [value]="generate.uri" type="text" class="form-control input-sm"></td></tr>
+  <table class="generate user-input">
+    <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" [value]="generate.uri || defaultDomain" type="text" class="form-control input-sm"></td></tr>
     <tr><td>Range start:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" [value]="generate.rangeStart || ''" type="text" class="form-control input-sm"></td></tr>
     <tr><td>Range end:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" [value]="generate.rangeEnd || ''" type="text" class="form-control input-sm"></td></tr>
     <tr *ngIf="fields.length > 0"><td colspan="2">&nbsp;</td></tr>
@@ -145,5 +165,11 @@
   </table>
 </ng-template>
 <ng-template #generateActionsTpl>
-  <button (click)="generateData()" style="margin-top: 5px;" class="btn btn-default btn-sm pull-right">Generate</button>
+  <button (click)="generateData()" class="btn btn-default btn-sm pull-right">Generate</button>
+</ng-template>
+<ng-template #excelTpl>
+  <ll-label-excel-file #excelFile [defaultDomain]="defaultDomain"></ll-label-excel-file>
+</ng-template>
+<ng-template #excelActionsTpl>
+  <button (click)="loadExcelData()" class="btn btn-default btn-sm pull-right">Load</button>
 </ng-template>

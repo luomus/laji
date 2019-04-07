@@ -10,7 +10,7 @@ import {
   Output,
   PLATFORM_ID
 } from '@angular/core';
-import { IAddLabelEvent, ILabelField } from '../../generic-label-maker.interface';
+import { IAddLabelEvent, ILabelField, ISetup } from '../../generic-label-maker.interface';
 import { CdkDragRelease } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../label.service';
 import { isPlatformBrowser } from '@angular/common';
@@ -25,15 +25,19 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 
+  @Input() setup: ISetup;
+  @Input() newAvailableFields: ILabelField[];
   @Input() availableFields: ILabelField[] = [];
   @Input() magnification = 2;
 
+  @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
   @Output() addLabelItem = new EventEmitter<IAddLabelEvent>();
   @Output() dragging = new EventEmitter<boolean>();
 
   filterBy = '';
   filterSubject = new Subject<string>();
   filterSubscription: Subscription;
+  addToBackside = false;
 
   constructor(
     @Inject(PLATFORM_ID) protected platformId,
@@ -102,4 +106,24 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
     event.source.reset();
   }
 
+  addField(field: ILabelField) {
+    const width = field.type === 'qr-code' ? 10 : 25;
+    const height = field.type === 'qr-code' ? 10 : 5;
+    this.addLabelItem.emit({
+      location: this.setup.twoSided && this.addToBackside ? 'backSideLabelItems' : 'labelItems',
+      item: {
+        type: 'field',
+        y: 0,
+        x: 0,
+        fields: [field],
+        style: {
+          'height.mm': Math.min(height, this.setup.label['height.mm']),
+          'width.mm': Math.min(width, this.setup.label['width.mm'])
+        }
+      }});
+  }
+
+  toggleBackside() {
+    this.addToBackside = !this.addToBackside;
+  }
 }
