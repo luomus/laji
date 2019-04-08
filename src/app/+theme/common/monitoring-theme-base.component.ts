@@ -59,16 +59,16 @@ export class MonitoringThemeBaseComponent implements OnInit {
         map(({hideNavFor = []}) => hideNavFor.every(u => !url.match(u)))
       ))
     );
-    const markActive = (navLink, url): NavLink => ({
+    const markActiveByRouterLink = (navLink, url): NavLink => ({
       ...navLink,
       active: (navLink.routerLink[0] === 'form' && url.match('places'))
         ? true
         : !!url.match(navLink.routerLink.join('/')),
-      children: navLink.children ? navLink.children.map(child => markActive(child, url)) : undefined
+      children: navLink.children ? navLink.children.map(child => markActiveByRouterLink(child, url)) : undefined
     });
 
-    // 'activeMatch' prop is greedier than routerLink matching.
-    const markActives = (navLinks: NavLink[], url: string): NavLink[] => {
+    // navLink.activeMatch prop is greedier than navLink.routerLink matching.
+    const markActive = (navLinks: NavLink[], url: string): NavLink[] => {
       let foundGreedy = false;
       const _navLinks = [];
       for (const navLink of navLinks) {
@@ -80,7 +80,7 @@ export class MonitoringThemeBaseComponent implements OnInit {
         }
       }
       if (!foundGreedy) {
-        return navLinks.map(nl => markActive(nl, url));
+        return navLinks.map(nl => markActiveByRouterLink(nl, url));
       }
       return _navLinks;
     };
@@ -89,7 +89,7 @@ export class MonitoringThemeBaseComponent implements OnInit {
         switchMap(navLinks => urls$.pipe(
           map(url => ({
             title,
-            navLinks: markActives(navLinks, url),
+            navLinks: markActive(navLinks, url),
             formID
           }))
         ))
