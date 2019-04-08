@@ -35,7 +35,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _data: object[];
   fields: ILabelField[];
   dragging = false;
-  version = '0.0.11';
+  version = '0.0.13';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -318,7 +318,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   }
 
   setPreviewActive(idx: number) {
-    if (this.data[idx]) {
+    if (this.data && this.data[idx]) {
       this.previewActive = idx;
       if (this._setup) {
         this.setAsExample(this.data[idx]);
