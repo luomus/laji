@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { IdService } from '../../shared/service/id.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,7 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'laji-theme-result',
   templateUrl: './theme-result.component.html',
-  styleUrls: ['./theme-result.component.css']
+  styleUrls: ['./theme-result.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ThemeResultComponent {
 
@@ -22,18 +23,14 @@ export class ThemeResultComponent {
   constructor(public translate: TranslateService) { }
 
   onRowSelect(event) {
-    if (event.row
+    const id = event.row
       && event.row.unit
       && event.row.unit.linkings
       && event.row.unit.linkings.taxon
-      && event.row.unit.linkings.taxon.id) {
-      this.nameClick.emit({...this.query, taxonId: IdService.getId(event.row.unit.linkings.taxon.id)});
-    } else if (event.row
-      && event.row.unit
-      && event.row.unit.linkings
-      && event.row.unit.linkings.taxon
-      && event.row.unit.linkings.taxon.speciesId) {
-      this.nameClick.emit({...this.query, taxonId: IdService.getId(event.row.unit.linkings.taxon.speciesId)});
+      && (event.row.unit.linkings.taxon.id || event.row.unit.linkings.taxon.speciesId);
+    console.log('row select', event.row, id, IdService.getId(id));
+    if (id) {
+      this.nameClick.emit({...this.query, taxonId: IdService.getId(id)});
     }
   }
 
