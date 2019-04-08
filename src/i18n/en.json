@@ -858,6 +858,7 @@
   "taxonomy.observations.yearChart.hideHistory": "Piilota vanhimmat vuodet",
   "taxonomy.observations.yearChart.xAxis": "Vuodet",
   "taxonomy.observations.yearChart.yAxis": "Havaintomäärä",
+  "taxonomy.observations.monthDayChart": "Esiintyminen vuodenaikoina",
   "taxonomy.observations.secureLevels": "Salausperusteet",
   "taxonomy.endangerment.iucnLink": "Lisää tietoa punaisen kirjan tulospalvelussa",
   "taxonomy.endangerment.evaluation": "Arvionti",

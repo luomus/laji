@@ -40,8 +40,21 @@
       ></laji-gbif-map>
     </div>
   </div>
-  <div class="col-xs-12" *ngIf="hasYearData !== false" [hidden]="!hasYearData">
-    <div class="panel panel-default"
+  <div class="col-xs-12">
+    <div *ngIf="hasMonthDayData !== false" [hidden]="!hasMonthDayData"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.observations.monthDayChart' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-taxon-month-day-chart
+        [taxonId]="taxon.id"
+        (hasData)="hasMonthDayData = $event"
+      ></laji-taxon-month-day-chart>
+    </div>
+    <div *ngIf="hasYearData !== false" [hidden]="!hasYearData"
+         class="panel panel-default"
          laji-panel
          [title]="'taxonomy.observations.yearChart' | translate"
          [open]="true"
@@ -143,21 +156,17 @@
          [open]="true"
          [autoToggle]="true"
     >
-      <table class="table taxon-table table-condensed">
-        <tbody>
+
         <ng-container *ngFor="let secureLevelType of [
           'secureLevel',
           'breedingSecureLevel',
           'naturaAreaSecureLevel',
           'nestSiteSecureLevel',
           'winteringSecureLevel']">
-          <tr *ngIf="taxon[secureLevelType]">
-            <th>{{ 'MX.' + secureLevelType | label }}</th>
-            <td>{{ taxon[secureLevelType] | label }}</td>
-          </tr>
+          <laji-taxon-info-row *ngIf="taxon[secureLevelType]" [label]="'MX.' + secureLevelType | label">
+            {{ taxon[secureLevelType] | label }}
+          </laji-taxon-info-row>
         </ng-container>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>

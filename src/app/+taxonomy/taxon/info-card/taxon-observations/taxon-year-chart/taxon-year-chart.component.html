@@ -1,14 +1,16 @@
 <ng-container *ngIf="data && data.length > 0">
-  <div class="info-card-chart">
+  <div class="info-card-chart year-chart">
     <ngx-charts-bar-vertical
       [results]="data"
       [xAxis]="true"
       [yAxis]="true"
+      [xAxisTickFormatting]="xAxisTickFormatting"
       [yAxisTickFormatting]="yAxisTickFormatting"
       [xAxisLabel]="'taxonomy.observations.yearChart.xAxis' | translate"
       [yAxisLabel]="'taxonomy.observations.yearChart.yAxis' | translate"
       [showXAxisLabel]="true"
       [showYAxisLabel]="true"
+      [barPadding]="2"
     >
       <ng-template #tooltipTemplate let-model="model">
         <span class="tooltip-label">{{ model.name }}</span>
