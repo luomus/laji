@@ -1,0 +1,6 @@
+::ng-deep .year-chart .ngx-charts .bar {
+  cursor: initial !important;
+}
+::ng-deep .year-chart .ngx-charts .bar[aria-label$=' 0'] {
+  display: none;
+}

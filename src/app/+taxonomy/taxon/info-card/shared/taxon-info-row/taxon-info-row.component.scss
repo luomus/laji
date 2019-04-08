@@ -1,0 +1,22 @@
+.row {
+  margin: 0;
+  border-top: 1px solid #ddd;
+
+  .key, .value {
+    padding: 5px;
+  }
+
+  .key {
+    font-weight: 700;
+    max-width: 300px;
+  }
+}
+
+:host:first-child .row {
+  border-top: none;
+}
+
+::ng-deep ul {
+  padding-left: 20px;
+  margin-left: 0;
+}

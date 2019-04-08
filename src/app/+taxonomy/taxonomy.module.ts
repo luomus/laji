@@ -65,6 +65,7 @@ import { DocumentViewerModule } from '../shared-modules/document-viewer/document
 import { IucnCommonModule } from '../shared-modules/iucn/iucn.module';
 import { TaxonDescriptionComponent } from './taxon/info-card/shared/taxon-description/taxon-description.component';
 import { TaxonMonthDayChartComponent } from './taxon/info-card/shared/taxon-month-day-chart/taxon-month-day-chart.component';
+import { TaxonInfoRowComponent } from './taxon/info-card/shared/taxon-info-row/taxon-info-row.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -95,7 +96,8 @@ import { TaxonMonthDayChartComponent } from './taxon/info-card/shared/taxon-mont
     TaxonEndangermentComponent,
     TaxonInvasiveComponent,
     TaxonDescriptionComponent,
-    TaxonMonthDayChartComponent
+    TaxonMonthDayChartComponent,
+    TaxonInfoRowComponent
   ],
 })
 export class TaxonomyModule {

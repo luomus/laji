@@ -67,7 +67,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   }
 
   onTmlLoad(data) {
-    console.log('on tml load haseka form', data);
     this.routingStateService.removeLast();
     this.router.navigate(
       this.localizeRouterService.translateRoute(['/vihko', data.formID, data.tmpID]),

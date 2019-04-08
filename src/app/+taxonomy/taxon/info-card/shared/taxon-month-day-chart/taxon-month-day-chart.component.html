@@ -35,7 +35,7 @@
         <h4 class="modal-title">{{ monthFormatting(activeMonth) | capitalize }}</h4>
       </div>
       <div class="modal-body" *ngIf="dayChartModalVisible">
-        <div class="info-card-chart">
+        <div class="info-card-chart day-chart">
           <ngx-charts-bar-vertical-2d
             [results]="dayChartDataByMonth[activeMonth]"
             [xAxis]="true"

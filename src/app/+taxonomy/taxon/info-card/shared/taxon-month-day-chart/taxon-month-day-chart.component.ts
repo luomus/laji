@@ -25,7 +25,7 @@ export class TaxonMonthDayChartComponent implements OnChanges, OnDestroy {
   dayChartModalVisible = false;
   activeMonth: number;
 
-  monthFormatting = this.getMonthLabel.bind(this);
+  monthFormatting: (number) => string = this.getMonthLabel.bind(this);
 
   private getDataSub: Subscription;
 
@@ -139,7 +139,7 @@ export class TaxonMonthDayChartComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private initMonthChartData() {
+  private initMonthChartData(): any[] {
     const data = [];
     for (let i = 1; i < 13; i++) {
       data.push({
@@ -150,7 +150,7 @@ export class TaxonMonthDayChartComponent implements OnChanges, OnDestroy {
     return data;
   }
 
-  private initDayChartData(month: number) {
+  private initDayChartData(month: number): any[] {
     const data = [];
     for (let i = 1; i < this.getNbrOfDaysInMonth(month) + 1; i++) {
       data.push({
@@ -169,15 +169,15 @@ export class TaxonMonthDayChartComponent implements OnChanges, OnDestroy {
       );
   }
 
-  yAxisTickFormatting(value: number) {
+  yAxisTickFormatting(value: number): string {
     return value.toLocaleString('fi');
   }
 
-  private getMonthLabel(month: number) {
+  private getMonthLabel(month: number): string {
     return this.translate.instant('m-' + (month < 10 ? '0' : '') + month);
   }
 
-  private getNbrOfDaysInMonth(month: number) {
+  private getNbrOfDaysInMonth(month: number): number {
     return new Date(2000, month, 0).getDate();
   }
 }
