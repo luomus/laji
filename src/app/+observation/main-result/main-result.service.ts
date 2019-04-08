@@ -1,5 +1,5 @@
 
-import {map} from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -112,10 +112,10 @@ export class MainResultService {
     }
     this.state[type].pendingKey = cacheKey;
     this.state[type].pending    = request
-      .do(data => {
+      .pipe(tap(data => {
         this.state[type].data = data;
         this.state[type].key  = cacheKey;
-      });
+      }));
     return this.state[type].pending ;
   }
 

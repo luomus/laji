@@ -1,5 +1,5 @@
 
-import {map} from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
@@ -120,7 +120,7 @@ export class ResultService {
     );
   }
 
-  private _fetch(type: 'map'|'list'|'result'|'taxon', cacheKey: string, request): Observable<any> {
+  private _fetch(type: 'map'|'list'|'result'|'taxon', cacheKey: string, request: Observable<any>): Observable<any> {
     if (this.state[type].key === cacheKey) {
       return ObservableOf(this.state[type].data);
     } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {
@@ -136,10 +136,10 @@ export class ResultService {
     }
     this.state[type].pendingKey = cacheKey;
     this.state[type].pending    = request
-      .do(data => {
+      .pipe(tap(data => {
         this.state[type].data = data;
         this.state[type].key  = cacheKey;
-      });
+      }));
     return this.state[type].pending ;
   }
 
