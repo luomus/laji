@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component, ElementRef,
   EventEmitter, Inject,
   Input,
@@ -37,7 +37,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   dragging = false;
   version = '0.0.11';
   previewActive = 0;
-  @Input() defaultDomain: string;
+  @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
   @Input() newAvailableFields: ILabelField[];
   @Input() availableFields: ILabelField[];
@@ -78,6 +78,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     private labelService: LabelService,
     private renderer2: Renderer2,
     private infoWindowService: InfoWindowService,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -174,6 +175,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
         this._selectedLabelItem = this._setup.backSideLabelItems[idx];
       }
     }
+    this.setPreviewActive(this.previewActive);
   }
 
   showSettings(item: ILabelItem) {
@@ -318,7 +320,9 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   setPreviewActive(idx: number) {
     if (this.data[idx]) {
       this.previewActive = idx;
-      this.setAsExample(this.data[idx]);
+      if (this._setup) {
+        this.setAsExample(this.data[idx]);
+      }
     }
   }
 

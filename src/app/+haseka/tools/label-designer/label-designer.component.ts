@@ -4,7 +4,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
 import { PdfLabelService } from '../../../shared/service/pdf-label.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { share } from 'rxjs/operators';
+import { event } from 'd3-selection';
 
 @Component({
   selector: 'laji-label-designer',
@@ -14,6 +16,8 @@ import { Observable } from 'rxjs';
 export class LabelDesignerComponent implements OnInit {
 
   labelFields$: Observable<ILabelField[]>;
+  newLabelFields$: Observable<ILabelField[]>;
+  newSetup: ISetup;
   setup: ISetup;
   viewSettings: any = {magnification: 2};
   data: any;
@@ -25,7 +29,10 @@ export class LabelDesignerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.labelFields$ = this.pdfLabelService.allPossibleFields();
+    this.labelFields$ = this.pdfLabelService.allPossibleFields().pipe(
+      share()
+    );
+    this.newLabelFields$ = this.labelFields$;
     this.setup = {
       page: {
         ...Presets.A4,
@@ -56,6 +63,7 @@ export class LabelDesignerComponent implements OnInit {
       })).splice(0, 2)
     };
     this.data = this.getMockData();
+    this.newSetup = JSON.parse(JSON.stringify(this.setup));
   }
 
 
@@ -101,4 +109,16 @@ export class LabelDesignerComponent implements OnInit {
     ];
   }
 
+  changeAvailableFields(event: ILabelField[]) {
+    this.newSetup = {
+      ...this.newSetup,
+      labelItems: [
+        ...this.newSetup.labelItems.map((field, idx) => ({
+          ...field,
+          fields: [event[idx]]
+        }))
+      ]
+    };
+    this.labelFields$ = of(event);
+  }
 }

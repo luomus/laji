@@ -51,14 +51,7 @@
 <ng-template #saveTpl>
   <table class="save user-input">
     <tr><td><label for="saveFile">Filename:</label></td><td><input id="saveFile" (keyup)="updateSaveData('file', $event.target.value)" [value]="saveData.file || ''" type="text" class="form-control input-sm"></td></tr>
-    <tr>
-      <td></td>
-      <td><label>
-        <input (change)="updateSaveData('includeFields', !saveData.includeFields)" [checked]="saveData.includeFields" type="checkbox">
-        Include label fields
-      </label></td>
-    </tr>
-    <tr>
+    <tr *ngIf="data && data.length > 0">
       <td></td>
       <td><label>
         <input (change)="updateSaveData('includeData', !saveData.includeData)" [checked]="saveData.includeData" type="checkbox">

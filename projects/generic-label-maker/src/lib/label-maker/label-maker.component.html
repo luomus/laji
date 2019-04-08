@@ -33,7 +33,7 @@
       </div>
       <div *ngIf="_active === 'file'">
         <ll-label-file
-          [availableFields]="newAvailableFields !== availableFields ? availableFields : undefined"
+          [availableFields]="availableFields"
           (availableFieldsChange)="availableFieldsChange.emit($event)"
           (dataChange)="data = $event"
           [newSetup]="newSetup"

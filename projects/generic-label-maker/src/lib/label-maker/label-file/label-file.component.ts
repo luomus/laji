@@ -19,7 +19,7 @@ export class LabelFileComponent {
   @Input() data: object[];
   @Input() availableFields: ILabelField[];
 
-  @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string, availableFields?: ILabelField[]}[];
+  @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string, availableFields: ILabelField[]}[];
 
   @Output() html = new EventEmitter<string>();
   @Output() dataChange = new EventEmitter<object[]>();
@@ -32,8 +32,7 @@ export class LabelFileComponent {
   filename = '';
   saveData = {
     file: '',
-    includeData: false,
-    includeFields: false
+    includeData: false
   };
 
   constructor(private infoWindowService: InfoWindowService) { }
@@ -89,8 +88,9 @@ export class LabelFileComponent {
       const filename = this.saveData.file + (this.saveData.file.endsWith('.label') ? '' : '.label');
       const zip = new JSZip();
       const data = {
+        version: 1,
         setup: this.setup,
-        fields: this.saveData.includeFields && this.availableFields ? this.availableFields : undefined,
+        fields: this.availableFields,
         data: this.saveData.includeData && this.data ? this.data : undefined
       };
       zip.file('data.json', JSON.stringify(data));
@@ -101,7 +101,6 @@ export class LabelFileComponent {
     }
     this.saveData = {
       file: '',
-      includeFields: false,
       includeData: false
     };
   }
@@ -110,7 +109,7 @@ export class LabelFileComponent {
     this.printBtn.renderPages();
   }
 
-  private updateResentFiles(data: {setup: ISetup, availableFields?: ILabelField[]}, filename: string) {
+  private updateResentFiles(data: {setup: ISetup, availableFields: ILabelField[]}, filename: string) {
     const idx = this.recentFiles.findIndex(i => i.filename === filename);
     if (idx === -1) {
       this.recentFiles = [
