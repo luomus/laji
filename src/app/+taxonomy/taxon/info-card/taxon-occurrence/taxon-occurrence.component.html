@@ -77,5 +77,46 @@
         (hasData)="hasMonthDayData = $event"
       ></laji-taxon-month-day-chart>
     </div>
+    <div *ngIf="taxon.occurrences"
+          class="panel panel-default"
+          laji-panel
+          [title]="'taxonomy.occurrence.byArea' | translate"
+          [open]="true"
+          [autoToggle]="true"
+    >
+      <laji-datatable
+        [rows]="taxon.occurrences"
+        [columns]="[
+          {
+            name: 'area',
+            label: 'MO.area' | label,
+            cellTemplate: 'label'
+          },
+          {
+            name: 'status',
+            label: 'MO.status' | label,
+            cellTemplate: 'label'
+          },
+          {
+            name: 'notes',
+            label: 'MO.notes' | label
+          },
+          {
+            name: 'year',
+            label: 'MO.year' | label
+          },
+          {
+            name: 'specimenURI',
+            label: 'MO.specimenURI' | label
+          }
+        ]"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [clientSideSorting]="true"
+        [count]="taxon.occurrences.length"
+        [page]="1"
+        [pageSize]="taxon.occurrences.length"
+      ></laji-datatable>
+    </div>
   </div>
 </div>
