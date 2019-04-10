@@ -59,7 +59,7 @@
         [height]="'600px'"
       ></laji-gbif-map>
     </div>
-  </div-->
+  </div>
   <div class="col-xs-12">
     <laji-taxon-description
       [taxonDescriptions]="taxonDescription"
@@ -76,7 +76,7 @@
         [taxonId]="taxon.id"
         (hasData)="hasMonthDayData = $event"
       ></laji-taxon-month-day-chart>
-    </div-->
+    </div>
     <div *ngIf="taxon.occurrences"
           class="panel panel-default"
           laji-panel
