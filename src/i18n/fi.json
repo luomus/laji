@@ -1045,6 +1045,7 @@
   "taxonomy.endangerment.evaluation": "Arvionti",
   "taxonomy.endangerment.evaluationHistory": "Arviontihistoria",
   "taxonomy.invasive.invasiveLink": "Tarkastele vieraslajiportaalissa",
+  "taxonomy.occurrence.byArea": "Esiintyminen eliömaakunnittain",
   "technical": "tekninen",
   "template.chooseType": "Talteen",
   "template.description": "Kuvaus",
