@@ -4,7 +4,7 @@
       <ol class="breadcrumb">
         <li *ngFor="let parent of information.parents">
           <a [routerLink]="['/about/' + parent.id] | localize">
-            {{ parent.menuTitle }}
+            {{ parent.title }}
           </a>
         </li>
         <li class="active">{{ information.title }}</li>
@@ -20,7 +20,7 @@
           <ul>
             <li *ngFor="let child of information.children">
               <a [routerLink]="['/about/' + child.id] | localize">
-                {{ child.menuTitle }}
+                {{ child.title }}
               </a>
             </li>
           </ul>

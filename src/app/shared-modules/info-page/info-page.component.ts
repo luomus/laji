@@ -40,7 +40,7 @@ export class InfoPageComponent implements OnChanges {
     this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.child || rootPageID, {}).pipe(
       tap(result => {
         let afterRoot = false;
-        this.title.emit(result.menuTitle);
+        this.title.emit(result.title);
         this.parents.emit((result.parents || []).filter(item => {
           if (roots && roots.indexOf(item.id) !== -1) {
             afterRoot = true;
