@@ -1,21 +1,35 @@
 <div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open}">
   <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event, filter)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
   <ng-container *ngIf="multiple; else select">
-    <ng-container *ngIf="!open">
+    <ng-container *ngIf="!useFilter; else multiWithFilter">
+      <ng-container *ngIf="!open">
+        <label class="lj-item selected" *ngFor="let option of selectedOptions; trackBy: track">
+          <laji-checkbox [value]="true" (valueChange)="remove(option.id)"></laji-checkbox><span>{{ option.value }}</span>
+        </label>
+      </ng-container>
+      <div *ngIf="open" class="lj-item-container">
+        <div [class.lj-active]="i === selectedIdx" *ngFor="let option of options; let i = index; trackBy: track">
+          <label class="lj-item">
+            <laji-checkbox [value]="selectedOptions.indexOf(option) !== -1" (valueChange)="toggleValue(option.id)"></laji-checkbox><span>{{ option.value }}</span>
+          </label>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #multiWithFilter>
       <label class="lj-item selected" *ngFor="let option of selectedOptions; trackBy: track">
         <laji-checkbox [value]="true" (valueChange)="remove(option.id)"></laji-checkbox><span>{{ option.value }}</span>
       </label>
-    </ng-container>
-    <div class="lj-filter" [hidden]="!useFilter || !open">
-      <input #filter (keyup)="onFilterChange($event, filter.value)" class="form-control" type="search" placeholder="{{filterPlaceHolder}}">
-    </div>
-    <div *ngIf="open" class="lj-item-container">
-      <div [class.lj-active]="i === selectedIdx" *ngFor="let option of (options | filter:filterBy ); let i = index; trackBy: track">
-        <label class="lj-item">
-          <laji-checkbox [value]="selectedOptions.indexOf(option) !== -1" (valueChange)="toggleValue(option.id)"></laji-checkbox><span>{{ option.value }}</span>
-        </label>
+      <div class="lj-filter" [hidden]="!useFilter || !open">
+        <input #filter (keyup)="onFilterChange($event, filter.value)" class="form-control" type="search" placeholder="{{filterPlaceHolder}}">
       </div>
-    </div>
+      <div *ngIf="open" class="lj-item-container">
+        <div [class.lj-active]="i === selectedIdx" *ngFor="let option of (unselectedOptions | filter:filterBy ); let i = index; trackBy: track">
+          <label class="lj-item">
+            <laji-checkbox (valueChange)="add(option.id)"></laji-checkbox><span>{{ option.value }}</span>
+          </label>
+        </div>
+      </div>
+    </ng-template>
   </ng-container>
 </div>
 
