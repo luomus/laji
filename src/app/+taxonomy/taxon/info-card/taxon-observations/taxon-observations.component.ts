@@ -12,12 +12,20 @@ export class TaxonObservationsComponent implements OnChanges {
 
   hasMonthDayData: boolean;
   hasYearData: boolean;
+  filterByRecordBasisTotal: number;
+  filterByLifeStageTotal: number;
+  filterBySexTotal: number;
+  filterByCollectionIdTotal: number;
 
   constructor() { }
 
   ngOnChanges() {
     this.hasMonthDayData = undefined;
     this.hasYearData = undefined;
+    this.filterByRecordBasisTotal = undefined;
+    this.filterByLifeStageTotal = undefined;
+    this.filterBySexTotal = undefined;
+    this.filterByCollectionIdTotal = undefined;
   }
 
 }
