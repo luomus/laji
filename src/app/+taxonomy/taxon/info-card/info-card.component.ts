@@ -83,7 +83,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
       if (
         (!this.hasBiologyData && this.activeTab === 'biology') ||
-        (!this.isFromMasterChecklist && (this.activeTab === 'occurrence' || this.activeTab === 'observations')) ||
+        (!this.isFromMasterChecklist &&
+          (this.activeTab === 'occurrence' || this.activeTab === 'observations' || this.activeTab === 'specimens')) ||
         (!this.isEndangered && this.activeTab === 'endangerment') ||
         (!this.taxon.invasiveSpecies && this.activeTab === 'invasive')
       ) {
