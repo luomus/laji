@@ -1,0 +1,14 @@
+<div class="occurrence-map" [style.width]="width">
+  <laji-biogeographical-province
+    [height]="height"
+    [fill]="fillData"
+  ></laji-biogeographical-province>
+  <div class="legend">
+    <ul>
+      <li *ngFor="let status of statusList">
+        <span class="color" [ngStyle]="{'background-color': colorByStatus[status]}"></span>
+        {{ status | label }}
+      </li>
+    </ul>
+  </div>
+</div>

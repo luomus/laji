@@ -64,12 +64,14 @@ import { DocumentViewerModule } from '../shared-modules/document-viewer/document
 import { IucnCommonModule } from '../shared-modules/iucn/iucn.module';
 import { TaxonDescriptionComponent } from './taxon/info-card/shared/taxon-description/taxon-description.component';
 import { TaxonInfoRowComponent } from './taxon/info-card/shared/taxon-info-row/taxon-info-row.component';
+import { BiogeographicalProvincesModule } from '../shared-modules/biogeographical-provinces/biogeographical-provinces.module';
+import { TaxonOccurrenceMapComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence-map/taxon-occurrence-map.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
-    DocumentViewerModule, IucnCommonModule
+    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule
   ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonTaxonomyService],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
@@ -93,7 +95,8 @@ import { TaxonInfoRowComponent } from './taxon/info-card/shared/taxon-info-row/t
     TaxonEndangermentComponent,
     TaxonInvasiveComponent,
     TaxonDescriptionComponent,
-    TaxonInfoRowComponent
+    TaxonInfoRowComponent,
+    TaxonOccurrenceMapComponent
   ],
 })
 export class TaxonomyModule {
