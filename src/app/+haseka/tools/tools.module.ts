@@ -34,6 +34,7 @@ import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete
 // tslint:disable-next-line:max-line-length
 import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
 import { LabelDesignerComponent } from './label-designer/label-designer.component';
+import { ImportContainerComponent } from './importer/import-container.component';
 import { GenericLabelMakerModule } from 'generic-label-maker';
 
 @NgModule({
@@ -68,7 +69,8 @@ import { GenericLabelMakerModule } from 'generic-label-maker';
     ToolSuccessComponent,
     StepperComponent,
     SpecialInformalTaxonGroupsComponent,
-    LabelDesignerComponent
+    LabelDesignerComponent,
+    ImportContainerComponent
   ],
   providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService],
   exports: []

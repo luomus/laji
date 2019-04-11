@@ -12,6 +12,7 @@ import { LajiApi, LajiApiService } from './laji-api.service';
 import { combineLatest, concat, delay, map, retryWhen, share, switchMap, take, tap } from 'rxjs/operators';
 import { FormList } from '../../+haseka/form-list/haseka-form-list';
 import { Global } from '../../../environments/global';
+import { Form } from '../model/Form';
 
 
 export interface LoadResponse extends FormList {
@@ -27,9 +28,10 @@ export class FormService {
     [environment.wbcForm]: '/theme/talvilintulaskenta/form',
     [environment.invasiveControlForm]: '/theme/vieraslajit/form',
     [environment.municipalityMonitoringForm]: '/theme/kunnat/form',
-    [environment.lineTransectForm]: '/theme/linjalaskenta/form',
-    [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/ei-vakiolinjat',
-    [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/kartoitus',
+    [environment.lineTransectForm]: '/theme/linjalaskenta/form/MHL.1',
+    [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/form/MHL.27',
+    [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/form/MHL.28',
+    [environment.lolifeForm]: '/theme/lolife/form',
     default: '/vihko'
   };
 
@@ -62,6 +64,10 @@ export class FormService {
     }
   }
 
+  static hasFeature(form: FormList, feature: Form.Feature) {
+    return form && Array.isArray(form.features) && form.features.indexOf(feature) !== -1;
+  }
+
   hasNamedPlace(): boolean {
     return !!(this._populate && this._populate.namedPlaceID) || !!(this.currentData && this.currentData.namedPlaceID);
   }
@@ -83,6 +89,10 @@ export class FormService {
             this.formDataStorage = {...this.formDataStorage};
             this.localChanged.emit(true);
           }
+        }
+        if (this.currentKey === id) {
+          this.currentData = undefined;
+          this.currentKey = undefined;
         }
         return ObservableOf(true);
       }))

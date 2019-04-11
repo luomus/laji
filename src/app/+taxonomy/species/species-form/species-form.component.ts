@@ -168,6 +168,11 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.showFilterChange.emit(showFilter);
   }
 
+  updateQuery(key: string, value: any) {
+    this.searchQuery.query[key] = value;
+    this.onQueryChange();
+  }
+
   private formQueryToQuery() {
     const query = this.searchQuery.query;
     query.onlyFinnish = this.formQuery.onlyFinnish ? true : undefined;

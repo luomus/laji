@@ -80,6 +80,21 @@
       </div>
     </div>
   </div>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <laji-select
+        [selected]="searchQuery.typeOfOccurrenceId"
+        (selectedChanged)="indirectQueryChange('typeOfOccurrenceId', $event)"
+        [useFilter]="false"
+        [title]="'observation.commonness' | translate"
+        [info]="'observation.info.commonness' | translate"
+        [options]="[
+              {id: 'MX.typeOfOccurrenceCommon', value: ('MX.typeOfOccurrenceCommon' | label)},
+              {id: 'MX.typeOfOccurrenceRare', value: ('MX.typeOfOccurrenceRare' | label)},
+              {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
+            ]"></laji-select>
+    </div>
+  </div>
 </div>
 <div class="row">
   <div *lajiLoggedIn="true">

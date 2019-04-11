@@ -16,6 +16,7 @@ export class NgxChartsLineChartComponent {
   @Input() legend: any;
   @Input() showXAxisLabel: any;
   @Input() showYAxisLabel: any;
+  @Input() showGridLines: any;
   @Input() xAxisLabel: any;
   @Input() yAxisLabel: any;
   @Input() xScaleMax: any;

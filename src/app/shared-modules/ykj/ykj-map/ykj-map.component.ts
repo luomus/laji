@@ -60,6 +60,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   get mapOptions() {
     return this._mapOptions;
   }
+  @Input() showFullScreenControl = false;
   @Input() taxon: Taxonomy;
   @Input() useStatistics = false;
   @Input() loading = false;

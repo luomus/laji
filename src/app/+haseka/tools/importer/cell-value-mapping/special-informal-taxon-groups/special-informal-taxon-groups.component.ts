@@ -1,7 +1,7 @@
 
 import {map} from 'rxjs/operators';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField, VALUE_IGNORE } from '../../../model/form-field';
+import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { MappingService } from '../../../service/mapping.service';
 import { UserService } from '../../../../../shared/service/user.service';
 import { InformalTaxonGroupApi } from '../../../../../shared/api/InformalTaxonGroupApi';
@@ -16,7 +16,7 @@ export class SpecialInformalTaxonGroupsComponent implements OnInit {
 
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
-  @Input() field: FormField;
+  @Input() field: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
   informalTaxonGroups: string[];

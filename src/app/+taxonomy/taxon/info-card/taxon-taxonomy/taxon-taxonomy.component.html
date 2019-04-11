@@ -9,7 +9,7 @@
         </p>
         <p *ngIf="taxon.nameAccordingTo" class="green-text">{{ 'taxonomy.acceptedName' | translate }}</p>
         <p *ngIf="!taxon.nameAccordingTo">
-          <span class="red-text">{{ 'taxonomy.unacceptedName' | translate }} </span>
+          <span class="red-text" *ngIf="synonymType">{{ 'MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1) | label | uppercase }} {{ 'taxonomy.ofTaxon' | translate }} </span>
           <a [routerLink]="['/taxon', taxon.synonymOf.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'" target="_blank">
             <laji-taxon-name [taxon]="taxon.synonymOf" [addLink]="false"></laji-taxon-name>
           </a>
@@ -20,7 +20,7 @@
           <li *ngFor="let publication of taxon.originalPublications">
             {{ publication | publication }}
             <br>
-            <a [href]="publication | publication:'URI'" target="_blank">LINKKI</a>
+            <a [href]="publication | publication:'URI'" target="_blank">{{ 'taxonomy.link' | translate }}</a>
           </li>
         </ul>
       </div>
@@ -32,7 +32,7 @@
          [open]="true"
          [autoToggle]="true"
     >
-      <laji-taxon-synonyms [taxon]="taxon"></laji-taxon-synonyms>
+      <laji-taxon-synonyms [taxon]="taxon" [synonymTypes]="synonymTypes"></laji-taxon-synonyms>
     </div>
     <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName"
          class="panel panel-default"
@@ -67,24 +67,11 @@
       <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
       <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
     </div>
-    <ng-container *ngIf="taxonomyDescriptions">
-      <div class="panel panel-default taxonomy-description-panel"
-           laji-panel
-           [title]="'taxonomy.description' | translate"
-           [open]="true"
-           [autoToggle]="true"
-      >
-        <div *ngFor="let variable of taxonomyDescriptions.variables">
-          <h4>
-            {{ variable.title | multiLang }}
-          </h4>
-          <span [innerHTML]="variable.content | multiLang"></span>
-        </div>
-      </div>
-      <div class="source">
-        <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
-      </div>
-    </ng-container>
+    <laji-taxon-description
+      [taxonDescriptions]="taxonDescription"
+      [groupId]="'MX.SDVG14'"
+      [title]="'taxonomy.description' | translate"
+    ></laji-taxon-description>
     <div class="panel panel-default"
          *ngIf="taxon.taxonExpert"
          laji-panel

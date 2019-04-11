@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ToolsComponent } from './tools.component';
-import { ImporterComponent } from './importer/importer.component';
 import { ExcelGeneratorComponent } from './excel-generator/excel-generator.component';
 import { LabelDesignerComponent } from './label-designer/label-designer.component';
+import { ImportContainerComponent } from './importer/import-container.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: ToolsComponent },
-  { path: 'import', pathMatch: 'full', component: ImporterComponent},
+  { path: 'import', pathMatch: 'full', component: ImportContainerComponent},
   { path: 'generate', pathMatch: 'full', component: ExcelGeneratorComponent},
   { path: 'label', pathMatch: 'full', component: LabelDesignerComponent}
 ];

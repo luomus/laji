@@ -8,6 +8,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   Output,
@@ -24,16 +25,16 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'laji-map',
   template: `
-<div class="laji-map-wrap" [ngClass]="{'no-controls': !showControls}">
-  <div #lajiMap class="laji-map"></div>
-  <div class="loading-map loading" *ngIf="loading"></div>
-  <ng-content></ng-content>
-  <ul class="legend" *ngIf="_legend && _legend.length > 0" [ngStyle]="{'margin-top': 0 }">
-    <li *ngFor="let leg of _legend">
-      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
-    </li>
-  </ul>
-</div>`,
+    <div class="laji-map-wrap" [ngClass]="{'no-controls': !showControls, 'map-fullscreen': fullScreen}">
+      <div #lajiMap class="laji-map"></div>
+      <div class="loading-map loading" *ngIf="loading"></div>
+      <ng-content></ng-content>
+      <ul class="legend" *ngIf="_legend && _legend.length > 0" [ngStyle]="{'margin-top': 0 }">
+        <li *ngFor="let leg of _legend">
+          <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
+        </li>
+      </ul>
+    </div>`,
   styleUrls: ['./laji-map.component.css'],
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -41,6 +42,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   @Input() data: any = [];
+  @Input() showFullScreenControl = false;
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
@@ -57,16 +59,20 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   map: any;
   _options: LajiMap.Options = {};
   _legend: {color: string, label: string}[];
+  fullScreen = false;
 
   private _settingsKey: string;
   private subSet: Subscription;
   private userSettings: LajiMap.Options = {};
 
+  private customControlsSub: Subscription;
+
   constructor(
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private logger: Logger,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private zone: NgZone
   ) { }
 
   ngAfterViewInit() {
@@ -80,7 +86,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!options.on) {
       options = {...options, on: {
           tileLayerChange: (event) => {
-            this.tileLayerChange.emit((<any> event).tileLayerName);
+            this.zone.run(() => {
+              this.tileLayerChange.emit((<any> event).tileLayerName);
+            });
 
             if (this._settingsKey) {
               this.userSettings.tileLayerName = (<any> event).tileLayerName as LajiMap.TileLayerName;
@@ -161,39 +169,46 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (changes.data) {
       this.setData(this.data);
     }
+    if (changes.showFullScreenControl) {
+      this.updateCustomControls();
+    }
   }
 
   initMap() {
-    if (this.map) {
-      this.map.destroy();
-    }
-    const options: any = {
-      lang: (this.lang || 'fi'),
-      ...this._options,
-      ...(this.userSettings || {}),
-      rootElem: this.elemRef.nativeElement,
-      googleApiKey: Global.googleApiKey,
-      data: this.data
-    };
-    try {
-      this.map = new LajiMap.LajiMap(options);
-      this.map.map.on('moveend', _ => {
+    this.zone.runOutsideAngular(() => {
+      if (this.map) {
+        this.map.destroy();
+      }
+      const options: any = {
+        lang: (this.lang || 'fi'),
+        ...this._options,
+        ...(this.userSettings || {}),
+        rootElem: this.elemRef.nativeElement,
+        googleApiKey: Global.googleApiKey,
+        data: this.data
+      };
+      try {
+        this.map = new LajiMap.LajiMap(options);
+        this.map.map.on('moveend', _ => {
+          this.moveEvent('moveend');
+        });
+        this.map.map.on('movestart', _ => {
+          this.moveEvent('movestart');
+        });
         this.moveEvent('moveend');
-      });
-      this.map.map.on('movestart', _ => {
-        this.moveEvent('movestart');
-      });
-      this.moveEvent('moveend');
-    } catch (e) {
-      this.logger.error('Map initialization failed', e);
-    }
+      } catch (e) {
+        this.logger.error('Map initialization failed', e);
+      }
+    });
   }
 
   moveEvent(type: string) {
-    this.move.emit({
-      zoom: this.map.getNormalizedZoom(),
-      bounds: this.map.map.getBounds(),
-      type: type
+    this.zone.run(() => {
+      this.move.emit({
+        zoom: this.map.getNormalizedZoom(),
+        bounds: this.map.map.getBounds(),
+        type: type
+      });
     });
   }
 
@@ -217,10 +232,14 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     events.map(event => {
       switch (event.type) {
         case 'create':
-          this.create.emit(event.feature.geometry);
+          this.zone.run(() => {
+            this.create.emit(event.feature.geometry);
+          });
           break;
         case 'delete':
-          this.create.emit();
+          this.zone.run(() => {
+            this.create.emit();
+          });
           break;
         default:
       }
@@ -240,6 +259,37 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
       return {};
     } else {
       return {shapeOptions: {color: '#00aa00', opacity: 1, fillOpacity: 0}};
+    }
+  }
+
+  private toggleFullscreen() {
+    this.fullScreen = !this.fullScreen;
+    this.updateCustomControls();
+    setTimeout(() => {
+      this.invalidateSize();
+    }, 0);
+    this.cd.markForCheck();
+  }
+
+  private updateCustomControls() {
+    if (this.customControlsSub) {
+      this.customControlsSub.unsubscribe();
+    }
+
+    if (!this.showFullScreenControl) {
+      this.map.setCustomControls([]);
+    } else {
+      this.customControlsSub = this.translate.get(this.fullScreen ? 'map.exitFullScreen' : 'map.fullScreen')
+        .subscribe(text => {
+          this.map.setCustomControls(
+            [{
+              iconCls: 'glyphicon glyphicon-resize-' + (this.fullScreen ? 'small' : 'full'),
+              fn: this.toggleFullscreen.bind(this),
+              position: 'bottomright',
+              text: text
+            }]
+          );
+        });
     }
   }
 }

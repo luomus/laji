@@ -51,14 +51,27 @@ import { TaxonTaxonomyComponent } from './taxon/info-card/taxon-taxonomy/taxon-t
 import { DownloadModule } from '../shared-modules/download/download.module';
 import {
   TaxonDescriptionSourceComponent
-} from './taxon/info-card/taxon-biology/taxon-description-source/taxon-description-source.component';
+} from './taxon/info-card/shared/taxon-description-source/taxon-description-source.component';
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
+import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
+import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
+import { TaxonObservationsComponent } from './taxon/info-card/taxon-observations/taxon-observations.component';
+import { InfoCardHeaderComponent } from './taxon/info-card/info-card-header/info-card-header.component';
+import { TaxonSpecimensComponent } from './taxon/info-card/taxon-specimens/taxon-specimens.component';
+import { TaxonEndangermentComponent } from './taxon/info-card/taxon-endangerment/taxon-endangerment.component';
+import { TaxonInvasiveComponent } from './taxon/info-card/taxon-invasive/taxon-invasive.component';
+import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
+import { IucnCommonModule } from '../shared-modules/iucn/iucn.module';
+import { TaxonDescriptionComponent } from './taxon/info-card/shared/taxon-description/taxon-description.component';
+import { TaxonInfoRowComponent } from './taxon/info-card/shared/taxon-info-row/taxon-info-row.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
-    NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule ],
-  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
+    NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
+    DocumentViewerModule, IucnCommonModule
+  ],
+  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonTaxonomyService],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
     TaxonTreeComponent, SpeciesListComponent, TaxonComponent,
     BoldSequenceComponent, SpeciesFormComponent, SpeciesComponent,
@@ -73,7 +86,14 @@ import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/tax
     TaxonBiologyComponent,
     TaxonTaxonomyComponent,
     TaxonDescriptionSourceComponent,
-    TaxonOccurrenceComponent
+    TaxonOccurrenceComponent,
+    TaxonObservationsComponent,
+    InfoCardHeaderComponent,
+    TaxonSpecimensComponent,
+    TaxonEndangermentComponent,
+    TaxonInvasiveComponent,
+    TaxonDescriptionComponent,
+    TaxonInfoRowComponent
   ],
 })
 export class TaxonomyModule {

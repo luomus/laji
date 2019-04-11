@@ -1,0 +1,54 @@
+.info-card-header-first-row {
+  height: 60px;
+}
+
+.taxon-parent {
+  margin-top: 15px;
+  padding: 8px 0;
+  border-radius: 4px;
+  display: inline-block;
+}
+.taxon-search-container {
+  position: absolute;
+  right: 16px;
+  top: 18px;
+}
+
+@media only screen and (max-width : 767px) {
+  .taxon-search-container {
+    position: static;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .taxon-parent {
+    margin-top: 5px;
+  }
+}
+
+.taxon-name-header {
+  margin-top: 5px;
+  margin-right: 15px;
+  display: inline-block;
+}
+.sibling-select-container {
+  display: inline-block;
+  vertical-align: bottom;
+  margin: 0 10px 10px 0;
+  white-space: nowrap;
+}
+.sibling-select-container select {
+  display: inline-block;
+  width: 200px;
+}
+.arrow-link {
+  text-decoration: none;
+}
+.arrow-link.arrow-link-right {
+  padding-left: 2px;
+  margin-left: 2px;
+}
+.arrow-link.arrow-link-left {
+  padding-right: 2px;
+  margin-right: 2px;
+}
+

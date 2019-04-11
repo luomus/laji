@@ -57,6 +57,10 @@ export class PdfLabelService {
     this.data = documents;
   }
 
+  getData(): Document[] {
+    return this.data || [];
+  }
+
 
   allPossibleFields(): Observable<ILabelField[]> {
     if (!this.data || this.data.length === 0) {

@@ -87,6 +87,9 @@ export class DatatableUtil {
       labelObservables.push(
         this.publicationService.getPublication(values[i], this.translate.currentLang).pipe(
           map((res: Publication) => {
+            if (!res) {
+              console.log(res);
+            }
             return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : values[i];
           }))
       );

@@ -1,33 +1,12 @@
-<table class="table taxon-table table-condensed" *ngIf="taxon">
-  <tbody>
-  <ng-container *ngFor="let synonymType of [
-    'basionyms',
-    'objectiveSynonyms',
-    'subjectiveSynonyms',
-    'homotypicSynonyms',
-    'heterotypicSynonyms',
-    'synonyms',
-    'misspelledNames',
-    'orthographicVariants',
-    'uncertainSynonyms',
-    'misappliedNames',
-    'alternativeNames'
-  ]">
-    <tr *ngIf="taxon[synonymType]">
-      <th>{{ 'MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1) | label }}
-      </th>
-      <td>
-        <ul>
-          <li *ngFor="let obj of taxon[synonymType]">
-            <a [routerLink]="['/taxon', obj.id, 'taxonomy'] | localize" [queryParams]="{context: null, showTree: null}" [queryParamsHandling]="'merge'" target="_blank">
-              <laji-taxon-name [taxon]="obj" [addLink]="false"></laji-taxon-name>
-            </a>
-            <span class="author" *ngIf="obj.scientificNameAuthorship">{{ obj.scientificNameAuthorship }}</span>
-          </li>
-        </ul>
-      </td>
-    </tr>
-  </ng-container>
-  </tbody>
-</table>
-
+<ng-container *ngFor="let synonymType of synonymTypes">
+  <laji-taxon-info-row *ngIf="taxon[synonymType]" [label]="'MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1) | label">
+    <ul>
+      <li *ngFor="let obj of taxon[synonymType]">
+        <a [routerLink]="['/taxon', obj.id, 'taxonomy'] | localize" [queryParams]="{context: null, showTree: null}" [queryParamsHandling]="'merge'" target="_blank">
+          <laji-taxon-name [taxon]="obj" [addLink]="false"></laji-taxon-name>
+        </a>
+        <span class="author" *ngIf="obj.scientificNameAuthorship">{{ obj.scientificNameAuthorship }}</span>
+      </li>
+    </ul>
+  </laji-taxon-info-row>
+</ng-container>

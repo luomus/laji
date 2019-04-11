@@ -14,7 +14,9 @@
 .env.dev, .env.staging {
   background-image: url("/static/images/dev.png");
 }
-
+.notifications {
+  background: white;
+}
 .search {
   max-width: 170px;
   margin: 10px 5px 0 0;
@@ -147,11 +149,10 @@
 .red-theme.navbar {
   box-shadow: 0 2px 5px #000;
 }
-
+#navbar .dropdown-menu a {
+  color: #333;
+}
 @media only screen and (min-width : 768px) {
-  #navbar .dropdown-menu a {
-    color: #333;
-  }
 
   .navbar-inverse .dropdown-menu li[role="menuitem"]:hover {
     background-color: #dfdfdf;

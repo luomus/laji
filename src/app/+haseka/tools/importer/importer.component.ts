@@ -4,8 +4,8 @@ import { from as ObservableFrom, of as ObservableOf } from 'rxjs';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
-import { FormField } from '../model/form-field';
-import { ImportService } from '../service/import.service';
+import { IFormField } from '../model/excel';
+import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -16,6 +16,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../model/import-table-column';
 import { catchError, concatMap, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { ExcelToolService } from '../service/excel-tool.service';
 
 export type States
   = 'empty'
@@ -50,13 +51,16 @@ export class ImporterComponent implements OnInit {
 
   @LocalStorage() uploadedFiles;
   @LocalStorage() partiallyUploadedFiles;
+  @LocalStorage('importCombineBy', CombineToDocument.gathering) combineBy: CombineToDocument;
+  @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
 
   data: {[key: string]: any}[];
   mappedData: {[key: string]: any}[];
-  parsedData: {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[];
+  parsedData: IDocumentData[];
   header: {[key: string]: string};
-  fields: {[key: string]: FormField};
+  fields: {[key: string]: IFormField};
   dataColumns: ImportTableColumn[];
+  docCnt = 0;
   origColMap: {[key: string]: string};
   colMap: {[key: string]: string};
   valueMap: {[key: string]: {[value: string]: any}} = {};
@@ -73,13 +77,18 @@ export class ImporterComponent implements OnInit {
   userMappings: any;
   hasUserMapping = false;
   ambiguousColumns = [];
-  maxUnits = ImportService.maxPerDocument;
   separator = MappingService.valueSplitter;
   hash;
   currentTitle: string;
   fileLoading = false;
   total = 0;
   current = 0;
+
+  combineOptions: CombineToDocument[] = [
+    CombineToDocument.gathering,
+    CombineToDocument.all,
+    CombineToDocument.none
+  ];
 
   private externalLabel = [
     'editors[*]',
@@ -95,7 +104,8 @@ export class ImporterComponent implements OnInit {
     private mappingService: MappingService,
     private toastsService: ToastsService,
     private augmentService: AugmentService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private excelToolService: ExcelToolService
   ) { }
 
   ngOnInit() {
@@ -139,9 +149,15 @@ export class ImporterComponent implements OnInit {
     }
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe(form => {
+        this.form = form;
+        this.combineOptions = this.excelToolService.getCombineOptions(form);
         const [data, sheet] = this.spreadSheetService.loadSheet(this.bstr);
         this.bstr = undefined;
         this.hash = Hash.sha1(data);
+
+        if (this.combineOptions && this.combineOptions.length > 0 && this.combineOptions.indexOf(this.combineBy) === -1) {
+          this.combineBy = this.combineOptions[0];
+        }
 
         if (this.partiallyUploadedFiles && this.partiallyUploadedFiles.indexOf(this.hash) > -1) {
           this.status = 'fileAlreadyUploadedPartially';
@@ -197,10 +213,11 @@ export class ImporterComponent implements OnInit {
     }
     this.translateService.get('excel.batch')
       .subscribe(label => {
+        const rowLabel = this.translateService.instant('line');
         const columns: ImportTableColumn[] = [
           {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
           {prop: '_doc', label: label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
-          {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
+          {prop: '_idx', label: rowLabel, sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
         ];
         Object.keys(this.header).map(address => {
           columns.push({
@@ -218,9 +235,16 @@ export class ImporterComponent implements OnInit {
       });
   }
 
-  formSelected(event) {
-    this.formID = event.id;
+  formSelected(formID) {
+    this.formID = formID;
     this.initForm();
+  }
+
+  hasButton(place: 'temp') {
+    if (this.form && this.form.actions) {
+      return typeof this.form.actions[place] !== 'undefined';
+    }
+    return true;
   }
 
   buttonLabel(place: 'save'|'temp') {
@@ -244,26 +268,32 @@ export class ImporterComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  rowMappingDone(mappings) {
+  rowMappingDone(mappings?) {
     this.status = 'importReady';
-    this.mappingService.addUserValueMapping(mappings);
+    if (mappings) {
+      this.mappingService.addUserValueMapping(mappings);
+    }
     this.hasUserMapping = this.mappingService.hasUserMapping();
     this.initParsedData();
     const skipped = [];
     const docs = {};
     if (this.parsedData) {
+      let removed = 0;
       this.parsedData.forEach((data, idx) => {
         skipped.push(...data.skipped);
         const docNum = idx + 1;
+        removed += data.document === null ? 1 : 0;
         Object.keys(data.rows).forEach(row => {
           docs[row] = docNum;
         });
       });
+
+      this.docCnt = this.parsedData.length - removed;
     }
     this.mappedData = [
       ...this.data.map((row, idx) => ({
         ...this.getMappedValues(row, this.colMap, this.fields),
-        _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : undefined,
+        _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : {status: 'valid'},
         _doc: docs[idx]
       }))
     ];
@@ -273,12 +303,22 @@ export class ImporterComponent implements OnInit {
     this.validate();
   }
 
+  changeImportType(value: any) {
+    if (value === false || value === true || value === 'true' || value === 'false') {
+      this.onlyWithCount = value === true || value === 'true';
+    } else {
+      this.combineBy = value;
+    }
+    this.parsedData = undefined;
+    this.rowMappingDone();
+  }
+
   validate() {
     this.status = 'validating';
     let success = true;
     this.total = this.parsedData.length;
     this.current = 1;
-    ObservableFrom(this.parsedData).pipe(
+    ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
       mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
         concatMap(document => this.importService.validateData(document).pipe(
           switchMap(result => ObservableOf({result: result, source: data})),
@@ -300,8 +340,6 @@ export class ImporterComponent implements OnInit {
               status: 'invalid',
               error: data.result._error
             });
-          } else {
-            Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {});
           }
           this.mappedData = [...this.mappedData];
           this.cdr.markForCheck();
@@ -330,8 +368,7 @@ export class ImporterComponent implements OnInit {
     let hadSuccess = false;
     this.total = this.parsedData.length;
     this.current = 1;
-    ObservableFrom(this.parsedData);
-    ObservableFrom(this.parsedData).pipe(
+    ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
       mergeMap(data => this.augmentService.augmentDocument(data.document).pipe(
         concatMap(document => this.importService.sendData(document, publicityRestrictions).pipe(
           switchMap(result => ObservableOf({result: result, source: data})),
@@ -390,7 +427,14 @@ export class ImporterComponent implements OnInit {
 
   initParsedData() {
     if (!this.parsedData) {
-      this.parsedData = this.importService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
+      this.parsedData = this.importService.flatFieldsToDocuments(
+        this.data,
+        this.colMap,
+        this.fields,
+        this.formID,
+        this.onlyWithCount,
+        this.combineBy
+      );
     }
   }
 
@@ -482,4 +526,8 @@ export class ImporterComponent implements OnInit {
     return result;
   }
 
+  clearFile() {
+    this.filename = '';
+    this.bstr = undefined;
+  }
 }

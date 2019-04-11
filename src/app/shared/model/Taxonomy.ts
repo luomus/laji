@@ -143,7 +143,7 @@ export interface Taxonomy {
 
   informalTaxonGroups?: Array<string>;
 
-  occurrences?: Array<any>;
+  occurrences?: Array<Occurrence>;
 
   synonymOf?: Taxonomy;
 
@@ -235,6 +235,8 @@ export interface Taxonomy {
   primaryHabitat?: Habitat;
 
   secondaryHabitats?: Habitat[];
+
+  parent?: any;
 }
 
 export interface RedListEvaluation {
@@ -246,6 +248,9 @@ export interface RedListEvaluation {
   possiblyRE?: object;
   primaryHabitat?: Habitat;
   secondaryHabitats?: Habitat[];
+  endangermentReasons?: string[];
+  primaryThreat?: string;
+  threats?: string[];
 }
 
 export interface LatestRedListStatusFinland {
@@ -316,5 +321,20 @@ export interface  Habitat {
   id: string;
 
   order: number;
+
+}
+
+
+export interface Occurrence {
+
+  area: string;
+
+  notes?: string;
+
+  specimenURI?: string;
+
+  status: string;
+
+  year?: number;
 
 }

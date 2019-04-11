@@ -1,0 +1,11 @@
+<ll-label-maker
+  [defaultDomain]="'http://tun.fi/'"
+  [newAvailableFields]="newAvailableFields$ | async"
+  [availableFields]="availableFields$ | async"
+  (availableFieldsChange)="setAvailableFields($event)"
+  [(viewSettings)]="viewSetting"
+  [(setup)]="setup"
+  [newSetup]="newSetup"
+  (html)="htmlToPdf($event)"
+  [showIntro]="false">
+</ll-label-maker>

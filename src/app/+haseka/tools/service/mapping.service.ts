@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { FormField, VALUE_IGNORE } from '../model/form-field';
+import { IColMap, IFormField, IUserMappings, IValueMap, TUserValueMap, VALUE_IGNORE } from '../model/excel';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
-import { NamedPlace } from '../../../shared/model/NamedPlace';
 
 export enum SpecialTypes {
   geometry = 'geometry',
@@ -25,17 +24,10 @@ export class MappingService {
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
 
+  // from boolean to translation key
   private readonly booleanMap = {
-    'true': {
-      'fi': 'Kyllä',
-      'en': 'Yes',
-      'sv': 'Ja'
-    },
-    'false': {
-      'fi': 'Ei',
-      'en': 'No',
-      'sv': 'Nej'
-    }
+    'true': 'yes',
+    'false': 'no'
   };
 
   private mapping = {
@@ -43,14 +35,17 @@ export class MappingService {
     'string': {}
   };
 
-  private colMapping: Object;
+  private colMapping: IColMap;
 
-  private userColMappings = {};
-  private userValueMappings = {};
+  private userColMappings: IColMap = {};
+  private userValueMappings: IValueMap = {};
 
   private specials = {
     'editors[*]': SpecialTypes.person,
+    'namedPlaceID': SpecialTypes.namedPlaceID,
     'gatheringEvent.leg[*]': SpecialTypes.person,
+    'gatheringEvent.dateBegin': SpecialTypes.dateOptionalTime,
+    'gatheringEvent.dateEnd': SpecialTypes.dateOptionalTime,
     'gatherings[*].leg': SpecialTypes.person,
     'gatherings[*].geometry': SpecialTypes.geometry,
     'gatherings[*].namedPlaceID': SpecialTypes.namedPlaceID,
@@ -62,12 +57,9 @@ export class MappingService {
     'gatherings[*].dateBegin': SpecialTypes.dateOptionalTime,
     'gatherings[*].dateEnd': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
-    'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon
+    'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon,
+    'gatherings[*].units[*].identifications[*].taxonID': SpecialTypes.taxonID
   };
-
-  static namedPlacesToList(namedPlaces: NamedPlace[]) {
-    return namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`);
-  }
 
   static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
     groups.forEach(group => {
@@ -86,7 +78,7 @@ export class MappingService {
   ) { }
 
 
-  rawValueToArray(value, field: FormField) {
+  rawValueToArray(value, field: IFormField) {
     if (typeof value === 'string') {
       value = value.trim();
     }
@@ -134,7 +126,7 @@ export class MappingService {
     this.userColMappings = {};
   }
 
-  initColMap(fields: {[key: string]: FormField}) {
+  initColMap(fields: {[key: string]: IFormField}) {
     const lookup = {};
     const simpleCols: {[label: string]: {cnt: number, key: string}} = {};
     Object.keys(fields).forEach((key) => {
@@ -155,7 +147,7 @@ export class MappingService {
     this.colMapping = lookup;
   }
 
-  colMap(value: string) {
+  colMap(value: string): string {
     if (!this.colMapping) {
       throw new ErrorEvent('Column map is not initialized!');
     }
@@ -163,19 +155,19 @@ export class MappingService {
     return this.colMapping[value] || this.userColMappings[value] || null;
   }
 
-  clearUserMapping() {
+  clearUserMapping(): void {
     this.userColMappings = {};
     this.userValueMappings = {};
   }
 
-  getUserMappings(): {col: any, value: any} {
+  getUserMappings(): IUserMappings {
     return {
       col: this.userColMappings,
       value: this.userValueMappings
     };
   }
 
-  setUserMapping(mapping: {col: any, value: any}) {
+  setUserMapping(mapping: IUserMappings): void {
     if (mapping && mapping.col && mapping.value) {
       this.userColMappings = mapping.col;
       this.userValueMappings = mapping.value;
@@ -184,18 +176,18 @@ export class MappingService {
     }
   }
 
-  hasUserMapping() {
+  hasUserMapping(): boolean {
     return Object.keys(this.userColMappings).length > 0 || Object.keys(this.userValueMappings).length > 0;
   }
 
-  getSpecial(field: FormField): SpecialTypes|null {
+  getSpecial(field: IFormField): SpecialTypes|null {
     if (field.key && this.specials[field.key]) {
       return this.specials[field.key];
     }
     return null;
   }
 
-  getLabel(value: any, field: FormField) {
+  getLabel(value: any, field: IFormField) {
     if (Array.isArray(value)) {
       return value.map((val) => this.getLabel(val, field));
     }
@@ -214,14 +206,14 @@ export class MappingService {
     return value;
   }
 
-  map(value: any, field: FormField, allowUnMapped = false) {
+  map(value: any, field: IFormField, allowUnMapped = false) {
     if (value === '' || value === null) {
       return value;
     }
     return this._map(value, field, allowUnMapped);
   }
 
-  mapByFieldType(value: any, field: FormField) {
+  mapByFieldType(value: any, field: IFormField) {
     const upperValue = ('' + value).toLowerCase();
     let realValue = null;
     switch (field.type) {
@@ -249,7 +241,7 @@ export class MappingService {
     return realValue;
   }
 
-  reverseMap(value: any, field: FormField): any {
+  reverseMap(value: any, field: IFormField): any {
     switch (field.type) {
       case 'boolean':
         return this.mapFromBoolean(value);
@@ -257,7 +249,7 @@ export class MappingService {
     return value;
   }
 
-  initStringMap(field: FormField) {
+  initStringMap(field: IFormField) {
     if (!field.enum || this.mapping.string[field.key]) {
       return;
     }
@@ -276,9 +268,7 @@ export class MappingService {
     if (typeof value !== 'boolean') {
       return value;
     }
-    const lang = this.translationService.currentLang;
-    const key = value ? 'true' : 'false';
-    return this.booleanMap[key][lang];
+    return this.translationService.instant(value ? this.booleanMap.true : this.booleanMap.false);
   }
 
   mapUnitTaxon(value) {
@@ -331,7 +321,23 @@ export class MappingService {
     return null;
   }
 
-  private _map(value: any, field: FormField, allowUnMapped = false, convertToArray = true) {
+  mapDateOptionalTime(value) {
+    if (typeof value === 'string') {
+      const parts = value.split(',');
+      const dateParts = parts[0].split('.');
+      if (dateParts.length === 3) {
+        if (dateParts[0].length === 4) {
+          parts[0] = dateParts.join('-');
+        } else if (dateParts[2].length === 4) {
+          parts[0] = dateParts.reverse().join('-');
+        }
+        return parts.join('T');
+      }
+    }
+    return value;
+  }
+
+  private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {
     if (Array.isArray(value)) {
       value = value.map(val => this._map(val, field, allowUnMapped, false));
       if (!field.isArray) {
@@ -342,7 +348,7 @@ export class MappingService {
       return value;
     }
     const upperValue = ('' + value).toLowerCase();
-    let targetValue = this.getUserMappedValue(upperValue, field);
+    let targetValue: TUserValueMap|TUserValueMap[] = this.getUserMappedValue(upperValue, field);
 
     switch (this.getSpecial(field)) {
       case SpecialTypes.geometry:
@@ -364,6 +370,9 @@ export class MappingService {
         break;
       case SpecialTypes.namedPlaceID:
         targetValue = this.mapNamedPlaceID(targetValue || value);
+        break;
+      case SpecialTypes.dateOptionalTime:
+        targetValue = this.mapDateOptionalTime(targetValue || value);
         break;
       default:
         if (targetValue === null) {
@@ -402,7 +411,7 @@ export class MappingService {
     return value;
   }
 
-  private getMappedValue(value: any, field: FormField) {
+  private getMappedValue(value: any, field: IFormField) {
     switch (field.type) {
       case 'string':
         return this.getUserMappedValue(value, field) ||
@@ -415,7 +424,7 @@ export class MappingService {
     return null;
   }
 
-  private getUserMappedValue(upperCaseValue: any, field: FormField) {
+  private getUserMappedValue(upperCaseValue: any, field: IFormField) {
     return this.userValueMappings[field.key] && typeof this.userValueMappings[field.key][upperCaseValue] !== 'undefined' ?
       this.userValueMappings[field.key] && this.userValueMappings[field.key][upperCaseValue] : null;
   }
@@ -425,16 +434,10 @@ export class MappingService {
       return;
     }
     this.mapping.boolean = {};
-    for (const key in this.booleanMap.true) {
-      if (this.booleanMap.true.hasOwnProperty(key)) {
-        this.mapping.boolean[this.booleanMap.true[key].toLowerCase()] = true;
-      }
-    }
-    for (const key in this.booleanMap.false) {
-      if (this.booleanMap.true.hasOwnProperty(key)) {
-        this.mapping.boolean[this.booleanMap.false[key].toLowerCase()] = false;
-      }
-    }
+    const trueLabel = this.translationService.instant(this.booleanMap.true).toLowerCase();
+    const falseLabel = this.translationService.instant(this.booleanMap.false).toLowerCase();
+    this.mapping.boolean[trueLabel] = true;
+    this.mapping.boolean[falseLabel] = false;
   }
 
 }

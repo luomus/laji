@@ -7,22 +7,12 @@
          [open]="true"
          [autoToggle]="true"
     >
-      <table class="table taxon-table table-condensed">
-        <tbody>
-          <tr *ngIf="taxon.primaryHabitat">
-            <th>{{ 'taxonomy.habitat.primary' | translate }}</th>
-            <td>
-              <laji-habitat [habitat]="taxon.primaryHabitat"></laji-habitat>
-            </td>
-          </tr>
-          <tr *ngIf="taxon.secondaryHabitats">
-            <th>{{ 'taxonomy.habitat.secondary' | translate }}</th>
-            <td>
-              <laji-habitat [habitat]="taxon.secondaryHabitats"></laji-habitat>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <laji-taxon-info-row *ngIf="taxon.primaryHabitat" [label]="'taxonomy.habitat.primary' | translate">
+        <laji-habitat [habitat]="taxon.primaryHabitat"></laji-habitat>
+      </laji-taxon-info-row>
+      <laji-taxon-info-row *ngIf="taxon.secondaryHabitats" [label]="'taxonomy.habitat.secondary' | translate">
+        <laji-habitat [habitat]="taxon.secondaryHabitats"></laji-habitat>
+      </laji-taxon-info-row>
     </div>
 
     <ng-container *ngIf="taxonDescription.length > 0">
@@ -52,9 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="source">
-        <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
-      </div>
+      <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
     </ng-container>
   </div>
 </div>

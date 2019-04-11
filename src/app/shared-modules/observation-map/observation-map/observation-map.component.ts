@@ -191,14 +191,15 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       this.activeBounds = e.bounds.pad(1);
     }
     if (
-      !this.showingItems &&
       e.type === 'moveend' && (
         curActive !== this.activeLevel ||
         (this.activeLevel >= this.onlyViewPortThreshold && !this.activeBounds.contains(e.bounds))
       )
     ) {
       this.activeBounds = e.bounds.pad(1);
-      this.updateMapData();
+      if (!this.showingItems) {
+        this.updateMapData();
+      }
     }
   }
 
@@ -458,8 +459,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private addViewPortCoordinates(query: WarehouseQueryInterface) {
     if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
       query.coordinates = [
-        this.activeBounds.getSouthWest().lat + ':' + this.activeBounds.getNorthEast().lat + ':' +
-        this.activeBounds.getSouthWest().lng + ':' + this.activeBounds.getNorthEast().lng + ':WGS84'
+        Math.max(this.activeBounds.getSouthWest().lat, -90) + ':' + Math.min(this.activeBounds.getNorthEast().lat, 90) + ':' +
+        Math.max(this.activeBounds.getSouthWest().lng, -180) + ':' + Math.min(this.activeBounds.getNorthEast().lng, 180) + ':WGS84'
       ];
     }
     return query;
@@ -499,11 +500,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  private getPopup(idx: number, geometry: any, cb: Function) {
+  private getPopup({featureIdx}, cb: Function) {
     this.translate.get('more')
       .subscribe((moreInfo) => {
         try {
-          const properties = this.mapData[0].featureCollection.features[idx].properties;
+          const properties = this.mapData[0].featureCollection.features[featureIdx].properties;
           const cnt = properties.count;
           let description = '';
           this.itemFields.map(field => {

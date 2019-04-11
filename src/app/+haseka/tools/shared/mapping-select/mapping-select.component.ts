@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField, VALUE_AS_IS, VALUE_IGNORE } from '../../model/form-field';
+import { IFormField, VALUE_AS_IS, VALUE_IGNORE } from '../../model/excel';
 import { SpreadSheetService } from '../../service/spread-sheet.service';
 
 @Component({
@@ -10,7 +10,8 @@ import { SpreadSheetService } from '../../service/spread-sheet.service';
 })
 export class MappingSelectComponent implements OnInit {
 
-  @Input() options: string[] = [];
+  @Input() options: string[];
+  @Input() disabledWhenNoOptions = false;
   _value: string;
   @Input() disabled = false;
   @Output() selected = new EventEmitter<string>();
@@ -20,13 +21,13 @@ export class MappingSelectComponent implements OnInit {
   fieldGroups: string[] = [];
   groups: {[group: string]: string[]};
   fieldGroupsLabel: {[group: string]: string} = {};
-  _fields: {[key: string]: FormField};
+  _fields: {[key: string]: IFormField};
 
   constructor() {}
 
   @Input()
   set value(value: string) {
-    if (value && this.options.indexOf(value) === -1 && !this._fields) {
+    if (value && this.options && this.options.indexOf(value) === -1 && !this._fields) {
       this._value = VALUE_AS_IS;
     } else {
       this._value = value;
@@ -34,7 +35,7 @@ export class MappingSelectComponent implements OnInit {
   }
 
   @Input()
-  set fields(fields: {[key: string]: FormField}) {
+  set fields(fields: {[key: string]: IFormField}) {
     this._fields = fields;
     const groups = {};
     Object.keys(fields).forEach(key => {

@@ -1,0 +1,62 @@
+<ng-container *ngIf="monthChartData && monthChartData.length > 0">
+  <div class="info-card-chart">
+    <ngx-charts-bar-vertical-2d
+      [results]="monthChartData"
+      [xAxis]="true"
+      [yAxis]="true"
+      [xAxisTickFormatting]="monthFormatting"
+      [yAxisTickFormatting]="yAxisTickFormatting"
+      [yAxisLabel]="'taxonomy.observations.yearChart.yAxis' | translate"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [legend]="true"
+      [legendTitle]="'MY.lifeStage' | label"
+      [barPadding]="2"
+      [groupPadding]="4"
+      (select)="onSelect($event)"
+    >
+      <ng-template #tooltipTemplate let-model="model">
+        <span class="tooltip-label">{{ model.name }}</span>
+        <span class="tooltip-val">{{ model.value.toLocaleString("fi") }}</span>
+      </ng-template>
+    </ngx-charts-bar-vertical-2d>
+  </div>
+</ng-container>
+
+<div class="modal fade" bsModal #dayChartModal="bs-modal"
+     (onHidden)="onHideDayChart()"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="dayChartModal.hide()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4 class="modal-title">{{ monthFormatting(activeMonth) | capitalize }}</h4>
+      </div>
+      <div class="modal-body" *ngIf="dayChartModalVisible">
+        <div class="info-card-chart day-chart">
+          <ngx-charts-bar-vertical-2d
+            [results]="dayChartDataByMonth[activeMonth]"
+            [xAxis]="true"
+            [yAxis]="true"
+            [yAxisTickFormatting]="yAxisTickFormatting"
+            [yAxisLabel]="'taxonomy.observations.yearChart.yAxis' | translate"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [legend]="true"
+            [legendTitle]="'MY.lifeStage' | label"
+            [barPadding]="2"
+            [groupPadding]="4"
+          >
+            <ng-template #tooltipTemplate let-model="model">
+              <span class="tooltip-label">{{ model.name }}</span>
+              <span class="tooltip-val">{{ model.value.toLocaleString("fi") }}</span>
+            </ng-template>
+          </ngx-charts-bar-vertical-2d>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

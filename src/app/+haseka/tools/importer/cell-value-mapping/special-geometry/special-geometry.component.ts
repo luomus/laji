@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { FormField, VALUE_IGNORE } from '../../../model/form-field';
+import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { CoordinateService } from '../../../../../shared/service/coordinate.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
@@ -24,7 +24,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
 
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
-  @Input() field: FormField;
+  @Input() field: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
   @Output() done = new EventEmitter();
   @ViewChild(LajiMapComponent) lajiMapComponent: LajiMapComponent;

@@ -1,18 +1,13 @@
-::ng-deep .taxon-table tr:first-child th, ::ng-deep .taxon-table tr:first-child td {
-  border-top: none;
-}
+::ng-deep {
+  .browse-button {
+    margin-bottom: 20px;
+  }
 
-::ng-deep .taxon-table ul {
-  padding-left: 20px;
-  margin-left: 0;
-}
-
-.info-card {
-
-}
-.taxon-name-header {
-  display: inline-block;
-}
-.omni-search-container {
-  margin: 10px 0 10px 10px;
+  .info-card-chart {
+    margin: auto;
+    width: 100%;
+    height: 350px;
+    max-height: calc(100vh - 61px);
+    max-width: 1200px;
+  }
 }

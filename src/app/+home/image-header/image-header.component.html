@@ -1,27 +1,10 @@
 <div class="header-image" role="main">
-  <carousel [interval]="false">
+  <div class="active item carousel-item" *lajiServerOnly>
+    <div [ngTemplateOutlet]="page1"></div>
+  </div>
+  <carousel [interval]="false" *lajiBrowserOnly>
     <slide>
-      <div class="carousel-caption">
-        <div class="row hidden-xs">
-          <div class="col-sm-12">
-            <img class="pull-left" src="https://cdn.laji.fi/images/logos/LAJI_FI_valk.png"/>
-          </div>
-        </div>
-        <div class="row text-container">
-          <laji-stat-item [colClass]="'col-md-4 col-sm-5'" [description]="'home.carousel.observations' | translate">
-            <laji-observation-count [lightLoader]="true" [query]="{cache: true}"></laji-observation-count>
-          </laji-stat-item>
-          <laji-stat-item [colClass]="'col-md-3 col-sm-4'" [description]="'home.carousel.species' | translate">
-            <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
-                                    [query]="{taxonRankId: 'MX.species', cache: true}">
-            </laji-observation-count>
-          </laji-stat-item>
-          <laji-stat-item [colClass]="'col-md-3 col-sm-3'" [description]="'home.carousel.collections' | translate">
-            <laji-observation-count [lightLoader]="true" [field]="'document.collectionId'"
-                                    [query]="{cache: true}"></laji-observation-count>
-          </laji-stat-item>
-        </div>
-      </div>
+      <div [ngTemplateOutlet]="page1"></div>
     </slide>
     <slide>
       <div class="carousel-caption">
@@ -45,3 +28,26 @@
     </slide>
   </carousel>
 </div>
+<ng-template #page1>
+  <div class="carousel-caption">
+    <div class="row hidden-xs">
+      <div class="col-sm-12">
+        <img class="pull-left" src="https://cdn.laji.fi/images/logos/LAJI_FI_valk.png"/>
+      </div>
+    </div>
+    <div class="row text-container">
+      <laji-stat-item [colClass]="'col-md-4 col-sm-5'" [description]="'home.carousel.observations' | translate">
+        <laji-observation-count [lightLoader]="true" [query]="{cache: true}"></laji-observation-count>
+      </laji-stat-item>
+      <laji-stat-item [colClass]="'col-md-3 col-sm-4'" [description]="'home.carousel.species' | translate">
+        <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
+                                [query]="{taxonRankId: 'MX.species', cache: true}">
+        </laji-observation-count>
+      </laji-stat-item>
+      <laji-stat-item [colClass]="'col-md-3 col-sm-3'" [description]="'home.carousel.collections' | translate">
+        <laji-observation-count [lightLoader]="true" [field]="'document.collectionId'"
+                                [query]="{cache: true}"></laji-observation-count>
+      </laji-stat-item>
+    </div>
+  </div>
+</ng-template>

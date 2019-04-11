@@ -16,14 +16,14 @@ export class HasFormPermission implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.formService.getForm(route.data.formId, 'fi').pipe(
+    return this.formService.getForm(route.data.formID, 'fi').pipe(
       take(1),
       flatMap(data => this.formPermissionService.getRights(data)),
       map(data => data.edit || data.admin),
       tap((hasPermission) => {
         const {noFormPermissionRedirect} = route.data;
-        if (!hasPermission && noFormPermissionRedirect) {
-          this.router.navigate([noFormPermissionRedirect]);
+        if (!hasPermission) {
+          this.router.navigate([noFormPermissionRedirect || '/']);
         }
       })
     );

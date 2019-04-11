@@ -29,5 +29,7 @@ export interface InformationItem {
 
   id?: string;
 
-  menuTitle?: string;
+  title?: string;
+
+  children?: Array<InformationItem>;
 }

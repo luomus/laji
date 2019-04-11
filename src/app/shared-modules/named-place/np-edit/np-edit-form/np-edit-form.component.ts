@@ -135,7 +135,7 @@ export class NpEditFormComponent implements OnInit {
       }
     }
 
-    data.geometry = formData.geometry.geometries[0];
+    data.geometry = formData.geometry;
 
     if (this.namedPlaceOptions && this.namedPlaceOptions.prepopulatedDocumentFields) {
       return this.augmnentPrepopulatedDocument(data, formData, this.namedPlaceOptions.prepopulatedDocumentFields);

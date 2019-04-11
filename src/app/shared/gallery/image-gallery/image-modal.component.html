@@ -13,7 +13,7 @@
   <ng-container *ngIf="view === 'compact' else fullView">
     <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
       <ng-container *ngIf="showPopover else onlyImage">
-        <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+        <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
              [popover]="info"
              [popoverContext]="{$implicit: img}"
              placement="bottom"
@@ -22,7 +22,7 @@
              alt="Image {{ index + 1 }}" />
       </ng-container>
       <ng-template #onlyImage>
-        <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+        <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
              class="ng-thumb compact"
              alt="Image {{ index + 1 }}" />
       </ng-template>
@@ -33,7 +33,7 @@
 <ng-template #fullView>
   <ng-container *ngIf="view === 'full' else fullView2">
     <div class="image-container full-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
-      <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+      <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
            class="ng-thumb full"
            alt="Image {{ index + 1 }}" />
       <ng-container *ngTemplateOutlet="info; context: {$implicit: img}"></ng-container>
@@ -44,7 +44,7 @@
 <ng-template #fullView2>
   <ng-container *ngIf="view === 'full2' else fullView3">
     <div class="image-container full2-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
-      <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+      <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
            class="ng-thumb"
            alt="Image {{ index + 1 }}" />
       <h4 *ngIf="showOverlay"><ng-container *ngTemplateOutlet="info; context: {$implicit: img}"></ng-container></h4>
@@ -54,7 +54,7 @@
 
 <ng-template #fullView3>
   <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
-    <img src="{{ img.thumbnailURL }}"
+    <img lajiLazyImage src="{{ img.thumbnailURL }}"
          class="ng-thumb"
          alt="Image {{ index + 1 }}" />
   </div>

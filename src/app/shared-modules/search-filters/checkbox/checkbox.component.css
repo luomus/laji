@@ -28,12 +28,12 @@
   content: "✓";
   top: -2px;
   left: 1px;
-  position: absolute;
+  position: relative;
 }
 
 .lj-cb-marker.negative:after {
   content: "–";
   top: -2px;
   left: 2px;
-  position: absolute;
+  position: relative;
 }

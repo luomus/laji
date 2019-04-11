@@ -1,9 +1,10 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
   selector: 'laji-selected-parents',
   templateUrl: './selected-parents.component.html',
-  styleUrls: ['./selected-parents.component.scss']
+  styleUrls: ['./selected-parents.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectedParentsComponent implements OnInit {
   @Input() header: string;

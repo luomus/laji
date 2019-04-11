@@ -1,10 +1,11 @@
-import {Component, Input, Output, OnChanges, SimpleChanges, EventEmitter} from '@angular/core';
+import {Component, Input, Output, OnChanges, SimpleChanges, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-biology',
   templateUrl: './taxon-biology.component.html',
-  styleUrls: ['./taxon-biology.component.scss']
+  styleUrls: ['./taxon-biology.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonBiologyComponent implements OnChanges {
   @Input() taxon: Taxonomy;

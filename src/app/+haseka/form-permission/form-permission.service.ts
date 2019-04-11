@@ -1,11 +1,13 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { FormPermissionApi } from '../../shared/api/FormPermissionApi';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of, of as ObservableOf } from 'rxjs';
 import { FormPermission } from '../../shared/model/FormPermission';
 import { Person } from '../../shared/model/Person';
 import { Form } from '../../shared/model/Form';
 import { UserService } from '../../shared/service/user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import { FormService } from '../../shared/service/form.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface Rights {
   edit: boolean;
@@ -21,8 +23,25 @@ export class FormPermissionService {
 
   constructor(
     private formPermissionApi: FormPermissionApi,
-    private userService: UserService
+    private formService: FormService,
+    private userService: UserService,
+    private translateService: TranslateService
   ) {}
+
+  hasAccessToForm(formID: string, personToken?: string): Observable<boolean> {
+    const permission$ = (collectionID) => this.getFormPermission(collectionID, personToken || this.userService.getToken()).pipe(
+      switchMap(permission => this.userService.getUser().pipe(
+        switchMap(person => of(this.isEditAllowed(permission, person)))
+      ))
+    );
+
+    return this.formService.getForm(formID, this.translateService.currentLang).pipe(
+      switchMap(form => !form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1 ?
+        of(true) :
+        permission$(form.collectionID)
+      )
+    );
+  }
 
 
   isPending(formPermission: FormPermission, person: Person): boolean {

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GenericLabelMakerElectron</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <style>
+    .loader {
+      width: 250px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      font-family: helvetica, arial, sans-serif;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: #333;
+      letter-spacing: 0.2em;
+    }
+
+    .loader::before, .loader::after {
+      content: "";
+      display: block;
+      width: 15px;
+      height: 15px;
+      background: #333;
+      position: absolute;
+      animation: load .7s infinite alternate ease-in-out;
+    }
+
+    .loader::before {
+       top: 0;
+    }
+    .loader::after {
+      bottom: 0;
+    }
+
+    @keyframes load {
+      0% { left: 0; height: 30px; width: 15px }
+      50% { height: 8px; width: 40px }
+      100% { left: 235px; height: 30px; width: 15px}
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.laji.fi/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="https://cdn.laji.fi/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' type="text/css">
+</head>
+<body>
+  <app-root>
+    <div class="loader">Loading...</div>
+  </app-root>
+</body>
+</html>

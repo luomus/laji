@@ -40,10 +40,10 @@ export class LabelItemComponent {
     fields.forEach(field => {
       if (field.type === 'text') {
         result.push({...field});
-      } else if (this.labelService.hasValue(this._data, field.field)) {
+      } else if (field.separatorAlways || this.labelService.hasValue(this._data, field.field)) {
         result.push({
           ...field,
-          content: this._data[field.field]
+          content: typeof this._data[field.field] !== 'undefined' ? this._data[field.field] : ''
         });
       }
     });

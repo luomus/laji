@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,7 +10,8 @@ import { Global } from '../../../../environments/global';
 @Component({
   selector: 'laji-nafi-result',
   templateUrl: './nafi-result.component.html',
-  styleUrls: ['./nafi-result.component.css']
+  styleUrls: ['./nafi-result.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NafiResultComponent implements OnInit, OnDestroy {
 

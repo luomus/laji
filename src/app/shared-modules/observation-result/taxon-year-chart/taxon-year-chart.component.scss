@@ -1,0 +1,13 @@
+::ng-deep .year-chart .ngx-charts .bar {
+  cursor: initial !important;
+}
+::ng-deep .year-chart .ngx-charts .bar[aria-label$=' 0'] {
+  display: none;
+}
+.info-card-chart {
+  margin: auto;
+  width: 100%;
+  height: 350px;
+  max-height: calc(100vh - 61px);
+  max-width: 1200px;
+}

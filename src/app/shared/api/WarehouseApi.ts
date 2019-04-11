@@ -56,7 +56,7 @@ export class WarehouseApi {
           continue;
         }
         return false;
-      } else if (['includeNonValidTaxa', 'cache'].indexOf(key) > -1) {
+      } else if (['includeNonValidTaxa', 'cache'].indexOf(key) > -1 || key.charAt(0) === '_') {
         continue;
       }
       return false;

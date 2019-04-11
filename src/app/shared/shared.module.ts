@@ -56,6 +56,7 @@ import { FilterPipe } from './pipe/filter.pipe';
 import { BoolToStringPipe } from './pipe/bool-to-string.pipe';
 import { PublicationPipe } from './pipe/publication.pipe';
 import { HabitatComponent } from './habitat/habitat.component';
+import { LazyImageDirective } from './directive/lazy-image.directive';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import { HabitatComponent } from './habitat/habitat.component';
     FilterPipe,
     BoolToStringPipe,
     PublicationPipe,
-    HabitatComponent
+    HabitatComponent,
+    LazyImageDirective
   ],
   imports: [
     FormsModule,
@@ -107,7 +109,7 @@ import { HabitatComponent } from './habitat/habitat.component';
     ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective
   ]
 })
 export class SharedModule {

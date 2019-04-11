@@ -6,7 +6,7 @@ import {
   ChangeDetectorRef,
   QueryList,
   ViewChildren,
-  SimpleChanges
+  SimpleChanges, Inject, PLATFORM_ID
 } from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQueryInterface';
@@ -14,7 +14,7 @@ import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.servic
 import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import 'leaflet.sync';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-wbc-species-maps',
@@ -37,10 +37,10 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   bounds = [];
   lastZoomedArea: string;
 
-  breaks = [0, 1, 2, 8, 32, 128, 512];
+  private epsilon = Math.pow(2, -52);
+  breaks = [0, this.epsilon, 2, 8, 32, 128, 512];
   labels = ['0', '1', '2-7', '8-31', '32-127', '128-511', '512-'];
   colorRange = ['#ffffff', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
-  private epsilon = Math.pow(2, -52);
   differenceBreaks = [-Number.MAX_VALUE, -50 + this.epsilon, -1 + this.epsilon, 1, 100];
   differenceLabels = ['≤ -50%', '≤ -1%', '~0%', '≥ 1%', '≥ 100%'];
   differenceColorRange = ['blue', '#9999ff', 'white', '#ff9999', 'red'];
@@ -50,8 +50,13 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   constructor(
     private resultService: WbcResultService,
     private ykjService: YkjService,
-    private cd: ChangeDetectorRef
-  ) { }
+    private cd: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      require('leaflet.sync');
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.taxonId && this.year) {
@@ -60,10 +65,12 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.maps = this.mapComponents.map(mapComponent => {
-      return mapComponent.mapComponent.map;
-    });
-    this.maps.forEach(m => this.initEventListeners(m));
+    if (isPlatformBrowser(this.platformId)) {
+      this.maps = this.mapComponents.map(mapComponent => {
+        return mapComponent.mapComponent.map;
+      });
+      this.maps.forEach(m => this.initEventListeners(m));
+    }
   }
 
   private updateMapData() {

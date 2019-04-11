@@ -43,13 +43,24 @@ export interface ILabelItem {
 export interface ILabelField {
   field: string;
   label: string;
+  prefix?: string;
+  suffix?: string;
   join?: string;
   content?: string;
   separator?: string;
-  includeLabel?: boolean;
+  separatorAlways?: boolean;
+  isArray?: boolean;
   type?: 'qr-code'|'text';
   style?: IFontStyle;
+  styleAppliesTo?: 'content'|'prefix'|'suffix'|'all'|'contentPrefix'|'contentSuffix'|'prefixSuffix';
   _menuOpen?: boolean;
+}
+
+export interface IViewSettings {
+  magnification: number;
+  grid?: number;
+  gridVisible?: boolean;
+  fullscreen?: boolean;
 }
 
 export interface ISetup {

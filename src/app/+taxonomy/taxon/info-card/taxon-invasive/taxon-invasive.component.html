@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-sm-push-9 col-sm-3">
+    <img src="https://cdn.laji.fi/images/vieraslaji_200x160.png">
+  </div>
+  <div class="col-sm-pull-3 col-sm-9">
+    <a class="btn btn-primary browse-button" href="http://vieraslajit.fi/fi/lajit/{{ taxon.id }}/show" target="_blank">
+      {{ 'taxonomy.invasive.invasiveLink' | translate }}
+    </a>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <laji-taxon-info-row [label]="'MX.invasiveSpeciesEstablishment' | label">
+          {{ taxon.invasiveSpeciesEstablishment | label }}
+        </laji-taxon-info-row>
+        <laji-taxon-info-row [label]="'MX.administrativeStatus' | label">
+          <ul>
+            <li *ngFor="let status of taxon.administrativeStatuses">
+              {{ status | label }}
+            </li>
+          </ul>
+        </laji-taxon-info-row>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <laji-taxon-description
+      [taxonDescriptions]="taxonDescription"
+      [groupId]="'MX.SDVG13'"
+    ></laji-taxon-description>
+  </div>
+</div>
+

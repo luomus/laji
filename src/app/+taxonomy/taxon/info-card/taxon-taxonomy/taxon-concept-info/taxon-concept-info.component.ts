@@ -1,14 +1,16 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy} from '@angular/core';
 import { TaxonConceptService } from './taxon-concept.service';
 import { TaxonMatch } from './taxon-match.model';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import {Taxonomy} from '../../../../../shared/model/Taxonomy';
+import {catchError} from 'rxjs/operators';
 
 @Component({
   selector: 'laji-taxon-concept-info',
   templateUrl: './taxon-concept-info.component.html',
   styleUrls: ['./taxon-concept-info.component.css'],
-  providers: [TaxonConceptService]
+  providers: [TaxonConceptService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
@@ -44,20 +46,25 @@ export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
       return;
     }
 
-    this.subs.push(this.taxonConceptService.getMatches(this.taxon.id, this.taxonConceptId).subscribe(matches => {
-      if (matches.length === 0) {
-        this.cd.markForCheck();
-      }
+    this.subs.push(
+      this.taxonConceptService.getMatches(this.taxon.id, this.taxonConceptId)
+        .pipe(catchError(() => of([])))
+        .subscribe(matches => {
+          if (matches.length === 0) {
+            this.cd.markForCheck();
+          }
 
-      for (let i = 0; i < matches.length; i++) {
-        const match = matches[i];
+          for (let i = 0; i < matches.length; i++) {
+            const match = matches[i];
 
-        this.subs.push(this.taxonConceptService.getMatchInfo(match).subscribe(info => {
-          this.matches.push(info);
-          this.cd.markForCheck();
+            this.subs.push(this.taxonConceptService.getMatchInfo(match).pipe(catchError(() => of(undefined))).subscribe(info => {
+              if (info) {
+                this.matches.push(info);
+              }
+              this.cd.markForCheck();
+            }));
+          }
         }));
-      }
-    }));
   }
 
   private unsubscribeSubs() {

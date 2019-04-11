@@ -1,36 +1,125 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="panel panel-default">
+    <div class="panel panel-default" *ngIf="taxon.occurrenceInFinland || taxon.typeOfOccurrenceInFinland || taxon.occurrenceInFinlandPublications || !taxon.finnish">
       <div class="panel-body">
-        <table class="table taxon-table table-condensed" *ngIf="taxon">
-          <tbody>
-          <tr>
-            <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
-            <td>{{ taxon.occurrenceInFinland | label }}</td>
-          </tr>
-          <tr *ngIf="taxon.typeOfOccurrenceInFinland">
-            <th>{{ 'taxonomy.typeOfOccurrenceInFinland' | translate }}</th>
-            <td>
-              <ul>
-                <li *ngFor="let type of taxon.typeOfOccurrenceInFinland">
-                  {{ type | label }}
-                </li>
-              </ul>
-            </td>
-          </tr>
-          <tr *ngIf="taxon.occurrenceInFinlandPublication">
-            <th>{{ 'taxonomy.occurrenceInFinlandPublication' | translate }}</th>
-            <td>
-              <ul>
-                <li *ngFor="let publication of taxon.occurrenceInFinlandPublication">
-                  {{ publication | publication }}
-                </li>
-              </ul>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <ng-container *ngIf="taxon.finnish">
+          <laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">
+            {{ taxon.occurrenceInFinland | label }}
+          </laji-taxon-info-row>
+          <laji-taxon-info-row *ngIf="taxon.typeOfOccurrenceInFinland" [label]="'taxonomy.typeOfOccurrenceInFinland' | translate">
+            <ul>
+              <li *ngFor="let type of taxon.typeOfOccurrenceInFinland">
+                {{ type | label }}
+              </li>
+            </ul>
+          </laji-taxon-info-row>
+          <laji-taxon-info-row *ngIf="taxon.occurrenceInFinlandPublications" [label]="'taxonomy.occurrenceInFinlandPublications' | translate">
+            <ul>
+              <li *ngFor="let publication of taxon.occurrenceInFinlandPublications">
+                {{ publication | publication }}
+                <br>
+                <a [href]="publication | publication:'URI'" target="_blank">{{ 'taxonomy.link' | translate }}</a>
+              </li>
+            </ul>
+          </laji-taxon-info-row>
+        </ng-container>
+        <p *ngIf="!taxon.finnish">{{ 'taxonomy.noOccurrenceInFinland' | translate }}</p>
       </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.map.finland' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-ykj-map
+        [query]="{taxonId: [taxon.id], countryId: ['ML.206'], cache: true}"
+        [height]="'600px'"
+        [type]="'count'"
+        [types]="['count']"
+        [showFullScreenControl]="true"
+      ></laji-ykj-map>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-default"
+         laji-panel
+         [title]="'GBIF'"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <p class="disclaimer">
+        {{ 'taxonomy.map.disclaimer' | translate }}
+      </p>
+      <laji-gbif-map
+        [taxon]="taxon"
+        [showFullScreenControl]="true"
+        [height]="'600px'"
+      ></laji-gbif-map>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <laji-taxon-description
+      [taxonDescriptions]="taxonDescription"
+      [groupId]="'MX.SDVG2'"
+    ></laji-taxon-description>
+    <div *ngIf="hasMonthDayData !== false" [hidden]="!hasMonthDayData"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.observations.monthDayChart' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-taxon-month-day-chart
+        [taxonId]="taxon.id"
+        (hasData)="hasMonthDayData = $event"
+      ></laji-taxon-month-day-chart>
+    </div>
+    <div *ngIf="taxon.occurrences"
+          class="panel panel-default"
+          laji-panel
+          [title]="'taxonomy.occurrence.byArea' | translate"
+          [open]="true"
+          [autoToggle]="true"
+    >
+      <laji-datatable
+        [rows]="taxon.occurrences"
+        [columns]="[
+          {
+            name: 'area',
+            label: 'MO.area' | label,
+            cellTemplate: 'label'
+          },
+          {
+            name: 'status',
+            label: 'MO.status' | label,
+            cellTemplate: 'label'
+          },
+          {
+            name: 'notes',
+            label: 'MO.notes' | label
+          },
+          {
+            name: 'year',
+            label: 'MO.year' | label
+          },
+          {
+            name: 'specimenURI',
+            label: 'MO.specimenURI' | label
+          }
+        ]"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [clientSideSorting]="true"
+        [count]="taxon.occurrences.length"
+        [page]="1"
+        [pageSize]="taxon.occurrences.length"
+      ></laji-datatable>
     </div>
   </div>
 </div>

@@ -26,3 +26,8 @@
     flex: 1 0 auto;
   }
 }
+@media only screen and (max-width : 767px) {
+  .tree-wrapper {
+    max-height: calc(50vh - 50px);
+  }
+}

@@ -1,11 +1,12 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, OnChanges, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-species-pie',
   templateUrl: './species-pie.component.html',
-  styleUrls: ['./species-pie.component.scss']
+  styleUrls: ['./species-pie.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesPieComponent implements OnInit, OnChanges {
   @Input() children: Taxonomy[];
