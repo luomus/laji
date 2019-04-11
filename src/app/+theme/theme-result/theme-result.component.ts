@@ -28,7 +28,6 @@ export class ThemeResultComponent {
       && event.row.unit.linkings
       && event.row.unit.linkings.taxon
       && (event.row.unit.linkings.taxon.id || event.row.unit.linkings.taxon.speciesId);
-    console.log('row select', event.row, id, IdService.getId(id));
     if (id) {
       this.nameClick.emit({...this.query, taxonId: IdService.getId(id)});
     }

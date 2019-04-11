@@ -77,7 +77,6 @@ export class TaxonYearChartComponent implements OnChanges, OnDestroy {
         prevYear = year;
       });
       this.data = this.allData.slice(this.splitIdx, this.allData.length);
-      console.log(this.allData.length);
       this.hasData.emit(this.allData.length > 0);
 
       this.cd.markForCheck();
