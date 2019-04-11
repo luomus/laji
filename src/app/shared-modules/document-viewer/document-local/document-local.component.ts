@@ -20,7 +20,7 @@ export class DocumentLocalComponent implements OnChanges {
   @Input() document: Document;
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
-  @Input() gatheringGeometryJSONPath = '$.geometry';
+  @Input() gatheringGeometryJSONPath: string;
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -73,7 +73,7 @@ export class DocumentLocalComponent implements OnChanges {
 
           doc.gatherings.forEach((gathering, i) => {
             try {
-              const geoData = JSONPath({json: gathering, path: this.gatheringGeometryJSONPath});
+              const geoData = JSONPath({json: gathering, path: this.gatheringGeometryJSONPath || '$.geometry'});
               // TODO There could be more than one hit... But in our current domain there isn't, so we ignore the issue.
               if (geoData && geoData[0]) {
                 this.mapData[i] = {geoJSON: geoData[0]};

@@ -13,6 +13,9 @@ import { DOCUMENT } from '@angular/common';
 export class TaxonSpecimensComponent implements OnChanges {
   @ViewChild('documentModal') public modal: ModalDirective;
   @Input() taxon: Taxonomy;
+  typeSpecimensTotal: number;
+  collectionsTotal: number;
+
 
   collectionId: string;
 

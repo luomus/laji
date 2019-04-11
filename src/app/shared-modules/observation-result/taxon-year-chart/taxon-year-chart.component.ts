@@ -1,5 +1,5 @@
 import {Component, OnChanges, OnDestroy, Input, Output, ChangeDetectorRef, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-import { WarehouseApi } from '../../../../../shared/api/WarehouseApi';
+import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class TaxonYearChartComponent implements OnChanges, OnDestroy {
   @Input() taxonId: string;
+  @Input() query: any;
   data: any[];
   splitIdx = 0;
 
@@ -41,7 +42,7 @@ export class TaxonYearChartComponent implements OnChanges, OnDestroy {
 
     this.data = undefined;
     this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
-      { taxonId: [this.taxonId], cache: true },
+      this.query ? this.query : { taxonId: [this.taxonId], cache: true },
       ['gathering.conversions.year'],
       ['gathering.conversions.year'],
       10000,
