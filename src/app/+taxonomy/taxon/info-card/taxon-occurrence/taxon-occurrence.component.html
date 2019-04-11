@@ -81,13 +81,20 @@
       ></laji-taxon-month-day-chart>
     </div>
     <div *ngIf="taxon.occurrences"
-          class="panel panel-default"
-          laji-panel
-          [title]="'taxonomy.occurrence.byArea' | translate"
-          [open]="true"
-          [autoToggle]="true"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.occurrence.byArea' | translate"
+         [open]="true"
+         [autoToggle]="true"
     >
+      <laji-taxon-occurrence-map
+        [height]="'400px'"
+        [width]="'270px'"
+        [occurrences]="taxon.occurrences"
+      ></laji-taxon-occurrence-map>
       <laji-datatable
+        class="taxon-occurrence-table"
+        [height]="'400px'"
         [rows]="taxon.occurrences"
         [columns]="[
           {

@@ -32,6 +32,7 @@ export interface FillArea {
 export class BiogeographicalProvinceComponent implements OnInit {
 
   @Input() fill: FillArea = {};
+  @Input() height = '100%';
 
   borderColor = '#333';
 
