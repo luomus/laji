@@ -2,11 +2,11 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild
 } from '@angular/core';
 import {Subscription, of, Observable, forkJoin} from 'rxjs';
-import {WarehouseApi} from '../../../../../shared/api/WarehouseApi';
+import {WarehouseApi} from '../../../shared/api/WarehouseApi';
 import {map, switchMap, tap} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';
-import {WarehouseValueMappingService} from '../../../../../shared/service/warehouse-value-mapping.service';
-import {TriplestoreLabelService} from '../../../../../shared/service/triplestore-label.service';
+import {WarehouseValueMappingService} from '../../../shared/service/warehouse-value-mapping.service';
+import {TriplestoreLabelService} from '../../../shared/service/triplestore-label.service';
 import {ModalDirective} from 'ngx-bootstrap';
 
 @Component({
@@ -18,6 +18,7 @@ import {ModalDirective} from 'ngx-bootstrap';
 export class TaxonMonthDayChartComponent implements OnChanges, OnDestroy {
   @ViewChild('dayChartModal') public modal: ModalDirective;
   @Input() taxonId: string;
+  @Input() query: any;
 
   monthChartData: any[];
   dayChartDataByMonth = {};
@@ -70,7 +71,7 @@ export class TaxonMonthDayChartComponent implements OnChanges, OnDestroy {
     this.dayChartDataByMonth = {};
 
     this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
-      { taxonId: [this.taxonId], cache: true },
+      this.query ? this.query : { taxonId: [this.taxonId], cache: true },
       ['gathering.conversions.month', 'gathering.conversions.day', 'unit.lifeStage'],
       ['unit.lifeStage'],
       10000,

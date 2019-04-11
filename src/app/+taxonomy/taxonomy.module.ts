@@ -57,14 +57,12 @@ import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
 import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
 import { TaxonObservationsComponent } from './taxon/info-card/taxon-observations/taxon-observations.component';
 import { InfoCardHeaderComponent } from './taxon/info-card/info-card-header/info-card-header.component';
-import { TaxonYearChartComponent } from './taxon/info-card/taxon-observations/taxon-year-chart/taxon-year-chart.component';
 import { TaxonSpecimensComponent } from './taxon/info-card/taxon-specimens/taxon-specimens.component';
 import { TaxonEndangermentComponent } from './taxon/info-card/taxon-endangerment/taxon-endangerment.component';
 import { TaxonInvasiveComponent } from './taxon/info-card/taxon-invasive/taxon-invasive.component';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { IucnCommonModule } from '../shared-modules/iucn/iucn.module';
 import { TaxonDescriptionComponent } from './taxon/info-card/shared/taxon-description/taxon-description.component';
-import { TaxonMonthDayChartComponent } from './taxon/info-card/shared/taxon-month-day-chart/taxon-month-day-chart.component';
 import { TaxonInfoRowComponent } from './taxon/info-card/shared/taxon-info-row/taxon-info-row.component';
 
 @NgModule({
@@ -91,12 +89,10 @@ import { TaxonInfoRowComponent } from './taxon/info-card/shared/taxon-info-row/t
     TaxonOccurrenceComponent,
     TaxonObservationsComponent,
     InfoCardHeaderComponent,
-    TaxonYearChartComponent,
     TaxonSpecimensComponent,
     TaxonEndangermentComponent,
     TaxonInvasiveComponent,
     TaxonDescriptionComponent,
-    TaxonMonthDayChartComponent,
     TaxonInfoRowComponent
   ],
 })
