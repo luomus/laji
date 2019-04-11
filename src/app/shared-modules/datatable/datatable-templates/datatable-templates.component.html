@@ -241,3 +241,8 @@
     {{ roundNumber(value) }}
   </span>
 </ng-template>
+<ng-template let-value="value" #biogeographicalProvince>
+  <span *ngIf="value" title="{{value | area:'provinceCode'}} &ndash; {{value | area}}">
+    {{ value | area:'provinceCode' }} &ndash; {{ value | area }}
+  </span>
+</ng-template>
