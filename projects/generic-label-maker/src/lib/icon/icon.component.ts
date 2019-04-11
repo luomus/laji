@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class IconComponent {
   @Input() size = 24;
-  @Input() type: 'close'|'drag-handle'|'logo'|'check'|'undo'|'redo'|'move';
+  @Input() type: 'close'|'drag-handle'|'logo'|'check'|'undo'|'redo'|'move'|'left'|'right';
 }
 
 

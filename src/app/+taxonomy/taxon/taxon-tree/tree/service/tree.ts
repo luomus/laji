@@ -41,7 +41,7 @@ export class Tree {
     ])
       .pipe(
         switchMap(data => {
-          const parentList = data[1];
+          const parentList = [...data[1]];
           parentList.push(data[0]);
 
           return this.updateNodes(parentList);

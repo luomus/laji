@@ -1,8 +1,10 @@
 <ng-container *ngIf="field.type === 'text'; else label">
-  <input type="text" [value]="field.content" (change)="textChange($event)">
+  <input type="text" [value]="field.content || ''" (change)="textChange($event)">
 </ng-container>
 <ng-template #label>
-  {{field.label}}
+  <div [title]="field.label" class="ellipsis" style="width: 205px;">
+    {{field.label}}
+  </div>
 </ng-template>
 <div class="more" (click)="toggleMore()" *ngIf="field.type !== 'qr-code'">
   <i *ngIf="field._menuOpen || more; else up" class="glyphicon glyphicon-chevron-down"></i>

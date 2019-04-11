@@ -143,7 +143,7 @@ export interface Taxonomy {
 
   informalTaxonGroups?: Array<string>;
 
-  occurrences?: Array<any>;
+  occurrences?: Array<Occurrence>;
 
   synonymOf?: Taxonomy;
 
@@ -321,5 +321,20 @@ export interface  Habitat {
   id: string;
 
   order: number;
+
+}
+
+
+export interface Occurrence {
+
+  area: string;
+
+  notes?: string;
+
+  specimenURI?: string;
+
+  status: string;
+
+  year?: number;
 
 }

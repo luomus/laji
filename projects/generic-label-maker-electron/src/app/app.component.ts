@@ -1,16 +1,13 @@
 import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
-import { ILabelField, ISetup, Presets } from 'generic-label-maker';
-import { IViewSettings } from '../../../generic-label-maker/src/lib/generic-label-maker.interface';
+import { FormService, ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
 import { LocalStorage } from 'ngx-webstorage';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
-import { map } from 'rxjs/operators';
-import { FormService } from '../../../generic-label-maker/src/lib/form.service';
+import { map, share, switchMap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../../src/app/shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
-import { InfoWindowService } from '../../../generic-label-maker/src/lib/info-window/info-window.service';
 
 const NEW_SETUP: ISetup = {
   page: {
@@ -72,6 +69,7 @@ export class AppComponent implements OnInit {
   @ViewChild('notebookImportActions') notebookImportActions;
 
   availableFields$: Observable<ILabelField[]>;
+  newAvailableFields$: Observable<ILabelField[]>;
 
   skipFields: string[] = [
     'secureLevel',
@@ -86,18 +84,19 @@ export class AppComponent implements OnInit {
     private formService: FormService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private lajiApiService: LajiApiService,
-    public infoWindowService: InfoWindowService
   ) {}
 
   ngOnInit(): void {
-    this.availableFields$ = this.http.get<any>(environment.form).pipe(
+    this.newAvailableFields$ = this.http.get<any>(environment.form).pipe(
       map(form => this.formService.schemaToAvailableFields(form.schema, [
         {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: 'qr-code'},
         {field: 'id', content: 'http://example.com/ID', label: 'ID'}
       ], {
         skip: this.skipFields
-      }))
+      })),
+      share()
     );
+    this.availableFields$ = this.newAvailableFields$;
   }
 
   htmlToPdf(html: string) {
@@ -109,11 +108,16 @@ export class AppComponent implements OnInit {
     }
   }
 
-  importData() {
-    this.infoWindowService.open({
-      title: 'Import from Notebook',
-      content: this.notebookImport,
-      actions: this.notebookImportActions
-    });
+  setAvailableFields(fields) {
+    this.newSetup = {
+      ...this.newSetup,
+      labelItems: [
+        ...this.newSetup.labelItems.map((field, idx) => ({
+          ...field,
+          fields: [fields[idx]]
+        }))
+      ]
+    };
+    this.availableFields$ = of(fields);
   }
 }

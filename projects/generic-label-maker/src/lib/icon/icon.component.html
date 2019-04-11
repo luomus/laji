@@ -24,9 +24,9 @@
         <rect x="2.151" y="2.480" width=".301" height=".302" ry="0"/>
         <rect x="2.73" y="2.051" width=".301" height=".354" ry="0"/>
       </g>
-      <g transform="translate(4, 15) scale(0.2)">
+      <g transform="translate(4, 15) scale(0.18)">
         <text x="0" y="0">Parus major</text>
-        <text x="0" y="18">Label Marker</text>
+        <text x="0" y="18">Label Designer</text>
       </g>
     </ng-container>
     <ng-container *ngSwitchCase="'redo'">
@@ -48,6 +48,12 @@
     </ng-container>
     <ng-container *ngSwitchCase="'move'">
       <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"/><path d="M0 0h24v24H0z" fill="none"/>
+    </ng-container>
+    <ng-container *ngSwitchCase="'left'">
+      <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/><path fill="none" d="M0 0h24v24H0z"/>
+    </ng-container>
+    <ng-container *ngSwitchCase="'right'">
+      <path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z"/><path fill="none" d="M0 0h24v24H0z"/>
     </ng-container>
   </ng-container>
 </svg>

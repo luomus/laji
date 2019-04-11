@@ -55,8 +55,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         debounceTime(200)
       )
       .subscribe((value) => {
-        this.filterBy = value.toLowerCase();
-        this.initOptions(this.selected, this.filterBy);
+        this.filterBy = value;
         this.cd.markForCheck();
       });
     this.initOptions(this.selected);
@@ -85,13 +84,11 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       if (!Array.isArray(this.selected)) {
         this.selected = [];
       }
-      this.selected.push(id);
+      this.selected = [...this.selected, id];
     } else {
       this.selected = [id];
     }
     this.selectedIdx = -1;
-    this.filter.nativeElement.value = '';
-    this.filterBy = '';
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
       this.selectedChanged.emit(id);

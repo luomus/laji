@@ -25,6 +25,9 @@ import { IconComponent } from './icon/icon.component';
 import { ViewSettingsComponent } from './label-maker/view-settings/view-settings.component';
 import { EditorGridComponent } from './label-maker/label-editor/editor-grid/editor-grid.component';
 import { LabelItemFieldComponent } from './label-preview/label-item/label-item-field/label-item-field.component';
+import { LabelExcelFileComponent } from './label-maker/label-excel-file/label-excel-file.component';
+import { LabelPreviewPagerComponent } from './label-preview/label-preview-pager/label-preview-pager.component';
+import { TypeaheadModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -49,13 +52,16 @@ import { LabelItemFieldComponent } from './label-preview/label-item/label-item-f
     IconComponent,
     ViewSettingsComponent,
     EditorGridComponent,
-    LabelItemFieldComponent
+    LabelItemFieldComponent,
+    LabelExcelFileComponent,
+    LabelPreviewPagerComponent
   ],
   imports: [
     CommonModule,
     DragDropModule,
     QRCodeModule,
-    NgxWebstorageModule
+    NgxWebstorageModule,
+    TypeaheadModule
   ],
   exports: [LabelMakerComponent, LabelPreviewComponent, LabelPrintComponent]
 })

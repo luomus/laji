@@ -36,8 +36,6 @@ export interface Information {
 
   title?: string;
 
-  menuTitle?: string;
-
   author?: string;
 
   posted?: string;

@@ -26,6 +26,7 @@
               [grid]="grid"
               [magnification]="_magnification"
               [item]="item"
+              [boundary]="'#label-editor'"
               (done)="done.emit()"
               (itemClick)="setActiveItem($event)"
               (itemChange)="onItemChange(item, $event)"

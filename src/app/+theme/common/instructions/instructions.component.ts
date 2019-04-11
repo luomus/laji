@@ -39,7 +39,6 @@ export class InstructionsComponent implements OnInit {
               private route: ActivatedRoute) {}
 
   ngOnInit() {
-    console.log('init');
     this.instructionsData$ = this.route.parent.data.pipe(
       mergeMap(({instructions}) => this.userService.isLoggedIn$.pipe(
         mergeMap(loggedIn => this.themeFormService.getForm(this.route).pipe(

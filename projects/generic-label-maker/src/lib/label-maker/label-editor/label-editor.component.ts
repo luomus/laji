@@ -14,6 +14,7 @@ export class LabelEditorComponent {
   _magnification = 2;
   _magnifiedStyle: ILabelStyle;
   init = false;
+  minSize = 10;
 
   @Input() grid: number;
   @Input() gridVisible: boolean;
@@ -76,6 +77,10 @@ export class LabelEditorComponent {
     if ((target === 'height.mm' && value < height) || (target === 'width.mm' && value < width)) {
       element.value = '' + this._setup[sec][target];
       return alert('Field within the label is blocking the resize.\nRemove or resize the field in the label!');
+    }
+    if (value < this.minSize) {
+      element.value = '' + this._setup[sec][target];
+      return alert('Cannot make labels smaller than ' + this.minSize + 'mm.');
     }
 
     this._setup = {

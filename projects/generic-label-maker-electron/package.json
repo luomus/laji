@@ -1,0 +1,34 @@
+{
+  "name": "label-deisgner-electron",
+  "version": "1.0.0",
+  "description": "Label designer electron",
+  "main": "electron",
+  "author": {
+    "name": "Ville-Matti Riihikoski",
+    "email": "ville-matti.riihikoski@helsinki.fi"
+  },
+  "contributors": [
+    "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>"
+  ],
+  "license": "MIT",
+  "angular-cli": {},
+  "private": false,
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "electron": "^4.1.0",
+    "electron-packager": "^13.1.1",
+    "generic-label-maker": "^0.0.10"
+  },
+  "keywords": [
+    "label",
+    "design",
+    "pdf",
+    "editor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org:luomus/laji.fi-front.git"
+  },
+  "homepage": "https://bitbucket.org/luomus/laji.fi-front"
+}

@@ -1,6 +1,6 @@
 <ng-container *ngIf="visible$ | async">
-  <div class="info-window" *ngIf="data$ | async; let data">
-    <div class="title">
+  <div class="info-window" cdkDrag *ngIf="data$ | async; let data">
+    <div class="title" cdkDragHandle>
       <span [innerHTML]="data.title"></span>
       <div class="close" (click)="infoWindowService.close()">
         <ll-icon type="close"></ll-icon>

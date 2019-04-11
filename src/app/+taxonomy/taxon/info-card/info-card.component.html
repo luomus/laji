@@ -36,7 +36,7 @@
         {{ "taxonomy.observations" | translate }}
       </a>
     </li>
-    <li role="presentation" [ngClass]="{active: activeTab === 'specimens'}">
+    <li role="presentation" [ngClass]="{active: activeTab === 'specimens'}" *ngIf="isFromMasterChecklist">
       <a [routerLink]="['/taxon', taxon.id, 'specimens'] | localize" [queryParamsHandling]="'preserve'">
         {{ "taxonomy.specimens" | translate }}
       </a>
@@ -96,7 +96,7 @@
   ></laji-taxon-observations>
   <laji-taxon-specimens
     [class.hidden]="activeTab !== 'specimens'"
-    *ngIf="activatedTabs['specimens']"
+    *ngIf="activatedTabs['specimens'] && isFromMasterChecklist"
     [taxon]="taxon"
   ></laji-taxon-specimens>
   <laji-taxon-endangerment

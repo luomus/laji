@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component, ElementRef,
   EventEmitter, Inject,
   Input,
@@ -15,6 +15,7 @@ import { IPageLayout, LabelService } from '../label.service';
 import { InfoWindowService } from '../info-window/info-window.service';
 import { Subscription } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { LabelExcelFileComponent } from './label-excel-file/label-excel-file.component';
 
 @Component({
   selector: 'll-label-maker',
@@ -28,15 +29,18 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   @ViewChild('intro') intro;
 
-  _active: 'file'|'edit'|'view'|'settings'|'fields'|'help' = 'file';
+  _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close' = 'file';
   _setup: ISetup;
   _selectedLabelItem: ILabelItem | undefined;
+  _data: object[];
   fields: ILabelField[];
   dragging = false;
-  version = '0.0.10';
+  version = '0.0.13';
+  previewActive = 0;
+  @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
+  @Input() newAvailableFields: ILabelField[];
   @Input() availableFields: ILabelField[];
-  @Input() data: object[];
   @Input() showIntro = true;
   _viewSettings: IViewSettings = {magnification: 2};
 
@@ -44,9 +48,13 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   @Output() viewSettingsChange = new EventEmitter<IViewSettings>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() introClosed = new EventEmitter();
+  @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
   @ViewChild('editor') editor: ElementRef<HTMLDivElement>;
   @ViewChild('generateTpl') generateTpl: TemplateRef<any>;
   @ViewChild('generateActionsTpl') generateActionsTpl: TemplateRef<any>;
+  @ViewChild('excelFile') excelCmp: LabelExcelFileComponent;
+  @ViewChild('excelTpl') excelTpl: TemplateRef<any>;
+  @ViewChild('excelActionsTpl') excelActionsTpl: TemplateRef<any>;
   subIntro: Subscription;
 
   generate: {
@@ -70,6 +78,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     private labelService: LabelService,
     private renderer2: Renderer2,
     private infoWindowService: InfoWindowService,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -83,6 +92,17 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     if (this.subIntro) {
       this.subIntro.unsubscribe();
     }
+  }
+
+
+  @Input()
+  set data(data: object[]) {
+    this._data = data;
+    this.setPreviewActive(0);
+  }
+
+  get data() {
+    return this._data;
   }
 
   @Input()
@@ -155,6 +175,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
         this._selectedLabelItem = this._setup.backSideLabelItems[idx];
       }
     }
+    this.setPreviewActive(this.previewActive);
   }
 
   showSettings(item: ILabelItem) {
@@ -238,6 +259,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     const start = this.generate.rangeStart < this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
     const end = this.generate.rangeStart > this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
     const MAX = 100000;
+    const idFieldsIdx = this.availableFields.findIndex(item => item.type === 'qr-code');
+    const idField = idFieldsIdx !== -1 ? this.availableFields[idFieldsIdx].field : 'id';
     let current = 0;
     for (let i = start; i <= end; i++) {
       current++;
@@ -246,18 +269,16 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
       }
       data.push({
         ...this.generate.data,
-        id: uri.replace('%id%', '' + i)
+        [idField]: uri.replace('%id%', '' + i)
       });
     }
     this.data = data;
-    if  (this.data[0]) {
-      this.setAsExample(this.data[0]);
-    }
+    this.setPreviewActive(0);
   }
 
   openIntro() {
     this.subIntro = this.infoWindowService.open({
-      title: 'Label Maker',
+      title: 'Label Designer',
       actionTypes: 'ok',
       content: this.intro
     }).subscribe(() => this.introClosed.emit());
@@ -269,6 +290,15 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
       title: 'Generate label data',
       content: this.generateTpl,
       actions: this.generateActionsTpl
+    });
+  }
+
+
+  importExcel() {
+    this.infoWindowService.open({
+      title: 'Import from file',
+      content: this.excelTpl,
+      actions: this.excelActionsTpl
     });
   }
 
@@ -285,6 +315,15 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
       ...item,
       fields: item.fields.map(field => ({...field, content: doc[field.field]}))
     }));
+  }
+
+  setPreviewActive(idx: number) {
+    if (this.data && this.data[idx]) {
+      this.previewActive = idx;
+      if (this._setup) {
+        this.setAsExample(this.data[idx]);
+      }
+    }
   }
 
   newFieldDragging(event: boolean, settings: HTMLDivElement) {
@@ -319,5 +358,14 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
       }
     });
     LabelMakerComponent.id = id + 1;
+  }
+
+  loadExcelData() {
+    const result = this.excelCmp.loadData();
+    if (result.availableFields) {
+      this.availableFieldsChange.emit(result.availableFields);
+    }
+    this.data = result.data;
+    this.infoWindowService.close();
   }
 }
