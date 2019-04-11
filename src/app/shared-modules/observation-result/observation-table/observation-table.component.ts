@@ -64,6 +64,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() selectChange = new EventEmitter<string[]>();
   @Output() rowSelect = new EventEmitter<any>();
+  @Output() total = new EventEmitter<number>();
 
   lang: string;
   cache: any = {};
@@ -421,10 +422,12 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
     this.fetchSub = (this.isAggregate ? aggregate$ : list$)
       .subscribe(data => {
+        this.total.emit(data && data.total || 0);
         this.result = data;
         this.loading = false;
         this.changeDetectorRef.markForCheck();
       }, (err) => {
+        this.total.emit(0);
         this.loading = false;
         this.changeDetectorRef.markForCheck();
         this.logger.error('Observation table data handling failed!', err);
