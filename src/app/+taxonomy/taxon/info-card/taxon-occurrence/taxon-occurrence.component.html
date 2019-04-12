@@ -73,7 +73,7 @@
       [taxonDescriptions]="taxonDescription"
       [groupId]="'MX.SDVG2'"
     ></laji-taxon-description>
-    <div *ngIf="hasMonthDayData !== false" [hidden]="!hasMonthDayData"
+    <div *ngIf="hasMonthDayData !== false && isFromMasterChecklist" [hidden]="!hasMonthDayData"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.observations.monthDayChart' | translate"
