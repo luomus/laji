@@ -46,6 +46,10 @@ export class WarehouseApi {
     this.warehouseQueryStatisticsGet = this.warehouseQueryStatisticsGet.bind(this);
   }
 
+  public static prepareCountQuery(query: WarehouseQueryInterface) {
+    return Util.removeFromObject(query, ['selected', 'aggregateBy']);
+  }
+
   public static isEmptyQuery(query: WarehouseQueryInterface = {}) {
     const keys = Object.keys(query);
     for (const key of keys) {
@@ -142,6 +146,9 @@ export class WarehouseApi {
 
     if (onlyCount !== undefined) {
       queryParameters['onlyCount'] = onlyCount
+    }
+    if (target === 'count') {
+      queryParameters = WarehouseApi.prepareCountQuery(queryParameters);
     }
 
     return this.http.get<PagedResult<any>|any>(path, {params: queryParameters});
@@ -262,11 +269,11 @@ export class WarehouseApi {
   public warehouseQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<WarehouseCountResultInterface> {
     const path = this.basePath + '/warehouse/query/count';
 
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams, ['selected'])};
+    const queryParameters = {...extraHttpRequestParams};
 
     this.addQueryToQueryParams(query, queryParameters);
 
-    return this.http.get<WarehouseCountResultInterface>(path, {params: queryParameters});
+    return this.http.get<WarehouseCountResultInterface>(path, {params: WarehouseApi.prepareCountQuery(queryParameters)});
   }
 
   /**
