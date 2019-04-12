@@ -47,7 +47,7 @@ export class WarehouseApi {
   }
 
   public static prepareCountQuery(query: WarehouseQueryInterface) {
-    return Util.removeFromObject(query, ['selected', 'aggregateBy']);
+    return Util.removeFromObject(query, ['selected', 'aggregateBy', 'orderBy', 'page', 'pageSize']);
   }
 
   public static isEmptyQuery(query: WarehouseQueryInterface = {}) {
