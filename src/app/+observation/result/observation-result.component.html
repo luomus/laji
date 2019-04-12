@@ -12,14 +12,10 @@
   <li class="counts">
     <strong *ngIf="active !== 'finnish'">
       <laji-observation-count
-        [timeout]="30000"
-        [query]="searchQuery.query"
-        [tick]="searchQuery.tack"></laji-observation-count>
+        [query]="searchQuery.query"></laji-observation-count>
       {{ 'observation.results.observation' | translate }}
       <laji-observation-count
-        [timeout]="30000"
         [query]="searchQuery.query"
-        [tick]="searchQuery.tack"
         [field]="'unit.linkings.taxon.speciesId'"
         [overrideInQuery]="{includeNonValidTaxa: false}">
       </laji-observation-count>
@@ -27,16 +23,12 @@
     </strong>
     <strong *ngIf="active === 'finnish'">
       <laji-observation-count
-        [timeout]="30000"
         [overrideInQuery]="{countryId: 'ML.206'}"
-        [query]="searchQuery.query"
-        [tick]="searchQuery.tack"></laji-observation-count>
+        [query]="searchQuery.query"></laji-observation-count>
       {{ 'observation.results.observation' | translate }}
       <laji-observation-count
-        [timeout]="30000"
         [overrideInQuery]="{countryId: 'ML.206', includeNonValidTaxa: false}"
         [query]="searchQuery.query"
-        [tick]="searchQuery.tack"
         [field]="'unit.linkings.taxon.speciesId'">
       </laji-observation-count>
       {{ 'observation.results.species' | translate }}
