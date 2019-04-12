@@ -1036,7 +1036,6 @@
   "taxonomy.acceptedName": "HYVÄKSYTTY NIMI",
   "taxonomy.ofTaxon": "TAKSONILLE",
   "taxonomy.link": "LINKKI",
-  "taxonomy.noOccurrenceInFinland": "Ei esiinny Suomessa",
   "taxonomy.observations.yearChart": "Havainnot vuosittain",
   "taxonomy.observations.yearChart.disclaimer": "Kuvaaja esittää havaintojen ajallista jakaumaa, joka ei ole sama asia kuin lajin runsastuminen/väheneminen.",
   "taxonomy.observations.yearChart.showHistory": "Näytä koko historia",
@@ -1208,5 +1207,6 @@
   "theme.lolife.places": "Kirjaa seurantatietoja",
   "reset": "Palauta oletusasetukset",
   "map.fullScreen": "Avaa kartta kokoruututilassa",
-  "map.exitFullScreen": "Poistu kokoruututilasta"
+  "map.exitFullScreen": "Poistu kokoruututilasta",
+  "readMore": "Lue lisää"
 }

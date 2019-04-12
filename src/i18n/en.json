@@ -286,6 +286,139 @@
   "ignore": "ignore",
   "information.more": "More information",
   "instructions": "Instructions",
+  "iucn": {
+    "about": {
+      "title": "Tietoa"
+    },
+    "evaluated": "Arvioituja lajeja",
+    "endangered": "Uhanalaiset",
+    "endangeredSingle": "Uhanalainen",
+    "feedback": {
+      "intro": "Sähköpostiosoite ei ole pakollinen. Lisääthän sähköpostiosoitteesi, mikäli haluat vastauksen."
+    },
+    "filter": {
+      "evaluated": "Arvioidut lajit",
+      "redList": "Punaisen listan lajit",
+      "title": "Laji ja tulokset",
+      "reasons": "Uhanalaisuuden syyt",
+      "threats": "Uhkatekijät",
+      "taxon": "Taksonominen rajaus",
+      "redListGroup": "Eliöryhmä",
+      "habitat": "Elinympäristö",
+      "habitatSpecific": "Elinympäristön lisämääreet",
+      "status": "Uhanalaisuusluokka",
+      "onlyPrimaryHabitat": "vain ensisijaisella elinympäristöllä",
+      "onlyPrimaryReason": "vain ensisijaisella uhanalaisuuden syyllä",
+      "onlyPrimaryThreat": "vain ensisijaisella uhkatekijällä",
+      "empty": "Tyhjennä"
+    },
+    "footer": {
+      "syke": "Suomen ympäristökeskus",
+      "openData": "Avoin data",
+      "pdf": "Punainen kirja PDF-muodossa",
+      "privacyPolicy": "Tietosuojaseloste"
+    },
+    "home":{
+      "book": {
+        "title": "Julkaistut punaiset kirjat",
+        "browse": "Selaile julkaisuja ja saatavilla olevia datalatauksia"
+      },
+      "browseResults": "Selaa tuloksia",
+      "evaluation": "Lue lisää arvioinnin toteutuksesta Suomessa",
+      "intro": "Punainen kirja 2019 on Suomessa järjestyksessään kolmas lajien uhanalaisuusarviointi, joka noudattaa kansainvälisen luonnonsuojeluliiton IUCN:n ohjeita. Lajien uhanalaisuutta arvioi ympäristöministeriön asettaman ohjausryhmän johdolla 180 lajiasiantuntijaa.",
+      "iucnCategories": "Uhanalaisuustarkastelussa käytettävät IUCN -luokat",
+      "results": "Tulokset",
+      "resultsIntro": "<p>Maassamme on vähintään 48 000 lajia, joista 22 418 eli 47 % tunnetaan niin hyvin, että niiden uhanalaisuutta pystyttiin arvioimaan. Näistä 2 667 lajia eli 11,9 % arvioitiin uhanalaisiksi. Uhanalaisten lajien osuus on kasvanut vuonna 2010 tehtyyn arviointiin verrattuna, jolloin uhanalaisia oli 10,5 % arvioiduista. Kehityssuunta osoittaa, että maamme lajiston uhanalaistumiskehitystä ei ole onnistuttu pysäyttämään.</p><p>Uhanalaisista lajeista suurin osa elää ensisijaisesti metsissä (31,2 %) sekä perinneympäristöissä ja muissa ihmisen muuttamissa ympäristöissä (24,4 %). Metsissä ja perinneympäristöissä elää kaiken kaikkiaan eniten lajeja, mikä osaltaan selittää uhanalaisten lajien suurta määrää. Suhteellisesti eniten uhanalaisia lajeja on kuitenkin tunturipaljakoilla, joilla elää vain 3,6 % kaikista arvioiduista lajeista, mutta niistä uhanalaisia on peräti 37,9 %.</p><p>Lajien uhanalaistumiseen on vaikuttanut merkittävimmin metsäelinympäristöjen muutokset, jotka ovat ensisijainen uhanalaisuuden syy 733 lajille. Yleisimpiä niistä ovat metsien uudistamis- ja hoitotoimet, vanhojen metsien ja kookkaiden puiden sekä lahopuun väheneminen. Toiseksi yleisin lajien uhanalaistumiseen vaikuttanut syy on avoimien elinympäristöjen umpeenkasvu, mikä on 639 lajin uhanalaisuuden syynä. Ilmastonmuutos vaikuttaa etenkin tunturilajien uhanalaistumiseen.</p>",
+      "title": "Punaisen kirjan nettipalvelu"
+    },
+    "more": "Lisätietoa käytetyistä termeistä.",
+    "page": {
+      "title": "The Web Service of the Red List of Finnish Species",
+      "intro": "The Web Service of the Red List of Finnish Species introduces the results of The 2019 Red List of Finnish Species. Of the 22,418&nbsp;species evaluated, 2,667&nbsp;i.e.&nbsp;11.9&nbsp;% were classified as threatened."
+    },
+    "publications": {
+      "title": "Julkaisut ja lataukset"
+    },
+    "results": {
+      "activeFilters": "Käytetyt rajaukset",
+      "evaluated": "Arvioidut",
+      "evaluatedSpecies": "Arvioituja lajeja",
+      "endangered": "Uhanalaisten lajien osuus arvioiduista",
+      "endangeredSpecies": "Uhanalaisia lajeja",
+      "fieldsAll": "Kaikki kentät",
+      "fieldsSelected": "Valitut kentät",
+      "selectColumns": "Valitse luettelossa näkyvät kentät",
+      "redListStatusesInFinland": "Luokat Suomessa",
+      "unspecified": "tarkemmin määrittelemättömät",
+      "column": {
+        "criteriaForStatus": "Luokkaan johtaneet kriteerit",
+        "class2015": "Luokka 2015",
+        "class2010": "Luokka 2010",
+        "habitat": "Elinympäristöt",
+        "reasons": "Uhanalaisuuden syyt",
+        "reasonForStatusChange": "Muutoksen syy",
+        "species": "Laji",
+        "status": "Luokka",
+        "vernacularName": "Kansankielinen nimi"
+      },
+      "onlyPrimary": "Vain ensisijaisella",
+      "habitat": {
+        "title": "Elinympäristö",
+        "primary": "Ensisijainen",
+        "primaryFull": "Ensisijainen elinympäristö",
+        "secondary": "Toissijainen",
+        "other": "Muut elinympäristöt",
+        "totalAll": "Kaikki yhteensä",
+        "total": "Total"
+      },
+      "tab": {
+        "status": "Yhteenveto uhanalaisuusluokista",
+        "species": "Lajiluettelo",
+        "reasons": "Uhanalaisuuden syyt",
+        "threats": "Uhkatekijät",
+        "habitat": "Elinympäristöt"
+      },
+      "title": "Lajit ja tulokset"
+    },
+    "taxon": {
+      "administrativeStatuses": "Lajia koskevat hallinnolliset lajitiedot",
+      "criteria": "Kriteerit",
+      "distributionArea": "Levinneisyysalueen koko",
+      "endanger": "Uhanalaisuus",
+      "evaluation": "Arviointi",
+      "evaluationBases": "Arvioinnin perusteet",
+      "history": {
+        "class": "Luokka",
+        "criteria": "Kriteerit",
+        "endanger": "Uhanalaisuuden syyt",
+        "period": "Arviointikausi",
+        "threats": "Uhkatekijät"
+      },
+      "individualCount": "Yksilömäärä",
+      "missing": "Tätä lajia ei ole arvioitu",
+      "more": "Lisää tietoa <h1>LAJI.FI</h1>-portaalissa",
+      "MX": {
+        "iucnRE": "Suomesta hävinnyt",
+        "iucnCR": "Äärimmäisen uhanalainen",
+        "iucnEN": "Erittäin uhanalainen",
+        "iucnVU": "Vaarantunut",
+        "iucnDD": "Puutteellisesti tunnettu",
+        "iucnNT": "Silmälläpidettävä",
+        "iucnLC": "Elinvoimainen",
+        "iucnNA": "Arviointiin soveltumaton",
+        "iucnNE": "Arvioimatta jätetty"
+      },
+      "occurrenceArea": "Esiintymien määrä",
+      "occurrenceInfoTitle": "Esiintymistä koskevat tiedot",
+      "occurrenceTitle": "Esiintymisalueet ja alueellinen uhanalaisuus",
+      "source": "Lähteet",
+      "title": "Lajit ja tulokset"
+    },
+    "hasEndangermentReason": "Uhanalaisuuteen johtaneet syyt",
+    "hasThreat": "Uhkatekijät tulevaisuudessa",
+    "threatPrimary": "Ensisijainen uhka",
+    "threatAny": "Yksi uhista"
+  },
   "lastCensus": "Previous census",
   "line": "line",
   "line-transect-result.chart": "Progress of species amount",
@@ -855,7 +988,6 @@
   "taxonomy.acceptedName": "ACCEPTED NAME",
   "taxonomy.ofTaxon": "OF",
   "taxonomy.link": "LINK",
-  "taxonomy.noOccurrenceInFinland": "Does not occur in Finland",
   "taxonomy.observations.yearChart": "Observations per year",
   "taxonomy.observations.yearChart.disclaimer": "The chart shows temporal distribution of the observations, which is not the same as population increase/decrease.",
   "taxonomy.observations.yearChart.showHistory": "Show all history",
@@ -1025,5 +1157,6 @@
   "theme.lolife.intro": "Flying-Squirrel-Life",
   "theme.lolife.places": "Record census actions",
   "map.fullScreen": "Open the map in fullscreen",
-  "map.exitFullScreen": "Exit fullscreen mode"
+  "map.exitFullScreen": "Exit fullscreen mode",
+  "readMore": "Read more"
 }

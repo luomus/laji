@@ -842,7 +842,6 @@
   "taxonomy.acceptedName": "ACCEPTERAD NAMN",
   "taxonomy.ofTaxon": "AV",
   "taxonomy.link": "LÄNK",
-  "taxonomy.noOccurrenceInFinland": "Ei esiinny Suomessa",
   "taxonomy.observations.yearChart": "Havainnot vuosittain",
   "taxonomy.observations.yearChart.disclaimer": "Kuvaaja esittää havaintojen ajallista jakaumaa, joka ei ole sama asia kuin lajin runsastuminen/väheneminen.",
   "taxonomy.observations.yearChart.showHistory": "Näytä koko historia",
@@ -1012,5 +1011,6 @@
   "theme.lolife.intro": "Flygekorre-Life",
   "theme.lolife.places": "Spela in folkräkningsåtgärder",
   "map.fullScreen": "Öppet stenografi läge",
-  "map.exitFullScreen": "Avsluta helskärmsläge"
+  "map.exitFullScreen": "Avsluta helskärmsläge",
+  "readMore": "Läs mer"
 }
