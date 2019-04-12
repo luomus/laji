@@ -101,7 +101,7 @@ export class WarehouseApi {
   public warehouseTeamMemberGet(id: string, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + `/warehouse/teamMember/${id}`;
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'documentId' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling warehouseTeamMemberGet.');
@@ -118,7 +118,7 @@ export class WarehouseApi {
   public warehouseTeamMemberFind(query: string, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + `/warehouse/teamMember`;
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'documentId' is not null or undefined
     if (query === null || query === undefined) {
       throw new Error('Required parameter query was null or undefined when calling warehouseTeamMemberFind.');
@@ -222,7 +222,7 @@ export class WarehouseApi {
   public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/query/download';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling warehouse download.');
@@ -262,7 +262,7 @@ export class WarehouseApi {
   public warehouseQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<WarehouseCountResultInterface> {
     const path = this.basePath + '/warehouse/query/count';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams, ['selected'])};
 
     this.addQueryToQueryParams(query, queryParameters);
 
@@ -281,7 +281,7 @@ export class WarehouseApi {
   public warehouseQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
     const path = this.basePath + '/warehouse/query/list';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     this.addMetaToQuery(selected, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
@@ -297,7 +297,7 @@ export class WarehouseApi {
   public warehouseQuerySingleGet(documentId: string, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/warehouse/query/single';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'documentId' is not null or undefined
     if (documentId === null || documentId === undefined) {
       throw new Error('Required parameter documentId was null or undefined when calling warehouseQuerySingleGet.');
@@ -319,7 +319,7 @@ export class WarehouseApi {
   public warehouseQueryAnnotationListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/warehouse/query/annotation/list';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     this.addMetaToQuery(selected, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
@@ -338,7 +338,7 @@ export class WarehouseApi {
   public warehouseQueryUnitMediaListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
     const path = this.basePath + '/warehouse/query/unitMedia/list';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     this.addMetaToQuery(selected, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
@@ -353,7 +353,7 @@ export class WarehouseApi {
   public warehouseEnumerationLabels(extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/warehouse/enumeration-labels';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     return this.http.get(path, {params: queryParameters});
   }

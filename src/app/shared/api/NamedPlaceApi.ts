@@ -59,7 +59,7 @@ export class NamedPlaceApi {
   public create(data: NamedPlace, userToken: string, extraHttpRequestParams?: any): Observable<NamedPlace> {
     const path = this.basePath + '/named-places';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'data' is not null or undefined
     if (data === null || data === undefined) {
       throw new Error('Required parameter data was null or undefined when calling createNamedPlace.');
@@ -85,7 +85,7 @@ export class NamedPlaceApi {
     const path = this.basePath + '/named-places/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling findById.');
@@ -110,7 +110,7 @@ export class NamedPlaceApi {
   public findAll(query: NamedPlaceQuery, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<NamedPlace>> {
     const path = this.basePath + '/named-places';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'personToken' is not null or undefined
     if (page !== undefined) {
       queryParameters['page'] = page;
@@ -142,7 +142,7 @@ export class NamedPlaceApi {
     const path = this.basePath + '/named-places/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
@@ -166,7 +166,7 @@ export class NamedPlaceApi {
     const path = this.basePath + '/named-places/{id}/reservation'
       .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');

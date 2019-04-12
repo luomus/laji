@@ -50,7 +50,7 @@ export class InformalTaxonGroupApi {
   public informalTaxonGroupFind(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
     const path = this.basePath + '/informal-taxon-groups';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
@@ -76,7 +76,7 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupFindById.');
@@ -98,7 +98,7 @@ export class InformalTaxonGroupApi {
   public informalTaxonGroupFindRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
     const path = this.basePath + '/informal-taxon-groups/roots';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
@@ -126,7 +126,7 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
@@ -156,7 +156,7 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}/parents'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
@@ -180,7 +180,7 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}/parentLevel'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetParentLevel.');
@@ -210,7 +210,7 @@ export class InformalTaxonGroupApi {
   public informalTaxonGroupGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
     const path = this.basePath + '/informal-taxon-groups/tree';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
@@ -238,7 +238,7 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}/siblings'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetWithSiblings.');

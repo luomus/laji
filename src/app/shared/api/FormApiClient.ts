@@ -46,7 +46,7 @@ export class FormApiClient {
   ): Promise<any> {
     const path = this.basePath + resource;
 
-    const queryParameters = {...Util.removeUndefinedFromObject(query)};
+    const queryParameters = {...Util.removeFromObject(query)};
 
     ['lang', 'personToken', 'formID'].forEach(key => {
       if (this[key] !== undefined) {

@@ -50,7 +50,7 @@ export class RedListTaxonGroupApi {
   public redListTaxonGroupsFind(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
     const path = this.basePath + '/red-list-evaluation-groups';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
@@ -76,7 +76,7 @@ export class RedListTaxonGroupApi {
     const path = this.basePath + '/red-list-evaluation-groups/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsFindById.');
@@ -98,7 +98,7 @@ export class RedListTaxonGroupApi {
   public redListTaxonGroupsFindRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
     const path = this.basePath + '/red-list-evaluation-groups/roots';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
@@ -126,7 +126,7 @@ export class RedListTaxonGroupApi {
     const path = this.basePath + '/red-list-evaluation-groups/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsGetChildren.');
@@ -156,7 +156,7 @@ export class RedListTaxonGroupApi {
     const path = this.basePath + '/red-list-evaluation-groups/{id}/parents'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsGetChildren.');
@@ -180,7 +180,7 @@ export class RedListTaxonGroupApi {
     const path = this.basePath + '/red-list-evaluation-groups/{id}/parentLevel'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsGetParentLevel.');
@@ -210,7 +210,7 @@ export class RedListTaxonGroupApi {
   public redListTaxonGroupsGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
     const path = this.basePath + '/red-list-evaluation-groups/tree';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
@@ -238,7 +238,7 @@ export class RedListTaxonGroupApi {
     const path = this.basePath + '/red-list-evaluation-groups/{id}/siblings'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsGetWithSiblings.');

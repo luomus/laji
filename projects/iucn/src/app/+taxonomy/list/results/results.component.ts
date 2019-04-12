@@ -145,7 +145,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private initQueries() {
-    this.baseQuery = Util.removeUndefinedFromObject({
+    this.baseQuery = Util.removeFromObject({
       checklistVersion: this.checklist,
       id: this.query.taxon,
       redListEvaluationGroups: this.query.redListGroup,
@@ -511,7 +511,7 @@ export class ResultsComponent implements OnChanges {
             hasKeys: false
           };
         }),
-        switchMap(red  => this.taxonApi.species(Util.removeUndefinedFromObject({
+        switchMap(red  => this.taxonApi.species(Util.removeFromObject({
           ...query,
           [groupField]: red.isRoot ? undefined : red.groups.join(','),
           aggregateBy: red.aggregateBy.join(',') + '=a',
