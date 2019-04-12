@@ -1,34 +1,38 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="panel panel-default" *ngIf="taxon.occurrenceInFinland || taxon.typeOfOccurrenceInFinland || taxon.occurrenceInFinlandPublications || !taxon.finnish">
+    <div class="panel panel-default">
       <div class="panel-body">
-        <ng-container *ngIf="taxon.finnish">
-          <laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">
-            {{ taxon.occurrenceInFinland | label }}
-          </laji-taxon-info-row>
-          <laji-taxon-info-row *ngIf="taxon.typeOfOccurrenceInFinland" [label]="'taxonomy.typeOfOccurrenceInFinland' | translate">
-            <ul>
-              <li *ngFor="let type of taxon.typeOfOccurrenceInFinland">
-                {{ type | label }}
-              </li>
-            </ul>
-          </laji-taxon-info-row>
-          <laji-taxon-info-row *ngIf="taxon.occurrenceInFinlandPublications" [label]="'taxonomy.occurrenceInFinlandPublications' | translate">
-            <ul>
-              <li *ngFor="let publication of taxon.occurrenceInFinlandPublications">
-                {{ publication | publication }}
-                <br>
-                <a [href]="publication | publication:'URI'" target="_blank">{{ 'taxonomy.link' | translate }}</a>
-              </li>
-            </ul>
-          </laji-taxon-info-row>
-        </ng-container>
-        <p *ngIf="!taxon.finnish">{{ 'taxonomy.noOccurrenceInFinland' | translate }}</p>
+        <laji-taxon-info-row [label]="'MX.finnish' | label">
+          {{ taxon.finnish | boolToString }}
+        </laji-taxon-info-row>
+        <laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">
+          {{ taxon.occurrenceInFinland | label }}
+        </laji-taxon-info-row>
+        <laji-taxon-info-row *ngIf="taxon.typeOfOccurrenceInFinland" [label]="'taxonomy.typeOfOccurrenceInFinland' | translate">
+          <ul>
+            <li *ngFor="let type of taxon.typeOfOccurrenceInFinland">
+              {{ type | label }}
+            </li>
+          </ul>
+        </laji-taxon-info-row>
+        <laji-taxon-info-row *ngIf="taxon.occurrenceInFinlandSpecimenURI" [label]="'MX.occurrenceInFinlandSpecimenURI' | label">
+          {{ taxon.occurrenceInFinlandSpecimenURI }}
+        </laji-taxon-info-row>
+        <laji-taxon-info-row *ngIf="taxon.occurrenceInFinlandPublications" [label]="'taxonomy.occurrenceInFinlandPublications' | translate">
+          <ul>
+            <li *ngFor="let publication of taxon.occurrenceInFinlandPublications">
+              {{ publication | publication }}
+              <br>
+              <a [href]="publication | publication:'URI'" target="_blank">{{ 'taxonomy.link' | translate }}</a>
+            </li>
+          </ul>
+        </laji-taxon-info-row>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <div class="panel panel-default"
+    <div *ngIf="isFromMasterChecklist"
+         class="panel panel-default"
          laji-panel
          [title]="'taxonomy.map.finland' | translate"
          [open]="true"
@@ -47,7 +51,8 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <div class="panel panel-default"
+    <div *ngIf="isFromMasterChecklist"
+         class="panel panel-default"
          laji-panel
          [title]="'GBIF'"
          [open]="true"

@@ -10,6 +10,7 @@ import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
 export class TaxonOccurrenceComponent implements OnChanges {
   @Input() taxon: Taxonomy;
   @Input() taxonDescription: TaxonomyDescription[];
+  @Input() isFromMasterChecklist: boolean;
 
   hasMonthDayData: boolean;
 
