@@ -1,16 +1,7 @@
-
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ISetup } from '../generic-label-maker.interface';
-import { LabelService, IPageLayout } from '../label.service';
+import { IPageLayout, LabelService } from '../label.service';
+
 const style = `
 .ll-print-content {
   display: grid;

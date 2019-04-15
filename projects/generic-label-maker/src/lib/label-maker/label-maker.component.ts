@@ -1,13 +1,17 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, ElementRef,
-  EventEmitter, Inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,
-  Renderer2, TemplateRef,
+  Renderer2,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
 import { IAddLabelEvent, ILabelField, ILabelItem, ISetup, IViewSettings } from '../generic-label-maker.interface';
@@ -35,7 +39,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _data: object[];
   fields: ILabelField[];
   dragging = false;
-  version = '0.0.13';
+  version = '0.0.14';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -97,6 +101,9 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   @Input()
   set data(data: object[]) {
+    if (!Array.isArray(data)) {
+      data = [];
+    }
     this._data = data;
     this.setPreviewActive(0);
   }
@@ -107,6 +114,9 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   @Input()
   set viewSettings(settings: IViewSettings) {
+    if (!settings) {
+      return;
+    }
     if (isPlatformBrowser(this.platformId) && settings.fullscreen !== this._viewSettings.fullscreen) {
       try {
         if (settings.fullscreen) {
@@ -134,6 +144,9 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   @Input()
   set setup(setup: ISetup) {
+    if (!setup) {
+      return;
+    }
     const hasField = {};
     const allFields = [];
     this.updateLocalId(setup);
