@@ -4,12 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { GenericLabelMakerModule } from 'generic-label-maker';
-import { LabelMakerComponent } from './label-maker/label-maker.component';
+import { LabelDesignerComponent } from './label-designer/label-designer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LabelMakerComponent
+    LabelDesignerComponent
   ],
   imports: [
     BrowserModule,
@@ -17,6 +17,8 @@ import { LabelMakerComponent } from './label-maker/label-maker.component';
     GenericLabelMakerModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [LabelDesignerComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
