@@ -544,7 +544,11 @@
             "styles": [
               "projects/generic-label-maker-element/src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              {
+                "input": "node_modules/document-register-element/build/document-register-element.js"
+              }
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
