@@ -1,7 +1,7 @@
 <table style="width: 220px;" class="icon">
   <tr>
     <td></td>
-    <td>Magnify editor by:</td>
+    <td>{{ 'Magnify editor by' | translate }}:</td>
     <td>
       <select class="form-control" (change)="change('magnification', +$event.target.value)">
         <option *ngFor="let mag of magnifications" [value]="mag" [selected]="mag === viewSettings.magnification">{{mag}}</option>
@@ -14,17 +14,17 @@
     <td>
       <ll-icon [type]="'check'" *ngIf="viewSettings.fullscreen"></ll-icon>
     </td>
-    <td>Fullscreen</td>
+    <td>{{ 'Fullscreen' | translate }}</td>
   </tr>
 </table>
-<h3>Grid</h3>
+<h3></h3>
 <table class="icon">
   <tr class="link" (click)="change('gridVisible', !viewSettings.gridVisible)">
     <td>
       <ll-icon [type]="'check'" *ngIf="viewSettings.gridVisible"></ll-icon>
     </td>
     <td colspan="3">
-      Show grid
+      {{ 'Show grid' | translate }}
     </td>
   </tr>
   <tr class="link" *ngFor="let g of grid" (click)="change('grid', viewSettings.grid === g ? undefined : g)">

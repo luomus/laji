@@ -1,29 +1,29 @@
 <div class="ll-setting-row">
-  Margins
+  {{ 'Margins' | translate }}
   <table class="margins">
     <tr>
-      <td>top:</td>
+      <td>{{ 'top' | translate }}:</td>
       <td>
         <input class="form-control input-sm md-input" type="text" [value]="top" (change)="change('top', $event.target.value)">
       </td>
       <td>mm.</td>
     </tr>
     <tr>
-      <td>right:</td>
+      <td>{{ 'right' | translate }}:</td>
       <td>
         <input class="form-control input-sm md-input" type="text" [value]="right" (change)="change('right', $event.target.value)">
       </td>
       <td>mm.</td>
     </tr>
     <tr>
-      <td>bottom:</td>
+      <td>{{ 'bottom' | translate }}:</td>
       <td>
         <input class="form-control input-sm md-input" type="text" [value]="bottom" (change)="change('bottom', $event.target.value)">
       </td>
       <td>mm.</td>
     </tr>
     <tr>
-      <td>left:</td>
+      <td>{{ 'left' | translate }}:</td>
       <td>
         <input class="form-control input-sm md-input" type="text" [value]="left" (change)="change('left', $event.target.value)">
       </td>

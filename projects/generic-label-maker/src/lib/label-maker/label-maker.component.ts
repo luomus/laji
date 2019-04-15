@@ -20,6 +20,8 @@ import { InfoWindowService } from '../info-window/info-window.service';
 import { Subscription } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { LabelExcelFileComponent } from './label-excel-file/label-excel-file.component';
+import { GenericLabelMakerTranslationsInterface } from '../translate/generic-label-maker-translations.interface';
+import { TranslateService } from '../translate/translate.service';
 
 @Component({
   selector: 'll-label-maker',
@@ -32,6 +34,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   static id = 0;
 
   @ViewChild('intro') intro;
+  @ViewChild('gettingStarted') gettingStarted;
 
   _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close' = 'file';
   _setup: ISetup;
@@ -39,7 +42,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _data: object[];
   fields: ILabelField[];
   dragging = false;
-  version = '0.0.14';
+  version = '0.0.15';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -83,6 +86,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     private renderer2: Renderer2,
     private infoWindowService: InfoWindowService,
     private cdr: ChangeDetectorRef,
+    private translateService: TranslateService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -98,6 +102,10 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     }
   }
 
+  @Input()
+  set translations(translations: GenericLabelMakerTranslationsInterface) {
+    this.translateService.setTranslations(translations);
+  }
 
   @Input()
   set data(data: object[]) {
@@ -289,9 +297,17 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     this.setPreviewActive(0);
   }
 
+  openGettingStarted() {
+    this.subIntro = this.infoWindowService.open({
+      title: this.translateService.get('Getting started'),
+      actionTypes: 'ok',
+      content: this.gettingStarted
+    }).subscribe(() => this.introClosed.emit());
+  }
+
   openIntro() {
     this.subIntro = this.infoWindowService.open({
-      title: 'Label Designer',
+      title: this.translateService.get('Label Designer'),
       actionTypes: 'ok',
       content: this.intro
     }).subscribe(() => this.introClosed.emit());
@@ -300,7 +316,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   openGenerate() {
     this.infoWindowService.open({
-      title: 'Generate label data',
+      title: this.translateService.get('Generate label data'),
       content: this.generateTpl,
       actions: this.generateActionsTpl
     });
@@ -309,7 +325,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   importExcel() {
     this.infoWindowService.open({
-      title: 'Import from file',
+      title: this.translateService.get('Import from file'),
       content: this.excelTpl,
       actions: this.excelActionsTpl
     });
