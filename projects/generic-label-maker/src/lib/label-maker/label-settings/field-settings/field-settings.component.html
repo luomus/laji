@@ -74,9 +74,9 @@
   <div style="margin-top: 15px">
     <ll-font-settings [allowEmptyFontFamily]="true" [minimal]="true" [showUnderline]="true" [fontSettings]="field.style" (fontSettingsChange)="change($event, 'style')"></ll-font-settings>
   </div>
-  <span>{{ 'Prefix only' | translate }}≈:</span>
+  <span>{{ 'Style applies to' | translate }}:</span>
   <select class="form-control" (change)="onChange($event, 'styleAppliesTo')">
-    <option value="all" [selected]="field.styleAppliesTo === 'all'">{{ 'All' | translate }}≈</option>
+    <option value="all" [selected]="field.styleAppliesTo === 'all'">{{ 'All' | translate }}</option>
     <option value="prefix" [selected]="field.styleAppliesTo === 'prefix'">{{ 'Prefix only' | translate }}</option>
     <option value="content" [selected]="field.styleAppliesTo === 'content'">{{ 'Value only' | translate }}</option>
     <option value="suffix" [selected]="field.styleAppliesTo === 'suffix'">{{ 'Suffix only' | translate }}</option>

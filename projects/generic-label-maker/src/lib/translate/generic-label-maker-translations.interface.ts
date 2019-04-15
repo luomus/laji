@@ -41,7 +41,7 @@ export interface GenericLabelMakerTranslationsInterface {
   'Available fields'?: string;
   'Add fields to the backside'?: string;
   'Download labels (pdf)'?: string;
-  'Include data)'?: string;
+  'Include data'?: string;
   'add to label'?: string;
   'Filename'?: string;
   'search'?: string;
@@ -57,7 +57,7 @@ export interface GenericLabelMakerTranslationsInterface {
   'Suffix'?: string;
   'Style applies to'?: string;
   'All'?: string;
-  'Prefix onl'?: string;
+  'Prefix only'?: string;
   'Value only'?: string;
   'Suffix only'?: string;
   'Prefix and value'?: string;
@@ -74,9 +74,9 @@ export interface GenericLabelMakerTranslationsInterface {
   'Page'?: string;
   'No active field selected'?: string;
   'Two sided (flip horizontal)'?: string;
-  'font'?: string;
-  'font-size'?: string;
-  'line-spacing'?: string;
+  'Font'?: string;
+  'Font size'?: string;
+  'Line spacing'?: string;
   'Field within the label is blocking the resize!'?: string;
   'Cannot make labels smaller than {{size}}mm!'?: string;
   'Are you sure that you want to remove this field?'?: string;

@@ -4,7 +4,7 @@
     <td>{{ 'Magnify editor by' | translate }}:</td>
     <td>
       <select class="form-control" (change)="change('magnification', +$event.target.value)">
-        <option *ngFor="let mag of magnifications" [value]="mag" [selected]="mag === viewSettings.magnification">{{mag}}</option>
+        <option *ngFor="let mag of magnifications" [value]="mag" [selected]="mag === viewSettings.magnification">{{mag}}x </option>
       </select>
     </td>
   </tr>

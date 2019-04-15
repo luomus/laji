@@ -39,10 +39,10 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close' = 'file';
   _setup: ISetup;
   _selectedLabelItem: ILabelItem | undefined;
-  _data: object[];
+  _data: object[] = [];
   fields: ILabelField[];
   dragging = false;
-  version = '0.0.15';
+  version = '0.0.16';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -331,27 +331,9 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setAsExample(doc: any) {
-    this._setup = {
-      ...this._setup,
-      labelItems: this.setExampleInLabelItems(doc, this._setup.labelItems),
-      backSideLabelItems: this.setExampleInLabelItems(doc, this._setup.backSideLabelItems)
-    };
-  }
-
-  private setExampleInLabelItems(doc: any, items: ILabelItem[]): ILabelItem[] {
-    return items.map(item => ({
-      ...item,
-      fields: item.fields.map(field => ({...field, content: doc[field.field]}))
-    }));
-  }
-
   setPreviewActive(idx: number) {
     if (this.data && this.data[idx]) {
       this.previewActive = idx;
-      if (this._setup) {
-        this.setAsExample(this.data[idx]);
-      }
     }
   }
 

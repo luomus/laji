@@ -25,7 +25,7 @@
   </tr>
 </table>
 <ng-container *ngIf="recentFiles.length > 0">
-  <h3>{{ 'Recent files' | translate }}≈</h3>
+  <h3>{{ 'Recent files' | translate }}</h3>
   <table class="icon">
     <tr class="link" *ngFor="let recent of recentFiles; let i=index">
       <td (click)="loadRecent(recent)"></td>
