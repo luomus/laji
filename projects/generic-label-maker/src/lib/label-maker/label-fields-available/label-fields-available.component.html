@@ -1,12 +1,12 @@
 <slot></slot>
 <ng-container *ngIf="availableFields && availableFields.length">
   <div class="reset-container" *ngIf="newAvailableFields && newAvailableFields !== availableFields">
-    <button type="button" class="btn btn-default btn-sm" (click)="availableFieldsChange.emit(newAvailableFields)">reset</button>
+    <button type="button" class="btn btn-default btn-sm" (click)="availableFieldsChange.emit(newAvailableFields)">{{ 'reset' | translate }}</button>
   </div>
-  <h3 class="first">Available fields</h3>
-  <input type="search" placeholder="search..." style="margin-bottom: 10px;" class="form-control" (keyup)="filter($event.target.value)">
+  <h3 class="first">{{ 'Available fields' | translate }}</h3>
+  <input type="search" placeholder="{{ 'search' | translate }}..." style="margin-bottom: 10px;" class="form-control" (keyup)="filter($event.target.value)">
   <div *ngFor="let field of (availableFields | searchFields:filterBy )" class="new-field-container">
-    <div class="field-add link" (click)="addField(field)" title="add to label">
+    <div class="field-add link" (click)="addField(field)" [title]="'add to label' | translate ">
       <ll-icon type="right" [size]="15"></ll-icon>
     </div>
     <div
@@ -23,7 +23,7 @@
   </div>
   <div *ngIf="setup.twoSided">
     <label>
-      Add fields to the backside
+      {{ 'Add fields to the backside' | translate }}
       <input type="checkbox" [checked]="addToBackside" (change)="toggleBackside()">
     </label>
   </div>

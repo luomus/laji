@@ -1,13 +1,35 @@
-import { Component } from '@angular/core';
-import { ISetup, Presets } from 'generic-label-maker';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'label-designer',
+  templateUrl: './label-designer.component.html',
+  styleUrls: ['./label-designer.component.scss']
 })
-export class AppComponent {
+export class LabelDesignerComponent implements OnInit {
 
+
+  @Input()
+  showIntro: boolean;
+
+  @Input()
+  data: object[];
+
+  @Input()
+  defaultDomain = 'http://tun.fi/EXAMPLE.';
+
+  @Input()
+  availableFields: ILabelField[] = [];
+
+  @Input()
+  newAvailableFields: ILabelField[] = [];
+
+  @Input()
+  viewSetting: IViewSettings = {
+    magnification: 2
+  };
+
+  @Input()
   setup: ISetup = {
     page: {
       ...Presets.A4,
@@ -53,5 +75,13 @@ export class AppComponent {
       }
     ]
   };
+
+  @Output()
+  html = new EventEmitter<string>();
+
+  constructor() { }
+
+  ngOnInit() {
+  }
 
 }

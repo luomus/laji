@@ -1,13 +1,17 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, ElementRef,
-  EventEmitter, Inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,
-  Renderer2, TemplateRef,
+  Renderer2,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
 import { IAddLabelEvent, ILabelField, ILabelItem, ISetup, IViewSettings } from '../generic-label-maker.interface';
@@ -16,6 +20,8 @@ import { InfoWindowService } from '../info-window/info-window.service';
 import { Subscription } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { LabelExcelFileComponent } from './label-excel-file/label-excel-file.component';
+import { GenericLabelMakerTranslationsInterface } from '../translate/generic-label-maker-translations.interface';
+import { TranslateService } from '../translate/translate.service';
 
 @Component({
   selector: 'll-label-maker',
@@ -28,14 +34,15 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   static id = 0;
 
   @ViewChild('intro') intro;
+  @ViewChild('gettingStarted') gettingStarted;
 
   _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close' = 'file';
   _setup: ISetup;
   _selectedLabelItem: ILabelItem | undefined;
-  _data: object[];
+  _data: object[] = [];
   fields: ILabelField[];
   dragging = false;
-  version = '0.0.13';
+  version = '0.0.16';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -79,6 +86,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     private renderer2: Renderer2,
     private infoWindowService: InfoWindowService,
     private cdr: ChangeDetectorRef,
+    private translateService: TranslateService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -94,9 +102,16 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     }
   }
 
+  @Input()
+  set translations(translations: GenericLabelMakerTranslationsInterface) {
+    this.translateService.setTranslations(translations);
+  }
 
   @Input()
   set data(data: object[]) {
+    if (!Array.isArray(data)) {
+      data = [];
+    }
     this._data = data;
     this.setPreviewActive(0);
   }
@@ -107,6 +122,9 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   @Input()
   set viewSettings(settings: IViewSettings) {
+    if (!settings) {
+      return;
+    }
     if (isPlatformBrowser(this.platformId) && settings.fullscreen !== this._viewSettings.fullscreen) {
       try {
         if (settings.fullscreen) {
@@ -134,6 +152,9 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   @Input()
   set setup(setup: ISetup) {
+    if (!setup) {
+      return;
+    }
     const hasField = {};
     const allFields = [];
     this.updateLocalId(setup);
@@ -276,9 +297,17 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     this.setPreviewActive(0);
   }
 
+  openGettingStarted() {
+    this.subIntro = this.infoWindowService.open({
+      title: this.translateService.get('Getting started'),
+      actionTypes: 'ok',
+      content: this.gettingStarted
+    }).subscribe(() => this.introClosed.emit());
+  }
+
   openIntro() {
     this.subIntro = this.infoWindowService.open({
-      title: 'Label Designer',
+      title: this.translateService.get('Label Designer'),
       actionTypes: 'ok',
       content: this.intro
     }).subscribe(() => this.introClosed.emit());
@@ -287,7 +316,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   openGenerate() {
     this.infoWindowService.open({
-      title: 'Generate label data',
+      title: this.translateService.get('Generate label data'),
       content: this.generateTpl,
       actions: this.generateActionsTpl
     });
@@ -296,33 +325,15 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   importExcel() {
     this.infoWindowService.open({
-      title: 'Import from file',
+      title: this.translateService.get('Import from file'),
       content: this.excelTpl,
       actions: this.excelActionsTpl
     });
   }
 
-  private setAsExample(doc: any) {
-    this._setup = {
-      ...this._setup,
-      labelItems: this.setExampleInLabelItems(doc, this._setup.labelItems),
-      backSideLabelItems: this.setExampleInLabelItems(doc, this._setup.backSideLabelItems)
-    };
-  }
-
-  private setExampleInLabelItems(doc: any, items: ILabelItem[]): ILabelItem[] {
-    return items.map(item => ({
-      ...item,
-      fields: item.fields.map(field => ({...field, content: doc[field.field]}))
-    }));
-  }
-
   setPreviewActive(idx: number) {
     if (this.data && this.data[idx]) {
       this.previewActive = idx;
-      if (this._setup) {
-        this.setAsExample(this.data[idx]);
-      }
     }
   }
 

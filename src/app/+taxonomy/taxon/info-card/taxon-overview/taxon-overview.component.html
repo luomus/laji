@@ -104,18 +104,20 @@
     </div>
   </div>
   <div class="col-xs-12" *ngIf="taxon.hasChildren">
-    <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.speciesPieChartTitle' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-species-pie
-        [children]="taxonChildren"
-        (taxonSelect)="taxonSelect.emit($event)"
-      ></laji-species-pie>
-    </div>
+    <ng-container *lajiHideForIe>
+      <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0"
+           class="panel panel-default"
+           laji-panel
+           [title]="'taxonomy.speciesPieChartTitle' | translate"
+           [open]="true"
+           [autoToggle]="true"
+      >
+        <laji-species-pie
+          [children]="taxonChildren"
+          (taxonSelect)="taxonSelect.emit($event)"
+        ></laji-species-pie>
+      </div>
+    </ng-container>
 
     <div *ngIf="taxon.hasChildren"
          class="panel panel-default"

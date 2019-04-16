@@ -49,7 +49,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() open: boolean;
 
   lang: string;
-  _options: {id: string, value: string}[] = [];
+  _options: {id: string, value: string, info: string}[] = [];
   active = [];
   selectedTitle = '';
   shouldSort = false;
@@ -123,7 +123,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
           return ObservableForkJoin(requests).pipe(
             map(mapping => options.reduce((prev, curr, idx) => {
                 if (mapping[idx] !== options[idx].id) {
-                  prev.push({id: mapping[idx], value: curr.value});
+                  prev.push({id: mapping[idx], value: curr.value, info: curr.info});
                 } else {
                   this.logger.log('No ETL mapping for', mapping[idx]);
                 }
@@ -236,7 +236,11 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     }
     this.shouldSort = false;
     return this.metadataService.getRange(this.alt).pipe(
-      map(range => range.map(options => ({id: options.id, value: MultiLangService.getValue(options.value, this.lang)}))),
+      map(range => range.map(data => {
+        const options = {id: data.id, value: MultiLangService.getValue(data.value, this.lang)};
+        this.addMetadataInfo(options, data);
+        return options;
+      })),
       map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options),
       map(options => this.skipBefore ? options.slice(options.findIndex(o => o.id === this.skipBefore)) : options)
     );
@@ -244,13 +248,30 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   private pickValue(data) {
     if (!this.pick) {
-      return data.map(value => ({id: value.id, value: value.value}));
+      return data.map(value => ({id: value.id, value: value.value, info: value.info}));
     }
     return data.reduce((total, item) => {
       if (typeof this.pick[item.id] !== 'undefined' && this.pick[item.id] === '') {
-        total.push({id: item.id, value: item.value});
+        total.push({id: item.id, value: item.value, info: item.info});
       }
       return total;
     }, []);
+  }
+
+  private addMetadataInfo(options, data) {
+    if (this.alt === 'MX.adminStatusEnum') {
+      let info = '';
+      const description = MultiLangService.getValue(data.administrativeStatusDescription, this.lang);
+      const link = MultiLangService.getValue(data.administrativeStatusLink, this.lang);
+      if (description) {
+        info += '<p>' + description + '</p>';
+      }
+      if (link) {
+        info += '<p>' + this.translate.instant('readMore') + ': <a href="' + link + '" target="_blank">' + link + '</a>';
+      }
+      if (info) {
+        options['info'] = info;
+      }
+    }
   }
 }

@@ -35,7 +35,7 @@
       </td>
     </tr>
     <tr>
-      <td>font:</td>
+      <td>{{ 'Font' | translate }}:</td>
       <td>
         <select style="width: 100%" class="form-control input-sm" (change)="change('font-family', $event.target.value)">
           <option value="" *ngIf="allowEmptyFontFamily"></option>
@@ -44,7 +44,7 @@
       </td>
     </tr>
     <tr>
-      <td>font-size:</td>
+      <td>{{ 'Font size' | translate }}:</td>
       <td>
         <select class="form-control input-sm" style="width: 60px;" (change)="change('font-size.pt', $event.target.value, true)">
           <option value=""></option>
@@ -53,11 +53,11 @@
       </td>
     </tr>
     <tr *ngIf="!minimal">
-      <td>line-spacing:</td>
+      <td>{{ 'Line spacing' | translate }}:</td>
       <td>
         <select class="form-control input-sm" style="width: 60px;" (change)="change('line-height', $event.target.value)">
           <option value=""></option>
-          <option *ngFor="let size of lineHeight" [value]="size" [selected]="fontSettings && size === fontSettings['line-height']">{{size}}</option>
+          <option *ngFor="let size of lineHeight" [value]="size" [selected]="fontSettings && size == fontSettings['line-height']">{{size}}</option>
         </select>
       </td>
     </tr>

@@ -1,18 +1,18 @@
 <div class="label-editor-window" #editor *ngIf="_setup; else missingSetup">
   <div class="menubar">
     <ul>
-      <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>File</a></li>
-      <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>Edit</a></li>
-      <li [class.active]="_active === 'view'" (click)="_active = 'view'" *ngIf="_viewSettings"><a>View</a></li>
-      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>Label fields</a></li>
-      <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>Settings</a></li>
-      <li [class.active]="_active === 'help'" (click)="_active = 'help'"><a>Help</a></li>
+      <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>{{ 'File' | translate }}</a></li>
+      <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>{{ 'Edit' | translate }}</a></li>
+      <li [class.active]="_active === 'view'" (click)="_active = 'view'" *ngIf="_viewSettings"><a>{{ 'View' | translate }}</a></li>
+      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>{{ 'Label fields' | translate }}</a></li>
+      <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>{{ 'Settings' | translate }}</a></li>
+      <li [class.active]="_active === 'help'" (click)="_active = 'help'"><a>{{ 'Help' | translate }}</a></li>
     </ul>
   </div>
   <div class="window-content">
     <div class="settings-wrap main" [class.dragging]="dragging" #settings *ngIf="_active !== 'close'">
       <div (click)="_active = 'close'" class="close-settings">
-        Close menu
+        {{ 'Close menu' | translate }}
         <div style="float: right">
           <ll-icon [type]="'close'"></ll-icon>
         </div>
@@ -22,14 +22,17 @@
       </div>
       <div *ngIf="_active === 'help'">
         <table class="icon">
+          <tr class="link" (click)="openGettingStarted()">
+            <td></td>
+            <td>{{ 'Getting started' | translate }}</td>
+          </tr>
           <tr class="link" (click)="openIntro()">
             <td>
               <ll-icon [size]="14" [type]="'logo'"></ll-icon>
             </td>
-            <td>About</td>
+            <td>{{ 'About' | translate }}</td>
           </tr>
         </table>
-        <h3 class="first">TODO: help content and videos</h3>
       </div>
       <div *ngIf="_active === 'file'">
         <ll-label-file
@@ -42,13 +45,13 @@
           [data]="data"
           (html)="html.emit($event)"
         ></ll-label-file>
-        <h3>Data</h3>
+        <h3>{{ 'Data' | translate }}</h3>
         <table class="icon">
           <tr class="link" (click)="openGenerate()">
             <td></td>
-            <td>Generate...</td>
+            <td>{{ 'Generate' | translate }}...</td>
           </tr>
-          <tr class="link" (click)="importExcel()"><td></td><td>Import from file...</td></tr>
+          <tr class="link" (click)="importExcel()"><td></td><td>{{ 'Import from file' | translate }}...</td></tr>
         </table>
         <ng-content select=".file-data"></ng-content>
       </div>
@@ -58,13 +61,13 @@
             <td>
               <ll-icon [size]="14" [type]="'undo'"></ll-icon>
             </td>
-            <td>Undo</td>
+            <td>{{ 'Undo' | translate }}</td>
           </tr>
           <tr class="link" [class.disabled]="!hasRedo()" (click)="redo()">
             <td>
               <ll-icon [size]="14" [type]="'redo'"></ll-icon>
             </td>
-            <td>Redo</td>
+            <td>{{ 'Redo' | translate }}</td>
           </tr>
         </table>
       </div>
@@ -115,18 +118,18 @@
         </div>
       </div>
       <div class="preview-space">
-        <strong>Preview</strong>
+        <strong>{{ 'Preview' | translate }}</strong>
         <ll-label-preview-pager [active]="previewActive" (activeChange)="setPreviewActive($event)" [data]="data"></ll-label-preview-pager>
         <div style="margin-bottom: 5px;">
           <div style="margin: 5px 15px 0 0; border: 1px solid #999; display: inline-block">
-            <ll-label-preview [setup]="_setup"></ll-label-preview>
+            <ll-label-preview [setup]="_setup" [data]="_data[previewActive]"></ll-label-preview>
           </div>
           <div *ngIf="_setup.twoSided" style="margin-top: 5px; border: 1px solid #999; display: inline-block">
-            <ll-label-preview [setup]="_setup" [backSide]="true"></ll-label-preview>
+            <ll-label-preview [setup]="_setup" [data]="_data[previewActive]" [backSide]="true"></ll-label-preview>
           </div>
         </div>
         <small *ngIf="dimensions">
-          There can be a total of {{dimensions.cols * dimensions.rows}} labels on a single page (in {{dimensions.cols}} columns and {{dimensions.rows}} rows).
+          {{ 'Labels on page' | translate:{total: dimensions.cols * dimensions.rows, cols: dimensions.cols, rows: dimensions.rows} }}
         </small>
       </div>
     </div>
@@ -137,27 +140,25 @@
   <div style="text-align: center; margin: 0 0 20px 0">
     <ll-icon [type]="'logo'" [size]="72"></ll-icon>
     <div style="margin-top: -5px">
-      <small>Version {{version}}</small>
+      <small>{{ 'Version' | translate }} {{version}}</small>
     </div>
   </div>
 
-  <p>With this tool you can make a specimen label design that can be used to print labels for Notebook observations.</p>
-  <p>You can start from scratch and design an entirely new label. You can also use pre-defined label templates as they are or as a starting point for your design.</p>
+  <div [innerHtml]="'Label intro' | translate"></div>
+</ng-template>
+<ng-template #gettingStarted>
   <p>
-    Under Fields you find all the data fields available for labels.
-    Under settings you can adjust both general label settings and separate field settings.
-    Under Files you can save your label desing templates, load previously saved templates,
-    see your recent label template files and download the label pdf.
+    Video
   </p>
 </ng-template>
 <ng-template #missingSetup>
-  Missing required setup parameter
+  {{ 'Missing required setup parameter' | translate }}
 </ng-template>
 <ng-template #generateTpl>
   <table class="generate user-input">
-    <tr><td>Uri:</td><td><input (change)="updateGenerate('uri', $event.target.value)" [value]="generate.uri || defaultDomain" type="text" class="form-control input-sm"></td></tr>
-    <tr><td>Range start:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" [value]="generate.rangeStart || ''" type="text" class="form-control input-sm"></td></tr>
-    <tr><td>Range end:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" [value]="generate.rangeEnd || ''" type="text" class="form-control input-sm"></td></tr>
+    <tr><td>{{ 'Uri' | translate }}:</td><td><input (change)="updateGenerate('uri', $event.target.value)" [value]="generate.uri || defaultDomain" type="text" class="form-control input-sm"></td></tr>
+    <tr><td>{{ 'Range start' | translate }}:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" [value]="generate.rangeStart || ''" type="text" class="form-control input-sm"></td></tr>
+    <tr><td>{{ 'Range end' | translate }}:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" [value]="generate.rangeEnd || ''" type="text" class="form-control input-sm"></td></tr>
     <tr *ngIf="fields.length > 0"><td colspan="2">&nbsp;</td></tr>
     <tr *ngFor="let field of fields;">
       <td>{{field.label}}:</td><td><input [value]="generate.data[field.field] || ''" (change)="updateGenerate(field.field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
@@ -165,11 +166,11 @@
   </table>
 </ng-template>
 <ng-template #generateActionsTpl>
-  <button (click)="generateData()" class="btn btn-default btn-sm pull-right">Generate</button>
+  <button (click)="generateData()" class="btn btn-default btn-sm pull-right">{{ 'Generate' | translate }}</button>
 </ng-template>
 <ng-template #excelTpl>
   <ll-label-excel-file #excelFile [defaultDomain]="defaultDomain"></ll-label-excel-file>
 </ng-template>
 <ng-template #excelActionsTpl>
-  <button (click)="loadExcelData()" class="btn btn-default btn-sm pull-right">Load</button>
+  <button (click)="loadExcelData()" class="btn btn-default btn-sm pull-right">{{ 'Load' | translate }}</button>
 </ng-template>

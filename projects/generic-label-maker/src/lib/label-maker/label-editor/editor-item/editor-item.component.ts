@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ILabelItem } from '../../../generic-label-maker.interface';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../../label.service';

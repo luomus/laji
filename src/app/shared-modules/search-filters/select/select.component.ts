@@ -124,6 +124,12 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  labelClick(event) {
+    if (event.target.classList.contains('no-propagation')) {
+      event.preventDefault();
+    }
+  }
+
   onFilterChange(event: KeyboardEvent, value) {
     switch (event.key) {
       case 'Esc':

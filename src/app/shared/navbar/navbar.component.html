@@ -118,7 +118,7 @@
                 </a>
               </li>
             </ng-container>
-            <li dropdown *lajiForTypes="['dev', 'prod', 'vir']">
+            <li dropdown *lajiForTypes="['dev', 'prod', 'vir', 'iucn']">
               <a dropdownToggle class="link language-toggle">
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">
@@ -135,7 +135,7 @@
                 <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
                   <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" preserveQueryParams>Suomeksi</a>
                 </li>
-                <li *ngIf="'sv' !== translate.currentLang" role="menuitem">
+                <li *ngIf="'sv' !== translate.currentLang && env !== 'iucn'" role="menuitem">
                   <a rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" preserveQueryParams>På svenska</a>
                 </li>
                 <li *ngIf="'en' !== translate.currentLang" role="menuitem">
