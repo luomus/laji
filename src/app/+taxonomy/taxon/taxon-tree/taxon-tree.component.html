@@ -7,15 +7,16 @@
     [skipParams]="skipParams"
   >
     <ng-template #label let-value="value">
-      <a *ngIf="value.id !== activeId" [routerLink]="'/taxon/' + value.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
-        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
-      </a>
+      <ng-container *ngIf="value.id !== activeId">
+        <a [routerLink]="'/taxon/' + value.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+          <laji-taxon-name [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
+        </a>
+        <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
+      </ng-container>
       <strong *ngIf="value.id === activeId">
-        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
-      </strong>
-      <ng-template #labelContent>
         <laji-taxon-name [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
-      </ng-template>
+        <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
+      </strong>
     </ng-template>
   </laji-tree>
 </div>

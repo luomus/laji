@@ -292,6 +292,11 @@ treenode:last-child > .tree-node > .tree-children::after {
   min-width: 400px;
 }
 
+.small-flag {
+  height: 11px;
+  width: auto;
+}
+
 /** Laji-Map **/
 .laji-map {
   width: 100%;
