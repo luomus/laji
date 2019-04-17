@@ -3,33 +3,34 @@
     <tr>
       <td colspan="2">
         <div style="text-align: right">
-          <div class="btn-group btn-sm ll-setting-row" role="group">
+          <div class="btn-group btn-sm ll-setting-row" role="group" style="padding-right: 0; padding-left: 0">
             <button type="button" class="btn btn-default btn-sm"
                     *ngIf="showUnderline"
                     [class.active]="fontSettings && fontSettings['text-decoration']"
                     (click)="change('text-decoration', fontSettings && fontSettings['text-decoration'] ? undefined : 'underline')"
-            ><i class="glyphicon glyphicon-text-color"></i></button>
+            ><ll-icon type="font-underline" size="18"></ll-icon></button>
             <button type="button" class="btn btn-default btn-sm"
                     [class.active]="fontSettings && fontSettings['font-weight']"
                     (click)="change('font-weight', fontSettings && fontSettings['font-weight'] ? undefined : 'bold')"
-            ><i class="glyphicon glyphicon-bold"></i></button>
+            ><ll-icon type="font-bold" size="18"></ll-icon></button>
             <button type="button" class="btn btn-default btn-sm"
                     [class.active]="fontSettings && fontSettings['font-style']"
                     (click)="change('font-style', fontSettings && fontSettings['font-style'] ? undefined : 'italic')"
-            ><i class="glyphicon glyphicon-italic"></i></button>
+            ><ll-icon type="font-italic" size="18"></ll-icon></button>
           </div>
           <div class="btn-group btn-sm ll-setting-row" role="group" *ngIf="!minimal">
             <button type="button" class="btn btn-default btn-sm"
                     [class.active]="fontSettings && fontSettings['text-align'] === 'left'"
                     (click)="change('text-align', fontSettings && fontSettings['text-align'] === 'left' ? undefined : 'left')"
-            ><i class="glyphicon glyphicon-align-left"></i></button>
+            ><ll-icon type="align-left" size="18"></ll-icon></button>
             <button type="button" class="btn btn-default btn-sm"
                     [class.active]="fontSettings && fontSettings['text-align'] === 'center'"
                     (click)="change('text-align', fontSettings && fontSettings['text-align'] === 'center' ? undefined : 'center')"
-            ><i class="glyphicon glyphicon-align-center"></i></button>
+            ><ll-icon type="align-center" size="18"></ll-icon></button>
             <button type="button" class="btn btn-default btn-sm"
                     [class.active]="fontSettings && fontSettings['text-align'] === 'right'"
-                    (click)="change('text-align', fontSettings && fontSettings['text-align'] === 'right' ? undefined : 'right')"><i class="glyphicon glyphicon-align-right"></i></button>
+                    (click)="change('text-align', fontSettings && fontSettings['text-align'] === 'right' ? undefined : 'right')"
+            ><ll-icon type="align-right" size="18"></ll-icon></button>
           </div>
         </div>
       </td>

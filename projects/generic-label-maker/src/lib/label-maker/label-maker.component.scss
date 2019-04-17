@@ -104,6 +104,13 @@ $small-screen: 900px;
   }
 
   .settings-wrap {
+
+    svg {
+      fill: #333;
+    }
+
+
+
     .close-settings {
       padding: 15px;
       border-bottom: 1px solid $menu-border-color;;
@@ -203,6 +210,9 @@ $small-screen: 900px;
 
   .disabled {
     color: #aaa;
+    svg {
+      fill: #aaa;
+    }
   }
 
   .editor-end {

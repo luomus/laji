@@ -29,7 +29,7 @@ $add-btn-width: 28px;
 .field-add {;
   width: $add-btn-width;
   float: right;
-  padding: ($space + 2) $space $space $space;
+  padding: ($space - 2) $space $space $space;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   text-align: right;

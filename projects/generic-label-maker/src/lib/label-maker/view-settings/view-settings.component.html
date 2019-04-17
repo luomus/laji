@@ -12,7 +12,7 @@
 <table class="icon">
   <tr class="link" (click)="change('fullscreen', !viewSettings.fullscreen)">
     <td>
-      <ll-icon [type]="'check'" *ngIf="viewSettings.fullscreen"></ll-icon>
+      <ll-icon [type]="'check'" [size]="20" *ngIf="viewSettings.fullscreen"></ll-icon>
     </td>
     <td>{{ 'Fullscreen' | translate }}</td>
   </tr>
@@ -21,7 +21,7 @@
 <table class="icon">
   <tr class="link" (click)="change('gridVisible', !viewSettings.gridVisible)">
     <td>
-      <ll-icon [type]="'check'" *ngIf="viewSettings.gridVisible"></ll-icon>
+      <ll-icon [type]="'check'" [size]="20" *ngIf="viewSettings.gridVisible"></ll-icon>
     </td>
     <td colspan="3">
       {{ 'Show grid' | translate }}
@@ -29,7 +29,7 @@
   </tr>
   <tr class="link" *ngFor="let g of grid" (click)="change('grid', viewSettings.grid === g ? undefined : g)">
     <td>
-      <ll-icon [type]="'check'" *ngIf="viewSettings.grid === g"></ll-icon>
+      <ll-icon [type]="'check'" [size]="20" *ngIf="viewSettings.grid === g"></ll-icon>
     </td>
     <td style="text-align: right">{{g}}</td>
     <td>&nbsp;mm</td>

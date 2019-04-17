@@ -42,7 +42,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _data: object[] = [];
   fields: ILabelField[];
   dragging = false;
-  version = '0.0.16';
+  version = '0.0.18';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -202,10 +202,12 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   showSettings(item: ILabelItem) {
     this.setActiveLabelItem(item);
     this._active = 'settings';
+    this.cdr.detectChanges();
   }
 
   setActiveLabelItem(item: ILabelItem) {
     this._selectedLabelItem = item;
+    this.cdr.detectChanges();
   }
 
   setupChanged(setup: ISetup, addToUndo = true) {
@@ -334,6 +336,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   setPreviewActive(idx: number) {
     if (this.data && this.data[idx]) {
       this.previewActive = idx;
+      this.cdr.detectChanges();
     }
   }
 

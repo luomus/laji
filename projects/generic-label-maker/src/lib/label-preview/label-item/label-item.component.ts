@@ -51,11 +51,11 @@ export class LabelItemComponent {
   }
 
   private getFieldValue(field: ILabelField, value: any): string {
-    if (typeof value === 'undefined') {
+    if (typeof value === 'undefined' || value === null) {
       return '';
     }
-    if (Array.isArray(this._data[field.field])) {
-      return this._data[field.field].map(val => this.getFieldValue(field, val)).join(field.join || ', ');
+    if (Array.isArray(value)) {
+      return value.map(val => this.getFieldValue(field, val)).join(field.join || ', ');
     }
     return field.valueMap && field.valueMap[value] || value;
   }

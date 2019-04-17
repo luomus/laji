@@ -7,9 +7,9 @@
   </div>
 </ng-template>
 <div class="more" (click)="toggleMore()" *ngIf="field.type !== 'qr-code'">
-  <i *ngIf="field._menuOpen || more; else up" class="glyphicon glyphicon-chevron-down"></i>
+  <ll-icon type="down" *ngIf="field._menuOpen || more; else up"></ll-icon>
   <ng-template #up>
-    <i class="glyphicon glyphicon-chevron-up"></i>
+    <ll-icon type="up"></ll-icon>
   </ng-template>
 </div>
 
