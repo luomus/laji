@@ -17,8 +17,19 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() showFullScreenControl = false;
   @Input() height = '605px';
+  @Input() set mapOptions(mapOptions: LajiMapOptions) {
+    this._mapOptions = {
+      ...this._mapOptions,
+      ...(mapOptions || {})
+    };
+  }
+  get mapOptions() {
+    return this._mapOptions;
+  }
 
-  mapOptions: LajiMapOptions = {
+  loading = false;
+
+  private _mapOptions: LajiMapOptions = {
     controls: {
       draw: false
     },
@@ -32,7 +43,6 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
     ],
     availableOverlayNameWhitelist: []
   };
-  loading = false;
 
   private layer: any;
 
