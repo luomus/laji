@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
 
 @Component({
   selector: 'label-designer',
   templateUrl: './label-designer.component.html',
-  styleUrls: ['./label-designer.component.scss']
+  styleUrls: ['./label-designer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelDesignerComponent implements OnInit {
+export class LabelDesignerComponent {
 
 
   @Input()
@@ -28,6 +29,10 @@ export class LabelDesignerComponent implements OnInit {
   viewSetting: IViewSettings = {
     magnification: 2
   };
+
+
+  @Input()
+  newSetup: ISetup;
 
   @Input()
   setup: ISetup = {
@@ -78,10 +83,15 @@ export class LabelDesignerComponent implements OnInit {
 
   @Output()
   html = new EventEmitter<string>();
+  @Output()
+  setupChange = new EventEmitter<ISetup>();
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
-  ngOnInit() {
+  updateSetup(setup: ISetup) {
+    this.setup = setup;
+    this.setupChange.emit(setup);
+    this.cdr.detectChanges();
   }
 
 }

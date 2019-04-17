@@ -6,5 +6,7 @@
   [newAvailableFields]="newAvailableFields"
   [(availableFields)]="availableFields"
   [(viewSettings)]="viewSetting"
-  [(setup)]="setup"
+  [setup]="setup"
+  (setupChange)="updateSetup($event)"
+  [newSetup]="newSetup"
 ></ll-label-maker>

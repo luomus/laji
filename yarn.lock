@@ -189,7 +189,6 @@
 "@angular/elements@7.2.9":
   version "7.2.9"
   resolved "https://registry.yarnpkg.com/@angular/elements/-/elements-7.2.9.tgz#8d95316b663265e84080ebecf80eb24974903ef3"
-  integrity sha512-xXmRGFd+oHOwck8ZVuRZDWgT4CPcAS/jyWCQ6y74mwQ006ivJ9w2fFGx+IKmRvBjoCHcUUupOop5GCJ3NlQAfQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -527,7 +526,6 @@
 "@types/jszip@^3.1.5":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@types/jszip/-/jszip-3.1.5.tgz#664b424b15aadf0489e871d319f4b18ddc6e24ea"
-  integrity sha512-DXjYsQr0B9rbjI8n7ZoIFXFMNHDBb9XLYRgwVYxhtsnr/HfFglpxb/InshOBAzkmW4WjgtvnA212voeVV2vwiA==
   dependencies:
     "@types/node" "*"
 
@@ -2737,7 +2735,6 @@ dns-txt@^2.0.2:
 document-register-element@^1.13.1:
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/document-register-element/-/document-register-element-1.13.1.tgz#dad8cb7be38e04ee3f56842e6cf81af46c1249ba"
-  integrity sha512-92ZyLDKg9j4rOll//NNXj25f+8rAzOkYsGJonhugKwXfeqH7bzs8Ucpvey0WzZ2ZzKdrvW9RnUw3UyOZ/uhBFw==
   dependencies:
     lightercollective "^0.1.0"
 
@@ -3596,10 +3593,9 @@ gaze@^1.0.0:
   dependencies:
     globule "^1.0.0"
 
-generic-label-maker@^0.0.16:
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-0.0.16.tgz#3f251bdeb654aa10ff24011053ca1321d78dfeb9"
-  integrity sha512-p/TuomR8cimbEBOxHIjSkvXP4SRBDdGWnCqLcP7Yrb2ZFtyAhRPHole2OkwIqrozkD1JshAQIcsoYzJ7Wy0bIg==
+generic-label-maker@^0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-0.0.18.tgz#8ac56b7a80dd57e06a42a2681d348fb157429f68"
   dependencies:
     tslib "^1.9.0"
 
@@ -4679,7 +4675,6 @@ jszip@^3.1.3:
 jszip@^3.2.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.2.1.tgz#c5d32df7274042282b157efb16e522b43435e01a"
-  integrity sha512-iCMBbo4eE5rb1VCpm5qXOAaUiRKRUKiItn8ah2YQQx9qymmSAY98eyQfioChEYcVQLh0zxJ3wS4A0mh90AVPvw==
   dependencies:
     lie "~3.3.0"
     pako "~1.0.2"
@@ -4798,7 +4793,6 @@ klaw-sync@^4.0.0:
 laji-form@^0.0.593:
   version "0.0.593"
   resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.593.tgz#a212b7ed78f070fb42aadc32761a2e9e90362828"
-  integrity sha512-w/G1TxjC1opyCkPNmDGVVxK1FLshlEnTiayuQvmkDtsrdd2xdRm2TxqZMQl4kaMM9BpTQkC2vg17aGDhIAdPCw==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -4973,7 +4967,6 @@ lie@~3.3.0:
 lightercollective@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.1.0.tgz#70df102c530dcb8d0ccabfe6175a8d00d5f61300"
-  integrity sha512-J9tg5uraYoQKaWbmrzDDexbG6hHnMcWS1qLYgJSWE+mpA3U5OCSeMUhb+K55otgZJ34oFdR0ECvdIb3xuO5JOQ==
 
 load-json-file@^1.0.0:
   version "1.1.0"
