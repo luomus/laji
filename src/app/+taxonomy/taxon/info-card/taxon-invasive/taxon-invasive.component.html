@@ -14,7 +14,7 @@
         <laji-taxon-info-row [label]="'MX.administrativeStatus' | label">
           <ul>
             <li *ngFor="let status of taxon.administrativeStatuses">
-              {{ status | label }}
+              <laji-administrative-status [status]="status"></laji-administrative-status>
             </li>
           </ul>
         </laji-taxon-info-row>

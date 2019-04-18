@@ -40,7 +40,9 @@
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.administrativeStatuses" [label]="'taxonomy.administrative.statuses' | translate">
   <ul>
-    <li *ngFor="let status of taxon.administrativeStatuses">{{ status | label }}</li>
+    <li *ngFor="let status of taxon.administrativeStatuses">
+      <laji-administrative-status [status]="status"></laji-administrative-status>
+    </li>
   </ul>
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.redListStatusesInFinland" [label]="'taxonomy.redListStatus2010Finland' | translate">

@@ -12,7 +12,7 @@ import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 
 
 
@@ -76,7 +76,8 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
               private sourceService: SourceService,
               private cd: ChangeDetectorRef,
               private logger: Logger,
-              private translate: TranslateService
+              private translate: TranslateService,
+              private adminStatusInfoPipe: AdminStatusInfoPipe
   ) {
   }
 
@@ -260,18 +261,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   private addMetadataInfo(options, data) {
     if (this.alt === 'MX.adminStatusEnum') {
-      let info = '';
-      const description = MultiLangService.getValue(data.administrativeStatusDescription, this.lang);
-      const link = MultiLangService.getValue(data.administrativeStatusLink, this.lang);
-      if (description) {
-        info += '<p>' + description + '</p>';
-      }
-      if (link) {
-        info += '<p>' + this.translate.instant('readMore') + ': <a href="' + link + '" target="_blank">' + link + '</a>';
-      }
-      if (info) {
-        options['info'] = info;
-      }
+      options['info'] = this.adminStatusInfoPipe.transform(data);
     }
   }
 }

@@ -66,6 +66,7 @@ import { TaxonDescriptionComponent } from './taxon/info-card/shared/taxon-descri
 import { TaxonInfoRowComponent } from './taxon/info-card/shared/taxon-info-row/taxon-info-row.component';
 import { BiogeographicalProvincesModule } from '../shared-modules/biogeographical-provinces/biogeographical-provinces.module';
 import { TaxonOccurrenceMapComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence-map/taxon-occurrence-map.component';
+import { AdministrativeStatusComponent } from './taxon/info-card/shared/administrative-status/administrative-status.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -96,7 +97,8 @@ import { TaxonOccurrenceMapComponent } from './taxon/info-card/taxon-occurrence/
     TaxonInvasiveComponent,
     TaxonDescriptionComponent,
     TaxonInfoRowComponent,
-    TaxonOccurrenceMapComponent
+    TaxonOccurrenceMapComponent,
+    AdministrativeStatusComponent
   ],
 })
 export class TaxonomyModule {
