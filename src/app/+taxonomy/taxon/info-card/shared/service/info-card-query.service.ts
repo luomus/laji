@@ -1,37 +1,18 @@
 import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQueryInterface';
 
 export class InfoCardQueryService {
-  static getSpecimenQuery(taxonId: string): WarehouseQueryInterface {
-    return {
-      taxonId: [taxonId],
-      superRecordBasis: ['PRESERVED_SPECIMEN'],
-      sourceId: ['KE.3', 'KE.167'],
-      cache: true
-    };
-  }
-
-  static getTypeSpecimenQuery(taxonId: string): WarehouseQueryInterface {
-    return {
-      taxonId: [taxonId],
-      superRecordBasis: ['PRESERVED_SPECIMEN'],
-      sourceId: ['KE.3', 'KE.167'],
-      typeSpecimen: true,
-      cache: true
-    };
-  }
-
-  static getCollectionSpecimenQuery(taxonId: string, collectionId?: string): WarehouseQueryInterface {
+  static getSpecimenQuery(taxonId: string, typeSpecimen?: boolean, collectionId?: string): WarehouseQueryInterface {
     return {
       taxonId: [taxonId],
       collectionId: collectionId ? [collectionId] : undefined,
       superRecordBasis: ['PRESERVED_SPECIMEN'],
       sourceId: ['KE.3', 'KE.167'],
-      typeSpecimen: false,
+      typeSpecimen: typeSpecimen,
       cache: true
     };
   }
 
-  static getReliableObservationQuery(taxonId: string): WarehouseQueryInterface {
+  static getReliableHumanObservationQuery(taxonId: string): WarehouseQueryInterface {
     return {
       taxonId: [taxonId],
       superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
@@ -40,20 +21,11 @@ export class InfoCardQueryService {
     };
   }
 
-  static getMapObservationQuery(taxonId: string): WarehouseQueryInterface {
+  static getFinnishObservationQuery(taxonId: string, mapQuery?: boolean): WarehouseQueryInterface {
     return {
       taxonId: [taxonId],
       countryId: ['ML.206'],
-      coordinateAccuracyMax: 10000,
-      taxonReliability: ['NEUTRAL', 'LIKELY', 'RELIABLE'],
-      cache: true
-    };
-  }
-
-  static getChartObservationQuery(taxonId: string): WarehouseQueryInterface {
-    return {
-      taxonId: [taxonId],
-      countryId: ['ML.206'],
+      coordinateAccuracyMax: mapQuery ? 10000 : undefined,
       taxonReliability: ['NEUTRAL', 'LIKELY', 'RELIABLE'],
       cache: true
     };

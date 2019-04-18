@@ -25,8 +25,8 @@ export class TaxonObservationsComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges() {
-    this.mapQuery = InfoCardQueryService.getMapObservationQuery(this.taxon.id);
-    this.chartQuery = InfoCardQueryService.getChartObservationQuery(this.taxon.id);
+    this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
+    this.chartQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id);
 
     this.hasMonthDayData = undefined;
     this.hasYearData = undefined;

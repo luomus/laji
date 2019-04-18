@@ -123,7 +123,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     let imageObs: Observable<any[]>;
     if (missingImages > 0 && this.isFromMasterChecklist) {
       imageObs = this.getImages(
-        InfoCardQueryService.getReliableObservationQuery(this.taxon.id),
+        InfoCardQueryService.getReliableHumanObservationQuery(this.taxon.id),
         missingImages
       ).pipe(
         switchMap(observationImages => {

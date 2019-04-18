@@ -27,9 +27,9 @@ export class TaxonImagesComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
-      this.typeSpecimenQuery = InfoCardQueryService.getTypeSpecimenQuery(this.taxon.id);
-      this.collectionSpecimenQuery = InfoCardQueryService.getCollectionSpecimenQuery(this.taxon.id);
-      this.reliableObservationQuery = InfoCardQueryService.getReliableObservationQuery(this.taxon.id);
+      this.typeSpecimenQuery = InfoCardQueryService.getSpecimenQuery(this.taxon.id, true);
+      this.collectionSpecimenQuery = InfoCardQueryService.getSpecimenQuery(this.taxon.id, false);
+      this.reliableObservationQuery = InfoCardQueryService.getReliableHumanObservationQuery(this.taxon.id);
 
       this.hasTypeSpecimens = undefined;
       this.hasCollectionImages = undefined;

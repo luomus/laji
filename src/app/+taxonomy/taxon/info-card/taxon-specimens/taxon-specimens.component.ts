@@ -34,8 +34,8 @@ export class TaxonSpecimensComponent implements OnChanges {
   ) { }
 
   ngOnChanges() {
-    this.typeSpecimenQuery = InfoCardQueryService.getTypeSpecimenQuery(this.taxon.id);
-    this.collectionSpecimenQuery = InfoCardQueryService.getCollectionSpecimenQuery(this.taxon.id);
+    this.typeSpecimenQuery = InfoCardQueryService.getSpecimenQuery(this.taxon.id, true);
+    this.collectionSpecimenQuery = InfoCardQueryService.getSpecimenQuery(this.taxon.id, false);
     this.collectionId = undefined;
   }
 

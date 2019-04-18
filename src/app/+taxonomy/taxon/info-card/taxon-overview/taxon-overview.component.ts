@@ -56,7 +56,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
 
   ngOnChanges() {
     this.getChildren();
-    this.mapQuery = InfoCardQueryService.getMapObservationQuery(this.taxon.id);
+    this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
   }
 
   ngOnDestroy() {
