@@ -425,6 +425,8 @@
       },
       "individualCount": "Yksilömäärä",
       "missing": "Tätä lajia ei ole arvioitu",
+      "missingInSpeciesLevel":  "Ei ole arvioitu lajitasolla",
+      "lowerTaxons": "Seuraavat alemmat tasot on arvioitu",
       "more": "Lisää tietoa <h1>LAJI.FI</h1>-portaalissa",
       "MX": {
         "iucnRE": "Suomesta hävinnyt",

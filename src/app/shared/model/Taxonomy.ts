@@ -241,6 +241,8 @@ export interface Taxonomy {
   occurrenceInFinlandSpecimenURI?: string;
 
   typeSpecimenURI?: string;
+
+  hasLatestRedListEvaluation?: boolean;
 }
 
 export interface RedListEvaluation {
