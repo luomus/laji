@@ -120,8 +120,10 @@ export class ImportService {
       return parentData[LEVEL_DOCUMENT].hash;
     } else if (parentData[LEVEL_GATHERING]) {
       return parentData[LEVEL_GATHERING].hash;
+    } else if (parentData[LEVEL_UNIT]) {
+      return parentData[LEVEL_UNIT].hash;
     }
-    return parentData[LEVEL_UNIT].hash;
+    return false;
   }
 
   private findParentHash(row: ILevelData, level: string) {
@@ -214,6 +216,9 @@ export class ImportService {
         });
       }
       const rootHash = this.getRootHash(parentData);
+      if (rootHash === false) {
+        return;
+      }
       if (!documents[rootHash]) {
         documents[rootHash] = [];
       }

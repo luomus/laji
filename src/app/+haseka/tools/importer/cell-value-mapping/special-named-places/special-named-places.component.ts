@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { ExcelToolService } from '../../../service/excel-tool.service';
-import { map } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -26,7 +26,8 @@ export class SpecialNamedPlacesComponent implements OnInit {
 
   ngOnInit() {
     this.namedPlaces$ = this.excelToolService.getNamedPlacesList(this.formID).pipe(
-      map(places => [VALUE_IGNORE, ...places])
+      map(places => [VALUE_IGNORE, ...places]),
+      share()
     );
   }
 
