@@ -3,7 +3,8 @@ import {
   OnInit,
   OnDestroy,
   ChangeDetectorRef,
-  HostListener
+  ChangeDetectionStrategy,
+  Inject
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -16,11 +17,13 @@ import {Logger} from '../../shared/logger';
 import {Title} from '@angular/platform-browser';
 import {TranslateService} from '@ngx-translate/core';
 import {FooterService} from '../../shared/service/footer.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
-  styleUrls: ['./taxon.component.css']
+  styleUrls: ['./taxon.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonComponent implements OnInit, OnDestroy {
   taxon: Taxonomy;
@@ -36,7 +39,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
   loading = false;
   private initTaxonSub: Subscription;
 
-  private dragging = false;
+  private onMouseMove = this.updateSidebarWidth.bind(this);
+  private onMouseUp  = this.stopDragging.bind(this);
+
   private subParam: Subscription;
 
   constructor(
@@ -48,7 +53,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private title: Title,
     private translate: TranslateService,
     private footerService: FooterService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit() {
@@ -86,22 +92,27 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   startDragging(e) {
     e.preventDefault();
-    this.dragging = true;
+    this.document.addEventListener(
+      'mousemove', this.onMouseMove
+    );
+    this.document.addEventListener(
+      'mouseup', this.onMouseUp
+    );
   }
 
-  @HostListener('document:mousemove', ['$event'])
-  onMouseMove(e) {
-    if (this.dragging) {
-      e.preventDefault();
-      this.sidebarWidth = Math.min(Math.max(e.pageX + 2, 120), 450);
-    }
+  private updateSidebarWidth(e) {
+    e.preventDefault();
+    this.sidebarWidth = Math.min(Math.max(e.pageX + 2, 120), 450);
+    this.cd.markForCheck();
   }
 
-  @HostListener('document:mouseup', ['$event'])
-  onMouseUp(e) {
-    if (this.dragging) {
-      this.dragging = false;
-    }
+  private stopDragging(e) {
+    this.document.removeEventListener(
+      'mousemove', this.onMouseMove
+    );
+    this.document.removeEventListener(
+      'mouseup', this.onMouseUp
+    );
   }
 
   toggleSidebar() {

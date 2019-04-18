@@ -1,13 +1,16 @@
-import { Component, OnChanges, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import {Component, OnChanges, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
+import {WarehouseQueryInterface} from '../../../../shared/model/WarehouseQueryInterface';
+import {InfoCardQueryService} from '../shared/service/info-card-query.service';
 
 @Component({
   selector: 'laji-taxon-overview',
   templateUrl: './taxon-overview.component.html',
-  styleUrls: ['./taxon-overview.component.scss']
+  styleUrls: ['./taxon-overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
@@ -20,6 +23,8 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   ingress: any;
   description: any;
   _taxonDescription: TaxonomyDescription;
+
+  mapQuery: WarehouseQueryInterface;
 
   private childrenSub: Subscription;
 
@@ -51,6 +56,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
 
   ngOnChanges() {
     this.getChildren();
+    this.mapQuery = InfoCardQueryService.getMapObservationQuery(this.taxon.id);
   }
 
   ngOnDestroy() {

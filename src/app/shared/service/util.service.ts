@@ -31,12 +31,18 @@ export class Util {
     return Object.keys(value).length === 0;
   }
 
-  public static removeUndefinedFromObject(obj: object) {
+  /**
+   * Remove undefined values from object and any key specified by the key parameter
+   *
+   * @param obj object to remove keys from
+   * @param keys array of keys that should be removed
+   */
+  public static removeFromObject(obj: object, keys?: string[]) {
     if (typeof obj !== 'object') {
       return obj;
     }
     return Object.keys(obj).reduce((cumulative, current) => {
-      if (typeof obj[current] !== 'undefined') {
+      if (typeof obj[current] !== 'undefined' && (!keys || keys.indexOf(current) === -1)) {
         cumulative[current] = obj[current];
       }
       return cumulative;

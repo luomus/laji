@@ -13,10 +13,10 @@
   >
   <div class="editor-item-wrap">
     <div class="drag-handle"><ll-icon type="move" cdkDragHandle size="18"></ll-icon></div>
-    <div class="resize-handle" cdkDrag (cdkDragStarted)="recordElementDimensions()" (cdkDragEnded)="onResizeEnd($event)" (cdkDragMoved)="onResize($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
-    <div class="option-handle"><i class="glyphicon glyphicon-edit" (click)="showSettings.emit(_item)"></i></div>
-    <div class="done-handle"><ll-icon size="18" type="check" (click)="done.emit()"></ll-icon></div>
-    <div class="editor-item-content" (click)="itemClick.emit(_item)">
+    <div class="resize-handle" cdkDrag (cdkDragStarted)="recordElementDimensions()" (cdkDragEnded)="onResizeEnd($event)" (cdkDragMoved)="onResize($event)"><ll-icon type="resize" size="18"></ll-icon></div>
+    <div class="option-handle"><ll-icon size="18" type="edit" (click)="showSettings.emit(_item)"></ll-icon></div>
+    <div class="done-handle"><ll-icon size="20" type="check" (click)="done.emit()"></ll-icon></div>
+    <div class="editor-item-content ellipsis" (click)="itemClick.emit(_item)">
       <ng-container *ngFor="let field of _item.fields; let l=last">
         <ng-container *ngIf="field.type === 'qr-code'; else plainText">
           <qrcode [qrdata]="field.content" [size]="size" [level]="'H'" [usesvg]="true"></qrcode>

@@ -18,7 +18,7 @@ function createWindow() {
 
   win.loadURL(
     url.format({
-      pathname: path.join(__dirname, `/../../dist/generic-label-maker-electron/index.html`),
+      pathname: path.join(__dirname, `/../generic-label-maker-electron/index.html`),
       protocol: 'file:',
       slashes: true
     })

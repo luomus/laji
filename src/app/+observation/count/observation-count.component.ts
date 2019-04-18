@@ -1,7 +1,7 @@
 
-import {concat, take, delay, retryWhen, timeout} from 'rxjs/operators';
+import { concat, take, delay, retryWhen } from 'rxjs/operators';
 import { Subscription, throwError as observableThrowError } from 'rxjs';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { Logger } from '../../shared/logger/logger.service';
@@ -19,14 +19,13 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   @Input() pick: any;
   @Input() query: any;
   @Input() overrideInQuery: WarehouseQueryInterface;
-  @Input() pageSize = 20;
-  @Input() tick: number;
   @Input() lightLoader = false;
-  @Input() timeout = 10000;
 
   public count = '';
   public loading = true;
 
+
+  private pageSize = 1000;
   private subCount: Subscription;
   private cache: string;
 
@@ -37,12 +36,14 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   ) {
   }
 
-  ngOnChanges() {
-    const key = JSON.stringify(this.query);
-    if (this.cache === key) {
-      return;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['query']) {
+      const key = JSON.stringify(WarehouseApi.prepareCountQuery(this.query));
+      if (this.cache === key) {
+        return;
+      }
+      this.cache = key;
     }
-    this.cache = key;
     this.update();
   }
 
@@ -68,11 +69,9 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   }
 
   private updateCount(query) {
-    this.subCount = this.warehouseService
-      .warehouseQueryCountGet(query).pipe(
-      timeout(this.timeout),
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), )), )
-      .subscribe(result => {
+    this.subCount = this.warehouseService.warehouseQueryCountGet(query).pipe(
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))
+      ).subscribe(result => {
           this.loading = false;
           this.count = '' + (result.total || 0);
           this.changeDetectorRef.markForCheck();
@@ -92,11 +91,9 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
       this.pick = Array.isArray(this.pick) ? this.pick : [this.pick];
     }
 
-    this.subCount = this.warehouseService
-      .warehouseQueryAggregateGet(query, [this.field], undefined, pageSize).pipe(
-      timeout(this.timeout),
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), )), )
-      .subscribe(
+    this.subCount = this.warehouseService.warehouseQueryAggregateGet(query, [this.field], undefined, pageSize).pipe(
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))
+      ).subscribe(
         result => {
           if (this.pick) {
             if (result.results) {

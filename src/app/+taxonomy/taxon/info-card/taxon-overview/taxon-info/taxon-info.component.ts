@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-info',
   templateUrl: './taxon-info.component.html',
-  styleUrls: ['./taxon-info.component.css']
+  styleUrls: ['./taxon-info.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonInfoComponent {
 

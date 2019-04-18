@@ -11,6 +11,10 @@
   display: inline;
   font-weight: normal;
 }
+.small-flag {
+  margin-left: 4px;
+  vertical-align: baseline;
+}
 
 @media only screen and (min-width : 768px) {
   :host {

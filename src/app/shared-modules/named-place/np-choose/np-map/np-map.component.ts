@@ -3,7 +3,7 @@ import {
   AfterViewInit, ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input,
+  Input, NgZone,
   OnChanges,
   OnInit,
   Output,
@@ -63,6 +63,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
     private labelPipe: LabelPipe,
     private areaNamePipe: AreaNamePipe,
     private cdr: ChangeDetectorRef,
+    private zone: NgZone
   ) { }
 
   ngOnInit() {
@@ -158,7 +159,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
         onChange: (events) => {
           events.forEach(e => {
             if (e.type === 'active') {
-              this.activePlaceChange.emit(e.idx);
+              this.zone.run(() => {
+                this.activePlaceChange.emit(e.idx);
+              });
             }
           });
         },

@@ -13,7 +13,7 @@ import { Title } from '@angular/platform-browser';
           <ol class="breadcrumb">
             <li *ngFor="let parent of parents; let f=first">
               <a [routerLink]="[(f ? '/about' : '/about/' + parent.id)] | localize">
-                {{ parent.menuTitle }}
+                {{ parent.title }}
               </a>
             </li>
             <li class="active">{{ title }}</li>
@@ -35,7 +35,7 @@ import { Title } from '@angular/platform-browser';
               <ul>
                 <li *ngFor="let child of children">
                   <a [routerLink]="['/about/' + child.id] | localize">
-                    {{ child.menuTitle }}
+                    {{ child.title }}
                   </a>
                 </li>
               </ul>

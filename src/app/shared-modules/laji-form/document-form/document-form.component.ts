@@ -278,10 +278,12 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         data => {
           this.formService
             .store(data.formData)
-            .subscribe(id => this.tmpLoad.emit({
-              formID: this.formId,
-              tmpID: id
-            }));
+            .subscribe(id => {
+              this.tmpLoad.emit({
+                formID: this.formId,
+                tmpID: id
+              });
+            });
         },
         err => {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';

@@ -31,7 +31,7 @@ export class LabelItemComponent {
     this.initContent();
   }
 
-  initContent() {
+  private initContent() {
     if (!this._data || !this._item) {
       return;
     }
@@ -43,10 +43,20 @@ export class LabelItemComponent {
       } else if (field.separatorAlways || this.labelService.hasValue(this._data, field.field)) {
         result.push({
           ...field,
-          content: typeof this._data[field.field] !== 'undefined' ? this._data[field.field] : ''
+          content: this.getFieldValue(field, this._data[field.field])
         });
       }
     });
     this._item.fields = result;
+  }
+
+  private getFieldValue(field: ILabelField, value: any): string {
+    if (typeof value === 'undefined' || value === null) {
+      return '';
+    }
+    if (Array.isArray(value)) {
+      return value.map(val => this.getFieldValue(field, val)).join(field.join || ', ');
+    }
+    return field.valueMap && field.valueMap[value] || value;
   }
 }

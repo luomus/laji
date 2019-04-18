@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
 import { ILabelItem, ILabelStyle, ISetup, TLabelLocation } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
+import { TranslateService } from '../../translate/translate.service';
 
 @Component({
   selector: 'll-label-editor',
@@ -14,6 +15,7 @@ export class LabelEditorComponent {
   _magnification = 2;
   _magnifiedStyle: ILabelStyle;
   init = false;
+  minSize = 10;
 
   @Input() grid: number;
   @Input() gridVisible: boolean;
@@ -24,7 +26,10 @@ export class LabelEditorComponent {
   @Output() showSettings = new EventEmitter<ILabelItem>();
   @Output() done = new EventEmitter<void>();
 
-  constructor(private labelService: LabelService) {
+  constructor(
+    private labelService: LabelService,
+    private translateService: TranslateService
+  ) {
     this.init = labelService.hasRation();
   }
 
@@ -75,7 +80,11 @@ export class LabelEditorComponent {
     const {width, height} = this.labelService.countMinLabelSize(this._setup);
     if ((target === 'height.mm' && value < height) || (target === 'width.mm' && value < width)) {
       element.value = '' + this._setup[sec][target];
-      return alert('Field within the label is blocking the resize.\nRemove or resize the field in the label!');
+      return alert(this.translateService.get('Field within the label is blocking the resize!'));
+    }
+    if (value < this.minSize) {
+      element.value = '' + this._setup[sec][target];
+      return alert(this.translateService.get('Cannot make labels smaller than {{size}}mm!', {size: this.minSize}));
     }
 
     this._setup = {

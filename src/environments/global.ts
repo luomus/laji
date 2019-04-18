@@ -20,6 +20,32 @@ export const Global = {
     namedPlace: 'MHL.36',
     collectionContest: 'MHL.25'
   },
+  _forms: {
+    'MHL.3': {
+      formID: 'MHL.3',
+      navLinks: {
+        stats: {
+          routerLink: ['stats'],
+          label: 'nafi.stats',
+          children: [
+            {
+              routerLink: ['stats', 'species'],
+              label: 'wbc.stats.species'
+            },
+            {
+              routerLink: ['stats', 'routes'],
+              label: 'wbc.stats.routes'
+            },
+            {
+              routerLink: ['stats', 'censuses'],
+              label: 'wbc.stats.censuses'
+            }
+          ]
+        }
+      },
+      navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'formPermissions']
+    }
+  },
   canHaveTemplate: [
     'JX.519',
     'MHL.6',
@@ -32,6 +58,8 @@ export const Global = {
     nafi: 'HR.175',
     wbc: 'HR.39',
     lineTransect: 'HR.61',
+    lineTransectEiVakio: 'HR.2691',
+    lineTransectKartoitus: 'HR.2692',
     invasiveControl: 'HR.2049',
     municipalityMonitoring: 'HR.2891'
   },

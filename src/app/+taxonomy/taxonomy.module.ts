@@ -51,24 +51,28 @@ import { TaxonTaxonomyComponent } from './taxon/info-card/taxon-taxonomy/taxon-t
 import { DownloadModule } from '../shared-modules/download/download.module';
 import {
   TaxonDescriptionSourceComponent
-} from './taxon/info-card/taxon-biology/taxon-description-source/taxon-description-source.component';
+} from './taxon/info-card/shared/component/taxon-description-source/taxon-description-source.component';
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
 import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
 import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
 import { TaxonObservationsComponent } from './taxon/info-card/taxon-observations/taxon-observations.component';
 import { InfoCardHeaderComponent } from './taxon/info-card/info-card-header/info-card-header.component';
-import { TaxonYearChartComponent } from './taxon/info-card/taxon-observations/taxon-year-chart/taxon-year-chart.component';
 import { TaxonSpecimensComponent } from './taxon/info-card/taxon-specimens/taxon-specimens.component';
 import { TaxonEndangermentComponent } from './taxon/info-card/taxon-endangerment/taxon-endangerment.component';
 import { TaxonInvasiveComponent } from './taxon/info-card/taxon-invasive/taxon-invasive.component';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { IucnCommonModule } from '../shared-modules/iucn/iucn.module';
+import { TaxonDescriptionComponent } from './taxon/info-card/shared/component/taxon-description/taxon-description.component';
+import { TaxonInfoRowComponent } from './taxon/info-card/shared/component/taxon-info-row/taxon-info-row.component';
+import { BiogeographicalProvincesModule } from '../shared-modules/biogeographical-provinces/biogeographical-provinces.module';
+import { TaxonOccurrenceMapComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence-map/taxon-occurrence-map.component';
+import { AdministrativeStatusComponent } from './taxon/info-card/shared/component/administrative-status/administrative-status.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
-    DocumentViewerModule, IucnCommonModule
+    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule
   ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonTaxonomyService],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
@@ -88,10 +92,13 @@ import { IucnCommonModule } from '../shared-modules/iucn/iucn.module';
     TaxonOccurrenceComponent,
     TaxonObservationsComponent,
     InfoCardHeaderComponent,
-    TaxonYearChartComponent,
     TaxonSpecimensComponent,
     TaxonEndangermentComponent,
-    TaxonInvasiveComponent
+    TaxonInvasiveComponent,
+    TaxonDescriptionComponent,
+    TaxonInfoRowComponent,
+    TaxonOccurrenceMapComponent,
+    AdministrativeStatusComponent
   ],
 })
 export class TaxonomyModule {

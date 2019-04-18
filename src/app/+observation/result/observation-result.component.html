@@ -12,14 +12,10 @@
   <li class="counts">
     <strong *ngIf="active !== 'finnish'">
       <laji-observation-count
-        [timeout]="30000"
-        [query]="searchQuery.query"
-        [tick]="searchQuery.tack"></laji-observation-count>
+        [query]="searchQuery.query"></laji-observation-count>
       {{ 'observation.results.observation' | translate }}
       <laji-observation-count
-        [timeout]="30000"
         [query]="searchQuery.query"
-        [tick]="searchQuery.tack"
         [field]="'unit.linkings.taxon.speciesId'"
         [overrideInQuery]="{includeNonValidTaxa: false}">
       </laji-observation-count>
@@ -27,16 +23,12 @@
     </strong>
     <strong *ngIf="active === 'finnish'">
       <laji-observation-count
-        [timeout]="30000"
         [overrideInQuery]="{countryId: 'ML.206'}"
-        [query]="searchQuery.query"
-        [tick]="searchQuery.tack"></laji-observation-count>
+        [query]="searchQuery.query"></laji-observation-count>
       {{ 'observation.results.observation' | translate }}
       <laji-observation-count
-        [timeout]="30000"
         [overrideInQuery]="{countryId: 'ML.206', includeNonValidTaxa: false}"
         [query]="searchQuery.query"
-        [tick]="searchQuery.tack"
         [field]="'unit.linkings.taxon.speciesId'">
       </laji-observation-count>
       {{ 'observation.results.species' | translate }}
@@ -133,6 +125,35 @@
             [showLegend]="true"
             [visible]="active === 'stats'"
           ></laji-observation-chart>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div [hidden]="!hasYearData"
+             class="panel panel-default"
+             laji-panel
+             [title]="'observation.results.yearChart' | translate"
+             [open]="true"
+             [autoToggle]="true"
+        >
+          <p class="disclaimer">
+            {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
+          </p>
+          <laji-observation-year-chart
+            [query]="searchQuery.query"
+            (hasData)="hasYearData = $event"
+          ></laji-observation-year-chart>
+        </div>
+        <div [hidden]="!hasMonthDayData"
+             class="panel panel-default"
+             laji-panel
+             [title]="'observation.results.monthDayChart' | translate"
+             [open]="true"
+             [autoToggle]="true"
+        >
+          <laji-observation-month-day-chart
+            [query]="searchQuery.query"
+            (hasData)="hasMonthDayData = $event"
+          ></laji-observation-month-day-chart>
         </div>
       </div>
       <div class="form-group spacer">

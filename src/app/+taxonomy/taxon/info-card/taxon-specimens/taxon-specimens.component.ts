@@ -1,16 +1,27 @@
-import {Component, OnChanges, Input, ViewChild} from '@angular/core';
+import {Component, OnChanges, Input, ViewChild, ChangeDetectionStrategy, Inject} from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import {ModalDirective} from 'ngx-bootstrap';
 import { IdService } from '../../../../shared/service/id.service';
+import { DOCUMENT } from '@angular/common';
+import {WarehouseQueryInterface} from '../../../../shared/model/WarehouseQueryInterface';
+import {InfoCardQueryService} from '../shared/service/info-card-query.service';
 
 @Component({
   selector: 'laji-taxon-specimens',
   templateUrl: './taxon-specimens.component.html',
-  styleUrls: ['./taxon-specimens.component.scss']
+  styleUrls: ['./taxon-specimens.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonSpecimensComponent implements OnChanges {
   @ViewChild('documentModal') public modal: ModalDirective;
   @Input() taxon: Taxonomy;
+
+  typeSpecimenQuery: WarehouseQueryInterface;
+  collectionSpecimenQuery: WarehouseQueryInterface;
+  collectionQuery: WarehouseQueryInterface;
+
+  typeSpecimensTotal: number;
+  collectionsTotal: number;
 
   collectionId: string;
 
@@ -18,9 +29,13 @@ export class TaxonSpecimensComponent implements OnChanges {
   highlightId: string;
   documentModalVisible = false;
 
-  constructor() { }
+  constructor(
+    @Inject(DOCUMENT) private document: Document
+  ) { }
 
   ngOnChanges() {
+    this.typeSpecimenQuery = InfoCardQueryService.getTypeSpecimenQuery(this.taxon.id);
+    this.collectionSpecimenQuery = InfoCardQueryService.getCollectionSpecimenQuery(this.taxon.id);
     this.collectionId = undefined;
   }
 
@@ -42,8 +57,10 @@ export class TaxonSpecimensComponent implements OnChanges {
     const row = event.row || {};
     if (row.document && row.document.collectionId) {
       this.collectionId = IdService.getId(row.document.collectionId);
+      this.collectionQuery = InfoCardQueryService.getCollectionSpecimenQuery(this.taxon.id, this.collectionId);
+
       setTimeout(() => {
-        const el = document.getElementById('collectionSpecimens');
+        const el = this.document.getElementById('collectionSpecimens');
         if (el) {
           el.scrollIntoView();
         }

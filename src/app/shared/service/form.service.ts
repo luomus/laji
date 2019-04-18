@@ -28,9 +28,9 @@ export class FormService {
     [environment.wbcForm]: '/theme/talvilintulaskenta/form',
     [environment.invasiveControlForm]: '/theme/vieraslajit/form',
     [environment.municipalityMonitoringForm]: '/theme/kunnat/form',
-    [environment.lineTransectForm]: '/theme/linjalaskenta/form',
-    [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/ei-vakiolinjat',
-    [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/kartoitus',
+    [environment.lineTransectForm]: '/theme/linjalaskenta/form/MHL.1',
+    [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/form/MHL.27',
+    [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/form/MHL.28',
     [environment.lolifeForm]: '/theme/lolife/form',
     default: '/vihko'
   };
@@ -89,6 +89,10 @@ export class FormService {
             this.formDataStorage = {...this.formDataStorage};
             this.localChanged.emit(true);
           }
+        }
+        if (this.currentKey === id) {
+          this.currentData = undefined;
+          this.currentKey = undefined;
         }
         return ObservableOf(true);
       }))

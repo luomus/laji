@@ -14,15 +14,15 @@
 {
   title: 'taxonomy.typeSpecimens',
   hasData: 'hasTypeSpecimens',
-  query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: true, cache: true}
+  query: typeSpecimenQuery
 }, {
   title: 'taxonomy.collectionSpecimens',
   hasData: 'hasCollectionImages',
-  query: {taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false, cache: true}
+  query: collectionSpecimenQuery
 }, {
   title: 'taxonomy.confirmedObservations',
   hasData: 'hasObservationImages',
-  query: {taxonId: [taxon.id], superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'], taxonReliability: ['RELIABLE'], cache: true}
+  query: reliableObservationQuery
 }]">
     <h3 *ngIf="this[item.hasData]">{{ item.title | translate }}</h3>
     <div class="gallery-container" [hidden]="this[item.hasData] === false">

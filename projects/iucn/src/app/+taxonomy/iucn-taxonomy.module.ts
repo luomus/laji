@@ -28,6 +28,7 @@ import { ActiveFiltersComponent } from './list/active-filters/active-filters.com
 import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { SelectFieldsModule } from '../../../../../src/app/shared-modules/select-fields/select-fields.module';
 import { DownloadModule } from '../../../../../src/app/shared-modules/download/download.module';
+import { IucnCommonModule } from '../../../../../src/app/shared-modules/iucn/iucn.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -41,7 +42,8 @@ import { DownloadModule } from '../../../../../src/app/shared-modules/download/d
     DatatableModule,
     NgSelectModule,
     SelectFieldsModule,
-    DownloadModule
+    DownloadModule,
+    IucnCommonModule
   ],
   declarations: [
     InfoCardComponent,

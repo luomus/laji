@@ -1,6 +1,6 @@
 <ng-container *ngIf="visible$ | async">
-  <div class="info-window" *ngIf="data$ | async; let data">
-    <div class="title">
+  <div class="info-window" cdkDrag *ngIf="data$ | async; let data">
+    <div class="title" cdkDragHandle>
       <span [innerHTML]="data.title"></span>
       <div class="close" (click)="infoWindowService.close()">
         <ll-icon type="close"></ll-icon>
@@ -20,14 +20,14 @@
     <div class="actions" *ngIf="data.actionTypes">
       <ng-container [ngSwitch]="data.actionTypes">
         <ng-container *ngSwitchCase="'yesNo'">
-          <div class="btn btn-default" (click)="infoWindowService.close(true)">Yes</div>
-          <div class="btn btn-default" (click)="infoWindowService.close(false)">No</div>
+          <div class="btn btn-default" (click)="infoWindowService.close(true)">{{ 'Yes' | translate }}</div>
+          <div class="btn btn-default" (click)="infoWindowService.close(false)">{{ 'No' | translate }}</div>
         </ng-container>
         <ng-container *ngSwitchCase="'cancel'">
-          <div class="btn btn-default" (click)="infoWindowService.close()">Cancel</div>
+          <div class="btn btn-default" (click)="infoWindowService.close()">{{ 'Cancel' | translate }}</div>
         </ng-container>
         <ng-container *ngSwitchDefault>
-          <div class="btn btn-default" (click)="infoWindowService.close()">Ok</div>
+          <div class="btn btn-default" (click)="infoWindowService.close()">{{ 'Ok' | translate }}</div>
         </ng-container>
       </ng-container>
     </div>

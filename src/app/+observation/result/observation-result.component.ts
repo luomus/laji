@@ -25,6 +25,8 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   public activated = {};
   public queryParams = {};
   public lastAllActive = 'map';
+  hasMonthDayData: boolean;
+  hasYearData: boolean;
 
   private subQueryUpdate: Subscription;
   private _active;

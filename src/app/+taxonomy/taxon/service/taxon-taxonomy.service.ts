@@ -166,6 +166,7 @@ export class TaxonTaxonomyService {
       'scientificName',
       'cursiveName',
       'taxonRank',
+      'finnish',
       'countOfFinnishSpecies'
     ].join(',');
   }

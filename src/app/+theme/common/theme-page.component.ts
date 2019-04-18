@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { UserService } from '../../shared/service/user.service';
 
 @Component({
     selector: 'laji-theme-page',
@@ -6,17 +7,32 @@ import { Component, Input } from '@angular/core';
 <div class="container-fluid">
     <div class="row" id="wrapper">
         <div *ngIf='showNav' class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
-            <h1>{{ title }}</h1>
+            <h1 [innerHTML]="title | translate"></h1>
             <ul *ngIf="navLinks">
                 <ng-container *ngFor="let link of navLinks">
-                    <li *ngIf="link.visible">
-                        <a routerLinkActive="laji-sidebar-active"
+                    <li>
+                        <a [class]="link.active ? 'laji-sidebar-active' : ''"
                            [routerLink]="link.routerLink">
-                            {{ link.label }}
+                            {{ link.label | translate }}
                         </a>
+                        <ul *ngIf="link.children && link.active" class="nested">
+                          <ng-container *ngFor="let childLink of link.children">
+                            <li>
+                              <a [class]="childLink.active ? 'laji-sidebar-active' : ''"
+                                 [routerLink]="childLink.routerLink" >
+                                {{ childLink.label | translate }}
+                              </a>
+                            </li>
+                          </ng-container>
+                        </ul>
                     </li>
                 </ng-container>
             </ul>
+            <laji-haseka-latest [userToken]="userService.getToken()"
+                                [forms]="[formID]"
+                                [tmpOnly]="true"
+                                *ngIf="userService.isLoggedIn$ | async">
+            </laji-haseka-latest>
             <ng-content select='nav'></ng-content>
         </div>
         <div class="content"
@@ -28,7 +44,6 @@ import { Component, Input } from '@angular/core';
     `,
     styles: [`
     :host {
-        height: 100%;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
@@ -43,6 +58,9 @@ import { Component, Input } from '@angular/core';
         padding: 2em 2em;
         padding-top: 1em;
     }
+    .nested li a {
+      padding-left: 55px;
+    }
     @media only screen and (min-width : 768px) {
         #wrapper {
             display: flex;
@@ -56,6 +74,8 @@ export class ThemePageComponent {
         {
             routerLink: string[], label: string, visible: boolean
         }[];
-    // tslint:disable-next-line:whitespace
-    @Input() showNav? = true;
+    @Input() showNav ? = true;
+    @Input() formID: string;
+
+    constructor(private userService: UserService) { }
 }

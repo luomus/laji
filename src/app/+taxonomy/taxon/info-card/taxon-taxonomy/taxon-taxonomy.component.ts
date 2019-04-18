@@ -1,5 +1,13 @@
-import {ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, HostBinding} from '@angular/core';
-import {Taxonomy, TaxonomyDescription, TaxonomyDescriptionGroup} from '../../../../shared/model/Taxonomy';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  ChangeDetectionStrategy
+} from '@angular/core';
+import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
 import {Subscription} from 'rxjs';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 import {TranslateService} from '@ngx-translate/core';
@@ -7,13 +15,12 @@ import {TranslateService} from '@ngx-translate/core';
 @Component({
   selector: 'laji-taxon-taxonomy',
   templateUrl: './taxon-taxonomy.component.html',
-  styleUrls: ['./taxon-taxonomy.component.scss']
+  styleUrls: ['./taxon-taxonomy.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
-
-  taxonomyDescriptions: TaxonomyDescriptionGroup;
-  _taxonDescription: TaxonomyDescription;
+  @Input() taxonDescription: TaxonomyDescription[];
 
   synonymType: string;
   synonymTypes = [
@@ -37,19 +44,6 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
     private taxonService: TaxonomyApi,
     private cd: ChangeDetectorRef
   ) { }
-
-  @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
-    this.taxonomyDescriptions = undefined;
-    this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription[0] : undefined;
-
-    if (this._taxonDescription) {
-      (this._taxonDescription.groups || []).forEach(group => {
-        if (group.group === 'MX.SDVG14') {
-          this.taxonomyDescriptions = group;
-        }
-      });
-    }
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {

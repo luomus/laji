@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { IPageStyle, ISetup } from '../../generic-label-maker.interface';
 import { IPageLayout } from '../../label.service';
 

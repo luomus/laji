@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ISetup, ILabelStyle } from './generic-label-maker.interface';
+import { ILabelStyle, ISetup } from './generic-label-maker.interface';
 
 export interface IPageLayout {
   cols: number;

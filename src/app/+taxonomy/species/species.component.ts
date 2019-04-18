@@ -1,5 +1,16 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,7 +21,8 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'laji-taxon-browse',
   templateUrl: './species.component.html',
-  styleUrls: ['./species.component.css']
+  styleUrls: ['./species.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesComponent implements OnInit, OnDestroy {
   @ViewChild('header') headerRef: ElementRef;
@@ -21,8 +33,8 @@ export class SpeciesComponent implements OnInit, OnDestroy {
   public stickyFilter = false;
   public showFilter = true;
 
-  private subData: Subscription;
   private subParams: Subscription;
+  private subQueryUpdate: Subscription;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -44,6 +56,12 @@ export class SpeciesComponent implements OnInit, OnDestroy {
         this.activated[tab] = true;
         this.cd.markForCheck();
       });
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
+      () => {
+        this.activated = {[this.active]: true};
+        this.cd.markForCheck();
+      }
+    );
 
     this.searchQuery.setQueryFromParams(this.route.snapshot.queryParams);
     this.setFilterPosition();
@@ -51,11 +69,12 @@ export class SpeciesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.footerService.footerVisible = true;
-    if (this.subData) {
-      this.subData.unsubscribe();
-    }
+
     if (this.subParams) {
       this.subParams.unsubscribe();
+    }
+    if (this.subQueryUpdate) {
+      this.subQueryUpdate.unsubscribe();
     }
   }
 

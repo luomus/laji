@@ -37,7 +37,7 @@
         {{ 'taxonomy.map.disclaimer' | translate }}
       </p>
       <laji-ykj-map
-        [query]="{taxonId: [taxon.id], countryId: ['ML.206'], cache: true}"
+        [query]="mapQuery"
         [height]="'600px'"
         [type]="'count'"
         [types]="['count']"
@@ -104,18 +104,20 @@
     </div>
   </div>
   <div class="col-xs-12" *ngIf="taxon.hasChildren">
-    <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.speciesPieChartTitle' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-species-pie
-        [children]="taxonChildren"
-        (taxonSelect)="taxonSelect.emit($event)"
-      ></laji-species-pie>
-    </div>
+    <ng-container *lajiHideForIe>
+      <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0 && taxon.taxonRank !== 'MX.genus' && taxon.taxonRank !== 'MX.subgenus'"
+           class="panel panel-default"
+           laji-panel
+           [title]="'taxonomy.speciesPieChartTitle' | translate"
+           [open]="true"
+           [autoToggle]="true"
+      >
+        <laji-species-pie
+          [children]="taxonChildren"
+          (taxonSelect)="taxonSelect.emit($event)"
+        ></laji-species-pie>
+      </div>
+    </ng-container>
 
     <div *ngIf="taxon.hasChildren"
          class="panel panel-default"
@@ -143,6 +145,12 @@
             name: 'scientificName',
             label: 'taxonomy.scientific.name',
             cellTemplate: 'taxonScientificName',
+            sortable: true
+          },
+          {
+            name: 'finnish',
+            label: 'taxonomy.finnish',
+            cellTemplate: 'boolean',
             sortable: true
           }
         ]">

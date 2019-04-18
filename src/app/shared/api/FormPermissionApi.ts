@@ -113,7 +113,7 @@ export class FormPermissionApi {
     public acceptRequestWithHttpInfo(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<HttpResponse<FormPermission>> {
         const path = this.basePath + `/formPermissions/${collectionID}/${personID}`;
 
-        const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+        const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionAcceptRequest.');
@@ -145,7 +145,7 @@ export class FormPermissionApi {
     public findByCollectionIDWithHttpInfo(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<HttpResponse<FormPermission>> {
         const path = this.basePath + `/formPermissions/${collectionID}`;
 
-        const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+        const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionFindByCollectionID.');
@@ -166,7 +166,7 @@ export class FormPermissionApi {
     public requestAccessWithHttpInfo(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<HttpResponse<FormPermission>> {
         const path = this.basePath + `/formPermissions/${collectionID}`;
 
-        const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+        const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionRequestAccess.');
@@ -192,7 +192,7 @@ export class FormPermissionApi {
     public revokeAccessWithHttpInfo(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<HttpResponse<FormPermission>> {
         const path = this.basePath + `/formPermissions/${collectionID}/${personID}`;
 
-        const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+        const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionRevokeAccess.');

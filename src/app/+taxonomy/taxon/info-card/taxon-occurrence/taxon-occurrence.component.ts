@@ -1,34 +1,31 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {Taxonomy, TaxonomyDescription, TaxonomyDescriptionGroup} from '../../../../shared/model/Taxonomy';
+import {ChangeDetectionStrategy, Component, Input, OnChanges} from '@angular/core';
+import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
+import {WarehouseQueryInterface} from '../../../../shared/model/WarehouseQueryInterface';
+import {InfoCardQueryService} from '../shared/service/info-card-query.service';
 
 @Component({
   selector: 'laji-taxon-occurrence',
   templateUrl: './taxon-occurrence.component.html',
-  styleUrls: ['./taxon-occurrence.component.scss']
+  styleUrls: ['./taxon-occurrence.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonOccurrenceComponent implements OnInit {
+export class TaxonOccurrenceComponent implements OnChanges {
   @Input() taxon: Taxonomy;
+  @Input() taxonDescription: TaxonomyDescription[];
+  @Input() isFromMasterChecklist: boolean;
 
-  occurrenceDescriptions: TaxonomyDescriptionGroup;
-  _taxonDescription: TaxonomyDescription;
+  mapQuery: WarehouseQueryInterface;
+  chartQuery: WarehouseQueryInterface;
 
-  @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
-    this.occurrenceDescriptions = undefined;
-    this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription[0] : undefined;
-
-    if (this._taxonDescription) {
-      (this._taxonDescription.groups || []).forEach(group => {
-        if (group.group === 'MX.SDVG2') {
-          this.occurrenceDescriptions = group;
-        }
-      });
-    }
-  }
+  hasMonthDayData: boolean;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges() {
+    this.mapQuery = InfoCardQueryService.getMapObservationQuery(this.taxon.id);
+    this.chartQuery = InfoCardQueryService.getChartObservationQuery(this.taxon.id);
 
+    this.hasMonthDayData = undefined;
   }
 
 }

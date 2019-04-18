@@ -54,6 +54,7 @@ export interface ILabelField {
   style?: IFontStyle;
   styleAppliesTo?: 'content'|'prefix'|'suffix'|'all'|'contentPrefix'|'contentSuffix'|'prefixSuffix';
   _menuOpen?: boolean;
+  valueMap?: {[from: string]: string};
 }
 
 export interface IViewSettings {

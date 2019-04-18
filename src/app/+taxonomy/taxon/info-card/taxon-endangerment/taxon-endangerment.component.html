@@ -4,37 +4,32 @@
       {{ 'taxonomy.endangerment.iucnLink' | translate }}
     </a>
 
-    <h3>{{ 'taxonomy.endangerment.evaluation' | translate }} {{ taxon.latestRedListEvaluation.evaluationYear }}</h3>
-    <div style="margin: 15px -15px;">
-      <laji-iucn-class [includeOther]="false" [highlight]="taxon.latestRedListEvaluation.redListStatus"></laji-iucn-class>
-      <div style="clear: both;"></div>
-      <laji-status-mark [showLabels]="true" [evaluation]="{possiblyRE: taxon.latestRedListEvaluation.possiblyRE}"></laji-status-mark>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <table class="table taxon-table table-condensed">
-          <tbody>
-          <tr>
-            <th>{{ 'MKV.criteriaForStatus' | label }}</th>
-            <td [innerHTML]="taxon.latestRedListEvaluation.criteriaForStatus | explainCriteria"></td>
-          </tr>
-          <tr>
-            <th>{{ 'MKV.hasEndangermentReason' | label }}</th>
-            <td>
-              <ul>
-                <li *ngFor="let reason of taxon.latestRedListEvaluation.endangermentReasons" [innerHTML]="reason | label"></li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <th>{{ 'MKV.hasThreat' | label }}</th>
-            <td>{{ taxon.latestRedListEvaluation.primaryThreat | label }}</td>
-          </tr>
-          </tbody>
-        </table>
+    <ng-container *ngIf="taxon.latestRedListEvaluation">
+      <h3>{{ 'taxonomy.endangerment.evaluation' | translate }} {{ taxon.latestRedListEvaluation.evaluationYear }}</h3>
+      <div style="margin: 15px -15px;">
+        <laji-iucn-class [includeOther]="false" [highlight]="taxon.latestRedListEvaluation.redListStatus"></laji-iucn-class>
+        <div style="clear: both;"></div>
+        <laji-status-mark [showLabels]="true" [evaluation]="{possiblyRE: taxon.latestRedListEvaluation.possiblyRE}"></laji-status-mark>
       </div>
-    </div>
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <laji-taxon-info-row [label]="'MKV.criteriaForStatus' | label">
+            <div [innerHTML]="taxon.latestRedListEvaluation.criteriaForStatus | explainCriteria"></div>
+          </laji-taxon-info-row>
+          <laji-taxon-info-row [label]="'iucn.hasEndangermentReason' | translate">
+            <ul>
+              <li *ngFor="let reason of taxon.latestRedListEvaluation.endangermentReasons" [innerHTML]="reason | label"></li>
+            </ul>
+          </laji-taxon-info-row>
+          <laji-taxon-info-row [label]="'iucn.hasThreat' | translate">
+            <ul>
+              <li *ngFor="let threat of taxon.latestRedListEvaluation.threats" [innerHTML]="threat | label"></li>
+            </ul>
+          </laji-taxon-info-row>
+        </div>
+      </div>
+    </ng-container>
 
     <h3>{{ 'taxonomy.endangerment.evaluationHistory' | translate }}</h3>
     <laji-taxon-status-history

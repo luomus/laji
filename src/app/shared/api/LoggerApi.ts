@@ -78,7 +78,7 @@ export class LoggerApi {
   public logError (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/error';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     return this.http.post(path, JSON.stringify(data, this.serializer()), {params: queryParameters});
   }
@@ -91,7 +91,7 @@ export class LoggerApi {
   public logInfo (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/info';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     return this.http.post(path, JSON.stringify(data, this.serializer()), {params: queryParameters});
   }
@@ -104,7 +104,7 @@ export class LoggerApi {
   public logStatus (minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
     const path = this.basePath + '/logger/status';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     if (minutesBack !== undefined) {
       queryParameters['minutesBack'] = '' + minutesBack;
     }
@@ -120,7 +120,7 @@ export class LoggerApi {
   public logWarn (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/warn';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     return this.http.post(path, JSON.stringify(data, this.serializer()), {params: queryParameters});
   }

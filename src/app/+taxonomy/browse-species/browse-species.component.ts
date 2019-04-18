@@ -10,9 +10,9 @@ import { Subscription } from 'rxjs';
 })
 export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   active = 'images';
-  activated = {'images': true};
+  activated: any = {'images': true};
 
-  private subQuery: Subscription;
+  private subQueryUpdate: Subscription;
 
   constructor(
     public searchQuery: TaxonomySearchQuery,
@@ -21,12 +21,18 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
+      () => {
+        this.activated = {[this.active]: true};
+        this.cd.markForCheck();
+      }
+    );
     this.searchQuery.setQueryFromParams({...this.route.snapshot.queryParams, onlyFinnish: 'true'});
   }
 
   ngOnDestroy() {
-    if (this.subQuery) {
-      this.subQuery.unsubscribe();
+    if (this.subQueryUpdate) {
+      this.subQueryUpdate.unsubscribe();
     }
   }
 

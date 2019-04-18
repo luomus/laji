@@ -1,98 +1,74 @@
-<table class="table taxon-table table-condensed" *ngIf="taxon">
-  <tbody>
-  <tr *ngIf="taxon.nameAccordingTo">
-    <th>{{ 'taxonomy.nameAccordingTo' | translate }}</th>
-    <td>{{ taxon.nameAccordingTo | checklist }}</td>
-  </tr>
-  <tr *ngIf="taxon.originalPublication">
-    <th>{{ 'taxonomy.originalPublication' | translate }}</th>
-    <td>{{ taxon.originalPublication }}</td>
-  </tr>
-  <tr>
-    <th>{{ 'taxonomy.scientific.name' | translate }}</th>
-    <td>
-      <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
-    </td>
-  </tr>
-  <tr *ngIf="taxon.scientificNameAuthorship">
-    <th>{{ 'taxonomy.author' | translate }}</th>
-    <td>{{ taxon.scientificNameAuthorship }}</td>
-  </tr>
-  <tr *ngIf="taxon.vernacularName">
-    <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
-    <td>{{ taxon.vernacularName | multiLang }}</td>
-  </tr>
-  <tr>
-    <th>{{ 'MX.taxonRank' | label }}</th>
-    <td>{{ taxon.taxonRank | label }}</td>
-  </tr>
-  <tr *ngIf="taxon.occurrenceInFinland">
-    <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
-    <td>{{ taxon.occurrenceInFinland | label }}</td>
-  </tr>
-  <tr *ngIf="taxon.invasiveSpecies">
-    <th>
-      <img src="/static/images/vieraslaji.png" class="img-responsive"/>
-    </th>
-    <td>
-      {{ 'taxonomy.invasive.phrase' | translate }}
-      <a href="http://vieraslajit.fi"> {{ 'taxonomy.invasive.title' | translate }}</a>
-      <table class="table table-condenced">
-        <tbody>
-        <tr>
-          <th>{{ 'MX.invasiveSpeciesEstablishment' | label }}</th>
-          <td>{{ taxon.invasiveSpeciesEstablishment | label }}</td>
-        </tr>
-        </tbody>
-      </table>
-    </td>
-  </tr>
-  <tr *ngIf="taxon.administrativeStatuses">
-    <th>{{ 'taxonomy.administrative.statuses' | translate }}</th>
-    <td>
-      <ul>
-        <li *ngFor="let status of taxon.administrativeStatuses">{{ status | label }}</li>
-      </ul>
-    </td>
-  </tr>
-  <tr *ngIf="taxon.redListStatusesInFinland">
-    <th>{{ 'taxonomy.redListStatus2010Finland' | translate }}</th>
-    <td>
-      <ul>
-        <li *ngFor="let status of taxon.redListStatusesInFinland">
-         {{ status.year }} {{ status.status | label }}
-        </li>
-      </ul>
-    </td>
-  </tr>
-  <tr *ngIf="taxon.taxonExpert && taxon.taxonExpert.length > 0">
-    <th>{{ (taxon.taxonExpert.length > 1 ? 'taxonomy.experts' : 'taxonomy.expert') | translate }}</th>
-    <td>
-      <ul class="comma-list">
-        <li *ngFor="let export of taxon.taxonExpert">{{ export | users:'fullname' }}</li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <th>{{ 'taxonomy.bold' | translate }}</th>
-    <td>
-      <laji-bold-sequence [scientificName]="taxon.scientificName" [cursive]="taxon.cursiveName"></laji-bold-sequence>
-      <laji-bold-synonym [taxa]="taxon.basionyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.heterotypicSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.homotypicSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.objectiveSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.orthographicVariants || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
-    </td>
-  </tr>
-  <tr *ngIf="taxon.informalTaxonGroups && taxon.informalTaxonGroups.length > 0">
-    <th>{{ 'taxonomy.informalTaxonGroups' | translate }}</th>
-    <td>
-      <ul>
-        <li *ngFor="let group of taxon.informalTaxonGroups">{{ group | label }}</li>
-      </ul>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<laji-taxon-info-row *ngIf="taxon.nameAccordingTo" [label]="'taxonomy.nameAccordingTo' | translate">
+  {{ taxon.nameAccordingTo | checklist }}
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.originalPublications" [label]="'taxonomy.originalPublications' | translate">
+  <ul>
+    <li *ngFor="let publication of taxon.originalPublications">
+      {{ publication | publication }}
+    </li>
+  </ul>
+</laji-taxon-info-row>
+<laji-taxon-info-row [label]="'taxonomy.scientific.name' | translate">
+  <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.scientificNameAuthorship" [label]="'taxonomy.author' | translate">
+  {{ taxon.scientificNameAuthorship }}
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.vernacularName" [label]="'taxonomy.vernacular.name' | translate">
+  {{ taxon.vernacularName | multiLang }}
+</laji-taxon-info-row>
+<laji-taxon-info-row [label]="'MX.taxonRank' | label">
+  {{ taxon.taxonRank | label }}
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">
+  {{ taxon.occurrenceInFinland | label }}
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.invasiveSpecies">
+  <ng-template #label>
+    <img src="/static/images/vieraslaji.png" class="img-responsive"/>
+  </ng-template>
+  {{ 'taxonomy.invasive.phrase' | translate }}
+  <a href="http://vieraslajit.fi"> {{ 'taxonomy.invasive.title' | translate }}</a>
+  <table class="table table-condenced invasive-table">
+    <tbody>
+    <tr>
+      <th>{{ 'MX.invasiveSpeciesEstablishment' | label }}</th>
+      <td>{{ taxon.invasiveSpeciesEstablishment | label }}</td>
+    </tr>
+    </tbody>
+  </table>
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.administrativeStatuses" [label]="'taxonomy.administrative.statuses' | translate">
+  <ul>
+    <li *ngFor="let status of taxon.administrativeStatuses">
+      <laji-administrative-status [status]="status"></laji-administrative-status>
+    </li>
+  </ul>
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.redListStatusesInFinland" [label]="'taxonomy.redListStatus2010Finland' | translate">
+  <ul>
+    <li *ngFor="let status of taxon.redListStatusesInFinland">
+      {{ status.year }} {{ status.status | label }}
+    </li>
+  </ul>
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.taxonExpert && taxon.taxonExpert.length > 0" [label]="(taxon.taxonExpert.length > 1 ? 'taxonomy.experts' : 'taxonomy.expert') | translate">
+  <ul class="comma-list">
+    <li *ngFor="let export of taxon.taxonExpert">{{ export | users:'fullname' }}</li>
+  </ul>
+</laji-taxon-info-row>
+<laji-taxon-info-row [label]="'taxonomy.bold' | translate">
+  <laji-bold-sequence [scientificName]="taxon.scientificName" [cursive]="taxon.cursiveName"></laji-bold-sequence>
+  <laji-bold-synonym [taxa]="taxon.basionyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.heterotypicSynonyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.homotypicSynonyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.objectiveSynonyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.orthographicVariants || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.informalTaxonGroups && taxon.informalTaxonGroups.length > 0" [label]="'taxonomy.informalTaxonGroups' | translate">
+  <ul>
+    <li *ngFor="let group of taxon.informalTaxonGroups">{{ group | label }}</li>
+  </ul>
+</laji-taxon-info-row>

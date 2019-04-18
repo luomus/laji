@@ -1,11 +1,16 @@
 <div class="editor-container" [class.fullscreen]="viewSettings.fullscreen">
   <ll-label-maker
+    [translations]="labelTranslations"
+    defaultDomain="http://tun.fi/"
     [showIntro]="false"
     [data]="data"
     [viewSettings]="viewSettings"
     (viewSettingsChange)="viewSettings = $event"
+    [newSetup]="newSetup"
     [setup]="setup"
     [availableFields]="labelFields$ | async"
+    (availableFieldsChange)="changeAvailableFields($event)"
+    [newAvailableFields]="newLabelFields$ | async"
     (setupChange)="setup = $event"
     (html)="htmlToPdf($event)"
   ></ll-label-maker>

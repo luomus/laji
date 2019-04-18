@@ -31,7 +31,6 @@ import { IucnRoutingModule } from './iucn-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponentModule } from '../../../../src/app/shared-modules/app-component/app-component.module';
 import { AppComponent } from '../../../../src/app/shared-modules/app-component/app.component';
-import { IucnCommonModule } from '../../../../src/app/shared-modules/iucn/iucn.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -67,7 +66,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
-    IucnCommonModule,
     IucnRoutingModule,
     TransferHttpCacheModule
   ],
