@@ -1,5 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnChanges} from '@angular/core';
 import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
+import {WarehouseQueryInterface} from '../../../../shared/model/WarehouseQueryInterface';
+import {InfoCardQueryService} from '../shared/service/info-card-query.service';
 
 @Component({
   selector: 'laji-taxon-occurrence',
@@ -12,11 +14,17 @@ export class TaxonOccurrenceComponent implements OnChanges {
   @Input() taxonDescription: TaxonomyDescription[];
   @Input() isFromMasterChecklist: boolean;
 
+  mapQuery: WarehouseQueryInterface;
+  chartQuery: WarehouseQueryInterface;
+
   hasMonthDayData: boolean;
 
   constructor() { }
 
   ngOnChanges() {
+    this.mapQuery = InfoCardQueryService.getMapObservationQuery(this.taxon.id);
+    this.chartQuery = InfoCardQueryService.getChartObservationQuery(this.taxon.id);
+
     this.hasMonthDayData = undefined;
   }
 

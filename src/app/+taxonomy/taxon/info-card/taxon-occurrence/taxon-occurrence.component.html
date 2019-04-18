@@ -42,7 +42,7 @@
         {{ 'taxonomy.map.disclaimer' | translate }}
       </p>
       <laji-ykj-map
-        [query]="{taxonId: [taxon.id], countryId: ['ML.206'], cache: true}"
+        [query]="mapQuery"
         [height]="'600px'"
         [type]="'count'"
         [types]="['count']"
@@ -75,17 +75,17 @@
       [taxonDescriptions]="taxonDescription"
       [groupId]="'MX.SDVG2'"
     ></laji-taxon-description>
-    <div *ngIf="hasMonthDayData !== false && isFromMasterChecklist" [hidden]="!hasMonthDayData"
+    <div *ngIf="isFromMasterChecklist" [hidden]="!hasMonthDayData"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.observations.monthDayChart' | translate"
          [open]="true"
          [autoToggle]="true"
     >
-      <laji-taxon-month-day-chart
-        [taxonId]="taxon.id"
+      <laji-observation-month-day-chart
+        [query]="chartQuery"
         (hasData)="hasMonthDayData = $event"
-      ></laji-taxon-month-day-chart>
+      ></laji-observation-month-day-chart>
     </div>
     <div *ngIf="taxon.occurrences"
          class="panel panel-default"

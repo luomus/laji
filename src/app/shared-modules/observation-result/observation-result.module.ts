@@ -9,8 +9,8 @@ import { DatatableModule } from '../datatable/datatable.module';
 import { SelectedFieldGroupComponent } from './selected-field-group/selected-field-group.component';
 import { PageSizeSelectComponent } from './page-size-select/page-size-select.component';
 import { SelectedFieldItemComponent } from './selected-field-item/selected-field-item.component';
-import { TaxonYearChartComponent } from './taxon-year-chart/taxon-year-chart.component';
-import { TaxonMonthDayChartComponent } from './taxon-month-day-chart/taxon-month-day-chart.component';
+import { ObservationYearChartComponent } from './observation-year-chart/observation-year-chart.component';
+import { ObservationMonthDayChartComponent } from './observation-month-day-chart/observation-month-day-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
@@ -27,10 +27,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     SelectedFieldGroupComponent,
     PageSizeSelectComponent,
     SelectedFieldItemComponent,
-    TaxonYearChartComponent,
-    TaxonMonthDayChartComponent
+    ObservationYearChartComponent,
+    ObservationMonthDayChartComponent
   ],
   providers: [ObservationListService],
-  exports: [ObservationTableComponent, SelectedFieldGroupComponent, TaxonYearChartComponent, TaxonMonthDayChartComponent]
+  exports: [ObservationTableComponent, SelectedFieldGroupComponent, ObservationYearChartComponent, ObservationMonthDayChartComponent]
 })
 export class ObservationResultModule { }

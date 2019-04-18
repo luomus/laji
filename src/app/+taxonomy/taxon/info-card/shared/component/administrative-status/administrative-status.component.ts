@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input } from '@angular/core';
-import { MetadataService } from '../../../../../shared/service/metadata.service';
+import { MetadataService } from '../../../../../../shared/service/metadata.service';
 import { map } from 'rxjs/operators';
 
 @Component({

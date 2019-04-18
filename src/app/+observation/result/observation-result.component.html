@@ -131,29 +131,29 @@
         <div [hidden]="!hasYearData"
              class="panel panel-default"
              laji-panel
-             [title]="'taxonomy.observations.yearChart' | translate"
+             [title]="'observation.results.yearChart' | translate"
              [open]="true"
              [autoToggle]="true"
         >
           <p class="disclaimer">
             {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
           </p>
-          <laji-taxon-year-graph
+          <laji-observation-year-chart
             [query]="searchQuery.query"
             (hasData)="hasYearData = $event"
-          ></laji-taxon-year-graph>
+          ></laji-observation-year-chart>
         </div>
         <div [hidden]="!hasMonthDayData"
              class="panel panel-default"
              laji-panel
-             [title]="'taxonomy.observations.monthDayChart' | translate"
+             [title]="'observation.results.monthDayChart' | translate"
              [open]="true"
              [autoToggle]="true"
         >
-          <laji-taxon-month-day-chart
+          <laji-observation-month-day-chart
             [query]="searchQuery.query"
             (hasData)="hasMonthDayData = $event"
-          ></laji-taxon-month-day-chart>
+          ></laji-observation-month-day-chart>
         </div>
       </div>
       <div class="form-group spacer">

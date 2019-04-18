@@ -15,7 +15,7 @@
         {{ 'taxonomy.map.disclaimer' | translate }}
       </p>
       <laji-ykj-map
-        [query]="{taxonId: [taxon.id], countryId: ['ML.206'], cache: true}"
+        [query]="mapQuery"
         [height]="'600px'"
         [type]="'count'"
         [types]="['count']"
@@ -43,19 +43,19 @@
     </div>
   </div>
   <div class="col-xs-12">
-    <div *ngIf="hasMonthDayData !== false" [hidden]="!hasMonthDayData"
+    <div [hidden]="!hasMonthDayData"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.observations.monthDayChart' | translate"
          [open]="true"
          [autoToggle]="true"
     >
-      <laji-taxon-month-day-chart
-        [taxonId]="taxon.id"
+      <laji-observation-month-day-chart
+        [query]="chartQuery"
         (hasData)="hasMonthDayData = $event"
-      ></laji-taxon-month-day-chart>
+      ></laji-observation-month-day-chart>
     </div>
-    <div *ngIf="hasYearData !== false" [hidden]="!hasYearData"
+    <div [hidden]="!hasYearData"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.observations.yearChart' | translate"
@@ -65,10 +65,10 @@
       <p class="disclaimer">
         {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
       </p>
-      <laji-taxon-year-graph
-        [taxonId]="taxon.id"
+      <laji-observation-year-chart
+        [query]="chartQuery"
         (hasData)="hasYearData = $event"
-      ></laji-taxon-year-graph>
+      ></laji-observation-year-chart>
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
@@ -87,7 +87,7 @@
         [showSettingsMenu]="false"
         [isAggregate]="true"
         [selected]="['unit.superRecordBasis']"
-        [query]="{taxonId: [taxon.id], cache: true}"
+        [query]="chartQuery"
         [showRowAsLink]="false"
         (total)="filterByRecordBasisTotal = $event"
       ></laji-observation-table>
@@ -107,7 +107,7 @@
         [showSettingsMenu]="false"
         [isAggregate]="true"
         [selected]="['unit.lifeStage']"
-        [query]="{taxonId: [taxon.id], cache: true}"
+        [query]="chartQuery"
         [showRowAsLink]="false"
         (total)="filterByLifeStageTotal = $event"
       ></laji-observation-table>
@@ -129,7 +129,7 @@
         [showSettingsMenu]="false"
         [isAggregate]="true"
         [selected]="['unit.sex']"
-        [query]="{taxonId: [taxon.id], cache: true}"
+        [query]="chartQuery"
         [showRowAsLink]="false"
         (total)="filterBySexTotal = $event"
       ></laji-observation-table>
@@ -150,7 +150,7 @@
         [showHeader]="false"
         [isAggregate]="true"
         [selected]="['document.collectionId']"
-        [query]="{taxonId: [taxon.id], cache: true}"
+        [query]="chartQuery"
         [showRowAsLink]="false"
         (total)="filterByCollectionIdTotal = $event"
       ></laji-observation-table>

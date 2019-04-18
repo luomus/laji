@@ -4,13 +4,12 @@ import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'laji-taxon-year-graph',
-  templateUrl: './taxon-year-chart.component.html',
-  styleUrls: ['./taxon-year-chart.component.scss'],
+  selector: 'laji-observation-year-chart',
+  templateUrl: './observation-year-chart.component.html',
+  styleUrls: ['./observation-year-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonYearChartComponent implements OnChanges, OnDestroy {
-  @Input() taxonId: string;
+export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   @Input() query: any;
   data: any[];
   splitIdx = 0;
@@ -26,6 +25,7 @@ export class TaxonYearChartComponent implements OnChanges, OnDestroy {
   ) { }
 
   ngOnChanges() {
+    console.log('o');
     this.updateData();
   }
 
@@ -42,7 +42,7 @@ export class TaxonYearChartComponent implements OnChanges, OnDestroy {
 
     this.data = undefined;
     this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
-      this.query ? this.query : { taxonId: [this.taxonId], cache: true },
+      this.query,
       ['gathering.conversions.year'],
       ['gathering.conversions.year'],
       10000,

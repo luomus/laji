@@ -10,12 +10,12 @@ import {TriplestoreLabelService} from '../../../shared/service/triplestore-label
 import {ModalDirective} from 'ngx-bootstrap';
 
 @Component({
-  selector: 'laji-taxon-month-day-chart',
-  templateUrl: './taxon-month-day-chart.component.html',
-  styleUrls: ['./taxon-month-day-chart.component.scss'],
+  selector: 'laji-observation-month-day-chart',
+  templateUrl: './observation-month-day-chart.component.html',
+  styleUrls: ['./observation-month-day-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonMonthDayChartComponent implements OnChanges, OnDestroy {
+export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
   @ViewChild('dayChartModal') public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;

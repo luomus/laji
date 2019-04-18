@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaxonMonthDayChartComponent } from './taxon-month-day-chart.component';
+import { ObservationMonthDayChartComponent } from './observation-month-day-chart.component';
 
 describe('TaxonMonthDayChartComponent', () => {
-  let component: TaxonMonthDayChartComponent;
-  let fixture: ComponentFixture<TaxonMonthDayChartComponent>;
+  let component: ObservationMonthDayChartComponent;
+  let fixture: ComponentFixture<ObservationMonthDayChartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaxonMonthDayChartComponent ]
+      declarations: [ ObservationMonthDayChartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaxonMonthDayChartComponent);
+    fixture = TestBed.createComponent(ObservationMonthDayChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
