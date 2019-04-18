@@ -13,6 +13,7 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SelectComponent } from './select/select.component';
 import { InfoModule } from '../info/info.module';
 import { IncludesPipe } from './includes.pipe';
+import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -22,6 +23,7 @@ import { IncludesPipe } from './includes.pipe';
     JwBootstrapSwitchNg2Module,
     InfoModule
   ],
+  providers: [ AdminStatusInfoPipe ] ,
   declarations: [
     MetadataSelectComponent,
     ThreeStateSwitchComponent,
@@ -31,7 +33,8 @@ import { IncludesPipe } from './includes.pipe';
     SearchFiltersComponent,
     SelectComponent,
     CheckboxComponent,
-    IncludesPipe
+    IncludesPipe,
+    AdminStatusInfoPipe
   ],
   exports: [
     MetadataSelectComponent,
@@ -39,7 +42,8 @@ import { IncludesPipe } from './includes.pipe';
     ThreeStateMultiSwitchComponent,
     SearchFiltersComponent,
     SelectComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    AdminStatusInfoPipe
   ]
 })
 export class SearchFiltersModule { }

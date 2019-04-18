@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import { TaxonomyDescription } from '../../../../../shared/model/Taxonomy';
+import { TaxonomyDescription } from '../../../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-description-source',

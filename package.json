@@ -48,7 +48,9 @@
   },
   "contributors": [
     "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>",
-    "Kalle Myllymaa <kalle.myllymaa@helsinki.fi"
+    "Kalle Myllymaa <kalle.myllymaa@helsinki.fi>",
+    "Pyry Mäkinen <pyry.makinen@helsinki.fi>",
+    "Meeri Rannisto <meeri.rannisto@helsinki.fi>"
   ],
   "license": "MIT",
   "angular-cli": {},
@@ -95,7 +97,7 @@
     "jsonpath-plus": "^0.18.0",
     "jw-bootstrap-switch-ng2": "^2.0.2",
     "laji-form": "^0.0.593",
-    "laji-map": "^1.0.487",
+    "laji-map": "^1.0.488",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.7.3",
     "moment": "2.22.2",
@@ -171,7 +173,7 @@
   "resolutions": {
     "proj4": "2.3.16",
     "leaflet": "1.4.0",
-    "laji-map": "1.0.487",
+    "laji-map": "1.0.488",
     "tslint": "5.10.0"
   },
   "keywords": [

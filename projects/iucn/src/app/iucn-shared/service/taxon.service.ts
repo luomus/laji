@@ -27,6 +27,26 @@ export class TaxonService {
     });
   }
 
+  getTaxonSpeciesWithLatestEvaluation(id: string, lang: string, checklist?: string): Observable<Taxonomy[]> {
+    return this.taxonApi.taxonomyFindSpecies(
+      id,
+      lang, undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      '1',
+      '10000',
+      undefined,
+      {
+        hasLatestRedListEvaluation: true,
+        checklistVersion: checklist,
+        selected: ['id', 'vernacularName', 'scientificName', 'cursiveName']
+      }).pipe(
+        map(res => res.results)
+    );
+  }
+
   getRedListStatusTree(lang: string): Observable<RedListTaxonGroup[]> {
     if (this.treeCache[lang]) {
       return ObservableOf(this.treeCache[lang]);

@@ -3,6 +3,8 @@ import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
+import {WarehouseQueryInterface} from '../../../../shared/model/WarehouseQueryInterface';
+import {InfoCardQueryService} from '../shared/service/info-card-query.service';
 
 @Component({
   selector: 'laji-taxon-overview',
@@ -21,6 +23,8 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   ingress: any;
   description: any;
   _taxonDescription: TaxonomyDescription;
+
+  mapQuery: WarehouseQueryInterface;
 
   private childrenSub: Subscription;
 
@@ -52,6 +56,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
 
   ngOnChanges() {
     this.getChildren();
+    this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
   }
 
   ngOnDestroy() {

@@ -16,6 +16,7 @@ import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
 import {GalleryService} from '../../../shared/gallery/service/gallery.service';
 import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
 import {Image} from '../../../shared/gallery/image-gallery/image.interface';
+import {InfoCardQueryService} from './shared/service/info-card-query.service';
 
 @Component({
   selector: 'laji-info-card',
@@ -122,12 +123,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     let imageObs: Observable<any[]>;
     if (missingImages > 0 && this.isFromMasterChecklist) {
       imageObs = this.getImages(
-        {
-          taxonId: [this.taxon.id],
-          superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
-          taxonReliability: ['RELIABLE'],
-          cache: true
-        },
+        InfoCardQueryService.getReliableHumanObservationQuery(this.taxon.id),
         missingImages
       ).pipe(
         switchMap(observationImages => {
@@ -140,7 +136,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
           if (missingImages > 0) {
             return this.getImages(
-              { taxonId: [this.taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], cache: true },
+              InfoCardQueryService.getSpecimenQuery(this.taxon.id),
               missingImages
             ).pipe(
               map(collectionImages => images.concat(collectionImages))

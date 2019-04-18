@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TaxonService } from '../../iucn-shared/service/taxon.service';
 import { ResultService } from '../../iucn-shared/service/result.service';
 import { Title } from '@angular/platform-browser';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -16,10 +16,8 @@ import { Router } from '@angular/router';
 export class InfoCardComponent implements OnChanges, OnInit {
 
   public taxon: Taxonomy;
-  public taxonAutocomplete: string;
   public latestStatus: RedListEvaluation;
   public isEndangered: boolean;
-  public activeIucnYear: number;
   public missing: boolean;
 
   @Input() public year: string;
@@ -27,14 +25,9 @@ export class InfoCardComponent implements OnChanges, OnInit {
   @Input() private checklistId: string;
 
   years$: Observable<{label: string, value: string}[]>;
+  species$: Observable<Taxonomy[]>;
 
-  private taxonMap = {
-    'MX.53141': 'MX.325026',
-    'MX.53121': 'MX.324995',
-    'MX.53137': 'MX.325028',
-    'MX.53123': 'MX.53124',
-    'MX.53132': 'MX.53134'
-  };
+  taxonSub: Subscription;
 
   constructor(
     private taxonService: TaxonService,
@@ -57,17 +50,38 @@ export class InfoCardComponent implements OnChanges, OnInit {
   }
 
   initTaxon() {
+    if (this.taxonSub) {
+      this.taxonSub.unsubscribe();
+    }
+
+    this.taxon = undefined;
+    this.latestStatus = undefined;
+    this.isEndangered = undefined;
+    this.missing = undefined;
+
     if (!this.taxonId) {
-      this.taxon = null;
       return;
     }
-    this.missing = false;
-    this.taxonAutocomplete = '';
-    this.taxonService.getTaxon(this.taxonMap[this.taxonId] || this.taxonId, this.translateService.currentLang, this.checklistId)
+
+    this.taxonSub = this.taxonService.getTaxon(this.taxonId, this.translateService.currentLang, this.checklistId)
       .subscribe(taxon => {
-        this.activeIucnYear = taxon.latestRedListStatusFinland && taxon.latestRedListStatusFinland.year || null;
-        this.latestStatus = taxon.latestRedListEvaluation || null;
-        this.isEndangered = this.latestStatus && this.resultService.endangered.includes(this.latestStatus.redListStatus);
+        if (!taxon.species) {
+          this.missing = true;
+          return;
+        }
+
+        if (taxon.hasLatestRedListEvaluation) {
+          this.latestStatus = taxon.latestRedListEvaluation;
+          this.isEndangered = this.resultService.endangered.includes(this.latestStatus.redListStatus);
+        } else {
+          this.latestStatus = null;
+          this.species$ = this.taxonService.getTaxonSpeciesWithLatestEvaluation(
+            taxon.id,
+            this.translateService.currentLang,
+            this.checklistId
+          );
+        }
+
         this.taxon = taxon;
         this.setTitle();
       }, (e) => {

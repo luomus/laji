@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges} from '@angular/core';
-import {TaxonomyDescription, TaxonomyDescriptionGroup} from '../../../../../shared/model/Taxonomy';
+import {TaxonomyDescription, TaxonomyDescriptionGroup} from '../../../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-description',
