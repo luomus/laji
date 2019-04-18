@@ -48,7 +48,8 @@
   },
   "contributors": [
     "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>",
-    "Kalle Myllymaa <kalle.myllymaa@helsinki.fi"
+    "Kalle Myllymaa <kalle.myllymaa@helsinki.fi>",
+    "Pyry Mäkinen <pyry.makinen@helsinki.fi>"
   ],
   "license": "MIT",
   "angular-cli": {},
