@@ -57,7 +57,7 @@ export class TaxonSpecimensComponent implements OnChanges {
     const row = event.row || {};
     if (row.document && row.document.collectionId) {
       this.collectionId = IdService.getId(row.document.collectionId);
-      this.collectionQuery = InfoCardQueryService.getCollectionSpecimenQuery(this.taxon.id, this.collectionId);
+      this.collectionQuery = InfoCardQueryService.getSpecimenQuery(this.taxon.id, false, this.collectionId);
 
       setTimeout(() => {
         const el = this.document.getElementById('collectionSpecimens');
