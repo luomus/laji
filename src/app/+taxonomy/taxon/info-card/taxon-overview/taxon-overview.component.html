@@ -12,6 +12,7 @@
             [view]="taxon.species ? 'full3' : 'compact'"
             [showOverlay]="false"
             [showPopover]="false"
+            [showLinkToSpeciesCard]="!taxon.species"
           ></laji-image-gallery>
         </div>
         <strong *ngIf="ingress" [innerHTML]="ingress | multiLang"></strong>

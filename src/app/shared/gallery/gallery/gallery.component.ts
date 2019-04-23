@@ -28,6 +28,7 @@ export class GalleryComponent implements OnChanges, OnDestroy {
   @Input() showOverlay = true;
   @Input() showExtraInfo = true;
   @Input() showLinkToSpeciesCard = false;
+  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
   @Input() sort: string[];
   @Input() view: 'compact'|'full'|'full2' = 'compact';
   @Input() views = ['compact', 'full'];

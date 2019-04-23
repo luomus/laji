@@ -48,7 +48,7 @@
            class="ng-thumb"
            alt="Image {{ index + 1 }}" />
       <h4 *ngIf="showOverlay" (click)="$event.stopPropagation()">
-        <a class="link" [routerLink]="'/taxon/' + img.taxonId | localize" target="_blank">
+        <a class="link" [routerLink]="'/taxon/' + img.taxonId + (!linkOptions || !linkOptions.tab || linkOptions.tab === 'overview' ? '' : '/' + linkOptions.tab) | localize" [queryParamsHandling]="linkOptions.queryParamsHandling">
           <ng-container *ngTemplateOutlet="info; context: {$implicit: img}"></ng-container>
         </a>
       </h4>
