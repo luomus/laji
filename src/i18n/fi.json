@@ -349,7 +349,7 @@
     },
     "home":{
       "book": {
-        "title": "Julkaistut punaiset kirjat",
+        "title": "Julkaistut Punaiset kirjat",
         "browse": "Selaile julkaisuja ja saatavilla olevia datalatauksia"
       },
       "browseResults": "Selaa tuloksia",
@@ -358,7 +358,7 @@
       "iucnCategories": "Uhanalaisuustarkastelussa käytettävät IUCN -luokat",
       "results": "Tulokset",
       "resultsIntro": "<p>Maassamme on vähintään 48 000 lajia, joista 22 418 eli 47 % tunnetaan niin hyvin, että niiden uhanalaisuutta pystyttiin arvioimaan. Näistä 2 667 lajia eli 11,9 % arvioitiin uhanalaisiksi. Uhanalaisten lajien osuus on kasvanut vuonna 2010 tehtyyn arviointiin verrattuna, jolloin uhanalaisia oli 10,5 % arvioiduista. Kehityssuunta osoittaa, että maamme lajiston uhanalaistumiskehitystä ei ole onnistuttu pysäyttämään.</p><p>Uhanalaisista lajeista suurin osa elää ensisijaisesti metsissä (31,2 %) sekä perinneympäristöissä ja muissa ihmisen muuttamissa ympäristöissä (24,4 %). Metsissä ja perinneympäristöissä elää kaiken kaikkiaan eniten lajeja, mikä osaltaan selittää uhanalaisten lajien suurta määrää. Suhteellisesti eniten uhanalaisia lajeja on kuitenkin tunturipaljakoilla, joilla elää vain 3,6 % kaikista arvioiduista lajeista, mutta niistä uhanalaisia on peräti 37,9 %.</p><p>Lajien uhanalaistumiseen on vaikuttanut merkittävimmin metsäelinympäristöjen muutokset, jotka ovat ensisijainen uhanalaisuuden syy 733 lajille. Yleisimpiä niistä ovat metsien uudistamis- ja hoitotoimet, vanhojen metsien ja kookkaiden puiden sekä lahopuun väheneminen. Toiseksi yleisin lajien uhanalaistumiseen vaikuttanut syy on avoimien elinympäristöjen umpeenkasvu, mikä on 639 lajin uhanalaisuuden syynä. Ilmastonmuutos vaikuttaa etenkin tunturilajien uhanalaistumiseen.</p>",
-      "title": "Punaisen kirjan nettipalvelu"
+      "title": "Punaisen kirjan verkkopalvelu"
     },
     "more": "Lisätietoa käytetyistä termeistä.",
     "page": {
@@ -448,7 +448,8 @@
     "hasEndangermentReason": "Uhanalaisuuteen johtaneet syyt",
     "hasThreat": "Uhkatekijät tulevaisuudessa",
     "threatPrimary": "Ensisijainen uhka",
-    "threatAny": "Yksi uhista"
+    "threatAny": "Yksi uhista",
+    "title": "PUNAINEN KIRJA"
   },
   "labelDesigner": {
     "File": "Tiedosto",

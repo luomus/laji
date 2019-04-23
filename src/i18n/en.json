@@ -288,11 +288,11 @@
   "instructions": "Instructions",
   "iucn": {
     "about": {
-      "title": "Tietoa"
+      "title": "About"
     },
-    "evaluated": "Arvioituja lajeja",
-    "endangered": "Uhanalaiset",
-    "endangeredSingle": "Uhanalainen",
+    "evaluated": "Assessed species",
+    "endangered": "Threatened",
+    "endangeredSingle": "Threatened",
     "feedback": {
       "intro": "Sähköpostiosoite ei ole pakollinen. Lisääthän sähköpostiosoitteesi, mikäli haluat vastauksen."
     },
@@ -313,31 +313,31 @@
       "empty": "Tyhjennä"
     },
     "footer": {
-      "syke": "Suomen ympäristökeskus",
-      "openData": "Avoin data",
-      "pdf": "Punainen kirja PDF-muodossa",
-      "privacyPolicy": "Tietosuojaseloste"
+      "syke": "Finnish Environment Institute (SYKE)",
+      "openData": "Open Data",
+      "pdf": "The Red List 2019 in PDF format",
+      "privacyPolicy": "Privacy Policy"
     },
     "home":{
       "book": {
-        "title": "Julkaistut punaiset kirjat",
-        "browse": "Selaile julkaisuja ja saatavilla olevia datalatauksia"
+        "title": "Published Red Lists",
+        "browse": "Browse the publications and available data downloads"
       },
-      "browseResults": "Selaa tuloksia",
-      "evaluation": "Lue lisää arvioinnin toteutuksesta Suomessa",
-      "intro": "Punainen kirja 2019 on Suomessa järjestyksessään kolmas lajien uhanalaisuusarviointi, joka noudattaa kansainvälisen luonnonsuojeluliiton IUCN:n ohjeita. Lajien uhanalaisuutta arvioi ympäristöministeriön asettaman ohjausryhmän johdolla 180 lajiasiantuntijaa.",
-      "iucnCategories": "Uhanalaisuustarkastelussa käytettävät IUCN -luokat",
-      "results": "Tulokset",
-      "resultsIntro": "<p>Maassamme on vähintään 48 000 lajia, joista 22 418 eli 47 % tunnetaan niin hyvin, että niiden uhanalaisuutta pystyttiin arvioimaan. Näistä 2 667 lajia eli 11,9 % arvioitiin uhanalaisiksi. Uhanalaisten lajien osuus on kasvanut vuonna 2010 tehtyyn arviointiin verrattuna, jolloin uhanalaisia oli 10,5 % arvioiduista. Kehityssuunta osoittaa, että maamme lajiston uhanalaistumiskehitystä ei ole onnistuttu pysäyttämään.</p><p>Uhanalaisista lajeista suurin osa elää ensisijaisesti metsissä (31,2 %) sekä perinneympäristöissä ja muissa ihmisen muuttamissa ympäristöissä (24,4 %). Metsissä ja perinneympäristöissä elää kaiken kaikkiaan eniten lajeja, mikä osaltaan selittää uhanalaisten lajien suurta määrää. Suhteellisesti eniten uhanalaisia lajeja on kuitenkin tunturipaljakoilla, joilla elää vain 3,6 % kaikista arvioiduista lajeista, mutta niistä uhanalaisia on peräti 37,9 %.</p><p>Lajien uhanalaistumiseen on vaikuttanut merkittävimmin metsäelinympäristöjen muutokset, jotka ovat ensisijainen uhanalaisuuden syy 733 lajille. Yleisimpiä niistä ovat metsien uudistamis- ja hoitotoimet, vanhojen metsien ja kookkaiden puiden sekä lahopuun väheneminen. Toiseksi yleisin lajien uhanalaistumiseen vaikuttanut syy on avoimien elinympäristöjen umpeenkasvu, mikä on 639 lajin uhanalaisuuden syynä. Ilmastonmuutos vaikuttaa etenkin tunturilajien uhanalaistumiseen.</p>",
-      "title": "Punaisen kirjan nettipalvelu"
+      "browseResults": "Browse the results",
+      "evaluation": "Read more about the implementation of the evaluation in Finland",
+      "intro": "The Red List 2019 is the third Finnish assessment of threatened species that complies with the IUCN guidelines. The assessment involved 180 species experts and a steering group appointed by the Ministry of the Environment guided the work.",
+      "iucnCategories": "The IUCN red-list categories used in the assessment",
+      "results": "Results",
+      "resultsIntro": "<p>At least 48,000 species live in Finland and adequate data for assessing their vulnerability was available for 22,418 or 47% of the species. Of the species assessed, 2,667 species or 11.9% were classified as threatened. The proportion of threatened species has increased compared to the previous assessment in 2010 when 10.5% of the assessed species were classified as threatened. The development trend indicates that the target of halting the increase in the vulnerability of Finnish species has not been met.</p><p>The majority of threatened species live primarily in forests (31.2%) and in rural biotopes and other cultural habitats (24.4%). Overall, most species live in forests and rural biotopes, which partially explains the large number of threatened species in these biotopes. However, the proportionally largest number of threatened species is found in alpine habitats where only 3.6% of all assessed species are found but no fewer than 37.9% are threatened.</p><p>Changes in the forest environment are the most significant cause of threat to species, as is the case with 733 threatened species. These changes include forest management activities, the reduction of old-growth forests and large trees as well as decreasing amounts of dead and decaying wood. The second most common threat to species is the overgrowing of open habitats, which is the primary cause of threat to 639 species. Climate change poses a threat to, in particular, species in fell areas.</p>",
+      "title": "The Web Service of the Red List of Finnish Species"
     },
     "more": "Lisätietoa käytetyistä termeistä.",
     "page": {
       "title": "The Web Service of the Red List of Finnish Species",
-      "intro": "The Web Service of the Red List of Finnish Species introduces the results of The 2019 Red List of Finnish Species. Of the 22,418&nbsp;species evaluated, 2,667&nbsp;i.e.&nbsp;11.9&nbsp;% were classified as threatened."
+      "intro": "The Web Service of the Red List of Finnish Species introduces the results of The 2019 Red List of Finnish Species. Of the 22,418 species evaluated, 2,667 i.e. 11.9 % were classified as threatened."
     },
     "publications": {
-      "title": "Julkaisut ja lataukset"
+      "title": "Publications and Downloads"
     },
     "results": {
       "activeFilters": "Käytetyt rajaukset",
@@ -378,7 +378,7 @@
         "threats": "Uhkatekijät",
         "habitat": "Elinympäristöt"
       },
-      "title": "Lajit ja tulokset"
+      "title": "Species and Results"
     },
     "taxon": {
       "administrativeStatuses": "Lajia koskevat hallinnolliset lajitiedot",
@@ -414,12 +414,13 @@
       "occurrenceInfoTitle": "Esiintymistä koskevat tiedot",
       "occurrenceTitle": "Esiintymisalueet ja alueellinen uhanalaisuus",
       "source": "Lähteet",
-      "title": "Lajit ja tulokset"
+      "title": "Species and Results"
     },
     "hasEndangermentReason": "Uhanalaisuuteen johtaneet syyt",
     "hasThreat": "Uhkatekijät tulevaisuudessa",
     "threatPrimary": "Ensisijainen uhka",
-    "threatAny": "Yksi uhista"
+    "threatAny": "Yksi uhista",
+    "title": "THE RED LIST"
   },
   "lastCensus": "Previous census",
   "line": "line",

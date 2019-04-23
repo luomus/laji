@@ -13,7 +13,7 @@
           </button>
           <a class="navbar-brand" [routerLink]="['/'] | localize">
             <span *lajiForTypes="['dev', 'prod', 'vir']">LAJI.FI</span>
-            <span *lajiForTypes="['iucn']">PUNAINEN KIRJA</span>
+            <span *lajiForTypes="['iucn']">{{ 'iucn.title' | translate }}</span>
           </a>
           <div class="visible-xs-inline-block pull-right search" *lajiForTypes="['dev', 'prod', 'vir']">
             <laji-omni-search
