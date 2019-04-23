@@ -5,6 +5,7 @@
     [showExtraInfo]="false"
     [showOverlay]="!taxon.species"
     [showLinkToSpeciesCard]="!taxon.species"
+    [linkOptions]="{tab: 'images', queryParams: {context: null}, queryParamsHandling: 'merge'}"
   ></laji-image-gallery>
   <hr>
 </ng-container>
@@ -35,6 +36,7 @@
         [showOverlay]="!taxon.species"
         [showPaginatorOnlyWhenNeeded]="true"
         [showLinkToSpeciesCard]="!taxon.species"
+        [linkOptions]="{tab: 'images', queryParams: {context: null}, queryParamsHandling: 'merge'}"
         (hasData)="this[item.hasData] = $event"
       ></laji-gallery>
     </div>
