@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NafiResultComponent } from './nafi/nafi-result/nafi-result.component';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
-import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { DocumentDeActivateGuard } from '../shared/guards/document-de-activate.guard';
 import { YkjComponent } from './ykj/ykj.component';
@@ -40,7 +39,7 @@ const routes: Routes = [
     component: MonitoringThemeBaseComponent,
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
       {path: 'stats', pathMatch: 'full', component: NafiResultComponent},
       {path: 'form', pathMatch: 'full', component: FormComponent, canActivate: [OnlyLoggedIn]},
       {
@@ -67,6 +66,7 @@ const routes: Routes = [
         },
       },
       navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'templates'],
+      instructions: '2668',
     }
   },
   {
