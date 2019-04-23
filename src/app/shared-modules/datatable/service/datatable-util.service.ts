@@ -20,7 +20,13 @@ export class DatatableUtil {
     private translate: TranslateService
   ) { }
 
-  getVisibleValue(value, template): Observable<string> {
+  getVisibleValue(value, row, template): Observable<string> {
+    if (value == null || (Array.isArray(value) && value.length === 0)) {
+      if (['latestRedListEvaluationHabitats', 'redListStatus2010', 'redListStatus2015', 'taxonName'].indexOf(template) === -1) {
+        return ObservableOf('');
+      }
+    }
+
     let observable;
     switch (template) {
       case 'label':
@@ -44,10 +50,23 @@ export class DatatableUtil {
       case 'publicationArray':
         observable = this.getPublications(value);
         break;
-      case 'latestRedListEvaluation.secondaryHabitats':
-        observable = ObservableForkJoin(value.map(v => this.getLabels(v.habitat))).pipe(
+      case 'latestRedListEvaluationHabitats':
+        if (!row.latestRedListEvaluation || !row.latestRedListEvaluation.primaryHabitat) {
+          return ObservableOf('');
+        }
+        const habitats = [row.latestRedListEvaluation.primaryHabitat].concat(row.latestRedListEvaluation.secondaryHabitats || []);
+        observable = ObservableForkJoin(habitats.map(h => this.getLabels(h.habitat))).pipe(
           map(data => data.join('; '))
         );
+        break;
+      case 'redListStatus2010':
+      case 'redListStatus2015':
+        const year = template === 'redListStatus2010' ? 2010 : 2015;
+        (row.redListStatusesInFinland || []).forEach(status => {
+          if (status.year === year) {
+            observable = this.getLabels(status.status);
+          }
+        });
         break;
       case 'iucnStatus':
         observable = ObservableOf(value.status.replace('MX.iucn', '') + ' (' + value.year + ')');
@@ -55,12 +74,17 @@ export class DatatableUtil {
       case 'user':
         observable = this.getUserName(value);
         break;
+      case 'taxonName':
+        observable = ObservableOf(
+          (row.scientificName || '') + (row.scientificName && row.vernacularName ? ' – ' : '') + (row.vernacularName || '')
+        );
+        break;
       default:
         observable = ObservableOf(value);
         break;
     }
 
-    return observable;
+    return observable || ObservableOf(value);
   }
 
   private getLabels(values): Observable<string> {
@@ -87,9 +111,6 @@ export class DatatableUtil {
       labelObservables.push(
         this.publicationService.getPublication(values[i], this.translate.currentLang).pipe(
           map((res: Publication) => {
-            if (!res) {
-              console.log(res);
-            }
             return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : values[i];
           }))
       );

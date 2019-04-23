@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { ExportService } from '../../../shared/service/export.service';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { DatatableUtil } from './datatable-util.service';
+import { DatatableUtil } from '../../../shared-modules/datatable/service/datatable-util.service';
 import { Util } from '../../../shared/service/util.service';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
@@ -71,19 +71,16 @@ export class TaxonExportService {
         const key = i + (firstRow ? 2 : 1);
 
         const template = cols[j].cellTemplate;
-        aoa[key][j] = (value === undefined || value === null || (Array.isArray(value) && value.length === 0)) ? '' : value;
+        aoa[key][j] = (value == null || (Array.isArray(value) && value.length === 0)) ? '' : value;
 
-        if (!template || aoa[key][j] === '') {
+        if (!template) {
           continue;
         }
 
-        const observable = this.dtUtil.getVisibleValue(value, template);
-
-        if (observable) {
-          observables.push(observable.pipe(tap(((val) => {
-            aoa[key][j] = val;
-          }))));
-        }
+        const observable = this.dtUtil.getVisibleValue(value, data[i], template);
+        observables.push(observable.pipe(tap(((val) => {
+          aoa[key][j] = val;
+        }))));
       }
     }
     return observables.length > 0 ? ObservableForkJoin(observables).pipe(
