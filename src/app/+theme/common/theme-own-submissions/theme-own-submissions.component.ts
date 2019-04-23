@@ -20,6 +20,7 @@ export class ThemeOwnSubmissionsComponent implements OnInit {
   useLocalDocumentViewer = false;
   gatheringGeometryJSONPath;
   columns = ['dateEdited', 'dateObserved', 'taxon', 'namedPlaceName', 'observer', 'id'];
+  actions = ['edit', 'view', 'download', 'stats', 'delete'];
 
   constructor(
     private formService: FormService,
@@ -35,6 +36,7 @@ export class ThemeOwnSubmissionsComponent implements OnInit {
     const {options = {}, namedPlaceOptions = {}} = form;
     if (options.ownSubmissionsColumns) {
       this.columns = options.ownSubmissionsColumns;
+      this.actions = options.ownSubmissionsActions;
     }
     this.useLocalDocumentViewer = !!namedPlaceOptions.documentListUseLocalDocumentViewer;
     this.gatheringGeometryJSONPath = namedPlaceOptions.documentViewerGatheringGeometryJSONPath;
