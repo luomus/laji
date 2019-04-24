@@ -74,8 +74,8 @@ export class AppComponent implements OnInit {
   skipFields: string[] = [
     'secureLevel',
     'gatheringEvent.legPublic',
-    'atherings.namedPlaceID',
-    'atherings.images',
+    'gatherings.namedPlaceID',
+    'gatherings.images',
     'gatherings.units.unitFact.autocompleteSelectedTaxonID',
   ];
 
