@@ -362,6 +362,15 @@
     "Are you sure that you want to remove this field?": "Är du säker på att du vill ta bort det här fältet?",
     "Field cannot fit the label!": "Fältet kan inte passa etiketten!"
   },
+  "label": {
+    "select":{
+      "label": "Välj observationer för märkning",
+      "intro": "\nVälj observationer från tabellen nedan och klicka på \"Gör etiketterna\" under tabellen när du är klar."
+    },
+    "make": "Gör etiketterna",
+    "designer": "Designetikett",
+    "id_short": "ID (kort)"
+  },
   "line": "rad",
   "line-transect-result.chart": "framsteg av artens mängd",
   "line-transect-result.grid": "Statistik enligt rutnät och art",

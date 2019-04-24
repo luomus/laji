@@ -11,7 +11,6 @@ import { Taxonomy } from '../model/Taxonomy';
 import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
-import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { catchError, filter, map, merge, share, take, tap } from 'rxjs/operators';
@@ -55,12 +54,12 @@ export class TriplestoreLabelService {
       subs.push(this.get(val, lang).pipe(map(result => ({key: val, value: result}))));
     });
     return ObservableForkJoin(subs).pipe(
-      map(results => results.reduce((cumulative, current) => {
+      map((results: any) => results.reduce((cumulative: {[key: string]: string}, current) => {
         if (!cumulative[current.key]) {
           cumulative[current.key] = current.value;
         }
         return cumulative;
-      }, {}))
+      }, {} as {[key: string]: string}))
     );
   }
 

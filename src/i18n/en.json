@@ -422,6 +422,15 @@
     "threatAny": "Yksi uhista",
     "title": "THE RED LIST"
   },
+  "label": {
+    "select":{
+      "label": "Select observations for labeling",
+      "intro": "Select observations from table below and <br>click \"Make the labels\" button below the table when done."
+    },
+    "make": "Make the labels",
+    "designer": "Design label",
+    "id_short": "ID (short)"
+  },
   "lastCensus": "Previous census",
   "line": "line",
   "line-transect-result.chart": "Progress of species amount",

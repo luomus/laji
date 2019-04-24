@@ -532,6 +532,15 @@
     "Are you sure that you want to remove this field?": "Oletko varma, että haluat poistaa kentän?",
     "Field cannot fit the label!": "Kenttä ei mahdu etiketille!"
   },
+  "label": {
+    "select":{
+      "label": "Valitse etiketöitävät",
+      "intro": "Valitse alla olevasta listasta havaintoerät joista haluat tehdä etiketin ja<br>klikkaa talukun alla olevaa \"Tee etiketit\"-nappia"
+    },
+    "make": "Tee etiketit",
+    "designer": "Suunnittele etiketti",
+    "id_short": "ID (lyhyt)"
+  },
   "lastCensus": "Edellinen laskenta",
   "line": "rivi",
   "line-transect-result.chart": "Lajimäärän kehitys",

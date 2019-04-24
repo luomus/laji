@@ -1,3 +1,7 @@
+#filter-row-container {
+  margin-bottom: 5px;
+}
+
 :host >>> .empty-header {
   height: 38px;
 }
@@ -5,14 +9,6 @@
 :host >>> .center-text {
   text-align: center !important;
   padding: 0 !important;
-}
-
-#filter-row-container {
-  margin-bottom: 5px;
-}
-
-#filter-row-container > * {
-  margin-bottom: 2px;
 }
 
 @media only screen and (min-width : 768px) {
