@@ -5,7 +5,8 @@
 .header-image {
   position: relative;
   background-clip: border-box;
-  background: url(https://cdn.laji.fi/images/backdrop/snow.jpg) center / cover;
+  background: url(https://cdn.laji.fi/images/backdrop/spring_1.jpg) center / cover;
+  /*background: url(https://cdn.laji.fi/images/backdrop/snow.jpg) center / cover;*/
   /*background: url(https://cdn.laji.fi/images/backdrop/kevat.jpg) center / cover;*/
   /*background: url(https://cdn.laji.fi/images/backdrop/syksy.jpg) center / cover;*/
   /*background: url(https://cdn.laji.fi/images/backdrop/syksy2.jpg) center / cover;*/
