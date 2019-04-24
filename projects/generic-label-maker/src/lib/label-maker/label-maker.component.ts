@@ -42,7 +42,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _data: object[] = [];
   fields: ILabelField[];
   dragging = false;
-  version = '0.0.19';
+  version = '0.0.20';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
