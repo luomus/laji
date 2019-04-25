@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { map, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ThemeFormService } from '../theme-form.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export enum Rights {
   Allowed,
