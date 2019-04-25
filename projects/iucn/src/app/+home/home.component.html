@@ -11,7 +11,7 @@
 <div class="container">
   <p style="margin-top: 15px;">
     {{'iucn.home.intro' | translate}}
-    <a [routerLink]="({'fi': '/about/r-27'} | multiLang)">{{'iucn.home.evaluation' | translate}}</a>
+    <a *ngIf="translate.currentLang === 'fi'" [routerLink]="({'fi': '/about/r-27'} | multiLang)">{{'iucn.home.evaluation' | translate}}</a>
   </p>
   <h2>
     {{'iucn.home.iucnCategories' | translate}}
