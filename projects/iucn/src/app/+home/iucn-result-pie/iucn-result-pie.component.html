@@ -4,7 +4,12 @@
   </div>
   <div class="panel-body identifications">
     <div class="chart">
-      <ngx-charts-pie-chart [results]="_data" [customColors]="colorSchema"></ngx-charts-pie-chart>
+      <ngx-charts-pie-chart
+        [results]="_data"
+        [customColors]="colorSchema"
+        [labels]="true"
+        [trimLabels]="false"
+      ></ngx-charts-pie-chart>
     </div>
     <div class="total">
       {{'iucn.evaluated' | translate}} <strong>{{ total }}</strong>
