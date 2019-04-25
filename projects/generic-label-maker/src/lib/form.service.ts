@@ -35,14 +35,14 @@ export class FormService {
       case 'array':
         if (schema.items) {
           if (schema.items.type !== 'object') {
-            base.push({field: path, isArray: true, label: this.getLabel(schema, parentLabel)});
+            base.push({field: path, isArray: true, label: this.getLabel(schema, parentLabel), valueMap: this.getValueMap(schema)});
           } else {
             this.convertSchema(path, schema.title || parentLabel, schema.items, base, options);
           }
         }
         break;
       case 'string':
-        base.push({field: path, label: this.getLabel(schema, parentLabel)});
+        base.push({field: path, label: this.getLabel(schema, parentLabel), valueMap: this.getValueMap(schema)});
         break;
       case 'boolean':
         base.push({field: path, label: this.getLabel(schema, parentLabel)});
@@ -54,6 +54,17 @@ export class FormService {
 
   private getLabel(item, parent: string) {
     return (parent ? parent.slice(0, 3) + ': ' : '') + item.title;
+  }
+
+  private getValueMap(item): undefined|{[value: string]: string} {
+    if (!Array.isArray(item.enum) || !Array.isArray(item.enumNames)) {
+      return undefined;
+    }
+    const result = {};
+    for (let i = 0; i < item.enum.length; i++) {
+      result[item.enum[i]] = item.enumNames[i];
+    }
+    return result;
   }
 
 }

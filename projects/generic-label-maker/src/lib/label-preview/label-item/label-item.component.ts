@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ILabelField, ILabelItem } from '../../generic-label-maker.interface';
+import { ILabelField, ILabelItem, ILabelValueMap } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 
 @Component({
@@ -10,9 +10,9 @@ import { LabelService } from '../../label.service';
 })
 export class LabelItemComponent {
 
-
   _item: ILabelItem;
   _data: object;
+  _map: ILabelValueMap;
 
   size;
 
@@ -31,6 +31,12 @@ export class LabelItemComponent {
     this.initContent();
   }
 
+  @Input()
+  set valueMap(map: ILabelValueMap) {
+    this._map = map;
+    this.initContent();
+  }
+
   private initContent() {
     if (!this._data || !this._item) {
       return;
@@ -40,23 +46,13 @@ export class LabelItemComponent {
     fields.forEach(field => {
       if (field.type === 'text') {
         result.push({...field});
-      } else if (field.separatorAlways || this.labelService.hasValue(this._data, field.field)) {
+      } else if (field.separatorAlways || LabelService.hasValue(this._data, field.field)) {
         result.push({
           ...field,
-          content: this.getFieldValue(field, this._data[field.field])
+          content: LabelService.getFieldValue(field, this._data[field.field], this._map, true) as string
         });
       }
     });
     this._item.fields = result;
-  }
-
-  private getFieldValue(field: ILabelField, value: any): string {
-    if (typeof value === 'undefined' || value === null) {
-      return '';
-    }
-    if (Array.isArray(value)) {
-      return value.map(val => this.getFieldValue(field, val)).join(field.join || ', ');
-    }
-    return field.valueMap && field.valueMap[value] || value;
   }
 }

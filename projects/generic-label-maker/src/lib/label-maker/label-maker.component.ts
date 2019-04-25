@@ -14,7 +14,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { IAddLabelEvent, ILabelField, ILabelItem, ISetup, IViewSettings } from '../generic-label-maker.interface';
+import { IAddLabelEvent, ILabelField, ILabelItem, ILabelValueMap, ISetup, IViewSettings } from '../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../label.service';
 import { InfoWindowService } from '../info-window/info-window.service';
 import { Subscription } from 'rxjs';
@@ -36,7 +36,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   @ViewChild('intro') intro;
   @ViewChild('gettingStarted') gettingStarted;
 
-  _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close' = 'file';
+  _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close'|'map' = 'file';
   _setup: ISetup;
   _selectedLabelItem: ILabelItem | undefined;
   _data: object[] = [];
@@ -381,5 +381,12 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     }
     this.data = result.data;
     this.infoWindowService.close();
+  }
+
+  onValueMapChange(map: ILabelValueMap) {
+    this.setupChanged({
+      ...this._setup,
+      valueMap: map
+    }, false);
   }
 }

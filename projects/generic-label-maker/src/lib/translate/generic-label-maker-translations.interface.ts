@@ -81,4 +81,7 @@ export interface GenericLabelMakerTranslationsInterface {
   'Cannot make labels smaller than {{size}}mm!'?: string;
   'Are you sure that you want to remove this field?'?: string;
   'Field cannot fit the label!'?: string;
+  'Are you sure that you want to remove this?'?: string;
+  'Map values'?: string;
+  'Add unique values from data'?: string;
 }

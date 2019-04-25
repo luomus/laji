@@ -30,6 +30,8 @@ import { LabelPreviewPagerComponent } from './label-preview/label-preview-pager/
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { TranslatePipe } from './translate/translate.pipe';
 import { TranslateService } from './translate/translate.service';
+import { LabelValueMapComponent } from './label-maker/label-value-map/label-value-map.component';
+import { FieldValueMapComponent } from './label-maker/label-value-map/field-value-map/field-value-map.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { TranslateService } from './translate/translate.service';
     LabelItemFieldComponent,
     LabelExcelFileComponent,
     LabelPreviewPagerComponent,
-    TranslatePipe
+    TranslatePipe,
+    LabelValueMapComponent,
+    FieldValueMapComponent
   ],
   imports: [
     CommonModule,

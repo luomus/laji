@@ -6,6 +6,7 @@
       <li [class.active]="_active === 'view'" (click)="_active = 'view'" *ngIf="_viewSettings"><a>{{ 'View' | translate }}</a></li>
       <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>{{ 'Label fields' | translate }}</a></li>
       <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>{{ 'Settings' | translate }}</a></li>
+      <li [class.active]="_active === 'map'" (click)="_active = 'map'"><a>{{ 'Map values' | translate }}</a></li>
       <li [class.active]="_active === 'help'" (click)="_active = 'help'"><a>{{ 'Help' | translate }}</a></li>
     </ul>
   </div>
@@ -89,6 +90,14 @@
           [newAvailableFields]="newAvailableFields"
           (addLabelItem)="addLabelItem($event)"
         ></ll-label-fields-available>
+      </div>
+      <div *ngIf="_active === 'map'">
+        <ll-label-value-map
+          [data]="_data"
+          [valueMap]="_setup.valueMap || {}"
+          (valueMapChange)="onValueMapChange($event)"
+          [availableFields]="availableFields"
+        ></ll-label-value-map>
       </div>
     </div>
     <div class="editor-wrap">

@@ -98,9 +98,20 @@ export interface ISetup {
    * Label items on the back side
    */
   backSideLabelItems?: ILabelItem[];
+
+  /**
+   * Map values to new one
+   */
+  valueMap?: ILabelValueMap;
 }
 
 export interface IAddLabelEvent {
   item: ILabelItem;
   location: TLabelLocation;
+}
+
+export interface ILabelValueMap {
+  [field: string]: {
+    [value: string]: string
+  };
 }
