@@ -179,7 +179,14 @@ export class ResultsComponent implements OnChanges {
       }).filter(item => !!item);
     }
     if (!this.selectedSpeciesFields || this.selectedSpeciesFields.length === 0) {
-      this.selectedSpeciesFields = this.defaultSpeciesFields;
+      this.selectedSpeciesFields = [...this.defaultSpeciesFields];
+    }
+    const statusIdx = this.selectedSpeciesFields.findIndex(item => item.key === 'status');
+    if (statusIdx !== -1) {
+      this.selectedSpeciesFields[statusIdx] = {
+        ...this.selectedSpeciesFields[statusIdx],
+        label: 'iucn.results.column.class' + this.resultService.getYearFromChecklistVersion(this.checklist)
+      };
     }
     this.initStatusQuery();
     this.initSpeciesListQuery();
