@@ -17,6 +17,7 @@ export class SelectFieldsModalGearComponent {
   @Input() modalTitle: string;
   @Input() selectedFieldsTitle: string;
   @Input() allSelectableFieldsTitle: string;
+  @Input() labelOpen = 'open';
   @Input() labelClose = 'close';
   @Input() labelReset = 'reset';
 

@@ -347,7 +347,8 @@
       "endangeredSpecies": "Uhanalaisia lajeja",
       "fieldsAll": "Kaikki kentät",
       "fieldsSelected": "Valitut kentät",
-      "selectColumns": "Valitse luettelossa näkyvät kentät",
+      "selectColumns": "Valitse sarakkeet",
+      "selectListColumns": "Valitse luettelossa näkyvät sarakkeet",
       "redListStatusesInFinland": "Luokat Suomessa",
       "unspecified": "tarkemmin määrittelemättömät",
       "column": {
