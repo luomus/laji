@@ -3,10 +3,11 @@ import { FormService as LabelFormService, ILabelField } from 'generic-label-make
 import { Observable } from 'rxjs';
 import { Document } from '../model/Document';
 import { map } from 'rxjs/operators';
-import { FormService } from './form.service';
+import { FormService as ToolsFormService } from './form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { IdService } from './id.service';
+import { SessionStorage } from 'ngx-webstorage';
 
 export interface IFlatDocument {
   [key: string]: string|number|boolean|string[];
@@ -17,6 +18,7 @@ export interface IFlatDocument {
 })
 export class PdfLabelService {
 
+  @SessionStorage('pdf-data', [])
   private data: IFlatDocument[];
 
   skipFields: string[] = [
@@ -36,7 +38,7 @@ export class PdfLabelService {
 
 
   constructor(
-    private formService: FormService,
+    private formService: ToolsFormService,
     private labelFormService: LabelFormService,
     private translateService: TranslateService
   ) {

@@ -532,7 +532,10 @@
     "Field within the label is blocking the resize!": "Kenttä etiketillä estää etiketin pienentämisen!",
     "Cannot make labels smaller than {{size}}mm!": "Etikettiä ei voi tehdä pienemmäksi kuin {{size}}mm!",
     "Are you sure that you want to remove this field?": "Oletko varma, että haluat poistaa kentän?",
-    "Field cannot fit the label!": "Kenttä ei mahdu etiketille!"
+    "Field cannot fit the label!": "Kenttä ei mahdu etiketille!",
+    "Map values": "Arvojen muuttaminen",
+    "Are you sure that you want to remove this?": "Oletko varma, että haluat poistaa tämän?",
+    "Add unique values from data'": "Lisää yksittäiset arvot datasta"
   },
   "label": {
     "select":{
