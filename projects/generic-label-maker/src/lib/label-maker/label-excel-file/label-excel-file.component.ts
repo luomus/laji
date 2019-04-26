@@ -93,6 +93,7 @@ export class LabelExcelFileComponent implements OnInit {
         label: this.idCol,
         field: this.idCol,
         content: ex[this.idCol] || 'http://example.com/123',
+        type: 'id'
       },
       {
         label: 'Text',

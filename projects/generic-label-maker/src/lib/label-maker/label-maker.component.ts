@@ -40,9 +40,9 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _setup: ISetup;
   _selectedLabelItem: ILabelItem | undefined;
   _data: object[] = [];
-  fields: ILabelField[];
+  generateFields: ILabelField[];
   dragging = false;
-  version = '0.0.21';
+  version = '0.0.22';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -162,31 +162,25 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
       ...setup,
       labelItems: setup.labelItems.map(item => {
         item.fields.forEach(field => {
-          if (!hasField[field.field] && !field.type && field.field !== 'id') {
+          if (!hasField[field.field] && !field.type) {
             hasField[field.field] = true;
             allFields.push(field);
           }
         });
-        return {
-        ...item,
-          _id: item._id || LabelMakerComponent.id++
-        };
+        return { ...item, _id: item._id || LabelMakerComponent.id++ };
       }),
       backSideLabelItems: (setup.backSideLabelItems || []).map(item => {
         item.fields.forEach(field => {
-          if (!hasField[field.field] && !field.type && field.field !== 'id') {
+          if (!hasField[field.field] && !field.type) {
             hasField[field.field] = true;
             allFields.push(field);
           }
         });
-        return {
-          ...item,
-          _id: item._id || LabelMakerComponent.id++
-        };
+        return { ...item, _id: item._id || LabelMakerComponent.id++ };
       })
     };
     this.dimensions = this.labelService.countLabelsPerPage(this._setup);
-    this.fields = allFields;
+    this.generateFields = allFields;
     if (this._selectedLabelItem) {
       let idx = this._setup.labelItems.findIndex(i => i._id === this._selectedLabelItem._id);
       if (idx !== -1) {
@@ -277,11 +271,11 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   generateData() {
     this.infoWindowService.close();
-    const uri = this.generate.uri + (this.generate.uri.indexOf('%id%') > -1 ? '' : '%id%');
+    const MAX = 100000;
     const data = [];
+    const uri = this.generate.uri + (this.generate.uri.indexOf('%id%') > -1 ? '' : '%id%');
     const start = this.generate.rangeStart < this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
     const end = this.generate.rangeStart > this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
-    const MAX = 100000;
     const idFieldsIdx = this.availableFields.findIndex(item => item.type === 'qr-code');
     const idField = idFieldsIdx !== -1 ? this.availableFields[idFieldsIdx].field : 'id';
     let current = 0;
@@ -360,6 +354,19 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     this.viewSettingsChange.emit(event);
   }
 
+  loadExcelData() {
+    const result = this.excelCmp.loadData();
+    if (result.availableFields) {
+      this.availableFieldsChange.emit(result.availableFields);
+    }
+    this.data = result.data;
+    this.infoWindowService.close();
+  }
+
+  onValueMapChange(map: ILabelValueMap) {
+    this.setupChanged({ ...this._setup, valueMap: map }, false);
+  }
+
   private updateLocalId(setup: ISetup) {
     let id = 0;
     ['labelItems', 'backSideLabelItems'].forEach(items => {
@@ -372,21 +379,5 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
       }
     });
     LabelMakerComponent.id = id + 1;
-  }
-
-  loadExcelData() {
-    const result = this.excelCmp.loadData();
-    if (result.availableFields) {
-      this.availableFieldsChange.emit(result.availableFields);
-    }
-    this.data = result.data;
-    this.infoWindowService.close();
-  }
-
-  onValueMapChange(map: ILabelValueMap) {
-    this.setupChanged({
-      ...this._setup,
-      valueMap: map
-    }, false);
   }
 }

@@ -50,7 +50,7 @@ export interface ILabelField {
   separator?: string;
   separatorAlways?: boolean;
   isArray?: boolean;
-  type?: 'qr-code'|'text';
+  type?: 'qr-code'|'text'|'id';
   style?: IFontStyle;
   styleAppliesTo?: 'content'|'prefix'|'suffix'|'all'|'contentPrefix'|'contentSuffix'|'prefixSuffix';
   _menuOpen?: boolean;
