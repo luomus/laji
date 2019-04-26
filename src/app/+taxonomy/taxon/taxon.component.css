@@ -33,6 +33,18 @@ laji-info-card {
   margin-left: 110px;
 }
 
+@media only screen and (max-width : 767px) {
+  .taxon-tree-container, laji-info-card {
+    width: 100% !important;
+  }
+  laji-info-card {
+    margin-left: 0 !important;
+  }
+  .dragbar, .hide-sidebar-toggle {
+    display: none;
+  }
+}
+
 .dragbar {
   position: absolute;
   top: 0;
@@ -68,32 +80,3 @@ laji-info-card {
 .hide-sidebar-toggle {
   right: 0;
 }
-
-@media only screen and (max-width : 767px) {
-  .taxon-tree-container, laji-info-card {
-    width: 100% !important;
-  }
-  laji-info-card {
-    margin-left: 0 !important;
-  }
-  .dragbar{
-    display: none;
-  }
-
-  .sidebar-toggle{
-    margin-right: 0px;
-  }
-
-  .hide-sidebar-toggle[_ngcontent-c8] {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-top: 1px solid #e1e1e1;
-    border-right: 0px solid #e1e1e1;
-    border-left : 1px solid #e1e1e1;
-    border-bottom: 1px solid #e1e1e1;
-  }
-}
-
-
