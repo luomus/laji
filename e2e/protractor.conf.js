@@ -17,7 +17,7 @@ let base =  {
 switch (process.platform) {
   case "darwin":
     base = {
-      directConnect: false,
+      directConnect: true,
       multiCapabilities: [
         { browserName: 'firefox' },
         { browserName: 'chrome' },
