@@ -188,6 +188,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
         data: this.data
       };
       try {
+        console.log(options);
         this.map = new LajiMap.LajiMap(options);
         this.map.map.on('moveend', _ => {
           this.moveEvent('moveend');
