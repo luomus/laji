@@ -1,6 +1,6 @@
 export default {
   person: {
-    token: '%USER_TOKEN%',
-    name: '%USER_NAME%'
+    token: 'OTFiMzJhNjktMTIyMy00ODkzLTgwNjgtNjg1NzM5N2NhNTJk',
+    name: 'Ville-Matti Riihikoski'
   }
 };
