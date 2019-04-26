@@ -5,7 +5,7 @@
 <ll-field-value-map
   *ngFor="let field of mapped"
   [title]="fieldLookup[field]?.label"
-  [mapping]="_map[field]"
+  [mapping]="valueMap[field]"
   (mappingChange)="updateFieldMap(field, $event)"
   (remove)="removeFromMap(field)"
   (refresh)="addMappingByField(field)"

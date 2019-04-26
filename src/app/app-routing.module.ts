@@ -7,8 +7,6 @@ import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { mergeMap } from 'rxjs/operators';
-import { environment } from '../environments/environment';
-import { Global } from '../environments/global';
 import { LocalizeGuard } from './locale/localize.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
