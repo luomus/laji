@@ -6,7 +6,7 @@ export class UserPage {
   private usernameElem = element(by.id('logged-in-user'));
 
   navigateTo(): wdpromise.Promise<void> {
-    return browser.get('/');
+    return browser.get('/user');
   }
 
   getLoggedInUser(): wdpromise.Promise<string> {

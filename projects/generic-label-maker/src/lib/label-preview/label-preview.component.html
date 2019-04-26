@@ -7,7 +7,7 @@
     *ngFor="let item of items"
     [item]="item"
     [data]="data"
-    [valueMap]="_setup.valueMap || {}"
+    [valueMap]="setup.valueMap || {}"
   ></ll-label-item>
 </div>
 <ll-ruler *ngIf="!init" (measured)="init = true"></ll-ruler>

@@ -10,9 +10,7 @@ let base =  {
     chromeOptions: {
       args: [ "--headless", "--disable-gpu", "--window-size=1200x800" ]
     },
-    browserName: 'chrome',
-    shardTestFiles: true,
-    maxInstances: 3
+    browserName: 'chrome'
   }
 };
 
