@@ -283,3 +283,22 @@ uiload > div {
 a:focus em, a:hover em {
   text-decoration: underline;
 }
+
+.btn-group {
+  position: absolute;
+  top: -25px;
+  right: 0px;
+}
+
+@media only screen and (max-width : 560px) {
+  .full2-container {
+    width: 160px;
+    margin: 0px 10px 0 0;
+  }
+
+  .full2-container h4{
+    width:160px;
+  }
+}
+
+
