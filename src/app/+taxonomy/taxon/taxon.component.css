@@ -84,7 +84,7 @@ laji-info-card {
     margin-right: 0px;
   }
 
-  .hide-sidebar-toggle[_ngcontent-c8] {
+  .hide-sidebar-toggle {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     border-top-left-radius: 6px;
