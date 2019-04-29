@@ -1,6 +1,6 @@
 <slot></slot>
 <ng-container *ngIf="availableFields && availableFields.length">
-  <div class="reset-container" *ngIf="newAvailableFields && newAvailableFields !== availableFields">
+  <div class="reset-container" *ngIf="!isSame">
     <button type="button" class="btn btn-default btn-sm" (click)="availableFieldsChange.emit(newAvailableFields)">{{ 'reset' | translate }}</button>
   </div>
   <h3 class="first">{{ 'Available fields' | translate }}</h3>

@@ -1,4 +1,4 @@
-<ng-container *ngIf="field.type === 'text'; else label">
+<ng-container *ngIf="field.type === fieldType.text; else label">
   <input type="text" [value]="field.content || ''" (change)="textChange($event)">
 </ng-container>
 <ng-template #label>
@@ -6,7 +6,7 @@
     {{field.label}}
   </div>
 </ng-template>
-<div class="more" (click)="toggleMore()" *ngIf="field.type !== 'qr-code'">
+<div class="more" (click)="toggleMore()" *ngIf="field.type !== fieldType.qrCode">
   <ll-icon type="down" *ngIf="field._menuOpen || more; else up"></ll-icon>
   <ng-template #up>
     <ll-icon type="up"></ll-icon>
@@ -58,7 +58,7 @@
       </td>
       <td></td>
     </tr>
-    <ng-container *ngIf="field.type !== 'text'">
+    <ng-container *ngIf="field.type !== fieldType.text">
       <tr>
         <td>{{ 'Prefix' | translate }}:</td>
         <td><input type="text" (change)="onChange($event, 'prefix')" [value]="field.prefix || ''" class="form-control"></td>

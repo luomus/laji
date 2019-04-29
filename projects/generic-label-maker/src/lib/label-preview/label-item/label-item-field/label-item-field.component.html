@@ -1,4 +1,4 @@
-<ng-container *ngIf="_field.type === 'qr-code'; else plainText">
+<ng-container *ngIf="_field.type === fieldType.qrCode; else plainText">
   <qrcode [qrdata]="_field.content" [size]="size" [level]="'H'" [usesvg]="true"></qrcode>
 </ng-container>
 <ng-template #plainText>

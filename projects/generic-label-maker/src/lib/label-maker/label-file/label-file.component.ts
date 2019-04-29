@@ -18,6 +18,7 @@ export class LabelFileComponent {
   @Input() setup: ISetup;
   @Input() data: object[];
   @Input() availableFields: ILabelField[];
+  @Input() pdfLoading = false;
 
   @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string, availableFields: ILabelField[]}[];
 
@@ -25,6 +26,7 @@ export class LabelFileComponent {
   @Output() dataChange = new EventEmitter<object[]>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
+  @Output() pdfLoadingChange = new EventEmitter<boolean>();
   @ViewChild('printBtn') printBtn: LabelPrintComponent;
   @ViewChild('saveTpl') saveTpl: TemplateRef<any>;
   @ViewChild('saveActionsTpl') saveActionsTpl: TemplateRef<any>;
@@ -150,5 +152,12 @@ export class LabelFileComponent {
     if (recent.availableFields) {
       this.availableFieldsChange.emit(recent.availableFields);
     }
+  }
+
+  startPdfLoading() {
+    if (this.pdfLoading) {
+      return;
+    }
+    this.pdfLoadingChange.emit(true);
   }
 }

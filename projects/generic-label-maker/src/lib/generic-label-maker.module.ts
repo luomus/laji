@@ -32,6 +32,7 @@ import { TranslatePipe } from './translate/translate.pipe';
 import { TranslateService } from './translate/translate.service';
 import { LabelValueMapComponent } from './label-maker/label-value-map/label-value-map.component';
 import { FieldValueMapComponent } from './label-maker/label-value-map/field-value-map/field-value-map.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { FieldValueMapComponent } from './label-maker/label-value-map/field-valu
     LabelPreviewPagerComponent,
     TranslatePipe,
     LabelValueMapComponent,
-    FieldValueMapComponent
+    FieldValueMapComponent,
+    LoaderComponent
   ],
   imports: [
     CommonModule,

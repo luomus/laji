@@ -10,7 +10,7 @@ import {
   Output,
   PLATFORM_ID
 } from '@angular/core';
-import { IAddLabelEvent, ILabelField, ISetup } from '../../generic-label-maker.interface';
+import { IAddLabelEvent, ILabelField, ISetup, FieldType } from '../../generic-label-maker.interface';
 import { CdkDragRelease } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../label.service';
 import { isPlatformBrowser } from '@angular/common';
@@ -26,8 +26,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 
   @Input() setup: ISetup;
-  @Input() newAvailableFields: ILabelField[];
-  @Input() availableFields: ILabelField[] = [];
   @Input() magnification = 2;
 
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
@@ -38,6 +36,10 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
   filterSubject = new Subject<string>();
   filterSubscription: Subscription;
   addToBackside = false;
+  isSame = true;
+
+  private _availableFields: ILabelField[] = [];
+  private _newAvailableFields: ILabelField[] = [];
 
   constructor(
     @Inject(PLATFORM_ID) protected platformId,
@@ -57,6 +59,26 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.filterSubscription.unsubscribe();
+  }
+
+  @Input()
+  set newAvailableFields(newAvailableFields: ILabelField[]) {
+    this._newAvailableFields = newAvailableFields || [];
+    this.checkIsSame();
+  }
+
+  get newAvailableFields() {
+    return this._newAvailableFields;
+  }
+
+  @Input()
+  set availableFields(availableFields: ILabelField[]) {
+    this._availableFields = availableFields || [];
+    this.checkIsSame();
+  }
+
+  get availableFields() {
+    return this._availableFields;
   }
 
   filter(value) {
@@ -88,8 +110,8 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 
     if (targetBounds) {
       const field: ILabelField = JSON.parse(JSON.stringify(event.source.data));
-      const width = field.type === 'qr-code' ? 10 : 25;
-      const height = field.type === 'qr-code' ? 10 : 5;
+      const width = field.type === FieldType.qrCode ? 10 : 25;
+      const height = field.type === FieldType.qrCode ? 10 : 5;
       const xPos = this.labelService.pixelToMm((elemBounds.left - targetBounds.left) / this.magnification);
       const yPos = this.labelService.pixelToMm((elemBounds.top - targetBounds.top) / this.magnification);
       this.addLabelItem.emit({location: targetBounds === targetFrontBounds ? 'labelItems' : 'backSideLabelItems', item: {
@@ -107,8 +129,8 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
   }
 
   addField(field: ILabelField) {
-    const width = field.type === 'qr-code' ? 10 : 25;
-    const height = field.type === 'qr-code' ? 10 : 5;
+    const width = field.type === FieldType.qrCode ? 10 : 25;
+    const height = field.type === FieldType.qrCode ? 10 : 5;
     this.addLabelItem.emit({
       location: this.setup.twoSided && this.addToBackside ? 'backSideLabelItems' : 'labelItems',
       item: {
@@ -125,5 +147,21 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 
   toggleBackside() {
     this.addToBackside = !this.addToBackside;
+  }
+
+  checkIsSame(): boolean {
+    if (this.availableFields.length !== this.newAvailableFields.length) {
+      this.isSame = false;
+      return;
+    }
+    const keys = new Set<string>();
+    this.newAvailableFields.forEach(field => keys.add(field.field));
+    let result = true;
+    this.availableFields.forEach(field => {
+      if (result && !keys.has(field.field)) {
+        result = false;
+      }
+    });
+    this.isSame = result;
   }
 }
