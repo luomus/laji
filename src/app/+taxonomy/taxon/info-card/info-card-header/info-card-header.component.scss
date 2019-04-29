@@ -7,18 +7,34 @@
   padding: 8px 0;
   border-radius: 4px;
   display: inline-block;
+  margin-left: 125px;
 }
 .taxon-search-container {
-  position: absolute;
-  right: 16px;
-  top: 18px;
+  position: relative;
+  padding: 6px 20px;
+  background: #2C3E50;
+}
+
+ .taxonomy-search {
+  width:50%;
+  margin: 0 auto;
+}
+
+.no-padding{
+  padding:0;
+}
+
+@media only screen and (max-width : 991px) {
+ .taxonomy-search {
+    width:100%;
+  }
 }
 
 @media only screen and (max-width : 767px) {
   .taxon-search-container {
     position: static;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 0px;
   }
   .taxon-parent {
     margin-top: 5px;

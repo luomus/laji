@@ -30,7 +30,7 @@ laji-info-card {
   }
 }
 ::ng-deep laji-info-card.sidebar-hidden .info-card-header-first-row {
-  margin-left: 110px;
+  margin-left: -15px;
 }
 
 .dragbar {
@@ -59,7 +59,7 @@ laji-info-card {
   border-bottom: 1px solid #e1e1e1;
 }
 .sidebar-toggle.open-toggle {
-  top: 0;
+  top: 42px;
   padding: 15px;
   border-top: none;
   border-top-right-radius: 0;

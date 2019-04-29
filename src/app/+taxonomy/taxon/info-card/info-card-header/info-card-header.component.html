@@ -1,10 +1,14 @@
 <div class="row info-card-header-first-row">
-  <div class="col-xs-12">
-    <div class="taxon-search-container">
-      <laji-taxon-select
-        [placeholder]="'taxonomy.card.search' | translate"
-        (taxonIdChange)="taxonSelect.emit($event)"
-      ></laji-taxon-select>
+  <div class="col-xs-12 no-padding">
+    <div class="taxon-search-container"> 
+      <div class="row">
+        <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <laji-taxon-select
+            [placeholder]="'taxonomy.card.search' | translate"
+            (taxonIdChange)="taxonSelect.emit($event)"
+          ></laji-taxon-select>
+        </div>
+      </div>
     </div>
     <laji-spinner [spinning]="loadingParent">
       <div class="taxon-parent">
