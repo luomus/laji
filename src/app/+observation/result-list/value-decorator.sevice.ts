@@ -172,7 +172,7 @@ export class ValueDecoratorService {
 
   protected makeTaxon(value): any {
     let result = '';
-    if (value.qname) {
+    if (value.qname || value.id) {
       result += value.vernacularName && value.vernacularName[this.lang] ?
         value.vernacularName[this.lang] : '';
       result += ' <i class="scientificName">(' + value.scientificName + ')</i>';

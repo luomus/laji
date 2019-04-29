@@ -1,6 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { IPageStyle, ISetup } from '../../generic-label-maker.interface';
-import { IPageLayout } from '../../label.service';
+import { IPageLayout, LabelService } from '../../label.service';
 
 @Component({
   selector: 'll-label-page',
@@ -17,6 +17,7 @@ export class LabelPageComponent implements AfterViewInit {
   rows = '';
   backStyle: IPageStyle;
   private _setup: ISetup;
+  private _dim: IPageLayout;
 
   constructor() { }
 
@@ -29,6 +30,7 @@ export class LabelPageComponent implements AfterViewInit {
       style['paddingRight.mm'] = swp;
       this.backStyle = style;
     }
+    this.initColsAndRows();
   }
 
   get setup() {
@@ -44,8 +46,17 @@ export class LabelPageComponent implements AfterViewInit {
 
   @Input()
   set pageLayout(dim: IPageLayout) {
-    this.cols = Array(dim.cols).fill('1fr').join(' ');
-    this.rows = Array(dim.rows).fill('1fr').join(' ');
+    this._dim = dim;
+    this.initColsAndRows();
+  }
+
+  private initColsAndRows() {
+    if (this._setup && this._dim) {
+      const width = LabelService.widthOuter(this._setup.label) + 'mm';
+      const height = LabelService.heightOuter(this._setup.label) + 'mm';
+      this.cols = Array(this._dim.cols).fill(width).join(' ');
+      this.rows = Array(this._dim.rows).fill(height).join(' ');
+    }
   }
 
 }

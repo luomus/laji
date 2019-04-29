@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ILabelField, ILabelItem, ISetup, TLabelLocation } from '../../generic-label-maker.interface';
+import { ILabelField, ILabelItem, ISetup, FieldType, TLabelLocation } from '../../generic-label-maker.interface';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TranslateService } from '../../translate/translate.service';
+import { Presets } from '../../presets';
 
 @Component({
   selector: 'll-label-settings',
@@ -15,9 +17,13 @@ export class LabelSettingsComponent implements OnInit {
   @Output() setupChange = new EventEmitter<ISetup>();
   showFieldFont = false;
   canDelete = false;
+  borders = Presets.Border;
+
   private _selectedLabelItem: ILabelItem;
 
-  constructor() { }
+  constructor(
+    private translateService: TranslateService
+  ) { }
 
   ngOnInit() {
   }
@@ -26,7 +32,7 @@ export class LabelSettingsComponent implements OnInit {
     this._selectedLabelItem = item;
     if (item && item.fields) {
       this.canDelete = item.fields.length > 1;
-      this.showFieldFont = item.fields[0] && item.fields[0].type !== 'qr-code';
+      this.showFieldFont = item.fields[0] && item.fields[0].type !== FieldType.qrCode;
     } else {
       this.canDelete = false;
       this.showFieldFont = false;
@@ -76,7 +82,7 @@ export class LabelSettingsComponent implements OnInit {
     if (itemIdx === -1) {
       return;
     }
-    if (confirm('Are you sure that you want to remove this field?')) {
+    if (confirm(this.translateService.get('Are you sure that you want to remove this field?'))) {
       this.setupChange.emit({
         ...this.setup,
         [location]: [
@@ -184,7 +190,7 @@ export class LabelSettingsComponent implements OnInit {
     const dim = pos === 'x' ? 'width.mm' : 'height.mm';
     if (value + this._selectedLabelItem.style[dim] > this.setup.label[dim]) {
       element.value = this._selectedLabelItem[pos];
-      return alert('Field cannot fit the label');
+      return alert(this.translateService.get('Field cannot fit the label!'));
     }
     this.changeSelectedItem(pos, value);
   }
@@ -198,7 +204,7 @@ export class LabelSettingsComponent implements OnInit {
     const pos = style === 'width.mm' ? 'x' : 'y';
     if (value + this._selectedLabelItem[pos] > this.setup.label[style]) {
       element.value = this._selectedLabelItem.style[style];
-      return alert('Field cannot fit the label');
+      return alert(this.translateService.get('Field cannot fit the label!'));
     }
 
     this.changeSelectedItem('style', {

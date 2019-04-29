@@ -106,8 +106,8 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     if (typeof value === 'string') {
       value = value.trim();
     }
-    let date = (value instanceof moment) ? value : moment(value, this.format, true);
-    if (!date.isValid()) {
+    let date: any = (value instanceof moment) ? value : moment(value, this.format, true);
+    if (!date.isValid && !date.isValid()) {
       this.validDate = !value;
       for (const format of [this.format, ...this.otherFormats]) {
         date = moment(value, format, true);
@@ -147,7 +147,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
         this.generateCalendar();
         this.cd.markForCheck();
       }
-    });
+    }, 10);
     this.value$ = this.valueSource.pipe(
       debounceTime(500))
       .subscribe((val) => this.value = val);

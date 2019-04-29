@@ -75,6 +75,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @Input() showPopover = false;
   @Input() showOverlay = true;
   @Input() showLinkToSpeciesCard = false;
+  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() select = new EventEmitter<{taxonId: string, documentId: string, unitId: string}>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;

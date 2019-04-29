@@ -6,6 +6,7 @@ import * as FileSaver from 'file-saver';
 import { PdfLabelService } from '../../../shared/service/pdf-label.service';
 import { Observable, of } from 'rxjs';
 import { share } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-label-designer',
@@ -20,17 +21,21 @@ export class LabelDesignerComponent implements OnInit {
   setup: ISetup;
   viewSettings: any = {magnification: 2};
   data: any;
+  labelTranslations: any;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private lajiApiService: LajiApiService,
-    private pdfLabelService: PdfLabelService
+    private pdfLabelService: PdfLabelService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
     this.labelFields$ = this.pdfLabelService.allPossibleFields().pipe(
       share()
     );
+    const translations = this.translateService.instant('labelDesigner');
+    this.labelTranslations = this.translateService.currentLang !== 'en' && typeof translations === 'object' ? translations : {};
     this.newLabelFields$ = this.labelFields$;
     this.setup = {
       page: {
@@ -50,9 +55,9 @@ export class LabelDesignerComponent implements OnInit {
         'font-family': 'Arial',
         'font-size.pt': 9
       },
-      labelItems: this.pdfLabelService.possibleFields.map((a, i) => ({
+      labelItems: this.pdfLabelService.defaultFields.map((a, i) => ({
         type: 'field',
-        y: i === 0 ? 0 : (i - 1) * 5,
+        y: Math.max(0, (i - 1) * 5),
         x: i === 0 ? 0 : 15,
         fields: [a],
         style: {

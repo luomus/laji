@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ISetup, ILabelStyle } from './generic-label-maker.interface';
+import { ILabelField, ILabelStyle, ILabelValueMap, ISetup } from './generic-label-maker.interface';
 
 export interface IPageLayout {
   cols: number;
@@ -27,6 +27,31 @@ export class LabelService {
 
   public static heightOuter(style: ILabelStyle) {
     return style['height.mm'] + ((style['marginTop.mm'] || 0) + (style['marginBottom.mm'] || 0));
+  }
+
+  public static hasValue(data: object, field: string) {
+    return !(typeof data[field] === 'undefined' || data[field] === '');
+  }
+
+  public static getFieldValue(field: ILabelField, value: any, userValueMap?: ILabelValueMap, join: boolean = true): string|string[] {
+    const map = userValueMap || {};
+    return LabelService._getValue(LabelService._getValue(value, field.valueMap), map[field.field], join ? field.join : undefined);
+  }
+
+  public static getDefaultFieldValue(field: ILabelField, value: any, join = true): string|string[] {
+    return LabelService._getValue(value, field.valueMap, join ? field.join : undefined);
+  }
+
+  private static _getValue(value: any, map?: {[values: string]: string}, join?: string): string|string[] {
+    if (typeof value === 'undefined' || value === null || (Array.isArray(value) && value.length === 0)) {
+      return '';
+    }
+    if (Array.isArray(value)) {
+      return join ?
+        value.map(val => LabelService._getValue(val, map)).join(join) :
+        value.map(val => LabelService._getValue(val, map)) as string[];
+    }
+    return map && map[value] || value;
   }
 
   constructor() {}
@@ -60,10 +85,6 @@ export class LabelService {
 
   public hasRation() {
     return !!this.pixelToMMRation;
-  }
-
-  public hasValue(data: object, field: string) {
-    return !(typeof data[field] === 'undefined' || data[field] === '');
   }
 
   public countMinLabelSize(setup: ISetup): {width: number, height: number} {

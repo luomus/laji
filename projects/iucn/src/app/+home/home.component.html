@@ -11,7 +11,7 @@
 <div class="container">
   <p style="margin-top: 15px;">
     {{'iucn.home.intro' | translate}}
-    <a [routerLink]="({'fi': '/about/r-27'} | multiLang)">{{'iucn.home.evaluation' | translate}}</a>
+    <a *ngIf="translate.currentLang === 'fi'" [routerLink]="({'fi': '/about/r-27'} | multiLang)">{{'iucn.home.evaluation' | translate}}</a>
   </p>
   <h2>
     {{'iucn.home.iucnCategories' | translate}}
@@ -25,13 +25,15 @@
     {{'iucn.home.results' | translate}}
   </h2>
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-12">
       <laji-iucn-result-pie
         [routerLink]="'/results' | localize"
         [year]="2019"
         [data]="iucnService.getYearsStats(2019) | async"></laji-iucn-result-pie>
     </div>
-    <div class="col-sm-8" [innerHTML]="'iucn.home.resultsIntro' | translate"></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12" [innerHTML]="'iucn.home.resultsIntro' | translate"></div>
   </div>
   <a [routerLink]="'/results' | localize">{{'iucn.home.browseResults' | translate}}</a>
   <h2>

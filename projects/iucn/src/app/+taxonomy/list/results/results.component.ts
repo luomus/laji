@@ -77,7 +77,7 @@ export class ResultsComponent implements OnChanges {
   speciesAllFields = [
     {label: 'iucn.results.column.species', key: 'species'},
     {label: 'iucn.results.column.status', key: 'status'},
-    {label: 'iucn.results.column.species', key: 'habitat'},
+    {label: 'iucn.results.column.habitat', key: 'habitat'},
     {label: 'iucn.results.column.reasons', key: 'reasons'},
     {label: 'iucn.results.tab.threats', key: 'threats'},
     {label: 'result.scientificName', key: 'scientificName'},
@@ -100,13 +100,26 @@ export class ResultsComponent implements OnChanges {
     'vernacularName.en': 'iucn.results.column.vernacularName',
     'vernacularName.sv': 'iucn.results.column.vernacularName',
   };
+  exportKeyMap = {
+    'species': 'taxonName',
+    'status': 'latestRedListEvaluation.redListStatus',
+    'habitat': 'latestRedListEvaluationHabitats',
+    'reasons': 'latestRedListEvaluation.endangermentReasons',
+    'threats': 'latestRedListEvaluation.threats',
+    'reasonForStatusChange': 'latestRedListEvaluation.reasonForStatusChange',
+    'criteriaForStatus': 'latestRedListEvaluation.criteriaForStatus',
+    '2015': 'redListStatus2015',
+    '2010': 'redListStatus2010'
+  };
   exportTemplates = {
-    'latestRedListEvaluation.secondaryHabitats.habitat': 'latestRedListEvaluation.secondaryHabitats',
-    'redListStatusesInFinland': 'redListStatusesInFinland',
-    'vernacularName.fi': 'vernacularName',
-    'vernacularName.en': 'vernacularName',
-    'vernacularName.sv': 'vernacularName',
-    'latestRedListEvaluation.criteriaForStatus': 'latestRedListEvaluation.criteriaForStatus'
+    'taxonName': 'taxonName',
+    'latestRedListEvaluation.redListStatus': 'label',
+    'latestRedListEvaluationHabitats': 'latestRedListEvaluationHabitats',
+    'latestRedListEvaluation.endangermentReasons': 'label',
+    'latestRedListEvaluation.threats': 'label',
+    'latestRedListEvaluation.reasonForStatusChange': 'label',
+    'redListStatus2015': 'redListStatus2015',
+    'redListStatus2010': 'redListStatus2010'
   };
   downloadLoading = false;
   init = false;
@@ -145,7 +158,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private initQueries() {
-    this.baseQuery = Util.removeUndefinedFromObject({
+    this.baseQuery = Util.removeFromObject({
       checklistVersion: this.checklist,
       id: this.query.taxon,
       redListEvaluationGroups: this.query.redListGroup,
@@ -166,7 +179,14 @@ export class ResultsComponent implements OnChanges {
       }).filter(item => !!item);
     }
     if (!this.selectedSpeciesFields || this.selectedSpeciesFields.length === 0) {
-      this.selectedSpeciesFields = this.defaultSpeciesFields;
+      this.selectedSpeciesFields = [...this.defaultSpeciesFields];
+    }
+    const statusIdx = this.selectedSpeciesFields.findIndex(item => item.key === 'status');
+    if (statusIdx !== -1) {
+      this.selectedSpeciesFields[statusIdx] = {
+        ...this.selectedSpeciesFields[statusIdx],
+        label: 'iucn.results.column.class' + this.resultService.getYearFromChecklistVersion(this.checklist)
+      };
     }
     this.initStatusQuery();
     this.initSpeciesListQuery();
@@ -511,7 +531,7 @@ export class ResultsComponent implements OnChanges {
             hasKeys: false
           };
         }),
-        switchMap(red  => this.taxonApi.species(Util.removeUndefinedFromObject({
+        switchMap(red  => this.taxonApi.species(Util.removeFromObject({
           ...query,
           [groupField]: red.isRoot ? undefined : red.groups.join(','),
           aggregateBy: red.aggregateBy.join(',') + '=a',
@@ -604,25 +624,19 @@ export class ResultsComponent implements OnChanges {
 
   download(type: string) {
     this.downloadLoading = true;
-    const skip = [
-      'cursiveName',
-      'latestRedListEvaluation.possiblyRE',
-      'latestRedListEvaluation.externalPopulationImpactOnRedListStatus',
-      'latestRedListEvaluation.primaryHabitat.habitatSpecificTypes',
-      'latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes',
-      'redListStatusesInFinland'
-    ];
-    const columns: DatatableColumn[] = this.getSpeciesFields()
-      .reduce((cumulative, current) => {
-        if (!skip.includes(current)) {
-          cumulative.push((!this.exportTemplates[current] ? this.taxonomyColumns.getColumn(current) : false) || {
-            name: this.exportTemplates[current] || current,
-            cellTemplate: this.exportTemplates[current] || 'label',
-            label: this.labels[current] ? this.translate.instant(this.labels[current]) : current
-          });
-        }
-        return cumulative;
-      }, []);
+    const columns: DatatableColumn[] = [this.taxonomyColumns.getColumn('id')];
+
+    this.selectedSpeciesFields.forEach(field => {
+      const key = this.exportKeyMap[field.key] || field.key;
+      const label = field.label;
+
+      columns.push((!this.exportTemplates[key] ? this.taxonomyColumns.getColumn(key) : false) || {
+        name: key,
+        cellTemplate: this.exportTemplates[key],
+        label: label
+      });
+    });
+
     const criteria = document.getElementById('enabled-filters');
     const first = criteria ? [criteria.innerText] : undefined;
     this.getAllSpecies().pipe(

@@ -40,7 +40,7 @@ $small-screen: 900px;
   }
 
   .menubar {
-    height: $menu-height;
+    min-height: $menu-height;
     width: 100%;
     color: #333;
     background: $menu-color;
@@ -104,6 +104,13 @@ $small-screen: 900px;
   }
 
   .settings-wrap {
+
+    svg {
+      fill: #333;
+    }
+
+
+
     .close-settings {
       padding: 15px;
       border-bottom: 1px solid $menu-border-color;;
@@ -203,6 +210,9 @@ $small-screen: 900px;
 
   .disabled {
     color: #aaa;
+    svg {
+      fill: #aaa;
+    }
   }
 
   .editor-end {
@@ -233,6 +243,10 @@ $small-screen: 900px;
         padding-right: 5px;
       }
     }
+  }
+
+  .clear {
+    clear: both;
   }
 
 }

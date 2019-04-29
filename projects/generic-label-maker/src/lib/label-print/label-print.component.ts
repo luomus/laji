@@ -1,16 +1,17 @@
-
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  OnInit,
-  Output,
+  OnChanges,
+  Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { ISetup } from '../generic-label-maker.interface';
-import { LabelService, IPageLayout } from '../label.service';
+import { IPageLayout, LabelService } from '../label.service';
+
 const style = `
 .ll-print-content {
   display: grid;
@@ -40,8 +41,9 @@ const style = `
   styleUrls: ['./label-print.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelPrintComponent {
+export class LabelPrintComponent implements OnChanges {
 
+  @Input() visible = true;
   @Input() setup: ISetup;
   @Input() data: object[];
   // tslint:disable-next-line:no-input-rename
@@ -61,6 +63,12 @@ export class LabelPrintComponent {
     private labelService: LabelService,
     private cdr: ChangeDetectorRef
   ) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.visible) {
+      this.renderPages();
+    }
+  }
 
   renderPages() {
     if (!this.data || this.data.length === 0) {
@@ -95,7 +103,7 @@ export class LabelPrintComponent {
   <head><meta charset="utf-8"><title>Labels</title><style>${style}</style></head>
   <body style="margin: 0; padding: 0;">${this.pageContainer.nativeElement.innerHTML}</body>
 </html>`;
-      this.printing = false;
+      this.printing = this.visible;
       this.html.emit(html);
     }
   }

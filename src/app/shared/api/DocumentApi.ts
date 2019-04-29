@@ -49,7 +49,7 @@ export class DocumentApi {
   public create(data: Document, userToken: string, extraHttpRequestParams?: any): Observable<Document> {
     const path = this.basePath + '/documents';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'data' is not null or undefined
     if (data === null || data === undefined) {
       throw new Error('Required parameter data was null or undefined when calling documentCreateWithUser.');
@@ -75,7 +75,7 @@ export class DocumentApi {
     const path = this.basePath + '/documents/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentFindByIdWithUser.');
@@ -101,7 +101,7 @@ export class DocumentApi {
   public findAll(userToken: string, page?: string, pageSize?: string, observationYear?: string, extraHttpRequestParams?: any): Observable<PagedResult<Document>> {
     const path = this.basePath + '/documents';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'personToken' is not null or undefined
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentFindWithUser.');
@@ -136,7 +136,7 @@ export class DocumentApi {
     const path = this.basePath + '/documents/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
@@ -163,7 +163,7 @@ export class DocumentApi {
   public countByYear(userToken: string, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/documents/count/byYear';
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     // verify required parameter 'personToken' is not null or undefined
     if (userToken === null || userToken === undefined) {
@@ -179,7 +179,7 @@ export class DocumentApi {
   public validate(data: Document, extraHttpRequestParams?: any ): Observable<any> {
     const path = this.basePath + `/documents/validate`;
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
     return this.http.post(path, data, {params: queryParameters, observe: 'response'}).pipe(
       map((response: HttpResponse<any>) => {
@@ -195,7 +195,7 @@ export class DocumentApi {
   public delete(id: string, personToken: string, extraHttpRequestParams?: any ): Observable<any> {
     const path = this.basePath + `/documents/${id}`;
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
     }

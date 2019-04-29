@@ -1,13 +1,6 @@
 <laji-taxon-info-row *ngIf="taxon.nameAccordingTo" [label]="'taxonomy.nameAccordingTo' | translate">
   {{ taxon.nameAccordingTo | checklist }}
 </laji-taxon-info-row>
-<laji-taxon-info-row *ngIf="taxon.originalPublications" [label]="'taxonomy.originalPublications' | translate">
-  <ul>
-    <li *ngFor="let publication of taxon.originalPublications">
-      {{ publication | publication }}
-    </li>
-  </ul>
-</laji-taxon-info-row>
 <laji-taxon-info-row [label]="'taxonomy.scientific.name' | translate">
   <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
 </laji-taxon-info-row>
@@ -40,7 +33,9 @@
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.administrativeStatuses" [label]="'taxonomy.administrative.statuses' | translate">
   <ul>
-    <li *ngFor="let status of taxon.administrativeStatuses">{{ status | label }}</li>
+    <li *ngFor="let status of taxon.administrativeStatuses">
+      <laji-administrative-status [status]="status"></laji-administrative-status>
+    </li>
   </ul>
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.redListStatusesInFinland" [label]="'taxonomy.redListStatus2010Finland' | translate">

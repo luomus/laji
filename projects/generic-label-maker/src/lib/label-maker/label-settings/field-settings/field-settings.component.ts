@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ILabelField } from '../../../generic-label-maker.interface';
+import { FieldType, ILabelField } from '../../../generic-label-maker.interface';
 
 @Component({
   selector: 'll-field-settings',
@@ -15,6 +15,7 @@ export class FieldSettingsComponent {
   @Output() fieldRemove = new EventEmitter<void>();
 
   more = false;
+  fieldType = FieldType;
 
   separators: {sep: string, label?: string}[] = [
     {sep: ', '},

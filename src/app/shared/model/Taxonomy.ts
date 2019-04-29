@@ -237,6 +237,12 @@ export interface Taxonomy {
   secondaryHabitats?: Habitat[];
 
   parent?: any;
+
+  occurrenceInFinlandSpecimenURI?: string;
+
+  typeSpecimenURI?: string;
+
+  hasLatestRedListEvaluation?: boolean;
 }
 
 export interface RedListEvaluation {

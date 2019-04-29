@@ -9,20 +9,24 @@
         [allSelectableFields]="speciesAllFields"
         [selectedFields]="selectedSpeciesFields"
         [defaultFields]="defaultSpeciesFields"
+        [labelOpen]="'iucn.results.selectColumns' | translate"
         [labelClose]="'close' | translate"
         [labelReset]="'reset' | translate"
-        [modalTitle]="'iucn.results.selectColumns' | translate"
+        [modalTitle]="'iucn.results.selectListColumns' | translate"
         [allSelectableFieldsTitle]="'iucn.results.fieldsAll' | translate"
         [selectedFieldsTitle]="'iucn.results.fieldsSelected' | translate"
         (selectedFieldsChange)="newFields($event)"
       ></laji-select-fields-modal-gear>
     </div>
     <laji-download
-      #speciesDownload
       linkClass="link btn btn-default btn-sm pull-right"
       [downloadLoading]="downloadLoading"
-      (download)="download($event)"
-    >{{ 'species.download' | translate }}</laji-download>
+      (download)="download($event)">
+      <span>
+        {{ 'species.download' | translate }}
+        <i class="glyphicon glyphicon-download-alt"></i>
+      </span>
+    </laji-download>
     <laji-data-table-footer [top]="true" [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
     <laji-red-list-species [fields]="selectedSpeciesFields" [species]="speciesQuery$ | async" [checklist]="checklist"></laji-red-list-species>
     <laji-data-table-footer [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>

@@ -9,7 +9,7 @@
     [showSettingsMenu]="false"
     [isAggregate]="false"
     [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime', 'document.collectionId']"
-    [query]="{taxonId: [taxon.id], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: true, cache: true}"
+    [query]="typeSpecimenQuery"
     [showRowAsLink]="true"
     (total)="typeSpecimensTotal = $event"
     (rowSelect)="showDocument($event)"
@@ -28,7 +28,7 @@
     [isAggregate]="true"
     [selected]="['document.collectionId']"
     (total)="collectionsTotal = $event"
-    [query]="{taxonId: taxon.id, superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false, cache: true}"
+    [query]="collectionSpecimenQuery"
     [showRowAsLink]="true"
     (rowSelect)="setCollectionId($event)"
   ></laji-observation-table>
@@ -42,7 +42,7 @@
     [showSettingsMenu]="false"
     [isAggregate]="false"
     [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime']"
-    [query]="{taxonId: [taxon.id], collectionId: [collectionId], superRecordBasis: ['PRESERVED_SPECIMEN'], sourceId: ['KE.3', 'KE.167'], typeSpecimen: false, cache: true}"
+    [query]="collectionQuery"
     [showRowAsLink]="true"
     (rowSelect)="showDocument($event)"
   ></laji-observation-table>

@@ -47,7 +47,11 @@
       <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
            class="ng-thumb"
            alt="Image {{ index + 1 }}" />
-      <h4 *ngIf="showOverlay"><ng-container *ngTemplateOutlet="info; context: {$implicit: img}"></ng-container></h4>
+      <h4 *ngIf="showOverlay" (click)="$event.stopPropagation()">
+        <a class="link" [routerLink]="'/taxon/' + img.taxonId + (!linkOptions?.tab || linkOptions.tab === 'overview' ? '' : '/' + linkOptions.tab) | localize" [queryParams]="linkOptions?.queryParams" [queryParamsHandling]="linkOptions?.queryParamsHandling">
+          <ng-container *ngTemplateOutlet="info; context: {$implicit: img}"></ng-container>
+        </a>
+      </h4>
     </div>
   </ng-container>
 </ng-template>

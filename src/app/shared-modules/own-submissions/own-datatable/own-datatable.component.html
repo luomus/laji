@@ -1,28 +1,29 @@
 <ng-container *ngIf="visibleRows">
-  <div id="filter-row-container">
-    <div id="download-button-container" *ngIf="showDownloadAll">
-      <button type="button" class="btn btn-default inline-block" (click)="openChooseFileTypeModal()">
-        <span><i class="glyphicon glyphicon-download-alt"></i> {{ "haseka.submissions.download" | translate }} {{ "haseka.submissions.submissions" | translate }}</span>
-      </button>
-    </div>
-
-    <div class="print-actions" *ngIf="showPrintLabels">
-      <ng-container *ngIf="printState === 'none'">
-        <button type="button" class="btn btn-default inline-block" (click)="doLabels()">
-          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'haseka.print.select' | translate }}</span>
+  <div id="filter-row-container" class="row">
+    <div class="col-sm-12">
+      <div id="download-button-container" *ngIf="showDownloadAll">
+        <button type="button" class="btn btn-default inline-block" (click)="openChooseFileTypeModal()">
+          <span><i class="glyphicon glyphicon-download-alt"></i> {{ "haseka.submissions.download" | translate }} {{ "haseka.submissions.submissions" | translate }}</span>
         </button>
-      </ng-container>
-      <ng-container *ngIf="printState === 'select'">
-        <div class="form-control-static">
-          {{ 'haseka.print.intro' | translate }}
-        </div>
-      </ng-container>
-    </div>
+      </div>
 
-    <input class="form-control inline-block"
-           type='text'
-           placeholder="{{'haseka.submissions.filter' | translate}}"
-           (keyup)='updateFilter($event)'/>
+      <div class="print-actions" *ngIf="showPrintLabels">
+        <ng-container *ngIf="printState === 'none'">
+          <button type="button" class="btn btn-default inline-block" (click)="doLabels()">
+            <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.select.label' | translate }}</span>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="printState === 'select'">
+          <div [innerHtml]="'label.select.intro' | translate">
+          </div>
+        </ng-container>
+      </div>
+
+      <input class="form-control inline-block"
+             type='text'
+             placeholder="{{'haseka.submissions.filter' | translate}}"
+             (keyup)='updateFilter($event)'/>
+    </div>
   </div>
   <ngx-datatable
     class="material striped"
@@ -178,14 +179,8 @@
   <ng-container *ngIf="printState === 'select'">
     <div class="row" style="margin-top: 15px;">
       <div class="col-sm-2">
-        <select class="form-control">
-          <option *ngFor="let label of labels" [value]="label">{{ label }}</option>
-          <option value="">{{ 'new' | translate }}...</option>
-        </select>
-      </div>
-      <div class="col-sm-2">
         <button type="button" class="btn btn-success" (click)="doLabels()" [disabled]="!selected || selected.length === 0">
-          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'haseka.print.pdf' | translate }}</span>
+          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
         </button>
       </div>
     </div>

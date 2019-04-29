@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ResultService } from '../iucn-shared/service/result.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-home',
@@ -10,6 +11,7 @@ import { ResultService } from '../iucn-shared/service/result.service';
 export class HomeComponent {
 
   constructor(
-    public iucnService: ResultService
+    public iucnService: ResultService,
+    public translate: TranslateService
   ) { }
 }

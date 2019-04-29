@@ -10,7 +10,6 @@ import { ResultService } from './service/result.service';
 import { FixedTableDirective } from './directive/fixed-table.directive';
 import { ThemeObservationListComponent } from './theme-observation-list/theme-observation-list.component';
 import { ThemeMyDocumentListComponent } from './theme-my-document-list/theme-my-document-list.component';
-import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { YkjComponent } from './ykj/ykj.component';
 import { EmkComponent } from './emk/emk.component';
@@ -99,7 +98,6 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
     FixedTableDirective,
     ThemeObservationListComponent,
     ThemeMyDocumentListComponent,
-    NafiInstructionsComponent,
     YkjComponent,
     EmkComponent,
     WbcResultComponent,

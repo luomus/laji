@@ -55,7 +55,7 @@ export class PersonApi {
         .replace('{' + 'token' + '}', String(token))
         .replace('{' + 'userId' + '}', String(userId));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personAcceptFriendRequest.');
@@ -82,7 +82,7 @@ export class PersonApi {
         .replace('{' + 'token' + '}', String(token))
         .replace('{' + 'profileKey' + '}', String(profileKey));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personAddFriendRequest.');
@@ -108,7 +108,7 @@ export class PersonApi {
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'profile' is not null or undefined
     if (profile === null || profile === undefined) {
       throw new Error('Required parameter profile was null or undefined when calling personCreateProfileByToken.');
@@ -132,7 +132,7 @@ export class PersonApi {
     const path = this.basePath + '/person/{token}'
         .replace('{' + 'token' + '}', String(token));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personFindByToken.');
@@ -150,7 +150,7 @@ export class PersonApi {
     const path = this.basePath + '/person/by-id/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling personFindByUserId.');
@@ -168,7 +168,7 @@ export class PersonApi {
     const path = this.basePath + '/person/by-id/{id}/profile'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling personFindByUserId.');
@@ -189,7 +189,7 @@ export class PersonApi {
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personFindProfileByToken.');
@@ -213,7 +213,7 @@ export class PersonApi {
         .replace('{' + 'token' + '}', String(token))
         .replace('{' + 'userId' + '}', String(userId));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personRemoveFriend.');
@@ -242,7 +242,7 @@ export class PersonApi {
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
 
-    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'profile' is not null or undefined
     if (profile === null || profile === undefined) {
       throw new Error('Required parameter profile was null or undefined when calling personUpdateProfileByToken.');

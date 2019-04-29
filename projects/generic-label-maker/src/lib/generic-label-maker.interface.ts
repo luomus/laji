@@ -1,5 +1,11 @@
 export type TLabelLocation = 'labelItems' | 'backSideLabelItems';
 
+export enum FieldType {
+  qrCode = 'qr-code',
+  id = 'id',
+  text = 'text'
+}
+
 export interface IFontStyle {
   'font-family'?: string;
   'font-size.pt'?: number;
@@ -50,10 +56,11 @@ export interface ILabelField {
   separator?: string;
   separatorAlways?: boolean;
   isArray?: boolean;
-  type?: 'qr-code'|'text';
+  type?: FieldType;
   style?: IFontStyle;
   styleAppliesTo?: 'content'|'prefix'|'suffix'|'all'|'contentPrefix'|'contentSuffix'|'prefixSuffix';
   _menuOpen?: boolean;
+  valueMap?: {[from: string]: string};
 }
 
 export interface IViewSettings {
@@ -97,9 +104,22 @@ export interface ISetup {
    * Label items on the back side
    */
   backSideLabelItems?: ILabelItem[];
+
+  border?: string;
+
+  /**
+   * Map values to new one
+   */
+  valueMap?: ILabelValueMap;
 }
 
 export interface IAddLabelEvent {
   item: ILabelItem;
   location: TLabelLocation;
+}
+
+export interface ILabelValueMap {
+  [field: string]: {
+    [value: string]: string
+  };
 }

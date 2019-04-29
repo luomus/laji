@@ -28,6 +28,11 @@ import { LabelItemFieldComponent } from './label-preview/label-item/label-item-f
 import { LabelExcelFileComponent } from './label-maker/label-excel-file/label-excel-file.component';
 import { LabelPreviewPagerComponent } from './label-preview/label-preview-pager/label-preview-pager.component';
 import { TypeaheadModule } from 'ngx-bootstrap';
+import { TranslatePipe } from './translate/translate.pipe';
+import { TranslateService } from './translate/translate.service';
+import { LabelValueMapComponent } from './label-maker/label-value-map/label-value-map.component';
+import { FieldValueMapComponent } from './label-maker/label-value-map/field-value-map/field-value-map.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +59,11 @@ import { TypeaheadModule } from 'ngx-bootstrap';
     EditorGridComponent,
     LabelItemFieldComponent,
     LabelExcelFileComponent,
-    LabelPreviewPagerComponent
+    LabelPreviewPagerComponent,
+    TranslatePipe,
+    LabelValueMapComponent,
+    FieldValueMapComponent,
+    LoaderComponent
   ],
   imports: [
     CommonModule,
@@ -63,6 +72,7 @@ import { TypeaheadModule } from 'ngx-bootstrap';
     NgxWebstorageModule,
     TypeaheadModule
   ],
+  providers: [TranslateService],
   exports: [LabelMakerComponent, LabelPreviewComponent, LabelPrintComponent]
 })
 export class GenericLabelMakerModule { }

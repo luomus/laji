@@ -13,9 +13,8 @@
   </ul>
 </ng-template>
 <ng-template #habitatTpl let-habitat="habitat">
-  {{ habitat.habitat | label }}
-  <ng-container *ngIf="habitat.habitatSpecificTypes">
-    (<ng-container *ngFor="let spe of habitat.habitatSpecificTypes; let l = last">{{ spe | label }}<ng-container *ngIf="!l">, </ng-container>
-  </ng-container>)
+  {{ habitat.habitat | label }}<ng-container *ngIf="habitat.habitatSpecificTypes">;
+    <ng-container *ngFor="let spe of habitat.habitatSpecificTypes; let l = last">{{ spe | label }}<ng-container *ngIf="!l">, </ng-container>
+    </ng-container>
   </ng-container>
 </ng-template>

@@ -8,3 +8,4 @@ export * from './lib/form.service';
 export * from './lib/info-window/info-window.service';
 export * from './lib/generic-label-maker.module';
 export * from './lib/generic-label-maker.interface';
+export * from './lib/translate/generic-label-maker-translations.interface';

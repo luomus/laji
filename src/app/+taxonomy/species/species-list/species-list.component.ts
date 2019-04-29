@@ -21,7 +21,7 @@ import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { TaxonExportService } from '../service/taxon-export.service';
-import { DatatableUtil } from '../service/datatable-util.service';
+import { DatatableUtil } from '../../../shared-modules/datatable/service/datatable-util.service';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Util } from '../../../shared/service/util.service';
 import { UserService } from '../../../shared/service/user.service';
@@ -191,7 +191,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
             this.sortValues[row.id][sort.prop] = rowValue;
           } else {
             arr.push(
-              this.dtUtil.getVisibleValue(rowValue, template)
+              this.dtUtil.getVisibleValue(rowValue, row, template)
                 .pipe(tap(val => {
                   this.sortValues[row.id][sort.prop] = val;
                 }))

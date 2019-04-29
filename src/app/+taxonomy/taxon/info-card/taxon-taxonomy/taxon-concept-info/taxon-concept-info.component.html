@@ -1,6 +1,9 @@
 <laji-taxon-info-row [label]="'taxonomy.card.id' | translate">
   {{ taxon.id | toFullUri }}
 </laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.typeSpecimenURI" [label]="'MX.typeSpecimenURI' | label">
+  {{ taxon.typeSpecimenURI }}
+</laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.additionalIds" [label]="'MX.additionalID' | label">
   <ul>
     <li *ngFor="let id of taxon.additionalIds">{{ id }}</li>

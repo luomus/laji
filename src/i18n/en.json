@@ -286,6 +286,153 @@
   "ignore": "ignore",
   "information.more": "More information",
   "instructions": "Instructions",
+  "iucn": {
+    "about": {
+      "title": "About"
+    },
+    "evaluated": "Assessed species",
+    "endangered": "Threatened",
+    "endangeredSingle": "Threatened",
+    "feedback": {
+      "intro": "Sähköpostiosoite ei ole pakollinen. Lisääthän sähköpostiosoitteesi, mikäli haluat vastauksen."
+    },
+    "filter": {
+      "evaluated": "Arvioidut lajit",
+      "redList": "Punaisen listan lajit",
+      "title": "Laji ja tulokset",
+      "reasons": "Uhanalaisuuden syyt",
+      "threats": "Uhkatekijät",
+      "taxon": "Taksonominen rajaus",
+      "redListGroup": "Eliöryhmä",
+      "habitat": "Elinympäristö",
+      "habitatSpecific": "Elinympäristön lisämääreet",
+      "status": "Uhanalaisuusluokka",
+      "onlyPrimaryHabitat": "vain ensisijaisella elinympäristöllä",
+      "onlyPrimaryReason": "vain ensisijaisella uhanalaisuuden syyllä",
+      "onlyPrimaryThreat": "vain ensisijaisella uhkatekijällä",
+      "empty": "Tyhjennä"
+    },
+    "footer": {
+      "syke": "Finnish Environment Institute (SYKE)",
+      "openData": "Open Data",
+      "pdf": "The Red List 2019 in PDF format",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "home":{
+      "book": {
+        "title": "Published Red Lists",
+        "browse": "Browse the publications and available data downloads"
+      },
+      "browseResults": "Browse the results",
+      "evaluation": "Read more about the implementation of the evaluation in Finland",
+      "intro": "The Red List 2019 is the third Finnish assessment of threatened species that complies with the IUCN guidelines. The assessment involved 180 species experts and a steering group appointed by the Ministry of the Environment guided the work.",
+      "iucnCategories": "The IUCN red-list categories used in the assessment",
+      "results": "Results",
+      "resultsIntro": "<p>At least 48,000 species live in Finland and adequate data for assessing their vulnerability was available for 22,418 or 47% of the species. Of the species assessed, 2,667 species or 11.9% were classified as threatened. The proportion of threatened species has increased compared to the previous assessment in 2010 when 10.5% of the assessed species were classified as threatened. The development trend indicates that the target of halting the increase in the vulnerability of Finnish species has not been met.</p><p>The majority of threatened species live primarily in forests (31.2%) and in rural biotopes and other cultural habitats (24.4%). Overall, most species live in forests and rural biotopes, which partially explains the large number of threatened species in these biotopes. However, the proportionally largest number of threatened species is found in alpine habitats where only 3.6% of all assessed species are found but no fewer than 37.9% are threatened.</p><p>Changes in the forest environment are the most significant cause of threat to species, as is the case with 733 threatened species. These changes include forest management activities, the reduction of old-growth forests and large trees as well as decreasing amounts of dead and decaying wood. The second most common threat to species is the overgrowing of open habitats, which is the primary cause of threat to 639 species. Climate change poses a threat to, in particular, species in fell areas.</p>",
+      "title": "The Web Service of the Red List of Finnish Species"
+    },
+    "more": "Lisätietoa käytetyistä termeistä.",
+    "page": {
+      "title": "The Web Service of the Red List of Finnish Species",
+      "intro": "The Web Service of the Red List of Finnish Species introduces the results of The 2019 Red List of Finnish Species. Of the 22,418 species evaluated, 2,667 i.e. 11.9 % were classified as threatened."
+    },
+    "publications": {
+      "title": "Publications and Downloads"
+    },
+    "results": {
+      "activeFilters": "Käytetyt rajaukset",
+      "evaluated": "Arvioidut",
+      "evaluatedSpecies": "Arvioituja lajeja",
+      "endangered": "Uhanalaisten lajien osuus arvioiduista",
+      "endangeredSpecies": "Uhanalaisia lajeja",
+      "fieldsAll": "Kaikki kentät",
+      "fieldsSelected": "Valitut kentät",
+      "selectColumns": "Valitse sarakkeet",
+      "selectListColumns": "Valitse luettelossa näkyvät sarakkeet",
+      "redListStatusesInFinland": "Luokat Suomessa",
+      "unspecified": "tarkemmin määrittelemättömät",
+      "column": {
+        "criteriaForStatus": "Luokkaan johtaneet kriteerit",
+        "class2019": "Luokka 2019",
+        "class2015": "Luokka 2015",
+        "class2010": "Luokka 2010",
+        "habitat": "Elinympäristöt",
+        "reasons": "Uhanalaisuuden syyt",
+        "reasonForStatusChange": "Muutoksen syy",
+        "species": "Laji",
+        "status": "Luokka",
+        "vernacularName": "Kansankielinen nimi"
+      },
+      "onlyPrimary": "Vain ensisijaisella",
+      "habitat": {
+        "title": "Elinympäristö",
+        "primary": "Ensisijainen",
+        "primaryFull": "Ensisijainen elinympäristö",
+        "secondary": "Toissijainen",
+        "other": "Muut elinympäristöt",
+        "totalAll": "Kaikki yhteensä",
+        "total": "Total"
+      },
+      "tab": {
+        "status": "Yhteenveto uhanalaisuusluokista",
+        "species": "Lajiluettelo",
+        "reasons": "Uhanalaisuuden syyt",
+        "threats": "Uhkatekijät",
+        "habitat": "Elinympäristöt"
+      },
+      "title": "Species and Results"
+    },
+    "taxon": {
+      "administrativeStatuses": "Lajia koskevat hallinnolliset lajitiedot",
+      "criteria": "Kriteerit",
+      "distributionArea": "Levinneisyysalueen koko",
+      "endanger": "Uhanalaisuus",
+      "evaluation": "Arviointi",
+      "evaluationBases": "Arvioinnin perusteet",
+      "history": {
+        "class": "Luokka",
+        "criteria": "Kriteerit",
+        "endanger": "Uhanalaisuuden syyt",
+        "period": "Arviointikausi",
+        "threats": "Uhkatekijät"
+      },
+      "individualCount": "Yksilömäärä",
+      "missing": "Tätä lajia ei ole arvioitu",
+      "missingInSpeciesLevel":  "Ei ole arvioitu lajitasolla",
+      "lowerTaxons": "Seuraavat alemmat tasot on arvioitu",
+      "more": "Lisää tietoa <h1>LAJI.FI</h1>-portaalissa",
+      "MX": {
+        "iucnRE": "Suomesta hävinnyt",
+        "iucnCR": "Äärimmäisen uhanalainen",
+        "iucnEN": "Erittäin uhanalainen",
+        "iucnVU": "Vaarantunut",
+        "iucnDD": "Puutteellisesti tunnettu",
+        "iucnNT": "Silmälläpidettävä",
+        "iucnLC": "Elinvoimainen",
+        "iucnNA": "Arviointiin soveltumaton",
+        "iucnNE": "Arvioimatta jätetty"
+      },
+      "occurrenceArea": "Esiintymien määrä",
+      "occurrenceInfoTitle": "Esiintymistä koskevat tiedot",
+      "occurrenceTitle": "Esiintymisalueet ja alueellinen uhanalaisuus",
+      "source": "Lähteet",
+      "title": "Species and Results"
+    },
+    "hasEndangermentReason": "Uhanalaisuuteen johtaneet syyt",
+    "hasThreat": "Uhkatekijät tulevaisuudessa",
+    "threatPrimary": "Ensisijainen uhka",
+    "threatAny": "Yksi uhista",
+    "title": "THE RED LIST"
+  },
+  "label": {
+    "select":{
+      "label": "Select observations for labeling",
+      "intro": "Select observations from table below and <br>click \"Make the labels\" button below the table when done."
+    },
+    "make": "Make the labels",
+    "designer": "Design label",
+    "id_short": "ID (short)"
+  },
   "lastCensus": "Previous census",
   "line": "line",
   "line-transect-result.chart": "Progress of species amount",
@@ -594,6 +741,8 @@
   "observation.results.observation": "hits of",
   "observation.results.species": "species",
   "observation.results.title": "Observation search",
+  "observation.results.yearChart": "Observations per year",
+  "observation.results.monthDayChart": "Occurrence by seasons",
   "observations.form.1d": "1d",
   "observations.form.7d": "7d",
   "omniSearch.allObservation": "observations",
@@ -855,14 +1004,13 @@
   "taxonomy.acceptedName": "ACCEPTED NAME",
   "taxonomy.ofTaxon": "OF",
   "taxonomy.link": "LINK",
-  "taxonomy.noOccurrenceInFinland": "Does not occur in Finland",
-  "taxonomy.observations.yearChart": "Observations per year",
+  "taxonomy.observations.yearChart": "Observations per year in Finland",
   "taxonomy.observations.yearChart.disclaimer": "The chart shows temporal distribution of the observations, which is not the same as population increase/decrease.",
   "taxonomy.observations.yearChart.showHistory": "Show all history",
   "taxonomy.observations.yearChart.hideHistory": "Hide old data",
   "taxonomy.observations.yearChart.xAxis": "Years",
   "taxonomy.observations.yearChart.yAxis": "Number of observations",
-  "taxonomy.observations.monthDayChart": "Occurrence by seasons",
+  "taxonomy.observations.monthDayChart": "Occurrence by seasons in Finland",
   "taxonomy.observations.secureLevels": "Basis for hiding data",
   "taxonomy.endangerment.iucnLink": "More information on the Red List website",
   "taxonomy.endangerment.evaluation": "Evaluation",
@@ -1025,5 +1173,6 @@
   "theme.lolife.intro": "Flying-Squirrel-Life",
   "theme.lolife.places": "Record census actions",
   "map.fullScreen": "Open the map in fullscreen",
-  "map.exitFullScreen": "Exit fullscreen mode"
+  "map.exitFullScreen": "Exit fullscreen mode",
+  "readMore": "Read more"
 }

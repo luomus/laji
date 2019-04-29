@@ -1,14 +1,5 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild
-} from '@angular/core';
-import { ILabelItem } from '../../../generic-label-maker.interface';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { FieldType, ILabelItem } from '../../../generic-label-maker.interface';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../../label.service';
 
@@ -42,6 +33,7 @@ export class EditorItemComponent implements AfterViewInit {
   x: number;
   y: number;
   origElementDimensions: DOMRect;
+  fieldType = FieldType;
 
   private maxWidthMm: number;
   private maxWidthPx: number;
