@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormService as LabelFormService, ILabelField } from 'generic-label-maker';
+import { FieldType, FormService as LabelFormService, ILabelField } from 'generic-label-maker';
 import { Observable } from 'rxjs';
 import { Document } from '../model/Document';
 import { map } from 'rxjs/operators';
@@ -31,9 +31,10 @@ export class PdfLabelService {
   ];
 
   defaultFields: ILabelField[] = [
-    {field: 'id', content: 'http://tun.fi/EXAMPLE', label: 'ID - QRCode', type: 'qr-code'},
-    {field: 'id_short', content: 'EXAMPLE', label: 'label.id_short'},
-    {field: 'id', content: 'http://tun.fi/EXAMPLE', label: 'ID'}
+    { field: 'id', content: 'http://tun.fi/EXAMPLE', label: 'ID - QRCode', type: FieldType.qrCode },
+    { field: 'id', content: 'http://tun.fi/EXAMPLE', label: 'ID', type: FieldType.id },
+    { field: 'id_short', content: 'EXAMPLE', label: 'label.id_short', type: FieldType.id },
+    { field: '', content: '', label: 'Text', type: FieldType.text }
   ];
 
 

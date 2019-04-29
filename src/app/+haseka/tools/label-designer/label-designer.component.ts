@@ -45,6 +45,7 @@ export class LabelDesignerComponent implements OnInit {
         'paddingBottom.mm': 10,
         'paddingRight.mm': 10
       },
+      border: Presets.Border.solid,
       label: {
         'height.mm': 20,
         'width.mm': 50,
