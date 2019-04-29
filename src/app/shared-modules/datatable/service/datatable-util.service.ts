@@ -22,7 +22,8 @@ export class DatatableUtil {
 
   getVisibleValue(value, row, template): Observable<string> {
     if (value == null || (Array.isArray(value) && value.length === 0)) {
-      if (['latestRedListEvaluationHabitats', 'redListStatus2010', 'redListStatus2015', 'taxonName'].indexOf(template) === -1) {
+      if (['taxonHabitats', 'latestRedListEvaluationHabitats', 'redListStatus2010', 'redListStatus2015', 'taxonName']
+        .indexOf(template) === -1) {
         return ObservableOf('');
       }
     }
@@ -50,14 +51,14 @@ export class DatatableUtil {
       case 'publicationArray':
         observable = this.getPublications(value);
         break;
+      case 'taxonHabitats':
+        observable = this.getHabitats(row);
+        break;
       case 'latestRedListEvaluationHabitats':
-        if (!row.latestRedListEvaluation || !row.latestRedListEvaluation.primaryHabitat) {
+        if (!row.latestRedListEvaluation) {
           return ObservableOf('');
         }
-        const habitats = [row.latestRedListEvaluation.primaryHabitat].concat(row.latestRedListEvaluation.secondaryHabitats || []);
-        observable = ObservableForkJoin(habitats.map(h => this.getLabels(h.habitat))).pipe(
-          map(data => data.join('; '))
-        );
+        observable = this.getHabitats(row.latestRedListEvaluation);
         break;
       case 'redListStatus2010':
       case 'redListStatus2015':
@@ -80,7 +81,6 @@ export class DatatableUtil {
         );
         break;
       default:
-        observable = ObservableOf(value);
         break;
     }
 
@@ -120,6 +120,15 @@ export class DatatableUtil {
     );
   }
 
+  private getHabitats(obj): Observable<string> {
+    if (!obj.primaryHabitat) {
+      return ObservableOf('');
+    }
+    const habitats = (obj.primaryHabitat ? [obj.primaryHabitat] : []).concat(obj.secondaryHabitats || []);
+    return ObservableForkJoin(habitats.map(h => this.getLabels(h.habitat))).pipe(
+      map(data => data.join('; '))
+    );
+  }
 
   private getUserName(value): Observable<string> {
     return this.userService.getUser(value)

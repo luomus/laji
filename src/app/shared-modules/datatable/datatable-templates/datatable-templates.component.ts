@@ -35,6 +35,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('link') link: TemplateRef<any>;
   @ViewChild('number') number: TemplateRef<any>;
   @ViewChild('biogeographicalProvince') biogeographicalProvince: TemplateRef<any>;
+  @ViewChild('taxonHabitats') taxonHabitats: TemplateRef<any>;
 
   annotationClass = Annotation.AnnotationClassEnum;
   annotationTypes = Annotation.TypeEnum;

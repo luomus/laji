@@ -125,7 +125,12 @@ export class TaxonomyColumns {
     },
     {
       name: 'notes'
-    }
+    },
+    {
+      name: 'habitats',
+      selectField: 'primaryHabitat,secondaryHabitats',
+      cellTemplate: 'taxonHabitats'
+    },
   ];
 
   columnLookup = {};
