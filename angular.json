@@ -29,7 +29,8 @@
               "node_modules/ngx-toastr/toastr.css",
               "src/styles/laji.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "es5BrowserSupport": true
           },
           "configurations": {
             "production": {

@@ -202,10 +202,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@angular/elements@7.2.9":
-  version "7.2.9"
-  resolved "https://registry.yarnpkg.com/@angular/elements/-/elements-7.2.9.tgz#8d95316b663265e84080ebecf80eb24974903ef3"
-  integrity sha512-xXmRGFd+oHOwck8ZVuRZDWgT4CPcAS/jyWCQ6y74mwQ006ivJ9w2fFGx+IKmRvBjoCHcUUupOop5GCJ3NlQAfQ==
+"@angular/elements@^7.2.14":
+  version "7.2.14"
+  resolved "https://registry.yarnpkg.com/@angular/elements/-/elements-7.2.14.tgz#27446f5efccf1ef7f354005aaa49319593acd838"
+  integrity sha512-1CEplR4IFSGTCjEtmO6K5q5AIqsj6ANK7yXCnpEhFhB1MJsq5OOoUQC/8tmRamC1K1H/8QCP3wHzRCo3XGxVRA==
   dependencies:
     tslib "^1.9.0"
 
