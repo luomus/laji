@@ -56,9 +56,12 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  transform(value: string, type?: labelType): any {
+  transform(value: any, type?: labelType, key?: string): any {
     if (Array.isArray(value)) {
-      return value.map(v => this.transform(v, type));
+      return value.map(v => this.transform(v, type, key));
+    }
+    if (value && key) {
+      value = value[key];
     }
     if (!value || typeof value !== 'string' || value.length === 0 ||
        (type === 'fullUri' && value.indexOf('http') !== 0)) {

@@ -1108,6 +1108,7 @@
   "taxonomy.vernacular.name.sv": "Ruotsinkielinen nimi",
   "taxonomy.vernacular.names": "Yleiskieliset nimet",
   "taxonomy.alternative.vernacular.name": "Muut yleiskieliset nimet",
+  "taxonomy.habitats": "Elinympäristöt",
   "taxonomy.parent.domain": "Yläkunta",
   "taxonomy.parent.kingdom": "Kunta",
   "taxonomy.parent.phylum": "Pääjakso",
