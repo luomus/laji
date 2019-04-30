@@ -10,4 +10,26 @@
     max-height: calc(100vh - 61px);
     max-width: 1200px;
   }
+
+  .nav.nav-tabs.nav-justified{
+    margin: 25px 0 20px 0; 
+    clear: both
+  }
+}
+
+@media only screen and (max-width : 767px) {
+  .nav.nav-tabs.nav-justified {
+    margin:0px 0 20px 0;
+  }
+
+  .btn{
+    background: #b3d5ec;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .btn .menu {
+    float:left;
+  }
 }
