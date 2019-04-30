@@ -91,7 +91,7 @@ export class LabelDesignerComponent {
   @Output()
   pdfLoadingChange = new EventEmitter<boolean>();
 
-  pdfTimeout: number;
+  pdfTimeout: any;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
