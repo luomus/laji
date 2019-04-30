@@ -43,7 +43,7 @@ export class PdfLabelService {
     private labelFormService: LabelFormService,
     private translateService: TranslateService
   ) {
-    this.defaultFields[1].label = this.translateService.instant(this.defaultFields[1].label);
+    this.defaultFields[2].label = this.translateService.instant(this.defaultFields[2].label);
   }
 
   setData(documents: Document[]) {
@@ -75,7 +75,7 @@ export class PdfLabelService {
           ...this.addKeyPrefix(taxonCensus, 'gatherings.taxonCensus'),
           ...this.addKeyPrefix(restGathering, 'gatherings'),
           ...this.addKeyPrefix(restUnit, 'gatherings.units'),
-          ...this.addKeyPrefix(identifications[0], 'gatherings.units.identifications'),
+          ...this.addKeyPrefix(identifications && identifications[0] ? identifications[0] : {}, 'gatherings.units.identifications'),
           id: IdService.getUri(unit.id || gathering.id || document.id),
           id_short: unit.id || gathering.id || document.id,
         });

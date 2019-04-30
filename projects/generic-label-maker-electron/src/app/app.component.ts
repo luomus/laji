@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
-import { FormService, ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
+import { FieldType, FormService, ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
 import { LocalStorage } from 'ngx-webstorage';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
-import { map, share, switchMap } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../../src/app/shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
@@ -27,6 +27,7 @@ const NEW_SETUP: ISetup = {
     'font-family': 'Arial',
     'font-size.pt': 9
   },
+  border: Presets.Border.solid,
   labelItems: [
     {
       type: 'field',
@@ -37,7 +38,7 @@ const NEW_SETUP: ISetup = {
       x: 0,
       y: 0,
       fields: [
-        {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: 'qr-code'}
+        {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: FieldType.qrCode}
       ]
     },
     {
@@ -49,7 +50,7 @@ const NEW_SETUP: ISetup = {
       x: 15,
       y: 0,
       fields: [
-        {field: 'id', content: 'http://example.com/ID', label: 'ID'}
+        {field: 'id', content: 'http://example.com/ID', label: 'ID', type:  FieldType.id}
       ]
     }
   ]
@@ -89,8 +90,9 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.newAvailableFields$ = this.http.get<any>(environment.form).pipe(
       map(form => this.formService.schemaToAvailableFields(form.schema, [
-        {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: 'qr-code'},
-        {field: 'id', content: 'http://example.com/ID', label: 'ID'}
+        {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: FieldType.qrCode},
+        {field: 'id', content: 'http://example.com/ID', label: 'ID', type: FieldType.id},
+        {field: '', content: '', label: 'Text', type: FieldType.text}
       ], {
         skip: this.skipFields
       })),
