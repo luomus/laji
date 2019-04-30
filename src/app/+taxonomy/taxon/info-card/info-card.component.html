@@ -6,7 +6,20 @@
   ></laji-info-card-header>
 
 
-  <a *ngIf="screenWidth <= 767" class="btn" (click)="toggleMenuMobile()" ><span class="menu glyphicon glyphicon-menu-hamburger"></span><span class="current-tab">{{ activeTab }}</span></a>
+  <a *ngIf="screenWidth <= 767" class="btn" (click)="toggleMenuMobile()" >
+    <span class="menu glyphicon glyphicon-menu-hamburger"></span>
+    <ng-container [ngSwitch]="activeTab">
+        <span class="current-tab" *ngSwitchCase="'overview'">{{ "taxonomy.overview" | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'images'"> {{ "species.images" | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'biology'"> {{ "taxonomy.biology" | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'taxonomy'">{{ "taxonomy.taxonomy" | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'occurrence'"> {{ "taxonomy.occurrence" | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'observations'">{{ "taxonomy.observations" | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'specimens'">{{ "taxonomy.specimens" | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'endangerment'">{{ "taxonomy.endangerment" | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'invasive'">{{ "taxonomy.invasive" | translate }}</span>
+    </ng-container>
+  </a>
   <ul *ngIf="(showMenu && screenWidth <= 767) || screenWidth > 767" class="nav nav-tabs nav-justified">
           <li role="presentation"  [ngClass]="{active: activeTab === 'overview'}">
               <a [routerLink]="['/taxon', taxon.id] | localize" [queryParamsHandling]="'preserve'">

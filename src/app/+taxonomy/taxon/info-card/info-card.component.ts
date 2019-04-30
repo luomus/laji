@@ -42,6 +42,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   activatedTabs = {};
 
   screenWidth: any;
+  currentValueTab: any;
 
   private imageSub: Subscription;
 
@@ -63,7 +64,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.showMenu = false;
     }
 
-    console.log(this.screenWidth);
   }
 
 
