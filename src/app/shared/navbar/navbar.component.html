@@ -2,7 +2,7 @@
   <div class="env" [ngClass]="{dev: !isProd}"></div>
   <div [ngClass]="{container: env === 'iucn', 'container-fluid': env !== 'iucn'}">
     <div class="row">
-      <div [ngClass]="{'col-sm-12': env === 'iucn', 'col-sm-11 class.col-sm-offset-1': env !== 'iucn'}">
+      <div class="col-sm-12">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
             aria-controls="navbar" (click)="toggleMenu()">
