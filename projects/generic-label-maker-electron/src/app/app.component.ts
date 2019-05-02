@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { LocalStorage, SessionStorage } from 'ngx-webstorage';
 import { FieldType, FormService, ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
-import { LocalStorage } from 'ngx-webstorage';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
@@ -62,9 +62,11 @@ const NEW_SETUP: ISetup = {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  pdfLoading = false;
   newSetup: ISetup = NEW_SETUP;
   @LocalStorage('viewSetting', {magnification: 2}) viewSetting: IViewSettings;
   @LocalStorage('setup', NEW_SETUP) setup: ISetup;
+  @SessionStorage('data', []) data: object[];
 
   @ViewChild('notebookImport') notebookImport;
   @ViewChild('notebookImportActions') notebookImportActions;
@@ -85,6 +87,7 @@ export class AppComponent implements OnInit {
     private formService: FormService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private lajiApiService: LajiApiService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -105,7 +108,13 @@ export class AppComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, html)
         .subscribe((response) => {
+          this.pdfLoading = false;
+          this.cdr.detectChanges();
           FileSaver.saveAs(response,  'labels.pdf');
+        }, () => {
+          this.pdfLoading = false;
+          this.cdr.detectChanges();
+          alert('Failed to create PDF');
         });
     }
   }
@@ -121,5 +130,9 @@ export class AppComponent implements OnInit {
       ]
     };
     this.availableFields$ = of(fields);
+  }
+
+  onDataChange(data: object[]) {
+    this.data = data;
   }
 }
