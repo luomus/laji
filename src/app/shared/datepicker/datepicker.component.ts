@@ -107,32 +107,48 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
       value = value.trim();
     }
     let date: any = (value instanceof moment) ? value : moment(value, this.format, true);
-    if (!date.isValid && !date.isValid()) {
-      this.validDate = !value;
+    if (date.isValid && !date.isValid()) {
+      this.validDate = false;
       for (const format of [this.format, ...this.otherFormats]) {
         date = moment(value, format, true);
         if (date.isValid()) {
           if (format.length <= 4 && this.toLastOfYear) {
             date = moment(value, format, true).endOf('year');
           }
-          this.validDate = true;
           this.value = date.format(this.format);
           return;
         }
       }
     }
-    if (value == null || !date.isValid()) {
-      this.viewDate = value || '';
-    } else {
+    value = value || '';
+    if (date.isValid && date.isValid()) {
+      this.validDate = true;
       this.viewDate = date.format(this.viewFormat);
       this.date = date;
+      if (this.currentValue !== value) {
+        this.onTouchedCallback();
+      }
+    } else if (value === '') {
+      if (!this.validDate) {
+        this.sendNewValue(value);
+      }
+      this.validDate = true;
+      this.viewDate = value;
+    } else {
+      this.validDate = false;
+      this.viewDate = value || '';
+      value = '';
     }
-    this.onChangeCallback(value);
     if (this.currentValue !== value) {
+      this.sendNewValue(value);
       this.currentValue = value;
-      this.select.emit(value);
-      this.cd.markForCheck();
     }
+  }
+
+  private sendNewValue(value) {
+    this.onChangeCallback(value);
+    this.select.emit(value);
+    this.cd.markForCheck();
   }
 
   ngOnInit() {
@@ -217,7 +233,6 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.value = selectedDate.format(this.format);
     this.viewDate = selectedDate.format(this.viewFormat);
     this.close();
-    this.select.emit(this.value);
     this.generateCalendar();
   }
 
