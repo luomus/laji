@@ -100,7 +100,7 @@ export class FormComponent
         : [this.root, 'form']
       : [this.root, 'places', this.collectionId, this.formId];
     this.router.navigate(
-      this.localizeRouterService.translateRoute(query),
+      query,
       {replaceUrl: true, relativeTo: this.route}
     );
   }
