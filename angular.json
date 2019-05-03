@@ -536,7 +536,7 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "ngx-build-plus:build",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/generic-label-maker-element",
             "index": "projects/generic-label-maker-element/src/index.html",
@@ -585,7 +585,7 @@
           }
         },
         "serve": {
-          "builder": "ngx-build-plus:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "generic-label-maker-element:build"
           },
@@ -602,7 +602,7 @@
           }
         },
         "test": {
-          "builder": "ngx-build-plus:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/generic-label-maker-element/src/test.ts",
             "polyfills": "projects/generic-label-maker-element/src/polyfills.ts",
