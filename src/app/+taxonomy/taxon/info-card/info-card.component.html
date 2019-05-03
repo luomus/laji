@@ -6,7 +6,7 @@
   ></laji-info-card-header>
 
 
-  <a *ngIf="screenWidth <= 767" class="btn" (click)="toggleMenuMobile()" >
+  <a *ngIf="screenWidth <= 767" class="btn btn-mobile" (click)="toggleMenuMobile()" >
     <span class="menu glyphicon glyphicon-menu-hamburger"></span>
     <ng-container [ngSwitch]="activeTab">
         <span class="current-tab" *ngSwitchCase="'overview'">{{ "taxonomy.overview" | translate }}</span>

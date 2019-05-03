@@ -36,7 +36,19 @@
   </li>
 </ul>
 
-<div class="whole-data-list" *ngIf="['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1">
+<a *ngIf="screenWidth <= 767" class="btn btn-mobile" (click)="toggleMenuMobile()" >
+  <span class="menu glyphicon glyphicon-menu-hamburger"></span>
+  <ng-container [ngSwitch]="active">
+      <span class="current-tab" *ngSwitchCase="'map'">{{ 'search.result.map' | translate }}</span>
+      <span class="current-tab" *ngSwitchCase="'list'">{{ 'search.result.list' | translate }}</span>
+      <span class="current-tab" *ngSwitchCase="'images'">{{ 'search.result.images' | translate }}</span>
+      <span class="current-tab" *ngSwitchCase="'species'">{{ 'search.result.species' | translate }}</span>
+      <span class="current-tab" *ngSwitchCase="'stats'">{{ 'search.result.stats' | translate }}</span>
+      <span class="current-tab" *ngSwitchCase="'load'">{{ 'search.result.load' | translate }}</span>
+  </ng-container>
+</a>
+
+<div class="whole-data-list" *ngIf="(['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1) && ((showMenu && screenWidth <= 767) || screenWidth > 767)">
   <ul class="nav nav-tabs nav-justified">
     <li role="presentation" [ngClass]="{active: active === 'map'}">
       <a [routerLink]="'/observation/map' | localize" [queryParams]="queryParams">

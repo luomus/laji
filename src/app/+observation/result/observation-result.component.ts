@@ -1,5 +1,6 @@
 import { filter } from 'rxjs/operators';
-import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, PLATFORM_ID, ViewChild,
+HostListener } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,6 +32,10 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   private subQueryUpdate: Subscription;
   private _active;
 
+  screenWidth: any;
+  currentValueTab: any;
+  showMenu = false;
+
   constructor(
     @Inject(WINDOW) private window,
     @Inject(PLATFORM_ID) private platformID: object,
@@ -38,6 +43,18 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
     public userService: UserService,
     public translate: TranslateService
   ) {
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.screenWidth = window.innerWidth;
+
+    if (this.screenWidth > 767) {
+      this.showMenu = true;
+    } else {
+      this.showMenu = false;
+    }
+
   }
 
   @Input() set active(value) {
@@ -130,5 +147,9 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
       'pageSize',
       'page'
     ]);
+  }
+
+  toggleMenuMobile() {
+    this.showMenu = !this.showMenu;
   }
 }
