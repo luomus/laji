@@ -91,6 +91,30 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
+          [(ngModel)]="searchQuery.query.primaryHabitat"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [placeholder]="'MKV.primaryHabitat' | label"
+          name="adminStatusFilters"
+          [alt]="'MKV.habitatEnum'"></laji-metadata-select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="searchQuery.query.anyHabitat"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [placeholder]="'MKV.habitat' | label"
+          name="adminStatusFilters"
+          [alt]="'MKV.habitatEnum'"></laji-metadata-select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
           [(ngModel)]="searchQuery.query.adminStatusFilters"
           (ngModelChange)="onAdministrativeStatusChange()"
           [multiple]="true"

@@ -51,7 +51,8 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
       params['invasiveSpeciesFilter'] === 'true' ? true : (params['invasiveSpeciesFilter'] === 'false' ? false : undefined);
 
     const arrayKeys = ['redListStatusFilters', 'adminStatusFilters',
-      'typesOfOccurrenceFilters', 'typesOfOccurrenceNotFilters', 'taxonRanks'
+      'typesOfOccurrenceFilters', 'typesOfOccurrenceNotFilters', 'taxonRanks',
+      'primaryHabitat', 'anyHabitat'
     ];
     for (let i = 0; i < arrayKeys.length; i++) {
       const key = arrayKeys[i];

@@ -62,7 +62,9 @@ export class SearchQuery implements SearchQueryInterface {
     'reliabilityOfCollection',
     'teamMember',
     'teamMemberId',
-    'taxonCensus'
+    'taxonCensus',
+    'primaryHabitat',
+    'anyHabitat'
   ];
 
   booleanTypes = [
