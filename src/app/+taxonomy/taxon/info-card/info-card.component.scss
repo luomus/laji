@@ -10,4 +10,46 @@
     max-height: calc(100vh - 61px);
     max-width: 1200px;
   }
+
+  /*.nav.nav-tabs.nav-justified{
+    margin: 25px 0 20px 0; 
+    clear: both
+  }*/
+}
+
+/*@media only screen and (min-width : 767px) {
+  .nav-tabs.nav-justified>li>a {
+    background: #f5f5f5;
+    border: 1px solid #c7c5c5;
+  }
+
+  .nav-tabs.nav-justified>li>a:hover {
+    background: #e0e0e0;
+  }
+
+  .nav-tabs.nav-justified>.active>a {
+    background: white;
+    border-bottom: 1px solid white;
+  }
+
+  .nav-tabs.nav-justified>.active>a:hover {
+    background: white;
+  }
+}*/
+
+@media only screen and (max-width : 767px) {
+ /* .nav.nav-tabs.nav-justified {
+    margin:0px 0 20px 0;
+  }*/
+
+  .btn{
+    background: #b3d5ec;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .btn .menu {
+    float:left;
+  }
 }

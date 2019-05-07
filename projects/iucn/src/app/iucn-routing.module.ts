@@ -5,25 +5,25 @@ import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../../src/app/locale/locale-en.component';
 import { LocaleSvComponent } from '../../../../src/app/locale/locale-sv.component';
 import { LocaleFiComponent } from '../../../../src/app/locale/locale-fi.component';
-import { mergeMap } from 'rxjs/operators';
+import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from '../../../../src/app/locale/localize.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
-    return route.data && route.data.noPreload ? ObservableOf(null) : ObservableTimer(50).pipe(
-      mergeMap(() => load())
-    );
+    const loadRoute = () => ObservableTimer(50).pipe(flatMap(() => load()), catchError(() => ObservableOf(null)));
+
+    return route.data && route.data.preload ? loadRoute() : ObservableOf(null);
   }
 }
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: './+home/iucn-home.module#IucnHomeModule'},
+  {path: '', pathMatch: 'full', loadChildren: './+home/iucn-home.module#IucnHomeModule', data: {preload: true}},
   {path: 'about', loadChildren: './+about/about.module#AboutModule', data: {title: 'iucn.about.title'}},
   {path: 'publications', loadChildren: './+publications/publications.module#PublicationsModule', data: {title: 'iucn.publications.title'}},
-  {path: 'user', loadChildren: '../../../../src/app/+user/user.module#UserModule', data: {noPreload: true}},
+  {path: 'user', loadChildren: '../../../../src/app/+user/user.module#UserModule'},
   {path: 'view', loadChildren: '../../../../src/app/+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
-  {path: 'results', loadChildren: './+taxonomy/iucn-taxonomy.module#IucnTaxonomyModule'},
-  {path: 'error', loadChildren: '../../../../src/app/+error/error.module#ErrorModule', data: {noPreload: true}}
+  {path: 'results', loadChildren: './+taxonomy/iucn-taxonomy.module#IucnTaxonomyModule', data: {preload: true}},
+  {path: 'error', loadChildren: '../../../../src/app/+error/error.module#ErrorModule'}
 ];
 
 const routesWithLang: Routes = [

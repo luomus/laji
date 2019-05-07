@@ -43,6 +43,10 @@ export class LabelValueMapComponent {
     this.initAddableFields();
   }
 
+  get valueMap()  {
+    return this._map;
+  }
+
   updateFieldMap(field: string, map: {[value: string]: string}) {
     this.valueMapChange.emit({
       ...this._map,

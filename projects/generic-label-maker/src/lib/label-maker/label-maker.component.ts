@@ -14,7 +14,15 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { IAddLabelEvent, ILabelField, ILabelItem, ILabelValueMap, ISetup, IViewSettings } from '../generic-label-maker.interface';
+import {
+  FieldType,
+  IAddLabelEvent,
+  ILabelField,
+  ILabelItem,
+  ILabelValueMap,
+  ISetup,
+  IViewSettings
+} from '../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../label.service';
 import { InfoWindowService } from '../info-window/info-window.service';
 import { Subscription } from 'rxjs';
@@ -38,24 +46,27 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close'|'map' = 'file';
   _setup: ISetup;
-  _selectedLabelItem: ILabelItem | undefined;
   _data: object[] = [];
-  fields: ILabelField[];
+  _selectedLabelItem: ILabelItem | undefined;
+  _viewSettings: IViewSettings = {magnification: 2};
+  generateFields: ILabelField[];
   dragging = false;
-  version = '0.0.20';
+  version = '1.0.0';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
   @Input() newAvailableFields: ILabelField[];
   @Input() availableFields: ILabelField[];
   @Input() showIntro = true;
-  _viewSettings: IViewSettings = {magnification: 2};
+  @Input() pdfLoading = false;
 
   @Output() html = new EventEmitter<string>();
   @Output() viewSettingsChange = new EventEmitter<IViewSettings>();
+  @Output() dataChange = new EventEmitter<object[]>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() introClosed = new EventEmitter();
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
+  @Output() pdfLoadingChange = new EventEmitter<boolean>();
   @ViewChild('editor') editor: ElementRef<HTMLDivElement>;
   @ViewChild('generateTpl') generateTpl: TemplateRef<any>;
   @ViewChild('generateActionsTpl') generateActionsTpl: TemplateRef<any>;
@@ -134,7 +145,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
           if (enterMethod) {
             enterMethod.call(elem);
           }
-        } else {
+        } else if (this._viewSettings.fullscreen) {
           const doc: any = document;
           const exitMethod = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
           if (exitMethod) {
@@ -162,31 +173,25 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
       ...setup,
       labelItems: setup.labelItems.map(item => {
         item.fields.forEach(field => {
-          if (!hasField[field.field] && !field.type && field.field !== 'id') {
+          if (!hasField[field.field] && !field.type) {
             hasField[field.field] = true;
             allFields.push(field);
           }
         });
-        return {
-        ...item,
-          _id: item._id || LabelMakerComponent.id++
-        };
+        return { ...item, _id: item._id || LabelMakerComponent.id++ };
       }),
       backSideLabelItems: (setup.backSideLabelItems || []).map(item => {
         item.fields.forEach(field => {
-          if (!hasField[field.field] && !field.type && field.field !== 'id') {
+          if (!hasField[field.field] && !field.type) {
             hasField[field.field] = true;
             allFields.push(field);
           }
         });
-        return {
-          ...item,
-          _id: item._id || LabelMakerComponent.id++
-        };
+        return { ...item, _id: item._id || LabelMakerComponent.id++ };
       })
     };
     this.dimensions = this.labelService.countLabelsPerPage(this._setup);
-    this.fields = allFields;
+    this.generateFields = allFields;
     if (this._selectedLabelItem) {
       let idx = this._setup.labelItems.findIndex(i => i._id === this._selectedLabelItem._id);
       if (idx !== -1) {
@@ -277,12 +282,12 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   generateData() {
     this.infoWindowService.close();
-    const uri = this.generate.uri + (this.generate.uri.indexOf('%id%') > -1 ? '' : '%id%');
+    const MAX = 10000;
     const data = [];
+    const uri = this.generate.uri + (this.generate.uri.indexOf('%id%') > -1 ? '' : '%id%');
     const start = this.generate.rangeStart < this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
     const end = this.generate.rangeStart > this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
-    const MAX = 100000;
-    const idFieldsIdx = this.availableFields.findIndex(item => item.type === 'qr-code');
+    const idFieldsIdx = this.availableFields.findIndex(item => item.type === FieldType.qrCode);
     const idField = idFieldsIdx !== -1 ? this.availableFields[idFieldsIdx].field : 'id';
     let current = 0;
     for (let i = start; i <= end; i++) {
@@ -297,6 +302,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     }
     this.data = data;
     this.setPreviewActive(0);
+    this.dataChange.emit(this.data);
   }
 
   openGettingStarted() {
@@ -317,6 +323,9 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
 
   openGenerate() {
+    if (!this.generate.uri) {
+      this.generate.uri = this.defaultDomain;
+    }
     this.infoWindowService.open({
       title: this.translateService.get('Generate label data'),
       content: this.generateTpl,
@@ -360,6 +369,20 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     this.viewSettingsChange.emit(event);
   }
 
+  loadExcelData() {
+    const result = this.excelCmp.loadData();
+    if (result.availableFields) {
+      this.availableFieldsChange.emit(result.availableFields);
+    }
+    this.data = result.data;
+    this.infoWindowService.close();
+    this.dataChange.emit(this.data);
+  }
+
+  onValueMapChange(map: ILabelValueMap) {
+    this.setupChanged({ ...this._setup, valueMap: map }, false);
+  }
+
   private updateLocalId(setup: ISetup) {
     let id = 0;
     ['labelItems', 'backSideLabelItems'].forEach(items => {
@@ -374,19 +397,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     LabelMakerComponent.id = id + 1;
   }
 
-  loadExcelData() {
-    const result = this.excelCmp.loadData();
-    if (result.availableFields) {
-      this.availableFieldsChange.emit(result.availableFields);
-    }
-    this.data = result.data;
-    this.infoWindowService.close();
-  }
-
-  onValueMapChange(map: ILabelValueMap) {
-    this.setupChanged({
-      ...this._setup,
-      valueMap: map
-    }, false);
+  onPdfLoading(loading: boolean) {
+    this.pdfLoading = true;
+    this.pdfLoadingChange.emit(loading);
   }
 }

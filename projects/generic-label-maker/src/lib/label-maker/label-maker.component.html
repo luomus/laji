@@ -4,11 +4,12 @@
       <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>{{ 'File' | translate }}</a></li>
       <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>{{ 'Edit' | translate }}</a></li>
       <li [class.active]="_active === 'view'" (click)="_active = 'view'" *ngIf="_viewSettings"><a>{{ 'View' | translate }}</a></li>
-      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>{{ 'Label fields' | translate }}</a></li>
+      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>{{ 'Label generateFields' | translate }}</a></li>
       <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>{{ 'Settings' | translate }}</a></li>
       <li [class.active]="_active === 'map'" (click)="_active = 'map'"><a>{{ 'Map values' | translate }}</a></li>
       <li [class.active]="_active === 'help'" (click)="_active = 'help'"><a>{{ 'Help' | translate }}</a></li>
     </ul>
+    <div class="clear"></div>
   </div>
   <div class="window-content">
     <div class="settings-wrap main" [class.dragging]="dragging" #settings *ngIf="_active !== 'close'">
@@ -23,10 +24,12 @@
       </div>
       <div *ngIf="_active === 'help'">
         <table class="icon">
+          <!--
           <tr class="link" (click)="openGettingStarted()">
             <td></td>
             <td>{{ 'Getting started' | translate }}</td>
           </tr>
+          -->
           <tr class="link" (click)="openIntro()">
             <td>
               <ll-icon [size]="14" [type]="'logo'"></ll-icon>
@@ -42,6 +45,8 @@
           (dataChange)="data = $event"
           [newSetup]="newSetup"
           [setup]="_setup"
+          [pdfLoading]="pdfLoading"
+          (pdfLoadingChange)="onPdfLoading($event)"
           (setupChange)="setupChanged($event)"
           [data]="data"
           (html)="html.emit($event)"
@@ -165,11 +170,11 @@
 </ng-template>
 <ng-template #generateTpl>
   <table class="generate user-input">
-    <tr><td>{{ 'Uri' | translate }}:</td><td><input (change)="updateGenerate('uri', $event.target.value)" [value]="generate.uri || defaultDomain" type="text" class="form-control input-sm"></td></tr>
+    <tr><td>{{ 'Uri' | translate }}:</td><td><input (change)="updateGenerate('uri', $event.target.value)" [value]="generate.uri" type="text" class="form-control input-sm"></td></tr>
     <tr><td>{{ 'Range start' | translate }}:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" [value]="generate.rangeStart || ''" type="text" class="form-control input-sm"></td></tr>
     <tr><td>{{ 'Range end' | translate }}:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" [value]="generate.rangeEnd || ''" type="text" class="form-control input-sm"></td></tr>
-    <tr *ngIf="fields.length > 0"><td colspan="2">&nbsp;</td></tr>
-    <tr *ngFor="let field of fields;">
+    <tr *ngIf="generateFields.length > 0"><td colspan="2">&nbsp;</td></tr>
+    <tr *ngFor="let field of generateFields;">
       <td>{{field.label}}:</td><td><input [value]="generate.data[field.field] || ''" (change)="updateGenerate(field.field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
     </tr>
   </table>

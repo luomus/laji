@@ -40,7 +40,7 @@ $small-screen: 900px;
   }
 
   .menubar {
-    height: $menu-height;
+    min-height: $menu-height;
     width: 100%;
     color: #333;
     background: $menu-color;
@@ -243,6 +243,10 @@ $small-screen: 900px;
         padding-right: 5px;
       }
     }
+  }
+
+  .clear {
+    clear: both;
   }
 
 }

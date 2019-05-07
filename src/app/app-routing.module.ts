@@ -6,37 +6,42 @@ import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
-import { mergeMap } from 'rxjs/operators';
-import { environment } from '../environments/environment';
-import { Global } from '../environments/global';
+import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
-    return route.data && route.data.noPreload ? ObservableOf(null) : ObservableTimer(50).pipe(
-      mergeMap(() => load())
-    );
+    const delay = typeof process !== 'undefined' && process.release.name === 'node' ? 0 : 50;
+    const loadRoute = () => ObservableTimer(delay).pipe(flatMap(() => load()), catchError(() => ObservableOf(null)));
+
+    return route.data && route.data.preload ? loadRoute() : ObservableOf(null);
   }
 }
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},
-  {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {noPreload: true, title: 'news.title'}},
+  {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule', data: {preload: true}},
+  {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {title: 'news.title'}},
   {path: 'about', loadChildren: './+information/information.module#InformationModule'},
-  {path: 'user', loadChildren: './+user/user.module#UserModule', data: {noPreload: true}},
+  {path: 'user', loadChildren: './+user/user.module#UserModule'},
   {path: 'view', loadChildren: './+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
-  {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule', data: {noPreload: true}},
+  {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule'},
   {path: 'vihko', loadChildren: './+haseka/haseka.module#HasekaModule', data: {title: 'haseka.title'}},
-  {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule', data: {title: 'navigation.observation'}},
-  {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule', data: {title: 'navigation.taxonomy'}},
-  {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule', data: {noPreload: true}},
-  {path: 'kartta', loadChildren: './+map/map.module#MapModule', data: {noPreload: true}},
-  {path: 'map', loadChildren: './+map/map.module#MapModule', data: {title: 'navigation.map', noPreload: true}},
-  {path: 'error', loadChildren: './+error/error.module#ErrorModule', data: {noPreload: true}},
-  {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}},
-  // {path: 'admin', loadChildren: './admin/admin.module#AdminModule', data: {noPreload: true}},
-  // {path: 'shell', component: ForumComponent, data: {noPreload: true}},
-  {path: 'forum', component: ForumComponent, data: {noPreload: true}}
+  {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule', data: {
+    preload: true,
+    title: 'navigation.observation'
+  }},
+  {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule', data: {
+    preload: true,
+    title: 'navigation.taxonomy'
+  }},
+  {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule'},
+  {path: 'kartta', loadChildren: './+map/map.module#MapModule'},
+  {path: 'map', loadChildren: './+map/map.module#MapModule', data: {title: 'navigation.map'}},
+  {path: 'error', loadChildren: './+error/error.module#ErrorModule'},
+  {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule'},
+  // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
+  // {path: 'shell', component: ForumComponent},
+  {path: 'forum', component: ForumComponent}
 ];
 
 const routesWithLang: Routes = [

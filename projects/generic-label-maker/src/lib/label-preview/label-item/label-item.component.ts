@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ILabelField, ILabelItem, ILabelValueMap } from '../../generic-label-maker.interface';
+import { FieldType, ILabelField, ILabelItem, ILabelValueMap } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 
 @Component({
@@ -44,7 +44,7 @@ export class LabelItemComponent {
     const fields = this._item.fields;
     const result: ILabelField[] = [];
     fields.forEach(field => {
-      if (field.type === 'text') {
+      if (field.type === FieldType.text) {
         result.push({...field});
       } else if (field.separatorAlways || LabelService.hasValue(this._data, field.field)) {
         result.push({

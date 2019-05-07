@@ -36,7 +36,7 @@ export class TaxonSelectComponent {
   @Input() typeaheadItemTemplate;
   @Input() allowInvalid = true;
   @Input() convertIdToName = true;
-  @Input() class = 'form-control input-sm';
+  @Input() class = 'form-control input-sm taxonomy-search';
   @Output() taxonIdChange = new EventEmitter<string>();
 
   @ViewChild('typeahead') typeahead;

@@ -30,7 +30,7 @@ laji-info-card {
   }
 }
 ::ng-deep laji-info-card.sidebar-hidden .info-card-header-first-row {
-  margin-left: 110px;
+  margin-left: -15px;
 }
 
 .dragbar {
@@ -59,10 +59,11 @@ laji-info-card {
   border-bottom: 1px solid #e1e1e1;
 }
 .sidebar-toggle.open-toggle {
-  top: 0;
+  top: 42px;
   padding: 15px;
   border-top: none;
   border-top-right-radius: 0;
+  text-align: center;
 }
 
 .hide-sidebar-toggle {
@@ -80,11 +81,13 @@ laji-info-card {
     display: none;
   }
 
-  .sidebar-toggle{
+  .sidebar-toggle.open-toggle{
     margin-right: 0px;
+    position: relative;
+    padding: 3px 15px;
   }
 
-  .hide-sidebar-toggle[_ngcontent-c8] {
+  .hide-sidebar-toggle {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     border-top-left-radius: 6px;
@@ -93,6 +96,7 @@ laji-info-card {
     border-right: 0px solid #e1e1e1;
     border-left : 1px solid #e1e1e1;
     border-bottom: 1px solid #e1e1e1;
+    right:21px;
   }
 }
 

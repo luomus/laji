@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { ILabelField } from '../../generic-label-maker.interface';
+import { FieldType, ILabelField } from '../../generic-label-maker.interface';
 
 @Component({
   selector: 'll-label-excel-file',
@@ -87,17 +87,18 @@ export class LabelExcelFileComponent implements OnInit {
         label: this.idCol + ' - QRCode',
         field: this.idCol,
         content: ex[this.idCol] || 'http://example.com/123',
-        type: 'qr-code'
+        type: FieldType.qrCode
       },
       {
         label: this.idCol,
         field: this.idCol,
         content: ex[this.idCol] || 'http://example.com/123',
+        type: FieldType.id
       },
       {
         label: 'Text',
         field: '_any_text_',
-        type: 'text'
+        type: FieldType.text
       },
       ...this.headers.reduce((cumulative, current) => {
         if (current !== this.idCol) {

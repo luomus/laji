@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { IFontStyle, ILabelField } from '../../../generic-label-maker.interface';
+import { FieldType, IFontStyle, ILabelField } from '../../../generic-label-maker.interface';
 
 @Component({
   selector: 'll-label-item-field',
@@ -17,6 +17,8 @@ export class LabelItemFieldComponent {
   _prefixStyle: IFontStyle;
   _contentStyle: IFontStyle;
   _suffixStyle: IFontStyle;
+
+  fieldType = FieldType;
 
   @Input()
   set field(field: ILabelField) {

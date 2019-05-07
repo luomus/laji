@@ -2,12 +2,11 @@
   <div class="col-xs-12">
     <div class="panel panel-default">
       <div class="panel-body">
-        <p *ngIf="taxon.nameAccordingTo">{{ taxon.nameAccordingTo | checklist }}</p>
         <p>
           <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
           <span *ngIf="taxon.scientificNameAuthorship" class="author">{{ taxon.scientificNameAuthorship }}</span>
         </p>
-        <p *ngIf="taxon.nameAccordingTo" class="green-text">{{ 'taxonomy.acceptedName' | translate }}</p>
+        <p *ngIf="taxon.nameAccordingTo" class="green-text">{{ 'taxonomy.acceptedName' | translate }} {{ taxon.nameAccordingTo | checklist }}</p>
         <p *ngIf="!taxon.nameAccordingTo">
           <span class="red-text" *ngIf="synonymType">{{ 'MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1) | label | uppercase }} {{ 'taxonomy.ofTaxon' | translate }} </span>
           <a [routerLink]="['/taxon', taxon.synonymOf.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'" target="_blank">

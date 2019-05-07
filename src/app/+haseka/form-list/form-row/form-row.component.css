@@ -7,3 +7,18 @@
 .shortDescription {
   margin-left: 10px;
 }
+
+@media only screen and (max-width : 991px) {
+
+  .shortDescription {
+    margin-left: 0px;
+    display: block;
+  }
+}
+
+@media only screen and (max-width : 767px) {
+  .link{
+    width:100%;
+  }
+}
+

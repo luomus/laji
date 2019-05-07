@@ -3,7 +3,7 @@ node {
     stage('Prepare environment') {
       git branch: 'development', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
       sh 'npm install -g yarn'
-      sh 'yarn install --silent --frozen-lockfile'
+      sh 'yarn install --silent --frozen-lockfile --check-files'
     }
     stage('Quality') {
       sh 'yarn run lint'

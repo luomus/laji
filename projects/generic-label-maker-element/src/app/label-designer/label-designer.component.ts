@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
+import { FieldType, ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
 
 @Component({
   selector: 'label-designer',
@@ -9,6 +9,8 @@ import { ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker
 })
 export class LabelDesignerComponent {
 
+  @Input()
+  pdfLoading: boolean;
 
   @Input()
   showIntro: boolean;
@@ -53,6 +55,7 @@ export class LabelDesignerComponent {
       'font-family': 'Arial',
       'font-size.pt': 9
     },
+    border: Presets.Border.solid,
     labelItems: [
       {
         type: 'field',
@@ -63,7 +66,7 @@ export class LabelDesignerComponent {
         x: 0,
         y: 0,
         fields: [
-          {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: 'qr-code'}
+          {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: FieldType.qrCode}
         ]
       },
       {
@@ -75,7 +78,7 @@ export class LabelDesignerComponent {
         x: 15,
         y: 0,
         fields: [
-          {field: 'id', content: 'http://example.com/ID', label: 'ID'}
+          {field: 'id', content: 'http://example.com/ID', label: 'ID', type: FieldType.id}
         ]
       }
     ]
@@ -85,6 +88,10 @@ export class LabelDesignerComponent {
   html = new EventEmitter<string>();
   @Output()
   setupChange = new EventEmitter<ISetup>();
+  @Output()
+  pdfLoadingChange = new EventEmitter<boolean>();
+
+  pdfTimeout: any;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -94,4 +101,16 @@ export class LabelDesignerComponent {
     this.cdr.detectChanges();
   }
 
+
+  updateLoading(loading: boolean) {
+    this.pdfLoading = loading;
+    this.pdfLoadingChange.emit(loading);
+    if (this.pdfTimeout) {
+      clearTimeout(this.pdfTimeout);
+    }
+    this.pdfTimeout = setTimeout(() => {
+      this.pdfLoading = false;
+      this.cdr.detectChanges();
+    }, 10000);
+  }
 }

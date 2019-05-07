@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ILabelField, ILabelItem, ISetup, TLabelLocation } from '../../generic-label-maker.interface';
+import { ILabelField, ILabelItem, ISetup, FieldType, TLabelLocation } from '../../generic-label-maker.interface';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslateService } from '../../translate/translate.service';
+import { Presets } from '../../presets';
 
 @Component({
   selector: 'll-label-settings',
@@ -16,6 +17,8 @@ export class LabelSettingsComponent implements OnInit {
   @Output() setupChange = new EventEmitter<ISetup>();
   showFieldFont = false;
   canDelete = false;
+  borders = Presets.Border;
+
   private _selectedLabelItem: ILabelItem;
 
   constructor(
@@ -29,7 +32,7 @@ export class LabelSettingsComponent implements OnInit {
     this._selectedLabelItem = item;
     if (item && item.fields) {
       this.canDelete = item.fields.length > 1;
-      this.showFieldFont = item.fields[0] && item.fields[0].type !== 'qr-code';
+      this.showFieldFont = item.fields[0] && item.fields[0].type !== FieldType.qrCode;
     } else {
       this.canDelete = false;
       this.showFieldFont = false;

@@ -10,7 +10,7 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  PLATFORM_ID, EventEmitter, OnDestroy,
+  PLATFORM_ID, EventEmitter, OnDestroy, HostListener
 } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
 import {GalleryService} from '../../../shared/gallery/service/gallery.service';
@@ -36,9 +36,13 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   hasImageData: boolean;
   hasBiologyData: boolean;
   isEndangered: boolean;
+  showMenu = false;
   images = [];
 
   activatedTabs = {};
+
+  screenWidth: any;
+  currentValueTab: any;
 
   private imageSub: Subscription;
 
@@ -48,17 +52,42 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     private cd: ChangeDetectorRef,
     private galleryService: GalleryService,
     @Inject(PLATFORM_ID) private platformId: object,
-  ) { }
+  ) {}
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.screenWidth = window.innerWidth;
+
+    if (this.screenWidth > 767) {
+      this.showMenu = true;
+    } else {
+      this.showMenu = false;
+    }
+
+  }
+
+
 
   ngOnInit() {
+    if (window.innerWidth > 767) {
+      this.showMenu = true;
+      this.screenWidth = window.innerWidth;
+    } else {
+      this.showMenu = false;
+      this.screenWidth = window.innerWidth;
+    }
+
     if (this.hasImageData === undefined) {
       this.hasImageData = this.activeTab === 'images';
     }
   }
 
+
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.activeTab) {
       this.activatedTabs[this.activeTab] = true;
+      this.showMenu = false;
     }
 
     if (changes.taxon) {
@@ -92,6 +121,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       }
 
       this.setImages();
+
     }
   }
 
@@ -181,5 +211,10 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     return false;
+  }
+
+
+  toggleMenuMobile() {
+    this.showMenu = !this.showMenu;
   }
 }

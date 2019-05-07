@@ -42,8 +42,8 @@
     <td>
     </td>
     <td>
-      <ll-label-print #printBtn [btnClass]="'menu-item'" [setup]="setup" [data]="data" (html)="html.emit($event)">
-        {{ 'Download labels (pdf)' | translate }}
+      <ll-label-print #printBtn [visible]="false" [btnClass]="'menu-item'" [setup]="setup" [data]="data" (html)="html.emit($event)" (pressed)="startPdfLoading()">
+        {{ 'Download labels (pdf)' | translate }}<ll-loader [loading]="pdfLoading"></ll-loader>
       </ll-label-print>
     </td>
   </tr>

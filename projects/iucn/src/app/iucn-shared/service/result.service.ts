@@ -123,11 +123,18 @@ export class ResultService {
   }
 
   getYearsStats(year: number): Observable<{name: string, value: number, key: string}[]> {
-    if (this.resultCache[year]) {
-      return ObservableOf(this.resultCache[year]);
-    }
     if (!this.requestCache[year]) {
-      this.requestCache[year] = this.taxonomyApi.species({
+      this.requestCache[year] = {};
+    }
+    if (!this.resultCache[year]) {
+      this.resultCache[year] = {};
+    }
+
+    if (this.resultCache[year][this.translationService.currentLang]) {
+      return ObservableOf(this.resultCache[year][this.translationService.currentLang]);
+    }
+    if (!this.requestCache[year][this.translationService.currentLang]) {
+      this.requestCache[year][this.translationService.currentLang] = this.taxonomyApi.species({
         checklistVersion: this.yearToChecklistVersion[year],
         'latestRedListEvaluation.redListStatus': 'MX.iucnEN,MX.iucnCR,MX.iucnVU,MX.iucnDD,MX.iucnRE,MX.iucnNT,MX.iucnLC,MX.iucnDD',
         aggregateBy: AGG_STATUS,
@@ -137,11 +144,11 @@ export class ResultService {
         switchMap(data => forkJoin(data.map(res => this.triplestoreLabelService.get(res.name, this.translationService.currentLang))).pipe(
           map(translations => data.map((res, idx) => ({...res, name: translations[idx]})))
         )),
-        tap(data => this.resultCache[year] = data),
+        tap(data => this.resultCache[year][this.translationService.currentLang] = data),
         share()
       );
     }
-    return this.requestCache[year];
+    return this.requestCache[year][this.translationService.currentLang];
   }
 
   private mapAgg(data) {

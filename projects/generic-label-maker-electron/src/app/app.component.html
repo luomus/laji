@@ -5,6 +5,9 @@
   (availableFieldsChange)="setAvailableFields($event)"
   [(viewSettings)]="viewSetting"
   [(setup)]="setup"
+  [data]="data"
+  [(pdfLoading)]="pdfLoading"
+  (dataChange)="onDataChange($event)"
   [newSetup]="newSetup"
   (html)="htmlToPdf($event)"
   [showIntro]="false">

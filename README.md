@@ -6,10 +6,29 @@ found at [api.laji.fi](https://apitest.laji.fi/explorer/).
 This repo contains 3 main branches. Follow guidelines set in [wiki](http://wiki.helsinki.fi/display/luomusict/Laji.fi+front+kehitysohjeet) for developing.
 
 ## Development server
-1. checkout development branch with command `git checkout development`
-2. Copy `config.json.dist` to `config.json` and fill in in the blanks.
-3. Run `npm install`
-4. Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
+```bash
+# Install yarn globally
+npm install yarn -g
+
+# clone branch
+git clone https://bitbucket.org/luomus/laji.fi-front.git
+cd laji.fi-front
+
+# change to dev
+git checkout -b development
+
+# Install application dependencies
+# Redis and make sure that it's running
+# Python and maker sure that the python executable is in the path
+
+# Install js dependencies
+yarn install --frozen-lockfile --check-files
+
+# Run the environment
+yarn run start
+
+# Go with your browser to http://localhost:3000/
+```
 
 ## Code scaffolding
 

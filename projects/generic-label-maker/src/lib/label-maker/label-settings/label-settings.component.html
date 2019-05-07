@@ -57,6 +57,19 @@
 <h3>{{ 'Label' | translate }}</h3>
 <ll-font-settings [fontSettings]="setup.label" (fontSettingsChange)="change('label', $event)"></ll-font-settings>
 <ll-margin-settings [style]="setup.label" (styleChange)="change('label', $event)"></ll-margin-settings>
+<div class="ll-setting-row">
+  {{ 'Border' | translate }}
+  <table class="margins">
+    <tr>
+      <td></td>
+      <td>
+        <select class="form-control" (change)="change('border', $event.target.value)">
+          <option *ngFor="let border of borders | keyvalue" [value]="border.value" [selected]="border.value === setup.border">{{border.key | translate}}</option>
+        </select>
+      </td>
+    </tr>
+  </table>
+</div>
 <h3>{{ 'Page' | translate }}</h3>
 <ll-margin-settings [style]="setup.page" [type]="'padding'" (styleChange)="change('page', $event)"></ll-margin-settings>
 <label>
