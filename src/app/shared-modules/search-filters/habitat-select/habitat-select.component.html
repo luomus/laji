@@ -1,0 +1,30 @@
+<div class="form-group">
+  <div class="col-sm-12">
+    <laji-metadata-select
+      [(ngModel)]="habitat"
+      (ngModelChange)="onSelect()"
+      [multiple]="true"
+      [placeholder]="'MKV.habitat' | label"
+      name="adminStatusFilters"
+      [alt]="'MKV.habitatEnum'"></laji-metadata-select>
+  </div>
+  <div class="col-sm-12">
+    <label class="small-label">
+      <laji-checkbox [value]="onlyPrimary" (valueChange)="onOnlyPrimaryChange()"></laji-checkbox>
+      {{ 'iucn.results.onlyPrimary' | translate }}
+    </label>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-12">
+    <laji-metadata-select
+      [(ngModel)]="habitatSpecific"
+      (ngModelChange)="onSelect()"
+      [disabled]="!habitat || habitat.length === 0"
+      [multiple]="true"
+      [useFilter]="false"
+      [placeholder]="'iucn.filter.habitatSpecific' | translate"
+      name="adminStatusFilters"
+      [alt]="'MKV.habitatSpecificTypeEnum'"></laji-metadata-select>
+  </div>
+</div>

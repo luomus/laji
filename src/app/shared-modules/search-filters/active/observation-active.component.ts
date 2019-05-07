@@ -69,19 +69,20 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   remove(item: ActiveList) {
-    const query = this.searchQuery.query;
+    const query = {...this.searchQuery.query};
     if (typeof query[item.field] !== 'undefined') {
       query[item.field] = undefined;
     }
     if (this.active && this.active.length < 2) {
       this.showList = false;
     }
+    this.searchQuery.query = query;
     this.searchQuery.queryUpdate({formSubmit: true});
   }
 
   removeAll() {
     const skip = this.searchQuery.skippedQueryParams ? this.searchQuery.skippedQueryParams : [];
-    const query = this.searchQuery.query;
+    const query = {...this.searchQuery.query};
     Object.keys(query).map((key) => {
       if (skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
         query[key] = undefined;
@@ -89,6 +90,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
     });
     this.active = [];
     this.showList = false;
+    this.searchQuery.query = query;
     this.searchQuery.queryUpdate({formSubmit: true});
   }
 

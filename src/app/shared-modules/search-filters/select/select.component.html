@@ -1,4 +1,4 @@
-<div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open}">
+<div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open, 'lj-disabled': disabled}">
   <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event, filter)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
   <ng-container *ngIf="multiple; else select">
     <ng-container *ngIf="!useFilter; else multiWithFilter">

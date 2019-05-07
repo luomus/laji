@@ -728,31 +728,11 @@
           [alt]="'MX.iucnStatuses'"></laji-metadata-select>
       </div>
     </div>
-    <ng-container *ngIf="advancedMode || searchQuery.primaryHabitat">
-      <div class="form-group">
-        <div class="col-sm-12">
-          <laji-metadata-select
-            [(ngModel)]="searchQuery.primaryHabitat"
-            (ngModelChange)="onQueryChange()"
-            [multiple]="true"
-            [placeholder]="'MKV.primaryHabitat' | label"
-            name="adminStatusFilters"
-            [alt]="'MKV.habitatEnum'"></laji-metadata-select>
-        </div>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="advancedMode || searchQuery.anyHabitat">
-      <div class="form-group">
-        <div class="col-sm-12">
-          <laji-metadata-select
-            [(ngModel)]="searchQuery.anyHabitat"
-            (ngModelChange)="onQueryChange()"
-            [multiple]="true"
-            [placeholder]="'MKV.habitat' | label"
-            name="adminStatusFilters"
-            [alt]="'MKV.habitatEnum'"></laji-metadata-select>
-        </div>
-      </div>
+    <ng-container *ngIf="advancedMode || searchQuery.primaryHabitat || searchQuery.anyHabitat">
+      <laji-habitat-select
+        [query]="searchQuery"
+        (select)="onHabitatChange($event)"
+      ></laji-habitat-select>
     </ng-container>
     <ng-container *ngIf="advancedMode || searchQuery.typeOfOccurrenceId">
       <div class="form-group">

@@ -14,6 +14,7 @@ import { SelectComponent } from './select/select.component';
 import { InfoModule } from '../info/info.module';
 import { IncludesPipe } from './includes.pipe';
 import { AdminStatusInfoPipe } from './admin-status-info.pipe';
+import { HabitatSelectComponent } from './habitat-select/habitat-select.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -34,7 +35,8 @@ import { AdminStatusInfoPipe } from './admin-status-info.pipe';
     SelectComponent,
     CheckboxComponent,
     IncludesPipe,
-    AdminStatusInfoPipe
+    AdminStatusInfoPipe,
+    HabitatSelectComponent
   ],
   exports: [
     MetadataSelectComponent,
@@ -43,7 +45,8 @@ import { AdminStatusInfoPipe } from './admin-status-info.pipe';
     SearchFiltersComponent,
     SelectComponent,
     CheckboxComponent,
-    AdminStatusInfoPipe
+    AdminStatusInfoPipe,
+    HabitatSelectComponent
   ]
 })
 export class SearchFiltersModule { }

@@ -266,6 +266,12 @@ export class ObservationFormComponent implements OnInit {
     this.onQueryChange();
   }
 
+  onHabitatChange(habitats: any) {
+    this.searchQuery.primaryHabitat = habitats.primaryHabitat;
+    this.searchQuery.anyHabitat = habitats.anyHabitat;
+    this.onQueryChange();
+  }
+
   zeroObservations(only = true) {
     this.searchQuery.individualCountMin = 0;
     if (only) {
