@@ -2,3 +2,22 @@
   margin-bottom: 5px;
 }
 
+.check-translations{
+  background: #ff00004d;
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 3px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  font-size: 0.8em;
+}
+
+.form-control {
+  margin-bottom: 8px;
+    border: 2px solid black;
+    color: black;
+    -webkit-box-shadow: -3px 2px 5px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: -3px 2px 5px -1px rgba(0,0,0,0.75);
+    box-shadow: -3px 2px 5px -1px rgba(0,0,0,0.75);
+}

@@ -25,6 +25,7 @@
           {{ description.title ? (description.title | multiLang) : description.id }}
         </option>
       </select>
+      <span class="check-translations" *ngIf="translationKo">{{ "translationsMissing" | translate }}</span>
       <div class="panel-group" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default"
              *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index"

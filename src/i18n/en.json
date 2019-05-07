@@ -1175,5 +1175,6 @@
   "theme.lolife.places": "Record census actions",
   "map.fullScreen": "Open the map in fullscreen",
   "map.exitFullScreen": "Exit fullscreen mode",
-  "readMore": "Read more"
+  "readMore": "Read more",
+  "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead"
 }

@@ -1309,5 +1309,6 @@
   "reset": "Palauta oletusasetukset",
   "map.fullScreen": "Avaa kartta kokoruututilassa",
   "map.exitFullScreen": "Poistu kokoruututilasta",
-  "readMore": "Lue lisää"
+  "readMore": "Lue lisää",
+  "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead"
 }

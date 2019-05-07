@@ -1246,5 +1246,6 @@
   "theme.lolife.places": "Spela in folkräkningsåtgärder",
   "map.fullScreen": "Öppet stenografi läge",
   "map.exitFullScreen": "Avsluta helskärmsläge",
-  "readMore": "Läs mer"
+  "readMore": "Läs mer",
+  "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead"
 }
