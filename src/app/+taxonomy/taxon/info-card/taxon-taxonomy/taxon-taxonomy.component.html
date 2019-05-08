@@ -14,6 +14,10 @@
           </a>
           <span *ngIf="taxon.synonymOf.scientificNameAuthorship" class="author">{{ taxon.synonymOf.scientificNameAuthorship }}</span>
         </p>
+        <ng-container *ngIf="taxon.notes">
+          <label>{{ 'MX.notes' | label }}</label>
+          <p>{{ taxon.notes }}</p>
+        </ng-container>
         <label *ngIf="taxon.originalPublications">{{ 'taxonomy.originalPublications' | translate }}</label>
         <ul>
           <li *ngFor="let publication of taxon.originalPublications">

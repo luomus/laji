@@ -936,6 +936,7 @@
   "species.form.all": "Alla",
   "species.form.finnish": "Finska",
   "species.form.specimen": "Taksonomisk avgränsning",
+  "species.form.onlyPrimaryHabitat": "Rajaa vain ensisijaisella elinympäristöllä",
   "species.images": "Bilder",
   "species.images.count1": "",
   "species.images.count2": "arter med bilder hittades",
