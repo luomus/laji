@@ -7,6 +7,10 @@ laji-taxon-occurrence-map {
   width: calc(100% - 270px);
 }
 
+:host /deep/ .link .panel-title{
+  font-size: 1.5em;
+}
+
 @media only screen and (max-width : 767px) {
   laji-taxon-occurrence-map {
     width: 100%;

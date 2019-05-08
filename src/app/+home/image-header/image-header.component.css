@@ -40,3 +40,9 @@
     height: 400px;
   }
 }
+
+@media only screen and (max-width:768px) {
+  .carousel-caption {
+    padding-bottom: 0px;
+  }
+}

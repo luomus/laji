@@ -2,3 +2,7 @@
   display: block;
   margin-bottom: 20px;
 }
+
+:host /deep/ .link .panel-title{
+  font-size: 1.5em;
+}

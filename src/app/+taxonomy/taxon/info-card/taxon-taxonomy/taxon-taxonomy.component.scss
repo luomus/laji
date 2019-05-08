@@ -7,6 +7,10 @@
   margin-right: 5px;
 }
 
+:host /deep/ .link .panel-title{
+  font-size: 1.5em;
+}
+
 ::ng-deep p .scientificName {
   font-size: 1.6em;
 }
