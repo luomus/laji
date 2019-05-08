@@ -997,6 +997,7 @@
   "species.form.all": "Kaikki",
   "species.form.finnish": "Suomalaiset",
   "species.form.specimen": "Taksonominen rajaus",
+  "species.form.onlyPrimaryHabitat": "Rajaa vain ensisijaisella elinympäristöllä",
   "species.images": "Kuvat",
   "species.images.count1": "Hakuehdoilla löytyi",
   "species.images.count2": "kuvallista lajia",
