@@ -134,7 +134,13 @@
       <div class="preview-space">
         <strong>{{ 'Preview' | translate }}</strong>
         <ll-label-preview-pager [active]="previewActive" (activeChange)="setPreviewActive($event)" [data]="data"></ll-label-preview-pager>
-        <div style="margin-bottom: 5px;">
+        <small *ngIf="dimensions">
+          {{ 'Labels on page' | translate:{total: dimensions.cols * dimensions.rows, cols: dimensions.cols, rows: dimensions.rows} }}
+        </small>
+        <br>
+        <div class="preview-elements" [ngStyle]="{
+            'transform': 'scale(' + (_viewSettings.previewMagnification || 1) + ')'
+          }">
           <div style="margin: 5px 15px 0 0; border: 1px solid #999; display: inline-block">
             <ll-label-preview [setup]="_setup" [data]="_data[previewActive]"></ll-label-preview>
           </div>
@@ -142,9 +148,6 @@
             <ll-label-preview [setup]="_setup" [data]="_data[previewActive]" [backSide]="true"></ll-label-preview>
           </div>
         </div>
-        <small *ngIf="dimensions">
-          {{ 'Labels on page' | translate:{total: dimensions.cols * dimensions.rows, cols: dimensions.cols, rows: dimensions.rows} }}
-        </small>
       </div>
     </div>
   </div>

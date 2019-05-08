@@ -202,6 +202,14 @@ $small-screen: 900px;
 
   .editor-space, .preview-space {
     padding: 45px 10px 45px 45px;
+    overflow: visible;
+  }
+
+  .preview-elements {
+    margin-bottom: 5px;
+    margin-right: 5px;
+    transform-origin: left top;
+    display: inline-block;
   }
 
   .editor-space {
