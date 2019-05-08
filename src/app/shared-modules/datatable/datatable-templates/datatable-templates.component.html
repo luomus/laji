@@ -247,7 +247,7 @@
   </span>
 </ng-template>
 <ng-template let-row="row" #taxonHabitats>
-  <span class="habitat" *ngIf="row.primaryHabitat || row.secondaryHabitats" title="{{ row.primaryHabitat.habitat | label }}{{ row.secondaryHabitats ? '; ' + (row.secondaryHabitats | label:undefined:'habitat' | values) : '' }}">
-    {{ row.primaryHabitat.habitat | label }}<ng-container *ngIf="row.secondaryHabitats">; {{ row.secondaryHabitats | label:undefined:'habitat' | values }}</ng-container>
+  <span class="habitat" *ngIf="row.primaryHabitat || row.secondaryHabitats" title="{{ row.primaryHabitat.habitat | label }}{{ row.secondaryHabitats ? '; ' + (row.secondaryHabitats | label:undefined:'habitat' | values:'; ') : '' }}">
+    {{ row.primaryHabitat.habitat | label }}<ng-container *ngIf="row.secondaryHabitats">; {{ row.secondaryHabitats | label:undefined:'habitat' | values:'; ' }}</ng-container>
   </span>
 </ng-template>
