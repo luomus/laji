@@ -29,7 +29,9 @@ export class SpeciesBrowseObservationsComponent {
       administrativeStatusId: query.adminStatusFilters,
       typeOfOccurrenceId: query.typesOfOccurrenceFilters,
       typeOfOccurrenceIdNot: query.typesOfOccurrenceNotFilters,
-      invasive: query.invasiveSpeciesFilter
+      invasive: query.invasiveSpeciesFilter,
+      primaryHabitat: query.primaryHabitat,
+      anyHabitat: query.anyHabitat
     };
 
     this.router.navigate(

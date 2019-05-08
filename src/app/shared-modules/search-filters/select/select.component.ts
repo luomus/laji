@@ -33,6 +33,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() useFilter = true;
   @Input() selected: string[] = [];
   @Input() open = false;
+  @Input() disabled = false;
   @Input() outputOnlyId = false;
   @Output() selectedChanged = new EventEmitter<string[]|string>();
   @Input() multiple = true;
@@ -62,6 +63,10 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
+    if (this.disabled) {
+      this.selected = [];
+      this.open = false;
+    }
     this.initOptions(this.selected);
   }
 

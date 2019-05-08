@@ -187,4 +187,6 @@ export interface WarehouseQueryInterface {
   taxonCensus?: Array<string>;
   sourceOfCoordinates?: string;
   _coordinatesIntersection?: number;
+  primaryHabitat?: Array<string>;
+  anyHabitat?: Array<string>;
 }

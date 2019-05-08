@@ -52,6 +52,13 @@
 .lj-select {
   position: relative;
 }
+.lj-disabled {
+  cursor: not-allowed;
+}
+.lj-disabled .lj-title {
+  pointer-events: none;
+  background-color: #eee
+}
 @media only screen and (max-width : 767px) {
   .lj-item {
     font-size: 1em;

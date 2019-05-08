@@ -47,6 +47,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() skip: string[];
   @Input() skipBefore: string;
   @Input() open: boolean;
+  @Input() disabled = false;
 
   lang: string;
   _options: {id: string, value: string, info: string}[] = [];

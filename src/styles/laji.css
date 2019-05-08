@@ -703,6 +703,11 @@ body > .ui-select-bootstrap.open {
   background-color: #ebcccc !important;
 }
 
+.small-label {
+  font-weight: normal;
+  font-size: smaller;
+}
+
 /** scrollbar **/
 ::-webkit-scrollbar {
   height: 8px;

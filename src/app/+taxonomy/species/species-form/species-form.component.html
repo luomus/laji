@@ -88,6 +88,11 @@
       </div>
     </div>
 
+    <laji-habitat-select
+      [query]="searchQuery.query"
+      (select)="onHabitatChange($event)"
+    ></laji-habitat-select>
+
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select

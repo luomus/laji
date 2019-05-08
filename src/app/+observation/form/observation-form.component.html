@@ -728,6 +728,12 @@
           [alt]="'MX.iucnStatuses'"></laji-metadata-select>
       </div>
     </div>
+    <ng-container *ngIf="advancedMode || searchQuery.primaryHabitat || searchQuery.anyHabitat">
+      <laji-habitat-select
+        [query]="searchQuery"
+        (select)="onHabitatChange($event)"
+      ></laji-habitat-select>
+    </ng-container>
     <ng-container *ngIf="advancedMode || searchQuery.typeOfOccurrenceId">
       <div class="form-group">
         <div class="col-sm-12">

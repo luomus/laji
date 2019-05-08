@@ -8,4 +8,6 @@ export interface TaxonomySearchQueryInterface {
   typesOfOccurrenceFilters?: string[];
   typesOfOccurrenceNotFilters?: string[];
   taxonRanks?: string[];
+  primaryHabitat?: string[];
+  anyHabitat?: string[];
 }

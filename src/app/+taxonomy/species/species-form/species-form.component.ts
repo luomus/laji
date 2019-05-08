@@ -86,6 +86,12 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  onHabitatChange(habitats: any) {
+    this.searchQuery.query.primaryHabitat = habitats.primaryHabitat;
+    this.searchQuery.query.anyHabitat = habitats.anyHabitat;
+    this.onQueryChange();
+  }
+
   updateTypesOfOccurrence(event) {
     this.searchQuery.query.typesOfOccurrenceFilters = event.true;
     this.searchQuery.query.typesOfOccurrenceNotFilters = event.false;
