@@ -61,12 +61,12 @@
     <ng-container *ngIf="field.type !== fieldType.text">
       <tr>
         <td>{{ 'Prefix' | translate }}:</td>
-        <td><input type="text" (change)="onChange($event, 'prefix')" [value]="field.prefix || ''" class="form-control"></td>
+        <td><input type="text" (change)="userInput($event, 'prefix')" [value]="field.prefix || '' | nbspToSpace" class="form-control"></td>
         <td></td>
       </tr>
       <tr>
         <td>{{ 'Suffix' | translate }}:</td>
-        <td><input type="text" (change)="onChange($event, 'suffix')" [value]="field.suffix || ''" class="form-control"></td>
+        <td><input type="text" (change)="userInput($event, 'suffix')" [value]="field.suffix || '' | nbspToSpace" class="form-control"></td>
         <td></td>
       </tr>
     </ng-container>

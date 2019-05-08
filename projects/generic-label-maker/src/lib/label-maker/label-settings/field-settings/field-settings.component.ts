@@ -62,4 +62,9 @@ export class FieldSettingsComponent {
     this.more = !(this.more || this.field._menuOpen);
     delete this.field._menuOpen;
   }
+
+  userInput(event: Event, place: string) {
+    const element = event.target as HTMLInputElement;
+    this.change(element.value.replace(/ /g, '&nbsp;'), place);
+  }
 }

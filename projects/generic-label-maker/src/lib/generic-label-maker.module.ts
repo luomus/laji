@@ -34,6 +34,7 @@ import { LabelValueMapComponent } from './label-maker/label-value-map/label-valu
 import { FieldValueMapComponent } from './label-maker/label-value-map/field-value-map/field-value-map.component';
 import { LoaderComponent } from './loader/loader.component';
 import { SortPipe } from './pipe/sort.pipe';
+import { NbspToSpacePipe } from './pipe/nbsp-to-space.pipe';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { SortPipe } from './pipe/sort.pipe';
     LabelValueMapComponent,
     FieldValueMapComponent,
     LoaderComponent,
-    SortPipe
+    SortPipe,
+    NbspToSpacePipe
   ],
   imports: [
     CommonModule,
