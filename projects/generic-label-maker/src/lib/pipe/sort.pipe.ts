@@ -10,9 +10,9 @@ export class SortPipe implements PipeTransform {
       return value;
     }
     if (!property) {
-      return value.sort();
+      return [...value.sort()];
     }
-    return value.sort((a, b) => (a[property] > b[property]) ? 1 : ((b[property] > a[property]) ? -1 : 0));
+    return [...value.sort((a, b) => (a[property] > b[property]) ? 1 : ((b[property] > a[property]) ? -1 : 0))];
   }
 
 }

@@ -21,14 +21,12 @@ export class FieldSettingsComponent {
     {sep: ', '},
     {sep: '. '},
     {sep: '-'},
-    {sep: ' - ', label: '&nbsp;-'},
     {sep: '&ndash;'},
-    {sep: ' &ndash; ', label: '&nbsp;&ndash;'},
     {sep: '&mdash;'},
-    {sep: ' &mdash; ', label: '&nbsp;&mdash;'},
     {sep: ': '},
     {sep: ' ', label: 'space'},
-    {sep: '<br>', label: 'new line'}
+    {sep: '<br>', label: 'new line'},
+    {sep: '', label: 'none'},
   ];
 
   onChange(event: Event, place = 'separator') {

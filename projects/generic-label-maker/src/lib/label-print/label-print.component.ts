@@ -9,7 +9,7 @@ import {
   Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ISetup } from '../generic-label-maker.interface';
+import { ISetup, QRCodeErrorCorrectionLevel } from '../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../label.service';
 
 const style = `
@@ -48,6 +48,7 @@ export class LabelPrintComponent implements OnChanges {
   @Input() data: object[];
   // tslint:disable-next-line:no-input-rename
   @Input() btnClass = 'btn btn-default';
+  @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
 
   @Output() pressed = new EventEmitter<void>();
   @Output() html = new EventEmitter<string>();

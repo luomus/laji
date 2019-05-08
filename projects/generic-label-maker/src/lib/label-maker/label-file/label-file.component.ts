@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { ILabelField, ISetup } from '../../generic-label-maker.interface';
+import { ILabelField, ISetup, PresetSetup, QRCodeErrorCorrectionLevel } from '../../generic-label-maker.interface';
 import { LocalStorage } from 'ngx-webstorage';
 import { LabelPrintComponent } from '../../label-print/label-print.component';
 import { InfoWindowService } from '../../info-window/info-window.service';
@@ -19,6 +19,8 @@ export class LabelFileComponent {
   @Input() data: object[];
   @Input() availableFields: ILabelField[];
   @Input() pdfLoading = false;
+  @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
+  @Input() presets: PresetSetup[];
 
   @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string, availableFields: ILabelField[]}[];
 
@@ -147,7 +149,7 @@ export class LabelFileComponent {
     };
   }
 
-  loadRecent(recent: { setup: ISetup; filename: string; availableFields?: ILabelField[] }) {
+  loadSetup(recent: { setup: ISetup; filename: string; availableFields?: ILabelField[] } | PresetSetup) {
     this.setupChange.emit(recent.setup);
     if (recent.availableFields) {
       this.availableFieldsChange.emit(recent.availableFields);

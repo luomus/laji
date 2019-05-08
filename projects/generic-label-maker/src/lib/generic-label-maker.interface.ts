@@ -1,9 +1,22 @@
 export type TLabelLocation = 'labelItems' | 'backSideLabelItems';
 
+export enum QRCodeErrorCorrectionLevel {
+  levelL = 'L',
+  levelM = 'M',
+  levelQ = 'Q',
+  levelH = 'H',
+}
+
 export enum FieldType {
   qrCode = 'qr-code',
   id = 'id',
   text = 'text'
+}
+
+export interface PresetSetup {
+  name: string;
+  setup: ISetup;
+  availableFields?: ILabelField[];
 }
 
 export interface IFontStyle {

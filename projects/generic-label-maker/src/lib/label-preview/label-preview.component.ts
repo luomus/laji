@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ILabelItem, ILabelStyle, ISetup } from '../generic-label-maker.interface';
+import { ILabelItem, ILabelStyle, ISetup, QRCodeErrorCorrectionLevel } from '../generic-label-maker.interface';
 import { LabelService } from '../label.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class LabelPreviewComponent {
   @Input() preview = true;
   @Input() data: object;
   @Input() backSide = false;
+  @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
 
   items: ILabelItem[] = [];
   labelStyle: ILabelStyle;

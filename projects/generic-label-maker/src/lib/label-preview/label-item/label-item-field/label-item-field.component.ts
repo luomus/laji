@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FieldType, IFontStyle, ILabelField } from '../../../generic-label-maker.interface';
+import { FieldType, IFontStyle, ILabelField, QRCodeErrorCorrectionLevel } from '../../../generic-label-maker.interface';
 
 @Component({
   selector: 'll-label-item-field',
@@ -13,6 +13,7 @@ export class LabelItemFieldComponent {
 
   @Input() isLast = false;
   @Input() size: number;
+  @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
 
   _prefixStyle: IFontStyle;
   _contentStyle: IFontStyle;
