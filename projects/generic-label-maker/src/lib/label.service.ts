@@ -51,6 +51,7 @@ export class LabelService {
         value.map(val => LabelService._getValue(val, map)).join(join) :
         value.map(val => LabelService._getValue(val, map)) as string[];
     }
+    value = value.trim();
     return map && map[value] || value;
   }
 

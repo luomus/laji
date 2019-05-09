@@ -21,7 +21,7 @@ import {
   ILabelItem,
   ILabelValueMap,
   ISetup,
-  IViewSettings
+  IViewSettings, PresetSetup, QRCodeErrorCorrectionLevel
 } from '../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../label.service';
 import { InfoWindowService } from '../info-window/info-window.service';
@@ -51,7 +51,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _viewSettings: IViewSettings = {magnification: 2};
   generateFields: ILabelField[];
   dragging = false;
-  version = '1.0.0';
+  version = '1.0.5';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -59,6 +59,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   @Input() availableFields: ILabelField[];
   @Input() showIntro = true;
   @Input() pdfLoading = false;
+  @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
+  @Input() presets: PresetSetup[];
 
   @Output() html = new EventEmitter<string>();
   @Output() viewSettingsChange = new EventEmitter<IViewSettings>();

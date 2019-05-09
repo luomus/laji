@@ -33,6 +33,8 @@ import { TranslateService } from './translate/translate.service';
 import { LabelValueMapComponent } from './label-maker/label-value-map/label-value-map.component';
 import { FieldValueMapComponent } from './label-maker/label-value-map/field-value-map/field-value-map.component';
 import { LoaderComponent } from './loader/loader.component';
+import { SortPipe } from './pipe/sort.pipe';
+import { NbspToSpacePipe } from './pipe/nbsp-to-space.pipe';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { LoaderComponent } from './loader/loader.component';
     TranslatePipe,
     LabelValueMapComponent,
     FieldValueMapComponent,
-    LoaderComponent
+    LoaderComponent,
+    SortPipe,
+    NbspToSpacePipe
   ],
   imports: [
     CommonModule,

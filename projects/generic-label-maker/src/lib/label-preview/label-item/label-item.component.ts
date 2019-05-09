@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FieldType, ILabelField, ILabelItem, ILabelValueMap } from '../../generic-label-maker.interface';
+import { FieldType, ILabelField, ILabelItem, ILabelValueMap, QRCodeErrorCorrectionLevel } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 
 @Component({
@@ -15,6 +15,7 @@ export class LabelItemComponent {
   _map: ILabelValueMap;
 
   size;
+  @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
 
   constructor(private labelService: LabelService) { }
 

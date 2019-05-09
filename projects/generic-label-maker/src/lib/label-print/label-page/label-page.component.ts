@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { IPageStyle, ISetup } from '../../generic-label-maker.interface';
+import { IPageStyle, ISetup, QRCodeErrorCorrectionLevel } from '../../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../../label.service';
 
 @Component({
@@ -11,6 +11,7 @@ import { IPageLayout, LabelService } from '../../label.service';
 export class LabelPageComponent implements AfterViewInit {
 
   @Input() data: object[];
+  @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
   @Output() ready = new EventEmitter<void>();
 
   cols = '';
