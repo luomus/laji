@@ -11,14 +11,17 @@
   font-size: 1.5em;
 }
 
-::ng-deep p .scientificName {
+.scientificName {
   font-size: 1.6em;
 }
 
 ::ng-deep .author {
-  font-size: 1.2em;
   font-variant: small-caps;
   padding-left: 7px;
+}
+
+.author {
+  font-size: 1.2em;
 }
 
 

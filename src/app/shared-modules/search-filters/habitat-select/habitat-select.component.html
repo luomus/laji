@@ -8,12 +8,6 @@
       name="adminStatusFilters"
       [alt]="'MKV.habitatEnum'"></laji-metadata-select>
   </div>
-  <div class="col-sm-12">
-    <label class="small-label">
-      <laji-checkbox [value]="onlyPrimary" (valueChange)="onOnlyPrimaryChange()"></laji-checkbox>
-      {{ 'iucn.results.onlyPrimary' | translate }}
-    </label>
-  </div>
 </div>
 <div class="form-group">
   <div class="col-sm-12">
@@ -26,5 +20,13 @@
       [placeholder]="'iucn.filter.habitatSpecific' | translate"
       name="adminStatusFilters"
       [alt]="'MKV.habitatSpecificTypeEnum'"></laji-metadata-select>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-12">
+    <label class="small-label">
+      <laji-checkbox [value]="onlyPrimary" (valueChange)="onOnlyPrimaryChange()"></laji-checkbox>
+      {{ 'species.form.onlyPrimaryHabitat' | translate }}
+    </label>
   </div>
 </div>

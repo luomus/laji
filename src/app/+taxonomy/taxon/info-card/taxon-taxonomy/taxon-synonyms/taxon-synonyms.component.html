@@ -6,6 +6,7 @@
           <laji-taxon-name [taxon]="obj" [addLink]="false"></laji-taxon-name>
         </a>
         <span class="author" *ngIf="obj.scientificNameAuthorship">{{ obj.scientificNameAuthorship }}</span>
+        <p *ngIf="obj.notes">{{ obj.notes }}</p>
       </li>
     </ul>
   </laji-taxon-info-row>

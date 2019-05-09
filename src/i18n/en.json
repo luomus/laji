@@ -865,6 +865,7 @@
   "species.form.all": "All",
   "species.form.finnish": "Finnish",
   "species.form.specimen": "Taxonomic delimitation",
+  "species.form.onlyPrimaryHabitat": "Rajaa vain ensisijaisella elinympäristöllä",
   "species.images": "Images",
   "species.images.count1": "",
   "species.images.count2": "species with images were found",
