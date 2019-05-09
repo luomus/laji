@@ -21,6 +21,7 @@ import { routing } from './haseka.routes';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest-documents.module';
+import { HasekaTermsComponent } from './terms/haseka-terms.component';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest
     FormRowComponent, OwnSubmissionsComponent, TemplatesComponent,
     NamedPlaceWrapperComponent,
     FormCategoryComponent,
-    FormCategorySurveyComponent
+    FormCategorySurveyComponent,
+    HasekaTermsComponent
   ]
 })
 export class HasekaModule {

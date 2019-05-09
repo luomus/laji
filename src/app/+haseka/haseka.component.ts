@@ -17,7 +17,6 @@ import { Document } from '../shared/model/Document';
 })
 export class HasekaComponent implements OnInit, OnDestroy {
 
-  @LocalStorage() public vihkoSettings;
   public email: string;
   public isFront = false;
   public documentModalVisible = false;
@@ -38,9 +37,6 @@ export class HasekaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.modal.config = {animated: false};
-    if (!this.vihkoSettings) {
-      this.vihkoSettings = { showIntro: true };
-    }
     this.showViewerClick$ = this.eventService.showViewerClick$.subscribe((doc) => {
         this.showDocumentViewer(doc);
     });
@@ -56,10 +52,6 @@ export class HasekaComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.showViewerClick$.unsubscribe();
     this.subRoute.unsubscribe();
-  }
-
-  toggleInfo() {
-    this.vihkoSettings = {showIntro: !this.vihkoSettings.showIntro};
   }
 
   showDocumentViewer(doc: Document) {
