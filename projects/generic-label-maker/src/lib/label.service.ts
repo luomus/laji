@@ -29,12 +29,12 @@ export class LabelService {
     return style['height.mm'] + ((style['marginTop.mm'] || 0) + (style['marginBottom.mm'] || 0));
   }
 
-  public static hasValue(data: object, field: string) {
+  public static hasValue(value: any) {
     return !(
-      typeof data[field] === 'undefined' ||
-      data[field] === '' ||
-      data[field] === null ||
-      (Array.isArray(data[field]) && data[field].length === 0)
+      typeof value === 'undefined' ||
+      value === '' ||
+      value === null ||
+      (Array.isArray(value) && value.length === 0)
     );
   }
 

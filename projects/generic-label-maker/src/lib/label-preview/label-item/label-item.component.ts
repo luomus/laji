@@ -11,6 +11,7 @@ import { LabelService } from '../../label.service';
 export class LabelItemComponent {
 
   _item: ILabelItem;
+  _originaleFields: ILabelField[];
   _data: object;
   _map: ILabelValueMap;
 
@@ -22,6 +23,7 @@ export class LabelItemComponent {
   @Input()
   set item(item: ILabelItem) {
     this._item = {...item, fields: [...item.fields]};
+    this._originaleFields = item.fields;
     this.size = this.labelService.mmToPixel(Math.min(item.style['height.mm'], item.style['width.mm']));
     this.initContent();
   }
@@ -42,18 +44,17 @@ export class LabelItemComponent {
     if (!this._data || !this._item) {
       return;
     }
-    const fields = this._item.fields;
-    const result: ILabelField[] = [];
-    fields.forEach(field => {
+    const fields: ILabelField[] = [];
+    this._originaleFields.forEach(field => {
       if (field.type === FieldType.text) {
-        result.push({...field});
-      } else if (field.separatorAlways || LabelService.hasValue(this._data, field.field)) {
-        result.push({
+        fields.push({...field});
+      } else if (field.separatorAlways || LabelService.hasValue(this._data[field.field])) {
+        fields.push({
           ...field,
           content: LabelService.getFieldValue(field, this._data[field.field], this._map, true) as string
         });
       }
     });
-    this._item.fields = result;
+    this._item = {...this._item, fields};
   }
 }

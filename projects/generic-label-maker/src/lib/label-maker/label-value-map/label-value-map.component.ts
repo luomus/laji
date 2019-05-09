@@ -87,7 +87,7 @@ export class LabelValueMapComponent {
     const base = {...map};
     const values = new Set();
     this.data.forEach((row) => {
-      if (LabelService.hasValue(row, field.field)) {
+      if (LabelService.hasValue(row[field.field])) {
         const rowValue = LabelService.getDefaultFieldValue(field, row[field.field], false);
         if (Array.isArray(rowValue)) {
           rowValue.forEach(v => values.add(v));

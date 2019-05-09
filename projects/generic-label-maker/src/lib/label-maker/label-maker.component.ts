@@ -51,7 +51,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _viewSettings: IViewSettings = {magnification: 2};
   generateFields: ILabelField[];
   dragging = false;
-  version = '1.0.5';
+  version = '1.0.13';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -287,20 +287,34 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     const MAX = 10000;
     const data = [];
     const uri = this.generate.uri + (this.generate.uri.indexOf('%id%') > -1 ? '' : '%id%');
+    const hasUri = uri.startsWith('http');
     const start = this.generate.rangeStart < this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
     const end = this.generate.rangeStart > this.generate.rangeEnd ? this.generate.rangeStart : this.generate.rangeEnd;
-    const idFieldsIdx = this.availableFields.findIndex(item => item.type === FieldType.qrCode);
-    const idField = idFieldsIdx !== -1 ? this.availableFields[idFieldsIdx].field : 'id';
+    const uriFieldsIdx = this.availableFields.findIndex(item => item.type === FieldType.qrCode);
+    const uriField = uriFieldsIdx !== -1 ? this.availableFields[uriFieldsIdx].field : 'id';
+    const domainFieldsIdx = this.availableFields.findIndex(item => item.type === FieldType.domain);
+    const idFieldsIdx = this.availableFields.findIndex(item => item.type === FieldType.id);
     let current = 0;
     for (let i = start; i <= end; i++) {
       current++;
       if (current > MAX) {
         break;
       }
-      data.push({
+      const rowUri = uri.replace('%id%', '' + i);
+      const rowData = {
         ...this.generate.data,
-        [idField]: uri.replace('%id%', '' + i)
-      });
+        [uriField]: rowUri
+      };
+      if (hasUri) {
+        const parsedUri = LabelService.parseUri(rowUri);
+        if (domainFieldsIdx > -1) {
+          rowData[this.availableFields[domainFieldsIdx].field] = parsedUri.domain;
+        }
+        if (idFieldsIdx > -1) {
+          rowData[this.availableFields[idFieldsIdx].field] = parsedUri.id;
+        }
+      }
+      data.push(rowData);
     }
     this.data = data;
     this.setPreviewActive(0);

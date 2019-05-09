@@ -28,13 +28,15 @@ import { LabelItemFieldComponent } from './label-preview/label-item/label-item-f
 import { LabelExcelFileComponent } from './label-maker/label-excel-file/label-excel-file.component';
 import { LabelPreviewPagerComponent } from './label-preview/label-preview-pager/label-preview-pager.component';
 import { TypeaheadModule } from 'ngx-bootstrap';
-import { TranslatePipe } from './translate/translate.pipe';
+import { TranslatePipe } from './pipe/translate.pipe';
 import { TranslateService } from './translate/translate.service';
 import { LabelValueMapComponent } from './label-maker/label-value-map/label-value-map.component';
 import { FieldValueMapComponent } from './label-maker/label-value-map/field-value-map/field-value-map.component';
 import { LoaderComponent } from './loader/loader.component';
 import { SortPipe } from './pipe/sort.pipe';
 import { NbspToSpacePipe } from './pipe/nbsp-to-space.pipe';
+import { HasValuePipe } from './pipe/has-value.pipe';
+import { SeparatorPipe } from './pipe/separator.pipe';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { NbspToSpacePipe } from './pipe/nbsp-to-space.pipe';
     FieldValueMapComponent,
     LoaderComponent,
     SortPipe,
-    NbspToSpacePipe
+    NbspToSpacePipe,
+    HasValuePipe,
+    SeparatorPipe
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FieldType, ILabelField, ISetup, IViewSettings, Presets, PresetSetup, QRCodeErrorCorrectionLevel } from 'generic-label-maker';
+import { FieldType, ILabelField, ISetup, IViewSettings, Presets, PresetSetup, QRCodeErrorCorrectionLevel, GenericLabelMakerTranslationsInterface } from 'generic-label-maker';
 
 @Component({
   selector: 'label-designer',
@@ -37,6 +37,9 @@ export class LabelDesignerComponent {
 
   @Input()
   presets: PresetSetup[] = [];
+
+  @Input()
+  translations: GenericLabelMakerTranslationsInterface;
 
   @Input()
   newSetup: ISetup;

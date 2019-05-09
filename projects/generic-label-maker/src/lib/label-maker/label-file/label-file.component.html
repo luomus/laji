@@ -37,7 +37,7 @@
   </table>
 </ng-container>
 <ng-container *ngIf="presets && presets.length > 0">
-  <h3>{{ 'Presets' | translate }}</h3>
+  <h3>{{ 'Templates' | translate }}</h3>
   <table class="icon">
     <tr class="link" *ngFor="let preset of presets">
       <td (click)="loadSetup(preset)"></td>

@@ -5,7 +5,7 @@ export interface GenericLabelMakerTranslationsInterface {
   'Save'?: string;
   'Edit'?: string;
   'View'?: string;
-  'Presets'?: string;
+  'Templates'?: string;
   'Load'?: string;
   'Label'?: string;
   'Labels'?: string;
