@@ -54,6 +54,7 @@ import {
 } from './taxon/info-card/shared/component/taxon-description-source/taxon-description-source.component';
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
 import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
+import { CheckLangService } from './taxon/service/check-lang.service';
 import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
 import { TaxonObservationsComponent } from './taxon/info-card/taxon-observations/taxon-observations.component';
 import { InfoCardHeaderComponent } from './taxon/info-card/info-card-header/info-card-header.component';
@@ -74,7 +75,7 @@ import { AdministrativeStatusComponent } from './taxon/info-card/shared/componen
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
     DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule
   ],
-  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonTaxonomyService],
+  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonTaxonomyService, CheckLangService],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
     TaxonTreeComponent, SpeciesListComponent, TaxonComponent,
     BoldSequenceComponent, SpeciesFormComponent, SpeciesComponent,
