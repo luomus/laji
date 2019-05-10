@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmi
 import { FieldType, ILabelItem } from '../../../generic-label-maker.interface';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../../label.service';
+import { TranslateService } from '../../../translate/translate.service';
 
 @Component({
   selector: 'll-editor-item',
@@ -43,7 +44,8 @@ export class EditorItemComponent implements AfterViewInit {
   private elem: HTMLDivElement;
 
   constructor(
-    private labelService: LabelService
+    private labelService: LabelService,
+    private translateService: TranslateService
   ) {}
 
   @Input()
@@ -156,12 +158,21 @@ export class EditorItemComponent implements AfterViewInit {
       w = Math.round(w / this._grid) * this._grid + move.x;
       h = Math.round(h / this._grid) * this._grid + move.y;
     }
+    w = Math.max(Math.min(w, this._maxWidth - this._item.x), 1);
+    h = Math.max(Math.min(h, this._maxHeight - this._item.y), 1);
+
+    if (this._item.fields[0] && this._item.fields[0].type === FieldType.qrCode && Math.min(w, h) < 10) {
+      const msg = this.translateService.get('Making QR Code smaller than 10mm is possible but not recommended');
+      if (msg) {
+        alert(msg);
+      }
+    }
     this.itemChange.emit({
       ...this._item,
       style: {
         ...this._item.style,
-        'width.mm': Math.max(Math.min(w, this._maxWidth - this._item.x), 1),
-        'height.mm': Math.max(Math.min(h, this._maxHeight - this._item.y), 1)
+        'width.mm': w,
+        'height.mm': h
       }
     });
   }

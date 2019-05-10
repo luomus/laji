@@ -36,7 +36,7 @@
       <td>{{ 'Id column' | translate }}:</td>
       <td>
         <select style="width: 100%" class="form-control input-sm" (change)="changeIdCol($event.target.value)">
-          <option *ngFor="let header of headers" [value]="header" [selected]="header === idCol">{{header}}</option>
+          <option *ngFor="let header of headers" [value]="header" [selected]="header === uriCol">{{header}}</option>
         </select>
       </td>
     </tr>

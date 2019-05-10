@@ -29,8 +29,13 @@ export class LabelService {
     return style['height.mm'] + ((style['marginTop.mm'] || 0) + (style['marginBottom.mm'] || 0));
   }
 
-  public static hasValue(data: object, field: string) {
-    return !(typeof data[field] === 'undefined' || data[field] === '');
+  public static hasValue(value: any) {
+    return !(
+      typeof value === 'undefined' ||
+      value === '' ||
+      value === null ||
+      (Array.isArray(value) && value.length === 0)
+    );
   }
 
   public static getFieldValue(field: ILabelField, value: any, userValueMap?: ILabelValueMap, join: boolean = true): string|string[] {
@@ -42,6 +47,19 @@ export class LabelService {
     return LabelService._getValue(value, field.valueMap, join ? field.join : undefined);
   }
 
+  public static parseUri(uri): {uri: string, id: string, domain: string} {
+    if (!uri.startsWith('http')) {
+      return {uri, id: '', domain: ''};
+    }
+    const uriParts = uri.split('/');
+    const id = uriParts.pop();
+    return {
+      uri,
+      id,
+      domain: uriParts.join('/') + '/'
+    };
+  }
+
   private static _getValue(value: any, map?: {[values: string]: string}, join?: string): string|string[] {
     if (typeof value === 'undefined' || value === null || (Array.isArray(value) && value.length === 0)) {
       return '';
@@ -51,6 +69,7 @@ export class LabelService {
         value.map(val => LabelService._getValue(val, map)).join(join) :
         value.map(val => LabelService._getValue(val, map)) as string[];
     }
+    value = value.trim();
     return map && map[value] || value;
   }
 

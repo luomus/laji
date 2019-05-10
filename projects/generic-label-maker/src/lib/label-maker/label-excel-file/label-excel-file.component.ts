@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { FieldType, ILabelField } from '../../generic-label-maker.interface';
+import { LabelService } from '../../label.service';
 
 @Component({
   selector: 'll-label-excel-file',
@@ -10,12 +11,14 @@ import { FieldType, ILabelField } from '../../generic-label-maker.interface';
 export class LabelExcelFileComponent implements OnInit {
 
   @Input() defaultDomain;
+  idField = '_id';
+  domainField = '_domain';
 
   wb: XLSX.WorkBook;
   filename: string;
   sheets: string[] = [];
   headers: string[] = [];
-  idCol: string;
+  uriCol: string;
   importFields = true;
   data: {[key: string]: string}[];
 
@@ -54,22 +57,32 @@ export class LabelExcelFileComponent implements OnInit {
     } else {
       this.headers = [];
     }
-    this.idCol = this.headers[0];
+    this.uriCol = this.headers[0];
     this.cdr.detectChanges();
     this.data = rows;
   }
 
   changeIdCol(value: any) {
-    this.idCol = value;
+    this.uriCol = value;
   }
 
   loadData() {
     return {
       availableFields: this.importFields ? this.getFields() : undefined,
-      data: this.data.map(row => ({
-        ...row,
-        [this.idCol]: this.makeUri(row[this.idCol])
-      }))
+      data: this.data.map(row => {
+        const uri = this.makeUri(row[this.uriCol]);
+        const parsedUri = LabelService.parseUri(uri);
+        const rowData = {
+          ...row,
+          [this.uriCol]: uri,
+          [this.idField]: parsedUri.id
+        };
+        if (parsedUri.domain) {
+          rowData[this.idField] = parsedUri.id;
+          rowData[this.domainField] = parsedUri.domain;
+        }
+        return rowData;
+      })
     };
   }
 
@@ -82,26 +95,45 @@ export class LabelExcelFileComponent implements OnInit {
 
   private getFields(): ILabelField[] {
     const ex = this.data[0] || {};
-    return [
+    const fields: ILabelField[] = [
       {
-        label: this.idCol + ' - QRCode',
-        field: this.idCol,
-        content: ex[this.idCol] || 'http://example.com/123',
+        label: this.uriCol + ' - QRCode',
+        field: this.uriCol,
+        content: ex[this.uriCol] || 'http://example.com/123',
         type: FieldType.qrCode
       },
       {
-        label: this.idCol,
-        field: this.idCol,
-        content: ex[this.idCol] || 'http://example.com/123',
+        label: this.uriCol,
+        field: this.uriCol,
+        content: ex[this.uriCol] || 'http://example.com/123',
+        type: FieldType.uri
+      },
+    ];
+    const uri = this.makeUri(ex[this.uriCol]);
+    const parsedUri = LabelService.parseUri(uri);
+    if (parsedUri.domain) {
+      fields.push({
+        label: 'domain',
+        field: this.domainField,
+        content: parsedUri.domain,
+        type: FieldType.domain
+      });
+      fields.push({
+        label: 'ID',
+        field: this.idField,
+        content: parsedUri.id,
         type: FieldType.id
-      },
-      {
-        label: 'Text',
-        field: '_any_text_',
-        type: FieldType.text
-      },
+      });
+    }
+    fields.push({
+      label: 'Text',
+      field: '_any_text_',
+      type: FieldType.text
+    });
+    return [
+      ...fields,
       ...this.headers.reduce((cumulative, current) => {
-        if (current !== this.idCol) {
+        if (current !== this.uriCol) {
           cumulative.push({
             field: current,
             label: current,

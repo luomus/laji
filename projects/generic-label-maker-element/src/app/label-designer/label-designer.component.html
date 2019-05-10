@@ -8,7 +8,10 @@
   [(viewSettings)]="viewSetting"
   [setup]="setup"
   (setupChange)="updateSetup($event)"
+  [translations]="translations"
   [pdfLoading]="pdfLoading"
   (pdfLoadingChange)="updateLoading($event)"
   [newSetup]="newSetup"
+  [presets]="presets"
+  [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel"
 ></ll-label-maker>

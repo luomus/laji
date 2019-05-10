@@ -46,10 +46,17 @@ export class FontSettingsComponent implements OnInit {
   }
 
   change(field: string, value: string|number, forceNumeric = false) {
-    this.fontSettingsChange.emit({
-      ...this.fontSettings,
-      [field]: forceNumeric ? Number(value) : value
-    });
+    if (!value) {
+      const result = {};
+      const currentSetting = this.fontSettings || {};
+      Object.keys(currentSetting).forEach(key => {
+        if (key !== field) {
+          result[key] = currentSetting[key];
+        }
+      });
+      return this.fontSettingsChange.emit(result);
+    }
+    this.fontSettingsChange.emit({...this.fontSettings, [field]: forceNumeric ? Number(value) : value});
   }
 
 }

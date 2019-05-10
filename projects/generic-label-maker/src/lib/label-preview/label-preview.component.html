@@ -8,6 +8,7 @@
     [item]="item"
     [data]="data"
     [valueMap]="setup.valueMap || {}"
+    [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel"
   ></ll-label-item>
 </div>
 <ll-ruler *ngIf="!init" (measured)="init = true"></ll-ruler>

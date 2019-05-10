@@ -28,10 +28,21 @@
   <h3>{{ 'Recent files' | translate }}</h3>
   <table class="icon">
     <tr class="link" *ngFor="let recent of recentFiles; let i=index">
-      <td (click)="loadRecent(recent)"></td>
-      <td (click)="loadRecent(recent)">{{ recent.filename | removeSuffix }}</td>
+      <td (click)="loadSetup(recent)"></td>
+      <td (click)="loadSetup(recent)">{{ recent.filename | removeSuffix }}</td>
       <td style="width: 24px" class="link" (click)="removeRecent(i)">
         <ll-icon type="close" size="14"></ll-icon>
+      </td>
+    </tr>
+  </table>
+</ng-container>
+<ng-container *ngIf="presets && presets.length > 0">
+  <h3>{{ 'Templates' | translate }}</h3>
+  <table class="icon">
+    <tr class="link" *ngFor="let preset of presets">
+      <td (click)="loadSetup(preset)"></td>
+      <td (click)="loadSetup(preset)">{{ preset.name }}</td>
+      <td style="width: 24px" class="link" (click)="loadSetup(preset)">
       </td>
     </tr>
   </table>
@@ -42,7 +53,7 @@
     <td>
     </td>
     <td>
-      <ll-label-print #printBtn [visible]="false" [btnClass]="'menu-item'" [setup]="setup" [data]="data" (html)="html.emit($event)" (pressed)="startPdfLoading()">
+      <ll-label-print #printBtn [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel" [visible]="false" [btnClass]="'menu-item'" [setup]="setup" [data]="data" (html)="html.emit($event)" (pressed)="startPdfLoading()">
         {{ 'Download labels (pdf)' | translate }}<ll-loader [loading]="pdfLoading"></ll-loader>
       </ll-label-print>
     </td>

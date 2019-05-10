@@ -27,8 +27,11 @@ export class FieldSettingsComponent {
     {sep: '&mdash;'},
     {sep: ' &mdash; ', label: '&nbsp;&mdash;'},
     {sep: ': '},
+    {sep: '; '},
+    {sep: ' & ', label: '&nbsp;&'},
     {sep: ' ', label: 'space'},
-    {sep: '<br>', label: 'new line'}
+    {sep: '<br>', label: 'new line'},
+    {sep: '', label: 'none'},
   ];
 
   onChange(event: Event, place = 'separator') {
@@ -61,5 +64,10 @@ export class FieldSettingsComponent {
   toggleMore() {
     this.more = !(this.more || this.field._menuOpen);
     delete this.field._menuOpen;
+  }
+
+  userInput(event: Event, place: string) {
+    const element = event.target as HTMLInputElement;
+    this.change(element.value.replace(/ /g, '&nbsp;'), place);
   }
 }

@@ -4,7 +4,7 @@
       <li [class.active]="_active === 'file'" (click)="_active = 'file'"><a>{{ 'File' | translate }}</a></li>
       <li [class.active]="_active === 'edit'" (click)="_active = 'edit'"><a>{{ 'Edit' | translate }}</a></li>
       <li [class.active]="_active === 'view'" (click)="_active = 'view'" *ngIf="_viewSettings"><a>{{ 'View' | translate }}</a></li>
-      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>{{ 'Label generateFields' | translate }}</a></li>
+      <li [class.active]="_active === 'fields'" (click)="_active = 'fields'"><a>{{ 'Label fields' | translate }}</a></li>
       <li [class.active]="_active === 'settings'" (click)="_active = 'settings'"><a>{{ 'Settings' | translate }}</a></li>
       <li [class.active]="_active === 'map'" (click)="_active = 'map'"><a>{{ 'Map values' | translate }}</a></li>
       <li [class.active]="_active === 'help'" (click)="_active = 'help'"><a>{{ 'Help' | translate }}</a></li>
@@ -40,6 +40,8 @@
       </div>
       <div *ngIf="_active === 'file'">
         <ll-label-file
+          [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel"
+          [presets]="presets"
           [availableFields]="availableFields"
           (availableFieldsChange)="availableFieldsChange.emit($event)"
           (dataChange)="data = $event"
@@ -134,17 +136,20 @@
       <div class="preview-space">
         <strong>{{ 'Preview' | translate }}</strong>
         <ll-label-preview-pager [active]="previewActive" (activeChange)="setPreviewActive($event)" [data]="data"></ll-label-preview-pager>
-        <div style="margin-bottom: 5px;">
-          <div style="margin: 5px 15px 0 0; border: 1px solid #999; display: inline-block">
-            <ll-label-preview [setup]="_setup" [data]="_data[previewActive]"></ll-label-preview>
-          </div>
-          <div *ngIf="_setup.twoSided" style="margin-top: 5px; border: 1px solid #999; display: inline-block">
-            <ll-label-preview [setup]="_setup" [data]="_data[previewActive]" [backSide]="true"></ll-label-preview>
-          </div>
-        </div>
         <small *ngIf="dimensions">
           {{ 'Labels on page' | translate:{total: dimensions.cols * dimensions.rows, cols: dimensions.cols, rows: dimensions.rows} }}
         </small>
+        <br>
+        <div class="preview-elements" [ngStyle]="{
+            'transform': 'scale(' + (_viewSettings.previewMagnification || 1) + ')'
+          }">
+          <div style="margin: 5px 15px 0 0; border: 1px solid #999; display: inline-block">
+            <ll-label-preview [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel" [setup]="_setup" [data]="_data[previewActive]"></ll-label-preview>
+          </div>
+          <div *ngIf="_setup.twoSided" style="margin-top: 5px; border: 1px solid #999; display: inline-block">
+            <ll-label-preview [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel" [setup]="_setup" [data]="_data[previewActive]" [backSide]="true"></ll-label-preview>
+          </div>
+        </div>
       </div>
     </div>
   </div>
