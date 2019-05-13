@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of, Subscription, merge, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '../../shared/service/footer.service';
 import { ComponentCanDeactivate } from '../../shared/guards/document-de-activate.guard';
@@ -27,6 +27,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   form$: Observable<any>;
   isMobile$: Observable<boolean>;
   mobileWelcomePageClosed = false;
+  _mobileWelcomePageShown: Subject<boolean>;
 
   private subParam: Subscription;
 
@@ -55,12 +56,13 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
     this.isMobile$ = this.form$.pipe(
       map(form => form.features && form.features.indexOf(Form.Feature.Mobile) !== -1)
     );
-    this.showMobileEntryPage$ = this.route.params.pipe(
+    this._mobileWelcomePageShown = new Subject();
+    this.showMobileEntryPage$ = merge(this.route.params.pipe(
       switchMap(params => params['documentId']
         ? of(false)
         : this.isMobile$
       )
-    );
+    ), this._mobileWelcomePageShown);
   }
 
   ngOnDestroy() {
@@ -136,5 +138,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
 
   enterForm() {
     this.mobileWelcomePageClosed = true;
+    this._mobileWelcomePageShown.next(false);
   }
 }

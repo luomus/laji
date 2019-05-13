@@ -4,7 +4,7 @@
       <p>{{ 'haseka.pleaseLogin' | translate }}</p>
     </div>
     <div *lajiLoggedIn>
-      <div *ngIf="(showMobileEntryPage$ | async) && !mobileWelcomePageClosed">
+      <div *ngIf="(showMobileEntryPage$ | async)">
         <laji-haseka-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-haseka-terms>
         <laji-document-form-header [formID]="(form$ | async).id" [formData]="(form$ | async).formData" [displayLatest]="isMobile$ | async"></laji-document-form-header>
         <button type="button"
@@ -14,7 +14,7 @@
         </button>
         <br />
       </div>
-      <ng-container *ngIf="!(showMobileEntryPage$ | async) || mobileWelcomePageClosed">
+      <ng-container *ngIf="!(showMobileEntryPage$ | async)">
         <laji-document-form
           (success)="onSuccess($event)"
           (tmpLoad)="onTmlLoad($event)"
