@@ -175,7 +175,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     }
     this.createNewLajiForm();
     setImmediate(() => {
-      this.lajiFormWrapper.invalidateSize();
+      if (this.lajiFormWrapper) {
+        this.lajiFormWrapper.invalidateSize();
+      }
     });
   }
 
