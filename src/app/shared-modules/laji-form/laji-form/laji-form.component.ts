@@ -36,6 +36,7 @@ const GLOBAL_SETTINGS = '_global_form_settings_';
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
   @Input() formData: any = {};
   @Input() settingsKey = '';
+  @Input() showShortcutButton = true;
 
   @Output() dataSubmit = new EventEmitter();
   @Output() dataChange = new EventEmitter();
@@ -216,7 +217,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
             info: msg => this.toastsService.showInfo(msg),
             warning: msg => this.toastsService.showWarning(msg),
             error: msg => this.toastsService.showError(msg),
-          }
+          },
+          showShortcutButton: this.showShortcutButton
         });
       });
     } catch (err) {

@@ -14,7 +14,8 @@ export namespace Form {
     Restricted = <any> 'MHL.featureRestrictAccess',
     Administer = <any> 'MHL.featureAdminister',
     DocumentsViewableForAll = <any> 'MHL.featureDocumentsViewableForAll',
-    AdminLockable = <any> 'MHL.featureAdminLockable'
+    AdminLockable = <any> 'MHL.featureAdminLockable',
+    Mobile = <any> 'MHL.featureMobile'
   }
   export interface List {
     id: string;

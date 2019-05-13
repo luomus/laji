@@ -46,6 +46,8 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
   @Input() formId: string;
   @Input() documentId: string;
+  @Input() showHeader = true;
+  @Input() showShortcutButton = true;
   @Output() success = new EventEmitter<{document: Document, form: any}>();
   @Output() error = new EventEmitter();
   @Output() cancel = new EventEmitter();

@@ -4,14 +4,28 @@
       <p>{{ 'haseka.pleaseLogin' | translate }}</p>
     </div>
     <div *lajiLoggedIn>
-      <laji-document-form
-        (success)="onSuccess($event)"
-        (tmpLoad)="onTmlLoad($event)"
-        (accessDenied)="onAccessDenied($event)"
-        (missingNamedplace)="onMissingNamedplace($event)"
-        (error)="onError()"
-        (cancel)="onCancel()"
-        [formId]="formId"
-        [documentId]="documentId"></laji-document-form>
+      <div *ngIf="(showMobileEntryPage$ | async) && !mobileWelcomePageClosed">
+        <laji-haseka-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-haseka-terms>
+        <laji-document-form-header *ngIf="form$" [formID]="(form$ | async).id" [formData]="(form$ | async).formData"></laji-document-form-header>
+        <button type="button"
+                class="btn btn-md btn-primary btn-block use-button"
+                (click)="enterForm()">
+          {{ 'haseka.mobile.newObservation' | translate }}
+        </button>
+      </div>
+      <ng-container *ngIf="!(showMobileEntryPage$ | async) || mobileWelcomePageClosed">
+        <laji-document-form
+          (success)="onSuccess($event)"
+          (tmpLoad)="onTmlLoad($event)"
+          (accessDenied)="onAccessDenied($event)"
+          (missingNamedplace)="onMissingNamedplace($event)"
+          (error)="onError()"
+          (cancel)="onCancel()"
+          [formId]="formId"
+          [documentId]="documentId"
+          [showHeader]="!(isMobile$ | async)"
+          [showShortcutButton]="!(isMobile$ | async)"
+        ></laji-document-form>
+      </ng-container>
     </div>
 </div>
