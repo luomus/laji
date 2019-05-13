@@ -10,7 +10,11 @@ export class DocumentFormHeaderComponent {
   @Input() formID: string;
   @Input() namedPlaceID: string;
   @Input() printType: string;
-  @Input() type: 'np' | 'npCreate' | 'npEdit' | 'form' = 'form';
+  @Input() formData: any;
+  @Input() displayObservationList: boolean;
+  @Input() displayLatest: boolean;
+  @Input() description: string;
+  @Input() displayTitle = true;
 
   form: any;
 
