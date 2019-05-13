@@ -67,6 +67,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   errorMsg = '';
 
+  description: string;
+  displayTitle: boolean;
+
   mapOptionsData: any;
   lang: string;
 
@@ -120,6 +123,22 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.tags = data.tags;
       this.documentForm = data.documentForm;
       this.placeForm = data.placeForm;
+
+      const {namedPlaceOptions = {}} = this.documentForm;
+      const {
+        editDescription = 'np.defaultEditDescription',
+        createDescription = 'np.defaultCreateDescription',
+        description = 'np.defaultDescription'
+      } = namedPlaceOptions;
+      this.description = description;
+      if (this.editMode) {
+        if (data.activeNPId >= 0)  {
+          this.description = editDescription;
+        } else {
+          this.description = createDescription;
+        }
+      }
+      this.displayTitle = !this.editMode;
 
       ['birdAssociationArea', 'municipality'].forEach(area => {
         if (this[area] && this[area].match(/^ML\.[0-9]+$/)) {

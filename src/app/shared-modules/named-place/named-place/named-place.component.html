@@ -1,12 +1,8 @@
 <div class="container-fluid" style="width: 100%">
   <div id="container" class="row np-row">
-    <laji-document-form-header *ngIf="documentForm"
-                               [formID]="formId"
-                               [type]="editMode
-                                 ? activeNP >= 0
-                                   ? 'npEdit'
-                                   : 'npCreate'
-                                 : 'np'"
+    <laji-document-form-header [formID]="formId"
+                               [displayObservationList]="false"
+                               [description]="description"
     class="no-flex"></laji-document-form-header>
 
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>

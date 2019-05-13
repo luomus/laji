@@ -3,34 +3,30 @@
     'col-sm-8': form.logo,
     'col-sm-12': !(form.logo)
   }">
-    <ng-container *ngIf="type !== 'npCreate' && type !== 'npEdit'">
+    <ng-container *ngIf="displayTitle">
 		  <h3>{{ form.title }}</h3>
     </ng-container>
-    <laji-own-submissions *ngIf="!formData?.id && namedPlace && form.options?.displayOwnSubmissions"
+    <laji-haseka-latest *ngIf="form && displayLatest"
+                        [userToken]="userService.getToken()"
+                        [forms]="[form.id]"
+    ></laji-haseka-latest>
+    <laji-own-submissions *ngIf="form && displayObservationList"
                           [actions]="isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
                           [columns]="['dateObserved', 'observer', 'dateEdited']"
                           [columnNameMapping]="form.namedPlaceOptions?.columnNameMapping"
                           [collectionID]="form.collectionID"
                           [formID]="form.id"
-                          [namedPlace]="namedPlace.id"
+                          [namedPlace]="namedPlace?.id"
                           [showDownloadAll]="false"
-                          [header]="form.options?.formOwnSubmissionsLabel || 'np.formOwnSubmissions'"
+                          [header]="form.options?.formOwnSubmissionsLabel || namedPlace ? 'np.formOwnSubmissions' : 'haseka.mobile.ownSubmissions'"
                           [forceLocalDocument]="useLocalDocumentViewer"
                           [documentViewerGatheringGeometryJSONPath]="form?.namedPlaceOptions?.documentViewerGatheringGeometryJSONPath"
                           [admin]="isAdmin"></laji-own-submissions>
-    <ng-container *ngIf="type === 'np'">
-      <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
+    <ng-container *ngIf="description">
+      <div [innerHtml]="description | translate"></div>
       <br>
     </ng-container>
-    <ng-container *ngIf="type === 'npCreate'">
-      <div [innerHtml]="form.namedPlaceOptions?.createDescription ? form.namedPlaceOptions.createDescription : 'np.defaultCreateDescription' | translate"></div>
-      <br>
-    </ng-container>
-    <ng-container *ngIf="type === 'npEdit'">
-      <div [innerHtml]="form.namedPlaceOptions?.editDescription ? form.namedPlaceOptions.editDescription : 'np.defaultEditDescription' | translate"></div>
-      <br>
-    </ng-container>
-    <ng-container *ngIf="type === 'form' && form.description">
+    <ng-container *ngIf="!description && form.description">
       <div [innerHtml]="form.description"></div><br>
     </ng-container>
     <span *ngIf="form.instructions && form.instructions[translate.currentLang]">

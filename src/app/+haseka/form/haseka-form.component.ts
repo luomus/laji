@@ -8,8 +8,9 @@ import { DocumentFormComponent } from '@laji-form/document-form/document-form.co
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { RoutingStateService } from '../../shared/service/routing-state.service';
 import { FormService } from '../../shared/service/form.service';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Form } from '../../shared/model/Form';
+import { take } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -80,10 +81,20 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
         this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
       );
     }
-    if (this.back) {
-      return this.router.navigateByUrl(this.back);
-    }
-    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/']));
+    this.isMobile$.pipe(take(1)).subscribe(isMobile => {
+      const query = isMobile ? ['/vihko', this.formId] : ['/vihko'];
+      if (!isMobile && this.back) {
+        return this.router.navigateByUrl(this.back);
+      }
+      this.router.navigate(this.localizeRouterService.translateRoute(query));
+    });
+  }
+
+  private nagivateToFront() {
+    this.isMobile$.pipe(take(1)).subscribe(isMobile => {
+      const query = isMobile ? ['/vihko', this.formId] : ['/vihko'];
+      this.router.navigate(this.localizeRouterService.translateRoute(query));
+    });
   }
 
   onTmlLoad(data) {
@@ -105,11 +116,11 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   }
 
   onError() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
+    this.nagivateToFront();
   }
 
   onCancel() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
+    this.nagivateToFront();
   }
 
   private getBack() {

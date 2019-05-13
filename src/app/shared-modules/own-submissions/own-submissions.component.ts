@@ -199,11 +199,14 @@ export class OwnSubmissionsComponent implements OnChanges {
     }
 
     if (!onlyDocuments) {
-      this.yearInfo$ = this.documentApi.countByYear(this.userService.getToken(), {
-        namedPlace: this.namedPlace,
+      const yearInfoQuery: any = {
         collectionID: this.collectionID,
         formID: this.formID
-      }).pipe(
+      };
+      if (this.namedPlace) {
+        yearInfoQuery.namedPlace = this.namedPlace;
+      }
+      this.yearInfo$ = this.documentApi.countByYear(this.userService.getToken(), yearInfoQuery).pipe(
         map(results => results.map(res => ({...res, year: parseInt(res.year, 10)})).reverse()),
         tap((results: any[]) => {
           if (this.year && results.findIndex(item => item.year === this.year) > -1) {
@@ -222,15 +225,18 @@ export class OwnSubmissionsComponent implements OnChanges {
         share()
       );
     }
+    const documentQuery: DocumentQuery = {
+      year: this.onlyTemplates ? undefined : this.year,
+      onlyTemplates: this.onlyTemplates,
+      collectionID: this.collectionID,
+      formID: this.formID,
+      selectedFields: this.getSelectedFields()
+    };
+    if (this.namedPlace) {
+      documentQuery.namedPlace = this.namedPlace;
+    }
     this.documents$ = (onlyDocuments ? ObservableOf([]) : this.yearInfo$).pipe(
-      switchMap(() => this.getAllDocuments<SearchDocument>({
-        year: this.onlyTemplates ? undefined : this.year,
-        onlyTemplates: this.onlyTemplates,
-        namedPlace: this.namedPlace,
-        collectionID: this.collectionID,
-        formID: this.formID,
-        selectedFields: this.getSelectedFields()
-      })),
+      switchMap(() => this.getAllDocuments<SearchDocument>(documentQuery)),
       switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
       tap(() => {
         this.loading = false;
@@ -297,18 +303,21 @@ export class OwnSubmissionsComponent implements OnChanges {
     page = 1,
     documents = []
   ): Observable<T[]> {
+    const _query: any = {
+      templates: query.onlyTemplates ? 'true' : undefined,
+      collectionID: query.collectionID,
+      formID: query.formID,
+      selectedFields: query.selectedFields
+    };
+    if (this.namedPlace) {
+      _query.namedPlace = this.namedPlace;
+    }
     return this.documentApi.findAll(
       this.userService.getToken(),
       String(page),
       String(10000),
       query.year ? String(query.year) : undefined,
-      {
-        templates: query.onlyTemplates ? 'true' : undefined,
-        namedPlace: query.namedPlace,
-        collectionID: query.collectionID,
-        formID: query.formID,
-        selectedFields: query.selectedFields
-      }
+      _query
     ).pipe(
       switchMap(result => {
         documents.push(...result.results);

@@ -77,8 +77,8 @@ export class UsersLatestComponent implements OnChanges {
       ), )
       .subscribe(
         result => {
-          this.documents = result.docs;
-          this.total = result.total || 0;
+          this.documents = this.forms ? result.docs.filter(doc => this.forms.indexOf(doc.formID) > -1) : [...result.docs];
+          this.total = this.documents.length || 0;
           this.loading = false;
           this.cd.markForCheck();
         },

@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { Form } from '../../../shared/model/Form';
+import { UserService } from '../../../shared/service/user.service';
 
 @Component({
   selector: 'laji-document-form-header',
@@ -17,8 +18,11 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() namedPlace: any;
   @Input() isAdmin = false;
   @Input() printType: string;
-  @Input() type: 'np' | 'npCreate' | 'npEdit' | 'form' = 'form';
   @Input() formData: any;
+  @Input() displayObservationList: boolean;
+  @Input() displayLatest: boolean;
+  @Input() description: string;
+  @Input() displayTitle = true;
 
   form: any;
   useLocalDocumentViewer = false;
@@ -28,6 +32,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   constructor(
     private title: Title,
     private formService: FormService,
+    private userService: UserService,
     public translate: TranslateService,
     private cd: ChangeDetectorRef
   ) { }
