@@ -75,5 +75,5 @@
     </small>
   </span>
 
-  <span class="label label-default">{{ document.formID | formName }}</span>
+  <span *ngIf="showFormName" class="label label-default">{{ document.formID | formName }}</span>
 </div>

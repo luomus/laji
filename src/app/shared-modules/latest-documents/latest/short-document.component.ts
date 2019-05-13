@@ -19,6 +19,7 @@ import { WINDOW } from '@ng-toolkit/universal';
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
   @Input() form: any;
+  @Input() showFormName = true;
   @Output() discard = new EventEmitter();
   @Output() showViewer = new EventEmitter<Document>();
 

@@ -9,6 +9,7 @@
     <laji-haseka-latest *ngIf="form && displayLatest"
                         [userToken]="userService.getToken()"
                         [forms]="[form.id]"
+                        [showFormNames]="false"
     ></laji-haseka-latest>
     <laji-own-submissions *ngIf="form && displayObservationList"
                           [actions]="isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
