@@ -9,6 +9,8 @@ export enum QRCodeErrorCorrectionLevel {
 
 export enum FieldType {
   qrCode = 'qr-code',
+  domain = 'domain',
+  uri = 'uri',
   id = 'id',
   text = 'text'
 }
