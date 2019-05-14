@@ -640,7 +640,7 @@
   "np.release": "Vapauta varaus",
   "np.requestAccess": "Pyydä pääsyä",
   "np.requestAccess-intro": "Varataksesi reitin, sinun täytyy pyytää lupa osallistua tähän tutkimukseen:",
-  "np.requestSend": "Pääsy pyyntö lähetetty",
+  "np.requestSend": "Pääsypyyntö lähetetty",
   "np.reserve": "Varaa",
   "np.reserved": "Reitti varattu",
   "np.save": "Tallenna",
