@@ -105,10 +105,13 @@ export class ThemeFormService {
         return ai - bi;
       })
       .reduce((links, name) => [...links, {name, ...navLinks[name]}], [])
-      .filter(({accessLevel}) =>
-        !accessLevel
-        || accessLevel === 'admin' && rights.admin
-        || accessLevel === 'editor' && rights.edit
+      .filter(({accessLevel, visible = true}) =>
+        visible
+        && (
+          !accessLevel
+          || accessLevel === 'admin' && rights.admin
+          || accessLevel === 'editor' && rights.edit
+        )
       ).map(getNav);
   }
 }
