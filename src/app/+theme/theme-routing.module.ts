@@ -362,6 +362,27 @@ const routes: Routes = [
       title: 'LOLIFE',
     }
   },
+  {
+    path: 'lepakot',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+    ],
+    data: {
+      formID: Global.forms.bats,
+      noFormPermissionRedirect: '/theme/lepakot',
+      title: 'Lepakko&shy;lomake',
+      navLinks: {
+        form: {
+          visible: false
+        },
+        ownSubmissions: {
+          visible: false
+        }
+      }
+    }
+  },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},

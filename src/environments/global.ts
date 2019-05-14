@@ -18,7 +18,8 @@ export const Global = {
     lineTransectKartoitus: 'MHL.28',
     whichSpecies: 'MHL.9',
     namedPlace: 'MHL.36',
-    collectionContest: 'MHL.25'
+    collectionContest: 'MHL.25',
+    bats: 'MHL.50',
   },
   _forms: {
     'MHL.3': {
@@ -75,6 +76,7 @@ export const Global = {
     'MHL.33': '/vieraslajit',
     'MHL.35': '/kunnat',
     'MHL.45': '/lolife',
+    'MHL.50': '/lepakot',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {
