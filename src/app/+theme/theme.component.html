@@ -102,36 +102,18 @@
     </div>
     <div class="panel-body">
       <table class="table table-bordered">
-        <tr>
-          <th>
-            <a [routerLink]="['/theme/nafi'] | localize">
-              {{ 'nafi.stats.title' | translate }}
-            </a>
-          </th>
-          <td>
-            {{ 'theme.nafi.intro' | translate }}
-          </td>
-        </tr>
-        <tr>
-          <th>
-            <a [routerLink]="['/theme/talvilintulaskenta'] | localize">
-              {{ 'wbc.title' | translate }}
-            </a>
-          </th>
-          <td>
-            {{ 'theme.wbc.intro' | translate }}
-          </td>
-        </tr>
-        <tr>
-          <th>
-            <a [routerLink]="['/theme/linjalaskenta'] | localize">
-              {{ 'navigation.linetransect' | translate }}
-            </a>
-          </th>
-          <td>
-            {{ 'theme.linetransect.intro' | translate }}
-          </td>
-        </tr>
+        <ng-container *ngFor="let form of Global.themeForms | keyvalue">
+          <tr *ngIf="environment.formWhitelist.indexOf(form.value.formID) !== -1">
+            <th>
+              <a [routerLink]="['/theme/' + form.value.path] | localize">
+                {{ form.value.name + '.title' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ form.value.name + '.intro' | translate }}
+            </td>
+          </tr>
+        </ng-container>
         <tr>
           <th>
             <a [routerLink]="['/theme/herpetology'] | localize">
@@ -151,36 +133,6 @@
           </th>
           <td>
             {{ 'theme.satellite.intro' | translate }}
-          </td>
-        </tr>
-        <tr>
-          <th>
-            <a [routerLink]="['/theme/vieraslajit'] | localize">
-              {{ 'navigation.invasiveSpecies' | translate }}
-            </a>
-          </th>
-          <td>
-            {{ 'theme.invasiveSpecies.intro' | translate }}
-          </td>
-        </tr>
-        <tr *lajiForTypes="['dev']">
-          <th>
-            <a [routerLink]="['/theme/kunnat'] | localize">
-              {{ 'navigation.municipalityMonitoring' | translate }}
-            </a>
-          </th>
-          <td>
-            {{ 'theme.municipalityMonitoring.intro' | translate }}
-          </td>
-        </tr>
-        <tr *lajiForTypes="['dev']">
-          <th>
-            <a [routerLink]="['/theme/lolife'] | localize">
-              {{ 'navigation.lolife' | translate }}
-            </a>
-          </th>
-          <td>
-            {{ 'theme.lolife.intro' | translate }}
           </td>
         </tr>
       </table>

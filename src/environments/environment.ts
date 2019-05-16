@@ -18,7 +18,7 @@ export const environment = {
   defaultForm: 'JX.519',
   nafiForm: 'MHL.6',
   invasiveControlForm: 'MHL.33',
-  municipalityMonitoringForm: 'MHL.35',
+  municipalityMonitoring: 'MHL.35',
   lolifeForm: 'MHL.45',
   wbcForm: 'MHL.3',
   lineTransectForm: 'MHL.1',

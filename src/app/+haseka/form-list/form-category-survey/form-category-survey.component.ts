@@ -10,7 +10,7 @@ import { Global } from '../../../../environments/global';
 })
 export class FormCategorySurveyComponent {
 
-  themes = Global.formsTheme;
+  themes = Global.themeForms;
 
   @Input() title: string;
   @Input() formList: FormList[] = [];

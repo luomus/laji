@@ -1,6 +1,6 @@
 /* tslint:disable:max-line-length */
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {Route, RouterModule, Routes} from '@angular/router';
 import { NafiResultComponent } from './nafi/nafi-result/nafi-result.component';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
@@ -30,98 +30,67 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
 import { Global } from '../../environments/global';
 import { HasFormPermission } from '../shared/route/has-form-permission';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
+import merge from 'deepmerge';
+import { ThemeFormService } from './common/theme-form.service';
 /* tslint:enable:max-line-length */
+
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
-  {
-    path: 'nafi',
-    component: MonitoringThemeBaseComponent,
-    children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+  {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
+  {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
+  {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},
+  {path: 'ykj',  pathMatch: 'full', component: YkjComponent, data: {title: 'navigation.ykj'}},
+  {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}},
+  {path: 'checklist',  pathMatch: 'full', component: ChecklistComponent, data: {title: 'navigation.checklist'}}
+];
+
+const themeFormAdditionalRoutes: {
+  [formID: string]: {
+    [name: string]: Routes
+  }
+} = {
+  [Global.forms.nafi]: {
+    additionalChildren: [
       {path: 'stats', pathMatch: 'full', component: NafiResultComponent},
-      {path: 'form', pathMatch: 'full', component: FormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'templates', pathMatch: 'full', component: NafiTemplatesComponent, canActivate: [OnlyLoggedIn]},
+    ]
+  },
+  [Global.forms.lineTransect]: {
+    instructions: [
+      {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } }
+    ],
+    form: [
       {
-        path: 'form/:id',
+        path: 'form',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+      },
+      {
+        path: 'form/:formID',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission]
+      },
+      {
+        path: 'form/:formID/:id',
         pathMatch: 'full',
         component: FormComponent,
-        canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
       },
-      {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'templates', pathMatch: 'full', component: NafiTemplatesComponent, canActivate: [OnlyLoggedIn]},
     ],
-    data: {
-      formID: Global.forms.nafi,
-      title: 'NAFI',
-      navLinks: {
-        templates: {
-          routerLink: ['templates'],
-          label: 'haseka.templates.title'
-        },
-        stats: {
-          routerLink: ['../nafi', 'stats'],
-          label: 'nafi.stats'
-        },
-      },
-      navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'templates'],
-      instructions: '2668',
-    }
-  },
-  {
-    path: 'linjalaskenta',
-    component: MonitoringThemeBaseComponent,
-    data: {
-      formID: Global.forms.lineTransect,
-      title: 'lineTransect.title',
-      navLinks: {
-        'form': {
-          label: 'Vakiolinjat ja ilmoittaminen',
-          accessLevel: undefined
-        },
-        'ei-vakiolinjat': {
-          routerLink: ['../linjalaskenta', 'ei-vakiolinjat'],
-          label: 'Ei-vakiolinjat',
-          activeMatch: `/places/${Global.collections.lineTransectEiVakio}`
-        },
-        'kartoitus': {
-          routerLink: ['../linjalaskenta', 'kartoitus'],
-          label: 'Kartoituslaskennat',
-          activeMatch: `/places/${Global.collections.lineTransectKartoitus}`
-        },
-        'stats': {
-          routerLink: ['../linjalaskenta', 'stats'],
-          label: 'Tulokset'
-        }
-      },
-      navLinksOrder: ['instructions', 'stats', 'form', 'ei-vakiolinjat', 'kartoitus', 'ownSubmissions', 'formPermissions'],
-      hideNavFor: ['/form']
-    },
-    children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
-      {
-        path: 'form', component: FormComponent,
-      },
-      {
-        path: 'form/:formID', component: FormComponent,
-        canActivate: [OnlyLoggedIn]
-      },
-      {
-        path: 'form/:formID/:id', component: FormComponent,
-        canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
-      },
+    places: [
       {
         path: 'places/:collectionId/:formId',
         pathMatch: 'full',
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
         data: { noScrollToTop: true }
-      },
-      {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
+      }
+    ],
+    additionalChildren: [
       {
         path: 'stats',
         data: { noScrollToTop: true },
@@ -151,61 +120,11 @@ const routes: Routes = [
       {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ]
   },
-  {
-    path: 'talvilintulaskenta',
-    component: MonitoringThemeBaseComponent,
-    data: {
-      formID: Global.forms.wbc,
-      navLinks: {
-        stats: {
-          routerLink: ['stats'],
-          label: 'nafi.stats',
-          children: [
-            {
-              routerLink: ['stats', 'species'],
-              label: 'wbc.stats.species'
-            },
-            {
-              routerLink: ['stats', 'routes'],
-              label: 'wbc.stats.routes'
-            },
-            {
-              routerLink: ['stats', 'censuses'],
-              label: 'wbc.stats.censuses'
-            }
-          ]
-        }
-      },
-      navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'formPermissions']
-    },
-    children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'stats', component: WbcResultComponent, data: { title: 'wbc.title', noScrollToTop: true }, children: [
-        {path: '', pathMatch: 'full', redirectTo: 'species'},
-        {path: 'species', component: WbcSpeciesComponent},
-        {path: 'species/:id', component: WbcSpeciesChartsComponent},
-        {path: 'routes', pathMatch: 'full', component: WbcRoutesComponent},
-        {path: 'routes/:id', pathMatch: 'full', component: WbcRouteComponent},
-        {path: 'censuses', pathMatch: 'full', component: WbcCensusesComponent},
-      ]},
-      {path: 'form', pathMatch: 'full', component: FormComponent},
-      {
-        path: 'form/:id',
-        pathMatch: 'full',
-        component: FormComponent,
-        canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
-      },
-      {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
-      {
-        path: 'places/:collectionId/:formId',
-        pathMatch: 'full',
-        component: NamedPlaceComponent,
-        resolve: { data: NamedPlaceResolver },
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-        data: { noScrollToTop: true }
-      },
+  [Global.forms.wbc]: {
+    instructions: [
+      {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } }
+     ],
+    additionalChildren: [
       {path: 'stats', component: WbcResultComponent, data: { title: 'wbc.title', noScrollToTop: true }, children: [
           {path: '', pathMatch: 'full', redirectTo: 'species'},
           {path: 'species', component: WbcSpeciesComponent},
@@ -213,71 +132,22 @@ const routes: Routes = [
           {path: 'routes', pathMatch: 'full', component: WbcRoutesComponent},
           {path: 'routes/:id', pathMatch: 'full', component: WbcRouteComponent},
           {path: 'censuses', pathMatch: 'full', component: WbcCensusesComponent},
-      ]},
+        ]},
     ]
   },
-  {
-    path: 'vieraslajit',
-    component: MonitoringThemeBaseComponent,
-    children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
-      {
-        path: 'places',
-        pathMatch: 'full',
-        redirectTo: 'form',
-      },
-      {
-        path: 'form',
-        pathMatch: 'full',
-        component: FormComponent,
-        canActivate: [OnlyLoggedIn, HasFormPermission],
-      },
-      {
-        path: 'form/:id',
-        pathMatch: 'full',
-        component: FormComponent,
-        canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard],
-      },
-      {
-        path: 'places/:collectionId/:formId',
-        pathMatch: 'full',
-        component: NamedPlaceComponent,
-        resolve: { data: NamedPlaceResolver },
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-        canActivate: [OnlyLoggedIn, HasFormPermission],
-      },
-      {
-        path: 'ownSubmissions',
-        pathMatch: 'full',
-        component: ThemeOwnSubmissionsComponent,
-        canActivate: [OnlyLoggedIn, HasFormPermission],
-      }
-    ],
-    data: {
-      formID: Global.forms.invasiveControl,
-      noFormPermissionRedirect: '/theme/vieraslajit',
-      title: 'Vieras&shy;lajit',
-      instructions: '2661',
-      navLinks: {
-        form: {
-          label: 'invasiveSpecies.places'
-        }
-      }
-    }
-  },
-  {
-    path: 'kunnat',
-    component: MonitoringThemeBaseComponent,
-    children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
-      {
-        path: 'places',
-        pathMatch: 'full',
-        redirectTo: 'form',
-      },
+};
+
+Object.keys(Global.themeForms).forEach(formID => {
+  const form = Global.themeForms[formID];
+  const extra = themeFormAdditionalRoutes[formID] || {};
+  let children = [
+    {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+  ];
+    const _children: {[name: string]: Routes} = {
+      instructions: [
+        {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      ],
+      form: [
       {
         path: 'form',
         pathMatch: 'full',
@@ -291,105 +161,63 @@ const routes: Routes = [
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
       },
-      {
-        path: 'places/:collectionId/:formId',
-        pathMatch: 'full',
-        component: NamedPlaceComponent,
-        resolve: { data: NamedPlaceResolver },
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-        canActivate: [OnlyLoggedIn, HasFormPermission],
-      },
-      {
-        path: 'ownSubmissions',
-        pathMatch: 'full',
-        component: ThemeOwnSubmissionsComponent,
-        canActivate: [OnlyLoggedIn, HasFormPermission],
-      }
     ],
-    data: {
-      formID: Global.forms.municipalityMonitoringForm,
-      noFormPermissionRedirect: '/theme/kunnat',
-      title: 'Kuntalomake',
-      instructions: '2666',
-      navLinks: {
-        form: {
-          label: 'invasiveSpecies.places'
-        }
-      }
-    }
-  },
-  {
-    path: 'lolife',
-    component: MonitoringThemeBaseComponent,
-    children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+    places: [
       {
         path: 'places',
         redirectTo: 'form',
       },
       {
-        path: 'form',
-        pathMatch: 'full',
-        component: FormComponent,
-        canActivate: [OnlyLoggedIn, HasFormPermission],
-      },
-      {
-        path: 'form/:id',
-        pathMatch: 'full',
-        component: FormComponent,
-        canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard],
-      },
-      {
         path: 'places/:collectionId/:formId',
         pathMatch: 'full',
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         canActivate: [OnlyLoggedIn, HasFormPermission],
-      },
+        data: { noScrollToTop: true }
+      }
+    ],
+    ownSubmissions: [
       {
         path: 'ownSubmissions',
         pathMatch: 'full',
         component: ThemeOwnSubmissionsComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
       }
-    ],
-    data: {
-      formID: Global.forms.lolifeForm,
-      noFormPermissionRedirect: '/theme/lolife',
-      title: 'LOLIFE',
+    ]
+  };
+  Object.keys(_children).forEach(name => {
+    const navLink = (form.navLinks || {})[name] || {};
+    const {visible = true} = navLink;
+    if (!visible) {
+      return;
     }
-  },
-  {
-    path: 'lepakot',
-    component: MonitoringThemeBaseComponent,
-    children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
-    ],
-    data: {
-      formID: Global.forms.bats,
-      noFormPermissionRedirect: '/theme/lepakot',
-      title: 'Lepakko&shy;lomake',
-      navLinks: {
-        form: {
-          visible: false
-        },
-        ownSubmissions: {
-          visible: false
+    const accessLevel = merge(ThemeFormService.defaultNavLinks[name], navLink);
+      _children[name].forEach(childRoute => {
+        if (!accessLevel) {
+            delete childRoute.canActivate;
         }
-      }
+      });
+
+    if (extra[name]) {
+      children = [...children, ...(<any> extra[name])];
+    } else {
+      children = [...children, ...(<any> _children[name])];
     }
-  },
-  {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
-  {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
-  {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},
-  {path: 'ykj',  pathMatch: 'full', component: YkjComponent, data: {title: 'navigation.ykj'}},
-  {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}},
-  {path: 'checklist',  pathMatch: 'full', component: ChecklistComponent, data: {title: 'navigation.checklist'}}
-];
+  });
+  if (extra.additionalChildren) {
+    children = [...children, ...(<any> extra.additionalChildren)];
+  }
+
+  const route: Route = {
+    path: form.path,
+    component: MonitoringThemeBaseComponent,
+    children,
+    data: form
+  };
+  routes.push(route);
+});
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

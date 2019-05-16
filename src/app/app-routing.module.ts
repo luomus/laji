@@ -8,6 +8,7 @@ import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
+import { Global } from '../environments/global';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -46,44 +47,32 @@ const routes: Routes = [
 
 const routesWithLang: Routes = [
   {path: 'en', data: {lang: 'en'}, children: [
-    {path: 'nafi', redirectTo: '/en/theme/nafi/instructions', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
-    {path: 'linjalaskenta', redirectTo: '/en/theme/linjalaskenta/instructions', pathMatch: 'full'},
-    {path: 'talvilintu', redirectTo: '/en/theme/talvilintulaskenta/instructions', pathMatch: 'full'},
-    {path: 'vieraslajit', redirectTo: '/en/theme/vieraslajit/instructions', pathMatch: 'full'},
-    {path: 'kunnat', redirectTo: '/en/theme/kunnat/instructions', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/en/theme/lolife/instructions', pathMatch: 'full'},
-    {path: 'lepakot', redirectTo: '/en/theme/lepakot/instructions', pathMatch: 'full'},
+    ...Object.keys(Global.themeForms).map(id =>
+      ({path: Global.themeForms[id].path, redirectTo: `/en/theme/${Global.themeForms[id].path}/instructions`, pathMatch: 'full'})
+    ),
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
     {path: 'nafi', redirectTo: '/sv/theme/nafi/instructions', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
-    {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
-    {path: 'linjalaskenta', redirectTo: '/sv/theme/linjalaskenta/instructions', pathMatch: 'full'},
-    {path: 'talvilintu', redirectTo: '/sv/theme/talvilintulaskenta/instructions', pathMatch: 'full'},
-    {path: 'vieraslajit', redirectTo: '/sv/theme/vieraslajit/instructions', pathMatch: 'full'},
-    {path: 'kunnat', redirectTo: '/sv/theme/kunnat/instructions', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/sv/theme/lolife/instructions', pathMatch: 'full'},
-    {path: 'lepakot', redirectTo: '/sv/theme/lepakot/instructions', pathMatch: 'full'},
+    ...Object.keys(Global.themeForms).map(id =>
+        ({path: Global.themeForms[id].path, redirectTo: `/sv/theme/${Global.themeForms[id].path}/instructions`, pathMatch: 'full'})
+    ),
     ...routes,
     {path: '**', redirectTo: '/sv/error/404'}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
   {path: '', data: {lang: 'fi'}, children: [
-    {path: 'nafi', redirectTo: '/theme/nafi/instructions', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
-    {path: 'linjalaskenta', redirectTo: '/theme/linjalaskenta/instructions', pathMatch: 'full'},
-    {path: 'talvilintu', redirectTo: '/theme/talvilintulaskenta/instructions', pathMatch: 'full'},
-    {path: 'vieraslajit', redirectTo: '/theme/vieraslajit/instructions', pathMatch: 'full'},
-    {path: 'kunnat', redirectTo: '/theme/kunnat/instructions', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/theme/lolife/instructions', pathMatch: 'full'},
-    {path: 'lepakot', redirectTo: '/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
+    ...Object.keys(Global.themeForms).map(id =>
+      ({path: Global.themeForms[id].path, redirectTo: `/theme/${Global.themeForms[id].path}/instructions`, pathMatch: 'full'})
+    ),
     ...routes,
     {path: '**', redirectTo: '/error/404'}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}

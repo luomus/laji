@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Global } from '../../environments/global';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'laji-theme',
@@ -6,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./theme.component.css']
 })
 export class ThemeComponent implements OnInit {
+
+  Global = Global;
+  environment = environment;
 
   constructor() { }
 

@@ -12,7 +12,7 @@ export const environment = {
   defaultForm: 'JX.519',
   nafiForm: 'MHL.6',
   invasiveControlForm: 'MHL.33',
-  municipalityMonitoringForm: '',
+  municipalityMonitoring: '',
   lolifeForm: '',
   apiBase: 'https://laji.fi/api',
   wbcForm: 'MHL.3',

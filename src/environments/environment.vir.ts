@@ -15,7 +15,7 @@ export const environment = {
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'MHL.36',
   invasiveControlForm: '',
-  municipalityMonitoringForm: '',
+  municipalityMonitoring: '',
   lolifeForm: '',
   loginUrl: '/user/viranomaiset',
   selfPage: 'https://login.laji.fi/self',

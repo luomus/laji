@@ -24,14 +24,13 @@ export interface LoadResponse extends FormList {
 export class FormService {
 
   readonly forms = {
-    [environment.nafiForm]: '/theme/nafi/form',
-    [environment.wbcForm]: '/theme/talvilintulaskenta/form',
-    [environment.invasiveControlForm]: '/theme/vieraslajit/form',
-    [environment.municipalityMonitoringForm]: '/theme/kunnat/form',
+    ...Object.keys(Global.themeForms).reduce((_forms, id) => ({
+      ..._forms,
+      [id]: `/theme/${Global.themeForms[id].path}/form`
+    }), {}),
     [environment.lineTransectForm]: '/theme/linjalaskenta/form/MHL.1',
     [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/form/MHL.27',
     [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/form/MHL.28',
-    [environment.lolifeForm]: '/theme/lolife/form',
     default: '/vihko'
   };
 
