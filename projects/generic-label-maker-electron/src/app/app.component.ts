@@ -38,7 +38,7 @@ const NEW_SETUP: ISetup = {
       x: 0,
       y: 0,
       fields: [
-        {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: FieldType.qrCode}
+        {field: 'uri', content: 'http://example.com/ID', label: 'URI - QRCode', type: FieldType.qrCode}
       ]
     },
     {
@@ -50,7 +50,7 @@ const NEW_SETUP: ISetup = {
       x: 15,
       y: 0,
       fields: [
-        {field: 'id', content: 'http://example.com/ID', label: 'ID', type:  FieldType.id}
+        {field: 'uri', content: 'http://example.com/ID', label: 'URI', type:  FieldType.uri}
       ]
     }
   ]
@@ -93,8 +93,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.newAvailableFields$ = this.http.get<any>(environment.form).pipe(
       map(form => this.formService.schemaToAvailableFields(form.schema, [
-        {field: 'id', content: 'http://example.com/ID', label: 'ID - QRCode', type: FieldType.qrCode},
-        {field: 'id', content: 'http://example.com/ID', label: 'ID', type: FieldType.id},
+        {field: 'uri', content: 'http://example.com/ID', label: 'URI - QRCode', type: FieldType.qrCode},
+        {field: 'uri', content: 'http://example.com/ID', label: 'URI', type: FieldType.uri},
+        {field: 'domain', content: 'http://example.com/', label: 'Domain', type: FieldType.domain},
+        {field: 'id', content: 'ID', label: 'ID', type: FieldType.id},
         {field: '', content: '', label: 'Text', type: FieldType.text}
       ], {
         skip: this.skipFields
