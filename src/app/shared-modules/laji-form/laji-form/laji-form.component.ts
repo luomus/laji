@@ -47,7 +47,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   renderElem: any;
   private _block = false;
   private settings: any;
-  private errorSub: Subscription;
   private municipalityEnums: any;
   private biogeographicalProvinceEnums: any;
 
@@ -63,6 +62,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
               private areaService: AreaService,
               private translate: TranslateService
   ) {
+    this._onError = this._onError.bind(this);
   }
 
   ngOnInit(): void {
@@ -98,9 +98,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     this.unMount();
     this.reactElem = undefined;
     this.renderElem = undefined;
-    if (this.errorSub) {
-      this.errorSub.unsubscribe();
-    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -159,14 +156,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       this.settings = settings;
       this.mountLajiForm();
     });
-    if (this.errorSub) {
-      this.errorSub.unsubscribe();
-    }
-    this.errorSub = this.ngZone.onError.subscribe((error) => {
-      this.logger.error('LajiForm crashed', {error, userSetting: this.settings});
-      throw error;
-      this.errorModal.show();
-    });
   }
 
   mountLajiForm() {
@@ -174,11 +163,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       return;
     }
     this.createNewLajiForm();
-    setImmediate(() => {
+    setTimeout(() => {
       if (this.lajiFormWrapper) {
         this.lajiFormWrapper.invalidateSize();
       }
-    });
+    }, 0);
   }
 
   createNewLajiForm() {
@@ -220,7 +209,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
             warning: msg => this.toastsService.showWarning(msg),
             error: msg => this.toastsService.showError(msg),
           },
-          showShortcutButton: this.showShortcutButton
+          showShortcutButton: this.showShortcutButton,
+          onError: this._onError
         });
       });
     } catch (err) {
@@ -244,6 +234,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
         clearBlock: this.lajiFormWrapper.popBlockingLoader
       });
     });
+  }
+
+  _onError(error, info) {
+    this.logger.error('LajiForm crashed', {error, reactInfo: info, userSettings: this.settings});
+    this.errorModal.show();
   }
 
   unMount() {
