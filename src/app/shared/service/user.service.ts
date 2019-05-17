@@ -1,11 +1,11 @@
-import { map, catchError, switchMap, tap, share, retry } from 'rxjs/operators';
+import { map, catchError, switchMap, tap, share, retry, filter } from 'rxjs/operators';
 import { Observable, Observer, of as ObservableOf, ReplaySubject, Subject, Subscription, throwError as observableThrowError } from 'rxjs';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'ngx-webstorage';
-import { isPlatformBrowser, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -14,10 +14,8 @@ import { LocalDb } from '../local-db/local-db.abstract';
 import { environment } from '../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { WINDOW } from '@ng-toolkit/universal';
-
-
-
-
+import { PlatformService } from './platform.service';
+import { BrowserService } from './browser.service';
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
@@ -63,9 +61,13 @@ export class UserService extends LocalDb {
               private toastsService: ToastsService,
               private translate: TranslateService,
               private localizeRouterService: LocalizeRouterService,
-              @Inject(PLATFORM_ID) private platformId: object,
-              @Inject(WINDOW) private window: Window) {
-    super('settings', isPlatformBrowser(platformId));
+              private platformService: PlatformService,
+              private browserService: BrowserService,
+              @Inject(WINDOW) private window: any) {
+    super('settings', platformService.isBrowser);
+    this.browserService.visibility$.pipe(
+      filter(visible => visible)
+    ).subscribe(() => this.checkLogin());
   }
 
   public set isLoggedIn(isIn: boolean) {
@@ -86,7 +88,7 @@ export class UserService extends LocalDb {
   }
 
   public login(userToken: string) {
-    if (this.token === userToken || !isPlatformBrowser(this.platformId)) {
+    if (this.token === userToken || !this.platformService.isBrowser) {
       return;
     }
     if (this.subUser) {
@@ -170,7 +172,7 @@ export class UserService extends LocalDb {
   }
 
   public doLogin(returnUrl?: string): void {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       this.returnUrl = returnUrl || this.location.path(true);
       this.window.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
     }
@@ -218,7 +220,7 @@ export class UserService extends LocalDb {
   }
 
   private checkLogin() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       if (this.token) {
         this.loadUserInfo(this.token).subscribe(
           value => this.isLoggedIn = !!value,
