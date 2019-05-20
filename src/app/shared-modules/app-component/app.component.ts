@@ -32,6 +32,8 @@ export class AppComponent {
   public viewContainerRef: ViewContainerRef;
   public hasAnalytics = true;
   public isEmbedded: boolean;
+  public onFrontPage = false;
+  public onMapPage = false;
   private currentRoute: string;
 
   constructor(
@@ -98,6 +100,11 @@ export class AppComponent {
             });
           });
         this.currentRoute = newRoute;
+
+        this.onFrontPage = router.isActive('/', true)
+          || router.isActive('/en', true)
+          || router.isActive('/sv', true);
+        this.onMapPage = router.isActive('/map', false);
       }
       // Use analytics
       if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {

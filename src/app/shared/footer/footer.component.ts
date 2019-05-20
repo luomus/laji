@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { FooterService } from '../service/footer.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -15,9 +15,8 @@ import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 })
 export class FooterComponent implements OnInit, OnDestroy {
 
-  public onFrontPage = false;
-  public onMapPage = false;
-  public subRouteEvent: Subscription;
+  @Input() onFrontPage = false;
+
   public subLangChange: Subscription;
   public tree$;
   public columns = [
@@ -43,22 +42,12 @@ export class FooterComponent implements OnInit, OnDestroy {
       distinctUntilChanged()
     );
     this.fetchTreeData(false);
-    this.subRouteEvent = this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.onFrontPage = this.router.isActive('/', true)
-          || this.router.isActive('/en', true)
-          || this.router.isActive('/sv', true);
-        this.onMapPage = this.router.isActive('/map', false);
-      });
     this.subLangChange = this.translate.onLangChange.subscribe(() => {
       this.fetchTreeData();
     });
   }
 
   ngOnDestroy() {
-    if (this.subRouteEvent) {
-      this.subRouteEvent.unsubscribe();
-    }
     if (this.subLangChange) {
       this.subLangChange.unsubscribe();
     }
