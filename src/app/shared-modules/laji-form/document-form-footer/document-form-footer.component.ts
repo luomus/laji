@@ -42,7 +42,9 @@ export class DocumentFormFooterComponent {
       let show: boolean;
 
       if (!form || !form.actions) {
-        show = true;
+        if (prop !== 'temp' || !form.features || form.features.indexOf(Form.Feature.Mobile) === -1) {
+          show = true;
+        }
       } else {
         show = prop in form.actions;
       }
