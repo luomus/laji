@@ -399,6 +399,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           this.isAdmin = result.rights.admin;
           data.uiSchemaContext.isAdmin = this.isAdmin;
           data.uiSchemaContext.annotations = result.annotations;
+          data.uiSchemaContext.isEdit = this.isEdit;
           this.form = data;
           this.updateReadonly().subscribe((readonly) => {
             this.lang = this.translate.currentLang;
