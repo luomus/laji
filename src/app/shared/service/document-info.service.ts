@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Document } from '../model/Document';
 import { Units } from '../model/Units';
-import { SearchDocument } from '../../shared-modules/own-submissions/own-submissions.component';
 import { Global } from '../../../environments/global';
 
 /**
@@ -17,94 +16,52 @@ export class DocumentInfoService {
       locality: null,
       namedPlaceID: null,
       localityCount: 0,
-      unitList: []
+      unitList: [],
+      taxonID: []
     };
 
-    if (!document.gatherings || !Array.isArray(document.gatherings)) {
-      return info;
+    if (document.gatherings && Array.isArray(document.gatherings)) {
+      for (let i = 0; i < document.gatherings.length; i++) {
+        const gathering = document.gatherings[i];
+        if (i === 0) {
+          info.locality = gathering.locality;
+          info.namedPlaceID = gathering.namedPlaceID;
+          info.localityCount = document.gatherings.length - 1;
+        }
+        DocumentInfoService.updateMinMaxDates(info, gathering.dateBegin);
+        DocumentInfoService.updateMinMaxDates(info, gathering.dateEnd);
+
+        if (gathering.units) {
+          gathering.units.reduce((result: string[], unit: Units) => {
+            if (this.isEmptyUnit(unit, form)) { return result; }
+
+            let taxon = unit.informalNameString || '';
+            if (unit.identifications && Array.isArray(unit.identifications)) {
+              taxon = unit.identifications.reduce(
+                (acc, cur) => {
+                  if (cur.taxonID) {
+                    info.taxonID.push(cur.taxonID);
+                  }
+                  const curTaxon = cur.taxon || cur.taxonVerbatim || cur.taxonID;
+                  return acc ? acc + ', ' + curTaxon : curTaxon;
+                }, taxon);
+            }
+            if (!unit.id) {
+              info.unsavedUnitCount++;
+            }
+            result.push(taxon);
+            return result;
+          }, info.unitList);
+        }
+      }
     }
 
-    for (let i = 0; i < document.gatherings.length; i++) {
-      const gathering = document.gatherings[i];
-      if (i === 0) {
-        info.locality = gathering.locality;
-        info.namedPlaceID = gathering.namedPlaceID;
-        info.localityCount = document.gatherings.length - 1;
-      }
-      DocumentInfoService.updateMinMaxDates(info, gathering.dateBegin);
-      DocumentInfoService.updateMinMaxDates(info, gathering.dateEnd);
-
-      if (gathering.units) {
-        gathering.units.reduce((result: string[], unit: Units) => {
-          if (this.isEmptyUnit(unit, form)) { return result; }
-
-          let taxon = unit.informalNameString || '';
-          if (unit.identifications && Array.isArray(unit.identifications)) {
-            taxon = unit.identifications.reduce(
-              (acc, cur) => {
-                const curTaxon = cur.taxon || cur.taxonVerbatim || cur.taxonID;
-                return acc ? acc + ', ' + curTaxon : curTaxon;
-              }, taxon);
-          }
-          if (!unit.id) {
-            info.unsavedUnitCount++;
-          }
-          result.push(taxon);
-          return result;
-        }, info.unitList);
-      }
-    }
-
-    if (document['gatheringEvent']) {
-      const event = document['gatheringEvent'];
+    if (document.gatheringEvent) {
+      const event = document.gatheringEvent;
       DocumentInfoService.updateMinMaxDates(info, event.dateBegin);
       DocumentInfoService.updateMinMaxDates(info, event.dateEnd);
     }
 
-    return info;
-  }
-
-  static getGatheringInfoFromSearchDocument(document: SearchDocument, form: any) {
-    const info = {
-      dateBegin: null,
-      dateEnd: null,
-      unsavedUnitCount: 0,
-      locality: null,
-      namedPlaceID: null,
-      localityCount: 0,
-      unitList: []
-    };
-    info.locality = (document['gatherings[*].locality'] || []).join(', ');
-    info.namedPlaceID = document['gatherings[*].gatherings[*].namedPlaceID'] ? document['gatherings[*].gatherings[*].namedPlaceID'][0] : '';
-    info.localityCount = document['gatherings[*].id'] ? document['gatherings[*].id'].length : 0;
-
-    ['gatherings[*].dateBegin', 'gatherings[*].dateEnd'].forEach(spot => {
-      if (document[spot]) {
-        document[spot].forEach(date => DocumentInfoService.updateMinMaxDates(info, date));
-      }
-    });
-
-    if (document['gatherings[*].units[*]']) {
-      document['gatherings[*].units[*]'].reduce((result: string[], unit: Units) => {
-        if (this.isEmptyUnit(unit, form)) { return result; }
-
-        let taxon = unit.informalNameString || '';
-        if (unit.identifications && Array.isArray(unit.identifications)) {
-          taxon = unit.identifications.reduce(
-            (acc, cur) => {
-              const curTaxon = cur.taxon || cur.taxonVerbatim || cur.taxonID;
-              return acc ? acc + ', ' + curTaxon : curTaxon;
-            }, taxon);
-        }
-        if (!unit.id) {
-          info.unsavedUnitCount++;
-        }
-        result.push(taxon);
-        return result;
-      }, info.unitList);
-    }
-    DocumentInfoService.updateMinMaxDates(info, document['gatheringEvent.dateBegin']);
-    DocumentInfoService.updateMinMaxDates(info, document['gatheringEvent.dateEnd']);
     return info;
   }
 
