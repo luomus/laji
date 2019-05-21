@@ -81,5 +81,14 @@ export const Global = {
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {
     kotka: 'KE.3'
-  }
+  },
+  documentCountUnitProperties: [
+    'count',
+    'individualCount',
+    'pairCount',
+    'abundanceString',
+    'maleIndividualCount',
+    'femaleIndividualCount',
+    'areaInSquareMeters'
+  ]
 };
