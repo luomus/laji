@@ -19,15 +19,6 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
   }
 }
 
-const getThemeFormRoute = (id: string, prefix: string): Route =>
-  ({
-    path: Global.themeForms[id].path,
-    redirectTo: `${prefix ? '/' + prefix : ''}/theme/${Global.themeForms[id].path}/instructions`,
-    pathMatch: 'full'
-  });
-
-const createThemeFormRoutes = (prefix?: string): Routes => Object.keys(<any> Global.themeForms).map(id => getThemeFormRoute(id, prefix));
-
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule', data: {preload: true}},
   {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {title: 'news.title'}},
@@ -58,12 +49,20 @@ const routesWithLang: Routes = [
   {path: 'en', data: {lang: 'en'}, children: [
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
-    ...routes
+    ...Object.keys(Global.themeForms).map(id =>
+      ({path: Global.themeForms[id].path, redirectTo: `/en/theme/${Global.themeForms[id].path}/instructions`, pathMatch: 'full'})
+    ),
+    ...routes,
+    {path: '**', redirectTo: '/en/error/404'}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
+    {path: 'nafi', redirectTo: '/sv/theme/nafi/instructions', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
-    {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
-    ...routes
+    ...Object.keys(Global.themeForms).map(id =>
+        ({path: Global.themeForms[id].path, redirectTo: `/sv/theme/${Global.themeForms[id].path}/instructions`, pathMatch: 'full'})
+    ),
+    ...routes,
+    {path: '**', redirectTo: '/sv/error/404'}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
   {path: '', data: {lang: 'fi'}, children: [
     {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
@@ -71,18 +70,13 @@ const routesWithLang: Routes = [
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
+    ...Object.keys(Global.themeForms).map(id =>
+      ({path: Global.themeForms[id].path, redirectTo: `/theme/${Global.themeForms[id].path}/instructions`, pathMatch: 'full'})
+    ),
     ...routes,
+    {path: '**', redirectTo: '/error/404'}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
 ];
-
-// Theme form routes can't be created in the initial routesWithLang construction above because of some angular black magic.
-routesWithLang[0].children = routesWithLang[0].children.concat(createThemeFormRoutes('en'));
-routesWithLang[1].children = routesWithLang[1].children.concat(createThemeFormRoutes('sv'));
-routesWithLang[2].children = routesWithLang[2].children.concat(createThemeFormRoutes());
-// Asterisk route must be last.
-routesWithLang[0].children.push({path: '**', redirectTo: '/en/error/404'});
-routesWithLang[1].children.push({path: '**', redirectTo: '/sv/error/404'});
-routesWithLang[2].children.push({path: '**', redirectTo: '/error/404'});
 
 @NgModule({
   imports: [RouterModule.forRoot(routesWithLang, {
