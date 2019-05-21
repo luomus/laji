@@ -12,6 +12,7 @@
                                    (discard)="discardDocument(unpublishedDocuments, i)"
                                    (showViewer)="showDocumentViewer($event)"
                                    [showFormName]="showFormNames"
+                                   [complainLocality]="complainLocality"
               ></laji-short-document>
             </td>
           </tr>
@@ -32,7 +33,9 @@
                                          [form]="formsById[document.formID]"
                                          (discard)="discardDocument(documents, i)"
                                          (showViewer)="showDocumentViewer($event)"
-                                         [showFormName]="showFormNames"></laji-short-document>
+                                         [showFormName]="showFormNames"
+                                         [complainLocality]="complainLocality"
+                    ></laji-short-document>
                   </td>
                 </tr>
                 </tbody>

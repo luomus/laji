@@ -20,6 +20,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
   @Input() form: any;
   @Input() showFormName = true;
+  @Input() complainLocality = true;
   @Output() discard = new EventEmitter();
   @Output() showViewer = new EventEmitter<Document>();
 

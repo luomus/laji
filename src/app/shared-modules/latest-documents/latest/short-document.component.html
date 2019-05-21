@@ -44,7 +44,9 @@
       {{ document.namedPlaceID | label }}
     </ng-container>
     <ng-template #missingLocality>
-      {{ 'haseka.users.latest.localityMissing' | translate }}
+      <ng-container *ngIf="complainLocality">
+        {{ 'haseka.users.latest.localityMissing' | translate }}
+      </ng-container>
     </ng-template>
   </span>
   <span *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</span>
