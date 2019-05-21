@@ -1,5 +1,7 @@
 <ng-container *ngIf="idx > -1">
-  {{ idx + 1 }}.
+  <button (click)="moveFieldUp(field, $event)" class="btn btn-xs">&#x25C0;</button>
+  <span>{{ idx + 1 }}.</span>
+  <button (click)="moveFieldDown(field, $event)" class="btn btn-xs">&#x25B6;</button>
 </ng-container>
 <ng-container>
   {{ label }}

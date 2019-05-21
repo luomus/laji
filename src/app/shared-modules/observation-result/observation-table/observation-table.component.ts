@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 
 @Component({
   selector: 'laji-observation-table',
@@ -70,10 +70,11 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   cache: any = {};
   orderBy: string[] = [];
   columnLookup = {};
-  _selected: string[] = [];
   _originalSelected: string[] = [];
-  _selectedNumbers: string[] = [];
   _originalSelectedNumbers: string[] = [];
+
+  columnSelector = new ColumnSelector;
+  numberColumnSelector = new ColumnSelector;
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -92,6 +93,61 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   };
 
   columns: ObservationTableColumn[] = [];
+
+  columnGroups = [
+    { header: 'identification', fields: [
+        'unit.taxon',
+        'unit.linkings.taxon.vernacularName',
+        'unit.linkings.taxon.scientificName',
+        'unit.taxonVerbatim'
+    ]},
+    { header: 'observation.form.date', fields: [
+      'gathering.displayDateTime',
+      'gathering.conversions.dayOfYearBegin',
+      'gathering.conversions.dayOfYearEnd'
+    ]},
+    { header: 'persons', fields: [
+      'gathering.team',
+      'unit.det'
+    ]},
+    { header: 'observation.form.unit', fields: [
+      'unit.abundanceString',
+      'unit.interpretations.individualCount',
+      'unit.lifeStage',
+      'unit.sex'
+    ]},
+    { header: 'observation.form.place', fields: [
+      'gathering.locality',
+      'gathering.interpretations.municipalityDisplayname',
+      'gathering.interpretations.biogeographicalProvinceDisplayname',
+      'gathering.interpretations.countryDisplayname'
+    ]},
+    { header: 'result.gathering.coordinatesVerbatim', fields: [
+      'gathering.conversions.ykj',
+      'gathering.conversions.ykj10kmCenter',
+      'gathering.conversions.ykj10km',
+      'gathering.conversions.ykj1kmCenter',
+      'gathering.conversions.ykj1km',
+      'gathering.conversions.euref',
+      'gathering.conversions.wgs84',
+      'gathering.interpretations.coordinateAccuracy'
+    ]},
+    { header: 'reliability', fields: [
+      'unit.reportedTaxonConfidence',
+      'unit.quality.taxon.reliability',
+      'unit.quality.taxon.source',
+      'document.quality.reliabilityOfCollection',
+      'unit.recordBasis'
+    ]},
+    { header: 'observation.filters.other', fields: [
+      'unit.notes',
+      'unit.recordBasis',
+      'document.collectionId',
+      'document.sourceId',
+      'document.secureLevel',
+      'document.secureReasons'
+    ]}
+  ];
 
   allColumns: ObservationTableColumn[] = [
     { name: 'unit.taxon',
@@ -225,7 +281,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   private modalSub: Subscription;
   private fetchSub: Subscription;
   private queryKey: string;
-  private hasChanges = false;
   private aggregateBy: string[] = [];
 
   @Input() showRowAsLink = true;
@@ -250,10 +305,12 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         }
       }
     });
-    this._selected = selected;
-    this._selectedNumbers = selectedNumbers;
+
     this._originalSelected = [...selected];
     this._originalSelectedNumbers = [...selectedNumbers];
+
+    this.columnSelector.columns       = selected;
+    this.numberColumnSelector.columns = selectedNumbers;
   }
 
   ngOnInit() {
@@ -282,7 +339,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   initColumns() {
-    const selected = this.isAggregate ? [...this._selected, 'count', ...this._selectedNumbers] : [...this._selected];
+    const selected = this.isAggregate ?
+      [...this.columnSelector.columns, 'count', ...this.numberColumnSelector.columns] :
+      [...this.columnSelector.columns];
+
     this.allColumns = this.allColumns
       .map(column => {
         this.columnLookup[column.name] = column;
@@ -291,7 +351,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         }
         return column;
       });
+
     this.aggregateBy = [];
+
     this.columns = selected.map(name => {
       const column = this.columnLookup[name];
       if (column.aggregate !== false) {
@@ -303,69 +365,41 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   openModal() {
-    this.hasChanges = false;
     this.modalRef.show();
     this.modalSub = this.modalRef.onHide.subscribe((modal: ModalDirective) => {
       if (modal.dismissReason !== null) {
-        this._selected = [...this._originalSelected];
-        this._selectedNumbers = [...this._originalSelectedNumbers];
+        this.columnSelector.columns = [...this._originalSelected];
+        this.numberColumnSelector.columns = [...this._originalSelectedNumbers];
       }
       this.modalSub.unsubscribe();
     });
   }
 
   closeOkModal() {
-    if (this.hasChanges) {
+    if (this.columnSelector.hasChanges || this.numberColumnSelector.hasChanges) {
       this.orderBy = [];
-      this.selectChange.emit([...this._selected, ...this._selectedNumbers]);
+      this.selectChange.emit([...this.columnSelector.columns, ...this.numberColumnSelector.columns]);
     }
     this.modalRef.hide();
-  }
-
-  toggleSelectedNumberField(field: string) {
-    this.hasChanges = true;
-    const idx = this._selectedNumbers.indexOf(field);
-    if (idx === -1) {
-      this._selectedNumbers = [...this._selectedNumbers, field];
-    } else {
-      this._selectedNumbers = [
-        ...this._selectedNumbers.slice(0, idx),
-        ...this._selectedNumbers.slice(idx + 1)
-      ];
-    }
   }
 
   onReorder(event) {
     if (
       !event.column ||
       !event.column.name ||
-      this._selected.indexOf(event.column.name) === -1 ||
+      !this.columnSelector.hasField(event.column.name) ||
       typeof event.newValue !== 'number' ||
       typeof event.prevValue !== 'number'
     ) {
       return;
     }
-    this._selected.splice(event.newValue, 0, this._selected.splice(event.prevValue, 1)[0]);
-    this.selectChange.emit([...this._selected, ...this._selectedNumbers]);
-  }
-
-  toggleSelectedField(field: string) {
-    this.hasChanges = true;
-    const idx = this._selected.indexOf(field);
-    if (idx === -1) {
-      this._selected = [...this._selected, field];
-    } else {
-      this._selected = [
-        ...this._selected.slice(0, idx),
-        ...this._selected.slice(idx + 1)
-      ];
-    }
+    this.columnSelector.moveFieldByIndex(event.prevValue, event.newValue);
+    this.selectChange.emit([...this.columnSelector.columns, ...this.numberColumnSelector.columns]);
   }
 
   clear() {
-    this.hasChanges = true;
-    this._selected = [];
-    this._selectedNumbers = [];
+    this.columnSelector.clear();
+    this.numberColumnSelector.clear();
   }
 
   setPage(pageInfo) {
@@ -413,7 +447,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     );
     const list$ = this.resultService.getList(
       this.query,
-      this.getSelectFields(this._selected, this.query),
+      this.getSelectFields(this.columnSelector.columns, this.query),
       page,
       this.pageSize,
       [...this.orderBy, this.defaultOrder],

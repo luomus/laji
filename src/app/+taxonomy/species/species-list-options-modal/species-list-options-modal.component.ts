@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
+import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 
 @Component({
   selector: 'laji-species-list-options-modal',
@@ -16,43 +17,23 @@ export class SpeciesListOptionsModalComponent {
 
   @Output() settingsChange = new EventEmitter();
 
-  _selected: string[] = [];
-  hasChanges = false;
+  columnSelector = new ColumnSelector;
 
   constructor() { }
 
   clear() {
-    this._selected = [...this.requiredFields];
-  }
-
-  toggleSelectedFields(fields: string[]) {
-    fields.forEach(field => {
-      this.toggleSelectedField(field);
-    });
-  }
-
-  toggleSelectedField(field: string) {
-    this.hasChanges = true;
-    const idx = this._selected.indexOf(field);
-    if (idx === -1) {
-      this._selected = [...this._selected, field];
-    } else {
-      this._selected = [
-        ...this._selected.slice(0, idx),
-        ...this._selected.slice(idx + 1)
-      ];
-    }
+    this.columnSelector.columns = [...this.requiredFields];
   }
 
   openModal() {
-    this._selected = [...this.searchQuery.listOptions.selected];
-    this.hasChanges = false;
+    this.columnSelector.columns = [...this.searchQuery.listOptions.selected];
+
     this.modalRef.show();
   }
 
   closeOkModal() {
-    if (this.hasChanges) {
-      this.searchQuery.listOptions.selected = [...this._selected];
+    if (this.columnSelector.hasChanges) {
+      this.searchQuery.listOptions.selected = [...this.columnSelector.columns];
       this.settingsChange.emit();
     }
 
