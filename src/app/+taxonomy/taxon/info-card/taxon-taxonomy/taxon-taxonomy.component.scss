@@ -2,6 +2,8 @@
   color: green;
   margin-bottom: 25px;
 }
+
+
 .red-text {
   color: red;
   margin-right: 5px;
@@ -16,12 +18,12 @@
 }
 
 ::ng-deep .author {
-  font-variant: small-caps;
   padding-left: 7px;
 }
 
 .author {
   font-size: 1.2em;
+  text-transform: capitalize;
 }
 
 
