@@ -21,6 +21,7 @@ import { DocumentService } from './service/document.service';
 import { PdfLabelService } from '../../shared/service/pdf-label.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { Router } from '@angular/router';
+import { Global } from '../../../environments/global';
 
 interface DocumentQuery {
   year?: number;
@@ -29,34 +30,6 @@ interface DocumentQuery {
   collectionID?: string;
   formID?: string;
   selectedFields?: string;
-}
-
-export interface SearchDocument {
-  id: string;
-  formID: string;
-  'gatherings[*].units[*].identifications[*]': string;
-  'gatherings[*].units[*].count': string;
-  'gatherings[*].units[*].individualCount': number[];
-  'gatherings[*].units[*].pairCount': number[];
-  'gatherings[*].units[*].abundanceString': string[];
-  'gatherings[*].units[*].maleIndividualCount': number[];
-  'gatherings[*].units[*].femaleIndividualCount': number[];
-  'gatherings[*].units[*].informalNameString': string[];
-  'gatherings[*].namedPlaceID': string[];
-  'gatherings[*].locality': string[];
-  'gatherings[*].id': string[];
-  'gatherings[*].dateEnd': string[];
-  'gatherings[*].dateBegin': string[];
-  'gatheringEvent.dateEnd': string;
-  'gatheringEvent.dateBegin': string;
-  'namedPlaceID': string;
-  'gatheringEvent.leg': string[];
-  dateEdited: string;
-  publicityRestrictions: string;
-  templateDescription: string;
-  templateName: string;
-  locked: boolean;
-  creator: string;
 }
 
 @Component({
@@ -105,12 +78,12 @@ export class OwnSubmissionsComponent implements OnChanges {
     templateDescription: 'templateDescription',
     dateEdited: 'dateEdited',
     form: 'formID',
-    dateObserved: 'gatheringEvent.dateEnd,gatheringEvent.dateBegin,gatherings[*].dateBegin,gatherings[*].dateEnd',
-    locality: 'gatherings[*].locality,namedPlaceID,gatherings[*].namedPlaceID',
-    unitCount: 'gatherings[*].units[*]',
+    dateObserved: 'gatheringEvent.dateEnd,gatheringEvent.dateBegin,gatherings.dateBegin,gatherings.dateEnd',
+    locality: 'gatherings.locality,namedPlaceID,gatherings.namedPlaceID',
+    unitCount: 'gatherings.units',
     observer: 'gatheringEvent.leg',
-    namedPlaceName: 'namedPlaceID,gatherings[*].namedPlaceID',
-    taxon: 'gatherings[*].units[*].identifications[*].taxonID',
+    namedPlaceName: 'namedPlaceID,gatherings.namedPlaceID',
+    taxon: 'gatherings.units.identifications.taxonID',
   };
 
   templateForm: TemplateForm = {
@@ -133,7 +106,9 @@ export class OwnSubmissionsComponent implements OnChanges {
     private pdfLabelService: PdfLabelService,
     private localizeRouterService: LocalizeRouterService,
     private router: Router
-  ) { }
+  ) {
+    this.selectedMap.taxon += ',' + Global.documentCountUnitProperties.map(prop => 'gatherings.units.' + prop).join(',');
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     this.modal.config = {animated: false};
@@ -182,7 +157,7 @@ export class OwnSubmissionsComponent implements OnChanges {
     this.loading = true;
 
     if (this.namedPlace) {
-      this.documents$ = this.getAllDocuments<SearchDocument>({
+      this.documents$ = this.getAllDocuments<Document>({
         year: !this.namedPlace && !this.onlyTemplates ? this.year : undefined,
         namedPlace: this.namedPlace,
         collectionID: this.collectionID,
@@ -236,7 +211,7 @@ export class OwnSubmissionsComponent implements OnChanges {
       documentQuery.namedPlace = this.namedPlace;
     }
     this.documents$ = (onlyDocuments ? ObservableOf([]) : this.yearInfo$).pipe(
-      switchMap(() => this.getAllDocuments<SearchDocument>(documentQuery)),
+      switchMap(() => this.getAllDocuments<Document>(documentQuery)),
       switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
       tap(() => {
         this.loading = false;
@@ -337,22 +312,21 @@ export class OwnSubmissionsComponent implements OnChanges {
     );
   }
 
-  private searchDocumentsToRowDocuments(documents: SearchDocument[]): Observable<RowDocument[]> {
+  private searchDocumentsToRowDocuments(documents: Document[]): Observable<RowDocument[]> {
     return Array.isArray(documents) && documents.length > 0 ?
       forkJoin(documents.map((doc, i) => this.setRowData(doc, i))) :
       ObservableOf([]);
   }
 
-  private setRowData(document: SearchDocument, idx: number): Observable<RowDocument> {
+  private setRowData(document: Document, idx: number): Observable<RowDocument> {
     return this.getForm(document.formID).pipe(
       switchMap((form) => {
-        const gatheringInfo = DocumentInfoService.getGatheringInfoFromSearchDocument(document, form);
-
+        const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
         return ObservableForkJoin(
           this.getLocality(gatheringInfo, document.namedPlaceID),
-          this.getObservers(document['gatheringEvent.leg']),
+          this.getObservers(document.gatheringEvent.leg),
           this.getNamedPlaceName(document.namedPlaceID),
-          this.getTaxon(document['gatherings[*].units[*].identifications[*].taxonID'])
+          this.getTaxon(gatheringInfo.taxonID)
         ).pipe(
           map<any, RowDocument>(([locality, observers, npName, taxon]) => {
             const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
@@ -364,7 +338,7 @@ export class OwnSubmissionsComponent implements OnChanges {
               creator: document.creator,
               templateName: document.templateName,
               templateDescription: document.templateDescription,
-              publicity: document.publicityRestrictions,
+              publicity: document.publicityRestrictions as any,
               dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
               dateObserved: dateObserved,
               namedPlaceName: npName,
@@ -379,7 +353,7 @@ export class OwnSubmissionsComponent implements OnChanges {
               index: idx,
               formViewerType: form.viewerType,
               _editUrl: this.formService.getEditUrlPath(document.formID, document.id),
-            };
+            } as RowDocument;
           })
         );
       })
