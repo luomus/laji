@@ -23,6 +23,8 @@ export class UsersLatestComponent implements OnChanges {
   @Input() tmpOnly = false;
   @Input() forms: string[];
   @Input() showFormNames: boolean;
+  @Input() complainLocality: boolean;
+
   @Output() showViewer = new EventEmitter<Document>();
 
   public unpublishedDocuments: Document[] = [];

@@ -52,3 +52,9 @@
   position: absolute;
   z-index: 1;
 }
+
+@media (max-width: 576px) {
+  .form-footer button {
+    margin-top: -5px;
+  }
+}
