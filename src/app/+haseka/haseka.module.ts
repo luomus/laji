@@ -22,6 +22,8 @@ import { HaSeKaFormComponent } from './form/haseka-form.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest-documents.module';
 import { HasekaTermsComponent } from './terms/haseka-terms.component';
+import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
+import { AppComponentModule } from '../shared-modules/app-component/app-component.module';
 
 @NgModule({
   imports: [
@@ -36,7 +38,8 @@ import { HasekaTermsComponent } from './terms/haseka-terms.component';
     OwnSubmissionsModule,
     StatisticsModule,
     FormPermissionModule,
-    LatestDocumentsModule
+    LatestDocumentsModule,
+    AppComponentModule
   ],
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,
@@ -44,7 +47,8 @@ import { HasekaTermsComponent } from './terms/haseka-terms.component';
     NamedPlaceWrapperComponent,
     FormCategoryComponent,
     FormCategorySurveyComponent,
-    HasekaTermsComponent
+    HasekaTermsComponent,
+    HasekaFeedbackComponent
   ]
 })
 export class HasekaModule {

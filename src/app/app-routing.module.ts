@@ -71,7 +71,7 @@ const routesWithLang: Routes = [
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
-    ...routes
+    ...routes,
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
 ];
 

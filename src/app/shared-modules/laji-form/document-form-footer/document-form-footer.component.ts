@@ -18,12 +18,13 @@ export class DocumentFormFooterComponent {
   @Output() lock = new EventEmitter<boolean>();
   _form: any;
   _locked: boolean;
-  _admin: false;
+  _admin = false;
   show = {
     save: false,
     temp: false,
     cancel: false
   };
+  displayFeedback = true;
 
   constructor() { }
 
@@ -53,6 +54,10 @@ export class DocumentFormFooterComponent {
       }
       this.show[prop] = show;
     });
+
+    if ((form.features || []).indexOf(Form.Feature.Mobile) !== -1) {
+      this.displayFeedback = false;
+    }
   }
 
   buttonLabel(prop: 'save'|'temp'|'cancel') {

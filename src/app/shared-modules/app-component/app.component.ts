@@ -34,6 +34,7 @@ export class AppComponent {
   public isEmbedded: boolean;
   public onFrontPage = false;
   public onMapPage = false;
+  public onVihkoPage = false;
   private currentRoute: string;
 
   constructor(
@@ -105,6 +106,7 @@ export class AppComponent {
           || router.isActive('/en', true)
           || router.isActive('/sv', true);
         this.onMapPage = router.isActive('/map', false);
+        this.onVihkoPage = router.isActive('/vihko', false);
       }
       // Use analytics
       if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
