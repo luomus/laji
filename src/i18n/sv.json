@@ -168,7 +168,7 @@
   "haseka.form.localData": "Det finns en osparad inlämning av detta formulär. Klicka här för att återvända till det.",
   "haseka.form.private": "Observationbatch är inte ännu publicerat",
   "haseka.form.savePrivate": "Spara utan att publicera",
-  "haseka.form.savePublic": "Spara och publicera (CC-BY)",
+  "haseka.form.savePublic": "Spara och publicera",
   "haseka.form.saveTemplate": "Spara som mall.",
   "haseka.form.success": "Observationerna sparat!",
   "haseka.form.unsaved": "senast sparade på {{saveTime}}",

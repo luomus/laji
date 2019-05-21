@@ -189,7 +189,7 @@
   "haseka.form.localData": "Tästä lomakkeesta on tallentamaton havaintoerä. Klikkaa tästä palataksesi siihen.",
   "haseka.form.private": "Havaintoerää ei ole vielä julkaistu",
   "haseka.form.savePrivate": "Tallenna julkaisematta",
-  "haseka.form.savePublic": "Tallenna julkisena (CC-BY)",
+  "haseka.form.savePublic": "Tallenna julkisena",
   "haseka.form.saveTemplate": "Tallenna lomakepohjaksi.",
   "haseka.form.success": "Havainnot tallennettu!",
   "haseka.form.unsaved": "Viimeksi tallennettu {{saveTime}}",

@@ -177,7 +177,7 @@
   "haseka.form.localData": "There’s an unsaved submission of this form. Click here to return to it.",
   "haseka.form.private": "Submission has not been published yet",
   "haseka.form.savePrivate": "Save without publishing",
-  "haseka.form.savePublic": "Save as public (CC-BY)",
+  "haseka.form.savePublic": "Save as public",
   "haseka.form.saveTemplate": "Save as template.",
   "haseka.form.success": "Observations saved!",
   "haseka.form.unsaved": "last saved at {{saveTime}}",
