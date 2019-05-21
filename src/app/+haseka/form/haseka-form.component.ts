@@ -11,6 +11,7 @@ import { FormService } from '../../shared/service/form.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Form } from '../../shared/model/Form';
 import { take } from 'rxjs/internal/operators';
+import { UserService } from '../../shared/service/user.service';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -38,6 +39,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
               private cd: ChangeDetectorRef,
               private routingStateService: RoutingStateService,
               private formService: FormService,
+              private userService: UserService,
               public translate: TranslateService
   ) {
   }
