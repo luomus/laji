@@ -23,7 +23,7 @@ export interface NavLink {
 })
 export class ThemeFormService {
 
-  static defaultNavLinks = {
+  defaultNavLinks = {
     instructions: {
       routerLink: ['instructions'],
       label: 'instructions',
@@ -62,7 +62,7 @@ export class ThemeFormService {
       switchMap(({formID, navLinks = {}, navLinksOrder = []}) => this.formService.getForm(formID, this.translateService.currentLang).pipe(
           switchMap(form => this.formPermissionService.getRights(form).pipe(
             map(rights => (this.getNavLinks(
-                merge(ThemeFormService.defaultNavLinks, navLinks),
+                merge(this.defaultNavLinks, navLinks),
                 navLinksOrder,
                 rights,
                 form.collectionID
