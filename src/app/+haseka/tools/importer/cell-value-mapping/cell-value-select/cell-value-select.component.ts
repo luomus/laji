@@ -42,6 +42,8 @@ export class CellValueSelectComponent implements OnInit {
       if (idx > -1) {
         mapping[value] = this._field.enum[idx];
       }
+    } else if (this._field.type === 'integer') {
+      mapping[value] = +to;
     } else if (this._field.type === 'boolean') {
       mapping[value] = to === 'true';
     } else if (typeof to !== 'undefined') {
