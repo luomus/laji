@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Document } from '../model/Document';
 import { Units } from '../model/Units';
 import { SearchDocument } from '../../shared-modules/own-submissions/own-submissions.component';
+import { Global } from '../../../environments/global';
 
 /**
  * Document Info service
@@ -125,15 +126,13 @@ export class DocumentInfoService {
         form.features.indexOf('MHL.featureEmptyOnNoCount') !== -1
       )
     ) {
-      return !(
-        unit.count ||
-        unit.individualCount ||
-        unit.pairCount ||
-        unit.abundanceString ||
-        unit.maleIndividualCount ||
-        unit.femaleIndividualCount ||
-        unit.areaInSquareMeters
-      );
+      let result = false;
+      Global.documentCountUnitProperties.forEach(key => {
+        if (typeof unit[key] !== 'undefined' && unit[key] !== '' && unit[key] !== null) {
+          result = true;
+        }
+      });
+      return result;
     }
 
     if (unit.identifications) {
