@@ -16,63 +16,77 @@ import { OwnSubmissionsComponent } from './own-submissions/own-submissions.compo
 import { TemplatesComponent } from './templates/templates.component';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
+import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
 
 export const hasekaRoutes: Routes = [
   {
     path: '',
-    component: HasekaComponent,
+    // Feedback button is handled globally everywhere else but on Vihko forms, since the button shouldn't be shown on some forms.
+    component: HasekaFeedbackComponent,
     children: [
-      {path: '', pathMatch: 'full', component: HaSeKaFormListComponent},
-      {path: 'forms', pathMatch: 'full', component: HaSeKaFormListComponent},
-      {path: 'ownSubmissions', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: OwnSubmissionsComponent},
-      {path: 'templates', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: TemplatesComponent},
-      {path: 'statistics', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
-      {path: 'statistics/:documentID', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
-      {path: 'tools',  canActivate: [OnlyLoggedIn], loadChildren: './tools/tools.module#ToolsModule'},
+      {
+        path: '',
+        component: HasekaComponent,
+        children: [
+          {path: '', pathMatch: 'full', component: HaSeKaFormListComponent},
+          {path: 'forms', pathMatch: 'full', component: HaSeKaFormListComponent},
+          {path: 'ownSubmissions', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: OwnSubmissionsComponent},
+          {path: 'templates', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: TemplatesComponent},
+          {path: 'statistics', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
+          {path: 'statistics/:documentID', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
+          {path: 'tools',  canActivate: [OnlyLoggedIn], loadChildren: './tools/tools.module#ToolsModule'},
+        ]
+      },
+      {
+        path: 'terms-of-service',
+        pathMatch: 'full',
+        component: HaSeKaTermsOfServiceComponent
+      },
+      {
+        path: 'places/:npId/print/:type',
+        component: NpPrintComponent
+      },
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceWrapperComponent
+      },
+      {
+        path: 'fp/:collectionId/admin',
+        canActivate: [OnlyLoggedIn],
+        component: AdminComponent,
+        children: [
+          {path: '', pathMatch: 'full', component: IntroComponent},
+          {path: 'accept', pathMatch: 'full', component: AcceptComponent},
+          {path: 'manage/:type', pathMatch: 'full', component: ManageComponent}
+        ]
+      },
+      {
+        path: 'fp/:collectionId',
+        pathMatch: 'full',
+        canActivate: [OnlyLoggedIn],
+        component: RequestWrapperComponent
+      },
+      {
+        path: ':formId',
+        pathMatch: 'full',
+        canActivate: [OnlyLoggedIn],
+        component: HaSeKaFormComponent,
+        data: {
+          displayFeedback: false
+        }
+      },
+      {
+        path: ':formId/:documentId',
+        pathMatch: 'full',
+        canActivate: [OnlyLoggedIn],
+        component: HaSeKaFormComponent,
+        canDeactivate: [DocumentDeActivateGuard],
+        data: {
+          displayFeedback: false
+        }
+      }
     ]
-  },
-  {
-    path: 'terms-of-service',
-    pathMatch: 'full',
-    component: HaSeKaTermsOfServiceComponent
-  },
-  {
-    path: 'places/:npId/print/:type',
-    component: NpPrintComponent
-  },
-  {
-    path: 'places/:collectionId/:formId',
-    pathMatch: 'full',
-    component: NamedPlaceWrapperComponent
-  },
-  {
-    path: 'fp/:collectionId/admin',
-    canActivate: [OnlyLoggedIn],
-    component: AdminComponent,
-    children: [
-      {path: '', pathMatch: 'full', component: IntroComponent},
-      {path: 'accept', pathMatch: 'full', component: AcceptComponent},
-      {path: 'manage/:type', pathMatch: 'full', component: ManageComponent}
-    ]
-  },
-  {
-    path: 'fp/:collectionId',
-    pathMatch: 'full',
-    canActivate: [OnlyLoggedIn],
-    component: RequestWrapperComponent
-  },
-  {
-    path: ':formId',
-    pathMatch: 'full',
-    canActivate: [OnlyLoggedIn],
-    component: HaSeKaFormComponent
-  },
-  {
-    path: ':formId/:documentId',
-    pathMatch: 'full',
-    canActivate: [OnlyLoggedIn],
-    component: HaSeKaFormComponent,
-    canDeactivate: [DocumentDeActivateGuard]
   }
 ];
 

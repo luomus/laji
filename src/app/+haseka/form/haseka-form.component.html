@@ -6,12 +6,16 @@
     <div *lajiLoggedIn>
       <div *ngIf="(showMobileEntryPage$ | async)">
         <laji-haseka-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-haseka-terms>
-        <laji-document-form-header [formID]="(form$ | async).id" [formData]="(form$ | async).formData" [displayLatest]="isMobile$ | async"></laji-document-form-header>
+        <laji-document-form-header [formID]="(form$ | async).id" [formData]="(form$ | async).formData"></laji-document-form-header>
         <button type="button"
                 class="btn btn-md btn-primary btn-block use-button"
                 (click)="enterForm()">
           {{ 'haseka.mobile.newObservation' | translate }}
         </button>
+        <laji-haseka-latest [userToken]="userService.getToken()"
+                            [forms]="(form$ | async).id"
+                            [showFormNames]="false"
+        ></laji-haseka-latest>
         <br />
       </div>
       <ng-container *ngIf="!(showMobileEntryPage$ | async)">

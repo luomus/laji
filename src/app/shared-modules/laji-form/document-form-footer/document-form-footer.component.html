@@ -1,4 +1,4 @@
-<div class="form-footer" *ngIf="_admin || (_form && !_locked)">
+<div [ngClass]='"form-footer" + (displayFeedback ? " padding-for-feedback" : "")' *ngIf="_admin || (_form && !_locked)">
   <div class="row">
     <div class="col-xs-3 col-sm-2" *ngIf="displaysSaveContainer()">
       <div class="lock-button" *ngIf="_admin && _locked !== undefined">
@@ -38,5 +38,6 @@
     <div [ngClass]="{'col-xs-3 col-sm-2': displaysSaveContainer(), 'col-xs-4 col-sm-3': !displaysSaveContainer()}">
       <button *ngIf="show.cancel" class="btn btn-danger btn-sm pull-right" [disabled]="saving" type="submit" (click)="cancel.emit()">{{ buttonLabel('cancel') | translate }}</button>
     </div>
+    <laji-feedback *ngIf="displayFeedback" [iconOnly]="true"></laji-feedback>
   </div>
 </div>
