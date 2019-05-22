@@ -71,9 +71,7 @@
   <ng-container *ngIf="data.scientificName">
     <strong class="scientificName cursive">{{ data.scientificName | label:'fullUri' }}</strong><br>
   </ng-container>
-  <ng-container *ngIf="data.caption && showExtraInfo">
-    {{ data.caption }}<br>
-  </ng-container>
+  <span *ngIf="data.caption && showExtraInfo" [innerHTML]="data.caption"></span><br>
   <ng-container *ngIf="data.author && showExtraInfo">
     {{ data.author }}<br>
   </ng-container>

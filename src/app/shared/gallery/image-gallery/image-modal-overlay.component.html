@@ -24,7 +24,7 @@
       </ng-template>
       <br>
       <ng-container *ngIf="img.caption">
-        {{ img.caption | multiLang }}
+        <span [innerHTML]="img.caption | multiLang"></span>
         <br>
       </ng-container>
       <span *ngIf="img.author">{{ img.author }},</span>
