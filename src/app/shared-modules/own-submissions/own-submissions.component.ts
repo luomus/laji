@@ -74,6 +74,7 @@ export class OwnSubmissionsComponent implements OnChanges {
   selectedFields = 'creator,id,gatherings[*].id,publicityRestrictions,formID';
 
   selectedMap = {
+    id: 'id',
     templateName: 'templateName',
     templateDescription: 'templateDescription',
     dateEdited: 'dateEdited',
