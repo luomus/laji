@@ -74,6 +74,7 @@ export class OwnSubmissionsComponent implements OnChanges {
   selectedFields = 'creator,id,gatherings[*].id,publicityRestrictions,formID';
 
   selectedMap = {
+    id: 'id',
     templateName: 'templateName',
     templateDescription: 'templateDescription',
     dateEdited: 'dateEdited',
@@ -324,7 +325,7 @@ export class OwnSubmissionsComponent implements OnChanges {
         const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
         return ObservableForkJoin(
           this.getLocality(gatheringInfo, document.namedPlaceID),
-          this.getObservers(document.gatheringEvent.leg),
+          this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
           this.getNamedPlaceName(document.namedPlaceID),
           this.getTaxon(gatheringInfo.taxonID)
         ).pipe(

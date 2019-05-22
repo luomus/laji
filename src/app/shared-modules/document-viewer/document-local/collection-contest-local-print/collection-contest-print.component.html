@@ -34,7 +34,7 @@
              src="{{ img.fullURL }}"
              class="image"
              alt="Image {{ index + 1 }}">
-        <div class="image-caption" *ngIf="img.caption">{{ img.caption }}</div>
+        <div class="image-caption" *ngIf="img.caption" [innerHTML]="img.caption"></div>
       </div>
     </div>
   </div>
