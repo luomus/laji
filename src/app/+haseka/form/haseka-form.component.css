@@ -1,0 +1,19 @@
+.form-footer ul, .form-footer li  {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.form-footer img {
+  max-height: 80px;
+}
+
+ul.form-footer {
+  margin-top: 10px;
+}
+
+.form-footer li {
+  padding: 0 8px 13px 8px;
+  display: inline-block;
+}
+

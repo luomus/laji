@@ -18,6 +18,22 @@
                             [complainLocality]="false"
         ></laji-haseka-latest>
         <br />
+        <ng-container *ngIf="form$ | async as form">
+          <ng-container *ngIf="form.options?.footer">
+            <ng-container *ngIf="form.options.footer.description">
+              {{ form.options.footer.description }}
+            </ng-container>
+            <ul class="form-footer">
+            <ng-container *ngFor="let logo of form.options.footer.logos | keyvalue">
+                <li>
+              <a [href]="logo.value" target="_blank">
+                <img lajiLazyImage [src]="logo.key">
+              </a>
+                </li>
+            </ng-container>
+            </ul>
+          </ng-container>
+        </ng-container>
       </div>
       <ng-container *ngIf="!(showMobileEntryPage$ | async)">
         <laji-document-form
