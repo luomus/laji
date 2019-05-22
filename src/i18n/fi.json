@@ -1142,7 +1142,7 @@
   "taxonomy.habitat.secondary": "Toissijaiset",
   "taxonomy.description": "Kuvaukset",
   "taxonomy.otherNames": "Muut nimet",
-  "taxonomy.acceptedName": "HYVÄKSYTTY NIMI",
+  "taxonomy.acceptedName": "Hyväksytty nimi",
   "taxonomy.ofTaxon": "TAKSONILLE",
   "taxonomy.link": "LINKKI",
   "taxonomy.observations.yearChart": "Havainnot vuosittain Suomessa",

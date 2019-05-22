@@ -17,9 +17,9 @@
                 'vernacularName'
                 ]"
               [columnsLookup]="columnLookup"
-              [selected]="_selected"
+              [selected]="columnSelector.columns"
               [disabled]="requiredFields"
-              (toggle)="toggleSelectedField($event)"
+              [columnSelector]="columnSelector"
             ></laji-selected-field-group>
             <laji-selected-field-group
               header="species.list.names"
@@ -33,9 +33,9 @@
                 'tradeName'
                 ]"
               [columnsLookup]="columnLookup"
-              [selected]="_selected"
+              [selected]="columnSelector.columns"
               [disabled]="requiredFields"
-              (toggle)="toggleSelectedField($event)"
+              [columnSelector]="columnSelector"
             ></laji-selected-field-group>
             <laji-selected-field-group
               header="species.list.statusInFinland"
@@ -45,9 +45,9 @@
                 'typeOfOccurrenceInFinlandNotes'
                 ]"
               [columnsLookup]="columnLookup"
-              [selected]="_selected"
+              [selected]="columnSelector.columns"
               [disabled]="requiredFields"
-              (toggle)="toggleSelectedField($event)"
+              [columnSelector]="columnSelector"
             ></laji-selected-field-group>
           </div>
           <div class="col-sm-6">
@@ -58,9 +58,9 @@
                 'originalPublications'
                 ]"
               [columnsLookup]="columnLookup"
-              [selected]="_selected"
+              [selected]="columnSelector.columns"
               [disabled]="requiredFields"
-              (toggle)="toggleSelectedField($event)"
+              [columnSelector]="columnSelector"
             ></laji-selected-field-group>
             <laji-selected-field-group
               header="species.list.attributes"
@@ -72,9 +72,9 @@
                 'habitats'
                 ]"
               [columnsLookup]="columnLookup"
-              [selected]="_selected"
+              [selected]="columnSelector.columns"
               [disabled]="requiredFields"
-              (toggle)="toggleSelectedField($event)"
+              [columnSelector]="columnSelector"
             ></laji-selected-field-group>
             <laji-selected-field-group
               header="species.list.misc"
@@ -83,9 +83,9 @@
                 'notes'
                 ]"
               [columnsLookup]="columnLookup"
-              [selected]="_selected"
+              [selected]="columnSelector.columns"
               [disabled]="requiredFields"
-              (toggle)="toggleSelectedField($event)"
+              [columnSelector]="columnSelector"
             ></laji-selected-field-group>
             <laji-selected-parents
               header="species.list.parents"
@@ -100,8 +100,8 @@
                 'tribe',
                 'genus'
                 ]"
-              [selected]="_selected"
-              (toggle)="toggleSelectedFields($event)"
+              [columnSelector]="columnSelector"
+              [selected]="columnSelector.columns"
             ></laji-selected-parents>
           </div>
         </div>

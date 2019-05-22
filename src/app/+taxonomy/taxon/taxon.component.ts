@@ -103,7 +103,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   private updateSidebarWidth(e) {
     e.preventDefault();
     this.sidebarWidth = Math.min(Math.max(e.pageX + 2, 120), 450);
-    this.cd.markForCheck();
+    this.cd.detectChanges();
   }
 
   private stopDragging(e) {
