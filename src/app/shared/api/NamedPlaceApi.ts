@@ -41,6 +41,7 @@ export interface NamedPlaceQuery {
   includePublic?: boolean;
   includeUnits?: boolean;
   selectedFields?: string;
+  idIn?: string;
 }
 
 @Injectable({providedIn: 'root'})

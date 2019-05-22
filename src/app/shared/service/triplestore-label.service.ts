@@ -87,12 +87,17 @@ export class TriplestoreLabelService {
       switch (parts[0]) {
         case 'MNP':
           if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {
-            TriplestoreLabelService.requestCache[key] = this.namedPlaceApi.findById(
-              key,
-              this.userService.getToken(),
-              {selectedFields: 'name'}
+            TriplestoreLabelService.requestCache[key] = this.namedPlaceApi.findAll(
+              {
+                idIn: key,
+                userToken: this.userService.getToken(),
+                selectedFields: 'name',
+                includePublic: true
+              },
+              '1',
+              '1'
               ).pipe(
-                map((np: NamedPlace) => np.name),
+                map((np) => np.results[0] && np.results[0].name || ''),
                 catchError(() => ObservableOf('')),
                 tap(name => TriplestoreLabelService.cache[key] = name),
                 share()
