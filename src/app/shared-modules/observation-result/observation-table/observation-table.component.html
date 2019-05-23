@@ -59,9 +59,9 @@
         </div>
 
         <div class="row" *ngIf="!isAggregate">
-          <ng-container *ngFor="let col of [[0, 4], [4, 2], [6, 2]]; let colindex = index">
+          <ng-container *ngFor="let col of [[0, 4], [4, 2], [6, 2]]">
             <div class="col-sm-6 col-md-4">
-              <ng-container *ngFor="let group of columnGroups.slice(col[0], col[0] + col[1])">
+              <ng-container *ngFor="let group of columnGroups | slice:col[0]:col[0] + col[1]">
                 <laji-selected-field-group
                   [header]="group.header"
                   [fields]="group.fields"
