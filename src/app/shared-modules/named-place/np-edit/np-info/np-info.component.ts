@@ -68,7 +68,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   documentModalVisible = false;
 
   public static getListItems(placeForm: any, np: NamedPlace, form: any): any[] {
-    const {namedPlaceOptions, collectionID: collectionId} = form;
+    const {namedPlaceOptions = {}, collectionID: collectionId} = form;
     const fields = placeForm.schema.properties;
     let displayed = [];
     if (namedPlaceOptions.infoFields) {

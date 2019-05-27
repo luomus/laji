@@ -22,6 +22,7 @@ export const environment = {
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'MHL.36',
   batForm: 'MHL.50',
+  valioForm: 'MHL.57',
   loginUrl: 'https://login.laji.fi/login',
   selfPage: 'https://login.laji.fi/self'
 };

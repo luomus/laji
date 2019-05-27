@@ -33,6 +33,7 @@ export class FormService {
     [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/form/MHL.28',
     [environment.lolifeForm]: '/theme/lolife/form',
     [environment.batForm]: '/theme/lepakot/form',
+    [environment.valioForm]: '/theme/valio/form',
     default: '/vihko'
   };
 
