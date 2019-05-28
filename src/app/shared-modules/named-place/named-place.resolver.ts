@@ -125,7 +125,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
   }
 
   getNamedPlaces$(documentForm): Observable<any> {
-    const selected = ((documentForm.options || {}).namedPlaceList || []).map(field => field.replace('$.', ''));
+    const selected = ((documentForm.options || {}).namedPlaceList || ['$.name']).map(field => field.replace('$.', ''));
     if (!(documentForm.namedPlaceOptions || {}).hideMapTab) {
       selected.push('geometry');
     }
