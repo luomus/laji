@@ -510,7 +510,7 @@
 
 "@swimlane/ngx-datatable@git+https://git@github.com/vixriihi/laji-datatable":
   version "14.0.0"
-  resolved "git+https://git@github.com/vixriihi/laji-datatable#8125b49eacf7554a1979fed00017babc7cd6cd32"
+  resolved "git+https://git@github.com/vixriihi/laji-datatable#e63a11e2f4b85ae8e27cdf90c2f6296a55409d9d"
 
 "@types/bluebird@*":
   version "3.5.26"
