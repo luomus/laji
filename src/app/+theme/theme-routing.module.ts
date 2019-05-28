@@ -452,7 +452,9 @@ const routes: Routes = [
     data: {
       formID: Global.forms.valio,
       noFormPermissionRedirect: '/theme/valio',
-      title: 'VALIO'
+      title: 'VALIO',
+      instructions: '2759',
+      hasRightsInstructions: '2761',
     }
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

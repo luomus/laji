@@ -55,6 +55,7 @@ const routesWithLang: Routes = [
     {path: 'kunnat', redirectTo: '/en/theme/kunnat/instructions', pathMatch: 'full'},
     {path: 'lolife', redirectTo: '/en/theme/lolife/instructions', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/en/theme/lepakot/instructions', pathMatch: 'full'},
+    {path: 'valio', redirectTo: '/en/theme/valio/instructions', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
@@ -68,6 +69,7 @@ const routesWithLang: Routes = [
     {path: 'kunnat', redirectTo: '/sv/theme/kunnat/instructions', pathMatch: 'full'},
     {path: 'lolife', redirectTo: '/sv/theme/lolife/instructions', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/sv/theme/lepakot/instructions', pathMatch: 'full'},
+    {path: 'valio', redirectTo: '/sv/theme/valio/instructions', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/sv/error/404'}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
@@ -81,6 +83,7 @@ const routesWithLang: Routes = [
     {path: 'kunnat', redirectTo: '/theme/kunnat/instructions', pathMatch: 'full'},
     {path: 'lolife', redirectTo: '/theme/lolife/instructions', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/theme/lepakot/instructions', pathMatch: 'full'},
+    {path: 'valio', redirectTo: '/theme/valio/instructions', pathMatch: 'full'},
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
