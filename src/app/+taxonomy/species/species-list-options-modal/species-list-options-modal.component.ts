@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output, ViewChild, ChangeDetectionStrate
 import { ModalDirective } from 'ngx-bootstrap';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
+import {TaxonomyColumns} from '../service/taxonomy-columns';
 
 @Component({
   selector: 'laji-species-list-options-modal',
@@ -12,14 +13,15 @@ export class SpeciesListOptionsModalComponent {
   @ViewChild('settingsModal') modalRef: ModalDirective;
 
   @Input() searchQuery: TaxonomySearchQuery;
-  @Input() columnLookup: any;
   @Input() requiredFields: string[] = [];
 
   @Output() settingsChange = new EventEmitter();
 
   columnSelector = new ColumnSelector;
 
-  constructor() { }
+  constructor(
+    public columnService: TaxonomyColumns
+  ) { }
 
   clear() {
     this.columnSelector.columns = [...this.requiredFields];

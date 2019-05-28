@@ -9,10 +9,11 @@ export class SortPipe implements PipeTransform {
     if (!Array.isArray(value)) {
       return value;
     }
+    const copy = [...value];
     if (!property) {
-      return [...value.sort()];
+      return copy.sort();
     }
-    return [...value.sort((a, b) => (a[property] > b[property]) ? 1 : ((b[property] > a[property]) ? -1 : 0))];
+    return copy.sort((a, b) => (a[property] > b[property]) ? 1 : ((b[property] > a[property]) ? -1 : 0));
   }
 
 }

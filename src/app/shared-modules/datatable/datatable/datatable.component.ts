@@ -134,8 +134,11 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() set columns(columns: DatatableColumn[]) {
     this.settings$.subscribe(settings => {
       this._columns = columns.map((column) => {
+        if (typeof column.headerTemplate === 'string') {
+          column.headerTemplate = this.datatableTemplates[column.headerTemplate];
+        }
         if (!column.headerTemplate) {
-          column.headerTemplate = this.datatableTemplates.header;
+          column.headerTemplate = this.datatableTemplates.dafaultHeader;
         }
         if (typeof column.cellTemplate === 'string') {
           column.cellTemplate = this.datatableTemplates[column.cellTemplate];

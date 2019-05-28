@@ -76,7 +76,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     private cd: ChangeDetectorRef,
     private taxonExportService: TaxonExportService,
     private dtUtil: DatatableUtil,
-    public columnService: TaxonomyColumns
+    private columnService: TaxonomyColumns
   ) { }
 
   ngOnInit() {
