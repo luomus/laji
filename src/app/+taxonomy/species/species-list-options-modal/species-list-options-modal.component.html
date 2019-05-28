@@ -16,7 +16,7 @@
                 'scientificNameAuthorship',
                 'vernacularName'
                 ]"
-              [columnsLookup]="columnLookup"
+              [columnsLookup]="columnService.columnLookup"
               [selected]="columnSelector.columns"
               [disabled]="requiredFields"
               [columnSelector]="columnSelector"
@@ -32,7 +32,7 @@
                 'obsoleteVernacularName',
                 'tradeName'
                 ]"
-              [columnsLookup]="columnLookup"
+              [columnsLookup]="columnService.columnLookup"
               [selected]="columnSelector.columns"
               [disabled]="requiredFields"
               [columnSelector]="columnSelector"
@@ -44,20 +44,18 @@
                 'typeOfOccurrenceInFinland',
                 'typeOfOccurrenceInFinlandNotes'
                 ]"
-              [columnsLookup]="columnLookup"
+              [columnsLookup]="columnService.columnLookup"
               [selected]="columnSelector.columns"
               [disabled]="requiredFields"
               [columnSelector]="columnSelector"
             ></laji-selected-field-group>
-          </div>
-          <div class="col-sm-6">
             <laji-selected-field-group
               header="species.list.publications"
               [fields]="[
                 'occurrenceInFinlandPublications',
                 'originalPublications'
                 ]"
-              [columnsLookup]="columnLookup"
+              [columnsLookup]="columnService.columnLookup"
               [selected]="columnSelector.columns"
               [disabled]="requiredFields"
               [columnSelector]="columnSelector"
@@ -71,35 +69,27 @@
                 'administrativeStatuses',
                 'habitats'
                 ]"
-              [columnsLookup]="columnLookup"
+              [columnsLookup]="columnService.columnLookup"
               [selected]="columnSelector.columns"
               [disabled]="requiredFields"
               [columnSelector]="columnSelector"
             ></laji-selected-field-group>
+          </div>
+          <div class="col-sm-6">
             <laji-selected-field-group
               header="species.list.misc"
               [fields]="[
                 'taxonExpert',
                 'notes'
                 ]"
-              [columnsLookup]="columnLookup"
+              [columnsLookup]="columnService.columnLookup"
               [selected]="columnSelector.columns"
               [disabled]="requiredFields"
               [columnSelector]="columnSelector"
             ></laji-selected-field-group>
             <laji-selected-parents
               header="species.list.parents"
-              [parents]="[
-                'domain',
-                'kingdom',
-                'phylum',
-                'division',
-                'class',
-                'order',
-                'family',
-                'tribe',
-                'genus'
-                ]"
+              [parents]="columnService.parents"
               [columnSelector]="columnSelector"
               [selected]="columnSelector.columns"
             ></laji-selected-parents>

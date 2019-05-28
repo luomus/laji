@@ -1,11 +1,17 @@
-<ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template #headerTpl>
+<ng-template let-label="label" let-info="info" let-sort="sort" #headerTpl>
   <span class="datatable-header-cell-wrapper sort-full-width"
-        (click)="$event.target.classList.contains('no-propagation') ? return : sort()" title="{{column.label | translate | values}}">
+        (click)="$event.target.classList.contains('no-propagation') ? return : sort()" title="{{ label }}">
     <span class="datatable-header-cell-label draggable">
-      {{ column.label | translate | values }}
+      {{ label }}
     </span>
-    <laji-info *ngIf="column.info">{{ column.info | translate }}</laji-info>
+    <laji-info *ngIf="info">{{ info }}</laji-info>
   </span>
+</ng-template>
+<ng-template let-column="column" let-sort="sortFn" #defaultHeaderTpl>
+  <ng-container *ngTemplateOutlet="headerTpl; context: {label: column.label | translate | values, info: column.info | translate, sort: sort}"></ng-container>
+</ng-template>
+<ng-template let-column="column" let-sort="sortFn" #labelHeaderTpl>
+  <ng-container *ngTemplateOutlet="headerTpl; context: {label: column.label | label | capitalize | values, info: column.info | translate, sort: sort}"></ng-container>
 </ng-template>
 
 <ng-template let-value="value" let-column="column" #taxon>
