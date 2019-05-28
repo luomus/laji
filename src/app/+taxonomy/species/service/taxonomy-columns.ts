@@ -134,19 +134,39 @@ export class TaxonomyColumns {
   ];
 
   columnLookup = {};
+  parents = [
+    'domain',
+    'kingdom',
+    'phylum',
+    'division',
+    'class',
+    'subclass',
+    'order',
+    'suborder',
+    'superfamily',
+    'family',
+    'subfamily',
+    'tribe',
+    'subtribe',
+    'genus',
+    'subgenus',
+    'species'
+  ];
 
   constructor() {
-    for (const parent of ['domain', 'kingdom', 'phylum', 'division', 'class', 'order', 'family', 'tribe', 'genus']) {
+    for (const parent of this.parents) {
       this.allColumns.push({
         name: 'parent.' + parent + '.scientificName',
         prop: 'parent.' + parent,
-        label: ['taxonomy.parent.' + parent, 'taxonomy.scientific.name.lower'],
+        label: ['MX.' + parent, 'MX.scientificName'],
         selectField: ['parent.' + parent + '.scientificName', 'parent.' + parent + '.cursiveName'],
-        cellTemplate: 'scientificName'
+        cellTemplate: 'scientificName',
+        headerTemplate: 'labelHeader'
       });
       this.allColumns.push({
         name: 'parent.' + parent + '.scientificNameAuthorship',
-        label: ['taxonomy.parent.' + parent, 'taxonomy.author.lower']
+        label: ['MX.' + parent, 'MX.scientificNameAuthorship'],
+        headerTemplate: 'labelHeader'
       });
     }
 
