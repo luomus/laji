@@ -43,12 +43,12 @@ export class InstructionsComponent implements OnInit {
         mergeMap(loggedIn => this.themeFormService.getForm(this.route).pipe(
           mergeMap(form => this.formPermissionService.getRights(form).pipe(
             mergeMap(rights => this.route.parent.data.pipe(
-              map(({instructions, loggedInInstructions}) => ({
+              map(({instructions, hasRightsInstructions}) => ({
                 loggedIn,
                 rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
                 collectionID: form.collectionID,
-                instructions: loggedIn && loggedInInstructions
-                  ? loggedInInstructions
+                instructions: rights.edit && hasRightsInstructions
+                  ? hasRightsInstructions
                   : instructions
               }))
           ))

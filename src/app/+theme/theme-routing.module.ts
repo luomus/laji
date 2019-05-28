@@ -454,7 +454,7 @@ const routes: Routes = [
       noFormPermissionRedirect: '/theme/valio',
       title: 'VALIO',
       instructions: '2759',
-      loggedInInstructions: '2761',
+      hasRightsInstructions: '2761',
     }
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
