@@ -4159,10 +4159,10 @@ gaze@^1.0.0:
   dependencies:
     globule "^1.0.0"
 
-generic-label-maker@^1.0.13:
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-1.0.13.tgz#81cc5a6a6201759ef2fbfe87ef014311381b79f0"
-  integrity sha512-yTvaKzYWVyeEvSV0OtQw/D1LVakWKxlYB0B6xsOZ4GtdvrdX0kOWtw1IjGXXM/CawgNTQtiOlv2IdkivPT72yw==
+generic-label-maker@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-1.0.14.tgz#55662cfbceafa91b78f4c94a46df076379a886be"
+  integrity sha512-SWTjDlkK15huYoSeI3sWc556nx3JeHPbtrid3TqdzlvPEB2vH/ObcGpL3JamooyDKgTG9/wbjVUq7OIjX0Sl/Q==
   dependencies:
     tslib "^1.9.0"
 
