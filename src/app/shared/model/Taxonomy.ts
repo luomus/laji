@@ -257,6 +257,8 @@ export interface RedListEvaluation {
   endangermentReasons?: string[];
   primaryThreat?: string;
   threats?: string[];
+  occurrences?: Occurrence[];
+  lastSightingNotes?: string;
 }
 
 export interface LatestRedListStatusFinland {

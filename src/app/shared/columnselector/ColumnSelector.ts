@@ -39,7 +39,7 @@ export class ColumnSelector {
     if (idx === -1) {
       this.selectedFields.push(field);
     } else {
-       this.selectedFields.splice(idx, 1);
+      this.selectedFields.splice(idx, 1);
     }
 
     this.updateSelectedFields();
@@ -52,7 +52,7 @@ export class ColumnSelector {
     this.updateSelectedFields();
   }
 
-  moveFieldByName(field: string, direction: number): boolean {
+  moveFieldByName(field: string, direction: number) {
     const idx = this.selectedFields.indexOf(field);
     const idxmoved = idx + direction;
 

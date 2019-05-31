@@ -510,7 +510,7 @@
 
 "@swimlane/ngx-datatable@git+https://git@github.com/vixriihi/laji-datatable":
   version "14.0.0"
-  resolved "git+https://git@github.com/vixriihi/laji-datatable#8125b49eacf7554a1979fed00017babc7cd6cd32"
+  resolved "git+https://git@github.com/vixriihi/laji-datatable#e63a11e2f4b85ae8e27cdf90c2f6296a55409d9d"
 
 "@types/bluebird@*":
   version "3.5.26"
@@ -4159,10 +4159,10 @@ gaze@^1.0.0:
   dependencies:
     globule "^1.0.0"
 
-generic-label-maker@^1.0.13:
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-1.0.13.tgz#81cc5a6a6201759ef2fbfe87ef014311381b79f0"
-  integrity sha512-yTvaKzYWVyeEvSV0OtQw/D1LVakWKxlYB0B6xsOZ4GtdvrdX0kOWtw1IjGXXM/CawgNTQtiOlv2IdkivPT72yw==
+generic-label-maker@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-1.0.14.tgz#55662cfbceafa91b78f4c94a46df076379a886be"
+  integrity sha512-SWTjDlkK15huYoSeI3sWc556nx3JeHPbtrid3TqdzlvPEB2vH/ObcGpL3JamooyDKgTG9/wbjVUq7OIjX0Sl/Q==
   dependencies:
     tslib "^1.9.0"
 
@@ -5552,10 +5552,10 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.612:
-  version "0.0.612"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.612.tgz#aa4b4b7f041b62fdf627893e66d319764781b3bc"
-  integrity sha512-5cM6N828xnoTosOgsmXPbfa7VTpwGdV5FkN7tjoMa1HAigzO3kqNX6OEwbF0RyZWz37X25cSA5UODddgh8HirA==
+laji-form@^0.0.617:
+  version "0.0.617"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.617.tgz#9b0a006df9718f8cdc055f731c63b745e2dd2ad1"
+  integrity sha512-VWBJRVGpuguP4pCZB8k//5dmqR7Brv+u86C4+LmJFmX4fTZobkB1iuoUgg37QvnvQ1UqSTOgisNX4zY93xKvwQ==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -5581,10 +5581,10 @@ laji-form@^0.0.612:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.497, laji-map@^1.0.395, laji-map@^1.0.496, laji-map@^1.0.497:
-  version "1.0.497"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.497.tgz#dc804815f4ab60ec075a2eed46399b93f36fd49b"
-  integrity sha512-EJJBOrTr+e9RThOJsmb3LIPAHjaaAzFaslrNL1WmNvvbIukkuzOo+biMQ9T7uyuQm8Mnc3dE3H9/ROnqwssMwQ==
+laji-map@1.0.498, laji-map@^1.0.395, laji-map@^1.0.496, laji-map@^1.0.498:
+  version "1.0.498"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.498.tgz#eda1e8c50ae8c0b965102d096914e3f23a5dddf7"
+  integrity sha512-0UZ1h5kbYhvqtED5XhsyKh+53uL/lGHKl1LyXor9wMXk/NpkNYa2rdCsTLl/8jsjUdy59mhslVKc0/CMcuP20g==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"

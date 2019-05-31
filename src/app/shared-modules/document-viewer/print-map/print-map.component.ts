@@ -24,6 +24,7 @@ export class PrintMapComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.lajiMap.map.setData([this._data || {}]);
+    this.lajiMap.map.zoomToData({maxZoom: this.lajiMap.map.getNormalizedZoom()});
   }
 
   private initData() {
@@ -59,7 +60,7 @@ export class PrintMapComponent implements OnChanges, AfterViewInit {
         type: 'FeatureCollection',
         features: [{
           type: 'Feature',
-          geometry: data,
+          geometry: data.geoJSON ? data.geoJSON : data,
         }]
       };
     }

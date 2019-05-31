@@ -20,6 +20,7 @@ export const Global = {
     namedPlace: 'MHL.36',
     collectionContest: 'MHL.25',
     bats: 'MHL.50',
+    valio: 'MHL.57',
   },
   _forms: {
     'MHL.3': {
@@ -77,6 +78,7 @@ export const Global = {
     'MHL.35': '/kunnat',
     'MHL.45': '/lolife',
     'MHL.50': '/lepakot',
+    'MHL.57': '/valio',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {

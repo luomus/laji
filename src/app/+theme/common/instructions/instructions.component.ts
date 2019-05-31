@@ -18,6 +18,7 @@ interface InstructionsData {
   rights: Rights;
   instructions: string;
   collectionID: string;
+  disableRequestDescription: boolean;
 }
 
 @Component({
@@ -39,16 +40,19 @@ export class InstructionsComponent implements OnInit {
               private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.instructionsData$ = this.route.parent.data.pipe(
-      mergeMap(({instructions}) => this.userService.isLoggedIn$.pipe(
+    this.instructionsData$ = this.userService.isLoggedIn$.pipe(
         mergeMap(loggedIn => this.themeFormService.getForm(this.route).pipe(
           mergeMap(form => this.formPermissionService.getRights(form).pipe(
-            map((rights) => ({
-              loggedIn,
-              rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
-              collectionID: form.collectionID,
-              instructions
-            }))
+            mergeMap(rights => this.route.parent.data.pipe(
+              map(({instructions, hasRightsInstructions}) => ({
+                loggedIn,
+                rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
+                collectionID: form.collectionID,
+                instructions: rights.edit && hasRightsInstructions
+                  ? hasRightsInstructions
+                  : instructions,
+                disableRequestDescription: form.options && form.options.disableRequestDescription
+              }))
           ))
       ))
     ))

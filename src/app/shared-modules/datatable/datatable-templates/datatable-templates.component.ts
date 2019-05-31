@@ -7,10 +7,11 @@ import { Annotation } from '../../../shared/model/Annotation';
   styleUrls: ['./datatable-templates.component.css']
 })
 export class DatatableTemplatesComponent {
+  @ViewChild('defaultHeaderTpl') dafaultHeader: TemplateRef<any>;
+  @ViewChild('labelHeaderTpl') labelHeader: TemplateRef<any>;
   @ViewChild('taxon') taxon: TemplateRef<any>;
   @ViewChild('originalTaxon') originalTaxon: TemplateRef<any>;
   @ViewChild('species') species: TemplateRef<any>;
-  @ViewChild('headerTpl') header: TemplateRef<any>;
   @ViewChild('eventDate') eventDate: TemplateRef<any>;
   @ViewChild('multiLang') multiLang: TemplateRef<any>;
   @ViewChild('multiLangAll') multiLangAll: TemplateRef<any>;

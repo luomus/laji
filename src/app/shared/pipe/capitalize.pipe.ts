@@ -5,10 +5,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class CapitalizePipe implements PipeTransform {
 
-  transform(value: string): any {
+  transform(value: any): any {
+    if (Array.isArray(value)) {
+      return value.map((v, i) => this.toUpperOrLowerCase(v, i !== 0));
+    }
+
+    return this.toUpperOrLowerCase(value);
+  }
+
+  private toUpperOrLowerCase(value: any, lowerCase = false) {
     if (!value || value.length === 0) {
       return value;
     }
-    return value.charAt(0).toUpperCase() + value.slice(1);
+    return (lowerCase ? value.charAt(0).toLowerCase() : value.charAt(0).toUpperCase()) + value.slice(1);
   }
 }

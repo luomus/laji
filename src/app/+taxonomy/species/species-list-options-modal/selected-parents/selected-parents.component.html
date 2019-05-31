@@ -11,7 +11,7 @@
         {{ selected.indexOf('parent.' + parent + '.scientificNameAuthorship') + 1 }}.
         <button (click)="onMoveDown(parent, $event)" class="btn btn-xs">&#x25B6;</button>
       </ng-container>
-      {{ 'taxonomy.parent.' + parent | translate }}
+      {{ 'MX.' + parent | label | capitalize }}
     </ng-container>
   </li>
 </ul>

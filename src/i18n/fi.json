@@ -1117,15 +1117,6 @@
   "taxonomy.vernacular.names": "Yleiskieliset nimet",
   "taxonomy.alternative.vernacular.name": "Muut yleiskieliset nimet",
   "taxonomy.habitats": "Elinympäristöt",
-  "taxonomy.parent.domain": "Yläkunta",
-  "taxonomy.parent.kingdom": "Kunta",
-  "taxonomy.parent.phylum": "Pääjakso",
-  "taxonomy.parent.division": "Kaari",
-  "taxonomy.parent.class": "Luokka",
-  "taxonomy.parent.order": "Lahko",
-  "taxonomy.parent.family": "Heimo",
-  "taxonomy.parent.tribe": "Tribus",
-  "taxonomy.parent.genus": "Suku",
   "taxonomy.speciesPieChartTitle": "Suomalaisten lajien lukumäärä alemmilla taksonitasoilla",
   "taxonomy.species": "lajia",
   "taxonomy.species.singular": "laji",
@@ -1317,5 +1308,6 @@
   "map.fullScreen": "Avaa kartta kokoruututilassa",
   "map.exitFullScreen": "Poistu kokoruututilasta",
   "readMore": "Lue lisää",
-  "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead"
+  "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead",
+  "bats.navLinks.form": "Kirjaa tietoja"
 }

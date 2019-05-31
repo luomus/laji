@@ -9,6 +9,7 @@ import { ToastsService } from '../../../../shared/service/toasts.service';
 import { Util } from '../../../../shared/service/util.service';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { AreaService } from '../../../../shared/service/area.service';
+import merge from 'deepmerge';
 
 @Component({
   selector: 'laji-np-edit-form',
@@ -144,8 +145,11 @@ export class NpEditFormComponent implements OnInit {
     return Promise.resolve(data);
   }
 
-  private getPrepopulatedDocument(namedPlace) {
+  private getPrepopulatedDocument(namedPlace, formData) {
     namedPlace.prepopulatedDocument = this.namedPlace && this.namedPlace.prepopulatedDocument || {};
+    if (formData.prepopulatedDocument) {
+      namedPlace.prepopulatedDocument = merge(namedPlace.prepopulatedDocument, formData.prepopulatedDocument);
+    }
     return namedPlace;
   }
 
@@ -186,7 +190,7 @@ export class NpEditFormComponent implements OnInit {
           });
         })
     };
-    const {prepopulatedDocument} = this.getPrepopulatedDocument(namedPlace);
+    const {prepopulatedDocument} = this.getPrepopulatedDocument(namedPlace, formData);
     const fieldPointers = Object.keys(options);
     return new Promise(resolve => Promise.all(fieldPointers.map(fieldPointer => {
       let valueOrPromise;

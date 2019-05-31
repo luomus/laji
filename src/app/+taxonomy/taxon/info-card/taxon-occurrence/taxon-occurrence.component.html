@@ -22,8 +22,10 @@
           <ul>
             <li *ngFor="let publication of taxon.occurrenceInFinlandPublications">
               {{ publication | publication }}
-              <br>
-              <a [href]="publication | publication:'URI'" target="_blank">{{ 'taxonomy.link' | translate }}</a>
+              <ng-container *ngIf="publication | publication:'URI'">
+                <br>
+                <a [href]="publication | publication:'URI'" target="_blank">{{ 'taxonomy.link' | translate }}</a>
+              </ng-container>
             </li>
           </ul>
         </laji-taxon-info-row>

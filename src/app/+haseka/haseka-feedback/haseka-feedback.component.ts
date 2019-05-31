@@ -16,7 +16,6 @@ export class HasekaFeedbackComponent implements OnInit {
               private router: Router) {}
 
   ngOnInit() {
-    this.route.data.subscribe(data => console.log(data));
     this.displayFeedback$ = this.router.events.pipe(
       filter(evt => evt instanceof NavigationEnd),
       switchMap(() => this.route.firstChild.data),
