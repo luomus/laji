@@ -5,7 +5,7 @@
                       [child]="data.instructions"
         ></laji-info-page>
       <laji-request *ngIf="data.collectionID && data.rights === Rights.NotAllowed && data.loggedIn"
-                    [collectionId]="data.collectionID">
+                    [collectionId]="data.collectionID" [disableDescription]="data.disableRequestDescription">
       </laji-request>
       <h3 *ngIf="data.loggedIn === false">
         Kirjaudu ensin sisään käyttääksesi tätä palvelua.

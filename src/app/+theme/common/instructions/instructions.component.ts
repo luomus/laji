@@ -18,6 +18,7 @@ interface InstructionsData {
   rights: Rights;
   instructions: string;
   collectionID: string;
+  disableRequestDescription: boolean;
 }
 
 @Component({
@@ -49,7 +50,8 @@ export class InstructionsComponent implements OnInit {
                 collectionID: form.collectionID,
                 instructions: rights.edit && hasRightsInstructions
                   ? hasRightsInstructions
-                  : instructions
+                  : instructions,
+                disableRequestDescription: form.options && form.options.disableRequestDescription
               }))
           ))
       ))
