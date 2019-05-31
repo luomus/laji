@@ -21,6 +21,8 @@ export const Global = {
     collectionContest: 'MHL.25',
     bats: 'MHL.50',
     valio: 'MHL.57',
+    batForm: 'MHL.50',
+    valioForm: 'MHL.57',
   },
   _forms: {
     'MHL.3': {
