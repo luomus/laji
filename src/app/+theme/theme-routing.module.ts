@@ -408,7 +408,8 @@ const routes: Routes = [
         form: {
           label: 'bats.navLinks.form'
         }
-      }
+      },
+      hasRightsInstructions: '2780',
     }
   },
   {
