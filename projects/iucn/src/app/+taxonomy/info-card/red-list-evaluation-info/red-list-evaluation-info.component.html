@@ -34,4 +34,13 @@
   -->
 </ng-container>
 
+<ng-container *ngIf="_evaluation.lastSightingNotes">
+  <h3>{{ 'MKV.lastSightingNotes' | label }}</h3>
+  <p>{{ _evaluation.lastSightingNotes }}</p>
+</ng-container>
+<ng-container *ngIf="_evaluation.occurrences">
+  <h3>{{ 'MKV.hasOccurrence' | label }}</h3>
+  <laji-taxon-occurrences [occurrences]="_evaluation.occurrences"></laji-taxon-occurrences>
+</ng-container>
+
 <a [routerLink]="['/about'] | localize" style="display: inline-block; margin-top: 15px;">{{'iucn.more' | translate}}</a>

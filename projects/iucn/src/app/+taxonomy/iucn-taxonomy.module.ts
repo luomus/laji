@@ -29,6 +29,7 @@ import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { SelectFieldsModule } from '../../../../../src/app/shared-modules/select-fields/select-fields.module';
 import { DownloadModule } from '../../../../../src/app/shared-modules/download/download.module';
 import { IucnCommonModule } from '../../../../../src/app/shared-modules/iucn/iucn.module';
+import { TaxonOccurrencesComponent } from './info-card/taxon-occurrences/taxon-occurrences.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -63,7 +64,8 @@ import { IucnCommonModule } from '../../../../../src/app/shared-modules/iucn/iuc
     RedListEvaluationInfoRowsetComponent,
     RedListHabitatComponent,
     RedListHabitatListComponent,
-    ActiveFiltersComponent
+    ActiveFiltersComponent,
+    TaxonOccurrencesComponent
   ]
 })
 export class IucnTaxonomyModule { }
