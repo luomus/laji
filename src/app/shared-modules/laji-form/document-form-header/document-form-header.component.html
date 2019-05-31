@@ -34,7 +34,7 @@
       <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
       |
     </span>
-    <a [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
+    <a *ngIf="!form.options || !form.options.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
   </div>
   <div class="col-sm-4" *ngIf="form.logo">
     <div class="form-logo pull-right" *ngIf="form.logo">
