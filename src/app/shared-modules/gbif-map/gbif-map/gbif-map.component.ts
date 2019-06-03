@@ -33,9 +33,9 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
     controls: {
       draw: false
     },
-    zoom: 2,
+    zoom: -1,
     draw: false,
-    center: [0, 0],
+    center: [40, 25],
     tileLayerName: LajiMapTileLayerName.openStreetMap,
     availableTileLayerNamesWhitelist: [
       LajiMapTileLayerName.openStreetMap,
