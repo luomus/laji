@@ -148,7 +148,11 @@ export class NpEditFormComponent implements OnInit {
   private getPrepopulatedDocument(namedPlace, formData) {
     namedPlace.prepopulatedDocument = this.namedPlace && this.namedPlace.prepopulatedDocument || {};
     if (formData.prepopulatedDocument) {
-      namedPlace.prepopulatedDocument = merge(namedPlace.prepopulatedDocument, formData.prepopulatedDocument);
+      namedPlace.prepopulatedDocument = merge(
+        namedPlace.prepopulatedDocument,
+        formData.prepopulatedDocument,
+        { arrayMerge: Util.arrayCombineMerge }
+      );
     }
     return namedPlace;
   }
