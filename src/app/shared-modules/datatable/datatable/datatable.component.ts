@@ -9,6 +9,7 @@ import {
   Input,
   Output,
   ViewChild,
+  NgZone,
   PLATFORM_ID,
   Inject, OnDestroy, OnInit
 } from '@angular/core';
@@ -88,7 +89,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     private cacheService: CacheService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private logger: Logger,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private zone: NgZone
   ) {
     this.settings$ = DatatableComponent.settings ?
       ObservableOf(DatatableComponent.settings).pipe(share()) :
@@ -226,7 +228,9 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   onRowSelect(event) {
     if (event.type === 'click' || event.type === 'dblClick') {
-      this.rowSelect.emit(event);
+      this.zone.run(() => {
+        this.rowSelect.emit(event);
+      });
     }
   }
 
