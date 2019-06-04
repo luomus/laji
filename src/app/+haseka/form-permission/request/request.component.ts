@@ -26,6 +26,8 @@ export class RequestComponent implements OnInit {
   @Input() collectionId: string;
   @Input() disableDescription = false;
 
+  clicked = false;
+
   constructor(
     private formPermissionService: FormPermissionService,
     private userService: UserService,
@@ -53,6 +55,10 @@ export class RequestComponent implements OnInit {
   }
 
   makeAccessRequest() {
+    this.clicked = true;
+    if (this.clicked) {
+      return;
+    }
     this.formPermissionService.makeAccessRequest(this.collectionId, this.userService.getToken())
       .subscribe(
         (formPermission: FormPermission) => {
