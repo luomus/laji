@@ -179,7 +179,8 @@ export class FormComponent
   }
 
   onTmlLoad(data) {
-    this.navigate(
+    // We don't use this.navigate because lang is already included in onTmlLoadUrl.
+    this.router.navigate(
       [this.onTmlLoadUrl, data.tmpID],
       { replaceUrl: true, relativeTo: this.route }
     );
