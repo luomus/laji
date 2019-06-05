@@ -1185,5 +1185,6 @@
   "map.exitFullScreen": "Exit fullscreen mode",
   "readMore": "Read more",
   "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead",
-  "bats.navLinks.form": "Record information"
+  "bats.navLinks.form": "Record information",
+  "np.list.col.deviceID": "Device number"
 }

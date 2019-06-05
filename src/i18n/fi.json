@@ -1309,5 +1309,6 @@
   "map.exitFullScreen": "Poistu kokoruututilasta",
   "readMore": "Lue lisää",
   "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead",
-  "bats.navLinks.form": "Kirjaa tietoja"
+  "bats.navLinks.form": "Kirjaa tietoja",
+  "np.list.col.deviceID": "Laitteen nro"
 }

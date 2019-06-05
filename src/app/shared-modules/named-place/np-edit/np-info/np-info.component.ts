@@ -23,6 +23,8 @@ import { Document } from '../../../../shared/model/Document';
 import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { Util } from '../../../../shared/service/util.service';
+import { schemaJSONPointer } from 'laji-form/lib/utils';
 
 @Component({
   selector: 'laji-np-info',
@@ -69,7 +71,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   public static getListItems(placeForm: any, np: NamedPlace, form: any): any[] {
     const {namedPlaceOptions = {}, collectionID: collectionId} = form;
-    const fields = placeForm.schema.properties;
     let displayed = [];
     if (namedPlaceOptions.infoFields) {
       displayed = namedPlaceOptions.infoFields || [];
@@ -81,13 +82,16 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
     const listItems = [];
     for (const field of displayed) {
-      if (!fields[field]) {
+      const fieldSchema = Util.parseJSONPointer(placeForm.schema, schemaJSONPointer(placeForm.schema, Util.JSONPathToJSONPointer(field)));
+      if (!fieldSchema) {
         continue;
       }
 
       let value;
-      if (!isEmpty(np[field])) {
-        value = np[field];
+      const _value = Util.parseJSONPath(np, field);
+      console.log(np, field, _value);
+      if (!isEmpty(_value)) {
+        value = _value;
       }
 
       let pipe;
@@ -99,7 +103,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
       if (value) {
         listItems.push({
-          title: fields[field].title,
+          title: fieldSchema.title,
           value,
           pipe
         });

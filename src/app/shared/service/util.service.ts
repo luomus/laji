@@ -49,9 +49,7 @@ export class Util {
     }, {});
   }
 
-  public static parseJSONPath(object: any, jsonPath: string): any {
-    // Both jsonpath and jsonpath-plus cause problems with the production build,
-    // so we convert the json paths to json pointers.
+  public static JSONPathToJSONPointer(jsonPath: string): string {
     let pathAsJSONPointer = jsonPath[0] === '$' ? jsonPath.substring(1, jsonPath.length) : jsonPath; // Remove first '$'
     pathAsJSONPointer = pathAsJSONPointer
       .replace(/\./g, '/')
@@ -60,7 +58,13 @@ export class Util {
     if (pathAsJSONPointer[pathAsJSONPointer.length - 1] === '/') {
       pathAsJSONPointer = pathAsJSONPointer.substring(0, pathAsJSONPointer.length - 1);
     }
-    return this.parseJSONPointer(object, pathAsJSONPointer);
+    return pathAsJSONPointer;
+  }
+
+  public static parseJSONPath(object: any, jsonPath: string): any {
+    // Both jsonpath and jsonpath-plus cause problems with the production build,
+    // so we convert the json paths to json pointers.
+    return this.parseJSONPointer(object, this.JSONPathToJSONPointer(jsonPath));
   }
 
   public static parseJSONPointer(object: any, jsonPointer: string, create = false): any {

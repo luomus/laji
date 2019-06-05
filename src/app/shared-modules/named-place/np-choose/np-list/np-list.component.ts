@@ -87,6 +87,9 @@ export class NpListComponent {
       '$.prepopulatedDocument.gatherings[0].invasiveControlOpen': {
         label: 'np.invasiveControlOpen',
         cellTemplate: 'boolToStrTpl'
+      },
+      '$.prepopulatedDocument.deviceID': {
+        label: 'np.list.col.deviceID',
       }
     };
   }
