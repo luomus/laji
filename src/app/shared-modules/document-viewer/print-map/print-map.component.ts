@@ -24,7 +24,7 @@ export class PrintMapComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.lajiMap.map.setData([this._data || {}]);
-    this.lajiMap.map.zoomToData({maxZoom: this.lajiMap.map.getNormalizedZoom()});
+    this.lajiMap.map.zoomToData({maxZoom: 4});
   }
 
   private initData() {
