@@ -55,10 +55,10 @@ export class RequestComponent implements OnInit {
   }
 
   makeAccessRequest() {
-    this.clicked = true;
     if (this.clicked) {
       return;
     }
+    this.clicked = true;
     this.formPermissionService.makeAccessRequest(this.collectionId, this.userService.getToken())
       .subscribe(
         (formPermission: FormPermission) => {
