@@ -57,11 +57,12 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   setActiveIndex(idx: number) {
     this.active = idx;
     if (this._data && this._data[idx]) {
-      this.lajiMap.map.setData([this._data[idx] || {}]);
+      this.lajiMap.map.setDraw({...(<any> this.mapOptions.draw), ...(this._data[idx] || {})});
       this.lajiMap.map.zoomToData({maxZoom: this.lajiMap.map.getNormalizedZoom()});
     } else {
-      this.lajiMap.map.setData([]);
+      this.lajiMap.map.setDraw(this.mapOptions.draw);
     }
+    console.log(this.lajiMap.map.getDraw());
   }
 
   private initData() {
