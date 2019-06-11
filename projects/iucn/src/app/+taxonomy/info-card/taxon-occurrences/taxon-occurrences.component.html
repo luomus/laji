@@ -1,14 +1,11 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
     <tr>
-      <th *ngFor="let field of ['area', 'status', 'notes', 'year', 'specimenURI']">{{ 'MO.' + field | label }}</th>
+      <th *ngFor="let field of ['area', 'status']">{{ 'MO.' + field | label }}</th>
     </tr>
     <tr *ngFor="let occurrence of occurrences">
       <td>{{ occurrence.area | label }}</td>
       <td>{{ occurrence.status | label }}</td>
-      <td>{{ occurrence.notes }}</td>
-      <td>{{ occurrence.year }}</td>
-      <td>{{ occurrence.specimenURI }}</td>
     </tr>
   </table>
 </div>
