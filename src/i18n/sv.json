@@ -25,6 +25,17 @@
     "2010": "2010 Rödlista",
     "2000": "2000 Rödlista"
   },
+  "criteria": {
+    "A": "Antalet individer har minskat betydligt",
+    "B1": "Litet förekomstområde och nedgång, eller stark fragmentering av förekomsten, eller extrema fluktuationer i populationsstorlek",
+    "B2": "Litet distributionsområde och nedgång, eller stark fragmentering av förekomsten, eller extrema fluktuationer i populationsstorlek",
+    "C1": "Liten populationsstorlek och konstant nedgång",
+    "C2": "Liten populationsstorlek och konstant nedgång och fragmentering, eller starka fluktuationer i populationsstorlek",
+    "D": "Liten populationsstorlek",
+    "D1": "Liten populationsstorlek",
+    "D2": "Mycket liten populationsstorlek eller begränsat distributionsområde och mottaglighet för signifikant minskning",
+    "E": "Baserat på analysen är det en stor sannolikhet att arten kommer att försvinna"
+  },
   "closed.intro": "Vihko is now closed for maintenance. We'll notify you on the <a href=\"/sv\">front page</a> when it's opened again.",
   "closed.title": "Closed",
   "delete.error": "Misslyckades att ta bort. Försök igen lite senare.",
