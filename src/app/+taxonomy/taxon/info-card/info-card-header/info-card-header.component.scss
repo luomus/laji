@@ -2,13 +2,33 @@
   height: 60px;
 }
 
+.content-breadcrumbs {
+  padding-left:0px;
+}
+
+:host-context(.sidebar-hidden) .content-breadcrumbs {
+  padding-left:150px
+}
+
 .taxon-parent {
   margin-top: 10px;
   padding: 8px 0;
   border-radius: 4px;
   display: inline-block;
-  margin-left: -70px;
+  margin-right: 10px;
+  min-height: 28px;
 }
+
+:host-context(.sidebar-hidden) .taxon-parent{
+  margin-top: 10px;
+  padding: 8px 0;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 10px;
+  min-height: 28px;
+}
+
+
 .taxon-search-container {
   position: relative;
   padding: 6px 20px;
@@ -24,6 +44,10 @@
   padding:0;
 }
 
+.no-left{
+  margin-left:0px;
+}
+
 .no-margin {
   margin:0;
 }
@@ -37,7 +61,7 @@
 .sibling-select-container {
   display: inline-block;
   vertical-align: bottom;
-  margin: 0 10px 4px 10px;
+  margin: 12px 10px 4px 10px;
   white-space: nowrap;
 }
 
@@ -70,14 +94,40 @@
   box-shadow: none;
   color: #337ab7;
   font-size: 1em;
-  height:34px;
 }
 
 
 @media only screen and (max-width : 1450px) {
-  .taxon-parent{
-    margin-left:30px;
-  } 
+  .taxon-parent {
+    margin-top: 10px;
+    padding: 8px 0;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+    min-height: 28px;
+  }
+  
+  :host-context(.sidebar-hidden) .taxon-parent{
+    margin-top: 10px;
+    padding: 8px 0;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+    min-height: 28px;
+  }
+
+  :host-context(.sidebar-hidden) .content-breadcrumbs {
+    padding-left:150px
+  }
+  
+  .taxon-parent {
+    margin-top: 10px;
+    padding: 8px 0;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+    min-height: 28px;
+  }
 }
 
 @media only screen and (max-width : 991px) {
@@ -86,7 +136,34 @@
   }
 
   .taxon-parent {
-    margin-left:80px;
+    margin-top: 50px;
+    padding: 8px 0;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+    min-height: 28px;
+  }
+  
+  :host-context(.sidebar-hidden) .taxon-parent{
+    margin-top: 10px;
+    padding: 8px 0;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+    min-height: 28px;
+  }
+
+  :host-context(.sidebar-hidden) .content-breadcrumbs {
+    padding-left:150px
+  }
+  
+  .taxon-parent {
+    margin-top: 10px;
+    padding: 8px 0;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+    min-height: 28px;
   }
 }
 
@@ -97,9 +174,15 @@
     top: -28px;
   }
   .taxon-parent {
-    margin-top: 50px;
+    margin-left: 10px;
+    padding-right:10px;
+    margin-top: 0px;
+  }
+
+  :host-context(.sidebar-hidden) .taxon-parent{
     margin-left: 0px;
-    padding-left:10px;
+    padding-right:10px;
+    margin-top: 0px;
   }
 
   .taxon-name-header {
@@ -109,7 +192,7 @@
   }
 
   .sibling-select-container {
-    margin: 0 10px 4px 0px;
+    margin: 0px 10px 4px 0px;
   }
 
   .sibling-select-container select {
@@ -128,6 +211,25 @@
     -ms-transform: rotate(90deg) translate(0px, 5px);
     transform: rotate(90deg) translate(0px, 5px);
   }
+
+  :host-context(.sidebar-hidden) .content-breadcrumbs {
+    padding-left:10px;
+    margin-top:50px;
+  }
+  
+  .taxon-parent {
+    padding: 8px 0;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+    min-height: 28px;
+  }
+
+  .content-breadcrumbs {
+    margin-top:10px
+  }
+
+
 }
 
 .arrow-link {

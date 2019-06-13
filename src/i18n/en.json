@@ -25,6 +25,17 @@
     "2010": "2010 Red List",
     "2000": "2000 Red List"
   },
+  "criteria": {
+    "A": "The number of individuals has reduced significantly",
+    "B1": "Small occurrence area and decline, or strong fragmentation of occurrence, or extreme fluctuations in population size",
+    "B2": "Small distribution area and decline, or strong fragmentation of occurrence, or extreme fluctuations in population size",
+    "C1": "Small population size and constant decline",
+    "C2": "Small population size and constant decline and fragmentation, or strong fluctuations in population size",
+    "D": "Small population size",
+    "D1": "Small population size",
+    "D2": "Very small population size, or restricted distribution area and susceptibility to significant reduction",
+    "E": "Based on the analysis, there is a significant probability that the species will disappear"
+  },
   "closed.intro": "Vihko is now closed for maintenance. We'll notify you on the <a href=\"/en\">front page</a> when it's opened again.",
   "closed.title": "Closed",
   "delete.error": "Failed to delete. Try again little later.",

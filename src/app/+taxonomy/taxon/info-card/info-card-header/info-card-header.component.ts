@@ -1,7 +1,8 @@
 import {Component, OnChanges, Input, SimpleChanges, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
-import {Subscription} from 'rxjs';
+import {Subscription, combineLatest} from 'rxjs';
 import {TaxonTaxonomyService} from '../../service/taxon-taxonomy.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'laji-info-card-header',
@@ -12,11 +13,12 @@ import {TaxonTaxonomyService} from '../../service/taxon-taxonomy.service';
 export class InfoCardHeaderComponent implements OnChanges {
   @Input() taxon: Taxonomy;
   @Input() activeTab: string;
-
-  parent: Taxonomy;
+  parent: Taxonomy[];
   siblings: Taxonomy[];
 
   loadingParent = false;
+  subParam: any;
+  showTaxonomy: boolean;
 
   private parentSub: Subscription;
   private siblingSub: Subscription;
@@ -25,7 +27,8 @@ export class InfoCardHeaderComponent implements OnChanges {
 
   constructor(
     private taxonomyService: TaxonTaxonomyService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -62,7 +65,7 @@ export class InfoCardHeaderComponent implements OnChanges {
 
     if (this.taxon.hasParent) {
       this.loadingParent = true;
-      this.parentSub = this.taxonomyService.getParent(this.taxon.id)
+      this.parentSub = this.taxonomyService.getParents(this.taxon.id)
         .subscribe(parent => {
           this.parent = parent;
           this.loadingParent = false;

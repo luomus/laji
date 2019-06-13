@@ -41,6 +41,7 @@ export class AreaService {
         });
       }
     }
+    this.areas = undefined;
     this.pending = this.lajiApi
       .getList(LajiApi.Endpoints.areas, {lang, page: 1, pageSize: 10000}).pipe(
       map(paged => paged.results),
