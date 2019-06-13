@@ -24,7 +24,7 @@ import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../../../../shared/service/util.service';
-import { schemaJSONPointer } from 'laji-form/lib/utils';
+import { LajiFormUtil } from '@laji-form/laji-form-util.service';
 
 @Component({
   selector: 'laji-np-info',
@@ -82,7 +82,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
     const listItems = [];
     for (const field of displayed) {
-      const fieldSchema = Util.parseJSONPointer(placeForm.schema, schemaJSONPointer(placeForm.schema, Util.JSONPathToJSONPointer(field)));
+      const fieldSchema = Util.parseJSONPointer(
+        placeForm.schema,
+        LajiFormUtil.schemaJSONPointer(placeForm.schema, Util.JSONPathToJSONPointer(field))
+      );
       if (!fieldSchema) {
         continue;
       }
