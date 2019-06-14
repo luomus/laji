@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, Observer, of as ObservableOf, Subject } from 'rxjs';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { Util } from './util.service';
-import { delay, filter, map, merge, retryWhen, share, take, tap } from 'rxjs/operators';
+import { filter, map, merge, share, tap } from 'rxjs/operators';
 
 
 @Injectable({providedIn: 'root'})
@@ -13,7 +13,6 @@ export class MetadataService {
   static readonly rangesCacheKey = 'ranges';
 
   private ranges;
-  private source = new Subject<any>();
   private pendingRanges: Observable<any>;
 
   constructor(private metadataApi: MetadataApi, private cacheService: CacheService) {
@@ -32,48 +31,36 @@ export class MetadataService {
    */
   getAllRanges() {
     if (this.ranges) {
-      if (!this.source.isStopped) {
-        this.source.complete();
-      }
       return ObservableOf(this.ranges);
-    } else if (this.pendingRanges) {
-      return Observable.create((observer: Observer<any>) => {
-        this.pendingRanges.subscribe(
-          (ranges) => {
-            observer.next(ranges);
-            observer.complete();
-          },
-          (err) => console.log(err)
-        );
-      });
-    }
-    this.pendingRanges = this.source
-      .asObservable().pipe(
+    } else if (!this.pendingRanges) {
+      this.pendingRanges = this.cacheService.getItem(MetadataService.rangesCacheKey).pipe(
+        merge(this.metadataApi.metadataFindAllRanges('multi').pipe(
+          tap(data => {
+            if (!Util.isEmptyObj(data)) {
+              this.cacheService.setItem(MetadataService.rangesCacheKey, data).subscribe();
+            }
+          })
+          )
+        ),
+        filter(result => {
+          return !Util.isEmptyObj(result);
+        }),
+        tap(ranges => {
+          this.ranges = ranges;
+        }),
         share()
       );
+    }
 
-    this.cacheService.getItem(MetadataService.rangesCacheKey).pipe(
-      merge(this.metadataApi.metadataFindAllRanges('multi').pipe(
-        retryWhen(errors => errors.pipe(
-          delay(1000),
-          take(3)
-        )),
-        tap(ranges =>  {
-          if (!Util.isEmptyObj(ranges)) {
-            this.cacheService.setItem(MetadataService.rangesCacheKey, ranges).subscribe(() => {}, () => {});
-          }
-        })
-      )),
-      filter(ranges => {
-        return !Util.isEmptyObj(ranges);
-      })
-    )
-      .subscribe(ranges => {
-        this.ranges = ranges;
-        this.source.next(ranges);
-      });
-
-    return this.pendingRanges;
+    return Observable.create((observer: Observer<any>) => {
+      this.pendingRanges.subscribe(
+        (ranges) => {
+          observer.next(ranges);
+          observer.complete();
+        },
+        (err) => console.log(err)
+      );
+    });
   }
 
   /**
@@ -91,8 +78,7 @@ export class MetadataService {
           });
           return total;
         }, {})
-      ),
-      share()
+      )
     );
   }
 
