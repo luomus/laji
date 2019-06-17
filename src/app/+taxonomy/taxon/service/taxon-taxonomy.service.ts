@@ -167,7 +167,8 @@ export class TaxonTaxonomyService {
       'cursiveName',
       'taxonRank',
       'finnish',
-      'countOfFinnishSpecies'
+      'countOfFinnishSpecies',
+      'observationCountFinland'
     ].join(',');
   }
 }

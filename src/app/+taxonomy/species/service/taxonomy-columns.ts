@@ -131,6 +131,12 @@ export class TaxonomyColumns {
       selectField: 'primaryHabitat,secondaryHabitats',
       cellTemplate: 'taxonHabitats'
     },
+    {
+      name: 'observationCount'
+    },
+    {
+      name: 'observationCountFinland'
+    }
   ];
 
   columnLookup = {};

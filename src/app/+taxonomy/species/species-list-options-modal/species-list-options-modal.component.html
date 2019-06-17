@@ -77,6 +77,17 @@
           </div>
           <div class="col-sm-6">
             <laji-selected-field-group
+              header="species.list.observations"
+              [fields]="[
+                'observationCount',
+                'observationCountFinland'
+                ]"
+              [columnsLookup]="columnService.columnLookup"
+              [selected]="columnSelector.columns"
+              [disabled]="requiredFields"
+              [columnSelector]="columnSelector"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
               header="species.list.misc"
               [fields]="[
                 'taxonExpert',
