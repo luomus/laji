@@ -25,7 +25,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   ) { }
 
   ngOnChanges() {
-    console.log('o');
     this.updateData();
   }
 

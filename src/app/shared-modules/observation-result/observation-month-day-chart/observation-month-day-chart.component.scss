@@ -11,3 +11,8 @@
   max-height: calc(100vh - 61px);
   max-width: 1200px;
 }
+
+.info-card-chart.day-chart {
+  height: 100%;
+  overflow-x: auto;
+}
