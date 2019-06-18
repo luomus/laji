@@ -60,6 +60,7 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
     if (this.searchQuery.query.taxonRanks && this.searchQuery.query.taxonRanks.indexOf('MX.species') === -1) {
       this.count = 0;
       this.loading = false;
+      this.cd.markForCheck();
       return;
     }
 

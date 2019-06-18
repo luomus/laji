@@ -103,7 +103,7 @@
           [data]="_data"
           [valueMap]="_setup.valueMap || {}"
           (valueMapChange)="onValueMapChange($event)"
-          [availableFields]="availableFields"
+          [availableFields]="availableFields | sort: 'label'"
         ></ll-label-value-map>
       </div>
     </div>
