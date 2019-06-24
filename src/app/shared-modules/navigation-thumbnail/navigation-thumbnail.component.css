@@ -27,3 +27,9 @@
 .info .glyphicon {
   font-size: 1.5em;
 }
+
+@media only screen and (max-width : 480px) {
+  .info .glyphicon {
+    font-size: 2.5em;
+  }
+}

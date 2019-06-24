@@ -906,6 +906,25 @@ input[type="radio"]
   }
 }
 
+@media only screen and (max-width: 768px) {
+  .input-sm {
+    height: 36px;
+  }
+}
+
+
+@media only screen and (max-width: 480px) {
+  .home-page .tooltip{
+    max-width: 175px;
+    min-width: auto;
+  }
+
+  .bs-tooltip-top .arrow, .bs-tooltip-bottom .arrow{
+    left: 82%;
+    display: none;
+  }
+}
+
 
 
 
