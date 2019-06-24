@@ -8,8 +8,42 @@
 .modal {
   font-weight: normal;
 }
+
+@media only screen and (max-width : 1024px) {
+  .laji-form-help-glyph {
+    width: 36px;
+    height: 36px;
+    display: inline-block;
+    margin:3px 3px 3px 5px;
+    vertical-align: middle;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+  }
+
+  .laji-form-help-glyph strong {
+    font-size: 18px;
+    line-height: 36px;
+  }
+}
+
 @media only screen and (max-width : 767px) {
   .modal {
     margin-top: 60px;
+  }
+  .laji-form-help-glyph {
+    width: 36px;
+    height: 36px;
+    display: inline-block;
+    margin:3px 3px 3px 5px;
+    vertical-align: middle;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+  }
+
+  .laji-form-help-glyph strong {
+    font-size: 18px;
+    line-height: 36px;
   }
 }

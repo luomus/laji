@@ -1,6 +1,7 @@
 
 import {filter, debounceTime} from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewChild,
+HostListener } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { Subject, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,6 +32,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   typeaheadLoading = false;
   showFilter = true;
   dateFormat = 'YYYY-MM-DD';
+  showMobile = false;
+  statusFilterMobile = false;
 
   drawing = false;
   drawingShape: string;
@@ -55,6 +58,18 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
               private route: Router,
               private cd: ChangeDetectorRef) {
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+
+    if ( window.innerWidth > 767) {
+      this.showMobile = false;
+    } else {
+      this.showMobile = true;
+    }
+
+  }
+
 
   ngOnInit() {
     this.subSearch = this.delayedSearch.pipe(
@@ -105,6 +120,10 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   toggleInfo() {
     this.observationSettings = {showIntro: !this.observationSettings.showIntro};
+  }
+
+  toggleMobile() {
+    this.statusFilterMobile = !this.statusFilterMobile;
   }
 
   onQueryChange() {

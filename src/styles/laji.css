@@ -28,6 +28,10 @@ p {
   flex-direction: column;
 }
 
+.container-fluid {
+  z-index: 99;
+}
+
 .footer, #navbar {
   flex: none;
 }

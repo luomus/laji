@@ -48,3 +48,16 @@ label {
   font-weight: normal;
   color: #fff;
 }
+
+@media only screen and (max-width: 1024px) {
+  .badge {
+    padding: 10px 8px;
+    width: 45%;
+    font-size: 14px;
+  }
+
+  .badge:first-child{
+    margin-right:7%;
+  }
+
+}
