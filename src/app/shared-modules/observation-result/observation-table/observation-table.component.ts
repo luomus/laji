@@ -63,6 +63,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() selectChange = new EventEmitter<string[]>();
+  @Output() resetColumns = new EventEmitter<void>();
   @Output() rowSelect = new EventEmitter<any>();
   @Output() total = new EventEmitter<number>();
 

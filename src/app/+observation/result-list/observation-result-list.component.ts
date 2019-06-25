@@ -14,11 +14,7 @@ const DEFAULT_PAGE_SIZE = 100;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultListComponent implements OnInit {
-  @ViewChild('documentModal') public modal: ModalDirective;
-  @Input() query: WarehouseQueryInterface;
-  @Input() visible: boolean;
-
-  selected: string[] = [
+  private static readonly defaultFields: string[] = [
     'unit.taxon',
     'unit.abundanceString',
     'gathering.displayDateTime',
@@ -29,7 +25,13 @@ export class ObservationResultListComponent implements OnInit {
     'document.collectionId',
     'gathering.team'
   ];
-  pageSize;
+
+  @ViewChild('documentModal') public modal: ModalDirective;
+  @Input() query: WarehouseQueryInterface;
+  @Input() visible: boolean;
+
+  selectedFields = ObservationResultListComponent.defaultFields;
+  pageSize: number;
   aggregateBy: string[] = [];
 
   shownDocument = '';
@@ -50,7 +52,7 @@ export class ObservationResultListComponent implements OnInit {
       .subscribe(data => {
         if (data) {
           this.aggregateBy = data.aggregateBy;
-          this.selected = data.selected || this.selected;
+          this.selectedFields = data.selected || this.selectedFields;
           this.pageSize = data.pageSize || DEFAULT_PAGE_SIZE;
         } else {
           this.pageSize = DEFAULT_PAGE_SIZE;
@@ -68,20 +70,25 @@ export class ObservationResultListComponent implements OnInit {
     }
   }
 
-  setPageSize(event) {
-    this.pageSize = event;
+  setPageSize(size: number) {
+    this.pageSize = size;
     this.saveSettings();
   }
 
-  setSelectedFields(event) {
-    this.selected = [...event];
+  setSelectedFields(fields: string[]) {
+    this.selectedFields = [...fields];
+    this.saveSettings();
+  }
+
+  resetSelectedFields() {
+    this.selectedFields = [ ...ObservationResultListComponent.defaultFields ];
     this.saveSettings();
   }
 
   private saveSettings() {
     this.userService.setItem(UserService.SETTINGS_RESULT_LIST, {
       aggregateBy: this.aggregateBy,
-      selected: this.selected,
+      selected: this.selectedFields,
       pageSize: this.pageSize
     }).subscribe(() => {}, () => {});
   }

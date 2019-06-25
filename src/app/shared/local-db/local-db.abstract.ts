@@ -4,7 +4,7 @@ import { catchError, map } from 'rxjs/operators';
 
 export abstract class LocalDb {
 
-  private db;
+  private db: LocalForage;
 
   protected constructor(dbName = 'cache', private isPlatformBrowser = true) {
     this.db = localForage.createInstance({

@@ -18,6 +18,7 @@
         #aggregatedDataTable
         (rowSelect)="onAggregateSelect($event)"
         (selectChange)="setAggregateBy($event)"
+        (resetColumns)="resetSelectedFields()"
         (pageSizeChange)="setPageSize($event)"
         [pageSize]="pageSize"
         [visible]="visible"
@@ -33,6 +34,7 @@
         *ngIf="listQuery"
         (rowSelect)="showDocument($event)"
         (selectChange)="setSelectedFields($event)"
+        (resetColumns)="resetSelectedFields()"
         [pageSize]="pageSize"
         [visible]="visible"
         [height]="'calc(80vh - 30px)'"

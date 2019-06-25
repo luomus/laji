@@ -28,6 +28,9 @@ const DEFAULT_PAGE_SIZE = 1000;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainResultComponent implements OnInit, OnChanges {
+  private static readonly defaultFields: string[] = [
+    'unit.species'
+  ];
 
   @ViewChild('aggregatedDataTable') public aggregatedDataTable: ObservationTableComponent;
   @ViewChild('documentModal') public modal: ModalDirective;
@@ -51,9 +54,7 @@ export class MainResultComponent implements OnInit, OnChanges {
   documentModalVisible = false;
   initialized = false;
 
-  aggregateBy = [
-    'unit.species'
-  ];
+  aggregateBy = MainResultComponent.defaultFields;
 
   selected: string[] = [
     'unit.taxon',
@@ -218,6 +219,11 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   setSelectedFields(event) {
     this.selected = [...event];
+    this.saveSettings();
+  }
+
+  resetSelectedFields() {
+    this.aggregateBy = [ ...MainResultComponent.defaultFields ];
     this.saveSettings();
   }
 

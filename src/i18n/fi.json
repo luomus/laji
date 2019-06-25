@@ -924,6 +924,7 @@
   "result.aggregate.numbers": "Tunnusluvut",
   "result.allObservation": "havaintoa",
   "result.clear": "Tyhjennä",
+  "result.reset": "Palauta oletusasetukset",
   "result.document.collectionId": "Aineisto",
   "result.document.createdDate": "Luontiajankohta",
   "result.document.documentId": "Tunniste",

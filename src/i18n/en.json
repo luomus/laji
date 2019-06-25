@@ -810,6 +810,7 @@
   "result.aggregate.numbers": "Measures",
   "result.allObservation": "observation",
   "result.clear": "Clear",
+  "result.reset": "Reset settings",
   "result.document.collectionId": "Collection",
   "result.document.createdDate": "Date of creation",
   "result.document.documentId": "Identifier",

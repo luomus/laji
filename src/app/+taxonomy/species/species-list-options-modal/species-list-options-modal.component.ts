@@ -27,6 +27,12 @@ export class SpeciesListOptionsModalComponent {
     this.columnSelector.columns = [...this.requiredFields];
   }
 
+  resetFields() {
+    this.searchQuery.resetFields();
+    this.columnSelector.columns = [...this.searchQuery.listOptions.selected];
+    this.settingsChange.emit();
+  }
+
   openModal() {
     this.columnSelector.columns = [...this.searchQuery.listOptions.selected];
 

@@ -6,6 +6,11 @@ import { SearchQueryInterface } from '../../../shared-modules/search-filters/sea
 
 @Injectable()
 export class TaxonomySearchQuery implements SearchQueryInterface {
+  private static readonly defaultFields: string[] = [
+    'vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
+    'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames'
+  ];
+
   public queryType = 'taxonomy';
   private queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
@@ -29,15 +34,24 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
 
   public init(): void {
     this.query = {};
-    this.listOptions = {
-      page: 1,
-      sortOrder: this.listOptions ? this.listOptions.sortOrder : 'taxonomic',
-      selected: this.listOptions ? this.listOptions.selected : ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
-        'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames']
-    };
+
+    if (!this.listOptions) {
+      this.listOptions = {
+        page:      1,
+        sortOrder: 'taxonomic',
+        selected:  TaxonomySearchQuery.defaultFields
+      };
+    } else {
+      this.listOptions = { ...this.listOptions, page: 1 };
+    }
+
     this.imageOptions = {
       page: 1
     };
+  }
+
+  public resetFields() {
+    this.listOptions.selected = TaxonomySearchQuery.defaultFields;
   }
 
   public setQueryFromParams(params: Params) {
