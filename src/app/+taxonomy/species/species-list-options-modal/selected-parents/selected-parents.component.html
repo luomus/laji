@@ -5,12 +5,12 @@
       (click)="onToggle(parent)"
       [ngClass]="{active: selected.indexOf('parent.' + parent + '.scientificName') > -1}">
     <ng-container>
-      <ng-container *ngIf="selected.indexOf('parent.' + parent + '.scientificName') > -1">
+      <div *ngIf="selected.indexOf('parent.' + parent + '.scientificName') > -1">
         <button (click)="onMoveUp(parent, $event)" class="btn btn-xs">&#x25C0;</button>
         {{ selected.indexOf('parent.' + parent + '.scientificName') + 1 }}.,
         {{ selected.indexOf('parent.' + parent + '.scientificNameAuthorship') + 1 }}.
         <button (click)="onMoveDown(parent, $event)" class="btn btn-xs">&#x25B6;</button>
-      </ng-container>
+      </div>
       {{ 'MX.' + parent | label | capitalize }}
     </ng-container>
   </li>
