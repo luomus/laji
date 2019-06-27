@@ -595,6 +595,11 @@
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.3.0.tgz#6b0e4b0192367d77e438ff660ccc4487c9602e7b"
   integrity sha512-0VU8WsYEOYmoxVtUuafB66/+9G8gMdGAC3dhCE/CMpjXgNIz9fwC6g41kRlNxFgpQI/uX/aWNLArNg7KmeFYvw==
 
+"@types/jasmine@^3.3.13":
+  version "3.3.13"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.3.13.tgz#d5daabb0af47bcddee40597acf6e804433bab439"
+  integrity sha512-iczmLoIiVymaD1TIr2UctxjFkNEslVE/QtNAUmpDsD71cZfZBAsPCUv1Y+8AwsfA8bLx2ccr7d95T9w/UAirlQ==
+
 "@types/jasminewd2@2.0.6":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@types/jasminewd2/-/jasminewd2-2.0.6.tgz#2f57a8d9875a6c9ef328a14bd070ba14a055ac39"
@@ -5552,18 +5557,18 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.627:
-  version "0.0.627"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.627.tgz#d1393ae1a5e1d55f9f8493ef889c101396b86e23"
-  integrity sha512-ueSbhiDaG+kBcH1Yd6yjq4n0R0stiLL4MuZiyDatZoGl8/OnDlCyyqYnHKw2eBkSxGZNCirfNjIygLP02aVxjw==
+laji-form@^0.0.628:
+  version "0.0.628"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.628.tgz#2e5d8ecda3dd3052efcba892f6fe108ab66395ec"
+  integrity sha512-TKZw7JQhVW62iSALaXDjNFZ93bUDjn7ulp6L5qGjbuDHEaKhY5LZ/RH5ZQDnHFGvfLHQzGH6kX+fgzRb1XUv+g==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     exif-js "^2.3.0"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.506"
-    laji-validate "0.0.73"
+    laji-map "^1.0.507"
+    laji-validate "0.0.75"
     moment "*"
     prop-types "^15.5.8"
     react "^16.8.6"
@@ -5581,13 +5586,14 @@ laji-form@^0.0.627:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.504, laji-map@^1.0.395, laji-map@^1.0.504, laji-map@^1.0.506:
-  version "1.0.504"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.504.tgz#f7a228d1384901ac150861ea7ab28e32935f29e8"
-  integrity sha512-XUbQtq6peMZSMbUuIkyiTigEsSVF+uVIqTNek01GaiHVVawmgXBdSZwaDu/XPHtYIv+aPFiMwyP/uvJgSm0//A==
+laji-map@1.0.507, laji-map@^1.0.507:
+  version "1.0.507"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.507.tgz#b4f463d5d9de82f43b2e6f16c6a9e989b89f09ea"
+  integrity sha512-DESxXjCjGCV8CD0mhE+QHlUNUDrPI7jJGolQHULVRhdK29wPyEjJiNYhhIL6O9s5V2Ba3wbwnRpaTvuvQbFuFw==
   dependencies:
+    "@types/jasmine" "^3.3.13"
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    leaflet "1.4.0"
+    leaflet "1.5.1"
     leaflet-contextmenu "1.4.0"
     leaflet-draw "1.0.3"
     leaflet-geometryutil "0.8.0"
@@ -5605,14 +5611,14 @@ laji-map@1.0.504, laji-map@^1.0.395, laji-map@^1.0.504, laji-map@^1.0.506:
     "@types/leaflet.markercluster" "*"
     "@types/node" "*"
 
-laji-validate@0.0.73:
-  version "0.0.73"
-  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.73.tgz#e6387d9c0d4dd9eb4b32f2461ebfb6667dbb4644"
-  integrity sha512-hA2FUtbtL3rypH+1tHy3i2QtzS38cA2MuaLK7JdXuynbLEMuWH1pNeggqEDK15UHGjXJFjEUYjXWsw50XEwNtA==
+laji-validate@0.0.75:
+  version "0.0.75"
+  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.75.tgz#a5be701f69069ea002830358f84bf71292c3d30a"
+  integrity sha512-4yny2XTj59VkhBqeG4PFhgGOb9/SIxyAG0+M7Li9nxhLiP6X7fz61Si78koJ+WDU7KtlcELjUCIdtBrweU1Tlg==
   dependencies:
     "@mapbox/geojson-area" "^0.2.2"
     geojson-bounds "^1.0.1"
-    laji-map "^1.0.395"
+    laji-map "^1.0.507"
     moment "*"
     validate.js "github:vixriihi/validate.js#dev"
 
@@ -5686,10 +5692,10 @@ leaflet.sync@^0.2.4:
   resolved "https://registry.yarnpkg.com/leaflet.sync/-/leaflet.sync-0.2.4.tgz#76d4095a61470882d72e092190090d0a1fa55ca2"
   integrity sha1-dtQJWmFHCILXLgkhkAkNCh+lXKI=
 
-leaflet@*, leaflet@1.4.0, leaflet@>=0.7.0, leaflet@^1.0.1:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.4.0.tgz#d5f56eeb2aa32787c24011e8be4c77e362ae171b"
-  integrity sha512-x9j9tGY1+PDLN9pcWTx9/y6C5nezoTMB8BLK5jTakx+H7bPlnbCHfi9Hjg+Qt36sgDz/cb9lrSpNQXmk45Tvhw==
+leaflet@*, leaflet@1.5.1, leaflet@>=0.7.0, leaflet@^1.0.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.5.1.tgz#9afb9d963d66c870066b1342e7a06f92840f46bf"
+  integrity sha512-ekM9KAeG99tYisNBg0IzEywAlp0hYI5XRipsqRXyRTeuU8jcuntilpp+eFf5gaE0xubc9RuSNIVtByEKwqFV0w==
 
 less-loader@4.1.0:
   version "4.1.0"
