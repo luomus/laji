@@ -28,8 +28,12 @@ p {
   flex-direction: column;
 }
 
+
 .container-fluid {
   z-index: 99;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1600px;
 }
 
 .footer, #navbar {
@@ -50,7 +54,15 @@ laji-locale-sv > div,
 }
 
 #content .container-fluid {
+  margin-right: auto; 
+  margin-left: auto;
+  max-width: 1600px;
+}
+
+#content .container-fluid.observation-fluid{
+  z-index: 99;
   margin: 0;
+  max-width: none;
 }
 
 #content .container-fluid > div {

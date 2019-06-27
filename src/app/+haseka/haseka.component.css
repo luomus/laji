@@ -16,6 +16,22 @@
   color: #3498DB;
 }
 
+#haseka-container {
+  margin-left: 15px;
+  margin-right: 15px;
+  width: auto;
+}
+
+@media only screen and (min-width : 1600px) {
+  #haseka-container {
+    width:1600px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left:15px;
+    padding-right: 15px;
+  }
+}
+
 @media only screen and (min-width : 768px) {
   .flex-column {
     display: flex;
@@ -29,10 +45,6 @@
   }
 }
 
-#haseka-container {
-  margin-left: 15px;
-  margin-right: 15px;
-}
 
 #content-container {
   margin-bottom: 20px;
