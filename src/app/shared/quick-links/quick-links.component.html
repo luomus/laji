@@ -1,0 +1,16 @@
+<div class="quick-links padding-top-10 dark-blue">
+  <div class="container-fluid">
+    <div class="row flex">
+      <div class="col-sm-9">
+        <span class="text-cta">Do you want send a report? Do you want to take part in citizen science? Click here to see all our services.</span>
+      </div>
+      <div class="col-sm-3">
+        <a class="cta" (click)="toggleMoreInfo()">Open our services {{ showMoreInfo }}</a>
+      </div>
+    </div>
+    <div class="more-info padding-top-10 dark-blue" *ngIf="showMoreInfo">
+      hola
+    </div>
+  </div>
+</div>
+
