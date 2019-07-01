@@ -964,38 +964,3 @@ input[type="radio"]
 .datatable-body-row.datatable-row-odd.sent {
   background: #009a00 !important;
 }
-
-
-/* General style */
-.padding-top-10 {
- padding: 10px 0;
-}
-
-.dark-blue {
-  background-color: #2C3E50;
-}
-
-.cta {
-  padding: 6px;
-  border: 1px solid #2980B9;
-  background-color: white;
-  border-radius: 6px;
-  display: inline-block;
-  min-width: 200px;
-  text-align: center;
-  -webkit-box-shadow: 0px 10px 15px 0px rgba(255,255,255,1);
-  -moz-box-shadow: 0px 10px 15px 0px rgba(255,255,255,1);
-  box-shadow: 0px 10px 15px 0px rgba(255,255,255,1);
-  -webkit-box-shadow: 0px 0px 13px 12px rgba(255,255,255,1);
-  -moz-box-shadow: 0px 0px 13px 12px rgba(255,255,255,1);
-  box-shadow: 0px 0px 10px 5px rgba(255,255,255,1);
-  font-weight: bold;
-  font-size: 16px;
-  float: right;
-  cursor: pointer;
-}
-
-.cta:hover {
-  text-decoration: none;
-  background-color: #cce6f7;
-}

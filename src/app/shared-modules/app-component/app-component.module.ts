@@ -11,7 +11,6 @@ import { LocaleSvComponent } from '../../locale/locale-sv.component';
 import { SharedModule } from '../../shared/shared.module';
 import { IucnFooterComponent } from '../../shared/iucn-footer/footer.component';
 import { LangModule } from '../lang/lang.module';
-import { QuickLinksComponent } from '../../shared/quick-links/quick-links.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +22,6 @@ import { QuickLinksComponent } from '../../shared/quick-links/quick-links.compon
     LocaleEnComponent,
     LocaleFiComponent,
     LocaleSvComponent,
-    QuickLinksComponent,
     AppComponent
   ],
   imports: [
@@ -40,7 +38,6 @@ import { QuickLinksComponent } from '../../shared/quick-links/quick-links.compon
     LocaleEnComponent,
     LocaleFiComponent,
     LocaleSvComponent,
-    QuickLinksComponent,
     AppComponent
   ]
 })
