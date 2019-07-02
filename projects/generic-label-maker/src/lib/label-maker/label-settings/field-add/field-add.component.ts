@@ -20,8 +20,9 @@ export class FieldAddComponent {
     const select = event.target as HTMLSelectElement;
     const value = select.value;
     select.value = '';
-    if (this.availableFields[value]) {
-      this.add.emit({...this.availableFields[value]});
+    const idx = this.availableFields.findIndex((v) => v.field === value);
+    if (idx > -1) {
+      this.add.emit({...this.availableFields[idx]});
     }
   }
 }
