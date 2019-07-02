@@ -1,10 +1,10 @@
 <div class="settings-wrap">
   <table class="input" style="width: 100%; margin-bottom: 15px;">
     <tr>
-      <td style="width: 20%">
+      <td style="width: 30%">
         <label class="link fill" for="excel-file"><ll-icon type="load"></ll-icon></label>
       </td>
-      <td style="width: 80%">
+      <td style="width: 70%">
         <label class="link fill" for="excel-file">
           <span style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 240px; display: block" *ngIf="filename; else noFile">
             {{filename}}
@@ -38,6 +38,12 @@
         <select style="width: 100%" class="form-control input-sm" (change)="changeIdCol($event.target.value)">
           <option *ngFor="let header of headers" [value]="header" [selected]="header === uriCol">{{header}}</option>
         </select>
+      </td>
+    </tr>
+    <tr style="padding-top: 5px;">
+      <td>{{ 'First data row' | translate }}:</td>
+      <td>
+        <input class="form-control input-sm" type="number" [value]="dataStarts" (change)="dataStarts = $event.target.value" (keyup)="dataStarts = $event.target.value">
       </td>
     </tr>
   </table>

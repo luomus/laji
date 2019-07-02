@@ -13,6 +13,7 @@ export class LabelExcelFileComponent implements OnInit {
   @Input() defaultDomain;
   idField = '_id';
   domainField = '_domain';
+  dataStarts = 2;
 
   wb: XLSX.WorkBook;
   filename: string;
@@ -67,9 +68,10 @@ export class LabelExcelFileComponent implements OnInit {
   }
 
   loadData() {
+    const start = this.dataStarts > 1 ? this.dataStarts : 2;
     return {
       availableFields: this.importFields ? this.getFields() : undefined,
-      data: this.data.map(row => {
+      data: this.data.slice(start - 2).map(row => {
         const uri = this.makeUri(row[this.uriCol]);
         const parsedUri = LabelService.parseUri(uri);
         const rowData = {
