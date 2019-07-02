@@ -52,7 +52,7 @@ import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-chart
 import { WbcRouteComponent } from './wbc/wbc-result/wbc-route/wbc-route.component';
 import { WbcRouteTableComponent } from './wbc/wbc-result/wbc-route-table/wbc-route-table.component';
 import { FormPermissionModule } from '../+haseka/form-permission/form-permission.module';
-import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
+import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail/navigation-thumbnail.module';
 import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest-documents.module';
 import { WbcTableFilterComponent } from './wbc/wbc-result/wbc-table-filter/wbc-table-filter.component';
 import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-list/wbc-routes-list.component';
