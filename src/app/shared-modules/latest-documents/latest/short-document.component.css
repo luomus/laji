@@ -9,3 +9,46 @@
 .nowrap {
   white-space: nowrap;
 }
+
+.info {
+  display: inline-block;
+  width: 85%;
+}
+
+.observation-tools {
+  display: inline-block;
+  width: 35px;
+  float: right;
+}
+
+.button-tools {
+  display: block;
+  margin-bottom: 3px;
+  width: 25px;
+  padding: 4px 0;
+  font-size: 12px;
+  display: block;
+  margin-bottom: 3px;
+  float: right;
+}
+
+.observation-title{
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .info, .observation-tools{
+    width:100%;
+    float: none;
+  }
+
+  .button-tools {
+    width: 32px;
+    display: inline-block;
+    padding: 9px 0;
+    margin-right: 5px;
+    float: left;
+  }
+}

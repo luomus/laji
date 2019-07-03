@@ -30,6 +30,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   public publicity = Document.PublicityRestrictionsEnum;
   public locality;
   public dateEdited;
+  public namedPlaceID;
 
   public showList = false;
   public changingLocale = true;
@@ -74,6 +75,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
     this.locality = gatheringInfo.locality;
+    this.namedPlaceID = gatheringInfo.namedPlaceID;
 
     this.loading = false;
   }
