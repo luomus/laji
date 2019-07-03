@@ -1,8 +1,3 @@
-<ng-template #todo>
-  <p style="margin-top: 10px">
-    {{ 'todoTranslation' | translate }}
-  </p>
-</ng-template>
 <div class="row">
   <div class="col-md-8">
     <h2>Talvilintulaskenta</h2>
@@ -53,25 +48,25 @@
 
     <ol>
       <li>
-        <a href="javascript:void(0)" (click)="toFragment('wbc-route')">Reitin valinta</a>
+        <a href="/theme/talvilintulaskenta/instructions#wbc-route">Reitin valinta</a>
       </li>
       <li>
-        <a href="javascript:void(0)" (click)="toFragment('wbc-send')">Havaintojen ilmoitus</a>
+        <a href="/theme/talvilintulaskenta/instructions#wbc-send">Havaintojen ilmoitus</a>
         <ol style="list-style-type: lower-alpha">
-          <li><a href="javascript:void(0)" (click)="toFragment('wbc-info')">Laskennan tiedot</a></li>
-          <li><a href="javascript:void(0)" (click)="toFragment('wbc-weather')">Sää- ja ravintotiedot ja marjalintuhuippu</a></li>
-          <li><a href="javascript:void(0)" (click)="toFragment('wbc-mammals')">Nisäkäshavainnot</a></li>
-          <li><a href="javascript:void(0)" (click)="toFragment('wbc-map')">Karttatyökalu</a></li>
-          <li><a href="javascript:void(0)" (click)="toFragment('wbc-biotope')">Biotoopit, lintulaudat ja ruokinnat</a></li>
-          <li><a href="javascript:void(0)" (click)="toFragment('wbc-obs')">Havainnot</a></li>
-          <li><a href="javascript:void(0)" (click)="toFragment('wbc-save')">Tallennus</a></li>
+          <li><a href="/theme/talvilintulaskenta/instructions#wbc-info">Laskennan tiedot</a></li>
+          <li><a href="/theme/talvilintulaskenta/instructions#wbc-weather">Sää- ja ravintotiedot ja marjalintuhuippu</a></li>
+          <li><a href="/theme/talvilintulaskenta/instructions#wbc-mammals">Nisäkäshavainnot</a></li>
+          <li><a href="/theme/talvilintulaskenta/instructions#wbc-map">Karttatyökalu</a></li>
+          <li><a href="/theme/talvilintulaskenta/instructions#wbc-biotope">Biotoopit, lintulaudat ja ruokinnat</a></li>
+          <li><a href="/theme/talvilintulaskenta/instructions#wbc-obs">Havainnot</a></li>
+          <li><a href="/theme/talvilintulaskenta/instructions#wbc-save">Tallennus</a></li>
         </ol>
       </li>
       <li>
-        <a href="javascript:void(0)" (click)="toFragment('wbc-edit')">Havaintoerän muokkaus</a>
+        <a href="/theme/talvilintulaskenta/instructions#wbc-edit">Havaintoerän muokkaus</a>
       </li>
       <li>
-        <a href="javascript:void(0)" (click)="toFragment('wbc-link')">Vanhojen havaintojen linkitys</a>
+        <a href="/theme/talvilintulaskenta/instructions#wbc-link">Vanhojen havaintojen linkitys</a>
       </li>
     </ol>
 
@@ -114,9 +109,9 @@
 
     <p>
       Lähes kaikki Linnustonseurannan tiedossa olevat reittikartat on siirretty Vihkoon. Jos reitin kulku oli piirretty Hatikkaan, Vihkoon on kopioitu viimeisin piirretty kartta. Laskija päivittää mahdolliset pakon sanelemat muutokset (esimerkiksi uusien rakennusten kierto yms.) karttaan heti tuoreeltaan. Jos reitti on uusi, kartta piirretään Vihkoon eikä sitä tarvitse muulla tavoin lähettää Linnustonseurantaan. Kartta kopioituu seuraavaan ilmoituskertaan.
-      <a href="javascript:void(0)" (click)="showMapInfo = !showMapInfo">Lisäohjeita karttatyökalun käytöstä</a>.
+      <a href="javascript:void(0)" onclick="javascript:document.getElementById('more-info-map').style.display = 'block'">Lisäohjeita karttatyökalun käytöstä</a>.
     </p>
-    <ng-container *ngIf="showMapInfo">
+    <div id="more-info-map" style="display: none;">
 
       Karttatyökalujen selitteet:
 
@@ -152,7 +147,7 @@
 
       <img src="https://cdn.laji.fi/images/wbc/intro-3.png">
 
-    </ng-container>
+    </div>
 
     <h4 id="wbc-biotope">Biotoopit, lintulaudat ja ruokinnat</h4>
 
