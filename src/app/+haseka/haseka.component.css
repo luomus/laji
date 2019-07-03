@@ -22,6 +22,12 @@
   width: auto;
 }
 
+.active {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #898989;
+}
+
 @media only screen and (min-width : 1600px) {
   #haseka-container {
     width:1600px;

@@ -13,20 +13,21 @@
               </div>
             </div>
           </ng-container>
-          <div [innerHtml]="'haseka.intro' | translate" *ngIf="isFront"></div>
-          <laji-haseka-terms *ngIf="isFront"></laji-haseka-terms>
+          <div [innerHtml]="'haseka.intro' | translate"></div>
+          <laji-haseka-terms></laji-haseka-terms>
           <a [routerLink]="'/about/2336' | localize" target="_blank">{{ 'haseka.instructions' | translate }}</a> |
           <a [routerLink]="'/vihko/terms-of-service' | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
           <router-outlet></router-outlet>
         </div>
       </div>
       <div class="col-sm-3 col-md-3 col-lg-3 more-info flex-column">
+        <h4>Menu</h4>
         <ul class="sidebar-nav">
-          <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize">{{ 'haseka.forms.title' | translate }}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{ 'haseka.ownSubmissions.title' | translate }}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'templates'] | localize">{{ 'haseka.templates.title' | translate }}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize">{{ 'haseka.statistics.title' | translate }}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'tools'] | localize">{{ 'haseka.tools' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ 'haseka.forms.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize" routerLinkActive="active" routerLinkActiveOptions="{exact:true}">{{ 'haseka.ownSubmissions.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'templates'] | localize" routerLinkActive="active" routerLinkActiveOptions="{exact:true}">{{ 'haseka.templates.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize" routerLinkActive="active" routerLinkActiveOptions="{exact:true}">{{ 'haseka.statistics.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'tools'] | localize" routerLinkActive="active" routerLinkActiveOptions="{exact:true}">{{ 'haseka.tools' | translate }}</a></li>
         </ul>
 
         <laji-haseka-latest [userToken]="userService.getToken()"

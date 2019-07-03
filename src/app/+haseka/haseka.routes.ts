@@ -28,7 +28,7 @@ export const hasekaRoutes: Routes = [
         path: '',
         component: HasekaComponent,
         children: [
-          {path: '', pathMatch: 'full', component: HaSeKaFormListComponent},
+          {path: '', pathMatch: 'full', redirectTo: 'forms', component: HaSeKaFormListComponent},
           {path: 'forms', pathMatch: 'full', component: HaSeKaFormListComponent},
           {path: 'ownSubmissions', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: OwnSubmissionsComponent},
           {path: 'templates', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: TemplatesComponent},
