@@ -2,13 +2,28 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  margin-bottom: 50px;
 }
 .form-list li {
   font-size: 12px;
-  margin: 0 0 4px 0;
+  margin: 0 0 25px 0;
+}
+
+.category-box {
+  float:left;
+  width:100%;
+}
+
+.form-box {
+  cursor: pointer;
+  position: relative;
 }
 
 @media only screen and (max-width : 991px) {
+  .form-list {
+    margin-bottom: 20px;
+  }
+
   .form-list li {
     margin: 0 0 15px 0;
   }

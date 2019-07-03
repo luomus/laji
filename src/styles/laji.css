@@ -964,3 +964,20 @@ input[type="radio"]
 .datatable-body-row.datatable-row-odd.sent {
   background: #009a00 !important;
 }
+
+
+/* CTA Buttons */
+
+.cta {
+  box-shadow: 0px 18px 4px -13px rgba(0,0,0,0.75); 
+  -webkit-box-shadow: 0px 18px 4px -13px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 18px 4px -13px rgba(0,0,0,0.75);
+  background-color: #3498DB;
+  border: none;
+  color:white;
+}
+
+.cta:hover {
+  background-color: #2980B9;
+  color:white;
+}
