@@ -5557,10 +5557,10 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.628:
-  version "0.0.628"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.628.tgz#2e5d8ecda3dd3052efcba892f6fe108ab66395ec"
-  integrity sha512-TKZw7JQhVW62iSALaXDjNFZ93bUDjn7ulp6L5qGjbuDHEaKhY5LZ/RH5ZQDnHFGvfLHQzGH6kX+fgzRb1XUv+g==
+laji-form@^0.0.629:
+  version "0.0.629"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.629.tgz#d9634a14a9758c75c487139af159ce38c04681cc"
+  integrity sha512-89lQBprGo45Fiy/DDMgc3TNXBwoxlf32oXi2GdtW6fGRu53jbUkrIvKbTNEQZCDVgsP068bVPthh7ET2nTvb8g==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -5568,7 +5568,7 @@ laji-form@^0.0.628:
     exif-js "^2.3.0"
     immutability-helper "^2.1.2"
     laji-map "^1.0.507"
-    laji-validate "0.0.75"
+    laji-validate "0.0.77"
     moment "*"
     prop-types "^15.5.8"
     react "^16.8.6"
@@ -5611,10 +5611,10 @@ laji-map@1.0.508, laji-map@^1.0.507, laji-map@^1.0.508:
     "@types/leaflet.markercluster" "*"
     "@types/node" "*"
 
-laji-validate@0.0.75:
-  version "0.0.75"
-  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.75.tgz#a5be701f69069ea002830358f84bf71292c3d30a"
-  integrity sha512-4yny2XTj59VkhBqeG4PFhgGOb9/SIxyAG0+M7Li9nxhLiP6X7fz61Si78koJ+WDU7KtlcELjUCIdtBrweU1Tlg==
+laji-validate@0.0.77:
+  version "0.0.77"
+  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.77.tgz#1fe7813ac3b2ee5c41cd3230aadd805e4649f543"
+  integrity sha512-7tBnR6xJFgLFW0uW6PyMvYGdFD+ODFAvGxZ1mTSSpF+gnpXSgGl5ntkP4p0Usj68NlQ3N7Omd0CCP3W4Hk7AAg==
   dependencies:
     "@mapbox/geojson-area" "^0.2.2"
     geojson-bounds "^1.0.1"
