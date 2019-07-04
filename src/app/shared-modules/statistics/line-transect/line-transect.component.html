@@ -51,7 +51,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let species of counts.species">
+      <tr *ngFor="let species of counts.species | sort:'name'">
         <td>{{ species.name || species.id }}</td>
         <td>{{ species.psCouples }}</td>
         <td>{{ species.tsCouples + species.psCouples }}</td>

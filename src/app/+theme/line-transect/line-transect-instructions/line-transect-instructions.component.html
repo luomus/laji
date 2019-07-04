@@ -1,8 +1,3 @@
-<ng-template #todo>
-  <p style="margin-top: 10px">
-    {{ 'todoTranslation' | translate }}
-  </p>
-</ng-template>
 <div class="row">
   <div class="col-md-8">
     <h3>Linjalaskenta</h3>
@@ -13,30 +8,30 @@
 
     <ol>
     	<li>
-    	  <a href="javascript:void(0)" (click)="toFragment('reserve')">Linjojen tarkastelu ja vakiolinjan varaaminen</a>
+    	  <a href="/theme/linjalaskenta/instructions#reserve">Linjojen tarkastelu ja vakiolinjan varaaminen</a>
     	</li>
     	<li>
-    	  <a href="javascript:void(0)" (click)="toFragment('form')">Havaintojen ilmoittaminen</a>
+    	  <a href="/theme/linjalaskenta/instructions#form">Havaintojen ilmoittaminen</a>
     	</li>
     	<li>
-    	  <a href="javascript:void(0)" (click)="toFragment('map')">Karttatyökalu</a>
+    	  <a href="/theme/linjalaskenta/instructions#map">Karttatyökalu</a>
           <ol style="list-style-type: lower-alpha">
             <li>
-              <a href="javascript:void(0)" (click)="toFragment('biotopes')">Biotooppipätkät</a>
+              <a href="/theme/linjalaskenta/instructions#biotopes">Biotooppipätkät</a>
             </li>
             <li>
-              <a href="javascript:void(0)" (click)="toFragment('line-edit')">Biotooppipätkien pituuden ja reitin kulun muuttaminen</a>
+              <a href="/theme/linjalaskenta/instructions#line-edit">Biotooppipätkien pituuden ja reitin kulun muuttaminen</a>
             </li>
             <li>
-              <a href="javascript:void(0)" (click)="toFragment('map-tools')">Karttatyökalujen selitteitä</a>
+              <a href="/theme/linjalaskenta/instructions#map-tools">Karttatyökalujen selitteitä</a>
             </li>
           </ol>
     	</li>
     	<li>
-    	  <a href="javascript:void(0)" (click)="toFragment('results')">Tulospalvelu</a>
+    	  <a href="/theme/linjalaskenta/instructions#results">Tulospalvelu</a>
     	</li>
     	<li>
-    	  <a href="javascript:void(0)" (click)="toFragment('editing')">Omien linjalaskentahavaintojen tarkastelu ja muokkaus</a>
+    	  <a href="/theme/linjalaskenta/instructions#editing">Omien linjalaskentahavaintojen tarkastelu ja muokkaus</a>
     	</li>
     </ol>
 

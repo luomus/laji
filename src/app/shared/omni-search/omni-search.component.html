@@ -41,12 +41,12 @@
             <div class="col-md-6 first-col">
               <div style="margin-bottom: 10px">
                 <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()">
-                  {{ 'Siirry lajikortille' }}
+                  {{ 'omniSearch.taxonList' | translate }}
                   <i class="glyphicon glyphicon-tag"></i>
                 </a>
                 <br>
                 <a [routerLink]="['/taxon/' + taxon.key + '/taxonomy'] | localize" [queryParams]="{ showTree: true }" (click)="close()">
-                  {{ 'Selaa taksonomiaa' }}
+                  {{ 'omniSearch.taxonCard' | translate }}
                 </a>
               </div>
 

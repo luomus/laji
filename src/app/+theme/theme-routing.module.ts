@@ -96,11 +96,12 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['instructions', 'stats', 'form', 'ei-vakiolinjat', 'kartoitus', 'ownSubmissions', 'formPermissions'],
-      hideNavFor: ['/form']
+      hideNavFor: ['/form'],
+      instructions: '2844'
     },
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
       {
         path: 'form', component: FormComponent,
       },
@@ -176,7 +177,8 @@ const routes: Routes = [
           ]
         }
       },
-      navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'formPermissions']
+      navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'formPermissions'],
+      instructions: '2846'
     },
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
