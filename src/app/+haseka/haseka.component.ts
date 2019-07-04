@@ -45,7 +45,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
       map(event => true), ).pipe(
       startWith(true))
       .subscribe(() => {
-        this.isFront = this.router.isActive('/vihko', true);
+        this.isFront = this.router.isActive('/vihko/forms', true);
       });
   }
 

@@ -24,12 +24,12 @@
   <div class="content">
       {{ form.shortDescription }}
       <div class="notification" *ngIf="tmpDocuments[form.id] || hasAdminRight">
-          <span *ngIf="tmpDocuments[form.id]" class="unsaved" [tooltip]="'haseka.form.localData' | translate">
+          <span *ngIf="!tmpDocuments[form.id]" class="unsaved" [tooltip]="'haseka.form.localData' | translate">
               <a [routerLink]="['/vihko', form.id, tmpDocuments[form.id]] | localize" class="form btn btn-danger btn-sm">
                   <i class="glyphicon glyphicon-warning-sign"></i>
               </a>
           </span>
-          <span *ngIf="hasAdminRight">
+          <span *ngIf="!hasAdminRight">
               <a [routerLink]="['/vihko/fp/' + form.collectionID + '/admin'] | localize" class="btn btn-sm btn-warning">
                   Hallinnoi lomakkeen käyttöä
               </a>

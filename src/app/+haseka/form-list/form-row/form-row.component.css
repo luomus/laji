@@ -14,6 +14,11 @@
   font-size: 14px;
 }
 
+.form-box .header h4 {
+  margin-bottom: 0px;
+  margin-top:0px;
+}
+
 .form-box .header {
   padding-left: 9px;
   height: 50px;
@@ -22,11 +27,12 @@
   background-color: rgb(236, 240, 241);
   color: #333;
   position: relative;
+  padding: 5px 9px;
 }
 
 .form-box .content {
   padding: 9px 9px 0 9px;
-  min-height: 80px;
+  min-height: 110px;
   margin-bottom: 42px;
   font-size: 16px;
   line-height: 22px;
@@ -66,9 +72,16 @@
 
 @media only screen and (max-width : 1280px) {
   .form-box .content {
-    height: 110px;
+    min-height: 130px;
   }
 }
+
+@media only screen and (max-width : 1024px) {
+  .form-box .content {
+    min-height: 150px;
+  }
+}
+
 
 @media only screen and (max-width : 991px) {
   .shortDescription {
