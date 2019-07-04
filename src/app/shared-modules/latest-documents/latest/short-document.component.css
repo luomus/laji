@@ -21,6 +21,23 @@
   float: right;
 }
 
+.delete_tmp {
+  padding: 3px 2px;
+}
+
+.delete_tmp span {
+  display: inline-block;
+}
+
+.delete_tmp span:first-child {
+  float:left;
+  width:85%;
+}
+
+.delete_tmp span:last-child {
+  float:right;
+}
+
 .button-tools {
   display: block;
   margin-bottom: 3px;
@@ -35,7 +52,6 @@
 .observation-title{
   font-size: 16px;
   font-weight: bold;
-  margin-bottom: 5px;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -51,4 +67,35 @@
     margin-right: 5px;
     float: left;
   }
+
+  .delete_tmp span:first-child {
+    width:100%;
+  }
+  
+  .delete_tmp span:last-child {
+    float:left;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .delete_tmp span:first-child {
+    width:85%;
+  }
+  
+  .delete_tmp span:last-child {
+    float:right;
+  }
+
+  .info {
+    display: inline-block;
+    width: 85%;
+  }
+  
+  .observation-tools {
+    display: inline-block;
+    width: 35px;
+    float: right;
+  }
+
+  
 }

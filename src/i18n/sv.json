@@ -925,6 +925,7 @@
   "result.settings.list": "Inställningar för listan",
   "result.showViewer": "Visa observation",
   "result.showPrivateViewer": "Visa opublicerad observation",
+  "result.showPrivateViewerText": "Opublicerad observation",
   "result.taxonomicOrder": "Taxonomic order",
   "result.unit.abundanceString": "Mängd",
   "result.unit.det": "Det.",

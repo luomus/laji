@@ -88,7 +88,6 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   removeDocument(event) {
     event.stopPropagation();
-
     if (this.newUnitsLength > 0) {
       this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).subscribe(
         (confirm) => {

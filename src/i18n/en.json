@@ -853,6 +853,7 @@
   "result.settings.list": "Settings for the list",
   "result.showViewer": "Show observation",
   "result.showPrivateViewer": "Show unpublished observation",
+  "result.showPrivateViewerText": "Unpublished observation",
   "result.taxonomicOrder": "Taxonomic order",
   "result.unit.abundanceString": "Number",
   "result.unit.det": "Det.",

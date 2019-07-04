@@ -966,6 +966,7 @@
   "result.settings.list": "Luettelon asetukset",
   "result.showViewer": "Näytä havaintoerä",
   "result.showPrivateViewer": "Näytä julkaisematon havaintoerä",
+  "result.showPrivateViewerText": "Julkaisematon havaintoerä",
   "result.taxonomicOrder": "Taksonominen järjestys",
   "result.unit.abundanceString": "Määrä",
   "result.unit.det": "Määrittäjä (det.)",

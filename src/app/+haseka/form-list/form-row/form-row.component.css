@@ -14,9 +14,14 @@
   font-size: 14px;
 }
 
+.form-box {
+  cursor: pointer;
+}
+
 .form-box .header h4 {
   margin-bottom: 0px;
   margin-top:0px;
+  margin-right: 35px;
 }
 
 .form-box .header {
@@ -34,7 +39,7 @@
   padding: 9px 9px 0 9px;
   min-height: 110px;
   margin-bottom: 42px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 22px;
   border-left: 6px solid #3498DB;
   overflow: hidden;
@@ -70,6 +75,16 @@
   -moz-transition-duration: .5s;
 }
 
+.alert-box {
+cursor: pointer;
+}
+
+.admin-rights {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
 @media only screen and (max-width : 1280px) {
   .form-box .content {
     min-height: 130px;
@@ -98,6 +113,12 @@
   .form-box .content {
     margin-bottom: 0px;
     height: auto;
+    min-height: auto;
+  }
+
+  .form-box .header {
+    height: auto;
+    min-height: 35px;
   }
   
 }
