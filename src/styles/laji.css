@@ -65,6 +65,14 @@ laji-locale-sv > div,
   max-width: none;
 }
 
+.navbar-fixed-top {
+  z-index: 1060;
+}
+
+.modal {
+  z-index: 1070;
+}
+
 #content .container-fluid > div {
   flex: 1 0 auto;
 }
