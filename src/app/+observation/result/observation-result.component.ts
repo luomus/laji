@@ -1,14 +1,9 @@
 import { filter } from 'rxjs/operators';
-import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, PLATFORM_ID, ViewChild,
-HostListener } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
-import { UserService } from '../../shared/service/user.service';
-import { TranslateService } from '@ngx-translate/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { WINDOW } from '@ng-toolkit/universal';
-import { isPlatformBrowser } from '@angular/common';
 
 
 @Component({
@@ -19,7 +14,10 @@ import { isPlatformBrowser } from '@angular/common';
 export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() filterSelect: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
+  @Output() queryChange: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
+
+  @Input() query: WarehouseQueryInterface = {};
+  @Input() lgScreen = true;
 
   @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
 
@@ -32,29 +30,11 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   private subQueryUpdate: Subscription;
   private _active;
 
-  screenWidth: any;
-  currentValueTab: any;
   showMenu = false;
 
   constructor(
-    @Inject(WINDOW) private window,
-    @Inject(PLATFORM_ID) private platformID: object,
-    public searchQuery: SearchQuery,
-    public userService: UserService,
-    public translate: TranslateService
+    public searchQuery: SearchQuery
   ) {
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.screenWidth = window.innerWidth;
-
-    if (this.screenWidth > 767) {
-      this.showMenu = true;
-    } else {
-      this.showMenu = false;
-    }
-
   }
 
   @Input() set active(value) {
@@ -65,6 +45,7 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
     if (value !== 'finnish') {
       this.lastAllActive = value;
     }
+    /*
     if (isPlatformBrowser(this.platformID)) {
       setTimeout(() => {
         try {
@@ -76,6 +57,7 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
         }
       }, 100);
     }
+     */
   }
 
   get active() {

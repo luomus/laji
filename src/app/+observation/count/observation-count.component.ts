@@ -20,6 +20,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   @Input() query: any;
   @Input() overrideInQuery: WarehouseQueryInterface;
   @Input() lightLoader = false;
+  @Input() value: number|string; // If this is set this will be always used
 
   public count = '';
   public loading = true;
@@ -54,6 +55,10 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   }
 
   update() {
+    if (typeof this.value !== 'undefined') {
+      this.count = '' + this.value;
+      return;
+    }
     let query = Util.clone(this.query);
     if (this.overrideInQuery) {
       query = {...query, ...this.overrideInQuery};

@@ -1,18 +1,12 @@
-
-import {switchMap, distinctUntilChanged, map} from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { AreaType } from '../../shared/service/area.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
-import { UserService } from '../../shared/service/user.service';
 import { Util } from '../../shared/service/util.service';
-import { LocalStorage } from 'ngx-webstorage';
 import * as moment from 'moment';
-import { TranslateService } from '@ngx-translate/core';
-
-
+import { ObservationFacade } from '../observation.facade';
 
 
 @Component({
@@ -25,12 +19,12 @@ export class ObservationFormComponent implements OnInit {
 
   @Input() invasiveStatuses: string[] = [];
   @Input() dateFormat = 'YYYY-MM-DD';
-  @Output() queryUpdate = new EventEmitter<WarehouseQueryInterface>();
+  @Input() advancedMode = false;
+
+  @Output() advancedModeChange = new EventEmitter<boolean>();
+  @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() mapDraw = new EventEmitter<string>();
 
-  @LocalStorage('observationAdvancedMode', false) advancedMode;
-
-  lang: string;
   formQuery: ObservationFormQuery;
   emptyFormQuery: ObservationFormQuery = {
     taxon: '',
@@ -52,7 +46,7 @@ export class ObservationFormComponent implements OnInit {
     coordinatesInSource: false,
   };
 
-  _searchQuery: WarehouseQueryInterface;
+  _query: WarehouseQueryInterface;
   showPlace = false;
   drawing = false;
   drawingShape: string;
@@ -106,17 +100,14 @@ export class ObservationFormComponent implements OnInit {
   };
 
   constructor(
-    private lajiApi: LajiApiService,
-    private userService: UserService,
-    private translate: TranslateService,
-    private cdr: ChangeDetectorRef
+    private observationFacade: ObservationFacade
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
     });
     this.dataSource = this.dataSource.pipe(
       distinctUntilChanged(),
-      switchMap((token: string) => this.getTaxa(token)),
+      switchMap((token: string) => this.observationFacade.taxaAutocomplete(token, this.formQuery.informalTaxonGroupId, 10)),
       switchMap((data) => {
         if (this.formQuery.taxon) {
           return ObservableOf(data);
@@ -126,7 +117,6 @@ export class ObservationFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
     this.updateVisibleSections();
   }
 
@@ -134,39 +124,13 @@ export class ObservationFormComponent implements OnInit {
     this.formQuery = Util.clone(this.emptyFormQuery);
   }
 
-  @Input() set searchQuery(query: WarehouseQueryInterface) {
-    this._searchQuery = query;
-    if (typeof this._searchQuery._coordinatesIntersection === 'undefined') {
-      this._searchQuery._coordinatesIntersection = 100;
-    }
+  @Input() set query(query: WarehouseQueryInterface) {
+    this._query = query;
     this.formQuery = this.searchQueryToFormQuery(query);
   }
 
-  get searchQuery() {
-    return this._searchQuery;
-  }
-
-  getTaxa(token: string): Observable<any> {
-    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
-      q: token,
-      limit: '' + this.autocompleteLimit,
-      includePayload: true,
-      lang: this.lang,
-      informalTaxonGroup: this.formQuery.informalTaxonGroupId,
-      excludeNameTypes: 'MX.hasMisspelledName,MX.hasMisappliedName'
-    } as LajiApi.Query.AutocompleteQuery).pipe(
-      map(data => {
-        return data.map(item => {
-          let groups = '';
-          if (item.payload && item.payload.informalTaxonGroups) {
-            groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
-              return prev + ' ' + curr.id;
-            }, groups);
-          }
-          item['groups'] = groups;
-          return item;
-        });
-      }));
+  get query() {
+    return this._query;
   }
 
   updateTime(dates, target = 'time') {
@@ -181,8 +145,8 @@ export class ObservationFormComponent implements OnInit {
       this.formQuery.timeEnd = '';
       this.onFormQueryChange();
     } else if (target === 'loaded') {
-      this.searchQuery.firstLoadedSameOrAfter = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.searchQuery.firstLoadedSameOrBefore = '';
+      this.query.firstLoadedSameOrAfter = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.query.firstLoadedSameOrBefore = '';
       this.onQueryChange();
     } else {
       console.error('invalid target for updateTime');
@@ -202,7 +166,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   onOnlyFromCollectionCheckBoxToggle() {
-    this.searchQuery.sourceId = this.formQuery.onlyFromCollectionSystems ? ['KE.3', 'KE.167'] : [];
+    this.query.sourceId = this.formQuery.onlyFromCollectionSystems ? ['KE.3', 'KE.167'] : [];
     this.onQueryChange();
   }
 
@@ -221,7 +185,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   onAdministrativeStatusChange() {
-    const admins = this.searchQuery.administrativeStatusId;
+    const admins = this.query.administrativeStatusId;
     let cnt = 0;
     this.invasiveStatuses.map(key => {
       const realKey = 'MX.' + key;
@@ -231,63 +195,54 @@ export class ObservationFormComponent implements OnInit {
       }
     });
     this.formQuery.allInvasiveSpecies = cnt === this.invasiveStatuses.length;
-    this.cdr.markForCheck();
     this.onQueryChange();
   }
 
   onSystemIDChange() {
-    this.formQuery.onlyFromCollectionSystems = this.searchQuery.sourceId.length === 2
-      && this.searchQuery.sourceId.indexOf('KE.3') > -1
-      && this.searchQuery.sourceId.indexOf('KE.167') > -1;
+    this.formQuery.onlyFromCollectionSystems = this.query.sourceId.length === 2
+      && this.query.sourceId.indexOf('KE.3') > -1
+      && this.query.sourceId.indexOf('KE.167') > -1;
     this.onQueryChange();
   }
 
   onCheckBoxToggle(field, selectValue: any = true, isDirect = true) {
     if (isDirect) {
-      this.searchQuery[field] = typeof this.searchQuery[field] === 'undefined'
-      ||  this.searchQuery[field] !== selectValue
-        ? selectValue : undefined;
+      this.query[field] = typeof this.query[field] === 'undefined' || this.query[field] !== selectValue ? selectValue : undefined;
     } else {
-      const value = this.searchQuery[field];
-      this.searchQuery[field] =
-        typeof value === 'undefined' ||  value !==  selectValue ?
-          selectValue : undefined;
+      const value = this.query[field];
+      this.query[field] = typeof value === 'undefined' ||  value !==  selectValue ? selectValue : undefined;
     }
     this.onQueryChange();
   }
 
   onCountChange() {
-    if ( this.searchQuery.individualCountMin === 0
-      && this.searchQuery.individualCountMax === 0) {
-      this.formQuery['zeroObservations'] = true;
-    } else {
-      this.formQuery['zeroObservations'] = false;
-    }
+    this.formQuery['zeroObservations'] = this.query.individualCountMin === 0
+      && this.query.individualCountMax === 0;
     this.onQueryChange();
   }
 
   onHabitatChange(habitats: any) {
-    this.searchQuery.primaryHabitat = habitats.primaryHabitat;
-    this.searchQuery.anyHabitat = habitats.anyHabitat;
+    this.query.primaryHabitat = habitats.primaryHabitat;
+    this.query.anyHabitat = habitats.anyHabitat;
     this.onQueryChange();
   }
 
   zeroObservations(only = true) {
-    this.searchQuery.individualCountMin = 0;
+    this.query.individualCountMin = 0;
     if (only) {
-      this.searchQuery.individualCountMax = 0;
-    } else if (this.searchQuery.individualCountMax === 0) {
-      this.searchQuery.individualCountMax = undefined;
+      this.query.individualCountMax = 0;
+    } else if (this.query.individualCountMax === 0) {
+      this.query.individualCountMax = undefined;
     }
     this.onQueryChange();
   }
 
   ownItemSelected() {
     if (!this.formQuery.asEditor || !this.formQuery.asObserver) {
-      delete this.searchQuery.editorOrObserverPersonToken;
+      delete this.query.editorOrObserverPersonToken;
     }
     if (this.formQuery.asEditor || this.formQuery.asObserver) {
-      this.searchQuery.qualityIssues = 'BOTH';
+      this.query.qualityIssues = 'BOTH';
     }
     this.onFormQueryChange();
   }
@@ -299,48 +254,48 @@ export class ObservationFormComponent implements OnInit {
 
   onTaxonSelect(event) {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
-      this.searchQuery['target'] = this.searchQuery['target'] ?
-        [...this.searchQuery['target'], this.formQuery.taxon] : [this.formQuery.taxon];
+      this.query['target'] = this.query['target'] ?
+        [...this.query['target'], this.formQuery.taxon] : [this.formQuery.taxon];
       this.formQuery.taxon = '';
       this.onQueryChange();
     }
   }
 
   updateSearchQuery(field, value) {
-    this.searchQuery[field] = value;
+    this.query[field] = value;
     this.onQueryChange();
   }
 
   enableAccuracySlider() {
-    if (!this.searchQuery.coordinateAccuracyMax) {
-      this.searchQuery.coordinateAccuracyMax = 1000;
+    if (!this.query.coordinateAccuracyMax) {
+      this.query.coordinateAccuracyMax = 1000;
       this.onAccuracySliderChange();
     }
   }
 
   onAccuracySliderChange() {
-    this.searchQuery.coordinateAccuracyMax = Math.pow(10, this.logCoordinateAccuracyMax);
+    this.query.coordinateAccuracyMax = Math.pow(10, this.logCoordinateAccuracyMax);
     this.onQueryChange();
   }
 
   onAccuracyValueChange() {
-    this.logCoordinateAccuracyMax = Math.log10(this.searchQuery.coordinateAccuracyMax);
+    this.logCoordinateAccuracyMax = Math.log10(this.query.coordinateAccuracyMax);
     this.onQueryChange();
   }
 
   indirectQueryChange(field, value) {
-    this.searchQuery[field] = value;
+    this.query[field] = value;
     this.onQueryChange();
   }
 
   onQueryChange() {
-    this.queryUpdate.emit(this.searchQuery);
+    this.queryChange.emit(this.query);
     this.updateVisibleAdvancedSections();
   }
 
   updateTypeOfOccurrence(event) {
-    this.searchQuery.typeOfOccurrenceId = event.true;
-    this.searchQuery.typeOfOccurrenceIdNot = event.false;
+    this.query.typeOfOccurrenceId = event.true;
+    this.query.typeOfOccurrenceIdNot = event.false;
     this.onQueryChange();
   }
 
@@ -348,7 +303,7 @@ export class ObservationFormComponent implements OnInit {
     Object.keys(this.section).forEach(section => {
       let visible = false;
       for (let i = 0; i < this.section[section].length; i++) {
-        const value = this.searchQuery[this.section[section][i]];
+        const value = this.query[this.section[section][i]];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
@@ -362,7 +317,7 @@ export class ObservationFormComponent implements OnInit {
     Object.keys(this.advancedSections).forEach(section => {
       let visible = false;
       for (let i = 0; i < this.advancedSections[section].length; i++) {
-        const value = this.searchQuery[this.advancedSections[section][i]];
+        const value = this.query[this.advancedSections[section][i]];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
@@ -388,7 +343,7 @@ export class ObservationFormComponent implements OnInit {
 
   private searchQueryToFormQuery(query: WarehouseQueryInterface): ObservationFormQuery {
     const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
-    const formQuery = {
+    return {
       taxon: '',
       timeStart: this.getValidDate(time[0]),
       timeEnd: this.getValidDate(time[1]),
@@ -408,13 +363,11 @@ export class ObservationFormComponent implements OnInit {
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
       coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates === 'REPORTED_VALUE'
     };
-
-    return formQuery;
   }
 
   private formQueryToSearchQuery(formQuery: ObservationFormQuery) {
     const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
-    const query = this.searchQuery;
+    const query = this.query;
 
     query.time = time.length > 0 ? [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
@@ -425,8 +378,8 @@ export class ObservationFormComponent implements OnInit {
     if (formQuery.onlyFromCollectionSystems) {
       query.sourceId = ['KE.167', 'KE.3'];
     }
-    query.editorPersonToken = formQuery.asEditor ? this.userService.getToken() : undefined;
-    query.observerPersonToken = formQuery.asObserver ? this.userService.getToken() : undefined;
+    query.editorPersonToken = formQuery.asEditor ? ObservationFacade.PERSON_TOKEN : undefined;
+    query.observerPersonToken = formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
     query.sourceOfCoordinates = formQuery.coordinatesInSource ? 'REPORTED_VALUE' : undefined;
@@ -467,4 +420,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
 
+  setAdvancedMode(advanced: boolean) {
+    this.advancedModeChange.emit(advanced);
+  }
 }

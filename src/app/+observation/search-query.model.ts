@@ -125,7 +125,7 @@ export class SearchQuery implements SearchQueryInterface {
   ) {
   }
 
-  public setQueryFromQueryObject(query) {
+  public setQueryFromQueryObject(query): WarehouseQueryInterface {
     for (const i of this.arrayTypes) {
       if (typeof query[i] !== 'undefined') {
         this.query[i] = decodeURIComponent(query[i])
@@ -180,6 +180,7 @@ export class SearchQuery implements SearchQueryInterface {
     if (typeof query['page'] !== 'undefined') {
       this.page = +query['page'];
     }
+    return this.query;
   }
 
   public getQueryObject(skipParams: string[] = [], obscure = true) {

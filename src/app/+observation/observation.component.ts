@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from './search-query.model';
 import { UserService } from '../shared/service/user.service';
 import { FooterService } from '../shared/service/footer.service';
+import { ObservationFacade } from './observation.facade';
 
 @Component({
   selector: 'laji-observation',
@@ -28,11 +29,14 @@ export class ObservationComponent implements OnInit, OnDestroy {
   private subParam: Subscription;
   private subQuery: Subscription;
 
-  constructor(private route: ActivatedRoute,
-              private footerService: FooterService,
-              private userService: UserService,
-              private cd: ChangeDetectorRef,
-              public searchQuery: SearchQuery) {
+  constructor(
+    private observationFacade: ObservationFacade,
+    private route: ActivatedRoute,
+    private footerService: FooterService,
+    private userService: UserService,
+    private cd: ChangeDetectorRef,
+    public searchQuery: SearchQuery
+  ) {
   }
 
   ngOnInit() {
@@ -40,7 +44,6 @@ export class ObservationComponent implements OnInit, OnDestroy {
     this.subParam = this.route.params.subscribe(value => {
       this.tab = value['tab'] || 'map';
     });
-    this.updateQuery(this.route.snapshot.queryParams);
   }
 
   ngOnDestroy() {
@@ -63,19 +66,19 @@ export class ObservationComponent implements OnInit, OnDestroy {
   }
 
   private updateQuery(params) {
-    this.searchQuery.setQueryFromQueryObject(params);
+    const query = this.searchQuery.setQueryFromQueryObject(params);
     if (params['target']) {
-      this.searchQuery.query.target = [params['target']];
+      query.target = [params['target']];
     }
-    if (this.searchQuery.query.editorPersonToken === 'true') {
-      this.searchQuery.query.editorPersonToken = this.userService.getToken();
+    if (query.editorPersonToken === 'true') {
+      query.editorPersonToken = this.userService.getToken();
     }
-    if (this.searchQuery.query.observerPersonToken === 'true') {
-      this.searchQuery.query.observerPersonToken = this.userService.getToken();
+    if (query.observerPersonToken === 'true') {
+      query.observerPersonToken = this.userService.getToken();
     }
-    if (this.searchQuery.query.editorOrObserverPersonToken === 'true') {
-      this.searchQuery.query.editorOrObserverPersonToken = this.userService.getToken();
+    if (query.editorOrObserverPersonToken === 'true') {
+      query.editorOrObserverPersonToken = this.userService.getToken();
     }
-    this.searchQuery.queryUpdate({formSubmit: true});
+    this.observationFacade.updateQuery(query);
   }
 }
