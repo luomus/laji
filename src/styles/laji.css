@@ -30,7 +30,7 @@ p {
 
 
 .container-fluid {
-  z-index: 99;
+  z-index: 1050;
   margin-right: auto;
   margin-left: auto;
   max-width: 1600px;
@@ -60,7 +60,7 @@ laji-locale-sv > div,
 }
 
 #content .container-fluid.observation-fluid{
-  z-index: 99;
+  z-index: unset;
   margin: 0;
   max-width: none;
 }
