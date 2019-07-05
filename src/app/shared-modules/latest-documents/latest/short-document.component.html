@@ -146,9 +146,9 @@
         </span>  
     </div>
 
-    <a class="delete_tmp" *ngIf="document._hasChanges">
+    <div class="delete_tmp" *ngIf="document._hasChanges">
         <span class="alert-box">{{ 'haseka.form.hasChanges' | translate }}</span>
-        <span class="label label-default button-tools link inline-block"  (click)="removeDocument($event, document)"><i class="glyphicon glyphicon-trash"></i></span>
-    </a>             
+        <span class="label label-default button-tools link inline-block"><i class="glyphicon glyphicon-trash" (click)="removeDocument($event, document)"></i></span>
+    </div>             
     
   </div>

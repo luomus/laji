@@ -15,6 +15,10 @@
   width: 85%;
 }
 
+.link:focus{
+  outline:none;
+}
+
 .observation-tools {
   display: inline-block;
   width: 35px;
@@ -32,6 +36,7 @@
 .delete_tmp span:first-child {
   float:left;
   width:85%;
+  margin-bottom: 5px;
 }
 
 .delete_tmp span:last-child {
@@ -97,5 +102,8 @@
     float: right;
   }
 
-  
+  .delete_tmp .button-tools {
+    margin-right: 0px;
+  }
+
 }
