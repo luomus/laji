@@ -16,6 +16,11 @@
 
 .form-box {
   cursor: pointer;
+  margin-bottom: 42px;
+  -webkit-box-shadow: 10px 10px 8px -12px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 8px -12px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 8px -12px rgba(0,0,0,0.75);
+  padding-right: 0;
 }
 
 .form-box .header h4 {
@@ -38,7 +43,6 @@
 .form-box .content {
   padding: 9px 9px 0 9px;
   min-height: 110px;
-  margin-bottom: 42px;
   font-size: 14px;
   line-height: 22px;
   border-left: 6px solid #3498DB;
