@@ -42,7 +42,7 @@
 
 .form-box .content {
   padding: 9px 9px 0 9px;
-  min-height: 110px;
+  height: 110px;
   font-size: 14px;
   line-height: 22px;
   border-left: 6px solid #3498DB;
@@ -91,13 +91,13 @@ cursor: pointer;
 
 @media only screen and (max-width : 1280px) {
   .form-box .content {
-    min-height: 130px;
+    height: 130px;
   }
 }
 
 @media only screen and (max-width : 1024px) {
   .form-box .content {
-    min-height: 150px;
+    height: 150px;
   }
 }
 

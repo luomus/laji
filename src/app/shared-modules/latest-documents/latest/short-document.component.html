@@ -104,7 +104,7 @@
 
         <span *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</span>
   
-        <div class="nowrap padding-top-bottom-5" (click)="showUnitList($event)">
+        <div class="nowrap padding-top-bottom-5 inline-block" (click)="showUnitList($event)">
           <small>
             <span>{{ unitList.length }} </span>
             <span *ngIf="unitList.length === 1">{{ 'haseka.users.latest.gathered.singular' | translate }} </span>
