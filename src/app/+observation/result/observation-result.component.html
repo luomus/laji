@@ -1,11 +1,11 @@
 <ul class="nav nav-pills">
   <li role="presentation" [ngClass]="{active: ['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1}">
-    <a [routerLink]="['/observation', this.lastAllActive] | localize" [queryParams]="queryParams">
+    <a [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery">
       <strong>{{ 'search.result.all' | translate }}</strong>
     </a>
   </li>
   <li role="presentation" class="beta" [ngClass]="{active: active === 'finnish'}">
-    <a [routerLink]="'/observation/finnish' | localize" [queryParams]="queryParams">
+    <a [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery">
       <strong>{{ 'search.result.finnish' | translate }}</strong>
     </a>
   </li>
@@ -51,32 +51,32 @@
 <div class="whole-data-list" *ngIf="(['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1) && ((showMenu && !lgScreen) || lgScreen)">
   <ul class="nav nav-tabs nav-justified">
     <li role="presentation" [ngClass]="{active: active === 'map'}">
-      <a [routerLink]="'/observation/map' | localize" [queryParams]="queryParams">
+      <a [routerLink]="'/observation/map' | localize" [queryParams]="query | toSafeQuery">
         {{ 'search.result.map' | translate }}
       </a>
     </li>
     <li role="presentation" [ngClass]="{active: active === 'list'}">
-      <a [routerLink]="'/observation/list' | localize" [queryParams]="queryParams">
+      <a [routerLink]="'/observation/list' | localize" [queryParams]="query | toSafeQuery">
         {{ 'search.result.list' | translate }}
       </a>
     </li>
     <li role="presentation" [ngClass]="{active: active === 'images'}">
-      <a [routerLink]="'/observation/images' | localize" [queryParams]="queryParams">
+      <a [routerLink]="'/observation/images' | localize" [queryParams]="query | toSafeQuery">
         {{ 'search.result.images' | translate }}
       </a>
     </li>
     <li role="presentation" [ngClass]="{active: active === 'species'}">
-      <a [routerLink]="'/observation/species' | localize" [queryParams]="queryParams">
+      <a [routerLink]="'/observation/species' | localize" [queryParams]="query | toSafeQuery">
         {{ 'search.result.species' | translate }}
       </a>
     </li>
     <li role="presentation" [ngClass]="{active: active === 'stats'}">
-      <a [routerLink]="'/observation/stats' | localize" [queryParams]="queryParams">
+      <a [routerLink]="'/observation/stats' | localize" [queryParams]="query | toSafeQuery">
         {{ 'search.result.stats' | translate }}
       </a>
     </li>
     <li role="presentation" [ngClass]="{active: active === 'load'}">
-      <a [routerLink]="'/observation/load' | localize" [queryParams]="queryParams">
+      <a [routerLink]="'/observation/load' | localize" [queryParams]="query | toSafeQuery">
         {{ 'search.result.load' | translate }}
       </a>
     </li>
@@ -110,7 +110,7 @@
           [visible]="active === 'species'"
           [pageSize]="100"
           [height]="'calc(80vh - 40px)'"
-          [query]="searchQuery.query"
+          [query]="query"
           [showSettingsMenu]="false"
           [showRowAsLink]="false"
           [isAggregate]="true"
@@ -123,7 +123,7 @@
     <laji-gallery
       [showPopover]="true"
       [showViewSwitch]="true"
-      [query]="searchQuery.query">
+      [query]="query">
     </laji-gallery>
   </div>
   <div [hidden]="active !== 'stats'" *ngIf="activated['stats']">
@@ -149,7 +149,7 @@
             {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
           </p>
           <laji-observation-year-chart
-            [query]="searchQuery.query"
+            [query]="query"
             (hasData)="hasYearData = $event"
           ></laji-observation-year-chart>
         </div>
@@ -161,19 +161,19 @@
              [autoToggle]="true"
         >
           <laji-observation-month-day-chart
-            [query]="searchQuery.query"
+            [query]="query"
             (hasData)="hasMonthDayData = $event"
           ></laji-observation-month-day-chart>
         </div>
       </div>
       <div class="form-group spacer">
         <div class="col-lg-12">
-          <laji-observation-filters [visible]="active === 'stats'" [query]="searchQuery.query" (queryChange)="queryChange.emit($event)"></laji-observation-filters>
+          <laji-observation-filters [visible]="active === 'stats'" [query]="query" (queryChange)="queryChange.emit($event)"></laji-observation-filters>
         </div>
       </div>
     </div>
   </div>
   <div [hidden]="active !== 'load'" *ngIf="activated['load']">
-    <laji-observation-download [query]="searchQuery.query"></laji-observation-download>
+    <laji-observation-download [query]="query"></laji-observation-download>
   </div>
 </div>

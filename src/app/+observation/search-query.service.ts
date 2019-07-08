@@ -3,13 +3,13 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
+import { ObservationFacade } from './observation.facade';
 
 @Injectable({providedIn: 'root'})
-export class SearchQuery implements SearchQueryInterface {
+export class SearchQueryService implements SearchQueryInterface {
   public queryType = 'observation';
   public queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
-  public tack = 0;
 
   public query: WarehouseQueryInterface = {};
   public page: number;
@@ -125,83 +125,76 @@ export class SearchQuery implements SearchQueryInterface {
   ) {
   }
 
-  public setQueryFromQueryObject(query): WarehouseQueryInterface {
+  public getQueryFromUrlQueryParams(params): WarehouseQueryInterface {
+    const result: WarehouseQueryInterface = {};
     for (const i of this.arrayTypes) {
-      if (typeof query[i] !== 'undefined') {
-        this.query[i] = decodeURIComponent(query[i])
+      if (typeof params[i] !== 'undefined') {
+        result[i] = decodeURIComponent(params[i])
           .split(this.separator[i] || ',')
           .map(value => value);
-      } else {
-        this.query[i] = undefined;
       }
     }
 
     for (const i of this.booleanTypes) {
-      if (typeof query[i] !== 'undefined') {
-        this.query[i] = query[i] === 'true';
-      } else {
-        this.query[i] = undefined;
+      if (typeof params[i] !== 'undefined') {
+        result[i] = params[i] === 'true';
       }
     }
 
     for (const i of this.numericTypes) {
-      if (typeof query[i] !== 'undefined') {
-        const value = +query[i];
+      if (typeof params[i] !== 'undefined') {
+        const value = +params[i];
         if (!isNaN(value)) {
-          this.query[i] = value;
+          result[i] = value;
         }
-      } else {
-        this.query[i] = undefined;
       }
     }
 
     for (const i of [...this.stringTypes, ...this.obscure]) {
-      if (typeof query[i] !== 'undefined') {
-        this.query[i] = query[i];
-      } else {
-        this.query[i] = undefined;
+      if (typeof params[i] !== 'undefined') {
+        result[i] = params[i];
       }
     }
 
-    if (this.query.coordinates) {
-      this.query.coordinates = this.query.coordinates.map(coordinate => {
+    if (result.coordinates) {
+      result.coordinates = result.coordinates.map(coordinate => {
         const parts = coordinate.split(':');
         const last = parseFloat(parts[parts.length - 1]);
         if (!isNaN(last)) {
           parts.pop();
-          this.query._coordinatesIntersection = Math.floor(last * 100);
+          result._coordinatesIntersection = Math.floor(last * 100);
         } else {
-          this.query._coordinatesIntersection = 100;
+          result._coordinatesIntersection = 100;
         }
         return parts.join(':');
       });
     }
 
-    if (typeof query['page'] !== 'undefined') {
-      this.page = +query['page'];
+    if (typeof params['page'] !== 'undefined') {
+      this.page = +params['page'];
     }
-    return this.query;
+    return result;
   }
 
-  public getQueryObject(skipParams: string[] = [], obscure = true) {
+  public getQueryObject(query: WarehouseQueryInterface, skipParams: string[] = [], obscure = true) {
     const result: {[field: string]: string | string[]}  = {};
-    if (this.query) {
+    if (query) {
       for (const i of this.arrayTypes) {
         if (skipParams.indexOf(i) > -1) {
           continue;
         }
-        if (this.query[i] !== undefined) {
-          if (this.query[i].length < 1 || this.query[0] === '') {
+        if (query[i] !== undefined) {
+          if (query[i].length < 1 || query[0] === '') {
             continue;
           }
-          if (typeof this.query[i] === 'string') {
-            this.query[i] = [this.query[i]];
+          if (typeof query[i] === 'string') {
+            query[i] = [query[i]];
           }
-          const query = this.query[i]
+          const queries = query[i]
             .filter(val => typeof val === 'string' && val.trim().length > 0)
             .join(this.separator[i] || ',');
-          if (query.length > 0) {
-            result[i] = query;
+          if (queries.length > 0) {
+            result[i] = queries;
           }
         }
       }
@@ -210,8 +203,8 @@ export class SearchQuery implements SearchQueryInterface {
         if (skipParams.indexOf(i) > -1) {
           continue;
         }
-        if (this.query[i] !== undefined) {
-          result[i] = this.query[i] ? 'true' : 'false';
+        if (query[i] !== undefined) {
+          result[i] = query[i] ? 'true' : 'false';
         }
       }
 
@@ -219,9 +212,9 @@ export class SearchQuery implements SearchQueryInterface {
         if (skipParams.indexOf(i) > -1) {
           continue;
         }
-        const type = typeof this.query[i];
+        const type = typeof query[i];
         if (type === 'number' || type === 'string') {
-          result[i] = String(this.query[i]);
+          result[i] = String(query[i]);
         }
       }
 
@@ -229,8 +222,8 @@ export class SearchQuery implements SearchQueryInterface {
         if (skipParams.indexOf(i) > -1) {
           continue;
         }
-        if (this.query[i] !== undefined && this.query[i] !== '') {
-          result[i] =  this.query[i];
+        if (query[i] !== undefined && query[i] !== '') {
+          result[i] =  query[i];
         }
       }
 
@@ -238,14 +231,14 @@ export class SearchQuery implements SearchQueryInterface {
         if (skipParams.indexOf(i) > -1) {
           continue;
         }
-        if (this.query[i] !== undefined) {
-          result[i] = obscure ? 'true' : this.query[i];
+        if (query[i] !== undefined) {
+          result[i] = obscure ? ObservationFacade.PERSON_TOKEN : query[i];
         }
       }
     }
 
-    if (result.coordinates && typeof this.query._coordinatesIntersection !== 'undefined') {
-      result.coordinates += ':' + this.query._coordinatesIntersection / 100;
+    if (result.coordinates && typeof query._coordinatesIntersection !== 'undefined') {
+      result.coordinates += ':' + query._coordinatesIntersection / 100;
     }
 
     if (result['target'] && Array.isArray(result['target'])) {
@@ -282,11 +275,11 @@ export class SearchQuery implements SearchQueryInterface {
     return result;
   }
 
-  public getURLSearchParams(queryParameters?: object, skipParams: string[] = []): object {
+  public getURLSearchParams(dwQuery: WarehouseQueryInterface, queryParameters?: object, skipParams: string[] = []): object {
     if (!queryParameters) {
       queryParameters = {};
     }
-    const query = this.getQueryObject(skipParams, false);
+    const query = this.getQueryObject(dwQuery, skipParams, false);
     Object.keys(query).map((key) => {
       queryParameters[key] = query[key];
     });
@@ -294,11 +287,11 @@ export class SearchQuery implements SearchQueryInterface {
     return queryParameters;
   }
 
-  public updateUrl(skipParams: string[], skipHistory: boolean = true): void {
-    const query = this.getQueryObject(skipParams);
-    const extra = {skipLocationChange: skipHistory};
-    if (Object.keys(query).length > 0) {
-      extra['queryParams'] = this.getQueryObject(skipParams);
+  public updateUrl(query: WarehouseQueryInterface, skipParams: string[]): void {
+    const queryParams = this.getQueryObject(query, skipParams);
+    const extra = {};
+    if (Object.keys(queryParams).length > 0) {
+      extra['queryParams'] = queryParams;
     } else {
       extra['preserveQueryParams'] = false;
     }

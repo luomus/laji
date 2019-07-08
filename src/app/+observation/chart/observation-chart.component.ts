@@ -2,7 +2,7 @@
 import {filter} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { SearchQuery } from '../search-query.model';
+import { SearchQueryService } from '../search-query.service';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { forkJoin as ObservableForkJoin, Observable, Subscription } from 'rxjs';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
@@ -40,7 +40,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
   private subTrans: Subscription;
   private subData: Subscription;
 
-  constructor(public searchQuery: SearchQuery,
+  constructor(public searchQuery: SearchQueryService,
               private warehouseService: WarehouseApi,
               private informalGroupService: InformalTaxonGroupApi,
               private translate: TranslateService,

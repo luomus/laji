@@ -1,63 +1,42 @@
-import { filter } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { SearchQuery } from '../search-query.model';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
-import { Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 
 @Component({
   selector: 'laji-observation-result',
   templateUrl: './observation-result.component.html',
-  styleUrls: ['./observation-result.component.css']
+  styleUrls: ['./observation-result.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy {
-
-  @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() queryChange: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
+export class ObservationResultComponent {
 
   @Input() query: WarehouseQueryInterface = {};
   @Input() lgScreen = true;
 
+  @Output() queryChange: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
+
   @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
 
-  public activated = {};
-  public queryParams = {};
-  public lastAllActive = 'map';
+  activated = {};
+  lastTabActive = 'map';
   hasMonthDayData: boolean;
   hasYearData: boolean;
-
-  private subQueryUpdate: Subscription;
-  private _active;
-
   showMenu = false;
 
-  constructor(
-    public searchQuery: SearchQuery
-  ) {
-  }
+  private _active;
 
-  @Input() set active(value) {
+
+  @Input()
+  set active(value) {
     if (this._active === value) {
       return;
     }
     this._active = value;
+    this.activated[value] = true;
     if (value !== 'finnish') {
-      this.lastAllActive = value;
+      this.lastTabActive = value;
     }
-    /*
-    if (isPlatformBrowser(this.platformID)) {
-      setTimeout(() => {
-        try {
-          this.window.dispatchEvent(new Event('resize'));
-        } catch (e) {
-          const evt = this.window.document.createEvent('UIEvents');
-          evt.initUIEvent('resize', true, false, this.window, 0);
-          this.window.dispatchEvent(evt);
-        }
-      }, 100);
-    }
-     */
   }
 
   get active() {
@@ -65,70 +44,28 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   resetActivated() {
-    const active = {[this._active]: true};
-    this.activated = active;
-  }
-
-  ngOnInit() {
-    this.updateQueryParams();
-    this.activated[this._active] = true;
-    this.subQueryUpdate = this.searchQuery.queryUpdated$
-      .pipe(filter(data => !(data && data.formSubmit)))
-      .subscribe(() => this.updateQueryParams());
-  }
-
-  ngOnDestroy() {
-    if (this.subQueryUpdate) {
-      this.subQueryUpdate.unsubscribe();
-    }
-  }
-
-  ngOnChanges(changes) {
-    if (changes.active) {
-      this.activate(this._active, true);
-    }
+    this.activated = {[this._active]: true};
   }
 
   pickLocation(e) {
     if (!e) {
       return;
     }
+    const query = {...this.query};
     if (e.coordinateVerbatim) {
-      this.searchQuery.query.coordinates = [e.coordinateVerbatim + ':YKJ'];
+      query.coordinates = [e.coordinateVerbatim + ':YKJ'];
     } else if (
       e.type === 'Polygon' &&
       e.coordinates && e.coordinates.length === 1 && e.coordinates[0].length === 5
     ) {
-      this.searchQuery.query.coordinates = [
+      query.coordinates = [
         e.coordinates[0][0][1] + ':' + e.coordinates[0][2][1] + ':' +
         e.coordinates[0][0][0] + ':' + e.coordinates[0][2][0] + ':WGS84'
       ];
     } else {
-      this.searchQuery.query.coordinates = undefined;
+      query.coordinates = undefined;
     }
-    this.searchQuery.queryUpdate({formSubmit: true});
-  }
-
-  activate(tab: string, forceUpdate = false) {
-    if (!forceUpdate && this._active === tab) {
-      return;
-    }
-    this.active = tab;
-    this.activated[tab] = true;
-    this.activeChange.emit(this._active);
-    this.searchQuery.updateUrl([
-      'selected',
-      'pageSize',
-      'page'
-    ]);
-  }
-
-  private updateQueryParams() {
-    this.queryParams = this.searchQuery.getQueryObject([
-      'selected',
-      'pageSize',
-      'page'
-    ]);
+    this.queryChange.emit(query);
   }
 
   toggleMenuMobile() {

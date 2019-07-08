@@ -26,7 +26,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PagedResult } from '../model/PagedResult';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
-import { SearchQuery } from '../../+observation/search-query.model';
+import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInterface';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
@@ -41,7 +41,7 @@ export class WarehouseApi {
   public static readonly longTimeout = 10000;
   protected basePath = environment.apiBase;
 
-  constructor(protected http: HttpClient, private queryService: SearchQuery) {
+  constructor(protected http: HttpClient, private queryService: SearchQueryService) {
     this.warehouseQueryAggregateGet = this.warehouseQueryAggregateGet.bind(this);
     this.warehouseQueryStatisticsGet = this.warehouseQueryStatisticsGet.bind(this);
   }
@@ -375,7 +375,7 @@ export class WarehouseApi {
 
   private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: object): void {
     this.queryService.query = query;
-    this.queryService.getURLSearchParams(queryParameters);
+    this.queryService.getURLSearchParams(query, queryParameters);
   }
 
 }

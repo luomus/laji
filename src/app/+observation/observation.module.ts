@@ -28,6 +28,7 @@ import { TeamComponent } from './form/team/team.component';
 import { MemberIdPillListComponent } from './form/team/member-id-pill-list/member-id-pill-list.component';
 import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
 import { ExistsPipe } from './pipe/exists.pipe';
+import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { ExistsPipe } from './pipe/exists.pipe';
     TeamComponent,
     MemberIdPillListComponent,
     RemoveLeadingPipe,
-    ExistsPipe
+    ExistsPipe,
+    ToSafeQueryPipe
   ]
 })
 export class ObservationModule {

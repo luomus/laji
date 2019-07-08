@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { SearchQuery } from '../+observation/search-query.model';
+import { SearchQueryService } from '../+observation/search-query.service';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
@@ -12,7 +12,7 @@ import { Global } from '../../environments/global';
 @Component({
   selector: 'laji-home',
   providers: [
-    SearchQuery
+    SearchQueryService
   ],
   styleUrls: ['./home.component.css'],
   templateUrl: './home.component.html',

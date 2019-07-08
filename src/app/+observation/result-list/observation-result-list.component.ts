@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { SearchQuery } from '../search-query.model';
+import { SearchQueryService } from '../search-query.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -42,7 +42,7 @@ export class ObservationResultListComponent implements OnInit {
     public translate: TranslateService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
-    public searchQuery: SearchQuery
+    public searchQuery: SearchQueryService
   ) {
   }
 

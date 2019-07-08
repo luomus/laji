@@ -1,7 +1,7 @@
 
 import {switchMap, startWith, combineLatest} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { SearchQuery } from '../search-query.model';
+import { SearchQueryService } from '../search-query.service';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
@@ -51,7 +51,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   private subLang: Subscription;
   private messages = {};
 
-  constructor(public searchQuery: SearchQuery,
+  constructor(public searchQuery: SearchQueryService,
               public userService: UserService,
               public translate: TranslateService,
               private toastsService: ToastsService,
