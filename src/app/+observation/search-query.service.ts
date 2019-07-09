@@ -3,7 +3,6 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
-import { ObservationFacade } from './observation.facade';
 
 @Injectable({providedIn: 'root'})
 export class SearchQueryService implements SearchQueryInterface {
@@ -12,12 +11,6 @@ export class SearchQueryService implements SearchQueryInterface {
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 
   public query: WarehouseQueryInterface = {};
-  public page: number;
-  public pageSize = 20;
-  public includeNonValidTaxa = false;
-  public selected: string[];
-  public orderBy: string[];
-  public aggregateBy: string[];
 
   separator = {
     'teamMember': ';'
@@ -40,6 +33,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'time',
     'keyword',
     'collectionId',
+    'collectionIdNot',
     'typeOfOccurrenceId',
     'typeOfOccurrenceIdNot',
     'coordinates',
@@ -50,6 +44,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'lifeStage',
     'sex',
     'documentId',
+    'gatheringId',
     'unitId',
     'individualId',
     'secureReason',
@@ -61,13 +56,21 @@ export class SearchQueryService implements SearchQueryInterface {
     'yearMonth',
     'reliabilityOfCollection',
     'teamMember',
+    'wild',
     'teamMemberId',
     'taxonCensus',
     'primaryHabitat',
-    'anyHabitat'
+    'anyHabitat',
+    'aggregateBy',
+    'orderBy',
   ];
 
   booleanTypes = [
+    'pessimisticDateRangeHandling',
+    'excludeNulls',
+    'pairCounts',
+    'onlyCount',
+    'geoJSON',
     'includeNonValidTaxa',
     'finnish',
     'invasive',
@@ -94,7 +97,9 @@ export class SearchQueryService implements SearchQueryInterface {
     'dayOfYearEnd',
     'individualCountMin',
     'individualCountMax',
-    'coordinateAccuracyMax'
+    'coordinateAccuracyMax',
+    'page',
+    'pageSize'
   ];
 
   stringTypes = [
@@ -111,7 +116,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'loadedSameOrBefore',
     'loadedSameOrAfter',
     'season',
-    'sourceOfCoordinates'
+    'sourceOfCoordinates',
+    'formId'
   ];
 
   obscure = [
@@ -168,10 +174,6 @@ export class SearchQueryService implements SearchQueryInterface {
         }
         return parts.join(':');
       });
-    }
-
-    if (typeof params['page'] !== 'undefined') {
-      this.page = +params['page'];
     }
     return result;
   }
@@ -232,7 +234,7 @@ export class SearchQueryService implements SearchQueryInterface {
           continue;
         }
         if (query[i] !== undefined) {
-          result[i] = obscure ? ObservationFacade.PERSON_TOKEN : query[i];
+          result[i] = obscure ? 'true' : query[i];
         }
       }
     }
@@ -243,27 +245,6 @@ export class SearchQueryService implements SearchQueryInterface {
 
     if (result['target'] && Array.isArray(result['target'])) {
       result['target'] = (result['target'] as string[]).map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
-    }
-
-    // Non query parameters (these will not have effect on result count)
-    if (this.selected !== undefined && skipParams.indexOf('selected') === -1) {
-      result['selected'] = this.selected.join(',');
-    }
-
-    if (this.aggregateBy !== undefined && skipParams.indexOf('aggregateBy') === -1) {
-      result['aggregateBy'] = this.aggregateBy.join(',');
-    }
-
-    if (this.orderBy !== undefined && skipParams.indexOf('orderBy') === -1) {
-      result['orderBy'] = this.orderBy.join(',');
-    }
-
-    if (this.pageSize !== undefined && skipParams.indexOf('pageSize') === -1) {
-      result['pageSize'] = String(this.pageSize);
-    }
-
-    if (this.page !== undefined && skipParams.indexOf('page') === -1) {
-      result['page'] = String(this.page);
     }
 
     if (result.editorPersonToken && result.observerPersonToken && result.observerPersonToken === result.editorPersonToken) {

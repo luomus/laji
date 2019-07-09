@@ -23,7 +23,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   @Input() value: number|string; // If this is set this will be always used
 
   public count = '';
-  public loading = true;
+  public loading = false;
 
 
   private pageSize = 1000;
@@ -55,8 +55,8 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   }
 
   update() {
-    if (typeof this.value !== 'undefined') {
-      this.count = '' + this.value;
+    if (typeof this.value !== 'undefined' || !this.query) {
+      this.count = '' + (this.value || 0);
       return;
     }
     let query = Util.clone(this.query);

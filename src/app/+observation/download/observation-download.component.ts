@@ -1,11 +1,11 @@
 
-import {switchMap, startWith, combineLatest} from 'rxjs/operators';
+import { switchMap, startWith, map, share, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { forkJoin as ObservableForkJoin, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
@@ -27,8 +27,12 @@ enum RequestStatus {
 })
 export class ObservationDownloadComponent implements OnInit, OnDestroy {
 
+  @Input() unitCount: number;
+  @Input() speciesCount: number;
   @Input() taxaLimit = 1000;
   @Input() loadLimit = 2000000;
+
+  privateCount$: Observable<number>;
 
   _query: WarehouseQueryInterface;
   hasPersonalData = false;
@@ -39,7 +43,6 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     'count': 0,
     'private': 0
   };
-  public speciesCount = 0;
   public description = '';
   public csvParams = '';
   private taxaDownloadAggregateBy = {
@@ -107,36 +110,18 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   updateCount() {
-    const secretQuery: WarehouseQueryInterface = Util.clone(this._query);
-    const speciesQuery: WarehouseQueryInterface = Util.clone(this._query);
-
-    if (WarehouseApi.isEmptyQuery(secretQuery)) {
-      secretQuery.cache = true;
-    }
-    if (WarehouseApi.isEmptyQuery(speciesQuery)) {
-      speciesQuery.cache = true;
-    }
-
-    secretQuery.secured = true;
-    speciesQuery.taxonRankId = 'MX.species';
-    speciesQuery.includeNonValidTaxa = false;
-
-    ObservableForkJoin(
-      this.warehouseService.warehouseQueryCountGet(this._query).pipe(
-        combineLatest(this.warehouseService.warehouseQueryCountGet(secretQuery),
-          (count, priva) => ({'count': count.total, 'private': priva.total}))),
-      this.warehouseService.warehouseQueryAggregateGet(
-        speciesQuery, ['unit.linkings.taxon.id'], undefined, 1
-      )
-    ).subscribe((data) => {
-        this.count = data[0];
-        this.speciesCount = data[1] && data[1].total;
-        this.cd.markForCheck();
-    });
+    this.privateCount$ = this.warehouseService.warehouseQueryCountGet({
+      ...this._query,
+      secured: true
+    }).pipe(
+      map(result => result.total),
+      tap(() => console.log('HTTP REQUEST!!!!')),
+      share()
+    );
   }
 
   updateCsvLink() {
-    const queryParams = this.searchQuery.getQueryObject();
+    const queryParams = this.searchQuery.getQueryObject(this._query);
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
     queryParams['includeNonValidTaxa'] = 'false';
     queryParams['pageSize'] = '' + this.taxaLimit;

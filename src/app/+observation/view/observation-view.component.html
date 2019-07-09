@@ -37,7 +37,10 @@
       </ng-container>
       <div #tabs>
         <laji-observation-result
+          [loading]="vm.loading"
           [lgScreen]="vm.lgScreen"
+          [speciesCount]="vm.countSpecies"
+          [unitCount]="vm.countUnit"
           [active]="activeTab"
           [query]="vm.query"
           (queryChange)="onQueryChange($event)"

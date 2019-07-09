@@ -57,6 +57,23 @@ export class BrowserService implements OnDestroy {
     }
   }
 
+  triggerResizeEvent() {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+    setTimeout(() => {
+      try {
+        this.window.dispatchEvent(new Event('resize'));
+      } catch (e) {
+        try {
+          const evt = this.window.document.createEvent('UIEvents');
+          evt.initUIEvent('resize', true, false, this.window, 0);
+          this.window.dispatchEvent(evt);
+        } catch (e) {}
+      }
+    }, 100);
+  }
+
   private initVisibilityListener() {
     let hidden, visibilityChange;
     if (typeof this.document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support

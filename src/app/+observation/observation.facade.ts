@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../shared/service/user.service';
 import { Autocomplete } from '../shared/model/Autocomplete';
 import { FooterService } from '../shared/service/footer.service';
+import { WarehouseApi } from '../shared/api/WarehouseApi';
 
 interface IPersistentState {
   showIntro: boolean;
@@ -21,6 +22,9 @@ interface IObservationState extends IPersistentState {
   filterVisible: boolean;
   usersMapSettings: any;
   activeTab: string;
+  countSpecies: number;
+  countUnit: number;
+  loading: boolean;
 }
 
 interface ITaxonAutocomplete extends Autocomplete {
@@ -41,7 +45,10 @@ let _state: IObservationState = {
   showIntro: true,
   filterVisible: true,
   usersMapSettings: {},
-  activeTab: 'map'
+  activeTab: 'map',
+  countSpecies: 0,
+  countUnit: 0,
+  loading: false
 };
 
 const _persistentState: IPersistentState = {
@@ -62,18 +69,24 @@ export class ObservationFacade {
 
   lgScreen$         = this.browserService.lgScreen$;
   query$            = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
+  loading$          = this.state$.pipe(map((state) => state.loading));
   advanced$         = this.state$.pipe(map((state) => state.advanced));
   activeTab$        = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
   showIntro$        = this.state$.pipe(map((state) => state.showIntro));
+  countUnit$        = this.query$.pipe(switchMap((query) => this.countUnits(query)), distinctUntilChanged());
+  countSpecies$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)), distinctUntilChanged());
   filterVisible$    = this.state$.pipe(map((state) => state.filterVisible));
   usersMapSettings$ = this.state$.pipe(map((state) => state.usersMapSettings), distinctUntilChanged());
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
     query: this.query$,
+    loading: this.loading$,
     advanced: this.advanced$,
     activeTab: this.activeTab$,
     showIntro: this.showIntro$,
+    countUnit: this.countUnit$,
+    countSpecies: this.countSpecies$,
     filterVisible: this.filterVisible$,
     usersMapSettings: this.usersMapSettings$
   });
@@ -86,6 +99,7 @@ export class ObservationFacade {
     private translateService: TranslateService,
     private userService: UserService,
     private footerService: FooterService,
+    private warehouseApi: WarehouseApi
   ) {
     this.updateState({..._state, ...this.persistentState});
   }
@@ -122,7 +136,7 @@ export class ObservationFacade {
     }
     this.hashCache['query'] = hash;
 
-    this.updateState({..._state, query});
+    this.updateState({..._state, query, loading: true});
   }
 
   clearQuery() {
@@ -160,6 +174,25 @@ export class ObservationFacade {
 
   hideFooter() {
     this.footerService.footerVisible = false;
+  }
+
+  private countUnits(query: WarehouseQueryInterface): Observable<number> {
+    return this.warehouseApi.warehouseQueryCountGet(query).pipe(
+      map(result => result.total || 0)
+    );
+  }
+
+  private countTaxa(query: WarehouseQueryInterface): Observable<number> {
+    return this.warehouseApi.warehouseQueryAggregateGet(
+      {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species'},
+      ['unit.linkings.taxon.speciesId'],
+      [],
+      1,
+      1
+    ).pipe(
+      map(result => result.total),
+      tap(() => this.updateState({..._state, loading: false}))
+    );
   }
 
   private updateState(state: IObservationState) {

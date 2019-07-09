@@ -11,7 +11,8 @@ export class GalleryService {
   constructor(private warehouseApi: WarehouseApi) {
   }
 
-  getList(query: WarehouseQueryInterface, sort: string[], pageSize: number, page: number): Observable<PagedResult<any>> {
+  getList(rawQuery: WarehouseQueryInterface, sort: string[], pageSize: number, page: number): Observable<PagedResult<any>> {
+    const query = {...rawQuery};
     if (WarehouseApi.isEmptyQuery(query)) {
       query.cache = true;
     }

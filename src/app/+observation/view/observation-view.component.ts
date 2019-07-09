@@ -9,7 +9,7 @@ import { ObservationFormComponent } from '../form/observation-form.component';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { tap } from 'rxjs/operators';
-import { PlatformService } from '../../shared/service/platform.service';
+import { BrowserService } from '../../shared/service/browser.service';
 
 
 @Component({
@@ -47,25 +47,15 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private observationFacade: ObservationFacade,
-    private route: Router,
-    private platformService: PlatformService
+    private browserService: BrowserService,
+    private route: Router
   ) {}
 
   @Input()
   set activeTab(tab: string) {
     this._activeTab = tab;
-    if (tab === 'map' && this.platformService.isBrowser) {
-      setTimeout(() => {
-        try {
-          this.window.dispatchEvent(new Event('resize'));
-        } catch (e) {
-          try {
-            const evt = this.window.document.createEvent('UIEvents');
-            evt.initUIEvent('resize', true, false, this.window, 0);
-            this.window.dispatchEvent(evt);
-          } catch (e) {}
-        }
-      }, 100);
+    if (tab === 'map') {
+      this.browserService.triggerResizeEvent();
     }
   }
 
@@ -76,7 +66,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
     this.subQueryUpdate = this.observationFacade.query$.pipe(
-      tap(() => this.results.resetActivated())
+      tap(() => { if (this.results) { this.results.resetActivated(); }})
     ).subscribe();
   }
 
@@ -115,9 +105,5 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   onAdvanceModeChange(event: boolean) {
     this.observationFacade.advanced(event);
-  }
-
-  onActiveTabChange(event: string) {
-    this.observationFacade.activeTab(event);
   }
 }

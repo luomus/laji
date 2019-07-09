@@ -11,7 +11,7 @@ import {
   Renderer2,
   ViewContainerRef
 } from '@angular/core';
-import { Image } from './image.interface';
+import { IImageSelectEvent, Image } from './image.interface';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 
@@ -77,7 +77,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @Input() showLinkToSpeciesCard = false;
   @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
   @Output() cancelEvent = new EventEmitter<any>();
-  @Output() select = new EventEmitter<{taxonId: string, documentId: string, unitId: string}>();
+  @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private _isShown = false;
@@ -107,7 +107,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   openImage(index) {
     if (this.eventOnClick) {
       if (this.modalImages[index]) {
-        this.select.emit({
+        this.imageSelect.emit({
           taxonId: this.modalImages[index].taxonId,
           documentId: this.modalImages[index].documentId,
           unitId: this.modalImages[index].unitId

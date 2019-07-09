@@ -11,6 +11,7 @@ import { IdService } from '../../shared/service/id.service';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 
 @Component({
@@ -22,6 +23,7 @@ import { Util } from '../../shared/service/util.service';
 })
 export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
 
+  @Input() query: WarehouseQueryInterface;
   @Input() height = 150;
   @Input() showLegend = false;
   @Input() legendPosition = 'top';
