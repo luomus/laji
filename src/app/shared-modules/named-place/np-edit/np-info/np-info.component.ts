@@ -92,7 +92,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
       let value;
       const _value = Util.parseJSONPath(np, field);
-      console.log(np, field, _value);
       if (!isEmpty(_value)) {
         value = _value;
       }

@@ -1,5 +1,4 @@
-
-import { switchMap, startWith, map, share, tap } from 'rxjs/operators';
+import { switchMap, startWith, map, share } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
 import { UserService } from '../../shared/service/user.service';
@@ -115,7 +114,6 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
       secured: true
     }).pipe(
       map(result => result.total),
-      tap(() => console.log('HTTP REQUEST!!!!')),
       share()
     );
   }

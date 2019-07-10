@@ -62,7 +62,6 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     } else {
       this.lajiMap.map.setDraw(this.mapOptions.draw);
     }
-    console.log(this.lajiMap.map.getDraw());
   }
 
   private initData() {

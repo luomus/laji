@@ -374,7 +374,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     const count$ = (typeof this.unitCount === 'undefined' ? countRemote$ : of(this.unitCount)).pipe(
       switchMap(cnt => {
-        console.log('MAP CNT ', cnt);
         if (cnt < this.showItemsWhenLessThan) {
           return items$;
         } else {
