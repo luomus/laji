@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
-  Inject,
   Input,
   OnChanges,
   OnInit,
@@ -16,7 +15,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../../shared/service/user.service';
 import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
 import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
-import { WINDOW } from '@ng-toolkit/universal';
+import { BrowserService } from '../../shared/service/browser.service';
 
 const DEFAULT_PAGE_SIZE = 1000;
 
@@ -68,8 +67,8 @@ export class MainResultComponent implements OnInit, OnChanges {
   ];
 
   constructor(
-    @Inject(WINDOW) private window,
     private userService: UserService,
+    private browserService: BrowserService,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -149,15 +148,7 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   closeList() {
     this.showObservationList = false;
-    setTimeout(() => {
-      try {
-        this.window.dispatchEvent(new Event('resize'));
-      } catch (e) {
-        const evt = this.window.document.createEvent('UIEvents');
-        evt.initUIEvent('resize', true, false, this.window, 0);
-        this.window.dispatchEvent(evt);
-      }
-    }, 100);
+    this.browserService.triggerResizeEvent();
   }
 
   onGridSelect(event) {
