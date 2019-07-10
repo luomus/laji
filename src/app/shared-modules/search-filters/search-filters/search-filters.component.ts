@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SearchQueryInterface } from '../search-query.interface';
 import { BrowserService } from '../../../shared/service/browser.service';
 
 @Component({
@@ -9,9 +8,12 @@ import { BrowserService } from '../../../shared/service/browser.service';
 })
 export class SearchFiltersComponent {
   @Input() showFilter = true;
-  @Input() searchQuery: SearchQueryInterface;
+  @Input() queryType: string;
+  @Input() query: object;
+  @Input() activeSkip: string[] = [];
 
   @Output() showFilterChange = new EventEmitter<boolean>();
+  @Output() queryChange = new EventEmitter<object>();
 
   constructor(
     private browserService: BrowserService

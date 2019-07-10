@@ -2,9 +2,12 @@
   <div class="row">
     <div class="form-filters"
          [ngClass]="{'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter}">
-      <laji-search-filters [searchQuery]="searchQuery"
-                           [showFilter]="vm.filterVisible"
-                           (showFilterChange)="filterVisible($event)">
+      <laji-search-filters
+         [query]="vm.query"
+         (queryChange)="onQueryChange($event)"
+         [queryType]="'observation'"
+         [showFilter]="vm.filterVisible"
+         (showFilterChange)="filterVisible($event)">
         <laji-observation-form
           [query]="vm.query"
           [invasiveStatuses]="invasiveStatuses"
