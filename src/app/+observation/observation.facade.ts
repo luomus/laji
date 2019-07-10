@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, share, switchMap, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
@@ -73,8 +73,8 @@ export class ObservationFacade {
   advanced$         = this.state$.pipe(map((state) => state.advanced));
   activeTab$        = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
   showIntro$        = this.state$.pipe(map((state) => state.showIntro));
-  countUnit$        = this.query$.pipe(switchMap((query) => this.countUnits(query)), distinctUntilChanged());
-  countSpecies$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)), distinctUntilChanged());
+  countUnit$        = this.query$.pipe(switchMap((query) => this.countUnits(query)), distinctUntilChanged(), share());
+  countSpecies$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)), distinctUntilChanged(), share());
   filterVisible$    = this.state$.pipe(map((state) => state.filterVisible));
   usersMapSettings$ = this.state$.pipe(map((state) => state.usersMapSettings), distinctUntilChanged());
 
