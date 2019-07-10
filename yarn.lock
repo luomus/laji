@@ -5586,14 +5586,13 @@ laji-form@^0.0.629:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.508, laji-map@^1.0.507, laji-map@^1.0.508:
-  version "1.0.508"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.508.tgz#aa5404929b6f2656ba0273a88262959a5c5d30d9"
-  integrity sha512-EJhzrz+3RIACOEiWZMo7iQN9NwmG36jp0TvZw5YpIYra6hv6BrJw4xgBapxNAjXPxHITreoyEE4nl4bhg5u/NQ==
+laji-map@1.0.504, laji-map@^1.0.507, laji-map@^1.0.504:
+  version "1.0.504"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.504.tgz#f7a228d1384901ac150861ea7ab28e32935f29e8"
+  integrity sha512-XUbQtq6peMZSMbUuIkyiTigEsSVF+uVIqTNek01GaiHVVawmgXBdSZwaDu/XPHtYIv+aPFiMwyP/uvJgSm0//A==
   dependencies:
-    "@types/jasmine" "^3.3.13"
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    leaflet "1.5.1"
+    leaflet "1.4.0"
     leaflet-contextmenu "1.4.0"
     leaflet-draw "1.0.3"
     leaflet-geometryutil "0.8.0"
@@ -5692,7 +5691,7 @@ leaflet.sync@^0.2.4:
   resolved "https://registry.yarnpkg.com/leaflet.sync/-/leaflet.sync-0.2.4.tgz#76d4095a61470882d72e092190090d0a1fa55ca2"
   integrity sha1-dtQJWmFHCILXLgkhkAkNCh+lXKI=
 
-leaflet@*, leaflet@1.5.1, leaflet@>=0.7.0, leaflet@^1.0.1:
+leaflet@*, leaflet@1.4.0, leaflet@1.5.1, leaflet@>=0.7.0, leaflet@^1.0.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.5.1.tgz#9afb9d963d66c870066b1342e7a06f92840f46bf"
   integrity sha512-ekM9KAeG99tYisNBg0IzEywAlp0hYI5XRipsqRXyRTeuU8jcuntilpp+eFf5gaE0xubc9RuSNIVtByEKwqFV0w==
