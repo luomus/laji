@@ -19,7 +19,7 @@ export class ResetComponent implements OnInit {
 
   ngOnInit() {
     this.observationFacade.clearQuery();
-    this.router.navigate(this.localizeRouterService.translateRoute(['/observation/map']), {replaceUrl: true});
+    this.router.navigate(this.localizeRouterService.translateRoute(['/observation/list']), {replaceUrl: true});
   }
 
 }
