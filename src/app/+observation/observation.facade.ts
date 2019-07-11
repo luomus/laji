@@ -181,29 +181,27 @@ export class ObservationFacade {
   }
 
   private countUnits(query: WarehouseQueryInterface): Observable<number> {
-    return this.warehouseApi.warehouseQueryCountGet(query).pipe(
-      map(result => result.total || 0),
-      catchError(() => of(0)),
-      distinctUntilChanged(),
-      tap((cnt) => this.updateState({..._state, loadingUnits: false, countUnit: cnt})),
-      startWith(_state.countUnit),
-      share()
-    );
+    return this.count(this.warehouseApi.warehouseQueryCountGet(query), 'loadingUnits', 'countUnit');
   }
 
   private countTaxa(query: WarehouseQueryInterface): Observable<number> {
-    return this.warehouseApi.warehouseQueryAggregateGet(
-      {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species', cache: true},
-      ['unit.linkings.taxon.speciesId'],
-      [],
-      1,
-      1
-    ).pipe(
-      map(result => result.total),
-      catchError(() => of(0)),
+    return this.count(
+      this.warehouseApi.warehouseQueryAggregateGet(
+        {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species', cache: true},
+        ['unit.linkings.taxon.speciesId'], [], 1, 1
+      ),
+      'loadingTaxa',
+      'countTaxa'
+    );
+  }
+
+  private count(src: Observable<any>, loadingKey: keyof IObservationState, countKey:  keyof IObservationState) {
+    return src.pipe(
+      map(result => result.total || 0),
+      catchError((e) => of(0)),
       distinctUntilChanged(),
-      tap((cnt) => this.updateState({..._state, loadingTaxa: false, countTaxa: cnt})),
-      startWith(_state.countTaxa),
+      tap((cnt) => this.updateState({..._state, [loadingKey]: false, [countKey]: cnt})),
+      startWith(_state[countKey]),
       share()
     );
   }
