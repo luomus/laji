@@ -24,6 +24,8 @@ export class InfoPageComponent implements OnChanges {
   children = new EventEmitter<InformationItem[]>();
   @Output()
   title = new EventEmitter<string>();
+  @Output()
+  hasContent = new EventEmitter<boolean>();
 
   constructor(
     private translateService: TranslateService,
@@ -48,6 +50,7 @@ export class InfoPageComponent implements OnChanges {
           return afterRoot;
         }));
         this.children.emit(result.children || []);
+        this.hasContent.emit(!!result.content.trim());
       }),
       map(result => result.content),
       startWith('')

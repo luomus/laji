@@ -8,6 +8,7 @@ import { DocumentFormFooterComponent } from './document-form-footer/document-for
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 import { LatestDocumentsModule } from '../latest-documents/latest-documents.module';
 import { AppComponentModule } from '../app-component/app-component.module';
+import { InfoPageModule } from '../info-page/info-page.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { AppComponentModule } from '../app-component/app-component.module';
     SharedModule,
     OwnSubmissionsModule,
     LatestDocumentsModule,
-    AppComponentModule
+    AppComponentModule,
+    InfoPageModule
   ],
   declarations: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],
   exports: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent]
