@@ -15,7 +15,8 @@ export class ObservationResultComponent {
   @Input() lgScreen = true;
   @Input() unitCount: number;
   @Input() speciesCount: number;
-  @Input() loading: boolean;
+  @Input() loadingUnits: boolean;
+  @Input() loadingTaxa: boolean;
 
   @Output() queryChange: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
 

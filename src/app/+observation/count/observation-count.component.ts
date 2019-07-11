@@ -21,10 +21,9 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   @Input() overrideInQuery: WarehouseQueryInterface;
   @Input() lightLoader = false;
   @Input() value: number|string; // If this is set this will be always used
+  @Input() loading = false;
 
   public count = '';
-  public loading = false;
-
 
   private pageSize = 1000;
   private subCount: Subscription;

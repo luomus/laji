@@ -12,9 +12,11 @@
   <li class="counts">
     <strong *ngIf="active !== 'finnish'">
       <laji-observation-count
+        [loading]="loadingUnits"
         [value]="unitCount"></laji-observation-count>
       {{ 'observation.results.observation' | translate }}
       <laji-observation-count
+        [loading]="loadingTaxa"
         [value]="speciesCount">
       </laji-observation-count>
       {{ 'observation.results.species' | translate }}
@@ -87,7 +89,7 @@
   </div>
   <div [hidden]="active !== 'map'" *ngIf="activated['map']">
     <laji-observation-map
-      [ready]="!loading"
+      [ready]="!loadingUnits"
       [unitCount]="unitCount"
       [showItemsWhenLessThan]="2000"
       [opacity]="0.5"

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map, share, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, distinctUntilChanged, map, share, startWith, switchMap, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
@@ -24,7 +24,8 @@ interface IObservationState extends IPersistentState {
   activeTab: string;
   countSpecies: number;
   countUnit: number;
-  loading: boolean;
+  loadingTaxa: boolean;
+  loadingUnits: boolean;
 }
 
 interface ITaxonAutocomplete extends Autocomplete {
@@ -48,7 +49,8 @@ let _state: IObservationState = {
   activeTab: 'map',
   countSpecies: 0,
   countUnit: 0,
-  loading: false
+  loadingTaxa: false,
+  loadingUnits: false
 };
 
 const _persistentState: IPersistentState = {
@@ -69,19 +71,21 @@ export class ObservationFacade {
 
   lgScreen$         = this.browserService.lgScreen$;
   query$            = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
-  loading$          = this.state$.pipe(map((state) => state.loading));
+  loading$          = this.state$.pipe(map((state) => state.loadingUnits));
+  loadingTaxa$      = this.state$.pipe(map((state) => state.loadingTaxa));
   advanced$         = this.state$.pipe(map((state) => state.advanced));
   activeTab$        = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
   showIntro$        = this.state$.pipe(map((state) => state.showIntro));
-  countUnit$        = this.query$.pipe(switchMap((query) => this.countUnits(query)), distinctUntilChanged(), share());
-  countSpecies$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)), distinctUntilChanged(), share());
+  countUnit$        = this.query$.pipe(switchMap((query) => this.countUnits(query)), distinctUntilChanged(), share(), startWith(0));
+  countSpecies$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)), distinctUntilChanged(), share(), startWith(0));
   filterVisible$    = this.state$.pipe(map((state) => state.filterVisible));
   usersMapSettings$ = this.state$.pipe(map((state) => state.usersMapSettings), distinctUntilChanged());
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
     query: this.query$,
-    loading: this.loading$,
+    loadingUnits: this.loading$,
+    loadingTaxa: this.loadingTaxa$,
     advanced: this.advanced$,
     activeTab: this.activeTab$,
     showIntro: this.showIntro$,
@@ -136,7 +140,7 @@ export class ObservationFacade {
     }
     this.hashCache['query'] = hash;
 
-    this.updateState({..._state, query, loading: true});
+    this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
   }
 
   clearQuery() {
@@ -178,20 +182,23 @@ export class ObservationFacade {
 
   private countUnits(query: WarehouseQueryInterface): Observable<number> {
     return this.warehouseApi.warehouseQueryCountGet(query).pipe(
-      map(result => result.total || 0)
+      map(result => result.total || 0),
+      catchError(() => of(0)),
+      tap((cnt) => this.updateState({..._state, loadingUnits: false, countUnit: cnt}))
     );
   }
 
   private countTaxa(query: WarehouseQueryInterface): Observable<number> {
     return this.warehouseApi.warehouseQueryAggregateGet(
-      {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species'},
+      {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species', cache: true},
       ['unit.linkings.taxon.speciesId'],
       [],
       1,
       1
     ).pipe(
       map(result => result.total),
-      tap(() => this.updateState({..._state, loading: false}))
+      catchError(() => of(0)),
+      tap((cnt) => this.updateState({..._state, loadingTaxa: false, countSpecies: cnt}))
     );
   }
 
