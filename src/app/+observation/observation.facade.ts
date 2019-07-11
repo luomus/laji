@@ -22,7 +22,7 @@ interface IObservationState extends IPersistentState {
   filterVisible: boolean;
   usersMapSettings: any;
   activeTab: string;
-  countSpecies: number;
+  countTaxa: number;
   countUnit: number;
   loadingTaxa: boolean;
   loadingUnits: boolean;
@@ -47,7 +47,7 @@ let _state: IObservationState = {
   filterVisible: true,
   usersMapSettings: {},
   activeTab: 'map',
-  countSpecies: 0,
+  countTaxa: 0,
   countUnit: 0,
   loadingTaxa: false,
   loadingUnits: false
@@ -76,8 +76,8 @@ export class ObservationFacade {
   advanced$         = this.state$.pipe(map((state) => state.advanced));
   activeTab$        = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
   showIntro$        = this.state$.pipe(map((state) => state.showIntro));
-  countUnit$        = this.query$.pipe(switchMap((query) => this.countUnits(query)), distinctUntilChanged(), share(), startWith(0));
-  countSpecies$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)), distinctUntilChanged(), share(), startWith(0));
+  countUnit$        = this.query$.pipe(switchMap((query) => this.countUnits(query)));
+  countTaxa$        = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
   filterVisible$    = this.state$.pipe(map((state) => state.filterVisible));
   usersMapSettings$ = this.state$.pipe(map((state) => state.usersMapSettings), distinctUntilChanged());
 
@@ -90,7 +90,7 @@ export class ObservationFacade {
     activeTab: this.activeTab$,
     showIntro: this.showIntro$,
     countUnit: this.countUnit$,
-    countSpecies: this.countSpecies$,
+    countTaxa: this.countTaxa$,
     filterVisible: this.filterVisible$,
     usersMapSettings: this.usersMapSettings$
   });
@@ -184,7 +184,10 @@ export class ObservationFacade {
     return this.warehouseApi.warehouseQueryCountGet(query).pipe(
       map(result => result.total || 0),
       catchError(() => of(0)),
-      tap((cnt) => this.updateState({..._state, loadingUnits: false, countUnit: cnt}))
+      distinctUntilChanged(),
+      tap((cnt) => this.updateState({..._state, loadingUnits: false, countUnit: cnt})),
+      startWith(_state.countUnit),
+      share()
     );
   }
 
@@ -198,7 +201,10 @@ export class ObservationFacade {
     ).pipe(
       map(result => result.total),
       catchError(() => of(0)),
-      tap((cnt) => this.updateState({..._state, loadingTaxa: false, countSpecies: cnt}))
+      distinctUntilChanged(),
+      tap((cnt) => this.updateState({..._state, loadingTaxa: false, countTaxa: cnt})),
+      startWith(_state.countTaxa),
+      share()
     );
   }
 
