@@ -58,6 +58,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   private changeSource = new Subject<any>();
   private changeEvent$ = this.changeSource.asObservable();
 
+  public hasAlertContent = false;
   public form: any;
   public lang: string;
   public status = '';
@@ -231,7 +232,12 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         this.formService.setCurrentData(result, true);
         this.translate.get('haseka.form.success')
           .subscribe(value => {
-            this.toastsService.showSuccess(this.getMessage('success', value));
+            this.toastsService.showSuccess(
+              this.getMessage(
+                data.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+                value
+              )
+            );
             this.changeDetector.markForCheck();
           });
         this.namedPlaceService.invalidateCache();

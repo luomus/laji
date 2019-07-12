@@ -20,7 +20,7 @@ export class ResetComponent implements OnInit {
   ngOnInit() {
     this.searchQuery.query = {};
     this.searchQuery.queryUpdate({submit: true});
-    this.router.navigate(this.localizeRouterService.translateRoute(['/observation/map']), {replaceUrl: true});
+    this.router.navigate(this.localizeRouterService.translateRoute(['/observation/list']), {replaceUrl: true});
   }
 
 }

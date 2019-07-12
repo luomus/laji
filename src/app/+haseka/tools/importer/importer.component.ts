@@ -319,7 +319,7 @@ export class ImporterComponent implements OnInit {
     this.total = this.parsedData.length;
     this.current = 1;
     ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
-      mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
+      concatMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
         concatMap(document => this.importService.validateData(document).pipe(
           switchMap(result => ObservableOf({result: result, source: data})),
           catchError(err => ObservableOf(typeof err.error !== 'undefined' ? err.error : err).pipe(
@@ -369,7 +369,7 @@ export class ImporterComponent implements OnInit {
     this.total = this.parsedData.length;
     this.current = 1;
     ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
-      mergeMap(data => this.augmentService.augmentDocument(data.document).pipe(
+      concatMap(data => this.augmentService.augmentDocument(data.document).pipe(
         concatMap(document => this.importService.sendData(document, publicityRestrictions).pipe(
           switchMap(result => ObservableOf({result: result, source: data})),
           catchError(err => ObservableOf(typeof err.json === 'function' ? err.json() : err).pipe(

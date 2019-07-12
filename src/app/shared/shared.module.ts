@@ -58,6 +58,7 @@ import { PublicationPipe } from './pipe/publication.pipe';
 import { HabitatComponent } from './habitat/habitat.component';
 import { LazyImageDirective } from './directive/lazy-image.directive';
 import { HideForIeDirective } from './directive/hide-for-ie.directive';
+import { SortPipe } from './pipe/sort.pipe';
 
 
 @NgModule({
@@ -84,7 +85,8 @@ import { HideForIeDirective } from './directive/hide-for-ie.directive';
     PublicationPipe,
     HabitatComponent,
     LazyImageDirective,
-    HideForIeDirective
+    HideForIeDirective,
+    SortPipe
   ],
   imports: [
     FormsModule,
@@ -111,7 +113,7 @@ import { HideForIeDirective } from './directive/hide-for-ie.directive';
     ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe
   ]
 })
 export class SharedModule {

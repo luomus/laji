@@ -31,7 +31,8 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
 
   private _mapOptions: LajiMapOptions = {
     controls: {
-      draw: false
+      draw: false,
+      layer: false
     },
     zoom: -1,
     draw: false,

@@ -1,4 +1,7 @@
 <laji-spinner [spinning]="!form" [overlay]="true"></laji-spinner>
+<div [hidden]="!hasAlertContent" style="margin-top: 20px;">
+  <laji-info-page child="2860" (hasContent)="hasAlertContent = $event"></laji-info-page>
+</div>
 <laji-document-form-header *ngIf="form && showHeader"
     [formID]="form.id"
     [namedPlace]="namedPlace"

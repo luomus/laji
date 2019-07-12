@@ -41,6 +41,7 @@ export interface GenericLabelMakerTranslationsInterface {
   'reset'?: string;
   'Available fields'?: string;
   'Add fields to the backside'?: string;
+  'First data row'?: string;
   'Download labels (pdf)'?: string;
   'Include data'?: string;
   'add to label'?: string;

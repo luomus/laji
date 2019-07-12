@@ -237,7 +237,9 @@ export class UserService extends LocalDb {
 
   private loadUserInfo(token: string): Observable<any> {
     this.token = token;
+    const currentId = this.currentUserId;
     return this.getUser(null, token).pipe(
+      filter((p) => p.id !== currentId),
       tap((person: Person) => this.addUser(person, true)),
       switchMap((person: Person) => this.getItem(person.id).pipe(
         tap((settings: any) => this.userSettings = settings),
