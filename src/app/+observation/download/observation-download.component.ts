@@ -1,10 +1,10 @@
 import { map, share } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -23,7 +23,7 @@ enum RequestStatus {
   templateUrl: './observation-download.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationDownloadComponent implements OnInit, OnDestroy {
+export class ObservationDownloadComponent {
 
   @Input() unitCount: number;
   @Input() speciesCount: number;
@@ -31,24 +31,18 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   @Input() loadLimit = 2000000;
 
   privateCount$: Observable<number>;
-
-  _query: WarehouseQueryInterface;
   hasPersonalData = false;
+  requests: {[place: string]: RequestStatus} = {};
+  requestStatus = RequestStatus;
+  description = '';
+  csvParams = '';
 
-  public requests: {[place: string]: RequestStatus} = {};
-  public requestStatus = RequestStatus;
-  public count = {
-    'count': 0,
-    'private': 0
-  };
-  public description = '';
-  public csvParams = '';
+  private _query: WarehouseQueryInterface;
   private taxaDownloadAggregateBy = {
     'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
     'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
     'sv': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
   };
-  private subLang: Subscription;
 
   constructor(public searchQuery: SearchQueryService,
               public userService: UserService,
@@ -78,19 +72,13 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     this.updateCsvLink();
   }
 
-  ngOnInit() {
-    this.updateCsvLink();
-  }
-
-  ngOnDestroy() {
-    if (this.subLang) {
-      this.subLang.unsubscribe();
-    }
+  get query(): WarehouseQueryInterface {
+    return this._query;
   }
 
   updateCount() {
     this.privateCount$ = this.warehouseService.warehouseQueryCountGet({
-      ...this._query,
+      ...this.query,
       secured: true
     }).pipe(
       map(result => result.total),
@@ -99,7 +87,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   updateCsvLink() {
-    const queryParams = this.searchQuery.getQueryObject(this._query);
+    const queryParams = this.searchQuery.getQueryObject(this.query);
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
     queryParams['includeNonValidTaxa'] = 'false';
     queryParams['pageSize'] = '' + this.taxaLimit;
@@ -125,7 +113,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
       this.userService.getToken(),
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
-      this._query,
+      this.query,
       this.translate.currentLang
     ).subscribe(
       () => {
