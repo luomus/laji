@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { TranslateService } from '@ngx-translate/core';
 import { IdService } from '../../shared/service/id.service';
 
 @Component({
   selector: 'laji-observation-filters',
-  templateUrl: './observation-filters.component.html',
-  styleUrls: ['./observation-filters.component.css']
+  templateUrl: './observation-filters.component.html'
 })
 export class ObservationFiltersComponent {
 
@@ -14,9 +12,7 @@ export class ObservationFiltersComponent {
   @Input() visible: boolean;
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
 
-  constructor(
-    public translate: TranslateService
-  ) { }
+  constructor() { }
 
   onRecordBasis(event) {
     if (event.row && event.row.unit && event.row.unit.superRecordBasis) {
