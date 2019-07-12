@@ -24,6 +24,10 @@ export class InfoPageComponent implements OnChanges {
   children = new EventEmitter<InformationItem[]>();
   @Output()
   title = new EventEmitter<string>();
+  @Output()
+  hasContent = new EventEmitter<boolean>();
+
+  private currentPage;
 
   constructor(
     private translateService: TranslateService,
@@ -37,7 +41,12 @@ export class InfoPageComponent implements OnChanges {
   private updatePage() {
     const rootPageID = this.rootPage && this.rootPage[this.translateService.currentLang];
     const roots = this.rootPage && Object.keys(this.rootPage).map(key => this.rootPage[key]);
-    this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.child || rootPageID, {}).pipe(
+    const page = this.child || rootPageID;
+    if (this.currentPage === page) {
+      return;
+    }
+    this.currentPage = page;
+    this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, page, {}).pipe(
       tap(result => {
         let afterRoot = false;
         this.title.emit(result.title);
@@ -48,6 +57,7 @@ export class InfoPageComponent implements OnChanges {
           return afterRoot;
         }));
         this.children.emit(result.children || []);
+        this.hasContent.emit(!!result.content.trim());
       }),
       map(result => result.content),
       startWith('')

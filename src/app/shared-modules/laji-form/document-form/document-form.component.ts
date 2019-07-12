@@ -58,6 +58,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   private changeSource = new Subject<any>();
   private changeEvent$ = this.changeSource.asObservable();
 
+  public hasAlertContent = false;
   public form: any;
   public lang: string;
   public status = '';
