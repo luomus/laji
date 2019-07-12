@@ -136,6 +136,10 @@ export class WarehouseApi {
 
     let queryParameters = {};
 
+    if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
+      query = {...query, cache: true};
+    }
+
     this.addQueryToQueryParams(this.queryWithMetaData(query, aggregateBy, orderBy, pageSize, page), queryParameters);
 
     if (geoJSON !== undefined) {
@@ -267,6 +271,10 @@ export class WarehouseApi {
   public warehouseQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<WarehouseCountResultInterface> {
     const path = this.basePath + '/warehouse/query/count';
 
+    if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
+      query = {...query, cache: true};
+    }
+
     const queryParameters = {...extraHttpRequestParams};
 
     this.addQueryToQueryParams(query, queryParameters);
@@ -285,6 +293,10 @@ export class WarehouseApi {
    */
   public warehouseQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
     const path = this.basePath + '/warehouse/query/list';
+
+    if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
+      query = {...query, cache: true};
+    }
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
@@ -342,7 +354,7 @@ export class WarehouseApi {
     const path = this.basePath + '/warehouse/query/unitMedia/list';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-;
+
     this.addQueryToQueryParams(this.queryWithMetaData(query, selected, orderBy, pageSize, page), queryParameters);
 
     return this.http.get<PagedResult<any>>(path, {params: queryParameters});

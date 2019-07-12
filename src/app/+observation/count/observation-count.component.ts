@@ -1,9 +1,7 @@
-
-import { concat, take, delay, retryWhen } from 'rxjs/operators';
-import { Subscription, throwError as observableThrowError } from 'rxjs';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { concat, take, delay, retryWhen, map, catchError, tap } from 'rxjs/operators';
+import { Observable, of, throwError as observableThrowError } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Util } from '../../shared/service/util.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
@@ -13,109 +11,74 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
   templateUrl: './observation-count.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationCountComponent implements OnDestroy, OnChanges {
+export class ObservationCountComponent implements OnChanges {
 
+  @Input() value: number | string; // If this is set this will be always used
   @Input() field: string;
   @Input() pick: any;
   @Input() query: any;
   @Input() overrideInQuery: WarehouseQueryInterface;
   @Input() lightLoader = false;
-  @Input() value: number|string; // If this is set this will be always used
   @Input() loading = false;
 
-  public count = '';
+  public count$: Observable<string>;
 
   private pageSize = 1000;
-  private subCount: Subscription;
-  private cache: string;
 
   constructor(
     private warehouseService: WarehouseApi,
-    private logger: Logger,
-    private changeDetectorRef: ChangeDetectorRef
+    private logger: Logger
   ) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['query']) {
-      const key = JSON.stringify(WarehouseApi.prepareCountQuery(this.query));
-      if (this.cache === key) {
-        return;
-      }
-      this.cache = key;
-    }
-    this.update();
-  }
-
-  ngOnDestroy() {
-    if (this.subCount) {
-      this.subCount.unsubscribe();
+    if (changes['query'] || changes['field'] || changes['pick'] || changes['overrideInQuery'] || changes['value']) {
+      this.update();
     }
   }
 
   update() {
     if (typeof this.value !== 'undefined' || !this.query) {
-      this.count = '' + (this.value || 0);
+      this.count$ = of('' + (this.value || 0));
       return;
     }
-    let query = Util.clone(this.query);
-    if (this.overrideInQuery) {
-      query = {...query, ...this.overrideInQuery};
-    }
-    if (WarehouseApi.isEmptyQuery(query)) {
-      query.cache = true;
-    }
-    if (this.subCount) {
-      this.subCount.unsubscribe();
-    }
+
+    const query = this.overrideInQuery ? {...this.query, ...this.overrideInQuery} : this.query;
     this.loading = true;
-    this.field ? this.updateAggregated(query) : this.updateCount(query);
+    this.count$ = (this.field ? this.aggregatedCount(query) : this.normalCount(query)).pipe(
+      map(val => '' + val),
+      catchError(err => {
+        this.logger.warn('Failed to update count', err);
+        return of('');
+      }),
+      tap(() => this.loading = false)
+    );
   }
 
-  private updateCount(query) {
-    this.subCount = this.warehouseService.warehouseQueryCountGet(query).pipe(
-        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))
-      ).subscribe(result => {
-          this.loading = false;
-          this.count = '' + (result.total || 0);
-          this.changeDetectorRef.markForCheck();
-        },
-        err => {
-          this.logger.warn('Failed to update count', err);
-          this.loading = false;
-          this.changeDetectorRef.markForCheck();
-        }
-      );
+  private normalCount(query: WarehouseQueryInterface): Observable<number> {
+    return this.warehouseService.warehouseQueryCountGet(query).pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
+      map(result => result.total)
+    );
   }
 
-  private updateAggregated(query) {
+  private aggregatedCount(query: WarehouseQueryInterface): Observable<number> {
     let pageSize = 1;
     if (this.pick) {
       pageSize = this.pageSize;
       this.pick = Array.isArray(this.pick) ? this.pick : [this.pick];
     }
 
-    this.subCount = this.warehouseService.warehouseQueryAggregateGet(query, [this.field], undefined, pageSize).pipe(
-        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))
-      ).subscribe(
-        result => {
-          if (this.pick) {
-            if (result.results) {
-              this.count = '' + result.results
-                  .filter(value => this.pick.indexOf(value.aggregateBy[this.field]) > -1)
-                  .reduce((pre, cur) => pre + cur['count'], 0);
-            }
-          } else {
-            this.count = '' + (result.total || 0);
-          }
-          this.loading = false;
-          this.changeDetectorRef.markForCheck();
-        },
-        err => {
-          this.logger.warn('Failed to update aggregated count', err);
-          this.loading = false;
-          this.changeDetectorRef.markForCheck();
+    return this.warehouseService.warehouseQueryAggregateGet(query, [this.field], undefined, pageSize).pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
+      map(result => {
+        if (this.pick && result.results) {
+          return result.results
+            .filter(value => this.pick.indexOf(value.aggregateBy[this.field]) > -1)
+            .reduce((pre, cur) => pre + cur['count'], 0);
         }
-      );
+        return result.total || 0;
+      })
+    );
   }
 }
