@@ -12,6 +12,8 @@ import { SelectedFieldItemComponent } from './selected-field-item/selected-field
 import { ObservationYearChartComponent } from './observation-year-chart/observation-year-chart.component';
 import { ObservationMonthDayChartComponent } from './observation-month-day-chart/observation-month-day-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ChartsModule } from 'ng2-charts';
+import { ChartsModuleBarVerticalGroup } from '../ng2-charts-module/ng2-charts.module';
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     NgxChartsModule,
     LangModule,
     SharedModule,
-    DatatableModule
+    DatatableModule,
+    ChartsModule,
+    ChartsModuleBarVerticalGroup
   ],
   declarations: [
     ObservationTableComponent,

@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild, OnInit
 } from '@angular/core';
 import {Subscription, of, Observable, forkJoin} from 'rxjs';
 import {WarehouseApi} from '../../../shared/api/WarehouseApi';
@@ -8,6 +8,9 @@ import {TranslateService} from '@ngx-translate/core';
 import {WarehouseValueMappingService} from '../../../shared/service/warehouse-value-mapping.service';
 import {TriplestoreLabelService} from '../../../shared/service/triplestore-label.service';
 import {ModalDirective} from 'ngx-bootstrap';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label } from 'ng2-charts';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'laji-observation-month-day-chart',
@@ -15,7 +18,8 @@ import {ModalDirective} from 'ngx-bootstrap';
   styleUrls: ['./observation-month-day-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
+
+export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChild('dayChartModal') public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;
@@ -32,6 +36,56 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
 
   @Output() hasData = new EventEmitter<boolean>();
 
+  public barChartOptions: any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    tooltips: {
+     enabled: true,
+     mode: 'index',
+     axis: 'x',
+     position: 'nearest'
+   },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          color: 'rgba(171,171,171,1)',
+          lineWidth: 1
+        },
+          ticks: {
+              callback: this.getMonthLabel.bind(this)
+          }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          max: 200,
+          min: 0,
+          stepSize: 100
+        },
+        gridLines: {
+          color: 'rgba(171,171,171,1)',
+          lineWidth: 0.5
+        }
+      }]
+    },
+    plugins: {
+      datalabels: {
+        display: false
+      },
+    }
+  };
+
+  public barChartLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+  public barChartType = 'bar';
+  public barLegend = true;
+  public barChartPlugins = [pluginDataLabels];
+
+  public barChartData: ChartDataSets[] = [
+    { data: [65, 59, 800, 81, 51, 55, 40, 59, 80, 81, 56, 55], label: 'Series A' },
+    { data: [28, 48, 40, 19, 86, 27, 90, 48, 40, 19, 86, 27], label: 'Series B' },
+    { data: [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0], label: 'Series C' }
+  ];
+
   constructor(
     private warehouseApi: WarehouseApi,
     private warehouseService: WarehouseValueMappingService,
@@ -39,6 +93,9 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
     private translate: TranslateService,
     private cd: ChangeDetectorRef
   ) { }
+
+  ngOnInit() {
+  }
 
   ngOnChanges() {
     this.updateData();
@@ -56,6 +113,17 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
       this.dayChartModalVisible = true;
       this.modal.show();
     }
+  }
+
+  onSelect1(e) {
+    if (e.active.length > 0) {
+      const chartElement = e.active[0]._chart.getElementAtEvent(event);
+      console.log(chartElement);
+      console.log(chartElement[0]._model.label);
+      this.activeMonth = chartElement[0]._model.label;
+      }
+      this.dayChartModalVisible = true;
+      this.modal.show();
   }
 
   onHideDayChart() {
@@ -180,5 +248,13 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
 
   private getNbrOfDaysInMonth(month: number): number {
     return new Date(2000, month, 0).getDate();
+  }
+
+  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
+    console.log(event, active);
+  }
+
+  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
+    console.log(event, active);
   }
 }

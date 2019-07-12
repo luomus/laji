@@ -1,5 +1,16 @@
 <ng-container *ngIf="monthChartData && monthChartData.length > 0">
   <div class="info-card-chart">
+            <div class="info-card-chart">
+              <laji-canvas baseChart 
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [legend]="true"
+                [chartType]="barChartType"
+                (chartClick)="onSelect1($event)"
+                >
+            </laji-canvas>
+            </div>
     <ngx-charts-bar-vertical-2d
       [results]="monthChartData"
       [xAxis]="true"

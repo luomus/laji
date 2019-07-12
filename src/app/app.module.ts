@@ -30,6 +30,9 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponentModule } from './shared-modules/app-component/app-component.module';
 import { TimeoutInterceptor } from './shared/interceptor/timeout.interceptor';
+import { ChartsModule } from 'ng2-charts';
+
+
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -65,7 +68,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     AppRoutingModule,
-    TransferHttpCacheModule
+    TransferHttpCacheModule,
+    ChartsModule
   ],
   exports: [
     TranslateModule
