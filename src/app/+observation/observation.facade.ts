@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, map, share, startWith, switchMap, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService } from '../shared/service/user.service';
+import { ISettingResultList, UserService } from '../shared/service/user.service';
 import { Autocomplete } from '../shared/model/Autocomplete';
 import { FooterService } from '../shared/service/footer.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
@@ -20,12 +20,13 @@ interface IPersistentState {
 interface IObservationState extends IPersistentState {
   query: WarehouseQueryInterface;
   filterVisible: boolean;
-  usersMapSettings: any;
+  settingsMap: any;
   activeTab: string;
   countTaxa: number;
   countUnit: number;
   loadingTaxa: boolean;
   loadingUnits: boolean;
+  settingsList: ISettingResultList;
 }
 
 interface ITaxonAutocomplete extends Autocomplete {
@@ -45,12 +46,13 @@ let _state: IObservationState = {
   advanced: false,
   showIntro: true,
   filterVisible: true,
-  usersMapSettings: {},
   activeTab: 'map',
   countTaxa: 0,
   countUnit: 0,
   loadingTaxa: false,
-  loadingUnits: false
+  loadingUnits: false,
+  settingsList: {},
+  settingsMap: {}
 };
 
 const _persistentState: IPersistentState = {
@@ -69,17 +71,18 @@ export class ObservationFacade {
   private store  = new BehaviorSubject<IObservationState>(_state);
   state$ = this.store.asObservable();
 
-  lgScreen$         = this.browserService.lgScreen$;
-  query$            = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
-  loading$          = this.state$.pipe(map((state) => state.loadingUnits));
-  loadingTaxa$      = this.state$.pipe(map((state) => state.loadingTaxa));
-  advanced$         = this.state$.pipe(map((state) => state.advanced));
-  activeTab$        = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
-  showIntro$        = this.state$.pipe(map((state) => state.showIntro));
-  countUnit$        = this.query$.pipe(switchMap((query) => this.countUnits(query)));
-  countTaxa$        = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
-  filterVisible$    = this.state$.pipe(map((state) => state.filterVisible));
-  usersMapSettings$ = this.state$.pipe(map((state) => state.usersMapSettings), distinctUntilChanged());
+  lgScreen$      = this.browserService.lgScreen$;
+  query$         = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
+  loading$       = this.state$.pipe(map((state) => state.loadingUnits));
+  loadingTaxa$   = this.state$.pipe(map((state) => state.loadingTaxa));
+  advanced$      = this.state$.pipe(map((state) => state.advanced));
+  activeTab$     = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
+  showIntro$     = this.state$.pipe(map((state) => state.showIntro));
+  countUnit$     = this.query$.pipe(switchMap((query) => this.countUnits(query)));
+  countTaxa$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
+  filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
+  settingsList$  = this.state$.pipe(map((state) => state.settingsList));
+  settingsMap$   = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
@@ -92,10 +95,12 @@ export class ObservationFacade {
     countUnit: this.countUnit$,
     countTaxa: this.countTaxa$,
     filterVisible: this.filterVisible$,
-    usersMapSettings: this.usersMapSettings$
+    settingsList: this.settingsList$,
+    settingsMap: this.settingsMap$
   });
 
   private hashCache: {[key: string]: string} = {};
+  private userSub: Subscription;
 
   constructor(
     private browserService: BrowserService,
@@ -106,6 +111,10 @@ export class ObservationFacade {
     private warehouseApi: WarehouseApi
   ) {
     this.updateState({..._state, ...this.persistentState});
+    this.userSub = this.userService.isLoggedIn$.pipe(
+      switchMap((loggedIn) => loggedIn ? this.userService.getUserSetting(UserService.SETTINGS_RESULT_LIST) : of({})),
+      tap(settings => this.updateState({..._state, settingsList: settings})),
+    ).subscribe();
   }
 
   activeTab(tab: string) {
@@ -170,6 +179,10 @@ export class ObservationFacade {
         return {...item, groups};
       }))
     );
+  }
+
+  updateListSettings(settings: ISettingResultList) {
+    this.userService.setUserSetting(UserService.SETTINGS_RESULT_LIST, settings);
   }
 
   showFooter() {

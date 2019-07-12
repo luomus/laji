@@ -46,7 +46,6 @@ export class ObservationFormComponent implements OnInit {
     coordinatesInSource: false,
   };
 
-  _query: WarehouseQueryInterface;
   showPlace = false;
   drawing = false;
   drawingShape: string;
@@ -58,7 +57,6 @@ export class ObservationFormComponent implements OnInit {
   logCoordinateAccuracyMax = 4;
 
   visible: {[key: string]: boolean} = {};
-
   visibleAdvanced: {[key: string]: boolean} = {};
 
   section = {
@@ -99,6 +97,8 @@ export class ObservationFormComponent implements OnInit {
     identify: ['unidentified'],
   };
 
+  private _query: WarehouseQueryInterface;
+
   constructor(
     private observationFacade: ObservationFacade
   ) {
@@ -124,7 +124,8 @@ export class ObservationFormComponent implements OnInit {
     this.formQuery = Util.clone(this.emptyFormQuery);
   }
 
-  @Input() set query(query: WarehouseQueryInterface) {
+  @Input()
+  set query(query: WarehouseQueryInterface) {
     this._query = query;
     this.formQuery = this.searchQueryToFormQuery(query);
   }

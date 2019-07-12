@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { ISettingResultList } from '../../shared/service/user.service';
 
 
 @Component({
@@ -18,8 +19,10 @@ export class ObservationResultComponent {
   @Input() loadingUnits: boolean;
   @Input() loadingTaxa: boolean;
   @Input() lang: string;
+  @Input() listSettings: ISettingResultList;
 
-  @Output() queryChange: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
+  @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
+  @Output() listSettingsChange = new EventEmitter<ISettingResultList>();
 
   @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
 

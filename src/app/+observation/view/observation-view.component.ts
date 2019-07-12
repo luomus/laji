@@ -10,6 +10,7 @@ import { IObservationViewModel, ObservationFacade } from '../observation.facade'
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
+import { ISettingResultList } from '../../shared/service/user.service';
 
 
 @Component({
@@ -105,5 +106,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   onAdvanceModeChange(event: boolean) {
     this.observationFacade.advanced(event);
+  }
+
+  onListSettingsChange(settings: ISettingResultList) {
+    this.observationFacade.updateListSettings(settings);
   }
 }
