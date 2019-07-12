@@ -17,6 +17,7 @@ export class ObservationResultComponent {
   @Input() speciesCount: number;
   @Input() loadingUnits: boolean;
   @Input() loadingTaxa: boolean;
+  @Input() lang: string;
 
   @Output() queryChange: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
 

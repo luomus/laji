@@ -133,6 +133,9 @@
       <div class="form-group">
         <div class="col-sm-12" style="height: 300px">
           <laji-observation-chart
+            [lang]="lang"
+            [query]="query"
+            (queryChange)="queryChange.emit($event)"
             [height]="300"
             [showLegend]="true"
             [visible]="active === 'stats'"
