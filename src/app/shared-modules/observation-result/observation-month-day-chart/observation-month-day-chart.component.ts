@@ -80,11 +80,13 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   public barLegend = true;
   public barChartPlugins = [pluginDataLabels];
 
-  public barChartData: ChartDataSets[] = [
+  public barChartData: any[] = []; /*= [
     { data: [65, 59, 800, 81, 51, 55, 40, 59, 80, 81, 56, 55], label: 'Series A' },
     { data: [28, 48, 40, 19, 86, 27, 90, 48, 40, 19, 86, 27], label: 'Series B' },
     { data: [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0], label: 'Series C' }
-  ];
+  ];*/
+
+  public daybarChartData: any[][] = [];
 
   constructor(
     private warehouseApi: WarehouseApi,
@@ -160,7 +162,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       return of([]);
     }
 
-    this.monthChartData = this.initMonthChartData();
+    // this.monthChartData = this.initMonthChartData();
+    this.daybarChartData = this.initDayChartDataDay();
     const labelObservables = [];
 
     result.forEach(r => {
@@ -169,20 +172,78 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       const lifeStage = r.aggregateBy['unit.lifeStage'];
       const count = r.count;
 
-      this.addDataToSeries(lifeStage, count, this.monthChartData[month - 1].series, labelObservables);
+      // this.addDataToSeries(lifeStage, count, this.monthChartData[month - 1].series, labelObservables);
+      this.addDataToSeriesGiorgio(lifeStage, count, month, labelObservables);
 
       if (day) {
-        if (!this.dayChartDataByMonth[month]) {
+        /*if (!this.dayChartDataByMonth[month]) {
           this.dayChartDataByMonth[month] = this.initDayChartData(month);
-        }
-        this.addDataToSeries(lifeStage, count, this.dayChartDataByMonth[month][day - 1].series, labelObservables);
+        }*/
+        // this.addDataToSeries(lifeStage, count, this.dayChartDataByMonth[month][day - 1].series, labelObservables);
+        this.addDataDayToSeriesGiorgio (lifeStage, count, month, day, labelObservables);
       }
     });
 
     return labelObservables.length > 0 ? forkJoin(labelObservables) : of([]);
   }
 
-  private addDataToSeries(lifeStage: string, count: number, series: any[], labelObservables: any[]) {
+  private addDataToSeriesGiorgio(lifeStage: string, count: number, month: number, labelObservables: any[]) {
+    if (this.barChartData.length < 1) {
+      this.barChartData.push({
+        label: this.translate.instant('all'),
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      });
+    }
+    this.barChartData[0].data[month - 1] += count;
+    if (lifeStage) {
+      let index = this.barChartData.findIndex(s => s.label === lifeStage);
+      if (index === -1) {
+        index = this.barChartData.length;
+        this.barChartData.push({label: lifeStage, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
+        labelObservables.push(
+          this.getLabel(lifeStage).pipe(
+            tap(label => {
+              this.barChartData[index].label = label;
+            })
+          )
+        );
+      }
+
+      this.barChartData[index].data[month - 1] += count;
+
+    }
+  }
+
+  private addDataDayToSeriesGiorgio(lifeStage: string, count: number, month: number, day: number, labelObservables: any[]) {
+    if (this.daybarChartData[month - 1].length < 1) {
+      const values = this.initDayBarChartData(month);
+      this.daybarChartData[month - 1].push({
+        label: this.translate.instant('all'),
+        data: values
+      });
+    }
+    this.daybarChartData[month - 1][0].data[day] += count;
+
+    if (lifeStage) {
+      const values = this.initDayBarChartData(month);
+      let index = this.daybarChartData[month - 1].findIndex(s => s.label === lifeStage);
+      if (index === -1) {
+        index = this.daybarChartData[month - 1].length;
+        this.daybarChartData[month - 1].push({label: lifeStage, data: values});
+        labelObservables.push(
+          this.getLabel(lifeStage).pipe(
+            tap(label => {
+              this.daybarChartData[month - 1][index].label = label;
+            })
+          )
+        );
+      }
+
+      this.daybarChartData[month - 1][index].data[day] += count;
+    }
+  }
+
+  /*private addDataToSeries(lifeStage: string, count: number, series: any[], labelObservables: any[]) {
     if (series.length < 1) {
       series.push({
         name: this.translate.instant('all'),
@@ -206,9 +267,9 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       }
       series[index].value += count;
     }
-  }
+  }*/
 
-  private initMonthChartData(): any[] {
+  /*private initMonthChartData(): any[] {
     const data = [];
     for (let i = 1; i < 13; i++) {
       data.push({
@@ -217,9 +278,9 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       });
     }
     return data;
-  }
+  }*/
 
-  private initDayChartData(month: number): any[] {
+  /*private initDayChartData(month: number): any[] {
     const data = [];
     for (let i = 1; i < this.getNbrOfDaysInMonth(month) + 1; i++) {
       data.push({
@@ -228,6 +289,22 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       });
     }
     return data;
+  }*/
+
+  private initDayChartDataDay(): any[] {
+    const data = [];
+    for (let i = 1; i < 13; i++) {
+      data.push([]);
+    }
+    return data;
+  }
+
+  private initDayBarChartData(month: number): any[] {
+    const days = [];
+    for (let i = 1; i < this.getNbrOfDaysInMonth(month) + 1; i++) {
+      days[i] = 0;
+    }
+    return days;
   }
 
   private getLabel(warehouseKey: string): Observable<string> {

@@ -11,7 +11,7 @@
                 >
             </laji-canvas>
             </div>
-    <ngx-charts-bar-vertical-2d
+    <!--<ngx-charts-bar-vertical-2d
       [results]="monthChartData"
       [xAxis]="true"
       [yAxis]="true"
@@ -30,7 +30,7 @@
         <span class="tooltip-label">{{ model.name }}</span>
         <span class="tooltip-val">{{ model.value.toLocaleString("fi") }}</span>
       </ng-template>
-    </ngx-charts-bar-vertical-2d>
+    </ngx-charts-bar-vertical-2d>-->
   </div>
 </ng-container>
 
@@ -47,7 +47,7 @@
       </div>
       <div class="modal-body" *ngIf="dayChartModalVisible">
         <div class="info-card-chart day-chart">
-          <ngx-charts-bar-vertical-2d
+          <!--<ngx-charts-bar-vertical-2d
             [results]="dayChartDataByMonth[activeMonth]"
             [xAxis]="true"
             [yAxis]="true"
@@ -64,7 +64,7 @@
               <span class="tooltip-label">{{ model.name }}</span>
               <span class="tooltip-val">{{ model.value.toLocaleString("fi") }}</span>
             </ng-template>
-          </ngx-charts-bar-vertical-2d>
+          </ngx-charts-bar-vertical-2d>-->
         </div>
       </div>
     </div>
