@@ -7,7 +7,6 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { SearchQueryService } from '../search-query.service';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { forkJoin as ObservableForkJoin, Observable, of } from 'rxjs';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
@@ -46,8 +45,7 @@ export class ObservationChartComponent implements OnChanges {
   data$: Observable<IPieData[]>;
   loading = false;
 
-  constructor(public searchQuery: SearchQueryService,
-              private warehouseService: WarehouseApi,
+  constructor(private warehouseService: WarehouseApi,
               private informalGroupService: InformalTaxonGroupApi,
               private logger: Logger
   ) {

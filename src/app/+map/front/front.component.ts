@@ -124,12 +124,9 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     if (params['showControls'] && params['showControls'] !== 'false') {
       this.showControls = true;
     }
-    if (params['target']) {
-      this.searchQuery.query.target = [params['target']];
-    }
+    const query = this.searchQuery.getQueryFromUrlQueryParams(params);
     this.mapOptions = {...this.mapOptions, ...options, draw: this.drawData};
-    this.searchQuery.getQueryFromUrlQueryParams(params);
-    this.query = Util.clone(this.searchQuery.query);
+    this.query = query;
   }
 
   ngAfterViewInit() {
