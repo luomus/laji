@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, map, share, startWith, switchMap, tap } from 'rxjs/operators';
@@ -60,8 +60,8 @@ const _persistentState: IPersistentState = {
   advanced: false
 };
 
-@Injectable({providedIn: 'root'})
-export class ObservationFacade {
+@Injectable()
+export class ObservationFacade implements OnDestroy {
 
   static PERSON_TOKEN = 'true';
 
@@ -115,6 +115,12 @@ export class ObservationFacade {
       switchMap((loggedIn) => loggedIn ? this.userService.getUserSetting(UserService.SETTINGS_RESULT_LIST) : of({})),
       tap(settings => this.updateState({..._state, settingsList: settings})),
     ).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
   }
 
   activeTab(tab: string) {
