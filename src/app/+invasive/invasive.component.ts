@@ -17,7 +17,7 @@ import * as moment from 'moment';
 export class InvasiveComponent implements OnInit {
 
   static taxa;
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
 
   taxa: Observable<Taxonomy[]>;
   aggr: {[key: string]: number} = {};

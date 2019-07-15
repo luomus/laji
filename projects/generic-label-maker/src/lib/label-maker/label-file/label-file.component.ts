@@ -29,9 +29,9 @@ export class LabelFileComponent {
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
   @Output() pdfLoadingChange = new EventEmitter<boolean>();
-  @ViewChild('printBtn') printBtn: LabelPrintComponent;
-  @ViewChild('saveTpl') saveTpl: TemplateRef<any>;
-  @ViewChild('saveActionsTpl') saveActionsTpl: TemplateRef<any>;
+  @ViewChild('printBtn', { static: true }) printBtn: LabelPrintComponent;
+  @ViewChild('saveTpl', { static: true }) saveTpl: TemplateRef<any>;
+  @ViewChild('saveActionsTpl', { static: true }) saveActionsTpl: TemplateRef<any>;
 
   filename = '';
   saveData = {

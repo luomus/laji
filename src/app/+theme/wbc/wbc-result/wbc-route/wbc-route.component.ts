@@ -29,7 +29,7 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
   season: SEASON;
   observationStats: any;
 
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
 
   private routeSub: Subscription;
 

@@ -37,8 +37,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private static settings: Settings;
 
-  @ViewChild('dataTable') public datatable: NgxDatatableComponent;
-  @ViewChild('dataTableTemplates') public datatableTemplates: DatatableTemplatesComponent;
+  @ViewChild('dataTable', { static: false }) public datatable: NgxDatatableComponent;
+  @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates: DatatableTemplatesComponent;
 
   @Input() loading = false;
   @Input() pageSize: number;
@@ -170,7 +170,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       return;
     }
     // wait until datatable initialization is complete (monkey patched) before scrolling
-    this.datatable.initializationState.pipe(take(1)).subscribe({next: () => {
+    setTimeout(() => {
       // find the index in datatable internal sorted array that corresponds to selected index in input data
       const postSortIndex = this.datatable._internalRows.findIndex((element) => {
         return element.preSortIndex === this._preselectedRowIndex;
@@ -184,7 +184,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       if (!isNaN(scrollAmount)) {
         this.scrollTo(scrollAmount);
       }
-    }});
+    }, 50);
   }
 
   /**
@@ -208,15 +208,12 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        this.datatable.recalculate();
-        this.initialized = true;
+      this.initialized = true;
 
-        // Make sure that preselected row index setter is called after initialization
-        if (this._preselectedRowIndex > -1) {
-          this.preselectedRowIndex = this._preselectedRowIndex;
-        }
-      }, 100);
+      // Make sure that preselected row index setter is called after initialization
+      if (this._preselectedRowIndex > -1) {
+        this.preselectedRowIndex = this._preselectedRowIndex;
+      }
     }
   }
 

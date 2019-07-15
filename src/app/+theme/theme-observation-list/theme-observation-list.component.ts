@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ThemeObservationListComponent implements OnInit {
 
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
 
   @Input() query: WarehouseQueryInterface;
   @Input() height;

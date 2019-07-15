@@ -41,8 +41,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   static id = 0;
 
-  @ViewChild('intro') intro;
-  @ViewChild('gettingStarted') gettingStarted;
+  @ViewChild('intro', { static: true }) intro;
+  @ViewChild('gettingStarted', { static: true }) gettingStarted;
 
   _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close'|'map' = 'file';
   _setup: ISetup;
@@ -69,12 +69,12 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   @Output() introClosed = new EventEmitter();
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
   @Output() pdfLoadingChange = new EventEmitter<boolean>();
-  @ViewChild('editor') editor: ElementRef<HTMLDivElement>;
-  @ViewChild('generateTpl') generateTpl: TemplateRef<any>;
-  @ViewChild('generateActionsTpl') generateActionsTpl: TemplateRef<any>;
-  @ViewChild('excelFile') excelCmp: LabelExcelFileComponent;
-  @ViewChild('excelTpl') excelTpl: TemplateRef<any>;
-  @ViewChild('excelActionsTpl') excelActionsTpl: TemplateRef<any>;
+  @ViewChild('editor', { static: false }) editor: ElementRef<HTMLDivElement>;
+  @ViewChild('generateTpl', { static: true }) generateTpl: TemplateRef<any>;
+  @ViewChild('generateActionsTpl', { static: true }) generateActionsTpl: TemplateRef<any>;
+  @ViewChild('excelFile', { static: false }) excelCmp: LabelExcelFileComponent;
+  @ViewChild('excelTpl', { static: true }) excelTpl: TemplateRef<any>;
+  @ViewChild('excelActionsTpl', { static: true }) excelActionsTpl: TemplateRef<any>;
   subIntro: Subscription;
 
   generate: {

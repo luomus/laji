@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Ou
 })
 export class CheckboxComponent {
 
-  @ViewChild('checkbox') checkbox: ElementRef<HTMLInputElement>;
+  @ViewChild('checkbox', { static: true }) checkbox: ElementRef<HTMLInputElement>;
 
   @Input() threeState = false;
   @Output() valueChange = new EventEmitter();

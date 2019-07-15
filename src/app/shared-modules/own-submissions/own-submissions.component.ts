@@ -57,7 +57,7 @@ export class OwnSubmissionsComponent implements OnChanges {
   @Input() documentViewerGatheringGeometryJSONPath: string;
   @Input() forceLocalDocument = false;
 
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
 
   publicity = Document.PublicityRestrictionsEnum;
 

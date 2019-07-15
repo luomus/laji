@@ -13,7 +13,7 @@ import {InfoCardQueryService} from '../shared/service/info-card-query.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonSpecimensComponent implements OnChanges {
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   @Input() taxon: Taxonomy;
 
   typeSpecimenQuery: WarehouseQueryInterface;

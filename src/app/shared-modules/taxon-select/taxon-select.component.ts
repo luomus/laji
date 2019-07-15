@@ -39,7 +39,7 @@ export class TaxonSelectComponent {
   @Input() class = 'form-control input-sm taxonomy-search';
   @Output() taxonIdChange = new EventEmitter<string>();
 
-  @ViewChild('typeahead') typeahead;
+  @ViewChild('typeahead', { static: true }) typeahead;
 
   private typeaheadMatch: {id: string, match: string};
   private enteredValue: string;

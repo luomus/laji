@@ -42,12 +42,12 @@ export type States
 })
 export class ImporterComponent implements OnInit {
 
-  @ViewChild('currentUserMapModal') currentUserMapModal: ModalDirective;
-  @ViewChild('userMapModal') userMapModal: ModalDirective;
-  @ViewChild('dataTable') datatable: DatatableComponent;
-  @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
-  @ViewChild('statusCol') statusColTpl: TemplateRef<any>;
-  @ViewChild('valueCol') valueColTpl: TemplateRef<any>;
+  @ViewChild('currentUserMapModal', { static: true }) currentUserMapModal: ModalDirective;
+  @ViewChild('userMapModal', { static: true }) userMapModal: ModalDirective;
+  @ViewChild('dataTable', { static: false }) datatable: DatatableComponent;
+  @ViewChild('rowNumber', { static: true }) rowNumberTpl: TemplateRef<any>;
+  @ViewChild('statusCol', { static: true }) statusColTpl: TemplateRef<any>;
+  @ViewChild('valueCol', { static: true }) valueColTpl: TemplateRef<any>;
 
   @LocalStorage() uploadedFiles;
   @LocalStorage() partiallyUploadedFiles;

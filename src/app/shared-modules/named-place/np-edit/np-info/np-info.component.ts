@@ -53,9 +53,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() reserveButtonClick = new EventEmitter();
   @Output() releaseButtonClick = new EventEmitter();
 
-  @ViewChild('infoModal') public modal: ModalDirective;
-  @ViewChild('infoBox') infoBox;
-  @ViewChild('documentModal') public documentModal: ModalDirective;
+  @ViewChild('infoModal', { static: true }) public modal: ModalDirective;
+  @ViewChild('infoBox', { static: true }) infoBox;
+  @ViewChild('documentModal', { static: false }) public documentModal: ModalDirective;
 
   publicity = Document.PublicityRestrictionsEnum;
 

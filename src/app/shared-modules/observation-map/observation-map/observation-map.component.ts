@@ -33,7 +33,7 @@ import { PlatformService } from '../../../shared/service/platform.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationMapComponent implements OnChanges, OnDestroy {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: false }) lajiMap: LajiMapComponent;
 
   @Input() visible = false;
   @Input() query: any;

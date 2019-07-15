@@ -24,7 +24,7 @@ export class ObservationResultListComponent implements OnInit {
     'gathering.team'
   ];
 
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
 

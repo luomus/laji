@@ -16,7 +16,7 @@ import { Global } from '../../../environments/global';
 })
 export class IdentifyComponent implements OnInit {
 
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   query: WarehouseQueryInterface;
   group: string;
   documentId: string;

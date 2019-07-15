@@ -31,7 +31,7 @@ export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'indivi
 })
 export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
-  @ViewChild(LajiMapComponent) mapComponent: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
 
   @Input() title: string;
   @Input() titleInfo: string;

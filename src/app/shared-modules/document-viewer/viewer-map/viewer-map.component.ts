@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @Input() data: {
     geoJSON: any;
     wgs84: any;

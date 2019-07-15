@@ -33,7 +33,7 @@ import { Global } from '../../../environments/global';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
-  @ViewChild('userMenu') public dropDown: BsDropdownDirective;
+  @ViewChild('userMenu', { static: false }) public dropDown: BsDropdownDirective;
 
   openMenu: Boolean = false;
   redTheme = false;

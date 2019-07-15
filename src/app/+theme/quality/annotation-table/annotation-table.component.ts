@@ -17,7 +17,7 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
   @Input() timeStart = '';
   @Input() timeEnd = '';
 
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
 
   page = 1;
   orderBy: string[] = [];

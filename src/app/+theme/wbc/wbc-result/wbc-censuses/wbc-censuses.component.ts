@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./wbc-censuses.component.css']
 })
 export class WbcCensusesComponent implements OnInit  {
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
 
   active: 'list'|'map' = 'list';
 

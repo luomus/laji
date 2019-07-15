@@ -45,7 +45,7 @@ interface LineTransectCount {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
-  @ViewChild(LajiMapComponent)
+  @ViewChild(LajiMapComponent, { static: true })
   lajiMap: LajiMapComponent;
 
   @Input() document: Document;

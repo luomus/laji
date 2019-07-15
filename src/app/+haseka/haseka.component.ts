@@ -23,7 +23,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
 
   public shownDocument: Document;
   public publicity = Document.PublicityRestrictionsEnum;
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
 
   private showViewerClick$: Subscription;
   private subRoute: Subscription;

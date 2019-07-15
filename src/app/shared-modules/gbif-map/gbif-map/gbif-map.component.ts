@@ -12,7 +12,7 @@ import {Taxonomy} from '../../../shared/model/Taxonomy';
   styleUrls: ['./gbif-map.component.scss']
 })
 export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
-  @ViewChild(LajiMapComponent) mapComponent: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
 
   @Input() taxon: Taxonomy;
   @Input() showFullScreenControl = false;

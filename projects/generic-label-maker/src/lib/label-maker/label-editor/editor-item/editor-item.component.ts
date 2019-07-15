@@ -20,7 +20,7 @@ export class EditorItemComponent implements AfterViewInit {
   @Output() showSettings = new EventEmitter<ILabelItem>();
   @Output() itemClick = new EventEmitter<ILabelItem>();
 
-  @ViewChild('item') elemRef: ElementRef<HTMLDivElement>;
+  @ViewChild('item', { static: true }) elemRef: ElementRef<HTMLDivElement>;
 
   _item: ILabelItem;
   _grid: number;

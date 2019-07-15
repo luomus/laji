@@ -19,7 +19,7 @@ export class YearSliderComponent implements OnInit {
 
   @Output() rangeChange = new EventEmitter();
 
-  @ViewChild('sliderRef') sliderRef;
+  @ViewChild('sliderRef', { static: false }) sliderRef;
 
   constructor(
     private translate: TranslateService

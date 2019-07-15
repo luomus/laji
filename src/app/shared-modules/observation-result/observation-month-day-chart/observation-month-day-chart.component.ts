@@ -16,7 +16,7 @@ import {ModalDirective} from 'ngx-bootstrap';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
-  @ViewChild('dayChartModal') public modal: ModalDirective;
+  @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;
 

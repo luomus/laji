@@ -22,9 +22,9 @@ import { ISettingResultList } from '../../shared/service/user.service';
 export class ObservationViewComponent implements OnInit, OnDestroy {
 
   _activeTab: string;
-  @ViewChild('tabs') tabs;
-  @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
-  @ViewChild(ObservationFormComponent) form: ObservationFormComponent;
+  @ViewChild('tabs', { static: false }) tabs;
+  @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
+  @ViewChild(ObservationFormComponent, { static: false }) form: ObservationFormComponent;
 
   showFilter = true;
   dateFormat = 'YYYY-MM-DD';

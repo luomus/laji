@@ -10,7 +10,7 @@ import {TaxonomyColumns} from '../service/taxonomy-columns';
   styleUrls: ['./species-list-options-modal.component.css']
 })
 export class SpeciesListOptionsModalComponent {
-  @ViewChild('settingsModal') modalRef: ModalDirective;
+  @ViewChild('settingsModal', { static: true }) modalRef: ModalDirective;
 
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() requiredFields: string[] = [];

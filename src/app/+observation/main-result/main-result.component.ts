@@ -31,8 +31,8 @@ export class MainResultComponent implements OnInit, OnChanges {
     'unit.species'
   ];
 
-  @ViewChild('aggregatedDataTable') public aggregatedDataTable: ObservationTableComponent;
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('aggregatedDataTable', { static: false }) public aggregatedDataTable: ObservationTableComponent;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
 
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;

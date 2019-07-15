@@ -28,7 +28,7 @@ export class FeedbackComponent {
   };
   public error = false;
 
-  @ViewChild('childModal') public modal: ModalDirective;
+  @ViewChild('childModal', { static: true }) public modal: ModalDirective;
 
   constructor(@Inject(WINDOW) private window: Window,
     public userService: UserService,

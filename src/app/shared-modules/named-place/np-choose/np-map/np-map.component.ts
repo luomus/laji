@@ -26,8 +26,8 @@ import { NpInfoRow } from '../../np-edit/np-info/np-info-row/np-info-row.compone
   providers: [ LabelPipe, AreaNamePipe ]
 })
 export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
-  @ViewChild('popup') popupComponent;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
+  @ViewChild('popup', { static: true }) popupComponent;
   @Input() visible = false;
   @Input() namedPlaces: ExtendedNamedPlace[];
   @Input() activeNP: number;

@@ -24,7 +24,7 @@ export class ObservationResultComponent {
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() listSettingsChange = new EventEmitter<ISettingResultList>();
 
-  @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
+  @ViewChild(ObservationMapComponent, { static: false }) observationMap: ObservationMapComponent;
 
   activated = {};
   lastTabActive = 'map';

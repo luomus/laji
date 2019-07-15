@@ -15,7 +15,7 @@ import { LajiMapOptions, LajiMapTileLayerName, LajiMapLang } from '@laji-map/laj
   styleUrls: ['./front.component.css']
 })
 export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: false }) lajiMap: LajiMapComponent;
   mapOptions: LajiMapOptions = {
     center: [64.209802, 24.912872],
     zoom: 3,
