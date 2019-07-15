@@ -12,10 +12,13 @@ import { Subscription } from 'rxjs';
 export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   @Input() query: any;
   data: any[];
+  newData: any[] = [{data: [], label: 'A'}];
   splitIdx = 0;
 
   private allData: any[];
+  private allSubData: any[];
   private getDataSub: Subscription;
+  private allDataNew: any[];
 
   @Output() hasData = new EventEmitter<boolean>();
 
@@ -35,6 +38,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   }
 
   private updateData() {
+    console.log('hola');
     if (this.getDataSub) {
       this.getDataSub.unsubscribe();
     }
@@ -54,6 +58,8 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       this.splitIdx = 0;
 
       this.allData = [];
+      this.allSubData = [];
+      this.allDataNew = [{data: [], label: 'A' }];
       let prevYear: number;
       res.map(r => {
         const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
@@ -62,6 +68,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
         if (prevYear) {
           for (let i = prevYear + 1; i < year; i++) {
             this.allData.push({name: i, value: 0});
+            this.allSubData.push(0);
             if (i < 1970) {
               this.splitIdx++;
             }
@@ -69,6 +76,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
         }
 
         this.allData.push({name: year, value: count});
+        this.allSubData.push(count);
         if (year < 1970) {
           this.splitIdx++;
         }
@@ -76,8 +84,14 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
         prevYear = year;
       });
       this.data = this.allData.slice(this.splitIdx, this.allData.length);
-      this.hasData.emit(this.allData.length > 0);
 
+      this.allDataNew[0].data = this.allSubData;
+
+      this.allSubData = this.allSubData.slice(this.splitIdx, this.allSubData.length);
+      this.newData[0].data = this.allSubData;
+
+      this.hasData.emit(this.allData.length > 0);
+      // check emit
       this.cd.markForCheck();
     });
   }
@@ -95,6 +109,14 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       this.data = this.allData;
     } else {
       this.data = this.allData.slice(this.splitIdx, this.allData.length);
+    }
+  }
+
+  toggleShowAllDataGiorgio() {
+    if (this.newData[0].data.length < this.allDataNew[0].data.length) {
+      this.newData[0].data = this.allDataNew[0].data;
+    } else {
+      this.newData[0].data = this.allData.slice(this.splitIdx, this.allDataNew[0].data.length);
     }
   }
 }
