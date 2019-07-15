@@ -1,10 +1,10 @@
 <div class="mode-select">
   <div class="form-group">
     <div class="col-sm-12">
-      <span class="badge link" [class.active]="!advancedMode" (click)="advancedMode = false">
+      <span class="badge link" [class.active]="!advancedMode" (click)="setAdvancedMode(false)">
         {{ 'observation.form.modeBasic' | translate }}
       </span>
-      <span class="badge link" [class.active]="advancedMode" (click)="advancedMode = true">
+      <span class="badge link" [class.active]="advancedMode" (click)="setAdvancedMode(true)">
         {{ 'observation.form.modeAdvanced' | translate }}
       </span>
     </div>
@@ -57,7 +57,7 @@
       </ng-template>
       <laji-pill-list
         [isLabel]="true"
-        [list]="searchQuery.target || []"
+        [list]="query.target || []"
         (updateList)="updateSearchQuery('target', $event)"
       ></laji-pill-list>
     </div>
@@ -83,7 +83,7 @@
   <div class="form-group">
     <div class="col-sm-12">
       <laji-select
-        [selected]="searchQuery.typeOfOccurrenceId"
+        [selected]="query.typeOfOccurrenceId"
         (selectedChanged)="indirectQueryChange('typeOfOccurrenceId', $event)"
         [useFilter]="false"
         [title]="'observation.commonness' | translate"
@@ -121,10 +121,10 @@
           </laji-info>
         </div>
       </div>
-      <div class="row" *ngIf="formQuery.asEditor || formQuery.asObserver || searchQuery.qualityIssues">
+      <div class="row" *ngIf="formQuery.asEditor || formQuery.asObserver || query.qualityIssues">
         <div class="col-sm-12">
           <laji-select
-            [selected]="[searchQuery.qualityIssues]"
+            [selected]="[query.qualityIssues]"
             (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
             [multiple]="false"
             [useFilter]="false"
@@ -178,11 +178,11 @@
         </div>
       </div>
     </div>
-    <ng-container *ngIf="advancedMode || searchQuery.season">
+    <ng-container *ngIf="advancedMode || query.season">
       <div class="form-group">
         <div class="col-lg-12">
           <label>{{ 'observation.form.season' | translate }}</label><laji-info>{{ 'observation.info.season' | translate }}</laji-info>
-            <laji-season [season]="searchQuery.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
+            <laji-season [season]="query.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
         </div>
       </div>
     </ng-container>
@@ -191,25 +191,25 @@
         <div class="lj-input-wrap">
           <label>{{ 'observation.form.loaded' | translate }}</label><laji-info>{{ 'observation.info.loaded' | translate }}</laji-info>
           <laji-datepicker
-            [(ngModel)]="searchQuery.firstLoadedSameOrAfter"
+            [(ngModel)]="query.firstLoadedSameOrAfter"
             [viewFormat]="'DD.MM.YYYY'"
             [otherFormats]="['D.M.YYYY', 'YYYY']"
             [format]="dateFormat"
-            (select)="onFormQueryChange()"
-            (change)="onFormQueryChange()"
+            (select)="onQueryChange()"
+            (change)="onQueryChange()"
             name="timeStart"></laji-datepicker>
         </div>
       </div>
       <div class="row">
         <div class="lj-input-wrap">
           <laji-datepicker
-            [(ngModel)]="searchQuery.firstLoadedSameOrBefore"
+            [(ngModel)]="query.firstLoadedSameOrBefore"
             [viewFormat]="'DD.MM.YYYY'"
             [otherFormats]="['D.M.YYYY', 'YYYY']"
             [toLastOfYear]="true"
             [format]="dateFormat"
-            (select)="onFormQueryChange()"
-            (change)="onFormQueryChange()"
+            (select)="onQueryChange()"
+            (change)="onQueryChange()"
             name="timeEnd"></laji-datepicker>
         </div>
       </div>
@@ -235,7 +235,7 @@
       <div class="col-sm-12">
         <laji-metadata-select
           [info]="'observation.info.country' | translate"
-          [(ngModel)]="searchQuery.countryId"
+          [(ngModel)]="query.countryId"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [firstOptions]="['ML.206']"
@@ -248,7 +248,7 @@
       <div class="col-sm-12">
         <laji-metadata-select
           [info]="'observation.info.biogeographicalProvince' | translate"
-          [(ngModel)]="searchQuery.biogeographicalProvinceId"
+          [(ngModel)]="query.biogeographicalProvinceId"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [placeholder]="'result.gathering.biogeographicalProvince'"
@@ -260,7 +260,7 @@
       <div class="col-sm-12">
         <laji-metadata-select
           [info]="'observation.info.municipality' | translate"
-          [(ngModel)]="searchQuery.finnishMunicipalityId"
+          [(ngModel)]="query.finnishMunicipalityId"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [placeholder]="'observation.form.municipality'"
@@ -280,7 +280,7 @@
           type="text"
           name="documentId"
           (ngModelChange)="onQueryChange()"
-          [(ngModel)]="searchQuery.area">
+          [(ngModel)]="query.area">
       </div>
     </div>
     <hr>
@@ -306,7 +306,7 @@
       </div>
     </div>
     <ng-container *ngIf="advancedMode || visibleAdvanced['coordinate']">
-      <ng-container *ngIf="searchQuery.coordinates">
+      <ng-container *ngIf="query.coordinates">
         <div class="row">
           <div class="col-sm-12">
             <label class="small-label">{{ 'observation.form.coordinateIntersection' | translate }}</label><laji-info>{{ 'observation.info.coordinateIntersection' | translate }}</laji-info>
@@ -316,7 +316,7 @@
                      style="padding: 3px 7px;"
                      class="form-control input-sm"
                      (change)="onQueryChange()"
-                     [(ngModel)]="searchQuery._coordinatesIntersection">
+                     [(ngModel)]="query._coordinatesIntersection">
               <span class="input-group-addon">%</span>
             </div>
           </div>
@@ -332,7 +332,7 @@
                    max="100"
                    list="coordinateIntersectionSrc"
                    (change)="onQueryChange()"
-                   [(ngModel)]="searchQuery._coordinatesIntersection">
+                   [(ngModel)]="query._coordinatesIntersection">
             <datalist id="coordinateIntersectionSrc">
               <option value="0">
               <option value="10">
@@ -374,7 +374,7 @@
                      style="padding: 3px 7px;"
                      class="form-control input-sm"
                      (change)="onAccuracyValueChange()"
-                     [(ngModel)]="searchQuery.coordinateAccuracyMax">
+                     [(ngModel)]="query.coordinateAccuracyMax">
               <span class="input-group-addon">m</span>
             </div>
         </div>
@@ -382,7 +382,7 @@
       <div class="row">
         <div class="col-sm-12">
           <input id="logCoordinateAccuracyMax"
-                 [ngClass]="{faded: !searchQuery.coordinateAccuracyMax}"
+                 [ngClass]="{faded: !query.coordinateAccuracyMax}"
                  type="range" name="logCoordinateAccuracyMax"
                  class="form-control input-sm"
                  step="1"
@@ -423,8 +423,8 @@
       </div>
       <div class="col-lg-12">
         <laji-team
-          [(memberIds)]="searchQuery.teamMemberId"
-          [(members)]="searchQuery.teamMember"
+          [(memberIds)]="query.teamMemberId"
+          [(members)]="query.teamMember"
           (update)="onQueryChange()"
         ></laji-team>
       </div>
@@ -434,7 +434,7 @@
     <div class="form-group">
       <div class="col-lg-12">
         <laji-metadata-select
-          [(ngModel)]="searchQuery.sex"
+          [(ngModel)]="query.sex"
           [alt]="'MY.sexes'"
           [multiple]="true"
           [placeholder]="'observation.form.sex'"
@@ -447,7 +447,7 @@
     <div class="form-group">
       <div class="col-lg-12">
         <laji-metadata-select
-          [(ngModel)]="searchQuery.lifeStage"
+          [(ngModel)]="query.lifeStage"
           (ngModelChange)="onQueryChange()"
           [alt]="'MY.lifeStages'"
           [multiple]="true"
@@ -460,7 +460,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
-          [(ngModel)]="searchQuery.recordBasis"
+          [(ngModel)]="query.recordBasis"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [useFilter]="false"
@@ -473,7 +473,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-select
-          [selected]="[searchQuery.nativeOccurrence]"
+          [selected]="[query.nativeOccurrence]"
           (selectedChanged)="indirectQueryChange('nativeOccurrence', $event[0])"
           [multiple]="false"
           [useFilter]="false"
@@ -488,7 +488,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-select
-          [selected]="[searchQuery.breedingSite]"
+          [selected]="[query.breedingSite]"
           (selectedChanged)="indirectQueryChange('breedingSite', $event[0])"
           [multiple]="false"
           [useFilter]="false"
@@ -512,14 +512,14 @@
                    class="form-control input-sm"
                    placeholder="{{'observation.form.countMin' | translate}}"
                    (ngModelChange)="onCountChange()"
-                   [(ngModel)]="searchQuery.individualCountMin">
+                   [(ngModel)]="query.individualCountMin">
           </div>
           <div class="col-sm-6">
             <input type="number" name="individualCountMax"
                    class="form-control input-sm"
                    placeholder="{{'observation.form.countMax' | translate}}"
                    (ngModelChange)="onCountChange()"
-                   [(ngModel)]="searchQuery.individualCountMax">
+                   [(ngModel)]="query.individualCountMax">
           </div>
         </div>
         <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
@@ -543,7 +543,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
-          [(ngModel)]="searchQuery.taxonReliability"
+          [(ngModel)]="query.taxonReliability"
           [info]="'observation.info.reliability' | translate"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
@@ -555,11 +555,11 @@
           [alt]="'MAN.annotationClassEnum'"></laji-metadata-select>
       </div>
     </div>
-    <ng-container *ngIf="advancedMode || searchQuery.annotated">
+    <ng-container *ngIf="advancedMode || query.annotated">
       <div class="form-group">
         <div class="col-sm-12">
           <laji-select
-            [selected]="[searchQuery.annotated]"
+            [selected]="[query.annotated]"
             (selectedChanged)="indirectQueryChange('annotated', $event[0])"
             [multiple]="false"
             [useFilter]="false"
@@ -571,11 +571,11 @@
         </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="advancedMode || searchQuery.qualityIssues">
+    <ng-container *ngIf="advancedMode || query.qualityIssues">
       <div class="row">
         <div class="col-sm-12">
           <laji-select
-            [selected]="[searchQuery.qualityIssues]"
+            [selected]="[query.qualityIssues]"
             (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
             [multiple]="false"
             [useFilter]="false"
@@ -594,7 +594,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
-          [(ngModel)]="searchQuery.collectionId"
+          [(ngModel)]="query.collectionId"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [field]="'MY.collectionID'"
@@ -607,7 +607,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-select
-          [selected]="searchQuery.reliabilityOfCollection"
+          [selected]="query.reliabilityOfCollection"
           (selectedChanged)="indirectQueryChange('reliabilityOfCollection', $event)"
           [multiple]="true"
           [useFilter]="false"
@@ -625,7 +625,7 @@
     <div class="row">
       <div class="col-sm-12">
         <laji-metadata-select
-          [(ngModel)]="searchQuery.sourceId"
+          [(ngModel)]="query.sourceId"
           [info]="'observation.info.system' | translate"
           (ngModelChange)="onSystemIDChange()"
           [placeholder]="'observation.form.system'"
@@ -650,7 +650,7 @@
     <div class="form-group">
       <div class="col-lg-12">
         <label>
-          <laji-checkbox [value]="searchQuery.typeSpecimen" (valueChange)="onCheckBoxToggle('typeSpecimen')"></laji-checkbox>
+          <laji-checkbox [value]="query.typeSpecimen" (valueChange)="onCheckBoxToggle('typeSpecimen')"></laji-checkbox>
           {{ 'observation.form.typeSpecimen' | translate }}
         </label>
         <laji-info [html]="'observation.info.typeSpecimen' | translate"></laji-info>
@@ -659,7 +659,7 @@
     <div class="row">
       <div class="col-sm-12">
         <laji-metadata-select
-          [(ngModel)]="searchQuery.collectionId"
+          [(ngModel)]="query.collectionId"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [field]="'MY.collectionID'"
@@ -680,7 +680,7 @@
           type="text"
           name="documentId"
           (ngModelChange)="onQueryChange()"
-          [(ngModel)]="searchQuery.documentId">
+          [(ngModel)]="query.documentId">
       </div>
     </div>
     <div class="row">
@@ -693,12 +693,12 @@
           type="text"
           name="documentId"
           (ngModelChange)="onQueryChange()"
-          [(ngModel)]="searchQuery.keyword">
+          [(ngModel)]="query.keyword">
       </div>
     </div>
   </div>
   <div laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
-    <ng-container *ngIf="advancedMode || searchQuery.administrativeStatusId">
+    <ng-container *ngIf="advancedMode || query.administrativeStatusId">
       <div class="form-group">
         <div class="col-sm-12">
           <p>
@@ -706,7 +706,7 @@
           </p>
           <laji-metadata-select
             [info]="'observation.info.adminStatus' | translate"
-            [(ngModel)]="searchQuery.administrativeStatusId"
+            [(ngModel)]="query.administrativeStatusId"
             (ngModelChange)="onAdministrativeStatusChange()"
             [multiple]="true"
             [placeholder]="'MX.hasAdminStatus' | label"
@@ -719,7 +719,7 @@
       <div class="col-sm-12">
         <laji-metadata-select
           [info]="'observation.info.redListStatus' | translate"
-          [(ngModel)]="searchQuery.redListStatusId"
+          [(ngModel)]="query.redListStatusId"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [useFilter]="false"
@@ -728,13 +728,13 @@
           [alt]="'MX.iucnStatuses'"></laji-metadata-select>
       </div>
     </div>
-    <ng-container *ngIf="advancedMode || searchQuery.primaryHabitat || searchQuery.anyHabitat">
+    <ng-container *ngIf="advancedMode || query.primaryHabitat || query.anyHabitat">
       <laji-habitat-select
-        [query]="searchQuery"
+        [query]="query"
         (select)="onHabitatChange($event)"
       ></laji-habitat-select>
     </ng-container>
-    <ng-container *ngIf="advancedMode || searchQuery.typeOfOccurrenceId">
+    <ng-container *ngIf="advancedMode || query.typeOfOccurrenceId">
       <div class="form-group">
         <div class="col-sm-12">
           <p>
@@ -743,8 +743,8 @@
           <laji-three-state-multi-switch
             [title]="'observation.form.typeOfOccurrenceId' | translate"
             [info]="'observation.info.typeOfOccurrenceId' | translate"
-            [trueValue]="searchQuery.typeOfOccurrenceId"
-            [falseValue]="searchQuery.typeOfOccurrenceIdNot"
+            [trueValue]="query.typeOfOccurrenceId"
+            [falseValue]="query.typeOfOccurrenceIdNot"
             [alt]="'MX.typeOfOccurrenceEnum'"
             (update)="updateTypeOfOccurrence($event)"
           ></laji-three-state-multi-switch>
@@ -758,11 +758,11 @@
           (change)="onQueryChange()"
           [onText]="'yes' | translate"
           [offText]="'no' | translate"
-          [(value)]="searchQuery.invasive">
+          [(value)]="query.invasive">
         </laji-three-state-switch>
       </div>
     </div>
-    <ng-container *ngIf="advancedMode || (searchQuery.finnish | exists)">
+    <ng-container *ngIf="advancedMode || (query.finnish | exists)">
       <div class="row">
         <div class="col-sm-12">
           <label>{{ 'observation.form.finnish' | translate }}</label><laji-info>{{ 'observation.info.finnish' | translate }}</laji-info><br>
@@ -770,7 +770,7 @@
             (change)="onQueryChange()"
             [onText]="'yes' | translate"
             [offText]="'no' | translate"
-            [(value)]="searchQuery.finnish">
+            [(value)]="query.finnish">
           </laji-three-state-switch>
         </div>
       </div>
@@ -827,7 +827,7 @@
           {{ 'observation.intro.images' | translate }}
         </p>
         <label>
-          <laji-checkbox [value]="searchQuery.hasUnitMedia" (valueChange)="onCheckBoxToggle('hasUnitMedia')"></laji-checkbox>
+          <laji-checkbox [value]="query.hasUnitMedia" (valueChange)="onCheckBoxToggle('hasUnitMedia')"></laji-checkbox>
           {{ 'observation.form.hasUnitMedia' | translate }}
         </label>
       </div>
@@ -835,14 +835,14 @@
     <div class="row">
       <div class="col-sm-12">
         <label>
-          <laji-checkbox [value]="searchQuery.hasGatheringMedia" (valueChange)="onCheckBoxToggle('hasGatheringMedia')"></laji-checkbox>
+          <laji-checkbox [value]="query.hasGatheringMedia" (valueChange)="onCheckBoxToggle('hasGatheringMedia')"></laji-checkbox>
           {{ 'observation.form.hasGatheringMedia' | translate }}</label><laji-info>{{ 'observation.info.hasGatheringMedia' | translate }}</laji-info>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
         <label>
-          <laji-checkbox [value]="searchQuery.hasDocumentMedia" (valueChange)="onCheckBoxToggle('hasDocumentMedia')"></laji-checkbox>
+          <laji-checkbox [value]="query.hasDocumentMedia" (valueChange)="onCheckBoxToggle('hasDocumentMedia')"></laji-checkbox>
           {{ 'observation.form.hasDocumentMedia' | translate }}
         </label>
         <laji-info>
@@ -855,7 +855,7 @@
       <div class="col-sm-12">
         <p>{{ 'observation.intro.noImages' | translate }}</p>
         <label>
-          <laji-checkbox [value]="searchQuery.hasUnitMedia === false" (valueChange)="onCheckBoxToggle('hasUnitMedia', false)"></laji-checkbox>
+          <laji-checkbox [value]="query.hasUnitMedia === false" (valueChange)="onCheckBoxToggle('hasUnitMedia', false)"></laji-checkbox>
           {{ 'observation.form.hasNotMedia' | translate }}
         </label>
       </div>
@@ -866,7 +866,7 @@
       <div class="col-sm-12">
         <laji-metadata-select
           [info]="'observation.info.secureLevel' | translate"
-          [(ngModel)]="searchQuery.secureLevel"
+          [(ngModel)]="query.secureLevel"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [useFilter]="false"
@@ -882,7 +882,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <label>
-          <laji-checkbox [value]="searchQuery.unidentified" (valueChange)="onCheckBoxToggle('unidentified', true)"></laji-checkbox>
+          <laji-checkbox [value]="query.unidentified" (valueChange)="onCheckBoxToggle('unidentified', true)"></laji-checkbox>
           {{ 'observation.form.unidentified' | translate }}
         </label>
         <laji-info [html]="'observation.info.unidentified' | translate"></laji-info>

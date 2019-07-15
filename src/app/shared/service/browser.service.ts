@@ -1,28 +1,80 @@
-import { Inject, Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
 import { PlatformService } from './platform.service';
 import { DOCUMENT } from '@angular/common';
+import { WINDOW } from '@ng-toolkit/universal';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+
+export interface IBrowserState {
+  visibility: boolean;
+  lgScreen: boolean;
+}
+
+let _state: IBrowserState = {
+  visibility: true,
+  lgScreen: true
+};
+
+const lgScreenSize = 767;
 
 @Injectable({
   providedIn: 'root'
 })
-export class BrowserService {
+export class BrowserService implements OnDestroy {
 
-  private visibilitySubject = new Subject<boolean>();
+  private store  = new BehaviorSubject<IBrowserState>(_state);
+  private state$ = this.store.asObservable();
 
-  visibility$ = this.visibilitySubject.asObservable();
+  lgScreen$ = this.state$.pipe(map((state) => state.lgScreen), distinctUntilChanged());
+  visibility$ = this.state$.pipe(map((state) => state.visibility));
+
+  private resizeSub: Subscription;
+  private visibilityChangeEvent: string;
+  private handlerForVisibilityChange: Function;
 
   constructor(
     @Inject(DOCUMENT) private document: any,
-    platformService: PlatformService
+    @Inject(WINDOW) private window: Window,
+    private zone: NgZone,
+    private platformService: PlatformService
   ) {
     if (!platformService.isBrowser) {
       return;
     }
     this.initVisibilityListener();
+    this.initScreenSizeListener();
   }
 
-  initVisibilityListener() {
+  ngOnDestroy(): void {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
+    if (this.handlerForVisibilityChange) {
+      this.document.removeEventListener(this.handlerForVisibilityChange);
+    }
+  }
+
+  triggerResizeEvent() {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+    setTimeout(() => {
+      try {
+        this.window.dispatchEvent(new Event('resize'));
+      } catch (e) {
+        try {
+          const evt = this.window.document.createEvent('UIEvents');
+          evt.initUIEvent('resize', true, false, this.window, 0);
+          this.window.dispatchEvent(evt);
+        } catch (e) {}
+      }
+    }, 100);
+  }
+
+  private initVisibilityListener() {
     let hidden, visibilityChange;
     if (typeof this.document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
       hidden = 'hidden';
@@ -35,12 +87,32 @@ export class BrowserService {
       visibilityChange = 'webkitvisibilitychange';
     }
 
-    const handleVisibilityChange = () => {
-      this.visibilitySubject.next(!this.document[hidden]);
+    this.handlerForVisibilityChange = () => {
+      this.updateState({..._state, visibility: !this.document[hidden]});
     };
     try {
-      this.document.addEventListener(visibilityChange, handleVisibilityChange, false);
+      this.visibilityChangeEvent = visibilityChange;
+      this.document.addEventListener(visibilityChange, this.handlerForVisibilityChange, false);
     } catch (e) {}
+  }
 
+  private initScreenSizeListener() {
+    this.updateScreenSize();
+    this.zone.runOutsideAngular(() => {
+      this.resizeSub = fromEvent(window, 'resize').pipe(
+        debounceTime(1000),
+        distinctUntilChanged()
+      ).subscribe(() => {
+        this.zone.run(() => this.updateScreenSize());
+      });
+    });
+  }
+
+  private updateScreenSize() {
+    this.updateState({..._state, lgScreen: this.window.innerWidth > lgScreenSize});
+  }
+
+  private updateState(state: IBrowserState) {
+    this.store.next(_state = state);
   }
 }

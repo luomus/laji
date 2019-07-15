@@ -1,7 +1,7 @@
 import { fromEvent as observableFromEvent, Subscription } from 'rxjs';
-import { Directive, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, PLATFORM_ID } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
-import { isPlatformBrowser } from '@angular/common';
+import { PlatformService } from '../service/platform.service';
 
 @Directive({
   selector: '[lajiClickOutSide]'
@@ -16,12 +16,12 @@ export class ClickOutSideDirective implements OnInit, OnDestroy {
 
   constructor(
     @Inject(WINDOW) private window: Window,
-    @Inject(PLATFORM_ID) private platformID: object,
+    private platformService: PlatformService,
     private _elementRef: ElementRef
   ) { }
 
   ngOnInit() {
-    if (!isPlatformBrowser(this.platformID)) {
+    if (!this.platformService.isBrowser) {
       return;
     }
     this.init = false;

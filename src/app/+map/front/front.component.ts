@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SearchQuery } from '../../+observation/search-query.model';
+import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
 import { FooterService } from '../../shared/service/footer.service';
@@ -98,7 +98,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public searchQuery: SearchQuery,
+    public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private footerService: FooterService
   ) {
@@ -124,12 +124,9 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     if (params['showControls'] && params['showControls'] !== 'false') {
       this.showControls = true;
     }
-    if (params['target']) {
-      this.searchQuery.query.target = [params['target']];
-    }
+    const query = this.searchQuery.getQueryFromUrlQueryParams(params);
     this.mapOptions = {...this.mapOptions, ...options, draw: this.drawData};
-    this.searchQuery.setQueryFromQueryObject(params);
-    this.query = Util.clone(this.searchQuery.query);
+    this.query = query;
   }
 
   ngAfterViewInit() {

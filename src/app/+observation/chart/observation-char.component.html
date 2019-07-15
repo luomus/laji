@@ -1,18 +1,19 @@
 <div class="observation-chart-wrapper">
   <div class="observation-chart" style="min-height: 100px">
     <laji-spinner [spinning]="loading" [overlay]="true">
-      <div class="stat-info" *ngIf="data">
-        <laji-info [placement]="'right'">{{ 'observation.info.stats' | translate }}</laji-info>
-      </div>
-      <laji-pie-chart
-            *ngIf="data"
-            [visible]="visible"
-            [data]="data"
-            [height]="height"
-            [showLegend]="showLegend"
-            [legendPosition]="legendPosition"
-            (sectionSelect)="onPieClick($event)">
-      </laji-pie-chart>
+      <ng-container *ngIf="data$ | async; let data">
+        <div class="stat-info">
+          <laji-info [placement]="'right'">{{ 'observation.info.stats' | translate }}</laji-info>
+        </div>
+        <laji-pie-chart
+              [visible]="visible"
+              [data]="data"
+              [height]="height"
+              [showLegend]="showLegend"
+              [legendPosition]="legendPosition"
+              (sectionSelect)="onPieClick($event)">
+        </laji-pie-chart>
+      </ng-container>
     </laji-spinner>
   </div>
 </div>

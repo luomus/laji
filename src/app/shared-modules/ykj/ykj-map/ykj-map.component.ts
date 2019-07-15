@@ -112,7 +112,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.initMapdata(!!changes.data);
+    this.initMapData(!!changes.data);
   }
 
   ngOnDestroy() {
@@ -121,10 +121,10 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   changeType(type: MapBoxTypes) {
     this.type = type;
-    this.initMapdata();
+    this.initMapData();
   }
 
-  initMapdata(dataIsChanged = false) {
+  private initMapData(dataIsChanged = false) {
     if (!this.query && !this.data) {
       return;
     }
@@ -156,17 +156,17 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
     this.subQuery = geoJson$
       .subscribe(geoJson => {
-          this.geoJsonLayer.addData(geoJson);
-          this.boundsChange.emit(this.geoJsonLayer.getBounds());
-          this.currentColor = '';
-          this.loading = false;
-          this.initColor();
-          this.cd.markForCheck();
-        },
-        error => {
-          this.loading = false;
-          this.cd.markForCheck();
-        });
+        this.geoJsonLayer.addData(geoJson);
+        this.boundsChange.emit(this.geoJsonLayer.getBounds());
+        this.currentColor = '';
+        this.loading = false;
+        this.initColor();
+        this.cd.markForCheck();
+      },
+      () => {
+        this.loading = false;
+        this.cd.markForCheck();
+      });
   }
 
   initLegend() {

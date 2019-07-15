@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { SearchQuery } from '../search-query.model';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { UserService } from '../../shared/service/user.service';
+import { ISettingResultList } from '../../shared/service/user.service';
 
 const DEFAULT_PAGE_SIZE = 100;
 
@@ -30,6 +28,8 @@ export class ObservationResultListComponent implements OnInit {
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
 
+  @Output() settingsChange = new EventEmitter<ISettingResultList>();
+
   selectedFields = ObservationResultListComponent.defaultFields;
   pageSize: number;
   aggregateBy: string[] = [];
@@ -38,27 +38,18 @@ export class ObservationResultListComponent implements OnInit {
   highlightId = '';
   documentModalVisible = false;
 
-  constructor(
-    public translate: TranslateService,
-    private userService: UserService,
-    private cd: ChangeDetectorRef,
-    public searchQuery: SearchQuery
-  ) {
+  @Input()
+  set settings(settings: ISettingResultList) {
+    if (!settings) {
+      settings = {};
+    }
+    this.aggregateBy = settings.aggregateBy || [];
+    this.selectedFields = settings.selected || this.selectedFields;
+    this.pageSize = settings.pageSize || DEFAULT_PAGE_SIZE;
   }
 
   ngOnInit() {
     this.modal.config = {animated: false};
-    this.userService.getItem<any>(UserService.SETTINGS_RESULT_LIST)
-      .subscribe(data => {
-        if (data) {
-          this.aggregateBy = data.aggregateBy;
-          this.selectedFields = data.selected || this.selectedFields;
-          this.pageSize = data.pageSize || DEFAULT_PAGE_SIZE;
-        } else {
-          this.pageSize = DEFAULT_PAGE_SIZE;
-        }
-        this.cd.markForCheck();
-      });
   }
 
   showDocument(event) {
@@ -71,8 +62,10 @@ export class ObservationResultListComponent implements OnInit {
   }
 
   setPageSize(size: number) {
-    this.pageSize = size;
-    this.saveSettings();
+    if (size !== this.pageSize) {
+      this.pageSize = size;
+      this.saveSettings();
+    }
   }
 
   setSelectedFields(fields: string[]) {
@@ -86,11 +79,11 @@ export class ObservationResultListComponent implements OnInit {
   }
 
   private saveSettings() {
-    this.userService.setItem(UserService.SETTINGS_RESULT_LIST, {
+    this.settingsChange.emit({
       aggregateBy: this.aggregateBy,
       selected: this.selectedFields,
       pageSize: this.pageSize
-    }).subscribe(() => {}, () => {});
+    });
   }
 
 }
