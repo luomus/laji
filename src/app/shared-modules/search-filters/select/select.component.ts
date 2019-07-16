@@ -59,7 +59,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         this.filterBy = value;
         this.cd.markForCheck();
       });
-    this.initOptions(this.selected);
   }
 
   ngOnChanges() {
@@ -105,7 +104,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   remove(id: string) {
     this.selected = this.selected.filter(value => value !== id);
     this.selectedIdx = -1;
-    this.initOptions(this.selected, this.filterBy);
+    this.initOptions(this.selected);
     if (this.outputOnlyId) {
       this.selectedChanged.emit(id);
     } else {
@@ -139,7 +138,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     switch (event.key) {
       case 'Esc':
         this.filterBy = '';
-        this.initOptions(this.selected, this.filterBy);
+        this.initOptions(this.selected);
         return;
       case 'Enter':
         if (!this.filterBy && this.selectedIdx === -1) {
@@ -177,12 +176,12 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     return item.id;
   }
 
-  private initOptions(selected, filterBy?) {
+  private initOptions(selected) {
     if (!this.options) {
       return;
     }
     this.selectedOptions = [];
-    if ((!selected || selected.length === 0) && !filterBy) {
+    if (!selected || selected.length === 0) {
       this.unselectedOptions = this.options;
       return;
     }
@@ -190,7 +189,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.options.map(option => {
       if (selected.indexOf(option.id) > -1) {
         this.selectedOptions.push(option);
-      } else if (!filterBy || option.value.toLowerCase().indexOf(filterBy) > -1) {
+      } else {
         this.unselectedOptions.push(option);
       }
     });
