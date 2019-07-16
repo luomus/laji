@@ -7,7 +7,6 @@ import { OwnDatatableComponent } from './own-datatable/own-datatable.component';
 import { FilterColumnsPipe } from './own-datatable/filter-columns.pipe';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
-import { RouterChildrenEventService } from './service/router-children-event.service';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 
 @NgModule({
@@ -23,9 +22,6 @@ import { DocumentViewerModule } from '../document-viewer/document-viewer.module'
     YearSliderComponent,
     OwnDatatableComponent,
     FilterColumnsPipe
-  ],
-  providers: [
-    RouterChildrenEventService
   ],
   exports: [
     OwnSubmissionsComponent

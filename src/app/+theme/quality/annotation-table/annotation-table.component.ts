@@ -5,6 +5,7 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { AnnotationTableColumn } from '../model/annotation-table-column';
+import { DocumentViewerFacade } from '../../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
   selector: 'laji-annotation-table',
@@ -89,7 +90,8 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
   constructor(
     private qualityService: QualityService,
     public translateService: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private documentViewerFacade: DocumentViewerFacade
   ) { }
 
   ngOnInit() {
@@ -126,9 +128,10 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
   showDocument(event) {
     const row: any = event.row || {};
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
-      this.highlightId = row.unit.unitId;
-      this.shownDocument = row.document.documentId;
-      this.modal.show();
+      this.documentViewerFacade.showDocumentID({
+        highlight: row.unit.unitId,
+        document: row.document.documentId
+      });
     }
   }
 

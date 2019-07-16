@@ -41,10 +41,14 @@ const emptyQuery: WarehouseQueryInterface = {
   _coordinatesIntersection: 100
 };
 
-let _state: IObservationState = {
-  query: {...emptyQuery},
-  advanced: false,
+const _persistentState: IPersistentState = {
   showIntro: true,
+  advanced: false
+};
+
+let _state: IObservationState = {
+  ..._persistentState,
+  query: {...emptyQuery},
   filterVisible: true,
   activeTab: 'map',
   countTaxa: 0,
@@ -53,11 +57,6 @@ let _state: IObservationState = {
   loadingUnits: false,
   settingsList: {},
   settingsMap: {}
-};
-
-const _persistentState: IPersistentState = {
-  showIntro: true,
-  advanced: false
 };
 
 @Injectable()

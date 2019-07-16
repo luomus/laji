@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { ModalDirective } from 'ngx-bootstrap';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
+import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 
 const DEFAULT_PAGE_SIZE = 100;
 
@@ -34,9 +35,9 @@ export class ObservationResultListComponent implements OnInit {
   pageSize: number;
   aggregateBy: string[] = [];
 
-  shownDocument = '';
-  highlightId = '';
-  documentModalVisible = false;
+  constructor(
+    private documentViewerFacade: DocumentViewerFacade
+  ) {}
 
   @Input()
   set settings(settings: ISettingResultList) {
@@ -54,10 +55,13 @@ export class ObservationResultListComponent implements OnInit {
 
   showDocument(event) {
     const row = event.row || {};
+    const query = this.query;
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
-      this.highlightId = row.unit.unitId;
-      this.shownDocument = row.document.documentId;
-      this.modal.show();
+      this.documentViewerFacade.showDocumentID({
+        document: row.document.documentId,
+        highlight: row.unit.unitId,
+        own: query && (!!query.observerPersonToken || !!query.editorPersonToken || !!query.editorOrObserverPersonToken)
+      });
     }
   }
 

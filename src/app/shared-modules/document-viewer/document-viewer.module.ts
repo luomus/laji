@@ -32,6 +32,7 @@ import { CollectionContestPrintComponent } from './document-local/collection-con
 import { PrintRowComponent } from './document-local/collection-contest-local-print/print-row/print-row.component';
 import { PrintTaxonHeaderComponent } from './document-local/collection-contest-local-print/print-taxon-header/print-taxon-header.component';
 import { CoordinatesViewerComponent } from './viewer-coordinates/viewer-coordinates.component';
+import { ViewerModalComponent } from './viewer-modal/viewer-modal.component';
 
 @NgModule({
   imports: [
@@ -50,8 +51,9 @@ import { CoordinatesViewerComponent } from './viewer-coordinates/viewer-coordina
     CollectionContestPrintComponent,
     PrintRowComponent,
     PrintTaxonHeaderComponent,
-    CoordinatesViewerComponent
+    CoordinatesViewerComponent,
+    ViewerModalComponent
   ],
-  exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent]
+  exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent]
 })
 export class DocumentViewerModule { }
