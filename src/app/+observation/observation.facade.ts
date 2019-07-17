@@ -219,7 +219,7 @@ export class ObservationFacade implements OnDestroy {
       catchError((e) => of(0)),
       distinctUntilChanged(),
       tap((cnt) => this.updateState({..._state, [loadingKey]: false, [countKey]: cnt})),
-      startWith(_state[countKey]),
+      startWith(''),
       share()
     );
   }

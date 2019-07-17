@@ -3,11 +3,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Util } from '../../shared/service/util.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions, LajiMapTileLayerName, LajiMapLang } from '@laji-map/laji-map.interface';
+import { latLng as LlatLng, GeometryUtil as LGeometryUtil } from 'leaflet';
 
 @Component({
   selector: 'laji-map-front',
@@ -56,8 +56,8 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
           case 'LineString': {
             let prevLatLng;
             let length = geometry.coordinates.slice(0).reduce((cumulative, coords) => {
-              const latLng = L.latLng(coords.reverse());
-              cumulative += prevLatLng ? L.latLng(latLng).distanceTo(prevLatLng) : 0;
+              const latLng = LlatLng(coords.reverse());
+              cumulative += prevLatLng ? LlatLng(latLng).distanceTo(prevLatLng) : 0;
               prevLatLng = latLng;
               return cumulative;
             }, 0);
@@ -74,14 +74,14 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
             return `${length}${suffix}`;
           }
           case 'Polygon': {
-            const latLngs = geometry.coordinates[0].slice(1).map(c => L.latLng(c.reverse()));
-            return L.GeometryUtil.readableArea(L.GeometryUtil.geodesicArea(latLngs), true);
+            const latLngs = geometry.coordinates[0].slice(1).map(c => LlatLng(c.reverse()));
+            return LGeometryUtil.readableArea(LGeometryUtil.geodesicArea(latLngs), true);
           }
           case 'Point': {
             if (geometry.radius === undefined) { return; }
             const {radius} = geometry;
             const area = (Math.PI) * (radius * radius);
-            return L.GeometryUtil.readableArea(area, true);
+            return LGeometryUtil.readableArea(area, true);
           }
       }
     },

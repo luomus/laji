@@ -33,14 +33,16 @@
         <th colspan="2">Lisämuuttujat</th>
       </tr>
       </thead>
-      <ng-container *ngFor="let f of field.fields">
-        <tr *ngIf="value[f.name] && (f.type !== 'collection' || value[f.name].length > 0)">
-          <th class="title"><span>{{ f.label }}</span></th>
-          <td *ngIf="f.type === 'checkbox'">{{ value ? ('yes' | translate) : ('no' | translate) }}</td>
-          <td *ngIf="f.type === 'select'">{{ f.options.value_options[value[f.name]] | values }}</td>
-          <td *ngIf="f.type !== 'select' && f.type !== 'checkbox'">{{ value[f.name] | label | values }}</td>
-        </tr>
-      </ng-container>
+      <tbody>
+        <ng-container *ngFor="let f of field.fields">
+          <tr *ngIf="value[f.name] && (f.type !== 'collection' || value[f.name].length > 0)">
+            <th class="title"><span>{{ f.label }}</span></th>
+            <td *ngIf="f.type === 'checkbox'">{{ value ? ('yes' | translate) : ('no' | translate) }}</td>
+            <td *ngIf="f.type === 'select'">{{ f.options.value_options[value[f.name]] | values }}</td>
+            <td *ngIf="f.type !== 'select' && f.type !== 'checkbox'">{{ value[f.name] | label | values }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
     </table>
   </div>
 </ng-template>

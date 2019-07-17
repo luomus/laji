@@ -1,16 +1,20 @@
 <table class="table table-bordered">
-  <tr>
-    <th>{{ 'iucn.taxon.history.period' | translate }}</th>
-    <th>{{ 'iucn.taxon.history.class' | translate }}</th>
-    <!--th>{{'iucn.taxon.history.criteria' | translate}}</th>
-    <th>{{'iucn.taxon.history.endanger' | translate}}</th>
-    <th>{{'iucn.taxon.history.threats' | translate}}</th-->
-  </tr>
-  <tr *ngFor="let row of history">
-    <td>{{ row.year }}</td>
-    <td>{{ row.status | label }}</td>
-    <!--td>{{ row.criteria }}</td>
-    <td [innerHtml]="row.reasons | nlToBr"></td>
-    <td>{{ row.threats }}</td-->
-  </tr>
+  <thead>
+    <tr>
+      <th>{{ 'iucn.taxon.history.period' | translate }}</th>
+      <th>{{ 'iucn.taxon.history.class' | translate }}</th>
+      <!--th>{{'iucn.taxon.history.criteria' | translate}}</th>
+      <th>{{'iucn.taxon.history.endanger' | translate}}</th>
+      <th>{{'iucn.taxon.history.threats' | translate}}</th-->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of history">
+      <td>{{ row.year }}</td>
+      <td>{{ row.status | label }}</td>
+      <!--td>{{ row.criteria }}</td>
+      <td [innerHtml]="row.reasons | nlToBr"></td>
+      <td>{{ row.threats }}</td-->
+    </tr>
+  </tbody>
 </table>

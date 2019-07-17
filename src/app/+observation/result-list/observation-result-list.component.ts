@@ -12,7 +12,7 @@ const DEFAULT_PAGE_SIZE = 100;
   styleUrls: ['./observation-result-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationResultListComponent implements OnInit {
+export class ObservationResultListComponent {
   private static readonly defaultFields: string[] = [
     'unit.taxon',
     'unit.abundanceString',
@@ -47,10 +47,6 @@ export class ObservationResultListComponent implements OnInit {
     this.aggregateBy = settings.aggregateBy || [];
     this.selectedFields = settings.selected || this.selectedFields;
     this.pageSize = settings.pageSize || DEFAULT_PAGE_SIZE;
-  }
-
-  ngOnInit() {
-    this.modal.config = {animated: false};
   }
 
   showDocument(event) {
