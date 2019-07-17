@@ -20,10 +20,6 @@ export class DocumentInfoService {
       taxonID: []
     };
 
-    if (document.id !== 'JX.1006204') {
-      return info;
-    }
-
     if (document.gatherings && Array.isArray(document.gatherings)) {
       for (let i = 0; i < document.gatherings.length; i++) {
         const gathering = document.gatherings[i];
