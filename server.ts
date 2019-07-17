@@ -26,7 +26,9 @@ const template = readFileSync(join(BROWSER_PATH, 'index.html')).toString();
 const win = domino.createWindow(template);
 
 global['window'] = win;
+win.devicePixelRatio = 2;
 global['document'] = win.document;
+global['navigator'] = win.navigator;
 Object.assign(global, domino.impl);
 global['KeyboardEvent'] = domino.impl.Event;
 
