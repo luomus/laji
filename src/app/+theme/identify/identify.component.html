@@ -49,16 +49,3 @@
     </div>
   </div>
 </div>
-<div class="modal fade" bsModal #documentModal="bs-modal"
-     tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <laji-document [identifying]="true" [uri]="documentId" [highlight]="unitId" [own]="false" [showTitle]="false" [openAnnotation]="true"></laji-document>
-      </div>
-    </div>
-  </div>
-</div>

@@ -1,10 +1,10 @@
-import {Component, OnChanges, Input, ViewChild, ChangeDetectionStrategy, Inject} from '@angular/core';
+import {Component, OnChanges, Input, ChangeDetectionStrategy, Inject} from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
-import {ModalDirective} from 'ngx-bootstrap';
 import { IdService } from '../../../../shared/service/id.service';
 import { DOCUMENT } from '@angular/common';
 import {WarehouseQueryInterface} from '../../../../shared/model/WarehouseQueryInterface';
 import {InfoCardQueryService} from '../shared/service/info-card-query.service';
+import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
   selector: 'laji-taxon-specimens',
@@ -13,7 +13,6 @@ import {InfoCardQueryService} from '../shared/service/info-card-query.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonSpecimensComponent implements OnChanges {
-  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   @Input() taxon: Taxonomy;
 
   typeSpecimenQuery: WarehouseQueryInterface;
@@ -26,11 +25,10 @@ export class TaxonSpecimensComponent implements OnChanges {
   collectionId: string;
 
   documentId: string;
-  highlightId: string;
-  documentModalVisible = false;
 
   constructor(
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private documentViewerFacade: DocumentViewerFacade
   ) { }
 
   ngOnChanges() {
@@ -42,15 +40,11 @@ export class TaxonSpecimensComponent implements OnChanges {
   showDocument(event) {
     const row = event.row || {};
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
-      this.highlightId = row.unit.unitId;
-      this.documentId = row.document.documentId;
-      this.documentModalVisible = true;
-      this.modal.show();
+      this.documentViewerFacade.showDocumentID({
+        highlight: row.unit.unitId,
+        document: row.document.documentId
+      });
     }
-  }
-
-  onHideDocument() {
-    this.documentModalVisible = false;
   }
 
   setCollectionId(event) {
