@@ -20,6 +20,10 @@ export class DocumentInfoService {
       taxonID: []
     };
 
+    if (document.id !== 'JX.1006204') {
+      return info;
+    }
+
     if (document.gatherings && Array.isArray(document.gatherings)) {
       for (let i = 0; i < document.gatherings.length; i++) {
         const gathering = document.gatherings[i];
@@ -83,10 +87,10 @@ export class DocumentInfoService {
         form.features.indexOf('MHL.featureEmptyOnNoCount') !== -1
       )
     ) {
-      let result = false;
+      let result = true;
       Global.documentCountUnitProperties.forEach(key => {
         if (typeof unit[key] !== 'undefined' && unit[key] !== '' && unit[key] !== null) {
-          result = true;
+          result = false;
         }
       });
       return result;
