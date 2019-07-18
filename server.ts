@@ -26,11 +26,11 @@ const template = readFileSync(join(BROWSER_PATH, 'index.html')).toString();
 const win = domino.createWindow(template);
 
 global['window'] = win;
-win.devicePixelRatio = 2;
 global['document'] = win.document;
 global['navigator'] = win.navigator;
-Object.assign(global, domino.impl);
 global['KeyboardEvent'] = domino.impl.Event;
+win.devicePixelRatio = 2; // this is used by the leaflet library
+Object.assign(global, domino.impl);
 
 const RedisClient = redis.createClient();
 const Lock = new Redlock([RedisClient]);
