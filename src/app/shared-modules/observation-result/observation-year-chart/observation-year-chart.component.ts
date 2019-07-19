@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { Color } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -28,8 +29,8 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
     scales: {
       xAxes: [{
         gridLines: {
-          color: 'rgba(171,171,171,1)',
-          lineWidth: 1
+          color: 'rgba(230,230,230,0.5)',
+          lineWidth: 0.2
         }
       }],
       yAxes: [{
@@ -37,7 +38,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
           beginAtZero: true
         },
         gridLines: {
-          color: 'rgba(171,171,171,1)',
+          color: 'rgba(171,171,171,0.5)',
           lineWidth: 0.5
         }
       }]
@@ -49,10 +50,11 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
     }
   };
 
-  newData: any[] = [{data: [], label: this.translate.instant('all')}];
+  newData: any[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
 
   private allSubData: any[];
+  private allSubBackground: any[];
   private getDataSub: Subscription;
   private allDataNew: any[];
   private barChartLabels: any[];
@@ -79,7 +81,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   }
 
   private updateData() {
-    console.log('hola');
     if (this.getDataSub) {
       this.getDataSub.unsubscribe();
     }
@@ -98,11 +99,12 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       this.splitIdx = 0;
 
       this.allSubData = [];
+      this.allSubBackground = [];
       this.barChartLabels = [];
       this.subBarChartLabels = [];
       this.allBarChartsLabel = [];
 
-      this.allDataNew = [{data: [], label: this.translate.instant('all') }];
+      this.allDataNew = [{data: [], backgroundColor: [], label: this.translate.instant('all') }];
       let prevYear: number;
       res.map(r => {
         const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
@@ -112,6 +114,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
           for (let i = prevYear + 1; i < year; i++) {
             this.subBarChartLabels.push(i);
             this.allSubData.push(0);
+            this.allSubBackground.push(this.getRandomColor);
             if (i < 1970) {
               this.splitIdx++;
             }
@@ -120,6 +123,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
 
 
         this.allSubData.push(count);
+        this.allSubBackground.push(this.getRandomColor());
         this.subBarChartLabels.push(year);
         if (year < 1970) {
           this.splitIdx++;
@@ -128,9 +132,12 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
         prevYear = year;
       });
       this.allDataNew[0].data = this.allSubData;
+      this.allDataNew[0].backgroundColor = this.allSubBackground;
 
       this.allSubData = this.allSubData.slice(this.splitIdx, this.allSubData.length);
+      this.allSubBackground = this.allSubBackground.slice(this.splitIdx, this.allSubBackground.length);
       this.newData[0].data = this.allSubData;
+      this.newData[0].backgroundColor = this.allSubBackground;
       this.allBarChartsLabel = this.subBarChartLabels;
       this.subBarChartLabels = this.subBarChartLabels.slice(this.splitIdx, this.subBarChartLabels.length);
       this.barChartLabels = this.subBarChartLabels;
@@ -149,12 +156,23 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
     return value.toLocaleString('fi');
   }
 
+  getRandomColor(): string {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
   toggleShowAllData() {
     if (this.newData[0].data.length < this.allDataNew[0].data.length) {
       this.newData[0].data = this.allDataNew[0].data;
+      this.newData[0].backgroundColor = this.allDataNew[0].backgroundColor;
       this.barChartLabels = this.allBarChartsLabel;
     } else {
       this.newData[0].data = this.allDataNew[0].data.slice(this.splitIdx, this.allDataNew[0].data.length);
+      this.newData[0].backgroundColor = this.allDataNew[0].backgroundColor.slice(this.splitIdx, this.allDataNew[0].data.length);
       this.barChartLabels = this.allBarChartsLabel.slice(this.splitIdx, this.allBarChartsLabel.length);
     }
   }

@@ -33,10 +33,10 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
      position: 'nearest'
    },
     scales: {
-      xAxes: [{
+      Axes: [{
         gridLines: {
-          color: 'rgba(171,171,171,1)',
-          lineWidth: 1
+          color: 'rgba(230,230,230,0.5)',
+          lineWidth: 0.2
         }
       }],
       yAxes: [{
@@ -44,7 +44,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
           beginAtZero: true
         },
         gridLines: {
-          color: 'rgba(171,171,171,1)',
+          color: 'rgba(171,171,171,0.5)',
           lineWidth: 0.5
         }
       }]

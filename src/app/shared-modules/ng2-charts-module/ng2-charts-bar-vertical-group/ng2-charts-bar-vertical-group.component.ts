@@ -6,6 +6,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   template: `<canvas baseChart
   [datasets]="datasets"
   [labels]="labels"
+  [colors]="colors"
   [options]="options"
   [plugins]="chartType"
   [legend]="legend"
@@ -21,6 +22,7 @@ export class LajiBarComponent {
   @Input() options: any;
   @Input() chartType: any;
   @Input() legend: any;
+  @Input() colors: any;
 
   @Output() chartClick = new EventEmitter<any>();
 }
