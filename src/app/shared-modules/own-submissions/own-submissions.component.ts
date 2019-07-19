@@ -1,24 +1,22 @@
-import { catchError, map, mergeAll, share, switchMap, tap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, map, share, switchMap, tap, toArray } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
-  OnDestroy,
   SimpleChanges
 } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { LocalStorage } from 'ngx-webstorage';
 import { DocumentExportService } from './service/document-export.service';
 import { DownloadEvent, LabelEvent, RowDocument, TemplateEvent } from './own-datatable/own-datatable.component';
 import { DocumentInfoService } from '../../shared/service/document-info.service';
 import * as moment from 'moment';
-import { Person } from '../../shared/model/Person';
 import { FormService } from '../../shared/service/form.service';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { Logger } from '../../shared/logger';
@@ -383,21 +381,11 @@ export class OwnSubmissionsComponent implements OnChanges {
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
-    return ObservableFrom(userArray.map((userId) => {
-      if (userId.indexOf('MA.') === 0) {
-        return this.userService.getUser(userId).pipe(
-          map((user: Person) => {
-            return user.fullName;
-          }));
-      }
-      return ObservableOf(userId);
-    })).pipe(
-      mergeAll(),
-      toArray()
-    ).pipe(
-      map((array) => {
-        return array.join(', ');
-      }));
+    return ObservableFrom(userArray).pipe(
+      concatMap(personId => this.userService.getPersonInfo(personId)),
+      toArray(),
+      map((array) => array.join(', '))
+    );
   }
 
   private getForm(formId: string): Observable<any> {

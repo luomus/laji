@@ -89,8 +89,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       }
     );
 
-    this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
-      .subscribe(data => {
+    this.userService.getUserSetting('taxonomyList').subscribe(data => {
         if (data && data.selected) {
           this.searchQuery.listOptions.selected = data.selected;
         }
@@ -369,8 +368,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private saveSettings() {
-    this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
+    this.userService.setUserSetting('taxonomyList', {
       selected: this.searchQuery.listOptions.selected
-    }).subscribe(() => {}, () => {});
+    });
   }
 }

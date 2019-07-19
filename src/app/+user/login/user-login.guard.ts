@@ -6,6 +6,8 @@ import { CanActivate,
   UrlTree } from '@angular/router';
 import { UserService } from '../../shared/service/user.service';
 import { Location } from '@angular/common';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class UserLoginGuard implements CanActivate {
@@ -16,16 +18,14 @@ export class UserLoginGuard implements CanActivate {
     private location: Location
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     if (!route.queryParams['token']) {
-      return this.router.parseUrl('/error/404');
+      return of(this.router.parseUrl('/error/404'));
     }
     this.location.replaceState('/', '');
-    this.userService.login(route.queryParams['token']);
 
-    // This work around and most of the code in the user-login component
-    // can be removed when https://github.com/angular/angular/issues/27845 is resolved.
-    const returnUrl = this.userService.getReturnUrl();
-    return returnUrl === '/' ? true : this.router.parseUrl(this.userService.getReturnUrl());
+    return this.userService.login(route.queryParams['token']).pipe(
+      map(() => this.router.parseUrl(this.userService.getReturnUrl()))
+    );
   }
 }

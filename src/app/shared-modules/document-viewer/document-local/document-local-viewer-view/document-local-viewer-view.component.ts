@@ -34,12 +34,7 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
   ) { }
 
   ngOnInit() {
-    this.metaFetch = this.userService.action$
-      .pipe(
-        startWith(''),
-        switchMap(() => this.userService.getUser())
-      )
-      .subscribe(person => {
+    this.metaFetch = this.userService.user$.subscribe(person => {
         this.personID = person.id;
         this.cd.markForCheck();
       });

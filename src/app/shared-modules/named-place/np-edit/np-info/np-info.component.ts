@@ -24,6 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../../../../shared/service/util.service';
 import { LajiFormUtil } from '@laji-form/laji-form-util.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-np-info',
@@ -187,7 +188,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     if (!this.namedPlace) {
       return;
     }
-    this.userService.getUser().subscribe(person => {
+    this.userService.user$.pipe(take(1)).subscribe(person => {
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) || this.formRights.admin;
       this.formReservable = this.documentForm &&
         Array.isArray(this.documentForm.features) &&

@@ -190,7 +190,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   doLogin(event: Event) {
     event.preventDefault();
-    this.userService.doLogin();
+    this.userService.redirectToLogin();
     this.closeMenu();
   }
 

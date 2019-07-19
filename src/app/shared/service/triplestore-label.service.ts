@@ -116,14 +116,7 @@ export class TriplestoreLabelService {
           }
           return TriplestoreLabelService.requestCache[key];
         case 'MA':
-          if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.userService.getUser(key).pipe(
-              map(person => person.fullName),
-              tap(name => TriplestoreLabelService.cache[key] = name),
-              share()
-            );
-          }
-          return TriplestoreLabelService.requestCache[key];
+          return this.userService.getPersonInfo(key);
         case 'MP':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.publications, key, {lang: 'multi'}).pipe(

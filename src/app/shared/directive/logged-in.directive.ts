@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { Observable, Subscription } from 'rxjs';
-import { startWith, switchMap, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Directive({
   selector: '[lajiLoggedIn]'
@@ -21,10 +21,7 @@ export class LoggedInDirective implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.userActions = this.userService.action$.pipe(
-      startWith(true),
-      switchMap(() => this.checkLogin())
-    ).subscribe();
+    this.userActions = this.toggleVisibility().subscribe();
   }
 
   ngOnDestroy() {
@@ -33,8 +30,9 @@ export class LoggedInDirective implements OnInit, OnDestroy {
     }
   }
 
-  private checkLogin(): Observable<boolean> {
+  private toggleVisibility(): Observable<boolean> {
     const onlyLoggedIn = this.lajiLoggedIn === null || typeof this.lajiLoggedIn === 'undefined' ? true : this.lajiLoggedIn;
+
     return this.userService.isLoggedIn$.pipe(
       tap(isLoggedIn => {
         const shouldBeVisible = (onlyLoggedIn && isLoggedIn) || (!onlyLoggedIn && !isLoggedIn);
