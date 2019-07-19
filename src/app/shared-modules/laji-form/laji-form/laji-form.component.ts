@@ -50,8 +50,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   private municipalityEnums: any;
   private biogeographicalProvinceEnums: any;
 
-  @ViewChild('errorModal') public errorModal: ModalDirective;
-  @ViewChild('lajiForm') lajiFormRoot: ElementRef;
+  @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
+  @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
 
   constructor(private apiClient: FormApiClient,
               private userService: UserService,

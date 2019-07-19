@@ -18,6 +18,7 @@ import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
+import { geoJSON as LgeoJSON } from 'leaflet';
 import { map } from 'rxjs/operators';
 
 export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|
@@ -31,7 +32,7 @@ export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'indivi
 })
 export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
-  @ViewChild(LajiMapComponent) mapComponent: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
 
   @Input() title: string;
   @Input() titleInfo: string;
@@ -112,7 +113,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.initMapdata(!!changes.data);
+    this.initMapData(!!changes.data);
   }
 
   ngOnDestroy() {
@@ -121,10 +122,10 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   changeType(type: MapBoxTypes) {
     this.type = type;
-    this.initMapdata();
+    this.initMapData();
   }
 
-  initMapdata(dataIsChanged = false) {
+  private initMapData(dataIsChanged = false) {
     if (!this.query && !this.data) {
       return;
     }
@@ -156,17 +157,17 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
     this.subQuery = geoJson$
       .subscribe(geoJson => {
-          this.geoJsonLayer.addData(geoJson);
-          this.boundsChange.emit(this.geoJsonLayer.getBounds());
-          this.currentColor = '';
-          this.loading = false;
-          this.initColor();
-          this.cd.markForCheck();
-        },
-        error => {
-          this.loading = false;
-          this.cd.markForCheck();
-        });
+        this.geoJsonLayer.addData(geoJson);
+        this.boundsChange.emit(this.geoJsonLayer.getBounds());
+        this.currentColor = '';
+        this.loading = false;
+        this.initColor();
+        this.cd.markForCheck();
+      },
+      () => {
+        this.loading = false;
+        this.cd.markForCheck();
+      });
   }
 
   initLegend() {
@@ -198,7 +199,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     if (this.geoJsonLayer) {
       this.geoJsonLayer.clearLayers();
     } else if (!this.geoJsonLayer) {
-      this.geoJsonLayer = L.geoJSON(undefined, {
+      this.geoJsonLayer = LgeoJSON(undefined, {
         style: function() {
           return { color: '#000000', weight: 0.3, opacity: 1, fillOpacity: 0.9 };
         }

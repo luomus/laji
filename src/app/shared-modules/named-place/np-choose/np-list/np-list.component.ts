@@ -32,11 +32,11 @@ export class NpListComponent {
   ];
   columnsMetaData: {[columnName: string]: DatatableColumn};
 
-  @ViewChild('label') labelIDTpl: TemplateRef<any>;
-  @ViewChild('status') statusTpl: TemplateRef<any>;
-  @ViewChild('area') areaTpl: TemplateRef<any>;
-  @ViewChild('boolToStr') boolToStrTpl: TemplateRef<any>;
-  @ViewChild('dataTable') public datatable: DatatableComponent;
+  @ViewChild('label', { static: true }) labelIDTpl: TemplateRef<any>;
+  @ViewChild('status', { static: true }) statusTpl: TemplateRef<any>;
+  @ViewChild('area', { static: false }) areaTpl: TemplateRef<any>;
+  @ViewChild('boolToStr', { static: true }) boolToStrTpl: TemplateRef<any>;
+  @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
 
   @Output() activePlaceChange = new EventEmitter<number>();
 

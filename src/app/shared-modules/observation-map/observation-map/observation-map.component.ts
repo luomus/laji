@@ -1,21 +1,17 @@
 import {concat, take, retryWhen, delay, timeout, switchMap, tap, map} from 'rxjs/operators';
-import { of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
+import { of, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Inject,
   Input,
   OnChanges, OnDestroy,
-  OnInit,
   Output,
-  PLATFORM_ID,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { Util } from '../../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ValueDecoratorService } from '../../../+observation/result-list/value-decorator.sevice';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -25,8 +21,9 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { isPlatformBrowser } from '@angular/common';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { PlatformService } from '../../../shared/service/platform.service';
+import { latLngBounds as LlatLngBounds } from 'leaflet';
 
 @Component({
   selector: 'laji-observation-map',
@@ -35,8 +32,8 @@ import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interfa
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+export class ObservationMapComponent implements OnChanges, OnDestroy {
+  @ViewChild(LajiMapComponent, { static: false }) lajiMap: LajiMapComponent;
 
   @Input() visible = false;
   @Input() query: any;
@@ -66,6 +63,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() set showControls(show: boolean) {
     this._mapOptions = {...this._mapOptions, controls: show ? { draw: false } : false};
   }
+  @Input() ready = true;
+  @Input() unitCount: number;
   @Input() height;
   @Input() selectColor = '#00aa00';
   @Input() color: any;
@@ -75,7 +74,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
   @Input() showItemsWhenLessThan = 0;
-  @Input() tick: number;
   @Input() itemFields: string[] = [
     'unit.linkings.taxon',
     'unit.taxonVerbatim',
@@ -105,13 +103,13 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private prev = '';
   private subDataFetch: Subscription;
   private style: (count: number) => string;
-  private lastQuery: any;
   private viewBound: any;
   private activeLevel = 0;
   private activeBounds: any;
   private reset = true;
   private showingItems = false;
   private dataCache: any;
+  private init = false;
 
 
   private static getValue(row: any, propertyName: string): string {
@@ -124,35 +122,33 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     return val;
   }
 
-  constructor(private warehouseService: WarehouseApi,
-              public translate: TranslateService,
-              private decorator: ValueDecoratorService,
-              private coordinateService: CoordinateService,
-              private logger: Logger,
-              private changeDetector: ChangeDetectorRef,
-              @Inject(PLATFORM_ID) private platformId: Object
+  constructor(
+    private warehouseService: WarehouseApi,
+    private platformService: PlatformService,
+    public translate: TranslateService,
+    private decorator: ValueDecoratorService,
+    private coordinateService: CoordinateService,
+    private logger: Logger,
+    private changeDetector: ChangeDetectorRef,
   ) { }
 
-  ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-    this.viewBound = L.latLngBounds;
-    this.activeBounds = L.latLngBounds;
-    if (!this.color) {
-      this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
-    }
-    this.lastQuery = JSON.stringify(this.query);
-    this.initColorScale();
-  }
-
   ngOnChanges(changes: SimpleChanges) {
-    if (!isPlatformBrowser(this.platformId)) {
+    if (!this.platformService.isBrowser) {
       return;
+    }
+    if (!this.init) {
+      this.init = true;
+
+      this.viewBound = LlatLngBounds;
+      this.activeBounds = LlatLngBounds;
+      if (!this.color) {
+        this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+      }
+      this.initColorScale();
     }
     this.decorator.lang = this.translate.currentLang;
     // First update is triggered by tile layer update event from the laji-map
-    if (changes['query']) {
+    if (changes['query'] || changes['unitCount'] || changes['ready']) {
       this.updateMapData();
     }
     this.initLegendTopMargin();
@@ -201,10 +197,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
         this.updateMapData();
       }
     }
-  }
-
-  invalidateSize() {
-    this.lajiMap.invalidateSize();
   }
 
   initLegendTopMargin(): void {
@@ -302,10 +294,12 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateMapData() {
-    const query = Util.clone(this.query);
-    const cacheKey = this.getCacheKey(query);
+    this.loading = true;
+    if (!this.ready) {
+      return;
+    }
+    const cacheKey = this.getCacheKey(this.query);
     if (this.prev === cacheKey) {
-      this.changeDetector.markForCheck();
       return;
     }
     this.prev = cacheKey;
@@ -313,16 +307,12 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       this.subDataFetch.unsubscribe();
     }
     this.drawData.featureCollection.features = [];
-    if (query.coordinates) {
+    if (this.query.coordinates) {
       this.initDrawData();
     }
-    if (WarehouseApi.isEmptyQuery(query)) {
-      query.cache = true;
-    }
     this.reset = true;
-    this.loading = true;
     this.showingItems = false;
-    this.addToMap(query);
+    this.addToMap(this.query);
   }
 
   private addToMap(query: WarehouseQueryInterface, page = 1) {
@@ -378,10 +368,13 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       }
     }));
 
-    const count$ = this.warehouseService
-      .warehouseQueryCountGet(query).pipe(
+    const countRemote$ = this.warehouseService.warehouseQueryCountGet(query).pipe(
+      map(result => result.total)
+    );
+
+    const count$ = (typeof this.unitCount === 'undefined' ? countRemote$ : of(this.unitCount)).pipe(
       switchMap(cnt => {
-        if (cnt.total < this.showItemsWhenLessThan) {
+        if (cnt < this.showItemsWhenLessThan) {
           return items$;
         } else {
           return (this.warehouseService.warehouseQueryAggregateGet(
@@ -390,6 +383,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
           ));
         }
       }));
+
     this.subDataFetch = ObservableOf(this.showItemsWhenLessThan).pipe(
       switchMap((less) => {
         return less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
@@ -397,10 +391,10 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
           undefined, this.size, page, true
         );
       })).pipe(
-      timeout(WarehouseApi.longTimeout * 3),
-      delay(100),
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), )), )
-      .subscribe((data: any) => {
+        timeout(WarehouseApi.longTimeout * 3),
+        delay(100),
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
+      ).subscribe((data: any) => {
           this.clearDrawData();
           if (this.reset) {
             this.reset = false;
@@ -414,7 +408,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
             this.addToMap(query, page);
           } else {
             this.mapData = [{
-              featureCollection: Util.clone(this.dataCache),
+              featureCollection: this.dataCache,
               getFeatureStyle: this.getStyle.bind(this),
               getClusterStyle: this.getClusterStyle.bind(this),
               getPopup: this.getPopup.bind(this),
@@ -432,30 +426,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       );
   }
 
-  /**
-   * This cannot be used at the moment since addData method in the map is working like set data
-   */
-  private addData(query: WarehouseQueryInterface, page) {
-    this.warehouseService.warehouseQueryAggregateGet(
-      this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
-      undefined, this.size, page, true
-    ).subscribe(data => {
-      this.lajiMap.map.addData([{
-        featureCollection: data.featureCollection || data,
-        getFeatureStyle: this.getStyle.bind(this),
-        getClusterStyle: this.getClusterStyle.bind(this),
-        getPopup: this.getPopup.bind(this),
-        cluster: data.cluster || false
-      }]);
-      if (data.lastPage > page && (this.lastPage === 0 || page <= this.lastPage)) {
-        page++;
-        this.addData(query, page);
-      } else {
-        this.loading = false;
-      }
-    });
-  }
-
   private addViewPortCoordinates(query: WarehouseQueryInterface) {
     if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
       query.coordinates = [
@@ -467,7 +437,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getCacheKey(query: WarehouseQueryInterface) {
-    const cache = JSON.stringify(query) + ':' + this.limitResults;
+    const cache = [JSON.stringify(query), this.limitResults, this.unitCount].join(':');
     if (!(this.activeBounds && this.activeBounds.toBBoxString)) {
       return cache + this.activeLevel;
     }

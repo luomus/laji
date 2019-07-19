@@ -52,17 +52,3 @@
     </div>
   </div>
 </div>
-<div class="modal fade" bsModal #documentModal="bs-modal"
-     (onHidden)="onHideDocument()"
-     tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-body" *ngIf="documentModalVisible">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <laji-document [uri]="documentId" [highlight]="highlightId" [own]="listQuery && (!!listQuery.observerPersonToken || !!listQuery.editorPersonToken || !!listQuery.editorOrObserverPersonToken)"></laji-document>
-      </div>
-    </div>
-  </div>
-</div>

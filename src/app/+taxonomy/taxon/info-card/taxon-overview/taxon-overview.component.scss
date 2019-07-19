@@ -15,7 +15,7 @@
   width: calc(91px * 3);
 }
 
-:host /deep/ .link .panel-title{
+::ng-deep .link .panel-title{
   font-size: 1.5em;
 }
 

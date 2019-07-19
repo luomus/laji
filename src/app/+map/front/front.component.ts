@@ -1,13 +1,13 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SearchQuery } from '../../+observation/search-query.model';
+import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Util } from '../../shared/service/util.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions, LajiMapTileLayerName, LajiMapLang } from '@laji-map/laji-map.interface';
+import { latLng as LlatLng, GeometryUtil as LGeometryUtil } from 'leaflet';
 
 @Component({
   selector: 'laji-map-front',
@@ -15,7 +15,7 @@ import { LajiMapOptions, LajiMapTileLayerName, LajiMapLang } from '@laji-map/laj
   styleUrls: ['./front.component.css']
 })
 export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: false }) lajiMap: LajiMapComponent;
   mapOptions: LajiMapOptions = {
     center: [64.209802, 24.912872],
     zoom: 3,
@@ -56,8 +56,8 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
           case 'LineString': {
             let prevLatLng;
             let length = geometry.coordinates.slice(0).reduce((cumulative, coords) => {
-              const latLng = L.latLng(coords.reverse());
-              cumulative += prevLatLng ? L.latLng(latLng).distanceTo(prevLatLng) : 0;
+              const latLng = LlatLng(coords.reverse());
+              cumulative += prevLatLng ? LlatLng(latLng).distanceTo(prevLatLng) : 0;
               prevLatLng = latLng;
               return cumulative;
             }, 0);
@@ -74,14 +74,14 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
             return `${length}${suffix}`;
           }
           case 'Polygon': {
-            const latLngs = geometry.coordinates[0].slice(1).map(c => L.latLng(c.reverse()));
-            return L.GeometryUtil.readableArea(L.GeometryUtil.geodesicArea(latLngs), true);
+            const latLngs = geometry.coordinates[0].slice(1).map(c => LlatLng(c.reverse()));
+            return LGeometryUtil.readableArea(LGeometryUtil.geodesicArea(latLngs), true);
           }
           case 'Point': {
             if (geometry.radius === undefined) { return; }
             const {radius} = geometry;
             const area = (Math.PI) * (radius * radius);
-            return L.GeometryUtil.readableArea(area, true);
+            return LGeometryUtil.readableArea(area, true);
           }
       }
     },
@@ -98,7 +98,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public searchQuery: SearchQuery,
+    public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private footerService: FooterService
   ) {
@@ -124,12 +124,9 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     if (params['showControls'] && params['showControls'] !== 'false') {
       this.showControls = true;
     }
-    if (params['target']) {
-      this.searchQuery.query.target = [params['target']];
-    }
+    const query = this.searchQuery.getQueryFromUrlQueryParams(params);
     this.mapOptions = {...this.mapOptions, ...options, draw: this.drawData};
-    this.searchQuery.setQueryFromQueryObject(params);
-    this.query = Util.clone(this.searchQuery.query);
+    this.query = query;
   }
 
   ngAfterViewInit() {

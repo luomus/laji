@@ -12,35 +12,37 @@
 <div class="row">
   <div class="col-sm-6">
     <table class="table">
-      <tr>
-        <th>Lajimäärä</th>
-        <td>{{ counts.species.length }}</td>
-      </tr>
-      <tr>
-        <th>Pääsaran parisumma</th>
-        <td>{{ counts.psCouples }}</td>
-      </tr>
-      <tr>
-        <th>Parisumma yhteensä</th>
-        <td>{{ counts.tsCouples + counts.psCouples }}</td>
-      </tr>
-      <tr>
-        <th>Pääsarkaprosentti</th>
-        <td>{{ counts.onPsPros }}%</td>
-      </tr>
-      <tr>
-        <th>Laskentanopeus</th>
-        <td>
-          {{ counts.minPerKm }}min/km
-          (<span class="speed-warning" *ngIf="counts.minPerKm > 50; else slowSpeed">keskimääräistä hitaampi</span><ng-template #slowSpeed><span class="speed-warning" *ngIf="counts.minPerKm < 35; else normalSpeed">keskimääräistä nopeampi</span></ng-template><ng-template #normalSpeed><span class="speed-ok">normaali</span></ng-template>)
-        </td>
-      </tr>
-      <tr *ngIf="stats$ | async let diff">
-        <th>Poikkeama laskentapäivän mediaanista</th>
-        <td>
-          {{ diff }}
-        </td>
-      </tr>
+      <tbody>
+        <tr>
+          <th>Lajimäärä</th>
+          <td>{{ counts.species.length }}</td>
+        </tr>
+        <tr>
+          <th>Pääsaran parisumma</th>
+          <td>{{ counts.psCouples }}</td>
+        </tr>
+        <tr>
+          <th>Parisumma yhteensä</th>
+          <td>{{ counts.tsCouples + counts.psCouples }}</td>
+        </tr>
+        <tr>
+          <th>Pääsarkaprosentti</th>
+          <td>{{ counts.onPsPros }}%</td>
+        </tr>
+        <tr>
+          <th>Laskentanopeus</th>
+          <td>
+            {{ counts.minPerKm }}min/km
+            (<span class="speed-warning" *ngIf="counts.minPerKm > 50; else slowSpeed">keskimääräistä hitaampi</span><ng-template #slowSpeed><span class="speed-warning" *ngIf="counts.minPerKm < 35; else normalSpeed">keskimääräistä nopeampi</span></ng-template><ng-template #normalSpeed><span class="speed-ok">normaali</span></ng-template>)
+          </td>
+        </tr>
+        <tr *ngIf="stats$ | async let diff">
+          <th>Poikkeama laskentapäivän mediaanista</th>
+          <td>
+            {{ diff }}
+          </td>
+        </tr>
+      </tbody>
     </table>
     <table class="table">
       <thead>

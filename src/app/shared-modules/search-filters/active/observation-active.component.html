@@ -2,7 +2,7 @@
   {{ 'observation.active' | translate }}
   <span class="badge" [ngClass]="{has: active.length > 0}">{{ active.length }}</span>
 </strong>
-<div class="active-list" *ngIf="showList">
+<div class="active-list" *ngIf="showList" (lajiClickOutSide)="toggleActiveList()">
   <ul>
     <li>
       <span>
@@ -12,7 +12,7 @@
     </li>
     <li *ngFor="let item of active">
       <span>
-        {{ searchQuery.queryType + '.active.' + item.field | translate }}
+        {{ queryType + '.active.' + item.field | translate }}
         <span (click)="remove(item)" class="label label-danger link"><i class="glyphicon glyphicon-remove"></i></span>
       </span>
     </li>

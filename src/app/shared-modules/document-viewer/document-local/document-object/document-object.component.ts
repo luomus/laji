@@ -14,12 +14,12 @@ export class DocumentObjectComponent implements OnChanges {
   templates = {};
   hasFacts = false;
 
-  @ViewChild('checkbox') checkboxTpl: TemplateRef<any>;
-  @ViewChild('select') selectTpl: TemplateRef<any>;
-  @ViewChild('taxonCensus') taxonCensusTpl: TemplateRef<any>;
-  @ViewChild('fieldset') fieldsetTpl: TemplateRef<any>;
-  @ViewChild('facts') factsTpl: TemplateRef<any>;
-  @ViewChild('default') defaultTpl: TemplateRef<any>;
+  @ViewChild('checkbox', { static: true }) checkboxTpl: TemplateRef<any>;
+  @ViewChild('select', { static: true }) selectTpl: TemplateRef<any>;
+  @ViewChild('taxonCensus', { static: true }) taxonCensusTpl: TemplateRef<any>;
+  @ViewChild('fieldset', { static: true }) fieldsetTpl: TemplateRef<any>;
+  @ViewChild('facts', { static: true }) factsTpl: TemplateRef<any>;
+  @ViewChild('default', { static: true }) defaultTpl: TemplateRef<any>;
 
   constructor() { }
 

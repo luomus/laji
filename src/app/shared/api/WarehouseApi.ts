@@ -26,7 +26,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PagedResult } from '../model/PagedResult';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
-import { SearchQuery } from '../../+observation/search-query.model';
+import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInterface';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
@@ -41,7 +41,7 @@ export class WarehouseApi {
   public static readonly longTimeout = 10000;
   protected basePath = environment.apiBase;
 
-  constructor(protected http: HttpClient, private queryService: SearchQuery) {
+  constructor(protected http: HttpClient, private queryService: SearchQueryService) {
     this.warehouseQueryAggregateGet = this.warehouseQueryAggregateGet.bind(this);
     this.warehouseQueryStatisticsGet = this.warehouseQueryStatisticsGet.bind(this);
   }
@@ -85,8 +85,7 @@ export class WarehouseApi {
 
     let queryParameters = {};
 
-    this.addMetaToQuery(aggregateBy, orderBy, pageSize, page);
-    this.addQueryToQueryParams(query, queryParameters);
+    this.addQueryToQueryParams(this.queryWithMetaData(query, aggregateBy, orderBy, pageSize, page), queryParameters);
 
     if (onlyCount !== undefined) {
       queryParameters['onlyCount'] = onlyCount
@@ -137,8 +136,11 @@ export class WarehouseApi {
 
     let queryParameters = {};
 
-    this.addMetaToQuery(aggregateBy, orderBy, pageSize, page);
-    this.addQueryToQueryParams(query, queryParameters);
+    if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
+      query = {...query, cache: true};
+    }
+
+    this.addQueryToQueryParams(this.queryWithMetaData(query, aggregateBy, orderBy, pageSize, page), queryParameters);
 
     if (geoJSON !== undefined) {
       queryParameters['geoJSON'] = geoJSON
@@ -269,6 +271,10 @@ export class WarehouseApi {
   public warehouseQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<WarehouseCountResultInterface> {
     const path = this.basePath + '/warehouse/query/count';
 
+    if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
+      query = {...query, cache: true};
+    }
+
     const queryParameters = {...extraHttpRequestParams};
 
     this.addQueryToQueryParams(query, queryParameters);
@@ -288,10 +294,13 @@ export class WarehouseApi {
   public warehouseQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
     const path = this.basePath + '/warehouse/query/list';
 
+    if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
+      query = {...query, cache: true};
+    }
+
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
-    this.addMetaToQuery(selected, orderBy, pageSize, page);
-    this.addQueryToQueryParams(query, queryParameters);
+    this.addQueryToQueryParams(this.queryWithMetaData(query, selected, orderBy, pageSize, page), queryParameters);
 
     return this.http.get<PagedResult<any>>(path, {params: queryParameters});
   }
@@ -328,8 +337,7 @@ export class WarehouseApi {
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
-    this.addMetaToQuery(selected, orderBy, pageSize, page);
-    this.addQueryToQueryParams(query, queryParameters);
+    this.addQueryToQueryParams(this.queryWithMetaData(query, selected, orderBy, pageSize, page), queryParameters);
 
     return this.http.get<any>(path, {params: queryParameters});
   }
@@ -347,8 +355,7 @@ export class WarehouseApi {
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
-    this.addMetaToQuery(selected, orderBy, pageSize, page);
-    this.addQueryToQueryParams(query, queryParameters);
+    this.addQueryToQueryParams(this.queryWithMetaData(query, selected, orderBy, pageSize, page), queryParameters);
 
     return this.http.get<PagedResult<any>>(path, {params: queryParameters});
   }
@@ -365,17 +372,19 @@ export class WarehouseApi {
     return this.http.get(path, {params: queryParameters});
   }
 
-  private addMetaToQuery(selectedOrAggregatedBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number): void {
-    this.queryService.aggregateBy = selectedOrAggregatedBy;
-    this.queryService.selected = selectedOrAggregatedBy;
-    this.queryService.orderBy = orderBy;
-    this.queryService.pageSize = pageSize;
-    this.queryService.page = page;
+  private queryWithMetaData(query: WarehouseQueryInterface, selectedOrAggregatedBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number): any {
+    return {
+      ...query,
+      aggregateBy: selectedOrAggregatedBy,
+      selected: selectedOrAggregatedBy,
+      orderBy: orderBy,
+      pageSize: pageSize,
+      page: page
+    };
   }
 
   private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: object): void {
-    this.queryService.query = query;
-    this.queryService.getURLSearchParams(queryParameters);
+    this.queryService.getURLSearchParams(query, queryParameters);
   }
 
 }

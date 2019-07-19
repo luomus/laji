@@ -120,7 +120,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
         }
       }
     }
-    value = value || '';
+    value = value || undefined;
     if (date.isValid && date.isValid()) {
       this.validDate = true;
       this.viewDate = date.format(this.viewFormat);
@@ -128,16 +128,12 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
       if (this.currentValue !== value) {
         this.onTouchedCallback();
       }
-    } else if (value === '') {
-      if (!this.validDate) {
-        this.sendNewValue(value);
-      }
+    } else if (value === undefined) {
       this.validDate = true;
-      this.viewDate = value;
+      this.viewDate = '';
     } else {
       this.validDate = false;
       this.viewDate = value || '';
-      value = '';
     }
     if (this.currentValue !== value) {
       this.sendNewValue(value);
@@ -274,9 +270,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
 
   toggle() {
     if (!this.viewDate) {
-      const value = moment();
+      const value = moment().format(this.format);
       this.value = value;
-      this.onChangeCallback(value.format(this.format));
+      this.onChangeCallback(value);
     }
     if (!this.opened) {
       this.generateCalendar();

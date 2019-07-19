@@ -46,7 +46,7 @@ export class NpEditComponent {
   @Output() editReady = new EventEmitter();
   @Output() error = new EventEmitter();
 
-  @ViewChild(NpInfoComponent) infoComponent: NpInfoComponent;
+  @ViewChild(NpInfoComponent, { static: false }) infoComponent: NpInfoComponent;
 
   constructor(
     private formService: FormService,

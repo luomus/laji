@@ -83,10 +83,10 @@ export class DocumentInfoService {
         form.features.indexOf('MHL.featureEmptyOnNoCount') !== -1
       )
     ) {
-      let result = false;
+      let result = true;
       Global.documentCountUnitProperties.forEach(key => {
         if (typeof unit[key] !== 'undefined' && unit[key] !== '' && unit[key] !== null) {
-          result = true;
+          result = false;
         }
       });
       return result;

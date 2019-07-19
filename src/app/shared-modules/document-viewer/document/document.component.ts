@@ -28,7 +28,7 @@ import { Global } from '../../../../environments/global';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
-  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
+  @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() highlight: string;
   @Input() own: boolean;

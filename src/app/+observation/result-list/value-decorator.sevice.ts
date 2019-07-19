@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { SourceService } from '../../shared/service/source.service';
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 import { FormattedNumber } from '../../shared/pipe/formated-number.pipe';
+import { DateFormatPipe } from 'ngx-moment';
 
 @Injectable()
 export class ValueDecoratorService {

@@ -1,13 +1,13 @@
-<ng-container *ngIf="monthChartData && monthChartData.length > 0">
-  <div class="info-card-chart">
-            <div class="info-card-chart">
-              <laji-canvas baseChart 
+<ng-container *ngIf="barChartData && barChartData.length > 0">
+  <div class="info-card-chart"> 
+            <div class="chart-container">
+              <laji-canvas baseChart
                 [datasets]="barChartData"
                 [labels]="barChartLabels"
                 [options]="barChartOptions"
                 [legend]="true"
                 [chartType]="barChartType"
-                (chartClick)="onSelect1($event)"
+                (chartClick)="chartClicked($event)"
                 >
             </laji-canvas>
             </div>
@@ -65,6 +65,14 @@
               <span class="tooltip-val">{{ model.value.toLocaleString("fi") }}</span>
             </ng-template>
           </ngx-charts-bar-vertical-2d>-->
+          <laji-canvas baseChart
+                [datasets]="daybarChartData[activeMonth]"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [legend]="true"
+                [chartType]="barChartType"
+                >
+            </laji-canvas>
         </div>
       </div>
     </div>

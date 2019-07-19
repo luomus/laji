@@ -10,7 +10,7 @@ import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interfa
   styleUrls: ['./np-info-map.component.css']
 })
 export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @Input() visible: boolean;
   @Input() namedPlace: NamedPlace;
 

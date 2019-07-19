@@ -16,3 +16,14 @@
   height: 100%;
   overflow-x: auto;
 }
+
+.chart-container {
+  position: relative;
+  height: 350px;
+  width: 100%;
+}
+
+canvas {
+  width: 500px;
+  height: 200px;
+}

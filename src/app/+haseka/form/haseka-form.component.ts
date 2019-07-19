@@ -20,7 +20,7 @@ import { UserService } from '../../shared/service/user.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
-  @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
+  @ViewChild(DocumentFormComponent, { static: false }) documentForm: DocumentFormComponent;
   formId: string;
   documentId: string;
   back: string;

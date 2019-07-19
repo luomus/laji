@@ -56,7 +56,7 @@ export class DownloadComponent {
   fileType = 'tsv';
 
   @Output() download = new EventEmitter<string>();
-  @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
+  @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalDirective;
 
   constructor() { }
 

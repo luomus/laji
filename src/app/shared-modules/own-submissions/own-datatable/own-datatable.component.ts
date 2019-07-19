@@ -137,10 +137,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecke
   _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'unitCount', 'observer', 'form', 'id'];
   _goToStartAfterViewCheck = false;
 
-  @ViewChild(DatatableComponent) table: DatatableComponent;
-  @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
-  @ViewChild('saveAsTemplate') public templateModal: ModalDirective;
-  @ViewChild('deleteModal') public deleteModal: ModalDirective;
+  @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
+  @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalDirective;
+  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
+  @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;
 
   constructor(
     @Inject(WINDOW) private window: Window,

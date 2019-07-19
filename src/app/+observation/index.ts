@@ -1,4 +1,4 @@
-export * from './search-query.model';
+export * from './search-query.service';
 export * from './observation.component';
 export * from './observation.routes';
 export * from './result/observation-result.component';

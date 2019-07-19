@@ -1,6 +1,9 @@
-<laji-search-filters [searchQuery]="searchQuery"
-                     [showFilter]="showFilter"
-                     (showFilterChange)="onShowFilterChange($event)">
+<laji-search-filters
+     [queryType]="searchQuery.queryType"
+     [(query)]="searchQuery.query"
+     (queryChange)="onQueryChange()"
+     [showFilter]="showFilter"
+     (showFilterChange)="onShowFilterChange($event)">
   <div class="taxon-panel">
     <div class="row">
       <div class="col-sm-12">

@@ -20,6 +20,12 @@ import { BrowserService } from './browser.service';
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
 
+export interface ISettingResultList {
+  aggregateBy?: string[];
+  selected?: string[];
+  pageSize?: number;
+}
+
 @Injectable({providedIn: 'root'})
 export class UserService extends LocalDb {
 

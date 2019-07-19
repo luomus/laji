@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
-  Inject,
   Input,
   OnChanges,
   OnInit,
@@ -12,11 +11,13 @@ import {
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { MainResultService } from './main-result.service';
-import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../../shared/service/user.service';
 import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
 import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
-import { WINDOW } from '@ng-toolkit/universal';
+import { BrowserService } from '../../shared/service/browser.service';
+import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
+import { Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 const DEFAULT_PAGE_SIZE = 1000;
 
@@ -32,8 +33,7 @@ export class MainResultComponent implements OnInit, OnChanges {
     'unit.species'
   ];
 
-  @ViewChild('aggregatedDataTable') public aggregatedDataTable: ObservationTableComponent;
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('aggregatedDataTable', { static: false }) public aggregatedDataTable: ObservationTableComponent;
 
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
@@ -45,7 +45,6 @@ export class MainResultComponent implements OnInit, OnChanges {
   title = '';
 
   documentId: string;
-  highlightId: string;
   pageSize;
 
   ctrlDown = false;
@@ -67,9 +66,12 @@ export class MainResultComponent implements OnInit, OnChanges {
     'unit.notes'
   ];
 
+  private viewerSub: Subscription;
+
   constructor(
-    @Inject(WINDOW) private window,
     private userService: UserService,
+    private browserService: BrowserService,
+    private documentViewerFacade: DocumentViewerFacade,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -100,7 +102,9 @@ export class MainResultComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.modal.config = {animated: false};
+    this.viewerSub = this.documentViewerFacade.showModal$.pipe(
+      tap(visible => this.documentModalVisible = visible)
+    ).subscribe();
     this.userService.getItem<any>(UserService.SETTINGS_RESULT_LIST)
       .subscribe(data => {
         if (data) {
@@ -149,15 +153,7 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   closeList() {
     this.showObservationList = false;
-    setTimeout(() => {
-      try {
-        this.window.dispatchEvent(new Event('resize'));
-      } catch (e) {
-        const evt = this.window.document.createEvent('UIEvents');
-        evt.initUIEvent('resize', true, false, this.window, 0);
-        this.window.dispatchEvent(evt);
-      }
-    }, 100);
+    this.browserService.triggerResizeEvent();
   }
 
   onGridSelect(event) {
@@ -195,16 +191,14 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   showDocument(event) {
     const row = event.row || {};
+    const listQuery = this.listQuery;
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
-      this.highlightId = row.unit.unitId;
-      this.documentId = row.document.documentId;
-      this.documentModalVisible = true;
-      this.modal.show();
+      this.documentViewerFacade.showDocumentID({
+        document: row.document.documentId,
+        highlight: row.unit.unitId,
+        own: listQuery && (!!listQuery.observerPersonToken || !!listQuery.editorPersonToken || !!listQuery.editorOrObserverPersonToken)
+      });
     }
-  }
-
-  onHideDocument() {
-    this.documentModalVisible = false;
   }
 
   setPageSize(event) {

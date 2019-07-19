@@ -1,4 +1,3 @@
-
 import {toArray, mergeAll, tap, combineLatest, switchMap,  map } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -8,8 +7,6 @@ import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
-
-
 
 
 @Component({

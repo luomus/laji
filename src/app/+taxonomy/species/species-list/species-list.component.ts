@@ -35,9 +35,9 @@ import { DownloadComponent } from '../../../shared-modules/download/download.com
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('speciesDownload') speciesDownload: DownloadComponent;
-  @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
-  @ViewChild('dataTable') public datatable: DatatableComponent;
+  @ViewChild('speciesDownload', { static: false }) speciesDownload: DownloadComponent;
+  @ViewChild('settingsModal', { static: true }) settingsModal: SpeciesListOptionsModalComponent;
+  @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
 
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() visible: boolean;

@@ -18,9 +18,8 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
   styleUrls: ['./observation-month-day-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
-export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
-  @ViewChild('dayChartModal') public modal: ModalDirective;
+export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
+  @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;
 
@@ -29,6 +28,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
   dayChartModalVisible = false;
   activeMonth: number;
+
 
   monthFormatting: (number) => string = this.getMonthLabel.bind(this);
 
@@ -57,10 +57,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       }],
       yAxes: [{
         ticks: {
-          beginAtZero: true,
-          max: 200,
-          min: 0,
-          stepSize: 100
+          beginAtZero: true
         },
         gridLines: {
           color: 'rgba(171,171,171,1)',
@@ -80,13 +77,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   public barLegend = true;
   public barChartPlugins = [pluginDataLabels];
 
-  public barChartData: any[] = []; /*= [
-    { data: [65, 59, 800, 81, 51, 55, 40, 59, 80, 81, 56, 55], label: 'Series A' },
-    { data: [28, 48, 40, 19, 86, 27, 90, 48, 40, 19, 86, 27], label: 'Series B' },
-    { data: [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0], label: 'Series C' }
-  ];*/
-
-  public daybarChartData: any[][] = [];
+  public barChartData: any[];
+  public daybarChartData: any[][];
 
   constructor(
     private warehouseApi: WarehouseApi,
@@ -95,9 +87,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     private translate: TranslateService,
     private cd: ChangeDetectorRef
   ) { }
-
-  ngOnInit() {
-  }
 
   ngOnChanges() {
     this.updateData();
@@ -117,15 +106,16 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     }
   }
 
-  onSelect1(e) {
-    if (e.active.length > 0) {
-      const chartElement = e.active[0]._chart.getElementAtEvent(event);
-      console.log(chartElement);
-      console.log(chartElement[0]._model.label);
-      this.activeMonth = chartElement[0]._model.label;
-      }
+  graphClickEvent(event, array) {
+    if (array.length > 0) {
+      this.activeMonth = array[0]._index;
       this.dayChartModalVisible = true;
       this.modal.show();
+    }
+  }
+
+  chartClicked(event) {
+    console.log('ok');
   }
 
   onHideDayChart() {
@@ -139,6 +129,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
     this.monthChartData = [];
     this.dayChartDataByMonth = {};
+    this.barChartData = [];
+    this.daybarChartData = [];
 
     this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
       this.query ? this.query : { taxonId: [this.taxonId], cache: true },
@@ -152,7 +144,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       map(res => res.results),
       switchMap(res => this.setData(res))
     ).subscribe(() => {
-      this.hasData.emit(this.monthChartData.length > 0);
+      this.hasData.emit(this.barChartData.length > 0);
       this.cd.markForCheck();
     });
   }
@@ -183,7 +175,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
         this.addDataDayToSeriesGiorgio (lifeStage, count, month, day, labelObservables);
       }
     });
-
     return labelObservables.length > 0 ? forkJoin(labelObservables) : of([]);
   }
 
@@ -327,11 +318,14 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     return new Date(2000, month, 0).getDate();
   }
 
-  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
-
   public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);
   }
+
+  public arrayMax(arr) {
+    return arr.reduce(function (p, v) {
+      return ( p > v ? p : v );
+    });
+  }
+
 }

@@ -166,6 +166,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.formQueryToQuery();
     this.searchQuery.updateUrl();
+    this.searchQuery.query = {...this.searchQuery.query};
     return false;
   }
 

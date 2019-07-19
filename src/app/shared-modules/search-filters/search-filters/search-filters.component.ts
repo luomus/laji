@@ -1,43 +1,27 @@
-import { WINDOW } from '@ng-toolkit/universal';
-import { Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
-import { SearchQueryInterface } from '../search-query.interface';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { BrowserService } from '../../../shared/service/browser.service';
 
 @Component({
   selector: 'laji-search-filters',
   templateUrl: './search-filters.component.html',
   styleUrls: ['./search-filters.component.css']
 })
-export class SearchFiltersComponent implements OnInit {
+export class SearchFiltersComponent {
   @Input() showFilter = true;
-  @Input() searchQuery: SearchQueryInterface;
+  @Input() queryType: string;
+  @Input() query: object;
+  @Input() activeSkip: string[] = [];
 
   @Output() showFilterChange = new EventEmitter<boolean>();
+  @Output() queryChange = new EventEmitter<object>();
 
   constructor(
-    @Inject(WINDOW) private window: Window,
-    @Inject(PLATFORM_ID) private platformID: object
+    private browserService: BrowserService
   ) { }
-
-  ngOnInit() {
-  }
 
   toggleFilters() {
     this.showFilter = !this.showFilter;
     this.showFilterChange.emit(this.showFilter);
-    if (!isPlatformBrowser(this.platformID)) {
-      return;
-    }
-    try {
-      setTimeout(() => {
-        try {
-          this.window.dispatchEvent(new Event('resize'));
-        } catch (e) {
-          const evt = this.window.document.createEvent('UIEvents');
-          evt.initUIEvent('resize', true, false, window, 0);
-          this.window.dispatchEvent(evt);
-        }
-      }, 50);
-    } catch (e) {}
+    this.browserService.triggerResizeEvent();
   }
 }

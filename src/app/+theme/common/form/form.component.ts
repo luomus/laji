@@ -18,7 +18,7 @@ import { Form } from '../../../shared/model/Form';
 })
 export class FormComponent
   implements OnInit, OnDestroy, ComponentCanDeactivate {
-  @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
+  @ViewChild(DocumentFormComponent, { static: false }) documentForm: DocumentFormComponent;
   formId;
   form: any;
   collectionId;

@@ -21,7 +21,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   @Input() filterBy = '';
   @Output() rowSelect = new EventEmitter<string>();
 
-  @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
+  @ViewChild('scientificName', { static: true }) scientificNameTpl: TemplateRef<any>;
 
   loading = true;
 

@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { SearchQuery } from './search-query.model';
-import { UserService } from '../shared/service/user.service';
-import { FooterService } from '../shared/service/footer.service';
+import { SearchQueryService } from './search-query.service';
+import { ObservationFacade } from './observation.facade';
+import { tap } from 'rxjs/operators';
+import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-observation',
@@ -16,35 +17,36 @@ import { FooterService } from '../shared/service/footer.service';
       z-index: auto;
     }
   `],
-  providers: [SearchQuery],
+  providers: [SearchQueryService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationComponent implements OnInit, OnDestroy {
-  public tab: string;
-  public page: number;
-  public options: any;
-  public data: any;
+  public activeTab$: Observable<string>;
 
   private subParam: Subscription;
   private subQuery: Subscription;
 
-  constructor(private route: ActivatedRoute,
-              private footerService: FooterService,
-              private userService: UserService,
-              private cd: ChangeDetectorRef,
-              public searchQuery: SearchQuery) {
+  constructor(
+    private observationFacade: ObservationFacade,
+    private route: ActivatedRoute,
+    private searchQuery: SearchQueryService
+  ) {
   }
 
   ngOnInit() {
-    this.footerService.footerVisible = false;
+    this.observationFacade.hideFooter();
+    this.activeTab$ = this.observationFacade.activeTab$;
     this.subParam = this.route.params.subscribe(value => {
-      this.tab = value['tab'] || 'map';
+      this.observationFacade.activeTab(value['tab'] || 'map');
     });
-    this.updateQuery(this.route.snapshot.queryParams);
+    this.subQuery = this.observationFacade.query$.pipe(
+      tap(query => this.updateUrlQueryParamsFromQuery(query))
+    ).subscribe();
+    this.updateQueryFromQueryParams(this.route.snapshot.queryParams);
   }
 
   ngOnDestroy() {
-    this.footerService.footerVisible = true;
+    this.observationFacade.showFooter();
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
@@ -57,25 +59,23 @@ export class ObservationComponent implements OnInit, OnDestroy {
   onPopState() {
     // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
     setTimeout(() => {
-      this.updateQuery(this.route.snapshot.queryParams);
-      this.cd.markForCheck();
+      this.updateQueryFromQueryParams(this.route.snapshot.queryParams);
     });
   }
 
-  private updateQuery(params) {
-    this.searchQuery.setQueryFromQueryObject(params);
-    if (params['target']) {
-      this.searchQuery.query.target = [params['target']];
+  private updateUrlQueryParamsFromQuery(query: WarehouseQueryInterface) {
+    this.searchQuery.updateUrl(query, [
+      'selected',
+      'pageSize',
+      'page'
+    ]);
+  }
+
+  private updateQueryFromQueryParams(queryParams) {
+    const query = this.searchQuery.getQueryFromUrlQueryParams(queryParams);
+    if (queryParams['target']) {
+      query.target = [queryParams['target']];
     }
-    if (this.searchQuery.query.editorPersonToken === 'true') {
-      this.searchQuery.query.editorPersonToken = this.userService.getToken();
-    }
-    if (this.searchQuery.query.observerPersonToken === 'true') {
-      this.searchQuery.query.observerPersonToken = this.userService.getToken();
-    }
-    if (this.searchQuery.query.editorOrObserverPersonToken === 'true') {
-      this.searchQuery.query.editorOrObserverPersonToken = this.userService.getToken();
-    }
-    this.searchQuery.queryUpdate({formSubmit: true});
+    this.observationFacade.updateQuery(query);
   }
 }

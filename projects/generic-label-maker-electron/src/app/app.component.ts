@@ -68,8 +68,8 @@ export class AppComponent implements OnInit {
   @LocalStorage('setup', NEW_SETUP) setup: ISetup;
   @SessionStorage('data', []) data: object[];
 
-  @ViewChild('notebookImport') notebookImport;
-  @ViewChild('notebookImportActions') notebookImportActions;
+  @ViewChild('notebookImport', { static: false }) notebookImport;
+  @ViewChild('notebookImportActions', { static: false }) notebookImportActions;
 
   availableFields$: Observable<ILabelField[]>;
   newAvailableFields$: Observable<ILabelField[]>;

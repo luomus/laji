@@ -9,7 +9,7 @@ import { Document } from '../../../shared/model/Document';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentFormComponent {
-  @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
+  @ViewChild(LajiFormComponent, { static: false }) lajiForm: LajiFormComponent;
   @Input() formId: string;
   @Input() documentId: string;
   @Input() showHeader = true;

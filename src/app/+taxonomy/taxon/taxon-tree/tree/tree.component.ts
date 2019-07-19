@@ -27,7 +27,7 @@ export class TreeComponent implements OnChanges, OnDestroy {
   @Input() skipParams: TreeSkipParameter[];
   @Input() activeId: string;
 
-  @ContentChild('label') labelTpl: TemplateRef<any>;
+  @ContentChild('label', {static: false}) labelTpl: TemplateRef<any>;
 
   tree: Tree;
 

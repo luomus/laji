@@ -43,7 +43,7 @@ import { Annotation } from '../../../shared/model/Annotation';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestroy, ComponentCanDeactivate {
-  @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
+  @ViewChild(LajiFormComponent, { static: false }) lajiForm: LajiFormComponent;
   @Input() formId: string;
   @Input() documentId: string;
   @Input() showHeader = true;

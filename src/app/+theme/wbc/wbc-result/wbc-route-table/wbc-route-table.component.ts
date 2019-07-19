@@ -16,8 +16,8 @@ export class WbcRouteTableComponent implements OnInit {
 
   @LocalStorage() showWbcRouteTableInfo;
 
-  @ViewChild('textOrTranslationKey') textOrTranslationKeyTpl: TemplateRef<any>;
-  @ViewChild('numberOrDocumentIds') numberOrDocumentIdsTpl: TemplateRef<any>;
+  @ViewChild('textOrTranslationKey', { static: true }) textOrTranslationKeyTpl: TemplateRef<any>;
+  @ViewChild('numberOrDocumentIds', { static: true }) numberOrDocumentIdsTpl: TemplateRef<any>;
 
   @Output() documentClick = new EventEmitter<string>();
 

@@ -136,6 +136,8 @@ export interface WarehouseQueryInterface {
   dayOfYearEnd?: number;
   keyword?: Array<string>;
   collectionId?: Array<string>;
+  collectionIdNot?: Array<string>;
+  wild?: Array<string>;
   coordinateAccuracyMax?: number;
   sourceId?: Array<string>;
   superRecordBasis?: Array<string>;
@@ -144,6 +146,7 @@ export interface WarehouseQueryInterface {
   taxonReliability?: Array<string>;
   sex?: Array<string>;
   documentId?: Array<string>;
+  gatheringId?: Array<string>;
   unitId?: Array<string>;
   individualId?: Array<string>;
   individualCountMin?: number;
@@ -189,4 +192,5 @@ export interface WarehouseQueryInterface {
   _coordinatesIntersection?: number;
   primaryHabitat?: Array<string>;
   anyHabitat?: Array<string>;
+  formId?: string;
 }

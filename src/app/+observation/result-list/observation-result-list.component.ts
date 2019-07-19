@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { SearchQuery } from '../search-query.model';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { UserService } from '../../shared/service/user.service';
+import { ISettingResultList } from '../../shared/service/user.service';
+import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 
 const DEFAULT_PAGE_SIZE = 100;
 
@@ -13,7 +12,7 @@ const DEFAULT_PAGE_SIZE = 100;
   styleUrls: ['./observation-result-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationResultListComponent implements OnInit {
+export class ObservationResultListComponent {
   private static readonly defaultFields: string[] = [
     'unit.taxon',
     'unit.abundanceString',
@@ -26,53 +25,47 @@ export class ObservationResultListComponent implements OnInit {
     'gathering.team'
   ];
 
-  @ViewChild('documentModal') public modal: ModalDirective;
+  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
+
+  @Output() settingsChange = new EventEmitter<ISettingResultList>();
 
   selectedFields = ObservationResultListComponent.defaultFields;
   pageSize: number;
   aggregateBy: string[] = [];
 
-  shownDocument = '';
-  highlightId = '';
-  documentModalVisible = false;
-
   constructor(
-    public translate: TranslateService,
-    private userService: UserService,
-    private cd: ChangeDetectorRef,
-    public searchQuery: SearchQuery
-  ) {
-  }
+    private documentViewerFacade: DocumentViewerFacade
+  ) {}
 
-  ngOnInit() {
-    this.modal.config = {animated: false};
-    this.userService.getItem<any>(UserService.SETTINGS_RESULT_LIST)
-      .subscribe(data => {
-        if (data) {
-          this.aggregateBy = data.aggregateBy;
-          this.selectedFields = data.selected || this.selectedFields;
-          this.pageSize = data.pageSize || DEFAULT_PAGE_SIZE;
-        } else {
-          this.pageSize = DEFAULT_PAGE_SIZE;
-        }
-        this.cd.markForCheck();
-      });
+  @Input()
+  set settings(settings: ISettingResultList) {
+    if (!settings) {
+      settings = {};
+    }
+    this.aggregateBy = settings.aggregateBy || [];
+    this.selectedFields = settings.selected || this.selectedFields;
+    this.pageSize = settings.pageSize || DEFAULT_PAGE_SIZE;
   }
 
   showDocument(event) {
     const row = event.row || {};
+    const query = this.query;
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
-      this.highlightId = row.unit.unitId;
-      this.shownDocument = row.document.documentId;
-      this.modal.show();
+      this.documentViewerFacade.showDocumentID({
+        document: row.document.documentId,
+        highlight: row.unit.unitId,
+        own: query && (!!query.observerPersonToken || !!query.editorPersonToken || !!query.editorOrObserverPersonToken)
+      });
     }
   }
 
   setPageSize(size: number) {
-    this.pageSize = size;
-    this.saveSettings();
+    if (size !== this.pageSize) {
+      this.pageSize = size;
+      this.saveSettings();
+    }
   }
 
   setSelectedFields(fields: string[]) {
@@ -86,11 +79,11 @@ export class ObservationResultListComponent implements OnInit {
   }
 
   private saveSettings() {
-    this.userService.setItem(UserService.SETTINGS_RESULT_LIST, {
+    this.settingsChange.emit({
       aggregateBy: this.aggregateBy,
       selected: this.selectedFields,
       pageSize: this.pageSize
-    }).subscribe(() => {}, () => {});
+    });
   }
 
 }

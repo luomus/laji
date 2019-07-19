@@ -9,8 +9,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   [options]="options"
   [plugins]="chartType"
   [legend]="legend"
-  [chartType]="chartType">
-  </canvas>`
+  [chartType]="chartType"
+  (chartClick)="chartClick.emit($event)"
+  >
+  </canvas>`,
+  styles: [':host { display:block; height:350px }']
 })
 export class LajiBarComponent {
   @Input() datasets: any;
@@ -19,5 +22,5 @@ export class LajiBarComponent {
   @Input() chartType: any;
   @Input() legend: any;
 
-  @Output() chartClick = new EventEmitter();
+  @Output() chartClick = new EventEmitter<any>();
 }

@@ -53,7 +53,7 @@ export class LabelPrintComponent implements OnChanges {
   @Output() pressed = new EventEmitter<void>();
   @Output() html = new EventEmitter<string>();
 
-  @ViewChild('pagesContainer') public pageContainer: ElementRef<HTMLDivElement>;
+  @ViewChild('pagesContainer', { static: true }) public pageContainer: ElementRef<HTMLDivElement>;
 
   pages: object[][] = [];
   pageLayout: IPageLayout;
