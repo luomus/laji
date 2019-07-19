@@ -22,21 +22,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;
-
-  monthChartData: any[];
-  dayChartDataByMonth = {};
-
-  dayChartModalVisible = false;
-  activeMonth: number;
-
-
-  monthFormatting: (number) => string = this.getMonthLabel.bind(this);
-
-  private getDataSub: Subscription;
-
-  @Output() hasData = new EventEmitter<boolean>();
-
-  public barChartOptions: any = {
+  @Input() barChartPlugins = [pluginDataLabels];
+  @Input() barChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
     tooltips: {
@@ -50,10 +37,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
         gridLines: {
           color: 'rgba(171,171,171,1)',
           lineWidth: 1
-        },
-          ticks: {
-              callback: this.getMonthLabel.bind(this)
-          }
+        }
       }],
       yAxes: [{
         ticks: {
@@ -72,11 +56,21 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
     }
   };
 
-  public barChartLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-  public barChartType = 'bar';
-  public barLegend = true;
-  public barChartPlugins = [pluginDataLabels];
+  monthChartData: any[];
+  dayChartDataByMonth = {};
 
+  dayChartModalVisible = false;
+  activeMonth: number;
+
+
+  monthFormatting: (number) => string = this.getMonthLabel.bind(this);
+
+  private getDataSub: Subscription;
+
+  @Output() hasData = new EventEmitter<boolean>();
+
+  public barChartLabels: any = [];
+  public barChartLabelsDay: any;
   public barChartData: any[];
   public daybarChartData: any[][];
 
@@ -115,7 +109,17 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
   }
 
   chartClicked(event) {
-    console.log('ok');
+    if (event.active.length > 0) {
+      this.barChartLabelsDay = [];
+      const chart = event.active[0]._chart;
+      const elementActive = chart.getElementAtEvent(event.event);
+        if ( elementActive.length > 0) {
+          this.activeMonth = elementActive[0]._index;
+          this.initLabelsDayChartData(this.activeMonth);
+          this.dayChartModalVisible = true;
+          this.modal.show();
+        }
+    }
   }
 
   onHideDayChart() {
@@ -154,7 +158,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
       return of([]);
     }
 
-    // this.monthChartData = this.initMonthChartData();
     this.daybarChartData = this.initDayChartDataDay();
     const labelObservables = [];
 
@@ -164,14 +167,9 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
       const lifeStage = r.aggregateBy['unit.lifeStage'];
       const count = r.count;
 
-      // this.addDataToSeries(lifeStage, count, this.monthChartData[month - 1].series, labelObservables);
       this.addDataToSeriesGiorgio(lifeStage, count, month, labelObservables);
 
       if (day) {
-        /*if (!this.dayChartDataByMonth[month]) {
-          this.dayChartDataByMonth[month] = this.initDayChartData(month);
-        }*/
-        // this.addDataToSeries(lifeStage, count, this.dayChartDataByMonth[month][day - 1].series, labelObservables);
         this.addDataDayToSeriesGiorgio (lifeStage, count, month, day, labelObservables);
       }
     });
@@ -213,7 +211,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
         data: values
       });
     }
-    this.daybarChartData[month - 1][0].data[day] += count;
+    this.daybarChartData[month - 1][0].data[day - 1] += count;
 
     if (lifeStage) {
       const values = this.initDayBarChartData(month);
@@ -230,72 +228,32 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
         );
       }
 
-      this.daybarChartData[month - 1][index].data[day] += count;
+      this.daybarChartData[month - 1][index].data[day - 1] += count;
     }
   }
-
-  /*private addDataToSeries(lifeStage: string, count: number, series: any[], labelObservables: any[]) {
-    if (series.length < 1) {
-      series.push({
-        name: this.translate.instant('all'),
-        value: 0
-      });
-    }
-    series[0].value += count;
-
-    if (lifeStage) {
-      let index = series.findIndex(s => s.name === lifeStage);
-      if (index === -1) {
-        index = series.length;
-        series.push({name: lifeStage, value: 0});
-        labelObservables.push(
-          this.getLabel(lifeStage).pipe(
-            tap(label => {
-              series[index].name = label;
-            })
-          )
-        );
-      }
-      series[index].value += count;
-    }
-  }*/
-
-  /*private initMonthChartData(): any[] {
-    const data = [];
-    for (let i = 1; i < 13; i++) {
-      data.push({
-        name: i,
-        series: []
-      });
-    }
-    return data;
-  }*/
-
-  /*private initDayChartData(month: number): any[] {
-    const data = [];
-    for (let i = 1; i < this.getNbrOfDaysInMonth(month) + 1; i++) {
-      data.push({
-        name: i,
-        series: []
-      });
-    }
-    return data;
-  }*/
 
   private initDayChartDataDay(): any[] {
     const data = [];
     for (let i = 1; i < 13; i++) {
       data.push([]);
+      this.barChartLabels.push(this.getMonthLabel(i));
     }
     return data;
   }
 
   private initDayBarChartData(month: number): any[] {
     const days = [];
-    for (let i = 1; i < this.getNbrOfDaysInMonth(month) + 1; i++) {
+    for (let i = 0; i < this.getNbrOfDaysInMonth(month); i++) {
       days[i] = 0;
     }
     return days;
+  }
+
+  private initLabelsDayChartData(month: number): any[] {
+    for (let i = 1; i < this.getNbrOfDaysInMonth(month + 1) + 1; i++) {
+      this.barChartLabelsDay.push(i);
+    }
+    return this.barChartLabelsDay;
   }
 
   private getLabel(warehouseKey: string): Observable<string> {
@@ -318,14 +276,14 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
     return new Date(2000, month, 0).getDate();
   }
 
-  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
+  public arrayMax(arr: any[]): number {
+    let sum, avg = 0;
+    if (arr.length) {
+        sum = arr.reduce(function(a, b) { return a + b; });
+        avg = sum / arr.length;
+    }
 
-  public arrayMax(arr) {
-    return arr.reduce(function (p, v) {
-      return ( p > v ? p : v );
-    });
+    return avg;
   }
 
 }
