@@ -2,6 +2,10 @@ import {Component, OnChanges, OnDestroy, Input, Output, ChangeDetectorRef, Event
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label } from 'ng2-charts';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-observation-year-chart',
@@ -11,20 +15,57 @@ import { Subscription } from 'rxjs';
 })
 export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   @Input() query: any;
-  data: any[];
-  newData: any[] = [{data: [], label: 'A'}];
+  @Input() barChartPlugins = [pluginDataLabels];
+  @Input() barChartOptions: any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    tooltips: {
+     enabled: true,
+     mode: 'index',
+     axis: 'x',
+     position: 'nearest'
+   },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          color: 'rgba(171,171,171,1)',
+          lineWidth: 1
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        },
+        gridLines: {
+          color: 'rgba(171,171,171,1)',
+          lineWidth: 0.5
+        }
+      }]
+    },
+    plugins: {
+      datalabels: {
+        display: false
+      },
+    }
+  };
+
+  newData: any[] = [{data: [], label: this.translate.instant('all')}];
   splitIdx = 0;
 
-  private allData: any[];
   private allSubData: any[];
   private getDataSub: Subscription;
   private allDataNew: any[];
+  private barChartLabels: any[];
+  private subBarChartLabels: any[];
+  private allBarChartsLabel: any[];
+
 
   @Output() hasData = new EventEmitter<boolean>();
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private translate: TranslateService,
   ) { }
 
   ngOnChanges() {
@@ -43,7 +84,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       this.getDataSub.unsubscribe();
     }
 
-    this.data = undefined;
     this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
       this.query,
       ['gathering.conversions.year'],
@@ -57,9 +97,12 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
     ).subscribe(res => {
       this.splitIdx = 0;
 
-      this.allData = [];
       this.allSubData = [];
-      this.allDataNew = [{data: [], label: 'A' }];
+      this.barChartLabels = [];
+      this.subBarChartLabels = [];
+      this.allBarChartsLabel = [];
+
+      this.allDataNew = [{data: [], label: this.translate.instant('all') }];
       let prevYear: number;
       res.map(r => {
         const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
@@ -67,7 +110,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
 
         if (prevYear) {
           for (let i = prevYear + 1; i < year; i++) {
-            this.allData.push({name: i, value: 0});
+            this.subBarChartLabels.push(i);
             this.allSubData.push(0);
             if (i < 1970) {
               this.splitIdx++;
@@ -75,22 +118,24 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
           }
         }
 
-        this.allData.push({name: year, value: count});
+
         this.allSubData.push(count);
+        this.subBarChartLabels.push(year);
         if (year < 1970) {
           this.splitIdx++;
         }
 
         prevYear = year;
       });
-      this.data = this.allData.slice(this.splitIdx, this.allData.length);
-
       this.allDataNew[0].data = this.allSubData;
 
       this.allSubData = this.allSubData.slice(this.splitIdx, this.allSubData.length);
       this.newData[0].data = this.allSubData;
+      this.allBarChartsLabel = this.subBarChartLabels;
+      this.subBarChartLabels = this.subBarChartLabels.slice(this.splitIdx, this.subBarChartLabels.length);
+      this.barChartLabels = this.subBarChartLabels;
 
-      this.hasData.emit(this.allData.length > 0);
+      this.hasData.emit(this.allSubData.length > 0);
       // check emit
       this.cd.markForCheck();
     });
@@ -105,18 +150,12 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   }
 
   toggleShowAllData() {
-    if (this.data.length < this.allData.length) {
-      this.data = this.allData;
-    } else {
-      this.data = this.allData.slice(this.splitIdx, this.allData.length);
-    }
-  }
-
-  toggleShowAllDataGiorgio() {
     if (this.newData[0].data.length < this.allDataNew[0].data.length) {
       this.newData[0].data = this.allDataNew[0].data;
+      this.barChartLabels = this.allBarChartsLabel;
     } else {
-      this.newData[0].data = this.allData.slice(this.splitIdx, this.allDataNew[0].data.length);
+      this.newData[0].data = this.allDataNew[0].data.slice(this.splitIdx, this.allDataNew[0].data.length);
+      this.barChartLabels = this.allBarChartsLabel.slice(this.splitIdx, this.allBarChartsLabel.length);
     }
   }
 }
