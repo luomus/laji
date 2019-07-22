@@ -1265,6 +1265,7 @@
   "save": "Spara",
   "cancel": "Avbryt",
   "close": "Stäng",
+  "TimeoutError": "Server didn't respond in time. Please check if it was saved successfully despite of this!",
   "navigation.lolife": "LOLIFE",
   "theme.lolife.intro": "Flygekorre-Life",
   "theme.lolife.places": "Spela in folkräkningsåtgärder",

@@ -1306,6 +1306,7 @@
   "save": "Tallenna",
   "cancel": "Peruuta",
   "close": "Sulje",
+  "TimeoutError": "Palvelin ei vastannut ajoissa. Tarkista onko tallennus kuitenkin onnistunut!",
   "navigation.lolife": "LOLIFE",
   "theme.lolife.intro": "Liito-Orava-Life",
   "theme.lolife.places": "Kirjaa seurantatietoja",

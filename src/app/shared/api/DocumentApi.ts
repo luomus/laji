@@ -62,7 +62,7 @@ export class DocumentApi {
       queryParameters['personToken'] = userToken;
     }
 
-    return this.http.post<Document>(path, data, {params: queryParameters});
+    return this.http.post<Document>(path, data, {params: queryParameters, headers: {timeout: '120000'}});
   }
 
   /**
@@ -153,7 +153,7 @@ export class DocumentApi {
       queryParameters['personToken'] = userToken;
     }
 
-    return this.http.put<Document>(path, data, {params: queryParameters});
+    return this.http.put<Document>(path, data, {params: queryParameters, headers: {timeout: '120000'}});
   }
 
   /**
@@ -181,7 +181,7 @@ export class DocumentApi {
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
-    return this.http.post(path, data, {params: queryParameters, observe: 'response'}).pipe(
+    return this.http.post(path, data, {params: queryParameters, observe: 'response', headers: {timeout: '60000'}}).pipe(
       map((response: HttpResponse<any>) => {
         if (response.status === 204) {
           return undefined;
@@ -205,6 +205,6 @@ export class DocumentApi {
     queryParameters['personToken'] = personToken;
 
 
-    return this.http.delete(path, {params: queryParameters});
+    return this.http.delete(path, {params: queryParameters, headers: {timeout: '60000'}});
   }
 }
