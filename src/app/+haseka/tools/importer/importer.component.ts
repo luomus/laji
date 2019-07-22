@@ -12,10 +12,10 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { LocalStorage } from 'ngx-webstorage';
+import { LocalStorage, SessionStorage } from 'ngx-webstorage';
 import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../model/import-table-column';
-import { catchError, concatMap, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { ExcelToolService } from '../service/excel-tool.service';
 
 export type States
@@ -328,7 +328,9 @@ export class ImporterComponent implements OnInit {
             ))
         )),
         tap(() => {
-          this.current++;
+          if (this.current < this.total) {
+            this.current++;
+          }
           this.cdr.markForCheck();
         })
       )))
@@ -378,7 +380,9 @@ export class ImporterComponent implements OnInit {
           ))
         )),
         tap(() => {
-          this.current++;
+          if (this.current < this.total) {
+            this.current++;
+          }
           this.cdr.markForCheck();
         })
       )))
@@ -414,11 +418,10 @@ export class ImporterComponent implements OnInit {
               .subscribe(msg => this.toastsService.showSuccess(msg));
           } else {
             if (hadSuccess) {
-              this.partiallyUploadedFiles = [...this.partiallyUploadedFiles, this.hash];
+              this.partiallyUploadedFiles = this.partiallyUploadedFiles ? [...this.partiallyUploadedFiles, this.hash] : [this.hash];
             }
             this.status = 'doneWithErrors';
-            this.translateService.get('excel.import.failed')
-              .subscribe(msg => this.toastsService.showError(msg));
+            this.toastsService.showError(this.translateService.instant('excel.import.failed'));
           }
           this.cdr.markForCheck();
         }
@@ -496,6 +499,9 @@ export class ImporterComponent implements OnInit {
       this.mappingService.clearUserValueMapping();
       this.colMap = JSON.parse(JSON.stringify(this.origColMap));
       this.valueMap = {};
+      if (status === 'empty' && (this.status === 'doneOk' || this.status === 'doneWithErrors')) {
+        this.filename = '';
+      }
     }
     this.hasUserMapping = this.mappingService.hasUserMapping();
     this.status = status;
