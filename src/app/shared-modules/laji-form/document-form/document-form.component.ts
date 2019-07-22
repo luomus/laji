@@ -333,7 +333,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.formService
       .load(this.formId, this.translate.currentLang, this.documentId).pipe(
       switchMap<any, Observable<LoadResponse|boolean>>((data) => {
-        if (data.formData._isTemplate && !this.formService.isTmpId(this.documentId)) {
+        if (data.formData._isTemplate && !FormService.isTmpId(this.documentId)) {
           return this.formService.store(data.formData).pipe(
             tap(() => {
               this.tmpLoad.emit({
@@ -390,7 +390,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             this.accessDenied.emit(data.collectionID);
             return;
           }
-          if (this.formService.isTmpId(this.documentId)) {
+          if (FormService.isTmpId(this.documentId)) {
             delete data.formData._isTemplate;
             this.isEdit = false;
             data.formData.id = undefined;
@@ -419,7 +419,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           });
         },
         err => {
-          this.formService.isTmpId(this.documentId) ?
+          FormService.isTmpId(this.documentId) ?
             this.error.emit(true) :
             this.translate
               .get(err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError', {documentId: this.documentId})
@@ -431,23 +431,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       );
   }
 
-  private errorsToPath(err, obj = {}, path = '$') {
-    Object.keys(err).forEach(key => {
-      if (key === '__errors' || key === '__error') {
-        err[key].forEach(message => {
-          if (!obj[path]) {
-            obj[path] = [];
-          }
-          obj[path].push(message);
-        });
-      } else {
-        const currentPath = path + (isNaN(+key) ? '.' + key : '[' + key + ']');
-        this.errorsToPath(err[key], obj, currentPath);
-      }
-    });
-    return obj;
-  }
-
   private getMessage(type, defaultValue) {
     if (this.form && this.form.options && this.form.options.messages && this.form.options.messages[type]) {
       return this.form.options.messages[type];
@@ -456,7 +439,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   private fetchAnnotations(documentID, page = 1, results = []): Observable<Annotation[]> {
-    return this.formService.isTmpId(documentID) ?
+    return FormService.isTmpId(documentID) ?
       ObservableOf([]) :
       this.lajiApi.getList(
         LajiApi.Endpoints.annotations,

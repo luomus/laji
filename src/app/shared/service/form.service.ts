@@ -23,6 +23,8 @@ export interface LoadResponse extends FormList {
 @Injectable({providedIn: 'root'})
 export class FormService {
 
+  private static readonly tmpNs = 'T';
+
   readonly forms = {
     [environment.nafiForm]: '/theme/nafi/form',
     [environment.wbcForm]: '/theme/talvilintulaskenta/form',
@@ -41,13 +43,12 @@ export class FormService {
 
   @LocalStorage() private formDataStorage;
   @LocalStorage() private tmpDocId;
-  private tmpNs = 'T';
   private currentData: any;
   private currentKey: string;
   private currentLang: string;
-  private formCache: {[key: string]: any} = {};
-  private jsonFormCache: {[key: string]: any} = {};
-  private formPending: {[key: string]: Observable<any>} = {};
+  private formCache: {[key: string]: Form.SchemaForm} = {};
+  private jsonFormCache: {[key: string]: Form.SchemaForm} = {};
+  private formPending: {[key: string]: Observable<Form.SchemaForm>} = {};
   private allForms: any[];
 
   private _populate: any;
@@ -66,8 +67,12 @@ export class FormService {
     }
   }
 
-  static hasFeature(form: FormList, feature: Form.Feature) {
+  static hasFeature(form: Form.List, feature: Form.Feature) {
     return form && Array.isArray(form.features) && form.features.indexOf(feature) !== -1;
+  }
+
+  static isTmpId(id: string) {
+    return id && id.indexOf(FormService.tmpNs + ':') === 0;
   }
 
   hasNamedPlace(): boolean {
@@ -125,7 +130,7 @@ export class FormService {
     return this.getUserId().pipe(
       switchMap(userID => {
         const tmpDoc = this.getTmpDoc(userID, id);
-        if (this.isTmpId(id)) {
+        if (FormService.isTmpId(id)) {
           return ObservableOf(tmpDoc._hasChanges);
         }
 
@@ -159,10 +164,6 @@ export class FormService {
     return this.getTmpId(this.tmpDocId);
   }
 
-  isTmpId(id: string) {
-    return id && id.indexOf(this.tmpNs + ':') === 0;
-  }
-
   getAllTempDocuments(): Observable<Document[]> {
     return this.getUserId().pipe(
       switchMap(userID => {
@@ -171,7 +172,7 @@ export class FormService {
         }
         return ObservableOf(
           Object.keys(this.formDataStorage[userID])
-            .filter((key) => this.isTmpId(key))
+            .filter((key) => FormService.isTmpId(key))
             .reduce((array, key) => {
               const document = this.getTmpDoc(userID, key);
               if (!document._hasChanges) {
@@ -201,7 +202,7 @@ export class FormService {
         share()
       );
     }
-    return Observable.create((observer: Observer<string>) => {
+    return Observable.create((observer: Observer<Form.SchemaForm>) => {
       this.formPending[formId].subscribe(
         data => {
           observer.next(data);
@@ -236,7 +237,7 @@ export class FormService {
    * @param documentId document id to be loaded
    * @returns Observable<any>
    */
-  load(formId: string, lang: string, documentId?: string): Observable<LoadResponse> {
+  load(formId: string, lang: string, documentId?: string) {
     this.setLang(lang);
     const form$ = this.formCache[formId] ?
       ObservableOf(this.formCache[formId]) :
@@ -247,7 +248,7 @@ export class FormService {
     const data$ = documentId ?
       this.getUserId().pipe(switchMap(userID => {
         const tmpDoc = this.getTmpDoc(userID, documentId);
-        return this.isTmpId(documentId) && tmpDoc ?
+        return FormService.isTmpId(documentId) && tmpDoc ?
           ObservableOf(tmpDoc) :
           this.documentApi.findById(documentId, this.userService.getToken()).pipe(
             switchMap((document: Document) => {
@@ -264,23 +265,6 @@ export class FormService {
       })) :
       this.userService.getDefaultFormData().pipe(
         tap(data => this.setCurrentData(data)));
-
-    return data$.pipe(
-      switchMap(data => {
-        return form$.pipe(
-          combineLatest(
-            this.getDefaultData(formId, documentId, data),
-            (form, current) => {
-              form.formData = current;
-              form.currentId = this.currentKey;
-              if (!documentId && form.prepopulatedDocument) {
-                form.formData = merge(form.formData || {}, form.prepopulatedDocument, { arrayMerge: Util.arrayCombineMerge });
-              }
-              this.currentData = Util.clone(form.formData);
-              return form;
-            }
-          ));
-      }));
   }
 
   getDefaultData(formId: string, documentId?: string, current?: any): Observable<any> {
@@ -370,7 +354,7 @@ export class FormService {
   }
 
   private getTmpId(num: number) {
-    return this.tmpNs + ':' + num;
+    return FormService.tmpNs + ':' + num;
   }
 
   private setLang(lang: string) {

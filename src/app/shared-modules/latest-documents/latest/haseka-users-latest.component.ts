@@ -85,7 +85,7 @@ export class UsersLatestComponent implements OnChanges {
   discardDocument(documents, i) {
     const id = documents[i].id;
     this.formService.discard(id);
-    if (this.formService.isTmpId(id)) {
+    if (FormService.isTmpId(id)) {
       documents.splice(i, 1);
     } else {
       this.documentApi.findById(id, this.userToken)

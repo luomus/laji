@@ -38,7 +38,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   documentForm;
   placeForm: any;
-  prepopulatedNamedPlace = {};
+  prepopulatedNamedPlace: NamedPlace = {};
 
   namedPlaces: NamedPlace[];
   namedPlacesEvents = new EventEmitter;
@@ -147,7 +147,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           this.prepopulatedNamedPlace[area] = undefined;
         }
       });
-      this.prepopulatedNamedPlace['collectionID'] = this.collectionId;
+      this.prepopulatedNamedPlace.collectionID = this.collectionId;
 
       this.setActiveNP(this.findNPIndexById(data.activeNPId));
 

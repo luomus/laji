@@ -9,7 +9,6 @@ import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { LocalDb } from '../local-db/local-db.abstract';
 import { environment } from '../../../environments/environment';
 import { WINDOW } from '@ng-toolkit/universal';
 import { PlatformService } from './platform.service';
@@ -58,7 +57,7 @@ let _state: IUserServiceState = {
 };
 
 @Injectable({providedIn: 'root'})
-export class UserService extends LocalDb {
+export class UserService {
 
   private subLogout: Subscription;
 
@@ -91,7 +90,6 @@ export class UserService extends LocalDb {
     private storage: LocalStorageService,
     @Inject(WINDOW) private window: any
   ) {
-    super('settings', platformService.isBrowser);
     this.browserService.visibility$.pipe(
       filter(visible => visible),
       mergeMap(() => this.checkLogin())
