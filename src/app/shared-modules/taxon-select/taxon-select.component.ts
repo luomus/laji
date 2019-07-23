@@ -18,7 +18,7 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
     [typeaheadOptionsLimit]="typeaheadLimit"
     [typeaheadWaitMs]="200"
     [typeaheadMinLength]="3"
-    [typeaheadFocusFirst]="!allowInvalid"
+    [typeaheadSelectFirstItem]="!allowInvalid"
     [typeaheadOptionField]="'value'"
     (typeaheadLoading)="changeTypeaheadLoading($event)"
     (typeaheadOnSelect)="onTaxonSelect($event)"

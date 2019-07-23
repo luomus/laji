@@ -18,6 +18,7 @@ import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
+import { geoJSON as LgeoJSON } from 'leaflet';
 import { map } from 'rxjs/operators';
 
 export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|
@@ -198,7 +199,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     if (this.geoJsonLayer) {
       this.geoJsonLayer.clearLayers();
     } else if (!this.geoJsonLayer) {
-      this.geoJsonLayer = L.geoJSON(undefined, {
+      this.geoJsonLayer = LgeoJSON(undefined, {
         style: function() {
           return { color: '#000000', weight: 0.3, opacity: 1, fillOpacity: 0.9 };
         }

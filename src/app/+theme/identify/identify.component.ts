@@ -1,12 +1,12 @@
 
 import {map} from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SourceService } from '../../shared/service/source.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { environment } from '../../../environments/environment.vir';
-import { ModalDirective } from 'ngx-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { Global } from '../../../environments/global';
+import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
   selector: 'laji-identify',
@@ -16,7 +16,6 @@ import { Global } from '../../../environments/global';
 })
 export class IdentifyComponent implements OnInit {
 
-  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   query: WarehouseQueryInterface;
   group: string;
   documentId: string;
@@ -27,12 +26,12 @@ export class IdentifyComponent implements OnInit {
   constructor(
     public translateService: TranslateService,
     private sourceService: SourceService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private documentViewerFacade: DocumentViewerFacade
   ) { }
 
   ngOnInit() {
     this.formId = environment.whichSpeciesForm;
-    this.modal.config = {animated: false};
     this.sourceService.getAllAsLookUp().pipe(
       map(sources => Object.keys(sources).filter((source) => source !== Global.sources.kotka)))
       .subscribe(sources => {
@@ -54,9 +53,11 @@ export class IdentifyComponent implements OnInit {
   }
 
   onImageSelect(event) {
-    this.documentId = event.documentId;
-    this.unitId = event.unitId;
-    this.modal.show();
+    this.documentViewerFacade.showDocumentID({
+      document: event.documentId,
+      highlight: event.unitId,
+      identifying: true
+    });
   }
 
 }

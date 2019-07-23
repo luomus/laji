@@ -1,16 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from '@ngx-translate/core';
+import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
   selector: 'laji-theme-observation-list',
   templateUrl: './theme-observation-list.component.html',
   styleUrls: ['./theme-observation-list.component.css']
 })
-export class ThemeObservationListComponent implements OnInit {
-
-  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
+export class ThemeObservationListComponent {
 
   @Input() query: WarehouseQueryInterface;
   @Input() height;
@@ -21,25 +19,21 @@ export class ThemeObservationListComponent implements OnInit {
 
   loading = false;
   results = {results: []};
-  shownDocument = '';
-  highlightId = '';
   current: string;
-  documentModalVisible = false;
 
   constructor(
-    public translate: TranslateService
+    public translate: TranslateService,
+    private documentViewerFacade: DocumentViewerFacade
   ) { }
-
-  ngOnInit() {
-    this.modal.config = {animated: false};
-  }
 
   showDocument(event) {
     const row = event.row || {};
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
-      this.highlightId = row.unit.unitId;
-      this.shownDocument = row.document.documentId;
-      this.modal.show();
+      this.documentViewerFacade.showDocumentID({
+        highlight: row.unit.unitId,
+        document: row.document.documentId,
+        useWorldMap: false
+      });
     }
   }
 }

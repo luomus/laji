@@ -12,7 +12,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { Util } from '../../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ValueDecoratorService } from '../../../+observation/result-list/value-decorator.sevice';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -24,6 +23,7 @@ import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../shared/service/platform.service';
+import { latLngBounds as LlatLngBounds } from 'leaflet';
 
 @Component({
   selector: 'laji-observation-map',
@@ -139,8 +139,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     if (!this.init) {
       this.init = true;
 
-      this.viewBound = L.latLngBounds;
-      this.activeBounds = L.latLngBounds;
+      this.viewBound = LlatLngBounds;
+      this.activeBounds = LlatLngBounds;
       if (!this.color) {
         this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
       }

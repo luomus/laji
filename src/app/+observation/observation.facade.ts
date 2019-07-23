@@ -41,10 +41,14 @@ const emptyQuery: WarehouseQueryInterface = {
   _coordinatesIntersection: 100
 };
 
-let _state: IObservationState = {
-  query: {...emptyQuery},
-  advanced: false,
+const _persistentState: IPersistentState = {
   showIntro: true,
+  advanced: false
+};
+
+let _state: IObservationState = {
+  ..._persistentState,
+  query: {...emptyQuery},
   filterVisible: true,
   activeTab: 'map',
   countTaxa: 0,
@@ -55,14 +59,10 @@ let _state: IObservationState = {
   settingsMap: {}
 };
 
-const _persistentState: IPersistentState = {
-  showIntro: true,
-  advanced: false
-};
-
 @Injectable()
-export class ObservationFacade implements OnDestroy {
+export class ObservationFacade {
 
+  // This value is visible in the query parameters when parameters with person token is used and the query is obscured.
   static PERSON_TOKEN = 'true';
 
   @LocalStorage('observationState', _persistentState)
@@ -81,8 +81,8 @@ export class ObservationFacade implements OnDestroy {
   countUnit$     = this.query$.pipe(switchMap((query) => this.countUnits(query)));
   countTaxa$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
   filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
-  settingsList$  = this.state$.pipe(map((state) => state.settingsList));
   settingsMap$   = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
+  settingsList$  = this.userService.getUserSetting('resultList');
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
@@ -100,7 +100,6 @@ export class ObservationFacade implements OnDestroy {
   });
 
   private hashCache: {[key: string]: string} = {};
-  private userSub: Subscription;
 
   constructor(
     private browserService: BrowserService,
@@ -111,16 +110,6 @@ export class ObservationFacade implements OnDestroy {
     private warehouseApi: WarehouseApi
   ) {
     this.updateState({..._state, ...this.persistentState});
-    this.userSub = this.userService.isLoggedIn$.pipe(
-      switchMap((loggedIn) => loggedIn ? this.userService.getUserSetting(UserService.SETTINGS_RESULT_LIST) : of({})),
-      tap(settings => this.updateState({..._state, settingsList: settings})),
-    ).subscribe();
-  }
-
-  ngOnDestroy(): void {
-    if (this.userSub) {
-      this.userSub.unsubscribe();
-    }
   }
 
   activeTab(tab: string) {
@@ -188,7 +177,7 @@ export class ObservationFacade implements OnDestroy {
   }
 
   updateListSettings(settings: ISettingResultList) {
-    this.userService.setUserSetting(UserService.SETTINGS_RESULT_LIST, settings);
+    this.userService.setUserSetting('resultList', settings);
   }
 
   showFooter() {
@@ -220,7 +209,7 @@ export class ObservationFacade implements OnDestroy {
       catchError((e) => of(0)),
       distinctUntilChanged(),
       tap((cnt) => this.updateState({..._state, [loadingKey]: false, [countKey]: cnt})),
-      startWith(_state[countKey]),
+      startWith(''),
       share()
     );
   }

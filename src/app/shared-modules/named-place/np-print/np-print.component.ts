@@ -1,5 +1,5 @@
 
-import {startWith,  catchError, map, switchMap } from 'rxjs/operators';
+import { startWith, catchError, map, switchMap, take } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as FileSaver from 'file-saver';
@@ -42,7 +42,7 @@ export class NpPrintComponent implements OnInit, OnDestroy {
  ngOnInit() {
     this.footerService.footerVisible = false;
     this.subData = ObservableCombineLatest(
-      this.userService.getUser(),
+      this.userService.user$.pipe(take(1)),
       this.route.params,
       this.translate.onLangChange.pipe(
         startWith({lang: this.translate.currentLang})))

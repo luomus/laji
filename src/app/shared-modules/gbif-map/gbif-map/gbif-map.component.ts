@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {Taxonomy} from '../../../shared/model/Taxonomy';
+import { tileLayer as LtileLayer } from 'leaflet';
 
 @Component({
   selector: 'laji-gbif-map',
@@ -104,7 +105,7 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
         )
         .subscribe(key => {
           if (key) {
-            this.layer = L.tileLayer(
+            this.layer = LtileLayer(
               this.layerUrl + key,
               {
                 zIndex: 1000,

@@ -75,8 +75,10 @@ export class FormService {
   }
 
   getUserId(): Observable<string> {
-    return this.userService.getUser().pipe(
-      map(person => person.id));
+    return this.userService.user$.pipe(
+      take(1),
+      map(person => person.id)
+    );
   }
 
   discard(id?: string): void {

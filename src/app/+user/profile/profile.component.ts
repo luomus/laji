@@ -1,5 +1,5 @@
 
-import {catchError,  concatMap, map, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, take, tap } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
@@ -52,7 +52,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subProfile = this.route.params.pipe(
       tap(() => this.loading = true),
       map(params => params['userId']),
-      concatMap((id) => this.userService.getUser().pipe(
+      concatMap((id) => this.userService.user$.pipe(
+        take(1),
         map(user => ({id: id, currentUser: user}))
       )),
       concatMap(data => {
@@ -97,7 +98,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   getCurrentUser() {
-    return this.userService.getUser();
+    return this.userService.user$.pipe(take(1));
   }
 
   toggleEditing() {

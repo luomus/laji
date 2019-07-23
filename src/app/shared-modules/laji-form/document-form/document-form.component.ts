@@ -1,4 +1,4 @@
-import { debounceTime, filter, throttleTime, distinctUntilChanged, tap, switchMap,  catchError, map, mergeMap } from 'rxjs/operators';
+import { debounceTime, filter, throttleTime, distinctUntilChanged, tap, switchMap, catchError, map, mergeMap, take } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -308,7 +308,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         this.readonly = false;
         return observer.next(this.readonly);
       }
-      this.userService.getUser().subscribe(user => {
+      this.userService.user$.pipe(take(1)).subscribe(user => {
         if (formData.id && formData.creator !== user.id && (!formData.editors || formData.editors.indexOf(user.id) === -1)) {
           this.readonly = 'haseka.form.readonly';
         } else {

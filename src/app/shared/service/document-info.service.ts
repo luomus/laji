@@ -78,15 +78,15 @@ export class DocumentInfoService {
   }
 
   public static isEmptyUnit(unit: Units, form: any) {
-    if (form.features && (
+    if (form && Array.isArray(form.features) && (
         form.features.indexOf('MHL.featurePrepopulateWithInformalTaxonGroups') !== -1 ||
         form.features.indexOf('MHL.featureEmptyOnNoCount') !== -1
       )
     ) {
-      let result = false;
+      let result = true;
       Global.documentCountUnitProperties.forEach(key => {
         if (typeof unit[key] !== 'undefined' && unit[key] !== '' && unit[key] !== null) {
-          result = true;
+          result = false;
         }
       });
       return result;

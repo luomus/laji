@@ -1,13 +1,16 @@
 <button class="btn btn-default toggle-linked" (click)="toggleLinkedVisible()">{{ linkedVisible ? 'Piilota' : 'Näytä' }} linkitetyt</button><br>
 <table class="table">
-  <tr>
-    <th colspan="2">
-      {{ 'excel.map.value-user' | translate }}
-    </th>
-    <th colspan="2">
-      {{ 'excel.map.value-mapped' | translate }}
-    </th>
-  </tr>
+  <thead>
+    <tr>
+      <th colspan="2">
+        {{ 'excel.map.value-user' | translate }}
+      </th>
+      <th colspan="2">
+        {{ 'excel.map.value-mapped' | translate }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
   <ng-container *ngFor="let value of invalidValues">
     <tr [ngClass]="{'hidden': hiddenValues[value]}">
       <td class="value-col">
@@ -32,4 +35,5 @@
       </td>
     </tr>
   </ng-container>
+  </tbody>
 </table>

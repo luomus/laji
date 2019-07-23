@@ -1193,6 +1193,7 @@
   "save": "Save",
   "cancel": "Cancel",
   "close": "Close",
+  "TimeoutError": "Server didn't respond in time. Please check if it was saved successfully despite of this!",
   "navigation.lolife": "LOLIFE",
   "theme.lolife.intro": "Flying-Squirrel-Life",
   "theme.lolife.places": "Record census actions",

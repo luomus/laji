@@ -1,17 +1,22 @@
-import { catchError, map, mergeAll, share, switchMap, tap, toArray } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { catchError, concatMap, map, share, switchMap, tap, toArray } from 'rxjs/operators';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
-import { ModalDirective } from 'ngx-bootstrap';
 import { LocalStorage } from 'ngx-webstorage';
 import { DocumentExportService } from './service/document-export.service';
 import { DownloadEvent, LabelEvent, RowDocument, TemplateEvent } from './own-datatable/own-datatable.component';
 import { DocumentInfoService } from '../../shared/service/document-info.service';
 import * as moment from 'moment';
-import { Person } from '../../shared/model/Person';
 import { FormService } from '../../shared/service/form.service';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { Logger } from '../../shared/logger';
@@ -22,6 +27,7 @@ import { PdfLabelService } from '../../shared/service/pdf-label.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { Router } from '@angular/router';
 import { Global } from '../../../environments/global';
+import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade';
 
 interface DocumentQuery {
   year?: number;
@@ -57,12 +63,9 @@ export class OwnSubmissionsComponent implements OnChanges {
   @Input() documentViewerGatheringGeometryJSONPath: string;
   @Input() forceLocalDocument = false;
 
-  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
-
   publicity = Document.PublicityRestrictionsEnum;
 
   documents$: Observable<RowDocument[]>;
-  shownDocument$: Observable<Document>;
   loading = true;
 
   @LocalStorage('own-submissions-year', '') year: number;
@@ -70,7 +73,6 @@ export class OwnSubmissionsComponent implements OnChanges {
 
   yearInfoError: string;
   documentError: string;
-  documentModalVisible = false;
   selectedFields = 'creator,id,gatherings[*].id,publicityRestrictions,formID';
 
   selectedMap = {
@@ -106,13 +108,13 @@ export class OwnSubmissionsComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private pdfLabelService: PdfLabelService,
     private localizeRouterService: LocalizeRouterService,
-    private router: Router
+    private router: Router,
+    private documentViewerFacade: DocumentViewerFacade
   ) {
     this.selectedMap.taxon += ',' + Global.documentCountUnitProperties.map(prop => 'gatherings.units.' + prop).join(',');
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.modal.config = {animated: false};
     this.initDocuments(this.onlyTemplates);
   }
 
@@ -122,8 +124,11 @@ export class OwnSubmissionsComponent implements OnChanges {
   }
 
   onDocumentClick(docID: string) {
-    this.shownDocument$ = this.documentApi.findById(docID, this.userService.getToken());
-    this.modal.show();
+    this.documentViewerFacade.showRemoteDocument({
+      document: docID,
+      own: this.admin,
+      forceLocal: this.forceLocalDocument
+    });
   }
 
   saveTemplate(event: TemplateEvent) {
@@ -376,21 +381,11 @@ export class OwnSubmissionsComponent implements OnChanges {
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
-    return ObservableFrom(userArray.map((userId) => {
-      if (userId.indexOf('MA.') === 0) {
-        return this.userService.getUser(userId).pipe(
-          map((user: Person) => {
-            return user.fullName;
-          }));
-      }
-      return ObservableOf(userId);
-    })).pipe(
-      mergeAll(),
-      toArray()
-    ).pipe(
-      map((array) => {
-        return array.join(', ');
-      }));
+    return ObservableFrom(userArray).pipe(
+      concatMap(personId => this.userService.getPersonInfo(personId)),
+      toArray(),
+      map((array) => array.join(', '))
+    );
   }
 
   private getForm(formId: string): Observable<any> {

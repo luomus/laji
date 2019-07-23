@@ -67,13 +67,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   ) { }
 
   ngOnInit() {
-    this.metaFetch = this.userService.action$.pipe(
-      startWith('')).pipe(
-      switchMap(() => this.userService.getUser()))
-      .subscribe(person => {
-        this.personID = person.id;
-        this.cd.markForCheck();
-      });
+    this.metaFetch = this.userService.user$.subscribe(person => {
+      this.personID = person.id;
+      this.cd.markForCheck();
+    });
   }
 
   ngAfterViewInit() {

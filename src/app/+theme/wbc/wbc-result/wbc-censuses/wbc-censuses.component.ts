@@ -1,9 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { WbcResultService, SEASON } from '../wbc-result.service';
-import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
-import { IdService } from '../../../../shared/service/id.service';
-import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
+import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
   selector: 'laji-wbc-censuses',
@@ -11,8 +9,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./wbc-censuses.component.css']
 })
 export class WbcCensusesComponent implements OnInit  {
-  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
-
   active: 'list'|'map' = 'list';
 
   activeYear: number;
@@ -33,9 +29,6 @@ export class WbcCensusesComponent implements OnInit  {
     {prop: 'gathering.eventDate.begin', dir: 'desc'},
   ];
 
-  documentModalVisible = false;
-  shownDocument: string;
-
   loading = false;
   queryKey: string;
   resultSub: Subscription;
@@ -43,6 +36,7 @@ export class WbcCensusesComponent implements OnInit  {
 
   constructor(
     private resultService: WbcResultService,
+    private documentViewerFacade: DocumentViewerFacade,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -73,8 +67,10 @@ export class WbcCensusesComponent implements OnInit  {
   }
 
   openViewer(fullId: string) {
-    this.shownDocument = IdService.getId(fullId);
-    this.modal.show();
+    this.documentViewerFacade.showDocumentID({
+      document: fullId,
+      useWorldMap: false
+    });
   }
 
   setActive(newActive: 'list'|'map') {
