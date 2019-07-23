@@ -8,7 +8,6 @@ import { ConsoleLogger, HttpLogger, Logger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { ILogger } from './shared/logger/logger.interface';
 import { AppRoutingModule } from './app-routing.module';
-import { TranslateFileLoader } from './shared/translate/translate-file-loader';
 import {
   AlertModule,
   BsDropdownModule,
@@ -30,6 +29,7 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponentModule } from './shared-modules/app-component/app-component.module';
 import { TimeoutInterceptor } from './shared/interceptor/timeout.interceptor';
+import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -49,7 +49,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: TranslateFileLoader
+        useClass: LazyTranslateLoader
       }
     }),
     CarouselModule.forRoot(),
