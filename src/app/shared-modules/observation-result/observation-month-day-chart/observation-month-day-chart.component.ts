@@ -8,9 +8,13 @@ import {TranslateService} from '@ngx-translate/core';
 import {WarehouseValueMappingService} from '../../../shared/service/warehouse-value-mapping.service';
 import {TriplestoreLabelService} from '../../../shared/service/triplestore-label.service';
 import {ModalDirective} from 'ngx-bootstrap';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+
+Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+  return coordinates;
+};
 
 @Component({
   selector: 'laji-observation-month-day-chart',
@@ -97,7 +101,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
     maintainAspectRatio: false,
     tooltips: {
     enabled: true,
-    mode: 'index'
+    mode: 'index',
+    position: 'cursor'
     },
     scales: {
       xAxes: [{

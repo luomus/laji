@@ -2,11 +2,15 @@ import {Component, OnChanges, OnDestroy, Input, Output, ChangeDetectorRef, Event
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { Color } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import {TranslateService} from '@ngx-translate/core';
+
+Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+  return coordinates;
+};
 
 @Component({
   selector: 'laji-observation-year-chart',
@@ -14,6 +18,7 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./observation-year-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 
 export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   @Input() query: any;
@@ -56,7 +61,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       maintainAspectRatio: false,
       tooltips: {
       enabled: true,
-      position: 'nearest'
+      position: 'cursor'
       },
       scales: {
         xAxes: [{
