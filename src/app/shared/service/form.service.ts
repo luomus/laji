@@ -14,12 +14,6 @@ import { FormList } from '../../+haseka/form-list/haseka-form-list';
 import { Global } from '../../../environments/global';
 import { Form } from '../model/Form';
 
-
-export interface LoadResponse extends FormList {
-  formData: Document;
-  currentId: string;
-}
-
 @Injectable({providedIn: 'root'})
 export class FormService {
 
@@ -72,7 +66,7 @@ export class FormService {
   }
 
   static isTmpId(id: string) {
-    return id && id.indexOf(FormService.tmpNs + ':') === 0;
+    return !id || (id && id.indexOf(FormService.tmpNs + ':') === 0);
   }
 
   hasNamedPlace(): boolean {
@@ -108,6 +102,9 @@ export class FormService {
       .subscribe();
   }
 
+  /**
+   * @deprecated this method will be moved to laji-form-document.facade.ts
+   */
   store(document: Document): Observable<string> {
     if (this.currentKey) {
       return this.getUserId().pipe(
@@ -188,9 +185,9 @@ export class FormService {
       }));
   }
 
-  getForm(formId: string, lang: string): Observable<any> {
+  getForm(formId: string, lang: string): Observable<Form.SchemaForm> {
     if (!formId) {
-      return ObservableOf({});
+      return ObservableOf(null);
     }
     this.setLang(lang);
     if (this.formCache[formId]) {

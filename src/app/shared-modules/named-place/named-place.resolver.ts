@@ -102,11 +102,11 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
       );
   }
 
-  getPlaceForm$(id: string): Observable<any> {
+  getPlaceForm$(id: string): Observable<Form.SchemaForm> {
     if (!id) {
-      return of([]);
+      return of(null);
     }
-    return this.formService.load(id, this.lang).pipe(
+    return this.formService.getForm(id, this.lang).pipe(
       catchError((err) => {
         const msgKey = err.status === 404
           ? 'haseka.form.formNotFound'

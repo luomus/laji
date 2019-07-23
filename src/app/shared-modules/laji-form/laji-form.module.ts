@@ -9,7 +9,7 @@ import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module'
 import { LatestDocumentsModule } from '../latest-documents/latest-documents.module';
 import { AppComponentModule } from '../app-component/app-component.module';
 import { InfoPageModule } from '../info-page/info-page.module';
-import { LajiFormFacade } from '@laji-form/laji-form.facade';
+import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 
 @NgModule({
   imports: [
@@ -22,6 +22,6 @@ import { LajiFormFacade } from '@laji-form/laji-form.facade';
   ],
   declarations: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],
   exports: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],
-  providers: [LajiFormFacade]
+  providers: [LajiFormDocumentFacade]
 })
 export class LajiFormModule { }

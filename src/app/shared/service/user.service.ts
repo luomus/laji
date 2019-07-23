@@ -29,6 +29,7 @@ export interface IUserSettings {
   frontMap?: any;
   formDefault?: any;
   '_global_form_settings_'?: any;
+  [key: string]: any;
 }
 
 interface IPersistentState {
@@ -229,7 +230,7 @@ export class UserService {
 
   private doLoginState(user: Person, token) {
     this.updatePersistentState({...this.persistentState, token: user ? token : ''});
-    this.updateState({..._state, ...this.persistentState, isLoggedIn: !!user, user: user || {}});
+    this.updateState({..._state, ...this.persistentState, isLoggedIn: !!user, user: user || {}, settings: {}});
   }
 
   private doLogoutState() {
@@ -249,6 +250,6 @@ export class UserService {
   }
 
   private doUserSettingsState(id: string) {
-    this.updateState({..._state, settings: this.storage.retrieve(this.personsCacheKey(id))});
+    this.updateState({..._state, settings: this.storage.retrieve(this.personsCacheKey(id)) || {}});
   }
 }

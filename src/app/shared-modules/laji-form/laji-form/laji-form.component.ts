@@ -5,11 +5,10 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnChanges,
-  OnDestroy, OnInit,
+  OnDestroy,
   Output,
   SimpleChanges, ViewChild
 } from '@angular/core';
@@ -20,7 +19,6 @@ import LajiForm from 'laji-form/lib/laji-form';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { concatMap, map } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
-import { Subscription } from 'rxjs';
 import { Global } from '../../../../environments/global';
 import { AreaService } from '../../../shared/service/area.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,7 +31,7 @@ const GLOBAL_SETTINGS = '_global_form_settings_';
   providers: [FormApiClient],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
+export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() formData: any = {};
   @Input() settingsKey: keyof IUserSettings = 'formDefault';
   @Input() showShortcutButton = true;
@@ -47,8 +45,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   renderElem: any;
   private _block = false;
   private settings: any;
-  private municipalityEnums: any;
-  private biogeographicalProvinceEnums: any;
 
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
   @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
@@ -63,31 +59,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
               private translate: TranslateService
   ) {
     this._onError = this._onError.bind(this);
-  }
-
-  ngOnInit(): void {
-    this.areaService.getMunicipalities(this.lang).subscribe(municipalities => {
-      this.municipalityEnums = municipalities.reduce((enums, municipality) => {
-        enums.enum.push(municipality.id);
-        enums.enumNames.push(municipality.value);
-        return enums;
-      }, {
-        enum: [],
-        enumNames: []
-      });
-      this.mountLajiForm();
-    });
-    this.areaService.getBiogeographicalProvinces(this.lang).subscribe(provinces => {
-      this.biogeographicalProvinceEnums = provinces.reduce((enums, province) => {
-        enums.enum.push(province.id);
-        enums.enumNames.push(province.value);
-        return enums;
-      }, {
-        enum: [],
-        enumNames: []
-      });
-      this.mountLajiForm();
-    });
   }
 
   ngAfterViewInit() {
@@ -159,7 +130,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   mountLajiForm() {
-    if (!this.municipalityEnums || !this.biogeographicalProvinceEnums || !this.settings) {
+    if (!this.settings) {
       return;
     }
     this.createNewLajiForm();
@@ -177,10 +148,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
           this.unMount();
         }
 
-        const uiSchemaContext = this.formData.uiSchemaContext || {};
-        uiSchemaContext['creator'] = this.formData.formData.creator;
-        uiSchemaContext['municipalityEnum'] = this.municipalityEnums;
-        uiSchemaContext['biogeographicalProvinceEnum'] = this.biogeographicalProvinceEnums;
         this.apiClient.lang = this.lang;
         this.apiClient.personToken = this.userService.getToken();
         this.apiClient.formID = this.formData.id;
@@ -189,7 +156,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
           rootElem: this.lajiFormRoot.nativeElement,
           schema: this.formData.schema,
           uiSchema: this.formData.uiSchema,
-          uiSchemaContext: uiSchemaContext,
+          uiSchemaContext: this.formData.uiSchemaContext,
           formData: this.formData.formData,
           validators: this.formData.validators,
           warnings: this.formData.warnings,

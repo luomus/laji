@@ -1,34 +1,44 @@
-<laji-spinner [spinning]="!form" [overlay]="true"></laji-spinner>
-<div [hidden]="!hasAlertContent" style="margin-top: 20px;">
-  <laji-info-page child="2860" (hasContent)="hasAlertContent = $event"></laji-info-page>
-</div>
-<laji-document-form-header *ngIf="form && showHeader"
-    [formID]="form.id"
-    [namedPlace]="namedPlace"
-    [isAdmin]="isAdmin"
-    [formData]="form.formData"
-    [displayObservationList]="!formData?.id && namedPlace && form.options?.displayOwnSubmissions"
-></laji-document-form-header>
-<div class="row" *ngIf="namedPlace" style="margin-top: 10px">
-  <div class="col-sm-12">
-    <strong>{{ namedPlace.name }}</strong>
+<ng-container *ngIf="vm$ | async; let vm">
+  <laji-spinner [spinning]="vm.loading" [overlay]="true"></laji-spinner>
+  <div style="margin-top: 20px;">
+    <div [hidden]="!hasAlertContent">
+      <laji-info-page child="2860" (hasContent)="hasAlertContent = $event"></laji-info-page>
+    </div>
+    <alert type="danger" *ngIf="vm.error == errors.notFound">
+      {{ 'haseka.form.formNotFound' | translate:{formId: this.formId} }}
+    </alert>
+    <alert type="danger" *ngIf="vm.error == errors.loadFailed">
+      {{ 'haseka.form.genericError' | translate }}
+    </alert>
   </div>
-</div>
-<div class="clear"></div>
-<div class="laji-form" *ngIf="readyForForm">
-  <laji-form
-          [formData]="form"
-          [settingsKey]="formId"
-          [showShortcutButton]="showShortcutButton"
-          (dataChange)="onChange($event)"
-          (dataSubmit)="onSubmit($event)"></laji-form>
-  <laji-document-form-footer
-          [form]="form"
-          [status]="status"
-          [readonly]="readonly"
-          [edit]="documentId"
-          (lock)="lock($event)"
-          (submitPublic)="submitPublic()"
-          (submitPrivate)="submitPrivate()"
-          (cancel)="cancel.emit()"></laji-document-form-footer>
-</div>
+  <laji-document-form-header *ngIf="showHeader && vm.form"
+      [formID]="vm.form.id"
+      [namedPlace]="namedPlace"
+      [isAdmin]="isAdmin"
+      [formData]="vm.form.formData"
+      [displayObservationList]="!vm.form.formData?.id && vm.namedPlace?.namedPlace && vm.form.options?.displayOwnSubmissions"
+  ></laji-document-form-header>
+  <div class="row" *ngIf="vm.namedPlace" style="margin-top: 10px">
+    <div class="col-sm-12">
+      <strong>{{ vm.namedPlace.name }}</strong>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div class="laji-form" *ngIf="vm.form">
+    <laji-form
+            [formData]="vm.form"
+            [settingsKey]="formId"
+            [showShortcutButton]="showShortcutButton"
+            (dataChange)="onChange($event)"
+            (dataSubmit)="onSubmit($event)"></laji-form>
+    <laji-document-form-footer
+            [form]="vm.form"
+            [status]="status"
+            [readonly]="readonly"
+            [edit]="documentId"
+            (lock)="lock($event)"
+            (submitPublic)="submitPublic()"
+            (submitPrivate)="submitPrivate()"
+            (cancel)="cancel.emit()"></laji-document-form-footer>
+  </div>
+</ng-container>

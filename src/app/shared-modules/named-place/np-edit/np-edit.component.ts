@@ -14,7 +14,7 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
 import { NpInfoComponent } from './np-info/np-info.component';
 import { Rights } from '../../../+haseka/form-permission/form-permission.service';
-import { LajiFormFacade } from '@laji-form/laji-form.facade';
+import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 
 @Component({
   selector: 'laji-np-edit',
@@ -53,7 +53,7 @@ export class NpEditComponent {
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
     private documentService: DocumentService,
-    private lajiFormFacade: LajiFormFacade
+    private lajiFormFacade: LajiFormDocumentFacade
   ) { }
 
   npClick() {
