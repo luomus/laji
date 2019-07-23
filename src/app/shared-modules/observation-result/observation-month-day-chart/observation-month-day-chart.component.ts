@@ -22,40 +22,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;
-  @Input() barChartPlugins = [pluginDataLabels];
-  @Input() barChartOptions: any = {
-    responsive: true,
-    maintainAspectRatio: false,
-    tooltips: {
-     enabled: true,
-     mode: 'index',
-     axis: 'x',
-     position: 'nearest'
-   },
-    scales: {
-      Axes: [{
-        gridLines: {
-          color: 'rgba(230,230,230,0.5)',
-          lineWidth: 0.2
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        gridLines: {
-          color: 'rgba(171,171,171,0.5)',
-          lineWidth: 0.5
-        }
-      }]
-    },
-    plugins: {
-      datalabels: {
-        display: false
-      },
-    }
-  };
-
   monthChartData: any[];
   dayChartDataByMonth = {};
 
@@ -69,10 +35,12 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
 
   @Output() hasData = new EventEmitter<boolean>();
 
-  public barChartLabels: any = [];
+  public barChartLabels: any;
   public barChartLabelsDay: any;
   public barChartData: any[];
   public daybarChartData: any[][];
+  private barChartPlugins: any;
+  private barChartOptions: any;
 
   constructor(
     private warehouseApi: WarehouseApi,
@@ -122,6 +90,40 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
     }
   }
 
+  initializeGraph() {
+    this.barChartPlugins = [pluginDataLabels];
+    this.barChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    tooltips: {
+    enabled: true,
+    mode: 'index'
+    },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          color: 'rgba(230,230,230,0.5)',
+          lineWidth: 0.2
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        },
+        gridLines: {
+          color: 'rgba(171,171,171,0.5)',
+          lineWidth: 0.5
+        }
+      }]
+    },
+    plugins: {
+      datalabels: {
+        display: false
+      },
+    }
+  };
+  }
+
   onHideDayChart() {
     this.dayChartModalVisible = false;
   }
@@ -135,6 +137,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
     this.dayChartDataByMonth = {};
     this.barChartData = [];
     this.daybarChartData = [];
+    this.barChartLabels = [];
 
     this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
       this.query ? this.query : { taxonId: [this.taxonId], cache: true },
@@ -172,6 +175,9 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
       if (day) {
         this.addDataDayToSeriesGiorgio (lifeStage, count, month, day, labelObservables);
       }
+
+      this.initializeGraph();
+      // this.barChartOptions.scales.yAxes[0].ticks.max=this.maxMinAvg(this.barChartData[0].data);
     });
     return labelObservables.length > 0 ? forkJoin(labelObservables) : of([]);
   }
@@ -276,14 +282,20 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
     return new Date(2000, month, 0).getDate();
   }
 
-  public arrayMax(arr: any[]): number {
-    let sum, avg = 0;
-    if (arr.length) {
-        sum = arr.reduce(function(a, b) { return a + b; });
-        avg = sum / arr.length;
+  maxMinAvg(arr) {
+    let max = arr[0];
+    let min = arr[0];
+    let sum = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+        sum = sum + arr[i];
     }
-
-    return avg;
+    return ( min + max ) / 2;
   }
 
 }

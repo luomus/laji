@@ -14,42 +14,9 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./observation-year-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   @Input() query: any;
-  @Input() barChartPlugins = [pluginDataLabels];
-  @Input() barChartOptions: any = {
-    responsive: true,
-    maintainAspectRatio: false,
-    tooltips: {
-     enabled: true,
-     mode: 'index',
-     axis: 'x',
-     position: 'nearest'
-   },
-    scales: {
-      xAxes: [{
-        gridLines: {
-          color: 'rgba(230,230,230,0.5)',
-          lineWidth: 0.2
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        gridLines: {
-          color: 'rgba(171,171,171,0.5)',
-          lineWidth: 0.5
-        }
-      }]
-    },
-    plugins: {
-      datalabels: {
-        display: false
-      },
-    }
-  };
-
   newData: any[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
 
@@ -60,6 +27,8 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   private barChartLabels: any[];
   private subBarChartLabels: any[];
   private allBarChartsLabel: any[];
+  private barChartPlugins: any;
+  private barChartOptionsYear: any;
 
 
   @Output() hasData = new EventEmitter<boolean>();
@@ -78,6 +47,40 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
     if (this.getDataSub) {
       this.getDataSub.unsubscribe();
     }
+  }
+
+  initializeGraph() {
+      this.barChartPlugins = [pluginDataLabels];
+      this.barChartOptionsYear = {
+      responsive: true,
+      maintainAspectRatio: false,
+      tooltips: {
+      enabled: true,
+      position: 'nearest'
+      },
+      scales: {
+        xAxes: [{
+          gridLines: {
+            color: 'rgba(230,230,230,0.5)',
+            lineWidth: 0.2
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          },
+          gridLines: {
+            color: 'rgba(171,171,171,0.5)',
+            lineWidth: 0.5
+          }
+        }]
+      },
+      plugins: {
+        datalabels: {
+          display: false
+        },
+      }
+    };
   }
 
   private updateData() {
@@ -131,6 +134,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
 
         prevYear = year;
       });
+      this.initializeGraph();
       this.allDataNew[0].data = this.allSubData;
       this.allDataNew[0].backgroundColor = this.allSubBackground;
 
@@ -141,6 +145,9 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       this.allBarChartsLabel = this.subBarChartLabels;
       this.subBarChartLabels = this.subBarChartLabels.slice(this.splitIdx, this.subBarChartLabels.length);
       this.barChartLabels = this.subBarChartLabels;
+
+      // Calculate average value for easy click small values
+      this.barChartOptionsYear.scales.yAxes[0].ticks.max = this.maxMinAvg(this.newData[0].data);
 
       this.hasData.emit(this.allSubData.length > 0);
       // check emit
@@ -163,6 +170,22 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+  }
+
+  maxMinAvg(arr) {
+    let max = arr[0];
+    let min = arr[0];
+    let sum = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+        sum = sum + arr[i];
+    }
+    return ( min + max ) / 2;
   }
 
   toggleShowAllData() {

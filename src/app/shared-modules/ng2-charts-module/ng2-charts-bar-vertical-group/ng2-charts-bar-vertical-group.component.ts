@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'laji-canvas',
-  template: `<canvas baseChart
+  template: `<canvas id="myChart" baseChart
   [datasets]="datasets"
   [labels]="labels"
   [colors]="colors"
