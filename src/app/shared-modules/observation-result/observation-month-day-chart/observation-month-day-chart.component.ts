@@ -283,19 +283,20 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
   }
 
   maxMinAvg(arr) {
-    let max = arr[0];
-    let min = arr[0];
+    const max = [];
     let sum = arr[0];
     for (let i = 1; i < arr.length; i++) {
-        if (arr[i] > max) {
-            max = arr[i];
-        }
-        if (arr[i] < min) {
-            min = arr[i];
-        }
         sum = sum + arr[i];
+        max[i] = arr[i];
     }
-    return ( min + max ) / 2;
+
+    max.sort((a, b) => b - a);
+    if (max[0] > (sum / 100) * 30) {
+      return max[1] + 50;
+    } else {
+      return max[0];
+    }
+
   }
 
 }
