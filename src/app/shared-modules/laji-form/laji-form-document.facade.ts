@@ -1,33 +1,49 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, of, of as ObservableOf, ReplaySubject, Subscription } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, map, mergeMap, take, tap, throttleTime } from 'rxjs/operators';
-import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
-import { Form } from '../../shared/model/Form';
+import { auditTime, catchError, debounceTime, distinctUntilChanged, map, mergeMap, share, take, tap, throttleTime } from 'rxjs/operators';
 import { LocalStorage } from 'ngx-webstorage';
-import { BrowserService } from '../../shared/service/browser.service';
-import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import merge from 'deepmerge';
+import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
+
+import { BrowserService } from '../../shared/service/browser.service';
+import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
+import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { UserService } from '../../shared/service/user.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import { Util } from '../../shared/service/util.service';
 import { DocumentService } from '../own-submissions/service/document.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
-import merge from 'deepmerge';
 import { Annotation } from '../../shared/model/Annotation';
 import { AreaService } from '../../shared/service/area.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Logger } from '../../shared/logger';
+import { Form } from '../../shared/model/Form';
 import { NamedPlacesService } from '../named-place/named-places.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
+import { Person } from '../../shared/model/Person';
 
 export enum FormError {
   ok,
+  incomplete,
   notFound,
   loadFailed,
   missingNamedPlace,
   noAccess
+}
+
+export enum Readonly {
+  noEdit,
+  false,
+  true
+}
+
+export interface ISuccessEvent {
+  success: boolean;
+  document: Document;
+  form: Form.SchemaForm;
+  namedPlace?: NamedPlace;
 }
 
 interface IEnum {
@@ -46,10 +62,11 @@ interface IUISchemaContext {
 }
 
 interface FormWithData extends Form.SchemaForm {
-  formData: Document;
-  annotations: Annotation[];
-  rights: Rights;
-  uiSchemaContext: IUISchemaContext;
+  formData?: Document;
+  annotations?: Annotation[];
+  rights?: Rights;
+  uiSchemaContext?: IUISchemaContext;
+  readonly?: Readonly;
 }
 
 interface IPersistentState {
@@ -76,7 +93,7 @@ let _state: ILajiFormState = {
   hasChanges: false,
   saving: false,
   loading: false,
-  error: FormError.ok
+  error: FormError.ok,
 };
 
 @Injectable()
@@ -108,6 +125,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   private readonly dataSub: Subscription;
   private formSub: Subscription;
+  private saveObs$: Observable<ISuccessEvent>;
 
   constructor(
     private logger: Logger,
@@ -124,10 +142,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
   ) {
     this.updateState({..._state, ...this.persistentState});
     this.dataSub = this.formData$.pipe(
-      throttleTime(3000),
-      debounceTime(3000)
-    ).subscribe((data) => {
-      console.log('FORM DATA UPDATE!!!', data);
+      auditTime(3000)
+    ).subscribe(() => {
+      console.log('Store form data');
     });
   }
 
@@ -144,15 +161,27 @@ export class LajiFormDocumentFacade implements OnDestroy {
     if (this.formSub) {
       this.formSub.unsubscribe();
     }
-    this.updateState({..._state, form: undefined, loading: true, hasChanges: false, error: FormError.ok});
+    this.updateState({..._state, form: undefined, loading: true, hasChanges: false, error: FormError.incomplete});
     this.formSub = this.formService.getForm(formID, this.translateService.currentLang).pipe(
-      mergeMap(form => this.formPermissionService.getRights(form).pipe(
-        tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess}) : null),
-        mergeMap(rights => rights.edit === false ?
-          of(null) : ((FormService.isTmpId(documentID) ? this.fetchEmptyData(form) : this.fetchExistingDocument(documentID)).pipe(
-            map(data => ({...form, formData: data, rights}))
-          ))
-        )
+      mergeMap(form => this.userService.user$.pipe(
+        take(1),
+        mergeMap(person => this.formPermissionService.getRights(form).pipe(
+          tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: form}) : null),
+          mergeMap(rights => {
+              if (rights.edit === false) {
+                this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}});
+                return of(form);
+              }
+              return (FormService.isTmpId(documentID) ? this.fetchEmptyData(form, person) : this.fetchExistingDocument(documentID)).pipe(
+                map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
+                map((res: FormWithData) => res.readonly !== Readonly.false ?
+                  {...res, uiSchema: {...res.uiSchema, 'ui:disabled': true}} :
+                  res
+                )
+              );
+            }
+          )
+        ))
       )),
       mergeMap(form => this.getAnnotations(documentID).pipe(
         map((annotations) => ({...form, annotations}))
@@ -161,15 +190,18 @@ export class LajiFormDocumentFacade implements OnDestroy {
         map(uiSchemaContext => ({...form, uiSchemaContext}))
       )),
       catchError((err) => {
-        console.log('Form error', err);
         this.updateState({
           ..._state,
           error: err instanceof HttpErrorResponse && err.status === 404 ? FormError.notFound :  FormError.loadFailed
         });
+        this.logger.error('Failed to load form', { error: err});
         return of(null);
       })
     ).subscribe((form: FormWithData) => {
-      this.updateState({..._state, loading: false, form: _state.error === FormError.ok ? form : null});
+      this.updateState({..._state, loading: false, form, error: _state.error === FormError.incomplete ? FormError.ok : _state.error});
+      if (form && form.formData && form.formData.locked) {
+        this.lock(form.formData.locked);
+      }
     });
   }
 
@@ -178,54 +210,50 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   lock(lock: boolean) {
-    this.updateState({..._state, form: {
+    this.updateState({..._state, hasChanges: true, form: {
       ..._state.form,
         formData: {..._state.form.formData, locked: lock},
         uiSchema: {..._state.form.uiSchema, 'ui:disabled': lock}
     }});
+    this.formData.next();
   }
 
   dataUpdate(doc: Document) {
-    this.updateState({..._state, hasChanges: true});
-    this.formData.next(doc);
+    this.updateState({..._state, hasChanges: true, form: {..._state.form, formData: doc}});
+    this.formData.next();
   }
 
   hasChanges(): boolean {
     return _state.hasChanges;
   }
 
-  save(document: Document, publicityRestriction: Document.PublicityRestrictionsEnum): Observable<{
-    success: boolean,
-    form: FormWithData,
-    document: Document
-  }> {
-    if (_state.saving) {
-      return;
-    }
-    this.updateState({..._state, saving: true});
-    document.publicityRestrictions = publicityRestriction;
-    delete document._hasChanges;
-    delete document._isTemplate;
-    if (FormService.isTmpId(document.id)) {
-      delete document.id;
-    }
-    return (document.id && FormService.isTmpId(document.id) ?
-      this.documentApi.update(document.id, document, this.userService.getToken()) :
-      this.documentApi.create(document, this.userService.getToken())).pipe(
-      catchError(e => {
-        try {
+  save(document: Document, publicityRestriction: Document.PublicityRestrictionsEnum): Observable<ISuccessEvent> {
+    if (!_state.saving) {
+      this.updateState({..._state, saving: true});
+      document.publicityRestrictions = publicityRestriction;
+      delete document._hasChanges;
+      delete document._isTemplate;
+      if (FormService.isTmpId(document.id)) {
+        delete document.id;
+      }
+      this.saveObs$ = (document.id && FormService.isTmpId(document.id) ?
+        this.documentApi.update(document.id, document, this.userService.getToken()) :
+        this.documentApi.create(document, this.userService.getToken())).pipe(
+        catchError(e => {
           this.logger.error('UNABLE TO SAVE DOCUMENT', { data: JSON.stringify(document), error: JSON.stringify(e._body)});
-        } catch (e) {}
-        return of(null);
-      }),
-      map(doc => ({success: !!doc, form: _state.form, document: doc})),
-      tap((res) => this.updateState({
-        ..._state,
-        saving: false,
-        hasChanges: res.success ? false : _state.hasChanges
-      })),
-      tap((res) => res.success ? this.namedPlacesService.invalidateCache() : null)
-    );
+          return of(null);
+        }),
+        map(doc => ({success: !!doc, form: _state.form, document: doc})),
+        tap((res) => this.updateState({
+          ..._state,
+          saving: false,
+          hasChanges: res.success ? false : _state.hasChanges
+        })),
+        tap((res) => res.success ? this.namedPlacesService.invalidateCache() : null),
+        share()
+      );
+    }
+    return this.saveObs$;
   }
 
   private fetchExistingDocument(documentID: string): Observable<Document> {
@@ -235,11 +263,8 @@ export class LajiFormDocumentFacade implements OnDestroy {
           document));
   }
 
-  private fetchEmptyData(form: Form.SchemaForm): Observable<Document> {
-    return this.userService.user$.pipe(
-      take(1),
-      map(person => ({formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }})),
-      map(base => form.prepopulatedDocument ? merge(form.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
+  private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
+    return of({formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.prepopulatedDocument ? merge(form.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
       map(data => this.addNamedPlaceData(form, data)));
   }
@@ -293,9 +318,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
       return data;
     }
     if (_state.namedPlaceForFormID !== form.id) {
-      if (_state.error === FormError.ok) {
-        this.updateState({..._state, error: FormError.missingNamedPlace});
-      }
+      this.updateState({..._state, error: FormError.missingNamedPlace, form: form});
       return data;
     }
 
@@ -323,8 +346,19 @@ export class LajiFormDocumentFacade implements OnDestroy {
     if (form.namedPlaceOptions && form.namedPlaceOptions.includeUnits) {
       removeList = removeList.filter(item => item !== 'units');
     }
+    this.updateState({..._state, namedPlaceForFormID: ''});
 
     return merge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
+  }
+
+  private getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
+    if (rights.admin) {
+      return Readonly.false;
+    }
+    if (person && person.id && data.id && data.creator !== person.id && (!data.editors || data.editors.indexOf(person.id) === -1)) {
+      return Readonly.noEdit;
+    }
+    return data && typeof data.locked !== 'undefined' ? (data.locked ? Readonly.true : Readonly.false) : Readonly.false;
   }
 
   private updateState(state: ILajiFormState) {

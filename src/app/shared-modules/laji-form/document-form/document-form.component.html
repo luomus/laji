@@ -11,7 +11,7 @@
       {{ 'haseka.form.genericError' | translate }}
     </alert>
   </div>
-  <laji-document-form-header *ngIf="showHeader && vm.form"
+  <laji-document-form-header *ngIf="showHeader && vm.error == errors.ok"
       [formID]="vm.form.id"
       [namedPlace]="namedPlace"
       [isAdmin]="isAdmin"
@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="clear"></div>
-  <div class="laji-form" *ngIf="vm.form">
+  <div class="laji-form" *ngIf="vm.error === errors.ok">
     <laji-form
             [formData]="vm.form"
             [settingsKey]="formId"
@@ -34,7 +34,7 @@
     <laji-document-form-footer
             [form]="vm.form"
             [status]="status"
-            [readonly]="readonly"
+            [readonly]="vm.form.readonly"
             [edit]="documentId"
             (lock)="lock($event)"
             (submitPublic)="submitPublic()"

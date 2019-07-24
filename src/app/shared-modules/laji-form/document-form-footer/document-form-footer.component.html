@@ -31,8 +31,8 @@
         <span class="pull-right">
         </span>
       </div>
-      <span *ngIf="isString(readonly)">
-        {{ readonly | translate }}
+      <span *ngIf="readonly === readonlyStates.noEdit">
+        {{ 'haseka.form.readonly' | translate }}
       </span>
     </div>
     <div [ngClass]="{'col-xs-3 col-sm-2': displaysSaveContainer(), 'col-xs-4 col-sm-3': !displaysSaveContainer()}">

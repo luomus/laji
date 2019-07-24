@@ -1,6 +1,5 @@
-import { switchMap, tap } from 'rxjs/operators';
+import { mergeMap, switchMap, take, tap } from 'rxjs/operators';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -21,7 +20,7 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { Document } from '../../../shared/model/Document';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
-import { FormError, ILajiFormState, LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
+import { FormError, ILajiFormState, ISuccessEvent, LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 
 @Component({
   selector: 'laji-document-form',
@@ -29,13 +28,13 @@ import { FormError, ILajiFormState, LajiFormDocumentFacade } from '@laji-form/la
   styleUrls: ['./document-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestroy, ComponentCanDeactivate {
+export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCanDeactivate {
   @ViewChild(LajiFormComponent, { static: false }) lajiForm: LajiFormComponent;
   @Input() formId: string;
   @Input() documentId: string;
   @Input() showHeader = true;
   @Input() showShortcutButton = true;
-  @Output() success = new EventEmitter<{document: Document, form: any}>();
+  @Output() success = new EventEmitter<ISuccessEvent>();
   @Output() error = new EventEmitter();
   @Output() cancel = new EventEmitter();
   @Output() accessDenied = new EventEmitter();
@@ -43,15 +42,15 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   @Output() tmpLoad = new EventEmitter();
 
   errors = FormError;
-  public hasAlertContent = false;
-  public form: any;
-  public lang: string;
-  public status = '';
-  public saveVisibility = 'hidden';
-  public namedPlace;
-  public readonly: boolean | string;
-  public isAdmin = false;
+  hasAlertContent = false;
+  form: any;
+  lang: string;
+  status = '';
+  saveVisibility = 'hidden';
+  namedPlace;
+  isAdmin = false;
 
+  private subErrors: Subscription;
   private subSaving: Subscription;
   private leaveMsg;
   private publicityRestrictions;
@@ -64,26 +63,24 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               private toastsService: ToastsService,
               private dialogService: DialogService,
               private changeDetector: ChangeDetectorRef) {
-    this.vm$ = this.lajiFormFacade.vm$.pipe(
-      tap(vm => this.errorHandling(vm))
-    );
+    this.vm$ = this.lajiFormFacade.vm$;
     this.footerService.footerVisible = false;
-  }
-
-  ngAfterViewInit() {
-    if (!this.documentId) {
-      return;
-    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['formId'] || changes['documentId']) {
       this.lajiFormFacade.loadForm(this.formId, this.documentId);
+      this.subErrors = this.lajiFormFacade.error$.pipe(
+        mergeMap(() => this.lajiFormFacade.vm$.pipe(take(1)))
+      ).subscribe(vm => this.errorHandling(vm));
     }
   }
 
   ngOnDestroy() {
     this.footerService.footerVisible = true;
+    if (this.subErrors) {
+      this.subErrors.unsubscribe();
+    }
   }
 
   canDeactivate(confirmKey = 'haseka.form.discardConfirm') {
@@ -103,10 +100,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       );
   }
 
-  hasChanges() {
-    return this.form && this.form.formData && this.form.formData._hasChanges;
-  }
-
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event) {
     if (this.lajiFormFacade.hasChanges()) {
@@ -122,11 +115,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
 
   lock(lock) {
     this.lajiFormFacade.lock(lock);
-    /*
-    this.updateReadonly().subscribe(() => {
-      this.changeDetector.markForCheck();
-    });
-     */
   }
 
   onSubmit(event) {
@@ -135,8 +123,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     }
     const document = event.data.formData;
     this.lajiForm.block();
-    this.subSaving = this.lajiFormFacade.save(document, this.publicityRestrictions)
-      .subscribe((res) => {
+    this.subSaving = this.lajiFormFacade.save(document, this.publicityRestrictions).subscribe((res) => {
         this.lajiForm.unBlock();
         if (res.success) {
           this.toastsService.showSuccess(
@@ -145,7 +132,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               this.translate.instant('haseka.form.success')
             )
           );
-          this.success.emit({form: res.form, document: res.document});
+          this.success.emit(res);
         } else {
           this.saveVisibility = 'shown';
           this.status = 'unsaved';
@@ -165,55 +152,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.lajiForm.submit();
   }
 
-  /*
-    .subscribe(
-      data => {
-        this.formService
-          .store(data.formData)
-          .subscribe(id => {
-            this.tmpLoad.emit({
-              formID: this.formId,
-              tmpID: id
-            });
-          });
-      }
-    );
-   */
-
-  /* TODO refactor this to facade
-  updateReadonly(): Observable<boolean> {
-    const {formData = {}} = this.form || {};
-    return Observable.create(observer => {
-      if (this.isAdmin) {
-        this.readonly = false;
-        return observer.next(this.readonly);
-      }
-      this.userService.user$.pipe(take(1)).subscribe(user => {
-        if (formData.id && formData.creator !== user.id && (!formData.editors || formData.editors.indexOf(user.id) === -1)) {
-          this.readonly = 'haseka.form.readonly';
-        } else {
-          this.readonly = formData.locked;
-        }
-        observer.next(this.readonly || false);
-      });
-    });
-  }
-   */
-
-  /*
-  this.formService
-    .subscribe(
-      result => {
-        this.updateReadonly().subscribe((readonly) => {
-          this.lang = this.translate.currentLang;
-          this.form.uiSchema['ui:disabled'] = readonly;
-          this.readyForForm = true;
-          this.changeDetector.markForCheck();
-        });
-      }
-    );
-   */
-
   private errorHandling(vm: ILajiFormState) {
     switch (vm.error) {
       case FormError.missingNamedPlace:
@@ -221,9 +159,11 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           collectionID: vm.form.collectionID,
           formID: vm.form.id
         });
+        this.changeDetector.detectChanges();
         break;
       case FormError.noAccess:
         this.accessDenied.emit(vm.form.collectionID);
+        this.changeDetector.detectChanges();
         break;
     }
   }

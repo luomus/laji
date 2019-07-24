@@ -11,6 +11,7 @@ import { NamedPlacesService } from 'app/shared-modules/named-place/named-places.
 import { ThemeFormService } from '../theme-form.service';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { Form } from '../../../shared/model/Form';
+import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 
 @Component({
   selector: 'laji-theme-form',
@@ -23,7 +24,6 @@ export class FormComponent
   form: any;
   collectionId;
   documentId;
-  hasNS = false;
   private subParam: Subscription;
   private onSuccessNav$: Subscription;
 
@@ -31,10 +31,10 @@ export class FormComponent
   root: string;
   successPage: string;
   onSuccessUrl: string;
-  onTmlLoadUrl: string;
   _onAccessDenied: string;
 
   constructor(
+    private formFacade: LajiFormDocumentFacade,
     private route: ActivatedRoute,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
@@ -55,17 +55,14 @@ export class FormComponent
           return this.formService.getForm(this.routeFormID || formID, this.translateService.currentLang);
         }),
         switchMap(form => this.themeFormService.getNavLinks$(this.route.parent).pipe(
-          map(navLinks => ({form, params, navLinks})
-          )))
+          map(navLinks => ({form, params, navLinks}))
+        ))
       ))
     ).subscribe(({form, params, navLinks}) => {
       this.form = form;
       this.formId = form.id;
       this.collectionId = form.collectionID;
-      const navLinkNames = navLinks.reduce((names, {name}) => ({
-        ...names,
-        [name]: true
-      }), {});
+      const navLinkNames = navLinks.reduce((names, {name}) => ({...names, [name]: true}), {});
 
       // Assumes that we are on a theme subpage (e.g. /theme/vieraslajit/*).
       this.root = this.router.url.replace(/(^.*\/theme\/[^\/]*)\/.*/, '$1');
@@ -76,20 +73,8 @@ export class FormComponent
         + ((this.successPage === 'form' && this.routeFormID)
           ? `/${this.routeFormID}`
           : '');
-      this.onTmlLoadUrl = this.routeFormID ? `${this.root}/form/${this.routeFormID}`
-      : `${this.root}/form`;
-      this._onAccessDenied = this.root;
 
       this.documentId = params['id'] || null;
-      if (form.features.indexOf(Form.Feature.NamedPlace) === -1) {
-        this.hasNS = true;
-        return;
-      }
-      if (!this.formService.hasNamedPlace() && !this.documentId) {
-        this.navigateAfterForm();
-      } else {
-        this.hasNS = true;
-      }
     });
   }
 
@@ -97,7 +82,7 @@ export class FormComponent
     const query = this.form.features.indexOf(Form.Feature.NamedPlace) === -1
       ? this.routeFormID
         ? [this.root, 'form', this.routeFormID]
-        : [this.root, 'form']
+        : [this.onSuccessUrl]
       : [this.root, 'places', this.collectionId, this.formId];
     this.router.navigate(
       query,
@@ -120,14 +105,11 @@ export class FormComponent
   }
 
   onAccessDenied() {
-    this.translateService.get('form.permission.no-access')
-      .subscribe(msg => {
-        this.toastService.showWarning(msg);
-        this.router.navigate(
-          this.localizeRouterService.translateRoute([this._onAccessDenied]),
-          { replaceUrl: true, relativeTo: this.route }
-        );
-      });
+    this.toastService.showWarning(this.translateService.instant('form.permission.no-access'));
+    this.router.navigate(
+      this.localizeRouterService.translateRoute([this._onAccessDenied]),
+      { replaceUrl: true, relativeTo: this.route }
+    );
   }
 
   protected navigate(route: any[], extras?: NavigationExtras) {
@@ -137,32 +119,17 @@ export class FormComponent
   }
 
   onSuccess(event) {
-    if (this.form.features.indexOf('MHL.featureNamedPlace') === -1) {
+    if (!FormService.hasFeature(this.form, Form.Feature.NamedPlace)) {
       this.navigate([this.onSuccessUrl], {relativeTo: this.route});
+      return;
+    }
+    if (FormService.hasFeature(this.form, Form.Feature.FilterNamedPlacesByBirdAssociationArea)) {
+      this.navigate([this.onSuccessUrl], {relativeTo: this.route.parent, queryParams: this.extractQueryParams(event, {})});
       return;
     }
     this.onSuccessNav$ = this.namedplacesService.getNamedPlace(event.document.namedPlaceID)
       .subscribe((np) => {
-        let queryParams;
-        if (this.successPage === 'form') {
-          queryParams = {
-            activeNP: event.document.namedPlaceID,
-          };
-
-          if (this.form.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality)) {
-            queryParams.municipality = np.municipality instanceof Array ? np.municipality[0] : 'all';
-          }
-          if (this.form.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea)
-            && np.birdAssociationArea instanceof Array
-          ) {
-            queryParams.birdAssociationArea = np.birdAssociationArea[0];
-          }
-        }
-        this.navigate([this.onSuccessUrl],
-          {
-            relativeTo: this.route.parent,
-            queryParams
-          });
+        this.navigate([this.onSuccessUrl], {relativeTo: this.route.parent, queryParams: this.extractQueryParams(event, np)});
       });
   }
 
@@ -178,12 +145,24 @@ export class FormComponent
     this.navigateAfterForm();
   }
 
-  onTmlLoad(data) {
-    // We don't use this.navigate because lang is already included in onTmlLoadUrl.
-    this.router.navigate(
-      [this.onTmlLoadUrl, data.tmpID],
-      { replaceUrl: true, relativeTo: this.route }
-    );
+  private extractQueryParams(event, np) {
+    if (this.successPage !== 'form') {
+      return;
+    }
+
+    const queryParams: any = {
+      activeNP: event.document.namedPlaceID,
+    };
+
+    if (FormService.hasFeature(this.form, Form.Feature.FilterNamedPlacesByBirdAssociationArea)) {
+      queryParams.municipality = np.municipality instanceof Array ? np.municipality[0] : 'all';
+    }
+    if (FormService.hasFeature(this.form, Form.Feature.FilterNamedPlacesByBirdAssociationArea)
+      && np.birdAssociationArea instanceof Array
+    ) {
+      queryParams.birdAssociationArea = np.birdAssociationArea[0];
+    }
+    return queryParams;
   }
 }
 
