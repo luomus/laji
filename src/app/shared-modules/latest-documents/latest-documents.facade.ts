@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, from, Observable, of, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, map, mergeMap, take, tap, toArray } from 'rxjs/operators';
 import { Document } from '../../shared/model/Document';
@@ -31,12 +31,12 @@ let _state: ILatestDocumentsState = {
 };
 
 @Injectable({providedIn: 'root'})
-export class LatestDocumentsFacade {
+export class LatestDocumentsFacade implements OnDestroy {
 
   private store  = new BehaviorSubject<ILatestDocumentsState>(_state);
   state$ = this.store.asObservable();
 
-  loading$       = this.state$.pipe(map((state) => state.loading), distinctUntilChanged());
+  loading$      = this.state$.pipe(map((state) => state.loading), distinctUntilChanged());
   latest$       = this.state$.pipe(map((state) => state.latest), distinctUntilChanged());
   tmpDocuments$ = this.state$.pipe(map((state) => state.tmpDocuments), distinctUntilChanged());
 
@@ -47,6 +47,7 @@ export class LatestDocumentsFacade {
   });
 
   private updateSub: Subscription;
+  private localUpdateSub: Subscription;
 
   constructor(
     private documentApi: DocumentApi,
@@ -55,14 +56,36 @@ export class LatestDocumentsFacade {
     private documentStorage: DocumentStorage,
     private formService: FormService,
     private translateService: TranslateService
-  ) {}
+  ) {
+    this.localUpdateSub = this.documentStorage.update$.subscribe(() => {
+      this.updateLocal();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.localUpdateSub) {
+      this.localUpdateSub.unsubscribe();
+    }
+  }
 
   update(): void {
     if (this.updateSub) {
       return;
     }
-    this.updateState({..._state, loading: true});
-    this.updateSub = this.userService.user$.pipe(
+    this.updateLocal();
+    this.updateRemote();
+  }
+
+  discardTmpData(id: string): void {
+    this.userService.user$.pipe(
+      take(1),
+      mergeMap(person => this.documentStorage.removeItem(id, person)),
+      tap(() => this.update())
+    ).subscribe();
+  }
+
+  private updateLocal() {
+    this.userService.user$.pipe(
       take(1),
       mergeMap(p => this.documentStorage.getAll(p, 'onlyTmp').pipe(
         mergeMap(tmps => this.getAllForms().pipe(
@@ -73,31 +96,26 @@ export class LatestDocumentsFacade {
           })))
         ))
       )),
-      map(tmpDocuments => ({tmpDocuments})),
-      catchError(() => of({tmpDocuments: []})),
-      mergeMap(res => this.documentApi.findAll(this.userService.getToken(), '1', '10').pipe(
-        map(docRes => docRes.results),
-        mergeMap(documents => this.checkForLocalData(documents)),
-        catchError((e) => {
-          console.log(e);
-          return of([] as ILatestDocument[]);
-        }),
-        map(documents => ({...res, latest: documents}))
-      )),
-    ).subscribe(
-      (documents) => {
-        this.updateState({..._state, ...documents, loading: false});
-        delete this.updateSub;
-      },
-    );
+      catchError(() => of([]))
+    ).subscribe(tmpDocuments => this.updateState({..._state, tmpDocuments}));
   }
 
-  discardTmpData(id: string): void {
-    this.userService.user$.pipe(
-      take(1),
-      mergeMap(person => this.documentStorage.removeItem(id, person)),
-      tap(() => this.update())
-    ).subscribe();
+  private updateRemote() {
+    if (this.updateSub) {
+      return;
+    }
+    this.updateState({..._state, loading: true});
+    this.updateSub = this.documentApi.findAll(this.userService.getToken(), '1', '10').pipe(
+      map(docRes => docRes.results),
+      mergeMap(documents => this.checkForLocalData(documents)),
+      catchError((e) => {
+        console.log(e);
+        return of([] as ILatestDocument[]);
+      }),
+    ).subscribe((latest) => {
+      this.updateState({..._state, latest, loading: false});
+      delete this.updateSub;
+    });
   }
 
   private getAllForms(): Observable<{[id: string]: Form.List}> {

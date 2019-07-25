@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { PlatformService } from '../shared/service/platform.service';
 import { LocalDb } from '../shared/local-db/local-db.abstract';
 import { Document } from '../shared/model/Document';
-import { from, Observable, of as ObservableOf, of } from 'rxjs';
+import { from, Observable, of as ObservableOf, of, Subject } from 'rxjs';
 import { Person } from '../shared/model/Person';
-import { catchError, map, mergeMap, switchMap, toArray } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { FormService } from '../shared/service/form.service';
 
 @Injectable({providedIn: 'root'})
 export class DocumentStorage extends LocalDb<Document> {
+
+  private listenerSource = new Subject();
+  update$ = this.listenerSource.asObservable();
 
   static key(documentId: string, person: string | Person): string {
     if (!person || !documentId) {
@@ -33,7 +36,8 @@ export class DocumentStorage extends LocalDb<Document> {
     }
     const itemId = person ? DocumentStorage.key(key, person) : key;
     return from(this.db.removeItem(itemId)).pipe(
-      catchError(() => ObservableOf(null))
+      tap(() => this.listenerSource.next()),
+      catchError(() => ObservableOf(null)),
     );
   }
 
@@ -46,9 +50,13 @@ export class DocumentStorage extends LocalDb<Document> {
 
   setItem(key: string, value: Document, person?: string | Person): Observable<Document> {
     if (person) {
-      return super.setItem(DocumentStorage.key(key, person), value);
+      return super.setItem(DocumentStorage.key(key, person), value).pipe(
+        tap(() => this.listenerSource.next())
+      );
     }
-    return super.setItem(key, value);
+    return super.setItem(key, value).pipe(
+      tap(() => this.listenerSource.next())
+    );
   }
 
   getAllKeys(person: string | Person, type?: 'onlyTmp'|'onlyDoc'): Observable<string[]> {

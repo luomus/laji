@@ -140,7 +140,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     private documentStorage: DocumentStorage
   ) {
     this.dataSub = this.dataChange$.pipe(
-      auditTime(5000),
+      auditTime(3000),
       mergeMap(() => this.userService.user$.pipe(take(1))),
       map(person => ({person, formData: _state.form && _state.form.formData})),
       mergeMap(data => data.formData ?
@@ -263,11 +263,12 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   discardChanges() {
-    if (_state.form && _state.form.formData && _state.form.formData.id) {
+    if (_state.form && _state.form.formData) {
       const id = _state.form.formData.id;
+      this.updateState({..._state, form: {..._state.form, formData: null}});
       this.userService.user$.pipe(
         take(1),
-        mergeMap(person => this.documentStorage.removeItem(id, person))
+        mergeMap(person => this.documentStorage.removeItem(id, person)),
       ).subscribe();
     }
   }
