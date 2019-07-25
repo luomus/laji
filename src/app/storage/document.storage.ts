@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { PlatformService } from '../../shared/service/platform.service';
-import { LocalDb } from '../../shared/local-db/local-db.abstract';
-import { Document } from '../../shared/model/Document';
+import { PlatformService } from '../shared/service/platform.service';
+import { LocalDb } from '../shared/local-db/local-db.abstract';
+import { Document } from '../shared/model/Document';
 import { from, Observable, of as ObservableOf, of } from 'rxjs';
-import { Person } from '../../shared/model/Person';
+import { Person } from '../shared/model/Person';
 import { catchError, map, mergeMap, switchMap, toArray } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DocumentStorage extends LocalDb<Document> {
 
   static key(documentId: string, person: string | Person): string {

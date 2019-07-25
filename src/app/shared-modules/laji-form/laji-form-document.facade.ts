@@ -31,7 +31,7 @@ import { Form } from '../../shared/model/Form';
 import { NamedPlacesService } from '../named-place/named-places.service';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
-import { DocumentStorage } from '@laji-form/document.storage';
+import { DocumentStorage } from '../../storage/document.storage';
 
 export enum FormError {
   ok,

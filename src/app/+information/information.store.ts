@@ -7,6 +7,9 @@ export class InformationState {
   info: Information;
 }
 
+/**
+ * @deprecated
+ */
 @Injectable()
 export class InformationStore extends Store<InformationState> {
   constructor () {
