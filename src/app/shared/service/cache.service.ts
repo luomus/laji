@@ -3,7 +3,7 @@ import { LocalDb } from '../local-db/local-db.abstract';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({providedIn: 'root'})
-export class CacheService extends LocalDb {
+export class CacheService extends LocalDb<any> {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object

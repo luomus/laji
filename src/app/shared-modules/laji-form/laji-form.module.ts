@@ -10,6 +10,7 @@ import { LatestDocumentsModule } from '../latest-documents/latest-documents.modu
 import { AppComponentModule } from '../app-component/app-component.module';
 import { InfoPageModule } from '../info-page/info-page.module';
 import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
+import { DocumentStorage } from '@laji-form/document.storage';
 
 @NgModule({
   imports: [
@@ -22,6 +23,6 @@ import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
   ],
   declarations: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],
   exports: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],
-  providers: [LajiFormDocumentFacade]
+  providers: [LajiFormDocumentFacade, DocumentStorage]
 })
 export class LajiFormModule { }

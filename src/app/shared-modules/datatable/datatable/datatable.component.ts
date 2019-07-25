@@ -94,10 +94,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   ) {
     this.settings$ = DatatableComponent.settings ?
       ObservableOf(DatatableComponent.settings).pipe(share()) :
-      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETTINGS)
+      this.cacheService.getItem(CACHE_COLUMN_SETTINGS)
         .pipe(
           map(value => value || {}),
-          tap(value => DatatableComponent.settings = value),
+          tap(value => DatatableComponent.settings = value as Settings),
           share()
         );
   }
@@ -277,7 +277,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   onResize(event) {
     if (event && event.column && event.column.name && event.newValue) {
       DatatableComponent.settings[event.column.name] = {width: event.newValue};
-      this.cacheService.setItem<Settings>(CACHE_COLUMN_SETTINGS, DatatableComponent.settings)
+      this.cacheService.setItem(CACHE_COLUMN_SETTINGS, DatatableComponent.settings)
         .subscribe(() => {}, () => {});
     }
   }

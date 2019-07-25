@@ -2,17 +2,17 @@ import * as localForage from 'localforage';
 import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-export abstract class LocalDb {
+export abstract class LocalDb<T> {
 
-  private db: LocalForage;
+  protected db: LocalForage;
 
-  protected constructor(dbName = 'cache', private isPlatformBrowser = true) {
+  protected constructor(dbName = 'cache', protected isPlatformBrowser = true) {
     this.db = localForage.createInstance({
       name: dbName
     });
   }
 
-  setItem<T>(key: string, value: T): Observable<T> {
+  setItem(key: string, value: T): Observable<T> {
     if (!this.isPlatformBrowser) {
       return ObservableOf(value);
     }
@@ -22,7 +22,7 @@ export abstract class LocalDb {
     );
   }
 
-  getItem<T>(key: string): Observable<T> {
+  getItem(key: string): Observable<T> {
     if (!this.isPlatformBrowser) {
       return ObservableOf(null);
     }

@@ -85,8 +85,6 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
 
   canDeactivate(confirmKey = 'haseka.form.discardConfirm') {
     if (!this.lajiFormFacade.hasChanges()) {
-      // TODO use new discrard
-      // this.formService.discard();
       return true;
     }
     return this.translate
@@ -94,7 +92,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
         switchMap(txt => this.dialogService.confirm(txt)),
         tap((result) => {
           if (result) {
-            // this.formService.discard();
+            this.lajiFormFacade.discardChanges();
           }
         })
       );

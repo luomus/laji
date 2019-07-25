@@ -1,12 +1,11 @@
-import { toArray, mergeAll, tap, combineLatest, switchMap, map, concatMap } from 'rxjs/operators';
+import { toArray, switchMap, map, concatMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Logger } from '../../../shared/logger/logger.service';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { FormService } from '../../../shared/service/form.service';
 import { Document } from '../../../shared/model/Document';
-import { Util } from '../../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { forkJoin as ObservableForkJoin, from as ObservableFrom, of as ObservableOf, Subscription } from 'rxjs';
 
 
 @Component({
@@ -133,16 +132,6 @@ export class UsersLatestComponent implements OnChanges {
         return array;
       })
     );
-  }
-
-  private getForm(formId: string): Observable<any> {
-    if (this.formsById[formId]) { return ObservableOf(this.formsById[formId]); }
-
-    return this.formService
-      .getForm(formId, this.translate.currentLang).pipe(
-      tap((res: any) => {
-        this.formsById[formId] = res;
-      }));
   }
 
   private compareEditDate(a: Document, b: Document) {

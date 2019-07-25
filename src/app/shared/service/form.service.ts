@@ -17,7 +17,7 @@ import { Form } from '../model/Form';
 @Injectable({providedIn: 'root'})
 export class FormService {
 
-  private static readonly tmpNs = 'T';
+  static readonly tmpNs = 'T';
 
   readonly forms = {
     [environment.nafiForm]: '/theme/nafi/form',
@@ -36,7 +36,6 @@ export class FormService {
   localChanged = new EventEmitter();
 
   @LocalStorage() private formDataStorage;
-  @LocalStorage() private tmpDocId;
   private currentData: any;
   private currentKey: string;
   private currentLang: string;
@@ -45,21 +44,10 @@ export class FormService {
   private formPending: {[key: string]: Observable<Form.SchemaForm>} = {};
   private allForms: any[];
 
-  private _populate: any;
-
   constructor(
     private lajiApi: LajiApiService,
     private userService: UserService,
-    private documentApi: DocumentApi,
-    private documentService: DocumentService
-  ) {
-    if (!this.formDataStorage) {
-      this.formDataStorage = {};
-    }
-    if (!this.tmpDocId) {
-      this.tmpDocId = 0;
-    }
-  }
+  ) {}
 
   static hasFeature(form: Form.List, feature: Form.Feature) {
     return form && Array.isArray(form.features) && form.features.indexOf(feature) !== -1;
@@ -67,17 +55,6 @@ export class FormService {
 
   static isTmpId(id: string) {
     return !id || (id && id.indexOf(FormService.tmpNs + ':') === 0);
-  }
-
-  hasNamedPlace(): boolean {
-    return !!(this._populate && this._populate.namedPlaceID) || !!(this.currentData && this.currentData.namedPlaceID);
-  }
-
-  getUserId(): Observable<string> {
-    return this.userService.user$.pipe(
-      take(1),
-      map(person => person.id)
-    );
   }
 
   discard(id?: string): void {
@@ -153,14 +130,6 @@ export class FormService {
     this.currentData = Util.clone(data);
   }
 
-  generateTmpId() {
-    if (this.tmpDocId >= (Number.MAX_SAFE_INTEGER - 1009) ) {
-      this.tmpDocId = 0;
-    }
-    this.tmpDocId = this.tmpDocId + 1;
-    return this.getTmpId(this.tmpDocId);
-  }
-
   getAllTempDocuments(): Observable<Document[]> {
     return this.getUserId().pipe(
       switchMap(userID => {
@@ -226,51 +195,6 @@ export class FormService {
     }
   }
 
-  /**
-   * Loads the form and populates the default data of the Document
-   *
-   * @param formId id for the form
-   * @param lang land to be used in the form
-   * @param documentId document id to be loaded
-   * @returns Observable<any>
-   */
-  load(formId: string, lang: string, documentId?: string) {
-    this.setLang(lang);
-    const form$ = this.formCache[formId] ?
-      ObservableOf(this.formCache[formId]) :
-      this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
-        tap((schema) => {
-          this.formCache[formId] = schema;
-        }));
-    const data$ = documentId ?
-      this.getUserId().pipe(switchMap(userID => {
-        const tmpDoc = this.getTmpDoc(userID, documentId);
-        return FormService.isTmpId(documentId) && tmpDoc ?
-          ObservableOf(tmpDoc) :
-          this.documentApi.findById(documentId, this.userService.getToken()).pipe(
-            switchMap((document: Document) => {
-              if (!document.isTemplate) {
-                return ObservableOf(document).pipe(
-                  tap(data => this.setCurrentData(data)));
-              }
-              documentId = '';
-              const newDocument = this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
-              newDocument._isTemplate = true;
-              this.populate(newDocument);
-              return ObservableOf(newDocument);
-            }));
-      })) :
-      this.userService.getDefaultFormData().pipe(
-        tap(data => this.setCurrentData(data)));
-  }
-
-  getDefaultData(formId: string, documentId?: string, current?: any): Observable<any> {
-    if (!documentId) {
-      return this.defaultFormData(formId);
-    }
-    return this.localFormDataIfNoNewerInRemote(documentId, current);
-  }
-
   getAllForms(lang: string): Observable<any> {
     this.setLang(lang);
     return this.allForms ?
@@ -279,10 +203,6 @@ export class FormService {
         map((forms) => forms.results.filter(form => this.isFormAllowed(form.id))),
         tap(forms => this.allForms = forms)
       );
-  }
-
-  populate(data: any) {
-    this._populate = merge(this._populate || {}, data || {}, { arrayMerge: Util.arrayCombineMerge });
   }
 
   getAddUrlPath(formId) {
@@ -331,6 +251,13 @@ export class FormService {
     );
   }
 
+  private getUserId(): Observable<string> {
+    return this.userService.user$.pipe(
+      take(1),
+      map(person => person.id)
+    );
+  }
+
   private isFormAllowed(formId: string) {
     const forms = environment.formWhitelist;
     if (forms.length === 0) {
@@ -350,10 +277,6 @@ export class FormService {
     return null;
   }
 
-  private getTmpId(num: number) {
-    return FormService.tmpNs + ':' + num;
-  }
-
   private setLang(lang: string) {
     if (this.currentLang !== lang) {
       this.formCache = {};
@@ -371,22 +294,6 @@ export class FormService {
     this.setCurrentData(current);
 
     return this.getTmpDocumentIfNewerThanCurrent(current, documentId);
-  }
-
-  /**
-   * Fetch current document and merges populate values into it
-   * After merge deletes the populate data
-   *
-   * @param formId id for the form
-   * @returns Observable<Document>
-   */
-  private defaultFormData(formId: string): Observable<Document> {
-    this.currentKey = this.generateTmpId();
-    return this.userService.getDefaultFormData().pipe(
-      map((data: Document) => ({...(data || {}), formID: formId})),
-      map((data: Document) => this._populate ? merge(data, this._populate, { arrayMerge: Util.arrayCombineMerge }) : data),
-      tap(() => delete this._populate)
-    );
   }
 
   /**
