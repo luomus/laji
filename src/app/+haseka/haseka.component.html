@@ -29,8 +29,7 @@
           <li><a class="link" [routerLink]="['/vihko', 'tools'] | localize">{{ 'haseka.tools' | translate }}</a></li>
         </ul>
 
-        <laji-haseka-latest [userToken]="userService.getToken()"
-                            *ngIf="userService.isLoggedIn$ | async"
+        <laji-haseka-latest *ngIf="userService.isLoggedIn$ | async"
                             (showViewer)="showDocumentViewer($event)"></laji-haseka-latest>
       </div>
     </div>

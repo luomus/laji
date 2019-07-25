@@ -5,6 +5,7 @@ import { Document } from '../shared/model/Document';
 import { from, Observable, of as ObservableOf, of } from 'rxjs';
 import { Person } from '../shared/model/Person';
 import { catchError, map, mergeMap, switchMap, toArray } from 'rxjs/operators';
+import { FormService } from '../shared/service/form.service';
 
 @Injectable({providedIn: 'root'})
 export class DocumentStorage extends LocalDb<Document> {
@@ -50,19 +51,27 @@ export class DocumentStorage extends LocalDb<Document> {
     return super.setItem(key, value);
   }
 
-  getAllKeys(person: string | Person): Observable<string[]> {
+  getAllKeys(person: string | Person, type?: 'onlyTmp'|'onlyDoc'): Observable<string[]> {
     if (!person) {
       return of([]);
     }
     const prefix = DocumentStorage.prefix(person);
 
     return from(this.db.keys()).pipe(
-      map(keys => keys.filter(key => key.indexOf(prefix) === 0))
+      map(keys => keys.filter(key => {
+        if (!type) {
+          return key.indexOf(prefix) === 0;
+        } else if (key.indexOf(prefix) !== 0) {
+          return false;
+        }
+        const isTmp = FormService.isTmpId(key.replace(prefix, ''));
+        return type === 'onlyTmp' ? isTmp : !isTmp;
+      }))
     );
   }
 
-  getAll(person: string | Person): Observable<Document[]> {
-    return this.getAllKeys(person).pipe(
+  getAll(person: string | Person, type?: 'onlyTmp'|'onlyDoc'): Observable<Document[]> {
+    return this.getAllKeys(person, type).pipe(
       switchMap(keys => from(keys)),
       mergeMap((key) => this.getItem(key)),
       toArray()

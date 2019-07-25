@@ -7,7 +7,6 @@
 		  <h3>{{ form.title }}</h3>
     </ng-container>
     <laji-haseka-latest *ngIf="form && displayLatest"
-                        [userToken]="userService.getToken()"
                         [forms]="[form.id]"
                         [showFormNames]="false"
     ></laji-haseka-latest>

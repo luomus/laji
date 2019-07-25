@@ -12,6 +12,7 @@ import {
 } from 'rxjs/operators';
 import { LocalStorage } from 'ngx-webstorage';
 import merge from 'deepmerge';
+import * as moment from 'moment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { BrowserService } from '../../shared/service/browser.service';
@@ -143,7 +144,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
       mergeMap(() => this.userService.user$.pipe(take(1))),
       map(person => ({person, formData: _state.form && _state.form.formData})),
       mergeMap(data => data.formData ?
-        this.documentStorage.setItem(data.formData.id, data.formData, data.person) : of(null)
+        this.documentStorage.setItem(data.formData.id, {...data.formData, dateEdited: this.currentDateTime()}, data.person) : of(null)
       )
     ).subscribe();
   }
@@ -286,10 +287,19 @@ export class LajiFormDocumentFacade implements OnDestroy {
         mergeMap(p => this.documentStorage.getItem(documentID, p))
       );
     }
-    return this.documentApi.findById(documentID, this.userService.getToken()).pipe(
-      map((document: Document) => document.isTemplate ?
-          this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']) :
-          document));
+    return this.userService.user$.pipe(
+      take(1),
+      mergeMap(person => this.documentStorage.getItem(documentID, person).pipe(
+        mergeMap(local => this.documentApi.findById(documentID, this.userService.getToken()).pipe(
+          map((document: Document) => {
+            if (document.isTemplate) {
+              return this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
+            }
+            return Util.isLocalNewestDocument(local, document) ? local : document;
+          })
+        ))
+      ))
+    );
   }
 
   private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
@@ -389,6 +399,10 @@ export class LajiFormDocumentFacade implements OnDestroy {
       return Readonly.noEdit;
     }
     return data && typeof data.locked !== 'undefined' ? (data.locked ? Readonly.true : Readonly.false) : Readonly.false;
+  }
+
+  private currentDateTime() {
+    return moment().format();
   }
 
   private updateState(state: ILajiFormState) {
