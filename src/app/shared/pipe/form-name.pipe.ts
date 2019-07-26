@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../service/form.service';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { Observable } from 'rxjs';
+import { Form } from '../model/Form';
 
 @Pipe({
   name: 'formName',
@@ -15,7 +16,7 @@ export class FormNamePipe extends AbstractLabelPipe implements PipeTransform {
     super(translate, _ref);
   }
 
-  protected _updateValue(key: string): Observable<string> {
+  protected _updateValue(key: string): Observable<Form.SchemaForm> {
     return this.formService
       .getForm(key, this.translate.currentLang);
   }

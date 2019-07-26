@@ -28,8 +28,7 @@ import { UserService } from '../../shared/service/user.service';
                     </li>
                 </ng-container>
             </ul>
-            <laji-haseka-latest [userToken]="userService.getToken()"
-                                [forms]="[formID]"
+            <laji-haseka-latest [forms]="[formID]"
                                 [tmpOnly]="true"
                                 *ngIf="userService.isLoggedIn$ | async">
             </laji-haseka-latest>

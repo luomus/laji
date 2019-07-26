@@ -17,11 +17,12 @@ import { WINDOW } from '@ng-toolkit/universal';
   styleUrls: ['./short-document.component.css']
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() hasChanges: boolean;
   @Input() document: Document;
   @Input() form: any;
   @Input() showFormName = true;
   @Input() complainLocality = true;
-  @Output() discard = new EventEmitter();
+  @Output() discardTempDocument = new EventEmitter();
   @Output() showViewer = new EventEmitter<Document>();
 
   public unitList = [];
@@ -92,12 +93,12 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
       this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).subscribe(
         (confirm) => {
           if (this.window.confirm(confirm)) {
-            this.discard.emit();
+            this.discardTempDocument.emit();
           }
         }
       );
     } else {
-      this.discard.emit();
+      this.discardTempDocument.emit();
     }
   }
 

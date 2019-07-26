@@ -2,16 +2,16 @@
   <small *ngIf="!changingLocale">{{ 'haseka.users.edited' | translate }}: <span *ngIf="document.dateEdited">{{ document.dateEdited | amTimeAgo }}</span></small>
 
   <span class="nowrap">
-    <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
+    <ng-container *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
       <span class="label label-warning link inline-block"
             [tooltip]="'result.showPrivateViewer' | translate"
             [placement]="'left'"
             (click)="onShowViewer($event)">
         <i class="glyphicon glyphicon-eye-close"></i>
       </span>
-    </span>
+    </ng-container>
 
-    <span *ngIf="document._hasChanges">
+    <ng-container *ngIf="hasChanges">
       <span class="label label-danger inline-block" [tooltip]="'haseka.form.hasChanges' | translate" [placement]="'left'">
         <i class="glyphicon glyphicon-warning-sign"></i>
       </span>
@@ -22,24 +22,24 @@
             (click)="removeDocument($event, document)">
         <i class="glyphicon glyphicon-trash"></i>
       </span>
-    </span>
+    </ng-container>
 
-    <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPublic">
+    <ng-container *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPublic">
       <span class="label label-success link inline-block"
             [tooltip]="'result.showViewer' | translate"
             [placement]="'left'"
             (click)="onShowViewer($event)">
         <i class="glyphicon glyphicon-eye-open"></i>
       </span>
-    </span>
+    </ng-container>
   </span>
   <br>
 
-  <span *ngIf="gatheringDates.start"> {{ gatheringDates.start | amDateFormat:'DD.MM.YYYY' }}</span>
-  <span *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</span>
+  <ng-container *ngIf="gatheringDates.start"> {{ gatheringDates.start | amDateFormat:'DD.MM.YYYY' }}</ng-container>
+  <ng-container *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</ng-container>
 
-  <span *ngIf="locality">{{ locality }}</span>
-  <span *ngIf="!locality">
+  <ng-container *ngIf="locality">{{ locality }}</ng-container>
+  <ng-container *ngIf="!locality">
     <ng-container *ngIf="document.namedPlaceID; else missingLocality">
       {{ document.namedPlaceID | label }}
     </ng-container>
@@ -48,14 +48,14 @@
         {{ 'haseka.users.latest.localityMissing' | translate }}
       </ng-container>
     </ng-template>
-  </span>
-  <span *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</span>
+  </ng-container>
+  <ng-container *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</ng-container>
 
   <span class="nowrap" (click)="showUnitList($event)">
     <small>
-      <span>{{ unitList.length }}</span>
-      <span *ngIf="unitList.length === 1">{{ 'haseka.users.latest.gathered.singular' | translate }}</span>
-      <span *ngIf="unitList.length !== 1">{{ 'haseka.users.latest.gathered' | translate }}</span>
+      <ng-container>{{ unitList.length }}</ng-container>
+      <ng-container *ngIf="unitList.length === 1">{{ 'haseka.users.latest.gathered.singular' | translate }}</ng-container>
+      <ng-container *ngIf="unitList.length !== 1">{{ 'haseka.users.latest.gathered' | translate }}</ng-container>
     </small>
 
     <span *ngIf="unitList && unitList.length > 0"
@@ -80,7 +80,7 @@
   <span *ngIf="showFormName" class="label label-default">{{ document.formID | formName }}</span>
 </div>-->
 
-<div class="link" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading" ngPreserveWhitespaces>
+<div class="link latest-container" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading" ngPreserveWhitespaces></div>
     <div class="info">
         <div class="observation-title" *ngIf="locality">{{ locality }}</div>
         <div class="observation-title" *ngIf="!locality">
@@ -131,7 +131,7 @@
         </div>
         
       
-        <span *ngIf="showFormName" class="label label-default">{{ document.formID | formName }}</span>        
+        <span *ngIf="showFormName" class="label label-default form-name">{{ document.formID | formName }}</span>        
     </div>
     <div class="observation-tools">
         <span class="nowrap">
@@ -152,3 +152,4 @@
     </div>             
     
   </div>
+

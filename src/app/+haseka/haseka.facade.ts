@@ -69,12 +69,6 @@ export class HasekaFacade implements OnDestroy {
     private footerService: FooterService
   ) {
     this.updateState({..._state, ...this.persistentState});
-    /*
-    this.userSub = this.userService.isLoggedIn$.pipe(
-      switchMap((loggedIn) => loggedIn ? this.userService.getUserSetting(UserService.SETTINGS_RESULT_LIST) : of({})),
-      tap(settings => this.updateState({..._state, settingsList: settings})),
-    ).subscribe();
-     */
   }
 
   ngOnDestroy(): void {

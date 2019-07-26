@@ -5,6 +5,8 @@ import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
 import { Observable } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
+import { DocumentStorage } from '../../../storage/document.storage';
+import { mergeMap, tap } from 'rxjs/operators';
 const { JSONPath } = require('jsonpath-plus');
 
 @Injectable()
@@ -55,10 +57,17 @@ export class DocumentService {
     '$..wind'
   ];
 
-  constructor(private documentApi: DocumentApi, private userService: UserService) { }
+  constructor(
+    private documentApi: DocumentApi,
+    private userService: UserService,
+    private documentStorage: DocumentStorage
+  ) { }
 
   deleteDocument(id: string) {
-    return this.documentApi.delete(id, this.userService.getToken());
+    return this.documentApi.delete(id, this.userService.getToken()).pipe(
+      mergeMap(() => this.userService.user$),
+      tap(person => this.documentStorage.removeItem(id, person))
+    );
   }
 
   saveTemplate(templateData: TemplateForm): Observable<Document> {

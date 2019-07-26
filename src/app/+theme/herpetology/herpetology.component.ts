@@ -90,7 +90,7 @@ export class HerpetologyComponent implements OnInit {
     );
 
     const cacheKey = 'herpetology';
-    this.cacheService.getItem<any[]>(cacheKey).pipe(
+    this.cacheService.getItem(cacheKey).pipe(
       merge(fetchData$.pipe(tap(data => this.cacheService.setItem(cacheKey, data).subscribe(() => {}, () => {})))),
       filter(data => !!data), )
       .subscribe(data => {
