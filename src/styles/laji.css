@@ -29,11 +29,12 @@ p {
 }
 
 
-.container-fluid {
+.container {
   z-index: 1050;
   margin-right: auto;
   margin-left: auto;
   max-width: 1600px;
+  width: auto;
 }
 
 .footer, #navbar {
@@ -47,19 +48,20 @@ laji-locale-fi > div,
 laji-locale-en > div,
 laji-locale-sv > div,
 #content > div,
-#content .container-fluid {
+#content .container {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
 }
 
-#content .container-fluid {
+#content .container {
   margin-right: auto; 
   margin-left: auto;
   max-width: 1600px;
+  width: auto;
 }
 
-#content .container-fluid.observation-fluid{
+#content .container.observation-fluid{
   z-index: unset;
   margin: 0;
   max-width: none;
@@ -73,7 +75,7 @@ laji-locale-sv > div,
   z-index: 1070;
 }
 
-#content .container-fluid > div {
+#content .container > div {
   flex: 1 0 auto;
 }
 

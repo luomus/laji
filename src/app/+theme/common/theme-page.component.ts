@@ -4,7 +4,7 @@ import { UserService } from '../../shared/service/user.service';
 @Component({
     selector: 'laji-theme-page',
     template: `
-<div class="container-fluid">
+<div class="container">
     <div class="row" id="wrapper">
         <div *ngIf='showNav' class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
             <h1 [innerHTML]="title | translate"></h1>

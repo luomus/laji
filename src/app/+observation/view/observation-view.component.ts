@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild, HostListener } from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -66,7 +66,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     return this._activeTab;
   }
 
-  /*@HostListener('window:resize', ['$event'])
+  @HostListener('window:resize', ['$event'])
   onResize(event: any) {
 
     if ( window.innerWidth > 767) {
@@ -75,7 +75,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
       this.showMobile = true;
     }
 
-  }*/
+  }
 
 
   ngOnInit() {

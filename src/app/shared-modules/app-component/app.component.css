@@ -12,7 +12,7 @@
 .embedded {
   margin-top: -50px;
 }
-:host >>> .embedded .container, .embedded .container-fluid {
+:host >>> .embedded .container, .embedded .container {
   width: 100% !important;
 }
 

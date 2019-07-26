@@ -1,5 +1,5 @@
 <footer *ngIf="footerService.footerVisible">
-  <div class="container-fluid info-footer">
+  <div class="container info-footer">
     <div class="row">
       <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
         <h3><a [routerLink]="'/about/' + item.id | localize">{{ item.title }}</a></h3>
@@ -30,7 +30,7 @@
     </div>
   </div>
   <div class="partners-footer">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
         <div class="col-sm-12 partners front"
              [ngClass]="{hidden: !onFrontPage}">
