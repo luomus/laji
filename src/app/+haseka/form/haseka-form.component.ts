@@ -101,14 +101,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
     });
   }
 
-  onTmlLoad(data) {
-    this.routingStateService.removeLast();
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/vihko', data.formID, data.tmpID]),
-      { replaceUrl: true, skipLocationChange: true }
-    );
-  }
-
   onAccessDenied(collectionID) {
     this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/fp', collectionID]));
   }

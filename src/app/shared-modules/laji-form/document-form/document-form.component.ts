@@ -39,7 +39,6 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   @Output() cancel = new EventEmitter();
   @Output() accessDenied = new EventEmitter();
   @Output() missingNamedplace = new EventEmitter();
-  @Output() tmpLoad = new EventEmitter();
 
   errors = FormError;
   hasAlertContent = false;

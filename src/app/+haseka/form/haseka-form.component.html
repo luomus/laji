@@ -37,7 +37,6 @@
       <ng-container *ngIf="!(showMobileEntryPage$ | async)">
         <laji-document-form
           (success)="onSuccess($event)"
-          (tmpLoad)="onTmlLoad($event)"
           (accessDenied)="onAccessDenied($event)"
           (missingNamedplace)="onMissingNamedplace($event)"
           (error)="onError()"
