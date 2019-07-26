@@ -165,7 +165,7 @@
                 [routerLink]="'/theme/linjalaskenta/statistics/' + row.id | localize">
             <i class="glyphicon glyphicon-stats"></i>
           </a>
-          <span *ngIf="actions.indexOf('delete') > -1 && (admin || row.creator === (usersId$ | async))" class="label label-danger link inline-block"
+          <span *ngIf="actions.indexOf('delete') > -1 && (admin || row.creator === usersId)" class="label label-danger link inline-block"
                 [tooltip]="'friend.remove' | translate"
                 [placement]="'left'"
                 [container]="'body'"

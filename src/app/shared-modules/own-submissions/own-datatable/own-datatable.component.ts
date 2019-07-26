@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map, share } from 'rxjs/operators';
 import {
   AfterViewChecked,
@@ -8,7 +8,7 @@ import {
   EventEmitter,
   HostListener,
   Inject,
-  Input,
+  Input, OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,
@@ -75,7 +75,7 @@ export interface LabelEvent {
   styleUrls: ['./own-datatable.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OwnDatatableComponent implements OnInit, AfterViewChecked {
+export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Input() year: number;
   @Input() loadError = '';
   @Input() showDownloadAll = true;
@@ -127,7 +127,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked {
   displayMode: string;
   defaultSort: any;
 
-  usersId$: Observable<string>;
+  usersId: string;
+  usersIdSub: Subscription;
 
   downloadedDocumentId: string;
   fileType = 'csv';
@@ -184,16 +185,21 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked {
     this.updateTranslations();
 
     this.updateDisplayMode();
-    this.usersId$ = this.userService.user$.pipe(
-      map(user => user.id),
-      share()
-    );
+    this.usersIdSub = this.userService.user$.pipe(
+      map(user => user.id)
+    ).subscribe(id => this.usersId = id);
   }
 
   ngAfterViewChecked() {
     if (this._goToStartAfterViewCheck) {
       this._goToStartAfterViewCheck = false;
       this.table.offset = 0;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.usersIdSub) {
+      this.usersIdSub.unsubscribe();
     }
   }
 
