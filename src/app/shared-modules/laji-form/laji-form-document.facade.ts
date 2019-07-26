@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, of, of as ObservableOf, ReplaySubject, Subscription } from 'rxjs';
 import {
   auditTime,
-  catchError,
+  catchError, delay,
   distinctUntilChanged,
   map,
   mergeMap,
@@ -269,6 +269,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
       this.updateState({..._state, form: {..._state.form, formData: null}});
       this.userService.user$.pipe(
         take(1),
+        delay(100), // Adding data to documentStorage is asynchronous so this delay is to make sure that the last save has gone thought
         mergeMap(person => this.documentStorage.removeItem(id, person)),
       ).subscribe();
     }
