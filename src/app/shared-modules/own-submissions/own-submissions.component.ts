@@ -252,9 +252,7 @@ export class OwnSubmissionsComponent implements OnChanges {
             .subscribe((value) => this.toastService.showSuccess(value));
           this.loading = false;
           this.cd.markForCheck();
-          setTimeout(() => {
-            this.latestFacade.update();
-          }, 3000);
+          this.latestFacade.update();
         },
         (err) => {
           this.translate.get('delete.error')

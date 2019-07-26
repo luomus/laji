@@ -48,6 +48,7 @@ export class LatestDocumentsFacade implements OnDestroy {
 
   private updateSub: Subscription;
   private localUpdateSub: Subscription;
+  private remoteRefresh;
 
   constructor(
     private documentApi: DocumentApi,
@@ -69,11 +70,14 @@ export class LatestDocumentsFacade implements OnDestroy {
   }
 
   update(): void {
-    if (this.updateSub) {
-      return;
-    }
     this.updateLocal();
     this.updateRemote();
+    if (this.remoteRefresh) {
+      clearTimeout(this.remoteRefresh);
+      delete this.remoteRefresh;
+    }
+    // ES is not reflecting deletes immediately so we'll make another remote update after 10sec.
+    this.remoteRefresh = setTimeout(this.updateRemote, 10000);
   }
 
   discardTmpData(id: string): void {

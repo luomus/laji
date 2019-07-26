@@ -17,6 +17,7 @@ import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../model/import-table-column';
 import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { ExcelToolService } from '../service/excel-tool.service';
+import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
 
 export type States
   = 'empty'
@@ -105,7 +106,8 @@ export class ImporterComponent implements OnInit {
     private toastsService: ToastsService,
     private augmentService: AugmentService,
     private dialogService: DialogService,
-    private excelToolService: ExcelToolService
+    private excelToolService: ExcelToolService,
+    private latestFacade: LatestDocumentsFacade
   ) { }
 
   ngOnInit() {
@@ -413,7 +415,7 @@ export class ImporterComponent implements OnInit {
           if (success) {
             this.status = 'doneOk';
             this.valid = true;
-            this.uploadedFiles = [...this.partiallyUploadedFiles, this.hash];
+            this.uploadedFiles = this.uploadedFiles ? [...this.uploadedFiles, this.hash] : [this.hash];
             this.translateService.get('excel.import.done')
               .subscribe(msg => this.toastsService.showSuccess(msg));
           } else {
@@ -423,6 +425,7 @@ export class ImporterComponent implements OnInit {
             this.status = 'doneWithErrors';
             this.toastsService.showError(this.translateService.instant('excel.import.failed'));
           }
+          this.latestFacade.update();
           this.cdr.markForCheck();
         }
       );
