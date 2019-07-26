@@ -105,8 +105,7 @@ export class MainResultComponent implements OnInit, OnChanges {
     this.viewerSub = this.documentViewerFacade.showModal$.pipe(
       tap(visible => this.documentModalVisible = visible)
     ).subscribe();
-    this.userService.getItem<any>(UserService.SETTINGS_RESULT_LIST)
-      .subscribe(data => {
+    this.userService.getUserSetting('resultList').subscribe(data => {
         if (data) {
           // change aggregatedBy field to another if needed!
           if (data.aggregateBy) {
@@ -222,11 +221,11 @@ export class MainResultComponent implements OnInit, OnChanges {
   }
 
   private saveSettings() {
-    this.userService.setItem(UserService.SETTINGS_RESULT_LIST, {
+    this.userService.setUserSetting('resultList', {
       aggregateBy: this.aggregateBy,
       selected: this.selected,
       pageSize: this.pageSize
-    }).subscribe(() => {}, () => {});
+    });
   }
 
 }

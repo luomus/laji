@@ -136,7 +136,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       switchMap(loggedIn => loggedIn ?
         this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
           combineLatest(
-            this.person ? ObservableOf(this.person) : this.userService.getUser(),
+            this.person ? ObservableOf(this.person) : this.userService.user$.pipe(take(1)),
             (permission, person) => ({permission, person})
           )).pipe(
           map(data => this.formPermissionService.isAdmin(data.permission, data.person))) :

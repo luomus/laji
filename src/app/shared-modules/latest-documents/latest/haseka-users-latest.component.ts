@@ -1,4 +1,4 @@
-import {toArray, mergeAll, tap, combineLatest, switchMap,  map } from 'rxjs/operators';
+import { toArray, mergeAll, tap, combineLatest, switchMap, map, concatMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Logger } from '../../../shared/logger/logger.service';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
@@ -27,7 +27,6 @@ export class UsersLatestComponent implements OnChanges {
   public unpublishedDocuments: Document[] = [];
   public documents: Document[] = [];
   public formsById = {};
-  public total = 0;
   public page = 1;
   public pageSize = 10;
   public loading = true;
@@ -35,7 +34,7 @@ export class UsersLatestComponent implements OnChanges {
   private docUpdateSub: Subscription;
 
   constructor(
-    private documentService: DocumentApi,
+    private documentApi: DocumentApi,
     private formService: FormService,
     private translate: TranslateService,
     private logger: Logger,
@@ -67,18 +66,11 @@ export class UsersLatestComponent implements OnChanges {
     if (this.docUpdateSub) {
       this.docUpdateSub.unsubscribe();
     }
-    this.docUpdateSub = ObservableOf(null).pipe(
-      switchMap(() => this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize))),
-      switchMap(response => ObservableOf(response).pipe(
-        combineLatest(
-          response.results ? this.processDocuments(response.results) : ObservableOf([]),
-          ((result, docs) => ({...result, docs: docs}))
-        ))
-      ), )
-      .subscribe(
+    this.docUpdateSub = this.documentApi.findAll(this.userToken, String(this.page), String(this.pageSize)).pipe(
+      switchMap(response => response && response.results ? this.processDocuments(response.results) : ObservableOf([]))
+    ).subscribe(
         result => {
-          this.documents = this.forms ? result.docs.filter(doc => this.forms.indexOf(doc.formID) > -1) : [...result.docs];
-          this.total = this.documents.length || 0;
+          this.documents = this.forms ? result.filter(doc => this.forms.indexOf(doc.formID) > -1) : [...result];
           this.loading = false;
           this.cd.markForCheck();
         },
@@ -96,7 +88,7 @@ export class UsersLatestComponent implements OnChanges {
     if (this.formService.isTmpId(id)) {
       documents.splice(i, 1);
     } else {
-      this.documentService.findById(id, this.userToken)
+      this.documentApi.findById(id, this.userToken)
         .subscribe(
           doc => {
             documents[i] = doc;
@@ -112,13 +104,9 @@ export class UsersLatestComponent implements OnChanges {
   }
 
   private processDocuments(docs: Document[]) {
-    return ObservableFrom(docs.map((doc) => {
-      return ObservableForkJoin(
-        this.formService.hasUnsavedData(doc.id),
-        this.getForm(doc.formID),
-        (hasUnsavedData, form) => (hasUnsavedData)
-      ).pipe(switchMap(
-        (hasUnsavedData) => {
+    return ObservableFrom(docs).pipe(
+      concatMap((doc) => this.formService.hasUnsavedData(doc.id).pipe(
+        switchMap((hasUnsavedData) => {
           if (hasUnsavedData) {
             return ObservableForkJoin(
               this.formService.getTmpDocumentIfNewerThanCurrent(doc),
@@ -126,8 +114,7 @@ export class UsersLatestComponent implements OnChanges {
             ).pipe(
               map(data => {
                 const storeDate = data[1];
-                const document = Util.clone(data[0]);
-                document._hasChanges = true;
+                const document = {...data[0], _hasChanges: true};
 
                 if (storeDate && (!document.dateEdited || new Date(storeDate) > new Date(document.dateEdited))) {
                   document.dateEdited = <any>storeDate;
@@ -138,13 +125,14 @@ export class UsersLatestComponent implements OnChanges {
           } else {
             return ObservableOf(doc);
           }
-        }));
-    })).pipe(
-      mergeAll(),
+        }),
+      )),
       toArray(),
-      tap((array) => {
+      map((array) => {
         array.sort(this.compareEditDate);
-      }), );
+        return array;
+      })
+    );
   }
 
   private getForm(formId: string): Observable<any> {

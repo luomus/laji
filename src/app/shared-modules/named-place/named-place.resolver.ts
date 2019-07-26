@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap, take } from 'rxjs/operators';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlaceQuery } from 'app/shared/api/NamedPlaceApi';
 import { FormService } from 'app/shared/service/form.service';
@@ -57,7 +57,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     const activeNPId = queryParams['activeNP'];
 
     return this.getDocumentForm$().pipe(
-      switchMap((documentForm) => this.userService.getUser().pipe(map((user) => ({documentForm, user})))),
+      switchMap((documentForm) => this.userService.user$.pipe(take(1), map((user) => ({documentForm, user})))),
       switchMap(data => {
         this.setMunicipality(data.documentForm, municipalityId);
         return forkJoin(

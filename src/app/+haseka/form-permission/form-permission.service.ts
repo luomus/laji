@@ -30,7 +30,8 @@ export class FormPermissionService {
 
   hasAccessToForm(formID: string, personToken?: string): Observable<boolean> {
     const permission$ = (collectionID) => this.getFormPermission(collectionID, personToken || this.userService.getToken()).pipe(
-      switchMap(permission => this.userService.getUser().pipe(
+      switchMap(permission => this.userService.user$.pipe(
+        take(1),
         switchMap(person => of(this.isEditAllowed(permission, person)))
       ))
     );
@@ -135,7 +136,8 @@ export class FormPermissionService {
         )) {
           return ObservableOf(notRestricted);
         }
-        return this.userService.getUser().pipe(
+        return this.userService.user$.pipe(
+          take(1),
           switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
             map((formPermission: FormPermission) => ({person, formPermission}))
           )),

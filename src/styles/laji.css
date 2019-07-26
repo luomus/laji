@@ -61,6 +61,10 @@ laji-locale-sv > div,
   width: auto;
 }
 
+#content .container-fluid {
+  margin: 0;
+}
+
 #content .container.observation-fluid{
   z-index: unset;
   margin: 0;

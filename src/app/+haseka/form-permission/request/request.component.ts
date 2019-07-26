@@ -5,6 +5,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { FormPermission } from '../../../shared/model/FormPermission';
 import { Logger } from '../../../shared/logger/logger.service';
 import { Person } from '../../../shared/model/Person';
+import { take } from 'rxjs/operators';
 
 export enum AccessLevel {
   Allowed,
@@ -43,15 +44,13 @@ export class RequestComponent implements OnInit {
   }
 
   private checkAccess(formPermission: FormPermission) {
-    this.userService
-      .getUser()
-      .subscribe((person: Person) => {
-        if (formPermission.editors.indexOf(person.id) > -1 || formPermission.admins.indexOf(person.id) > -1) {
-          this.accessLevel = AccessLevel.Allowed;
-        } else if (formPermission.permissionRequests.indexOf(person.id) > -1) {
-          this.accessLevel = AccessLevel.Requested;
-        }
-      });
+    this.userService.user$.pipe(take(1)).subscribe((person: Person) => {
+      if (formPermission.editors.indexOf(person.id) > -1 || formPermission.admins.indexOf(person.id) > -1) {
+        this.accessLevel = AccessLevel.Allowed;
+      } else if (formPermission.permissionRequests.indexOf(person.id) > -1) {
+        this.accessLevel = AccessLevel.Requested;
+      }
+    });
   }
 
   makeAccessRequest() {

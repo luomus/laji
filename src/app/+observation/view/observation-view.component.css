@@ -38,6 +38,10 @@
   margin-top:10px;
 }
 
+.close-filters-mobile {
+  display: none;
+}
+
 @media only screen and (max-width : 1024px) {
   .toggle-intro {
     font-size: 30px;
@@ -51,12 +55,13 @@
     height: auto;
     position: absolute;
     width: 100%;
-    height: 100%;
-    margin-top:40px;
+    bottom: 0;
+    top: 40px;
   }
 
   .close-filters-mobile{
     position: fixed;
+    display: block;
     height: 40px;
     z-index: 1070;
     width: 100%;

@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../shared/service/user.service';
 import { LocalizeRouterService } from '../locale/localize-router.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-user',
-  template: ' ',
+  template: '',
 })
 export class UserComponent implements OnInit {
   constructor(private userService: UserService,
@@ -14,7 +15,7 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getUser().subscribe(
+    this.userService.user$.pipe(take(1)).subscribe(
       user => {
         this.router.navigate(
           this.localizeRouterService.translateRoute((!user || !user.id) ? ['/'] : ['/user', user.id])

@@ -1,24 +1,21 @@
-import { map, catchError, switchMap, tap, share, retry, filter } from 'rxjs/operators';
-import { Observable, Observer, of as ObservableOf, ReplaySubject, Subject, Subscription, throwError as observableThrowError } from 'rxjs';
+import { map, catchError, tap, share, filter, distinctUntilChanged, mergeMap, take } from 'rxjs/operators';
+import { isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
-import { LocalStorage } from 'ngx-webstorage';
+import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
-import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LocalDb } from '../local-db/local-db.abstract';
 import { environment } from '../../../environments/environment';
-import { HttpErrorResponse } from '@angular/common/http';
 import { WINDOW } from '@ng-toolkit/universal';
 import { PlatformService } from './platform.service';
 import { BrowserService } from './browser.service';
-
-export const USER_INFO = '[user]: info';
-export const USER_LOGOUT_ACTION = '[user]: logout';
+import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
+import { httpOkError } from '../observable/operators/http-ok-error';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -26,32 +23,54 @@ export interface ISettingResultList {
   pageSize?: number;
 }
 
+export interface IUserSettings {
+  resultList?: string[];
+  taxonomyList?: string[];
+  observationMap?: any;
+  frontMap?: any;
+  formDefault?: any;
+  '_global_form_settings_'?: any;
+}
+
+interface IPersistentState {
+  token: string;
+  returnUrl: string;
+}
+
+export interface IUserServiceState extends IPersistentState {
+  user: Person;
+  isLoggedIn: boolean;
+  settings: IUserSettings;
+  allUsers: {[id: string]: Person|Observable<Person>};
+}
+
+const _persistentState: IPersistentState = {
+  token: '',
+  returnUrl: ''
+};
+
+let _state: IUserServiceState = {
+  ..._persistentState,
+  user: null,
+  isLoggedIn: false,
+  settings: {},
+  allUsers: {}
+};
+
 @Injectable({providedIn: 'root'})
 export class UserService extends LocalDb {
 
-  public static readonly UNKOWN_USER = 'unknown';
-  public static readonly SETTINGS_RESULT_LIST = 'result-list';
-  public static readonly SETTINGS_TAXONOMY_LIST = 'taxonomy-list';
-  public static readonly SETTINGS_TAXONOMY_TREE = 'taxonomy-tree';
-
-  private _isLoggedIn$ = new ReplaySubject<boolean>(1);
-  private actionSource = new Subject<any>();
-  public action$ = this.actionSource.asObservable();
+  private subLogout: Subscription;
 
   // Do not write to this variable in the server!
-  @LocalStorage() private token;
-  @LocalStorage() private returnUrl;
-  private userSettings: {[key: string]: any};
-  private currentUserId: string;
-  private users: {[id: string]: Person} = {};
-  private usersFetch: {[id: string]: Observable<Person>} = {};
-  private defaultFormData: any;
-  private checked = false;
+  @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
+  // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
+  private store = new ReplaySubject<IUserServiceState>(1);
+  state$ = this.store.asObservable();
 
-  private subUser: Subscription;
-  private subLogout: Subscription;
-  private observable: Observable<Person>;
-  private formDefaultObservable: Observable<any>;
+  isLoggedIn$ = this.state$.pipe(map((state) => state.isLoggedIn), distinctUntilChanged());
+  settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
+  user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
 
   public static getLoginUrl(next = '', lang = 'fi') {
     return (environment.loginUrl
@@ -60,132 +79,92 @@ export class UserService extends LocalDb {
     + '&next=' + next).replace('%lang%', lang);
   }
 
-  constructor(private userService: PersonApi,
-              private router: Router,
-              private location: Location,
-              private logger: Logger,
-              private toastsService: ToastsService,
-              private translate: TranslateService,
-              private localizeRouterService: LocalizeRouterService,
-              private platformService: PlatformService,
-              private browserService: BrowserService,
-              @Inject(WINDOW) private window: any) {
+  constructor(
+    private personApi: PersonApi,
+    private router: Router,
+    private location: Location,
+    private logger: Logger,
+    private translate: TranslateService,
+    private localizeRouterService: LocalizeRouterService,
+    private platformService: PlatformService,
+    private browserService: BrowserService,
+    private storage: LocalStorageService,
+    @Inject(WINDOW) private window: any
+  ) {
     super('settings', platformService.isBrowser);
     this.browserService.visibility$.pipe(
-      filter(visible => visible)
-    ).subscribe(() => this.checkLogin());
+      filter(visible => visible),
+      mergeMap(() => this.checkLogin())
+    ).subscribe();
   }
 
-  public set isLoggedIn(isIn: boolean) {
-    this._isLoggedIn$.next(isIn);
-  }
-
-  public get isLoggedIn() {
-    console.error('Use observable isLoggedIn$ instead of this isLoggedIn');
-    return true;
-  }
-
-  public get isLoggedIn$() {
-    if (!this.checked) {
-      this.checkLogin();
-      this.checked = true;
+  login(userToken: string) {
+    if (this.persistentState.token === userToken || !this.platformService.isBrowser) {
+      return of(true);
     }
-    return this._isLoggedIn$.asObservable();
+    return this.checkLogin(userToken);
   }
 
-  public login(userToken: string) {
-    if (this.token === userToken || !this.platformService.isBrowser) {
+  logout() {
+    if (!this.persistentState.token || this.subLogout) {
       return;
     }
-    if (this.subUser) {
-      this.subUser.unsubscribe();
-    }
-    this.subUser = this.loadUserInfo(userToken).subscribe(value => {
-      this.isLoggedIn = !!value;
-    });
+    this.subLogout = this.personApi.removePersonToken(this.persistentState.token).pipe(
+      httpOkError(404, false),
+      retryWithBackoff(300),
+      catchError((err) => {
+        this.logger.warn('Failed to logout', err);
+        return of(false);
+      })
+    ).subscribe(() => this.doLogoutState());
   }
 
-  public logout(showError = true) {
-    if (!this.token || this.subLogout) {
-      return;
-    }
-    this.subLogout = this.userService.removePersonToken(this.token).pipe(
-      catchError(err => {
-        if (err.status === 404) {
-          return ObservableOf(null);
-        }
-        return observableThrowError(err);
-      })).pipe(
-      retry(5))
-      .subscribe(
-        () => {
-          this.token = '';
-          this.isLoggedIn = false;
-          this.currentUserId = undefined;
-          this.actionSource.next(USER_LOGOUT_ACTION);
-        },
-        err => {
-          if (this.token !== '') {
-            this.token = '';
-            this.isLoggedIn = false;
-            this.currentUserId = undefined;
-            if (showError) {
-              this.translate.get('error.logout').subscribe(
-                msg => this.toastsService.showError(msg)
-              );
-            }
-            this.logger.warn('Failed to logout', err);
-          }
-        }
-      );
+  getToken(): string {
+    return this.persistentState.token;
   }
 
-  public getToken(): string {
-    return this.token;
+  getPersonInfo(id: string, info?: 'fullName' | 'fullNameWithGroup'): Observable<string>;
+  getPersonInfo(id: string, info: keyof Person | 'fullNameWithGroup'): Observable<string|string[]>;
+  getPersonInfo(id: string, info: keyof Person | 'fullNameWithGroup' = 'fullName'): Observable<string|string[]> {
+    if (!id || !id.startsWith('MA.')) {
+      return of(id);
+    }
+
+    const pickValue = (obs: Observable<Person>): Observable<string|string[]> => obs.pipe(
+      map(person => info === 'fullNameWithGroup' ?
+        (person.fullName || '') + (person.group ? ' (' + person.group + ')' : '') :
+        person[info]
+      )
+    );
+
+    if (_state.allUsers[id]) {
+      return pickValue(isObservable(_state.allUsers[id]) ? _state.allUsers[id] as Observable<Person> : of(_state.allUsers[id] as Person));
+    }
+    if (id === _state.user.id) {
+      return pickValue(of(_state.user));
+    }
+
+    _state.allUsers[id] = this.personApi.personFindByUserId(id).pipe(
+      catchError(() => of({
+        id,
+        fullName: id
+      } as Person)),
+      tap(person => _state.allUsers[id] = person),
+      share()
+    );
+    return pickValue(_state.allUsers[id] as Observable<Person>);
   }
 
-  public getUser(id?: string, token?: string): Observable<Person> {
-    if (!id) {
-      return this.getCurrentUser(token).pipe(
-        catchError((err: HttpErrorResponse | any) => {
-          if (err instanceof HttpErrorResponse && err.status !== 404 && err.status !== 400) {
-            this.logger.error('Failed to fetch current users information', err);
-          }
-          this.logout(false);
-          return ObservableOf({});
-        }));
-    }
-    if (this.users[id]) {
-      return ObservableOf(this.users[id]);
-    } else if (!this.usersFetch[id]) {
-      this.usersFetch[id] = Observable.create((observer: Observer<Person>) => {
-        const onComplete = (user: Person) => {
-          observer.next(user);
-          observer.complete();
-          delete this.usersFetch[id];
-        };
-        this.userService.personFindByUserId(id).pipe(catchError((e) => ObservableOf({})))
-          .subscribe(
-            (user: Person) => {
-              this.addUser(user);
-              onComplete(user);
-            }
-          );
-      });
-      this.usersFetch[id] = this.usersFetch[id].pipe(share());
-    }
-    return this.usersFetch[id];
-  }
-
-  public doLogin(returnUrl?: string): void {
+  redirectToLogin(returnUrl?: string): void {
     if (this.platformService.isBrowser) {
-      this.returnUrl = returnUrl || this.location.path(true);
-      this.window.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
+      returnUrl = returnUrl || this.location.path(true);
+      this.updatePersistentState({...this.persistentState, returnUrl});
+      this.window.location.href = UserService.getLoginUrl(returnUrl, this.translate.currentLang);
     }
   }
 
-  public getReturnUrl(): string {
-    const returnTo = this.returnUrl || '/';
+  getReturnUrl(): string {
+    const returnTo = this.persistentState.returnUrl || '/';
     const lang = this.localizeRouterService.getLocationLang(returnTo);
     this.translate.use(lang);
     return this.localizeRouterService.translateRoute(
@@ -193,98 +172,85 @@ export class UserService extends LocalDb {
     );
   }
 
-  public getDefaultFormData(): Observable<any> {
-    if (this.defaultFormData) {
-      return ObservableOf(this.defaultFormData);
-    } else if (this.formDefaultObservable) {
-      return this.formDefaultObservable;
-    }
-    this.formDefaultObservable = this.getUser().pipe(
-      map(data => ({
-        'creator': data.id,
+  /**
+   * @deprecated this will be refactored into haseka facade
+   */
+  getDefaultFormData(): Observable<any> {
+    return this.user$.pipe(
+      take(1),
+      map(person => ({
+        'creator': person.id,
         'gatheringEvent': {
-          'leg': [data.id]
+          'leg': [person.id]
         }
-      }))).pipe(
-      tap(data => this.defaultFormData = data),
-      share()
+      }))
     );
-    return this.formDefaultObservable;
   }
 
-  public getUserSetting(key): Observable<any> {
-    return ObservableOf(this.userSettings && this.userSettings[key] ? this.userSettings[key] : undefined);
+  getUserSetting(key: keyof IUserSettings): Observable<any> {
+    return this.settings$.pipe(map(settings => settings[key]));
   }
 
-  public setUserSetting(key: string, value: any): void {
-    if (!this.currentUserId) {
+  setUserSetting(key: keyof IUserSettings, value: any): void {
+    const personID = _state.user.id || '';
+    if (!personID) {
       return;
     }
-    this.setItem(this.currentUserId, {...this.userSettings, [key]: value}).pipe(
-      tap((settings) => this.userSettings = settings))
-      .subscribe(() => {}, () => {});
+    const settings = {..._state.settings, [key]: value};
+    this.updateState({..._state, settings});
+    this.storage.store(this.personsCacheKey(personID), settings);
   }
 
-  private checkLogin() {
-    if (this.platformService.isBrowser) {
-      if (this.token) {
-        this.loadUserInfo(this.token).subscribe(
-          value => this.isLoggedIn = !!value,
-          () => this.isLoggedIn = false
-        );
-      } else {
-        this.isLoggedIn = false;
-      }
+  private personsCacheKey(personID): string {
+    return `users-${personID }-settings`;
+  }
+
+  private checkLogin(rawToken?: string): Observable<boolean> {
+    if (!this.platformService.isBrowser) {
+      this.doLoginState({}, '');
+      return of(true);
+    }
+    const token = rawToken || this.persistentState.token;
+    if (token) {
+      return this.personApi.personFindByToken(token).pipe(
+        httpOkError(404, false),
+        retryWithBackoff(300),
+        catchError(() => of(false)),
+        tap(user => this.doLoginState(user, token)),
+        tap(user => this.doUserSettingsState(user.id)),
+        map(user => !!user),
+        share()
+      );
     } else {
-      // On server render the pages just like the user would have been logged in
-      this.isLoggedIn = true;
+      this.doLogoutState();
     }
+    this.storage.clear('token'); // this is only used for the transition phase and can be removed after one release
+    this.storage.clear('returnUrl'); // this is only used for the transition phase and can be removed after one release
+    return of(false);
   }
 
-  private loadUserInfo(token: string): Observable<any> {
-    this.token = token;
-    const currentId = this.currentUserId;
-    return this.getUser(null, token).pipe(
-      filter((p) => p.id !== currentId),
-      tap((person: Person) => this.addUser(person, true)),
-      switchMap((person: Person) => this.getItem(person.id).pipe(
-        tap((settings: any) => this.userSettings = settings),
-        switchMap(() => ObservableOf(person))
-      )),
-      tap(() => this.actionSource.next(USER_INFO)),
-      catchError(err => {
-        this.logout();
-        this.logger.warn('Failed to load user info with token', err);
-
-        return ObservableOf(null);
-      })
-    );
+  private doLoginState(user: Person, token) {
+    this.updatePersistentState({...this.persistentState, token: user ? token : ''});
+    this.updateState({..._state, ...this.persistentState, isLoggedIn: !!user, user: user || {}});
   }
 
-  private getCurrentUser(token?: string) {
-    const userToken = token || this.token;
-    if (!userToken) {
-      return ObservableOf({});
-    }
-    if (this.currentUserId && this.users[this.currentUserId]) {
-      return ObservableOf(this.users[this.currentUserId]);
-    } else if (this.observable) {
-      return this.observable;
-    }
-    this.observable = this.userService.personFindByToken(userToken).pipe(
-      tap(u => this.addUser(u, true)),
-      share()
-    );
-    return this.observable;
+  private doLogoutState() {
+    this.updatePersistentState({...this.persistentState, token: ''});
+    this.updateState({..._state, ...this.persistentState, isLoggedIn: false, user: {}, settings: {}});
   }
 
-  private addUser(user: Person, asCurrent = false) {
-    if (!user) {
+  private updateState(state: IUserServiceState) {
+    this.store.next(_state = state);
+  }
+
+  private updatePersistentState(state: IPersistentState) {
+    if (!this.platformService.isBrowser) {
       return;
     }
-    if (asCurrent) {
-      this.currentUserId = user.id;
-    }
-    this.users[user.id] = user;
+    this.persistentState = state;
+  }
+
+  private doUserSettingsState(id: string) {
+    this.updateState({..._state, settings: this.storage.retrieve(this.personsCacheKey(id))});
   }
 }

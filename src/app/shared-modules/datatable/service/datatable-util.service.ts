@@ -73,7 +73,7 @@ export class DatatableUtil {
         observable = ObservableOf(value.status.replace('MX.iucn', '') + ' (' + value.year + ')');
         break;
       case 'user':
-        observable = this.getUserName(value);
+        observable = this.userService.getPersonInfo(value);
         break;
       case 'taxonName':
         observable = ObservableOf(
@@ -128,10 +128,5 @@ export class DatatableUtil {
     return ObservableForkJoin(habitats.map(h => this.getLabels(h.habitat))).pipe(
       map(data => data.join('; '))
     );
-  }
-
-  private getUserName(value): Observable<string> {
-    return this.userService.getUser(value)
-      .pipe(map((user: Person) => (user.fullName || '')));
   }
 }

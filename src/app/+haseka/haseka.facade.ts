@@ -1,18 +1,15 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
-import { catchError, distinctUntilChanged, map, share, startWith, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
-import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
+import { LajiApiService } from '../shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ISettingResultList, UserService } from '../shared/service/user.service';
-import { Autocomplete } from '../shared/model/Autocomplete';
+import { UserService } from '../shared/service/user.service';
 import { FooterService } from '../shared/service/footer.service';
-import { WarehouseApi } from '../shared/api/WarehouseApi';
-import { FormList } from './form-list/haseka-form-list';
 import { Form } from '../shared/model/Form';
+import { Document } from '../shared/model/Document';
 
 interface IPersistentState {
   activeYear: string;
@@ -21,6 +18,7 @@ interface IPersistentState {
 
 interface IVihkoState extends IPersistentState {
   forms: Form.List[];
+  latestDocs: Document[];
 }
 
 interface IVihkoViewModel extends IVihkoState {
@@ -34,7 +32,8 @@ const _persistentState: IPersistentState = {
 
 let _state: IVihkoState = {
   ..._persistentState,
-  forms: []
+  forms: [],
+  latestDocs: []
 };
 
 @Injectable()
@@ -50,12 +49,14 @@ export class HasekaFacade implements OnDestroy {
   activeYear$    = this.state$.pipe(map((state) => state.activeYear), distinctUntilChanged());
   showIntro$     = this.state$.pipe(map((state) => state.showIntro));
   forms$         = this.state$.pipe(map((state) => state.forms), distinctUntilChanged());
+  latestDocs$    = this.state$.pipe(map((state) => state.latestDocs), distinctUntilChanged());
 
   vm$: Observable<IVihkoViewModel> = hotObjectObserver<IVihkoViewModel>({
     forms: this.forms$,
     lgScreen: this.lgScreen$,
     showIntro: this.showIntro$,
-    activeYear: this.activeYear$
+    activeYear: this.activeYear$,
+    latestDocs: this.latestDocs$
   });
 
   private userSub: Subscription;
@@ -80,6 +81,14 @@ export class HasekaFacade implements OnDestroy {
     if (this.userSub) {
       this.userSub.unsubscribe();
     }
+  }
+
+  updateLatestDocuments(): void {
+    const token = this.userService.getToken();
+    if (!token) {
+      this.updateState({..._state, latestDocs: []});
+    }
+
   }
 
   activeYear(year: string) {

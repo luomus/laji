@@ -9,15 +9,12 @@ export class OnlyLoggedIn implements CanActivate {
 
   constructor(private userService: UserService) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
-    Observable<boolean>
-    | Promise<boolean>
-    | boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return this.userService.isLoggedIn$.pipe(
       take(1),
       tap(login => {
         if (!login) {
-          this.userService.doLogin(state.url);
+          this.userService.redirectToLogin(state.url);
         }
       })
     );

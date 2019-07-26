@@ -66,17 +66,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     return this._activeTab;
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-
-    if ( window.innerWidth > 767) {
-      this.showMobile = false;
-    } else {
-      this.showMobile = true;
-    }
-
-  }
-
 
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
@@ -124,5 +113,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   onListSettingsChange(settings: ISettingResultList) {
     this.observationFacade.updateListSettings(settings);
+  }
+
+  toggleMobile() {
+  this.statusFilterMobile = !this.statusFilterMobile;
   }
 }

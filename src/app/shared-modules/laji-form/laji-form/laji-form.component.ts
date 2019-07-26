@@ -14,7 +14,7 @@ import {
   SimpleChanges, ViewChild
 } from '@angular/core';
 import { FormApiClient } from '../../../shared/api/FormApiClient';
-import { UserService } from '../../../shared/service/user.service';
+import { IUserSettings, UserService } from '../../../shared/service/user.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import LajiForm from 'laji-form/lib/laji-form';
 import { ToastsService } from '../../../shared/service/toasts.service';
@@ -35,7 +35,7 @@ const GLOBAL_SETTINGS = '_global_form_settings_';
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
   @Input() formData: any = {};
-  @Input() settingsKey = '';
+  @Input() settingsKey: keyof IUserSettings = 'formDefault';
   @Input() showShortcutButton = true;
 
   @Output() dataSubmit = new EventEmitter();

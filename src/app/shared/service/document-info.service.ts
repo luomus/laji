@@ -78,7 +78,7 @@ export class DocumentInfoService {
   }
 
   public static isEmptyUnit(unit: Units, form: any) {
-    if (form.features && (
+    if (form && Array.isArray(form.features) && (
         form.features.indexOf('MHL.featurePrepopulateWithInformalTaxonGroups') !== -1 ||
         form.features.indexOf('MHL.featureEmptyOnNoCount') !== -1
       )
