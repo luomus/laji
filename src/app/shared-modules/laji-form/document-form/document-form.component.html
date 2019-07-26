@@ -4,12 +4,17 @@
     <div [hidden]="!hasAlertContent">
       <laji-info-page child="2860" (hasContent)="hasAlertContent = $event"></laji-info-page>
     </div>
-    <alert type="danger" *ngIf="vm.error == errors.notFound">
-      {{ 'haseka.form.formNotFound' | translate:{formId: this.formId} }}
-    </alert>
-    <alert type="danger" *ngIf="vm.error == errors.loadFailed">
-      {{ 'haseka.form.genericError' | translate }}
-    </alert>
+    <ng-container [ngSwitch]="vm.error">
+      <alert type="danger" *ngSwitchCase="errors.notFoundForm">
+        {{ 'haseka.form.formNotFound' | translate:{formId: this.formId} }}
+      </alert>
+      <alert type="danger" *ngSwitchCase="errors.notFoundDocument">
+        {{ 'haseka.form.documentNotFound' | translate:{documentId: this.documentId} }}
+      </alert>
+      <alert type="danger" *ngSwitchCase="errors.loadFailed">
+        {{ 'haseka.form.genericError' | translate }}
+      </alert>
+    </ng-container>
   </div>
   <laji-document-form-header *ngIf="showHeader && vm.error == errors.ok"
       [formID]="vm.form.id"

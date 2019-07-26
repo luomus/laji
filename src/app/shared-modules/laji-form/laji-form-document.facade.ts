@@ -13,7 +13,6 @@ import {
 import { LocalStorage } from 'ngx-webstorage';
 import merge from 'deepmerge';
 import * as moment from 'moment';
-import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { BrowserService } from '../../shared/service/browser.service';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
@@ -37,7 +36,8 @@ import { DocumentStorage } from '../../storage/document.storage';
 export enum FormError {
   ok,
   incomplete,
-  notFound,
+  notFoundForm,
+  notFoundDocument,
   loadFailed,
   missingNamedPlace,
   noAccess
@@ -193,7 +193,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
       catchError((err) => {
         this.updateState({
           ..._state,
-          error: err instanceof HttpErrorResponse && err.status === 404 ? FormError.notFound :  FormError.loadFailed
+          error: err.status === 404 ? FormError.notFoundForm :  FormError.loadFailed
         });
         this.logger.error('Failed to load form', { error: err});
         return of(null);
@@ -232,15 +232,16 @@ export class LajiFormDocumentFacade implements OnDestroy {
     if (!_state.saving) {
       this.updateState({..._state, saving: true});
       const document = {...rawDocument};
+      const isTmpId = FormService.isTmpId(document.id);
       document.publicityRestrictions = publicityRestriction;
       delete document._hasChanges;
       delete document._isTemplate;
-      if (FormService.isTmpId(document.id)) {
-        delete document.id;
-      }
-      this.saveObs$ = (document.id && FormService.isTmpId(document.id) ?
-        this.documentApi.update(document.id, document, this.userService.getToken()) :
-        this.documentApi.create(document, this.userService.getToken())).pipe(
+      if (isTmpId) { delete document.id; }
+
+      this.saveObs$ = (isTmpId ?
+        this.documentApi.create(document, this.userService.getToken()) :
+        this.documentApi.update(document.id, document, this.userService.getToken())
+      ).pipe(
         tap(() => this.namedPlacesService.invalidateCache()),
         tap(() => this.userService.user$.pipe(
           take(1),
@@ -297,6 +298,10 @@ export class LajiFormDocumentFacade implements OnDestroy {
               return this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
             }
             return Util.isLocalNewestDocument(local, document) ? local : document;
+          }),
+          catchError(err => {
+            this.updateState({..._state, error: err.status === 404 ? FormError.notFoundDocument : FormError.loadFailed});
+            return of(null);
           })
         ))
       ))
@@ -331,7 +336,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
           biogeographicalProvinceEnum: resultToEnum(biogeographicalProvinces),
           annotations: form.annotations,
           formID: form.id,
-          creator: form.formData.creator,
+          creator: form.formData && form.formData.creator || undefined,
           isAdmin: form.rights.edit,
           isEdit: FormService.isTmpId(documentID),
           placeholderGeometry: _state.namedPlace && _state.namedPlace.geometry || undefined
@@ -341,7 +346,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private getAnnotations(documentID: string, page = 1, results = []): Observable<Annotation[]> {
-    return !documentID || FormService.isTmpId(documentID) ?
+    return FormService.isTmpId(documentID) ?
       ObservableOf([]) :
       this.lajiApi.getList(
         LajiApi.Endpoints.annotations,
@@ -396,7 +401,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     if (rights.admin) {
       return Readonly.false;
     }
-    if (person && person.id && data.id && data.creator !== person.id && (!data.editors || data.editors.indexOf(person.id) === -1)) {
+    if (person && person.id && data && data.id && data.creator !== person.id && (!data.editors || data.editors.indexOf(person.id) === -1)) {
       return Readonly.noEdit;
     }
     return data && typeof data.locked !== 'undefined' ? (data.locked ? Readonly.true : Readonly.false) : Readonly.false;

@@ -10,8 +10,8 @@ import { FormService } from '../shared/service/form.service';
 @Injectable({providedIn: 'root'})
 export class DocumentStorage extends LocalDb<Document> {
 
-  private listenerSource = new Subject();
-  update$ = this.listenerSource.asObservable();
+  private deletesSource = new Subject();
+  deletes$ = this.deletesSource.asObservable();
 
   static key(documentId: string, person: string | Person): string {
     if (!person || !documentId) {
@@ -36,7 +36,7 @@ export class DocumentStorage extends LocalDb<Document> {
     }
     const itemId = person ? DocumentStorage.key(key, person) : key;
     return from(this.db.removeItem(itemId)).pipe(
-      tap(() => this.listenerSource.next()),
+      tap(() => this.deletesSource.next()),
       catchError(() => ObservableOf(null)),
     );
   }
@@ -50,13 +50,9 @@ export class DocumentStorage extends LocalDb<Document> {
 
   setItem(key: string, value: Document, person?: string | Person): Observable<Document> {
     if (person) {
-      return super.setItem(DocumentStorage.key(key, person), value).pipe(
-        tap(() => this.listenerSource.next())
-      );
+      return super.setItem(DocumentStorage.key(key, person), value);
     }
-    return super.setItem(key, value).pipe(
-      tap(() => this.listenerSource.next())
-    );
+    return super.setItem(key, value);
   }
 
   getAllKeys(person: string | Person, type?: 'onlyTmp'|'onlyDoc'): Observable<string[]> {

@@ -57,7 +57,7 @@ export class LatestDocumentsFacade implements OnDestroy {
     private formService: FormService,
     private translateService: TranslateService
   ) {
-    this.localUpdateSub = this.documentStorage.update$.subscribe(() => {
+    this.localUpdateSub = this.documentStorage.deletes$.subscribe(() => {
       this.updateLocal();
     });
   }

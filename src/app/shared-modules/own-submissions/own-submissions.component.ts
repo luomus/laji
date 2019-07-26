@@ -28,6 +28,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { Router } from '@angular/router';
 import { Global } from '../../../environments/global';
 import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade';
+import { LatestDocumentsFacade } from '../latest-documents/latest-documents.facade';
 
 interface DocumentQuery {
   year?: number;
@@ -109,7 +110,8 @@ export class OwnSubmissionsComponent implements OnChanges {
     private pdfLabelService: PdfLabelService,
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
-    private documentViewerFacade: DocumentViewerFacade
+    private documentViewerFacade: DocumentViewerFacade,
+    private latestFacade: LatestDocumentsFacade
   ) {
     this.selectedMap.taxon += ',' + Global.documentCountUnitProperties.map(prop => 'gatherings.units.' + prop).join(',');
   }
@@ -250,6 +252,9 @@ export class OwnSubmissionsComponent implements OnChanges {
             .subscribe((value) => this.toastService.showSuccess(value));
           this.loading = false;
           this.cd.markForCheck();
+          setTimeout(() => {
+            this.latestFacade.update();
+          }, 3000);
         },
         (err) => {
           this.translate.get('delete.error')
