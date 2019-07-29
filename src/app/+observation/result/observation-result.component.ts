@@ -42,6 +42,7 @@ export class ObservationResultComponent {
     }
     this._active = value;
     this.activated[value] = true;
+    this.showMenu = false;
     if (value !== 'finnish') {
       this.lastTabActive = value;
     }

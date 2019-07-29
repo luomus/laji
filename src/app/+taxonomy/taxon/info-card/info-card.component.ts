@@ -18,6 +18,7 @@ import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInter
 import {Image} from '../../../shared/gallery/image-gallery/image.interface';
 import {InfoCardQueryService} from './shared/service/info-card-query.service';
 
+
 @Component({
   selector: 'laji-info-card',
   templateUrl: './info-card.component.html',
@@ -65,8 +66,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
   }
-
-
 
   ngOnInit() {
     if (window.innerWidth > 767) {
@@ -123,6 +122,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.setImages();
 
     }
+
+    this.showMenu = false;
   }
 
   ngOnDestroy() {
