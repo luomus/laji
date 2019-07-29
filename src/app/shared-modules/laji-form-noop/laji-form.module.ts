@@ -5,6 +5,7 @@ import { LajiFormComponent } from './laji-form/laji-form.component';
 import { DocumentFormHeaderComponent } from './document-form-header/document-form-header.component';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { DocumentFormFooterComponent } from './document-form-footer/document-form-footer.component';
+import { LajiFormDocumentFacade } from '../laji-form/laji-form-document.facade';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { DocumentFormFooterComponent } from './document-form-footer/document-for
     SharedModule
   ],
   declarations: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],
-  exports: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent]
+  exports: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],
+  providers: [LajiFormDocumentFacade]
 })
 export class LajiFormModule { }
