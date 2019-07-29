@@ -126,22 +126,22 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     const document = event.data.formData;
     this.lajiForm.block();
     this.subSaving = this.lajiFormFacade.save(document, this.publicityRestrictions).subscribe((res) => {
-        this.lajiForm.unBlock();
-        if (res.success) {
-          this.toastsService.showSuccess(
-            this.getMessage(
-              this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
-              this.translate.instant('haseka.form.success')
-            )
-          );
-          this.success.emit(res);
-        } else {
-          this.saveVisibility = 'shown';
-          this.status = 'unsaved';
-          this.toastsService.showError(this.getMessage('error', this.translate.instant('haseka.form.error')));
-        }
-        this.changeDetector.markForCheck();
-      });
+      this.lajiForm.unBlock();
+      if (res.success) {
+        this.toastsService.showSuccess(
+          this.getMessage(
+            this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+            this.translate.instant('haseka.form.success')
+          )
+        );
+        this.success.emit(res);
+      } else {
+        this.saveVisibility = 'shown';
+        this.status = 'unsaved';
+        this.toastsService.showError(this.getMessage('error', this.translate.instant('haseka.form.error')));
+      }
+      this.changeDetector.markForCheck();
+    });
   }
 
   submitPublic() {
