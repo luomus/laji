@@ -80,7 +80,7 @@
   <span *ngIf="showFormName" class="label label-default">{{ document.formID | formName }}</span>
 </div>-->
 
-<div class="link latest-container" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading" ngPreserveWhitespaces></div>
+<div class="link latest-container" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading" ngPreserveWhitespaces>
     <div class="info">
         <div class="observation-title" *ngIf="locality">{{ locality }}</div>
         <div class="observation-title" *ngIf="!locality">
