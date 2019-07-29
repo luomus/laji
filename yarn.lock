@@ -511,10 +511,9 @@
     d3-shape "^1.2.0"
     d3-time-format "^2.1.0"
 
-"@swimlane/ngx-datatable@^15.0.2":
+"@swimlane/ngx-datatable@git+https://git@github.com/vixriihi/ngx-datatable#dev":
   version "15.0.2"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-15.0.2.tgz#3ab0a25668ebc20fe192a3014d41875e0f307181"
-  integrity sha512-IlUyCs/hLv12hzz2pGugbrdRpBbwE6JUM4Bm4CCqLptmZj+t8pw8Ywthde8yUDdpgGgTJeJ9G5o92QadyGbP3g==
+  resolved "git+https://git@github.com/vixriihi/ngx-datatable#b450c39eb3f941b3960e12c31e4a74f8129eb04f"
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
