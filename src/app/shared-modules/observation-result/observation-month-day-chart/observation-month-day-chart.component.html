@@ -1,7 +1,7 @@
 <ng-container *ngIf="barChartData && barChartData.length > 0">
   <div class="info-card-chart"> 
             <div class="chart-container">
-              <laji-bar-chart baseChart
+              <laji-bar-chart
                 [datasets]="barChartData"
                 [labels]="barChartLabels"
                 [options]="barChartOptions"
@@ -27,7 +27,7 @@
       </div>
       <div class="modal-body" *ngIf="dayChartModalVisible">
         <div class="info-card-chart day-chart">
-          <laji-bar-chart baseChart
+          <laji-bar-chart
                 [datasets]="daybarChartData[activeMonth]"
                 [labels]="barChartLabelsDay"
                 [options]="barChartOptions"

@@ -1,6 +1,6 @@
 <ng-container *ngIf="newData && newData[0].data.length > 0">
   <div class="info-card-chart year-chart">
-    <laji-bar-chart baseChart
+    <laji-bar-chart
       [datasets]="newData"
       [colors] = "colors"
       [labels]="barChartLabels"
