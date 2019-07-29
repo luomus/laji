@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
-  selector: 'laji-canvas',
+  selector: 'laji-bar-chart',
   template: `<canvas id="myChart" baseChart
   [datasets]="datasets"
   [labels]="labels"
@@ -16,7 +16,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   </canvas>`,
   styles: [':host { display:block; height:350px }']
 })
-export class LajiBarComponent {
+export class BarChartComponent {
   @Input() datasets: any;
   @Input() labels: any;
   @Input() options: any;

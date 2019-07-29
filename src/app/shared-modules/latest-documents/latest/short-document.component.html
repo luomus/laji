@@ -95,7 +95,7 @@
         </div>
         <div class="published" *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
             <span>
-                <span class="label label-warning link inline-block">{{ 'result.showPrivateViewerText' | translate }}</span>
+                <span class="label label-warning link inline-block">{{ 'result.latestObservationsLabel' | translate }}</span>
             </span>
         </div>
         <div class="observation-last-edit" *ngIf="!changingLocale"> <i class="glyphicon glyphicon-edit"></i> <span *ngIf="document.dateEdited">{{ document.dateEdited | amTimeAgo }} </span></div>

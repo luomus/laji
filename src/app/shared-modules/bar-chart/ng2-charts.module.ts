@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LajiBarComponent } from './ng2-charts-bar-vertical-group/ng2-charts-bar-vertical-group.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
@@ -8,8 +8,8 @@ import { ChartsModule } from 'ng2-charts';
     CommonModule,
     ChartsModule
   ],
-  declarations: [LajiBarComponent],
-  exports: [LajiBarComponent]
+  declarations: [BarChartComponent],
+  exports: [BarChartComponent]
 })
 export class ChartsModuleBarVerticalGroup { }
 

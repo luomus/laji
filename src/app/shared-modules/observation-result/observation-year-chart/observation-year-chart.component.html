@@ -1,6 +1,6 @@
 <ng-container *ngIf="newData && newData[0].data.length > 0">
   <div class="info-card-chart year-chart">
-    <laji-canvas baseChart
+    <laji-bar-chart baseChart
       [datasets]="newData"
       [colors] = "colors"
       [labels]="barChartLabels"
@@ -8,7 +8,7 @@
       [legend]="false"
       [chartType]="'bar'"
       >
-   </laji-canvas>
+   </laji-bar-chart>
   </div>
   <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="splitIdx > 0">
     {{ 'taxonomy.observations.yearChart.' + (newData[0].data.length < allDataNew[0].data.length ? 'showHistory' : 'hideHistory') | translate }}

@@ -13,7 +13,7 @@ import { ObservationYearChartComponent } from './observation-year-chart/observat
 import { ObservationMonthDayChartComponent } from './observation-month-day-chart/observation-month-day-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartsModule } from 'ng2-charts';
-import { ChartsModuleBarVerticalGroup } from '../ng2-charts-module/ng2-charts.module';
+import { ChartsModuleBarVerticalGroup } from '../bar-chart/ng2-charts.module';
 
 @NgModule({
   imports: [
