@@ -33,7 +33,7 @@ import { InfoModule } from '../shared-modules/info/info.module';
 import { BoldSynonymComponent } from './taxon/info-card/taxon-overview/taxon-info/bold-synonym/bold-synonym.component';
 import { SpeciesCountComponent } from './species/species-count/species-count.component';
 import { SpeciesPieComponent } from './taxon/info-card/taxon-overview/species-pie/species-pie.component';
-import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail/navigation-thumbnail.module';
+import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { TaxonSelectModule } from '../shared-modules/taxon-select/taxon-select.module';
 import { TaxonSynonymsComponent } from './taxon/info-card/taxon-taxonomy/taxon-synonyms/taxon-synonyms.component';
 import { TaxonNamesComponent } from './taxon/info-card/taxon-taxonomy/taxon-names/taxon-names.component';

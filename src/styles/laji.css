@@ -979,6 +979,12 @@ input[type="radio"]
   background: #009a00 !important;
 }
 
+/* Common style */
+
+.margin-top-20 {
+  margin-top:20px;
+}
+
 
 /* CTA Buttons */
 
