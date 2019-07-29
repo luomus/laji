@@ -139,6 +139,12 @@ export class FormPermissionService {
         return this.userService.user$.pipe(
           take(1),
           switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
+            catchError(() => of({
+              id: '',
+              collectionID: form.collectionID,
+              admins: [],
+              editors: []
+            } as FormPermission)),
             map((formPermission: FormPermission) => ({person, formPermission}))
           )),
           switchMap(data => ObservableOf(cb(data.formPermission, data.person))),
