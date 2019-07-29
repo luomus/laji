@@ -12,9 +12,6 @@ import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
-Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
-  return coordinates;
-};
 
 @Component({
   selector: 'laji-observation-month-day-chart',
@@ -22,7 +19,7 @@ Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
   styleUrls: ['./observation-month-day-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
+export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;
@@ -53,6 +50,12 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy {
     private translate: TranslateService,
     private cd: ChangeDetectorRef
   ) { }
+
+  ngOnInit() {
+    Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+      return coordinates;
+    };
+  }
 
   ngOnChanges() {
     this.updateData();

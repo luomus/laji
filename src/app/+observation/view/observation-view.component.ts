@@ -80,6 +80,10 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     if (this.subQueryUpdate) {
       this.subQueryUpdate.unsubscribe();
     }
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   draw(type: string) {
