@@ -598,7 +598,7 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/jasmine@*":
+"@types/jasmine@*", "@types/jasmine@^3.3.13":
   version "3.3.16"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.3.16.tgz#7c84074f5d7f84da9a14f816ccfb9aeb4da13f27"
   integrity sha512-Nveep4zKGby8uIvG2AEUyYOwZS8uVeHK9TgbuWYSawUDDdIgfhCKz28QzamTo//Jk7Ztt9PO3f+vzlB6a4GV1Q==
@@ -5853,11 +5853,12 @@ laji-form@^0.0.629:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.512, laji-map@^1.0.507:
-  version "1.0.512"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.512.tgz#b29fdbf1aeedcfb1e192fcbc760598ff0f4596d7"
-  integrity sha512-s7D43i5vGbG4QK7Phioxgd7kqfzeXyPfuVghfZSvfKaIVYBgP/mWbovXdpt6G5VEjQjqzSdv1HmQog/G/7iZhA==
+laji-map@1.0.513, laji-map@^1.0.507:
+  version "1.0.513"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.513.tgz#08b6f375cb7037e77714ff2001028445dd0ed048"
+  integrity sha512-F+PAKPDW8LziujYbxD+r7qjKsSdkRaT6naPubtt96sRCyk3eeyZ5zw8QmE++DMFAzKVpciyZ7K92Qu7S8SF8lw==
   dependencies:
+    "@types/jasmine" "^3.3.13"
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
     leaflet-contextmenu "1.4.0"
@@ -5958,10 +5959,10 @@ leaflet.sync@^0.2.4:
   resolved "https://registry.yarnpkg.com/leaflet.sync/-/leaflet.sync-0.2.4.tgz#76d4095a61470882d72e092190090d0a1fa55ca2"
   integrity sha1-dtQJWmFHCILXLgkhkAkNCh+lXKI=
 
-leaflet@*, leaflet@1.4.0, leaflet@1.5.1, leaflet@>=0.7.0, leaflet@^1.0.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.5.1.tgz#9afb9d963d66c870066b1342e7a06f92840f46bf"
-  integrity sha512-ekM9KAeG99tYisNBg0IzEywAlp0hYI5XRipsqRXyRTeuU8jcuntilpp+eFf5gaE0xubc9RuSNIVtByEKwqFV0w==
+leaflet@*, leaflet@1.4.0, leaflet@>=0.7.0, leaflet@^1.0.1:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.4.0.tgz#d5f56eeb2aa32787c24011e8be4c77e362ae171b"
+  integrity sha512-x9j9tGY1+PDLN9pcWTx9/y6C5nezoTMB8BLK5jTakx+H7bPlnbCHfi9Hjg+Qt36sgDz/cb9lrSpNQXmk45Tvhw==
 
 less-loader@5.0.0:
   version "5.0.0"
