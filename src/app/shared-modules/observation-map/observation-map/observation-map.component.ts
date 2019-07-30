@@ -294,7 +294,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateMapData() {
-    this.loading = true;
     if (!this.ready) {
       return;
     }
@@ -311,6 +310,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       this.initDrawData();
     }
     this.reset = true;
+    this.loading = true;
     this.showingItems = false;
     this.addToMap(this.query);
   }
