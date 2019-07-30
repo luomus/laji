@@ -1,3 +1,5 @@
+@import '../../../../styles/sass/styles';
+
 ::ng-deep {
   .browse-button {
     margin-bottom: 20px;
@@ -9,6 +11,10 @@
     height: 350px;
     max-height: calc(100vh - 61px);
     max-width: 1200px;
+
+    @include media-query-phone {
+      background-color: $main-blu;
+    }
   }
 
   /*.nav.nav-tabs.nav-justified{
