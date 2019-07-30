@@ -294,7 +294,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateMapData() {
-    this.loading = true;
     if (!this.ready) {
       return;
     }
@@ -311,6 +310,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       this.initDrawData();
     }
     this.reset = true;
+    this.loading = true;
     this.showingItems = false;
     this.addToMap(this.query);
   }
@@ -428,10 +428,13 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private addViewPortCoordinates(query: WarehouseQueryInterface) {
     if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
-      query.coordinates = [
-        Math.max(this.activeBounds.getSouthWest().lat, -90) + ':' + Math.min(this.activeBounds.getNorthEast().lat, 90) + ':' +
-        Math.max(this.activeBounds.getSouthWest().lng, -180) + ':' + Math.min(this.activeBounds.getNorthEast().lng, 180) + ':WGS84'
-      ];
+      return {
+        ...query,
+        coordinates: [
+          Math.max(this.activeBounds.getSouthWest().lat, -90) + ':' + Math.min(this.activeBounds.getNorthEast().lat, 90) + ':' +
+          Math.max(this.activeBounds.getSouthWest().lng, -180) + ':' + Math.min(this.activeBounds.getNorthEast().lng, 180) + ':WGS84'
+        ]
+      };
     }
     return query;
   }

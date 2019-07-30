@@ -11,7 +11,7 @@ import { FormService } from '../../shared/service/form.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Form } from '../../shared/model/Form';
 import { take } from 'rxjs/internal/operators';
-import { UserService } from '../../shared/service/user.service';
+import { BrowserService } from '../../shared/service/browser.service';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -39,7 +39,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
               private cd: ChangeDetectorRef,
               private routingStateService: RoutingStateService,
               private formService: FormService,
-              private userService: UserService,
+              private browserService: BrowserService,
               public translate: TranslateService
   ) {
   }
@@ -80,24 +80,28 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   }
 
   onSuccess(data) {
-    if (data.form && data.form.viewerType && data.document && data.document.id) {
-      return this.router.navigate(
-        this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
-      );
-    }
-    this.isMobile$.pipe(take(1)).subscribe(isMobile => {
-      const query = isMobile ? ['/vihko', this.formId] : ['/vihko'];
-      if (!isMobile && this.back) {
-        return this.router.navigateByUrl(this.back);
+    this.browserService.goBack(() => {
+      if (data.form && data.form.viewerType && data.document && data.document.id) {
+        return this.router.navigate(
+          this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
+        );
       }
-      this.router.navigate(this.localizeRouterService.translateRoute(query));
+      this.isMobile$.pipe(take(1)).subscribe(isMobile => {
+        const query = isMobile ? ['/vihko', this.formId] : ['/vihko'];
+        if (!isMobile && this.back) {
+          return this.router.navigateByUrl(this.back);
+        }
+        this.router.navigate(this.localizeRouterService.translateRoute(query));
+      });
     });
   }
 
-  private nagivateToFront() {
-    this.isMobile$.pipe(take(1)).subscribe(isMobile => {
-      const query = isMobile ? ['/vihko', this.formId] : ['/vihko'];
-      this.router.navigate(this.localizeRouterService.translateRoute(query));
+  private navigateToFront() {
+    this.browserService.goBack(() => {
+      this.isMobile$.pipe(take(1)).subscribe(isMobile => {
+        const query = isMobile ? ['/vihko', this.formId] : ['/vihko'];
+        this.router.navigate(this.localizeRouterService.translateRoute(query));
+      });
     });
   }
 
@@ -112,11 +116,11 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   }
 
   onError() {
-    this.nagivateToFront();
+    this.navigateToFront();
   }
 
   onCancel() {
-    this.nagivateToFront();
+    this.navigateToFront();
   }
 
   private getBack() {

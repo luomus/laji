@@ -94,7 +94,7 @@ let _state: ILajiFormState = {
   hasChanges: false,
   saving: false,
   loading: false,
-  error: FormError.ok,
+  error: FormError.incomplete,
 };
 
 @Injectable()
@@ -159,6 +159,10 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   loadForm(formID: string, documentID?: string): void {
+    if (!formID) {
+      this.updateState({..._state, hasChanges: false, error: FormError.incomplete});
+      return;
+    }
     if (this.formSub) {
       this.formSub.unsubscribe();
     }
