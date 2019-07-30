@@ -93,6 +93,8 @@
           <span class="label label-success link inline-block"
                 [tooltip]="'result.showViewer' | translate"
                 [placement]="'right'"
+                container="body"
+                [adaptivePosition]="false"
                 (click)="showViewer(row.id)">
             <i class="glyphicon glyphicon-eye-open"></i>
           </span>
@@ -101,6 +103,8 @@
           <span class="label label-warning link inline-block"
                 [tooltip]="'result.showPrivateViewer' | translate"
                 [placement]="'right'"
+                container="body"
+                [adaptivePosition]="false"
                 (click)="showViewer(row.id)">
             <i class="glyphicon glyphicon-eye-close"></i>
           </span>
@@ -111,6 +115,8 @@
                 'label-default': row.locked
               }"
               [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
+              container="body"
+              [adaptivePosition]="false"
               [routerLink]="row._editUrl | localize"
               [placement]="'right'">
             <i class="glyphicon glyphicon-edit"></i>
@@ -119,6 +125,8 @@
           <span class="label label-warning link inline-block"
                 (click)="makeTemplate(row)"
                 [tooltip]="'haseka.form.saveTemplate' | translate"
+                container="body"
+                [adaptivePosition]="false"
                 [placement]="'right'">
             <i class="glyphicon glyphicon-floppy-disk"></i>
           </span>
@@ -154,6 +162,7 @@
                 [tooltip]="('haseka.submissions.download' | translate) + ' ' + ('haseka.submissions.submission' | translate)"
                 [placement]="'left'"
                 [container]="'body'"
+                [adaptivePosition]="false"
                 (click)="openChooseFileTypeModal(row.id)">
             <i class="glyphicon glyphicon-download-alt"></i>
           </span>
@@ -162,12 +171,14 @@
                 [tooltip]="'haseka.submissions.toStatistics' | translate"
                 [placement]="'left'"
                 [container]="'body'"
+                [adaptivePosition]="false"
                 [routerLink]="'/theme/linjalaskenta/statistics/' + row.id | localize">
             <i class="glyphicon glyphicon-stats"></i>
           </a>
           <span *ngIf="actions.indexOf('delete') > -1 && (admin || row.creator === usersId)" class="label label-danger link inline-block"
                 [tooltip]="'friend.remove' | translate"
                 [placement]="'left'"
+                [adaptivePosition]="false"
                 [container]="'body'"
                 (click)="deleteDialog(row)">
             <i class="glyphicon glyphicon-remove"></i>

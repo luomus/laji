@@ -6,19 +6,24 @@
       <span class="label label-warning link inline-block"
             [tooltip]="'result.showPrivateViewer' | translate"
             [placement]="'left'"
+            container="body"
             (click)="onShowViewer($event)">
         <i class="glyphicon glyphicon-eye-close"></i>
       </span>
     </ng-container>
 
     <ng-container *ngIf="hasChanges">
-      <span class="label label-danger inline-block" [tooltip]="'haseka.form.hasChanges' | translate" [placement]="'left'">
+      <span class="label label-danger inline-block" container="body" [tooltip]="'haseka.form.hasChanges' | translate" [placement]="'left'"
+            container="body"
+            [adaptivePosition]="false">
         <i class="glyphicon glyphicon-warning-sign"></i>
       </span>
       <span class="label label-default link inline-block"
             tabIndex=0
             [tooltip]="'haseka.users.latest.discard' | translate"
             [placement]="'left'"
+            container="body"
+            [adaptivePosition]="false"
             (click)="removeDocument($event, document)">
         <i class="glyphicon glyphicon-trash"></i>
       </span>
@@ -28,6 +33,8 @@
       <span class="label label-success link inline-block"
             [tooltip]="'result.showViewer' | translate"
             [placement]="'left'"
+            container="body"
+            [adaptivePosition]="false"
             (click)="onShowViewer($event)">
         <i class="glyphicon glyphicon-eye-open"></i>
       </span>

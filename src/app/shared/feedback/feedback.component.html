@@ -1,5 +1,7 @@
 <a class="link icon no-print" (click)="modal.show()" *ngIf="iconOnly; else label">
-  <i class="fa fa-envelope-o" placement="left" [tooltip]="'feedback' | translate"></i>
+  <i class="fa fa-envelope-o" placement="left" [tooltip]="'feedback' | translate"
+     container="body"
+     [adaptivePosition]="false"></i>
 </a>
 <ng-template #label>
   <a class="link" (click)="modal.show()">
