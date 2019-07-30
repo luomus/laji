@@ -1,26 +1,26 @@
-::ng-deep .datatable-body-row.last-rows,
-::ng-deep .datatable-body-row.last-rows .datatable-row-left,
-::ng-deep .datatable-body-row.last-rows .datatable-row-center {
+:host ::ng-deep .datatable-body-row.last-rows,
+:host ::ng-deep .datatable-body-row.last-rows .datatable-row-left,
+:host ::ng-deep .datatable-body-row.last-rows .datatable-row-center {
   background-color: #eee !important;
 }
-::ng-deep .datatable-body-cell.mean {
+:host ::ng-deep .datatable-body-cell.mean {
   background-color: #fdb;
 }
-::ng-deep .datatable-body-cell.median {
+:host ::ng-deep .datatable-body-cell.median {
   background-color: #dfb;
 }
-::ng-deep .datatable-body-cell.min {
+:host ::ng-deep .datatable-body-cell.min {
   font-weight: bold !important;
   color: red !important;
 }
-::ng-deep .datatable-body-cell.max {
+:host ::ng-deep .datatable-body-cell.max {
   font-weight: bold !important;
   color: green !important;
 }
-::ng-deep .datatable-body-cell.significantly-less {
+:host ::ng-deep .datatable-body-cell.significantly-less {
   background-color: #fcc;
 }
-::ng-deep .datatable-body-cell.significantly-more {
+:host ::ng-deep .datatable-body-cell.significantly-more {
   background-color: #cfc;
 }
 
@@ -32,15 +32,15 @@
 }
 
 
-::ng-deep .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
+:host ::ng-deep .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
   border-right: none;
 }
-::ng-deep .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover):not(:focus) .datatable-row-left {
+:host ::ng-deep .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover):not(:focus) .datatable-row-left {
   background-color: #f9f9f9;
 }
-::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active,
-::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-left,
-::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-center,
-::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-right {
+:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active,
+:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-left,
+:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-center,
+:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-right {
   background-color: #ddd !important;
 }

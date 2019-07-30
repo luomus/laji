@@ -1,6 +1,6 @@
-::ng-deep .datatable-body-cell.significantly-less {
+:host ::ng-deep .datatable-body-cell.significantly-less {
   background-color: #fcc;
 }
-::ng-deep .datatable-body-cell.significantly-more {
+:host ::ng-deep .datatable-body-cell.significantly-more {
   background-color: #cfc;
 }
