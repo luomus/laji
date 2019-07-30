@@ -22,17 +22,18 @@ Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
 
 export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   @Input() query: any;
-  @Input() colors: any = ['#bd869e', '#50abcc', '#98DCF1', '#9FABCD', '#BA7A82', '#ADCDED', '#BBE9F7', '#B598B9', '#95B5EA', '#B9607D'];
-  newData: any[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
+  @Input() colors: string[] =
+  ['#bd869e', '#50abcc', '#98DCF1', '#9FABCD', '#BA7A82', '#ADCDED', '#BBE9F7', '#B598B9', '#95B5EA', '#B9607D'];
+  newData: ChartDataSets[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
 
-  private allSubData: any[];
-  private allSubBackground: any[];
+  private allSubData: number[];
+  private allSubBackground: string[];
   private getDataSub: Subscription;
   private allDataNew: any[];
-  private barChartLabels: any[];
-  private subBarChartLabels: any[];
-  private allBarChartsLabel: any[];
+  private barChartLabels: number[];
+  private subBarChartLabels: number[];
+  private allBarChartsLabel: number[];
   private barChartPlugins: any;
   private barChartOptionsYear: any;
 

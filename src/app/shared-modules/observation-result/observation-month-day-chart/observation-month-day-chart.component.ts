@@ -36,8 +36,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
   @Output() hasData = new EventEmitter<boolean>();
 
-  public barChartLabels: any;
-  public barChartLabelsDay: any;
+  public barChartLabels: string[];
+  public barChartLabelsDay: number[];
   public barChartData: any[];
   public daybarChartData: any[][];
   private barChartPlugins: any;
