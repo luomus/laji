@@ -22,6 +22,7 @@ Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
 
 export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   @Input() query: any;
+  @Input() colors: any = ['#bd869e', '#50abcc', '#98DCF1', '#9FABCD', '#BA7A82', '#ADCDED', '#BBE9F7', '#B598B9', '#95B5EA', '#B9607D'];
   newData: any[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
 
@@ -122,7 +123,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
           for (let i = prevYear + 1; i < year; i++) {
             this.subBarChartLabels.push(i);
             this.allSubData.push(0);
-            this.allSubBackground.push(this.getRandomColor);
+            // this.allSubBackground.push(this.getRandomColor);
             if (i < 1970) {
               this.splitIdx++;
             }
@@ -131,7 +132,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
 
 
         this.allSubData.push(count);
-        this.allSubBackground.push(this.getRandomColor());
+        // this.allSubBackground.push(this.getRandomColor());
         this.subBarChartLabels.push(year);
         if (year < 1970) {
           this.splitIdx++;
@@ -140,6 +141,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
         prevYear = year;
       });
       this.initializeGraph();
+      this.allSubBackground = this.addColorsBackground(this.colors, this.allSubData.length);
       this.allDataNew[0].data = this.allSubData;
       this.allDataNew[0].backgroundColor = this.allSubBackground;
 
@@ -175,6 +177,25 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+  }
+
+  addColorsBackground(arr, total) {
+      let i = 0;
+      const background = [];
+
+      for (let j = 0 ; j < total; j++) {
+        if (i >= arr.length) {
+          i = 0;
+          background.push(arr[i]);
+          i++;
+        } else {
+          background.push(arr[i]);
+          i++;
+        }
+
+      }
+
+      return background;
   }
 
   maxMinAvg(arr) {
