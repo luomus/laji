@@ -5824,10 +5824,10 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.630:
-  version "0.0.630"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.630.tgz#46fc88a03af4d1f0b1f9558c1069b73fbd8d79fa"
-  integrity sha512-prQ/y5pT/uWbaMuNNfGR9si2t+L9og7zCpZ9fzGhVzRNTX2E34jJEv+1YZclkC4BZwa35DcFJC414aFJ9o0WtA==
+laji-form@^0.0.631:
+  version "0.0.631"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.631.tgz#ac1e1bafc81f7aa37f230542bedffffc94b758e3"
+  integrity sha512-1V2xq+yonfDiup8b/Q4vsK40rBnzs73SDYiCcThWGRKwc0k18Y6K1x/xzuxD4sxISHdMl6+s2OKizK7l8h+Y+Q==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -5847,7 +5847,7 @@ laji-form@^0.0.630:
     react-dom "^16.8.6"
     react-dropzone "^10.1.4"
     react-inlinesvg "^0.6.0"
-    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#5b50c519de08c41e621722b229928b2520c7bc83"
+    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#e40ee333010be085b3cb55591f55eeaaeefd35e2"
     react-sortable-hoc "^0.6.3"
     react-spinner "^0.2.7"
     react-transition-group "^1.1.1"
@@ -7907,9 +7907,9 @@ react-is@^16.3.2, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#5b50c519de08c41e621722b229928b2520c7bc83":
+"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#e40ee333010be085b3cb55591f55eeaaeefd35e2":
   version "1.0.0"
-  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#5b50c519de08c41e621722b229928b2520c7bc83"
+  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#e40ee333010be085b3cb55591f55eeaaeefd35e2"
   dependencies:
     ajv "^5.2.3"
     lodash.topath "^4.5.2"
