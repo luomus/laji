@@ -84,6 +84,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
 
   canDeactivate(confirmKey = 'haseka.form.discardConfirm') {
     if (!this.lajiFormFacade.hasChanges()) {
+      this.lajiFormFacade.discardChanges();
       return true;
     }
     return this.translate

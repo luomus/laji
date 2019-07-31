@@ -160,7 +160,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   loadForm(formID: string, documentID?: string): void {
     if (!formID) {
-      this.updateState({..._state, hasChanges: false, error: FormError.incomplete});
+      this.updateState({..._state, error: FormError.incomplete});
       return;
     }
     if (this.formSub) {
@@ -285,6 +285,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   private fetchExistingDocument(documentID: string): Observable<Document> {
     if (FormService.isTmpId(documentID)) {
+      this.updateState({..._state, hasChanges: true});
       return this.userService.user$.pipe(
         take(1),
         mergeMap(p => this.documentStorage.getItem(documentID, p))
@@ -298,7 +299,11 @@ export class LajiFormDocumentFacade implements OnDestroy {
             if (document.isTemplate) {
               return this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
             }
-            return Util.isLocalNewestDocument(local, document) ? local : document;
+            if (Util.isLocalNewestDocument(local, document)) {
+              this.updateState({..._state, hasChanges: true});
+              return local;
+            }
+            return document;
           }),
           catchError(err => {
             this.updateState({..._state, error: err.status === 404 ? FormError.notFoundDocument : FormError.loadFailed});
