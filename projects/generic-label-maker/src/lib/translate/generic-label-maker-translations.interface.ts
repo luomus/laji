@@ -74,6 +74,9 @@ export interface GenericLabelMakerTranslationsInterface {
   'height'?: string;
   'Field'?: string;
   'Page'?: string;
+  'capitalize'?: string;
+  'uppercase'?: string;
+  'lowercase'?: string;
   'No active field selected'?: string;
   'Two sided (flip horizontal)'?: string;
   'Font'?: string;

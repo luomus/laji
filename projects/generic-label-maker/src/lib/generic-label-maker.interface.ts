@@ -29,6 +29,7 @@ export interface IFontStyle {
   'text-decoration'?: string;
   'text-align'?: string;
   'line-height'?: string;
+  'text-transform'?: string;
 }
 
 export interface IPageStyle extends IFontStyle {

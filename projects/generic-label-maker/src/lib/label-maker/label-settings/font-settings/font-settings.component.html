@@ -62,5 +62,14 @@
         </select>
       </td>
     </tr>
+    <tr>
+      <td>{{ 'Transform' | translate }}:</td>
+      <td>
+        <select class="form-control input-sm" (change)="change('text-transform', $event.target.value)">
+          <option value=""></option>
+          <option *ngFor="let value of textTransform" [value]="value" [selected]="fontSettings && value === fontSettings['text-transform']">{{value | translate}}</option>
+        </select>
+      </td>
+    </tr>
   </table>
 </div>
