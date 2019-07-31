@@ -25,11 +25,12 @@ import {
 } from '../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../label.service';
 import { InfoWindowService } from '../info-window/info-window.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { LabelExcelFileComponent } from './label-excel-file/label-excel-file.component';
 import { GenericLabelMakerTranslationsInterface } from '../translate/generic-label-maker-translations.interface';
 import { TranslateService } from '../translate/translate.service';
+import { LabelMakerFacade } from './label-maker.facade';
 
 @Component({
   selector: 'll-label-maker',
@@ -51,6 +52,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _viewSettings: IViewSettings = {magnification: 2};
   generateFields: ILabelField[];
   dragging = false;
+  filename$: Observable<string>;
   version = '1.0.15';
   previewActive = 0;
   @Input() defaultDomain = '';
@@ -100,13 +102,15 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     private infoWindowService: InfoWindowService,
     private cdr: ChangeDetectorRef,
     private translateService: TranslateService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private labelMakerFacade: LabelMakerFacade
   ) { }
 
   ngOnInit(): void {
     if (this.showIntro) {
       this.openIntro();
     }
+    this.filename$ = this.labelMakerFacade.currentFile$;
   }
 
   ngOnDestroy(): void {

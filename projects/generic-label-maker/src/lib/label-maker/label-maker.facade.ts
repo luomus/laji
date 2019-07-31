@@ -3,10 +3,12 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 
 interface IState {
+  currentFile: string;
   hasChanges: boolean;
 }
 
 let _state: IState = {
+  currentFile: '',
   hasChanges: false
 };
 
@@ -15,7 +17,12 @@ export class LabelMakerFacade {
   private store  = new BehaviorSubject<IState>(_state);
   state$ = this.store.asObservable();
 
-  hasChanges$ = this.state$.pipe(map((state) => state.hasChanges), distinctUntilChanged());
+  hasChanges$ = this.state$.pipe(map(state => state.hasChanges), distinctUntilChanged());
+  currentFile$ = this.state$.pipe(map(state => state.currentFile), distinctUntilChanged());
+
+  loadedFile(filename: string) {
+    this.updateState({..._state, currentFile: filename, hasChanges: false});
+  }
 
   hasChanges(changes: boolean) {
     this.updateState({..._state, hasChanges: changes});

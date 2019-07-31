@@ -9,6 +9,12 @@ import { TranslateService } from '../../translate/translate.service';
 import { LabelMakerFacade } from '../label-maker.facade';
 import { take } from 'rxjs/operators';
 
+export interface ILoadSetup {
+  setup: ISetup;
+  filename: string;
+  availableFields?: ILabelField[];
+}
+
 @Component({
   selector: 'll-label-file',
   templateUrl: './label-file.component.html',
@@ -55,6 +61,12 @@ export class LabelFileComponent {
     }
     const genericError = 'Could not find label information from the file!';
     this.filename = target.files[0].name;
+    const error = () => {
+      evt.target.value = '';
+      this.labelMakerFacade.loadedFile('');
+      alert(genericError);
+    };
+
     if (this.filename.endsWith('.label')) {
       JSZip.loadAsync(target.files[0])
         .then(content => content.files['data.json'].async('text'))
@@ -66,22 +78,20 @@ export class LabelFileComponent {
             this.updateResentFiles({setup: data.setup, availableFields: data.fields}, this.filename);
             if (data.fields && Array.isArray(data.fields)) {
               this.availableFieldsChange.emit(data.fields);
+              this.labelMakerFacade.loadedFile(this.filename);
             }
             if (data.data && Array.isArray(data.data)) {
               this.dataChange.emit(data.data);
             }
           } else {
-            evt.target.value = '';
-            alert(genericError);
+            error();
           }
         })
         .catch(() => {
-          evt.target.value = '';
-          alert(genericError);
+          error();
         });
     } else {
-      evt.target.value = '';
-      alert(genericError);
+      error();
     }
   }
 
@@ -146,6 +156,7 @@ export class LabelFileComponent {
 
   makeNew() {
     if (confirm(this.translateService.get('Are you sure that you want to start a new empty label?'))) {
+      this.labelMakerFacade.loadedFile('');
       this.setupChange.emit(JSON.parse(JSON.stringify(this.newSetup)));
     }
   }
@@ -157,7 +168,7 @@ export class LabelFileComponent {
     };
   }
 
-  loadSetup(recent: { setup: ISetup; filename: string; availableFields?: ILabelField[] } | PresetSetup) {
+  loadSetup(recent: ILoadSetup | PresetSetup) {
     this.labelMakerFacade.hasChanges$.pipe(take(1)).subscribe(
       (hasChanges) => {
         if (hasChanges && !confirm(this.translateService.get('Do you want to discard the local changes?'))) {
@@ -167,7 +178,7 @@ export class LabelFileComponent {
         if (recent.availableFields) {
           this.availableFieldsChange.emit(recent.availableFields);
         }
-        this.labelMakerFacade.hasChanges(false);
+        this.labelMakerFacade.loadedFile((recent as ILoadSetup).filename || (recent as PresetSetup).name);
       });
   }
 
