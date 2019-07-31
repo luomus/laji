@@ -5,6 +5,9 @@ import { LabelPrintComponent } from '../../label-print/label-print.component';
 import { InfoWindowService } from '../../info-window/info-window.service';
 import { saveAs } from 'file-saver';
 import * as JSZip from 'jszip';
+import { TranslateService } from '../../translate/translate.service';
+import { LabelMakerFacade } from '../label-maker.facade';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'll-label-file',
@@ -39,7 +42,11 @@ export class LabelFileComponent {
     includeData: false
   };
 
-  constructor(private infoWindowService: InfoWindowService) { }
+  constructor(
+    private infoWindowService: InfoWindowService,
+    private translateService: TranslateService,
+    private labelMakerFacade: LabelMakerFacade
+  ) { }
 
   onFileChange(evt: any) {
     const target: DataTransfer = <DataTransfer>(evt.target);
@@ -107,6 +114,7 @@ export class LabelFileComponent {
       file: '',
       includeData: false
     };
+    this.labelMakerFacade.hasChanges(false);
   }
 
   print() {
@@ -137,7 +145,7 @@ export class LabelFileComponent {
   }
 
   makeNew() {
-    if (confirm('Are you sure that you want to start a new empty label?')) {
+    if (confirm(this.translateService.get('Are you sure that you want to start a new empty label?'))) {
       this.setupChange.emit(JSON.parse(JSON.stringify(this.newSetup)));
     }
   }
@@ -150,10 +158,17 @@ export class LabelFileComponent {
   }
 
   loadSetup(recent: { setup: ISetup; filename: string; availableFields?: ILabelField[] } | PresetSetup) {
-    this.setupChange.emit(recent.setup);
-    if (recent.availableFields) {
-      this.availableFieldsChange.emit(recent.availableFields);
-    }
+    this.labelMakerFacade.hasChanges$.pipe(take(1)).subscribe(
+      (hasChanges) => {
+        if (hasChanges && !confirm(this.translateService.get('Do you want to discard the local changes?'))) {
+          return;
+        }
+        this.setupChange.emit(recent.setup);
+        if (recent.availableFields) {
+          this.availableFieldsChange.emit(recent.availableFields);
+        }
+        this.labelMakerFacade.hasChanges(false);
+      });
   }
 
   startPdfLoading() {

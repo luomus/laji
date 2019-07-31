@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from
 import { ILabelItem, ILabelStyle, ISetup, TLabelLocation } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
 import { TranslateService } from '../../translate/translate.service';
+import { LabelMakerFacade } from '../label-maker.facade';
 
 @Component({
   selector: 'll-label-editor',
@@ -28,7 +29,8 @@ export class LabelEditorComponent {
 
   constructor(
     private labelService: LabelService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private labelMakerFacade: LabelMakerFacade
   ) {
     this.init = labelService.hasRation();
   }
@@ -71,7 +73,8 @@ export class LabelEditorComponent {
       [items]: result
     };
     this.setupChange.emit(this._setup);
-
+    console.log('MARKING AS HAVING CHANGES');
+    this.labelMakerFacade.hasChanges(true);
   }
 
   updateDimensions(event: Event, target: string, sec: 'page'|'label') {

@@ -87,4 +87,6 @@ export interface GenericLabelMakerTranslationsInterface {
   'Map values'?: string;
   'Add unique values from data'?: string;
   'Making QR Code smaller than 10mm is possible but not recommended'?: string;
+  'Are you sure that you want to start a new empty label?'?: string;
+  'Do you want to discard the local changes?'?: string;
 }
