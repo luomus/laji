@@ -12,6 +12,7 @@ import { ThemeFormService } from '../theme-form.service';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { Form } from '../../../shared/model/Form';
 import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
+import { BrowserService } from '../../../shared/service/browser.service';
 
 @Component({
   selector: 'laji-theme-form',
@@ -43,6 +44,7 @@ export class FormComponent
     private translateService: TranslateService,
     private namedplacesService: NamedPlacesService,
     private themeFormService: ThemeFormService,
+    private browserService: BrowserService,
     private cdr: ChangeDetectorRef
   ) {
 
@@ -121,26 +123,28 @@ export class FormComponent
   }
 
   onSuccess(event) {
-    if (!FormService.hasFeature(this.form, Form.Feature.NamedPlace)) {
-      this.navigate([this.onSuccessUrl], {relativeTo: this.route});
-      return;
-    }
-    if (FormService.hasFeature(this.form, Form.Feature.FilterNamedPlacesByBirdAssociationArea)) {
-      this.navigate([this.onSuccessUrl], {relativeTo: this.route.parent, queryParams: this.extractQueryParams(event, {})});
-      return;
-    }
-    this.onSuccessNav$ = this.namedplacesService.getNamedPlace(event.document.namedPlaceID)
-      .subscribe((np) => {
-        this.navigate([this.onSuccessUrl], {relativeTo: this.route.parent, queryParams: this.extractQueryParams(event, np)});
-      });
+    this.browserService.goBack(() => {
+      if (!FormService.hasFeature(this.form, Form.Feature.NamedPlace)) {
+        this.navigate([this.onSuccessUrl], {relativeTo: this.route});
+        return;
+      }
+      if (FormService.hasFeature(this.form, Form.Feature.FilterNamedPlacesByBirdAssociationArea)) {
+        this.navigate([this.onSuccessUrl], {relativeTo: this.route.parent, queryParams: this.extractQueryParams(event, {})});
+        return;
+      }
+      this.onSuccessNav$ = this.namedplacesService.getNamedPlace(event.document.namedPlaceID)
+        .subscribe((np) => {
+          this.navigate([this.onSuccessUrl], {relativeTo: this.route.parent, queryParams: this.extractQueryParams(event, np)});
+        });
+    });
   }
 
   onError() {
-    this.navigateAfterForm();
+    this.browserService.goBack(() => this.navigateAfterForm());
   }
 
   onCancel() {
-    this.navigateAfterForm();
+    this.browserService.goBack(() => this.navigateAfterForm());
   }
 
   onMissingNamedplace() {

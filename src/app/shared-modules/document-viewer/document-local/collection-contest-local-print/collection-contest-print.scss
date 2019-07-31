@@ -30,7 +30,7 @@ $baseFontSize: 15pt;
     margin: 0 0 20mm 0;
     font-size: $baseFontSize + 13;
   }
-  ::ng-deep {
+  :host ::ng-deep {
     .print-row {
       text-align: center;
       margin-bottom: 5mm;

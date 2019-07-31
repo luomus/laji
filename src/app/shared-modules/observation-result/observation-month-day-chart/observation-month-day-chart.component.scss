@@ -1,7 +1,7 @@
-::ng-deep .chart-legend .legend-label {
+:host ::ng-deep .chart-legend .legend-label {
   cursor: initial !important;
 }
-::ng-deep .day-chart .ngx-charts .bar {
+:host ::ng-deep .day-chart .ngx-charts .bar {
   cursor: initial !important;
 }
 .info-card-chart {

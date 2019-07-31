@@ -22,6 +22,6 @@
     box-shadow: -3px 2px 5px -1px rgba(0,0,0,0.75);
 }
 
-::ng-deep .link .panel-title{
+:host ::ng-deep .link .panel-title{
   font-size: 1.5em;
 }

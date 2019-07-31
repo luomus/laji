@@ -30,6 +30,7 @@
       <a
         [tooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
+        container="body"
         target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize">
         <i class="glyphicon glyphicon-tag"></i>
       </a>
@@ -61,6 +62,7 @@
         <a
           [tooltip]="'showSpeciesCard' | translate"
           [placement]="'right'"
+          container="body"
           target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings[taxon].id || value.linkings[taxon].qname) | toQName)] | localize">
           <i class="glyphicon glyphicon-tag"></i>
         </a>
@@ -90,6 +92,7 @@
       <a
         [tooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
+        container="body"
         target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.speciesId | toQName)] | localize">
         <i class="glyphicon glyphicon-tag"></i>
       </a>

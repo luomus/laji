@@ -7,7 +7,7 @@
   position: relative;
 }
 
-::ng-deep .lj-item laji-checkbox {
+:host ::ng-deep .lj-item laji-checkbox {
   position: relative;
   margin: 2px 3px -2px -16px;
 }

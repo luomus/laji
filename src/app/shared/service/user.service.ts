@@ -61,6 +61,7 @@ let _state: IUserServiceState = {
 export class UserService {
 
   private subLogout: Subscription;
+  private init = false;
 
   // Do not write to this variable in the server!
   @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
@@ -72,7 +73,7 @@ export class UserService {
   settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
   user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
 
-  public static getLoginUrl(next = '', lang = 'fi') {
+  static getLoginUrl(next = '', lang = 'fi') {
     return (environment.loginUrl
     + '?target=' + environment.systemID
     + '&redirectMethod=GET&locale=%lang%'
@@ -171,21 +172,6 @@ export class UserService {
     );
   }
 
-  /**
-   * @deprecated this will be refactored into haseka facade
-   */
-  getDefaultFormData(): Observable<any> {
-    return this.user$.pipe(
-      take(1),
-      map(person => ({
-        'creator': person.id,
-        'gatheringEvent': {
-          'leg': [person.id]
-        }
-      }))
-    );
-  }
-
   getUserSetting(key: keyof IUserSettings): Observable<any> {
     return this.settings$.pipe(map(settings => settings[key]));
   }
@@ -216,7 +202,6 @@ export class UserService {
         retryWithBackoff(300),
         catchError(() => of(false)),
         tap(user => this.doLoginState(user, token)),
-        tap(user => this.doUserSettingsState(user.id)),
         map(user => !!user),
         share()
       );
@@ -229,13 +214,26 @@ export class UserService {
   }
 
   private doLoginState(user: Person, token) {
+    if (user && user.id && _state.user && _state.user.id === user.id) {
+      return;
+    }
+    this.init = true;
     this.updatePersistentState({...this.persistentState, token: user ? token : ''});
     this.updateState({..._state, ...this.persistentState, isLoggedIn: !!user, user: user || {}, settings: {}});
+    this.doUserSettingsState(user.id);
   }
 
   private doLogoutState() {
+    if (!_state.isLoggedIn && this.init) {
+      return;
+    }
+    this.init = true;
     this.updatePersistentState({...this.persistentState, token: ''});
     this.updateState({..._state, ...this.persistentState, isLoggedIn: false, user: {}, settings: {}});
+  }
+
+  private doUserSettingsState(id: string) {
+    this.updateState({..._state, settings: this.storage.retrieve(this.personsCacheKey(id)) || {}});
   }
 
   private updateState(state: IUserServiceState) {
@@ -247,9 +245,5 @@ export class UserService {
       return;
     }
     this.persistentState = state;
-  }
-
-  private doUserSettingsState(id: string) {
-    this.updateState({..._state, settings: this.storage.retrieve(this.personsCacheKey(id)) || {}});
   }
 }

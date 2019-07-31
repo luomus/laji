@@ -20,8 +20,8 @@ img.compact {
   color: #d43f3a;
 }
 
-::ng-deep .habitat li,
-::ng-deep .habitat ul {
+:host ::ng-deep .habitat li,
+:host ::ng-deep .habitat ul {
   margin:0;
   padding:0;
   list-style:none

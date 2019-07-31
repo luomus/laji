@@ -105,7 +105,6 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   onCancel() {
-    this.lajiFormFacade.discardChanges();
     this.cancel.emit();
   }
 

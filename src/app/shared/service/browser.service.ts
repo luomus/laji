@@ -1,7 +1,7 @@
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
 import { PlatformService } from './platform.service';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, Location } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
@@ -36,7 +36,8 @@ export class BrowserService implements OnDestroy {
     @Inject(DOCUMENT) private document: any,
     @Inject(WINDOW) private window: Window,
     private zone: NgZone,
-    private platformService: PlatformService
+    private platformService: PlatformService,
+    private location: Location
   ) {
     if (!platformService.isBrowser) {
       return;
@@ -57,7 +58,7 @@ export class BrowserService implements OnDestroy {
     }
   }
 
-  triggerResizeEvent() {
+  triggerResizeEvent(): void {
     if (!this.platformService.isBrowser) {
       return;
     }
@@ -72,6 +73,17 @@ export class BrowserService implements OnDestroy {
         } catch (e) {}
       }
     }, 100);
+  }
+
+  goBack(onNoHistory?: () => void): void {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+    if (this.window.history.length > 1) {
+      this.location.back();
+    } else if (onNoHistory) {
+      onNoHistory();
+    }
   }
 
   private initVisibilityListener() {
