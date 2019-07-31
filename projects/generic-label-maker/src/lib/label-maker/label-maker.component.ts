@@ -18,7 +18,7 @@ import {
   FieldType,
   IAddLabelEvent,
   ILabelField,
-  ILabelItem,
+  ILabelItem, ILabelPdf,
   ILabelValueMap,
   ISetup,
   IViewSettings, PresetSetup, QRCodeErrorCorrectionLevel
@@ -64,7 +64,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
   @Input() presets: PresetSetup[];
 
-  @Output() html = new EventEmitter<string>();
+  @Output() html = new EventEmitter<ILabelPdf>();
   @Output() viewSettingsChange = new EventEmitter<IViewSettings>();
   @Output() dataChange = new EventEmitter<object[]>();
   @Output() setupChange = new EventEmitter<ISetup>();

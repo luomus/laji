@@ -53,8 +53,8 @@
     <td>
     </td>
     <td>
-      <ll-label-print #printBtn [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel" [visible]="false" [btnClass]="'menu-item'" [setup]="setup" [data]="data" (html)="html.emit($event)" (pressed)="startPdfLoading()">
-        {{ 'Download labels (pdf)' | translate }}<ll-loader [loading]="pdfLoading"></ll-loader>
+      <ll-label-print #printBtn [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel" [visible]="false" [btnClass]="'menu-item'" [setup]="setup" [data]="data" (html)="onHtml($event)" (pressed)="startPdfLoading()">
+        {{ 'Download labels (pdf)' | translate }}...<ll-loader [loading]="pdfLoading"></ll-loader>
       </ll-label-print>
     </td>
   </tr>
@@ -73,4 +73,12 @@
 </ng-template>
 <ng-template #saveActionsTpl>
   <button (click)="doSave()" [disabled]="!saveData.file" class="btn btn-default btn-sm pull-right">{{ 'Save' | translate }}</button>
+</ng-template>
+<ng-template #makePdfTpl>
+  <table class="save user-input">
+    <tr><td><label for="saveFile">{{ 'Filename' | translate }}:</label></td><td><input id="pdfFile" (keyup)="pdfFile = $event.target.value" [value]="pdfFile || ''" type="text" class="form-control input-sm"></td></tr>
+  </table>
+</ng-template>
+<ng-template #makePdfActionsTpl>
+  <button (click)="doPrint()" [disabled]="!pdfFile" class="btn btn-default btn-sm pull-right">{{ 'Download' | translate }}</button>
 </ng-template>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { ILabelField, ISetup, PresetSetup, QRCodeErrorCorrectionLevel } from '../../generic-label-maker.interface';
+import { ILabelField, ILabelPdf, ISetup, PresetSetup, QRCodeErrorCorrectionLevel } from '../../generic-label-maker.interface';
 import { LocalStorage } from 'ngx-webstorage';
 import { LabelPrintComponent } from '../../label-print/label-print.component';
 import { InfoWindowService } from '../../info-window/info-window.service';
@@ -33,7 +33,7 @@ export class LabelFileComponent {
 
   @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string, availableFields: ILabelField[]}[];
 
-  @Output() html = new EventEmitter<string>();
+  @Output() html = new EventEmitter<ILabelPdf>();
   @Output() dataChange = new EventEmitter<object[]>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
@@ -41,12 +41,15 @@ export class LabelFileComponent {
   @ViewChild('printBtn', { static: true }) printBtn: LabelPrintComponent;
   @ViewChild('saveTpl', { static: true }) saveTpl: TemplateRef<any>;
   @ViewChild('saveActionsTpl', { static: true }) saveActionsTpl: TemplateRef<any>;
+  @ViewChild('makePdfTpl', { static: true }) makePdfTpl: TemplateRef<any>;
+  @ViewChild('makePdfActionsTpl', { static: true }) makePdfActionsTpl: TemplateRef<any>;
 
   filename = '';
   saveData = {
     file: '',
     includeData: false
   };
+  pdfFile = '';
 
   constructor(
     private infoWindowService: InfoWindowService,
@@ -59,12 +62,11 @@ export class LabelFileComponent {
     if (target.files.length < 1) {
       return;
     }
-    const genericError = 'Could not find label information from the file!';
     this.filename = target.files[0].name;
     const error = () => {
       evt.target.value = '';
       this.labelMakerFacade.loadedFile('');
-      alert(genericError);
+      alert(this.translateService.get('Could not find label information from the file!'));
     };
 
     if (this.filename.endsWith('.label')) {
@@ -97,7 +99,7 @@ export class LabelFileComponent {
 
   save() {
     this.infoWindowService.open({
-      title: 'Save to file',
+      title: this.translateService.get('Save to file'),
       content: this.saveTpl,
       actions: this.saveActionsTpl
     });
@@ -128,6 +130,15 @@ export class LabelFileComponent {
   }
 
   print() {
+    this.infoWindowService.open({
+      title: this.translateService.get('Download labels (pdf)'),
+      content: this.makePdfTpl,
+      actions: this.makePdfActionsTpl
+    });
+  }
+
+  doPrint() {
+    this.infoWindowService.close();
     this.printBtn.renderPages();
   }
 
@@ -187,5 +198,12 @@ export class LabelFileComponent {
       return;
     }
     this.pdfLoadingChange.emit(true);
+  }
+
+  onHtml(html: string) {
+    this.html.emit({
+      filename: this.pdfFile.endsWith('.pdf') ? this.pdfFile : this.pdfFile + '.pdf',
+      html
+    });
   }
 }

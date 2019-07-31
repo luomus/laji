@@ -21,6 +21,11 @@ export interface PresetSetup {
   availableFields?: ILabelField[];
 }
 
+export interface ILabelPdf {
+  filename?: string;
+  html: string;
+}
+
 export interface IFontStyle {
   'font-family'?: string;
   'font-size.pt'?: number;
