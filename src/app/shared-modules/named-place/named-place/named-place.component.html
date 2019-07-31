@@ -26,6 +26,8 @@
         <div class="row">
           <label class="col-xs-12"
                  [tooltip]="birdAssociationAreaHelp"
+                 container="body"
+                 [adaptivePosition]="false"
                  [placement]="'right'"
                  [isDisabled]="!documentForm.namedPlaceOptions || !documentForm.namedPlaceOptions.birdAssociationAreaHelp">{{ 'MNP.birdAssociationArea' | label }}
             <span *ngIf="documentForm.namedPlaceOptions && documentForm.namedPlaceOptions.birdAssociationAreaHelp" class="label-info laji-form-help-glyph"><strong>?</strong></span>

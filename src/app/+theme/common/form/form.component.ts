@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
 import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';
@@ -44,7 +44,8 @@ export class FormComponent
     private translateService: TranslateService,
     private namedplacesService: NamedPlacesService,
     private themeFormService: ThemeFormService,
-    private browserService: BrowserService
+    private browserService: BrowserService,
+    private cdr: ChangeDetectorRef
   ) {
 
   }
@@ -77,6 +78,7 @@ export class FormComponent
           : '');
 
       this.documentId = params['id'] || null;
+      this.cdr.markForCheck();
     });
   }
 

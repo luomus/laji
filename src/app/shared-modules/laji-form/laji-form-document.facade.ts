@@ -160,7 +160,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   loadForm(formID: string, documentID?: string): void {
     if (!formID) {
-      this.updateState({..._state, hasChanges: false, error: FormError.incomplete});
+      this.updateState({..._state, error: FormError.incomplete});
       return;
     }
     if (this.formSub) {
@@ -233,38 +233,34 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   save(rawDocument: Document, publicityRestriction: Document.PublicityRestrictionsEnum): Observable<ISuccessEvent> {
-    if (!_state.saving) {
-      this.updateState({..._state, saving: true});
-      const document = {...rawDocument};
-      const isTmpId = FormService.isTmpId(document.id);
-      document.publicityRestrictions = publicityRestriction;
-      delete document._hasChanges;
-      delete document._isTemplate;
-      if (isTmpId) { delete document.id; }
+    this.updateState({..._state, saving: true});
+    const document = {...rawDocument};
+    const isTmpId = FormService.isTmpId(document.id);
+    document.publicityRestrictions = publicityRestriction;
+    delete document._hasChanges;
+    delete document._isTemplate;
+    if (isTmpId) { delete document.id; }
 
-      this.saveObs$ = (isTmpId ?
-        this.documentApi.create(document, this.userService.getToken()) :
-        this.documentApi.update(document.id, document, this.userService.getToken())
-      ).pipe(
-        tap(() => this.namedPlacesService.invalidateCache()),
-        tap(() => this.userService.user$.pipe(
-          take(1),
-          mergeMap(p => this.documentStorage.removeItem(rawDocument.id, p))).subscribe()
-        ),
-        catchError(e => {
-          this.logger.error('UNABLE TO SAVE DOCUMENT', { data: JSON.stringify(document), error: JSON.stringify(e._body)});
-          return of(null);
-        }),
-        map(doc => ({success: !!doc, form: _state.form, document: doc})),
-        tap((res) => this.updateState({
-          ..._state,
-          saving: false,
-          hasChanges: res.success ? false : _state.hasChanges
-        })),
-        share()
-      );
-    }
-    return this.saveObs$;
+    return (isTmpId ?
+      this.documentApi.create(document, this.userService.getToken()) :
+      this.documentApi.update(document.id, document, this.userService.getToken())
+    ).pipe(
+      tap(() => this.namedPlacesService.invalidateCache()),
+      tap(() => this.userService.user$.pipe(
+        take(1),
+        mergeMap(p => this.documentStorage.removeItem(rawDocument.id, p))).subscribe()
+      ),
+      catchError(e => {
+        this.logger.error('UNABLE TO SAVE DOCUMENT', { data: JSON.stringify(document), error: JSON.stringify(e._body)});
+        return of(null);
+      }),
+      map(doc => ({success: !!doc, form: _state.form, document: doc})),
+      tap((res) => this.updateState({
+        ..._state,
+        saving: false,
+        hasChanges: res.success ? false : _state.hasChanges
+      }))
+    );
   }
 
   discardChanges() {
@@ -289,6 +285,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   private fetchExistingDocument(documentID: string): Observable<Document> {
     if (FormService.isTmpId(documentID)) {
+      this.updateState({..._state, hasChanges: true});
       return this.userService.user$.pipe(
         take(1),
         mergeMap(p => this.documentStorage.getItem(documentID, p))
@@ -302,7 +299,11 @@ export class LajiFormDocumentFacade implements OnDestroy {
             if (document.isTemplate) {
               return this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
             }
-            return Util.isLocalNewestDocument(local, document) ? local : document;
+            if (Util.isLocalNewestDocument(local, document)) {
+              this.updateState({..._state, hasChanges: true});
+              return local;
+            }
+            return document;
           }),
           catchError(err => {
             this.updateState({..._state, error: err.status === 404 ? FormError.notFoundDocument : FormError.loadFailed});

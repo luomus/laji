@@ -77,7 +77,7 @@ export class LatestDocumentsFacade implements OnDestroy {
       delete this.remoteRefresh;
     }
     // ES is not reflecting deletes immediately so we'll make another remote update after 10sec.
-    this.remoteRefresh = setTimeout(this.updateRemote, 10000);
+    this.remoteRefresh = setTimeout(() => this.updateRemote(), 10000);
   }
 
   discardTmpData(id: string): void {

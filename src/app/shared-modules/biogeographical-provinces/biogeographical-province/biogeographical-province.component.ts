@@ -1,6 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { Observable } from 'rxjs';
+import { WarehouseApi } from '../../../shared/api/WarehouseApi';
+import { map, tap } from 'rxjs/operators';
+import { IdService } from '../../../shared/service/id.service';
 
-export interface FillArea {
+export interface BiogeographicalArea {
  'ML.270'?: string;
  'ML.271'?: string;
  'ML.268'?: string;
@@ -27,18 +32,72 @@ export interface FillArea {
 @Component({
   selector: 'laji-biogeographical-province',
   templateUrl: './biogeographical-province.component.html',
-  styles: []
+  styles: [`
+    text {
+        font-size: 30px;
+    }
+  `]
 })
-export class BiogeographicalProvinceComponent implements OnInit {
+export class BiogeographicalProvinceComponent {
 
-  @Input() fill: FillArea = {};
+  @Input() fill: BiogeographicalArea = {};
   @Input() height = '100%';
 
   borderColor = '#333';
+  loading = false;
+  results$: Observable<BiogeographicalArea>;
 
-  constructor() { }
+  private colorPalette = [
+    '#f7fcfd',
+    '#e5f5f9',
+    '#ccece6',
+    '#99d8c9',
+    '#66c2a4',
+    '#41ae76',
+    '#238b45',
+    '#006d2c',
+    '#00441b'
+  ];
 
-  ngOnInit() {
+  constructor(
+    private warehouseApi: WarehouseApi
+  ) {}
+
+  @Input()
+  set query(query: WarehouseQueryInterface) {
+    const mapQuery: WarehouseQueryInterface = {...query, countryId: ['ML.206']};
+    this.results$ = this.warehouseApi.warehouseQueryAggregateGet(
+      mapQuery,
+      ['gathering.interpretations.biogeographicalProvince'],
+      [],
+      100,
+      1
+    ).pipe(
+      map((result) => result.results.map(aggr => ({
+        count: aggr.count,
+        key: IdService.getId(aggr.aggregateBy['gathering.interpretations.biogeographicalProvince'])
+      }))),
+      tap(counts => this.initFillColors(counts)),
+      map(result => result.reduce((cumulative, current) => {
+        if (cumulative[current.key]) {
+          cumulative[current.key] += current.count;
+        } else {
+          cumulative[current.key] = current.county;
+        }
+        return cumulative;
+      }, {}))
+    );
   }
 
+  private initFillColors(result: {count: number, key: string}[]) {
+    const colors = {};
+    result.forEach(res => {
+      if (res.count > 1000) {
+        colors[res.key] = this.colorPalette[this.colorPalette.length - 1];
+      } else {
+        colors[res.key] = this.colorPalette[Math.floor(res.count / 10) % 10];
+      }
+    });
+    this.fill = colors;
+  }
 }
