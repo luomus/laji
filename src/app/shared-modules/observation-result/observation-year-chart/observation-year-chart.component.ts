@@ -145,19 +145,21 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       this.allSubBackground = this.addColorsBackground(this.colors, this.allSubData.length);
       this.allDataNew[0].data = this.allSubData;
       this.allDataNew[0].backgroundColor = this.allSubBackground;
+      this.allBarChartsLabel = this.subBarChartLabels;
 
       this.allSubData = this.allSubData.slice(this.splitIdx, this.allSubData.length);
       this.allSubBackground = this.allSubBackground.slice(this.splitIdx, this.allSubBackground.length);
       this.newData[0].data = this.allSubData;
       this.newData[0].backgroundColor = this.allSubBackground;
-      this.allBarChartsLabel = this.subBarChartLabels;
       this.subBarChartLabels = this.subBarChartLabels.slice(this.splitIdx, this.subBarChartLabels.length);
       this.barChartLabels = this.subBarChartLabels;
 
-      // Calculate average value for easy click small values
-      this.barChartOptionsYear.scales.yAxes[0].ticks.max = this.maxMinAvg(this.newData[0].data);
+      if (this.splitIdx > 0 && this.allSubData.length === 0) {
+        this.newData = this.allDataNew;
+        this.barChartLabels = this.allBarChartsLabel;
+      }
 
-      this.hasData.emit(this.allSubData.length > 0);
+      this.hasData.emit(this.allDataNew[0].data.length > 0);
       // check emit
       this.cd.markForCheck();
     });
@@ -197,23 +199,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       }
 
       return background;
-  }
-
-  maxMinAvg(arr) {
-    const max = [];
-    let sum = arr[0];
-    for (let i = 1; i < arr.length; i++) {
-        sum = sum + arr[i];
-        max[i] = arr[i];
-    }
-
-    max.sort((a, b) => b - a);
-    if (max[0] > (sum / 100) * 30) {
-      return max[1] + 50;
-    } else {
-      return max[0];
-    }
-
   }
 
   toggleShowAllData() {
