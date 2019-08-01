@@ -31,6 +31,7 @@ import { LabelExcelFileComponent } from './label-excel-file/label-excel-file.com
 import { GenericLabelMakerTranslationsInterface } from '../translate/generic-label-maker-translations.interface';
 import { TranslateService } from '../translate/translate.service';
 import { LabelMakerFacade } from './label-maker.facade';
+import { FieldKeyPipe } from '../pipe/field-key.pipe';
 
 @Component({
   selector: 'll-label-maker',
@@ -53,7 +54,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   generateFields: ILabelField[];
   dragging = false;
   filename$: Observable<string>;
-  version = '1.0.15';
+  version = '2.0.0';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() newSetup: ISetup;
@@ -175,26 +176,22 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     const hasField = {};
     const allFields = [];
     this.updateLocalId(setup);
+    const checkItem = (item) => {
+      item.fields.forEach(field => {
+        const isText = field.type === 'text';
+        const fieldId = FieldKeyPipe.getKey(field);
+        if (!hasField[fieldId] && (!field.type || isText)) {
+          hasField[fieldId] = true;
+          allFields.push(field);
+        }
+      });
+      return {...item, _id: item._id || LabelMakerComponent.id++};
+    };
+
     this._setup = {
       ...setup,
-      labelItems: setup.labelItems.map(item => {
-        item.fields.forEach(field => {
-          if (!hasField[field.field] && !field.type) {
-            hasField[field.field] = true;
-            allFields.push(field);
-          }
-        });
-        return { ...item, _id: item._id || LabelMakerComponent.id++ };
-      }),
-      backSideLabelItems: (setup.backSideLabelItems || []).map(item => {
-        item.fields.forEach(field => {
-          if (!hasField[field.field] && !field.type) {
-            hasField[field.field] = true;
-            allFields.push(field);
-          }
-        });
-        return { ...item, _id: item._id || LabelMakerComponent.id++ };
-      })
+      labelItems: setup.labelItems.map(checkItem),
+      backSideLabelItems: (setup.backSideLabelItems || []).map(checkItem)
     };
     this.dimensions = this.labelService.countLabelsPerPage(this._setup);
     this.generateFields = allFields;
@@ -269,7 +266,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     return this._redo.length > 0;
   }
 
-  updateGenerate(key: string, value: string, inData = false) {
+  updateGenerate(field: ILabelField | string, value: string, inData = false) {
+    const key = typeof field === 'string' ? field : FieldKeyPipe.getKey(field);
     if (inData) {
       this.generate = {
         ...this.generate,

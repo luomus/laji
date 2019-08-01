@@ -53,10 +53,11 @@ export class FieldSettingsComponent {
     }
   }
 
-  textChange(event: Event) {
+  textFieldChanged(event: Event) {
     const element = event.target as HTMLInputElement;
     this.fieldChange.emit({
       ...this.field,
+      label: element.value,
       content: element.value
     });
   }

@@ -181,7 +181,7 @@
     <tr><td>{{ 'Range end' | translate }}:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" [value]="generate.rangeEnd || ''" type="number" class="form-control input-sm"></td></tr>
     <tr *ngIf="generateFields.length > 0"><td colspan="2">&nbsp;</td></tr>
     <tr *ngFor="let field of generateFields;">
-      <td>{{field.label}}:</td><td><input [value]="generate.data[field.field] || ''" (change)="updateGenerate(field.field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
+      <td>{{field.label}}:</td><td><input [value]="generate.data[(field | fieldKey)] || ''" (change)="updateGenerate(field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
     </tr>
   </table>
 </ng-template>

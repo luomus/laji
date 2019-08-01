@@ -38,6 +38,7 @@ import { NbspToSpacePipe } from './pipe/nbsp-to-space.pipe';
 import { HasValuePipe } from './pipe/has-value.pipe';
 import { SeparatorPipe } from './pipe/separator.pipe';
 import { LabelMakerFacade } from './label-maker/label-maker.facade';
+import { FieldKeyPipe } from './pipe/field-key.pipe';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { LabelMakerFacade } from './label-maker/label-maker.facade';
     SortPipe,
     NbspToSpacePipe,
     HasValuePipe,
-    SeparatorPipe
+    SeparatorPipe,
+    FieldKeyPipe
   ],
   imports: [
     CommonModule,
