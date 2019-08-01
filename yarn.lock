@@ -4278,10 +4278,10 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-generic-label-maker@^1.0.15:
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-1.0.15.tgz#678ec07717afd193b245207ba9dbdcb0c0304f6a"
-  integrity sha512-YFRWI2aPXP+wYq56ajlhkQskpCb+UF7TZjVCboiu8CNz7ocpt+tbdswoXQF73bqOH6fVW+ceCVAHle014HG5pA==
+generic-label-maker@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-2.0.0.tgz#82f3d1546f6f2db963d24289db4bbf06bdb90603"
+  integrity sha512-fc+hK2qVBQgxwzwl7J0CfXAd+1APFRI607f0qf5SHeMDTSENQ+8RsaMbUIAes584nzQCMD6XLMSWhjit/AjdDA==
   dependencies:
     tslib "^1.9.0"
 

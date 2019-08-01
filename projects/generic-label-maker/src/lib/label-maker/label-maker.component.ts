@@ -57,8 +57,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   version = '2.0.0';
   previewActive = 0;
   @Input() defaultDomain = '';
-  @Input() newSetup: ISetup;
-  @Input() newAvailableFields: ILabelField[];
+  @Input() defaultSetup: ISetup;
+  @Input() defaultAvailableFields: ILabelField[];
   @Input() availableFields: ILabelField[];
   @Input() showIntro = true;
   @Input() pdfLoading = false;
@@ -175,7 +175,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     }
     const hasField = {};
     const allFields = [];
-    this.updateLocalId(setup);
+    LabelMakerComponent.id = this.findTheHighestId(setup) + 1;
+
     const checkItem = (item) => {
       item.fields.forEach(field => {
         const isText = field.type === 'text';
@@ -401,7 +402,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     this.setupChanged({ ...this._setup, valueMap: map }, false);
   }
 
-  private updateLocalId(setup: ISetup) {
+  private findTheHighestId(setup: ISetup) {
     let id = 0;
     ['labelItems', 'backSideLabelItems'].forEach(items => {
       if (setup[items]) {
@@ -412,7 +413,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
         });
       }
     });
-    LabelMakerComponent.id = id + 1;
+    return id;
   }
 
   onPdfLoading(loading: boolean) {

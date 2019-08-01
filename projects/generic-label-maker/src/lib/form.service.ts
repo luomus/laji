@@ -53,7 +53,7 @@ export class FormService {
   }
 
   private getLabel(item, parent: string) {
-    return (parent ? parent.slice(0, 3) + ': ' : '') + item.title;
+    return item.title + (parent ? ' - ' + parent : '');
   }
 
   private getValueMap(item): undefined|{[value: string]: string} {

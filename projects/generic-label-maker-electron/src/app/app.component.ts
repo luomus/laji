@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { LocalStorage, SessionStorage } from 'ngx-webstorage';
-import { FieldType, FormService, ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
+import { FieldType, ILabelPdf, ILabelField, ISetup, IViewSettings, Presets } from 'generic-label-maker';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
@@ -8,6 +8,7 @@ import { map, share } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../../src/app/shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
+import { FormService } from '../../../generic-label-maker/src/lib/form.service';
 
 const NEW_SETUP: ISetup = {
   page: {
@@ -63,7 +64,7 @@ const NEW_SETUP: ISetup = {
 })
 export class AppComponent implements OnInit {
   pdfLoading = false;
-  newSetup: ISetup = NEW_SETUP;
+  defaultSetup: ISetup = NEW_SETUP;
   @LocalStorage('viewSetting', {magnification: 2}) viewSetting: IViewSettings;
   @LocalStorage('setup', NEW_SETUP) setup: ISetup;
   @SessionStorage('data', []) data: object[];
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit {
   @ViewChild('notebookImportActions', { static: false }) notebookImportActions;
 
   availableFields$: Observable<ILabelField[]>;
-  newAvailableFields$: Observable<ILabelField[]>;
+  defaultAvailableFields$: Observable<ILabelField[]>;
 
   skipFields: string[] = [
     'secureLevel',
@@ -91,7 +92,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.newAvailableFields$ = this.http.get<any>(environment.form).pipe(
+    this.defaultAvailableFields$ = this.http.get<any>(environment.form).pipe(
       map(form => this.formService.schemaToAvailableFields(form.schema, [
         {field: 'uri', content: 'http://example.com/ID', label: 'URI - QRCode', type: FieldType.qrCode},
         {field: 'uri', content: 'http://example.com/ID', label: 'URI', type: FieldType.uri},
@@ -103,16 +104,16 @@ export class AppComponent implements OnInit {
       })),
       share()
     );
-    this.availableFields$ = this.newAvailableFields$;
+    this.availableFields$ = this.defaultAvailableFields$;
   }
 
-  htmlToPdf(html: string) {
+  htmlToPdf(result: ILabelPdf) {
     if (isPlatformBrowser(this.platformId)) {
-      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, html)
+      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, result.html)
         .subscribe((response) => {
           this.pdfLoading = false;
           this.cdr.detectChanges();
-          FileSaver.saveAs(response,  'labels.pdf');
+          FileSaver.saveAs(response, result.filename || 'labels.pdf');
         }, () => {
           this.pdfLoading = false;
           this.cdr.detectChanges();
@@ -122,13 +123,28 @@ export class AppComponent implements OnInit {
   }
 
   setAvailableFields(fields) {
-    this.newSetup = {
-      ...this.newSetup,
+    this.defaultSetup = {
+      ...this.defaultSetup,
       labelItems: [
-        ...this.newSetup.labelItems.map((field, idx) => ({
+        ...this.defaultSetup.labelItems.map((field, idx) => {
+          let target = fields[idx] || fields[0];
+          const correctType = fields.find(f => f.type === field.fields[0].type);
+          if (correctType) {
+            target = correctType;
+          } else {
+            const idType = fields.find(f => f.type && f.type === FieldType.id);
+            if (idType) {
+              target = {
+                ...idType,
+                type: field.fields[0].type
+              };
+            }
+          }
+          return {
           ...field,
-          fields: [fields[idx]]
-        }))
+            fields: [target]
+          };
+        })
       ]
     };
     this.availableFields$ = of(fields);

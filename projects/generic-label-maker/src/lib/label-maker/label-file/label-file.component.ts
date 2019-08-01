@@ -26,6 +26,7 @@ export class LabelFileComponent {
   @Input() newSetup: ISetup;
   @Input() setup: ISetup;
   @Input() data: object[];
+  @Input() defaultAvailableFields: ILabelField[];
   @Input() availableFields: ILabelField[];
   @Input() pdfLoading = false;
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;

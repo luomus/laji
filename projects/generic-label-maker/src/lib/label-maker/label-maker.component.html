@@ -45,8 +45,9 @@
           [presets]="presets"
           [availableFields]="availableFields"
           (availableFieldsChange)="availableFieldsChange.emit($event)"
+          [defaultAvailableFields]="defaultAvailableFields"
           (dataChange)="data = $event"
-          [newSetup]="newSetup"
+          [newSetup]="defaultSetup"
           [setup]="_setup"
           [pdfLoading]="pdfLoading"
           (pdfLoadingChange)="onPdfLoading($event)"
@@ -95,7 +96,7 @@
           [magnification]="_viewSettings.magnification"
           [availableFields]="availableFields"
           (availableFieldsChange)="availableFieldsChange.emit($event)"
-          [newAvailableFields]="newAvailableFields"
+          [defaultAvailableFields]="defaultAvailableFields"
           (addLabelItem)="addLabelItem($event)"
         ></ll-label-fields-available>
       </div>
