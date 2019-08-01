@@ -19,6 +19,11 @@ export class FontSettingsComponent implements OnInit {
     'Times New Roman',
     'Verdana',
   ];
+  textTransform: string[] = [
+    'capitalize',
+    'uppercase',
+    'lowercase',
+  ];
   fontSizes: number[] = [];
   lineHeight: number[] = [
     0.9,
@@ -50,9 +55,7 @@ export class FontSettingsComponent implements OnInit {
       const result = {};
       const currentSetting = this.fontSettings || {};
       Object.keys(currentSetting).forEach(key => {
-        if (key !== field) {
-          result[key] = currentSetting[key];
-        }
+        result[key] = key === field ? undefined : currentSetting[key];
       });
       return this.fontSettingsChange.emit(result);
     }

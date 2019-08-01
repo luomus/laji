@@ -37,6 +37,7 @@ import { SortPipe } from './pipe/sort.pipe';
 import { NbspToSpacePipe } from './pipe/nbsp-to-space.pipe';
 import { HasValuePipe } from './pipe/has-value.pipe';
 import { SeparatorPipe } from './pipe/separator.pipe';
+import { LabelMakerFacade } from './label-maker/label-maker.facade';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,7 @@ import { SeparatorPipe } from './pipe/separator.pipe';
     NgxWebstorageModule,
     TypeaheadModule
   ],
-  providers: [TranslateService],
+  providers: [TranslateService, LabelMakerFacade],
   exports: [LabelMakerComponent, LabelPreviewComponent, LabelPrintComponent]
 })
 export class GenericLabelMakerModule { }
