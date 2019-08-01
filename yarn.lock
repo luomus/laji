@@ -603,7 +603,7 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/jasmine@*", "@types/jasmine@^3.3.13":
+"@types/jasmine@*":
   version "3.3.16"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.3.16.tgz#7c84074f5d7f84da9a14f816ccfb9aeb4da13f27"
   integrity sha512-Nveep4zKGby8uIvG2AEUyYOwZS8uVeHK9TgbuWYSawUDDdIgfhCKz28QzamTo//Jk7Ztt9PO3f+vzlB6a4GV1Q==
@@ -5896,12 +5896,11 @@ laji-form@^0.0.631:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.513, laji-map@^1.0.507, laji-map@^1.0.513:
-  version "1.0.513"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.513.tgz#08b6f375cb7037e77714ff2001028445dd0ed048"
-  integrity sha512-F+PAKPDW8LziujYbxD+r7qjKsSdkRaT6naPubtt96sRCyk3eeyZ5zw8QmE++DMFAzKVpciyZ7K92Qu7S8SF8lw==
+laji-map@1.0.514, laji-map@^1.0.507, laji-map@^1.0.513:
+  version "1.0.514"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.514.tgz#f562c6192156b0db4caa6ca3f6a18a162e1663ff"
+  integrity sha512-Buwq46AEP9PE8BVh++KwlW4gC353xoWv4c1rZn+rJwpG7V6H4q8rjH+nosuqhLjjpKzac+k5ZRaFANjXM7ptOQ==
   dependencies:
-    "@types/jasmine" "^3.3.13"
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
     leaflet-contextmenu "1.4.0"

@@ -31,6 +31,7 @@ import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
 import { ExistsPipe } from './pipe/exists.pipe';
 import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 import { ObservationFacade } from './observation.facade';
+import { AnnotationsComponent } from './annotations/annotations.component';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { ObservationFacade } from './observation.facade';
     MemberIdPillListComponent,
     RemoveLeadingPipe,
     ExistsPipe,
-    ToSafeQueryPipe
+    ToSafeQueryPipe,
+    AnnotationsComponent
   ],
   providers: [
     ObservationFacade

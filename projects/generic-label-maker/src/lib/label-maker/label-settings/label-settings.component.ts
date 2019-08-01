@@ -3,6 +3,7 @@ import { ILabelField, ILabelItem, ISetup, FieldType, TLabelLocation } from '../.
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslateService } from '../../translate/translate.service';
 import { Presets } from '../../presets';
+import { LabelMakerFacade } from '../label-maker.facade';
 
 @Component({
   selector: 'll-label-settings',
@@ -22,7 +23,8 @@ export class LabelSettingsComponent implements OnInit {
   private _selectedLabelItem: ILabelItem;
 
   constructor(
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private labelMakerFacade: LabelMakerFacade
   ) { }
 
   ngOnInit() {
@@ -52,11 +54,13 @@ export class LabelSettingsComponent implements OnInit {
           ...value
         }
       });
+    } else {
+      this.setupChange.emit({
+        ...this.setup,
+        [field]: value
+      });
     }
-    this.setupChange.emit({
-      ...this.setup,
-      [field]: value
-    });
+    this.labelMakerFacade.hasChanges(true);
   }
 
   changeSelectedItem(field: string, item: any) {
@@ -90,6 +94,7 @@ export class LabelSettingsComponent implements OnInit {
           ...this.setup[location].slice(itemIdx + 1)
         ]
       });
+      this.labelMakerFacade.hasChanges(true);
     }
   }
 
@@ -112,6 +117,7 @@ export class LabelSettingsComponent implements OnInit {
         ...this.setup[location].slice(itemIdx + 1)
       ]
     });
+    this.labelMakerFacade.hasChanges(true);
   }
 
   fieldAdd(labelField: ILabelField) {
@@ -133,6 +139,7 @@ export class LabelSettingsComponent implements OnInit {
         ...this.setup[location].slice(itemIdx + 1)
       ]
     });
+    this.labelMakerFacade.hasChanges(true);
   }
 
   fieldUpdate(labelField: ILabelField, idx: number) {
@@ -155,6 +162,7 @@ export class LabelSettingsComponent implements OnInit {
         ...this.setup[location].slice(itemIdx + 1)
       ]
     });
+    this.labelMakerFacade.hasChanges(true);
   }
 
   drop(event: CdkDragDrop<ILabelField[]>) {
@@ -175,6 +183,7 @@ export class LabelSettingsComponent implements OnInit {
         ...this.setup[location].slice(itemIdx + 1)
       ]
     });
+    this.labelMakerFacade.hasChanges(true);
   }
 
   round(value: any) {

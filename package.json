@@ -99,7 +99,7 @@
     "jsonpath-plus": "^0.20.1",
     "jw-bootstrap-switch-ng2": "^2.0.5",
     "laji-form": "^0.0.631",
-    "laji-map": "1.0.513",
+    "laji-map": "1.0.514",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.7.3",
     "moment": "2.24.0",
@@ -182,7 +182,7 @@
   "resolutions": {
     "proj4": "2.3.16",
     "leaflet": "1.4.0",
-    "laji-map": "1.0.513",
+    "laji-map": "1.0.514",
     "tslint": "5.10.0"
   },
   "keywords": [

@@ -1,5 +1,5 @@
 <ul class="nav nav-pills">
-  <li role="presentation" [ngClass]="{active: ['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1}">
+  <li role="presentation" [ngClass]="{active: active !== 'finnish'}">
     <a [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery">
       <strong>{{ 'search.result.all' | translate }}</strong>
     </a>
@@ -35,56 +35,68 @@
     </strong>
   </li>
 </ul>
-<a *ngIf="!lgScreen" class="btn btn-mobile" (click)="toggleMenuMobile()" >
-  <span class="menu glyphicon glyphicon-menu-hamburger"></span>
-  <ng-container [ngSwitch]="active">
-      <span class="current-tab" *ngSwitchCase="'map'">{{ 'search.result.map' | translate }}</span>
-      <span class="current-tab" *ngSwitchCase="'list'">{{ 'search.result.list' | translate }}</span>
-      <span class="current-tab" *ngSwitchCase="'images'">{{ 'search.result.images' | translate }}</span>
-      <span class="current-tab" *ngSwitchCase="'species'">{{ 'search.result.species' | translate }}</span>
-      <span class="current-tab" *ngSwitchCase="'stats'">{{ 'search.result.stats' | translate }}</span>
-      <span class="current-tab" *ngSwitchCase="'load'">{{ 'search.result.load' | translate }}</span>
-  </ng-container>
-</a>
 
-<div class="whole-data-list" *ngIf="(['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1) && ((showMenu && !lgScreen) || lgScreen)">
-  <ul class="nav nav-tabs nav-justified">
-    <li role="presentation" [ngClass]="{active: active === 'map'}">
-      <a [routerLink]="'/observation/map' | localize" [queryParams]="query | toSafeQuery">
-        {{ 'search.result.map' | translate }}
-      </a>
-    </li>
-    <li role="presentation" [ngClass]="{active: active === 'list'}">
-      <a [routerLink]="'/observation/list' | localize" [queryParams]="query | toSafeQuery">
-        {{ 'search.result.list' | translate }}
-      </a>
-    </li>
-    <li role="presentation" [ngClass]="{active: active === 'images'}">
-      <a [routerLink]="'/observation/images' | localize" [queryParams]="query | toSafeQuery">
-        {{ 'search.result.images' | translate }}
-      </a>
-    </li>
-    <li role="presentation" [ngClass]="{active: active === 'species'}">
-      <a [routerLink]="'/observation/species' | localize" [queryParams]="query | toSafeQuery">
-        {{ 'search.result.species' | translate }}
-      </a>
-    </li>
-    <li role="presentation" [ngClass]="{active: active === 'stats'}">
-      <a [routerLink]="'/observation/stats' | localize" [queryParams]="query | toSafeQuery">
-        {{ 'search.result.stats' | translate }}
-      </a>
-    </li>
-    <li role="presentation" [ngClass]="{active: active === 'load'}">
-      <a [routerLink]="'/observation/load' | localize" [queryParams]="query | toSafeQuery">
-        {{ 'search.result.load' | translate }}
-      </a>
-    </li>
-  </ul>
-</div>
+<ng-container *ngIf="active !== 'finnish'">
+  <a *ngIf="!lgScreen" class="btn btn-mobile" (click)="toggleMenuMobile()" >
+    <span class="menu glyphicon glyphicon-menu-hamburger"></span>
+    <ng-container [ngSwitch]="active">
+        <span class="current-tab" *ngSwitchCase="'map'">{{ 'search.result.map' | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'list'">{{ 'search.result.list' | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'images'">{{ 'search.result.images' | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'species'">{{ 'search.result.species' | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'stats'">{{ 'search.result.stats' | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'load'">{{ 'search.result.load' | translate }}</span>
+        <span class="current-tab" *ngSwitchCase="'annotation'">{{ 'search.result.annotation' | translate }}</span>
+    </ng-container>
+  </a>
+
+  <div class="whole-data-list" *ngIf="(showMenu && !lgScreen) || lgScreen">
+    <ul class="nav nav-tabs nav-justified">
+      <li role="presentation" [ngClass]="{active: active === 'map'}">
+        <a [routerLink]="'/observation/map' | localize" [queryParams]="query | toSafeQuery">
+          {{ 'search.result.map' | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{active: active === 'list'}">
+        <a [routerLink]="'/observation/list' | localize" [queryParams]="query | toSafeQuery">
+          {{ 'search.result.list' | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{active: active === 'images'}">
+        <a [routerLink]="'/observation/images' | localize" [queryParams]="query | toSafeQuery">
+          {{ 'search.result.images' | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{active: active === 'species'}">
+        <a [routerLink]="'/observation/species' | localize" [queryParams]="query | toSafeQuery">
+          {{ 'search.result.species' | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{active: active === 'stats'}">
+        <a [routerLink]="'/observation/stats' | localize" [queryParams]="query | toSafeQuery">
+          {{ 'search.result.stats' | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{active: active === 'load'}">
+        <a [routerLink]="'/observation/load' | localize" [queryParams]="query | toSafeQuery">
+          {{ 'search.result.load' | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{active: active === 'annotation'}">
+        <a [routerLink]="'/observation/annotation' | localize" [queryParams]="query | toSafeQuery">
+          {{ 'search.result.annotation' | translate }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</ng-container>
 
 <div class="results">
   <div [hidden]="active !== 'finnish'" *ngIf="activated['finnish']">
     <laji-main-result [query]="query" [visible]="active === 'finnish'"></laji-main-result>
+  </div>
+  <div [hidden]="active !== 'annotation'" *ngIf="activated['annotation']">
+    <laji-annotations [query]="query"></laji-annotations>
   </div>
   <div [hidden]="active !== 'map'" *ngIf="activated['map']">
     <laji-observation-map
