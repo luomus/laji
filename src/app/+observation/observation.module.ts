@@ -20,6 +20,7 @@ import { PillListComponent } from './pill-list/pill-list.component';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ChartsModule } from 'ng2-charts';
 import { ObservationFormComponent } from './form/observation-form.component';
 import { SeasonComponent } from './form/season/season.component';
 import { ResetComponent } from './reset/reset.component';
@@ -45,6 +46,7 @@ import { AnnotationsComponent } from './annotations/annotations.component';
     ObservationMapModule,
     InfoModule,
     NgxChartsModule,
+    ChartsModule,
     JwBootstrapSwitchNg2Module
   ],
   declarations: [ObservationComponent, ObservationChartComponent,

@@ -1,4 +1,6 @@
-:host ::ng-deep {
+@import '../../../../styles/sass/styles';
+
+::ng-deep {
   .browse-button {
     margin-bottom: 20px;
   }

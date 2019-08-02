@@ -1,4 +1,4 @@
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import {Observable, of, Subscription} from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -10,13 +10,15 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  PLATFORM_ID, EventEmitter, OnDestroy, HostListener
+  PLATFORM_ID, EventEmitter, OnDestroy
 } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
 import {GalleryService} from '../../../shared/gallery/service/gallery.service';
 import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
 import {Image} from '../../../shared/gallery/image-gallery/image.interface';
 import {InfoCardQueryService} from './shared/service/info-card-query.service';
+import { BrowserService } from '../../../shared/service/browser.service';
+
 
 @Component({
   selector: 'laji-info-card',
@@ -41,8 +43,9 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   activatedTabs = {};
 
-  screenWidth: any;
+  sub: Subscription;
   currentValueTab: any;
+  lgScreen: boolean;
 
   private imageSub: Subscription;
 
@@ -51,38 +54,22 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private cd: ChangeDetectorRef,
     private galleryService: GalleryService,
+    private browserService: BrowserService,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {}
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.screenWidth = window.innerWidth;
-
-    if (this.screenWidth > 767) {
-      this.showMenu = true;
-    } else {
-      this.showMenu = false;
-    }
-
-  }
-
-
-
   ngOnInit() {
-    if (window.innerWidth > 767) {
-      this.showMenu = true;
-      this.screenWidth = window.innerWidth;
-    } else {
-      this.showMenu = false;
-      this.screenWidth = window.innerWidth;
-    }
-
+    this.sub = this.browserService.lgScreen$.pipe(
+      tap(data => {
+        this.lgScreen = data;
+        this.cd.markForCheck();
+      })
+    )
+    .subscribe();
     if (this.hasImageData === undefined) {
       this.hasImageData = this.activeTab === 'images';
     }
   }
-
-
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.activeTab) {
@@ -123,6 +110,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.setImages();
 
     }
+
+    this.showMenu = false;
   }
 
   ngOnDestroy() {

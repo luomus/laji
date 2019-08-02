@@ -1,6 +1,7 @@
 .result-list {
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 }
 :host {
   flex: 1 0 auto;
@@ -18,7 +19,7 @@
   padding: 0 30px 0 0;
   z-index: 2;
   font-size: 13px;
-  color: #3498DB;
+  color: #337ab7;
 }
 :host >>> .alert-warning {
   margin-right: 10px;
@@ -32,10 +33,64 @@
   height: calc(100vh - 50px);
   padding: 0;
 }
+
+.mobileMargin {
+  margin-top:10px;
+}
+
+.close-filters-mobile {
+  display: none;
+}
+
+@media only screen and (max-width : 1024px) {
+  .toggle-intro {
+    font-size: 30px;
+  }
+}
+
+
 @media only screen and (max-width : 767px) {
   .form-filters {
     top: 0;
     height: auto;
-    position: relative;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    top: 40px;
   }
+
+  .close-filters-mobile{
+    position: fixed;
+    display: block;
+    height: 40px;
+    z-index: 1059;
+    width: 100%;
+    background: #c7c7c7;
+    padding: 0 15px;
+  }
+
+  .close-filters-mobile div {
+    height: 100%;
+    line-height: 40px;
+    float: right;
+    padding: 0 0 0 15px;
+  }
+
+  .close-filters-mobile div label {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .mobileMargin {
+    margin-top:50px;
+  }
+
+  .result-list {
+    margin-top: 50px;
+  }
+
+  :host >>> .navbar-collapse {
+    z-index: 9999;
+  }
+
 }

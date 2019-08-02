@@ -21,10 +21,10 @@ export class FooterComponent implements OnInit, OnDestroy {
   public subLangChange: Subscription;
   public tree$;
   public columns = [
-    'col-sm-offset-1 col-sm-6 col-md-3',
-    'col-sm-5 col-md-2',
-    'col-sm-offset-1 col-md-offset-0 col-sm-6 col-md-3',
-    'col-sm-5 col-md-3'
+    'col-sm-6 col-md-3',
+    'col-sm-6 col-md-3',
+    'col-sm-6 col-md-3',
+    'col-sm-6 col-md-3'
   ];
 
   constructor(

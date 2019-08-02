@@ -1,0 +1,62 @@
+/* Media queries */
+@mixin media-query-phone {
+    @media (max-width: 767px) { @content; }
+}
+
+@mixin media-query-tablet {
+    @media (min-width: 768px) { @content; }
+}
+
+@mixin media-query-desktop {
+    @media (min-width: 1200px) { @content; }
+}
+
+@mixin media-query-big-desktop {
+    @media (min-width: 1800px) { @content; }
+}
+
+
+
+@mixin input-placeholder {
+    &.placeholder { @content; }
+    &:-moz-placeholder { @content; }
+    &::-moz-placeholder { @content; }
+    &:-ms-input-placeholder { @content; }
+    &::-webkit-input-placeholder { @content; }
+}
+
+
+/* Font size in rem */
+@mixin font-size($size) {
+    font-size: ($size* 10) + px;
+    font-size: $size + rem;
+}
+
+
+@mixin border-radius($top-left:10px, $top-right:null, $bottom-right:null, $bottom-left:null){
+    -webkit-border-radius: $top-left $top-right $bottom-right $bottom-left;
+    -moz-border-radius: $top-left $top-right $bottom-right $bottom-left;
+    -ms-border-radius: $top-left $top-right $bottom-right $bottom-left;
+    border-radius: $top-left $top-right $bottom-right $bottom-left;  
+}
+
+
+@mixin border( $size, $pattern, $color) {
+    border: $size $pattern $color;
+}
+
+
+@mixin button-link($color) {
+    color: $color;
+    &:hover {
+      color:darken($color,8%);
+      text-decoration: underline;
+      transition: all 0.3s ease;
+    }
+    &:active {
+      color:darken($color,25%);
+    } 
+}
+
+  
+

@@ -1,3 +1,12 @@
 .label {
   margin-right: 3px;
 }
+
+@media only screen and (max-width : 1024px) {
+  .label-success {
+    font-size: 12px;
+    margin-top: 3px;
+    display: inline-block;
+    padding: 12px 6px;
+  }
+}

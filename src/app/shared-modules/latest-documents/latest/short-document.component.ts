@@ -31,6 +31,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   public publicity = Document.PublicityRestrictionsEnum;
   public locality;
   public dateEdited;
+  public namedPlaceID;
 
   public showList = false;
   public changingLocale = true;
@@ -75,6 +76,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
     this.locality = gatheringInfo.locality;
+    this.namedPlaceID = gatheringInfo.namedPlaceID;
 
     this.loading = false;
   }
@@ -87,7 +89,6 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   removeDocument(event) {
     event.stopPropagation();
-
     if (this.newUnitsLength > 0) {
       this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).subscribe(
         (confirm) => {
