@@ -1,7 +1,7 @@
 <div id="haseka-container" class="flex-column">
   <div class="flex-column">
     <div class="row flex-column flex-row">
-      <div class="col-sm-9 col-md-9 col-lg-10" id="content-container">
+      <div class="col-sm-9 col-md-9 col-lg-9" id="content-container">
         <div>
           <h1>{{ 'haseka.title' | translate }}</h1>
           <ng-container *lajiBrowserOnly>
@@ -20,13 +20,14 @@
           <router-outlet></router-outlet>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column">
+      <div class="col-sm-3 col-md-3 col-lg-3 more-info flex-column">
+        <h4>Menu</h4>
         <ul class="sidebar-nav">
-          <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize">{{ 'haseka.forms.title' | translate }}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{ 'haseka.ownSubmissions.title' | translate }}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'templates'] | localize">{{ 'haseka.templates.title' | translate }}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize">{{ 'haseka.statistics.title' | translate }}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'tools'] | localize">{{ 'haseka.tools' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ 'haseka.forms.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize" routerLinkActive="active" routerLinkActiveOptions="{exact:true}">{{ 'haseka.ownSubmissions.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'templates'] | localize" routerLinkActive="active" routerLinkActiveOptions="{exact:true}">{{ 'haseka.templates.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize" routerLinkActive="active" routerLinkActiveOptions="{exact:true}">{{ 'haseka.statistics.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'tools'] | localize" routerLinkActive="active" routerLinkActiveOptions="{exact:true}">{{ 'haseka.tools' | translate }}</a></li>
         </ul>
 
         <laji-haseka-latest *ngIf="userService.isLoggedIn$ | async"

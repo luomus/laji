@@ -1,5 +1,5 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
-  <div class="container-fluid" *ngIf="taxon">
+  <div class="container" *ngIf="taxon">
     <div class="row">
       <ng-container *ngIf="canShowTree">
         <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" [class.hidden]="!showTree">

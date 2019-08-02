@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -25,9 +25,12 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @ViewChild('tabs', { static: false }) tabs;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
   @ViewChild(ObservationFormComponent, { static: false }) form: ObservationFormComponent;
+  showMobile: any;
+  subscription: any;
 
   showFilter = true;
   dateFormat = 'YYYY-MM-DD';
+  statusFilterMobile = false;
 
   drawing = false;
   drawingShape: string;
@@ -64,8 +67,10 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     return this._activeTab;
   }
 
+
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
+    this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
     this.subQueryUpdate = this.observationFacade.query$.pipe(
       tap(() => { if (this.results) { this.results.resetActivated(); }})
     ).subscribe();
@@ -74,6 +79,10 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.subQueryUpdate) {
       this.subQueryUpdate.unsubscribe();
+    }
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
@@ -110,5 +119,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   onListSettingsChange(settings: ISettingResultList) {
     this.observationFacade.updateListSettings(settings);
+  }
+
+  toggleMobile() {
+  this.statusFilterMobile = !this.statusFilterMobile;
   }
 }

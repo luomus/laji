@@ -2,14 +2,107 @@
   min-width: 200px;
   text-align: left;
   font-weight: bold;
+  padding: 6px 10px;
+  font-size: 14px;
 }
+
 
 .shortDescription {
-  margin-left: 10px;
+  display: block;
+  margin-left: 0px;
+  margin-bottom: 5px;
+  font-size: 14px;
 }
 
-@media only screen and (max-width : 991px) {
+.form-box {
+  cursor: pointer;
+  margin-bottom: 42px;
+  -webkit-box-shadow: 10px 10px 8px -12px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 8px -12px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 8px -12px rgba(0,0,0,0.75);
+  padding-right: 0;
+}
 
+.form-box .header h4 {
+  margin-bottom: 0px;
+  margin-top:0px;
+  margin-right: 35px;
+}
+
+.form-box .header {
+  padding-left: 9px;
+  height: 50px;
+  border-left: 6px solid #3498DB;
+  overflow: hidden;
+  background-color: rgb(236, 240, 241);
+  color: #333;
+  position: relative;
+  padding: 5px 9px;
+}
+
+.form-box .content {
+  padding: 9px 9px 0 9px;
+  height: 110px;
+  font-size: 14px;
+  line-height: 22px;
+  border-left: 6px solid #3498DB;
+  overflow: hidden;
+  color: #333;
+  position: relative;
+}
+
+.form-box:hover {
+  text-decoration: none;
+}
+
+.form-box .layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #2980B9;
+  opacity: 0.2;
+}
+
+.form-box:hover .header {
+  background: rgba(52,152,219,0.2);
+  -webkit-transition-duration: .5s;
+  transition-duration: .5s;
+  -moz-transition-duration: .5s;
+}
+
+.form-box:hover .content {
+  background: rgba(52,152,219,0.2);
+  -webkit-transition-duration: .5s;
+  transition-duration: .5s;
+  -moz-transition-duration: .5s;
+}
+
+.alert-box {
+cursor: pointer;
+}
+
+.admin-rights {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+@media only screen and (max-width : 1280px) {
+  .form-box .content {
+    height: 130px;
+  }
+}
+
+@media only screen and (max-width : 1024px) {
+  .form-box .content {
+    height: 150px;
+  }
+}
+
+
+@media only screen and (max-width : 991px) {
   .shortDescription {
     margin-left: 0px;
     display: block;
@@ -20,5 +113,17 @@
   .link{
     width:100%;
   }
+
+  .form-box .content {
+    margin-bottom: 0px;
+    height: auto;
+    min-height: auto;
+  }
+
+  .form-box .header {
+    height: auto;
+    min-height: 35px;
+  }
+  
 }
 

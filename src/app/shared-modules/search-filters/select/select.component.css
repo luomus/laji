@@ -40,7 +40,8 @@
   color: #ccc;
   position: absolute;
   right: 3px;
-  top: 7px;
+  top: 50%;
+  margin-top: -10px;
 }
 
 .lj-open .lj-title:after {

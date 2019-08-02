@@ -1,6 +1,5 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" [ngClass]="{'red-theme': redTheme}">
-  <div class="env" [ngClass]="{dev: !isProd}"></div>
-  <div [ngClass]="{container: env === 'iucn', 'container-fluid': env !== 'iucn'}">
+  <div [ngClass]="{container: env === 'iucn', 'container': env !== 'iucn'}">
     <div class="row">
       <div class="col-sm-12">
         <div class="navbar-header">
@@ -12,6 +11,7 @@
           <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" [routerLink]="['/'] | localize">
+            <div class="env" [ngClass]="{dev: !isProd}"></div>
             <span *lajiForTypes="['dev', 'prod', 'vir']">LAJI.FI</span>
             <span *lajiForTypes="['iucn']">{{ 'iucn.title' | translate }}</span>
           </a>

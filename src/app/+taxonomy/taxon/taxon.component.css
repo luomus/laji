@@ -1,7 +1,7 @@
 :host, laji-spinner {
-  display: flex;
+  /*display: flex;
   flex: 1 0 auto;
-  flex-direction: column;
+  flex-direction: column;*/
 }
 
 .taxon-tree-container {

@@ -26,3 +26,9 @@
     padding-right: 10px;
   }
 }
+
+@media only screen and (max-width : 480px) {
+  .nav-pills li:first-child {
+    margin-bottom: 10px;
+  }
+}
