@@ -4,6 +4,9 @@
 .list-group {
   margin-bottom: 0;
 }
+.list-group select {
+  color: #000;
+}
 .list-group-item {
   padding: 3px 15px;
 }

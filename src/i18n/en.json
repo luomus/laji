@@ -76,6 +76,8 @@
   "excel.import.step4.invalidData": "Could not find data to send from the file. Bellow you'll find a table with more information why this is so. You can make the needed changes to the file and upload it here:",
   "excel.import.step4.userMapping": "Current mapping",
   "excel.import.workingOn": "Working on file:",
+  "excel.import.split.no": "one column",
+  "excel.import.split.yes": "multiple columns",
   "excel.combine.gathering": "Different gatheerings to new observations",
   "excel.combine.none": "Every row to new observation",
   "excel.combine.all": "Combine as many rows as is possible",
