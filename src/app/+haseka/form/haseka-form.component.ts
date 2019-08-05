@@ -6,7 +6,6 @@ import { FooterService } from '../../shared/service/footer.service';
 import { ComponentCanDeactivate } from '../../shared/guards/document-de-activate.guard';
 import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { RoutingStateService } from '../../shared/service/routing-state.service';
 import { FormService } from '../../shared/service/form.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Form } from '../../shared/model/Form';
@@ -23,7 +22,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   @ViewChild(DocumentFormComponent, { static: false }) documentForm: DocumentFormComponent;
   formId: string;
   documentId: string;
-  back: string;
   showMobileEntryPage$: Observable<boolean>;
   form$: Observable<any>;
   isMobile$: Observable<boolean>;
@@ -37,7 +35,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
               private footerService: FooterService,
               private localizeRouterService: LocalizeRouterService,
               private cd: ChangeDetectorRef,
-              private routingStateService: RoutingStateService,
               private formService: FormService,
               private browserService: BrowserService,
               public translate: TranslateService
@@ -45,7 +42,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   }
 
   ngOnInit() {
-    this.back = this.getBack();
     this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.formId = params['formId'];
@@ -88,9 +84,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
       }
       this.isMobile$.pipe(take(1)).subscribe(isMobile => {
         const query = isMobile ? ['/vihko', this.formId] : ['/vihko'];
-        if (!isMobile && this.back) {
-          return this.router.navigateByUrl(this.back);
-        }
         this.router.navigate(this.localizeRouterService.translateRoute(query));
       });
     });
@@ -121,17 +114,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
 
   onCancel() {
     this.navigateToFront();
-  }
-
-  private getBack() {
-    const history = this.routingStateService.getHistory();
-    for (let i = history.length - 2; i >= 0; i--) {
-      if (history[i].match(/\/user/)) {
-        continue;
-      }
-      return history[i];
-    }
-    return '';
   }
 
   enterForm() {

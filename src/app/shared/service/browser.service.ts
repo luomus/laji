@@ -4,6 +4,7 @@ import { PlatformService } from './platform.service';
 import { DOCUMENT, Location } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { RoutingStateService } from './routing-state.service';
 
 export interface IBrowserState {
   visibility: boolean;
@@ -37,6 +38,7 @@ export class BrowserService implements OnDestroy {
     @Inject(WINDOW) private window: Window,
     private zone: NgZone,
     private platformService: PlatformService,
+    private routingStateService: RoutingStateService,
     private location: Location
   ) {
     if (!platformService.isBrowser) {
@@ -79,7 +81,7 @@ export class BrowserService implements OnDestroy {
     if (!this.platformService.isBrowser) {
       return;
     }
-    if (this.window.history.length > 1) {
+    if (this.routingStateService.hasHistory()) {
       this.location.back();
     } else if (onNoHistory) {
       onNoHistory();
