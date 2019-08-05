@@ -17,8 +17,8 @@ import { ExcelToolService } from './excel-tool.service';
 export class GeneratorService {
 
   public static splitDate = {
-    mm: '@mm',
     dd: '@dd',
+    mm: '@mm',
     yyyy: '@yyyy'
   };
 
@@ -28,7 +28,10 @@ export class GeneratorService {
     system: '@sys'
   };
 
-  public static splitCoordinateSystems = ['ykj', 'wgs84'];
+  public static splitCoordinateSystem = {
+    ykj: 'ykj'
+  };
+  public static splitCoordinateSystems = [GeneratorService.splitCoordinateSystem.ykj, 'wgs84'];
 
   public static splittableFields: {[key: string]: splitType} = {
     'gatheringEvent.dateBegin': 'date',

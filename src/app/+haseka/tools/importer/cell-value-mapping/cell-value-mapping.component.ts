@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { IFormField } from '../../model/excel';
 import { ImportService } from '../../service/import.service';
 import { MappingService, SpecialTypes } from '../../service/mapping.service';
@@ -28,7 +38,8 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
 
   constructor(
     private importService: ImportService,
-    private mappingService: MappingService
+    private mappingService: MappingService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -89,5 +100,6 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
     if (intersection.length === 0) {
       this.allMapped = true;
     }
+    this.cdr.detectChanges();
   }
 }
