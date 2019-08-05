@@ -22,6 +22,7 @@ export const environment = {
   loginUrl: '/user/viranomaiset',
   selfPage: 'https://login.laji.fi/self',
   apiBase: '/api',
+  base: 'https://laji.fi',
   production: true,
   forceLogin: true,
   disableAnalytics: true,

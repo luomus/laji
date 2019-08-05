@@ -21,6 +21,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { Global } from '../../../../environments/global';
 import { AreaService } from '../../../shared/service/area.service';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../../environments/environment';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -184,7 +185,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
             error: msg => this.toastsService.showError(msg),
           },
           showShortcutButton: this.showShortcutButton,
-          onError: this._onError
+          onError: this._onError,
+          lajiFiBase: environment.base
         });
       });
     } catch (err) {

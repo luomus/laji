@@ -21,6 +21,7 @@ export const environment = {
   lolifeForm: 'MHL.45',
   wbcForm: 'MHL.3',
   apiBase: 'https://dev.laji.fi/api',
+  base: 'https://dev.laji.fi',
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
