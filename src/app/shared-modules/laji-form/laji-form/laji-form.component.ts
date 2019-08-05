@@ -16,7 +16,7 @@ import { FormApiClient } from '../../../shared/api/FormApiClient';
 import { IUserSettings, UserService } from '../../../shared/service/user.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
-import { concatMap, map } from 'rxjs/operators';
+import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Global } from '../../../../environments/global';
 import { AreaService } from '../../../shared/service/area.service';
@@ -121,7 +121,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     import('laji-form/lib/laji-form').then((formPackage) => {
       this.lajiFormWrapperProto = formPackage.default;
       this.userService.getUserSetting(this.settingsKey).pipe(
+        take(1),
         concatMap(globalSettings => this.userService.getUserSetting(GLOBAL_SETTINGS).pipe(
+          take(1),
           map(settings => ({...globalSettings, ...settings}))
         ))
       ).subscribe(settings => {
