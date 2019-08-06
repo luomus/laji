@@ -122,11 +122,10 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     import('laji-form/lib/laji-form').then((formPackage) => {
       this.lajiFormWrapperProto = formPackage.default;
       this.userService.getUserSetting(this.settingsKey).pipe(
-        take(1),
         concatMap(globalSettings => this.userService.getUserSetting(GLOBAL_SETTINGS).pipe(
-          take(1),
           map(settings => ({...globalSettings, ...settings}))
-        ))
+        )),
+        take(1)
       ).subscribe(settings => {
         this.settings = settings;
         this.mountLajiForm();
