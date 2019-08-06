@@ -13,7 +13,7 @@
           <a type="button"
              class="btn btn-sm btn-default"
              [routerLink]="['/view/print'] | localize"
-             [queryParams]="{id: document.id}"
+             [queryParams]="{id: document.id, showFacts: showFacts}"
              target="_blank"
              [tooltip]="'haseka.submissions.toPrint' | translate">
             {{ 'print' | translate }}

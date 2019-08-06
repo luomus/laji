@@ -1123,6 +1123,7 @@
   "viewer.taxonVerbatim": "Reported name",
   "viewer.unit": "observations",
   "viewer.valueInterpreted": "interpreted",
+  "viewer.id": "Id",
   "wbc.form": "Routes and send observations",
   "wbc.instructions.title": "",
   "wbc.season.fall": "Fall",

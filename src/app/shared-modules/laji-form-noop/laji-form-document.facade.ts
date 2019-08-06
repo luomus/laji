@@ -24,7 +24,6 @@ import { DocumentService } from '../own-submissions/service/document.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Annotation } from '../../shared/model/Annotation';
-import { AreaService } from '../../shared/service/area.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Logger } from '../../shared/logger';
 import { Form } from '../../shared/model/Form';

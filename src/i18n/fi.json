@@ -1236,6 +1236,7 @@
   "viewer.taxonVerbatim": "Kirjattu nimi",
   "viewer.unit": "havaintoa",
   "viewer.valueInterpreted": "tulkittu",
+  "viewer.id": "Tunniste",
   "wbc.form": "Reitit ja ilmoittaminen",
   "wbc.instructions.title": "Talvilintulaskennan havaintojen ilmoittaminen Vihko-järjestelmän kautta",
   "wbc.season.fall": "Syksy",
