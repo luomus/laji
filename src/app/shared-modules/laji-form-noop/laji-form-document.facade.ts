@@ -56,26 +56,10 @@ export interface ISuccessEvent {
   namedPlace?: NamedPlace;
 }
 
-interface IEnum {
-  enum: string[];
-  enumNames: string[];
-}
-
-interface IUISchemaContext {
-  creator: string;
-  municipalityEnum: IEnum[];
-  biogeographicalProvinceEnum: IEnum[];
-  annotations: Annotation[];
-  isAdmin: boolean;
-  isEdit: boolean;
-  placeholderGeometry?: any;
-}
-
 interface FormWithData extends Form.SchemaForm {
   formData?: Document;
   annotations?: Annotation[];
   rights?: Rights;
-  uiSchemaContext?: IUISchemaContext;
   readonly?: Readonly;
 }
 
