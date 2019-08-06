@@ -236,6 +236,9 @@ export class SpreadSheetService {
   }
 
   private getCombinedDateValue(values: {[key: string]: string}): string {
+    if (!values[GeneratorService.splitDate.dd] && !values[GeneratorService.splitDate.mm] && !values[GeneratorService.splitDate.yyyy]) {
+      return '';
+    }
     if (!values[GeneratorService.splitDate.dd]) {
       values[GeneratorService.splitDate.dd] = '01';
     }
