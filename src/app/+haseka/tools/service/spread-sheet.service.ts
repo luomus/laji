@@ -265,7 +265,8 @@ export class SpreadSheetService {
     if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.ykj) {
       return values[GeneratorService.splitCoordinate.N] + ':' + values[GeneratorService.splitCoordinate.E];
     }
-    return values[GeneratorService.splitCoordinate.N] + ',' + values[GeneratorService.splitCoordinate.E];
+    return values[GeneratorService.splitCoordinate.N].replace(',', '.') + ',' +
+      values[GeneratorService.splitCoordinate.E].replace(',', '.');
   }
 
   private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {
