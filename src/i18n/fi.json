@@ -63,7 +63,7 @@
   "excel.import.done": "Tiedot tallennettiin onnistuneesti",
   "excel.import.error.alreadyUploaded": "<strong>Tiedosto on jo tallennettu.</strong> Varmista että valitsit oikean tiedoston.",
   "excel.import.error.alreadyUploadedPartially": "<strong>Tiedosto on jo osittain ladattu.</strong> Poista tiedostosta rivit jotka ovat jo onnistuneesti tallenettu ja yritä uudelleen",
-  "excel.import.error.ambiguousColumns": "<strong>Otsikko rivullä usea samanniminen sarake!</strong><br>Varmista että otsikko rivillä ei esiinny samaa nimeä useaan kertaan. Nyt löytyi sarakkeet \"{{ambiguousColumns}}\" useaan kertaan.",
+  "excel.import.error.ambiguousColumns": "<strong>Otsikkorivillä on monta saman nimistä saraketta!</strong><br>Korjaa tiedostoa niin että nämä sarakkeet eivät ole siinä useaan kertaan: <em>\"{{ambiguousColumns}}\"</em>.",
   "excel.import.error.doneWithErrors": "<strong>Kaikkia havaintoeriä ei onnistuttu tallentamaan!</strong> Alla olevasta taulukon ensimmäisestä sarakkeesta näet ne rivit joiden lähetys epäonnistui. Voit kokeilla uudelleen lähettämistä poistamalla tiedosta ne rivit joissa lähetys onnistui ja lähettämällä epäonnistuneet rivit uudelleen. Jos ongelma ei korjaannut, niin ota yhteyttä ylläpitoon ja jos mahdollista, niin pistä ongelmallinen tiedosto myös mukaan.",
   "excel.import.error.invalidFileType": "<strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel, OpenDocument sekä csv tiedostoformaatit.",
   "excel.import.failed": "Kaikkia havaintoeriä ei onnistuttu tallentamaan!",
