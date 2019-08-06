@@ -134,15 +134,14 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.settings) {
       return;
     }
-    this.createNewLajiForm();
-    setTimeout(() => {
+    this.createNewLajiForm(() => {
       if (this.lajiFormWrapper) {
         this.lajiFormWrapper.invalidateSize();
       }
-    }, 0);
+    });
   }
 
-  private createNewLajiForm() {
+  private createNewLajiForm(onReady?: () => void) {
     if (!this.lajiFormWrapperProto) {
       return;
     }
@@ -181,7 +180,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
             error: msg => this.toastsService.showError(msg),
           },
           showShortcutButton: this.showShortcutButton,
-          onError: this._onError
+          onError: this._onError,
+          onComponentDidMount: onReady ? onReady() : () => {}
         });
       });
     } catch (err) {
