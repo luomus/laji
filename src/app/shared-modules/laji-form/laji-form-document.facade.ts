@@ -309,7 +309,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
       annotations: form.annotations,
       formID: form.id,
       creator: form.formData && form.formData.creator || undefined,
-      isAdmin: form.rights.edit,
+      isAdmin: form.rights && form.rights.admin,
       isEdit: FormService.isTmpId(documentID),
       placeholderGeometry: _state.namedPlace && _state.namedPlace.geometry || undefined
     });
