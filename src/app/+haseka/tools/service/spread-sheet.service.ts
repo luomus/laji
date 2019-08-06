@@ -16,7 +16,6 @@ interface IColCombine {
   type: string;
   groupId: number;
   order: number;
-  value?: any;
 }
 
 @Injectable()
@@ -87,7 +86,7 @@ export class SpreadSheetService {
     this.requiredFields[formID] = fields;
   }
 
-  setHiddenFeilds(formID: string, fields: string[]) {
+  setHiddenFields(formID: string, fields: string[]) {
     this.hiddenFields[formID] = fields;
   }
 
@@ -144,7 +143,7 @@ export class SpreadSheetService {
     }
   }
 
-  getColMapFromSheet(sheet: {[key: string]: string}, fields: {[key: string]: IFormField}, len: number) {
+  getColMapFromSheet(sheet: {[key: string]: string}, fields: {[key: string]: IFormField}) {
     const colMap = {};
 
     this.mappingService.initColMap(fields);
@@ -226,7 +225,11 @@ export class SpreadSheetService {
   }
 
   private getCombinedValue(values: {[key: string]: string}): string {
-    if (values[GeneratorService.splitCoordinate.N]) {
+    if (
+      typeof values[GeneratorService.splitCoordinate.N] !== 'undefined' ||
+      typeof values[GeneratorService.splitCoordinate.E] !== 'undefined' ||
+      typeof values[GeneratorService.splitCoordinate.system] !== 'undefined'
+    ) {
       return this.getCombinedCoordinateValue(values);
     }
     return this.getCombinedDateValue(values);
