@@ -19,7 +19,6 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Global } from '../../../../environments/global';
-import { AreaService } from '../../../shared/service/area.service';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
 
@@ -53,7 +52,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private ngZone: NgZone,
               private cd: ChangeDetectorRef,
               private toastsService: ToastsService,
-              private areaService: AreaService,
               private translate: TranslateService
   ) {
     this._onError = this._onError.bind(this);

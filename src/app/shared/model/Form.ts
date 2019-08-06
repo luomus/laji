@@ -2,6 +2,7 @@
  * Form interface
  */
 import { Document } from './Document';
+import { Annotation } from './Annotation';
 
 export namespace Form {
   export enum Feature {
@@ -36,9 +37,26 @@ export namespace Form {
     collectionID: string;
     features: Form.Feature[];
   }
+
+  export interface IEnum {
+    enum: string[];
+    enumNames: string[];
+  }
+
+  export interface IUISchemaContext {
+    creator?: string;
+    municipalityEnum?: IEnum;
+    biogeographicalProvinceEnum?: IEnum;
+    annotations?: Annotation[];
+    isAdmin?: boolean;
+    isEdit?: boolean;
+    placeholderGeometry?: any;
+  }
+
   export interface SchemaForm extends List {
     schema: any;
     uiSchema: any;
+    uiSchemaContext?: IUISchemaContext;
     excludeFromCopy?: string[];
     language?: string;
     options?: {
