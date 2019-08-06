@@ -34,8 +34,14 @@ p {
   margin-right: auto;
   margin-left: auto;
   max-width: 1600px;
-  width: auto;
 }
+
+@media (min-width: 1650px) {
+    .container {
+      width: 1600px;
+    }
+} 
+
 
 .footer, #navbar {
   flex: none;
@@ -54,12 +60,13 @@ laji-locale-sv > div,
   flex-direction: column;
 }
 
-#content .container {
+.container .container {
   margin-right: auto; 
   margin-left: auto;
   max-width: 1600px;
-  width: auto;
+  width: auto
 }
+
 
 #content .container-fluid {
   margin: 0;
