@@ -390,7 +390,9 @@ export class MappingService {
       if (value.match(/^[0-9]{3,7}:[0-9]{3,7}$/)) {
         const ykjParts = value.split(':');
         if (ykjParts[0].length === ykjParts[1].length) {
-          return this.coordinateService.convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
+          try {
+            return this.coordinateService.convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
+          } catch (e) {}
         }
       } else if (value.match(/^-?[0-9]{1,2}\.[0-9]+,-?1?[0-9]{1,2}\.[0-9]+/)) {
         const wgsParts = value.split(',');

@@ -8,11 +8,22 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 import { IFormField, LEVEL_DOCUMENT, VALUE_IGNORE } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
+import { GeneratorService } from './generator.service';
+
+interface IColCombine {
+  col: string;
+  field: string;
+  type: string;
+  groupId: number;
+  order: number;
+}
 
 @Injectable()
 export class SpreadSheetService {
 
   public static readonly nameSeparator = ' - ';
+
+  private static groupId = 1;
 
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -75,7 +86,7 @@ export class SpreadSheetService {
     this.requiredFields[formID] = fields;
   }
 
-  setHiddenFeilds(formID: string, fields: string[]) {
+  setHiddenFields(formID: string, fields: string[]) {
     this.hiddenFields[formID] = fields;
   }
 
@@ -113,10 +124,7 @@ export class SpreadSheetService {
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
 
     this.setDateFormat(sheet, !!workBook.Workbook);
-    return [
-      <any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'}),
-      sheet
-    ];
+    return this.combineSplittedFields(<any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'}));
   }
 
   setDateFormat(sheet: XLSX.WorkSheet, hasWorkbook) {
@@ -135,40 +143,16 @@ export class SpreadSheetService {
     }
   }
 
-  getColMapFromSheet(sheet: XLSX.WorkSheet, fields: {[key: string]: IFormField}, len: number) {
+  getColMapFromSheet(sheet: {[key: string]: string}, fields: {[key: string]: IFormField}) {
     const colMap = {};
-    let idx = -1, col;
 
     this.mappingService.initColMap(fields);
-    while (idx <= len) {
-      const address = XLSX.utils.encode_cell({r: 0, c: ++idx});
-      col = sheet[address];
-      if (!col) {
-        continue;
+    Object.keys(sheet).forEach(key => {
+      const valueKey = this.mappingService.colMap(this.normalizeHeader(sheet[key]));
+      if (valueKey !== null) {
+        colMap[key] = valueKey;
       }
-      let found = false;
-      if (Array.isArray(col.c)) {
-        for (let i = 0; i < col.c.length; i++) {
-          if (col.c.t) {
-            const commentKey = this.mappingService.colMap(this.normalizeHeader(col.c.t));
-            if (commentKey !== null) {
-              colMap[XLSX.utils.encode_col(idx)] = commentKey;
-              found = true;
-              break;
-            }
-          }
-        }
-        if (found) {
-          continue;
-        }
-      }
-      if (col.v) {
-        const valueKey = this.mappingService.colMap(this.normalizeHeader(col.v));
-        if (valueKey !== null) {
-          colMap[XLSX.utils.encode_col(idx)] = valueKey;
-        }
-      }
-    }
+    });
     return colMap;
   }
 
@@ -180,6 +164,122 @@ export class SpreadSheetService {
       }
     }
     return '';
+  }
+
+  private combineSplittedFields(data: {[col: string]: string}[]) {
+    if (!data || data.length < 2) {
+      return data;
+    }
+    const first = data[0];
+    const combines: IColCombine[] = [];
+    const matches = [];
+    Object.keys(GeneratorService.splitDate).forEach(key => matches.push(GeneratorService.splitDate[key]));
+    Object.keys(GeneratorService.splitCoordinate).forEach(key => matches.push(GeneratorService.splitCoordinate[key]));
+    const splitRegExp = new RegExp(`(${matches.join('|')})\\b`);
+
+    const getGroup = (field: string): IColCombine => {
+      for (const col of combines) {
+        if (col.field === field) {
+          return col;
+        }
+      }
+      return null;
+    };
+
+    Object.keys(first).forEach((key) => {
+      const match = first[key].match(splitRegExp);
+      const newField = first[key].replace(splitRegExp, '');
+      const group = getGroup(newField);
+      if (match) {
+        combines.push({
+          col: key,
+          field: newField,
+          type: match[1],
+          groupId: group && group.groupId || SpreadSheetService.groupId++,
+          order: matches.indexOf(match[1])
+        });
+      }
+    });
+
+    if (combines.length === 0) {
+      return data;
+    }
+    const groupedCombines = this.getCombinedGroups(combines);
+    return data.map((row, index) => {
+      const newRow = {...row};
+      for (const group of groupedCombines) {
+        const values = {};
+        const combineTo = group[0].col;
+        for (const col of group) {
+          values[col.type] = newRow[col.col];
+          delete newRow[col.col];
+        }
+        if (index === 0) {
+          newRow[combineTo] = group[0].field;
+        } else {
+          newRow[combineTo] = this.getCombinedValue(values);
+        }
+      }
+      return newRow;
+    });
+  }
+
+  private getCombinedValue(values: {[key: string]: string}): string {
+    if (
+      typeof values[GeneratorService.splitCoordinate.N] !== 'undefined' ||
+      typeof values[GeneratorService.splitCoordinate.E] !== 'undefined' ||
+      typeof values[GeneratorService.splitCoordinate.system] !== 'undefined'
+    ) {
+      return this.getCombinedCoordinateValue(values);
+    }
+    return this.getCombinedDateValue(values);
+  }
+
+  private getCombinedDateValue(values: {[key: string]: string}): string {
+    if (!values[GeneratorService.splitDate.dd]) {
+      values[GeneratorService.splitDate.dd] = '01';
+    }
+    if (!values[GeneratorService.splitDate.mm]) {
+      values[GeneratorService.splitDate.mm] = '' + (new Date().getMonth() + 1);
+    }
+    if (!values[GeneratorService.splitDate.yyyy]) {
+      values[GeneratorService.splitDate.yyyy] = '' + new Date().getFullYear();
+    }
+    return values[GeneratorService.splitDate.yyyy] + '-' +
+      this.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
+      this.addLeadingZero(values[GeneratorService.splitDate.dd]);
+  }
+
+  private addLeadingZero(val: string | number) {
+    val = '' + val;
+    if (val.length === 1) {
+      return '0' + val;
+    }
+    return val;
+  }
+
+  private getCombinedCoordinateValue(values: {[key: string]: string}): string {
+    if (!values[GeneratorService.splitCoordinate.system]) {
+      return values[GeneratorService.splitCoordinate.N] + ' ' + values[GeneratorService.splitCoordinate.E];
+    }
+    if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.ykj) {
+      return values[GeneratorService.splitCoordinate.N] + ':' + values[GeneratorService.splitCoordinate.E];
+    }
+    return values[GeneratorService.splitCoordinate.N] + ',' + values[GeneratorService.splitCoordinate.E];
+  }
+
+  private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {
+    const groups: {[key: string]: IColCombine[]} = {};
+    combines.forEach(col => {
+      if (!groups[col.groupId]) {
+        groups[col.groupId] = [];
+      }
+      groups[col.groupId].push(col);
+    });
+    return Object.keys(groups).map(group => {
+      groups[group].sort((a, b) => a.order - b.order);
+      return groups[group];
+    });
   }
 
   private normalizeHeader(value: string) {

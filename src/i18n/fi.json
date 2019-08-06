@@ -76,6 +76,8 @@
   "excel.import.step4.invalidData": "Tiedoston datasta ei löytynyt havaintoja, jotka olisi voitu tallentaa. Alla olevan taulukon ensimmäisestä sarakkeesta löydät lisätietoja syistä. Voit tehdä muutoksia tiedostoon ja ladata se uudestaan suoraan tästä:",
   "excel.import.step4.userMapping": "Nykyinen datan kuvaus",
   "excel.import.workingOn": "Käsitellään tiedostoa:",
+  "excel.import.split.no": "yksi sarake",
+  "excel.import.split.yes": "monta saraketta",
   "excel.combine.gathering": "Päivän ja paikan yhdistelmästä erillinen havaintoerä",
   "excel.combine.none": "Jokaisesta rivistä erillinen havaintoerä",
   "excel.combine.all": "Kaikki yhteen havaintoerään, jos mahdollista",

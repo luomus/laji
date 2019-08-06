@@ -39,6 +39,14 @@ export class FieldListComponent implements OnInit {
     });
   }
 
+  onSplitChange(field: IFormField, value: any) {
+    field.splitType = value;
+  }
+
+  onSplitClick(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
   onTitleClick() {
     const allVisible = [];
     this.visibleFields.forEach(group => {
@@ -57,6 +65,10 @@ export class FieldListComponent implements OnInit {
   set parent(parent: string) {
     this._parent = parent;
     this.initVisibleFields();
+  }
+
+  trackFields(field: IFormField): string {
+    return field.key;
   }
 
   private initVisibleFields() {
@@ -79,5 +91,4 @@ export class FieldListComponent implements OnInit {
     }, {});
     this.visibleFields = Object.keys(visibleFields).map(key => visibleFields[key]);
   }
-
 }

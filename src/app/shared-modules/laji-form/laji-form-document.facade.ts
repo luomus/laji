@@ -24,7 +24,6 @@ import { DocumentService } from '../own-submissions/service/document.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Annotation } from '../../shared/model/Annotation';
-import { AreaService } from '../../shared/service/area.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Logger } from '../../shared/logger';
 import { Form } from '../../shared/model/Form';
@@ -56,26 +55,10 @@ export interface ISuccessEvent {
   namedPlace?: NamedPlace;
 }
 
-interface IEnum {
-  enum: string[];
-  enumNames: string[];
-}
-
-interface IUISchemaContext {
-  creator: string;
-  municipalityEnum: IEnum[];
-  biogeographicalProvinceEnum: IEnum[];
-  annotations: Annotation[];
-  isAdmin: boolean;
-  isEdit: boolean;
-  placeholderGeometry?: any;
-}
-
 interface FormWithData extends Form.SchemaForm {
   formData?: Document;
   annotations?: Annotation[];
   rights?: Rights;
-  uiSchemaContext?: IUISchemaContext;
   readonly?: Readonly;
 }
 
@@ -134,7 +117,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
     private documentService: DocumentService,
     private documentApi: DocumentApi,
     private formService: FormService,
-    private areaService: AreaService,
     private namedPlacesService: NamedPlacesService,
     private formPermissionService: FormPermissionService,
     private documentStorage: DocumentStorage
@@ -321,34 +303,16 @@ export class LajiFormDocumentFacade implements OnDestroy {
     );
   }
 
-  private fetchUiSchemaContext(form: FormWithData, documentID?: string): Observable<IUISchemaContext> {
-    const lang = this.translateService.currentLang;
-    const resultToEnum = (values: any[]) => {
-      return values.reduce((enums, current) => {
-        enums.enum.push(current.id);
-        enums.enumNames.push(current.value);
-        return enums;
-      }, {
-        enum: [],
-        enumNames: []
-      });
-    };
+  private fetchUiSchemaContext(form: FormWithData, documentID?: string): Observable<Form.IUISchemaContext> {
 
-    return this.areaService.getMunicipalities(lang).pipe(
-      map(municipalities => ({municipalityEnum: resultToEnum(municipalities)})),
-      mergeMap((result) => this.areaService.getBiogeographicalProvinces(lang).pipe(
-        map(biogeographicalProvinces => ({
-          ...result,
-          biogeographicalProvinceEnum: resultToEnum(biogeographicalProvinces),
-          annotations: form.annotations,
-          formID: form.id,
-          creator: form.formData && form.formData.creator || undefined,
-          isAdmin: form.rights.edit,
-          isEdit: FormService.isTmpId(documentID),
-          placeholderGeometry: _state.namedPlace && _state.namedPlace.geometry || undefined
-        }))
-      ))
-    );
+    return of({
+      annotations: form.annotations,
+      formID: form.id,
+      creator: form.formData && form.formData.creator || undefined,
+      isAdmin: form.rights.edit,
+      isEdit: FormService.isTmpId(documentID),
+      placeholderGeometry: _state.namedPlace && _state.namedPlace.geometry || undefined
+    });
   }
 
   private getAnnotations(documentID: string, page = 1, results = []): Observable<Annotation[]> {

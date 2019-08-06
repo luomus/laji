@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
-import { map, catchError, switchMap, take } from 'rxjs/operators';
+import { map, catchError, switchMap, take, mergeMap } from 'rxjs/operators';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlaceQuery } from 'app/shared/api/NamedPlaceApi';
 import { FormService } from 'app/shared/service/form.service';
@@ -11,6 +11,7 @@ import { FormPermissionService, Rights } from 'app/+haseka/form-permission/form-
 import { environment } from 'environments/environment';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import { Form } from '../../shared/model/Form';
+import { AreaService } from '../../shared/service/area.service';
 
 export interface NPResolverData {
   collectionId?: string;
@@ -41,7 +42,10 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
               private translate: TranslateService,
               private namedPlacesService: NamedPlacesService,
               private userService: UserService,
-              private formPermissionService: FormPermissionService) {}
+              private formPermissionService: FormPermissionService,
+              private areaService: AreaService
+  ) {}
+
   resolve(route: ActivatedRouteSnapshot): Observable<NPResolverData> {
     this.lang = this.translate.currentLang;
 
@@ -106,7 +110,30 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     if (!id) {
       return of(null);
     }
+
+    const getAreaEnum = (
+      type: Exclude<keyof AreaService, 'getAreaType' | 'getName' | 'getProvinceCode' | 'types' | 'lajiApi' | 'getAllAsLookUp'>
+    ): Observable<Form.IEnum> => this.areaService[type](this.lang).pipe(
+        map((areas) => areas.reduce((enums, area) => {
+          enums.enum.push(area.id);
+          enums.enumNames.push(area.value);
+          return enums;
+        }, {
+          enum: [],
+          enumNames: []
+        })));
+
     return this.formService.getForm(id, this.lang).pipe(
+      mergeMap(form => forkJoin([getAreaEnum('getMunicipalities'), getAreaEnum('getBiogeographicalProvinces')]).pipe(
+        map(([municipalityEnum, biogeographicalProvinceEnum]) => ({
+          ...form,
+          uiSchemaContext: {
+            ...(form.uiSchemaContext || {}),
+            municipalityEnum,
+            biogeographicalProvinceEnum
+          }
+        }))
+      )),
       catchError((err) => {
         const msgKey = err.status === 404
           ? 'haseka.form.formNotFound'

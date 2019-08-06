@@ -15,6 +15,7 @@ export const environment = {
   municipalityMonitoringForm: '',
   lolifeForm: '',
   apiBase: '/api',
+  base: 'https://embedded.laji.fi',
   wbcForm: 'MHL.3',
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',

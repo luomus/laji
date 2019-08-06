@@ -177,7 +177,7 @@ export class UserService {
   }
 
   setUserSetting(key: keyof IUserSettings, value: any): void {
-    const personID = _state.user.id || '';
+    const personID = _state.user && _state.user.id || '';
     if (!personID) {
       return;
     }

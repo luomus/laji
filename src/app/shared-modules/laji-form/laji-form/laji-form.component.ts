@@ -16,11 +16,11 @@ import { FormApiClient } from '../../../shared/api/FormApiClient';
 import { IUserSettings, UserService } from '../../../shared/service/user.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
-import { concatMap, map } from 'rxjs/operators';
+import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Global } from '../../../../environments/global';
-import { AreaService } from '../../../shared/service/area.service';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../../environments/environment';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -52,7 +52,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private ngZone: NgZone,
               private cd: ChangeDetectorRef,
               private toastsService: ToastsService,
-              private areaService: AreaService,
               private translate: TranslateService
   ) {
     this._onError = this._onError.bind(this);
@@ -123,7 +122,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.userService.getUserSetting(this.settingsKey).pipe(
         concatMap(globalSettings => this.userService.getUserSetting(GLOBAL_SETTINGS).pipe(
           map(settings => ({...globalSettings, ...settings}))
-        ))
+        )),
+        take(1)
       ).subscribe(settings => {
         this.settings = settings;
         this.mountLajiForm();
@@ -182,7 +182,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
             error: msg => this.toastsService.showError(msg),
           },
           showShortcutButton: this.showShortcutButton,
-          onError: this._onError
+          onError: this._onError,
+          lajiFiBase: environment.base
         });
       });
     } catch (err) {
