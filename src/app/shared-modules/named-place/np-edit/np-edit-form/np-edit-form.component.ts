@@ -17,7 +17,7 @@ import merge from 'deepmerge';
   styleUrls: ['./np-edit-form.component.css']
 })
 export class NpEditFormComponent implements OnInit {
-  @Input() documentForm: any;
+  @Input() placeForm: any;
   @Input() namedPlace: NamedPlace;
   @Input() namedPlaceOptions: any;
   @Output() editReady = new EventEmitter<{np?: NamedPlace, isEdit?: boolean}>();
