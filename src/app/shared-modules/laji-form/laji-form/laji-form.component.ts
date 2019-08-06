@@ -20,7 +20,6 @@ import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Global } from '../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from '../../../../environments/environment';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -182,8 +181,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
             error: msg => this.toastsService.showError(msg),
           },
           showShortcutButton: this.showShortcutButton,
-          onError: this._onError,
-          lajiFiBase: environment.base
+          onError: this._onError
         });
       });
     } catch (err) {
