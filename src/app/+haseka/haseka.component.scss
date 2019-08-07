@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 :host {
   display: flex;
   flex-direction: column;
@@ -13,7 +15,7 @@
 .toggle-intro {
   padding: 10px 10px 0 0;
   font-size: 13px;
-  color: #3498DB;
+  color: $color-main;
 }
 
 #haseka-container {

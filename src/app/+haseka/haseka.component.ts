@@ -10,7 +10,7 @@ import { DocumentViewerFacade } from '../shared-modules/document-viewer/document
 @Component({
   selector: 'haseka',
   templateUrl: './haseka.component.html',
-  styleUrls: ['./haseka.component.css']
+  styleUrls: ['./haseka.component.scss']
 })
 export class HasekaComponent implements OnInit, OnDestroy {
 

@@ -5,7 +5,7 @@ import { LocalStorage } from 'ngx-webstorage';
 @Component({
   selector: 'laji-wbc-route-table',
   templateUrl: './wbc-route-table.component.html',
-  styleUrls: ['./wbc-route-table.component.css']
+  styleUrls: ['./wbc-route-table.component.scss']
 })
 export class WbcRouteTableComponent implements OnInit {
   rows: any[];

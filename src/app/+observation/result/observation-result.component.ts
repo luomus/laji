@@ -7,7 +7,7 @@ import { ISettingResultList } from '../../shared/service/user.service';
 @Component({
   selector: 'laji-observation-result',
   templateUrl: './observation-result.component.html',
-  styleUrls: ['./observation-result.component.css'],
+  styleUrls: ['./observation-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultComponent {

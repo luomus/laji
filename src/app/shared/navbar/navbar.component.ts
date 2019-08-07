@@ -27,7 +27,7 @@ import { Global } from '../../../environments/global';
 
 @Component({
   selector: 'laji-navbar',
-  styleUrls: ['./navbar.component.css'],
+  styleUrls: ['./navbar.component.scss'],
   templateUrl: './navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

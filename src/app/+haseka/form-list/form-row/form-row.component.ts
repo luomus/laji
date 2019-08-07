@@ -4,7 +4,7 @@ import { Form } from '../../../shared/model/Form';
 @Component({
   selector: 'laji-form-row',
   templateUrl: './form-row.component.html',
-  styleUrls: ['./form-row.component.css'],
+  styleUrls: ['./form-row.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormRowComponent implements OnInit {
