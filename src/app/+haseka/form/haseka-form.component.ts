@@ -78,7 +78,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   onSuccess(data) {
     this.isMobile$.pipe(take(1)).subscribe(isMobile => {
       if (isMobile) {
-        return this.router.navigate(this.localizeRouterService.translateRoute(['/vihko', this.formId]), {skipLocationChange: false});
+        return this.navigateToMobileFront();
       }
       this.browserService.goBack(() => {
         if (data.form && data.form.viewerType && data.document && data.document.id) {
@@ -94,12 +94,16 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   private navigateToFront() {
     this.isMobile$.pipe(take(1)).subscribe(isMobile => {
       if (isMobile) {
-        return this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']), {skipLocationChange: true}).then(() =>
-          this.router.navigate(this.localizeRouterService.translateRoute(['/vihko', this.formId]))
-        );
+        return this.navigateToMobileFront();
       }
       this.browserService.goBack(() => this.router.navigate(this.localizeRouterService.translateRoute(['/vihko'])));
     });
+  }
+
+  private navigateToMobileFront() {
+    return this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']), {skipLocationChange: true}).then(() =>
+      this.router.navigate(this.localizeRouterService.translateRoute(['/vihko', this.formId]))
+    );
   }
 
   onAccessDenied(collectionID) {
