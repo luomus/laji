@@ -52,7 +52,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
       switchMap(params => this.formService.getForm(params['formId'], this.translate.currentLang))
     );
     this.isMobile$ = this.form$.pipe(
-      map(form => form.features && form.features.indexOf(Form.Feature.Mobile) !== -1)
+      map(form => FormService.hasFeature(form, Form.Feature.Mobile))
     );
     this._mobileWelcomePageShown = new Subject();
     this.showMobileEntryPage$ = merge(this.route.params.pipe(
@@ -76,25 +76,29 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   }
 
   onSuccess(data) {
-    this.browserService.goBack(() => {
-      if (data.form && data.form.viewerType && data.document && data.document.id) {
-        return this.router.navigate(
-          this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
-        );
+    this.isMobile$.pipe(take(1)).subscribe(isMobile => {
+      if (isMobile) {
+        return this.router.navigate(this.localizeRouterService.translateRoute(['/vihko', this.formId]), {skipLocationChange: false});
       }
-      this.isMobile$.pipe(take(1)).subscribe(isMobile => {
-        const query = isMobile ? ['/vihko', this.formId] : ['/vihko'];
-        this.router.navigate(this.localizeRouterService.translateRoute(query));
+      this.browserService.goBack(() => {
+        if (data.form && data.form.viewerType && data.document && data.document.id) {
+          return this.router.navigate(
+            this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
+          );
+        }
+        this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
       });
     });
   }
 
   private navigateToFront() {
-    this.browserService.goBack(() => {
-      this.isMobile$.pipe(take(1)).subscribe(isMobile => {
-        const query = isMobile ? ['/vihko', this.formId] : ['/vihko'];
-        this.router.navigate(this.localizeRouterService.translateRoute(query));
-      });
+    this.isMobile$.pipe(take(1)).subscribe(isMobile => {
+      if (isMobile) {
+        return this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']), {skipLocationChange: true}).then(() =>
+          this.router.navigate(this.localizeRouterService.translateRoute(['/vihko', this.formId]))
+        );
+      }
+      this.browserService.goBack(() => this.router.navigate(this.localizeRouterService.translateRoute(['/vihko'])));
     });
   }
 

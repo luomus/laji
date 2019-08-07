@@ -47,6 +47,9 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
         this.uri = params['uri'];
         this.own = params['own'] === 'true';
       }
+      if (params['showFacts']) {
+        this.showFacts = !!(params['showFacts'] === 'true');
+      }
     });
   }
 

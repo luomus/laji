@@ -38,7 +38,9 @@ export class HasekaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subRoute.unsubscribe();
+    if (this.subRoute) {
+      this.subRoute.unsubscribe();
+    }
   }
 
   showDocumentViewer(document: Document) {

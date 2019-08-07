@@ -76,7 +76,7 @@ export class FormComponent
         + ((this.successPage === 'form' && this.routeFormID)
           ? `/${this.routeFormID}`
           : '');
-
+      this._onAccessDenied = this.root;
       this.documentId = params['id'] || null;
       this.cdr.markForCheck();
     });

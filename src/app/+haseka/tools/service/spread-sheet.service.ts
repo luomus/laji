@@ -236,6 +236,9 @@ export class SpreadSheetService {
   }
 
   private getCombinedDateValue(values: {[key: string]: string}): string {
+    if (!values[GeneratorService.splitDate.dd] && !values[GeneratorService.splitDate.mm] && !values[GeneratorService.splitDate.yyyy]) {
+      return '';
+    }
     if (!values[GeneratorService.splitDate.dd]) {
       values[GeneratorService.splitDate.dd] = '01';
     }
@@ -265,7 +268,8 @@ export class SpreadSheetService {
     if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.ykj) {
       return values[GeneratorService.splitCoordinate.N] + ':' + values[GeneratorService.splitCoordinate.E];
     }
-    return values[GeneratorService.splitCoordinate.N] + ',' + values[GeneratorService.splitCoordinate.E];
+    return values[GeneratorService.splitCoordinate.N].replace(',', '.') + ',' +
+      values[GeneratorService.splitCoordinate.E].replace(',', '.');
   }
 
   private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {

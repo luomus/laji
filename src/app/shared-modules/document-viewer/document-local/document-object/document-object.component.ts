@@ -10,6 +10,8 @@ export class DocumentObjectComponent implements OnChanges {
   @Input() hideTooltips = false;
   @Input() showFacts = false;
   @Input() fields: any;
+  @Input() showUnitId = false;
+  @Input() showLinks = true;
 
   templates = {};
   hasFacts = false;
@@ -20,6 +22,7 @@ export class DocumentObjectComponent implements OnChanges {
   @ViewChild('fieldset', { static: true }) fieldsetTpl: TemplateRef<any>;
   @ViewChild('facts', { static: true }) factsTpl: TemplateRef<any>;
   @ViewChild('default', { static: true }) defaultTpl: TemplateRef<any>;
+  @ViewChild('taxonID', { static: true }) taxonIDTpl: TemplateRef<any>;
 
   constructor() { }
 

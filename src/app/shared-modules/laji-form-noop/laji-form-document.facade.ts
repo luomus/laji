@@ -24,7 +24,6 @@ import { DocumentService } from '../own-submissions/service/document.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Annotation } from '../../shared/model/Annotation';
-import { AreaService } from '../../shared/service/area.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Logger } from '../../shared/logger';
 import { Form } from '../../shared/model/Form';
@@ -56,26 +55,10 @@ export interface ISuccessEvent {
   namedPlace?: NamedPlace;
 }
 
-interface IEnum {
-  enum: string[];
-  enumNames: string[];
-}
-
-interface IUISchemaContext {
-  creator: string;
-  municipalityEnum: IEnum[];
-  biogeographicalProvinceEnum: IEnum[];
-  annotations: Annotation[];
-  isAdmin: boolean;
-  isEdit: boolean;
-  placeholderGeometry?: any;
-}
-
 interface FormWithData extends Form.SchemaForm {
   formData?: Document;
   annotations?: Annotation[];
   rights?: Rights;
-  uiSchemaContext?: IUISchemaContext;
   readonly?: Readonly;
 }
 

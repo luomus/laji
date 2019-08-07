@@ -1,5 +1,9 @@
 <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="'result.unit.taxonVerbatim' | translate">
   <laji-taxon-name [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
+  <ng-container *ngIf="showFacts">
+    <a *ngIf="showLinks; else nonlink" target="_blank" href="{{ unit.unitId }}">{{ unit.unitId }}</a>
+    <ng-template #nonlink><small>({{ unit.unitId }})</small></ng-template>
+  </ng-container>
 </laji-row>
 <ng-template #taxonVerbatim>
   <laji-row *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>

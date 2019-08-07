@@ -19,6 +19,16 @@
     </ul>
   </laji-row>
 </ng-template>
+<ng-template #taxonID let-value="value" let-label="label">
+  <laji-row [title]="label" [value]="value | taxon" ngPreserveWhitespaces>
+    <ng-container *ngIf="showFacts || showUnitId">
+      <a *ngIf="showLinks; else nonlink" target="_blank" href="http://tun.fi/{{ object.id }}">http://tun.fi/{{ object.id }}</a>
+      <ng-template #nonlink>
+        <small>(http://tun.fi/{{ object.id }})</small>
+      </ng-template>
+    </ng-container>
+  </laji-row>
+</ng-template>
 <ng-template #fieldset let-value="value" let-field="field">
   <laji-document-object [object]="value"
                         [fields]="field.fields"

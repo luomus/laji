@@ -20,7 +20,6 @@ import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Global } from '../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from '../../../../environments/environment';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -135,15 +134,14 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.settings) {
       return;
     }
-    this.createNewLajiForm();
-    setTimeout(() => {
+    this.createNewLajiForm(() => {
       if (this.lajiFormWrapper) {
         this.lajiFormWrapper.invalidateSize();
       }
-    }, 0);
+    });
   }
 
-  private createNewLajiForm() {
+  private createNewLajiForm(onReady?: () => void) {
     if (!this.lajiFormWrapperProto) {
       return;
     }
@@ -183,7 +181,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           },
           showShortcutButton: this.showShortcutButton,
           onError: this._onError,
-          lajiFiBase: environment.base
+          onComponentDidMount: onReady ? onReady() : () => {}
         });
       });
     } catch (err) {
