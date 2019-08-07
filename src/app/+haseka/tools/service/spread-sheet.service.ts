@@ -239,15 +239,6 @@ export class SpreadSheetService {
     if (!values[GeneratorService.splitDate.dd] && !values[GeneratorService.splitDate.mm] && !values[GeneratorService.splitDate.yyyy]) {
       return '';
     }
-    if (!values[GeneratorService.splitDate.dd]) {
-      values[GeneratorService.splitDate.dd] = '01';
-    }
-    if (!values[GeneratorService.splitDate.mm]) {
-      values[GeneratorService.splitDate.mm] = '' + (new Date().getMonth() + 1);
-    }
-    if (!values[GeneratorService.splitDate.yyyy]) {
-      values[GeneratorService.splitDate.yyyy] = '' + new Date().getFullYear();
-    }
     return values[GeneratorService.splitDate.yyyy] + '-' +
       this.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
       this.addLeadingZero(values[GeneratorService.splitDate.dd]);
