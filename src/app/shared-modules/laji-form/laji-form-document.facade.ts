@@ -153,12 +153,8 @@ export class LajiFormDocumentFacade implements OnDestroy {
       mergeMap(form => this.userService.user$.pipe(
         take(1),
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
-          tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: form}) : null),
+          tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
           mergeMap(rights => {
-              if (rights.edit === false) {
-                this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}});
-                return of(form);
-              }
               return (documentID ? this.fetchExistingDocument(documentID) : this.fetchEmptyData(form, person)).pipe(
                 map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
                 map((res: FormWithData) => res.readonly !== Readonly.false ?
