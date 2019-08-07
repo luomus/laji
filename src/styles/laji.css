@@ -30,7 +30,7 @@ p {
 
 
 .container {
-  z-index: 1028;
+  /*z-index: 1028;*/
   margin-right: auto;
   margin-left: auto;
   max-width: 1600px;
@@ -82,9 +82,9 @@ laji-locale-sv > div,
   z-index: 1060;
 }
 
-.modal {
+/*.modal {
   z-index: 1070;
-}
+}*/
 
 #content .container > div {
   flex: 1 0 auto;
