@@ -997,17 +997,17 @@ body > .ui-select-bootstrap.open {
 }
 
 .cta:hover {
-  background-color: darken($color-main, 10%);
+  background-color: $color-main-dark;
   color:white;
 }
 
 
 .label-info{
-  background-color: $color-main;
+  background-color: $color-main-dark;
 }
 
 .nav-pills>li>a{
-  border: 1px solid $color-main;
+  border: 1px solid $color-main-dark;
 }
 
 .padding-top-bottom-5 {
@@ -1025,4 +1025,8 @@ body > .ui-select-bootstrap.open {
 
 .alert-box:hover{
   text-decoration: none;
+}
+
+a {
+  color: $color-main-dark;
 }

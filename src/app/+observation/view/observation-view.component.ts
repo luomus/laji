@@ -16,7 +16,7 @@ import { ISettingResultList } from '../../shared/service/user.service';
 @Component({
   selector: 'laji-observation-view',
   templateUrl: './observation-view.component.html',
-  styleUrls: ['./observation-view.component.css'],
+  styleUrls: ['./observation-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationViewComponent implements OnInit, OnDestroy {
