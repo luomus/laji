@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .env {
   position: absolute;
   left:0;
@@ -51,8 +53,8 @@
 
 .navbar {
   margin-bottom: 0;
-  background-color: #3498DB;
-  border-color: #2980B9;
+  background-color: $color-main;
+  border-color: darken($color-main, 10%);
 }
 
 .navbar .navbar-nav {
@@ -62,12 +64,12 @@
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li.open > a,
 .navbar-inverse .navbar-brand:hover {
-  background-color: #2980B9;
+  background-color: darken($color-main, 10%);
 }
 
 .navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover {
-  background-color: #2980B9;
-  border-color: #2980B9;
+  background-color: darken($color-main, 10%);
+  border-color: darken($color-main, 10%);
 }
 
 .navbar-inverse .dropdown-menu li[role="menuitem"] {
@@ -78,11 +80,11 @@
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:focus,
 .navbar-inverse .navbar-nav > .active > a:hover {
-  background-color: #2980B9;
+  background-color: darken($color-main, 10%);
 }
 
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-  border-color: #2980B9;
+  border-color: darken($color-main, 10%);
 }
 
 .navbar-text {
@@ -95,7 +97,7 @@
 }
 
 .navbar-toggle {
-  border-color: #2980B9
+  border-color: darken($color-main, 10%)
 }
 
 .navbar-brand {
@@ -107,7 +109,7 @@
 #navbar .active a {
   color: #ffffff;
   font-weight: 500;
-  background-color: #2980B9;
+  background-color: darken($color-main, 10%);
 }
 
 #navbar a {

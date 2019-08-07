@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 hr {
   margin: 4px 0;
 }
@@ -44,7 +46,7 @@ label {
 }
 
 .badge.active {
-  background: #337ab7;
+  background: $color-main-dark;
   font-weight: normal;
   color: #fff;
 }

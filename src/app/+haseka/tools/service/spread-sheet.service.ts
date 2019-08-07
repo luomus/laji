@@ -236,14 +236,8 @@ export class SpreadSheetService {
   }
 
   private getCombinedDateValue(values: {[key: string]: string}): string {
-    if (!values[GeneratorService.splitDate.dd]) {
-      values[GeneratorService.splitDate.dd] = '01';
-    }
-    if (!values[GeneratorService.splitDate.mm]) {
-      values[GeneratorService.splitDate.mm] = '' + (new Date().getMonth() + 1);
-    }
-    if (!values[GeneratorService.splitDate.yyyy]) {
-      values[GeneratorService.splitDate.yyyy] = '' + new Date().getFullYear();
+    if (!values[GeneratorService.splitDate.dd] && !values[GeneratorService.splitDate.mm] && !values[GeneratorService.splitDate.yyyy]) {
+      return '';
     }
     return values[GeneratorService.splitDate.yyyy] + '-' +
       this.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
@@ -265,7 +259,8 @@ export class SpreadSheetService {
     if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.ykj) {
       return values[GeneratorService.splitCoordinate.N] + ':' + values[GeneratorService.splitCoordinate.E];
     }
-    return values[GeneratorService.splitCoordinate.N] + ',' + values[GeneratorService.splitCoordinate.E];
+    return values[GeneratorService.splitCoordinate.N].replace(',', '.') + ',' +
+      values[GeneratorService.splitCoordinate.E].replace(',', '.');
   }
 
   private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {

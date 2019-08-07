@@ -1,3 +1,5 @@
+@import "styles";
+
 html {
   position: relative;
   height: 100%;
@@ -30,7 +32,6 @@ p {
 
 
 .container {
-  /*z-index: 1028;*/
   margin-right: auto;
   margin-left: auto;
   max-width: 1600px;
@@ -40,7 +41,7 @@ p {
     .container {
       width: 1600px;
     }
-} 
+}
 
 
 .footer, #navbar {
@@ -61,7 +62,7 @@ laji-locale-sv > div,
 }
 
 .container .container {
-  margin-right: auto; 
+  margin-right: auto;
   margin-left: auto;
   max-width: 1600px;
   width: auto
@@ -144,7 +145,7 @@ laji-locale-sv > div,
 
 .footer footer {
   flex: none;
-  background-color: #3498DB;
+  background-color: $color-main;
   width: 100%;
 }
 
@@ -829,15 +830,6 @@ body > .ui-select-bootstrap.open {
   }
 }
 
-/** workaround to https://github.com/swimlane/ngx-datatable/issues/943 **/
-input[type="checkbox"],
-input[type="radio"]
-{
-  display: inline;
-}
-/** end of workaround **/
-
-
 /** datatable global styling **/
 .ngx-datatable.material {
   box-shadow: none;
@@ -886,7 +878,7 @@ input[type="radio"]
 /** Tabs **/
 
 .nav.nav-tabs.nav-justified{
-  margin: 25px 0 20px 0; 
+  margin: 25px 0 20px 0;
   clear: both
 }
 
@@ -912,7 +904,7 @@ input[type="radio"]
     border-bottom: 1px solid #ddd;
     border-radius: 4px 4px 0 0;
   }
-  
+
   .nav-tabs.nav-justified>li>a {
     margin-bottom: 0;
   }
@@ -996,26 +988,26 @@ input[type="radio"]
 /* CTA Buttons */
 
 .cta {
-  box-shadow: 0px 18px 4px -13px rgba(0,0,0,0.75); 
+  box-shadow: 0px 18px 4px -13px rgba(0,0,0,0.75);
   -webkit-box-shadow: 0px 18px 4px -13px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 18px 4px -13px rgba(0,0,0,0.75);
-  background-color: #3498DB;
+  background-color: $color-main;
   border: none;
   color:white;
 }
 
 .cta:hover {
-  background-color: #2980B9;
+  background-color: $color-main-dark;
   color:white;
 }
 
 
 .label-info{
-  background-color: #337ab7;
+  background-color: $color-main-dark;
 }
 
 .nav-pills>li>a{
-  border: 1px solid #337ab7;
+  border: 1px solid $color-main-dark;
 }
 
 .padding-top-bottom-5 {
@@ -1033,4 +1025,8 @@ input[type="radio"]
 
 .alert-box:hover{
   text-decoration: none;
+}
+
+a {
+  color: $color-main-dark;
 }

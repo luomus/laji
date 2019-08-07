@@ -1,3 +1,5 @@
+@import "../../../styles/variables";
+
 .result-list {
   display: flex;
   flex-direction: column;
@@ -19,7 +21,7 @@
   padding: 0 30px 0 0;
   z-index: 2;
   font-size: 13px;
-  color: #337ab7;
+  color: $color-main-dark;
 }
 :host >>> .alert-warning {
   margin-right: 10px;

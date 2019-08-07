@@ -12,7 +12,7 @@ import { ObservationFacade } from '../observation.facade';
 @Component({
   selector: 'laji-observation-form',
   templateUrl: './observation-form.component.html',
-  styleUrls: ['./observation-form.component.css'],
+  styleUrls: ['./observation-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationFormComponent implements OnInit {

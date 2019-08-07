@@ -1,3 +1,5 @@
+@import "../../../styles/variables";
+
 .results, .whole-data-list {
   padding-top: 20px;
 }
@@ -17,7 +19,7 @@
   padding: 0 15px 0 0;
   z-index: 2;
   font-size: 13px;
-  color: #3498DB;
+  color: $color-main-dark;
 }
 
 
