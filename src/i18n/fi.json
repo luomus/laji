@@ -1311,6 +1311,7 @@
   "save": "Tallenna",
   "cancel": "Peruuta",
   "close": "Sulje",
+  "noYear": "vuosi puuttuu",
   "TimeoutError": "Palvelin ei vastannut ajoissa. Tarkista onko tallennus kuitenkin onnistunut!",
   "navigation.lolife": "LOLIFE",
   "theme.lolife.intro": "Liito-Orava-Life",

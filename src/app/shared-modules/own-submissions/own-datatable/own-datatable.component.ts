@@ -65,7 +65,7 @@ export interface TemplateEvent {
 
 export interface LabelEvent {
   documentIDs: string[];
-  year: number;
+  year: string;
   label: string;
 }
 
@@ -76,7 +76,7 @@ export interface LabelEvent {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
-  @Input() year: number;
+  @Input() year: string;
   @Input() loadError = '';
   @Input() showDownloadAll = true;
   @Input() showPrintLabels = true;
