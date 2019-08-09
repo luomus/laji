@@ -181,7 +181,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           },
           showShortcutButton: this.showShortcutButton,
           onError: this._onError,
-          onComponentDidMount: onReady ? onReady() : () => {}
+          onComponentDidMount: onReady ? onReady() : () => {},
+          optimizeOnChange: true
         });
       });
     } catch (err) {
