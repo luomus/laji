@@ -6,7 +6,6 @@ import {
   distinctUntilChanged,
   map,
   mergeMap,
-  share,
   take,
   tap,
 } from 'rxjs/operators';
@@ -106,7 +105,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   private readonly dataSub: Subscription;
   private formSub: Subscription;
-  private saveObs$: Observable<ISuccessEvent>;
 
   constructor(
     private logger: Logger,
