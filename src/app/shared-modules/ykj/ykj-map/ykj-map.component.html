@@ -20,7 +20,9 @@
       <span class="cnt">
         {{ 'theme.cnt' | translate }}
       </span>
-        <span dropdown container="body">
+        <div dropdown
+             placement="top"
+              container="body">
         <ng-container *ngIf="types.length > 1">
           <a href dropdownToggle (click)="false">
             <span>
@@ -38,7 +40,7 @@
             {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
           </span>
         </ng-container>
-      </span>
+      </div>
       </div>
       <ul>
         <li *ngFor="let leg of legendList">
