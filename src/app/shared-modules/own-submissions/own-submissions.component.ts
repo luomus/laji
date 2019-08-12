@@ -195,7 +195,9 @@ export class OwnSubmissionsComponent implements OnChanges {
           if (this.year && results.findIndex(item => item.year === this.year) > -1) {
             return;
           }
-          this.year = results.length > 0 ? results[0].year : new Date().getFullYear();
+          this.year = results.length > 0 && (results.length !== 1 && results[0].year !== 'null')
+            ? results[0].year
+            : new Date().getFullYear();
         }),
         catchError(() => {
           this.translate.get('haseka.form.genericError')
