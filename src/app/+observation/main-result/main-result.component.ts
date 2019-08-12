@@ -130,6 +130,9 @@ export class MainResultComponent implements OnInit, OnChanges {
     if (changes.query && this.initialized) {
       this.initInternalQueries();
     }
+    if (changes.visible) {
+      this.browserService.triggerResizeEvent();
+    }
   }
 
   initInternalQueries() {
