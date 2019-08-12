@@ -39,7 +39,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() zeroObservationQuery: WarehouseQueryInterface;
   @Input() data: any;
   @Input() type: MapBoxTypes = 'count';
-  @Input() types = ['count', 'individualCount', 'newest'];
+  @Input() types: MapBoxTypes[] = ['count', 'individualCount', 'newest'];
   @Input() typeLabels: any = {};
   @Input() colorRange: string[] = ['violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
