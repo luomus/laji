@@ -5,7 +5,7 @@ import {
   catchError, delay,
   distinctUntilChanged,
   map,
-  mergeMap,
+  mergeMap, switchMap,
   take,
   tap,
 } from 'rxjs/operators';
@@ -148,7 +148,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     }
     this.updateState({..._state, form: undefined, loading: true, hasChanges: false, error: FormError.incomplete});
     this.formSub = this.formService.getForm(formID, this.translateService.currentLang).pipe(
-      mergeMap(form => this.userService.user$.pipe(
+      switchMap(form => this.userService.user$.pipe(
         take(1),
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
           tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
@@ -179,10 +179,13 @@ export class LajiFormDocumentFacade implements OnDestroy {
         return of(null);
       })
     ).subscribe((form: FormWithData) => {
-      this.updateState({..._state, loading: false, form, error: _state.error === FormError.incomplete ? FormError.ok : _state.error});
       if (form && form.formData && form.formData.locked) {
-        this.lock(form.formData.locked);
+        if (!form.uiSchema) {
+          form.uiSchema = {};
+        }
+        form.uiSchema['ui:disabled'] = true;
       }
+      this.updateState({..._state, loading: false, form, error: _state.error === FormError.incomplete ? FormError.ok : _state.error});
     });
   }
 
