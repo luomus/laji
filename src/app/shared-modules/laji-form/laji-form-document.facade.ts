@@ -245,7 +245,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   discardChanges() {
     if (_state.form && _state.form.formData) {
       const id = _state.form.formData.id;
-      this.updateState({..._state, form: {..._state.form, formData: null}});
+      this.updateState({..._state, form: {..._state.form, formData: null}, error: FormError.incomplete});
       this.userService.user$.pipe(
         take(1),
         delay(100), // Adding data to documentStorage is asynchronous so this delay is to make sure that the last save has gone thought
