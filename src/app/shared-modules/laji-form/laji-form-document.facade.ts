@@ -303,6 +303,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   private fetchUiSchemaContext(form: FormWithData, documentID?: string): Observable<Form.IUISchemaContext> {
 
     return of({
+      ...form.uiSchemaContext,
       annotations: form.annotations,
       formID: form.id,
       creator: form.formData && form.formData.creator || undefined,
