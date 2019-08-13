@@ -1,14 +1,14 @@
-import { map, share } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 
 
@@ -23,20 +23,21 @@ enum RequestStatus {
   templateUrl: './observation-download.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationDownloadComponent {
+export class ObservationDownloadComponent implements OnDestroy {
 
   @Input() unitCount: number;
   @Input() speciesCount: number;
   @Input() taxaLimit = 1000;
   @Input() loadLimit = 2000000;
 
-  privateCount$: Observable<number>;
+  privateCount: number;
   hasPersonalData = false;
   requests: {[place: string]: RequestStatus} = {};
   requestStatus = RequestStatus;
   description = '';
   csvParams = '';
 
+  private cntSub: Subscription;
   private _query: WarehouseQueryInterface;
   private taxaDownloadAggregateBy = {
     'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
@@ -52,6 +53,12 @@ export class ObservationDownloadComponent {
               private logger: Logger,
               private cd: ChangeDetectorRef
   ) { }
+
+  ngOnDestroy(): void {
+    if (this.cntSub) {
+      this.cntSub.unsubscribe();
+    }
+  }
 
   @Input() set query(query: WarehouseQueryInterface) {
     if (!query) {
@@ -77,13 +84,15 @@ export class ObservationDownloadComponent {
   }
 
   updateCount() {
-    this.privateCount$ = this.warehouseService.warehouseQueryCountGet({
+    this.cntSub = this.warehouseService.warehouseQueryCountGet({
       ...this.query,
       secured: true
     }).pipe(
-      map(result => result.total),
-      share()
-    );
+      map(result => result.total)
+    ).subscribe(cnt => {
+      this.privateCount = cnt;
+      this.cd.markForCheck();
+    });
   }
 
   updateCsvLink() {
