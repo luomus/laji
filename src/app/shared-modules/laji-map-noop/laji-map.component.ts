@@ -28,4 +28,5 @@ export class LajiMapComponent {
 
   drawToMap(type: string) {}
   invalidateSize() {}
+  setData(data: any) {}
 }
