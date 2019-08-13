@@ -20,14 +20,14 @@
       <span class="cnt">
         {{ 'theme.cnt' | translate }}
       </span>
-      <span container="body" dropdown>
-      <ng-container *ngIf="types.length > 1">
-        <a (click)="false" dropdownToggle href>
-          <span>
-            {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
-          </span>
-        </a>
-        <ul *dropdownMenu class="dropdown-menu" role="menu">
+      <div dropdown style="position: relative">
+        <ng-container *ngIf="types.length > 1">
+          <a (click)="false" dropdownToggle href>
+            <span>
+              {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
+            </span>
+          </a>
+          <ul *dropdownMenu class="dropdown-menu" role="menu">
             <ng-container *ngFor="let type of types">
               <li><a (click)="changeType(type)"
                      class="link">{{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}</a></li>
@@ -39,7 +39,7 @@
             {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
           </span>
         </ng-container>
-      </span>
+      </div>
       <ul>
         <li *ngFor="let leg of legendList">
           <span [ngStyle]="{'background-color': leg.color}" class="color"></span>
