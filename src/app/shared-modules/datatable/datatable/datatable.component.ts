@@ -77,7 +77,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   _page: number;
   _count: number;
   _offset: number;
-  _columns: DatatableColumn[];
+  _columns: DatatableColumn[] = []; // This needs to be initialized so that the data table would do initial sort!
   selected: any[] = [];
 
   initialized = false;
@@ -161,29 +161,28 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;
-    if (!this.initialized) {
-      return;
-    }
     this.selected = [this._rows[this._preselectedRowIndex]] || [];
     if (!this.selected.length) {
       return;
     }
-    // wait until datatable initialization is complete (monkey patched) before scrolling
-    setTimeout(() => {
-      // find the index in datatable internal sorted array that corresponds to selected index in input data
-      const postSortIndex = this.datatable._internalRows.findIndex((element) => {
-        return element.preSortIndex === this._preselectedRowIndex;
-      });
-      // Don't scroll if row is visible in initial viewport. Should be scrolled to top initially.
-      if (postSortIndex < this.datatable.bodyComponent._pageSize) {
-        return;
-      }
-      // Calculate relative position of selected row and scroll to it
-      const scrollAmount = (<number> this.datatable.bodyComponent.rowHeight) * postSortIndex;
-      if (!isNaN(scrollAmount)) {
-        this.scrollTo(scrollAmount);
-      }
-    }, 50);
+    this.showActiveRow();
+  }
+
+  showActiveRow() {
+    if (!this.initialized && this._preselectedRowIndex !== -1) {
+      return;
+    }
+    const postSortIndex = this.datatable._internalRows.findIndex((element) => {
+      return element.preSortIndex === this._preselectedRowIndex;
+    });
+    // Calculate relative position of selected row and scroll to it
+    const rowHeight = this.datatable.bodyComponent.rowHeight as number;
+    const scrollTo = rowHeight * postSortIndex;
+    const maxScroll = rowHeight * this.datatable._internalRows.length - this.datatable.bodyHeight;
+    const currentOffset = this.datatable.bodyComponent.offsetY;
+    if (!isNaN(scrollTo) && (scrollTo < currentOffset || scrollTo > currentOffset + this.datatable.bodyHeight)) {
+      this.scrollTo(Math.min(scrollTo, maxScroll));
+    }
   }
 
   /**
@@ -210,9 +209,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this.initialized = true;
 
       // Make sure that preselected row index setter is called after initialization
-      if (this._preselectedRowIndex > -1) {
-        this.preselectedRowIndex = this._preselectedRowIndex;
-      }
+      this.showActiveRow();
     }
   }
 
