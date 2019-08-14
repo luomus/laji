@@ -119,12 +119,11 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this.updateFilteredRows();
     } else {
       this._rows = this._originalRows;
-      if (this._preselectedRowIndex === undefined) {
-        this.scrollTo();
-      }
     }
-    if (this._preselectedRowIndex !== undefined) {
+    if (this._preselectedRowIndex !== undefined && this._preselectedRowIndex !== -1) {
       this.preselectedRowIndex = this._preselectedRowIndex;
+    } else {
+      this.scrollTo();
     }
   }
 
