@@ -1104,6 +1104,7 @@
   "taxonomy.ofTaxon": "AV",
   "taxonomy.link": "LÄNK",
   "taxonomy.observations.yearChart": "Havainnot vuosittain Suomessa",
+  "taxonomy.observation.yearChart.filter": "Click on the legend to filter results",
   "taxonomy.observations.yearChart.disclaimer": "Kuvaaja esittää havaintojen ajallista jakaumaa, joka ei ole sama asia kuin lajin runsastuminen/väheneminen.",
   "taxonomy.observations.yearChart.showHistory": "Näytä koko historia",
   "taxonomy.observations.yearChart.hideHistory": "Piilota vanhimmat vuodet",
