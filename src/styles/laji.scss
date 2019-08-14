@@ -35,6 +35,7 @@ p {
   margin-right: auto;
   margin-left: auto;
   max-width: 1600px;
+  z-index: 99;
 }
 
 @media (min-width: 1650px) {
@@ -74,7 +75,7 @@ laji-locale-sv > div,
 }
 
 #content .container.observation-fluid{
-  z-index: unset;
+  z-index: 99;
   margin: 0;
   max-width: none;
 }
