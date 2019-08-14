@@ -169,7 +169,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   showActiveRow() {
-    if (!this.initialized && this._preselectedRowIndex !== -1) {
+    if (!this.initialized || this._preselectedRowIndex === -1 || !this.datatable || !this.datatable._internalRows) {
       return;
     }
     const postSortIndex = this.datatable._internalRows.findIndex((element) => {
