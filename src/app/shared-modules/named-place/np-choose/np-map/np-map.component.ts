@@ -118,7 +118,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   private setNewActivePlace(newActive: number) {
     if (!this.lajiMap.map) { return; }
 
-    this.lajiMap.map.setActive(this.lajiMap.map.getLayerByIdxTuple([0, newActive]));
+    try {
+      this.lajiMap.map.setActive(this.lajiMap.map.getLayerByIdxTuple([0, newActive]));
+    } catch (e) {}
   }
 
   private initMapData() {
