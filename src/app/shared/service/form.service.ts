@@ -70,8 +70,8 @@ export class FormService {
           observer.error(error);
           observer.complete();
         }
-        );
-    } );
+      );
+    });
   }
 
   getFormInJSONFormat(formId: string, lang: string): Observable<any> {
