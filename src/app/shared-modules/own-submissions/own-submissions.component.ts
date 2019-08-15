@@ -395,6 +395,7 @@ export class OwnSubmissionsComponent implements OnChanges {
 
   private getForm(formId: string): Observable<any> {
     return this.formService.getForm(formId, this.translate.currentLang).pipe(
+      map(form => form || {id: formId}),
       catchError((err) => {
         this.logger.error('Failed to load form ' + formId, err);
         return ObservableOf({id: formId});
