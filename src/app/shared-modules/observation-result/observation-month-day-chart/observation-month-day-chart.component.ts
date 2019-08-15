@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild, OnInit
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild, OnInit, ElementRef
 } from '@angular/core';
 import {Subscription, of, Observable, forkJoin} from 'rxjs';
 import {WarehouseApi} from '../../../shared/api/WarehouseApi';
@@ -12,8 +12,6 @@ import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-chart.component';
-import { BaseChartDirective } from 'ng2-charts';
-
 
 
 @Component({
@@ -24,7 +22,7 @@ import { BaseChartDirective } from 'ng2-charts';
 })
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
-  @ViewChild('chart', { static: false }) public barChart: BaseChartDirective;
+  @ViewChild('barChart', { static: false }) public barChart: BarChartComponent;
   @Input() taxonId: string;
   @Input() query: any;
   monthChartData: any[];
@@ -88,9 +86,15 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   }
 
   chartClicked(event) {
-    // const helpers = Chart.helpers;
-    // var gio = this.barChart;
-    // var eventPosition = helpers.getRelativePosition(event, this.barChart.chart);
+
+    const gio = this.barChart.baseChartComponent.chart;
+    const helpers = Chart.helpers;
+
+    const eventPosition = Chart.helpers.getRelativePosition(event.event, gio);
+    const mouseX = eventPosition.x;
+    const mouseY = eventPosition.y;
+
+    const activePoints = [];
 
     if (event.active.length > 0) {
       this.barChartLabelsDay = [];
