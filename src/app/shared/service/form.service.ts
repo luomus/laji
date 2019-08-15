@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
+import { Observable, Observer, of, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { concat, delay, map, retryWhen, share, take, tap } from 'rxjs/operators';
+import { catchError, concat, delay, map, retryWhen, share, switchMap, take, tap } from 'rxjs/operators';
 import { Global } from '../../../environments/global';
 import { Form } from '../model/Form';
-import { PagedResult } from '../model/PagedResult';
 
 @Injectable({providedIn: 'root'})
 export class FormService {
@@ -55,7 +54,8 @@ export class FormService {
       return ObservableOf(this.formCache[formId]);
     } else if (!this.formPending[formId]) {
       this.formPending[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
-        retryWhen(errors => errors.pipe(delay(500), take(2), concat(observableThrowError(errors)))),
+        catchError(error => error.status === 404 ? of(null) : observableThrowError(error)),
+        retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
         tap((schema) => this.formCache[formId] = schema),
         share()
       );
@@ -70,8 +70,8 @@ export class FormService {
           observer.error(error);
           observer.complete();
         }
-        );
-    } );
+      );
+    });
   }
 
   getFormInJSONFormat(formId: string, lang: string): Observable<any> {
