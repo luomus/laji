@@ -5,7 +5,7 @@ import { LocalizeRouterService } from 'app/locale/localize-router.service';
 
 @Component({
     template: `
-    <div class="container">
+    <div class="container-fluid">
         <laji-request
             [collectionId]='collectionId'
         ></laji-request>

@@ -158,33 +158,35 @@
           ></laji-observation-chart>
         </div>
       </div>
-      <div class="col-xs-12">
-        <div [hidden]="!hasYearData"
-             class="panel panel-default"
-             laji-panel
-             [title]="'observation.results.yearChart' | translate"
-             [open]="true"
-             [autoToggle]="true"
-        >
-          <p class="disclaimer">
-            {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
-          </p>
-          <laji-observation-year-chart
-            [query]="query"
-            (hasData)="hasYearData = $event"
-          ></laji-observation-year-chart>
-        </div>
-        <div [hidden]="!hasMonthDayData"
-             class="panel panel-default"
-             laji-panel
-             [title]="'observation.results.monthDayChart' | translate"
-             [open]="true"
-             [autoToggle]="true"
-        >
-          <laji-observation-month-day-chart
-            [query]="query"
-            (hasData)="hasMonthDayData = $event"
-          ></laji-observation-month-day-chart>
+      <div class="row">
+        <div class="col-xs-12">
+          <div [hidden]="!hasYearData"
+               class="panel panel-default"
+               laji-panel
+               [title]="'observation.results.yearChart' | translate"
+               [open]="true"
+               [autoToggle]="true"
+          >
+            <p class="disclaimer">
+              {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
+            </p>
+            <laji-observation-year-chart
+              [query]="query"
+              (hasData)="hasYearData = $event"
+            ></laji-observation-year-chart>
+          </div>
+          <div [hidden]="!hasMonthDayData"
+               class="panel panel-default"
+               laji-panel
+               [title]="'observation.results.monthDayChart' | translate"
+               [open]="true"
+               [autoToggle]="true"
+          >
+            <laji-observation-month-day-chart
+              [query]="query"
+              (hasData)="hasMonthDayData = $event"
+            ></laji-observation-month-day-chart>
+          </div>
         </div>
       </div>
       <div class="form-group spacer">

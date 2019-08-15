@@ -1032,6 +1032,7 @@
   "taxonomy.ofTaxon": "OF",
   "taxonomy.link": "LINK",
   "taxonomy.observations.yearChart": "Observations per year in Finland",
+  "taxonomy.observation.yearChart.filter": "Click on the legend to filter results",
   "taxonomy.observations.yearChart.disclaimer": "The chart shows temporal distribution of the observations, which is not the same as population increase/decrease.",
   "taxonomy.observations.yearChart.showHistory": "Show all history",
   "taxonomy.observations.yearChart.hideHistory": "Hide old data",

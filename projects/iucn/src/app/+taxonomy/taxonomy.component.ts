@@ -8,7 +8,7 @@ import { DEFAULT_YEAR, ResultService } from '../iucn-shared/service/result.servi
   selector: 'laji-taxonomy',
   template: `
     <laji-simple-omni></laji-simple-omni>
-    <div class="container">
+    <div class="container-fluid">
       <laji-info-card [taxonId]="taxon" [year]="year" [checklistId]="checklist"></laji-info-card>
     </div>
   `,
