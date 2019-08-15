@@ -1,5 +1,5 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
-  <div class="container" *ngIf="taxon">
+  <div class="container-fluid" *ngIf="taxon">
     <div class="row">
       <ng-container *ngIf="canShowTree">
         <div class="taxon-tree-container" [style.width]="sidebarWidth + 'px'" [class.hidden]="!showTree">
@@ -32,7 +32,7 @@
       ></laji-info-card>
     </div>
   </div>
-  <div class="container" *ngIf="taxon === false">
+  <div class="container-fluid" *ngIf="taxon === false">
     <h1>
       {{ 'taxonomy.notFound' | translate }}
     </h1>

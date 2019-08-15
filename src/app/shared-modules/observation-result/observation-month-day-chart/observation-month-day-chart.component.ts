@@ -11,6 +11,9 @@ import {ModalDirective} from 'ngx-bootstrap';
 import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-chart.component';
+import { BaseChartDirective } from 'ng2-charts';
+
 
 
 @Component({
@@ -21,6 +24,7 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 })
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
+  @ViewChild('chart', { static: false }) public barChart: BaseChartDirective;
   @Input() taxonId: string;
   @Input() query: any;
   monthChartData: any[];
@@ -84,6 +88,10 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   }
 
   chartClicked(event) {
+    // const helpers = Chart.helpers;
+    // var gio = this.barChart;
+    // var eventPosition = helpers.getRelativePosition(event, this.barChart.chart);
+
     if (event.active.length > 0) {
       this.barChartLabelsDay = [];
       const chart = event.active[0]._chart;
@@ -215,6 +223,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       this.barChartData[index].data[month - 1] += count;
 
     }
+    (window as any).bar = this.barChart;
   }
 
   private addDataDayToSeriesGiorgio(lifeStage: string, count: number, month: number, day: number, labelObservables: any[]) {

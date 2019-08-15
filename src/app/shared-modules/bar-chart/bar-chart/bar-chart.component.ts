@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
+import { BaseChartComponent } from '@swimlane/ngx-charts';
 
 
 @Component({
   selector: 'laji-bar-chart',
-  template: `<canvas id="myChart" baseChart
+  template: `<canvas #chart="base-chart"  id="myChart" baseChart
   [datasets]="datasets"
   [labels]="labels"
   [colors]="colors"
@@ -16,7 +17,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   </canvas>`,
   styles: [':host { display:block; height:350px }']
 })
-export class BarChartComponent {
+export class BarChartComponent implements OnInit {
+  @ViewChild('chart', { static: true }) baseChartComponent: BaseChartComponent;
   @Input() datasets: any;
   @Input() labels: any;
   @Input() options: any;
@@ -25,4 +27,8 @@ export class BarChartComponent {
   @Input() colors: any;
 
   @Output() chartClick = new EventEmitter<any>();
+
+  ngOnInit() {
+    console.log(this.baseChartComponent);
+  }
 }
