@@ -232,7 +232,9 @@ export class ImporterComponent implements OnInit {
         });
         this.dataColumns = columns;
         setTimeout(() => {
-          this.datatable.refreshTable();
+          if (this.datatable) {
+            this.datatable.refreshTable();
+          }
         }, 200);
       });
   }
