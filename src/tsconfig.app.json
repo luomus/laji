@@ -1,21 +1,16 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es5",
-    "lib": ["es2015", "dom"],
     "outDir": "../out-tsc/app",
-    "module": "esnext",
-    "baseUrl": "",
-    "paths": {
-      "@laji-map/*": ["app/shared-modules/laji-map/*"],
-      "@laji-form/*": ["app/shared-modules/laji-form/*"],
-      "jszip": ["../node_modules/jszip/dist/jszip.js"]
-    }
+    "baseUrl": "./"
   },
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "**/*.ts"
+  ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
