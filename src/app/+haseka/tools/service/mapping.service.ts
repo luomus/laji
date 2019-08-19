@@ -331,7 +331,7 @@ export class MappingService {
         } else if (dateParts[2].length === 4) {
           parts[0] = dateParts.reverse().join('-');
         }
-        return parts.join('T');
+        return parts.join('T').replace(' ', '');
       }
     }
     return value;

@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit, ElementRef } from '@angular/core';
+import { BaseChartDirective } from 'ng2-charts';
 
 
 @Component({
   selector: 'laji-bar-chart',
-  template: `<canvas id="myChart" baseChart
+  template: `<canvas #mycanvas="base-chart" id="myChart" baseChart
   [datasets]="datasets"
   [labels]="labels"
   [colors]="colors"
@@ -11,12 +12,13 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   [plugins]="chartType"
   [legend]="legend"
   [chartType]="chartType"
-  (chartClick)="chartClick.emit($event)"
+  (chartClick)="onClick($event)"
   >
   </canvas>`,
   styles: [':host { display:block; height:350px }']
 })
-export class BarChartComponent {
+export class BarChartComponent implements OnInit {
+  @ViewChild('mycanvas', { static: true }) baseChartComponent: BaseChartDirective;
   @Input() datasets: any;
   @Input() labels: any;
   @Input() options: any;
@@ -25,4 +27,27 @@ export class BarChartComponent {
   @Input() colors: any;
 
   @Output() chartClick = new EventEmitter<any>();
+
+  constructor(
+    public elm: ElementRef<HTMLCanvasElement>
+    ) {
+    const top = elm.nativeElement.getBoundingClientRect().top;
+  }
+
+  initActiveClickAreas = false;
+
+  ngOnInit() {
+    console.log(this.baseChartComponent);
+  }
+
+  onClick(event) {
+    if (!this.initActiveClickAreas) {
+      // TODO init active areas
+    }
+    // if ( click in active area) {
+        // return labelClick.emit(value)
+    // }
+    this.chartClick.emit(event);
+  }
+
 }

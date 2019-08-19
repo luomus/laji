@@ -14,11 +14,19 @@
       "jszip": ["../node_modules/jszip/dist/jszip.js"]
     }
   },
+  "files": [
+    "main.server.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "**/*.ts"
+  ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
   ],
   "angularCompilerOptions": {
+    "fullTemplateTypeCheck": false,
     "entryModule": "app/app.server.module#AppServerModule"
   }
 }

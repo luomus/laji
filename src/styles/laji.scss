@@ -74,7 +74,7 @@ laji-locale-sv > div,
 }
 
 #content .container.observation-fluid{
-  z-index: unset;
+  z-index: 99;
   margin: 0;
   max-width: none;
 }

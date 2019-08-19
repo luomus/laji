@@ -1,4 +1,5 @@
-import {Component, OnChanges, OnDestroy, Input, Output, ChangeDetectorRef, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnChanges, OnDestroy, Input, Output, ChangeDetectorRef, EventEmitter,
+ChangeDetectionStrategy, OnInit} from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -8,9 +9,6 @@ import { Color } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import {TranslateService} from '@ngx-translate/core';
 
-Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
-  return coordinates;
-};
 
 @Component({
   selector: 'laji-observation-year-chart',
@@ -20,7 +18,7 @@ Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
 })
 
 
-export class ObservationYearChartComponent implements OnChanges, OnDestroy {
+export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnInit {
   @Input() query: any;
   @Input() colors: string[] =
   ['#bd869e', '#50abcc', '#98DCF1', '#9FABCD', '#BA7A82', '#ADCDED', '#BBE9F7', '#B598B9', '#95B5EA', '#B9607D'];
@@ -35,7 +33,11 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   private subBarChartLabels: number[];
   private allBarChartsLabel: number[];
   private barChartPlugins: any;
-  private barChartOptionsYear: any;
+  private barChartOptionsYear: any = {
+      animation: {
+        duration: 500
+      }
+  };
 
 
   @Output() hasData = new EventEmitter<boolean>();
@@ -45,6 +47,12 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
     private cd: ChangeDetectorRef,
     private translate: TranslateService,
   ) { }
+
+  ngOnInit() {
+      Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+        return coordinates;
+      };
+  }
 
   ngOnChanges() {
     this.updateData();
@@ -86,6 +94,9 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
         datalabels: {
           display: false
         },
+      },
+      animation: {
+        duration: 700
       }
     };
   }
@@ -124,7 +135,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
           for (let i = prevYear + 1; i < year; i++) {
             this.subBarChartLabels.push(i);
             this.allSubData.push(0);
-            // this.allSubBackground.push(this.getRandomColor);
             if (i < 1970) {
               this.splitIdx++;
             }
@@ -133,7 +143,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
 
 
         this.allSubData.push(count);
-        // this.allSubBackground.push(this.getRandomColor());
         this.subBarChartLabels.push(year);
         if (year < 1970) {
           this.splitIdx++;
@@ -163,6 +172,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
       // check emit
       this.cd.markForCheck();
     });
+    this.barChartOptionsYear.animation.duration = 0;
   }
 
   xAxisTickFormatting(value: number) {
@@ -202,6 +212,8 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy {
   }
 
   toggleShowAllData() {
+    this.initializeGraph();
+    this.barChartOptionsYear.animation.duration = 0;
     if (this.newData[0].data.length < this.allDataNew[0].data.length) {
       this.newData[0].data = this.allDataNew[0].data;
       this.newData[0].backgroundColor = this.allDataNew[0].backgroundColor;

@@ -18,8 +18,6 @@ export class CellValueSelectComponent implements OnInit {
   ignore = VALUE_IGNORE;
   booleanValues = [VALUE_IGNORE, 'true', 'false'];
 
-  constructor() { }
-
   @Input() set field(field: IFormField) {
     this._field = field;
     this.labels = [];

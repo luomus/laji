@@ -5,8 +5,7 @@ import {
   catchError, delay,
   distinctUntilChanged,
   map,
-  mergeMap,
-  share,
+  mergeMap, switchMap,
   take,
   tap,
 } from 'rxjs/operators';
@@ -106,7 +105,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   private readonly dataSub: Subscription;
   private formSub: Subscription;
-  private saveObs$: Observable<ISuccessEvent>;
 
   constructor(
     private logger: Logger,
@@ -150,7 +148,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     }
     this.updateState({..._state, form: undefined, loading: true, hasChanges: false, error: FormError.incomplete});
     this.formSub = this.formService.getForm(formID, this.translateService.currentLang).pipe(
-      mergeMap(form => this.userService.user$.pipe(
+      switchMap(form => this.userService.user$.pipe(
         take(1),
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
           tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
@@ -181,10 +179,13 @@ export class LajiFormDocumentFacade implements OnDestroy {
         return of(null);
       })
     ).subscribe((form: FormWithData) => {
-      this.updateState({..._state, loading: false, form, error: _state.error === FormError.incomplete ? FormError.ok : _state.error});
       if (form && form.formData && form.formData.locked) {
-        this.lock(form.formData.locked);
+        if (!form.uiSchema) {
+          form.uiSchema = {};
+        }
+        form.uiSchema['ui:disabled'] = true;
       }
+      this.updateState({..._state, loading: false, form, error: _state.error === FormError.incomplete ? FormError.ok : _state.error});
     });
   }
 
@@ -244,7 +245,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   discardChanges() {
     if (_state.form && _state.form.formData) {
       const id = _state.form.formData.id;
-      this.updateState({..._state, form: {..._state.form, formData: null}});
+      this.updateState({..._state, form: {..._state.form, formData: null}, error: FormError.incomplete});
       this.userService.user$.pipe(
         take(1),
         delay(100), // Adding data to documentStorage is asynchronous so this delay is to make sure that the last save has gone thought
@@ -302,11 +303,12 @@ export class LajiFormDocumentFacade implements OnDestroy {
   private fetchUiSchemaContext(form: FormWithData, documentID?: string): Observable<Form.IUISchemaContext> {
 
     return of({
+      ...form.uiSchemaContext,
       annotations: form.annotations,
       formID: form.id,
       creator: form.formData && form.formData.creator || undefined,
       isAdmin: form.rights && form.rights.admin,
-      isEdit: FormService.isTmpId(documentID),
+      isEdit: !FormService.isTmpId(documentID),
       placeholderGeometry: _state.namedPlace && _state.namedPlace.geometry || undefined
     });
   }

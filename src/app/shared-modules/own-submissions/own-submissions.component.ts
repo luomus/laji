@@ -31,7 +31,7 @@ import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade'
 import { LatestDocumentsFacade } from '../latest-documents/latest-documents.facade';
 
 interface DocumentQuery {
-  year?: number;
+  year?: string;
   onlyTemplates?: boolean;
   namedPlace?: string;
   collectionID?: string;
@@ -69,7 +69,7 @@ export class OwnSubmissionsComponent implements OnChanges {
   documents$: Observable<RowDocument[]>;
   loading = true;
 
-  @LocalStorage('own-submissions-year', '') year: number;
+  @LocalStorage('own-submissions-year', '') year: string;
   yearInfo$: Observable<any[]>;
 
   yearInfoError: string;
@@ -120,7 +120,7 @@ export class OwnSubmissionsComponent implements OnChanges {
     this.initDocuments(this.onlyTemplates);
   }
 
-  sliderRangeChange(newYear: number) {
+  sliderRangeChange(newYear: string) {
     this.year = newYear;
     this.initDocuments(true);
   }
@@ -190,12 +190,14 @@ export class OwnSubmissionsComponent implements OnChanges {
         yearInfoQuery.namedPlace = this.namedPlace;
       }
       this.yearInfo$ = this.documentApi.countByYear(this.userService.getToken(), yearInfoQuery).pipe(
-        map(results => results.map(res => ({...res, year: parseInt(res.year, 10)})).reverse()),
+        map(results => results.reverse()),
         tap((results: any[]) => {
           if (this.year && results.findIndex(item => item.year === this.year) > -1) {
             return;
           }
-          this.year = results.length > 0 ? results[0].year : new Date().getFullYear();
+          this.year = results.length > 0 && (results.length !== 1 && results[0].year !== 'null')
+            ? results[0].year
+            : new Date().getFullYear();
         }),
         catchError(() => {
           this.translate.get('haseka.form.genericError')
@@ -235,7 +237,7 @@ export class OwnSubmissionsComponent implements OnChanges {
       );
     } else {
       this.documentExportService.downloadDocuments(
-        this.getAllDocuments<Document>({year: this.year}), this.year, e.fileType
+        this.getAllDocuments<Document>({year: this.year}), 1, e.fileType
       );
     }
   }
@@ -393,6 +395,7 @@ export class OwnSubmissionsComponent implements OnChanges {
 
   private getForm(formId: string): Observable<any> {
     return this.formService.getForm(formId, this.translate.currentLang).pipe(
+      map(form => form || {id: formId}),
       catchError((err) => {
         this.logger.error('Failed to load form ' + formId, err);
         return ObservableOf({id: formId});
