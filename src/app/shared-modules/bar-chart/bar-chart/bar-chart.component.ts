@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit, ElementRef } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 
 
 @Component({
   selector: 'laji-bar-chart',
-  template: `<canvas #mycanvas="base-chart"  id="myChart" baseChart
+  template: `<canvas #mycanvas="base-chart" id="myChart" baseChart
   [datasets]="datasets"
   [labels]="labels"
   [colors]="colors"
@@ -27,6 +27,12 @@ export class BarChartComponent implements OnInit {
   @Input() colors: any;
 
   @Output() chartClick = new EventEmitter<any>();
+
+  constructor(
+    public elm: ElementRef<HTMLCanvasElement>
+    ) {
+    const top = elm.nativeElement.getBoundingClientRect().top;
+  }
 
   initActiveClickAreas = false;
 
