@@ -82,7 +82,7 @@
           {{ 'search.result.load' | translate }}
         </a>
       </li>
-      <li role="presentation" [ngClass]="{active: active === 'annotation'}">
+      <li role="presentation" [ngClass]="{active: active === 'annotation'}" *lajiForTypes="['dev']">
         <a [routerLink]="'/observation/annotation' | localize" [queryParams]="query | toSafeQuery">
           {{ 'search.result.annotation' | translate }}
         </a>
