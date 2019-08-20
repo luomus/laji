@@ -2,11 +2,13 @@
   <div id="wrapper" class="row" *ngIf="information$ | async; let information">
     <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
       <ol class="breadcrumb">
-        <li *ngFor="let parent of information.parents">
-          <a [routerLink]="['/about/' + parent.id] | localize">
-            {{ parent.title }}
-          </a>
-        </li>
+        <ng-container *ngFor="let parent of information.parents; let i = index">
+          <li *ngIf="i !== 0">
+            <a [routerLink]="['/about/' + parent.id] | localize">
+              {{ parent.title }}
+            </a>
+          </li>
+        </ng-container>
         <li class="active">{{ information.title }}</li>
       </ol>
       <div class="about" [innerHtml]="information.content"></div>
