@@ -1,10 +1,8 @@
-<ng-template #todo>
-  <p style="margin-top: 10px">
-    {{ 'todoTranslation' | translate }}
-  </p>
+<ng-template #en>
+  <laji-info-page [child]="'3061'"></laji-info-page>
 </ng-template>
 <div class="container-fluid">
-  <div *ngIf="translate.currentLang === 'fi'; else todo">
+  <div *ngIf="translate.currentLang === 'fi'; else en">
     <h1>Eliömaakunnat</h1>
 
     <strong>
