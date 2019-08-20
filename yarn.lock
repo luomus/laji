@@ -318,7 +318,7 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.5.5.tgz#02f077ac8817d3df4a832ef59de67565e71cca4b"
   integrity sha512-E5BN68cqR7dhKan1SfqgPGhQ178bkVKpXTPEXnFJBrEt8/DKRZlybmy+IgYLTeN7tp1R5Ccmbm2rBk17sHYU3g==
 
-"@babel/runtime-corejs2@^7.0.0", "@babel/runtime-corejs2@^7.4.5":
+"@babel/runtime-corejs2@^7.0.0":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime-corejs2/-/runtime-corejs2-7.5.5.tgz#c3214c08ef20341af4187f1c9fbdc357fbec96b2"
   integrity sha512-FYATQVR00NSNi7mUfpPDp7E8RYMXDuO8gaix7u/w3GekfUinKgX1AcTxs7SoiEmoEW9mbpjrwqWSW6zCmw5h8A==
@@ -975,7 +975,7 @@ ajv-keywords@^3.1.0:
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.4.1.tgz#ef916e271c64ac12171fd8384eaae6b2345854da"
   integrity sha512-RO1ibKvd27e6FEShVFfPALuHI3WjSVNeK5FIsmme/LYRNxjKuNj+Dt7bucLa6NdSv3JcVTyMlm9kGR84z1XpaQ==
 
-ajv@6.10.2, ajv@^6.1.0, ajv@^6.10.2, ajv@^6.5.5, ajv@^6.7.0:
+ajv@6.10.2, ajv@^6.1.0, ajv@^6.10.2, ajv@^6.5.5:
   version "6.10.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.10.2.tgz#d3cea04d6b017b2894ad69040fec8b623eb4bd52"
   integrity sha512-TXtUUEYHuaTEbLZWIKUr5pmBuhDLy+8KYtPYdcV8qC+pOZL+NKqYwvWSRrVXHn+ZmRRAu8vJTAznH7Oag6RVRw==
@@ -995,7 +995,7 @@ ajv@6.9.1:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^5.0.0:
+ajv@^5.0.0, ajv@^5.2.3:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
   integrity sha1-c7Xuyj+rZT49P5Qis0GtQiBdyWU=
@@ -5861,10 +5861,10 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.637:
-  version "0.0.637"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.637.tgz#42bb331b87a1a5b4aa89e89b85e2855fce3bdbc4"
-  integrity sha512-whG7gqR1P1VTlO5JaltZaruBdDDzv6PohLuxJOhDNe9m9FX6PfwBJgfZVacs6KuvxNQfdnPsGyd9zaMfWvEYyw==
+laji-form@^0.0.636:
+  version "0.0.636"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.636.tgz#532592a39c8b349f8398b322e0e24566762aba36"
+  integrity sha512-Di9wbXHB/3rKfUr83n8Oe72e7beMbc+fUv6s+Yv9gayUtaetNols3qE2o8fmrLUBJSWrL2INMA9VL1fxDfRspw==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -5884,7 +5884,7 @@ laji-form@^0.0.637:
     react-dom "^16.8.6"
     react-dropzone "^10.1.4"
     react-inlinesvg "^0.6.0"
-    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#0443d2f7ff0d9e9eb5ead2de7c8e5bfcdc01d634"
+    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#e40ee333010be085b3cb55591f55eeaaeefd35e2"
     react-sortable-hoc "^0.6.3"
     react-spinner "^0.2.7"
     react-transition-group "^1.1.1"
@@ -6142,6 +6142,11 @@ lodash.tail@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.tail/-/lodash.tail-4.1.1.tgz#d2333a36d9e7717c8ad2f7cacafec7c32b444664"
   integrity sha1-0jM6NtnncXyK0vfKyv7HwytERmQ=
+
+lodash.topath@^4.5.2:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/lodash.topath/-/lodash.topath-4.5.2.tgz#3616351f3bba61994a0931989660bd03254fd009"
+  integrity sha1-NhY1Hzu6YZlKCTGYlmC9AyVP0Ak=
 
 lodash@^4.12.0, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4, lodash@^4.17.5, lodash@~4.17.11:
   version "4.17.15"
@@ -6566,11 +6571,6 @@ nan@^2.12.1, nan@^2.3.4:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
-
-nanoid@^2.0.0:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-2.0.3.tgz#dde999e173bc9d7bd2ee2746b89909ade98e075e"
-  integrity sha512-NbaoqdhIYmY6FXDRB4eYtDVC9Z9eCbn8TyaiC16LNKtpPv/aqa0tOPD8y6gNE4yUNnaZ7LLhYtXOev/6+cBtfw==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -7947,23 +7947,19 @@ react-inlinesvg@^0.6.0:
     httpplease "^0.16"
     once "^1.4"
 
-react-is@^16.3.2, react-is@^16.8.1, react-is@^16.8.4:
+react-is@^16.3.2, react-is@^16.8.1:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
 
-"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#0443d2f7ff0d9e9eb5ead2de7c8e5bfcdc01d634":
-  version "1.7.0"
-  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#0443d2f7ff0d9e9eb5ead2de7c8e5bfcdc01d634"
+"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#e40ee333010be085b3cb55591f55eeaaeefd35e2":
+  version "1.0.0"
+  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#e40ee333010be085b3cb55591f55eeaaeefd35e2"
   dependencies:
-    "@babel/runtime-corejs2" "^7.4.5"
-    ajv "^6.7.0"
-    core-js "^2.5.7"
-    lodash "^4.17.15"
+    ajv "^5.2.3"
+    lodash.topath "^4.5.2"
     prop-types "^15.5.8"
-    react-is "^16.8.4"
-    react-lifecycles-compat "^3.0.4"
-    shortid "^2.2.14"
+    setimmediate "^1.0.5"
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
@@ -8899,13 +8895,6 @@ shelljs@0.3.x:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.3.0.tgz#3596e6307a781544f591f37da618360f31db57b1"
   integrity sha1-NZbmMHp4FUT1kfN9phg2DzHbV7E=
-
-shortid@^2.2.14:
-  version "2.2.14"
-  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.14.tgz#80db6aafcbc3e3a46850b3c88d39e051b84c8d18"
-  integrity sha512-4UnZgr9gDdA1kaKj/38IiudfC3KHKhDc1zi/HSxd9FQDR0VLwH3/y79tZJLsVYPsJgIjeHjqIWaWVRJUj9qZOQ==
-  dependencies:
-    nanoid "^2.0.0"
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
