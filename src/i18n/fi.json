@@ -73,7 +73,7 @@
   "excel.import.step1.intro": "Valitse tiedosto alla olevaan kenttään. Jos tiedosto nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.",
   "excel.import.step1.removeUserMapping": "Poista datan kuvaus",
   "excel.import.step4.importReady": "Alla olevasta taulukosta näet tiedot, jotka ovat valmiita tallennettavaksi Vihkoon. Taulukon erä sarakkeessa on tieto siitä monenteen havaintoerään kyseisen rivin tiedot tallentuvat.",
-  "excel.import.step4.invalidData": "Tiedoston datasta ei löytynyt havaintoja, jotka olisi voitu tallentaa. Alla olevan taulukon ensimmäisestä sarakkeesta löydät lisätietoja syistä. Voit tehdä muutoksia tiedostoon ja ladata se uudestaan suoraan tästä:",
+  "excel.import.step4.invalidData": "Tiedoston havainnoissa on virheitä, joiden vuoksi tietostoa ei voi tallentaa. Alla olevan taulukon ensimmäisestä sarakkeesta löydät lisätietoja syistä. Tee korjaukset tiedostoon ja lataa se uudelleen suoraan tästä:",
   "excel.import.step4.userMapping": "Nykyinen datan kuvaus",
   "excel.import.workingOn": "Käsitellään tiedostoa:",
   "excel.import.split.no": "yksi sarake",
