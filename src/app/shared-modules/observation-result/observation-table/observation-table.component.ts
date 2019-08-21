@@ -460,11 +460,11 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         this.total.emit(data && data.total || 0);
         this.result = data;
         this.loading = false;
-        this.changeDetectorRef.markForCheck();
+        this.changeDetectorRef.detectChanges();
       }, (err) => {
         this.total.emit(0);
         this.loading = false;
-        this.changeDetectorRef.markForCheck();
+        this.changeDetectorRef.detectChanges();
         this.logger.error('Observation table data handling failed!', err);
       });
   }

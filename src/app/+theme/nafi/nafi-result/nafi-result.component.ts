@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -39,7 +39,8 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private translate: TranslateService,
-    private resultService: ResultService
+    private resultService: ResultService,
+    private cdr: ChangeDetectorRef
   ) {
     const now = new Date();
     this.currentYear = now.getFullYear();
@@ -76,6 +77,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
         this.query.ykj10kmCenter = params['grid'];
       }
       this.page = +params['page'] || 1;
+      this.cdr.detectChanges();
     });
   }
 
