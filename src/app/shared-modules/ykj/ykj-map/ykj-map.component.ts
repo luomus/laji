@@ -123,6 +123,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey) {
         this.initColor();
+        this.currentColor = colorKey;
       }
       return;
     }
@@ -205,12 +206,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
   initColor() {
     this.count = {total: 0};
-    const colorKey = this.getColorKey();
     const dataLayer = this.getDataLayer();
-    if (this.currentColor === colorKey || !dataLayer) {
+    if (!dataLayer) {
       return;
     }
-    this.currentColor = colorKey;
     let col;
     switch (this.type) {
       case 'individualCount':
