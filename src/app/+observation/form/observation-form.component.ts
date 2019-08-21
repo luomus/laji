@@ -1,9 +1,9 @@
 import { switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { AreaType } from '../../shared/service/area.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Observable, of as ObservableOf, Subject } from 'rxjs';
+import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
 import * as moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
@@ -15,7 +15,7 @@ import { ObservationFacade } from '../observation.facade';
   styleUrls: ['./observation-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationFormComponent implements OnInit {
+export class ObservationFormComponent implements OnInit, OnDestroy {
 
   @Input() invasiveStatuses: string[] = [];
   @Input() dateFormat = 'YYYY-MM-DD';
@@ -98,6 +98,7 @@ export class ObservationFormComponent implements OnInit {
   };
 
   delayedSearch = new Subject();
+  delayedSub: Subscription;
 
   private _query: WarehouseQueryInterface;
 
@@ -117,13 +118,19 @@ export class ObservationFormComponent implements OnInit {
         return ObservableOf([]);
       }));
 
-    this.delayedSearch.asObservable().pipe(
+    this.delayedSub = this.delayedSearch.asObservable().pipe(
       debounceTime(1000)
     ).subscribe(() => this.onQueryChange());
   }
 
   ngOnInit() {
     this.updateVisibleSections();
+  }
+
+  ngOnDestroy(): void {
+    if (this.delayedSub) {
+      this.delayedSub.unsubscribe();
+    }
   }
 
   empty() {
