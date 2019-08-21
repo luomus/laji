@@ -1,9 +1,9 @@
-import { switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { AreaType } from '../../shared/service/area.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, Subject } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
 import * as moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
@@ -97,6 +97,8 @@ export class ObservationFormComponent implements OnInit {
     identify: ['unidentified'],
   };
 
+  delayedSearch = new Subject();
+
   private _query: WarehouseQueryInterface;
 
   constructor(
@@ -114,6 +116,10 @@ export class ObservationFormComponent implements OnInit {
         }
         return ObservableOf([]);
       }));
+
+    this.delayedSearch.asObservable().pipe(
+      debounceTime(1000)
+    ).subscribe(() => this.onQueryChange());
   }
 
   ngOnInit() {
@@ -219,7 +225,7 @@ export class ObservationFormComponent implements OnInit {
   onCountChange() {
     this.formQuery['zeroObservations'] = this.query.individualCountMin === 0
       && this.query.individualCountMax === 0;
-    this.onQueryChange();
+    this.delayedQueryChange();
   }
 
   onHabitatChange(habitats: any) {
@@ -281,7 +287,7 @@ export class ObservationFormComponent implements OnInit {
 
   onAccuracyValueChange() {
     this.logCoordinateAccuracyMax = Math.log10(this.query.coordinateAccuracyMax);
-    this.onQueryChange();
+    this.delayedQueryChange();
   }
 
   indirectQueryChange(field, value) {
@@ -292,6 +298,10 @@ export class ObservationFormComponent implements OnInit {
   onQueryChange() {
     this.queryChange.emit(this.query);
     this.updateVisibleAdvancedSections();
+  }
+
+  delayedQueryChange() {
+    this.delayedSearch.next();
   }
 
   updateTypeOfOccurrence(event) {
