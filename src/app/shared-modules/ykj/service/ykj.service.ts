@@ -112,9 +112,12 @@ export class YkjService {
     return features;
   }
 
-  convertYkjToGeoJsonFeature(lat: any, lng: any, properties: {[k: string]: any} = {}) {
+  convertYkjToGeoJsonFeature(lat: any, lng: any, properties: {[k: string]: any} = {}): GeoJSON.Feature | null {
     lat = parseInt(lat, 10);
     lng = parseInt(lng, 10);
+    if (isNaN(lat) || isNaN(lng)) {
+      return null;
+    }
     const latStart = this.pad(lat);
     const latEnd = this.pad(lat + 1);
     const lonStart = this.pad(lng);
@@ -135,7 +138,7 @@ export class YkjService {
     };
   }
 
-  private convertYkjLatLngToWgsLngLat(latLng: [any, any]): [string, string] {
+  private convertYkjLatLngToWgsLngLat(latLng: [any, any]): [number, number] {
     return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84').reverse();
   }
 

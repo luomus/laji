@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -28,6 +28,9 @@ export class WbcRoutesMapComponent implements OnInit {
     this.selectedGrid = undefined;
 
     data.map(item => {
+      if (!item['document.namedPlace.ykj10km.lat'] || !item['document.namedPlace.ykj10km.lon']) {
+        return;
+      }
       const grid =  parseInt(item['document.namedPlace.ykj10km.lat'], 10) + ':'
       + parseInt(item['document.namedPlace.ykj10km.lon'], 10);
       const geometry = this.ykjService.convertYkjToGeoJsonFeature(
@@ -46,7 +49,8 @@ export class WbcRoutesMapComponent implements OnInit {
 
   constructor(
     public translate: TranslateService,
-    private ykjService: YkjService
+    private ykjService: YkjService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -54,5 +58,6 @@ export class WbcRoutesMapComponent implements OnInit {
 
   gridClick(grid) {
     this.selectedGrid = grid;
+    this.cdr.detectChanges();
   }
 }

@@ -8,7 +8,7 @@
     {{ 'feedback' | translate }}
   </a>
 </ng-template>
-<div bsModal #childModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog">
+<div bsModal #childModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog" [config]="{backdrop: false}">
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
