@@ -1,5 +1,5 @@
 <ng-container *ngIf="field.type === fieldType.text; else label">
-  <input type="text" [value]="field.content || ''" (change)="textChange($event)">
+  <input type="text" [value]="field.content || ''" (change)="textFieldChanged($event)">
 </ng-container>
 <ng-template #label>
   <div [title]="field.label" class="ellipsis" style="width: 205px;">

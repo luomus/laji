@@ -5,7 +5,6 @@ declare module 'jsonpath-plus';
 declare module 'laji-form/lib/laji-form';
 declare const OpenSeadragon: any;
 declare let d3: any;
-declare const L: any;
 
 declare module '*.json' {
    const value: any;

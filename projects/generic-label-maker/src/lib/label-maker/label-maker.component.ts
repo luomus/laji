@@ -18,18 +18,20 @@ import {
   FieldType,
   IAddLabelEvent,
   ILabelField,
-  ILabelItem,
+  ILabelItem, ILabelPdf,
   ILabelValueMap,
   ISetup,
   IViewSettings, PresetSetup, QRCodeErrorCorrectionLevel
 } from '../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../label.service';
 import { InfoWindowService } from '../info-window/info-window.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { LabelExcelFileComponent } from './label-excel-file/label-excel-file.component';
 import { GenericLabelMakerTranslationsInterface } from '../translate/generic-label-maker-translations.interface';
 import { TranslateService } from '../translate/translate.service';
+import { LabelMakerFacade } from './label-maker.facade';
+import { FieldKeyPipe } from '../pipe/field-key.pipe';
 
 @Component({
   selector: 'll-label-maker',
@@ -41,8 +43,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
 
   static id = 0;
 
-  @ViewChild('intro') intro;
-  @ViewChild('gettingStarted') gettingStarted;
+  @ViewChild('intro', { static: true }) intro;
+  @ViewChild('gettingStarted', { static: true }) gettingStarted;
 
   _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close'|'map' = 'file';
   _setup: ISetup;
@@ -51,30 +53,31 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   _viewSettings: IViewSettings = {magnification: 2};
   generateFields: ILabelField[];
   dragging = false;
-  version = '1.0.15';
+  filename$: Observable<string>;
+  version = '2.0.0';
   previewActive = 0;
   @Input() defaultDomain = '';
-  @Input() newSetup: ISetup;
-  @Input() newAvailableFields: ILabelField[];
+  @Input() defaultSetup: ISetup;
+  @Input() defaultAvailableFields: ILabelField[];
   @Input() availableFields: ILabelField[];
   @Input() showIntro = true;
   @Input() pdfLoading = false;
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
   @Input() presets: PresetSetup[];
 
-  @Output() html = new EventEmitter<string>();
+  @Output() html = new EventEmitter<ILabelPdf>();
   @Output() viewSettingsChange = new EventEmitter<IViewSettings>();
   @Output() dataChange = new EventEmitter<object[]>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() introClosed = new EventEmitter();
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
   @Output() pdfLoadingChange = new EventEmitter<boolean>();
-  @ViewChild('editor') editor: ElementRef<HTMLDivElement>;
-  @ViewChild('generateTpl') generateTpl: TemplateRef<any>;
-  @ViewChild('generateActionsTpl') generateActionsTpl: TemplateRef<any>;
-  @ViewChild('excelFile') excelCmp: LabelExcelFileComponent;
-  @ViewChild('excelTpl') excelTpl: TemplateRef<any>;
-  @ViewChild('excelActionsTpl') excelActionsTpl: TemplateRef<any>;
+  @ViewChild('editor', { static: false }) editor: ElementRef<HTMLDivElement>;
+  @ViewChild('generateTpl', { static: true }) generateTpl: TemplateRef<any>;
+  @ViewChild('generateActionsTpl', { static: true }) generateActionsTpl: TemplateRef<any>;
+  @ViewChild('excelFile', { static: false }) excelCmp: LabelExcelFileComponent;
+  @ViewChild('excelTpl', { static: true }) excelTpl: TemplateRef<any>;
+  @ViewChild('excelActionsTpl', { static: true }) excelActionsTpl: TemplateRef<any>;
   subIntro: Subscription;
 
   generate: {
@@ -100,13 +103,15 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     private infoWindowService: InfoWindowService,
     private cdr: ChangeDetectorRef,
     private translateService: TranslateService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private labelMakerFacade: LabelMakerFacade
   ) { }
 
   ngOnInit(): void {
     if (this.showIntro) {
       this.openIntro();
     }
+    this.filename$ = this.labelMakerFacade.currentFile$;
   }
 
   ngOnDestroy(): void {
@@ -170,27 +175,24 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     }
     const hasField = {};
     const allFields = [];
-    this.updateLocalId(setup);
+    LabelMakerComponent.id = this.findTheHighestId(setup) + 1;
+
+    const checkItem = (item) => {
+      item.fields.forEach(field => {
+        const isText = field.type === 'text';
+        const fieldId = FieldKeyPipe.getKey(field);
+        if (!hasField[fieldId] && (!field.type || isText)) {
+          hasField[fieldId] = true;
+          allFields.push(field);
+        }
+      });
+      return {...item, _id: item._id || LabelMakerComponent.id++};
+    };
+
     this._setup = {
       ...setup,
-      labelItems: setup.labelItems.map(item => {
-        item.fields.forEach(field => {
-          if (!hasField[field.field] && !field.type) {
-            hasField[field.field] = true;
-            allFields.push(field);
-          }
-        });
-        return { ...item, _id: item._id || LabelMakerComponent.id++ };
-      }),
-      backSideLabelItems: (setup.backSideLabelItems || []).map(item => {
-        item.fields.forEach(field => {
-          if (!hasField[field.field] && !field.type) {
-            hasField[field.field] = true;
-            allFields.push(field);
-          }
-        });
-        return { ...item, _id: item._id || LabelMakerComponent.id++ };
-      })
+      labelItems: setup.labelItems.map(checkItem),
+      backSideLabelItems: (setup.backSideLabelItems || []).map(checkItem)
     };
     this.dimensions = this.labelService.countLabelsPerPage(this._setup);
     this.generateFields = allFields;
@@ -265,7 +267,8 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     return this._redo.length > 0;
   }
 
-  updateGenerate(key: string, value: string, inData = false) {
+  updateGenerate(field: ILabelField | string, value: string, inData = false) {
+    const key = typeof field === 'string' ? field : FieldKeyPipe.getKey(field);
     if (inData) {
       this.generate = {
         ...this.generate,
@@ -399,7 +402,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     this.setupChanged({ ...this._setup, valueMap: map }, false);
   }
 
-  private updateLocalId(setup: ISetup) {
+  private findTheHighestId(setup: ISetup) {
     let id = 0;
     ['labelItems', 'backSideLabelItems'].forEach(items => {
       if (setup[items]) {
@@ -410,7 +413,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
         });
       }
     });
-    LabelMakerComponent.id = id + 1;
+    return id;
   }
 
   onPdfLoading(loading: boolean) {

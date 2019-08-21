@@ -1,5 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FieldType, ILabelField, ISetup, IViewSettings, Presets, PresetSetup, QRCodeErrorCorrectionLevel, GenericLabelMakerTranslationsInterface } from 'generic-label-maker';
+import {
+  FieldType,
+  ILabelField,
+  ISetup,
+  IViewSettings,
+  Presets,
+  PresetSetup,
+  QRCodeErrorCorrectionLevel,
+  GenericLabelMakerTranslationsInterface,
+  ILabelPdf
+} from 'generic-label-maker';
 
 @Component({
   selector: 'label-designer',
@@ -25,7 +35,7 @@ export class LabelDesignerComponent {
   availableFields: ILabelField[] = [];
 
   @Input()
-  newAvailableFields: ILabelField[] = [];
+  defaultAvailableFields: ILabelField[] = [];
 
   @Input()
   viewSetting: IViewSettings = {
@@ -42,7 +52,7 @@ export class LabelDesignerComponent {
   translations: GenericLabelMakerTranslationsInterface;
 
   @Input()
-  newSetup: ISetup;
+  defaultSetup: ISetup;
 
   @Input()
   setup: ISetup = {
@@ -93,7 +103,7 @@ export class LabelDesignerComponent {
   };
 
   @Output()
-  html = new EventEmitter<string>();
+  html = new EventEmitter<ILabelPdf>();
   @Output()
   setupChange = new EventEmitter<ISetup>();
   @Output()
@@ -108,7 +118,6 @@ export class LabelDesignerComponent {
     this.setupChange.emit(setup);
     this.cdr.detectChanges();
   }
-
 
   updateLoading(loading: boolean) {
     this.pdfLoading = loading;

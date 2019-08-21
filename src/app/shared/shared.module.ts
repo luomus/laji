@@ -2,7 +2,6 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
 import { AlertModule, BsDropdownModule, ModalModule, PopoverModule, ProgressbarModule, TooltipModule } from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
@@ -25,7 +24,6 @@ import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
 import { AreaNamePipe } from './pipe/area-name.pipe';
 import { ImageModalOverlayComponent } from './gallery/image-gallery/image-modal-overlay.component';
-import { MomentModule } from 'angular2-moment';
 import { FormNamePipe } from './pipe/form-name.pipe';
 import { NlToBrPipe } from './pipe/nl-to-br.pipe';
 import { LocalizePipe } from '../locale/localize.pipe';
@@ -59,6 +57,7 @@ import { HabitatComponent } from './habitat/habitat.component';
 import { LazyImageDirective } from './directive/lazy-image.directive';
 import { HideForIeDirective } from './directive/hide-for-ie.directive';
 import { SortPipe } from './pipe/sort.pipe';
+import { DateFormatPipe, MomentModule } from 'ngx-moment';
 
 
 @NgModule({

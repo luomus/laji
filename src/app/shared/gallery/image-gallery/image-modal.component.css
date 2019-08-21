@@ -68,7 +68,7 @@ img.ng-thumb.full {
   float: left;
   width: 170px;
   height: 160px;
-  margin: -5px 5px 0 0;
+  margin: -5px 20px 0 0;
 }
 .full2-container img.ng-thumb {
   width: 170px;
@@ -83,6 +83,7 @@ img.ng-thumb.full {
   position: absolute;
   bottom: 0;
   cursor: auto;
+  height:40px;
 }
 .full2-container h4 a {
   color: #fff;
@@ -222,7 +223,7 @@ img.ng-thumb.full {
   text-shadow: 0 1px 5px #000;
 }
 
-::ng-deep .ng-gallery-content > span.info-text a {
+:host ::ng-deep .ng-gallery-content > span.info-text a {
   color: #fff;
 }
 
@@ -289,6 +290,14 @@ a:focus em, a:hover em {
   top: -25px;
   right: 0px;
 }
+
+
+@media only screen and (max-width : 1024px) {
+  .full2-container {
+    margin: -5px 10px 0 0;
+  }
+}
+
 
 @media only screen and (max-width : 560px) {
   .full2-container {

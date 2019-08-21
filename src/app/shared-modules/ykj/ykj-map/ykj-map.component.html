@@ -1,13 +1,14 @@
-<div class="map-wrap" [style.height]="height">
+<div [style.height]="height" class="map-wrap">
   <laji-map
-    [options]="mapOptions"
     [loading]="loading"
     [maxBounds]="maxBounds"
+    [options]="mapOptions"
     [showFullScreenControl]="showFullScreenControl"
   >
-    <div class="title" *ngIf="taxon || title">
+    <div *ngIf="taxon || title" class="title">
       <h5>
-        <span *ngIf="taxon" class="scientificName" [ngClass]="{cursive: taxon.cursiveName}">{{ taxon.scientificName }}</span>
+        <span *ngIf="taxon" [ngClass]="{cursive: taxon.cursiveName}"
+              class="scientificName">{{ taxon.scientificName }}</span>
         <ng-container *ngIf="taxon && taxon.vernacularName">
           <br>{{ taxon.vernacularName | multiLang }}
         </ng-container>
@@ -16,21 +17,21 @@
       </h5>
     </div>
     <div class="legend">
-      <div>
       <span class="cnt">
         {{ 'theme.cnt' | translate }}
       </span>
-        <span dropdown container="body">
+      <div dropdown style="position: relative">
         <ng-container *ngIf="types.length > 1">
-          <a href dropdownToggle (click)="false">
+          <a (click)="false" dropdownToggle href>
             <span>
               {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
             </span>
           </a>
           <ul *dropdownMenu class="dropdown-menu" role="menu">
-              <ng-container *ngFor="let type of types">
-                <li><a class="link" (click)="changeType(type)">{{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}</a></li>
-              </ng-container>
+            <ng-container *ngFor="let type of types">
+              <li><a (click)="changeType(type)"
+                     class="link">{{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}</a></li>
+            </ng-container>
           </ul>
         </ng-container>
         <ng-container *ngIf="types.length <= 1">
@@ -38,11 +39,10 @@
             {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
           </span>
         </ng-container>
-      </span>
       </div>
       <ul>
         <li *ngFor="let leg of legendList">
-          <span class="color" [ngStyle]="{'background-color': leg.color}"></span>
+          <span [ngStyle]="{'background-color': leg.color}" class="color"></span>
           {{ leg.label }}
           <span class="cnt">{{ count[leg.color] || 0 }}</span>
         </li>

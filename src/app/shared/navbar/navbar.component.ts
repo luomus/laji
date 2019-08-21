@@ -27,13 +27,13 @@ import { Global } from '../../../environments/global';
 
 @Component({
   selector: 'laji-navbar',
-  styleUrls: ['./navbar.component.css'],
+  styleUrls: ['./navbar.component.scss'],
   templateUrl: './navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
-  @ViewChild('userMenu') public dropDown: BsDropdownDirective;
+  @ViewChild('userMenu', { static: false }) public dropDown: BsDropdownDirective;
 
   openMenu: Boolean = false;
   redTheme = false;
@@ -190,7 +190,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   doLogin(event: Event) {
     event.preventDefault();
-    this.userService.doLogin();
+    this.userService.redirectToLogin();
     this.closeMenu();
   }
 

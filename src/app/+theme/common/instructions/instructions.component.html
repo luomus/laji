@@ -8,7 +8,7 @@
                     [collectionId]="data.collectionID" [disableDescription]="data.disableRequestDescription">
       </laji-request>
       <h3 *ngIf="data.loggedIn === false">
-        Kirjaudu ensin sisään käyttääksesi tätä palvelua.
+        {{ 'force.login' | translate }}
       </h3>
     </ng-container>
   </div>

@@ -14,7 +14,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { USER_INFO, UserService } from '../../shared/service/user.service';
+import { IUserSettings, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import * as LajiMap from 'laji-map';
@@ -53,7 +53,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() move = new EventEmitter();
   @Output() failure =  new EventEmitter();
   @Output() tileLayerChange =  new EventEmitter();
-  @ViewChild('lajiMap') elemRef: ElementRef;
+  @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
   map: any;
@@ -61,7 +61,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   _legend: {color: string, label: string}[];
   fullScreen = false;
 
-  private _settingsKey: string;
+  private _settingsKey: keyof IUserSettings;
   private subSet: Subscription;
   private userSettings: LajiMap.Options = {};
 
@@ -122,17 +122,13 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.initMap();
   }
 
-  @Input() set settingsKey(key: string) {
+  @Input() set settingsKey(key: keyof IUserSettings) {
     this._settingsKey = key;
     if (this.subSet) {
       this.subSet.unsubscribe();
     }
     if (key) {
-      this.subSet = this.userService.getUserSetting(this._settingsKey).pipe(
-        merge(this.userService.action$.pipe(
-          filter(action => action === USER_INFO),
-          switchMap(() => this.userService.getUserSetting(this._settingsKey)), )
-        ))
+      this.subSet = this.userService.getUserSetting(this._settingsKey)
         .subscribe(settings => {
           this.userSettings = settings || {};
           if (this.userSettings.tileLayerName) {

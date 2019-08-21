@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest as ObservableCombineLatest } from 'rxjs';
 import { WbcResultService, SEASON } from '../wbc-result.service';
-import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
-import { ModalDirective } from 'ngx-bootstrap';
-import { IdService } from '../../../../shared/service/id.service';
+import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
   selector: 'laji-wbc-route',
@@ -23,20 +21,16 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
   loadingCensusList = false;
   loadingObservationStats = false;
 
-  documentModalVisible = false;
-  shownDocument: string;
-
   season: SEASON;
   observationStats: any;
-
-  @ViewChild('documentModal') public modal: ModalDirective;
 
   private routeSub: Subscription;
 
   constructor(
     private resultService: WbcResultService,
     private route: ActivatedRoute,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private documentViewerFacade: DocumentViewerFacade
   ) { }
 
   ngOnInit() {
@@ -77,7 +71,9 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
   }
 
   openViewer(fullId: string) {
-    this.shownDocument = IdService.getId(fullId);
-    this.modal.show();
+    this.documentViewerFacade.showDocumentID({
+      document: fullId,
+      useWorldMap: false
+    });
   }
 }

@@ -10,10 +10,22 @@
       <ul class="list-group">
         <li class="list-group-item"
             [class.link]="!field.required"
-            *ngFor="let field of visible.fields"
+            *ngFor="let field of visible.fields; trackBy:trackFields"
             (click)="onClick(field)"
             [ngClass]="{active: selected.indexOf(field.key) > -1 || field.required}">
           {{ field.label || field.key }} <span class="required" *ngIf="field.required">*</span>
+          <ng-container *ngIf="field | canSplitTo:'date'">
+            <select [name]="field.key + '_split'" (click)="onSplitClick($event)" class="pull-right" (change)="onSplitChange(field, $event.target.value)">
+              <option value="">{{ 'excel.import.split.no' | translate }}</option>
+              <option value="date">{{ 'excel.import.split.yes' | translate }}</option>
+            </select>
+          </ng-container>
+          <ng-container *ngIf="field | canSplitTo:'coordinate'">
+            <select [name]="field.key + '_split'" (click)="onSplitClick($event)" class="pull-right" (change)="onSplitChange(field, $event.target.value)">
+              <option value="">{{ 'excel.import.split.no' | translate }}</option>
+              <option value="coordinate">{{ 'excel.import.split.yes' | translate }}</option>
+            </select>
+          </ng-container>
         </li>
       </ul>
     </ng-container>

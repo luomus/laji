@@ -14,7 +14,7 @@ import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interfa
 })
 export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
 
-  @ViewChild(LajiMapComponent)
+  @ViewChild(LajiMapComponent, { static: false })
   public lajiMap: LajiMapComponent;
   @Input()
   public namedPlace: NamedPlace;
@@ -185,8 +185,8 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
   private getYkj(lat, lng): {lat: number, lng: number} {
     const coord = this.coordinateService.convertWgs84ToYkj(lat, lng).map(val => Math.round(val / 10) * 10);
     return {
-      lat: coord[1],
-      lng: coord[0]
+      lat: coord[0],
+      lng: coord[1]
     };
   }
 

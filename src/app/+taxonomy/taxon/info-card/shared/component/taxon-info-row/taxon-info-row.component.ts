@@ -6,7 +6,7 @@ import {Component, OnInit, Input, ContentChild, TemplateRef} from '@angular/core
   styleUrls: ['./taxon-info-row.component.scss']
 })
 export class TaxonInfoRowComponent implements OnInit {
-  @ContentChild('label') labelTpl: TemplateRef<any>;
+  @ContentChild('label', {static: true}) labelTpl: TemplateRef<any>;
   @Input() label: string;
 
   constructor() { }

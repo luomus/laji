@@ -17,11 +17,12 @@ import { WINDOW } from '@ng-toolkit/universal';
   styleUrls: ['./short-document.component.css']
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() hasChanges: boolean;
   @Input() document: Document;
   @Input() form: any;
   @Input() showFormName = true;
   @Input() complainLocality = true;
-  @Output() discard = new EventEmitter();
+  @Output() discardTempDocument = new EventEmitter();
   @Output() showViewer = new EventEmitter<Document>();
 
   public unitList = [];
@@ -30,6 +31,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   public publicity = Document.PublicityRestrictionsEnum;
   public locality;
   public dateEdited;
+  public namedPlaceID;
 
   public showList = false;
   public changingLocale = true;
@@ -74,6 +76,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
     this.locality = gatheringInfo.locality;
+    this.namedPlaceID = gatheringInfo.namedPlaceID;
 
     this.loading = false;
   }
@@ -86,17 +89,16 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   removeDocument(event) {
     event.stopPropagation();
-
     if (this.newUnitsLength > 0) {
       this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).subscribe(
         (confirm) => {
           if (this.window.confirm(confirm)) {
-            this.discard.emit();
+            this.discardTempDocument.emit();
           }
         }
       );
     } else {
-      this.discard.emit();
+      this.discardTempDocument.emit();
     }
   }
 

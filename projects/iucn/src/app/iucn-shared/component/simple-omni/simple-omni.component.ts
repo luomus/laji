@@ -11,7 +11,7 @@ import { TaxonSelectComponent } from '../../../../../../../src/app/shared-module
 })
 export class SimpleOmniComponent implements OnInit {
 
-  @ViewChild(TaxonSelectComponent) taxonSelectComponent: TaxonSelectComponent;
+  @ViewChild(TaxonSelectComponent, { static: true }) taxonSelectComponent: TaxonSelectComponent;
 
   constructor(
     private localizeRouterService: LocalizeRouterService,

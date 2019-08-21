@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FieldType, ILabelField, ILabelItem, ILabelValueMap, QRCodeErrorCorrectionLevel } from '../../generic-label-maker.interface';
 import { LabelService } from '../../label.service';
+import { FieldKeyPipe } from '../../pipe/field-key.pipe';
 
 @Component({
   selector: 'll-label-item',
@@ -47,7 +48,11 @@ export class LabelItemComponent {
     const fields: ILabelField[] = [];
     this._originaleFields.forEach(field => {
       if (field.type === FieldType.text) {
-        fields.push({...field});
+        const dataKey = FieldKeyPipe.getKey(field);
+        fields.push({
+          ...field,
+          content: this._data[dataKey] || field.content
+        });
       } else if (field.separatorAlways || LabelService.hasValue(this._data[field.field])) {
         fields.push({
           ...field,

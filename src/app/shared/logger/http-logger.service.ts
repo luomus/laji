@@ -9,18 +9,22 @@ export class HttpLogger implements ILogger {
   }
 
   public error(message: string, meta?: any): void {
-    this.loggerApi.logError({message: message, meta}).subscribe();
+    this._log('logError', message, meta);
   }
 
   public info(message: string, meta?: any): void {
-    this.loggerApi.logInfo({message: message, meta}).subscribe();
+    this._log('logInfo', message, meta);
   }
 
   public warn(message: string, meta?: any): void {
-    this.loggerApi.logWarn({message: message, meta}).subscribe();
+    this._log('logWarn', message, meta);
   }
 
   public log(message: string, meta?: any): void {
     // log level items are not send forward
+  }
+
+  private _log(type: Exclude<keyof LoggerApi, 'logStatus' | 'http'>, message: string, meta?: any): void {
+    this.loggerApi[type]({message, meta}).subscribe();
   }
 }

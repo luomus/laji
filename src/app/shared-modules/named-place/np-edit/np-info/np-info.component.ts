@@ -18,13 +18,13 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { Rights } from '../../../../+haseka/form-permission/form-permission.service';
 import { Form } from '../../../../shared/model/Form';
 import { NpInfoRow } from './np-info-row/np-info-row.component';
-import { RouterChildrenEventService } from '../../../own-submissions/service/router-children-event.service';
 import { Document } from '../../../../shared/model/Document';
 import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../../../../shared/service/util.service';
 import { LajiFormUtil } from '@laji-form/laji-form-util.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-np-info',
@@ -53,9 +53,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() reserveButtonClick = new EventEmitter();
   @Output() releaseButtonClick = new EventEmitter();
 
-  @ViewChild('infoModal') public modal: ModalDirective;
-  @ViewChild('infoBox') infoBox;
-  @ViewChild('documentModal') public documentModal: ModalDirective;
+  @ViewChild('infoModal', { static: true }) public modal: ModalDirective;
+  @ViewChild('infoBox', { static: true }) infoBox;
+  @ViewChild('documentModal', { static: false }) public documentModal: ModalDirective;
 
   publicity = Document.PublicityRestrictionsEnum;
 
@@ -92,7 +92,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
       let value;
       const _value = Util.parseJSONPath(np, field);
-      console.log(np, field, _value);
       if (!isEmpty(_value)) {
         value = _value;
       }
@@ -120,7 +119,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   constructor(private userService: UserService,
-              private eventService: RouterChildrenEventService,
               private clipboardService: ClipboardService,
               private toastService: ToastrService,
               private translate: TranslateService,
@@ -190,7 +188,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     if (!this.namedPlace) {
       return;
     }
-    this.userService.getUser().subscribe(person => {
+    this.userService.user$.pipe(take(1)).subscribe(person => {
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) || this.formRights.admin;
       this.formReservable = this.documentForm &&
         Array.isArray(this.documentForm.features) &&

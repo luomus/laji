@@ -2,6 +2,6 @@
   margin-bottom: 5px;
 }
 
-:host /deep/ .link .panel-title{
+:host ::ng-deep .link .panel-title{
   font-size: 1.5em;
 }

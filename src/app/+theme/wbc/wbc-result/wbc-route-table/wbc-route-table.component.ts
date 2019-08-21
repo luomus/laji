@@ -5,7 +5,7 @@ import { LocalStorage } from 'ngx-webstorage';
 @Component({
   selector: 'laji-wbc-route-table',
   templateUrl: './wbc-route-table.component.html',
-  styleUrls: ['./wbc-route-table.component.css']
+  styleUrls: ['./wbc-route-table.component.scss']
 })
 export class WbcRouteTableComponent implements OnInit {
   rows: any[];
@@ -16,8 +16,8 @@ export class WbcRouteTableComponent implements OnInit {
 
   @LocalStorage() showWbcRouteTableInfo;
 
-  @ViewChild('textOrTranslationKey') textOrTranslationKeyTpl: TemplateRef<any>;
-  @ViewChild('numberOrDocumentIds') numberOrDocumentIdsTpl: TemplateRef<any>;
+  @ViewChild('textOrTranslationKey', { static: true }) textOrTranslationKeyTpl: TemplateRef<any>;
+  @ViewChild('numberOrDocumentIds', { static: true }) numberOrDocumentIdsTpl: TemplateRef<any>;
 
   @Output() documentClick = new EventEmitter<string>();
 

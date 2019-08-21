@@ -1,0 +1,48 @@
+@import '../../../../../styles/variables';
+
+:host ::ng-deep .datatable-body-row.last-rows,
+:host ::ng-deep .datatable-body-row.last-rows .datatable-row-left,
+:host ::ng-deep .datatable-body-row.last-rows .datatable-row-center {
+  background-color: #eee !important;
+}
+:host ::ng-deep .datatable-body-cell.mean {
+  background-color: #fdb;
+}
+:host ::ng-deep .datatable-body-cell.median {
+  background-color: #dfb;
+}
+:host ::ng-deep .datatable-body-cell.min {
+  font-weight: bold !important;
+  color: red !important;
+}
+:host ::ng-deep .datatable-body-cell.max {
+  font-weight: bold !important;
+  color: green !important;
+}
+:host ::ng-deep .datatable-body-cell.significantly-less {
+  background-color: #fcc;
+}
+:host ::ng-deep .datatable-body-cell.significantly-more {
+  background-color: #cfc;
+}
+
+.toggle-intro {
+  padding: 10px;
+  text-align: end;
+  font-size: 13px;
+  color: $color-main-dark;
+}
+
+
+:host ::ng-deep .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
+  border-right: none;
+}
+:host ::ng-deep .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover):not(:focus) .datatable-row-left {
+  background-color: #f9f9f9;
+}
+:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active,
+:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-left,
+:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-center,
+:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-right {
+  background-color: #ddd !important;
+}

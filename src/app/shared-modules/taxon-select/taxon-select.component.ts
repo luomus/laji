@@ -18,7 +18,7 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
     [typeaheadOptionsLimit]="typeaheadLimit"
     [typeaheadWaitMs]="200"
     [typeaheadMinLength]="3"
-    [typeaheadFocusFirst]="!allowInvalid"
+    [typeaheadSelectFirstItem]="!allowInvalid"
     [typeaheadOptionField]="'value'"
     (typeaheadLoading)="changeTypeaheadLoading($event)"
     (typeaheadOnSelect)="onTaxonSelect($event)"
@@ -39,7 +39,7 @@ export class TaxonSelectComponent {
   @Input() class = 'form-control input-sm taxonomy-search';
   @Output() taxonIdChange = new EventEmitter<string>();
 
-  @ViewChild('typeahead') typeahead;
+  @ViewChild('typeahead', { static: true }) typeahead;
 
   private typeaheadMatch: {id: string, match: string};
   private enteredValue: string;

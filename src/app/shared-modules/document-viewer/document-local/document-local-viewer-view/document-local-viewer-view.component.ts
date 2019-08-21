@@ -12,7 +12,7 @@ import { UserService } from '../../../../shared/service/user.service';
   styleUrls: ['./document-local-viewer-view.component.css']
 })
 export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnChanges {
-  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
+  @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
 
   @Input() document: Document;
   @Input() fields: any;
@@ -34,12 +34,7 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
   ) { }
 
   ngOnInit() {
-    this.metaFetch = this.userService.action$
-      .pipe(
-        startWith(''),
-        switchMap(() => this.userService.getUser())
-      )
-      .subscribe(person => {
+    this.metaFetch = this.userService.user$.subscribe(person => {
         this.personID = person.id;
         this.cd.markForCheck();
       });

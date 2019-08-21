@@ -1,3 +1,5 @@
+@import '../../../../styles/styles';
+
 ::ng-deep {
   .browse-button {
     margin-bottom: 20px;
@@ -12,7 +14,7 @@
   }
 
   /*.nav.nav-tabs.nav-justified{
-    margin: 25px 0 20px 0; 
+    margin: 25px 0 20px 0;
     clear: both
   }*/
 }

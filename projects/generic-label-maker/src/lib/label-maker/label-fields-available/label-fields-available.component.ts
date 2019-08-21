@@ -39,7 +39,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
   isSame = true;
 
   private _availableFields: ILabelField[] = [];
-  private _newAvailableFields: ILabelField[] = [];
+  private _defaultAvailableFields: ILabelField[] = [];
 
   constructor(
     @Inject(PLATFORM_ID) protected platformId,
@@ -62,13 +62,13 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  set newAvailableFields(newAvailableFields: ILabelField[]) {
-    this._newAvailableFields = newAvailableFields || [];
+  set defaultAvailableFields(defaultAvailableFields: ILabelField[]) {
+    this._defaultAvailableFields = defaultAvailableFields || [];
     this.checkIsSame();
   }
 
-  get newAvailableFields() {
-    return this._newAvailableFields;
+  get defaultAvailableFields() {
+    return this._defaultAvailableFields;
   }
 
   @Input()
@@ -150,12 +150,12 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
   }
 
   checkIsSame(): boolean {
-    if (this.availableFields.length !== this.newAvailableFields.length) {
+    if (this.availableFields.length !== this.defaultAvailableFields.length) {
       this.isSame = false;
       return;
     }
     const keys = new Set<string>();
-    this.newAvailableFields.forEach(field => keys.add(field.field));
+    this.defaultAvailableFields.forEach(field => keys.add(field.field));
     let result = true;
     this.availableFields.forEach(field => {
       if (result && !keys.has(field.field)) {

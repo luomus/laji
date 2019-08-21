@@ -17,6 +17,7 @@ import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../model/import-table-column';
 import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { ExcelToolService } from '../service/excel-tool.service';
+import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
 
 export type States
   = 'empty'
@@ -42,12 +43,12 @@ export type States
 })
 export class ImporterComponent implements OnInit {
 
-  @ViewChild('currentUserMapModal') currentUserMapModal: ModalDirective;
-  @ViewChild('userMapModal') userMapModal: ModalDirective;
-  @ViewChild('dataTable') datatable: DatatableComponent;
-  @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
-  @ViewChild('statusCol') statusColTpl: TemplateRef<any>;
-  @ViewChild('valueCol') valueColTpl: TemplateRef<any>;
+  @ViewChild('currentUserMapModal', { static: true }) currentUserMapModal: ModalDirective;
+  @ViewChild('userMapModal', { static: true }) userMapModal: ModalDirective;
+  @ViewChild('dataTable', { static: false }) datatable: DatatableComponent;
+  @ViewChild('rowNumber', { static: true }) rowNumberTpl: TemplateRef<any>;
+  @ViewChild('statusCol', { static: true }) statusColTpl: TemplateRef<any>;
+  @ViewChild('valueCol', { static: true }) valueColTpl: TemplateRef<any>;
 
   @LocalStorage() uploadedFiles;
   @LocalStorage() partiallyUploadedFiles;
@@ -105,7 +106,8 @@ export class ImporterComponent implements OnInit {
     private toastsService: ToastsService,
     private augmentService: AugmentService,
     private dialogService: DialogService,
-    private excelToolService: ExcelToolService
+    private excelToolService: ExcelToolService,
+    private latestFacade: LatestDocumentsFacade
   ) { }
 
   ngOnInit() {
@@ -151,7 +153,7 @@ export class ImporterComponent implements OnInit {
       .subscribe(form => {
         this.form = form;
         this.combineOptions = this.excelToolService.getCombineOptions(form);
-        const [data, sheet] = this.spreadSheetService.loadSheet(this.bstr);
+        const data = this.spreadSheetService.loadSheet(this.bstr);
         this.bstr = undefined;
         this.hash = Hash.sha1(data);
 
@@ -175,7 +177,7 @@ export class ImporterComponent implements OnInit {
         }
         this.excludedFromCopy = form.excludeFromCopy || [];
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, true);
-        this.colMap = this.spreadSheetService.getColMapFromSheet(sheet, this.fields, Object.keys(this.header).length);
+        this.colMap = this.spreadSheetService.getColMapFromSheet(this.header, this.fields);
         this.origColMap = JSON.parse(JSON.stringify(this.colMap));
 
         this.initDataColumns();
@@ -230,7 +232,9 @@ export class ImporterComponent implements OnInit {
         });
         this.dataColumns = columns;
         setTimeout(() => {
-          this.datatable.refreshTable();
+          if (this.datatable) {
+            this.datatable.refreshTable();
+          }
         }, 200);
       });
   }
@@ -413,7 +417,7 @@ export class ImporterComponent implements OnInit {
           if (success) {
             this.status = 'doneOk';
             this.valid = true;
-            this.uploadedFiles = [...this.partiallyUploadedFiles, this.hash];
+            this.uploadedFiles = this.uploadedFiles ? [...this.uploadedFiles, this.hash] : [this.hash];
             this.translateService.get('excel.import.done')
               .subscribe(msg => this.toastsService.showSuccess(msg));
           } else {
@@ -423,6 +427,7 @@ export class ImporterComponent implements OnInit {
             this.status = 'doneWithErrors';
             this.toastsService.showError(this.translateService.instant('excel.import.failed'));
           }
+          this.latestFacade.update();
           this.cdr.markForCheck();
         }
       );

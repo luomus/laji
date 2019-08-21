@@ -1,5 +1,5 @@
 
-import {combineLatest} from 'rxjs/operators';
+import { combineLatest, take } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -62,7 +62,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.formPermissionService
       .getFormPermission(this.collectionId, this.userService.getToken()).pipe(
       combineLatest(
-        this.userService.getUser(),
+        this.userService.user$.pipe(take(1)),
         (permission, person) => ({permission, person})
       ))
       .subscribe((data) => {

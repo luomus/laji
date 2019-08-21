@@ -38,7 +38,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Output() selectedChanged = new EventEmitter<string[]|string>();
   @Input() multiple = true;
   @Input() info: string;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild('filter', { static: false }) filter: ElementRef;
 
   selectedOptions: SelectOptions[] = [];
   unselectedOptions: SelectOptions[] = [];

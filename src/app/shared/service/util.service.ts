@@ -1,4 +1,5 @@
 import merge from 'deepmerge';
+import { Document } from '../model/Document';
 
 export class Util {
   /**
@@ -108,6 +109,30 @@ export class Util {
       }
     });
     return destination;
+  }
+
+
+  public static isLocalNewestDocument(local: Document, remote: Document): boolean {
+    if (remote && remote.dateEdited) {
+      if (!local || !local.dateEdited ||
+        Util.getDateFromString(local.dateEdited) < Util.getDateFromString(remote.dateEdited)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private static getDateFromString(dateString) {
+    const reggie = /(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/;
+    const dateArray = reggie.exec(dateString);
+    return new Date(
+      (+dateArray[1]),
+      (+dateArray[2]) - 1, // Careful, month starts at 0!
+      (+dateArray[3]),
+      (+dateArray[4]),
+      (+dateArray[5]),
+      (+dateArray[6])
+    );
   }
 
   private static mergeClone(value, options) {

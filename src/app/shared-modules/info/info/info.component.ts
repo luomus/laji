@@ -25,8 +25,8 @@ export class InfoComponent {
   @Input() labelType = 'info';
   @Input() showOnHover = false;
 
-  @ViewChild('modal') public modal: ModalDirective;
-  @ViewChild('pop') public popover: PopoverDirective;
+  @ViewChild('modal', { static: true }) public modal: ModalDirective;
+  @ViewChild('pop', { static: true }) public popover: PopoverDirective;
 
   constructor(
     @Inject(WINDOW) private window,

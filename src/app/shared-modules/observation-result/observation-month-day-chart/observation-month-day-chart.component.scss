@@ -1,7 +1,7 @@
-::ng-deep .chart-legend .legend-label {
+:host ::ng-deep .chart-legend .legend-label {
   cursor: initial !important;
 }
-::ng-deep .day-chart .ngx-charts .bar {
+:host ::ng-deep .day-chart .ngx-charts .bar {
   cursor: initial !important;
 }
 .info-card-chart {
@@ -15,4 +15,15 @@
 .info-card-chart.day-chart {
   height: 100%;
   overflow-x: auto;
+}
+
+.chart-container {
+  position: relative;
+  height: 350px;
+  width: 100%;
+}
+
+canvas {
+  width: 500px;
+  height: 200px;
 }

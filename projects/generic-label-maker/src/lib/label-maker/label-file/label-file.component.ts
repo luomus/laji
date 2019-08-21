@@ -1,10 +1,19 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { ILabelField, ISetup, PresetSetup, QRCodeErrorCorrectionLevel } from '../../generic-label-maker.interface';
+import { ILabelField, ILabelPdf, ISetup, PresetSetup, QRCodeErrorCorrectionLevel } from '../../generic-label-maker.interface';
 import { LocalStorage } from 'ngx-webstorage';
 import { LabelPrintComponent } from '../../label-print/label-print.component';
 import { InfoWindowService } from '../../info-window/info-window.service';
 import { saveAs } from 'file-saver';
 import * as JSZip from 'jszip';
+import { TranslateService } from '../../translate/translate.service';
+import { LabelMakerFacade } from '../label-maker.facade';
+import { take } from 'rxjs/operators';
+
+export interface ILoadSetup {
+  setup: ISetup;
+  filename: string;
+  availableFields?: ILabelField[];
+}
 
 @Component({
   selector: 'll-label-file',
@@ -17,6 +26,7 @@ export class LabelFileComponent {
   @Input() newSetup: ISetup;
   @Input() setup: ISetup;
   @Input() data: object[];
+  @Input() defaultAvailableFields: ILabelField[];
   @Input() availableFields: ILabelField[];
   @Input() pdfLoading = false;
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
@@ -24,30 +34,42 @@ export class LabelFileComponent {
 
   @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string, availableFields: ILabelField[]}[];
 
-  @Output() html = new EventEmitter<string>();
+  @Output() html = new EventEmitter<ILabelPdf>();
   @Output() dataChange = new EventEmitter<object[]>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
   @Output() pdfLoadingChange = new EventEmitter<boolean>();
-  @ViewChild('printBtn') printBtn: LabelPrintComponent;
-  @ViewChild('saveTpl') saveTpl: TemplateRef<any>;
-  @ViewChild('saveActionsTpl') saveActionsTpl: TemplateRef<any>;
+  @ViewChild('printBtn', { static: true }) printBtn: LabelPrintComponent;
+  @ViewChild('saveTpl', { static: true }) saveTpl: TemplateRef<any>;
+  @ViewChild('saveActionsTpl', { static: true }) saveActionsTpl: TemplateRef<any>;
+  @ViewChild('makePdfTpl', { static: true }) makePdfTpl: TemplateRef<any>;
+  @ViewChild('makePdfActionsTpl', { static: true }) makePdfActionsTpl: TemplateRef<any>;
 
   filename = '';
   saveData = {
     file: '',
     includeData: false
   };
+  pdfFile = '';
 
-  constructor(private infoWindowService: InfoWindowService) { }
+  constructor(
+    private infoWindowService: InfoWindowService,
+    private translateService: TranslateService,
+    private labelMakerFacade: LabelMakerFacade
+  ) { }
 
   onFileChange(evt: any) {
     const target: DataTransfer = <DataTransfer>(evt.target);
     if (target.files.length < 1) {
       return;
     }
-    const genericError = 'Could not find label information from the file!';
     this.filename = target.files[0].name;
+    const error = () => {
+      evt.target.value = '';
+      this.labelMakerFacade.loadedFile('');
+      alert(this.translateService.get('Could not find label information from the file!'));
+    };
+
     if (this.filename.endsWith('.label')) {
       JSZip.loadAsync(target.files[0])
         .then(content => content.files['data.json'].async('text'))
@@ -59,28 +81,26 @@ export class LabelFileComponent {
             this.updateResentFiles({setup: data.setup, availableFields: data.fields}, this.filename);
             if (data.fields && Array.isArray(data.fields)) {
               this.availableFieldsChange.emit(data.fields);
+              this.labelMakerFacade.loadedFile(this.filename);
             }
             if (data.data && Array.isArray(data.data)) {
               this.dataChange.emit(data.data);
             }
           } else {
-            evt.target.value = '';
-            alert(genericError);
+            error();
           }
         })
         .catch(() => {
-          evt.target.value = '';
-          alert(genericError);
+          error();
         });
     } else {
-      evt.target.value = '';
-      alert(genericError);
+      error();
     }
   }
 
   save() {
     this.infoWindowService.open({
-      title: 'Save to file',
+      title: this.translateService.get('Save to file'),
       content: this.saveTpl,
       actions: this.saveActionsTpl
     });
@@ -107,9 +127,19 @@ export class LabelFileComponent {
       file: '',
       includeData: false
     };
+    this.labelMakerFacade.hasChanges(false);
   }
 
   print() {
+    this.infoWindowService.open({
+      title: this.translateService.get('Download labels (pdf)'),
+      content: this.makePdfTpl,
+      actions: this.makePdfActionsTpl
+    });
+  }
+
+  doPrint() {
+    this.infoWindowService.close();
     this.printBtn.renderPages();
   }
 
@@ -137,7 +167,8 @@ export class LabelFileComponent {
   }
 
   makeNew() {
-    if (confirm('Are you sure that you want to start a new empty label?')) {
+    if (confirm(this.translateService.get('Are you sure that you want to start a new empty label?'))) {
+      this.labelMakerFacade.loadedFile('');
       this.setupChange.emit(JSON.parse(JSON.stringify(this.newSetup)));
     }
   }
@@ -149,11 +180,18 @@ export class LabelFileComponent {
     };
   }
 
-  loadSetup(recent: { setup: ISetup; filename: string; availableFields?: ILabelField[] } | PresetSetup) {
-    this.setupChange.emit(recent.setup);
-    if (recent.availableFields) {
-      this.availableFieldsChange.emit(recent.availableFields);
-    }
+  loadSetup(recent: ILoadSetup | PresetSetup) {
+    this.labelMakerFacade.hasChanges$.pipe(take(1)).subscribe(
+      (hasChanges) => {
+        if (hasChanges && !confirm(this.translateService.get('Do you want to discard the local changes?'))) {
+          return;
+        }
+        this.setupChange.emit(recent.setup);
+        if (recent.availableFields) {
+          this.availableFieldsChange.emit(recent.availableFields);
+        }
+        this.labelMakerFacade.loadedFile((recent as ILoadSetup).filename || (recent as PresetSetup).name);
+      });
   }
 
   startPdfLoading() {
@@ -161,5 +199,12 @@ export class LabelFileComponent {
       return;
     }
     this.pdfLoadingChange.emit(true);
+  }
+
+  onHtml(html: string) {
+    this.html.emit({
+      filename: this.pdfFile.endsWith('.pdf') ? this.pdfFile : this.pdfFile + '.pdf',
+      html
+    });
   }
 }

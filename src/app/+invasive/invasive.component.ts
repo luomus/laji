@@ -1,13 +1,13 @@
 
 import {tap, map} from 'rxjs/operators';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { Taxonomy } from '../shared/model/Taxonomy';
 import { IdService } from '../shared/service/id.service';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import * as moment from 'moment';
+import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
   selector: 'laji-invasive',
@@ -17,30 +17,24 @@ import * as moment from 'moment';
 export class InvasiveComponent implements OnInit {
 
   static taxa;
-  @ViewChild('documentModal') public modal: ModalDirective;
 
   taxa: Observable<Taxonomy[]>;
   aggr: {[key: string]: number} = {};
   daysBack;
-
-  shownDocument = '';
-  highlightId;
-
   invasiveQuery = {
     countryId: ['ML.206'],
     administrativeStatusId: ['MX.euInvasiveSpeciesList']
   };
-  documentModalVisible = false;
 
   constructor(
     private taxonomyApi: TaxonomyApi,
-    private warehouseApi: WarehouseApi
+    private warehouseApi: WarehouseApi,
+    private documentViewerFacade: DocumentViewerFacade
   ) {
     this.daysBack = moment().subtract(365, 'days');
   }
 
   ngOnInit() {
-    this.modal.config = {animated: false};
     this.updateObservations();
     this.updateTaxa();
   }
@@ -80,9 +74,10 @@ export class InvasiveComponent implements OnInit {
     this.warehouseApi.warehouseQueryListGet({...this.invasiveQuery, taxonId: taxonID}, ['document.documentId', 'unit.unitId'], undefined, 1)
       .pipe(map(data => data.results[0]))
       .subscribe(result => {
-        this.shownDocument = result.document && result.document.documentId || '';
-        this.highlightId = result.unit && result.unit.unitId || '';
-        this.modal.show();
+        this.documentViewerFacade.showDocumentID({
+          document: result.document && result.document.documentId || '',
+          highlight: result.unit && result.unit.unitId || ''
+        });
       });
   }
 }

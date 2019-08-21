@@ -1,24 +1,16 @@
-<ng-container *ngIf="data && data.length > 0">
+<ng-container *ngIf="newData && newData[0].data.length > 0">
   <div class="info-card-chart year-chart">
-    <ngx-charts-bar-vertical
-      [results]="data"
-      [xAxis]="true"
-      [yAxis]="true"
-      [xAxisTickFormatting]="xAxisTickFormatting"
-      [yAxisTickFormatting]="yAxisTickFormatting"
-      [xAxisLabel]="'taxonomy.observations.yearChart.xAxis' | translate"
-      [yAxisLabel]="'taxonomy.observations.yearChart.yAxis' | translate"
-      [showXAxisLabel]="true"
-      [showYAxisLabel]="true"
-      [barPadding]="2"
-    >
-      <ng-template #tooltipTemplate let-model="model">
-        <span class="tooltip-label">{{ model.name }}</span>
-        <span class="tooltip-val">{{ model.value.toLocaleString("fi") }}</span>
-      </ng-template>
-    </ngx-charts-bar-vertical>
+    <laji-bar-chart
+      [datasets]="newData"
+      [colors] = "colors"
+      [labels]="barChartLabels"
+      [options]="barChartOptionsYear"
+      [legend]="false"
+      [chartType]="'bar'"
+      >
+   </laji-bar-chart>
   </div>
-  <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="splitIdx > 0">
-    {{ 'taxonomy.observations.yearChart.' + (data.length < allData.length ? 'showHistory' : 'hideHistory') | translate }}
+  <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="splitIdx > 0 && allSubData.length > 0">
+    {{ 'taxonomy.observations.yearChart.' + (newData[0].data.length < allDataNew[0].data.length ? 'showHistory' : 'hideHistory') | translate }}
   </button>
 </ng-container>

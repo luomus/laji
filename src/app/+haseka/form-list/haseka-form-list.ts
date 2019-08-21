@@ -1,8 +1,8 @@
 
-import {take, combineLatest,  map, switchMap } from 'rxjs/operators';
+import { take, combineLatest, map, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin as ObservableForkJoin, merge as ObservableMerge, Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
@@ -11,6 +11,7 @@ import { FormPermissionService } from '../form-permission/form-permission.servic
 import { Person } from '../../shared/model/Person';
 import { environment } from '../../../environments/environment';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
+import { LatestDocumentsFacade } from '../../shared-modules/latest-documents/latest-documents.facade';
 
 
 const DEFAULT_CATEGORY = 'MHL.categoryGeneric';
@@ -48,30 +49,24 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private formPermissionService: FormPermissionService,
               private triplestoreLabelService: TriplestoreLabelService,
+              private latestFacade: LatestDocumentsFacade,
               private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    this.subTmp = ObservableMerge(
-      this.formService.getAllTempDocuments(),
-      this.formService.localChanged.pipe(
-        switchMap(() => this.formService.getAllTempDocuments()))
-    ).pipe(map(documents => documents.reduce(
-      (cumulative, current) => {
-        if (current.formID && !cumulative[current.formID]) {
-          cumulative[current.formID] = current.id;
-        }
-        return cumulative;
-      }, {})
-    )).subscribe((data: any) => {
+    this.subTmp = this.latestFacade.tmpDocuments$.pipe(
+      map(res => res.map(r => r.document)),
+      map(documents => documents.reduce((cumulative, current) => {
+          if (!cumulative[current.formID]) {
+            cumulative[current.formID] = current.id;
+          }
+          return cumulative;
+        }, {})
+      )
+    ).subscribe((data: any) => {
       this.tmpDocument = data;
       this.changeDetector.markForCheck();
     });
-    this.subTrans = this.translate.onLangChange.subscribe(
-      () => {
-        this.updateForms();
-      }
-    );
     this.updateForms();
   }
 
@@ -136,7 +131,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       switchMap(loggedIn => loggedIn ?
         this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
           combineLatest(
-            this.person ? ObservableOf(this.person) : this.userService.getUser(),
+            this.person ? ObservableOf(this.person) : this.userService.user$.pipe(take(1)),
             (permission, person) => ({permission, person})
           )).pipe(
           map(data => this.formPermissionService.isAdmin(data.permission, data.person))) :

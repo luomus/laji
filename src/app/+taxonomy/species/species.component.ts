@@ -25,7 +25,7 @@ import { isPlatformBrowser } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesComponent implements OnInit, OnDestroy {
-  @ViewChild('header') headerRef: ElementRef;
+  @ViewChild('header', { static: true }) headerRef: ElementRef;
 
   public active: string;
   public activated = {};

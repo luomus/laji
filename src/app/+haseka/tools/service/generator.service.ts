@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { IFormField } from '../model/excel';
+import { IFormField, splitType } from '../model/excel';
 import { UserService } from '../../../shared/service/user.service';
 import { MappingService, SpecialTypes } from './mapping.service';
 import { Person } from '../../../shared/model/Person';
@@ -10,11 +10,34 @@ import { NamedPlacesService } from '../../../shared-modules/named-place/named-pl
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 import { ExportService } from '../../../shared/service/export.service';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { ExcelToolService } from './excel-tool.service';
 
 @Injectable()
 export class GeneratorService {
+
+  public static splitDate = {
+    dd: '@dd',
+    mm: '@mm',
+    yyyy: '@yyyy'
+  };
+
+  public static splitCoordinate = {
+    N: '@N',
+    E: '@E',
+    system: '@sys'
+  };
+
+  public static splitCoordinateSystem = {
+    ykj: 'ykj'
+  };
+  public static splitCoordinateSystems = [GeneratorService.splitCoordinateSystem.ykj, 'wgs84'];
+
+  public static splittableFields: {[key: string]: splitType} = {
+    'gatheringEvent.dateBegin': 'date',
+    'gatheringEvent.dateEnd': 'date',
+    'gatherings[*].geometry': 'coordinate',
+  };
 
   private sheetNames = {
     'base': 'Tallennuspohja',
@@ -60,7 +83,7 @@ export class GeneratorService {
     const allTranslations = Object.keys(this.instructionMapping).map(key => this.instructionMapping[key]);
     allTranslations.push(this.instructionArray);
     ObservableForkJoin(
-      this.userService.getUser(),
+      this.userService.user$.pipe(take(1)),
       this.excelToolService.getNamedPlacesList(formID),
       this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(map(result => result.results)),
       this.translateService.get(allTranslations, {separator: MappingService.valueSplitter}).pipe(
@@ -92,7 +115,9 @@ export class GeneratorService {
 
   private fieldsToAOA(fields: IFormField[], useLabels: boolean, specials: {person: Person}) {
     const result = [[], []];
-    fields.map((field, idx) => {
+    let idx = -1;
+    fields.map((field) => {
+      idx++;
       const special = this.mappingService.getSpecial(field);
       let value = field.default;
 
@@ -109,8 +134,32 @@ export class GeneratorService {
       } else if (field.type === 'boolean') {
         value = this.mappingService.reverseMap(value, field);
       }
-      result[0][idx] = field.fullLabel;
-      result[1][idx] = value;
+      if (field.splitType) {
+        switch (field.splitType) {
+          case 'date':
+            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitDate.dd);
+            result[1][idx] = '';
+            idx++;
+            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitDate.mm);
+            result[1][idx] = '';
+            idx++;
+            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitDate.yyyy);
+            result[1][idx] = '';
+            break;
+          case 'coordinate':
+            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitCoordinate.N);
+            result[1][idx] = '';
+            idx++;
+            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitCoordinate.E);
+            result[1][idx] = '';
+            idx++;
+            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitCoordinate.system);
+            result[1][idx] = '';
+        }
+      } else {
+        result[0][idx] = field.fullLabel;
+        result[1][idx] = value;
+      }
     });
     return result;
   }
@@ -125,20 +174,54 @@ export class GeneratorService {
     const vSheet = [];
     const cache = {};
     let vColumn = 0;
-    fields.map((field, idx) => {
-      const headerAddress = XLSX.utils.encode_cell({r: 0, c: idx});
-      const dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
-      const headerCell = sheet[headerAddress];
+    let idx = -1;
+    fields.map((field) => {
+      idx++;
+      let dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
       const special = this.mappingService.getSpecial(field);
-
-      /* Comments do not work nicely with excel (leaves comments open on hover)
-      if (!headerCell.c) {
-        headerCell.c = [];
-      }
-      headerCell.c.push({a: 'laji.fi', t: field.key});
-      */
-
       let validValues;
+
+      const addValidator = (skipSort = false) => {
+        if (validValues) {
+          const cacheKey = JSON.stringify(validValues);
+          if (!cache[cacheKey]) {
+            if (!skipSort) {
+              validValues.sort();
+            }
+            this.addToValidationSheetData(validValues, vColumn, vSheet);
+            cache[cacheKey] = this.sheetNames.vars + '!' + this.makeExactRange(
+              XLSX.utils.encode_range({r: 0, c: vColumn}, {r: validValues.length - 1, c: vColumn})
+            );
+            vColumn++;
+          }
+          validation.push({
+            sqref: dataRange,
+            sqtarget: cache[cacheKey]
+          });
+        }
+      };
+
+      if (field.splitType === 'date') {
+        validValues = Array.from({length: 31}, (v, i) => i + 1);
+        addValidator(true);
+        idx ++;
+        dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
+        validValues = Array.from({length: 12}, (v, i) => i + 1);
+        addValidator(true);
+        idx ++;
+        const year = new Date().getFullYear();
+        dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
+        validValues = Array.from({length: 50}, (v, i) => year - i);
+        addValidator(true);
+        return;
+      } else if (field.splitType === 'coordinate') {
+        idx += 2;
+        dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
+        validValues = GeneratorService.splitCoordinateSystems;
+        addValidator();
+        return;
+      }
+
       if (field.enum) {
         validValues = (useLabels ? field.enumNames : field.enum).filter(val => val !== '');
       } else if (field.type === 'boolean') {
@@ -157,22 +240,7 @@ export class GeneratorService {
             break;
         }
       }
-
-      if (validValues) {
-        const cacheKey = JSON.stringify(validValues);
-        if (!cache[cacheKey]) {
-          validValues.sort();
-          this.addToValidationSheetData(validValues, vColumn, vSheet);
-          cache[cacheKey] = this.sheetNames.vars + '!' + this.makeExactRange(
-            XLSX.utils.encode_range({r: 0, c: vColumn}, {r: validValues.length - 1, c: vColumn})
-          );
-          vColumn++;
-        }
-        validation.push({
-          sqref: dataRange,
-          sqtarget: cache[cacheKey]
-        });
-      }
+      addValidator();
     });
     if (validation.length > 0) {
       sheet['!dataValidation'] = validation;

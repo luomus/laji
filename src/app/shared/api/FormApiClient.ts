@@ -66,7 +66,12 @@ export class FormApiClient {
     return this.http.request(
       options['method'] || 'GET',
       path,
-      {headers: options['headers'], params: queryParameters, body: options['body'] || undefined, observe: 'response'}
+      {
+        headers: {...options['headers'], timeout: '120000'},
+        params: queryParameters,
+        body: options['body'] || undefined,
+        observe: 'response'
+      }
     ).pipe(
       map((response) => ({...response, json: () => response.body})),
       catchError(err => of({...err, json: () => err.error}))

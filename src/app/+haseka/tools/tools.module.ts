@@ -36,6 +36,7 @@ import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mappi
 import { LabelDesignerComponent } from './label-designer/label-designer.component';
 import { ImportContainerComponent } from './importer/import-container.component';
 import { GenericLabelMakerModule } from 'generic-label-maker';
+import { CanSplitToPipe } from './excel-generator/pipes/can-split-to.pipe';
 
 @NgModule({
   imports: [
@@ -70,7 +71,8 @@ import { GenericLabelMakerModule } from 'generic-label-maker';
     StepperComponent,
     SpecialInformalTaxonGroupsComponent,
     LabelDesignerComponent,
-    ImportContainerComponent
+    ImportContainerComponent,
+    CanSplitToPipe
   ],
   providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService],
   exports: []

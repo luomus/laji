@@ -6,11 +6,11 @@
     [data]="data"
     [viewSettings]="viewSettings"
     (viewSettingsChange)="viewSettings = $event"
-    [newSetup]="newSetup"
+    [defaultSetup]="newSetup"
     [setup]="setup"
     [availableFields]="labelFields$ | async"
     (availableFieldsChange)="changeAvailableFields($event)"
-    [newAvailableFields]="newLabelFields$ | async"
+    [defaultAvailableFields]="newLabelFields$ | async"
     (setupChange)="setup = $event"
     (html)="htmlToPdf($event)"
   ></ll-label-maker>

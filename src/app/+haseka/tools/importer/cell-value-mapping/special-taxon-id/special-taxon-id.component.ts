@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./special-taxon-id.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpecialTaxonIdComponent implements OnInit {
+export class SpecialTaxonIdComponent {
 
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
@@ -18,11 +18,6 @@ export class SpecialTaxonIdComponent implements OnInit {
   dataSource: Observable<any>;
   limit = 20;
   taxon: {[key: string]: string} = {};
-
-  constructor() {}
-
-  ngOnInit() {
-  }
 
   onTaxonSelect(value, to) {
     const mapping = {...this.mapping};

@@ -10,6 +10,9 @@ export class NewsState {
   currentList: string;
 }
 
+/**
+ * @deprecated
+ */
 @Injectable({providedIn: 'root'})
 export class NewsStore extends Store<NewsState> {
   constructor () {

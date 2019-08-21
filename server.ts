@@ -27,8 +27,10 @@ const win = domino.createWindow(template);
 
 global['window'] = win;
 global['document'] = win.document;
-Object.assign(global, domino.impl);
+global['navigator'] = win.navigator;
 global['KeyboardEvent'] = domino.impl.Event;
+win.devicePixelRatio = 2; // this is used by the leaflet library
+Object.assign(global, domino.impl);
 
 const RedisClient = redis.createClient();
 const Lock = new Redlock([RedisClient]);

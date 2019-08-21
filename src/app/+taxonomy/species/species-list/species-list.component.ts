@@ -35,9 +35,9 @@ import { DownloadComponent } from '../../../shared-modules/download/download.com
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('speciesDownload') speciesDownload: DownloadComponent;
-  @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
-  @ViewChild('dataTable') public datatable: DatatableComponent;
+  @ViewChild('speciesDownload', { static: false }) speciesDownload: DownloadComponent;
+  @ViewChild('settingsModal', { static: true }) settingsModal: SpeciesListOptionsModalComponent;
+  @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
 
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() visible: boolean;
@@ -89,8 +89,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       }
     );
 
-    this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
-      .subscribe(data => {
+    this.userService.getUserSetting('taxonomyList').subscribe(data => {
         if (data && data.selected) {
           this.searchQuery.listOptions.selected = data.selected;
         }
@@ -369,8 +368,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private saveSettings() {
-    this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
+    this.userService.setUserSetting('taxonomyList', {
       selected: this.searchQuery.listOptions.selected
-    }).subscribe(() => {}, () => {});
+    });
   }
 }

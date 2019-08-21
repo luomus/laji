@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
+const MAX_HISTORY = 30;
+
 @Injectable({providedIn: 'root'})
 export class RoutingStateService {
   private history = [];
@@ -12,16 +14,26 @@ export class RoutingStateService {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(({urlAfterRedirects}: NavigationEnd) => {
-      this.history = [...this.history, urlAfterRedirects];
+      if (urlAfterRedirects.match(/\/user\/(login|logout)/) || this.history[this.history.length - 1] === urlAfterRedirects) {
+        return;
+      }
+      if (this.history[this.history.length - 2] === urlAfterRedirects) {
+        this.history.pop();
+      } else {
+        this.history = [...this.history, urlAfterRedirects];
+        if (this.history.length > MAX_HISTORY) {
+          this.history.shift();
+        }
+      }
     });
+  }
+
+  public hasHistory() {
+    return this.history.length > 1;
   }
 
   public getHistory(): string[] {
     return [...this.history];
-  }
-
-  public removeLast(): void {
-    this.history.pop();
   }
 
   public getPreviousUrl(): string {

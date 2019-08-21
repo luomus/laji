@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 :host {
   display: flex;
   flex-direction: column;
@@ -13,8 +15,21 @@
 .toggle-intro {
   padding: 10px 10px 0 0;
   font-size: 13px;
-  color: #3498DB;
+  color: $color-main-dark;
 }
+
+#haseka-container {
+  margin-left: 15px;
+  margin-right: 15px;
+  width: auto;
+}
+
+.active {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #898989;
+}
+
 
 @media only screen and (min-width : 768px) {
   .flex-column {
@@ -29,10 +44,6 @@
   }
 }
 
-#haseka-container {
-  margin-left: 15px;
-  margin-right: 15px;
-}
 
 #content-container {
   margin-bottom: 20px;

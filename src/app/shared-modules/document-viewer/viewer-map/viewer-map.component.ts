@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @Input() data: {
     geoJSON: any;
     wgs84: any;
@@ -62,7 +62,6 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     } else {
       this.lajiMap.map.setDraw(this.mapOptions.draw);
     }
-    console.log(this.lajiMap.map.getDraw());
   }
 
   private initData() {

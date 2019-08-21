@@ -1,17 +1,22 @@
-import { catchError, map, mergeAll, share, switchMap, tap, toArray } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { catchError, concatMap, map, share, switchMap, tap, toArray } from 'rxjs/operators';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
-import { ModalDirective } from 'ngx-bootstrap';
 import { LocalStorage } from 'ngx-webstorage';
 import { DocumentExportService } from './service/document-export.service';
 import { DownloadEvent, LabelEvent, RowDocument, TemplateEvent } from './own-datatable/own-datatable.component';
 import { DocumentInfoService } from '../../shared/service/document-info.service';
 import * as moment from 'moment';
-import { Person } from '../../shared/model/Person';
 import { FormService } from '../../shared/service/form.service';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { Logger } from '../../shared/logger';
@@ -22,9 +27,11 @@ import { PdfLabelService } from '../../shared/service/pdf-label.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { Router } from '@angular/router';
 import { Global } from '../../../environments/global';
+import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade';
+import { LatestDocumentsFacade } from '../latest-documents/latest-documents.facade';
 
 interface DocumentQuery {
-  year?: number;
+  year?: string;
   onlyTemplates?: boolean;
   namedPlace?: string;
   collectionID?: string;
@@ -57,20 +64,16 @@ export class OwnSubmissionsComponent implements OnChanges {
   @Input() documentViewerGatheringGeometryJSONPath: string;
   @Input() forceLocalDocument = false;
 
-  @ViewChild('documentModal') public modal: ModalDirective;
-
   publicity = Document.PublicityRestrictionsEnum;
 
   documents$: Observable<RowDocument[]>;
-  shownDocument$: Observable<Document>;
   loading = true;
 
-  @LocalStorage('own-submissions-year', '') year: number;
+  @LocalStorage('own-submissions-year', '') year: string;
   yearInfo$: Observable<any[]>;
 
   yearInfoError: string;
   documentError: string;
-  documentModalVisible = false;
   selectedFields = 'creator,id,gatherings[*].id,publicityRestrictions,formID';
 
   selectedMap = {
@@ -106,24 +109,28 @@ export class OwnSubmissionsComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private pdfLabelService: PdfLabelService,
     private localizeRouterService: LocalizeRouterService,
-    private router: Router
+    private router: Router,
+    private documentViewerFacade: DocumentViewerFacade,
+    private latestFacade: LatestDocumentsFacade
   ) {
     this.selectedMap.taxon += ',' + Global.documentCountUnitProperties.map(prop => 'gatherings.units.' + prop).join(',');
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.modal.config = {animated: false};
     this.initDocuments(this.onlyTemplates);
   }
 
-  sliderRangeChange(newYear: number) {
+  sliderRangeChange(newYear: string) {
     this.year = newYear;
     this.initDocuments(true);
   }
 
   onDocumentClick(docID: string) {
-    this.shownDocument$ = this.documentApi.findById(docID, this.userService.getToken());
-    this.modal.show();
+    this.documentViewerFacade.showRemoteDocument({
+      document: docID,
+      own: this.admin,
+      forceLocal: this.forceLocalDocument
+    });
   }
 
   saveTemplate(event: TemplateEvent) {
@@ -183,12 +190,14 @@ export class OwnSubmissionsComponent implements OnChanges {
         yearInfoQuery.namedPlace = this.namedPlace;
       }
       this.yearInfo$ = this.documentApi.countByYear(this.userService.getToken(), yearInfoQuery).pipe(
-        map(results => results.map(res => ({...res, year: parseInt(res.year, 10)})).reverse()),
+        map(results => results.reverse()),
         tap((results: any[]) => {
           if (this.year && results.findIndex(item => item.year === this.year) > -1) {
             return;
           }
-          this.year = results.length > 0 ? results[0].year : new Date().getFullYear();
+          this.year = results.length > 0 && (results.length !== 1 && results[0].year !== 'null')
+            ? results[0].year
+            : new Date().getFullYear();
         }),
         catchError(() => {
           this.translate.get('haseka.form.genericError')
@@ -228,7 +237,7 @@ export class OwnSubmissionsComponent implements OnChanges {
       );
     } else {
       this.documentExportService.downloadDocuments(
-        this.getAllDocuments<Document>({year: this.year}), this.year, e.fileType
+        this.getAllDocuments<Document>({year: this.year}), 1, e.fileType
       );
     }
   }
@@ -245,6 +254,7 @@ export class OwnSubmissionsComponent implements OnChanges {
             .subscribe((value) => this.toastService.showSuccess(value));
           this.loading = false;
           this.cd.markForCheck();
+          this.latestFacade.update();
         },
         (err) => {
           this.translate.get('delete.error')
@@ -376,25 +386,16 @@ export class OwnSubmissionsComponent implements OnChanges {
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
-    return ObservableFrom(userArray.map((userId) => {
-      if (userId.indexOf('MA.') === 0) {
-        return this.userService.getUser(userId).pipe(
-          map((user: Person) => {
-            return user.fullName;
-          }));
-      }
-      return ObservableOf(userId);
-    })).pipe(
-      mergeAll(),
-      toArray()
-    ).pipe(
-      map((array) => {
-        return array.join(', ');
-      }));
+    return ObservableFrom(userArray).pipe(
+      concatMap(personId => this.userService.getPersonInfo(personId)),
+      toArray(),
+      map((array) => array.join(', '))
+    );
   }
 
   private getForm(formId: string): Observable<any> {
     return this.formService.getForm(formId, this.translate.currentLang).pipe(
+      map(form => form || {id: formId}),
       catchError((err) => {
         this.logger.error('Failed to load form ' + formId, err);
         return ObservableOf({id: formId});

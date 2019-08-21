@@ -67,7 +67,14 @@ $small-screen: 900px;
             color: lighten($menu-text-color, 90%);
             text-decoration: none;
           }
+        }
 
+        &.info {
+          background: none;
+          border-bottom: none;
+          float: right;
+          cursor: default;
+          color: $menu-text-color;
         }
 
         a {
@@ -108,8 +115,6 @@ $small-screen: 900px;
     svg {
       fill: #333;
     }
-
-
 
     .close-settings {
       padding: 15px;

@@ -130,17 +130,13 @@ export class YkjService {
           [latEnd, lonEnd],
           [latEnd, lonStart],
           [latStart, lonStart],
-        ].map(this.convertYkjToWgs)]
+        ].map(this.convertYkjLatLngToWgsLngLat)]
       }
     };
   }
 
-  private convertWgs84ToYkj(lat: any, lng: any) {
-    return MapUtil.convertLatLng([lat, lng], 'WGS84', 'EPSG:2393');
-  }
-
-  private convertYkjToWgs(latLng: [any, any]): [string, string] {
-    return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84');
+  private convertYkjLatLngToWgsLngLat(latLng: [any, any]): [string, string] {
+    return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84').reverse();
   }
 
   private pad(value) {

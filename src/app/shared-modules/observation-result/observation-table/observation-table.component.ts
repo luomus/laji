@@ -29,8 +29,8 @@ import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
-  @ViewChild('dataTable') public datatable: DatatableComponent;
-  @ViewChild('settingsModal') public modalRef: ModalDirective;
+  @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
+  @ViewChild('settingsModal', { static: true }) public modalRef: ModalDirective;
 
   @Input() query: WarehouseQueryInterface;
   @Input() pageSize;

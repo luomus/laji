@@ -3,6 +3,7 @@ export interface GenericLabelMakerTranslationsInterface {
   'File'?: string;
   'New'?: string;
   'Save'?: string;
+  'Save to file'?: string;
   'Edit'?: string;
   'View'?: string;
   'Templates'?: string;
@@ -43,6 +44,7 @@ export interface GenericLabelMakerTranslationsInterface {
   'Add fields to the backside'?: string;
   'First data row'?: string;
   'Download labels (pdf)'?: string;
+  'Download'?: string;
   'Include data'?: string;
   'add to label'?: string;
   'Filename'?: string;
@@ -74,6 +76,9 @@ export interface GenericLabelMakerTranslationsInterface {
   'height'?: string;
   'Field'?: string;
   'Page'?: string;
+  'capitalize'?: string;
+  'uppercase'?: string;
+  'lowercase'?: string;
   'No active field selected'?: string;
   'Two sided (flip horizontal)'?: string;
   'Font'?: string;
@@ -84,7 +89,10 @@ export interface GenericLabelMakerTranslationsInterface {
   'Are you sure that you want to remove this field?'?: string;
   'Field cannot fit the label!'?: string;
   'Are you sure that you want to remove this?'?: string;
+  'Could not find label information from the file!'?: string;
   'Map values'?: string;
   'Add unique values from data'?: string;
   'Making QR Code smaller than 10mm is possible but not recommended'?: string;
+  'Are you sure that you want to start a new empty label?'?: string;
+  'Do you want to discard the local changes?'?: string;
 }

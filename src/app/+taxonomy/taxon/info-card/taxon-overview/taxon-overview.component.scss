@@ -15,7 +15,7 @@
   width: calc(91px * 3);
 }
 
-:host /deep/ .link .panel-title{
+:host ::ng-deep .link .panel-title{
   font-size: 1.5em;
 }
 
@@ -25,7 +25,7 @@
   }
 }
 
-::ng-deep .info-card .panel-body {
+:host ::ng-deep .info-card .panel-body {
   overflow-y: auto;
 }
 

@@ -399,13 +399,7 @@ export class DocumentExportService {
     }
 
     if (key.match(new RegExp('^' + this.valuePrefixes.person + '\.[0-9]+$'))) {
-      return this.userService
-        .getUser(key)
-        .pipe(
-          map((user) => {
-            return user.fullName || key;
-          })
-        );
+      return this.userService.getPersonInfo(key);
     }
 
     if (key.match(new RegExp('^' + this.valuePrefixes.collection + '\.[0-9]+$'))) {

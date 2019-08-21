@@ -22,17 +22,15 @@
         {{ 'haseka.form.error' | translate }}
       </div>
       <div *ngSwitchCase="'unsaved'" class="unsaved status hidden-xs hidden-sm">
-          <span *ngIf="_form.formData.dateEdited">
-            {{ 'haseka.form.unsaved' | translate:{saveTime: _form.formData.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
-          </span>
-        <span *ngIf="!_form.formData.dateEdited">
-            {{ 'haseka.form.unsavedNever' | translate }}
-          </span>
-        <span class="pull-right">
-        </span>
+        <ng-container *ngIf="_form.formData && _form.formData.dateEdited; else unsaved">
+          {{ 'haseka.form.unsaved' | translate:{saveTime: _form.formData.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
+        </ng-container>
+        <ng-template #unsaved>
+          {{ 'haseka.form.unsavedNever' | translate }}
+        </ng-template>
       </div>
-      <span *ngIf="isString(readonly)">
-        {{ readonly | translate }}
+      <span *ngIf="readonly === readonlyStates.noEdit">
+        {{ 'haseka.form.readonly' | translate }}
       </span>
     </div>
     <div [ngClass]="{'col-xs-3 col-sm-2': displaysSaveContainer(), 'col-xs-4 col-sm-3': !displaysSaveContainer()}">

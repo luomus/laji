@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 hr {
   margin: 4px 0;
 }
@@ -21,7 +23,7 @@ label {
   display: inline;
 }
 
-::ng-deep p {
+:host ::ng-deep p {
   font-size: small;
 }
 .switch-label {
@@ -44,7 +46,28 @@ label {
 }
 
 .badge.active {
-  background: #777;
+  background: $color-main-dark;
   font-weight: normal;
   color: #fff;
 }
+
+@media only screen and (max-width: 1024px) {
+  .badge {
+    padding: 10px 8px;
+    width: 45%;
+    font-size: 12px;
+  }
+
+  .badge:first-child{
+    margin-right:7%;
+  }
+
+}
+
+@media only screen and (max-width: 767px) {
+  .badge {
+    font-size: 14px;
+  }
+
+}
+

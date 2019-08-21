@@ -37,8 +37,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private static settings: Settings;
 
-  @ViewChild('dataTable') public datatable: NgxDatatableComponent;
-  @ViewChild('dataTableTemplates') public datatableTemplates: DatatableTemplatesComponent;
+  @ViewChild('dataTable', { static: false }) public datatable: NgxDatatableComponent;
+  @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates: DatatableTemplatesComponent;
 
   @Input() loading = false;
   @Input() pageSize: number;
@@ -77,7 +77,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   _page: number;
   _count: number;
   _offset: number;
-  _columns: DatatableColumn[];
+  _columns: DatatableColumn[] = []; // This needs to be initialized so that the data table would do initial sort!
   selected: any[] = [];
 
   initialized = false;
@@ -94,10 +94,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   ) {
     this.settings$ = DatatableComponent.settings ?
       ObservableOf(DatatableComponent.settings).pipe(share()) :
-      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETTINGS)
+      this.cacheService.getItem(CACHE_COLUMN_SETTINGS)
         .pipe(
           map(value => value || {}),
-          tap(value => DatatableComponent.settings = value),
+          tap(value => DatatableComponent.settings = value as Settings),
           share()
         );
   }
@@ -119,12 +119,11 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this.updateFilteredRows();
     } else {
       this._rows = this._originalRows;
-      if (this._preselectedRowIndex === undefined) {
-        this.scrollTo();
-      }
     }
-    if (this._preselectedRowIndex !== undefined) {
+    if (this._preselectedRowIndex !== undefined && this._preselectedRowIndex !== -1) {
       this.preselectedRowIndex = this._preselectedRowIndex;
+    } else {
+      this.scrollTo();
     }
   }
 
@@ -162,29 +161,28 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;
-    if (!this.initialized) {
-      return;
-    }
     this.selected = [this._rows[this._preselectedRowIndex]] || [];
     if (!this.selected.length) {
       return;
     }
-    // wait until datatable initialization is complete (monkey patched) before scrolling
-    this.datatable.initializationState.pipe(take(1)).subscribe({next: () => {
-      // find the index in datatable internal sorted array that corresponds to selected index in input data
-      const postSortIndex = this.datatable._internalRows.findIndex((element) => {
-        return element.preSortIndex === this._preselectedRowIndex;
-      });
-      // Don't scroll if row is visible in initial viewport. Should be scrolled to top initially.
-      if (postSortIndex < this.datatable.bodyComponent._pageSize) {
-        return;
-      }
-      // Calculate relative position of selected row and scroll to it
-      const scrollAmount = (<number> this.datatable.bodyComponent.rowHeight) * postSortIndex;
-      if (!isNaN(scrollAmount)) {
-        this.scrollTo(scrollAmount);
-      }
-    }});
+    this.showActiveRow();
+  }
+
+  showActiveRow() {
+    if (!this.initialized || this._preselectedRowIndex === -1 || !this.datatable || !this.datatable._internalRows) {
+      return;
+    }
+    const postSortIndex = this.datatable._internalRows.findIndex((element) => {
+      return element.preSortIndex === this._preselectedRowIndex;
+    });
+    // Calculate relative position of selected row and scroll to it
+    const rowHeight = this.datatable.bodyComponent.rowHeight as number;
+    const scrollTo = rowHeight * postSortIndex;
+    const maxScroll = rowHeight * this.datatable._internalRows.length - this.datatable.bodyHeight;
+    const currentOffset = this.datatable.bodyComponent.offsetY;
+    if (!isNaN(scrollTo) && (scrollTo < currentOffset || scrollTo > currentOffset + this.datatable.bodyHeight)) {
+      this.scrollTo(Math.min(scrollTo, maxScroll));
+    }
   }
 
   /**
@@ -208,15 +206,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        this.datatable.recalculate();
-        this.initialized = true;
+      this.initialized = true;
 
-        // Make sure that preselected row index setter is called after initialization
-        if (this._preselectedRowIndex > -1) {
-          this.preselectedRowIndex = this._preselectedRowIndex;
-        }
-      }, 100);
+      // Make sure that preselected row index setter is called after initialization
+      this.showActiveRow();
     }
   }
 
@@ -280,7 +273,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   onResize(event) {
     if (event && event.column && event.column.name && event.newValue) {
       DatatableComponent.settings[event.column.name] = {width: event.newValue};
-      this.cacheService.setItem<Settings>(CACHE_COLUMN_SETTINGS, DatatableComponent.settings)
+      this.cacheService.setItem(CACHE_COLUMN_SETTINGS, DatatableComponent.settings)
         .subscribe(() => {}, () => {});
     }
   }

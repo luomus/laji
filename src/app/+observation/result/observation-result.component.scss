@@ -1,3 +1,5 @@
+@import "../../../styles/variables";
+
 .results, .whole-data-list {
   padding-top: 20px;
 }
@@ -17,12 +19,18 @@
   padding: 0 15px 0 0;
   z-index: 2;
   font-size: 13px;
-  color: #3498DB;
+  color: $color-main-dark;
 }
 
 
 @media only screen and (min-width : 768px) {
   .spacer, .species-list {
     padding-right: 10px;
+  }
+}
+
+@media only screen and (max-width : 480px) {
+  .nav-pills li:first-child {
+    margin-bottom: 10px;
   }
 }

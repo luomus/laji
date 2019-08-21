@@ -15,7 +15,7 @@ export class HasekaTermsComponent implements OnInit, AfterViewInit {
   @Input() modal = false;
   @Input() dismissLabel = 'Ok';
 
-  @ViewChild('modal') public modalComponent: ModalDirective;
+  @ViewChild('modal', { static: false }) public modalComponent: ModalDirective;
 
   modalIsVisible = false;
 

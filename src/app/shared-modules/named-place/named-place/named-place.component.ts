@@ -31,14 +31,14 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NamedPlaceComponent implements OnInit, OnDestroy {
-  @ViewChild(NpEditComponent) npEdit: NpEditComponent;
+  @ViewChild(NpEditComponent, { static: false }) npEdit: NpEditComponent;
 
   formId;
   collectionId;
 
   documentForm;
   placeForm: any;
-  prepopulatedNamedPlace = {};
+  prepopulatedNamedPlace: NamedPlace = {};
 
   namedPlaces: NamedPlace[];
   namedPlacesEvents = new EventEmitter;
@@ -76,8 +76,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   private subParam: Subscription;
   private routerEvents: Subscription;
 
-  @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
-  @ViewChild(NpEditComponent) editView: NpEditComponent;
+  @ViewChild(NpChooseComponent, { static: false }) chooseView: NpChooseComponent;
+  @ViewChild(NpEditComponent, { static: false }) editView: NpEditComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -147,7 +147,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           this.prepopulatedNamedPlace[area] = undefined;
         }
       });
-      this.prepopulatedNamedPlace['collectionID'] = this.collectionId;
+      this.prepopulatedNamedPlace.collectionID = this.collectionId;
 
       this.setActiveNP(this.findNPIndexById(data.activeNPId));
 

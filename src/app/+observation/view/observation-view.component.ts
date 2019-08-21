@@ -1,36 +1,36 @@
-
-import {filter, debounceTime} from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { SearchQuery } from '../search-query.model';
-import { Subject, Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { SearchQueryService } from '../search-query.service';
+import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { LocalStorage } from 'ngx-webstorage';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Router } from '@angular/router';
 import { WINDOW } from '@ng-toolkit/universal';
 import { ObservationFormComponent } from '../form/observation-form.component';
-
+import { IObservationViewModel, ObservationFacade } from '../observation.facade';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { tap } from 'rxjs/operators';
+import { BrowserService } from '../../shared/service/browser.service';
+import { ISettingResultList } from '../../shared/service/user.service';
 
 
 @Component({
   selector: 'laji-observation-view',
   templateUrl: './observation-view.component.html',
-  styleUrls: ['./observation-view.component.css'],
+  styleUrls: ['./observation-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationViewComponent implements OnInit, OnDestroy {
 
-  @LocalStorage() public observationSettings: any;
-  @Input() activeTab: string;
-  @ViewChild('tabs') tabs;
-  @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
-  @ViewChild(ObservationFormComponent) form: ObservationFormComponent;
+  _activeTab: string;
+  @ViewChild('tabs', { static: false }) tabs;
+  @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
+  @ViewChild(ObservationFormComponent, { static: false }) form: ObservationFormComponent;
+  showMobile: any;
+  subscription: any;
 
-  debouchAfterChange = 500;
-  limit = 10;
-  typeaheadLoading = false;
   showFilter = true;
   dateFormat = 'YYYY-MM-DD';
+  statusFilterMobile = false;
 
   drawing = false;
   drawingShape: string;
@@ -42,45 +42,47 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     'quarantinePlantPest'
   ];
 
-  subUpdate: Subscription;
-  subMap: Subscription;
-  lastQuery: string;
-  delayedSearchSource = new Subject<any>();
-  delayedSearch = this.delayedSearchSource.asObservable();
-  subSearch: Subscription;
+  subQueryUpdate: Subscription;
 
-  constructor(@Inject(WINDOW) private window: Window,
-              public searchQuery: SearchQuery,
-              public translate: TranslateService,
-              private route: Router,
-              private cd: ChangeDetectorRef) {
+  vm$: Observable<IObservationViewModel>;
+
+  constructor(
+    @Inject(WINDOW) private window: Window,
+    public searchQuery: SearchQueryService,
+    public translate: TranslateService,
+    private observationFacade: ObservationFacade,
+    private browserService: BrowserService,
+    private route: Router
+  ) {}
+
+  @Input()
+  set activeTab(tab: string) {
+    this._activeTab = tab;
+    if (tab === 'map') {
+      this.browserService.triggerResizeEvent();
+    }
   }
 
-  ngOnInit() {
-    this.subSearch = this.delayedSearch.pipe(
-      debounceTime(this.debouchAfterChange))
-      .subscribe(() => {
-        this.onSubmit();
-        this.cd.markForCheck();
-      });
+  get activeTab(): string {
+    return this._activeTab;
+  }
 
-    if (!this.observationSettings) {
-      this.observationSettings = { showIntro: true };
-    }
-    this.subUpdate = this.searchQuery.queryUpdated$.pipe(
-      filter(data => data && data.formSubmit))
-      .subscribe(() => this.onSubmit());
+
+  ngOnInit() {
+    this.vm$ = this.observationFacade.vm$;
+    this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
+    this.subQueryUpdate = this.observationFacade.query$.pipe(
+      tap(() => { if (this.results) { this.results.resetActivated(); }})
+    ).subscribe();
   }
 
   ngOnDestroy() {
-    if (this.subUpdate) {
-      this.subUpdate.unsubscribe();
+    if (this.subQueryUpdate) {
+      this.subQueryUpdate.unsubscribe();
     }
-    if (this.subMap) {
-      this.subMap.unsubscribe();
-    }
-    if (this.subSearch) {
-      this.subSearch.unsubscribe();
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
@@ -94,43 +96,32 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  empty(refresh: boolean) {
-    Object.keys(this.searchQuery.query).map(key => this.searchQuery.query[key] = undefined);
+  empty() {
+    this.observationFacade.clearQuery();
     this.form.empty();
-
-    if (refresh) {
-      this.onSubmit();
-    }
   }
 
   toggleInfo() {
-    this.observationSettings = {showIntro: !this.observationSettings.showIntro};
+    this.observationFacade.toggleIntro();
   }
 
-  onQueryChange() {
-    this.delayedSearchSource.next(true);
+  onQueryChange(event: WarehouseQueryInterface) {
+    this.observationFacade.updateQuery(event);
   }
 
-  onSubmit() {
-    const cacheKey = JSON.stringify(this.searchQuery.query);
-    if (this.lastQuery === cacheKey) {
-      return;
-    }
-    this.searchQuery.query = {...this.searchQuery.query};
-    this.lastQuery = cacheKey;
-    this.searchQuery.tack++;
-    this.results.resetActivated();
-    this.searchQuery.updateUrl([
-      'selected',
-      'pageSize',
-      'page'
-    ], false);
-    this.searchQuery.queryUpdate();
-    return false;
+  filterVisible(event: boolean) {
+    this.observationFacade.filterVisible(event);
   }
 
-  onFilterSelect(event) {
-    this.searchQuery.query = event;
-    this.delayedSearchSource.next();
+  onAdvanceModeChange(event: boolean) {
+    this.observationFacade.advanced(event);
+  }
+
+  onListSettingsChange(settings: ISettingResultList) {
+    this.observationFacade.updateListSettings(settings);
+  }
+
+  toggleMobile() {
+  this.statusFilterMobile = !this.statusFilterMobile;
   }
 }

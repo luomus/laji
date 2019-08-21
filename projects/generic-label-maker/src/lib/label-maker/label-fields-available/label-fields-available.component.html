@@ -1,7 +1,7 @@
 <slot></slot>
 <ng-container *ngIf="availableFields && availableFields.length">
   <div class="reset-container" *ngIf="!isSame">
-    <button type="button" class="btn btn-default btn-sm" (click)="availableFieldsChange.emit(newAvailableFields)">{{ 'reset' | translate }}</button>
+    <button type="button" class="btn btn-default btn-sm" (click)="availableFieldsChange.emit(defaultAvailableFields)">{{ 'reset' | translate }}</button>
   </div>
   <h3 class="first">{{ 'Available fields' | translate }}</h3>
   <input type="search" placeholder="{{ 'search' | translate }}..." style="margin-bottom: 10px;" class="form-control" (keyup)="filter($event.target.value)">

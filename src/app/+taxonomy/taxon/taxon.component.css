@@ -1,7 +1,7 @@
 :host, laji-spinner {
-  display: flex;
+  /*display: flex;
   flex: 1 0 auto;
-  flex-direction: column;
+  flex-direction: column;*/
 }
 
 .taxon-tree-container {
@@ -25,11 +25,11 @@ laji-info-card {
     height: calc(100vh - 50px);
   }
 
-  ::ng-deep laji-info-card .info-card-header-first-row {
+  :host ::ng-deep laji-info-card .info-card-header-first-row {
     margin-left: 10px;
   }
 }
-::ng-deep laji-info-card.sidebar-hidden .info-card-header-first-row {
+:host ::ng-deep laji-info-card.sidebar-hidden .info-card-header-first-row {
   margin-left: -15px;
 }
 

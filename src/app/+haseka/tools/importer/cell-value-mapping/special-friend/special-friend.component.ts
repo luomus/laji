@@ -32,7 +32,7 @@ export class SpecialFriendComponent implements OnInit {
   @Input()
   set mapping(mapping: {[value: string]: any}) {
     this._mapping = mapping;
-    this.initCurrentValue();
+    this.initCurrentValue(false);
   }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class SpecialFriendComponent implements OnInit {
       });
   }
 
-  initCurrentValue() {
+  initCurrentValue(emitMapping = true) {
     if (!this._mapping || !this.validValues || this.validValues.length === 0) {
       return;
     }
@@ -73,7 +73,7 @@ export class SpecialFriendComponent implements OnInit {
         mapping[value] = this.validIds[idx];
       }
     });
-    if (hasMapping) {
+    if (hasMapping && emitMapping) {
       this.currentValues = values;
       this.mappingChanged.emit(mapping);
     }

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { Presets, ILabelField, ISetup } from 'generic-label-maker';
+import { Presets, ILabelField, ISetup, ILabelPdf } from 'generic-label-maker';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
@@ -72,11 +72,11 @@ export class LabelDesignerComponent implements OnInit {
   }
 
 
-  htmlToPdf(html: string) {
+  htmlToPdf(data: ILabelPdf) {
     if (isPlatformBrowser(this.platformId)) {
-      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, html)
+      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, data.html)
         .subscribe((response) => {
-          FileSaver.saveAs(response,  'labels.pdf');
+          FileSaver.saveAs(response,  data.filename || 'labels.pdf');
         });
     }
   }

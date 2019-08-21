@@ -1,61 +1,49 @@
-
 import {startWith, map, filter} from 'rxjs/operators';
-/* tslint:disable:component-selector */
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../shared/service/user.service';
-import { LocalStorage } from 'ngx-webstorage';
 import { NavigationEnd, Router } from '@angular/router';
-import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
-import { RouterChildrenEventService } from '../shared-modules/own-submissions/service/router-children-event.service';
 import { Document } from '../shared/model/Document';
+import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
 
+/* tslint:disable:component-selector */
 @Component({
   selector: 'haseka',
   templateUrl: './haseka.component.html',
-  styleUrls: ['./haseka.component.css']
+  styleUrls: ['./haseka.component.scss']
 })
 export class HasekaComponent implements OnInit, OnDestroy {
 
   public email: string;
   public isFront = false;
-  public documentModalVisible = false;
-
-  public shownDocument: Document;
   public publicity = Document.PublicityRestrictionsEnum;
-  @ViewChild('documentModal') public modal: ModalDirective;
 
-  private showViewerClick$: Subscription;
   private subRoute: Subscription;
 
   constructor(
     public userService: UserService,
     public router: Router,
-    private eventService: RouterChildrenEventService
+    private documentViewerFacade: DocumentViewerFacade
   ) {
   }
 
   ngOnInit() {
-    this.modal.config = {animated: false};
-    this.showViewerClick$ = this.eventService.showViewerClick$.subscribe((doc) => {
-        this.showDocumentViewer(doc);
-    });
     this.subRoute = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(event => true), ).pipe(
       startWith(true))
       .subscribe(() => {
-        this.isFront = this.router.isActive('/vihko', true);
+        this.isFront = this.router.isActive('/vihko/forms', true);
       });
   }
 
   ngOnDestroy() {
-    this.showViewerClick$.unsubscribe();
-    this.subRoute.unsubscribe();
+    if (this.subRoute) {
+      this.subRoute.unsubscribe();
+    }
   }
 
-  showDocumentViewer(doc: Document) {
-    this.shownDocument = doc;
-    this.modal.show();
+  showDocumentViewer(document: Document) {
+    this.documentViewerFacade.showDocument({document, own: true});
   }
 }

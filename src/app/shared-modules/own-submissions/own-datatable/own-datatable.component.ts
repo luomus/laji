@@ -1,5 +1,5 @@
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { map, share } from 'rxjs/operators';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
@@ -8,8 +8,7 @@ import {
   EventEmitter,
   HostListener,
   Inject,
-  Input,
-  OnDestroy,
+  Input, OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,
@@ -66,7 +65,7 @@ export interface TemplateEvent {
 
 export interface LabelEvent {
   documentIDs: string[];
-  year: number;
+  year: string;
   label: string;
 }
 
@@ -76,8 +75,8 @@ export interface LabelEvent {
   styleUrls: ['./own-datatable.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecked {
-  @Input() year: number;
+export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @Input() year: string;
   @Input() loadError = '';
   @Input() showDownloadAll = true;
   @Input() showPrintLabels = true;
@@ -121,7 +120,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecke
   ];
   allRows: RowDocument[] = [];
   visibleRows: RowDocument[];
-  userId;
   filterBy: string;
   selectionType: string;
   selectedLabel: string;
@@ -129,7 +127,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecke
   displayMode: string;
   defaultSort: any;
 
-  usersId$: Subscription;
+  usersId: string;
+  usersIdSub: Subscription;
 
   downloadedDocumentId: string;
   fileType = 'csv';
@@ -137,10 +136,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecke
   _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'unitCount', 'observer', 'form', 'id'];
   _goToStartAfterViewCheck = false;
 
-  @ViewChild(DatatableComponent) table: DatatableComponent;
-  @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
-  @ViewChild('saveAsTemplate') public templateModal: ModalDirective;
-  @ViewChild('deleteModal') public deleteModal: ModalDirective;
+  @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
+  @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalDirective;
+  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
+  @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -186,22 +185,21 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, AfterViewChecke
     this.updateTranslations();
 
     this.updateDisplayMode();
-    this.usersId$ = this.userService.getUser().pipe(
-      map(user => user.id))
-      .subscribe(userId => {
-        this.userId = userId;
-        this.cd.markForCheck();
-      });
-  }
-
-  ngOnDestroy() {
-    this.usersId$.unsubscribe();
+    this.usersIdSub = this.userService.user$.pipe(
+      map(user => user.id)
+    ).subscribe(id => this.usersId = id);
   }
 
   ngAfterViewChecked() {
     if (this._goToStartAfterViewCheck) {
       this._goToStartAfterViewCheck = false;
       this.table.offset = 0;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.usersIdSub) {
+      this.usersIdSub.unsubscribe();
     }
   }
 

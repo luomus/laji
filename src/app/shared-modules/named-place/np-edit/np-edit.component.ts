@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -9,13 +8,13 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { Util } from '../../../shared/service/util.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
 import { NpInfoComponent } from './np-info/np-info.component';
 import { Rights } from '../../../+haseka/form-permission/form-permission.service';
+import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 
 @Component({
   selector: 'laji-np-edit',
@@ -27,7 +26,7 @@ export class NpEditComponent {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
   @Input() loading: boolean;
-  @Input() prepopulatedNamedPlace: string;
+  @Input() prepopulatedNamedPlace: NamedPlace;
   @Input() documentForm: any;
   @Input() formRights: Rights = {
     edit: false,
@@ -46,14 +45,15 @@ export class NpEditComponent {
   @Output() editReady = new EventEmitter();
   @Output() error = new EventEmitter();
 
-  @ViewChild(NpInfoComponent) infoComponent: NpInfoComponent;
+  @ViewChild(NpInfoComponent, { static: false }) infoComponent: NpInfoComponent;
 
   constructor(
     private formService: FormService,
     private translate: TranslateService,
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
-    private documentService: DocumentService
+    private documentService: DocumentService,
+    private lajiFormFacade: LajiFormDocumentFacade
   ) { }
 
   npClick() {
@@ -67,36 +67,10 @@ export class NpEditComponent {
   }
 
   useClick() {
-    this.populateForm();
+    this.lajiFormFacade.useNamedPlace(this.namedPlace, this.formId);
     this.router.navigate(this.localizeRouterService.translateRoute([
       this.formService.getAddUrlPath(this.formId)
     ]));
-  }
-
-  private populateForm() {
-    const np = this.namedPlace;
-    const populate: any = np.acceptedDocument ?
-      Util.clone(np.acceptedDocument) : (np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {});
-
-    populate.namedPlaceID = np.id;
-
-    if (!populate.gatherings) {
-      populate.gatherings = [{}];
-    } else if (!populate.gatherings[0]) {
-      populate.gatherings[0] = {};
-    }
-    if (this.namedPlace.notes) {
-      if (!populate.gatheringEvent) {
-        populate.gatheringEvent = {};
-      }
-      populate.gatheringEvent.namedPlaceNotes = this.namedPlace.notes;
-    }
-
-    let removeList = this.documentForm.excludeFromCopy || DocumentService.removableGathering;
-    if (this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.includeUnits) {
-      removeList = removeList.filter(item => item !== 'units');
-    }
-    this.formService.populate(this.documentService.removeMeta(populate, removeList));
   }
 
   setIsEdit(b: boolean) {

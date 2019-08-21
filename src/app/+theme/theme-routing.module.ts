@@ -41,7 +41,7 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
       {path: 'stats', pathMatch: 'full', component: NafiResultComponent},
-      {path: 'form', pathMatch: 'full', component: FormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'form', pathMatch: 'full', component: FormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
       {
         path: 'form/:id',
         pathMatch: 'full',
@@ -107,7 +107,7 @@ const routes: Routes = [
       },
       {
         path: 'form/:formID', component: FormComponent,
-        canActivate: [OnlyLoggedIn]
+        canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]
       },
       {
         path: 'form/:formID/:id', component: FormComponent,
@@ -190,7 +190,7 @@ const routes: Routes = [
         {path: 'routes/:id', pathMatch: 'full', component: WbcRouteComponent},
         {path: 'censuses', pathMatch: 'full', component: WbcCensusesComponent},
       ]},
-      {path: 'form', pathMatch: 'full', component: FormComponent},
+      {path: 'form', pathMatch: 'full', component: FormComponent, canDeactivate: [DocumentDeActivateGuard]},
       {
         path: 'form/:id',
         pathMatch: 'full',
@@ -234,6 +234,7 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard]
       },
       {
         path: 'form/:id',
@@ -285,6 +286,7 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard]
       },
       {
         path: 'form/:id',
@@ -335,6 +337,7 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard]
       },
       {
         path: 'form/:id',
@@ -379,6 +382,7 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard]
       },
       {
         path: 'form/:id',
@@ -429,6 +433,7 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard]
       },
       {
         path: 'form/:id',

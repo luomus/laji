@@ -13,7 +13,7 @@
     <div class="row no-margin content-breadcrumbs">
       <div>
           <laji-spinner [spinning]="loadingParent"  *ngFor="let parents of parent">
-            <div class="taxon-parent" *ngIf="parents.taxonRank==='MX.kingdom' || parents.taxonRank==='MX.order' || parents.taxonRank==='MX.class' || parents.taxonRank==='MX.genus'">
+            <div class="taxon-parent" *ngIf="parents.taxonRank==='MX.kingdom' || parents.taxonRank==='MX.phylum' || parents.taxonRank==='MX.order' || parents.taxonRank==='MX.class' || parents.taxonRank==='MX.family' || parents.taxonRank==='MX.genus'">
                 <a *ngIf="!loadingParent && parents && taxon.hasParent" [routerLink]="'/taxon/' + parents.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
                   <laji-taxon-name [taxon]="parents" [addLink]="false"></laji-taxon-name>
                       <i class="glyphicon glyphicon-chevron-right"></i>

@@ -19,6 +19,10 @@
   min-height: 0;
 }
 
+#navbar .nav {
+  margin-bottom: 0;
+}
+
 .nav a {
   cursor: pointer;
 }

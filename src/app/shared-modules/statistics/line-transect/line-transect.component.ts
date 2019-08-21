@@ -1,5 +1,5 @@
 
-import {catchError, combineLatest, map} from 'rxjs/operators';
+import { catchError, combineLatest, map, take } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -45,7 +45,7 @@ interface LineTransectCount {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
-  @ViewChild(LajiMapComponent)
+  @ViewChild(LajiMapComponent, { static: true })
   lajiMap: LajiMapComponent;
 
   @Input() document: Document;
@@ -287,7 +287,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     }
     return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken()).pipe(
       combineLatest(
-        this.userSerivce.getUser(),
+        this.userSerivce.user$.pipe(take(1)),
         (formPermission, user) => ({formPermission, user})
       ));
   }

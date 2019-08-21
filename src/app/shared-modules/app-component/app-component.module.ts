@@ -11,6 +11,7 @@ import { LocaleSvComponent } from '../../locale/locale-sv.component';
 import { SharedModule } from '../../shared/shared.module';
 import { IucnFooterComponent } from '../../shared/iucn-footer/footer.component';
 import { LangModule } from '../lang/lang.module';
+import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { LangModule } from '../lang/lang.module';
   imports: [
     LangModule,
     CommonModule,
-    SharedModule
+    SharedModule,
+    DocumentViewerModule
   ],
   exports: [
     NavbarComponent,

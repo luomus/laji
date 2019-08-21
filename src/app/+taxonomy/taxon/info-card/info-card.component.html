@@ -5,8 +5,7 @@
     (taxonSelect)="updateRoute($event)"
   ></laji-info-card-header>
 
-
-  <a *ngIf="screenWidth <= 767" class="btn btn-mobile" (click)="toggleMenuMobile()" >
+  <a *ngIf="!lgScreen" class="btn btn-mobile" (click)="toggleMenuMobile()" >
     <span class="menu glyphicon glyphicon-menu-hamburger"></span>
     <ng-container [ngSwitch]="activeTab">
         <span class="current-tab" *ngSwitchCase="'overview'">{{ "taxonomy.overview" | translate }}</span>
@@ -20,7 +19,7 @@
         <span class="current-tab" *ngSwitchCase="'invasive'">{{ "taxonomy.invasive" | translate }}</span>
     </ng-container>
   </a>
-  <ul *ngIf="(showMenu && screenWidth <= 767) || screenWidth > 767" class="nav nav-tabs nav-justified">
+  <ul *ngIf="((showMenu && !lgScreen) || lgScreen)" class="nav nav-tabs nav-justified">
           <li role="presentation"  [ngClass]="{active: activeTab === 'overview'}">
               <a [routerLink]="['/taxon', taxon.id] | localize" [queryParamsHandling]="'preserve'">
                 {{ "taxonomy.overview" | translate }}

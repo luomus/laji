@@ -16,7 +16,7 @@
   border-top: none;
 }
 
-::ng-deep ul {
+:host ::ng-deep ul {
   padding-left: 20px;
   margin-left: 0;
 }

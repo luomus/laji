@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -29,9 +28,9 @@ export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'indivi
   styleUrls: ['./ykj-map.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild(LajiMapComponent) mapComponent: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
 
   @Input() title: string;
   @Input() titleInfo: string;
@@ -40,7 +39,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() zeroObservationQuery: WarehouseQueryInterface;
   @Input() data: any;
   @Input() type: MapBoxTypes = 'count';
-  @Input() types = ['count', 'individualCount', 'newest'];
+  @Input() types: MapBoxTypes[] = ['count', 'individualCount', 'newest'];
   @Input() typeLabels: any = {};
   @Input() colorRange: string[] = ['violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
@@ -68,8 +67,6 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Output() gridClick = new EventEmitter<WarehouseQueryInterface>();
   @Output() boundsChange = new EventEmitter<any>();
 
-  geoJsonLayer;
-  mapInit = false;
   count: {[k: string]: number} = {};
   legendList: {color: string, label: string}[] = [];
 
@@ -102,17 +99,10 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.cd.markForCheck();
     });
     this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
-    if (!this.geoJsonLayer) {
-      this.initGeoJsonLayer();
-    }
-  }
-
-  ngAfterViewInit() {
-    this.initMap();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.initMapdata(!!changes.data);
+    this.initMapData(!!changes.data);
   }
 
   ngOnDestroy() {
@@ -121,17 +111,17 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   changeType(type: MapBoxTypes) {
     this.type = type;
-    this.initMapdata();
+    this.initMapData();
   }
 
-  initMapdata(dataIsChanged = false) {
+  private initMapData(dataIsChanged = false) {
     if (!this.query && !this.data) {
       return;
     }
     const key = JSON.stringify({'query': this.query, 'zeroQuery': this.zeroObservationQuery});
     if (!dataIsChanged && this.current === key) {
       const colorKey = this.getColorKey();
-      if (this.currentColor !== colorKey  && this.geoJsonLayer) {
+      if (this.currentColor !== colorKey) {
         this.initColor();
       }
       return;
@@ -139,7 +129,6 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     delete this.taxon;
     this.current = key;
     this.loading = true;
-    this.initGeoJsonLayer();
     if (this.subQuery) {
       this.subQuery.unsubscribe();
     }
@@ -156,17 +145,37 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
     this.subQuery = geoJson$
       .subscribe(geoJson => {
-          this.geoJsonLayer.addData(geoJson);
-          this.boundsChange.emit(this.geoJsonLayer.getBounds());
-          this.currentColor = '';
-          this.loading = false;
-          this.initColor();
-          this.cd.markForCheck();
-        },
-        error => {
-          this.loading = false;
-          this.cd.markForCheck();
+        this.mapComponent.setData({
+          on: {
+            click: (event, data) => {
+              try {
+                this.gridClick.emit({
+                  ...(this.query || {}),
+                  ykj10kmCenter: data.feature.properties.grid
+                });
+              } catch (e) {}
+            }
+          },
+          getFeatureStyle: () => ({
+            weight: 0.2,
+            opacity: 1,
+            fillOpacity: 0.8,
+            color: '#000000'
+          }),
+          featureCollection: {
+            type: 'FeatureCollection',
+            features: geoJson
+          }
         });
+        this.initColor();
+        this.boundsChange.emit(this.getDataLayer().getBounds());
+        this.loading = false;
+        this.cd.markForCheck();
+      },
+      () => {
+        this.loading = false;
+        this.cd.markForCheck();
+      });
   }
 
   initLegend() {
@@ -194,30 +203,11 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }));
   }
 
-  initGeoJsonLayer() {
-    if (this.geoJsonLayer) {
-      this.geoJsonLayer.clearLayers();
-    } else if (!this.geoJsonLayer) {
-      this.geoJsonLayer = L.geoJSON(undefined, {
-        style: function() {
-          return { color: '#000000', weight: 0.3, opacity: 1, fillOpacity: 0.9 };
-        }
-      });
-      this.geoJsonLayer.on('click', (evt) => {
-        if (!evt.layer.feature.properties || !evt.layer.feature.properties.grid) {
-          return;
-        }
-        const query = JSON.parse(JSON.stringify(this.query || {}));
-        query.ykj10kmCenter = evt.layer.feature.properties.grid;
-        this.gridClick.emit(query);
-      });
-    }
-  }
-
   initColor() {
     this.count = {total: 0};
     const colorKey = this.getColorKey();
-    if (this.currentColor === colorKey) {
+    const dataLayer = this.getDataLayer();
+    if (this.currentColor === colorKey || !dataLayer) {
       return;
     }
     this.currentColor = colorKey;
@@ -242,7 +232,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         col = this.countColor.bind(this);
         break;
     }
-    this.geoJsonLayer.eachLayer((layer) => {
+    dataLayer.eachLayer((layer) => {
       const color = col(layer.feature);
       layer.setStyle({fillColor: color});
     });
@@ -308,16 +298,15 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     return newColor;
   }
 
-  private initMap() {
-    if (this.mapInit || !this.mapComponent || !this.mapComponent.map || !this.mapComponent.map.map) {
-      return;
+  private getDataLayer() {
+    try {
+      const layers = this.mapComponent.map.getData();
+      for (const layer of layers) {
+        return layer.group;
+      }
+    } catch (e) {
     }
-    this.mapInit = true;
-    this.mapComponent.map.map.options.maxZoom = 8;
-    this.mapComponent.map.map.options.minZoom = 2;
-    if (this.geoJsonLayer) {
-      this.geoJsonLayer.addTo(this.mapComponent.map.map);
-    }
+    return null;
   }
 
   private getColorKey() {

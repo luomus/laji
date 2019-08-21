@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-year-slider',
@@ -11,15 +10,11 @@ export class YearSliderComponent implements OnInit {
   @Input() year: string;
   @Input() yearInfo: any[];
   @Input() showCounts = true;
-  selectList: {year: number, count: number}[] = [];
 
   pcsString: string;
   pcString: string;
-  subTrans: Subscription;
 
-  @Output() rangeChange = new EventEmitter();
-
-  @ViewChild('sliderRef') sliderRef;
+  @Output() rangeChange = new EventEmitter<string>();
 
   constructor(
     private translate: TranslateService
@@ -30,7 +25,7 @@ export class YearSliderComponent implements OnInit {
   }
 
   yearSelectChange(val: string) {
-    this.rangeChange.emit(parseInt(val, 10));
+    this.rangeChange.emit(val);
   }
 
   private updateTranslations() {

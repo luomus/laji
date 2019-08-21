@@ -1,7 +1,7 @@
-::ng-deep .year-chart .ngx-charts .bar {
+:host ::ng-deep .year-chart .ngx-charts .bar {
   cursor: initial !important;
 }
-::ng-deep .year-chart .ngx-charts .bar[aria-label$=' 0'] {
+:host ::ng-deep .year-chart .ngx-charts .bar[aria-label$=' 0'] {
   display: none;
 }
 .info-card-chart {

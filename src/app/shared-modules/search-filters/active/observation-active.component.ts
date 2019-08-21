@@ -1,17 +1,8 @@
-
-import {filter} from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  HostListener,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewContainerRef
+  Component, EventEmitter,
+  Input, Output,
 } from '@angular/core';
-import { SearchQueryInterface } from '../search-query.interface';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-observation-active',
@@ -19,46 +10,25 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./observation-active.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationActiveComponent implements OnInit, OnDestroy {
-  @Input() searchQuery: SearchQueryInterface;
+export class ObservationActiveComponent {
+  @Input() skip: string[] = [];
+  @Input() queryType = '';
 
-  public active: ActiveList[] = [];
-  public showList = false;
+  @Output() queryChange = new EventEmitter<any>();
 
-  private subQueryUpdate: Subscription;
-  private el: Element;
+  active: ActiveList[] = [];
+  showList = false;
 
-  constructor(
-    viewContainerRef: ViewContainerRef,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.el = viewContainerRef.element.nativeElement;
-  }
+  private _query: object;
 
-  ngOnInit() {
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.pipe(
-      filter(data => !(data && data.formSubmit)))
-      .subscribe(() => {
-        this.updateSelectedList();
-        this.cdr.markForCheck();
-      });
+  @Input()
+  set query(query: object) {
+    this._query = query;
     this.updateSelectedList();
   }
 
-  ngOnDestroy() {
-    if (this.subQueryUpdate) {
-      this.subQueryUpdate.unsubscribe();
-    }
-  }
-
-  @HostListener('body:click', ['$event.target'])
-  onHostClick(target) {
-    if (!this.showList || !target) {
-      return;
-    }
-    if (this.el !== target && !this.el.contains((<any>target))) {
-      this.toggleActiveList();
-    }
+  get query() {
+    return this._query;
   }
 
   toggleActiveList() {
@@ -69,70 +39,57 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   remove(item: ActiveList) {
-    const query = {...this.searchQuery.query};
-    if (typeof query[item.field] !== 'undefined') {
-      query[item.field] = undefined;
-    }
+    const query = {...this.query};
+
+    delete query[item.field];
     if (this.active && this.active.length < 2) {
       this.showList = false;
     }
-    this.searchQuery.query = query;
-    this.searchQuery.queryUpdate({formSubmit: true});
+    this.queryChange.emit(query);
   }
 
   removeAll() {
-    const skip = this.searchQuery.skippedQueryParams ? this.searchQuery.skippedQueryParams : [];
-    const query = {...this.searchQuery.query};
+    const query = {...this.query};
+
     Object.keys(query).map((key) => {
-      if (skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
-        query[key] = undefined;
+      if (this.skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
+        delete query[key];
       }
     });
     this.active = [];
     this.showList = false;
-    this.searchQuery.query = query;
-    this.searchQuery.queryUpdate({formSubmit: true});
+    this.queryChange.emit(query);
   }
 
   updateSelectedList() {
-    const skip = this.searchQuery.skippedQueryParams ? this.searchQuery.skippedQueryParams : [];
-    const query = this.searchQuery.query;
-    const active = [];
-    const doubles = {};
+    const query = this.query;
     const keys = Object.keys(query);
+    const doubles = {};
+    const doubleKeys = {
+      teamMember: 'teamMember',
+      teamMemberId: 'teamMember',
+      firstLoadedSameOrBefore: 'firstLoaded',
+      firstLoadedSameOrAfter: 'firstLoaded'
+    };
 
-    if (keys && keys.length > 0) {
-      keys.map((i) => {
-        if (skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
-          return;
-        }
-        const type = typeof query[i];
-        if (type !== 'undefined') {
-          if (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0)) {
-
-            // show only on teamMember text
-            if (['teamMember', 'teamMemberId'].indexOf(i) !== -1) {
-              if (doubles['teamMember']) {
-                return;
-              }
-              doubles['teamMember'] = true;
-            }
-
-            // show only on firstloaded text
-            if (['firstLoadedSameOrBefore', 'firstLoadedSameOrAfter'].indexOf(i) !== -1) {
-              if (doubles['firstLoaded']) {
-                return;
-              }
-              doubles['firstLoaded'] = true;
-            }
-
-            active.push({field: i, value: query[i]});
+    this.active = keys.reduce((result, i) => {
+      if (this.skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
+        return result;
+      }
+      const type = typeof query[i];
+      if (type !== 'undefined' && (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0))) {
+        // show only one filter in some cases
+        if (doubleKeys[i]) {
+          if (doubles[doubleKeys[i]]) {
+            return result;
           }
+          doubles[doubleKeys[i]] = true;
         }
-      });
-    }
 
-    this.active = active;
+        result.push({field: i, value: query[i]});
+      }
+      return result;
+    }, []);
   }
 
 }

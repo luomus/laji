@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-pill-list',
@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: true
 })
-export class PillListComponent implements OnInit {
+export class PillListComponent {
 
   @Input() separator = ',';
   @Input() isLabel;
@@ -15,12 +15,8 @@ export class PillListComponent implements OnInit {
 
   _list;
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-  @Input() set list(data) {
+  @Input()
+  set list(data) {
     if (typeof data === 'string') {
       this._list = data.split(this.separator);
     } else if (Array.isArray(data)) {

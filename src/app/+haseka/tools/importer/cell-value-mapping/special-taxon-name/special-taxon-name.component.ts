@@ -8,7 +8,7 @@ import { MappingService } from '../../../service/mapping.service';
   styleUrls: ['./special-taxon-name.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpecialTaxonNameComponent implements OnInit {
+export class SpecialTaxonNameComponent {
 
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
@@ -19,11 +19,6 @@ export class SpecialTaxonNameComponent implements OnInit {
   mergeKey = MappingService.mergeKey;
   linkedVisible = true;
   hiddenValues: {[value: string]: boolean} = {};
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   toggleLinkedVisible() {
     this.linkedVisible = !this.linkedVisible;

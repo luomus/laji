@@ -1,5 +1,5 @@
 
-import {switchMap} from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Component, Inject, Input, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -28,7 +28,7 @@ export class FeedbackComponent {
   };
   public error = false;
 
-  @ViewChild('childModal') public modal: ModalDirective;
+  @ViewChild('childModal', { static: true }) public modal: ModalDirective;
 
   constructor(@Inject(WINDOW) private window: Window,
     public userService: UserService,
@@ -51,7 +51,8 @@ export class FeedbackComponent {
       return;
     }
     const meta = this.getMeta();
-    this.userService.getUser().pipe(
+    this.userService.user$.pipe(
+      take(1),
       switchMap(user => this.lajiApi.post(
         LajiApi.Endpoints.feedback,
         {

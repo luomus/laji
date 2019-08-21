@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Form } from '../../../shared/model/Form';
+import { Readonly } from '@laji-form/laji-form-document.facade';
+import { FormService } from '../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-document-form-footer',
@@ -10,7 +12,7 @@ import { Form } from '../../../shared/model/Form';
 export class DocumentFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
-  @Input() readonly = false;
+  @Input() readonly: Readonly = Readonly.false;
   @Input() edit = false;
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
@@ -25,31 +27,33 @@ export class DocumentFormFooterComponent {
     cancel: false
   };
   displayFeedback = true;
+  readonlyStates = Readonly;
 
   constructor() { }
 
-  isString(val) { return typeof val === 'string'; }
-
-  displaysSaveContainer() { return this._admin || this.show.save; }
+  displaysSaveContainer() {
+    return this._admin || this.show.save;
+  }
 
   @Input()
   set form(form: any) {
+    if (!form) {
+      return;
+    }
     this._form = form;
     this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
-    this._locked = form && form && (form.features || []).indexOf(Form.Feature.AdminLockable) > -1
-      ? !!form.formData.locked
-      : undefined;
+    this._locked = FormService.hasFeature(form, Form.Feature.AdminLockable) ? (form.formData && !!form.formData.locked) : undefined;
     ['save', 'temp', 'cancel'].forEach(prop => {
       let show: boolean;
 
       if (!form || !form.actions) {
-        if (prop !== 'temp' || !form.features || form.features.indexOf(Form.Feature.Mobile) === -1) {
+        if (prop !== 'temp' || !FormService.hasFeature(form, Form.Feature.Mobile)) {
           show = true;
         }
       } else {
         show = prop in form.actions;
       }
-      if (this.readonly && (prop === 'save' || prop === 'temp')) {
+      if ((prop === 'save' || prop === 'temp') && [Readonly.noEdit, Readonly.true].includes(this.readonly)) {
         show = false;
       }
       this.show[prop] = show;

@@ -17,7 +17,7 @@ import merge from 'deepmerge';
   styleUrls: ['./np-edit-form.component.css']
 })
 export class NpEditFormComponent implements OnInit {
-  @Input() documentForm: any;
+  @Input() placeForm: any;
   @Input() namedPlace: NamedPlace;
   @Input() namedPlaceOptions: any;
   @Output() editReady = new EventEmitter<{np?: NamedPlace, isEdit?: boolean}>();
@@ -30,7 +30,7 @@ export class NpEditFormComponent implements OnInit {
   private hasChanges = false;
   private isPublic = false;
 
-  @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
+  @ViewChild(LajiFormComponent, { static: true }) lajiForm: LajiFormComponent;
 
   constructor(@Inject(WINDOW) private window: Window,
     private userService: UserService,
