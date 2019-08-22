@@ -280,13 +280,15 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     } else {
       this.generate = {
         ...this.generate,
-        [key]: key === 'uri' ? value : Number(value)
+        [key]: value
       };
     }
   }
 
   generateData() {
     this.infoWindowService.close();
+    this.generate.rangeStart = Number(this.generate.rangeStart);
+    this.generate.rangeEnd = Number(this.generate.rangeEnd);
     const MAX = 10000;
     const data = [];
     const uri = this.generate.uri + (this.generate.uri.indexOf('%id%') > -1 ? '' : '%id%');

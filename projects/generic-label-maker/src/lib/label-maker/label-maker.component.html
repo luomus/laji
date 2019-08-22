@@ -178,8 +178,8 @@
 <ng-template #generateTpl>
   <table class="generate user-input">
     <tr><td>{{ 'Uri' | translate }}:</td><td><input (change)="updateGenerate('uri', $event.target.value)" [value]="generate.uri" type="text" class="form-control input-sm"></td></tr>
-    <tr><td>{{ 'Range start' | translate }}:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" [value]="generate.rangeStart || ''" type="number" class="form-control input-sm"></td></tr>
-    <tr><td>{{ 'Range end' | translate }}:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" [value]="generate.rangeEnd || ''" type="number" class="form-control input-sm"></td></tr>
+    <tr><td>{{ 'Range start' | translate }}:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" [value]="generate.rangeStart || ''" type="text" [class.error]="!(generate.rangeStart | isNumeric)" class="form-control input-sm"></td></tr>
+    <tr><td>{{ 'Range end' | translate }}:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" [value]="generate.rangeEnd || ''" type="text" [class.error]="!(generate.rangeEnd | isNumeric)" class="form-control input-sm"></td></tr>
     <tr *ngIf="generateFields.length > 0"><td colspan="2">&nbsp;</td></tr>
     <tr *ngFor="let field of generateFields;">
       <td>{{field.label}}:</td><td><input [value]="generate.data[(field | fieldKey)] || ''" (change)="updateGenerate(field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
