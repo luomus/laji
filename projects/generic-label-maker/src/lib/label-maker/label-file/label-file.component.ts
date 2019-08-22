@@ -131,6 +131,9 @@ export class LabelFileComponent {
   }
 
   print() {
+    if (!this.data || this.data.length === 0) {
+      return;
+    }
     this.infoWindowService.open({
       title: this.translateService.get('Download labels (pdf)'),
       content: this.makePdfTpl,
