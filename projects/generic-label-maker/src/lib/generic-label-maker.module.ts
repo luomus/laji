@@ -39,6 +39,7 @@ import { HasValuePipe } from './pipe/has-value.pipe';
 import { SeparatorPipe } from './pipe/separator.pipe';
 import { LabelMakerFacade } from './label-maker/label-maker.facade';
 import { FieldKeyPipe } from './pipe/field-key.pipe';
+import { IsNumericPipe } from './pipe/is-numeric.pipe';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { FieldKeyPipe } from './pipe/field-key.pipe';
     NbspToSpacePipe,
     HasValuePipe,
     SeparatorPipe,
-    FieldKeyPipe
+    FieldKeyPipe,
+    IsNumericPipe
   ],
   imports: [
     CommonModule,

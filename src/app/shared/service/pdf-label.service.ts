@@ -34,7 +34,7 @@ export class PdfLabelService {
     { field: 'id', content: 'http://tun.fi/EXAMPLE', label: 'ID - QRCode', type: FieldType.qrCode },
     { field: 'id', content: 'http://tun.fi/EXAMPLE', label: 'ID', type: FieldType.id },
     { field: 'id_short', content: 'EXAMPLE', label: 'label.id_short', type: FieldType.id },
-    { field: '', content: '', label: 'Text', type: FieldType.text }
+    { field: '', content: 'Text', label: 'Text', type: FieldType.text }
   ];
 
 

@@ -2,6 +2,7 @@ $menu-height: 24px;
 $menu-color: #333;
 $menu-border-color: #777;
 $menu-text-color: #eee;
+$error-color: #900;
 $settings-border-color: #aaa;
 $settings-bg-color: #efefef;
 $settings-text-color: #333;
@@ -13,7 +14,7 @@ $small-screen: 900px;
   width: 100%;
 }
 
-::ng-deep .label-editor-window {
+:host ::ng-deep .label-editor-window {
   position: relative;
   height: 100%;
   width: 100%;
@@ -22,6 +23,10 @@ $small-screen: 900px;
   border: 1px solid $menu-border-color;
   background-color: #fefefe;
   z-index: 10;
+
+  input.error {
+    border-color: $error-color;
+  }
 
   .ellipsis {
     overflow: hidden;

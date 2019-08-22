@@ -130,6 +130,7 @@ export class LabelExcelFileComponent implements OnInit {
     fields.push({
       label: 'Text',
       field: '_any_text_',
+      content: 'Text',
       type: FieldType.text
     });
     return [
