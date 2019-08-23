@@ -5861,10 +5861,10 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.639:
-  version "0.0.639"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.639.tgz#290d2cee5603f455c0585f9581835e8a81876b87"
-  integrity sha512-MaKp4waqMQ8e8s2TF87S06MJY8cQPTgdoN2gyJfMr/Etu6mtLzE6OH1QtxhCVnW4TZjcQfOkc2O+b7dYxrZW4Q==
+laji-form@^0.0.641:
+  version "0.0.641"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.641.tgz#c34fab2cca0b6dc738624923bd04aa0a75c66683"
+  integrity sha512-xfVu+Hm+mSEbix8K6I+SHH1lVSkWbry5YFj2JyLAZRkBx/YN9QRBcFwrum8gVFwCRFIZELAxSH/qMAvPlRN9LA==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -5875,13 +5875,13 @@ laji-form@^0.0.639:
     laji-validate "0.0.77"
     moment "*"
     prop-types "^15.5.8"
-    react "^16.8.6"
+    react "~16.8.6"
     react-addons-css-transition-group "*"
     react-addons-shallow-compare "*"
     react-autosuggest "^9.3.2"
     react-bootstrap "git+https://git@github.com/olzraiti/react-bootstrap.git#927b8f7a33ba1262b8a59cf236f612f5b5e2130c"
     react-bootstrap-switch "^15.0.4"
-    react-dom "^16.8.6"
+    react-dom "~16.8.6"
     react-dropzone "^10.1.4"
     react-inlinesvg "^0.6.0"
     react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#0443d2f7ff0d9e9eb5ead2de7c8e5bfcdc01d634"
@@ -7920,15 +7920,15 @@ react-bootstrap-switch@^15.0.4:
     uncontrollable "^5.0.0"
     warning "^3.0.0"
 
-react-dom@^16.8.6:
-  version "16.9.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.9.0.tgz#5e65527a5e26f22ae3701131bcccaee9fb0d3962"
-  integrity sha512-YFT2rxO9hM70ewk9jq0y6sQk8cL02xm4+IzYBz75CQGlClQQ1Bxq0nhHF6OtSbit+AIahujJgb/CPRibFkMNJQ==
+react-dom@~16.8.6:
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
+  integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.15.0"
+    scheduler "^0.13.6"
 
 react-dropzone@^10.1.4:
   version "10.1.7"
@@ -8050,14 +8050,15 @@ react-widgets@^3.4.8:
     deconstruct-number-format "0.0.1"
     format-number-with-string "0.0.2"
 
-react@^16.8.6:
-  version "16.9.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.9.0.tgz#40ba2f9af13bc1a38d75dbf2f4359a5185c4f7aa"
-  integrity sha512-+7LQnFBwkiw+BobzOF6N//BdoNw0ouwmSJTEm9cglOOmsg/TMiFHZLe2sEoN5M7LgJTj9oHH0gxklfnQe66S1w==
+react@~16.8.6:
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
+  integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
+    scheduler "^0.13.6"
 
 read-cache@^1.0.0:
   version "1.0.0"
@@ -8684,10 +8685,10 @@ sax@>=0.6.0, sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-scheduler@^0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.15.0.tgz#6bfcf80ff850b280fed4aeecc6513bc0b4f17f8e"
-  integrity sha512-xAefmSfN6jqAa7Kuq7LIJY0bwAPG3xlCj0HMEBQk1lxYiDKZscY2xJ5U/61ZTrYbmNQbXa+gc7czPkVo11tnCg==
+scheduler@^0.13.6:
+  version "0.13.6"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.6.tgz#466a4ec332467b31a91b9bf74e5347072e4cd889"
+  integrity sha512-IWnObHt413ucAYKsD9J1QShUKkbKLQQHdxRyw73sw4FN26iWr3DY/H34xGPe4nmL1DwXyWmSWmMrA9TfQbE/XQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
