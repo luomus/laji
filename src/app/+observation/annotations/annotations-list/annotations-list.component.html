@@ -1,0 +1,11 @@
+<div class="annotations">
+    <div class="annotation" *ngFor="let annotation of result.results">
+        <div class="image"><img src="" /></div>
+        <div class="info">
+           <p *ngIf="annotation.unit">aaa</p>
+        </div>
+
+    </div>
+</div>
+
+{{ 'search.result.'+_activeTab | translate }}
