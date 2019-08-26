@@ -279,7 +279,7 @@
           class="form-control input-sm"
           type="text"
           name="documentId"
-          (ngModelChange)="onQueryChange()"
+          (ngModelChange)="delayedQueryChange()"
           [(ngModel)]="query.area">
       </div>
     </div>
@@ -315,7 +315,7 @@
                      name="coordinatesIntersection"
                      style="padding: 3px 7px;"
                      class="form-control input-sm"
-                     (change)="onQueryChange()"
+                     (change)="delayedQueryChange()"
                      [(ngModel)]="query._coordinatesIntersection">
               <span class="input-group-addon">%</span>
             </div>
@@ -679,7 +679,7 @@
           class="form-control input-sm"
           type="text"
           name="documentId"
-          (ngModelChange)="onQueryChange()"
+          (ngModelChange)="delayedQueryChange()"
           [(ngModel)]="query.documentId">
       </div>
     </div>
@@ -692,7 +692,7 @@
           class="form-control input-sm"
           type="text"
           name="documentId"
-          (ngModelChange)="onQueryChange()"
+          (ngModelChange)="delayedQueryChange()"
           [(ngModel)]="query.keyword">
       </div>
     </div>

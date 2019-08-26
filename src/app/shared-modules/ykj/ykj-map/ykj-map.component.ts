@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -28,7 +29,7 @@ export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'indivi
   styleUrls: ['./ykj-map.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
+export class YkjMapComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
 
   @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
 
@@ -93,6 +94,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     this.timeBreak[0] = now.getFullYear() + '-01-01';
   }
 
+  ngAfterViewInit(): void {
+    this.initMapData();
+  }
+
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
       this._mapOptions = {...this._mapOptions, lang: <LajiMapLang> this.translate.currentLang};
@@ -106,7 +111,9 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subLang.unsubscribe();
+    if (this.subLang) {
+      this.subLang.unsubscribe();
+    }
   }
 
   changeType(type: MapBoxTypes) {
@@ -115,7 +122,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private initMapData(dataIsChanged = false) {
-    if (!this.query && !this.data) {
+    if ((!this.query && !this.data) || !this.mapComponent.map) {
       return;
     }
     const key = JSON.stringify({'query': this.query, 'zeroQuery': this.zeroObservationQuery});
@@ -123,6 +130,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey) {
         this.initColor();
+        this.currentColor = colorKey;
       }
       return;
     }
@@ -168,7 +176,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
           }
         });
         this.initColor();
-        this.boundsChange.emit(this.getDataLayer().getBounds());
+        const dataLayer = this.getDataLayer();
+        if (dataLayer) {
+          this.boundsChange.emit(dataLayer.getBounds());
+        }
         this.loading = false;
         this.cd.markForCheck();
       },
@@ -205,12 +216,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
   initColor() {
     this.count = {total: 0};
-    const colorKey = this.getColorKey();
     const dataLayer = this.getDataLayer();
-    if (this.currentColor === colorKey || !dataLayer) {
+    if (!dataLayer) {
       return;
     }
-    this.currentColor = colorKey;
     let col;
     switch (this.type) {
       case 'individualCount':

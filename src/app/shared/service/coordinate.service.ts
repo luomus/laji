@@ -82,16 +82,22 @@ export class CoordinateService {
           [latEnd, lonEnd],
           [latEnd, lonStart],
           [latStart, lonStart],
-        ].map(this.convertYkjToWgs)],
+        ].map((latLng: [string, string]) => this.convertYkjToWgs(latLng).reverse())],
         coordinateVerbatim: origLat + ':' + origLng
       }
     };
   }
 
+  /**
+   * Convert WGS84 (lat, lng) to YKJ (lat, lng)
+   */
   convertWgs84ToYkj(lat: any, lng: any): [number, number] {
     return MapUtil.convertLatLng([lat, lng], 'WGS84', 'EPSG:2393');
   }
 
+  /**
+   * Convert Etrs (lat, lng) to WGS84 (lat, lng)
+   */
   convertEtrsToWgs(lat: any, lng: any) {
     return MapUtil.convertLatLng([lat, lng], 'EPSG:3067', 'WGS84');
   }

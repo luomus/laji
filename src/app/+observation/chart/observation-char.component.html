@@ -3,7 +3,7 @@
     <laji-spinner [spinning]="loading" [overlay]="true">
       <ng-container *ngIf="data$ | async; let data">
         <div class="stat-info">
-          <laji-info [placement]="'right'">{{ 'observation.info.stats' | translate }}</laji-info>
+          <laji-info [placement]="'left'">{{ 'observation.info.stats' | translate }}</laji-info>
         </div>
         <laji-pie-chart
               [visible]="visible"

@@ -153,7 +153,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
           tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
           mergeMap(rights => {
-              return (documentID ? this.fetchExistingDocument(documentID) : this.fetchEmptyData(form, person)).pipe(
+              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person)).pipe(
                 map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
                 map((res: FormWithData) => res.readonly !== Readonly.false ?
                   {...res, uiSchema: {...res.uiSchema, 'ui:disabled': true}} :
@@ -262,7 +262,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     return FormService.tmpNs + ':' +  this.tmpDocId;
   }
 
-  private fetchExistingDocument(documentID: string): Observable<Document> {
+  private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<Document> {
     if (FormService.isTmpId(documentID)) {
       this.updateState({..._state, hasChanges: true});
       return this.userService.user$.pipe(
@@ -276,6 +276,13 @@ export class LajiFormDocumentFacade implements OnDestroy {
         mergeMap(local => this.documentApi.findById(documentID, this.userService.getToken()).pipe(
           map((document: Document) => {
             if (document.isTemplate) {
+              if (form.prepopulatedDocument) {
+                return merge(
+                  form.prepopulatedDocument,
+                  this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']),
+                  { arrayMerge: Util.arrayCombineMerge }
+                );
+              }
               return this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
             }
             if (Util.isLocalNewestDocument(local, document)) {

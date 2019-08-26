@@ -2,7 +2,7 @@
   <div class="container-fluid info-footer">
     <div class="row">
       <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
-        <h3><a [routerLink]="'/about/' + item.id | localize">{{ item.title }}</a></h3>
+        <h3>{{ item.title }}</h3>
         <p class="intro" *ngIf="i === 0"><strong>{{ 'footer.intro1' | translate }}</strong></p>
         <ul *ngIf="item.children">
           <li *ngFor="let child of item.children">

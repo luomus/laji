@@ -62,6 +62,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'primaryHabitat',
     'anyHabitat',
     'aggregateBy',
+    'selected',
     'orderBy',
   ];
 

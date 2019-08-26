@@ -51,7 +51,7 @@ export class LabelItemComponent {
         const dataKey = FieldKeyPipe.getKey(field);
         fields.push({
           ...field,
-          content: this._data[dataKey] || field.content
+          content: typeof this._data[dataKey] === 'undefined' ? field.content : this._data[dataKey]
         });
       } else if (field.separatorAlways || LabelService.hasValue(this._data[field.field])) {
         fields.push({

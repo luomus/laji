@@ -18,10 +18,13 @@ import {
   FieldType,
   IAddLabelEvent,
   ILabelField,
-  ILabelItem, ILabelPdf,
+  ILabelItem,
+  ILabelPdf,
   ILabelValueMap,
   ISetup,
-  IViewSettings, PresetSetup, QRCodeErrorCorrectionLevel
+  IViewSettings,
+  PresetSetup,
+  QRCodeErrorCorrectionLevel
 } from '../generic-label-maker.interface';
 import { IPageLayout, LabelService } from '../label.service';
 import { InfoWindowService } from '../info-window/info-window.service';
@@ -280,13 +283,15 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     } else {
       this.generate = {
         ...this.generate,
-        [key]: key === 'uri' ? value : Number(value)
+        [key]: value
       };
     }
   }
 
   generateData() {
     this.infoWindowService.close();
+    this.generate.rangeStart = Number(this.generate.rangeStart);
+    this.generate.rangeEnd = Number(this.generate.rangeEnd);
     const MAX = 10000;
     const data = [];
     const uri = this.generate.uri + (this.generate.uri.indexOf('%id%') > -1 ? '' : '%id%');
@@ -297,6 +302,23 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     const uriField = uriFieldsIdx !== -1 ? this.availableFields[uriFieldsIdx].field : 'id';
     const domainFieldsIdx = this.availableFields.findIndex(item => item.type === FieldType.domain);
     const idFieldsIdx = this.availableFields.findIndex(item => item.type === FieldType.id);
+
+    const addTextField = (field) => {
+      if (field.type === FieldType.text) {
+        const key = FieldKeyPipe.getKey(field);
+        if (typeof this.generate.data[key] === 'undefined') {
+          this.generate.data[key] = '';
+        }
+      }
+    };
+
+    this._setup.labelItems.forEach(item => {
+      item.fields.forEach(addTextField);
+    });
+    (this._setup.backSideLabelItems || []).forEach(item => {
+      item.fields.forEach(addTextField);
+    });
+
     let current = 0;
     for (let i = start; i <= end; i++) {
       current++;
