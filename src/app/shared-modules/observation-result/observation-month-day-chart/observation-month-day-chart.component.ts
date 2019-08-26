@@ -54,7 +54,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
      this.windowVerticalOffset = window.pageYOffset
           || document.documentElement.scrollTop
           || document.body.scrollTop || 0;
-}
+  }
 
   constructor(
     private warehouseApi: WarehouseApi,
