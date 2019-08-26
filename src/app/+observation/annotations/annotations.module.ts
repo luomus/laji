@@ -6,6 +6,8 @@ import { AnnotationListComponent } from './annotations-list/annotations-list.com
 import { LangModule } from '../../shared-modules/lang/lang.module';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { AnnotationListService } from './service/annotation-list.service';
+import { GatheringComponent } from './gathering/gathering.component';
+import { GatheringRowsComponent } from './gathering-rows/gathering-rows.component';
 
 @NgModule({
   imports: [
@@ -14,7 +16,7 @@ import { AnnotationListService } from './service/annotation-list.service';
     LangModule,
     SharedModule
   ],
-  declarations: [AnnotationsComponent, AnnotationListComponent],
+  declarations: [AnnotationsComponent, AnnotationListComponent, GatheringComponent, GatheringRowsComponent],
   providers: [AnnotationListService],
   exports: [AnnotationsComponent]
 })

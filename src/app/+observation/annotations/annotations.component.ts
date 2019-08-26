@@ -26,6 +26,7 @@ export class AnnotationsComponent implements OnInit, OnChanges {
   @Output() hasData = new EventEmitter<boolean>();
   annotations: any;
   subAnnotation: Subscription;
+  gathering: any[];
   result: PagedResult<any> = {
     currentPage: 1,
     lastPage: 1,
@@ -76,24 +77,26 @@ export class AnnotationsComponent implements OnInit, OnChanges {
     this.lang = this.translations.currentLang;
     this.loading = true;
     this.cd.markForCheck();
-    /*this.subAnnotation = this.warehouseApi.warehouseQueryListGet(
+    this.subAnnotation = this.warehouseApi.warehouseQueryListGet(
       this.query,
       [
         'document.documentId',
-        'gathering.team',
-        'gathering.province',
-        'unit.linkings.taxon.id',
-        'unit.linkings.taxon.scientificName',
-        'unit.linkings.originalTaxon.scientificName',
-        'unit.linkings.originalTaxon.species',
-        'gathering.municipality',
-        'gathering.locality',
-        'gathering.displayDateTime',
+        'unit.media.thumbnailURL',
         'unit.media.fullURL',
-        'unit.annotations.annotationClass'
+        'gathering.displayDateTime',
+        'gathering.country',
+        'gathering.biogeographicalProvince',
+        'gathering.locality',
+        'gathering.municipality',
+        'gathering.team',
+        'unit.annotationCount',
+        'unit.linkings.originalTaxon.scientificName',
+        'unit.linkings.taxon.vernacularName',
+        'unit.linkings.originalTaxon.vernacularName',
+        'unit.quality.taxon.reliability'
       ],
       ['gathering.displayDateTime ASC'],
-      50,
+      20,
       this.page
     ).subscribe(data => {
       this.result = data;
@@ -103,31 +106,8 @@ export class AnnotationsComponent implements OnInit, OnChanges {
       this.size = this.result.pageSize;
       this.cd.markForCheck();
       this.loading = false;
-    }); */
+    });
 
-    this.subAnnotation = this.annotationService.getList
-        (
-        this.query,
-        // ['document.documentId', 'unit.media.thumbnailURL', 'document.collectionId',
-        // 'gathering.country', 'unit.linkings.taxon.scientificName', 'unit.linkings.taxon.nameFinnish',
-        // 'unit.linkings.taxon.speciesNameEnglish', 'unit.linkings.taxon.speciesNameSwedish' ,
-        // 'gathering.biogeographicalProvince', 'gathering.locality', 'gathering.municipality',
-        // 'unit.quality.taxon.reliability', 'unit.annotationCount', 'gathering.team'],
-        ['document.documentId', 'unit.media.thumbnailURL', 'document.collectionId'],
-         this.page,
-         this.size,
-         undefined,
-         this.lang
-         )
-      .subscribe(data => {
-        this.result = data;
-        this.paginatorDisplay = this.result.total > this.result.pageSize;
-        this.total = this.result.total;
-        this.count = this.result.total;
-        this.size = this.result.pageSize;
-        this.loading = false;
-        this.cd.markForCheck();
-      });
   }
 
 

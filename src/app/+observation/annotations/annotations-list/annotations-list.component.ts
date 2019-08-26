@@ -12,6 +12,7 @@ export class AnnotationListComponent implements OnInit {
 
   @Input() result: PagedResult<any>;
   lang: string;
+  gathering: any[];
 
   constructor(
     private transation: TranslateService

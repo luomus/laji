@@ -1,0 +1,11 @@
+div{
+    &.annotation{
+        div{
+            &.image{
+                img {
+                    height: 200px;
+                }
+            }
+        }
+    }
+}

@@ -34,6 +34,8 @@ import { ObservationFacade } from './observation.facade';
 import { AnnotationsComponent } from './annotations/annotations.component';
 import { AnnotationListComponent } from './annotations/annotations-list/annotations-list.component';
 import { AnnotationListService } from './annotations/service/annotation-list.service';
+import { GatheringComponent } from './annotations/gathering/gathering.component';
+import { GatheringRowsComponent } from './annotations/gathering-rows/gathering-rows.component';
 
 @NgModule({
   imports: [
@@ -66,7 +68,9 @@ import { AnnotationListService } from './annotations/service/annotation-list.ser
     ExistsPipe,
     ToSafeQueryPipe,
     AnnotationsComponent,
-    AnnotationListComponent
+    AnnotationListComponent,
+    GatheringRowsComponent,
+    GatheringComponent
   ],
   providers: [
     ObservationFacade,
