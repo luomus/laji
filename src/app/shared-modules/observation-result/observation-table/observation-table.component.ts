@@ -315,6 +315,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    console.log('problem observation');
     this.lang = this.translate.currentLang;
     this.initColumns();
     this.fetchPage(this.page);

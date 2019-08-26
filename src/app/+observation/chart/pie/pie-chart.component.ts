@@ -3,8 +3,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 @Component({
   selector: 'laji-pie-chart',
   template: `
+  <div class="table-responsive">
   <ngx-charts-advanced-pie-chart
-    [view]="[760, height]"
+    [view]=""
     (select)="select($event)"
     [valueFormatting]="valueFormat"
     [scheme]="'fire'"
@@ -12,7 +13,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
     [results]="data"
     [gradient]="false">
     </ngx-charts-advanced-pie-chart>
+    </div>
   `,
+  styleUrls: ['./pie-chart.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PieChartComponent {

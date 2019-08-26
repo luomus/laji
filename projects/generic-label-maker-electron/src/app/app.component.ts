@@ -98,7 +98,7 @@ export class AppComponent implements OnInit {
         {field: 'uri', content: 'http://example.com/ID', label: 'URI', type: FieldType.uri},
         {field: 'domain', content: 'http://example.com/', label: 'Domain', type: FieldType.domain},
         {field: 'id', content: 'ID', label: 'ID', type: FieldType.id},
-        {field: '', content: '', label: 'Text', type: FieldType.text}
+        {field: '', content: 'Text', label: 'Text', type: FieldType.text}
       ], {
         skip: this.skipFields
       })),
