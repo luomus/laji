@@ -195,7 +195,7 @@ export class ObservationFacade {
   private countTaxa(query: WarehouseQueryInterface): Observable<number> {
     return this.count(
       this.warehouseApi.warehouseQueryAggregateGet(
-        {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species', cache: true},
+        {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species'},
         ['unit.linkings.taxon.speciesId'], [], 1, 1
       ),
       'loadingTaxa',

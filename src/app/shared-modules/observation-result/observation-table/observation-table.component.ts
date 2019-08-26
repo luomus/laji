@@ -315,6 +315,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    console.log('problem observation');
     this.lang = this.translate.currentLang;
     this.initColumns();
     this.fetchPage(this.page);
@@ -460,11 +461,12 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         this.total.emit(data && data.total || 0);
         this.result = data;
         this.loading = false;
-        this.changeDetectorRef.detectChanges();
+        // This needs to be markForCheck and not detectChanges otherwise observation table on taxon section will not work
+        this.changeDetectorRef.markForCheck();
       }, (err) => {
         this.total.emit(0);
         this.loading = false;
-        this.changeDetectorRef.detectChanges();
+        this.changeDetectorRef.markForCheck();
         this.logger.error('Observation table data handling failed!', err);
       });
   }
