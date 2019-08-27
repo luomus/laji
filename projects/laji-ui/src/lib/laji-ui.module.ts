@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { LajiUiComponent } from './laji-ui.component';
+import { ButtonComponent } from './button/button.component';
 
 
 
 @NgModule({
-  declarations: [LajiUiComponent],
+  declarations: [ButtonComponent],
   imports: [
   ],
-  exports: [LajiUiComponent]
+  exports: [ButtonComponent]
 })
 export class LajiUiModule { }
