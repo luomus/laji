@@ -115,14 +115,17 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
         const xwidth = ( width - padding_left - padding_right ) / count;
 
         let bar_index = (event.event.offsetX - padding_left - scales['y-axis-0'].width) / xwidth; // Calculate index (current month)
-        if (bar_index > 0 && bar_index < count) { // control if the click is in yAxis, no event there
-          bar_index = Math.floor(bar_index);
-          console.log(bar_index);
-          this.barChartLabelsDay = [];
-          this.activeMonth = bar_index;
-          this.initLabelsDayChartData(this.activeMonth);
-          this.dayChartModalVisible = true;
-          this.modal.show();
+        bar_index = Math.floor(bar_index);
+        if (this.barChartData[0].data[bar_index] > 0) {
+          if (bar_index >= 0 && bar_index < count) { // control if the click is in yAxis, no event there
+            bar_index = Math.floor(bar_index);
+            console.log(bar_index);
+            this.barChartLabelsDay = [];
+            this.activeMonth = bar_index;
+            this.initLabelsDayChartData(this.activeMonth);
+            this.dayChartModalVisible = true;
+            this.modal.show();
+          }
         }
       }
     /*if (event.active.length > 0) {
