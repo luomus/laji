@@ -8,6 +8,7 @@ import { TypeaheadModule } from 'ngx-bootstrap';
 import { AnnotationListService } from './service/annotation-list.service';
 import { GatheringComponent } from './gathering/gathering.component';
 import { GatheringRowsComponent } from './gathering-rows/gathering-rows.component';
+import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,7 @@ import { GatheringRowsComponent } from './gathering-rows/gathering-rows.componen
     LangModule,
     SharedModule
   ],
-  declarations: [AnnotationsComponent, AnnotationListComponent, GatheringComponent, GatheringRowsComponent],
+  declarations: [AnnotationsComponent, AnnotationListComponent, GatheringComponent, GatheringRowsComponent, TaxonNameComponent],
   providers: [AnnotationListService],
   exports: [AnnotationsComponent]
 })

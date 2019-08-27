@@ -1,10 +1,8 @@
 <div class="annotations row">
     <div class="annotation col-xs-12 col-sm-6 col-lg-2" *ngFor="let annotation of result.results">
         <div class="image" *ngIf="annotation.unit.media"><img [src]="annotation.unit.media[0].fullURL" /></div>
-        <laji-gathering
-        [visible]= "true"
-        [gathering]= "gathering"
-        ></laji-gathering>
+        <laji-unit-annotation [showImage]="false" [unit]="annotation.unit" (hasData)="hasTaxon = $event"></laji-unit-annotation>
+        <laji-gathering [visible]="true" [gathering]="annotation.gathering"></laji-gathering>
     </div>
 </div>
 

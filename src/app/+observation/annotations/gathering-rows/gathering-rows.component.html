@@ -1,0 +1,16 @@
+<div class="position">
+  <span *ngIf="gathering.country">{{ gathering.country }}</span>
+  <span *ngIf="gathering.biogeographicalProvince">,{{ gathering.biogeographicalProvince }}</span>
+  <span *ngIf="gathering.municipality">,{{ gathering.municipality }}</span>
+  <span *ngIf="gathering.locality">,{{ gathering.locality }}</span>
+</div>
+
+<div class="date">
+      <span *ngIf="gathering.displayDateTime">{{ gathering.displayDateTime }}</span>
+</div>
+
+<div class="author" *ngIf="gathering.team">
+      <div *ngFor="let member of gathering.team">
+            <span class="member">{{ member }}</span>
+      </div>
+</div>
