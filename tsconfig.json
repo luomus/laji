@@ -19,7 +19,15 @@
       "@laji-form/*": [
         "app/shared-modules/laji-form/*"
       ],
-      "jszip": ["../node_modules/jszip/dist/jszip.js"]
+      "jszip": [
+        "../node_modules/jszip/dist/jszip.js"
+      ],
+      "laji-ui": [
+        "dist/laji-ui"
+      ],
+      "laji-ui/*": [
+        "dist/laji-ui/*"
+      ]
     },
     "typeRoots": [
       "node_modules/@types"
