@@ -84,7 +84,7 @@ export class DocumentLocalComponent implements OnChanges {
             }
 
             const units: Units[] = [];
-            gathering.units.reduce((arr: Units[], unit: Units) => {
+            (gathering.units || []).reduce((arr: Units[], unit: Units) => {
               if (DocumentInfoService.isEmptyUnit(unit, form)) {
                 return arr;
               }
