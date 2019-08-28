@@ -3,12 +3,12 @@
 div {
     &.unit {
         background-color: $main-gray;
-        min-height: 240px;
         div {
             &.image {
                 height:200px;
                 margin-bottom: 10px;
                 position: relative;
+                background-color: $main-gray-darker;
                 div {
                     &.number-images {
                         position: absolute;

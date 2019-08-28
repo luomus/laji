@@ -1,8 +1,8 @@
 <div class="annotations">
     <div class="annotation col-xs-12 col-sm-6 col-md-3 col-lg-2" *ngFor="let annotation of result.results">
         <div class="annotation-item">
-            <laji-unit-annotation [showImage]="false" [unit]="annotation.unit"></laji-unit-annotation>
-            <laji-gathering [visible]="true" [gathering]="annotation.gathering"></laji-gathering>
+            <div class="unit-annotation"><laji-unit-annotation [showImage]="false" [unit]="annotation.unit"></laji-unit-annotation></div>
+            <div class="gathering"><laji-gathering [visible]="true" [gathering]="annotation.gathering"></laji-gathering></div>
         </div>
     </div>
 </div>

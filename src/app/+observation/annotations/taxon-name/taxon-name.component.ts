@@ -36,7 +36,7 @@ export class TaxonNameComponent implements OnInit {
           } else {
             for (const lang of ['fi', 'en', 'sv' ]) {
               if (this.unit.linkings.originalTaxon.vernacularName[lang] && lang !== this.currentLang) {
-              this._taxon = this.unit.linkings.originalTaxon.vernacularName[lang] + ' (' + lang + ')';
+              return this._taxon = this.unit.linkings.originalTaxon.vernacularName[lang] + ' (' + lang + ')';
               }
             }
           }

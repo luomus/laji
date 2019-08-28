@@ -7,6 +7,14 @@ div{
             &.annotation-item {
                 background-color: $main-gray;
                 min-height: 400px;
+                div {
+                  &.unit-annotation {
+                      min-height: 240px;
+                  }
+                  &.gathering {
+                    min-height: 130px;
+                  }
+                }
             }
         }
     }

@@ -93,7 +93,8 @@ export class AnnotationsComponent implements OnInit, OnChanges {
         'unit.linkings.originalTaxon.scientificName',
         'unit.linkings.taxon.vernacularName',
         'unit.linkings.originalTaxon.vernacularName',
-        'unit.quality.taxon.reliability'
+        'unit.quality.taxon.reliability',
+        'unit.annotations.type'
       ],
       ['gathering.displayDateTime DESC'],
       20,

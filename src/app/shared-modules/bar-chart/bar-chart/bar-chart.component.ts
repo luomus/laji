@@ -37,7 +37,6 @@ export class BarChartComponent implements OnInit {
   initActiveClickAreas = false;
 
   ngOnInit() {
-    console.log(this.baseChartComponent);
   }
 
   onClick(event) {
