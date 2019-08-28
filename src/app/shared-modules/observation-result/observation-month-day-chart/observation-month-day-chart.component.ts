@@ -235,7 +235,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       }
 
       this.initializeGraph();
-      // this.barChartOptions.scales.yAxes[0].ticks.max=this.maxMinAvg(this.barChartData[0].data);
     });
     return labelObservables.length > 0 ? forkJoin(labelObservables) : of([]);
   }
