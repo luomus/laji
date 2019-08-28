@@ -57,7 +57,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   generateFields: ILabelField[];
   dragging = false;
   filename$: Observable<string>;
-  version = '2.0.0';
+  version = '2.1.0';
   previewActive = 0;
   @Input() defaultDomain = '';
   @Input() defaultSetup: ISetup;
