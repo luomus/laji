@@ -15,7 +15,7 @@ import { BaseChartDirective } from 'ng2-charts';
   (chartClick)="onClick($event)"
   >
   </canvas>`,
-  styles: [':host { display:block; height:350px }']
+  styles: [':host { display:block; height:450px }']
 })
 export class BarChartComponent implements OnInit {
   @ViewChild('mycanvas', { static: true }) baseChartComponent: BaseChartDirective;

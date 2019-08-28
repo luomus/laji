@@ -1,3 +1,4 @@
+
 :host ::ng-deep .chart-legend .legend-label {
   cursor: initial !important;
 }
@@ -7,8 +8,7 @@
 .info-card-chart {
   margin: auto;
   width: 100%;
-  height: 350px;
-  max-height: calc(100vh - 61px);
+  min-height: 450px;
   max-width: 1200px;
 }
 
@@ -19,7 +19,7 @@
 
 .chart-container {
   position: relative;
-  height: 350px;
+  min-height: 450px;
   width: 100%;
 }
 
