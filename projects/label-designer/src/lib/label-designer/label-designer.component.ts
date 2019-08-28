@@ -36,6 +36,9 @@ import { TranslateService } from '../translate/translate.service';
 import { LabelMakerFacade } from './label-maker.facade';
 import { FieldKeyPipe } from '../pipe/field-key.pipe';
 
+/**
+ * Label designer window that can do everything about the label. Edit the label, preview and print the labels.
+ */
 @Component({
   selector: 'll-label-designer',
   templateUrl: './label-designer.component.html',
@@ -44,45 +47,167 @@ import { FieldKeyPipe } from '../pipe/field-key.pipe';
 })
 export class LabelDesignerComponent implements OnInit, OnDestroy {
 
+  /**
+   * @internal
+   */
   static id = 0;
 
+
+  /**
+   * @internal
+   */
   @ViewChild('intro', { static: true }) intro;
+
+  /**
+   * @internal
+   */
   @ViewChild('gettingStarted', { static: true }) gettingStarted;
 
+  /**
+   * @internal
+   */
   _active: 'file'|'edit'|'view'|'settings'|'fields'|'help'|'close'|'map' = 'file';
+  /**
+   * @internal
+   */
   _setup: ISetup;
+  /**
+   * @internal
+   */
   _data: object[] = [];
+  /**
+   * @internal
+   */
   _selectedLabelItem: ILabelItem | undefined;
+  /**
+   * @internal
+   */
   _viewSettings: IViewSettings = {magnification: 2};
+  /**
+   * @internal
+   */
   generateFields: ILabelField[];
+  /**
+   * @internal
+   */
   dragging = false;
+  /**
+   * @internal
+   */
   filename$: Observable<string>;
+  /**
+   * @internal
+   */
   version = '2.1.0';
+  /**
+   * @internal
+   */
   previewActive = 0;
+  /**
+   * Default domain that is used on generate data dialog.
+   */
   @Input() defaultDomain = '';
+  /**
+   * Setup that is used when the user clicks new from the file menu.
+   * This is optional input and if this is missing there will not be new button visible.
+   */
   @Input() defaultSetup: ISetup;
+  /**
+   * These are the default label fields. If the user import an excel file available fields changes and if that list is different from this
+   * there will be a reset button visible on label fields tab.
+   */
   @Input() defaultAvailableFields: ILabelField[];
+  /**
+   * These are the fields that are visible on label fields tab.
+   */
   @Input() availableFields: ILabelField[];
+  /**
+   * Whether or not show the intro on startup.
+   */
   @Input() showIntro = true;
+  /**
+   * Since the loading of the pdf is done externally this will tell the editor to display loading indicator on the download the pdf link.
+   */
   @Input() pdfLoading = false;
+  /**
+   * Error correction level used on the QR Code.
+   */
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
+  /**
+   * Preset setups that the user can pick from the file menu.
+   */
   @Input() presets: PresetSetup[];
 
-  @Output() html = new EventEmitter<ILabelPdf>();
-  @Output() viewSettingsChange = new EventEmitter<IViewSettings>();
-  @Output() dataChange = new EventEmitter<object[]>();
-  @Output() setupChange = new EventEmitter<ISetup>();
-  @Output() introClosed = new EventEmitter();
-  @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
-  @Output() pdfLoadingChange = new EventEmitter<boolean>();
+  /**
+   * Event that triggers when the html for the label is generated. Event holds the desired filename and the html string
+   * (See {@link ILabelPdf}).
+   */
+  @Output() html: EventEmitter<ILabelPdf> = new EventEmitter<ILabelPdf>();
+
+  /**
+   * Triggered when view settings change.
+   */
+  @Output() viewSettingsChange: EventEmitter<IViewSettings> = new EventEmitter<IViewSettings>();
+
+  /**
+   * Triggered when the data is changed. This can occurs when the excel is imported or when the generate data menu item is used.
+   */
+  @Output() dataChange: EventEmitter<object[]> = new EventEmitter<object[]>();
+
+  /**
+   * Triggered when setup changes. This happens on every change on the label, so make sure that performance of the chain of the event's
+   * that this triggers is good and that it doesn't block the ui thread.
+   */
+  @Output() setupChange: EventEmitter<ISetup> = new EventEmitter<ISetup>();
+
+  /**
+   * Triggered when the intro dialog is closed.
+   */
+  @Output() introClosed: EventEmitter<void> = new EventEmitter<void>();
+
+  /**
+   * Triggered when available fields are changed.
+   */
+  @Output() availableFieldsChange: EventEmitter<ILabelField[]> = new EventEmitter<ILabelField[]>();
+
+  /**
+   * Triggered when pdf loading is changed
+   */
+  @Output() pdfLoadingChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  /**
+   * @internal
+   */
   @ViewChild('editor', { static: false }) editor: ElementRef<HTMLDivElement>;
+  /**
+   * @internal
+   */
   @ViewChild('generateTpl', { static: true }) generateTpl: TemplateRef<any>;
+  /**
+   * @internal
+   */
   @ViewChild('generateActionsTpl', { static: true }) generateActionsTpl: TemplateRef<any>;
+  /**
+   * @internal
+   */
   @ViewChild('excelFile', { static: false }) excelCmp: LabelExcelFileComponent;
+  /**
+   * @internal
+   */
   @ViewChild('excelTpl', { static: true }) excelTpl: TemplateRef<any>;
+  /**
+   * @internal
+   */
   @ViewChild('excelActionsTpl', { static: true }) excelActionsTpl: TemplateRef<any>;
+
+  /**
+   * @internal
+   */
   subIntro: Subscription;
 
+  /**
+   * @internal
+   */
   generate: {
     uri: string;
     rangeStart: number;
@@ -95,11 +220,17 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     data: {}
   };
 
+  /**
+   * @internal
+   */
   dimensions: IPageLayout;
 
   private _undo: ISetup[] = [];
   private _redo: ISetup[] = [];
 
+  /**
+   * @internal
+   */
   constructor(
     private labelService: LabelService,
     private renderer2: Renderer2,
@@ -123,11 +254,17 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Translations for the component. See {@link LabelDesignerTranslationsInterface} to see what values can be translated.
+   */
   @Input()
   set translations(translations: LabelDesignerTranslationsInterface) {
     this.translateService.setTranslations(translations);
   }
 
+  /**
+   * Array of data objects. Each object in the array will generate one label.
+   */
   @Input()
   set data(data: object[]) {
     if (!Array.isArray(data)) {
@@ -141,6 +278,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     return this._data;
   }
 
+  /**
+   * View settings to use. See {@link IViewSettings} for details on what can be set.
+   */
   @Input()
   set viewSettings(settings: IViewSettings) {
     if (!settings) {
@@ -171,6 +311,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     return this._viewSettings;
   }
 
+  /**
+   * Setup object for the label.
+   */
   @Input()
   set setup(setup: ISetup) {
     if (!setup) {
@@ -211,17 +354,26 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     this.setPreviewActive(this.previewActive);
   }
 
+  /**
+   * @internal
+   */
   showSettings(item: ILabelItem) {
     this.setActiveLabelItem(item);
     this._active = 'settings';
     this.cdr.detectChanges();
   }
 
+  /**
+   * @internal
+   */
   setActiveLabelItem(item: ILabelItem) {
     this._selectedLabelItem = item;
     this.cdr.detectChanges();
   }
 
+  /**
+   * @internal
+   */
   setupChanged(setup: ISetup, addToUndo = true) {
     if (addToUndo) {
       this._redo = [];
@@ -234,6 +386,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @internal
+   */
   addLabelItem(event: IAddLabelEvent) {
     const item = event.item;
     if (!item._id) {
@@ -244,10 +399,16 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     this.setupChange.emit(this._setup);
   }
 
+  /**
+   * @internal
+   */
   done() {
     this._selectedLabelItem = undefined;
   }
 
+  /**
+   * Undo the changes if there are anything to undo
+   */
   undo() {
     if (this.hasUndo()) {
       this._redo.push(this._setup);
@@ -255,6 +416,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Redo the changes if there are anything to redo
+   */
   redo() {
     if (this.hasRedo()) {
       this._undo.push(this._setup);
@@ -262,14 +426,23 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @internal
+   */
   hasUndo() {
     return this._undo.length > 0;
   }
 
+  /**
+   * @internal
+   */
   hasRedo() {
     return this._redo.length > 0;
   }
 
+  /**
+   * @internal
+   */
   updateGenerate(field: ILabelField | string, value: string, inData = false) {
     const key = typeof field === 'string' ? field : FieldKeyPipe.getKey(field);
     if (inData) {
@@ -288,6 +461,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @internal
+   */
   generateData() {
     this.infoWindowService.close();
     this.generate.rangeStart = Number(this.generate.rangeStart);
@@ -346,6 +522,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     this.dataChange.emit(this.data);
   }
 
+  /**
+   * Open getting started dialog
+   */
   openGettingStarted() {
     this.subIntro = this.infoWindowService.open({
       title: this.translateService.get('Getting started'),
@@ -354,6 +533,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     }).subscribe(() => this.introClosed.emit());
   }
 
+  /**
+   * Open intro dialog
+   */
   openIntro() {
     this.subIntro = this.infoWindowService.open({
       title: this.translateService.get('Label Designer'),
@@ -362,7 +544,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     }).subscribe(() => this.introClosed.emit());
   }
 
-
+  /**
+   * Open generate dialog
+   */
   openGenerate() {
     if (!this.generate.uri) {
       this.generate.uri = this.defaultDomain;
@@ -374,7 +558,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     });
   }
 
-
+  /**
+   * Open excel import dialog
+   */
   importExcel() {
     this.infoWindowService.open({
       title: this.translateService.get('Import from file'),
@@ -383,6 +569,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Preview the specific item on the data array.
+   */
   setPreviewActive(idx: number) {
     if (this.data && this.data[idx]) {
       this.previewActive = idx;
@@ -390,6 +579,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @internal
+   */
   newFieldDragging(event: boolean, settings: HTMLDivElement) {
     if (event) {
       this.renderer2.setStyle(settings, 'margin-top', '-' + settings.scrollTop + 'px');
@@ -405,11 +597,17 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     this.dragging = event;
   }
 
+  /**
+   * @internal
+   */
   onViewSettingsChange(event: IViewSettings) {
     this.viewSettings = event;
     this.viewSettingsChange.emit(event);
   }
 
+  /**
+   * @internal
+   */
   loadExcelData() {
     const result = this.excelCmp.loadData();
     if (result.availableFields) {
@@ -420,6 +618,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     this.dataChange.emit(this.data);
   }
 
+  /**
+   * @internal
+   */
   onValueMapChange(map: ILabelValueMap) {
     this.setupChanged({ ...this._setup, valueMap: map }, false);
   }
@@ -438,6 +639,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     return id;
   }
 
+  /**
+   * @internal
+   */
   onPdfLoading(loading: boolean) {
     this.pdfLoading = true;
     this.pdfLoadingChange.emit(loading);

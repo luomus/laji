@@ -57,7 +57,7 @@ export class LabelDesignerComponent implements OnInit {
         'font-size.pt': 9
       },
       labelItems: this.pdfLabelService.defaultFields.map((a, i) => ({
-        type: 'field',
+        type: <'field'>'field',
         y: Math.max(0, (i - 1) * 5),
         x: i === 0 ? 0 : 15,
         fields: [a],

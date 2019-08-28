@@ -1,12 +1,17 @@
 import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
-
+/**
+ * @ignore
+ */
 interface IState {
   currentFile: string;
   hasChanges: boolean;
 }
 
+/**
+ * @ignore
+ */
 let _state: IState = {
   currentFile: '',
   hasChanges: false

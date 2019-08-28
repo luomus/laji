@@ -149,7 +149,8 @@
             <ll-label-preview [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel" [setup]="_setup" [data]="_data[previewActive]"></ll-label-preview>
           </div>
           <div *ngIf="_setup.twoSided" style="margin-top: 5px; border: 1px solid #999; display: inline-block">
-            <ll-label-preview [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel" [setup]="_setup" [data]="_data[previewActive]" [backSide]="true"></ll-label-preview>
+            <ll-label-preview [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel" [setup]="_setup" [data]="_data[previewActive]"
+                              [backside]="true"></ll-label-preview>
           </div>
         </div>
       </div>

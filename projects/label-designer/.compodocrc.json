@@ -1,10 +1,12 @@
 {
+  "name": "Label Designer",
   "watch": true,
   "serve": true,
   "disableGraph":true,
   "disablePrivate": true,
   "disableProtected": true,
   "disableLifeCycleHooks": true,
+  "disableCoverage": true,
   "disableInternal": true,
   "navTabConfig": [
     {
@@ -12,13 +14,14 @@
       "label": "Overview"
     },
     {
-      "id": "info",
-      "label": "API"
+      "id": "readme",
+      "label": "Readme"
     },
     {
-      "id": "tree",
-      "label": "DOM Tree"
+      "id": "info",
+      "label": "Info"
     }
   ],
+  "includes": "docs",
   "tsconfig": "./tsconfig.lib.json"
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FieldType, FormService as LabelFormService, ILabelField } from 'label-designer';
+import { FieldType, SchemaService, ILabelField } from 'label-designer';
 import { Observable } from 'rxjs';
 import { Document } from '../model/Document';
 import { map } from 'rxjs/operators';
@@ -40,7 +40,7 @@ export class PdfLabelService {
 
   constructor(
     private formService: ToolsFormService,
-    private labelFormService: LabelFormService,
+    private schemaService: SchemaService,
     private translateService: TranslateService
   ) {
     this.defaultFields[2].label = this.translateService.instant(this.defaultFields[2].label);
@@ -58,7 +58,7 @@ export class PdfLabelService {
 
   allPossibleFields(): Observable<ILabelField[]> {
     return this.formService.getForm(environment.defaultForm, this.translateService.currentLang).pipe(
-      map(form => this.labelFormService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields }))
+      map(form => this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields }))
     );
   }
 

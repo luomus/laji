@@ -9,10 +9,12 @@ export interface ISchemaOptions {
 @Injectable({
   providedIn: 'root'
 })
-export class FormService {
+export class SchemaService {
 
-  constructor() { }
-
+  /**
+   * Convert json schema to list of label fields. This list can be used for the
+   * [LabelDesigner components availableFields]{@link LabelDesignerComponent#availableFields}.
+   */
   schemaToAvailableFields(schema: any, base: ILabelField[], options?: ISchemaOptions): ILabelField[] {
     this.convertSchema('', '', schema, base, options);
     if (options) {
