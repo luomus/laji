@@ -2,6 +2,9 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input,
 import { IPageStyle, ISetup, QRCodeErrorCorrectionLevel } from '../../label-designer.interface';
 import { IPageLayout, LabelService } from '../../label.service';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'll-label-page',
   templateUrl: './label-page.component.html',

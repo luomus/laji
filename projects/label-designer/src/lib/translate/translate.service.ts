@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { LabelDesignerTranslationsInterface } from './label-designer-translations.interface';
 
+/**
+ * @internal
+ */
 @Injectable()
 export class TranslateService {
 

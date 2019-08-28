@@ -1,6 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Output, Renderer2, ViewChild } from '@angular/core';
 import { LabelService } from '../label.service';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'll-ruler',
   templateUrl: './ruler.component.html',

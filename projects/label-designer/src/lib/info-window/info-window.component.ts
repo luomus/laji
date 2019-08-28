@@ -3,6 +3,9 @@ import { Observable } from 'rxjs';
 import { IInfoWindow, InfoWindowService } from './info-window.service';
 import { tap } from 'rxjs/operators';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'll-info-window',
   templateUrl: './info-window.component.html',

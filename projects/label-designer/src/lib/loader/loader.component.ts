@@ -1,5 +1,8 @@
 import { Component, Input } from '@angular/core';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'll-loader',
   template: `<div *ngIf="loading" class="ll-ellipsis"><div></div><div></div><div></div><div></div></div>`,

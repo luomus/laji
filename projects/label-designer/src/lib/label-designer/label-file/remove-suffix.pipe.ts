@@ -4,13 +4,15 @@ import { Pipe, PipeTransform } from '@angular/core';
  * @internal
  */
 @Pipe({
-  name: 'nbspToSpace'
+  name: 'removeSuffix'
 })
-export class NbspToSpacePipe implements PipeTransform {
+export class RemoveSuffixPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
     if (typeof value === 'string') {
-      return value.replace(/&nbsp;/g, ' ');
+      const parts = value.split('.');
+      parts.pop();
+      return parts.join('.');
     }
     return value;
   }

@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'll-label-preview-pager',
   templateUrl: './label-preview-pager.component.html',

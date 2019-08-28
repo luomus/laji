@@ -3,7 +3,7 @@
  */
 
 export * from './lib/presets';
-export * from './lib/label-maker/label-designer.component';
+export * from './lib/label-designer/label-designer.component';
 export * from './lib/form.service';
 export * from './lib/info-window/info-window.service';
 export * from './lib/label-designer.module';

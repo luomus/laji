@@ -1,0 +1,24 @@
+{
+  "watch": true,
+  "serve": true,
+  "disableGraph":true,
+  "disablePrivate": true,
+  "disableProtected": true,
+  "disableLifeCycleHooks": true,
+  "disableInternal": true,
+  "navTabConfig": [
+    {
+      "id": "example",
+      "label": "Overview"
+    },
+    {
+      "id": "info",
+      "label": "API"
+    },
+    {
+      "id": "tree",
+      "label": "DOM Tree"
+    }
+  ],
+  "tsconfig": "./tsconfig.lib.json"
+}

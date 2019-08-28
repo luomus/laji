@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular
 
 const ICON_SIZE = 24;
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'll-icon',
   templateUrl: './icon.component.html',

@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FieldType, IFontStyle, ILabelField, QRCodeErrorCorrectionLevel } from '../../../label-designer.interface';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'll-label-item-field',
   templateUrl: './label-item-field.component.html',
