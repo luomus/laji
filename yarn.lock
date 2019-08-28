@@ -5854,10 +5854,10 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-label-designer@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/label-designer/-/label-designer-2.1.0.tgz#f768b6c00a75fcad5cfb2fefa8ec1c7b1fe7b59c"
-  integrity sha512-/I5avrHFCmzvgK+57CY+1wM/yBHAoqQ6NykAJE04noy0NamPzFAfzuF3AP8DTpYcN8z6CWkfLP9fJE3lvsJDIw==
+label-designer@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/label-designer/-/label-designer-3.0.0.tgz#2ad97a22318a27840052d18f784bd2ae402b4c1f"
+  integrity sha512-0PPm4aWcxBYnS7zg13VaepCFdC0GSL8TFTX9Ux4aNtxMoRIu8gt2MfLeYW331OdIoOYklXMXduwynB+vF879KQ==
   dependencies:
     tslib "^1.9.0"
 

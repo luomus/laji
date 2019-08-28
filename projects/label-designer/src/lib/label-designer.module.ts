@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { LabelMakerComponent } from './label-maker/label-maker.component';
+import { LabelDesignerComponent } from './label-maker/label-designer.component';
 import { LabelPreviewComponent } from './label-preview/label-preview.component';
 import { LabelPrintComponent } from './label-print/label-print.component';
 import { LabelEditorComponent } from './label-maker/label-editor/label-editor.component';
@@ -43,7 +43,7 @@ import { IsNumericPipe } from './pipe/is-numeric.pipe';
 
 @NgModule({
   declarations: [
-    LabelMakerComponent,
+    LabelDesignerComponent,
     LabelPreviewComponent,
     LabelPrintComponent,
     LabelEditorComponent,
@@ -86,6 +86,6 @@ import { IsNumericPipe } from './pipe/is-numeric.pipe';
     TypeaheadModule
   ],
   providers: [TranslateService, LabelMakerFacade],
-  exports: [LabelMakerComponent, LabelPreviewComponent, LabelPrintComponent]
+  exports: [LabelDesignerComponent, LabelPreviewComponent, LabelPrintComponent]
 })
 export class LabelDesignerModule { }

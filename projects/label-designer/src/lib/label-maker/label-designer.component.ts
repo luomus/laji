@@ -37,12 +37,12 @@ import { LabelMakerFacade } from './label-maker.facade';
 import { FieldKeyPipe } from '../pipe/field-key.pipe';
 
 @Component({
-  selector: 'll-label-maker',
-  templateUrl: './label-maker.component.html',
-  styleUrls: ['./label-maker.component.scss'],
+  selector: 'll-label-designer',
+  templateUrl: './label-designer.component.html',
+  styleUrls: ['./label-designer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelMakerComponent implements OnInit, OnDestroy {
+export class LabelDesignerComponent implements OnInit, OnDestroy {
 
   static id = 0;
 
@@ -178,7 +178,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
     }
     const hasField = {};
     const allFields = [];
-    LabelMakerComponent.id = this.findTheHighestId(setup) + 1;
+    LabelDesignerComponent.id = this.findTheHighestId(setup) + 1;
 
     const checkItem = (item) => {
       item.fields.forEach(field => {
@@ -189,7 +189,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
           allFields.push(field);
         }
       });
-      return {...item, _id: item._id || LabelMakerComponent.id++};
+      return {...item, _id: item._id || LabelDesignerComponent.id++};
     };
 
     this._setup = {
@@ -237,7 +237,7 @@ export class LabelMakerComponent implements OnInit, OnDestroy {
   addLabelItem(event: IAddLabelEvent) {
     const item = event.item;
     if (!item._id) {
-      item._id = LabelMakerComponent.id++;
+      item._id = LabelDesignerComponent.id++;
     }
     this._undo.push(this._setup);
     this._setup = {...this._setup, [event.location]: [...this._setup[event.location], item]};

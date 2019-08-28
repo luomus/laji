@@ -1,4 +1,4 @@
-<ll-label-maker
+<ll-label-designer
   [defaultDomain]="'http://tun.fi/'"
   [defaultAvailableFields]="defaultAvailableFields$ | async"
   [defaultSetup]="defaultSetup"
@@ -11,4 +11,4 @@
   (dataChange)="onDataChange($event)"
   (html)="htmlToPdf($event)"
   [showIntro]="false">
-</ll-label-maker>
+</ll-label-designer>
