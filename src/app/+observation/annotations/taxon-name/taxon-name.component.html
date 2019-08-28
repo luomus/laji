@@ -1,7 +1,9 @@
 <div class="unit" *ngIf="unit">
+    <div class="image" *ngIf="unit.media"><img [src]="unit.media[0].fullURL" /><div *ngIf="unit.media.length > 1">{{ unit.media.length }}</div></div>
+    <div class="image no-media" *ngIf="!unit.media"></div>
     <div *ngIf="unit.linkings">
         <div *ngIf="unit.linkings.originalTaxon">
-            <div class="taxon" ><span class="specie" *ngIf="unit.linkings.originalTaxon.vernacularName">{{ _taxon }}</span><span class="scientificName" *ngIf="unit.linkings.originalTaxon.scientificName">{{ unit.linkings.originalTaxon.scientificName }}</span></div>
+            <div class="taxon" ><span class="specie" *ngIf="unit.linkings.originalTaxon.vernacularName">{{ _taxon }} - </span><span class="scientificName" *ngIf="unit.linkings.originalTaxon.scientificName">{{ unit.linkings.originalTaxon.scientificName }}</span></div>
         </div>
     </div>
 </div>

@@ -2,10 +2,10 @@
         <laji-annotations-list
         [result]="result">
         </laji-annotations-list>
-        
+
         <laji-paginator *ngIf="showPaginator && paginatorDisplay"
-                        [page]="page" [count]="count"
-                        [size]="size"
-                        (change)="pageChanged($event)"
+        [page]="page" [count]="count"
+        [size]="size"
+        (change)="pageChanged($event)"
         ></laji-paginator>
 </laji-spinner>

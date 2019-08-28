@@ -9,6 +9,7 @@ import { AnnotationListService } from './service/annotation-list.service';
 import { GatheringComponent } from './gathering/gathering.component';
 import { GatheringRowsComponent } from './gathering-rows/gathering-rows.component';
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
+import { AnnotationImagesComponent } from './annotation-images/annotation-images.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,9 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
     LangModule,
     SharedModule
   ],
-  declarations: [AnnotationsComponent, AnnotationListComponent, GatheringComponent, GatheringRowsComponent, TaxonNameComponent],
+  declarations: [AnnotationsComponent, AnnotationListComponent,
+  GatheringComponent, GatheringRowsComponent,
+  TaxonNameComponent, AnnotationImagesComponent],
   providers: [AnnotationListService],
   exports: [AnnotationsComponent]
 })

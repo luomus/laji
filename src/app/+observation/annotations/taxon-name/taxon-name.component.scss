@@ -1,0 +1,25 @@
+@import '../../../../styles/_styles.scss'; 
+
+div {
+    &.unit {
+        background-color: $main-gray;
+        padding: 0 10px;
+        min-height: 200px;
+    }
+    &.image {
+        height:200px;
+        margin-bottom: 10px;
+        img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            height: auto; 
+            width: auto;  
+            max-height: 200px;
+
+        }
+    }
+    &.taxon {
+        font-weight: bold;
+    }
+}

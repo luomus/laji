@@ -1,11 +1,8 @@
+@import '../../../../styles/_styles.scss'; 
+
 div{
     &.annotation{
-        div{
-            &.image{
-                img {
-                    height: 200px;
-                }
-            }
-        }
+        margin-bottom:20px;
+        background-color: $main-gray;
     }
 }

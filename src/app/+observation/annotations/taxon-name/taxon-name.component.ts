@@ -24,7 +24,11 @@ export class TaxonNameComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-     if (this.unit.linkings) {
+    this.fetchTaxon();
+  }
+
+  fetchTaxon() {
+    if (this.unit.linkings) {
       if (this.unit.linkings.originalTaxon) {
         if (this.unit.linkings.originalTaxon.vernacularName) {
           if (this.unit.linkings.originalTaxon.vernacularName[this.currentLang]) {
