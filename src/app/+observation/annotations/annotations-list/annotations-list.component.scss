@@ -2,7 +2,12 @@
 
 div{
     &.annotation{
-        margin-bottom:20px;
-        background-color: $main-gray;
+        margin-bottom:40px;
+        div {
+            &.annotation-item {
+                background-color: $main-gray;
+                min-height: 400px;
+            }
+        }
     }
 }

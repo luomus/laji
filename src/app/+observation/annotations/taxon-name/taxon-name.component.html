@@ -1,5 +1,5 @@
 <div class="unit" *ngIf="unit">
-    <div class="image" *ngIf="unit.media"><img [src]="unit.media[0].fullURL" /><div *ngIf="unit.media.length > 1">{{ unit.media.length }}</div></div>
+    <div class="image" *ngIf="unit.media"><img [src]="unit.media[0].fullURL" /><div class="number-images" *ngIf="unit.media.length > 1"><span>{{ unit.media.length }}</span></div></div>
     <div class="image no-media" *ngIf="!unit.media"></div>
     <div *ngIf="unit.linkings">
         <div *ngIf="unit.linkings.originalTaxon">

@@ -4,22 +4,39 @@ div {
     &.unit {
         background-color: $main-gray;
         padding: 0 10px;
-        min-height: 200px;
-    }
-    &.image {
-        height:200px;
-        margin-bottom: 10px;
-        img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            height: auto; 
-            width: auto;  
-            max-height: 200px;
+        min-height: 240px;
+        div {
+            &.image {
+                height:200px;
+                margin-bottom: 10px;
+                position: relative;
+                div {
+                    &.number-images {
+                        position: absolute;
+                        bottom: 10px;
+                        width: 100px;
+                        background: url('../../../../static/images/icons/images_white.png') no-repeat;
+                        span {
+                            margin-left: 26px;
+                            color: $white;
+                        }
+                    }
+                }
+                img {
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                    height: auto; 
+                    width: auto;  
+                    max-height: 200px;
+        
+                }
+            }
+            &.taxon {
+                font-weight: bold;
+                text-transform: capitalize;
+            }
 
         }
-    }
-    &.taxon {
-        font-weight: bold;
     }
 }
