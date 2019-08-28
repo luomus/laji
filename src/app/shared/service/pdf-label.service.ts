@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FieldType, FormService as LabelFormService, ILabelField } from 'generic-label-maker';
+import { FieldType, FormService as LabelFormService, ILabelField } from 'label-designer';
 import { Observable } from 'rxjs';
 import { Document } from '../model/Document';
 import { map } from 'rxjs/operators';

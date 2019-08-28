@@ -4310,13 +4310,6 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-generic-label-maker@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/generic-label-maker/-/generic-label-maker-2.1.0.tgz#5f477d7293489166af19f3357fd8273631980b2d"
-  integrity sha512-CtMMXUOQW+0hpfNE6jWNYVcqDlx9ytsMyvLsOANAHsVai3DtyUQWiuLXVaSPtZEB9Mjg8LtqvhNpzriAVCa3WA==
-  dependencies:
-    tslib "^1.9.0"
-
 genfun@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/genfun/-/genfun-5.0.0.tgz#9dd9710a06900a5c4a5bf57aca5da4e52fe76537"
@@ -5860,6 +5853,13 @@ klaw-sync@^4.0.0:
   integrity sha512-go/5tXbgLkgwxQ2c2ewaMen6TpQtI9fTzzmTdlSGK8XxKcFSsJvn/Sgn75Vg+mOJwkKVPrqLw2Xq7x/zP1v7PQ==
   dependencies:
     graceful-fs "^4.1.11"
+
+label-designer@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/label-designer/-/label-designer-2.1.0.tgz#f768b6c00a75fcad5cfb2fefa8ec1c7b1fe7b59c"
+  integrity sha512-/I5avrHFCmzvgK+57CY+1wM/yBHAoqQ6NykAJE04noy0NamPzFAfzuF3AP8DTpYcN8z6CWkfLP9fJE3lvsJDIw==
+  dependencies:
+    tslib "^1.9.0"
 
 laji-form@^0.0.640:
   version "0.0.640"
