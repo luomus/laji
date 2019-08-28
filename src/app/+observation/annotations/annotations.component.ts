@@ -95,7 +95,7 @@ export class AnnotationsComponent implements OnInit, OnChanges {
         'unit.linkings.originalTaxon.vernacularName',
         'unit.quality.taxon.reliability'
       ],
-      ['gathering.displayDateTime ASC'],
+      ['gathering.displayDateTime DESC'],
       20,
       this.page
     ).subscribe(data => {

@@ -3,7 +3,6 @@
 div {
     &.unit {
         background-color: $main-gray;
-        padding: 0 10px;
         min-height: 240px;
         div {
             &.image {
@@ -14,6 +13,7 @@ div {
                     &.number-images {
                         position: absolute;
                         bottom: 10px;
+                        left: 10px;
                         width: 100px;
                         background: url('../../../../static/images/icons/images_white.png') no-repeat;
                         span {
@@ -35,6 +35,17 @@ div {
             &.taxon {
                 font-weight: bold;
                 text-transform: capitalize;
+                padding: 0 10px;
+            }
+            &.no-media {
+                background-color: $main-gray-darker;
+                span {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                }
             }
 
         }
