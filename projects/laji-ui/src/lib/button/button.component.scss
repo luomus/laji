@@ -1,1 +1,41 @@
-@import '../vars.scss'
+@import '../vars.scss';
+
+button {
+  color: $neutral-8;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5em 1em;
+  margin: 0.25em 0;
+  &:focus {
+    outline: unset;
+  }
+}
+
+.primary {
+  background: $primary-5;
+  color: adjust-hue($color: $neutral-1, $degrees: -20%);
+  box-shadow: 0 2px 6px $primary-4;
+  &:hover {
+    background: $primary-6;
+    color: adjust-hue($color: $neutral-2, $degrees: -20%);
+  }
+}
+
+.secondary {
+  background: $neutral-1;
+  color: $primary-7;
+  box-shadow: 0 1px 3px $neutral-4;
+  &:hover {
+    background: $primary-1;
+  }
+}
+
+*:disabled {
+  background: none;
+  color: $neutral-6;
+  border: 1px solid $neutral-3;
+  box-shadow: none;
+  &:hover {
+    background: none;
+  }
+}

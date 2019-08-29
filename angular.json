@@ -29,6 +29,9 @@
               "node_modules/ngx-toastr/toastr.css",
               "src/styles/laji.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/laji-ui/src/lib"]
+            },
             "scripts": []
           },
           "configurations": {

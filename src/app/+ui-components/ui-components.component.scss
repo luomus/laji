@@ -1,0 +1,14 @@
+@import 'vars';
+
+:host {
+  background: $neutral-2;
+  min-height: 100vh;
+}
+
+.flex-row {
+  display: flex;
+  flex-flow: row wrap;
+  * {
+    margin-right: 0.5em;
+  }
+}

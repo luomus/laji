@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+type Role = 'primary' | 'secondary'
 
 @Component({
   selector: 'lu-button',
@@ -6,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent {
-
+  @Input() role: Role = 'secondary';
+  @Input() disabled = false;
 }
