@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { filter, map, switchMap } from 'rxjs/operators';
-import { RoutingStateService } from '../../shared/service/routing-state.service';
+import { HistoryService } from '../../shared/service/history.service';
 import { Global } from '../../../environments/global';
 
 
@@ -47,7 +47,7 @@ export class AppComponent {
     translateService: TranslateService,
     localizeRouterService: LocalizeRouterService,
     metaService: Meta,
-    routingStateService: RoutingStateService // Need to include this here so that history recording starts
+    historyService: HistoryService // Need to include this here so that history recording starts
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;

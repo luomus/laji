@@ -4,7 +4,7 @@ import { PlatformService } from './platform.service';
 import { DOCUMENT, Location } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { RoutingStateService } from './routing-state.service';
+import { HistoryService } from './history.service';
 
 export interface IBrowserState {
   visibility: boolean;
@@ -38,7 +38,7 @@ export class BrowserService implements OnDestroy {
     @Inject(WINDOW) private window: Window,
     private zone: NgZone,
     private platformService: PlatformService,
-    private routingStateService: RoutingStateService,
+    private historyService: HistoryService,
     private location: Location
   ) {
     if (!platformService.isBrowser) {
@@ -81,11 +81,21 @@ export class BrowserService implements OnDestroy {
     if (!this.platformService.isBrowser) {
       return;
     }
-    if (this.routingStateService.hasHistory()) {
+    if (this.historyService.hasPrevious()) {
       this.location.back();
     } else if (onNoHistory) {
       onNoHistory();
     }
+  }
+
+  public getPathAndQueryFromUrl(uri: string): [string, {[param: string]: string}] {
+    const [path, query = ''] = uri.split('?');
+    const queryObject = query.split('&').filter(s => s).reduce((q, param) => {
+      const [name, value] = param.split('=');
+      q[name]  = value;
+      return q;
+    }, {});
+    return [path, queryObject];
   }
 
   private initVisibilityListener() {

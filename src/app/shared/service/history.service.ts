@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 const MAX_HISTORY = 30;
 
 @Injectable({providedIn: 'root'})
-export class RoutingStateService {
+export class HistoryService {
   private history = [];
 
   constructor(
@@ -28,25 +28,15 @@ export class RoutingStateService {
     });
   }
 
-  public hasHistory() {
+  public clear() {
+    this.history = [];
+  }
+
+  public hasPrevious() {
     return this.history.length > 1;
   }
 
-  public getHistory(): string[] {
-    return [...this.history];
-  }
-
-  public getPreviousUrl(): string {
+  public getPrevious(): string {
     return this.history[this.history.length - 2] || '';
-  }
-
-  public getPathAndQueryFromUrl(uri: string): [string, any] {
-    const [path, query = ''] = uri.split('?');
-    const backQuery = query.split('&').filter(s => s).reduce((q, param) => {
-      const [name, value] = param.split('=');
-      q[name]  = value;
-      return q;
-    }, {});
-    return [path, backQuery];
   }
 }

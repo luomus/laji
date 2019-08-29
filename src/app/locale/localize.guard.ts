@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { HistoryService } from '../shared/service/history.service';
 
 /**
  * Changes the locale value based on lang found in the data
@@ -14,7 +15,8 @@ import { TranslateService } from '@ngx-translate/core';
 export class LocalizeGuard implements CanActivate {
 
   constructor(
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private historyService: HistoryService
   ) {}
 
   canActivate(
@@ -28,6 +30,7 @@ export class LocalizeGuard implements CanActivate {
 
     if (this.translateService.currentLang !== lang) {
       this.translateService.use(lang);
+      this.historyService.clear();
     }
 
     return true;
