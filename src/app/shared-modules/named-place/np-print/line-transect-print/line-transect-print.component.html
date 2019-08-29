@@ -166,21 +166,21 @@
     <table class="line-table">
       <thead>
         <tr>
-          <th>Apusarka</th>
+          <th class="col-1">Apusarka</th>
           <th colspan="2">50m leveä pääsarka</th>
-          <th>Apusarka</th>
-          <th>Biotooppi pääsaralla</th>
+          <th class="col-4">Apusarka</th>
+          <th class="col-5">Biotooppi pääsaralla</th>
         </tr>
       </thead>
       <tbody>
         <ng-container *ngFor="let distance of page; let j = index">
           <ng-container *ngIf="biotopes[(distance - formSplit)]; else noBiotopes">
             <tr *ngFor="let biotope of biotopes[(distance - formSplit)]; first as isFirst" class="biotopes-{{biotopes[(distance - formSplit)].length}}">
-              <td><div class="distance" *ngIf="isFirst">{{ distance }}</div></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td class="biotope-container">
+              <td class="col-1"></td>
+              <td class="col-2"><div class="distance" *ngIf="isFirst">{{ distance }}</div></td>
+              <td class="col-3"></td>
+              <td class="col-4"></td>
+              <td class="col-5 biotope-container">
                 <ul class="biotopelist">
                   <li>{{ biotope }}</li>
                 </ul>
@@ -190,11 +190,11 @@
           </ng-container>
           <ng-template #noBiotopes>
             <tr class="biotopes-0">
-              <td><div class="distance">{{ distance }}</div></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td><div class="distance">{{ distance }}</div></td>
+              <td class="col-1"></td>
+              <td class="col-2"><div class="distance">{{ distance }}</div></td>
+              <td class="col-3"></td>
+              <td class="col-4"></td>
+              <td class="col-5"><div class="distance">{{ distance }}</div></td>
             </tr>
           </ng-template>
         </ng-container>
