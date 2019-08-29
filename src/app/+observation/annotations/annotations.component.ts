@@ -52,6 +52,7 @@ export class AnnotationsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+    console.log('test Gio');
     this.lang = this.translations.currentLang;
   }
 
