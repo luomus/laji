@@ -45,7 +45,7 @@ import { UserService } from '../../shared/service/user.service';
     :host {
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
+        flex: 1 0;
     }
     h1 {
         padding-left: 10px;
