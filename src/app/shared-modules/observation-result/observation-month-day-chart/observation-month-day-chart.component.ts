@@ -98,6 +98,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   }
 
   chartClicked(event) {
+    console.log('hola');
     const gio: Chart = this.barChart.baseChartComponent.chart;
       const scale = (gio as any).scales['x-axis-0'];
       const width = scale.width;

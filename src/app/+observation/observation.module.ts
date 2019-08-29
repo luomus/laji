@@ -32,6 +32,12 @@ import { ExistsPipe } from './pipe/exists.pipe';
 import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 import { ObservationFacade } from './observation.facade';
 import { AnnotationsComponent } from './annotations/annotations.component';
+import { AnnotationListComponent } from './annotations/annotations-list/annotations-list.component';
+import { AnnotationListService } from './annotations/service/annotation-list.service';
+import { GatheringComponent } from './annotations/gathering/gathering.component';
+import { GatheringRowsComponent } from './annotations/gathering-rows/gathering-rows.component';
+import { TaxonNameComponent } from './annotations/taxon-name/taxon-name.component';
+
 
 @NgModule({
   imports: [
@@ -63,10 +69,15 @@ import { AnnotationsComponent } from './annotations/annotations.component';
     RemoveLeadingPipe,
     ExistsPipe,
     ToSafeQueryPipe,
-    AnnotationsComponent
+    AnnotationsComponent,
+    AnnotationListComponent,
+    GatheringRowsComponent,
+    GatheringComponent,
+    TaxonNameComponent
   ],
   providers: [
-    ObservationFacade
+    ObservationFacade,
+    AnnotationListService
   ]
 })
 export class ObservationModule {

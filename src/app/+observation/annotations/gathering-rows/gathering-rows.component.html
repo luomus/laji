@@ -1,0 +1,18 @@
+<div class="position">
+  <ul class="comma-list">
+      <li *ngIf="gathering.country">{{ gathering.country }}</li>
+      <li *ngIf="gathering.biogeographicalProvince">{{ gathering.biogeographicalProvince }}</li>
+      <li *ngIf="gathering.municipality">{{ gathering.municipality }}</li>
+      <li *ngIf="gathering.locality">{{ gathering.locality }}</li>
+   </ul>
+</div>
+
+<div class="date">
+      <span *ngIf="gathering.displayDateTime">{{ gathering.displayDateTime }}</span>
+</div>
+
+<div class="author" *ngIf="gathering.team">
+      <div *ngFor="let member of gathering.team">
+            <span class="member">{{ member }}</span>
+      </div>
+</div>

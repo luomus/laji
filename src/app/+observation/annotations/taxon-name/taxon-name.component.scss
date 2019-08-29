@@ -1,0 +1,53 @@
+@import '../../../../styles/_styles.scss'; 
+
+div {
+    &.unit {
+        background-color: $main-gray;
+        div {
+            &.image {
+                height:200px;
+                margin-bottom: 10px;
+                position: relative;
+                background-color: $main-gray-darker;
+                div {
+                    &.number-images {
+                        position: absolute;
+                        bottom: 10px;
+                        left: 10px;
+                        width: 100px;
+                        background: url('../../../../static/images/icons/images_white.png') no-repeat;
+                        span {
+                            margin-left: 26px;
+                            color: $white;
+                        }
+                    }
+                }
+                img {
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                    height: auto; 
+                    width: auto;  
+                    max-height: 200px;
+        
+                }
+            }
+            &.taxon {
+                font-weight: bold;
+                text-transform: capitalize;
+                padding: 0 10px;
+            }
+            &.no-media {
+                background-color: $main-gray-darker;
+                span {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                }
+            }
+
+        }
+    }
+}

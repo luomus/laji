@@ -1,0 +1,9 @@
+@import '../../../../styles/_styles.scss'; 
+
+div{
+    &.gathering {
+        background-color: $main-gray;
+        padding: 0 10px;
+        margin-top: 10px;
+    }
+}
