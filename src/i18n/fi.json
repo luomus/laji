@@ -106,7 +106,7 @@
   "excel.step1": "Valitse tiedosto",
   "excel.step2": "Sarakkeiden linkittäminen",
   "excel.step3": "Arvojen linkittäminen",
-  "excel.step4": "Tarkistus ja Lähetys",
+  "excel.step4": "Tarkastus ja lähetys",
   "excel.step5": "Valmis",
   "excel.userMapping.add": "<h1>Kuvauksen tuonti</h1><p>Voit kopioida alla olevaan kenttään laji.fi:n ymmärtämän kuvauksen datastasi.</p><p>Kuvauksen voi tehdä ladattuasi haluamasi massatallennuspohjan laji.fi:hin.</p>",
   "excel.userMapping.get": "<h1>Datan nykyinen kuvaus</h1><p>Ottamalla talteen tämän kuvauksen, voit tuoda jatkossa samanmuotoista dataa ilman, että sinun tarvitsee uudelleen kertoa mistä arvoissa on kyse.</p>",

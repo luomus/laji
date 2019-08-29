@@ -1,0 +1,14 @@
+<ll-label-designer
+  [defaultDomain]="'http://tun.fi/'"
+  [defaultAvailableFields]="defaultAvailableFields$ | async"
+  [defaultSetup]="defaultSetup"
+  [availableFields]="availableFields$ | async"
+  (availableFieldsChange)="setAvailableFields($event)"
+  [(viewSettings)]="viewSetting"
+  [(setup)]="setup"
+  [data]="data"
+  [(pdfLoading)]="pdfLoading"
+  (dataChange)="onDataChange($event)"
+  (html)="htmlToPdf($event)"
+  [showIntro]="false">
+</ll-label-designer>

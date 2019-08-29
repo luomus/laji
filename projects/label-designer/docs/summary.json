@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Angular component",
+    "file": "usage.md"
+  },
+  {
+    "title": "Custom html element",
+    "file": "element.md"
+  },
+  {
+    "title": "Standalone app",
+    "file": "electron.md"
+  }
+]
