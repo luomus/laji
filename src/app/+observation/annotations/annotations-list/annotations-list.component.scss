@@ -9,11 +9,39 @@ div{
                 min-height: 400px;
                 div {
                   &.unit-annotation {
-                      min-height: 240px;
+                      height: 240px;
+                      overflow: hidden;
+                      @include media-query-laptop {
+                          height: 280px;
+                      }
                   }
                   &.gathering {
-                    min-height: 130px;
+                    height: 130px;
+                    overflow: hidden;
                   }
+                  &.quality{
+                      padding: 0 10px;
+                      height: 20px;
+                  }
+                  &.information {
+                      height: 20px;
+                      overflow: hidden;
+                      padding: 0 10px;
+                  }
+                }
+                span{
+                    &.green{
+                        color: $green;
+                    }
+                    &.gray{
+                        color: $gray-text
+                    }
+                    &.red{
+                        color: $red
+                    }
+                    &.white {
+                        color: $white;
+                    }
                 }
             }
         }

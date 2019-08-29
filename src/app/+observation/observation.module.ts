@@ -37,7 +37,7 @@ import { AnnotationListService } from './annotations/service/annotation-list.ser
 import { GatheringComponent } from './annotations/gathering/gathering.component';
 import { GatheringRowsComponent } from './annotations/gathering-rows/gathering-rows.component';
 import { TaxonNameComponent } from './annotations/taxon-name/taxon-name.component';
-import { AnnotationImagesComponent } from './annotations/annotation-images/annotation-images.component';
+
 
 @NgModule({
   imports: [
@@ -73,8 +73,7 @@ import { AnnotationImagesComponent } from './annotations/annotation-images/annot
     AnnotationListComponent,
     GatheringRowsComponent,
     GatheringComponent,
-    TaxonNameComponent,
-    AnnotationImagesComponent
+    TaxonNameComponent
   ],
   providers: [
     ObservationFacade,

@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import {TranslateService} from '@ngx-translate/core';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-annotations-list',
@@ -14,6 +15,8 @@ export class AnnotationListComponent implements OnInit {
   lang: string;
   gathering: any[];
   hasTaxon: boolean;
+
+  annotationClass = Annotation.AnnotationClassEnum;
 
   constructor(
     private transation: TranslateService
