@@ -8,11 +8,11 @@
 }
 
 @mixin media-query-laptop {
-    @media (max-width: 1200px) { @content; }
+    @media (max-width: 1400px) { @content; }
 }
 
 @mixin media-query-desktop {
-    @media (max-width: 1800px) { @content; }
+    @media (max-width: 1799px) { @content; }
 }
 
 @mixin media-query-big-desktop {

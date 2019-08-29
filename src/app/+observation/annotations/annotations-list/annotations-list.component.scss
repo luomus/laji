@@ -7,6 +7,9 @@ div{
             &.annotation-item {
                 background-color: $main-gray;
                 min-height: 400px;
+                @include media-query-phone {
+                    min-height: auto;
+                }
                 div {
                   &.unit-annotation {
                       height: 240px;
@@ -14,19 +17,31 @@ div{
                       @include media-query-laptop {
                           height: 280px;
                       }
+                      @include media-query-phone {
+                        height: auto;
+                      }
                   }
                   &.gathering {
                     height: 130px;
                     overflow: hidden;
+                    @include media-query-phone {
+                        height: auto;
+                    }
                   }
                   &.quality{
                       padding: 0 10px;
                       height: 20px;
+                      @include media-query-phone {
+                        height: auto;
+                      }
                   }
                   &.information {
                       height: 20px;
                       overflow: hidden;
                       padding: 0 10px;
+                      @include media-query-phone {
+                        height: auto;
+                      }
                   }
                 }
                 span{
