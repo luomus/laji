@@ -8,7 +8,7 @@ import { map, share } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../../src/app/shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
-import { FormService } from '../../../label-designer/src/lib/form.service';
+import { SchemaService } from '../../../label-designer/src/lib/schema.service';
 
 const NEW_SETUP: ISetup = {
   page: {
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private formService: FormService,
+    private formService: SchemaService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private lajiApiService: LajiApiService,
     private cdr: ChangeDetectorRef

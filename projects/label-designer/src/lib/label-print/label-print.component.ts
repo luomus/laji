@@ -12,6 +12,9 @@ import {
 import { ISetup, QRCodeErrorCorrectionLevel } from '../label-designer.interface';
 import { IPageLayout, LabelService } from '../label.service';
 
+/**
+ * @ignore
+ */
 const style = `
 .ll-print-content {
   display: grid;
@@ -35,6 +38,9 @@ const style = `
 }
 `;
 
+/**
+ * Convert the label setup together with data to html that can be used to print.
+ */
 @Component({
   selector: 'll-label-print',
   templateUrl: './label-print.component.html',
@@ -43,23 +49,68 @@ const style = `
 })
 export class LabelPrintComponent implements OnChanges {
 
+  /**
+   * Show elements that are printed.
+   */
   @Input() visible = true;
+
+  /**
+   * Setup used for the label
+   */
   @Input() setup: ISetup;
+
+  /**
+   * Array that holds key value objects that are used for the data on the label.
+   */
   @Input() data: object[];
-  // tslint:disable-next-line:no-input-rename
+
+  /**
+   * Css class that are on the print button.
+   */
   @Input() btnClass = 'btn btn-default';
+
+  /**
+   * Error correction level used for the QR Code
+   */
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
 
-  @Output() pressed = new EventEmitter<void>();
-  @Output() html = new EventEmitter<string>();
+  /**
+   * This event is triggered when print button is pressed or when renderPages method is called.
+   */
+  @Output() pressed: EventEmitter<void> = new EventEmitter<void>();
 
+  /**
+   * This event is triggered when the html generated from the labels are ready.
+   *
+   * Event will have the html string in it.
+   */
+  @Output() html: EventEmitter<string> = new EventEmitter<string>();
+
+  /**
+   * @ignore
+   */
   @ViewChild('pagesContainer', { static: true }) public pageContainer: ElementRef<HTMLDivElement>;
 
+  /**
+   * @ignore
+   */
   pages: object[][] = [];
+  /**
+   * @ignore
+   */
   pageLayout: IPageLayout;
+  /**
+   * @ignore
+   */
   nroPages: number;
+  /**
+   * @ignore
+   */
   printing = false;
 
+  /**
+   * @ignore
+   */
   constructor(
     private labelService: LabelService,
     private cdr: ChangeDetectorRef
@@ -71,7 +122,12 @@ export class LabelPrintComponent implements OnChanges {
     }
   }
 
-  renderPages() {
+  /**
+   * Render the label pages.
+   *
+   * This method can be used to start page rendering even if the button itself would not be visible.
+   */
+  renderPages(): void {
     if (!this.data || this.data.length === 0) {
       return;
     }
@@ -96,7 +152,10 @@ export class LabelPrintComponent implements OnChanges {
     this.cdr.markForCheck();
   }
 
-  printReady() {
+  /**
+   * @ignore
+   */
+  printReady(): void {
     this.nroPages--;
     if (this.nroPages <= 0) {
       const html = `<!DOCTYPE html>

@@ -1,5 +1,5 @@
 <div class="editor-container" [class.fullscreen]="viewSettings.fullscreen">
-  <ll-label-maker
+  <ll-label-designer
     [translations]="labelTranslations"
     defaultDomain="http://tun.fi/"
     [showIntro]="false"
@@ -13,6 +13,6 @@
     [defaultAvailableFields]="newLabelFields$ | async"
     (setupChange)="setup = $event"
     (html)="htmlToPdf($event)"
-  ></ll-label-maker>
+  ></ll-label-designer>
 </div>
 <div class="editor-placeholder"></div>

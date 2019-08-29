@@ -2,6 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 const DEFAULT_SEPARATOR = ', ';
 
+/**
+ * @internal
+ */
 @Pipe({
   name: 'separator'
 })

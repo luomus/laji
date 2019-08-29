@@ -6,6 +6,9 @@ export interface IPageLayout {
   rows: number;
 }
 
+/**
+ * @internal
+ */
 @Injectable({
   providedIn: 'root'
 })

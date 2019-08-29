@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { LabelService } from '../label.service';
 
+/**
+ * @internal
+ */
 @Pipe({
   name: 'hasValue'
 })

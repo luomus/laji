@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ILabelField } from '../label-designer.interface';
 
+/**
+ * @internal
+ */
 @Pipe({
   name: 'fieldKey'
 })

@@ -3,6 +3,9 @@ import { FieldType, ILabelField, ILabelItem, ILabelValueMap, QRCodeErrorCorrecti
 import { LabelService } from '../../label.service';
 import { FieldKeyPipe } from '../../pipe/field-key.pipe';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'll-label-item',
   templateUrl: './label-item.component.html',
