@@ -1,8 +1,10 @@
 <div class="position">
-  <span *ngIf="gathering.country">{{ gathering.country }}, </span>
-  <span *ngIf="gathering.biogeographicalProvince">{{ gathering.biogeographicalProvince }}, </span>
-  <span *ngIf="gathering.municipality">{{ gathering.municipality }}, </span>
-  <span *ngIf="gathering.locality">{{ gathering.locality }}</span>
+  <ul class="comma-list">
+      <li *ngIf="gathering.country">{{ gathering.country }}</li>
+      <li *ngIf="gathering.biogeographicalProvince">{{ gathering.biogeographicalProvince }}</li>
+      <li *ngIf="gathering.municipality">{{ gathering.municipality }}</li>
+      <li *ngIf="gathering.locality">{{ gathering.locality }}</li>
+   </ul>
 </div>
 
 <div class="date">
