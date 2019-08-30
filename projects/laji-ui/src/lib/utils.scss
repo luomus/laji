@@ -1,0 +1,37 @@
+@import 'vars';
+
+.flex-row {
+  display: flex;
+  flex-flow: row wrap;
+  * {
+    margin-right: 0.5em;
+  }
+}
+
+.fs-1 {
+  font-size: $fs-1;
+}
+.fs-2 {
+  font-size: $fs-2;
+}
+.fs-3 {
+  font-size: $fs-3;
+}
+.fs-4 {
+  font-size: $fs-4;
+}
+.fs-5 {
+  font-size: $fs-5;
+}
+.fs-6 {
+  font-size: $fs-6;
+}
+.fs-7 {
+  font-size: $fs-7;
+}
+.fs-8 {
+  font-size: $fs-8;
+}
+.fs-9 {
+  font-size: $fs-9;
+}

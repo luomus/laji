@@ -1,4 +1,4 @@
-@import '../vars.scss';
+@import 'vars';
 
 button {
   color: $neutral-8;
@@ -23,10 +23,11 @@ button {
 
 .secondary {
   background: $neutral-1;
-  color: $primary-7;
+  color: $neutral-7;
   box-shadow: 0 1px 3px $neutral-4;
   &:hover {
     background: $primary-1;
+    color: $primary-7;
   }
 }
 
