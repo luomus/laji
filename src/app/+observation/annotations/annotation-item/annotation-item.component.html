@@ -1,0 +1,13 @@
+
+<div class="unit-annotation"><laji-unit-annotation [showImage]="false" [unit]="item.unit"></laji-unit-annotation></div>
+<div class="gathering"><laji-gathering [visible]="true" [gathering]="item.gathering"></laji-gathering></div>
+<div class="information">
+     <span *ngIf="item.unit.annotationCount; else noAnnotation">
+        <span>{{ item.unit.annotationCount }} {{ 'quality.qualityLabel' | translate }}</span>
+    </span>
+    <ng-template #noAnnotation>{{ 'annotation.none' | translate }}</ng-template>
+</div>
+<div class="quality">
+    <span *ngIf="item.unit.quality.taxon.reliability"> {{ 'observation.form.qualityTitle' | translate }}:  {{ item.unit.quality.taxon.reliability | label: 'warehouse' }} </span>
+</div>
+

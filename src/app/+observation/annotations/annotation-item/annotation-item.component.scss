@@ -1,0 +1,50 @@
+@import '../../../../styles/_styles.scss'; 
+
+div {
+    &.unit-annotation {
+        height: 240px;
+        overflow: hidden;
+        @include media-query-laptop {
+            height: 280px;
+        }
+        @include media-query-phone {
+          height: auto;
+        }
+    }
+    &.gathering {
+      height: 130px;
+      overflow: hidden;
+      @include media-query-phone {
+          height: auto;
+      }
+    }
+    &.quality{
+        padding: 0 10px;
+        height: 20px;
+        @include media-query-phone {
+          height: auto;
+        }
+    }
+    &.information {
+        height: 20px;
+        overflow: hidden;
+        padding: 0 10px;
+        @include media-query-phone {
+          height: auto;
+        }
+    }
+  }
+  span{
+      &.green{
+          color: $green;
+      }
+      &.gray{
+          color: $gray-text
+      }
+      &.red{
+          color: $red
+      }
+      &.white {
+          color: $white;
+      }
+  }

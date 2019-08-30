@@ -1,17 +1,7 @@
 <div class="annotations">
     <div class="annotation col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let annotation of result.results">
         <div class="annotation-item">
-            <div class="unit-annotation"><laji-unit-annotation [showImage]="false" [unit]="annotation.unit"></laji-unit-annotation></div>
-            <div class="gathering"><laji-gathering [visible]="true" [gathering]="annotation.gathering"></laji-gathering></div>
-            <div class="information">
-                <span *ngIf="annotation.unit.annotationCount; else noAnnotation">
-                    <span>{{ annotation.unit.annotationCount }} {{ 'quality.qualityLabel' | translate }}</span>
-                </span>
-                <ng-template #noAnnotation>{{ 'annotation.none' | translate }}</ng-template>
-            </div>
-            <div class="quality">
-                <span *ngIf="annotation.unit.quality.taxon.reliability"> {{ 'observation.form.qualityTitle' | translate }}:  {{ annotation.unit.quality.taxon.reliability | label: 'warehouse' }} </span>
-            </div>
+           <laji-annotation-item [item]="annotation"></laji-annotation-item>
         </div>
     </div>
 </div>

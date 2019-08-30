@@ -9,6 +9,7 @@ import { AnnotationListService } from './service/annotation-list.service';
 import { GatheringComponent } from './gathering/gathering.component';
 import { GatheringRowsComponent } from './gathering-rows/gathering-rows.component';
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
+import { AnnotationItemComponent } from './annotation-item/annotation-item.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
   ],
   declarations: [AnnotationsComponent, AnnotationListComponent,
   GatheringComponent, GatheringRowsComponent,
-  TaxonNameComponent],
+  TaxonNameComponent,
+  AnnotationItemComponent],
   providers: [AnnotationListService],
   exports: [AnnotationsComponent]
 })
