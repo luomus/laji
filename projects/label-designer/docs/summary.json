@@ -1,14 +1,32 @@
 [
   {
-    "title": "Angular component",
-    "file": "usage.md"
+    "title": "Usage",
+    "file": "usage.md",
+    "children": [
+      {
+        "title": "Angular component",
+        "file": "usage/angular.md"
+      },
+      {
+        "title": "Custom html element",
+        "file": "usage/element.md"
+      },
+      {
+        "title": "Standalone app",
+        "file": "usage/electron.md"
+      }
+    ]
   },
   {
-    "title": "Custom html element",
-    "file": "element.md"
+    "title": "Change log",
+    "file": "CHANGELOG.md"
   },
   {
-    "title": "Standalone app",
-    "file": "electron.md"
+    "title": "Contributing",
+    "file": "CONTRIBUTING.md"
+  },
+  {
+    "title": "Contributor Code of Conduct",
+    "file": "CODE_OF_CONDUCT.md"
   }
 ]
