@@ -52,7 +52,6 @@ export class AnnotationsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    console.log('test Gio');
     this.lang = this.translations.currentLang;
   }
 
@@ -91,6 +90,7 @@ export class AnnotationsComponent implements OnInit, OnChanges {
         'gathering.municipality',
         'gathering.team',
         'unit.annotationCount',
+        'unit.unitId',
         'unit.linkings.originalTaxon.scientificName',
         'unit.linkings.taxon.vernacularName',
         'unit.linkings.originalTaxon.vernacularName',

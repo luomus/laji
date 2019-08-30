@@ -2,7 +2,8 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import {TranslateService} from '@ngx-translate/core';
-import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { DocumentViewerFacade } from '../../../shared-modules/document-viewer/document-viewer.facade';
+
 
 @Component({
   selector: 'laji-annotations-list',
@@ -19,11 +20,22 @@ export class AnnotationListComponent implements OnInit {
   annotationClass = Annotation.AnnotationClassEnum;
 
   constructor(
-    private transation: TranslateService
+    private transation: TranslateService,
+    private documentViewerFacade: DocumentViewerFacade
   ) { }
 
   ngOnInit() {
    this.lang = this.transation.currentLang;
+  }
+
+  showDocument(value) {
+    const row: any = value || {};
+    if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
+      this.documentViewerFacade.showDocumentID({
+        highlight: row.unit.unitId,
+        document: row.document.documentId
+      });
+    }
   }
 
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter,
+Output, NgZone } from '@angular/core';
 
 @Component({
   selector: 'laji-annotation-item',
@@ -9,9 +10,13 @@ export class AnnotationItemComponent implements OnInit {
 
   @Input() item: any;
 
-  constructor() { }
+
+  constructor(
+    private zone: NgZone,
+  ) { }
 
   ngOnInit() {
   }
+
 
 }
