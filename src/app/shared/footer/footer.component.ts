@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { map } from 'rxjs/operators';
-import { SeasonService, Season } from '../service/season.service';
+import { HeaderImage, HeaderImageService } from '../service/header-image.service';
 
 @Component({
   selector: 'laji-footer',
@@ -27,20 +27,19 @@ export class FooterComponent implements OnInit, OnDestroy {
     'col-sm-offset-1 col-md-offset-0 col-sm-6 col-md-3 ',
     'col-sm-5 col-md-3'
   ];
-  public season: Season;
+  public headerImage: HeaderImage;
 
   constructor(
     public footerService: FooterService,
-    private router: Router,
     private lajiApi: LajiApiService,
     private translate: TranslateService,
     private logger: Logger,
-    private seasonService: SeasonService
+    private headerImageService: HeaderImageService
   ) {
   }
 
   ngOnInit() {
-    this.season = this.seasonService.getCurrentSeason();
+    this.headerImage = this.headerImageService.getCurrentSeason();
     this.tree$ = of(FooterComponent.treeData);
     this.fetchTreeData(false);
     this.subLangChange = this.translate.onLangChange.subscribe(() => {

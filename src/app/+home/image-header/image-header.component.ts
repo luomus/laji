@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SeasonService, Season } from 'app/shared/service/season.service';
+import { HeaderImage, HeaderImageService } from 'app/shared/service/header-image.service';
 
 @Component({
   selector: 'laji-image-header',
@@ -7,11 +7,11 @@ import { SeasonService, Season } from 'app/shared/service/season.service';
   styleUrls: ['./image-header.component.css']
 })
 export class ImageHeaderComponent implements OnInit {
-  season: Season;
+  headerImage: HeaderImage;
 
-  constructor(private seasonService: SeasonService) {}
+  constructor(private headerImageService: HeaderImageService) {}
 
   ngOnInit() {
-    this.season = this.seasonService.getCurrentSeason();
+    this.headerImage = this.headerImageService.getCurrentSeason();
   }
 }
