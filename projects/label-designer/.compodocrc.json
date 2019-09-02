@@ -1,7 +1,8 @@
 {
   "name": "Label Designer",
-  "watch": true,
-  "serve": true,
+  "watch": false,
+  "serve": false,
+  "assetsFolder": "screenshots",
   "disableGraph":true,
   "disablePrivate": true,
   "disableProtected": true,

@@ -33,7 +33,7 @@ export class LabelPreviewComponent implements OnChanges {
   @Input() preview = true;
 
   /**
-   * Object that holds the key value data used in the label.
+   * Object that holds the key value data used on the label.
    */
   @Input() data: object;
 

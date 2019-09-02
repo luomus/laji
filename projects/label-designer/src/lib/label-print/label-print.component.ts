@@ -39,7 +39,11 @@ const style = `
 `;
 
 /**
- * Convert the label setup together with data to html that can be used to print.
+ * Convert the label setup together with data to html that can be used for printing.
+ *
+ * Please note that this will not generate pdf. Instead this will generate html that can
+ * be used to generate the pdf externally. It's up to the host system to decide what to
+ * do with the html received.
  */
 @Component({
   selector: 'll-label-print',

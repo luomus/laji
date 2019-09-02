@@ -37,7 +37,7 @@ import { LabelMakerFacade } from './label-maker.facade';
 import { FieldKeyPipe } from '../pipe/field-key.pipe';
 
 /**
- * Label designer window that can do everything about the label. Edit the label, preview and print the labels.
+ * Label designer window that can be used to load, edit, show preview and send the html from the labels to the host component.
  */
 @Component({
   selector: 'll-label-designer',
@@ -51,7 +51,6 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
    * @internal
    */
   static id = 0;
-
 
   /**
    * @internal
@@ -98,7 +97,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  version = '2.1.0';
+  version = '3.1.2';
   /**
    * @internal
    */
@@ -118,7 +117,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
    */
   @Input() defaultAvailableFields: ILabelField[];
   /**
-   * These are the fields that are visible on label fields tab.
+   * These are all the available fields that the user can add the label.
    */
   @Input() availableFields: ILabelField[];
   /**
@@ -150,7 +149,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   @Output() viewSettingsChange: EventEmitter<IViewSettings> = new EventEmitter<IViewSettings>();
 
   /**
-   * Triggered when the data is changed. This can occurs when the excel is imported or when the generate data menu item is used.
+   * Triggered when the data is changed. This can occurs when the excel is imported or when the data is generated using the generate dialog.
    */
   @Output() dataChange: EventEmitter<object[]> = new EventEmitter<object[]>();
 
@@ -312,7 +311,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Setup object for the label.
+   * Setup for the whole page see {@link ISetup}
    */
   @Input()
   set setup(setup: ISetup) {
@@ -561,7 +560,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * Open excel import dialog
    */
-  importExcel() {
+  openImportExcel() {
     this.infoWindowService.open({
       title: this.translateService.get('Import from file'),
       content: this.excelTpl,
