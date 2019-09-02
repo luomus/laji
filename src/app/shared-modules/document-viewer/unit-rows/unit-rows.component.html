@@ -1,5 +1,5 @@
 <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="'result.unit.taxonVerbatim' | translate" [noTitleSpace]="true">
-  <laji-taxon-name [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
+  <span class="name-taxon"><laji-taxon-name [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks"></laji-taxon-name></span>
   <ng-container *ngIf="showFacts">
     <a *ngIf="showLinks; else nonlink" target="_blank" href="{{ unit.unitId }}">{{ unit.unitId }}</a>
     <ng-template #nonlink><small>({{ unit.unitId }})</small></ng-template>
@@ -14,7 +14,7 @@
 <laji-row
   *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname) || !unit.linkings.originalTaxon)"
   [title]="'viewer.fixedName'|translate" [noTitleSpace]="true">
-  <laji-taxon-name [taxon]="unit.linkings.taxon" [addLink]="showLinks"></laji-taxon-name>
+  <span class="name-taxon"><laji-taxon-name [taxon]="unit.linkings.taxon" [addLink]="showLinks"></laji-taxon-name></span>
 </laji-row>
 <laji-row *ngIf="showFacts" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim" [noTitleSpace]="true"></laji-row>
 <laji-row *ngIf="showFacts" [title]="'MY.recordBasis' | label" [value]="unit.recordBasis | label: 'warehouse'" [noTitleSpace]="true"></laji-row>
@@ -27,7 +27,7 @@
     {{ unit.quality.taxon.reliability | label: 'warehouse' }}
     <span *ngIf="unit.quality.taxon.source">
           ({{ unit.quality.taxon.source | label: 'warehouse' }})
-        </span>
+    </span>
   </laji-row>
 </ng-container>
 <laji-issues [data]="unit"></laji-issues>

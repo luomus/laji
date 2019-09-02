@@ -5,7 +5,6 @@ hr {
 .unit {
   position: relative;
   min-height: 30px;
-  margin: 20px 0;
 }
 .annotation-btn {
   position: absolute;
