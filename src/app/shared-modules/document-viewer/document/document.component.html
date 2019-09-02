@@ -26,14 +26,10 @@
           ></laji-edit-link>
         </h3>
       </div>
-      <laji-issues [data]="document"></laji-issues>
-      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName" ngPreserveWhitespaces>
-        <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
-      </laji-row>
-      <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
-      <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
+     
+     
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
-      <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
+      
     </div>
     <div class="col-sm-5">
       <div class="row">
@@ -63,7 +59,35 @@
             {{ showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate) }}
             <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
           </button>
-          <div style="margin-top: 35px;">
+        </div>
+      </div>
+      <div class="row" *ngIf="document.media">
+        <div class="col-sm-12">
+          <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
+    <ul class="nav nav-tabs link">
+      <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
+        <a (click)="setActive(i)">
+         {{ i + 1 }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      images
+    </div>
+    <div class="col-sm-4">
+      <ng-container *ngFor="let gathering of document.gatherings; let i=index">
+        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i" [showAnnotation]="true"></laji-gathering>
+      </ng-container>
+    </div>
+    <div class="col-sm-4">
+          <div>
             <alert [type]="document.secured ?  'warning' : 'info'">
               <span *ngIf="!document.secured; else isSecured">
                 {{ 'viewer.secured.none' | translate }}
@@ -96,31 +120,16 @@
               </div>
             </alert>
           </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="document.media">
-        <div class="col-sm-12">
-          <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
-    <ul class="nav nav-tabs link">
-      <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
-        <a (click)="setActive(i)">
-         {{ i + 1 }}
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div class="row">
-    <div class="col-sm-7">
+      <laji-issues [data]="document"></laji-issues>
+      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName" [noTitleSpace]="true" ngPreserveWhitespaces>
+        <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
+      </laji-row>
+      <laji-row [title]="'MY.notes' | label" [value]="document.notes" [noTitleSpace]="true"></laji-row>
+      <laji-row [title]="'MY.keywords' | label" [value]="document.keywords" [noTitleSpace]="true"></laji-row>
+      <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
       <ng-container *ngFor="let gathering of document.gatherings; let i=index">
-        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
-      </ng-container>
-    </div>
-    <div class="col-sm-5">
+        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i" [showAnnotation]="false"></laji-gathering>
+      </ng-container>      
       <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData"></laji-viewer-map>
       <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
     </div>

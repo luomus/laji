@@ -23,6 +23,7 @@ export class UnitComponent implements OnInit {
   @Input() identifying: boolean;
   @Input() openAnnotation: boolean;
   @Input() showFacts = false;
+  @Input() showAnnotation: boolean;
 
   annotationVisible = false;
   annotationClass$: Observable<string>;

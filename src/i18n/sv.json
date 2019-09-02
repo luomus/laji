@@ -844,6 +844,7 @@
   "observation.results.monthDayChart": "Esiintyminen vuodenaikoina",
   "observations.form.1d": "1d",
   "observations.form.7d": "7d",
+  "observations.list.empty": "Inte observationer",
   "omniSearch.allObservation": "observationer",
   "omniSearch.groups": "organismgrupp",
   "omniSearch.matches": "Information om art",

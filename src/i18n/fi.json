@@ -882,6 +882,7 @@
   "observation.results.monthDayChart": "Esiintyminen vuodenaikoina",
   "observations.form.1d": "1pv",
   "observations.form.7d": "7pv",
+  "observations.list.empty": "Ei havaintoja",
   "omniSearch.allObservation": "havaintoa",
   "omniSearch.groups": "Eliöryhmä",
   "omniSearch.links": "Hyödyllistä",

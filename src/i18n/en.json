@@ -770,6 +770,7 @@
   "observation.results.monthDayChart": "Occurrence by seasons",
   "observations.form.1d": "1d",
   "observations.form.7d": "7d",
+  "observations.list.empty": "No observations",
   "omniSearch.allObservation": "observations",
   "omniSearch.groups": "species group",
   "omniSearch.matches": "Information about species",

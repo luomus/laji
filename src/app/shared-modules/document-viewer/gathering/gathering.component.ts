@@ -19,7 +19,9 @@ export class GatheringComponent {
   @Input() identifying: boolean;
   @Input() openAnnotation: boolean;
   @Input() showOnlyHighlightedUnit: boolean;
+  @Input() showAnnotation: boolean;
   @Output() showAllUnits = new EventEmitter();
+
 
   constructor() { }
 
