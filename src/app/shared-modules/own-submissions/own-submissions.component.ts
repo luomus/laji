@@ -1,4 +1,4 @@
-import { catchError, concatMap, map, share, switchMap, tap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, share, switchMap, tap, toArray } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -423,8 +423,8 @@ export class OwnSubmissionsComponent implements OnChanges {
       map(documents => documents.filter(doc => event.documentIDs.indexOf(doc.id) > -1))
     );
     (event.documentIDs.length > 10 ? year$ : documents$).pipe(
-      tap((docs) => {
-        this.pdfLabelService.setData(docs);
+      mergeMap(docs => this.pdfLabelService.setData(docs)),
+      tap(() => {
         this.loading = false;
         this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/tools/label']));
       })

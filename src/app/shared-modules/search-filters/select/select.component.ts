@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
 import { debounceTime, take } from 'rxjs/operators';
+import { FilterService } from '../../../shared/service/filter.service';
 
 interface SelectOptions {
   id: string;
@@ -48,7 +49,10 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
   private filterSub: Subscription;
 
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor(
+    private cd: ChangeDetectorRef,
+    private filterService: FilterService
+  ) { }
 
   ngOnInit() {
     this.filterSub = this.filterInput
@@ -144,12 +148,13 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         if (!this.filterBy && this.selectedIdx === -1) {
           return;
         }
+        const filterItems = this.filterService.filter(this.unselectedOptions, this.filterBy);
         if (this.selectedIdx === -1) {
-          if (this.unselectedOptions.length > 0) {
-            this.add(this.unselectedOptions[0].id);
+          if (filterItems.length > 0) {
+            this.add(filterItems[0].id);
           }
-        } else if (this.unselectedOptions[this.selectedIdx]) {
-          this.add(this.unselectedOptions[this.selectedIdx].id);
+        } else if (filterItems[this.selectedIdx]) {
+          this.add(filterItems[this.selectedIdx].id);
         }
         return;
       case 'ArrowUp':
