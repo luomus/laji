@@ -4,7 +4,11 @@
        [class.odd]="isOdd">
     <div class="row">
       <div class="col-xs-12 row-title">
-        <span class="person pull-right">
+        <div *ngIf="annotation.annotationByPerson">
+          <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
+          <span *ngIf="!changingLocale">{{ annotation.created | date: 'yyyy.MM.dd' }}</span>
+        </div>
+        <!--<span class="person pull-right">
           <button
             type="button"
             class="btn btn-danger btn-xs"
@@ -12,7 +16,7 @@
             *ngIf="(annotation.annotationByPerson | toQName) === personID">
             <i class="glyphicon glyphicon-remove"></i>
           </button>
-        </span>
+        </span>-->
         <ng-container *ngIf="annotation.annotationClass">
           <span [ngSwitch]="annotation.annotationClass | toQName" [tooltip]="annotation.annotationClass | toQName | label"
             class="annotation-class">
@@ -47,8 +51,6 @@
             {{ 'MAN.typeUnidentifiable' | label }}
           </span>
           <span class="annotation-title" *ngIf="annotation.annotationClass">{{ annotation.annotationClass | toQName | label }}</span>
-          <span class="annotation-title" *ngIf="annotation.annotationByPerson">{{ annotation.annotationByPerson | toQName | users }}</span>
-          <span *ngIf="!changingLocale">{{ annotation.created | amTimeAgo }}</span>
         </small>
       </div>
     </div>

@@ -13,6 +13,7 @@
   "allSelected": "Alla valda",
   "annotation.none": "Inga kommentarer",
   "annotation.title": "kommentarer",
+  "annotation.addAnnotationExpert" : "Add expert annotation",
   "annotationBySystem": "Denna observation har blivit annoterad automatiskt för kvalitet.",
   "asIs": "Värde som det är",
   "checkAll": "Markera alla",

@@ -10,6 +10,11 @@
       </span>
     </h4>
   </div>-->
+  <!--<laji-annotation-list
+    [personID]="personID"
+    [annotations]="annotations | convertAnnotations"
+    (remove)="onDelete($event)">
+  </laji-annotation-list>-->
   <laji-annotation-list
     [personID]="personID"
     [annotations]="annotations"
@@ -20,7 +25,7 @@
 
 <div class="annotation-form">
     <span class="comment-title">
-        {{ 'annotation.title' | translate }}
+        {{ 'annotation.addAnnotationExpert' | translate }}
     </span>
     
     <laji-annotation-form

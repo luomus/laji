@@ -1,14 +1,12 @@
 <ng-container *ngIf="documentImages.length > 0 || gatheringImages.length > 0 || unitImages.length > 0">
-  <ng-container *ngIf="documentImages.length > 0">
-    <div class="col-sm-12">
-      {{ 'viewer.documentImages' | translate }}
-      <laji-image-gallery [modalImages]="documentImages"></laji-image-gallery>
+  <ng-container *ngIf="gatheringImages.length > 0 else unit">
+    <div>
+      <laji-image-carousel-document [modalImages]="gatheringImages"></laji-image-carousel-document>
     </div>
   </ng-container>
-  <ng-container *ngIf="gatheringImages.length > 0">
-    <div class="col-sm-12">
-      {{ 'viewer.gatheringImages' | translate }}
-      <laji-image-gallery [modalImages]="gatheringImages"></laji-image-gallery>
-    </div>
-  </ng-container>
+  <ng-template  #unit>
+      <div *ngIf="unitImages.length > 0">
+        <laji-image-carousel-document [modalImages]="unitImages"></laji-image-carousel-document>
+      </div>
+  </ng-template>
 </ng-container>

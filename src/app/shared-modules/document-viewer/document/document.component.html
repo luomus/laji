@@ -61,11 +61,11 @@
           </button>
         </div>
       </div>
-      <div class="row" *ngIf="document.media">
+      <!--<div class="row" *ngIf="document.media">
         <div class="col-sm-12">
           <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
   <div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
@@ -77,16 +77,16 @@
       </li>
     </ul>
   </div>
-  <div class="row">
-    <div class="col-sm-4">
-      images
+  <div class="row container-col">
+    <div class="col-sm-4 column-modal">
+      <laji-images [document]="document"></laji-images>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 column-modal">
       <ng-container *ngFor="let gathering of document.gatherings; let i=index">
         <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i" [showAnnotation]="true"></laji-gathering>
       </ng-container>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 column-modal">
           <div>
             <alert [type]="document.secured ?  'warning' : 'info'">
               <span *ngIf="!document.secured; else isSecured">

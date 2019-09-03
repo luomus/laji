@@ -1,6 +1,6 @@
 .annotation {
   border-bottom: 1px solid #ededed;
-  margin: 0 -5px;
+  margin: 0 -5px 10px -5px;
   padding: 3px 5px;
   min-height: 50px;
   background-color: #f9f9f9;
@@ -15,10 +15,8 @@
   font-size: larger;
 }
 
-.annotation-title:after {
-  content: "\B7";
-  padding: 0 0 0 3px;
-  display: inline;
+.annotation-person {
+  font-weight: bold;
 }
 
 .annotation-positive {

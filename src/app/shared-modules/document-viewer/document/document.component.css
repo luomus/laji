@@ -12,3 +12,11 @@
   width: 430px;
   max-width: 430px;
 }
+
+.container-col {
+  display: flex
+}
+
+.column-modal {
+  flex: 1;
+}

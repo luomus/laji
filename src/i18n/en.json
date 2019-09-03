@@ -13,6 +13,7 @@
   "allSelected": "All selected",
   "annotation.none": "No comments",
   "annotation.title": "Comments",
+  "annotation.addAnnotationExpert" : "Add expert annotation",
   "annotationBySystem": "This observation has been automatically annotated for quality.",
   "asIs": "Value as is",
   "checkAll": "Check all",

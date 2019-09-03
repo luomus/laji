@@ -1,0 +1,13 @@
+
+<div class="main-image">
+    <img src="{{ mainURL }}" />
+</div>
+
+<div class="image-list-container">
+    <ul *ngIf="modalImages">
+        <li class="image" *ngFor ="let img of modalImages; let index = index">
+            <img src="{{ img.fullURL }}" (click)="openMainPic(img.fullURL)">
+        </li>
+    </ul>
+</div>
+

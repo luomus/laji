@@ -58,6 +58,7 @@ import { LazyImageDirective } from './directive/lazy-image.directive';
 import { HideForIeDirective } from './directive/hide-for-ie.directive';
 import { SortPipe } from './pipe/sort.pipe';
 import { DateFormatPipe, MomentModule } from 'ngx-moment';
+import { ImageCarouselDocumentComponent } from './gallery/image-carousel-document/image-carousel-document.component';
 
 
 @NgModule({
@@ -85,7 +86,8 @@ import { DateFormatPipe, MomentModule } from 'ngx-moment';
     HabitatComponent,
     LazyImageDirective,
     HideForIeDirective,
-    SortPipe
+    SortPipe,
+    ImageCarouselDocumentComponent
   ],
   imports: [
     FormsModule,
@@ -112,7 +114,8 @@ import { DateFormatPipe, MomentModule } from 'ngx-moment';
     ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
+    ImageCarouselDocumentComponent
   ]
 })
 export class SharedModule {

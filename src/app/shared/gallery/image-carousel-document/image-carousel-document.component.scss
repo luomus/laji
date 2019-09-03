@@ -1,0 +1,30 @@
+div {
+    &.image-list-container{
+        position: relative;
+        margin-top: 10px;
+    }
+    &.main-image{
+        img {
+            width:100%;
+        }
+    }
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+        display: inline-block;
+        margin-right: 10px;
+        border: 1px solid black;
+        &:nth-child(5n){
+          margin-right: 0;
+        }
+        img {
+           width: auto;
+           height: 40px;
+        }
+    }
+}
+

@@ -797,6 +797,19 @@ body > .ui-select-bootstrap.open {
 }
 /** /scrollbar **/
 
+@media (min-width: 1260px){
+  .modal-lg {
+      width: 1200px;
+  }
+}
+
+@media (min-width: 1660px){
+  .modal-lg {
+      width: 1600px;
+  }
+}
+
+
 @media only screen and (min-width : 768px) {
   .modal-dialog {
     margin: 60px auto 30px auto;
