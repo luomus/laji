@@ -43,11 +43,15 @@ export namespace Form {
     enumNames: string[];
   }
 
+  export interface IAnnotationMap {
+    [targetID: string]: Annotation[];
+  }
+
   export interface IUISchemaContext {
     creator?: string;
     municipalityEnum?: IEnum;
     biogeographicalProvinceEnum?: IEnum;
-    annotations?: Annotation[];
+    annotations?: IAnnotationMap;
     isAdmin?: boolean;
     isEdit?: boolean;
     placeholderGeometry?: any;

@@ -56,7 +56,7 @@ export interface ISuccessEvent {
 
 interface FormWithData extends Form.SchemaForm {
   formData?: Document;
-  annotations?: Annotation[];
+  annotations?: Form.IAnnotationMap;
   rights?: Rights;
   readonly?: Readonly;
 }
@@ -165,6 +165,13 @@ export class LajiFormDocumentFacade implements OnDestroy {
         ))
       )),
       mergeMap(form => this.getAnnotations(documentID).pipe(
+        map((annotations) => (annotations || []).reduce<Form.IAnnotationMap>((cumulative, current) => {
+          if (!cumulative[current.targetID]) {
+            cumulative[current.targetID] = [];
+          }
+          cumulative[current.targetID].push(current);
+          return cumulative;
+        }, {})),
         map((annotations) => ({...form, annotations}))
       )),
       mergeMap(form => this.fetchUiSchemaContext(form, documentID).pipe(
