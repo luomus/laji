@@ -1,5 +1,5 @@
 
-import {merge, switchMap, filter} from 'rxjs/operators';
+import { merge, switchMap, filter, take } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -129,6 +129,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
     if (key) {
       this.subSet = this.userService.getUserSetting(this._settingsKey)
+        .pipe(take(1))
         .subscribe(settings => {
           this.userSettings = settings || {};
           if (this.userSettings.tileLayerName) {
