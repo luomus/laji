@@ -2,7 +2,7 @@
 import { switchMap, take } from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Component, Inject, Input, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ngx-webstorage';
 import { ToastsService } from '../service/toasts.service';
@@ -27,16 +27,26 @@ export class FeedbackComponent {
     email: ''
   };
   public error = false;
+  private displayedModal: BsModalRef;
 
-  @ViewChild('childModal', { static: true }) public modal: ModalDirective;
+  @ViewChild('childModal', { static: true }) public modal: HTMLElement;
 
   constructor(@Inject(WINDOW) private window: Window,
     public userService: UserService,
     public translate: TranslateService,
     private lajiApi: LajiApiService,
     private toastsService: ToastsService,
-    private location: Location
+    private location: Location,
+    private modalService: BsModalService
 ) {
+  }
+
+  openModal() {
+    this.displayedModal = this.modalService.show(this.modal);
+  }
+
+  closeModal() {
+    this.displayedModal.hide();
   }
 
   closeError() {
@@ -71,7 +81,7 @@ export class FeedbackComponent {
             meta: '',
             email: ''
           };
-          this.modal.hide();
+          this.closeModal();
           this.sendMessage('showSuccess', 'feedback.success');
         },
         () => {
