@@ -108,7 +108,6 @@ export class SchemaService {
     });
 
     if (lvl === 0) {
-      console.log('RESULT', selected ? result : [base]);
       return selected ? result : [base];
     }
 
