@@ -14,7 +14,7 @@
         <div class="tags" *ngIf="annotation.addedTags || annotation.addedTags">
          <div class="added-tags" *ngIf="annotation.addedTags">
            <span *ngFor="let addedTag of annotation.addedTags">
-             {{ addedTag }}
+             {{ addedTag | tagName }}
            </span>
          </div>
          <div class="removed-tags" *ngIf="annotation.removedTags">
