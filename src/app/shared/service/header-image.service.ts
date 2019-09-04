@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
 export interface HeaderImage {
-  imageUrl: string,
-  attribution: string,
-  attributionUrl: string,
-  license: string,
-  licenseUrl: string
+  imageUrl: string;
+  attribution: string;
+  attributionUrl: string;
+  license: string;
+  licenseUrl: string;
 }
 
 const headerImages = {
@@ -38,7 +38,7 @@ const headerImages = {
     license: 'Creative Commons BY-SA 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0/'
   },
-}
+};
 
 @Injectable({providedIn: 'root'})
 export class HeaderImageService {
