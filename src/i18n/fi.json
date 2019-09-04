@@ -546,7 +546,7 @@
   "label": {
     "select":{
       "label": "Valitse etiketöitävät",
-      "intro": "Valitse alla olevasta listasta havaintoerät joista haluat tehdä etiketin ja<br>klikkaa talukun alla olevaa \"Tee etiketit\"-nappia"
+      "intro": "Valitse luettelosta ne havaintoerät, joille haluat etiketit."
     },
     "make": "Tee etiketit",
     "designer": "Suunnittele etiketti",
@@ -973,6 +973,7 @@
   "result.showPrivateViewer": "Näytä julkaisematon havaintoerä",
   "result.latestObservationsLabel": "Julkaisematon havaintoerä",
   "result.taxonomicOrder": "Taksonominen järjestys",
+  "result.unit.id": "Havainnon tunniste",
   "result.unit.abundanceString": "Määrä",
   "result.unit.det": "Määrittäjä (det.)",
   "result.unit.interpretations.individualCount": "Yksilömäärä (tulkittu)",

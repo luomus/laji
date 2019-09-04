@@ -813,6 +813,14 @@
     <div class="row">
       <div class="col-sm-12">
         <label class="small-label">
+          <laji-checkbox [value]="formQuery.controllingRisksOfInvasiveAlienSpecies" (valueChange)="onInvasiveCheckBoxToggle('controllingRisksOfInvasiveAlienSpecies')"></laji-checkbox>
+          {{ 'MX.controllingRisksOfInvasiveAlienSpecies' | label }}
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <label class="small-label">
           <laji-checkbox [value]="formQuery.allInvasiveSpecies" (valueChange)="onInvasiveCheckBoxToggle(invasiveStatuses)"></laji-checkbox>
           {{ 'observation.form.allInvasive' | translate }}
         </label>

@@ -5,22 +5,8 @@
 .header-image {
   position: relative;
   background-clip: border-box;
-}
-
-.header-image.spring {
-  background: url(https://cdn.laji.fi/images/backdrop/spring_1.jpg) center / cover;
-}
-
-.header-image.summer {
-  background: url(https://cdn.laji.fi/images/backdrop/spring_1.jpg) center / cover;
-}
-
-.header-image.autumn {
-  background: url(https://cdn.laji.fi/images/backdrop/syksy2.jpg) center / cover;
-}
-
-.header-image.winter {
-  background: url(https://cdn.laji.fi/images/backdrop/snow.jpg) center / cover;
+  background-position: center;
+  background-size: cover;
 }
 
 .header-image, .carousel .item {

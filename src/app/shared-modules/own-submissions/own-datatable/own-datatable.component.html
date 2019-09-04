@@ -8,15 +8,15 @@
       </div>
 
       <div class="print-actions" *ngIf="showPrintLabels">
-        <ng-container *ngIf="printState === 'none'">
-          <button type="button" class="btn btn-default inline-block" (click)="doLabels()">
-            <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.select.label' | translate }}</span>
-          </button>
-        </ng-container>
-        <ng-container *ngIf="printState === 'select'">
-          <div [innerHtml]="'label.select.intro' | translate">
-          </div>
-        </ng-container>
+        <button *ngIf="printState === 'none'" type="button" class="btn btn-default inline-block" (click)="doLabels()">
+          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.select.label' | translate }}</span>
+        </button>
+        <button *ngIf="printState === 'select'" type="button" class="btn btn-success inline-block" (click)="doLabels()" [disabled]="!selected || selected.length === 0">
+          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
+        </button>
+      </div>
+
+      <div *ngIf="printState === 'select'" class="print-actions text-block" [innerHtml]="'label.select.intro' | translate">
       </div>
 
       <input class="form-control inline-block"
@@ -187,15 +187,6 @@
       </ng-template>
     </ngx-datatable-column>
   </ngx-datatable>
-  <ng-container *ngIf="printState === 'select'">
-    <div class="row" style="margin-top: 15px;">
-      <div class="col-sm-2">
-        <button type="button" class="btn btn-success" (click)="doLabels()" [disabled]="!selected || selected.length === 0">
-          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
-        </button>
-      </div>
-    </div>
-  </ng-container>
 </ng-container>
 
 <div class="modal" tabindex="-1" role="dialog" bsModal #chooseFileTypeModal="bs-modal">
