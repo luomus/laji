@@ -4,14 +4,18 @@ import { Annotation } from '../../../shared/model/Annotation';
 import { UserService } from '../../../shared/service/user.service';
 import { IdService } from '../../../shared/service/id.service';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { AbstractCachedHttpService } from '../../../shared/service/abstract-cached-http.service';
 
-@Injectable()
-export class AnnotationService {
+@Injectable({providedIn: 'root'})
+export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> {
 
   constructor(
     private lajiApi: LajiApiService,
     private userService: UserService
-  ) { }
+  ) {
+    super();
+  }
 
   delete(annotation: Annotation): Observable<any> {
     return this.lajiApi.remove(LajiApi.Endpoints.annotations, IdService.getId(annotation.id), {personToken: this.userService.getToken()});
@@ -19,6 +23,10 @@ export class AnnotationService {
 
   save(annotation: Annotation): Observable<Annotation> {
     return this.lajiApi.post(LajiApi.Endpoints.annotations, annotation, {personToken: this.userService.getToken()});
+  }
+
+  getTag(id: string, lang: string): Observable<AnnotationTag> {
+    return this.fetchById(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang, id);
   }
 
   getAnnotationClassInEffect(annotations: Annotation[]): Observable<Annotation.AnnotationClassEnum>;

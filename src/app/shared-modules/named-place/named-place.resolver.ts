@@ -112,16 +112,14 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     }
 
     const getAreaEnum = (
-      type: Exclude<keyof AreaService, 'getAreaType' | 'getName' | 'getProvinceCode' | 'types' | 'lajiApi' | 'getAllAsLookUp'>
-    ): Observable<Form.IEnum> => this.areaService[type](this.lang).pipe(
-        map((areas) => areas.reduce((enums, area) => {
+      type: keyof Pick<AreaService, 'getMunicipalities' | 'getBiogeographicalProvinces'>
+    ): Observable<Form.IEnum> => (this.areaService[type](this.lang)).pipe(
+        map(areas => areas.reduce((enums, area) => {
           enums.enum.push(area.id);
           enums.enumNames.push(area.value);
           return enums;
-        }, {
-          enum: [],
-          enumNames: []
-        })));
+        }, { enum: [], enumNames: [] }))
+    );
 
     return this.formService.getForm(id, this.lang).pipe(
       mergeMap(form => forkJoin([getAreaEnum('getMunicipalities'), getAreaEnum('getBiogeographicalProvinces')]).pipe(

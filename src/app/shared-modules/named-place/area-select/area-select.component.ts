@@ -7,10 +7,11 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { AreaService, AreaType } from '../../../shared/service/area.service';
+import { AreaService } from '../../../shared/service/area.service';
 import { CollectionService } from '../../../shared/service/collection.service';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { Area } from '../../../shared/model/Area';
 
 @Component({
   selector: 'laji-area-select',
@@ -68,14 +69,14 @@ export class AreaSelectComponent implements OnInit {
   private getDataObservable(): Observable<any> {
     switch (this.field) {
       case 'MY.collectionID':
-        return this.collectionService.getAllAsLookUp(this.lang);
-      case <any>AreaType.Biogeographical:
+        return this.collectionService.getAll(this.lang);
+      case <any>Area.AreaType.Biogeographical:
         return this.areaService.getBiogeographicalProvinces(this.lang);
-      case <any>AreaType.Municipality:
+      case <any>Area.AreaType.Municipality:
         return this.areaService.getMunicipalities(this.lang);
-      case <any>AreaType.Country:
+      case <any>Area.AreaType.Country:
         return this.areaService.getCountries(this.lang);
-      case <any>AreaType.BirdAssociationArea:
+      case <any>Area.AreaType.BirdAssociationArea:
         return this.areaService.getBirdAssociationAreas(this.lang);
       default:
         throw new Error('Could not find mapping for ' + this.field);

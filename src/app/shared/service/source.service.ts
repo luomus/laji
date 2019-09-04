@@ -1,51 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Observable, Observer, of as ObservableOf } from 'rxjs';
+import { Observable} from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { map, share, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { AbstractCachedHttpService } from './abstract-cached-http.service';
 
 
 @Injectable({providedIn: 'root'})
-export class SourceService {
-
-  private sources;
-  private currentLang;
-  private pending: Observable<any>;
+export class SourceService extends AbstractCachedHttpService<string> {
 
   constructor(private lajiApi: LajiApiService) {
+    super('name');
   }
 
-  getAllAsLookUp(lang?: string): Observable<any> {
+  getAllAsLookUp(lang?: string): Observable<{[id: string]: string}> {
     if (!lang) {
       lang = this.currentLang || 'fi';
     }
-    if (lang === this.currentLang) {
-      if (this.sources) {
-        return ObservableOf(this.sources);
-      } else if (this.pending) {
-        return Observable.create((observer: Observer<any>) => {
-          const onComplete = (res: any) => {
-            observer.next(res);
-            observer.complete();
-          };
-          this.pending.subscribe(
-            () => { onComplete(this.sources); }
-          );
-        });
-      }
-    }
-    this.pending = this.lajiApi.getList(LajiApi.Endpoints.sources, {lang, page: 1, pageSize: 1000}).pipe(
-      map(paged => paged.results),
-      map(sources => {
-        const lkObject = {};
-        sources.map(source => { lkObject[source['id']] = source['name']; });
-        return lkObject;
-      }),
-      tap(locations => { this.sources = locations; }),
-      share()
-    );
-    this.currentLang = lang;
-
-    return this.pending;
+    return this.fetchLookup(this.lajiApi.getList(LajiApi.Endpoints.sources, {lang, page: 1, pageSize: 1000}).pipe(
+      map(paged => paged.results)
+    ), lang);
   }
 
   getName(id: string, lang) {

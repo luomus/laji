@@ -17,7 +17,7 @@ export interface Area {
     /**
      * Area type
      */
-    areaType?: string;
+    areaType?: Area.AreaType;
 
     /**
      *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
@@ -43,4 +43,15 @@ export interface Area {
 
     provinceCodeNumeric?: string;
 
+}
+
+export namespace Area {
+  export enum AreaType {
+    Country = <any>'ML.country',
+    Biogeographical = <any>'ML.biogeographicalProvince',
+    Municipality = <any>'ML.municipality',
+    OldMunicipality = <any>'ML.oldMunicipality',
+    BirdAssociationArea = <any>'ML.birdAssociationArea',
+    IucnEvaluationArea = <any>'ML.iucnEvaluationArea',
+  }
 }

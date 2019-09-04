@@ -179,7 +179,7 @@ export class ObservationListService {
       allMappers.push(this.sourceService.getAllAsLookUp(lang).pipe(map(sources => ({'document.sourceId': sources}))));
     }
     if (selected.indexOf('document.collectionId') > -1) {
-      allMappers.push(this.collectionService.getAllAsLookUp(lang).pipe(
+      allMappers.push(this.collectionService.getAll(lang).pipe(
         map(collections => {
           const lookUp = {};
           collections.map(collection => lookUp[collection.id] = collection.value);
