@@ -14,12 +14,9 @@
     </div>
     <div class="row" *ngIf="onFrontPage">
       <div class="col-sm-12">
-        <div class="pull-right info" [ngSwitch]="season">
+        <div class="pull-right info">
           {{ 'footer.image.attribution' | translate }}:
-          <ng-container *ngSwitchCase="'spring'"><a href="https://www.biomi.org/">Mikko Heikkinen</a>, <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons BY 4.0</a></ng-container>
-          <ng-container *ngSwitchCase="'summer'"><a href="https://www.biomi.org/">Mikko Heikkinen</a>, <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons BY 4.0</a></ng-container>
-          <ng-container *ngSwitchCase="'autumn'"><span>Kari Lahti</span>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">Creative Commons BY-SA 4.0</a></ng-container>
-          <ng-container *ngSwitchCase="'winter'"><a href="https://www.flickr.com/photos/timo_w2s/15517459434/">Timo Newton-Syms</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/"> Creative Commons BY-SA 2.0</a></ng-container>
+          <a [href]="headerImage.attributionUrl">{{headerImage.attribution}}</a>, <a [href]="headerImage.licenseUrl">{{headerImage.license}}</a>
         </div>
       </div>
     </div>
