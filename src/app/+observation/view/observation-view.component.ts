@@ -39,7 +39,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     'nationalInvasiveSpeciesStrategy',
     'otherInvasiveSpeciesList',
     'euInvasiveSpeciesList',
-    'quarantinePlantPest'
+    'quarantinePlantPest',
+    'controllingRisksOfInvasiveAlienSpecies'
   ];
 
   subQueryUpdate: Subscription;
