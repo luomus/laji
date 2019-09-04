@@ -12,21 +12,21 @@ button {
 }
 
 .primary {
-  background: $primary-5;
+  background-color: $primary-5;
   color: adjust-hue($color: $neutral-1, $degrees: -20%);
-  box-shadow: 0 2px 6px $primary-4;
+  box-shadow: 0 2px 6px $neutral-4;
   &:hover {
-    background: $primary-6;
+    background-color: $primary-6;
     color: adjust-hue($color: $neutral-2, $degrees: -20%);
   }
 }
 
 .secondary {
-  background: $neutral-1;
+  background-color: $neutral-1;
   color: $neutral-7;
   box-shadow: 0 1px 3px $neutral-4;
   &:hover {
-    background: $primary-1;
+    background-color: $primary-1;
     color: $primary-7;
   }
 }

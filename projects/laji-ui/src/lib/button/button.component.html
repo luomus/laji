@@ -1,1 +1,10 @@
-<button [ngClass]="role" [disabled]="disabled"><ng-content></ng-content></button>
+<button [ngClass]="role" [disabled]="disabled"
+        [@highlight]="{
+          value: clicked,
+          params: {
+            bg: clickedStyles['background-color'],
+            color: clickedStyles['color']
+          }
+        }"
+        (@highlight.done)="onHighlightDone()"
+        (click)="onClick()"><ng-content></ng-content></button>
