@@ -858,6 +858,7 @@
   "result.showPrivateViewer": "Show unpublished observation",
   "result.latestObservationsLabel": "Unpublished observation",
   "result.taxonomicOrder": "Taxonomic order",
+  "result.unit.id": "Observation identifier",
   "result.unit.abundanceString": "Number",
   "result.unit.det": "Det.",
   "result.unit.interpretations.individualCount": "Individual count (interpreted)",

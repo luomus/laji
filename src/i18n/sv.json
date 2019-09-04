@@ -931,6 +931,7 @@
   "result.showPrivateViewer": "Visa opublicerad observation",
   "result.latestObservationsLabel": "Opublicerad observation",
   "result.taxonomicOrder": "Taxonomic order",
+  "result.unit.id": "Observation idr",
   "result.unit.abundanceString": "Mängd",
   "result.unit.det": "Det.",
   "result.unit.interpretations.individualCount": "Individsantal (tolkas)",

@@ -971,6 +971,7 @@
   "result.showPrivateViewer": "Näytä julkaisematon havaintoerä",
   "result.latestObservationsLabel": "Julkaisematon havaintoerä",
   "result.taxonomicOrder": "Taksonominen järjestys",
+  "result.unit.id": "Havainnon tunniste",
   "result.unit.abundanceString": "Määrä",
   "result.unit.det": "Määrittäjä (det.)",
   "result.unit.interpretations.individualCount": "Yksilömäärä (tulkittu)",
