@@ -4,6 +4,7 @@ import { Annotation } from '../../shared/model/Annotation';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { IdService } from '../../shared/service/id.service';
+import { Utils } from 'tslint';
 
 function isAnnotation(object: any): object is Annotation {
   return 'type' in object && (object['type'] === 'http://tun.fi/MAN.typeOpinion' || object['type'] === 'MAN.typeOpinion');
@@ -52,13 +53,13 @@ export class ConvertAnnotationsPipe implements PipeTransform {
     } as Annotation).pipe(
       map(annotation => ({
         ...annotation,
-        rootID: IdService.getUri(value.rootID),
-        targetID: IdService.getUri(value.targetID),
-        byPerson: IdService.getUri(value.byPerson),
-        bySystem: IdService.getUri(value.bySystem),
-        byRole: IdService.getUri(value.byRole),
-        addedTags: (value.addedTags || []).map(IdService.getUri),
-        removedTags: (value.removedTags || []).map(IdService.getUri),
+        rootID: IdService.getUri(annotation.rootID),
+        targetID: IdService.getUri(annotation.targetID),
+        byPerson: IdService.getUri(annotation.byPerson),
+        bySystem: IdService.getUri(annotation.bySystem),
+        byRole: IdService.getUri(annotation.byRole),
+        addedTags: (annotation.addedTags || []).map(id => IdService.getUri(id)),
+        removedTags: (annotation.removedTags || []).map(id => IdService.getUri(id)),
         id: IdService.getUri(annotation.id),
       })),
       tap(annotation => ConvertAnnotationsPipe.cache[annotation.id] = annotation)
