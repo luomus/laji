@@ -545,7 +545,7 @@
   "label": {
     "select":{
       "label": "Valitse etiketöitävät",
-      "intro": "Valitse alla olevasta listasta havaintoerät joista haluat tehdä etiketin ja<br>klikkaa talukun alla olevaa \"Tee etiketit\"-nappia"
+      "intro": "Valitse luettelosta ne havaintoerät, joille haluat etiketit."
     },
     "make": "Tee etiketit",
     "designer": "Suunnittele etiketti",

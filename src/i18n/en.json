@@ -450,7 +450,7 @@
   "label": {
     "select":{
       "label": "Select observations for labeling",
-      "intro": "Select observations from table below and <br>click \"Make the labels\" button below the table when done."
+      "intro": "Select the submissions which to create labels for."
     },
     "make": "Make the labels",
     "designer": "Design label",

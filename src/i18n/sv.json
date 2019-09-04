@@ -529,7 +529,7 @@
   "label": {
     "select":{
       "label": "Välj observationer för märkning",
-      "intro": "\nVälj observationer från tabellen nedan och klicka på \"Gör etiketterna\" under tabellen när du är klar."
+      "intro": "Välj de observationer som du vill skapa etiketter för."
     },
     "make": "Gör etiketterna",
     "designer": "Designetikett",
