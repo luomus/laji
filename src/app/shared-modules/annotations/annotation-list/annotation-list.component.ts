@@ -19,6 +19,7 @@ export class AnnotationListComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.annotations);
   }
 
 

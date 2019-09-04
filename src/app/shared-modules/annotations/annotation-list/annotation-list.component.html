@@ -1,16 +1,28 @@
 <div class="annotations">
   <laji-spinner [spinning]="!annotations"></laji-spinner>
-  <div class="annotation" *ngFor="let annotation of annotations; let isOdd=odd"
+  <div class="annotation" *ngFor="let annotation of (annotations | convertAnnotations); let isOdd=odd"
        [class.odd]="isOdd">
     <div class="row">
       <div class="col-xs-12 row-title">
-        <div *ngIf="annotation.annotationByPerson">
-          <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-          <span *ngIf="!changingLocale">{{ annotation.created | date: 'yyyy.MM.dd' }}</span>
+        <div *ngIf="annotation.byPerson">
+          <span class="annotation-person">{{ annotation.byPerson | toQName | users }} </span>
+          <span>{{ annotation.created | date: 'dd.MM.yyyy' }}</span>
         </div>
-        <!--<div *ngIf="annotation.addedTags.length > 0">
-          tags added here
-        </div>-->
+        <p class="content" *ngIf="annotation.identification && annotation.identification.taxon">
+            New identification: {{ annotation.identification.taxon }}
+        </p>
+        <div class="tags" *ngIf="annotation.addedTags || annotation.addedTags">
+         <div class="added-tags" *ngIf="annotation.addedTags">
+           <span *ngFor="let addedTag of annotation.addedTags">
+             {{ addedTag }}
+           </span>
+         </div>
+         <div class="removed-tags" *ngIf="annotation.removedTags">
+            <span *ngFor="let removedTag of annotation.removedTags">
+                {{ removedTag }}
+            </span>
+          </div>
+        </div>
         <!--<span class="person pull-right">
           <button
             type="button"
