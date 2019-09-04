@@ -1,6 +1,6 @@
 <div class="annotations">
   <laji-spinner [spinning]="!annotations"></laji-spinner>
-  <div class="annotation" *ngFor="let annotation of annotations let isOdd=odd"
+  <div class="annotation" *ngFor="let annotation of annotations; let isOdd=odd"
        [class.odd]="isOdd">
     <div class="row">
       <div class="col-xs-12 row-title">
@@ -8,6 +8,9 @@
           <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
           <span *ngIf="!changingLocale">{{ annotation.created | date: 'yyyy.MM.dd' }}</span>
         </div>
+        <!--<div *ngIf="annotation.addedTags.length > 0">
+          tags added here
+        </div>-->
         <!--<span class="person pull-right">
           <button
             type="button"

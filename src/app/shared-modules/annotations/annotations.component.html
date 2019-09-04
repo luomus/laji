@@ -17,7 +17,7 @@
   </laji-annotation-list>-->
   <laji-annotation-list
     [personID]="personID"
-    [annotations]="annotations"
+    [annotations]="annotations | convertAnnotations"
     (remove)="onDelete($event)">
   </laji-annotation-list>
 
