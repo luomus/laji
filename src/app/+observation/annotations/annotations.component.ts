@@ -7,7 +7,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { map, switchMap } from 'rxjs/operators';
 import { Annotation } from '../../shared/model/Annotation';
 import { PagedResult } from '../../shared/model/PagedResult';
-import { AnnotationListService } from './service/annotation-list.service';
+
 
 
 @Component({
@@ -47,8 +47,7 @@ export class AnnotationsComponent implements OnInit, OnChanges {
   constructor(
     private warehouseApi: WarehouseApi,
     private translations: TranslateService,
-    private cd: ChangeDetectorRef,
-    private annotationService: AnnotationListService
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
