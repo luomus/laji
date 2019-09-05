@@ -1,3 +1,9 @@
+<a name="3.1.5"></a>
+# 3.1.5 (2019-09-05)
+
+### Features
+* **doc:** added link to demo to README.nd
+
 <a name="3.1.4"></a>
 # 3.1.4 (2019-09-05)
 
