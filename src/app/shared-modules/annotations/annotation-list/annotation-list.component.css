@@ -1,7 +1,7 @@
 .annotation {
   border-bottom: 1px solid #ededed;
   margin: 0 -5px 10px -5px;
-  padding: 3px 5px;
+  padding: 5px;
   min-height: 50px;
   background-color: #f9f9f9;
 }
@@ -26,3 +26,77 @@
 .annotation-negative {
   color: #d43f3a;
 }
+
+.added-tags {
+  margin-bottom: 10px;
+}
+
+.tags .added-tags div div.annotation-marker {
+  padding: 5px;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.new-identification span {
+  color: #008400;
+  font-weight: bold;
+}
+
+.annotation-marker.positive {
+  border: 2px solid #008400;
+  color: #008400;
+}
+
+.annotation-marker.neutral{
+  border: 2px solid #000;
+  color: #000;
+}
+
+.annotation-marker.check {
+  border: 2px solid #E16200;
+  color: #E16200;
+}
+
+.annotation-marker.negative {
+  border: 2px solid #FF0000;
+  color: #FF0000;
+}
+
+.annotation-star {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.annotation-star {
+  background: url('../../../../static/images/icons/sprite-stars-annotations.png') 0 0 no-repeat;
+  background-repeat: no-repeat;
+}
+
+.annotation-star.positive {
+  background-position: -5px -3px;
+}
+
+.annotation-star.neutral {
+  background-position: -29px -3px;
+}
+
+.annotation-star.check {
+  background: none;
+  width: 0px
+}
+
+.annotation-star.negative {
+  background-position: -77px -3px;
+}
+
+.removed-tags {
+  margin-top: 8px;
+}
+
+

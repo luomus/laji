@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-annotation-list',
@@ -12,6 +13,8 @@ export class AnnotationListComponent implements OnInit {
   @Input() personID: string;
   @Output() remove = new EventEmitter<Annotation>();
 
+  annotationTagsObservation = Global.annotationTags;
+
   types = Annotation.TypeEnum;
   annotationClass = Annotation.AnnotationClassEnum;
   changingLocale = false;
@@ -19,7 +22,6 @@ export class AnnotationListComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.annotations);
   }
 
 

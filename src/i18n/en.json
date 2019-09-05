@@ -14,6 +14,8 @@
   "annotation.none": "No comments",
   "annotation.title": "Comments",
   "annotation.addAnnotationExpert" : "Add expert annotation",
+  "annotation.removedTags": "Removed tags",
+  "annotation.newIdentification": "New identification",
   "annotationBySystem": "This observation has been automatically annotated for quality.",
   "asIs": "Value as is",
   "checkAll": "Check all",

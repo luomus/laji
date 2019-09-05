@@ -1,6 +1,6 @@
 <div class="annotations">
   <laji-spinner [spinning]="!annotations"></laji-spinner>
-  <div class="annotation" *ngFor="let annotation of (annotations | convertAnnotations); let isOdd=odd"
+  <div class="annotation" *ngFor="let annotation of annotations; let isOdd=odd"
        [class.odd]="isOdd">
     <div class="row">
       <div class="col-xs-12 row-title">
@@ -8,19 +8,25 @@
           <span class="annotation-person">{{ annotation.byPerson | toQName | users }} </span>
           <span>{{ annotation.created | date: 'dd.MM.yyyy' }}</span>
         </div>
-        <p class="content" *ngIf="annotation.identification && annotation.identification.taxon">
-            New identification: {{ annotation.identification.taxon }}
+        <p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon">
+            <span>{{ 'annotation.newIdentification' | translate }}:</span> {{ annotation.identification.taxon | multiLang }}
         </p>
         <div class="tags" *ngIf="annotation.addedTags || annotation.addedTags">
-         <div class="added-tags" *ngIf="annotation.addedTags">
-           <span *ngFor="let addedTag of annotation.addedTags">
-             {{ addedTag | tagName }}
-           </span>
+         <div class="added-tags" *ngIf="annotation.addedTags.length > 0">
+           <div *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | toQName">
+             <div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].quality }}" >
+                <span class="annotation-star {{ annotationTagsObservation[addedTag | toQName].quality }}"></span>
+                <span>{{ addedTag | toQName | label }}</span>
+             </div>
+           </div>
          </div>
-         <div class="removed-tags" *ngIf="annotation.removedTags">
-            <span *ngFor="let removedTag of annotation.removedTags">
-                {{ removedTag }}
-            </span>
+         <div class="removed-tags" *ngIf="annotation.removedTags.length > 0">
+            <ul class="comma-list">
+              {{ 'annotation.removedTags' | translate }}: 
+              <li *ngFor="let removedTag of annotation.removedTags">
+                    {{ removedTag }}
+              </li>
+            </ul>
           </div>
         </div>
         <!--<span class="person pull-right">
