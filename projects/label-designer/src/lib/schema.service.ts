@@ -25,7 +25,7 @@ export class SchemaService {
     }
     this.convertSchema('', '', schema, base, options);
     if (options && options.skip) {
-      base = base.filter(field => !options.skip.includes(field.field));
+      base = base.filter(field => options.skip.indexOf(field.field) === -1);
     }
     return base;
   }

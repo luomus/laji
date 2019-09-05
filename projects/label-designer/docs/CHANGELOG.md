@@ -1,3 +1,10 @@
+<a name="3.1.4"></a>
+# 3.1.4 (2019-09-05)
+
+### Features
+* **editor:** added menu item to clear data only on the editor
+* **generator:** pre-fill free text fields with the field value
+
 <a name="3.1.3"></a>
 # 3.1.3 (2019-09-03)
 
