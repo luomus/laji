@@ -7,6 +7,9 @@ it from being used for other kinds of labels also.
 
 ![editor](https://cdn.laji.fi/label-designer/screenshots/editor.png)
 
+## Demo
+Running demo can be found [here](https://label-designer.stackblitz.io).
+
 ## Getting started
 There are few ways you can use this library.
 1. [Angular library](https://luomus.github.io/label-designer/additional-documentation/usage/angular-component.html)
