@@ -38,6 +38,7 @@ import { GatheringComponent } from './annotations/gathering/gathering.component'
 import { GatheringRowsComponent } from './annotations/gathering-rows/gathering-rows.component';
 import { TaxonNameComponent } from './annotations/taxon-name/taxon-name.component';
 import { AnnotationItemComponent } from './annotations/annotation-item/annotation-item.component';
+import { LangModule } from '../shared-modules/lang/lang.module';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { AnnotationItemComponent } from './annotations/annotation-item/annotatio
     InfoModule,
     NgxChartsModule,
     ChartsModule,
-    JwBootstrapSwitchNg2Module
+    JwBootstrapSwitchNg2Module,
+    LangModule
   ],
   declarations: [ObservationComponent, ObservationChartComponent,
     ObservationViewComponent,

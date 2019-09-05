@@ -9,7 +9,7 @@
           <span>{{ annotation.created | date: 'dd.MM.yyyy' }}</span>
         </div>
         <p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon">
-            <span>{{ 'annotation.newIdentification' | translate }}:</span> {{ annotation.identification.taxon | multiLang }}
+            <span>{{ 'annotation.newIdentification' | translate }}:</span> {{ annotation.identification.taxon }}
         </p>
         <div class="tags" *ngIf="annotation.addedTags || annotation.addedTags">
          <div class="added-tags" *ngIf="annotation.addedTags.length > 0">
@@ -85,7 +85,7 @@
       {{ annotation.notes }}
     </p>
   </div>
-  <div *ngIf="annotations && annotations.length === 0">
+  <div class="no-annotations" *ngIf="annotations && annotations.length === 0">
     {{ 'annotation.none' | translate }}
   </div>
 </div>

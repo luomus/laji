@@ -11,6 +11,8 @@ import { GatheringRowsComponent } from './gathering-rows/gathering-rows.componen
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { AnnotationItemComponent } from './annotation-item/annotation-item.component';
 
+
+
 @NgModule({
   imports: [
     CommonModule,

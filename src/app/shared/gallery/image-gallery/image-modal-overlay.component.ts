@@ -22,6 +22,7 @@ export class ImageModalOverlayComponent implements OnInit {
   ngOnInit() {
   }
 
+
   @HostListener('window:keydown', ['$event'])
   onKeyDown(e) {
     e.stopPropagation();
