@@ -42,10 +42,11 @@
   <section>
     <h2>Buttons</h2>
     <div class="flex-row">
-      <lu-button [role]="'primary'">Primary button</lu-button>
-      <lu-button>Secondary button</lu-button>
+      <lu-button [disabled]="testDisable" [role]="'primary'">Primary button</lu-button>
+      <lu-button [disabled]="testDisable">Secondary button</lu-button>
       <lu-button [disabled]="true">Disabled button</lu-button>
     </div>
+    <lu-button (click)="onDisable()">Disable other buttons</lu-button>
   </section>
   <section>
     <h2>Switches</h2>

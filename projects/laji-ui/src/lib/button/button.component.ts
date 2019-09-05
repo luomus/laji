@@ -9,7 +9,7 @@ type Role = 'primary' | 'secondary';
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
-    trigger('highlight', [
+    trigger('clicked', [
       state('unclicked', style({
         'box-shadow': '*',
         'background-color': '*',
@@ -24,6 +24,17 @@ type Role = 'primary' | 'secondary';
         color: '#1f74ad',
       }}),
       transition('unclicked<=>clicked', animate('200ms')),
+    ]),
+    trigger('disabled', [
+      state('active', style({
+        'background-color': '*',
+        'box-shadow': '*'
+      })),
+      state('disabled', style({
+        'background-color': 'rgba(0, 0, 0, 0)',
+        'box-shadow': '0 0 0 #c7cdd1'
+      })),
+      transition('active<=>disabled', animate('500ms')),
     ])
   ]
 })
@@ -53,7 +64,7 @@ export class ButtonComponent {
   onClick() {
     this.clicked = 'clicked';
   }
-  onHighlightDone() {
+  onAnimationDone() {
     setTimeout(() => {
       this.clicked = 'unclicked';
       this.cdr.detectChanges();
