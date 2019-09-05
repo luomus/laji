@@ -1,49 +1,29 @@
-import { tap, share, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable, Observer, of as ObservableOf } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
+import { AbstractCachedHttpService } from './abstract-cached-http.service';
 
+interface ICollectionRange {
+  id: string;
+  value: string;
+}
 
 @Injectable({providedIn: 'root'})
-export class CollectionService {
-
-  private collectionsLookup;
-  private currentLang;
-  private pending: Observable<any>;
+export class CollectionService extends AbstractCachedHttpService<ICollectionRange> {
 
   constructor(
     private metadataService: MetadataApi
   ) {
+    super();
   }
 
-  getAllAsLookUp(lang: string): Observable<any> {
-    if (lang === this.currentLang) {
-      if (this.collectionsLookup) {
-        return ObservableOf(this.collectionsLookup);
-      } else if (this.pending) {
-        return Observable.create((observer: Observer<any>) => {
-          const onComplete = (res: any) => {
-            observer.next(res);
-            observer.complete();
-          };
-          this.pending.subscribe(
-            () => { onComplete(this.collectionsLookup); }
-          );
-        });
-      }
-    }
-    this.pending = this.metadataService
-      .metadataFindPropertiesRanges('MY.collectionID', lang, false, true).pipe(
-        tap(collections => { this.collectionsLookup = collections; }),
-        share()
-      );
-    this.currentLang = lang;
-
-    return this.pending;
+  getAll(lang: string): Observable<ICollectionRange[]> {
+    return this.fetchList(this.metadataService.metadataFindPropertiesRanges('MY.collectionID', lang, false, true), lang);
   }
 
-  getName(id: string, lang): Observable<any> {
-    return this.getAllAsLookUp(lang).pipe(
+  getName(id: string, lang): Observable<ICollectionRange[]> {
+    return this.getAll(lang).pipe(
       map(data => data.filter(col => col.id === id))
     );
   }

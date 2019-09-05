@@ -11,13 +11,13 @@ import { Taxonomy } from '../model/Taxonomy';
 import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
-import { NamedPlace } from '../model/NamedPlace';
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { catchError, filter, map, merge, share, take, tap } from 'rxjs/operators';
 import { AreaService } from './area.service';
 import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
 import { Publication } from '../model/Publication';
 import { NamedPlaceApi } from '../api/NamedPlaceApi';
+import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -41,6 +41,7 @@ export class TriplestoreLabelService {
               private lajiApi: LajiApiService,
               private userService: UserService,
               private areaService: AreaService,
+              private annotationService: AnnotationService,
               private redListTaxonGroupApi: RedListTaxonGroupApi
   ) {
     this.pending = this.getAllLabels();
@@ -131,6 +132,16 @@ export class TriplestoreLabelService {
           return this.areaService.getName(key, lang);
         case 'KE':
           return this.sourceService.getName(key, lang);
+        case 'MMAN':
+          if (!TriplestoreLabelService.requestCache[key]) {
+            TriplestoreLabelService.requestCache[key] = this.annotationService.getTag(key, 'multi').pipe(
+              map(tag => tag.name),
+              tap(name => TriplestoreLabelService.cache[key] = name),
+              map(name => MultiLangService.getValue((name as any), lang)),
+              share()
+            );
+          }
+          return TriplestoreLabelService.requestCache[key];
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'}).pipe(

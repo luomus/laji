@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { FooterService } from '../service/footer.service';
-import { Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';

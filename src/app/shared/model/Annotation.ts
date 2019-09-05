@@ -64,26 +64,33 @@ export interface Annotation {
 
 }
 export namespace Annotation {
-    export enum AnnotationClassEnum {
-        AnnotationClassReliable = <any> 'MAN.annotationClassReliable',
-        AnnotationClassLikely = <any> 'MAN.annotationClassLikely',
-        AnnotationClassNeutral = <any> 'MAN.annotationClassNeutral',
-        AnnotationClassSuspicious = <any> 'MAN.annotationClassSuspicious',
-        AnnotationClassUnreliable = <any> 'MAN.annotationClassUnreliable',
-        AnnotationClassSpam = <any> 'MAN.annotationClassSpam',
-        AnnotationClassAcknowledged = <any> 'MAN.annotationClassAcknowledged'
-    }
-    export enum InvasiveControlEffectivenessEnum {
-        InvasiveControlEffectivenessFull = <any> 'MY.invasiveControlEffectivenessFull',
-        InvasiveControlEffectivenessPartial = <any> 'MY.invasiveControlEffectivenessPartial',
-        InvasiveControlEffectivenessNone = <any> 'MY.invasiveControlEffectivenessNone',
-        InvasiveControlEffectivenessNotFound = <any> 'MY.invasiveControlEffectivenessNotFound'
-    }
-    export enum TypeEnum {
-        TypeOpinion = <any> 'MAN.typeOpinion',
-        TypeInvasiveControlEffectiveness = <any> 'MAN.typeInvasiveControlEffectiveness',
-        TypeComment = <any> 'MAN.typeComment',
-        TypeAcknowledged = <any> 'MAN.typeAcknowledged',
-        TypeUnidentifiable = <any> 'MAN.typeUnidentifiable'
-    }
+
+  export enum AnnotationRoleEnum {
+    expert = 'MMAN.expert',
+    basic = 'MMAN.basic',
+    owner = 'MMAN.owner'
+  }
+
+  export enum AnnotationClassEnum {
+      AnnotationClassReliable = <any> 'MAN.annotationClassReliable',
+      AnnotationClassLikely = <any> 'MAN.annotationClassLikely',
+      AnnotationClassNeutral = <any> 'MAN.annotationClassNeutral',
+      AnnotationClassSuspicious = <any> 'MAN.annotationClassSuspicious',
+      AnnotationClassUnreliable = <any> 'MAN.annotationClassUnreliable',
+      AnnotationClassSpam = <any> 'MAN.annotationClassSpam',
+      AnnotationClassAcknowledged = <any> 'MAN.annotationClassAcknowledged'
+  }
+  export enum InvasiveControlEffectivenessEnum {
+      InvasiveControlEffectivenessFull = <any> 'MY.invasiveControlEffectivenessFull',
+      InvasiveControlEffectivenessPartial = <any> 'MY.invasiveControlEffectivenessPartial',
+      InvasiveControlEffectivenessNone = <any> 'MY.invasiveControlEffectivenessNone',
+      InvasiveControlEffectivenessNotFound = <any> 'MY.invasiveControlEffectivenessNotFound'
+  }
+  export enum TypeEnum {
+      TypeOpinion = <any> 'MAN.typeOpinion',
+      TypeInvasiveControlEffectiveness = <any> 'MAN.typeInvasiveControlEffectiveness',
+      TypeComment = <any> 'MAN.typeComment',
+      TypeAcknowledged = <any> 'MAN.typeAcknowledged',
+      TypeUnidentifiable = <any> 'MAN.typeUnidentifiable'
+  }
 }

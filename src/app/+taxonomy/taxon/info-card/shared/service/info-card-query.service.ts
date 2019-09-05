@@ -8,6 +8,8 @@ export class InfoCardQueryService {
       superRecordBasis: ['PRESERVED_SPECIMEN'],
       sourceId: ['KE.3', 'KE.167'],
       typeSpecimen: typeSpecimen,
+      includeNonValidTaxa: false,
+      taxonReliability: ['LIKELY', 'RELIABLE'],
       cache: true
     };
   }
