@@ -14,3 +14,22 @@
 .annotation-unidentifiable label {
   font-weight: normal;
 }
+
+.tags {
+  margin-bottom: 40px;
+}
+
+.add-tags, .removed-tags {
+  margin-bottom: 20px;
+}
+
+.add-tags input, .removed-tags input.form-control {
+  display: inline-block;
+  width: 70%;
+}
+
+.add-tags label, .removed-tags label {
+  font-weight: normal;
+  width: 30%
+}
+

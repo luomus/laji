@@ -15,7 +15,7 @@
       </label>
     </div>
   </div>
-  <div class="row annotation-class">
+  <!--<div class="row annotation-class">
     <div class="col-sm-12">
       {{ 'MAN.annotationClass' | label }}:
       <select [(ngModel)]="annotation.annotationClass"
@@ -27,9 +27,29 @@
         </option>
       </select>
     </div>
+  </div>-->
+  <div class="tags">
+      <div class="row add-tags">
+          <div class="col-sm-6">
+            <label>Add Tags:</label> <input type="text" class="form-control input-sm">
+          </div>
+      
+          <div class="col-sm-6">
+            Tag
+          </div>
+      </div>
+      <div class="row removed-tags">
+          <div class="col-sm-6">
+              <label>Remove Tags:</label> <input type="text" class="form-control input-sm">
+          </div>
+        
+          <div class="col-sm-6">
+            Tag
+          </div>
+      </div>
   </div>
   <div class="row">
-    <div class="col-sm-12" *ngIf="!isEditor">
+    <div class="col-sm-5" *ngIf="!isEditor">
       {{ 'MAN.opinion' | label }}:
       <input
         [ngClass]="{loading: typeaheadLoading}"
@@ -52,6 +72,16 @@
           {{ model.value }}
         </h5>
       </ng-template>
+    </div>
+
+    <div class="col-sm-2 text-center">
+      Coll
+      <input type="checkbox" class="form-control input-sm">
+    </div>
+
+    <div class="col-sm-5">
+        Taxon specifier
+        <input type="text" class="form-control input-sm">
     </div>
   </div>
   <div class="row message">
