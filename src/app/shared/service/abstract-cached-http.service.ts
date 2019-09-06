@@ -1,12 +1,11 @@
-import { Observable, Observer, of as ObservableOf } from 'rxjs';
-import { map, share, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 
 export abstract class AbstractCachedHttpService<T> {
 
-  protected currentData: {[id: string]: T};
   protected currentLang: string;
-  private pendingFetch;
+  private _fetch;
 
   protected constructor(private valueKey = '', private idKey = 'id') {}
 
@@ -17,33 +16,17 @@ export abstract class AbstractCachedHttpService<T> {
   }
 
   fetchLookup(query: Observable<any[]>, lang: string): Observable<{[id: string]: T}> {
-    if (lang === this.currentLang) {
-      if (this.currentData) {
-        return ObservableOf(this.currentData);
-      } else if (this.pendingFetch) {
-        return Observable.create((observer: Observer<any>) => {
-          const onComplete = (res: any) => {
-            observer.next(res);
-            observer.complete();
-          };
-          this.pendingFetch.subscribe(
-            () => { onComplete(this.currentData); }
-          );
-        });
-      }
+    if (lang !== this.currentLang || !this._fetch) {
+      this.currentLang = lang;
+      this._fetch = query.pipe(
+        map(data => (data || []).reduce((cumulative, current) => {
+          cumulative[current[this.idKey]] = this.valueKey ? current[this.valueKey] : current;
+          return cumulative;
+        }, {})),
+        shareReplay(1)
+      );
     }
-    this.currentData = undefined;
-    this.pendingFetch = query.pipe(
-      map(data => (data || []).reduce((cumulative, current) => {
-        cumulative[current[this.idKey]] = this.valueKey ? current[this.valueKey] : current;
-        return cumulative;
-      }, {})),
-      tap((data) => this.currentData = data),
-      share()
-    );
-    this.currentLang = lang;
-
-    return this.pendingFetch;
+    return this._fetch;
   }
 
   fetchById(query: Observable<T[]>, lang: string, id: string): Observable<T> {
