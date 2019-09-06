@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { Global } from '../../../../environments/global';
 
 
 @Component({
@@ -40,6 +41,8 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
   emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
 
+  annotationTagsObservation = Global.annotationTags;
+
   constructor(
     private metadataService: MetadataService,
     private annotationService: AnnotationService,
@@ -49,6 +52,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+    console.log('form');
     this.initAnnotation();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.opinion);

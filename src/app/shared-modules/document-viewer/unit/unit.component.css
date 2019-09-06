@@ -1,7 +1,9 @@
 hr {
   margin: 4px 0;
 }
-
+.highlight {
+  border-left: 3px solid #E7D759;
+}
 .unit {
   position: relative;
   min-height: 30px;

@@ -1,8 +1,8 @@
-<laji-row [title]="'viewer.field.observer' | translate" [value]="gathering.team | values:'; '" [noTitleSpace]="true"></laji-row>
-<laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="true">
+<laji-row [title]="'viewer.field.observer' | translate" [value]="gathering.team | values:'; '"></laji-row>
+<laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime">
   {{ gathering.displayDateTime }}
 </laji-row>
-<laji-row [title]="'MY.locality' | label" [noTitleSpace]="true">
+<laji-row [title]="'MY.locality' | label">
   <ul class="comma-list">
     <li *ngIf="gathering.higherGeography" [tooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
       {{ gathering.higherGeography }}</li>
@@ -28,9 +28,9 @@
       {{ gathering.locality }}</li>
   </ul>
 </laji-row>
-<laji-row [title]="'MY.coordinatesVerbatim' | label" [value]="gathering.coordinatesVerbatim" [noTitleSpace]="true"></laji-row>
-<laji-row [title]="'MY.notes' | label" [value]="gathering.notes" [noTitleSpace]="true"></laji-row>
-<laji-row [title]="'MY.taxonCensus' | label" *ngIf="gathering.taxonCensus" [noTitleSpace]="true">
+<laji-row [title]="'MY.coordinatesVerbatim' | label" [value]="gathering.coordinatesVerbatim"></laji-row>
+<laji-row [title]="'MY.notes' | label" [value]="gathering.notes"></laji-row>
+<laji-row [title]="'MY.taxonCensus' | label" *ngIf="gathering.taxonCensus">
   <ul class="comma-list">
     <li *ngFor="let census of gathering.taxonCensus" [tooltip]="census.type | toQName | label" [isDisabled]="hideTooltips">{{ census.taxonId | toQName | taxon }}</li>
   </ul>

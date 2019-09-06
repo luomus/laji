@@ -31,7 +31,15 @@
   <div class="tags">
       <div class="row add-tags">
           <div class="col-sm-6">
-            <label>Add Tags:</label> <input type="text" class="form-control input-sm">
+            <label>Add Tags:</label> 
+            <select [(ngModel)]="annotation.addedTags"
+            [disabled]="unIdentifyable"
+            name="annotationTags"
+            class="form-control input-sm">
+              <option *ngFor="let tag of annotationTagsObservation[0] " [value]="tag.value">
+                {{ tag.value | label }}
+              </option>
+            </select>
           </div>
       
           <div class="col-sm-6">
