@@ -9,15 +9,26 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <ng-container *ngIf="vm.document">
-          <laji-document *ngIf="!vm.forceLocal && vm.document.publicityRestrictions === publicityRestrictionsPublic; else local"
-                         [highlight]="vm.highlight"
-                         [uri]="vm.document.id"
-                         [own]="vm.own"
-                         [openAnnotation]="vm.openAnnotation"
-                         [identifying]="vm.identifying"
-                         [useWorldMap]="vm.useWorldMap"
+            <laji-document-annotation *ngIf="!vm.forceLocal && vm.openAnnotation; else normal"
+              [highlight]="vm.highlight"
+              [uri]="vm.document.id"
+              [own]="vm.own"
+              [openAnnotation]="vm.openAnnotation"
+              [identifying]="vm.identifying"
+              [useWorldMap]="vm.useWorldMap"
           >
-          </laji-document>
+          </laji-document-annotation>
+          <ng-template #normal>
+            <laji-document *ngIf="!vm.forceLocal && vm.document.publicityRestrictions === publicityRestrictionsPublic; else local"
+                          [highlight]="vm.highlight"
+                          [uri]="vm.document.id"
+                          [own]="vm.own"
+                          [openAnnotation]="vm.openAnnotation"
+                          [identifying]="vm.identifying"
+                          [useWorldMap]="vm.useWorldMap"
+            >
+            </laji-document>
+          </ng-template>
           <ng-template #local>
             <laji-document-local [document]="vm.document">
             </laji-document-local>

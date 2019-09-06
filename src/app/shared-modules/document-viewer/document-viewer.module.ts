@@ -33,6 +33,11 @@ import { PrintTaxonHeaderComponent } from './document-local/collection-contest-l
 import { CoordinatesViewerComponent } from './viewer-coordinates/viewer-coordinates.component';
 import { ViewerModalComponent } from './viewer-modal/viewer-modal.component';
 import { DocumentAnnotationComponent } from './document-annotation/document-annotation.component';
+import { UnitAnnotationComponent } from './unit-annotation/unit-annotation.component';
+import { GatheringAnnotationsRowsComponent } from './gathering-annotations-rows/gathering-annotations-rows.component';
+import { GatheringAnnotationComponent } from './gathering-annotation/gathering-annotation.component';
+import { UnitAnnotationRowsComponent } from './unit-annotation-rows/unit-annotation-rows.component';
+import { UnitAnnotationListComponent } from './unit-annotation-list/unit-annotation-list.component';
 
 @NgModule({
   imports: [
@@ -53,7 +58,12 @@ import { DocumentAnnotationComponent } from './document-annotation/document-anno
     PrintTaxonHeaderComponent,
     CoordinatesViewerComponent,
     ViewerModalComponent,
-    DocumentAnnotationComponent
+    DocumentAnnotationComponent,
+    UnitAnnotationComponent,
+    GatheringAnnotationsRowsComponent,
+    GatheringAnnotationComponent,
+    UnitAnnotationRowsComponent,
+    UnitAnnotationListComponent
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent]
 })

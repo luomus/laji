@@ -1,0 +1,20 @@
+
+<div class="unit" *ngIf="unit">
+  <ng-container>
+    <div class="row">
+      <div class="col-xs-12 col-md-10 col-md-offset-2 annotations">
+        <laji-annotations
+          [identifying]="identifying"
+          [editors]="editors"
+          [personID]="personID"
+          [rootID]="documentID"
+          [targetID]="unitID"
+          [annotations]="annotations"
+          (close)="hideAnnotations()"
+          (annotationChange)="initAnnotationStatus($event)"
+        ></laji-annotations>
+      </div>
+    </div>
+  </ng-container>
+</div>
+

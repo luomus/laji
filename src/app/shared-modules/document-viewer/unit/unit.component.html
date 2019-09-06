@@ -11,29 +11,4 @@
     </div>
     <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
   </div>
-  <div class="annotation-btn">
-    <button type="button"
-            [tooltip]="'annotation.title' | translate"
-            placement="left"
-            class="btn btn-xs {{annotationClass$ | async}}"
-            (click)="toggleAnnotations()">
-      <i class="fa {{annotationIcon}}"></i>
-    </button>
-  </div>
-  <ng-container *ngIf="annotationVisible">
-    <div class="row">
-      <div class="col-xs-12 col-md-10 col-md-offset-2 annotations">
-        <laji-annotations
-          [identifying]="identifying"
-          [editors]="editors"
-          [personID]="personID"
-          [rootID]="documentID"
-          [targetID]="unitID"
-          [annotations]="annotations"
-          (close)="hideAnnotations()"
-          (annotationChange)="initAnnotationStatus($event)"
-        ></laji-annotations>
-      </div>
-    </div>
-  </ng-container>
 </div>
