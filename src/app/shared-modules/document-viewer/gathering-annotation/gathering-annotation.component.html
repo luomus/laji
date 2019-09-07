@@ -4,18 +4,16 @@
             <laji-gathering-annotations-rows [gathering]="gathering"></laji-gathering-annotations-rows>
             <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
         </ng-container>
-        <div *ngIf="!showAnnotation">
             <ng-container *ngFor="let unit of gathering?.units">
                 <ng-container *ngIf="!showAnnotation; else annotation">
                     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
                                 <laji-unit-annotation [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit-annotation>
                     </ng-container>
                 </ng-container>
-                <ng-template #annotations>
+                <ng-template #annotation>
                     <laji-unit-annotation-list [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit-annotation-list>
                 </ng-template>
             </ng-container>
-        </div>
 
         <laji-row [showWithoutValue]="true" *ngIf="showOnlyHighlightedUnit && unitCnt > 1">
           <button type="button" (click)="showAllUnits.emit()" class="btn btn-default btn-sm all-units-btn">
