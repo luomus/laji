@@ -1,13 +1,14 @@
 
 import {map,  mergeMap } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { Global } from '../../../../environments/global';
 
 
@@ -33,7 +34,10 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   sending = false;
   needsAck: boolean;
   annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
+  tags: Array<AnnotationTag>;
+  annotationTags: Subscription;
   types = Annotation.TypeEnum;
+  selectedOptions: string[] = [];
   ownerTypes = [
     Annotation.AnnotationClassEnum.AnnotationClassNeutral,
     Annotation.AnnotationClassEnum.AnnotationClassAcknowledged
@@ -48,12 +52,13 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     private annotationService: AnnotationService,
     private loggerService: Logger,
     private lajiApi: LajiApiService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
     console.log('form');
-    this.initAnnotation();
+    this.initAnnotationTags();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.opinion);
     }).pipe(
@@ -82,6 +87,43 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.initAnnotation();
+    this.initAnnotationTags();
+  }
+
+  onChangeSelectBox(event: any) {
+    const value: string = event.target.value;
+    if (value === '') {
+      return;
+    }
+
+    if (this.selectedOptions.indexOf(value) === -1) {
+        this.selectedOptions.push(value);
+    }
+  }
+
+  deleteSelected(array, item) {
+    const index = array.indexOf(item);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+  }
+
+
+  showOption(optionId: string): boolean {
+    return this.selectedOptions.indexOf(optionId) === -1;
+  }
+
+  initAnnotationTags() {
+    if (this.annotationTags) {
+      return;
+    }
+
+
+    this.annotationTags = this.lajiApi.getList(LajiApi.Endpoints.annotationsTags,
+    {lang: this.translate.currentLang}).subscribe(listTags => {
+    this.tags = listTags;
+    this.cd.markForCheck();
+    });
   }
 
   initAnnotation() {
