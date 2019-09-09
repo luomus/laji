@@ -25,7 +25,7 @@
     
     <laji-annotation-form
     [identifying]="identifying"
-    [annotations]="annotations"
+    [annotations]="annotations | convertAnnotations"
     [annotation]="annotation"
     [personID]="personID"
     [editors]="editors"

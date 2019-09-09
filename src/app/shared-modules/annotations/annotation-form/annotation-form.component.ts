@@ -38,6 +38,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   annotationTags: Subscription;
   types = Annotation.TypeEnum;
   selectedOptions: string[] = [];
+  deletedOptions: string[] = [];
   ownerTypes = [
     Annotation.AnnotationClassEnum.AnnotationClassNeutral,
     Annotation.AnnotationClassEnum.AnnotationClassAcknowledged
@@ -57,7 +58,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    console.log('form');
+    console.log(this.annotations);
     this.initAnnotationTags();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.opinion);
@@ -90,14 +91,21 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     this.initAnnotationTags();
   }
 
-  onChangeSelectBox(event: any) {
+  onChangeSelectBox(event: any, option, index) {
     const value: string = event.target.value;
     if (value === '') {
       return;
     }
 
-    if (this.selectedOptions.indexOf(value) === -1) {
+    if (option === 'added') {
+      if (this.selectedOptions.indexOf(value) === -1) {
         this.selectedOptions.push(value);
+        this.tags.splice(index, 1);
+      }
+    } else {
+      if (this.deletedOptions.indexOf(value) === -1) {
+        this.deletedOptions.push(value);
+      }
     }
   }
 
@@ -108,9 +116,23 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     }
   }
 
+  public AddTarget(index, option) {
+    if (option === 'added') {
+      this.selectedOptions.push(this.tags[index].id);
+      this.tags.splice(index, 1);
+    } else {
+      this.deletedOptions.push(this.annotations[index].id);
+      this.annotations.splice(index, 1);
+    }
+  }
+
 
   showOption(optionId: string): boolean {
-    return this.selectedOptions.indexOf(optionId) === -1;
+      return this.selectedOptions.indexOf(optionId) === -1;
+  }
+
+  showOption2(optionId: string): boolean {
+    return this.deletedOptions.indexOf(optionId) === -1;
   }
 
   initAnnotationTags() {

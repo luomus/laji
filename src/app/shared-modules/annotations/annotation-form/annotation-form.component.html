@@ -32,10 +32,10 @@
       <div class="row add-tags">
           <div class="col-sm-6">
             <label>Add Tags:</label> 
-            <select (change)="onChangeSelectBox($event)">
+            <select name="addTags" (change)="onChangeSelectBox($event, 'added')">
                 <option value="" [selected]="isSelected"> Please choose one </option>
                 <ng-template ngFor let-item [ngForOf]="tags">
-                   <option *ngIf="showOption(item.id)" value="{{item.id}}">
+                   <option *ngIf="showOption(item.id, tags)" value="{{item.id}}">
                       {{ item.name }}
                    </option>
                 </ng-template>
@@ -54,11 +54,25 @@
       </div>
       <div class="row removed-tags">
           <div class="col-sm-6">
-              <label>Remove Tags:</label> <input type="text" class="form-control input-sm">
+              <label>Remove Tags:</label>
+              <select name="addTags" (change)="onChangeSelectBox($event, 'removed')">
+                <option value="" [selected]="isSelected"> Please choose one </option>
+                  <ng-template ngFor let-item [ngForOf]="annotations">
+                     <option *ngIf="showOption2( item.addedTags | toQName)" value="{{item.addedTags | toQName }}">
+                        {{ item.addedTags | toQName | label }}
+                     </option>
+                  </ng-template>
+              </select>
           </div>
         
-          <div class="col-sm-6">
-            Tag
+          <div class="col-sm-6 selecteded-tags">
+              <span *ngFor="let selected of deletedOptions; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
+                  <div *ngSwitchCase="annotationTagsObservation[selected | toQName].value" class="annotation-marker {{ annotationTagsObservation[selected | toQName].quality }}" >
+                      <span class="annotation-star {{ annotationTagsObservation[selected | toQName].quality }}"></span>
+                      <span>{{ selected | toQName | label }}</span>
+                  </div>
+                  <div (click)="deleteSelected(deletedOptions, selected)"></div>
+              </span>
           </div>
       </div>
   </div>
