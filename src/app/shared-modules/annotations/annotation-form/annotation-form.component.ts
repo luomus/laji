@@ -100,7 +100,6 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     if (option === 'added') {
       if (this.selectedOptions.indexOf(value) === -1) {
         this.selectedOptions.push(value);
-        this.tags.splice(index, 1);
       }
     } else {
       if (this.deletedOptions.indexOf(value) === -1) {
@@ -116,15 +115,13 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     }
   }
 
-
-
   showOption(optionId: string): boolean {
       return this.selectedOptions.indexOf(optionId) === -1;
   }
 
   showOptionDeleted(optionId: string): boolean {
     return this.deletedOptions.indexOf(optionId) === -1;
-}
+  }
 
 
 
@@ -133,13 +130,13 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
       return;
     }
 
-
     this.annotationTags = this.lajiApi.getList(LajiApi.Endpoints.annotationsTags,
     {lang: this.translate.currentLang}).subscribe(listTags => {
     this.tags = listTags;
     this.cd.markForCheck();
     });
   }
+
 
   initAnnotation() {
     this.isEditor = this.editors && this.personID && this.editors.indexOf(this.personID) > -1;
