@@ -59,6 +59,7 @@ import { HideForIeDirective } from './directive/hide-for-ie.directive';
 import { SortPipe } from './pipe/sort.pipe';
 import { DateFormatPipe, MomentModule } from 'ngx-moment';
 import { ImageCarouselDocumentComponent } from './gallery/image-carousel-document/image-carousel-document.component';
+import { UniquePipe } from './pipe/unique.pipe';
 
 
 
@@ -88,7 +89,8 @@ import { ImageCarouselDocumentComponent } from './gallery/image-carousel-documen
     LazyImageDirective,
     HideForIeDirective,
     SortPipe,
-    ImageCarouselDocumentComponent
+    ImageCarouselDocumentComponent,
+    UniquePipe
   ],
   imports: [
     FormsModule,
@@ -116,7 +118,7 @@ import { ImageCarouselDocumentComponent } from './gallery/image-carousel-documen
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    ImageCarouselDocumentComponent
+    ImageCarouselDocumentComponent, UniquePipe
   ]
 })
 export class SharedModule {

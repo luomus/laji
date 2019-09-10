@@ -116,24 +116,17 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     }
   }
 
-  public AddTarget(index, option) {
-    if (option === 'added') {
-      this.selectedOptions.push(this.tags[index].id);
-      this.tags.splice(index, 1);
-    } else {
-      this.deletedOptions.push(this.annotations[index].id);
-      this.annotations.splice(index, 1);
-    }
-  }
 
 
   showOption(optionId: string): boolean {
       return this.selectedOptions.indexOf(optionId) === -1;
   }
 
-  showOption2(optionId: string): boolean {
+  showOptionDeleted(optionId: string): boolean {
     return this.deletedOptions.indexOf(optionId) === -1;
-  }
+}
+
+
 
   initAnnotationTags() {
     if (this.annotationTags) {

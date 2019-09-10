@@ -33,7 +33,7 @@
   width: 30%
 }
 
-.add-tags .selected-tags {
+.add-tags .selected-tags, .removed-tags .selected-tags {
   box-sizing: border-box;
   padding: 0 20px;
 }
