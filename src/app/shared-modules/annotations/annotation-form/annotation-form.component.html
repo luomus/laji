@@ -57,12 +57,10 @@
               <label>Remove Tags:</label>
               <select name="removeTags" (change)="onChangeSelectBox($event, 'removed')">
                 <option value="" [selected]="isSelected"> Please choose one </option>
-                  <ng-template ngFor let-item [ngForOf]="annotations | unique">
-                      <ng-template ngFor let-tag [ngForOf]="item.addedTags | toQName">
-                        <option *ngIf="showOptionDeleted(tag)" value="{{ tag }}">
-                            {{ tag | label }}
+                  <ng-template ngFor let-item [ngForOf]="annotations | activeTags">
+                        <option *ngIf="showOptionDeleted(item | toQName)" value="{{ item | toQName}}">
+                            {{ item | toQName | label }}
                         </option>
-                      </ng-template>  
                   </ng-template>
               </select>
           </div>

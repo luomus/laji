@@ -135,6 +135,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     this.tags = listTags;
     this.cd.markForCheck();
     });
+
   }
 
 
