@@ -1,0 +1,4 @@
+<ul class="tabs-list">
+  <li *ngFor="let tab of tabComponents; let index = index" class="tabs-button" (click)="onSelect(index)">{{tab.heading}}</li>
+</ul>
+<ng-content></ng-content>
