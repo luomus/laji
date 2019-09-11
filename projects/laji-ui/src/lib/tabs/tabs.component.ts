@@ -14,9 +14,7 @@ export class TabsComponent implements AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.tabComponents.first.active = true;
-    });
+    Promise.resolve(null).then(() => this.tabComponents.first.active = true);
   }
 
   onSelect(tabIndex: number) {
