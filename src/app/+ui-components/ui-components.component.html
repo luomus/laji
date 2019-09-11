@@ -46,14 +46,23 @@
       <lu-button [disabled]="testDisable">Secondary button</lu-button>
       <lu-button [disabled]="true">Disabled button</lu-button>
     </div>
-    <lu-button (click)="onDisable()">Disable other buttons</lu-button>
+    <lu-checkbox (checked)="testDisable = $event">Disable buttons</lu-checkbox>
   </section>
   <section>
     <h2>Switches</h2>
     <h3>Two-way switch</h3>
     <lu-checkbox>Checkbox</lu-checkbox>
     <h3>Three-way switch</h3>
-    <h3>Radio</h3>
+    <h3>N-way switch</h3>
+    <h4>Dropdown</h4>
+    <lu-dropdown></lu-dropdown>
+    <h4>Radio</h4>
+  </section>
+  <section>
+    <h2>Inputs</h2>
+    <h3>Text area</h3>
+    <h4>Single-line</h4>
+    <h4>Multi-line</h4>
   </section>
   <br>
 </div>

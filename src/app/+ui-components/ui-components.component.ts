@@ -6,8 +6,4 @@ import { Component } from '@angular/core';
 })
 export class UiComponentsComponent {
   testDisable = false;
-
-  onDisable() {
-    this.testDisable = !this.testDisable;
-  }
 }

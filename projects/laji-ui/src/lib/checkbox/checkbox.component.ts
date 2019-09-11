@@ -17,13 +17,13 @@ export class CheckboxComponent implements OnDestroy{
   /**
    * Set initial state of checkbox
    */
-  @Input() set checked(checked: boolean) {
+  @Input() set init(checked: boolean) {
     this.checkbox.nativeElement.checked = checked;
   }
   /**
    * Observable of changes to initial state of checkbox
    */
-  @Input() set checked$(observable: Observable<boolean>) {
+  @Input() set init$(observable: Observable<boolean>) {
     this.unsubscribe$.next();
     observable.pipe(takeUntil(this.unsubscribe$)).subscribe((checked) => {
       this.checkbox.nativeElement.checked = checked;
@@ -32,10 +32,10 @@ export class CheckboxComponent implements OnDestroy{
   /**
    * Changes to state of checkbox that were triggered by user
    */
-  @Output() triggered = new EventEmitter<boolean>();
+  @Output() checked = new EventEmitter<boolean>();
 
   onInput(event: Event) {
-    this.triggered.emit(event.target['checked']);
+    this.checked.emit(event.target['checked']);
   }
 
   ngOnDestroy() {
