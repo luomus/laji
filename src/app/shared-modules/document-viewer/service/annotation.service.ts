@@ -31,7 +31,7 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
       take(1),
       switchMap(user => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
         // TODO: add logic to get the user role
-        map(tags => tags.filter(tag => tag.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.basic)))
+        map(tags => tags.filter(tag => tag.requiredRolesAdd && tag.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.basic)))
       ))
     );
   }
@@ -41,7 +41,7 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
       take(1),
       switchMap(user => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
         // TODO: add logic to get the user role
-        map(tags => tags.filter(tag => tag.requiredRolesRemove.includes(Annotation.AnnotationRoleEnum.basic)))
+        map(tags => tags.filter(tag => tag.requiredRolesRemove && tag.requiredRolesRemove.includes(Annotation.AnnotationRoleEnum.basic)))
       ))
     );
   }

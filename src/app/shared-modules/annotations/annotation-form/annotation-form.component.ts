@@ -34,8 +34,10 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   sending = false;
   needsAck: boolean;
   annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
-  tags: Array<AnnotationTag>;
-  annotationTags: Subscription;
+  tagsAdd: Array<AnnotationTag>;
+  tagsRemove: Array<AnnotationTag>;
+  annotationAddadableTags: Subscription;
+  annotationRemovableTags: Subscription;
   types = Annotation.TypeEnum;
   selectedOptions: string[] = [];
   deletedOptions: string[] = [];
@@ -58,7 +60,6 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    console.log(this.annotations);
     this.initAnnotationTags();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.opinion);
@@ -126,15 +127,31 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
 
   initAnnotationTags() {
-    if (this.annotationTags) {
+    if (this.annotationAddadableTags) {
       return;
     }
 
-    this.annotationTags = this.lajiApi.getList(LajiApi.Endpoints.annotationsTags,
-    {lang: this.translate.currentLang}).subscribe(listTags => {
-    this.tags = listTags;
-    this.cd.markForCheck();
-    });
+    if (this.annotationRemovableTags) {
+      return;
+    }
+
+
+    this.annotationAddadableTags = this.annotationService.getAllAddableTags(this.translate.currentLang)
+    .subscribe(
+      (resultArray: AnnotationTag[]) => {
+        this.tagsAdd = resultArray;
+      },
+      error => console.log('Error :: ' + error)
+    );
+
+
+    this.annotationRemovableTags = this.annotationService.getAllRemovableTags(this.translate.currentLang)
+    .subscribe(
+      (resultArray: AnnotationTag[]) => {
+        this.tagsRemove = resultArray;
+      },
+      error => console.log('Error :: ' + error)
+    );
 
   }
 

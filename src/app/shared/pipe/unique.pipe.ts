@@ -1,5 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Annotation } from '../model/Annotation';
+import { AnnotationTag } from '../../shared/model/AnnotationTag';
+import { IdService } from '../service/id.service';
 
 @Pipe({
   name: 'activeTags',
@@ -9,34 +11,39 @@ import { Annotation } from '../model/Annotation';
 export class UniquePipe implements PipeTransform {
 
 
-  transform(value: Annotation[]): any[] {
-    if ( value === undefined) {
-      return value;
-    }
-
-    if ( value === undefined || !value[0].addedTags || !value[0].removedTags) {
+  transform(value: AnnotationTag[], args: Annotation[]): any[] {
+    if ( value === undefined || args === undefined) {
       return value;
     }
 
     const addedTags = [];
     const removedTags = [];
+    let active = [];
 
-    for (let i = 0; i < value.length; i++) {
-      for ( let j = 0; j < value[i].addedTags.length; j++) {
-        addedTags.push(value[i].addedTags[j]);
+    for (let i = 0; i < args.length; i++) {
+      if (args[i].addedTags) {
+        for ( let j = 0; j < args[i].addedTags.length; j++) {
+          addedTags.push(args[i].addedTags[j]);
+        }
       }
 
-      for ( let j = 0; j < value[i].removedTags.length; j++) {
-        removedTags.push(value[i].removedTags[j]);
+      if (args[i].removedTags) {
+        for ( let j = 0; j < args[i].removedTags.length; j++) {
+          removedTags.push(args[i].removedTags[j]);
+        }
       }
     }
 
+    active = this.arr_diff(this.mergeUniqueValues(addedTags), this.mergeUniqueValues(removedTags));
 
-    return this.arr_diff(this.mergeArrays(addedTags), this.mergeArrays(removedTags));
+    value = value.filter(
+      item => active.includes(item.id)
+    );
 
+    return value;
   }
 
-  mergeArrays(...arrays) {
+  mergeUniqueValues(...arrays) {
     let jointArray = [];
 
     arrays.forEach(array => {
@@ -65,7 +72,7 @@ export class UniquePipe implements PipeTransform {
 
     for (const k in a) {
       if (a.hasOwnProperty(k)) {
-        diff.push(k);
+        diff.push(IdService.getId(k));
       }
     }
 
