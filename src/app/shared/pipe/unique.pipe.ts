@@ -50,7 +50,7 @@ export class UniquePipe implements PipeTransform {
         jointArray = [...jointArray, ...array];
     });
     const uniqueArray = jointArray.filter((item , index) => jointArray.indexOf(item) === index);
-    console.log(uniqueArray);
+
     return uniqueArray;
   }
 

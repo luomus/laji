@@ -43,12 +43,12 @@
           </div>
       
           <div class="col-sm-6 selected-tags">
-            <span *ngFor="let selected of selectedOptions; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
+            <span *ngFor="let selected of annotation.addedTags; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
                 <div *ngSwitchCase="annotationTagsObservation[selected | toQName].value" class="annotation-marker {{ annotationTagsObservation[selected | toQName].quality }}" >
                     <span class="annotation-star {{ annotationTagsObservation[selected | toQName].quality }}"></span>
                     <span>{{ selected | toQName | label }}</span>
                 </div>
-                <div (click)="deleteSelected(selectedOptions, selected)"></div>
+                <div (click)="deleteSelected(annotation.addedTags, selected)"></div>
             </span>
           </div>
       </div>
@@ -66,12 +66,12 @@
           </div>
         
           <div class="col-sm-6 selected-tags">
-              <span *ngFor="let selected of deletedOptions; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
+              <span *ngFor="let selected of annotation.removedTags; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
                   <div *ngSwitchCase="annotationTagsObservation[selected | toQName].value" class="annotation-marker {{ annotationTagsObservation[selected | toQName].quality }}" >
                       <span class="annotation-star {{ annotationTagsObservation[selected | toQName].quality }}"></span>
                       <span>{{ selected | toQName | label }}</span>
                   </div>
-                  <div (click)="deleteSelected(deletedOptions, selected)"></div>
+                  <div (click)="deleteSelected(annotation.removedTags, selected)"></div>
               </span>
           </div>
       </div>

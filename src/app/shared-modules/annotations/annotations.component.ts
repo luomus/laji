@@ -36,8 +36,10 @@ export class AnnotationsComponent implements OnInit {
     this.annotation = {
       rootID: IdService.getId(this.rootID),
       targetID: IdService.getId(this.targetID),
-      annotationClass: Annotation.AnnotationClassEnum.AnnotationClassNeutral,
-      type: Annotation.TypeEnum.TypeOpinion
+      /*annotationClass: Annotation.AnnotationClassEnum.AnnotationClassNeutral,*/
+      type: Annotation.TypeEnum.TypeOpinion,
+      addedTags: [],
+      removedTags: []
     };
   }
 

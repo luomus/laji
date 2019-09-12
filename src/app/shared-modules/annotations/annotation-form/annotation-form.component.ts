@@ -99,12 +99,12 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     }
 
     if (option === 'added') {
-      if (this.selectedOptions.indexOf(value) === -1) {
-        this.selectedOptions.push(value);
+      if (this.annotation.addedTags.indexOf(value) === -1) {
+        this.annotation.addedTags.push(value);
       }
     } else {
-      if (this.deletedOptions.indexOf(value) === -1) {
-        this.deletedOptions.push(value);
+      if (this.annotation.removedTags.indexOf(value) === -1) {
+        this.annotation.removedTags.push(value);
       }
     }
   }
@@ -117,11 +117,11 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   }
 
   showOption(optionId: string): boolean {
-      return this.selectedOptions.indexOf(optionId) === -1;
+      return this.annotation.addedTags.indexOf(optionId) === -1;
   }
 
   showOptionDeleted(optionId: string): boolean {
-    return this.deletedOptions.indexOf(optionId) === -1;
+    return this.annotation.removedTags.indexOf(optionId) === -1;
   }
 
 
