@@ -6,6 +6,7 @@ import { IdService } from '../../../shared/service/id.service';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { AbstractCachedHttpService } from '../../../shared/service/abstract-cached-http.service';
+import { map, switchMap, take } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> {
@@ -23,6 +24,26 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
 
   save(annotation: Annotation): Observable<Annotation> {
     return this.lajiApi.post(LajiApi.Endpoints.annotations, annotation, {personToken: this.userService.getToken()});
+  }
+
+  getAllAddableTags(lang: string): Observable<AnnotationTag[]> {
+    return this.userService.user$.pipe(
+      take(1),
+      switchMap(user => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
+        // TODO: add logic to get the user role
+        map(tags => tags.filter(tag => tag.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.basic)))
+      ))
+    );
+  }
+
+  getAllRemovableTags(lang: string): Observable<AnnotationTag[]> {
+    return this.userService.user$.pipe(
+      take(1),
+      switchMap(user => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
+        // TODO: add logic to get the user role
+        map(tags => tags.filter(tag => tag.requiredRolesRemove.includes(Annotation.AnnotationRoleEnum.basic)))
+      ))
+    );
   }
 
   getTag(id: string, lang: string): Observable<AnnotationTag> {
