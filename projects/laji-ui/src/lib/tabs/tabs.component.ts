@@ -1,10 +1,27 @@
-import { Component, ContentChildren, AfterViewInit, QueryList, ComponentFactoryResolver, ViewChild, ViewContainerRef, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ContentChildren, AfterViewInit, QueryList, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { TabComponent } from './tab/tab.component';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { color } from '../vars';
 
 @Component({
   selector: 'lu-tabs',
   templateUrl: './tabs.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./tabs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('activeTab', [
+      state('inactive', style({
+        'background-color': color.neutral[3],
+        'color': color.neutral[6]
+      })),
+      state('active', style({
+        'background-color': color.neutral[2],
+        'color': color.neutral[7]
+      })),
+      transition('inactive=>active', animate('100ms')),
+      transition('active=>inactive', animate('200ms'))
+    ])
+  ]
 })
 export class TabsComponent implements AfterViewInit {
   @ContentChildren(TabComponent) tabComponents !: QueryList<TabComponent>;
