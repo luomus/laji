@@ -26,7 +26,7 @@ export class AnnotationsComponent implements OnInit {
   constructor(private annotationService: AnnotationService) { }
 
   ngOnInit() {
-    console.log('annotations');
+    console.log(this.annotations);
     this.initEmptyAnnotation();
     if (this.identifying) {
       this.adding = true;
@@ -37,10 +37,13 @@ export class AnnotationsComponent implements OnInit {
     this.annotation = {
       rootID: IdService.getId(this.rootID),
       targetID: IdService.getId(this.targetID),
-      /*annotationClass: Annotation.AnnotationClassEnum.AnnotationClassNeutral,*/
-      type: Annotation.TypeEnum.TypeOpinion,
+      identification: {
+        taxon: '',
+        taxonSpecifier: ''
+      },
       addedTags: [],
-      removedTags: []
+      removedTags: [],
+      type: Annotation.TypeEnum.TypeOpinion
     };
   }
 

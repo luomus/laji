@@ -55,7 +55,9 @@ export interface Annotation {
      */
     targetID?: string;
 
-    opinion?: string;
+    /*opinion?: string;  */
+
+    identification?: Annotation.Identification;
 
     type?: Annotation.TypeEnum;
 
@@ -64,6 +66,11 @@ export interface Annotation {
 
 }
 export namespace Annotation {
+
+  export interface Identification {
+    taxon: string;
+    taxonSpecifier: string;
+  }
 
   export enum AnnotationRoleEnum {
     expert = 'MMAN.expert',
@@ -93,4 +100,6 @@ export namespace Annotation {
       TypeAcknowledged = <any> 'MAN.typeAcknowledged',
       TypeUnidentifiable = <any> 'MAN.typeUnidentifiable'
   }
+
+
 }

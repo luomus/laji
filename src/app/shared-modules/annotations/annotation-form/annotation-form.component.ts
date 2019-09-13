@@ -61,9 +61,10 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+    console.log(this.annotation);
     this.initAnnotationTags();
     this.taxonAutocomplete = Observable.create((observer: any) => {
-      observer.next(this.annotation.opinion);
+      observer.next(this.annotation.identification.taxon);
     }).pipe(
       mergeMap((query: string) => this.getTaxa(query))
     );
@@ -160,9 +161,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   initAnnotation() {
     this.isEditor = this.editors && this.personID && this.editors.indexOf(this.personID) > -1;
     this.needsAck = this.annotations && this.annotations[0] && this.annotations[0].type !== Annotation.TypeEnum.TypeAcknowledged;
-    if (!this.annotation.annotationClass) {
-      this.annotation.annotationClass = this.emptyAnnotationClass;
-    }
+
     this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum').pipe(
       map(annotationOptions => annotationOptions.filter(annotation => this.isEditor ?
           this.ownerTypes.indexOf(annotation.id) > -1 :
@@ -186,8 +185,10 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     this.sending = true;
     if (this.unIdentifyable) {
       this.annotation.type = Annotation.TypeEnum.TypeUnidentifiable;
-      delete this.annotation.annotationClass;
     }
+
+    console.log(this.annotation);
+
     this.annotationService
       .save(this.annotation)
       .subscribe(
