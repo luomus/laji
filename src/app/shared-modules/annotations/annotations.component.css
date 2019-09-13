@@ -14,5 +14,14 @@
 
 .comment-title {
   font-weight: bold;
-  font-size:16px;
+  font-size:18px;
+}
+
+.switch-mode {
+  color: #3498DB;
+  cursor: pointer;
+}
+
+.annotation-form {
+  margin-top: 30px;
 }

@@ -1,4 +1,4 @@
-<form *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
+<form *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()"> Editor: {{ isEditor }}
   <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
     {{ 'haseka.form.error' | translate }}
   </alert>
@@ -31,8 +31,8 @@
   <div class="tags">
       <div class="row add-tags">
           <div class="col-sm-6">
-            <label>Add Tags:</label> 
-            <select name="addTags" (change)="onChangeSelectBox($event, 'added')">
+            <label>Add Tags</label> 
+            <select name="addTags" class="input-sm" (change)="onChangeSelectBox($event, 'added')">
                 <option value="" [selected]="isSelected"> Please choose one </option>
                 <ng-template ngFor let-item [ngForOf]="tagsAdd">
                    <option *ngIf="showOption(item.id)" value="{{item.id}}">
@@ -52,10 +52,10 @@
             </span>
           </div>
       </div>
-      <div class="row removed-tags">
+      <div class="row removed-tags" *ngIf="expert">
           <div class="col-sm-6">
-              <label>Remove Tags:</label>
-              <select name="removeTags" (change)="onChangeSelectBox($event, 'removed')">
+              <label>Remove Tags</label>
+              <select name="removeTags" class="input-sm" (change)="onChangeSelectBox($event, 'removed')">
                 <option value="" [selected]="isSelected"> Please choose one </option>
                   <ng-template ngFor let-item [ngForOf]="tagsRemove | activeTags: annotations">
                         <option *ngIf="showOptionDeleted(item.id | toQName)" value="{{ item.id | toQName}}">
@@ -78,7 +78,7 @@
   </div>
   <div class="row">
     <div class="col-sm-5" *ngIf="!isEditor">
-      {{ 'MAN.opinion' | label }}:
+      <label>{{ 'MAN.opinion' | label }}</label>
       <input
         [ngClass]="{loading: typeaheadLoading}"
         type="text"
@@ -102,19 +102,19 @@
       </ng-template>
     </div>
 
-    <div class="col-sm-2 text-center">
-      Coll
+    <div class="col-sm-2 text-center" *ngIf="expert">
+      <label>Coll</label>
       <input type="checkbox" class="form-control input-sm">
     </div>
 
-    <div class="col-sm-5">
-        Taxon specifier
+    <div class="col-sm-5" *ngIf="!isEditor && expert">
+        <label>Taxon specifier</label>
         <input type="text" class="form-control input-sm">
     </div>
   </div>
   <div class="row message">
     <div class="col-sm-12">
-      {{ 'MAN.notes' | label }}:
+      <label>{{ 'MAN.notes' | label }}</label>
       <textarea #notes="ngModel"
                 name="notes"
                 [required]="annotation.annotationClass === emptyAnnotationClass && !annotation.opinion && !unIdentifyable"
@@ -123,7 +123,7 @@
     </div>
   </div>
   <div class="actions">
-    <button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button>
+    <!--<button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button>-->
     <button type="submit" [disabled]="annotationForm.form.pristine || !annotationForm.form.valid || sending" class="btn btn-success btn-sm">{{ 'feedback.send' | translate }}</button>
   </div>
 </form>

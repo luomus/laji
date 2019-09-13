@@ -19,6 +19,7 @@ export class AnnotationsComponent implements OnInit {
   @Output() annotationChange = new EventEmitter<Annotation>();
   error = false;
   adding = false;
+  expert = true;
   type: Annotation.TypeEnum;
   annotation: Annotation = {};
 
@@ -54,6 +55,10 @@ export class AnnotationsComponent implements OnInit {
 
   closeAddForm() {
     this.adding = false;
+  }
+
+  changeModeForm() {
+   this.expert = !this.expert;
   }
 
   onDelete(annotation: Annotation) {

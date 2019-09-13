@@ -8,8 +8,6 @@
 .annotation-form {
   margin: 0 -5px;
   padding: 5px 5px 10px 5px;
-  border-bottom: 1px solid #d6d6d6;
-  background-color: #f4f4f4;
 }
 .annotation-unidentifiable label {
   font-weight: normal;
@@ -116,6 +114,11 @@ div.annotation-marker {
 
 .annotation-star.negative {
   background-position: -77px -3px;
+}
+
+.annotation-form label {
+  color: black;
+  font-weight: bold;
 }
 
 
