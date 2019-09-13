@@ -55,7 +55,7 @@ export interface Annotation {
      */
     targetID?: string;
 
-    /*opinion?: string;  */
+    opinion?: string;
 
     identification?: Annotation.Identification;
 

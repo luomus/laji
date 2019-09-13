@@ -1,4 +1,4 @@
-<form *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()"> Editor: {{ isEditor }}
+<form *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
   <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
     {{ 'haseka.form.error' | translate }}
   </alert>
@@ -124,7 +124,7 @@
       <label>{{ 'MAN.notes' | label }}</label>
       <textarea #notes="ngModel"
                 name="notes"
-                [required]="annotation.annotationClass === emptyAnnotationClass && !annotation.opinion && !unIdentifyable"
+                [required]="annotation.annotationClass === emptyAnnotationClass && !annotation.identification.opinion && !unIdentifyable"
                 class="form-control feedback-text input-sm"
                 [(ngModel)]="annotation.notes"></textarea>
     </div>

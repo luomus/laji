@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 
 
 @Component({
@@ -26,6 +26,7 @@ export class GatheringAnnotationComponent {
 
 
   constructor() { }
+
 
 }
 
