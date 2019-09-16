@@ -129,15 +129,6 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
 
   initAnnotationTags() {
-    if (this.annotationAddadableTags) {
-      return;
-    }
-
-    if (this.annotationRemovableTags) {
-      return;
-    }
-
-
     this.annotationAddadableTags = this.annotationService.getAllAddableTags(this.translate.currentLang)
     .subscribe(
       (resultArray: AnnotationTag[]) => {
@@ -161,7 +152,9 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   initAnnotation() {
     this.isEditor = this.editors && this.personID && this.editors.indexOf(this.personID) > -1;
     this.needsAck = this.annotations && this.annotations[0] && this.annotations[0].type !== Annotation.TypeEnum.TypeAcknowledged;
-
+    if (!this.annotation.annotationClass) {
+      this.annotation.annotationClass = this.emptyAnnotationClass;
+    }
     this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum').pipe(
       map(annotationOptions => annotationOptions.filter(annotation => this.isEditor ?
           this.ownerTypes.indexOf(annotation.id) > -1 :

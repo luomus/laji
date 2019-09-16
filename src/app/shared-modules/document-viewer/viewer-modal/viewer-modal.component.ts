@@ -28,6 +28,7 @@ export class ViewerModalComponent implements OnInit, OnDestroy {
     this.subModal = this.viewerFacade.showModal$.pipe(
       tap((visible) => visible ? this.modal.show() : this.modal.hide())
     ).subscribe();
+    console.log(this.vm$);
   }
 
   ngOnDestroy(): void {

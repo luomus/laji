@@ -68,7 +68,7 @@
             </div>-->
           </div>
         </div>
-        <div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
+        <!--<div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
           <ul class="nav nav-tabs link">
             <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
               <a (click)="setActive(i)">
@@ -76,7 +76,7 @@
               </a>
             </li>
           </ul>
-        </div>
+        </div>-->
         <div class="row container-col">
           <div class="col-sm-4 column-modal" *ngIf="document.gatherings && document.gatherings[0].units && (document.gatherings[0].units[0].media || document.gatherings[0].media)">
             <laji-images [document]="document"></laji-images>

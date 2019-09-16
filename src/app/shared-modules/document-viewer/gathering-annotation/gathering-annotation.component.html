@@ -11,15 +11,13 @@
                     </ng-container>
                 </ng-container>
                 <ng-template #annotation>
-                    <laji-unit-annotation-list [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit-annotation-list>
+                    <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
+                        <laji-unit-annotation-list [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit-annotation-list>
+                    </ng-container>    
                 </ng-template>
             </ng-container>
 
-        <laji-row [showWithoutValue]="true" *ngIf="showOnlyHighlightedUnit && unitCnt > 1">
-          <button type="button" (click)="showAllUnits.emit()" class="btn btn-default btn-sm all-units-btn">
-            {{ 'viewer.otherUnits' | translate:{cnt: unitCnt - 1} }}
-          </button>
-        </laji-row>
+
         <div class="observations" *ngIf="!showAnnotation">
             <div class="number-observations" *ngIf="unitCnt > 0 else nobservations">
                 {{ unitCnt }} <span *ngIf="unitCnt == 1">{{ 'haseka.users.latest.gathered.singular' | translate }}</span> <span *ngIf="unitCnt > 1">{{ 'haseka.users.latest.gathered' | translate }}</span> 

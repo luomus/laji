@@ -72,6 +72,7 @@
         class="form-control input-sm"
         name="opinion"
         [disabled]="unIdentifyable"
+        [required]="(!unIdentifyable && expert)"
         [(ngModel)]="annotation.identification.taxon"
         [typeahead]="taxonAutocomplete"
         [typeaheadOptionsLimit]="20"
@@ -124,8 +125,8 @@
       <label>{{ 'MAN.notes' | label }}</label>
       <textarea #notes="ngModel"
                 name="notes"
-                [required]="annotation.annotationClass === emptyAnnotationClass && !annotation.identification.opinion && !unIdentifyable"
                 class="form-control feedback-text input-sm"
+                [required]="(!unIdentifyable && !expert)"
                 [(ngModel)]="annotation.notes"></textarea>
     </div>
   </div>
