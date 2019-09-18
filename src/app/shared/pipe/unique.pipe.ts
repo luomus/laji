@@ -12,6 +12,7 @@ export class UniquePipe implements PipeTransform {
 
 
   transform(value: AnnotationTag[], args: Annotation[]): any[] {
+    console.log('unique');
     if ( value === undefined || args === undefined) {
       return value;
     }
@@ -23,13 +24,13 @@ export class UniquePipe implements PipeTransform {
     for (let i = 0; i < args.length; i++) {
       if (args[i].addedTags) {
         for ( let j = 0; j < args[i].addedTags.length; j++) {
-          addedTags.push(args[i].addedTags[j]);
+          addedTags.push(IdService.getId(args[i].addedTags[j]));
         }
       }
 
       if (args[i].removedTags) {
         for ( let j = 0; j < args[i].removedTags.length; j++) {
-          removedTags.push(args[i].removedTags[j]);
+          removedTags.push(IdService.getId(args[i].removedTags[j]));
         }
       }
     }
