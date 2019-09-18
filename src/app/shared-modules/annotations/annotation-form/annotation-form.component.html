@@ -90,12 +90,12 @@
       </ng-template>
     </div>
 
-    <div class="col-sm-2 text-center" *ngIf="expert">
+    <div class="col-sm-2 text-center">
       <label>Coll</label>
       <input type="checkbox" class="form-control input-sm">
     </div>
 
-    <div class="col-sm-5" *ngIf="!isEditor && expert">
+    <div class="col-sm-5" *ngIf="!isEditor">
         <label>Taxon specifier </label>
         <input
         [ngClass]="{loading: typeaheadLoading}"

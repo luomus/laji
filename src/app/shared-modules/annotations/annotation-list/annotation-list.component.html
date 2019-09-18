@@ -24,7 +24,7 @@
             <ul class="comma-list">
               {{ 'annotation.removedTags' | translate }}: 
               <li *ngFor="let removedTag of annotation.removedTags">
-                    {{ removedTag }}
+                    {{ removedTag | toQName | label }}
               </li>
             </ul>
           </div>
