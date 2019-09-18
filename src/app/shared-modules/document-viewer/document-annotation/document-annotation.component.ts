@@ -65,7 +65,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ) { }
 
   ngOnInit() {
-    console.log('document');
     this.metaFetch = this.userService.user$.subscribe(person => {
       this.personID = person.id;
       this.cd.markForCheck();

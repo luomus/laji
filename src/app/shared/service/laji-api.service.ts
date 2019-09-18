@@ -241,7 +241,6 @@ export class LajiApiService {
   post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<LajiApi.Response.HtmlToPdf>;
   post(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}`;
-    console.log('api');
     const options = { params: {...this.removeUndefinedFromObject(query)} };
     if (endpoint === LajiApi.Endpoints.htmlToPdf) {
       options['responseType'] = 'blob';

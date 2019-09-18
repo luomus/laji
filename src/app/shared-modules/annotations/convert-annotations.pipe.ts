@@ -24,7 +24,6 @@ export class ConvertAnnotationsPipe implements PipeTransform {
   ) {}
 
   transform(value: Annotation | Annotation[]): any {
-    console.log('pipe');
     if (Array.isArray(value)) {
       return value.map(v => this.transform(v));
     }

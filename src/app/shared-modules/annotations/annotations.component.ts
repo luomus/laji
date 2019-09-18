@@ -26,7 +26,6 @@ export class AnnotationsComponent implements OnInit {
   constructor(private annotationService: AnnotationService) { }
 
   ngOnInit() {
-    console.log('list');
     this.initEmptyAnnotation();
     if (this.identifying) {
       this.adding = true;

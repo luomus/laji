@@ -12,7 +12,6 @@ export class UniquePipe implements PipeTransform {
 
 
   transform(value: AnnotationTag[], args: Annotation[]): any[] {
-    console.log('unique');
     if ( value === undefined || args === undefined) {
       return value;
     }
