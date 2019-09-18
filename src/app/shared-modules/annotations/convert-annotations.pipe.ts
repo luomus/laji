@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Annotation } from '../../shared/model/Annotation';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { IdService } from '../../shared/service/id.service';
-import { Utils } from 'tslint';
 
 function isAnnotation(object: any): object is Annotation {
   return 'type' in object && (object['type'] === 'http://tun.fi/MAN.typeOpinion' || object['type'] === 'MAN.typeOpinion');
@@ -42,6 +41,9 @@ export class ConvertAnnotationsPipe implements PipeTransform {
   }
 
   private convertOldToNew(value: Annotation): Observable<Annotation> {
+    if (value.addedTags) {
+      return of(value);
+    }
     return this.http.post<Annotation>('https://dev.laji.fi/api/annotations/convert', {
       ...value,
       rootID: IdService.getId(value.rootID),
