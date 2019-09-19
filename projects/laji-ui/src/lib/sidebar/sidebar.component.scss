@@ -1,0 +1,53 @@
+@import 'vars';
+
+:host {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.sidebar {
+  background-color: $neutral-3;
+  box-shadow: inset 0 0 10px 0 rgba(#000, 0.1);
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px 40px;
+}
+
+.sidebar {
+  position: relative;
+}
+
+.sidebar .dragbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 3px;
+  cursor: col-resize;
+  background-color: $neutral-4;
+  user-select: none;
+  opacity: 0;
+}
+
+.sidebar.left {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}
+
+:host .sidebar.left ::ng-deep lu-sidebar-link div {
+  padding: 10px 20px;
+  padding-right: 30px;
+  cursor: pointer;
+  &:hover:not(.active) {
+    background-color: $neutral-6;
+    color: $neutral-2;
+  }
+  &.active {
+    background-color: $neutral-2;
+    box-shadow: -4px 4px 5px -4px rgba(0,0,0,0.1), -4px -3px 5px -4px rgba(0,0,0,0.1);
+    cursor: default;
+  }
+}

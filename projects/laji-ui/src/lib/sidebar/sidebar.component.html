@@ -1,0 +1,17 @@
+<ng-container *ngIf="position === 'right' else sidebar"></ng-container>
+
+<div class="content">
+  <lu-button (click)="onSwitchState()">hamburger</lu-button>
+  <lu-button (click)="onSwitchPosition()">Switch sidebar position</lu-button>
+  <lu-button (click)="draggable = !draggable">Switch draggable</lu-button>
+  <ng-content select="main"></ng-content>
+</div>
+
+<ng-container *ngIf="position === 'left' else sidebar"></ng-container>
+
+<ng-template #sidebar>
+  <div class="sidebar" [ngClass]="{'left': position === 'left', 'right': position === 'right'}" [@sidebarState]="active ? 'active' : 'inactive'" #sidebarRef>
+    <div *ngIf="draggable" class="dragbar" (mousedown)="onDragStart($event)"></div>
+    <ng-content select="nav"></ng-content>
+  </div>
+</ng-template>

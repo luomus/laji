@@ -5,14 +5,19 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { TabComponent } from './tabs/tab/tab.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { SidebarLinkComponent } from './sidebar/sidebar-link/sidebar-link.component';
 
 
 
 @NgModule({
-  declarations: [ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent],
+  declarations: [
+    ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
+    SidebarLinkComponent
+  ],
   imports: [
     CommonModule
   ],
-  exports: [ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent]
+  exports: [ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent, SidebarLinkComponent]
 })
 export class LajiUiModule { }
