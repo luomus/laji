@@ -63,10 +63,10 @@
           </div>
       </div>
   </div>
-  <div class="row">
+  <div class="row taxon">
     <div class="col-sm-5" *ngIf="!isEditor">
       <label>{{ 'taxonomy.taxonomy' | translate }}</label> 
-      <span *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.originalTaxon)" (click)="copyCurrentTaxon()">Copy current</span>
+      <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.originalTaxon)" (click)="copyCurrentTaxon()">Copy current</span>
       <input #taxon
         [ngClass]="{loading: typeaheadLoading}"
         type="text"
@@ -133,7 +133,7 @@
   </div>
   <div class="actions">
     <!--<button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button>-->
-    <button type="submit" [disabled]="annotationForm.form.pristine || !annotationForm.form.valid || sending" class="btn btn-success btn-sm">{{ 'feedback.send' | translate }}</button>
+    <button type="submit" [disabled]="!annotationForm.form.valid || sending" class="btn btn-success btn-sm">Send annotation</button>
   </div>
 </form>
 <div *lajiLoggedIn="false" class="annotation-form">

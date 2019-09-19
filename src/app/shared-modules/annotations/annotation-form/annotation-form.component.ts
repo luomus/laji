@@ -137,11 +137,13 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
           this.unit.linkings.taxon.vernacularName, this.translate.currentLang
           );
+          this.cd.detectChanges();
       } else {
         this.taxonElement.nativeElement.focus();
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
           this.unit.linkings.originalTaxon.vernacularName, this.translate.currentLang
           );
+          this.cd.detectChanges();
       }
     } else {
       return;

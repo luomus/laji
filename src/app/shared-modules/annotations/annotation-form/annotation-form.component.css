@@ -1,3 +1,12 @@
+label {
+  margin-right: 10px;
+}
+
+.switch-mode {
+  color: #3498DB;
+  cursor: pointer;
+}
+
 .actions {
   margin-top: 10px;
 }
@@ -13,8 +22,13 @@
   font-weight: normal;
 }
 
-.tags {
-  margin-bottom: 40px;
+.tags, .taxon {
+  margin-bottom: 30px;
+}
+
+.tags label {
+  display: block;
+  width: 100%;
 }
 
 .add-tags, .removed-tags {
@@ -23,17 +37,17 @@
 
 .add-tags input, .removed-tags input.form-control {
   display: inline-block;
-  width: 70%;
+  width: 100%;
 }
 
 .add-tags label, .removed-tags label {
   font-weight: normal;
-  width: 30%
 }
 
 .add-tags .selected-tags, .removed-tags .selected-tags {
   box-sizing: border-box;
   padding: 0 20px;
+  margin-top: 5px;
 }
 
 .container-annotation {
@@ -68,22 +82,18 @@ div.annotation-marker {
 }
 
 .annotation-marker.positive {
-  border: 2px solid #008400;
   color: #008400;
 }
 
 .annotation-marker.neutral{
-  border: 2px solid #000;
   color: #000;
 }
 
 .annotation-marker.check {
-  border: 2px solid #E16200;
   color: #E16200;
 }
 
 .annotation-marker.negative {
-  border: 2px solid #FF0000;
   color: #FF0000;
 }
 

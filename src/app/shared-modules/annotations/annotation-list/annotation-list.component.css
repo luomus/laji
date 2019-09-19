@@ -3,7 +3,7 @@
   margin: 0 -5px 10px -5px;
   padding: 5px;
   min-height: 50px;
-  background-color: #f9f9f9;
+  background-color: #F1F1F1;
 }
 .annotation:last-of-type {
   border-bottom: none;
@@ -31,6 +31,11 @@
   margin-bottom: 10px;
 }
 
+.tags .added-tags div {
+  display: inline-block;
+  margin-right: 10px;
+}
+
 .tags .added-tags div div.annotation-marker {
   padding: 5px;
   border-radius: 6px;
@@ -47,22 +52,18 @@
 }
 
 .annotation-marker.positive {
-  border: 2px solid #008400;
   color: #008400;
 }
 
 .annotation-marker.neutral{
-  border: 2px solid #000;
   color: #000;
 }
 
 .annotation-marker.check {
-  border: 2px solid #E16200;
   color: #E16200;
 }
 
 .annotation-marker.negative {
-  border: 2px solid #FF0000;
   color: #FF0000;
 }
 
