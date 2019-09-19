@@ -1,6 +1,6 @@
 
 import {map,  mergeMap } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
@@ -18,6 +18,7 @@ import { Global } from '../../../../environments/global';
   styleUrls: ['./annotation-form.component.css']
 })
 export class AnnotationFormComponent implements OnInit, OnChanges {
+  static readonly lang = ['en', 'fi', 'sv'];
 
   @Input() editors: string[];
   @Input() personID: string;
@@ -25,9 +26,11 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   @Input() annotation: Annotation;
   @Input() identifying: boolean;
   @Input() expert: boolean;
+  @Input() unit: any;
   @Output() success = new EventEmitter<Annotation>();
   @Output() cancel = new EventEmitter<any>();
 
+  @ViewChild('taxon', {static: false}) taxonElement: ElementRef;
   taxonAutocomplete: Observable<any>;
   error: any;
   unIdentifyable = false;
@@ -51,13 +54,15 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
   annotationTagsObservation = Global.annotationTags;
 
+
   constructor(
     private metadataService: MetadataService,
     private annotationService: AnnotationService,
     private loggerService: Logger,
     private lajiApi: LajiApiService,
     private translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private el: ElementRef
   ) { }
 
   ngOnInit() {
@@ -123,6 +128,39 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
   showOptionDeleted(optionId: string): boolean {
     return this.annotation.removedTags.indexOf(optionId) === -1;
+  }
+
+  copyCurrentTaxon() {
+    if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
+      if (this.unit.linkings.taxon) {
+        this.taxonElement.nativeElement.focus();
+        this.annotation.identification.taxon = this.getLangCurrentTaxon(
+          this.unit.linkings.taxon.vernacularName, this.translate.currentLang
+          );
+      } else {
+        this.taxonElement.nativeElement.focus();
+        this.annotation.identification.taxon = this.getLangCurrentTaxon(
+          this.unit.linkings.originalTaxon.vernacularName, this.translate.currentLang
+          );
+      }
+    } else {
+      return;
+    }
+  }
+
+
+  getLangCurrentTaxon(value, currentLang) {
+    if (value[currentLang]) {
+      return value[currentLang];
+    } else {
+      for (const item of AnnotationFormComponent.lang) {
+        if (item !== currentLang) {
+          if (value[item]) {
+            return value[item];
+          }
+        }
+      }
+    }
   }
 
 

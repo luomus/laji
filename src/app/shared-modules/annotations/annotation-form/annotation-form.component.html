@@ -65,8 +65,9 @@
   </div>
   <div class="row">
     <div class="col-sm-5" *ngIf="!isEditor">
-      <label>{{ 'MAN.opinion' | label }}</label>
-      <input
+      <label>{{ 'taxonomy.taxonomy' | translate }}</label> 
+      <span *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.originalTaxon)" (click)="copyCurrentTaxon()">Copy current</span>
+      <input #taxon
         [ngClass]="{loading: typeaheadLoading}"
         type="text"
         class="form-control input-sm"

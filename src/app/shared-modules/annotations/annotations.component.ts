@@ -14,6 +14,7 @@ export class AnnotationsComponent implements OnInit {
   @Input() editors: string[];
   @Input() personID: string;
   @Input() identifying = false;
+  @Input() unit: any;
   @Input() annotations: Annotation[] = [];
   @Output() close = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
