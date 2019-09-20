@@ -3,6 +3,7 @@
 div {
     &.unit {
         background-color: $main-gray;
+        position: relative;
         div {
             &.image {
                 height:200px;
@@ -44,6 +45,21 @@ div {
                     left: 50%;
                     transform: translate(-50%, -50%);
                     color: white;
+                }
+            }
+            &.status-annotation {
+                position: absolute;
+                top: 0px;
+                width: 40px;
+                height: 40px;
+                right: 0px;
+                background-color: #F5F5F5;
+                span {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    margin-right: -50%;
+                    transform: translate(-50%, -50%);
                 }
             }
 
