@@ -135,13 +135,13 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
       if (this.unit.linkings.taxon) {
         this.taxonElement.nativeElement.focus();
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
-          this.unit.linkings.taxon.vernacularName, this.translate.currentLang
+          this.unit.linkings.taxon.vernacularName, this.unit, this.translate.currentLang
           );
           this.cd.detectChanges();
       } else {
         this.taxonElement.nativeElement.focus();
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
-          this.unit.linkings.originalTaxon.vernacularName, this.translate.currentLang
+          this.unit.linkings.originalTaxon.vernacularName, this.unit, this.translate.currentLang
           );
           this.cd.detectChanges();
       }
@@ -151,17 +151,21 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   }
 
 
-  getLangCurrentTaxon(value, currentLang) {
-    if (value[currentLang]) {
-      return value[currentLang];
-    } else {
-      for (const item of AnnotationFormComponent.lang) {
-        if (item !== currentLang) {
-          if (value[item]) {
-            return value[item];
+  getLangCurrentTaxon(value, unit, currentLang) {
+    if (value) {
+      if (value[currentLang]) {
+        return value[currentLang];
+      } else {
+        for (const item of AnnotationFormComponent.lang) {
+          if (item !== currentLang) {
+            if (value[item]) {
+              return value[item];
+            }
           }
         }
       }
+    } else {
+      return unit.taxonVerbatim;
     }
   }
 
