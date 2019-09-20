@@ -6,10 +6,13 @@ div {
         position: relative;
         div {
             &.image {
-                height:200px;
+                /*min-height:200px;*/
                 margin-bottom: 10px;
                 position: relative;
                 background-color: $main-gray-darker;
+                @include media-query-laptop {
+                    min-height: auto;
+                }
                 div {
                     &.number-images {
                         position: absolute;
@@ -40,6 +43,7 @@ div {
             }
             &.no-media {
                 background-color: $main-gray-darker;
+                min-height: 100px;
                 span {
                     position: absolute;
                     top: 50%;
