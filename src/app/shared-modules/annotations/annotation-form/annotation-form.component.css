@@ -131,4 +131,15 @@ div.annotation-marker {
   font-weight: bold;
 }
 
+@media only screen and (min-width: 992px) and (max-width: 1280px) {
+  .taxon label {
+    height: 35px;
+  }
 
+  .switch-mode {
+    display: block;
+    position: absolute;
+    top: 15px;
+  }
+
+}

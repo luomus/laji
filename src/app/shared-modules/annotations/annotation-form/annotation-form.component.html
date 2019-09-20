@@ -17,7 +17,7 @@
   </div>
   <div class="tags">
       <div class="row add-tags">
-          <div class="col-sm-6">
+          <div class="col-lg-6 col-md-12 col-sm-12">
             <label>Add Tags</label> 
             <select name="addTags" class="input-sm" (change)="onChangeSelectBox($event, 'added')">
                 <option value="" [selected]="isSelected"> Please choose one </option>
@@ -29,7 +29,7 @@
               </select>
           </div>
       
-          <div class="col-sm-6 selected-tags">
+          <div class="col-lg-6 col-md-12 col-sm-12 selected-tags">
             <span *ngFor="let selected of annotation.addedTags; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
                 <div *ngSwitchCase="annotationTagsObservation[selected | toQName].value" class="annotation-marker {{ annotationTagsObservation[selected | toQName].quality }}" >
                     <span class="annotation-star {{ annotationTagsObservation[selected | toQName].quality }}"></span>
@@ -40,7 +40,7 @@
           </div>
       </div>
       <div class="row removed-tags" *ngIf="expert">
-          <div class="col-sm-6">
+          <div class="col-lg-6 col-md-12 col-sm-12">
               <label>Remove Tags</label>
               <select name="removeTags" class="input-sm" (change)="onChangeSelectBox($event, 'removed')">
                 <option value="" [selected]="isSelected"> Please choose one </option>
@@ -52,7 +52,7 @@
               </select>
           </div>
         
-          <div class="col-sm-6 selected-tags">
+          <div class="col-lg-6 col-md-12 col-sm-12 selected-tags">
               <span *ngFor="let selected of annotation.removedTags; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
                   <div *ngSwitchCase="annotationTagsObservation[selected | toQName].value" class="annotation-marker {{ annotationTagsObservation[selected | toQName].quality }}" >
                       <span class="annotation-star {{ annotationTagsObservation[selected | toQName].quality }}"></span>
@@ -64,9 +64,9 @@
       </div>
   </div>
   <div class="row taxon">
-    <div class="col-sm-5" *ngIf="!isEditor">
+    <div class="col-lg-5 col-md-12 col-sm-12" *ngIf="!isEditor">
       <label>{{ 'taxonomy.taxonomy' | translate }}</label> 
-      <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.originalTaxon)" (click)="copyCurrentTaxon()">Copy current</span>
+      <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon)" (click)="copyCurrentTaxon()">Copy current</span>
       <input #taxon
         [ngClass]="{loading: typeaheadLoading}"
         type="text"
@@ -91,34 +91,20 @@
       </ng-template>
     </div>
 
-    <div class="col-sm-2 text-center">
+    <div class="col-lg-2 col-md-3 col-sm-12 text-center">
       <label>Coll</label>
       <input type="checkbox" class="form-control input-sm">
     </div>
 
-    <div class="col-sm-5" *ngIf="!isEditor">
+    <div class="col-lg-5 col-md-9 col-sm-12" *ngIf="!isEditor">
         <label>Taxon specifier </label>
         <input
-        [ngClass]="{loading: typeaheadLoading}"
         type="text"
         class="form-control input-sm"
         name="taxonSpecifier"
         [disabled]="annotation.opinion===''"
         [(ngModel)]="annotation.identification.taxonSpecifier"
-        [typeahead]="taxonAutocomplete"
-        [typeaheadOptionsLimit]="20"
-        [typeaheadWaitMs]="200"
-        [typeaheadMinLength]="3"
-        [typeaheadOptionField]="'value'"
-        [typeaheadItemTemplate]="taxonItemSpecifier"
-        autocomplete="off"
-        autocorrect="off"
       >
-      <ng-template #taxonItemSpecifier let-model="item">
-        <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-          {{ model.value }}
-        </h5>
-      </ng-template>
     </div>
   </div>
   <div class="row message">

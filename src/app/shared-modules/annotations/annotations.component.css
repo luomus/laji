@@ -25,3 +25,9 @@
 .annotation-form {
   margin-top: 30px;
 }
+
+@media only screen and (max-width: 1280px) {
+  .switch-mode {
+    display: block;
+  }
+}

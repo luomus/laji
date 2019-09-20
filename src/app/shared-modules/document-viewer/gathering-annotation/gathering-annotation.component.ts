@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class GatheringAnnotationComponent {
+export class GatheringAnnotationComponent implements OnInit {
 
   @Input() editors: string[];
   @Input() personID: string;
@@ -27,6 +27,8 @@ export class GatheringAnnotationComponent {
 
   constructor() { }
 
+  ngOnInit() {
+  }
 
 }
 
