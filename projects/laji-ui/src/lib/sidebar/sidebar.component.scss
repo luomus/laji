@@ -17,12 +17,13 @@
 
 .sidebar {
   position: relative;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .sidebar .dragbar {
   position: absolute;
   top: 0;
-  right: 0;
   height: 100%;
   width: 3px;
   cursor: col-resize;
@@ -31,15 +32,26 @@
   opacity: 0;
 }
 
-.sidebar.left {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 20px;
+.sidebar.left .dragbar {
+  left: unset;
+  right: 0;
+}
+.sidebar.right .dragbar {
+  left: 0;
+  right: unset;
 }
 
-:host .sidebar.left ::ng-deep lu-sidebar-link div {
+.sidebar.left {
+  padding-left: 20px;
+  padding-right: 0;
+}
+.sidebar.right {
+  padding-left: 0;
+  padding-right: 20px;
+}
+
+:host .sidebar ::ng-deep lu-sidebar-link div {
   padding: 10px 20px;
-  padding-right: 30px;
   cursor: pointer;
   &:hover:not(.active) {
     background-color: $neutral-6;
@@ -47,7 +59,19 @@
   }
   &.active {
     background-color: $neutral-2;
-    box-shadow: -4px 4px 5px -4px rgba(0,0,0,0.1), -4px -3px 5px -4px rgba(0,0,0,0.1);
     cursor: default;
+  }
+}
+
+:host .sidebar.left ::ng-deep lu-sidebar-link div {
+  padding-right: 30px;
+  &.active {
+    box-shadow: -4px 4px 5px -4px rgba(0,0,0,0.1), -4px -3px 5px -4px rgba(0,0,0,0.1);
+  }
+}
+:host .sidebar.right ::ng-deep lu-sidebar-link div {
+  padding-left: 30px;
+  &.active {
+    box-shadow: 4px 4px 5px -4px rgba(0,0,0,0.1), 4px -3px 5px -4px rgba(0,0,0,0.1);
   }
 }
