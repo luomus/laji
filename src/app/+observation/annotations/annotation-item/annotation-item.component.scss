@@ -2,17 +2,12 @@
 
 div {
     &.unit-annotation {
-        height: 240px;
         overflow: hidden;
-        @include media-query-laptop {
-            height: 280px;
-        }
         @include media-query-phone {
           height: auto;
         }
     }
     &.gathering {
-      height: 130px;
       overflow: hidden;
       @include media-query-phone {
           height: auto;
@@ -21,6 +16,8 @@ div {
     &.quality{
         padding: 0 10px;
         height: 20px;
+        position: absolute;
+        bottom: 15px;
         @include media-query-phone {
           height: auto;
         }
