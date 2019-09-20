@@ -46,7 +46,9 @@
         <span class="current-tab" *ngSwitchCase="'species'">{{ 'search.result.species' | translate }}</span>
         <span class="current-tab" *ngSwitchCase="'stats'">{{ 'search.result.stats' | translate }}</span>
         <span class="current-tab" *ngSwitchCase="'load'">{{ 'search.result.load' | translate }}</span>
-        <span class="current-tab" *ngSwitchCase="'annotation'">{{ 'search.result.annotation' | translate }}</span>
+        <ng-container *ngIf="lgScreen">
+          <span class="current-tab" *ngSwitchCase="'annotation'">{{ 'search.result.annotation' | translate }}</span>
+        </ng-container>
     </ng-container>
   </a>
 
@@ -82,11 +84,13 @@
           {{ 'search.result.load' | translate }}
         </a>
       </li>
-      <li role="presentation" [ngClass]="{active: active === 'annotation'}" *lajiForTypes="['dev']">
-        <a [routerLink]="'/observation/annotation' | localize" [queryParams]="query | toSafeQuery">
-          {{ 'search.result.annotation' | translate }}
-        </a>
-      </li>
+      <ng-container *ngIf="lgScreen">
+        <li role="presentation" [ngClass]="{active: active === 'annotation'}" *lajiForTypes="['dev']">
+          <a [routerLink]="'/observation/annotation' | localize" [queryParams]="query | toSafeQuery">
+            {{ 'search.result.annotation' | translate }}
+          </a>
+        </li>
+      </ng-container>
     </ul>
   </div>
 </ng-container>
@@ -95,7 +99,7 @@
   <div [hidden]="active !== 'finnish'" *ngIf="activated['finnish']">
     <laji-main-result [query]="query" [visible]="active === 'finnish'"></laji-main-result>
   </div>
-  <div [hidden]="active !== 'annotation'" *ngIf="activated['annotation']">
+  <div [hidden]="active !== 'annotation'" *ngIf="activated['annotation'] && lgScreen">
     <laji-annotations [query]="query"></laji-annotations>
   </div>
   <div [hidden]="active !== 'map'" *ngIf="activated['map']">
