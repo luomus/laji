@@ -17,8 +17,7 @@
 
 .sidebar {
   position: relative;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px 20px;
 }
 
 .sidebar .dragbar {
@@ -41,15 +40,6 @@
   right: unset;
 }
 
-.sidebar.left {
-  padding-left: 20px;
-  padding-right: 0;
-}
-.sidebar.right {
-  padding-left: 0;
-  padding-right: 20px;
-}
-
 :host .sidebar ::ng-deep lu-sidebar-link div {
   padding: 10px 20px;
   cursor: pointer;
@@ -65,12 +55,14 @@
 
 :host .sidebar.left ::ng-deep lu-sidebar-link div {
   padding-right: 30px;
+  margin-right: -20px;
   &.active {
     box-shadow: -4px 4px 5px -4px rgba(0,0,0,0.1), -4px -3px 5px -4px rgba(0,0,0,0.1);
   }
 }
 :host .sidebar.right ::ng-deep lu-sidebar-link div {
   padding-left: 30px;
+  margin-left: -20px;
   &.active {
     box-shadow: 4px 4px 5px -4px rgba(0,0,0,0.1), 4px -3px 5px -4px rgba(0,0,0,0.1);
   }

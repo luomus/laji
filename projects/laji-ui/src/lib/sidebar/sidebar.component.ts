@@ -50,7 +50,12 @@ export class SidebarComponent implements OnDestroy {
   }
 
   onDrag(mousemove) {
-    const width = Math.abs(this.sidebarRef.nativeElement.clientLeft - mousemove.clientX);
+    let width = 0;
+    if (this.position === 'left') {
+      width = Math.abs(this.sidebarRef.nativeElement.clientLeft - mousemove.clientX);
+    } else {
+      width = Math.abs(this.sidebarRef.nativeElement.offsetLeft + this.sidebarRef.nativeElement.clientWidth - mousemove.clientX);
+    }
     this.renderer.setStyle(this.sidebarRef.nativeElement, 'width', `${width}px`);
   }
 
