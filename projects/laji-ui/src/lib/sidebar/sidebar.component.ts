@@ -8,16 +8,11 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   animations: [
     trigger('sidebarState', [
       state('inactive', style({
-        'width': '0px',
-        'overflow-x': 'hidden',
-        'padding': '0px',
-        'opacity': '0'
-      })),
+        'transform': 'translateX({{transform}})',
+        'box-shadow': '0 0 0 0 rgba(0,0,0,0.1)'
+      }), {params: {transform: '-100%'}}),
       state('active', style({
-        'width': '*',
-        'overflow-x': 'unset',
-        'padding': '*',
-        'opacity': '1'
+        'transform': 'none'
       })),
       transition('inactive<=>active', animate('200ms')),
     ])

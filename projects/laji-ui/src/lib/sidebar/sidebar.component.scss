@@ -1,5 +1,7 @@
 @import 'vars';
 
+$mobileBreakpoint: 450px;
+
 :host {
   display: flex;
   flex-flow: row nowrap;
@@ -7,17 +9,27 @@
 
 .sidebar {
   background-color: $neutral-3;
-  box-shadow: inset 0 0 10px 0 rgba(#000, 0.1);
+  box-shadow: inset -10px 0 10px -10px rgba(#000, 0.1);
+  position: relative;
+  padding: 10px 20px;
+  overflow-x: hidden;
+
+  @media only screen and (max-width: $mobileBreakpoint) {
+    position: fixed;
+    // HACK: 50px referring to navbar height... needs to be changed whenever navbar height is changed
+    top: 50px;
+    z-index: 1;
+    height: 100%;
+    box-shadow: 0 0 50px 0 rgba(#000, 0.3);
+    &.right {
+      right: 0;
+    }
+  }
 }
 
 .content {
   flex-grow: 1;
   padding: 20px 40px;
-}
-
-.sidebar {
-  position: relative;
-  padding: 10px 20px;
 }
 
 .sidebar .dragbar {

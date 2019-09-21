@@ -10,8 +10,12 @@
 <ng-container *ngIf="position === 'left' else sidebar"></ng-container>
 
 <ng-template #sidebar>
-  <div class="sidebar" [ngClass]="{'left': position === 'left', 'right': position === 'right'}" [@sidebarState]="active ? 'active' : 'inactive'" #sidebarRef>
+  <div class="sidebar"
+       [ngClass]="{'left': position === 'left', 'right': position === 'right'}"
+       [@sidebarState]="{value: active ? 'active' : 'inactive', params: {transform: position === 'left' ? '-100%' : '100%'}}"
+       #sidebarRef>
     <div *ngIf="draggable" class="dragbar" (mousedown)="onDragStart($event)"></div>
+    <button (click)="onSwitchState()">Close</button>
     <ng-content select="nav"></ng-content>
   </div>
 </ng-template>
