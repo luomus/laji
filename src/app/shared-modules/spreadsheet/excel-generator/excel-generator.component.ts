@@ -3,7 +3,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { IFormField } from '../../../+haseka/tools/model/excel';
-import { SpreadSheetService } from '../service/spread-sheet.service';
+import { SpreadsheetService } from '../service/spreadsheet.service';
 import { GeneratorService } from '../service/generator.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class ExcelGeneratorComponent implements OnInit {
   constructor(
     private formService: FormService,
     private translateService: TranslateService,
-    private spreadSheetService: SpreadSheetService,
+    private spreadSheetService: SpreadsheetService,
     private generatorService: GeneratorService,
     private cdr: ChangeDetectorRef
   ) { }

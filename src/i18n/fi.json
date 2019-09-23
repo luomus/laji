@@ -96,6 +96,7 @@
   "excel.map.col-ok": "Kaikki sarakkeet onnistuttiin tunnistamaan automaattisesti.",
   "excel.map.col-select": "Valitse sarakkeen merkitys",
   "excel.map.col-user": "Tiedostossa oleva otsikko",
+  "excel.map.delete": "Oletko varma että halut poistaa datan kuvauksen?",
   "excel.map.value-intro": "Mitä tunnettua arvoa tiedostossa oleva arvo tarkoittaa.",
   "excel.map.value-mapped": "Vihkoon vietävä arvo",
   "excel.map.value-select": "Valitse arvon merkitys",

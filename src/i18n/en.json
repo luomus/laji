@@ -91,6 +91,7 @@
   "excel.info.personID": "Field should have users MA IDs. If the field is required, currently logged in user information is automatically added.",
   "excel.info.taxon": "Write the species name to this field.",
   "excel.info.taxonID": "Field should have taxon IDs. You can look for one directly from species.fi or you can write the name as it is. If you write the name, when importing you'll be asked to link the values to known taxon IDs.",
+  "excel.map.delete": "Are you sure that you want to remove the user mapping?",
   "excel.map.col-intro": "Select the meaning of column from the dropdown.",
   "excel.map.col-mapped": "Notebooks fields",
   "excel.map.col-ok": "All the columns where mapped automatically.",

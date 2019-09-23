@@ -23,7 +23,7 @@ import { TaxonAutocompleteModule } from '../taxon-autocomplete/taxon-autocomplet
 import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
 import { ImportContainerComponent } from './importer/import-container.component';
 import { CanSplitToPipe } from './excel-generator/pipes/can-split-to.pipe';
-import { SpreadSheetService } from './service/spread-sheet.service';
+import { SpreadsheetService } from './service/spreadsheet.service';
 import { MappingService } from './service/mapping.service';
 import { ImportService } from './service/import.service';
 import { GeneratorService } from './service/generator.service';
@@ -32,6 +32,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { DatatableModule } from '../datatable/datatable.module';
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { TypeaheadModule } from 'ngx-bootstrap';
+import { UserMappingButtonComponent } from './importer/load-file/user-mapping-button.component';
+import { SpreadsheetFacade } from './spreadsheet.facade';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import { TypeaheadModule } from 'ngx-bootstrap';
     StepperComponent,
     SpecialInformalTaxonGroupsComponent,
     ImportContainerComponent,
-    CanSplitToPipe
+    CanSplitToPipe,
+    UserMappingButtonComponent
   ],
   exports: [ImporterComponent, ExcelGeneratorComponent],
   imports: [
@@ -66,6 +69,6 @@ import { TypeaheadModule } from 'ngx-bootstrap';
     TypeaheadModule,
     TaxonAutocompleteModule,
   ],
-  providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService],
+  providers: [SpreadsheetService, MappingService, ImportService, GeneratorService, AugmentService, SpreadsheetFacade],
 })
 export class SpreadsheetModule { }

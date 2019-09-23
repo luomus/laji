@@ -4,6 +4,7 @@ import { IColMap, IFormField, IUserMappings, IValueMap, TUserValueMap, VALUE_IGN
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
+import { SpreadsheetFacade } from '../spreadsheet.facade';
 
 export enum SpecialTypes {
   geometry = 'geometry',
@@ -74,7 +75,8 @@ export class MappingService {
 
   constructor(
     private translationService: TranslateService,
-    private coordinateService: CoordinateService
+    private coordinateService: CoordinateService,
+    private spreadsheetFacade: SpreadsheetFacade
   ) { }
 
 
@@ -92,9 +94,10 @@ export class MappingService {
   }
 
   addUserColMapping(mapping) {
-    if (typeof mapping !== 'object' || Array.isArray(mapping)) {
+    if (typeof mapping !== 'object' || Array.isArray(mapping) || Object.keys(mapping).length === 0) {
       return;
     }
+    this.spreadsheetFacade.hasUserMapping(true);
     Object.keys(mapping).map(col => {
       this.userColMappings[col.toLowerCase()] = mapping[col];
     });
@@ -104,6 +107,7 @@ export class MappingService {
     if (typeof mapping !== 'object' || Array.isArray(mapping)) {
       return;
     }
+    let hasMapping = false;
     Object.keys(mapping).map(field => {
       if (typeof mapping[field] !== 'object' || Array.isArray(mapping[field])) {
         return;
@@ -113,9 +117,13 @@ export class MappingService {
       }
       Object.keys(mapping[field])
         .map(key => {
+          hasMapping = true;
           this.userValueMappings[field][key.toLowerCase()] = mapping[field][key];
         });
     });
+    if (hasMapping) {
+      this.spreadsheetFacade.hasUserMapping(true);
+    }
   }
 
   clearUserValueMapping() {
@@ -158,6 +166,7 @@ export class MappingService {
   clearUserMapping(): void {
     this.userColMappings = {};
     this.userValueMappings = {};
+    this.spreadsheetFacade.hasUserMapping(false);
   }
 
   getUserMappings(): IUserMappings {
