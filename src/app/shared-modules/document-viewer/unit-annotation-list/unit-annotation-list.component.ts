@@ -14,6 +14,7 @@ import { Annotation } from '../../../shared/model/Annotation';
 export class UnitAnnotationListComponent implements OnInit {
   @Input() editors: string[];
   @Input() personID: string;
+  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() documentID: string;
   @Input() unit: any;
   @Input() highlight: string;

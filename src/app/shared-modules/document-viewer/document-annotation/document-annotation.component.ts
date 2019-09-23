@@ -13,12 +13,14 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { interval as ObservableInterval, Subscription, throwError as observableThrowError } from 'rxjs';
+import { interval as ObservableInterval, Subscription, throwError as observableThrowError, Observable } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
+import { Annotation } from '../../../shared/model/Annotation';
+import { Person } from '../../../shared/model/Person';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -43,6 +45,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   documentID: string;
   editors: string[];
   personID: string;
+  personRoleAnnotation: Annotation.AnnotationRoleEnum;
   activeGathering: any;
   mapData: any = [];
   hasMapData = false;
@@ -57,6 +60,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   private interval: Subscription;
   private metaFetch: Subscription;
 
+
   constructor(
     private warehouseApi: WarehouseApi,
     private userService: UserService,
@@ -65,8 +69,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ) { }
 
   ngOnInit() {
-    this.metaFetch = this.userService.user$.subscribe(person => {
+    this.metaFetch = this.userService.user$.subscribe((person: Person) => {
       this.personID = person.id;
+      if (person.roleAnnotation) {
+        this.personRoleAnnotation = person.roleAnnotation;
+      } else {
+        this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
+      }
       this.cd.markForCheck();
     });
   }

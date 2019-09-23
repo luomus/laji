@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Annotation } from '../../../shared/model/Annotation';
 
 
 @Component({
@@ -12,6 +13,7 @@ export class GatheringAnnotationComponent implements OnInit {
 
   @Input() editors: string[];
   @Input() personID: string;
+  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() documentID: string;
   @Input() gathering: any;
   @Input() highlight: string;

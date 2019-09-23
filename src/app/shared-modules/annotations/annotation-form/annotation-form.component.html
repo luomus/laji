@@ -39,7 +39,7 @@
             </span>
           </div>
       </div>
-      <div class="row removed-tags" *ngIf="expert">
+      <div class="row removed-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert'">
           <div class="col-lg-6 col-md-12 col-sm-12">
               <label>Remove Tags</label>
               <select name="removeTags" class="input-sm" (change)="onChangeSelectBox($event, 'removed')">
@@ -52,7 +52,7 @@
               </select>
           </div>
         
-          <div class="col-lg-6 col-md-12 col-sm-12 selected-tags">
+          <div class="col-lg-6 col-md-12 col-sm-12 selected-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert'">
               <span *ngFor="let selected of annotation.removedTags; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
                   <div *ngSwitchCase="annotationTagsObservation[selected | toQName].value" class="annotation-marker {{ annotationTagsObservation[selected | toQName].quality }}" >
                       <span class="annotation-star {{ annotationTagsObservation[selected | toQName].quality }}"></span>
@@ -113,7 +113,7 @@
       <textarea #notes="ngModel"
                 name="notes"
                 class="form-control feedback-text input-sm"
-                [required]="(!unIdentifyable && !expert)"
+                [required]="!unIdentifyable && !expert"
                 [(ngModel)]="annotation.notes"></textarea>
     </div>
   </div>

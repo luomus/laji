@@ -22,6 +22,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
   @Input() editors: string[];
   @Input() personID: string;
+  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() annotations: Annotation[];
   @Input() annotation: Annotation;
   @Input() identifying: boolean;

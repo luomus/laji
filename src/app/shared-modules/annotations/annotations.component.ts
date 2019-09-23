@@ -13,6 +13,7 @@ export class AnnotationsComponent implements OnInit {
   @Input() targetID: string;
   @Input() editors: string[];
   @Input() personID: string;
+  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() identifying = false;
   @Input() unit: any;
   @Input() annotations: Annotation[] = [];

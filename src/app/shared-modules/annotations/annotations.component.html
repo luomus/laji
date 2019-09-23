@@ -19,21 +19,30 @@
 </div>
 
 <div class="annotation-form">
-    <span class="comment-title">
-        {{ 'annotation.addAnnotationExpert' | translate }}
-    </span>
-    <span *lajiLoggedIn="true">
-      <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()"> Switch to basic</span>
-      <ng-template #basicMode>
-        <span class="switch-mode expert" (click)="changeModeForm()"> Switch to expert</span>
-      </ng-template>  
-    </span>
+  <ng-container *ngIf="personRoleAnnotation == 'MMAN.expert'; else basicForm">
+      <span class="comment-title">
+          {{ 'annotation.addAnnotationExpert' | translate }}
+      </span>
+      <span *lajiLoggedIn="true">
+        <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()"> Switch to basic</span>
+        <ng-template #basicMode>
+          <span class="switch-mode expert" (click)="changeModeForm()"> Switch to expert</span>
+        </ng-template>  
+      </span>
+  </ng-container>
+  <ng-template #basicForm>
+      <span class="comment-title">
+          Add an annotation
+      </span>
+  </ng-template>
+    
    
     <laji-annotation-form
     [identifying]="identifying"
     [annotations]="annotations | convertAnnotations"
     [annotation]="annotation"
     [personID]="personID"
+    [personRoleAnnotation]="personRoleAnnotation"
     [editors]="editors"
     [expert]="expert"
     [unit]="unit"
