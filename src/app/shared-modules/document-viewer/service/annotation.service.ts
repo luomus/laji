@@ -26,30 +26,34 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
     return this.lajiApi.post(LajiApi.Endpoints.annotations, annotation, {personToken: this.userService.getToken()});
   }
 
-  getAllAddableTags(lang: string): Observable<AnnotationTag[]> {
-    return this.userService.user$.pipe(
-      take(1),
-      switchMap(user => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
-        // TODO: add logic to get the user role
-        map(tags => tags.filter(tag => tag.requiredRolesAdd && tag.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.basic)))
-      ))
-    );
-  }
-
-  getAllRemovableTags(lang: string): Observable<AnnotationTag[]> {
-    return this.userService.user$.pipe(
-      take(1),
-      switchMap(user => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
-        // TODO: add logic to get the user role
-        map(tags => tags.filter(tag => tag.requiredRolesRemove && tag.requiredRolesRemove.includes(Annotation.AnnotationRoleEnum.basic)))
-      ))
-    );
-  }
-
   getTag(id: string, lang: string): Observable<AnnotationTag> {
     return this.fetchById(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang, id);
   }
 
+  getAllAddableTags(lang: string): Observable<AnnotationTag[]> {
+    return this.annotatorsTags('requiredRolesAdd', lang);
+  }
+
+  getAllRemovableTags(lang: string): Observable<AnnotationTag[]> {
+    return this.annotatorsTags('requiredRolesRemove', lang);
+  }
+
+  private annotatorsTags(
+    type: keyof Pick<AnnotationTag, 'requiredRolesAdd' | 'requiredRolesRemove'>,
+    lang
+  ): Observable<AnnotationTag[]> {
+    return this.userService.user$.pipe(
+      take(1),
+      map(user => (user && user.roleAnnotation) || Annotation.AnnotationRoleEnum.basic),
+      switchMap(annotatorsRole => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
+        map(tags => tags.filter(tag => tag[type] && tag[type].includes(annotatorsRole)))
+      ))
+    );
+  }
+
+  /**
+   * @deprecated
+   */
   getAnnotationClassInEffect(annotations: Annotation[]): Observable<Annotation.AnnotationClassEnum>;
   getAnnotationClassInEffect(
     annotations: Annotation[] = []
