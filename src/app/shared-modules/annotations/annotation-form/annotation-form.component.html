@@ -73,7 +73,7 @@
         class="form-control input-sm"
         name="opinion"
         [disabled]="unIdentifyable"
-        [required]="expert"
+        [required]="expert && personRoleAnnotation==='MMAN.expert'"
         [(ngModel)]="annotation.identification.taxon"
         [typeahead]="taxonAutocomplete"
         [typeaheadOptionsLimit]="20"
@@ -113,7 +113,7 @@
       <textarea #notes="ngModel"
                 name="notes"
                 class="form-control feedback-text input-sm"
-                [required]="!expert"
+                [required]="!expert || personRoleAnnotation==='MMAN.basic'"
                 [(ngModel)]="annotation.notes"></textarea>
     </div>
   </div>

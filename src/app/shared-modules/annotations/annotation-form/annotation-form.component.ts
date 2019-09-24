@@ -22,7 +22,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
   @Input() editors: string[];
   @Input() personID: string;
-  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
+  @Input() personRoleAnnotation: string;
   @Input() annotations: Annotation[];
   @Input() annotation: Annotation;
   @Input() identifying: boolean;
@@ -219,6 +219,10 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     this.sending = true;
     if (this.unIdentifyable) {
       this.annotation.type = Annotation.TypeEnum.TypeUnidentifiable;
+    }
+
+    if (!this.expert) {
+    this.annotation.removedTags = [];
     }
 
     this.annotationService

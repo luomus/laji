@@ -20,9 +20,12 @@
 
 <div class="annotation-form">
   <ng-container *ngIf="personRoleAnnotation == 'MMAN.expert'; else basicForm">
-      <span class="comment-title">
+      <span class="comment-title"  *ngIf="expert; else expertAnnotation">
           {{ 'annotation.addAnnotationExpert' | translate }}
       </span>
+      <ng-template #expertAnnotation>
+        <span class="comment-title">Add basic annotation</span>
+      </ng-template>
       <span *lajiLoggedIn="true">
         <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()"> Switch to basic</span>
         <ng-template #basicMode>
