@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 type Role = 'primary' | 'secondary';
@@ -38,7 +38,7 @@ type Role = 'primary' | 'secondary';
     ])
   ]
 })
-export class ButtonComponent {
+export class ButtonComponent implements OnDestroy {
   private _role: Role = 'secondary';
   @Input() set role(role: Role) {
     this._role = role;
@@ -67,7 +67,10 @@ export class ButtonComponent {
   onAnimationDone() {
     setTimeout(() => {
       this.clicked = 'unclicked';
-      this.cdr.detectChanges();
-    }, 100);
+      this.cdr.markForCheck();
+    });
+  }
+  ngOnDestroy() {
+    this.cdr.detach();
   }
 }

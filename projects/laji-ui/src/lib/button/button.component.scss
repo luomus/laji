@@ -14,7 +14,7 @@ button {
 .primary {
   background-color: $primary-5;
   color: adjust-hue($color: $neutral-1, $degrees: -20%);
-  box-shadow: 0 2px 6px $neutral-4;
+  box-shadow: 0 2px 6px rgba($neutral-8, 0.2);
   &:hover {
     background-color: $primary-6;
     color: adjust-hue($color: $neutral-2, $degrees: -20%);
@@ -24,7 +24,7 @@ button {
 .secondary {
   background-color: $neutral-1;
   color: $neutral-7;
-  box-shadow: 0 1px 3px $neutral-4;
+  box-shadow: 0 1px 3px rgba($neutral-8, 0.2);
   &:hover {
     background-color: $primary-1;
     color: $primary-7;

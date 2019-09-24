@@ -7,24 +7,23 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   styleUrls: ['./sidebar.component.scss'],
   animations: [
     trigger('sidebarState', [
-      state('inactive', style({
+      state('closed', style({
         'transform': 'translateX({{transform}})',
         'box-shadow': '0 0 0 0 rgba(0,0,0,0.1)'
       }), {params: {transform: '-100%'}}),
-      state('active', style({
-        'transform': 'none'
+      state('open', style({
+        'transform': 'translateX(0%)',
       })),
-      transition('inactive<=>active', animate('200ms')),
+      transition('closed<=>open', animate('200ms')),
     ])
   ]
 })
 export class SidebarComponent implements OnDestroy {
   @Input() position: 'left' | 'right' = 'left';
   @Input() draggable = true;
+  @Input() open = true;
 
   @ViewChild('sidebarRef', {static: false}) sidebarRef: ElementRef;
-
-  active = true;
 
   destroyDragMoveListener: Function;
   destroyDragEndListener: Function;
@@ -32,7 +31,7 @@ export class SidebarComponent implements OnDestroy {
   constructor(private renderer: Renderer2) {}
 
   onSwitchState() {
-    this.active = !this.active;
+    this.open = !this.open;
   }
 
   onSwitchPosition() {
