@@ -30,7 +30,7 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
     return this.fetchById(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang, id);
   }
 
-  getAllAddableTags(lang: string, own): Observable<AnnotationTag[]> {
+  getAllAddableTags(lang: string, own = false): Observable<AnnotationTag[]> {
     return this.annotatorsTags('requiredRolesAdd', lang, own);
   }
 
