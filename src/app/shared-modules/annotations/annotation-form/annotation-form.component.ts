@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { Global } from '../../../../environments/global';
+import { format } from 'd3-format';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   @Output() cancel = new EventEmitter<any>();
 
   @ViewChild('taxon', {static: false}) taxonElement: ElementRef;
+  @ViewChild('annotationForm', {static: false}) formAnnotation: any;
   taxonAutocomplete: Observable<any>;
   error: any;
   unIdentifyable = false;
@@ -139,12 +141,14 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
           this.unit.linkings.taxon.vernacularName, this.unit, this.translate.currentLang
           );
           this.cd.detectChanges();
+          this.formAnnotation.control.markAsDirty();
       } else {
         this.taxonElement.nativeElement.focus();
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
           this.unit.linkings.originalTaxon.vernacularName, this.unit, this.translate.currentLang
           );
           this.cd.detectChanges();
+          this.formAnnotation.control.markAsDirty();
       }
     } else {
       return;
