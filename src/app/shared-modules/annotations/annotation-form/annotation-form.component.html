@@ -73,7 +73,7 @@
         class="form-control input-sm"
         name="opinion"
         [disabled]="unIdentifyable"
-        [required]="(!unIdentifyable && expert)"
+        [required]="expert"
         [(ngModel)]="annotation.identification.taxon"
         [typeahead]="taxonAutocomplete"
         [typeaheadOptionsLimit]="20"
@@ -113,13 +113,13 @@
       <textarea #notes="ngModel"
                 name="notes"
                 class="form-control feedback-text input-sm"
-                [required]="!unIdentifyable && !expert"
+                [required]="!expert"
                 [(ngModel)]="annotation.notes"></textarea>
     </div>
   </div>
   <div class="actions">
     <!--<button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button>-->
-    <button type="submit" [disabled]="!annotationForm.form.valid || sending" class="btn btn-success btn-sm">Send annotation</button>
+    <button type="submit" [disabled]="annotationForm.pristine || !annotationForm.form.valid || sending" class="btn btn-success btn-sm">Send annotation</button>
   </div>
 </form>
 <div *lajiLoggedIn="false" class="annotation-form">
