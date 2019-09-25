@@ -7,6 +7,7 @@ import { TabsComponent } from './tabs/tabs.component';
 import { TabComponent } from './tabs/tab/tab.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SidebarLinkComponent } from './sidebar/sidebar-link/sidebar-link.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -16,7 +17,8 @@ import { SidebarLinkComponent } from './sidebar/sidebar-link/sidebar-link.compon
     SidebarLinkComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   exports: [ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent, SidebarLinkComponent]
 })

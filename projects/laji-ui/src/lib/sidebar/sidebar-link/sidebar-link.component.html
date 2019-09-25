@@ -1,3 +1,4 @@
-<div [ngClass]="{'active': active.isActive}">
-  <ng-content></ng-content>
+<div [routerLink]="link" [ngClass]="{'active': active}">
+  <ng-content select="*"></ng-content>
 </div>
+<ng-content *ngIf="active" select="lu-sidebar-link"></ng-content>

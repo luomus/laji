@@ -34,10 +34,6 @@ export class SidebarComponent implements OnDestroy {
     this.open = !this.open;
   }
 
-  onSwitchPosition() {
-    this.position === 'left' ? this.position = 'right' : this.position = 'left';
-  }
-
   onDragStart(mousedown) {
     this.destroyDragMoveListener = this.renderer.listen(document, 'mousemove', this.onDrag.bind(this));
     this.destroyDragEndListener = this.renderer.listen(document, 'mouseup', this.onDragEnd.bind(this));

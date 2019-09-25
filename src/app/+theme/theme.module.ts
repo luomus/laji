@@ -64,6 +64,7 @@ import { InstructionsComponent } from './common/instructions/instructions.compon
 import { ThemePageComponent } from './common/theme-page.component';
 import { FormComponent } from './common/form/form.component';
 import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/theme-own-submissions.component';
+import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 
 /* tslint:enable:max-line-length */
 
@@ -89,6 +90,7 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
     NavigationThumbnailModule,
     LatestDocumentsModule,
     InfoPageModule,
+    LajiUiModule
   ],
   declarations: [
     HerpetologyComponent,

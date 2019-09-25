@@ -4,6 +4,7 @@ $mobileBreakpoint: 450px;
 
 :host {
   position: relative;
+  height: 100%;
   display: flex;
   flex-flow: row nowrap;
 }
@@ -60,6 +61,8 @@ $mobileBreakpoint: 450px;
 }
 
 :host .sidebar ::ng-deep lu-sidebar-link div {
+  position: relative;
+  z-index: 1;
   padding: 10px 20px;
   cursor: pointer;
   &:hover:not(.active) {

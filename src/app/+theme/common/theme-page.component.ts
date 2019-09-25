@@ -4,7 +4,21 @@ import { UserService } from '../../shared/service/user.service';
 @Component({
     selector: 'laji-theme-page',
     template: `
-<div class="container-fluid">
+<lu-sidebar>
+  <nav>
+    <h4>Vieraslajit</h4>
+    <lu-sidebar-link *ngFor="let link of navLinks" [link]="link.routerLink" routerLinkActive>
+      {{ link.label | translate }}
+      <lu-sidebar-link *ngFor="let child of link.children" [link]="child.routerLink">
+        {{ child.label | translate }}
+      </lu-sidebar-link>
+    </lu-sidebar-link>
+  </nav>
+  <main>
+    <ng-content select='*'></ng-content>
+  </main>
+</lu-sidebar>
+<!--<div class="container-fluid">
     <div class="row" id="wrapper">
         <div *ngIf='showNav' class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
             <h1 [innerHTML]="title | translate"></h1>
@@ -39,7 +53,7 @@ import { UserService } from '../../shared/service/user.service';
             <ng-content select='*'></ng-content>
         </div>
     </div>
-</div>
+</div>-->
     `,
     styles: [`
     :host {

@@ -3,3 +3,8 @@
 :host {
   display: block;
 }
+
+// nested links
+:host ::ng-deep lu-sidebar-link {
+  margin-left: 20px;
+}
