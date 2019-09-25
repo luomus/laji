@@ -130,6 +130,14 @@
     <div class="page-header">
       <h2>{{ 'viewer.notFound' | translate }}</h2>
     </div>
-  </ng-container>
-  <!--<pre>{{document | json}}</pre>-->
-  
+  </div>
+  <div style="margin-top: 10px" *ngIf="document.licenseId">
+    <laji-license [type]="document.licenseId"></laji-license>
+  </div>
+</ng-container>
+<ng-container *ngIf="hasDoc === false">
+  <div class="page-header">
+    <h2>{{ 'viewer.notFound' | translate }}</h2>
+  </div>
+</ng-container>
+<!--<pre>{{document | json}}</pre>-->

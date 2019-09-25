@@ -38,6 +38,7 @@ import { GatheringAnnotationsRowsComponent } from './gathering-annotations-rows/
 import { GatheringAnnotationComponent } from './gathering-annotation/gathering-annotation.component';
 import { UnitAnnotationRowsComponent } from './unit-annotation-rows/unit-annotation-rows.component';
 import { UnitAnnotationListComponent } from './unit-annotation-list/unit-annotation-list.component';
+import { LicenseModule } from '../license/license.module';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { UnitAnnotationListComponent } from './unit-annotation-list/unit-annotat
     TypeaheadModule,
     LangModule,
     AnnotationsModule,
-    LajiMapModule
+    LajiMapModule,
+    LicenseModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
