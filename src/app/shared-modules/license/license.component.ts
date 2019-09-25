@@ -100,7 +100,7 @@ const LICENSES: {[type: string]: ILicense} = {
         <a *ngSwitchDefault [href]="_license.link" target="_blank" rel="noopener nofollow">
             <img *ngIf="_license.img; else noImg" [src]="'static/images/license-icons/' + _license.img"
                  [alt]="_sort"
-                 style="height: 30px">
+                 style="height: 18px">
             <ng-template #noImg>{{ _type | label }}</ng-template>
         </a>
     </ng-container>
