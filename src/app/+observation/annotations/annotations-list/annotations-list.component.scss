@@ -3,6 +3,9 @@
 div{
     &.annotation{
         margin-bottom:40px;
+        @include media-query-big-desktop {
+            width: 16.666666667%;
+        }
         div {
             &.annotation-item {
                 background-color: $main-gray;

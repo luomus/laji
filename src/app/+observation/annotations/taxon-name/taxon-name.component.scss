@@ -9,7 +9,7 @@ div {
                 /*min-height:200px;*/
                 margin-bottom: 10px;
                 position: relative;
-                background-color: $main-gray-darker;
+                background-color: $black;
                 @include media-query-laptop {
                     min-height: auto;
                 }
@@ -42,7 +42,7 @@ div {
                 height: 40px;
             }
             &.no-media {
-                background-color: $main-gray-darker;
+                background-color: $black;
                 min-height: 100px;
                 span {
                     position: absolute;
