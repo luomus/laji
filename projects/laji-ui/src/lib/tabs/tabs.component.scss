@@ -1,0 +1,32 @@
+@import 'vars';
+
+$selector-vertical-padding: 12px;
+$selector-horizontal-padding: 24px;
+
+.tabs-list {
+  padding: 0;
+  border-bottom: 1px solid $neutral-4;
+  box-shadow: inset 0 -5px 5px -5px rgba(#000, 0.1);
+  li {
+    display: inline-block;
+    padding: $selector-vertical-padding $selector-horizontal-padding;
+    margin-right: 8px;
+    margin-bottom: -1px;
+    cursor: pointer;
+    border: 1px solid $neutral-4;
+    &:not(.active) {
+      box-shadow: inset 0 -5px 5px -5px rgba(#000, 0.1);
+    }
+    &.active {
+      border-bottom: none;
+      padding-bottom: $selector-vertical-padding + 1px;
+      margin-bottom: -2px;
+      cursor: unset;
+      $blur: 3px;
+      box-shadow: 5px 0px $blur -5px rgba(#000, 0.1), -5px 0px $blur -5px rgba(#000, 0.1), 0px -5px $blur -5px rgba(#000, 0.1);
+    }
+    &:hover:not(.active) {
+      background-color: lighten($neutral-3, 3) !important;
+    }
+  }
+}

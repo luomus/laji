@@ -1,0 +1,12 @@
+<button [ngClass]="role"
+        [disabled]="disabled"
+        [@clicked]="{
+          value: clicked,
+          params: {
+            bg: clickedStyles['background-color'],
+            color: clickedStyles['color']
+          }
+        }"
+        (@clicked.done)="onAnimationDone()"
+        [@disabled]="disabled ? 'disabled': 'active'"
+        (click)="onClick()"><ng-content></ng-content></button>

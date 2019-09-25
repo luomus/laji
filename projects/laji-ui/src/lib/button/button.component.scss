@@ -1,0 +1,43 @@
+@import 'vars';
+
+button {
+  color: $neutral-8;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5em 1em;
+  margin: 0.25em 0;
+  &:focus {
+    outline: unset;
+  }
+}
+
+.primary {
+  background-color: $primary-5;
+  color: adjust-hue($color: $neutral-1, $degrees: -20%);
+  box-shadow: 0 2px 6px rgba($neutral-8, 0.2);
+  &:hover {
+    background-color: $primary-6;
+    color: adjust-hue($color: $neutral-2, $degrees: -20%);
+  }
+}
+
+.secondary {
+  background-color: $neutral-1;
+  color: $neutral-7;
+  box-shadow: 0 1px 3px rgba($neutral-8, 0.2);
+  &:hover {
+    background-color: $primary-1;
+    color: $primary-7;
+  }
+}
+
+*:disabled {
+  background-color: rgba(0,0,0,0);
+  color: $neutral-6;
+  border: 1px solid $neutral-3;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  &:hover {
+    background-color: rgba(0,0,0,0);
+    color: $neutral-6;
+  }
+}
