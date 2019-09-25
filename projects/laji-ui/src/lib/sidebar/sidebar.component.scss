@@ -23,8 +23,6 @@ $mobileBreakpoint: 450px;
 
   @media only screen and (max-width: $mobileBreakpoint) {
     position: fixed;
-    // HACK: 50px referring to navbar height... needs to be changed whenever navbar height is changed
-    top: 50px;
     z-index: 2;
     height: 100%;
     box-shadow: 0 0 50px 0 rgba(#000, 0.2);
@@ -100,21 +98,21 @@ $mobileBreakpoint: 450px;
 :host ::ng-deep .open-menu button {
   position: fixed;
   z-index: 1;
-  margin-top: 10px;
+  margin: 0;
   padding: 10px 10px;
 }
 
 :host ::ng-deep .open-menu.left button {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 10px;
+  border-radius: 0;
   border-bottom-right-radius: 10px;
 }
 
 :host ::ng-deep .open-menu.right button {
   right:0;
-  border-top-left-radius: 10px;
+  border-radius: 0;
   border-bottom-left-radius: 10px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+}
+
+:host ::ng-deep nav {
+  min-width: max-content;
 }
