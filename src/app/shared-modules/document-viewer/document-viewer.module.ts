@@ -32,6 +32,7 @@ import { PrintRowComponent } from './document-local/collection-contest-local-pri
 import { PrintTaxonHeaderComponent } from './document-local/collection-contest-local-print/print-taxon-header/print-taxon-header.component';
 import { CoordinatesViewerComponent } from './viewer-coordinates/viewer-coordinates.component';
 import { ViewerModalComponent } from './viewer-modal/viewer-modal.component';
+import { LicenseModule } from '../license/license.module';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { ViewerModalComponent } from './viewer-modal/viewer-modal.component';
     TypeaheadModule,
     LangModule,
     AnnotationsModule,
-    LajiMapModule
+    LajiMapModule,
+    LicenseModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
