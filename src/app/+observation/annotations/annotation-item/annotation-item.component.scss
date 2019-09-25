@@ -1,35 +1,44 @@
 @import '../../../../styles/_styles.scss'; 
 
 div {
-    &.unit-annotation {
-        overflow: hidden;
-        @include media-query-phone {
-          height: auto;
+    &.item-content{
+        min-height: 460px;
+        @include media-query-tablet {
+            min-height: 520px;
+        }
+        div {
+            &.unit-annotation {
+                overflow: hidden;
+                @include media-query-phone {
+                  height: auto;
+                }
+            }
+            &.gathering {
+              overflow: hidden;
+              @include media-query-phone {
+                  height: auto;
+              }
+            }
+            &.quality{
+                padding: 0 10px;
+                height: 20px;
+                position: absolute;
+                bottom: 15px;
+                @include media-query-phone {
+                  height: auto;
+                }
+            }
+            &.information {
+                height: 20px;
+                overflow: hidden;
+                padding: 0 10px;
+                @include media-query-phone {
+                  height: auto;
+                }
+            }
         }
     }
-    &.gathering {
-      overflow: hidden;
-      @include media-query-phone {
-          height: auto;
-      }
-    }
-    &.quality{
-        padding: 0 10px;
-        height: 20px;
-        position: absolute;
-        bottom: 15px;
-        @include media-query-phone {
-          height: auto;
-        }
-    }
-    &.information {
-        height: 20px;
-        overflow: hidden;
-        padding: 0 10px;
-        @include media-query-phone {
-          height: auto;
-        }
-    }
+    
   }
   span{
       &.green{
