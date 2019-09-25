@@ -1,4 +1,5 @@
 @import "styles";
+@import "vars";
 
 html {
   position: relative;
@@ -7,6 +8,7 @@ html {
 }
 
 body {
+  background-color: $neutral-2;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding-top: 50px;
   height: 100%;
