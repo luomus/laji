@@ -236,6 +236,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
           this.annotation = annotation;
           this.success.emit(annotation);
           this.sending = false;
+          this.formAnnotation.control.markAsPristine();
         },
         error => {
           this.error = true;

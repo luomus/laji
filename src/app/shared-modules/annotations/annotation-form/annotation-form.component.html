@@ -102,7 +102,7 @@
         type="text"
         class="form-control input-sm"
         name="taxonSpecifier"
-        [disabled]="annotation.opinion===''"
+        [disabled]="annotation.identification.taxon===''"
         [(ngModel)]="annotation.identification.taxonSpecifier"
       >
     </div>

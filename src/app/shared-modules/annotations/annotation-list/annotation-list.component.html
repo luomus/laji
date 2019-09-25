@@ -13,7 +13,7 @@
         </ng-template>
         <p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
             <span>{{ 'annotation.newIdentification' | translate }}:</span> {{ annotation.identification.taxon }}
-            <span *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''">, {{ annotation.identification.taxonSpecifier }}</span>
+            <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''">,{{ annotation.identification.taxonSpecifier }}</ng-container>
         </p>
         <div class="tags" *ngIf="annotation.addedTags || annotation.addedTags">
          <div class="added-tags" *ngIf="annotation.addedTags.length > 0">
