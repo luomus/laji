@@ -41,6 +41,14 @@ const LICENSES: {[type: string]: ILicense} = {
     link: 'https://creativecommons.org/licenses/by-nc/4.0/',
     img: 'by-nc.png'
   },
+  'MZ.intellectualRightsCC-BY-ND-4.0': {
+    link: 'https://creativecommons.org/licenses/by-nd/4.0/',
+    img: 'by-nd.png'
+  },
+  'MZ.intellectualRightsCC-BY-NC-ND-4.0': {
+    link: 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+    img: 'by-nc-nd.png'
+  },
   'MZ.intellectualRightsCC-BY-NC-2.0': {
     link: 'https://creativecommons.org/licenses/by-nc/2.0/',
     img: 'by-nc.png'
