@@ -24,6 +24,7 @@ export class AnnotationsComponent implements OnInit {
   expert = true;
   type: Annotation.TypeEnum;
   annotation: Annotation = {};
+  annotationRole = Annotation.AnnotationRoleEnum;
 
   constructor(private annotationService: AnnotationService) { }
 

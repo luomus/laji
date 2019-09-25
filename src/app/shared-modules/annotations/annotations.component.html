@@ -19,7 +19,7 @@
 </div>
 
 <div class="annotation-form">
-  <ng-container *ngIf="personRoleAnnotation == 'MMAN.expert'; else basicForm">
+  <ng-container *ngIf="personRoleAnnotation === annotationRole.expert; else basicForm">
       <span class="comment-title"  *ngIf="expert; else expertAnnotation">
           {{ 'annotation.addAnnotationExpert' | translate }}
       </span>

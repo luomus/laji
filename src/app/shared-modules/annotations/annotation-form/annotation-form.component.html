@@ -63,7 +63,7 @@
           </div>
       </div>
   </div>
-  <div class="row taxon">
+  <div class="row taxon" *ngIf="!isEditor">
     <div class="col-lg-5 col-md-12 col-sm-12" *ngIf="!isEditor">
       <label>{{ 'taxonomy.taxonomy' | translate }}</label> 
       <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon)" (click)="copyCurrentTaxon()">Copy current</span>
@@ -73,7 +73,7 @@
         class="form-control input-sm"
         name="opinion"
         [disabled]="unIdentifyable"
-        [required]="expert && personRoleAnnotation==='MMAN.expert'"
+        [required]="expert && personRoleAnnotation===annotationRole.expert"
         [(ngModel)]="annotation.identification.taxon"
         [typeahead]="taxonAutocomplete"
         [typeaheadOptionsLimit]="20"
@@ -113,7 +113,7 @@
       <textarea #notes="ngModel"
                 name="notes"
                 class="form-control feedback-text input-sm"
-                [required]="!expert || personRoleAnnotation==='MMAN.basic'"
+                [required]="!expert || personRoleAnnotation!==annotationRole.expert"
                 [(ngModel)]="annotation.notes"></textarea>
     </div>
   </div>

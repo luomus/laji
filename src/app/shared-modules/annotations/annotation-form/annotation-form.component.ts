@@ -23,7 +23,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
   @Input() editors: string[];
   @Input() personID: string;
-  @Input() personRoleAnnotation: string;
+  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() annotations: Annotation[];
   @Input() annotation: Annotation;
   @Input() identifying: boolean;
@@ -54,8 +54,8 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   ];
 
   emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
-
   annotationTagsObservation = Global.annotationTags;
+  annotationRole = Annotation.AnnotationRoleEnum;
 
 
   constructor(
