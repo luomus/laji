@@ -18,42 +18,6 @@ import { UserService } from '../../shared/service/user.service';
     <ng-content select='*'></ng-content>
   </main>
 </lu-sidebar>
-<!--<div class="container-fluid">
-    <div class="row" id="wrapper">
-        <div *ngIf='showNav' class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
-            <h1 [innerHTML]="title | translate"></h1>
-            <ul *ngIf="navLinks">
-                <ng-container *ngFor="let link of navLinks">
-                    <li>
-                        <a [class]="link.active ? 'laji-sidebar-active' : ''"
-                           [routerLink]="link.routerLink">
-                            {{ link.label | translate }}
-                        </a>
-                        <ul *ngIf="link.children && link.active" class="nested">
-                          <ng-container *ngFor="let childLink of link.children">
-                            <li>
-                              <a [class]="childLink.active ? 'laji-sidebar-active' : ''"
-                                 [routerLink]="childLink.routerLink" >
-                                {{ childLink.label | translate }}
-                              </a>
-                            </li>
-                          </ng-container>
-                        </ul>
-                    </li>
-                </ng-container>
-            </ul>
-            <laji-haseka-latest [forms]="[formID]"
-                                [tmpOnly]="true"
-                                *ngIf="userService.isLoggedIn$ | async">
-            </laji-haseka-latest>
-            <ng-content select='nav'></ng-content>
-        </div>
-        <div class="content"
-        [ngClass]="{'col-sm-9 col-md-10 col-lg-10': showNav}">
-            <ng-content select='*'></ng-content>
-        </div>
-    </div>
-</div>-->
     `,
     styles: [`
     :host {
