@@ -118,9 +118,9 @@ const LICENSES: {[type: string]: ILicense} = {
 })
 export class LicenseComponent {
 
-  private _type: string;
-  private _sort: string;
-  private _license: ILicense;
+  _type: string;
+  _sort: string;
+  _license: ILicense;
 
   constructor(
     private logger: Logger
