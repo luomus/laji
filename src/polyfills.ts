@@ -68,3 +68,4 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  */
 
 import 'core-js/modules/es7.array.includes';
+import 'core-js/modules/es7.object.values';
