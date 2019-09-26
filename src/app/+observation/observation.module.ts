@@ -32,6 +32,7 @@ import { ExistsPipe } from './pipe/exists.pipe';
 import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 import { ObservationFacade } from './observation.facade';
 import { AnnotationsComponent } from './annotations/annotations.component';
+import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { AnnotationsComponent } from './annotations/annotations.component';
     InfoModule,
     NgxChartsModule,
     ChartsModule,
-    JwBootstrapSwitchNg2Module
+    JwBootstrapSwitchNg2Module,
+    LajiUiModule
   ],
   declarations: [ObservationComponent, ObservationChartComponent,
     ObservationViewComponent,

@@ -1,4 +1,4 @@
-import { Component, ContentChildren, AfterViewInit, QueryList, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ContentChildren, AfterViewInit, QueryList, ChangeDetectorRef, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { TabComponent } from './tab/tab.component';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { color } from '../vars';
@@ -26,7 +26,8 @@ import { color } from '../vars';
 export class TabsComponent implements AfterViewInit {
   @ContentChildren(TabComponent) tabComponents !: QueryList<TabComponent>;
 
-  selectedIndex = 0;
+  @Input() selectedIndex = 0;
+  @Output() select = new EventEmitter<number>();
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -38,5 +39,6 @@ export class TabsComponent implements AfterViewInit {
     this.tabComponents.toArray()[this.selectedIndex].active = false;
     this.selectedIndex = tabIndex;
     this.tabComponents.toArray()[tabIndex].active = true;
+    this.select.next(tabIndex);
   }
 }
