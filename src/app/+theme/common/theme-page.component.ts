@@ -18,32 +18,7 @@ import { UserService } from '../../shared/service/user.service';
     <ng-content select='*'></ng-content>
   </main>
 </lu-sidebar>
-    `,
-    styles: [`
-    :host {
-        display: flex;
-        flex-direction: column;
-        flex: 1 0;
-    }
-    h1 {
-        padding-left: 10px;
-    }
-    .sidebar-nav {
-        background-color: #ECF0F1;
-    }
-    .content {
-        padding: 2em 2em;
-        padding-top: 1em;
-    }
-    .nested li a {
-      padding-left: 55px;
-    }
-    @media only screen and (min-width : 768px) {
-        #wrapper {
-            display: flex;
-        }
-    }
-    `]
+    `
 })
 export class ThemePageComponent {
     @Input() title: string;
