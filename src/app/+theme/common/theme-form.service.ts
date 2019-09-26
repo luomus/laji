@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormService } from '../../shared/service/form.service';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import merge from 'deepmerge';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
+import { UserService } from '../../shared/service/user.service';
 
 export interface NavLink {
   routerLink: string[];
@@ -48,7 +49,8 @@ export class ThemeFormService {
 
   constructor(private formService: FormService,
               private formPermissionService: FormPermissionService,
-              private translateService: TranslateService
+              private translateService: TranslateService,
+              private userService: UserService
   ) { }
 
   getForm(route: ActivatedRoute): Observable<any> {
@@ -61,13 +63,17 @@ export class ThemeFormService {
     return route.data.pipe(
       switchMap(({formID, navLinks = {}, navLinksOrder = []}) => this.formService.getForm(formID, this.translateService.currentLang).pipe(
           switchMap(form => this.formPermissionService.getRights(form).pipe(
-            map(rights => (this.getNavLinks(
+            switchMap(rights => this.userService.user$.pipe(
+              take(1),
+              map((user) => UserService.isAdmin(user) ? {...rights, admin: true} : rights)
+            )),
+            map(rights => this.getNavLinks(
                 merge(this.defaultNavLinks, navLinks),
                 navLinksOrder,
                 rights,
                 form.collectionID
               )
-            ))
+            )
           ))
         )
       )
