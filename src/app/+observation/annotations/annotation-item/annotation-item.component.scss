@@ -2,7 +2,7 @@
 
 div {
     &.item-content{
-        min-height: 460px;
+        min-height: 500px;
         @include media-query-tablet {
             min-height: 520px;
         }

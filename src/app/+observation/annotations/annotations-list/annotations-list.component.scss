@@ -9,7 +9,7 @@ div{
         div {
             &.annotation-item {
                 background-color: $main-gray;
-                min-height: 460px;
+                min-height: 500px;
                 cursor: pointer;
                 @include media-query-tablet {
                     min-height: 520px;
