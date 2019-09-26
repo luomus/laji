@@ -58,7 +58,6 @@ import { LazyImageDirective } from './directive/lazy-image.directive';
 import { HideForIeDirective } from './directive/hide-for-ie.directive';
 import { SortPipe } from './pipe/sort.pipe';
 import { DateFormatPipe, MomentModule } from 'ngx-moment';
-import { ImageCarouselDocumentComponent } from './gallery/image-carousel-document/image-carousel-document.component';
 import { UniquePipe } from './pipe/unique.pipe';
 
 
@@ -89,7 +88,6 @@ import { UniquePipe } from './pipe/unique.pipe';
     LazyImageDirective,
     HideForIeDirective,
     SortPipe,
-    ImageCarouselDocumentComponent,
     UniquePipe
   ],
   imports: [
@@ -118,7 +116,7 @@ import { UniquePipe } from './pipe/unique.pipe';
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    ImageCarouselDocumentComponent, UniquePipe
+    UniquePipe
   ]
 })
 export class SharedModule {

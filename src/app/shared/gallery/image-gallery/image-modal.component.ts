@@ -65,7 +65,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   public loading = false;
   public showRepeat = false;
   @Input() eventOnClick = false;
-  @Input() view: 'compact'|'full'|'full2'|'full3' = 'compact';
+  @Input() view: 'compact'|'annotation'|'full'|'full2'|'full3' = 'compact';
   @Input() views = ['compact', 'full'];
   @Input() showExtraInfo = true;
   @Input() modalImages: Image[];
@@ -81,6 +81,10 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private _isShown = false;
+  mainURL: string;
+  index: number;
+  tmpImg: Object;
+
 
   constructor(_viewContainerRef: ViewContainerRef,
               _renderer: Renderer2,
@@ -98,10 +102,24 @@ export class ImageModalComponent implements OnInit, OnDestroy {
     } else {
       this.showRepeat = true;
     }
+
+    if (this.modalImages && this.modalImages.length > 0) {
+      this.tmpImg = {
+        mainURL: this.modalImages[0].fullURL,
+        index: 0
+      };
+    }
   }
 
   ngOnDestroy() {
     this._overlay.dispose();
+  }
+
+  openMainPic(url, index) {
+   this.tmpImg = {
+     mainURL: url,
+     index: index
+   };
   }
 
   openImage(index) {

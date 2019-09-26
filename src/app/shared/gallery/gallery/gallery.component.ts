@@ -29,7 +29,7 @@ export class GalleryComponent implements OnChanges {
   @Input() showLinkToSpeciesCard = false;
   @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
   @Input() sort: string[];
-  @Input() view: 'compact'|'full'|'full2' = 'compact';
+  @Input() view: 'compact'|'annotation'|'full'|'full2' = 'compact';
   @Input() views = ['compact', 'full'];
   @Output() selected = new EventEmitter<IImageSelectEvent>();
   @Output() hasData = new EventEmitter<boolean>();

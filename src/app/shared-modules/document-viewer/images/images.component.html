@@ -1,12 +1,39 @@
 <ng-container *ngIf="documentImages.length > 0 || gatheringImages.length > 0 || unitImages.length > 0">
-  <ng-container *ngIf="gatheringImages.length > 0 else unit">
+  <ng-container *ngIf="unitImages.length > 0 else gathering">
     <div>
-      <laji-image-carousel-document [modalImages]="gatheringImages"></laji-image-carousel-document>
+      <!--<laji-image-carousel-document [modalImages]="unitImages"></laji-image-carousel-document>-->
+      <laji-image-gallery
+      [showPopover]="showPopover"
+      [showViewSwitch]="showViewSwitch"
+      [showOverlay]="showOverlay"
+      [showExtraInfo]="showExtraInfo"
+      [showLinkToSpeciesCard]="showLinkToSpeciesCard"
+      [linkOptions]="linkOptions"
+      [view]="view"
+      [views]="views"
+      [modalImages]="unitImages"
+      [eventOnClick]="eventOnImageClick"
+      (imageSelect)="selected.emit($event)"
+    ></laji-image-gallery>
+
     </div>
   </ng-container>
-  <ng-template  #unit>
-      <div *ngIf="unitImages.length > 0">
-        <laji-image-carousel-document [modalImages]="unitImages"></laji-image-carousel-document>
+  <ng-template  #gathering>
+      <div *ngIf="gatheringImages.length > 0">
+        <!--<laji-image-carousel-document [modalImages]="gatheringImages"></laji-image-carousel-document>-->
+        <laji-image-gallery
+        [showPopover]="showPopover"
+        [showViewSwitch]="showViewSwitch"
+        [showOverlay]="showOverlay"
+        [showExtraInfo]="showExtraInfo"
+        [showLinkToSpeciesCard]="showLinkToSpeciesCard"
+        [linkOptions]="linkOptions"
+        [view]="view"
+        [views]="views"
+        [modalImages]="gatheringImages"
+        [eventOnClick]="eventOnImageClick"
+        (imageSelect)="selected.emit($event)"
+      ></laji-image-gallery>
       </div>
   </ng-template>
 </ng-container>

@@ -69,7 +69,6 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    console.log(this.expert);
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.identification.taxon);
     }).pipe(

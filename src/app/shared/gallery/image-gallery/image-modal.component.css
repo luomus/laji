@@ -37,6 +37,10 @@
   cursor: pointer;
 }
 
+.image-container .main-annotation-image {
+  max-width: 100%;
+}
+
 .full-container {
   width: 360px;
   float:left;

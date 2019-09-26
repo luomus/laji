@@ -9,6 +9,16 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 export class ImagesComponent implements OnChanges {
 
   @Input() document: any;
+  @Input() eventOnImageClick = false;
+  @Input() showViewSwitch = false;
+  @Input() showPopover = false;
+  @Input() showOverlay = true;
+  @Input() showExtraInfo = true;
+  @Input() showLinkToSpeciesCard = false;
+  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
+  @Input() sort: string[];
+  @Input() view: 'compact'|'annotation'|'full'|'full2' = 'annotation';
+  @Input() views = ['compact', 'full'];
 
   documentImages = [];
   gatheringImages = [];

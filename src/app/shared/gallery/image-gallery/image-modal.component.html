@@ -10,7 +10,7 @@
     </div>
   </div>
 
-  <ng-container *ngIf="view === 'compact' else fullView">
+  <ng-container *ngIf="view === 'compact' else annotation">
     <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
       <ng-container *ngIf="showPopover else onlyImage">
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
@@ -29,6 +29,32 @@
     </div>
   </ng-container>
 </div>
+
+<ng-template #annotation>
+  <ng-container *ngIf="view === 'annotation' else fullView">
+    <div class="image-container">
+      <ng-container *ngIf="showPopover else onlyImage">
+        <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+             [popover]="info"
+             [popoverContext]="{$implicit: img}"
+             placement="bottom"
+             triggers="mouseenter:mouseleave"
+             class="ng-thumb compact"
+             alt="Image {{ index + 1 }}" />
+      </ng-container>
+      <ng-template #onlyImage>
+        <img class="main-annotation-image" src="{{ tmpImg.mainURL }}" (click)="openImage(tmpImg.index)">
+      </ng-template>
+    </div>
+    <div *ngFor ="let img of modalImages; let index = index">
+        <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+        class="ng-thumb compact"
+        alt="Image {{ index + 1 }}"
+        (click)="openMainPic(img.fullURL, index)"
+        />
+    </div>
+  </ng-container> 
+</ng-template>
 
 <ng-template #fullView>
   <ng-container *ngIf="view === 'full' else fullView2">
