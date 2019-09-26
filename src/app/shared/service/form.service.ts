@@ -51,7 +51,7 @@ export class FormService {
     }
     this.setLang(lang);
     if (this.formCache[formId]) {
-      return ObservableOf(this.formCache[formId]);
+      return ObservableOf(JSON.parse(JSON.stringify(this.formCache[formId])));
     } else if (!this.formPending[formId]) {
       this.formPending[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
         catchError(error => error.status === 404 ? of(null) : observableThrowError(error)),
@@ -63,7 +63,7 @@ export class FormService {
     return new Observable((observer: Observer<Form.SchemaForm>) => {
       this.formPending[formId].subscribe(
         data => {
-          observer.next(data);
+          observer.next(JSON.parse(JSON.stringify(data)));
           observer.complete();
         },
         error => {
