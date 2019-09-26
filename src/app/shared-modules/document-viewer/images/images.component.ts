@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 export class ImagesComponent implements OnChanges {
 
   @Input() document: any;
+  @Input() highlight: any;
   @Input() eventOnImageClick = false;
   @Input() showViewSwitch = false;
   @Input() showPopover = false;
@@ -41,11 +42,13 @@ export class ImagesComponent implements OnChanges {
           this.gatheringImages = this.gatheringImages.concat(gathering.media);
         }
         if (gathering.units) {
-          gathering.units.map(unit => {
-            if (unit.media) {
-              this.unitImages = this.unitImages.concat(unit.media);
-            }
-          });
+          gathering.units.filter(unit => unit.unitId === this.highlight).map(
+              item => {
+                if (item.media) {
+                  this.unitImages = this.unitImages.concat(item.media);
+                }
+              }
+          );
         }
       });
     }
