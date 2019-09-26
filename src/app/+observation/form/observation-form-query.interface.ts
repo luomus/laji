@@ -11,6 +11,7 @@ export interface ObservationFormQuery {
   quarantinePlantPest: boolean;
   otherInvasiveSpeciesList: boolean;
   nationalInvasiveSpeciesStrategy: boolean;
+  controllingRisksOfInvasiveAlienSpecies: boolean;
   allInvasiveSpecies: boolean;
   onlyFromCollectionSystems: boolean;
   asObserver: boolean;

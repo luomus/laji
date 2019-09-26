@@ -11,6 +11,9 @@
   padding-top: 2px;
   text-align: center;
 }
+.link {
+  color: white;
+}
 .list-img {
   margin-top: 2px;
   cursor: pointer;

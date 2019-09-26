@@ -125,6 +125,9 @@
       <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
     </div>
   </div>
+  <div style="margin-top: 10px" *ngIf="document.licenseId">
+    <laji-license [type]="document.licenseId"></laji-license>
+  </div>
 </ng-container>
 <ng-container *ngIf="hasDoc === false">
   <div class="page-header">

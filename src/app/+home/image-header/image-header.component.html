@@ -1,4 +1,4 @@
-<div class="header-image" role="main">
+<div class="header-image" [ngStyle]="{'background-image': 'url(' + headerImage.imageUrl + ')'}" role="main">
   <div class="active item carousel-item" *lajiServerOnly>
     <div [ngTemplateOutlet]="page1"></div>
   </div>

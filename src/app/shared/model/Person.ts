@@ -25,6 +25,8 @@
 
 'use strict';
 
+import { Annotation } from './Annotation';
+
 export interface Person {
 
 
@@ -49,4 +51,6 @@ export interface Person {
   emailAddress?: Array<string>;
 
   role?: Array<string>;
+
+  roleAnnotation?: Annotation.AnnotationRoleEnum;
 }

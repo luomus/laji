@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { FieldType, FormService as LabelFormService, ILabelField } from 'generic-label-maker';
+import { FieldType, ILabelField } from 'label-designer';
 import { Observable } from 'rxjs';
 import { Document } from '../model/Document';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { FormService as ToolsFormService } from './form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { IdService } from './id.service';
 import { SessionStorage } from 'ngx-webstorage';
+import { SchemaService } from '../../../../projects/label-designer/src/lib/schema.service';
+import { ILabelData } from '../../../../projects/label-designer/src/lib/label-designer.interface';
 
-export interface IFlatDocument {
-  [key: string]: string|number|boolean|string[];
-}
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +18,11 @@ export interface IFlatDocument {
 export class PdfLabelService {
 
   @SessionStorage('pdf-data', [])
-  private data: IFlatDocument[];
+  private data: ILabelData[];
 
   skipFields: string[] = [
+    '@type',
+    'geometry',
     'editors',
     'secureLevel',
     'gatheringEvent.legPublic',
@@ -31,67 +32,51 @@ export class PdfLabelService {
   ];
 
   defaultFields: ILabelField[] = [
-    { field: 'id', content: 'http://tun.fi/EXAMPLE', label: 'ID - QRCode', type: FieldType.qrCode },
-    { field: 'id', content: 'http://tun.fi/EXAMPLE', label: 'ID', type: FieldType.id },
-    { field: 'id_short', content: 'EXAMPLE', label: 'label.id_short', type: FieldType.id },
+    { field: 'gatherings.units.id', content: 'http://tun.fi/EXAMPLE', label: 'ID - QRCode', type: FieldType.qrCode },
+    { field: 'gatherings.units.id', content: 'http://tun.fi/EXAMPLE', label: 'ID', type: FieldType.uri },
+    { field: 'gatherings.units.id_domain', content: 'EXAMPLE', label: 'label.domain', type: FieldType.domain },
+    { field: 'gatherings.units.id_short', content: 'EXAMPLE', label: 'label.id_short', type: FieldType.id },
     { field: '', content: 'Text', label: 'Text', type: FieldType.text }
   ];
 
 
   constructor(
     private formService: ToolsFormService,
-    private labelFormService: LabelFormService,
+    private schemaService: SchemaService,
     private translateService: TranslateService
   ) {
-    this.defaultFields[2].label = this.translateService.instant(this.defaultFields[2].label);
+    this.defaultFields.forEach(field => {
+      if (field.label.startsWith('label.')) {
+        field.label = this.translateService.instant(field.label);
+      }
+    });
   }
 
-  setData(documents: Document[]) {
-    const docs: IFlatDocument[] = [];
-    documents.forEach(doc => this.documentToFlat(doc, docs));
-    this.data = docs;
+  setData(documents: Document[]): Observable<boolean> {
+    return this.allPossibleFields().pipe(
+      map(fields => this.schemaService.convertDataToLabelData(
+        [...fields, {field: 'id', label: ''}], documents, 'gatherings.units')
+      ),
+      map(data => data.map(item => {
+        item['gatherings.units.id'] = IdService.getUri(item['gatherings.units.id'] || item['id']) || '';
+        item['gatherings.units.id_short'] = item['gatherings.units.id'] || item['id'] || '';
+        item['gatherings.units.id_domain'] = (item['gatherings.units.id'] as string)
+          .replace(item['gatherings.units.id_short'] as string, '');
+        return item;
+      })),
+      tap(data => this.data = data),
+      map(() => true)
+    );
   }
 
-  getData(): IFlatDocument[] {
+  getData(): ILabelData[] {
     return this.data || [];
   }
 
   allPossibleFields(): Observable<ILabelField[]> {
     return this.formService.getForm(environment.defaultForm, this.translateService.currentLang).pipe(
-      map(form => this.labelFormService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields }))
+      map(form => this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields }))
     );
-  }
-
-  private documentToFlat(document: Document, docs: IFlatDocument[] = []): IFlatDocument[] {
-    const {acknowledgedWarnings, gatherings, gatheringEvent, ...restDocument} = document;
-    (gatherings || []).forEach(gathering => {
-      const {units, geometry, wgs84Geometry, gatheringFact, taxonCensus, ...restGathering} = gathering;
-      (units || []).forEach(unit => {
-        const {identifications, typeSpecimens, unitFact, unitGathering, measurement, ...restUnit} = unit;
-        docs.push({
-          ...restDocument,
-          ...this.addKeyPrefix(gatheringEvent, 'gatheringEvent'),
-          ...this.addKeyPrefix(gatheringFact, 'gatherings.gatheringFact'),
-          ...this.addKeyPrefix(taxonCensus, 'gatherings.taxonCensus'),
-          ...this.addKeyPrefix(restGathering, 'gatherings'),
-          ...this.addKeyPrefix(restUnit, 'gatherings.units'),
-          ...this.addKeyPrefix(identifications && identifications[0] ? identifications[0] : {}, 'gatherings.units.identifications'),
-          id: IdService.getUri(unit.id || gathering.id || document.id),
-          id_short: unit.id || gathering.id || document.id,
-        });
-      });
-    });
-    return docs;
-  }
-
-  private addKeyPrefix(obj: object, prefix = ''): IFlatDocument {
-    const result = {};
-    if (obj) {
-      Object.keys(obj).forEach(key => {
-        result[prefix + '.' + key] = obj[key];
-      });
-    }
-    return result;
   }
 
 }

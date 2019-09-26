@@ -26,6 +26,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     onlyNonInvasive: false,
     euInvasiveSpeciesList: false,
     nationallySignificantInvasiveSpecies: false,
+    controllingRisksOfInvasiveAlienSpecies: false,
     quarantinePlantPest: false,
     allInvasiveSpecies: false
   };
@@ -34,6 +35,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   public invasiveSelected: string[] = [];
   public invasiveStatuses: string[] = [
+    'controllingRisksOfInvasiveAlienSpecies',
     'nationallySignificantInvasiveSpecies',
     'nationalInvasiveSpeciesStrategy',
     'otherInvasiveSpeciesList',
@@ -102,7 +104,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     const invasiveSelected = [];
     const allFields = [
       'onlyInvasive', 'onlyNonInvasive', 'euInvasiveSpeciesList',
-      'nationallySignificantInvasiveSpecies', 'quarantinePlantPest', 'allInvasiveSpecies'
+      'nationallySignificantInvasiveSpecies', 'controllingRisksOfInvasiveAlienSpecies', 'quarantinePlantPest', 'allInvasiveSpecies'
     ];
     for (const i in allFields) {
       if (this.formQuery[allFields[i]]) {
@@ -220,6 +222,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       nationallySignificantInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.quarantinePlantPest'),
+      controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.controllingRisksOfInvasiveAlienSpecies'),
       allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val))
     };
 

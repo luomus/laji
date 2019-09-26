@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AreaType } from '../../../../shared/service/area.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of as ObservableOf, Subscription } from 'rxjs';
 import { ObservationListService } from '../../../../shared-modules/observation-result/service/observation-list.service';
@@ -7,6 +6,7 @@ import { Logger } from '../../../../shared/logger';
 import { combineLatest, map, tap } from 'rxjs/operators';
 import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
+import { Area } from '../../../../shared/model/Area';
 
 @Component({
   selector: 'laji-line-transect-result-chart',
@@ -20,7 +20,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   @Input() collectionId: string;
 
   loading = false;
-  areaTypes = AreaType;
+  areaTypes = Area.AreaType;
   birdAssociationAreas: string[] = [];
   currentArea;
   taxon: string;

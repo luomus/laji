@@ -33,6 +33,9 @@
   }
 }
 
+.text-block {
+  margin-top: 7px;
+}
 
 .inline-block {
   display: inline-block;

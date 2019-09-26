@@ -529,7 +529,7 @@
   "label": {
     "select":{
       "label": "Välj observationer för märkning",
-      "intro": "\nVälj observationer från tabellen nedan och klicka på \"Gör etiketterna\" under tabellen när du är klar."
+      "intro": "Välj de observationer som du vill skapa etiketter för."
     },
     "make": "Gör etiketterna",
     "designer": "Designetikett",
@@ -931,6 +931,7 @@
   "result.showPrivateViewer": "Visa opublicerad observation",
   "result.latestObservationsLabel": "Opublicerad observation",
   "result.taxonomicOrder": "Taxonomic order",
+  "result.unit.id": "Observation idr",
   "result.unit.abundanceString": "Mängd",
   "result.unit.det": "Det.",
   "result.unit.interpretations.individualCount": "Individsantal (tolkas)",

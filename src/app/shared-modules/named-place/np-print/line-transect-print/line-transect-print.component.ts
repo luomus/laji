@@ -127,7 +127,7 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
       if (baseDoc.gatherings && baseDoc.gatherings[idx] && baseDoc.gatherings[idx].habitatClassification) {
         biotope = baseDoc.gatherings[idx].habitatClassification;
       }
-      biotopes[biotopeSlot].unshift(biotope + (current !== dist[0] ?  ' (' + dist[0] + 'm.)' : ''));
+      biotopes[biotopeSlot].unshift(biotope + (current !== dist[0] ?  ' (' + dist[0] + ' m)' : ''));
       total = dist[1];
       while (current < total) {
         if (!pages[currentPage]) {

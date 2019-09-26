@@ -18,10 +18,12 @@ import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
 import { News } from '../model/News';
 import { Image } from '../model/Image';
+import { AnnotationTag } from '../model/AnnotationTag';
 
 export namespace LajiApi {
 
   export enum Endpoints {
+    annotationsTags = 'annotations/tags',
     annotations = 'annotations',
     areas = 'areas',
     autocomplete = 'autocomplete',
@@ -80,6 +82,8 @@ export namespace LajiApi {
     export interface AnnotationListQuery extends Paged, PersonToken {
       rootID: string;
     }
+
+    export interface AnnotationTagsQuery extends LangWithFallback { }
 
     export interface AreaQuery extends Lang, Paged {
       type?: LajiApi.AreaType;
@@ -172,6 +176,8 @@ export namespace LajiApi {
       base64pdf: string;
     }
 
+    export interface AnnotationTagListResponse extends Array<AnnotationTag> { }
+
     export interface AnnotationListResponse extends PagedResult<Annotation> { }
 
     export interface AreaListResponse extends PagedResult<Area> { }
@@ -200,6 +206,7 @@ export class LajiApiService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getList(endpoint: LajiApi.Endpoints.annotationsTags, query: LajiApi.Query.AnnotationTagsQuery): Observable<LajiApi.Response.AnnotationTagListResponse>;
   getList(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationListQuery): Observable<LajiApi.Response.AnnotationListResponse>;
   getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
   getList(endpoint: LajiApi.Endpoints.checklists, query: LajiApi.Query.ChecklistQuery): Observable<LajiApi.Response.ChecklistListResponse>;

@@ -2,7 +2,7 @@
   (click)="show()"
   (mouseenter)="mouseEnter()"
   (mouseleave)="mouseLeave()"
-  [className]="'label label-' + labelType + ' link no-propagation' + (glyphicon ? '' : ' laji-form-help-glyph')"
+  [class]="'link no-propagation'"
 ><strong
   [popover]="content"
   [adaptivePosition]="false"
@@ -12,7 +12,7 @@
   #pop="bs-popover"
   containerClass="popover-lg"
   container="body"
-  class="no-propagation"
+  [class]="'no-propagation label label-' + labelType + (glyphicon ? '' : ' laji-form-help-glyph')"
 >
   <span [className]="'glyphicon glyphicon-' + glyphicon" *ngIf="glyphicon"></span>
   <ng-container *ngIf="!glyphicon">?</ng-container>
