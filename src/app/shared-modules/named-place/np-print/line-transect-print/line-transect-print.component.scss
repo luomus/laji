@@ -127,25 +127,33 @@ $baseFontSize: 12pt;
     border-bottom: solid 1px #000;
     font-size: $baseFontSize;
   }
-  td:nth-child(0), th:nth-child(0),
-  td:nth-child(1), th:nth-child(1),
-  th:nth-child(2),
-  td:nth-child(3), th:nth-child(3),
-  td:nth-child(4), th:nth-child(4),
-  td:nth-child(5)
-  {
-    border-right: dashed 1px #000;
-  }
-  td:nth-child(2) {
-    border-right: dotted 1px #000;
-  }
   tr:last-of-type {
     height: 100%;
+  }
+  .col-1 {
+    border-right: dashed 2px #000;
+    border-left: dashed 1px #000;
+    width: 27%;
+  }
+  .col-2 {
+    border-right: dotted 1px #000;
+    width: 15%;
+  }
+  .col-3 {
+    width: 15%;
+  }
+  .col-4 {
+    border-left: dashed 2px #000;
+    border-right: dashed 1px #000;
+    width: 27%;
+  }
+  .col-5 {
+    border-right: dashed 1px #000;
   }
 }
 .distance {
   margin: 0 1mm;
-  font-size: $baseFontSize - 4;
+  font-size: $baseFontSize - 2;
 }
 .short-hand {
   position: absolute;

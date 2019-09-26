@@ -1,12 +1,12 @@
 import { switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
-import { AreaType } from '../../shared/service/area.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
 import * as moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
+import { Area } from '../../shared/model/Area';
 
 
 @Component({
@@ -37,6 +37,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     quarantinePlantPest: undefined,
     otherInvasiveSpeciesList: undefined,
     nationalInvasiveSpeciesStrategy: undefined,
+    controllingRisksOfInvasiveAlienSpecies: undefined,
     allInvasiveSpecies: undefined,
     onlyFromCollectionSystems: undefined,
     asEditor: false,
@@ -50,7 +51,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   drawing = false;
   drawingShape: string;
 
-  areaType = AreaType;
+  areaType = Area.AreaType;
   dataSource: Observable<any>;
   typeaheadLoading = false;
   autocompleteLimit = 10;
@@ -373,6 +374,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
       otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
+      controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.controllingRisksOfInvasiveAlienSpecies'),
       allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,

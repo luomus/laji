@@ -15,7 +15,6 @@ import { NamedPlacesService } from '../named-places.service';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
 import { FooterService } from '../../../shared/service/footer.service';
 import { Form } from '../../../shared/model/Form';
-import { AreaType } from '../../../shared/service/area.service';
 import { NpEditComponent } from '../np-edit/np-edit.component';
 import { Rights } from '../../../+haseka/form-permission/form-permission.service';
 import * as moment from 'moment';
@@ -23,6 +22,7 @@ import { EventEmitter } from 'events';
 import { Util } from '../../../shared/service/util.service';
 import { NPResolverData } from '../named-place.resolver';
 import { TranslateService } from '@ngx-translate/core';
+import { Area } from '../../../shared/model/Area';
 
 @Component({
   selector: 'laji-named-place',
@@ -46,7 +46,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   namedPlace: NamedPlace;
 
   userID: string;
-  areaTypes = AreaType;
+  areaTypes = Area.AreaType;
   editMode = false;
   loading = false;
   allowEdit = false;

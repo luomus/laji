@@ -2,9 +2,9 @@ import {
   Component, OnInit, OnChanges, ChangeDetectorRef, Input, Output, EventEmitter,
   SimpleChanges
 } from '@angular/core';
-import { AreaType } from '../../../../shared/service/area.service';
 import { WbcResultService, SEASON } from '../wbc-result.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Area } from '../../../../shared/model/Area';
 
 @Component({
   selector: 'laji-wbc-result-filters',
@@ -18,7 +18,7 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
 
   years: number[] = [];
   seasons: SEASON[] = ['fall', 'winter', 'spring'];
-  areaTypes = AreaType;
+  areaTypes = Area.AreaType;
 
   activeYear: number;
   activeSeason: SEASON;

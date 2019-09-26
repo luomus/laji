@@ -9,7 +9,8 @@ import { UserService } from '../../../shared/service/user.service';
 import { FormPermission } from '../../../shared/model/FormPermission';
 import { Logger } from '../../../shared/logger/logger.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { RoutingStateService } from '../../../shared/service/routing-state.service';
+import { HistoryService } from '../../../shared/service/history.service';
+import { BrowserService } from '../../../shared/service/browser.service';
 
 @Component({
   selector: 'laji-admin',
@@ -35,11 +36,12 @@ export class AdminComponent implements OnInit, OnDestroy {
     private toastsService: ToastsService,
     private userService: UserService,
     private logger: Logger,
-    private routingStateService: RoutingStateService
+    private browserService: BrowserService,
+    private historyService: HistoryService
   ) { }
 
   ngOnInit() {
-    const [path, query] = this.routingStateService.getPathAndQueryFromUrl(this.routingStateService.getPreviousUrl());
+    const [path, query] = this.browserService.getPathAndQueryFromUrl(this.historyService.getPrevious());
     this.backPath = path;
     this.backQuery = query;
     this.subParam = this.route.params.subscribe(params => {

@@ -119,7 +119,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
         if (this.barChartData[0].data[bar_index] > 0) {
           if (bar_index >= 0 && bar_index < count) { // control if the click is in yAxis, no event there
             bar_index = Math.floor(bar_index);
-            console.log(bar_index);
             this.barChartLabelsDay = [];
             this.activeMonth = bar_index;
             this.initLabelsDayChartData(this.activeMonth);

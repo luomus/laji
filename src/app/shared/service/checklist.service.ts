@@ -1,51 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Observable, Observer, of as ObservableOf } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { map, share, tap } from 'rxjs/operators';
-
+import { map } from 'rxjs/operators';
+import { AbstractCachedHttpService } from './abstract-cached-http.service';
 
 @Injectable({providedIn: 'root'})
-export class ChecklistService {
-
-  private checklists;
-  private currentLang;
-  private pending: Observable<any>;
+export class ChecklistService extends AbstractCachedHttpService<string> {
 
   constructor(private lajiApi: LajiApiService) {
+    super('dc:bibliographicCitation');
   }
 
-  getAllAsLookUp(lang?: string): Observable<any> {
-    if (!lang) {
-      lang = this.currentLang || 'fi';
-    }
-    if (lang === this.currentLang) {
-      if (this.checklists) {
-        return ObservableOf(this.checklists);
-      } else if (this.pending) {
-        return Observable.create((observer: Observer<any>) => {
-          const onComplete = (res: any) => {
-            observer.next(res);
-            observer.complete();
-          };
-          this.pending.subscribe(
-            () => { onComplete(this.checklists); }
-          );
-        });
-      }
-    }
-    this.pending = this.lajiApi.getList(LajiApi.Endpoints.checklists, {lang, page: 1, pageSize: 1000}).pipe(
+  getAllAsLookUp(lang?: string): Observable<{[id: string]: string}> {
+    return this.fetchLookup(this.lajiApi.getList(LajiApi.Endpoints.checklists, {lang, page: 1, pageSize: 1000}).pipe(
       map(paged => paged.results),
-      map(checklists => {
-        const lkObject = {};
-        checklists.map(checklist => { lkObject[checklist['id']] = checklist['dc:bibliographicCitation']; });
-        return lkObject;
-      }),
-      tap(locations => { this.checklists = locations; }),
-      share()
-    );
-    this.currentLang = lang;
-
-    return this.pending;
+    ), lang);
   }
 
   getName(id: string, lang) {

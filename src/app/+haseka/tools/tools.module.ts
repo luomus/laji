@@ -35,7 +35,7 @@ import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete
 import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
 import { LabelDesignerComponent } from './label-designer/label-designer.component';
 import { ImportContainerComponent } from './importer/import-container.component';
-import { GenericLabelMakerModule } from 'generic-label-maker';
+import { LabelDesignerModule } from 'label-designer';
 import { CanSplitToPipe } from './excel-generator/pipes/can-split-to.pipe';
 
 @NgModule({
@@ -47,7 +47,7 @@ import { CanSplitToPipe } from './excel-generator/pipes/can-split-to.pipe';
     LajiMapModule,
     TypeaheadModule,
     TaxonAutocompleteModule,
-    GenericLabelMakerModule
+    LabelDesignerModule
   ],
   declarations: [
     ToolsComponent,

@@ -8,6 +8,8 @@ export class InfoCardQueryService {
       superRecordBasis: ['PRESERVED_SPECIMEN'],
       sourceId: ['KE.3', 'KE.167'],
       typeSpecimen: typeSpecimen,
+      includeNonValidTaxa: false,
+      taxonReliability: ['LIKELY', 'RELIABLE', 'NEUTRAL'],
       cache: true
     };
   }
@@ -16,7 +18,8 @@ export class InfoCardQueryService {
     return {
       taxonId: [taxonId],
       superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
-      taxonReliability: ['RELIABLE'],
+      taxonReliability: ['RELIABLE', 'LIKELY'],
+      includeNonValidTaxa: false,
       cache: true
     };
   }
@@ -27,6 +30,7 @@ export class InfoCardQueryService {
       countryId: ['ML.206'],
       coordinateAccuracyMax: mapQuery ? 10000 : undefined,
       taxonReliability: ['NEUTRAL', 'LIKELY', 'RELIABLE'],
+      includeNonValidTaxa: false,
       cache: true
     };
   }

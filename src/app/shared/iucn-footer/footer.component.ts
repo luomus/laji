@@ -71,7 +71,7 @@ export class IucnFooterComponent implements OnInit, OnDestroy {
           IucnFooterComponent.treeData = tree;
           this.tree$ = of(IucnFooterComponent.treeData);
         },
-        err =>  this.logger.error('Failed to fetch information tree', err)
+        err =>  this.logger.error('Failed to fetchList information tree', err)
       );
   }
 }

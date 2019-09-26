@@ -68,12 +68,13 @@ import { TaxonInfoRowComponent } from './taxon/info-card/shared/component/taxon-
 import { BiogeographicalProvincesModule } from '../shared-modules/biogeographical-provinces/biogeographical-provinces.module';
 import { TaxonOccurrenceMapComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence-map/taxon-occurrence-map.component';
 import { AdministrativeStatusComponent } from './taxon/info-card/shared/component/administrative-status/administrative-status.component';
+import { LicenseModule } from '../shared-modules/license/license.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
-    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule
+    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LicenseModule
   ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonTaxonomyService, CheckLangService],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,

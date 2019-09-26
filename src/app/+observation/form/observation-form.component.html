@@ -472,17 +472,16 @@
     </div>
     <div class="form-group">
       <div class="col-sm-12">
-        <laji-select
-          [selected]="[query.nativeOccurrence]"
-          (selectedChanged)="indirectQueryChange('nativeOccurrence', $event[0])"
-          [multiple]="false"
+        <laji-metadata-select
+          [(ngModel)]="query.wild"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
           [useFilter]="false"
-          [title]="'observation.form.nativeOccurrence' | translate"
+          name="wild"
+          [mapToWarehouse]="true"
+          [placeholder]="'observation.form.nativeOccurrence' | translate"
           [info]="'observation.info.nativeOccurrence' | translate"
-          [options]="[
-            {id: true, value: ('observation.form.nativeOccurrenceTrue' | translate)},
-            {id: false, value: ('observation.form.nativeOccurrenceFalse' | translate)}
-          ]"></laji-select>
+          [alt]="'MY.wildEnum'"></laji-metadata-select>
       </div>
     </div>
     <div class="form-group">
@@ -808,6 +807,14 @@
         <label class="small-label">
           <laji-checkbox [value]="formQuery.quarantinePlantPest" (valueChange)="onInvasiveCheckBoxToggle('quarantinePlantPest')"></laji-checkbox>
           {{ 'MX.quarantinePlantPest' | label }}
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <label class="small-label">
+          <laji-checkbox [value]="formQuery.controllingRisksOfInvasiveAlienSpecies" (valueChange)="onInvasiveCheckBoxToggle('controllingRisksOfInvasiveAlienSpecies')"></laji-checkbox>
+          {{ 'MX.controllingRisksOfInvasiveAlienSpecies' | label }}
         </label>
       </div>
     </div>

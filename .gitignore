@@ -33,6 +33,9 @@ settings.json
 /e2e/*.map
 !/e2e/protractor.conf.js
 
+# Don't include script with this repo!
+**/*.sh
+
 #System Files
 .DS_Store
 Thumbs.db

@@ -7,12 +7,13 @@ import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscri
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { CollectionService } from '../../../shared/service/collection.service';
-import { AreaService, AreaType } from '../../../shared/service/area.service';
+import { AreaService } from '../../../shared/service/area.service';
 import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
+import { Area } from '../../../shared/model/Area';
 
 
 
@@ -219,12 +220,12 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       this.shouldSort = true;
       switch (this.field) {
         case 'MY.collectionID':
-          return this.collectionService.getAllAsLookUp(this.lang);
-        case <any>AreaType.Biogeographical:
+          return this.collectionService.getAll(this.lang);
+        case <any>Area.AreaType.Biogeographical:
           return this.areaService.getBiogeographicalProvinces(this.lang);
-        case <any>AreaType.Municipality:
+        case <any>Area.AreaType.Municipality:
           return this.areaService.getMunicipalities(this.lang);
-        case <any>AreaType.Country:
+        case <any>Area.AreaType.Country:
           return this.areaService.getCountries(this.lang);
         case 'KE.informationSystem':
           return this.sourceService.getAllAsLookUp(this.lang).pipe(

@@ -48,10 +48,15 @@
            class="ng-thumb"
            alt="Image {{ index + 1 }}" />
       <h4 *ngIf="showOverlay" (click)="$event.stopPropagation()">
-        <a class="link" [routerLink]="'/taxon/' + img.taxonId + (!linkOptions?.tab || linkOptions.tab === 'overview' ? '' : '/' + linkOptions.tab) | localize" [queryParams]="linkOptions?.queryParams" [queryParamsHandling]="linkOptions?.queryParamsHandling">
+        <a *ngIf="img.taxonId else noTaxonLinking" class="link" [routerLink]="'/taxon/' + img.taxonId + (!linkOptions?.tab || linkOptions.tab === 'overview' ? '' : '/' + linkOptions.tab) | localize" [queryParams]="linkOptions?.queryParams" [queryParamsHandling]="linkOptions?.queryParamsHandling">
           <ng-container *ngTemplateOutlet="info; context: {$implicit: img}"></ng-container>
         </a>
       </h4>
+      <ng-template #noTaxonLinking>
+        <span class="link" (click)="openImage(index)">
+          <ng-container *ngTemplateOutlet="info; context: {$implicit: img}"></ng-container>
+        </span>
+      </ng-template>
     </div>
   </ng-container>
 </ng-template>
