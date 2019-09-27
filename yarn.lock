@@ -5722,10 +5722,10 @@ label-designer@^3.1.5:
   dependencies:
     tslib "^1.9.0"
 
-laji-form@^0.0.640:
-  version "0.0.640"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.640.tgz#6f1052f1981f7843c8f9a426d3d332454068a1fb"
-  integrity sha512-22/qVU4oSt+eeWdaCWmH7j4ZprqeHzMIEnkAjUrX59zxEpk5cqO373H9uGR3FIX9h7TWVA0c8R5zwqDXl5H9mg==
+laji-form@^0.0.645:
+  version "0.0.645"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.645.tgz#63a6dec3fa4d8f32094bed8f670ac3b26343b94e"
+  integrity sha512-FlZYjy7HYf1XuCvWbpGrjOv+rlfJyDTno/wcsxUc0ppLevfl7IZ+0WTgjRtAUZl4VDNAx6p9xFhjPe9gjIC/KA==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
