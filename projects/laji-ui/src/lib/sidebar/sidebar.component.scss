@@ -47,6 +47,7 @@ $mobileBreakpoint: 768px;
   background-color: $neutral-4;
   user-select: none;
   opacity: 0;
+  z-index: 5;
 }
 
 .sidebar.left .dragbar {
@@ -56,6 +57,26 @@ $mobileBreakpoint: 768px;
 .sidebar.right .dragbar {
   left: 0;
   right: unset;
+}
+
+.open-bar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50px;
+  background-color: $neutral-3;
+  user-select: none;
+  &::after {
+    content: '';
+    margin-left: 50px;
+  }
+}
+
+.open-bar.left {
+  left: 0;
+}
+.open-bar.right {
+  right: 0;
 }
 
 :host .sidebar ::ng-deep lu-sidebar-link div {
@@ -90,7 +111,6 @@ $mobileBreakpoint: 768px;
 
 .close-menu {
   margin-top: 10px;
-  float: right;
   color: $neutral-6;
   cursor: pointer;
 }

@@ -1,4 +1,4 @@
-import { Component, Input, Renderer2, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Renderer2, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
@@ -7,6 +7,16 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   styleUrls: ['./sidebar.component.scss'],
   animations: [
     trigger('sidebarState', [
+      state('closed', style({
+        'width': '50px',
+        'opacity': '0',
+        'z-index': '-1'
+      }), {params: {transform: '-100%'}}),
+      state('open', style({
+      })),
+      transition('closed<=>open', animate('2000ms')),
+    ]),
+    trigger('sidebarStateMobile', [
       state('closed', style({
         'transform': 'translateX({{transform}})',
         'box-shadow': '0 0 0 0 rgba(0,0,0,0.1)'
@@ -28,7 +38,7 @@ export class SidebarComponent implements OnDestroy {
   destroyDragMoveListener: Function;
   destroyDragEndListener: Function;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
 
   onSwitchState() {
     this.open = !this.open;
@@ -41,15 +51,27 @@ export class SidebarComponent implements OnDestroy {
 
   onDrag(mousemove) {
     let width = 0;
+    let opacity = 1;
     if (this.position === 'left') {
       width = Math.abs(this.sidebarRef.nativeElement.clientLeft - mousemove.clientX);
     } else {
       width = Math.abs(this.sidebarRef.nativeElement.offsetLeft + this.sidebarRef.nativeElement.clientWidth - mousemove.clientX);
     }
-    this.renderer.setStyle(this.sidebarRef.nativeElement, 'width', `${width}px`);
+    if (width < 50) {
+      this.onDragEnd();
+      this.open = false;
+      this.cdr.markForCheck();
+    } else {
+      this.open = true;
+    }
+    if (width <= 100) {
+      opacity = (width - 50) / 50;
+    }
+    this.renderer.setStyle(this.sidebarRef.nativeElement, 'width', `${Math.max(50, width)}px`);
+    this.renderer.setStyle(this.sidebarRef.nativeElement, 'opacity', `${Math.max(0, opacity)}`);
   }
 
-  onDragEnd(mouseup) {
+  onDragEnd() {
     this.destroyDragMoveListener();
     this.destroyDragEndListener();
   }

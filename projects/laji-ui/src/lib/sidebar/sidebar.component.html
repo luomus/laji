@@ -7,7 +7,9 @@
 <ng-container *ngIf="position === 'left' else sidebar"></ng-container>
 
 <ng-template #sidebar>
-  <lu-button class="open-menu" [ngClass]="{'left': position === 'left', 'right': position === 'right'}" (click)="onSwitchState()">Open</lu-button>
+  <div class="open-bar" [ngClass]="{'left': position === 'left', 'right': position === 'right'}">
+    <a class="open-button" (click)="onSwitchState()">Open</a>
+  </div>
   <div class="sidebar"
        [ngClass]="{'left': position === 'left', 'right': position === 'right'}"
        [@sidebarState]="{value: open ? 'open' : 'closed', params: {transform: position === 'left' ? '-100%' : '100%'}}"
