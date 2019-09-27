@@ -143,3 +143,11 @@ div.annotation-marker {
   }
 
 }
+
+@media only screen and (min-width: 768px) and (max-width: 1200px)  {
+ .taxon div:nth-child(2) label, .taxon div:nth-child(3) label {
+   height: auto;
+   margin-top: 10px;
+ }
+}
+

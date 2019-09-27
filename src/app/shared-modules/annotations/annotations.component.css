@@ -29,5 +29,6 @@
 @media only screen and (max-width: 1280px) {
   .switch-mode {
     display: block;
+    margin-bottom: 10px;
   }
 }

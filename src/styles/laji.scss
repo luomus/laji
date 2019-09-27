@@ -797,14 +797,20 @@ body > .ui-select-bootstrap.open {
 }
 /** /scrollbar **/
 
+@media (min-width: 768px){
+  .modal-annotation {
+      width: 95%;
+  }
+}
+
 @media (min-width: 1260px){
-  .modal-lg {
+  .modal-annotation {
       width: 1200px;
   }
 }
 
 @media (min-width: 1660px){
-  .modal-lg {
+  .modal-annotation {
       width: 1600px;
   }
 }
