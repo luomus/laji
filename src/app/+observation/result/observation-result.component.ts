@@ -50,6 +50,7 @@ export class ObservationResultComponent {
   hasMonthDayData: boolean;
   hasYearData: boolean;
   showMenu = false;
+  selectedIndex = 0;
 
   private _active;
 
@@ -66,6 +67,7 @@ export class ObservationResultComponent {
     if (value !== 'finnish') {
       this.lastTabActive = value;
     }
+    this.selectedIndex = tabNameToIndex[this.active];
   }
 
   get active() {
@@ -99,10 +101,6 @@ export class ObservationResultComponent {
 
   toggleMenuMobile() {
     this.showMenu = !this.showMenu;
-  }
-
-  getSelectedIndex() {
-    return tabNameToIndex[this.active];
   }
 
   onSelect(tabIndex: number) {

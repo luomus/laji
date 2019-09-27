@@ -42,7 +42,7 @@
   </ng-container>
 </div>
 
-<lu-tabs *ngIf="active !== 'finnish'" [selectedIndex]="getSelectedIndex()" (select)="onSelect($event)">
+<lu-tabs *ngIf="active !== 'finnish'" [selectedIndex]="selectedIndex" (select)="onSelect($event)">
   <lu-tab [heading]="'search.result.map' | translate">
     <laji-observation-map
       [ready]="!loadingUnits"

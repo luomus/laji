@@ -1,4 +1,7 @@
-import { Component, ContentChildren, AfterViewInit, QueryList, ChangeDetectorRef, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component, ContentChildren, AfterViewInit, QueryList, ChangeDetectorRef,
+  ChangeDetectionStrategy, Input, Output, EventEmitter
+} from '@angular/core';
 import { TabComponent } from './tab/tab.component';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { color } from '../vars';
@@ -26,8 +29,9 @@ import { color } from '../vars';
 export class TabsComponent implements AfterViewInit {
   @ContentChildren(TabComponent) tabComponents !: QueryList<TabComponent>;
 
-  @Input() selectedIndex = 0;
   @Output() select = new EventEmitter<number>();
+
+  _selectedIndex = 0;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -35,10 +39,25 @@ export class TabsComponent implements AfterViewInit {
     Promise.resolve(null).then(() => this.tabComponents.first.active = true);
   }
 
+  @Input() set selectedIndex(idx) {
+    const updateActive = this.updateActiveComponents(this._selectedIndex);
+    this._selectedIndex = idx;
+    updateActive(idx);
+  }
+  get selectedIndex() {
+    return this._selectedIndex;
+  }
+
   onSelect(tabIndex: number) {
-    this.tabComponents.toArray()[this.selectedIndex].active = false;
+    const updateActive = this.updateActiveComponents(this.selectedIndex);
     this.selectedIndex = tabIndex;
-    this.tabComponents.toArray()[tabIndex].active = true;
+    updateActive(tabIndex);
     this.select.next(tabIndex);
   }
+
+  updateActiveComponents = oldIdx => newIdx => setTimeout(() => {
+      this.tabComponents.toArray()[oldIdx].active = false;
+      this.tabComponents.toArray()[newIdx].active = true;
+      this.cdr.markForCheck();
+  })
 }
