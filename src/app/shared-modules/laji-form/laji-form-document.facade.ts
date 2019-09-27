@@ -190,7 +190,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
         if (!form.uiSchema) {
           form.uiSchema = {};
         }
-        form.uiSchema['ui:disabled'] = true;
+        form.uiSchema = {...form.uiSchema, 'ui:disabled': true};
       }
       this.updateState({..._state, loading: false, form, error: _state.error === FormError.incomplete ? FormError.ok : _state.error});
     });
