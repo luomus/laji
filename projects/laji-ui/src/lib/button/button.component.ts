@@ -24,17 +24,6 @@ type Role = 'primary' | 'secondary';
         color: '#1f74ad',
       }}),
       transition('unclicked<=>clicked', animate('200ms')),
-    ]),
-    trigger('disabled', [
-      state('active', style({
-        'background-color': '*',
-        'box-shadow': '*'
-      })),
-      state('disabled', style({
-        'background-color': 'rgba(0, 0, 0, 0)',
-        'box-shadow': '0 0 0 #c7cdd1'
-      })),
-      transition('active<=>disabled', animate('500ms')),
     ])
   ]
 })
