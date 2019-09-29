@@ -9,12 +9,44 @@ $mobileBreakpoint: 768px;
   flex-flow: row nowrap;
 }
 
+.content {
+  flex-grow: 1;
+  padding: 20px 40px;
+}
+
+.sidebar {
+  position: relative;
+  background-color: $neutral-3;
+  box-shadow: inset -10px 0 10px -10px rgba(#000, 0.1);
+  overflow-x: hidden;
+}
+
+.dragbar {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 3px;
+  cursor: col-resize;
+  user-select: none;
+}
+
+.sidebar-content-wrapper {
+  min-width: max-content;
+  padding: 10px 20px;
+}
+
+.open-sidebar {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+}
+
+/*
 .sidebar {
   position: relative;
   z-index: 2;
   background-color: $neutral-3;
   box-shadow: inset -10px 0 10px -10px rgba(#000, 0.1);
-  position: relative;
   padding: 10px 20px;
   overflow-x: hidden;
   &.right {
@@ -31,11 +63,6 @@ $mobileBreakpoint: 768px;
       right: 0;
     }
   }
-}
-
-.content {
-  flex-grow: 1;
-  padding: 20px 40px;
 }
 
 .sidebar .dragbar {
@@ -136,3 +163,8 @@ $mobileBreakpoint: 768px;
 :host ::ng-deep nav {
   min-width: max-content;
 }
+
+.sidebar-nav-wrapper {
+
+}
+ */

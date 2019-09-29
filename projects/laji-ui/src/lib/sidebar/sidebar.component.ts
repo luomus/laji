@@ -1,12 +1,51 @@
-import { Component, Input, Renderer2, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
+import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
 
 @Component({
   selector: 'lu-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
   animations: [
-    trigger('sidebarState', [
+    trigger('sidebarOpen', [
+      state('closed', style({
+        'width': '50px'
+      })),
+      state('open', style({
+      })),
+      transition('open=>closed', group([
+        query('@sidebarContentOpen', [
+          animateChild()
+        ]),
+        query('@sidebarOpenbtnOpen', [
+          animateChild()
+        ]),
+        animate('300ms ease')
+      ])),
+      transition('closed=>open', group([
+        animate('300ms ease'),
+      ])),
+    ]),
+    trigger('sidebarContentOpen', [
+      state('closed', style({
+        opacity: 0,
+        display: 'none'
+      })),
+      state('open', style({
+        opacity: 1,
+      })),
+      transition('closed<=>open', animate('300ms ease')),
+    ]),
+    trigger('sidebarOpenbtnOpen', [
+      state('closed', style({
+        opacity: 1,
+      })),
+      state('open', style({
+        opacity: 0,
+        display: 'none'
+      })),
+      transition('open=>closed', animate('300ms ease')),
+    ]),
+/*     trigger('sidebarState', [
       state('closed', style({
         'width': '50px',
         'opacity': '0',
@@ -14,7 +53,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
       }), {params: {transform: '-100%'}}),
       state('open', style({
       })),
-      transition('closed<=>open', animate('2000ms')),
+      transition('closed<=>open', animate('200ms')),
     ]),
     trigger('sidebarStateMobile', [
       state('closed', style({
@@ -25,22 +64,29 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         'transform': 'translateX(0%)',
       })),
       transition('closed<=>open', animate('200ms')),
-    ])
+    ]) */
   ]
 })
 export class SidebarComponent implements OnDestroy {
   @Input() position: 'left' | 'right' = 'left';
-  @Input() draggable = true;
-  @Input() open = true;
+
+  open = true;
+
+/*   @Input() draggable = true;
+  @Input() open = true; */
 
   @ViewChild('sidebarRef', {static: false}) sidebarRef: ElementRef;
+  @ViewChild('navWrapper', {static: false}) navWrapperRef: ElementRef;
+
+/*   minWidthThreshold = 200;
+  prevWidth = 0; */
 
   destroyDragMoveListener: Function;
   destroyDragEndListener: Function;
 
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
 
-  onSwitchState() {
+  onSwitchOpen() {
     this.open = !this.open;
   }
 
@@ -51,7 +97,6 @@ export class SidebarComponent implements OnDestroy {
 
   onDrag(mousemove) {
     let width = 0;
-    let opacity = 1;
     if (this.position === 'left') {
       width = Math.abs(this.sidebarRef.nativeElement.clientLeft - mousemove.clientX);
     } else {
@@ -63,12 +108,9 @@ export class SidebarComponent implements OnDestroy {
       this.cdr.markForCheck();
     } else {
       this.open = true;
-    }
-    if (width <= 100) {
-      opacity = (width - 50) / 50;
+      this.cdr.markForCheck();
     }
     this.renderer.setStyle(this.sidebarRef.nativeElement, 'width', `${Math.max(50, width)}px`);
-    this.renderer.setStyle(this.sidebarRef.nativeElement, 'opacity', `${Math.max(0, opacity)}`);
   }
 
   onDragEnd() {
@@ -85,3 +127,26 @@ export class SidebarComponent implements OnDestroy {
     }
   }
 }
+
+/**
+ * DOM COMPONENTS
+ * - Sidebar (variable width, always opaque)
+ *   - SidebarContentWrapper (fixed width, transparent when closed)
+ *     - Close button
+ *     - SidebarContent
+ *   - Open button (hamburger)
+ *   - Dragbar (left or right edge of host)
+ * - Content
+ *
+ * INPUTS
+ * - Position
+ * - Width
+ *
+ * ANIMS
+ * - open <=> closed
+ *
+ * ON MOBILE
+ * - disable dragbar
+ * - open <=> closed animation uses TranslateX instead of changing width
+ *
+ */
