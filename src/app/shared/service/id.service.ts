@@ -14,7 +14,8 @@ export class IdService {
     'luomus:': 'http://id.luomus.fi/',
     'zmuo:': 'http://id.zmuo.oulu.fi/',
     'herbo:': 'http://id.herb.oulu.fi/',
-    'utu:': 'http://mus.utu.fi/'
+    'utu:': 'http://mus.utu.fi/',
+    'gbif-dataset:': 'https://www.gbif.org/dataset/',
   };
 
   static getId(value) {
