@@ -2,9 +2,9 @@
 
 div {
     &.item-content{
-        min-height: 500px;
+        min-height: 450px;
         @include media-query-tablet {
-            min-height: 520px;
+            min-height: 480px;
         }
         div {
             &.unit-annotation {

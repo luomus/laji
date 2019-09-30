@@ -4,12 +4,14 @@ div {
     &.unit {
         background-color: $main-gray;
         position: relative;
+        height: 175px;
         div {
             &.image {
                 /*min-height:200px;*/
                 margin-bottom: 10px;
                 position: relative;
                 background-color: $black;
+                height: 125px;
                 @include media-query-laptop {
                     min-height: auto;
                 }
@@ -30,7 +32,7 @@ div {
                     display: block;
                     margin-left: auto;
                     margin-right: auto;
-                    height: auto; 
+                    height: 100%; 
                     width: auto;  
                     max-height: 200px;
         
@@ -42,7 +44,7 @@ div {
             }
             &.no-media {
                 background-color: $black;
-                min-height: 100px;
+                height: 125px;
                 span {
                     position: absolute;
                     top: 50%;

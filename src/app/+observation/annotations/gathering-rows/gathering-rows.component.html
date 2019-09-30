@@ -3,7 +3,7 @@
       <li *ngIf="gathering.country">{{ gathering.country }}</li>
       <li *ngIf="gathering.biogeographicalProvince">{{ gathering.biogeographicalProvince }}</li>
       <li *ngIf="gathering.municipality">{{ gathering.municipality }}</li>
-      <li *ngIf="gathering.locality">{{ gathering.locality }}</li>
+      <li *ngIf="gathering.locality">{{ gathering.locality | truncate : 80 : true }}</li>
    </ul>
 </div>
 
@@ -12,7 +12,10 @@
 </div>
 
 <div class="author" *ngIf="gathering.team">
-      <div *ngFor="let member of gathering.team">
-            <span class="member">{{ member }}</span>
-      </div>
+      <!--<div *ngFor="let member of gathering.team">
+            <span class="member">{{ member | truncate : 80 : true }}</span>
+      </div>-->
+      <ul class="comma-list">
+            <li *ngFor="let member of gathering.team"><span class="member">{{ member }}</span></li>
+      </ul>
 </div>

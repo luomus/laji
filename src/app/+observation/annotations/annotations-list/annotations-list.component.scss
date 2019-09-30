@@ -9,10 +9,10 @@ div{
         div {
             &.annotation-item {
                 background-color: $main-gray;
-                min-height: 500px;
+                min-height: 450px;
                 cursor: pointer;
                 @include media-query-tablet {
-                    min-height: 520px;
+                    min-height: 480px;
                 }
                 &:hover {
                     -webkit-box-shadow: 0px 0px 33px -5px rgba(0,0,0,0.75);
