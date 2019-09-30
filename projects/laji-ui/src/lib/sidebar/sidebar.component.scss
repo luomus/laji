@@ -1,6 +1,7 @@
 @import 'vars';
 
 $mobileBreakpoint: 768px;
+$sidebarMinWidth: 50px;
 
 :host {
   position: relative;
@@ -11,16 +12,21 @@ $mobileBreakpoint: 768px;
 
 .sidebar {
   position: relative;
+  z-index: 5;
   background-color: $neutral-3;
-  box-shadow: inset -10px 0 10px -10px rgba(#000, 0.1);
   overflow-x: hidden;
-  min-width: 50px;
+  min-width: $sidebarMinWidth;
+  &:not(.mobile) {
+    box-shadow: inset -10px 0 10px -10px rgba(#000, 0.1);
+  }
   &.mobile {
     position: fixed;
     height: 100%;
-    box-shadow: 0 0 50px 0 rgba(#000, 0.2);
-    &.right {
+    box-shadow: 0 0 10px 0 rgba(#000, 0.2);
+    &.open {
       box-shadow: 0 0 50px 0 rgba(#000, 0.2);
+    }
+    &.right {
       right: 0;
     }
   }
@@ -48,10 +54,15 @@ $mobileBreakpoint: 768px;
   padding: 10px 20px;
 }
 
-.open-sidebar {
+.open-btn {
   position: absolute;
   top: 10px;
   left: 5px;
+  cursor: pointer;
+}
+
+.close-btn {
+  cursor: pointer;
 }
 
 // SIDEBAR NAV
@@ -90,7 +101,7 @@ $mobileBreakpoint: 768px;
   flex-grow: 1;
   padding: 20px 40px;
   &.mobile {
-    margin-left: 50px;
+    margin-left: $sidebarMinWidth;
     padding: 10px;
   }
 }

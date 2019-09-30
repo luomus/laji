@@ -6,32 +6,16 @@
 
 <ng-container *ngIf="position === 'left' else sidebar"></ng-container>
 
-<!-- <ng-template #sidebar>
-  <div class="open-bar" [ngClass]="{'left': position === 'left', 'right': position === 'right'}">
-    <a class="open-button" (click)="onSwitchState()">Open</a>
-  </div>
-  <div class="sidebar"
-       [ngClass]="{'left': position === 'left', 'right': position === 'right'}"
-       [@sidebarState]="{value: open ? 'open' : 'closed', params: {transform: position === 'left' ? '-100%' : '100%'}}"
-       #sidebarRef>
-    <div *ngIf="draggable" class="dragbar" (mousedown)="onDragStart($event)"></div>
-    <div class="sidebar-nav-wrapper" #navWrapper>
-      <a class="close-menu" (click)="onSwitchState()">Close</a>
-      <ng-content select="nav"></ng-content>
-    </div>
-  </div>
-</ng-template> -->
-
 <ng-template #sidebar>
   <div class="sidebar"
-       [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile}"
+       [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile, 'open': open}"
        [@sidebarOpen]="disableWidthAnim ? 'disabled' : (open ? 'open' : 'closed')"
        #sidebarRef>
     <div *ngIf="!mobile" class="dragbar" (mousedown)="onDragStart($event)"></div>
     <div class="sidebar-content-wrapper" [@sidebarContentOpen]="open ? 'open' : 'closed'" #navWrapper >
-      <a class="close-sidebar" (click)="onSwitchOpen()">Close</a>
+      <div class="close-btn" (click)="onSwitchOpen()">Close</div>
       <ng-content select="nav"></ng-content>
     </div>
-    <div [@sidebarOpenbtnOpen]="open ? 'open' : 'closed'" class="open-sidebar" (click)="onSwitchOpen()">Open</div>
+    <div [@sidebarOpenbtnOpen]="open ? 'open' : 'closed'" class="open-btn" (click)="onSwitchOpen()">Open</div>
   </div>
 </ng-template>
