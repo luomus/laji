@@ -190,7 +190,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
         if (!form.uiSchema) {
           form.uiSchema = {};
         }
-        form.uiSchema = {...form.uiSchema, 'ui:disabled': true};
+        form.uiSchema = {...form.uiSchema, 'ui:disabled': !this.isAdmin(form)};
       }
       this.updateState({..._state, loading: false, form, error: _state.error === FormError.incomplete ? FormError.ok : _state.error});
     });
@@ -204,7 +204,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     this.updateState({..._state, hasChanges: true, form: {
       ..._state.form,
         formData: {..._state.form.formData, locked: lock},
-        uiSchema: {..._state.form.uiSchema, 'ui:disabled': lock}
+        uiSchema: {..._state.form.uiSchema, 'ui:disabled': this.isAdmin(_state.form) ? false : lock}
     }});
     this.dataChange.next();
   }
@@ -259,6 +259,10 @@ export class LajiFormDocumentFacade implements OnDestroy {
         mergeMap(person => this.documentStorage.removeItem(id, person)),
       ).subscribe();
     }
+  }
+
+  private isAdmin(form: FormWithData): boolean {
+    return form && form.rights && form.rights.admin;
   }
 
   private getNewTmpId(): string {
