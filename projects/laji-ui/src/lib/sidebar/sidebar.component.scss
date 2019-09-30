@@ -9,25 +9,38 @@ $mobileBreakpoint: 768px;
   flex-flow: row nowrap;
 }
 
-.content {
-  flex-grow: 1;
-  padding: 20px 40px;
-}
-
 .sidebar {
   position: relative;
   background-color: $neutral-3;
   box-shadow: inset -10px 0 10px -10px rgba(#000, 0.1);
   overflow-x: hidden;
+  min-width: 50px;
+  &.mobile {
+    position: fixed;
+    height: 100%;
+    box-shadow: 0 0 50px 0 rgba(#000, 0.2);
+    &.right {
+      box-shadow: 0 0 50px 0 rgba(#000, 0.2);
+      right: 0;
+    }
+  }
 }
 
+// DRAGBAR
 .dragbar {
   position: absolute;
-  right: 0;
   height: 100%;
   width: 3px;
   cursor: col-resize;
   user-select: none;
+}
+.sidebar.left .dragbar {
+  left: unset;
+  right: 0;
+}
+.sidebar.right .dragbar {
+  left: 0;
+  right: unset;
 }
 
 .sidebar-content-wrapper {
@@ -39,6 +52,47 @@ $mobileBreakpoint: 768px;
   position: absolute;
   top: 10px;
   left: 5px;
+}
+
+// SIDEBAR NAV
+:host .sidebar ::ng-deep lu-sidebar-link div {
+  position: relative;
+  z-index: 1;
+  padding: 10px 20px;
+  cursor: pointer;
+  &:hover:not(.active) {
+    background-color: $neutral-6;
+    color: $neutral-2;
+  }
+  &.active {
+    background-color: $neutral-2;
+    cursor: default;
+  }
+}
+:host .sidebar.left ::ng-deep lu-sidebar-link div {
+  padding-right: 30px;
+  margin-right: -20px;
+  &.active {
+    box-shadow: -4px 4px 5px -4px rgba(0,0,0,0.1), -4px -3px 5px -4px rgba(0,0,0,0.1);
+  }
+}
+:host .sidebar.right ::ng-deep lu-sidebar-link div {
+  padding-left: 30px;
+  margin-left: -20px;
+  &.active {
+    box-shadow: 4px 4px 5px -4px rgba(0,0,0,0.1), 4px -3px 5px -4px rgba(0,0,0,0.1);
+  }
+}
+
+// CONTENT
+
+.content {
+  flex-grow: 1;
+  padding: 20px 40px;
+  &.mobile {
+    margin-left: 50px;
+    padding: 10px;
+  }
 }
 
 /*

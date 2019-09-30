@@ -1,5 +1,7 @@
-import { Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
+
+const mobileBreakpoint = 450;
 
 @Component({
   selector: 'lu-sidebar',
@@ -45,32 +47,23 @@ import { trigger, state, style, transition, animate, group, query, animateChild 
       })),
       transition('open=>closed', animate('300ms ease')),
     ]),
-/*     trigger('sidebarState', [
+    trigger('sidebarOpenMobile', [
       state('closed', style({
-        'width': '50px',
-        'opacity': '0',
-        'z-index': '-1'
-      }), {params: {transform: '-100%'}}),
-      state('open', style({
+        'transform': 'translateX(-50%)'
       })),
-      transition('closed<=>open', animate('200ms')),
-    ]),
-    trigger('sidebarStateMobile', [
-      state('closed', style({
-        'transform': 'translateX({{transform}})',
-        'box-shadow': '0 0 0 0 rgba(0,0,0,0.1)'
-      }), {params: {transform: '-100%'}}),
       state('open', style({
         'transform': 'translateX(0%)',
       })),
       transition('closed<=>open', animate('200ms')),
-    ]) */
+    ])
   ]
 })
-export class SidebarComponent implements OnDestroy {
+export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() position: 'left' | 'right' = 'left';
 
   open = true;
+  disableWidthAnim = false;
+  mobile = false;
 
 /*   @Input() draggable = true;
   @Input() open = true; */
@@ -81,29 +74,35 @@ export class SidebarComponent implements OnDestroy {
 /*   minWidthThreshold = 200;
   prevWidth = 0; */
 
+  destroyResizeListener: Function;
   destroyDragMoveListener: Function;
   destroyDragEndListener: Function;
 
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
+
+  ngAfterViewInit() {
+    this.detectMobileMode();
+    this.destroyResizeListener = this.renderer.listen(window, 'resize', this.detectMobileMode);
+  }
+
+  detectMobileMode() {
+    this.mobile = window.innerWidth < mobileBreakpoint;
+    this.cdr.detectChanges();
+  }
 
   onSwitchOpen() {
     this.open = !this.open;
   }
 
   onDragStart(mousedown) {
+    this.disableWidthAnim = true;
     this.destroyDragMoveListener = this.renderer.listen(document, 'mousemove', this.onDrag.bind(this));
     this.destroyDragEndListener = this.renderer.listen(document, 'mouseup', this.onDragEnd.bind(this));
   }
 
   onDrag(mousemove) {
-    let width = 0;
-    if (this.position === 'left') {
-      width = Math.abs(this.sidebarRef.nativeElement.clientLeft - mousemove.clientX);
-    } else {
-      width = Math.abs(this.sidebarRef.nativeElement.offsetLeft + this.sidebarRef.nativeElement.clientWidth - mousemove.clientX);
-    }
+    const width = this.calcSidebarWidth(mousemove.clientX);
     if (width < 50) {
-      this.onDragEnd();
       this.open = false;
       this.cdr.markForCheck();
     } else {
@@ -114,6 +113,7 @@ export class SidebarComponent implements OnDestroy {
   }
 
   onDragEnd() {
+    this.disableWidthAnim = false;
     this.destroyDragMoveListener();
     this.destroyDragEndListener();
   }
@@ -126,27 +126,14 @@ export class SidebarComponent implements OnDestroy {
       this.destroyDragEndListener();
     }
   }
-}
 
-/**
- * DOM COMPONENTS
- * - Sidebar (variable width, always opaque)
- *   - SidebarContentWrapper (fixed width, transparent when closed)
- *     - Close button
- *     - SidebarContent
- *   - Open button (hamburger)
- *   - Dragbar (left or right edge of host)
- * - Content
- *
- * INPUTS
- * - Position
- * - Width
- *
- * ANIMS
- * - open <=> closed
- *
- * ON MOBILE
- * - disable dragbar
- * - open <=> closed animation uses TranslateX instead of changing width
- *
- */
+  calcSidebarWidth(mouseX) {
+    let width = 50;
+    if (this.position === 'left') {
+      width = Math.abs(this.sidebarRef.nativeElement.clientLeft - mouseX);
+    } else {
+      width = Math.abs(this.sidebarRef.nativeElement.offsetLeft + this.sidebarRef.nativeElement.clientWidth - mouseX);
+    }
+    return width;
+  }
+}

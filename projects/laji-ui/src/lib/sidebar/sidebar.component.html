@@ -1,6 +1,6 @@
 <ng-container *ngIf="position === 'right' else sidebar"></ng-container>
 
-<div class="content">
+<div class="content" [ngClass]="{'mobile': mobile}">
   <ng-content select="main"></ng-content>
 </div>
 
@@ -24,10 +24,10 @@
 
 <ng-template #sidebar>
   <div class="sidebar"
-       [ngClass]="{'left': position === 'left', 'right': position === 'right'}"
-       [@sidebarOpen]="open ? 'open' : 'closed'"
+       [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile}"
+       [@sidebarOpen]="disableWidthAnim ? 'disabled' : (open ? 'open' : 'closed')"
        #sidebarRef>
-    <div class="dragbar" (mousedown)="onDragStart($event)"></div>
+    <div *ngIf="!mobile" class="dragbar" (mousedown)="onDragStart($event)"></div>
     <div class="sidebar-content-wrapper" [@sidebarContentOpen]="open ? 'open' : 'closed'" #navWrapper >
       <a class="close-sidebar" (click)="onSwitchOpen()">Close</a>
       <ng-content select="nav"></ng-content>
