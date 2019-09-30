@@ -2,8 +2,7 @@
      (onHidden)="onModalHide()"
      (onShow)="pnModalShow()"
      tabindex="-1" role="dialog" aria-hidden="true">
-  <div *ngIf="vm$ | async; let vm">
-    <div class="modal-dialog" [ngClass]="{'modal-lg': !vm.openAnnotation, 'modal-annotation': vm.openAnnotation}">
+    <div *ngIf="vm$ | async; let vm" class="modal-dialog" [ngClass]="{'modal-lg': !vm.openAnnotation, 'modal-annotation': vm.openAnnotation}">
         <div class="modal-content">
             <div class="modal-body">
               <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
@@ -38,5 +37,4 @@
             </div>
           </div>
     </div>
-  </div>
 </div>
