@@ -1,3 +1,7 @@
+a {
+  cursor: pointer;
+}
+
 .annotation {
   border-radius: 5px;
   padding: 5px;
@@ -24,10 +28,13 @@
 
 .annotation-form {
   margin-top: 30px;
-  -webkit-box-shadow: 2px 5px 9px 1px rgba(0,0,0,0.5);
-  -moz-box-shadow: 2px 5px 9px 1px rgba(0,0,0,0.5);
-  box-shadow: 2px 5px 9px 1px rgba(0,0,0,0.5);
+  background: #f9f9f9;
+  border: 1px solid #c9c9c9;
   padding: 5px;
+}
+
+hr {
+  border-top: 2px solid #eee;
 }
 
 @media only screen and (max-width: 1280px) {

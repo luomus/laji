@@ -18,7 +18,9 @@
 
 </div>
 
-<div class="annotation-form">
+<hr/>
+
+<div class="annotation-form" [ngClass]="{'annotation-form': formVisible, '': !formVisible}">
   <ng-container *ngIf="personRoleAnnotation === annotationRole.expert; else basicForm">
       <span class="comment-title"  *ngIf="expert; else expertAnnotation">
           {{ 'annotation.addAnnotationExpert' | translate }}
@@ -33,9 +35,14 @@
         </ng-template>  
       </span>
   </ng-container>
-  <ng-template #basicForm>
+  <ng-template *ngIf="formVisible; else noForm" #basicForm>
       <span class="comment-title">
           Add an annotation
+      </span>
+  </ng-template>
+  <ng-template #noForm>
+      <span class="comment-title">
+          <a (click)="showDocument()">Add an annotation</a>
       </span>
   </ng-template>
     
@@ -49,6 +56,7 @@
     [editors]="editors"
     [expert]="expert"
     [unit]="unit"
+    [visible]="formVisible"
     (success)="onSuccess($event)"
     (cancel)="closeAddForm()"
   ></laji-annotation-form>

@@ -1,3 +1,19 @@
 .column-modal {
     flex: 1;
 }
+
+.no-images {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    position: absolute;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.background-no-images {
+    height: 100%;
+    -webkit-box-shadow: inset 0px 0px 21px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: inset 0px 0px 21px 0px rgba(0,0,0,0.2);
+    box-shadow: inset 0px 0px 21px 0px rgba(0,0,0,0.2);
+}

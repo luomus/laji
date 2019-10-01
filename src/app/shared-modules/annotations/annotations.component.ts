@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AnnotationService } from '../document-viewer/service/annotation.service';
 import { Annotation } from '../../shared/model/Annotation';
 import { IdService } from '../../shared/service/id.service';
+import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
   selector: 'laji-annotations',
@@ -11,12 +12,14 @@ import { IdService } from '../../shared/service/id.service';
 export class AnnotationsComponent implements OnInit {
   @Input() rootID: string;
   @Input() targetID: string;
+  @Input() documentID: string;
   @Input() editors: string[];
   @Input() personID: string;
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() identifying = false;
   @Input() unit: any;
   @Input() annotations: Annotation[] = [];
+  @Input() formVisible: boolean;
   @Output() close = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
   error = false;
@@ -26,7 +29,10 @@ export class AnnotationsComponent implements OnInit {
   annotation: Annotation = {};
   annotationRole = Annotation.AnnotationRoleEnum;
 
-  constructor(private annotationService: AnnotationService) { }
+  constructor(
+    private annotationService: AnnotationService,
+    private documentViewerFacade: DocumentViewerFacade
+    ) { }
 
   ngOnInit() {
     this.initEmptyAnnotation();
@@ -81,6 +87,14 @@ export class AnnotationsComponent implements OnInit {
     this.annotationChange.emit(annotation);
     this.closeAddForm();
     this.initEmptyAnnotation();
+  }
+
+  showDocument() {
+      this.documentViewerFacade.showDocumentID({
+        highlight: this.unit.unitId,
+        document: this.documentID,
+        openAnnotation: true
+      });
   }
 
 }

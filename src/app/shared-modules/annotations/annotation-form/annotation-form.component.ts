@@ -28,6 +28,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   @Input() annotation: Annotation;
   @Input() identifying: boolean;
   @Input() expert: boolean;
+  @Input() visible;
   @Input() unit: any;
   @Output() success = new EventEmitter<Annotation>();
   @Output() cancel = new EventEmitter<any>();
