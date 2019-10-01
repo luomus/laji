@@ -78,7 +78,7 @@
           </ul>
         </div>-->
         <div class="row container-col">
-          <div class="col-sm-4 column-modal" *ngIf="document.gatherings && document.gatherings[0].units && (document.gatherings[0].units[0].media || document.gatherings[0].media)">
+          <div class="col-sm-4 column-modal" *ngIf="document.gatherings && document.gatherings[0].units">
             <laji-images [document]="document" [highlight]="highlight"></laji-images>
           </div>
           <div class="col-sm-4 column-modal">

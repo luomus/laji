@@ -24,6 +24,10 @@
 
 .annotation-form {
   margin-top: 30px;
+  -webkit-box-shadow: 2px 5px 9px 1px rgba(0,0,0,0.5);
+  -moz-box-shadow: 2px 5px 9px 1px rgba(0,0,0,0.5);
+  box-shadow: 2px 5px 9px 1px rgba(0,0,0,0.5);
+  padding: 5px;
 }
 
 @media only screen and (max-width: 1280px) {
