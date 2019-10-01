@@ -42,8 +42,14 @@
   </ng-template>
   <ng-template #noForm>
       <span class="comment-title">
-          <a (click)="showDocument()">Add an annotation</a>
+          Add an annotation
       </span>
+      <span *lajiLoggedIn="true" class="comment-title">
+          <button class="btn btn-xs btn-success" (click)="showDocument()"><i class="glyphicon glyphicon-plus"></i></button>
+      </span>
+      <div *lajiLoggedIn="false" class="annotation-form">
+          {{ 'force.login' | translate }}
+      </div>
   </ng-template>
     
    
