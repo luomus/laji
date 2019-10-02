@@ -64,6 +64,9 @@ import { InstructionsComponent } from './common/instructions/instructions.compon
 import { ThemePageComponent } from './common/theme-page.component';
 import { FormComponent } from './common/form/form.component';
 import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/theme-own-submissions.component';
+import { ObservationFacade } from '../+observation/observation.facade';
+import { ObservationComponentModule } from '../+observation/observation-component.module';
+import { SearchComponent } from './search/search.component';
 
 /* tslint:enable:max-line-length */
 
@@ -89,6 +92,7 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
     NavigationThumbnailModule,
     LatestDocumentsModule,
     InfoPageModule,
+    ObservationComponentModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -132,7 +136,8 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
     MonitoringThemeBaseComponent,
     FormComponent,
     ThemeOwnSubmissionsComponent,
+    SearchComponent,
   ],
-  providers: [ ResultService, QualityService, WbcResultService ]
+  providers: [ ResultService, QualityService, WbcResultService, ObservationFacade ]
 })
 export class ThemeModule { }

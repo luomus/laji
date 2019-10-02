@@ -1,11 +1,11 @@
 <ul class="nav nav-pills">
   <li role="presentation" [ngClass]="{active: active !== 'finnish'}">
-    <a [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery">
+    <a [routerLink]="[basePath + '', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery">
       <strong>{{ 'search.result.all' | translate }}</strong>
     </a>
   </li>
   <li role="presentation" class="beta" [ngClass]="{active: active === 'finnish'}">
-    <a [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery">
+    <a [routerLink]="basePath + '/finnish' | localize" [queryParams]="query | toSafeQuery">
       <strong>{{ 'search.result.finnish' | translate }}</strong>
     </a>
   </li>
@@ -53,37 +53,37 @@
   <div class="whole-data-list" *ngIf="(showMenu && !lgScreen) || lgScreen">
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation" [ngClass]="{active: active === 'map'}">
-        <a [routerLink]="'/observation/map' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/map' | localize" [queryParams]="query | toSafeQuery">
           {{ 'search.result.map' | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: active === 'list'}">
-        <a [routerLink]="'/observation/list' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/list' | localize" [queryParams]="query | toSafeQuery">
           {{ 'search.result.list' | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: active === 'images'}">
-        <a [routerLink]="'/observation/images' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/images' | localize" [queryParams]="query | toSafeQuery">
           {{ 'search.result.images' | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: active === 'species'}">
-        <a [routerLink]="'/observation/species' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/species' | localize" [queryParams]="query | toSafeQuery">
           {{ 'search.result.species' | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: active === 'stats'}">
-        <a [routerLink]="'/observation/stats' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/stats' | localize" [queryParams]="query | toSafeQuery">
           {{ 'search.result.stats' | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: active === 'load'}">
-        <a [routerLink]="'/observation/load' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/load' | localize" [queryParams]="query | toSafeQuery">
           {{ 'search.result.load' | translate }}
         </a>
       </li>
       <li role="presentation" [ngClass]="{active: active === 'annotation'}" *lajiForTypes="['dev']">
-        <a [routerLink]="'/observation/annotation' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]=" basePath + '/annotation' | localize" [queryParams]="query | toSafeQuery">
           {{ 'search.result.annotation' | translate }}
         </a>
       </li>

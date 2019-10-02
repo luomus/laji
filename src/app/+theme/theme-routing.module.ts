@@ -30,10 +30,61 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
 import { Global } from '../../environments/global';
 import { HasFormPermission } from '../shared/route/has-form-permission';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
+import { SearchComponent } from './search/search.component';
+import { ResetComponent } from '../+observation/reset/reset.component';
+import { ObservationComponent } from '../+observation';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
+  {
+    path: 'gene',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'search',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'list'
+          },
+          {
+            path: ':tab',
+            pathMatch: 'full',
+            component: SearchComponent,
+            data: {
+              noScrollToTop: true
+            }
+          }
+        ]
+      },
+    ],
+    data: {
+      formID: Global.forms.nafi,
+      title: '',
+      navLinks: {
+        search: {
+          routerLink: ['search'],
+          label: 'theme.gene.search'
+        },
+        instructions: {
+          label: 'theme.gene.instructions'
+        },
+        form: {hidden: true},
+        formPermissions: {hidden: true},
+        ownSubmissions: {hidden: true}
+      },
+      navLinksOrder: ['instructions', 'search'],
+      instructions: {
+        fi: '3284',
+        sv: '3288',
+        en: '3286'
+      },
+    }
+  },
   {
     path: 'nafi',
     component: MonitoringThemeBaseComponent,

@@ -17,6 +17,7 @@ export interface NavLink {
   active?: boolean;
   name?: string;
   activeMatch?: string;
+  hidden?: boolean;
 }
 
 @Injectable({
@@ -24,7 +25,7 @@ export interface NavLink {
 })
 export class ThemeFormService {
 
-  defaultNavLinks = {
+  defaultNavLinks: {[name: string]: NavLink} = {
     instructions: {
       routerLink: ['instructions'],
       label: 'instructions',
@@ -111,9 +112,10 @@ export class ThemeFormService {
         return ai - bi;
       })
       .reduce((links, name) => [...links, {name, ...navLinks[name]}], [])
-      .filter(({accessLevel, visible = true}) =>
-        visible
-        && (
+      .filter(({accessLevel, visible = true, hidden = false}) =>
+        !hidden &&
+        visible &&
+        (
           !accessLevel
           || accessLevel === 'admin' && rights.admin
           || accessLevel === 'editor' && rights.edit

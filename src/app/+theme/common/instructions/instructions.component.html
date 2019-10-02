@@ -2,7 +2,7 @@
   <div class="col-8">
     <ng-container *ngIf="instructionsData$ | async as data">
       <laji-info-page *ngIf="data.instructions"
-                      [child]="data.instructions"
+                      [child]="data.instructions | multiLang"
         ></laji-info-page>
       <laji-request *ngIf="data.collectionID && data.rights === Rights.NotAllowed && data.loggedIn"
                     [collectionId]="data.collectionID" [disableDescription]="data.disableRequestDescription">

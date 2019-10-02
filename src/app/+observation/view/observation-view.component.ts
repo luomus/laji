@@ -21,6 +21,7 @@ import { ISettingResultList } from '../../shared/service/user.service';
 })
 export class ObservationViewComponent implements OnInit, OnDestroy {
 
+  @Input() basePath = '/observation';
   _activeTab: string;
   @ViewChild('tabs', { static: false }) tabs;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
