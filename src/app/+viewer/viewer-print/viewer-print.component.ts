@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, Inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { FooterService } from '../../shared/service/footer.service';
 import { UserService } from '../../shared/service/user.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';

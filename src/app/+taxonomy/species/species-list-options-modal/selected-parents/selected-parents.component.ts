@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ColumnSelector } from 'app/shared/columnselector/ColumnSelector';
 
 @Component({

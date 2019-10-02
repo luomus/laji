@@ -1,4 +1,4 @@
-import {startWith, map, filter} from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../shared/service/user.service';
 import { NavigationEnd, Router } from '@angular/router';

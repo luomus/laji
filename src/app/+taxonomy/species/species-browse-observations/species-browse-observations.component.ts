@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';

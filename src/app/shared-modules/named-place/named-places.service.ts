@@ -6,6 +6,7 @@ import { forkJoin, from, Observable, of, of as ObservableOf } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
+
 const { JSONPath } = require('jsonpath-plus');
 
 @Injectable({providedIn: 'root'})

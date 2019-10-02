@@ -1,19 +1,27 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild, OnInit, ElementRef,
-  HostListener
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
 } from '@angular/core';
-import {Subscription, of, Observable, forkJoin} from 'rxjs';
-import {WarehouseApi} from '../../../shared/api/WarehouseApi';
-import {map, switchMap, tap} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
-import {WarehouseValueMappingService} from '../../../shared/service/warehouse-value-mapping.service';
-import {TriplestoreLabelService} from '../../../shared/service/triplestore-label.service';
-import {ModalDirective} from 'ngx-bootstrap';
-import { ChartOptions, ChartType, ChartDataSets, Chart, ChartScales } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
+import { WarehouseApi } from '../../../shared/api/WarehouseApi';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { ModalDirective } from 'ngx-bootstrap';
+import { Chart } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-chart.component';
-
 
 
 @Component({

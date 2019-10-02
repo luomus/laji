@@ -18,7 +18,6 @@ import { IdentifyComponent } from './identify/identify.component';
 import { QualityComponent } from './quality/quality.component';
 import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/named-place.component';
 import { ThemeComponent } from './theme.component';
-import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
 import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
@@ -31,8 +30,6 @@ import { Global } from '../../environments/global';
 import { HasFormPermission } from '../shared/route/has-form-permission';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
 import { SearchComponent } from './search/search.component';
-import { ResetComponent } from '../+observation/reset/reset.component';
-import { ObservationComponent } from '../+observation';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [

@@ -1,4 +1,4 @@
-import { concat, take, delay, retryWhen,  map } from 'rxjs/operators';
+import { concat, delay, map, retryWhen, take } from 'rxjs/operators';
 import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';

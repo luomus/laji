@@ -1,5 +1,5 @@
-import { Observable, Subscription } from 'rxjs';
-import { map, share } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
@@ -8,7 +8,8 @@ import {
   EventEmitter,
   HostListener,
   Inject,
-  Input, OnDestroy,
+  Input,
+  OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,

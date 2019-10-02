@@ -1,5 +1,5 @@
 /* tslint:disable:no-use-before-declare */
-import {debounceTime} from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 /**
  * Originally from here: https://github.com/jkuri/ng2-datepicker
  *

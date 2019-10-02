@@ -1,14 +1,16 @@
 import {
-  Component,
-  OnChanges,
-  Input,
   AfterViewInit,
   ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  OnChanges,
+  PLATFORM_ID,
   QueryList,
-  ViewChildren,
-  SimpleChanges, Inject, PLATFORM_ID
+  SimpleChanges,
+  ViewChildren
 } from '@angular/core';
-import { WbcResultService, SEASON } from '../../wbc-result.service';
+import { SEASON, WbcResultService } from '../../wbc-result.service';
 import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQueryInterface';
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
 import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';

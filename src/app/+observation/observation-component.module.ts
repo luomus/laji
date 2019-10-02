@@ -30,7 +30,6 @@ import { MemberIdPillListComponent } from './form/team/member-id-pill-list/membe
 import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
 import { ExistsPipe } from './pipe/exists.pipe';
 import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
-import { ObservationFacade } from './observation.facade';
 import { AnnotationsComponent } from './annotations/annotations.component';
 
 @NgModule({

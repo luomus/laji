@@ -6,7 +6,6 @@ import { MultiLangService } from '../../../shared-modules/lang/service/multi-lan
 import { PublicationService } from '../../../shared/service/publication.service';
 import { Publication } from '../../../shared/model/Publication';
 import { UserService } from '../../../shared/service/user.service';
-import { Person } from '../../../shared/model/Person';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({

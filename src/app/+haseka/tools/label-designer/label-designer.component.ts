@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { Presets, ILabelField, ISetup, ILabelPdf } from 'label-designer';
+import { ILabelField, ILabelPdf, ISetup, Presets } from 'label-designer';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';

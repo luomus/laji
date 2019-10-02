@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormService } from '../../shared/service/form.service';
-import { switchMap, map, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';

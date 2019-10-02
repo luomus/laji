@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input, ViewChild, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Document } from '../../../../shared/model/Document';
 import { ViewerMapComponent } from '../../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
 import { UserService } from '../../../../shared/service/user.service';
 
 @Component({

@@ -1,12 +1,5 @@
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import {
-  ChangeDetectionStrategy,
-  Component, EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { forkJoin as ObservableForkJoin, Observable, of } from 'rxjs';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';

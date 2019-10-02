@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../shared/service/user.service';
 import { FormService } from '../../../shared/service/form.service';
 import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
