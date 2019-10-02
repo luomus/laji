@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  front:
+    container_name: laji
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app:delegated'
+      - '/app/node_modules'
+    ports:
+      - '3000:3000'
+      - '49153:49153'
+    environment:
+      - NODE_ENV=dev
+      - CHOKIDAR_USEPOLLING=true
