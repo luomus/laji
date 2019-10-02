@@ -213,6 +213,15 @@ laji-locale-sv > div,
   background-position: center right !important;
 }
 
+/** Viewer **/
+laji-document {
+  .facts {
+    max-width: 100%;
+    overflow: auto;
+  }
+}
+/** /Viewer **/
+
 /** Observation **/
 .dropdown-toggle .caret {
   float: right;
