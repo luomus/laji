@@ -97,7 +97,7 @@ export class AnnotationsComponent implements OnInit, OnChanges {
         'unit.annotations.type'
       ],
       ['gathering.displayDateTime DESC'],
-      12,
+      18,
       this.page
     ).subscribe(data => {
       this.result = data;

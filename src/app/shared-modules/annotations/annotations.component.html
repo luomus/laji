@@ -20,7 +20,7 @@
 
 <hr/>
 
-<div class="annotation-form" [ngClass]="{'annotation-form': formVisible, '': !formVisible}">
+<div [ngClass]="{'annotation-form': formVisible, '': !formVisible}">
   <ng-container *ngIf="personRoleAnnotation === annotationRole.expert; else basicForm">
       <span class="comment-title"  *ngIf="expert; else expertAnnotation">
           {{ 'annotation.addAnnotationExpert' | translate }}
@@ -35,10 +35,12 @@
         </ng-template>  
       </span>
   </ng-container>
-  <ng-template *ngIf="formVisible; else noForm" #basicForm>
-      <span class="comment-title">
-          Add an annotation
-      </span>
+  <ng-template #basicForm>
+    <ng-container *ngIf="formVisible; else noForm">
+        <span class="comment-title">
+            Add an annotation
+        </span>
+    </ng-container>
   </ng-template>
   <ng-template #noForm>
       <span class="comment-title">

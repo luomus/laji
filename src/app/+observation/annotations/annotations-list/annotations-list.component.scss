@@ -1,6 +1,10 @@
 @import '../../../../styles/_styles.scss'; 
 
 div{
+    &.annotations{
+        flex-wrap: wrap;
+        display: flex;
+    }
     &.annotation{
         margin-bottom:40px;
         @include media-query-big-desktop {
@@ -9,10 +13,9 @@ div{
         div {
             &.annotation-item {
                 background-color: $main-gray;
-                min-height: 450px;
+                flex: 0 1;
                 cursor: pointer;
                 @include media-query-tablet {
-                    min-height: 480px;
                 }
                 &:hover {
                     -webkit-box-shadow: 0px 0px 33px -5px rgba(0,0,0,0.75);
