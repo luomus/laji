@@ -141,8 +141,8 @@
         </div>
       </ng-container>
       <div>
-          <a *ngIf="indexPagination>0" class="arrow left" (click)="previous()"></a>
-          <a *ngIf="indexPagination<result.length-1" class="arrow right" (click)="next()"></a>
+          <a *ngIf="result && indexPagination>0" class="arrow left" (click)="previous()"></a>
+          <a *ngIf="result && indexPagination < result.length-1" class="arrow right" (click)="next()"></a>
       </div>
       <!--<pre>{{document | json}}</pre>-->
       

@@ -56,7 +56,8 @@ export class ObservationResultListComponent {
       this.documentViewerFacade.showDocumentID({
         document: row.document.documentId,
         highlight: row.unit.unitId,
-        own: query && (!!query.observerPersonToken || !!query.editorPersonToken || !!query.editorOrObserverPersonToken)
+        own: query && (!!query.observerPersonToken || !!query.editorPersonToken || !!query.editorOrObserverPersonToken),
+        result: undefined
       });
     }
   }

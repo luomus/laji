@@ -213,7 +213,10 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       }
       this.mapData = mapData;
       this.setActive(activeIdx);
-      this.indexPagination = this.setIndexPagination();
+      if (this.result) {
+        this.indexPagination = this.setIndexPagination();
+      }
+
       if (this.interval) {
         this.interval.unsubscribe();
       }

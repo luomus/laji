@@ -1,7 +1,7 @@
 <div class="unit" *ngIf="unit">
     <div class="image" *ngIf="unit.media">
         <img [src]="unit.media[0].thumbnailURL" />
-        <div class="number-images"><span>{{ unit.media.length }}</span></div>
+        <div class="number-images" *ngIf="unit.media.length > 1"><span>{{ unit.media.length }}</span></div>
     </div>
     <div class="image no-media" *ngIf="!unit.media"><span>No image</span></div>
     <div class="status-annotation"><span>?</span></div>
