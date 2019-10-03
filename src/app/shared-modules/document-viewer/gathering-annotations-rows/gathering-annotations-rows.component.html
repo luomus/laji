@@ -1,4 +1,6 @@
-<laji-row [title]="'viewer.field.observer' | translate" [value]="gathering.team | values:'; '" [noTitleSpace]="true"></laji-row>
+<laji-row [title]="'viewer.field.observer' | translate"  *ngIf="gathering.team" [noTitleSpace]="true">
+  Saved by {{ gathering.team }}</laji-row>
+<laji-issues [data]="gathering"></laji-issues>aaa
 <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="true">
   {{ gathering.displayDateTime }}
 </laji-row>

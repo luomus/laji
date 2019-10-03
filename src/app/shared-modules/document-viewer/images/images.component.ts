@@ -21,15 +21,22 @@ export class ImagesComponent implements OnChanges {
   @Input() view: 'compact'|'annotation'|'full'|'full2' = 'annotation';
   @Input() views = ['compact', 'full'];
 
-  documentImages = [];
-  gatheringImages = [];
-  unitImages = [];
+  documentImages;
+  gatheringImages;
+  unitImages;
+  loading: boolean;
 
   ngOnChanges() {
     this.initImages();
   }
 
   private initImages() {
+
+  this.documentImages = [];
+  this.gatheringImages = [];
+  this.unitImages = [];
+  this.loading = true;
+
     if (!this.document) {
       return;
     }
@@ -52,6 +59,8 @@ export class ImagesComponent implements OnChanges {
         }
       });
     }
+
+    this.loading = false;
   }
 
 }

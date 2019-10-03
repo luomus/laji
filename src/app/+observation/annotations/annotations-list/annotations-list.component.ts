@@ -34,7 +34,8 @@ export class AnnotationListComponent implements OnInit {
       this.documentViewerFacade.showDocumentID({
         highlight: row.unit.unitId,
         document: row.document.documentId,
-        openAnnotation: true
+        openAnnotation: true,
+        result: this.result.results
       });
     }
   }

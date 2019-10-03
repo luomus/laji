@@ -21,6 +21,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Person } from '../../../shared/model/Person';
+import { PagedResult } from 'app/shared/model/PagedResult';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -32,6 +33,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   @Input() uri: string;
   @Input() highlight: string;
   @Input() own: boolean;
+  @Input() result: Array<any>;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
   @Input() openAnnotation = false;
@@ -54,6 +56,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   unitCnt;
   isViewInited = false;
   showOnlyHighlighted = true;
+  indexPagination: number;
   @SessionStorage() showFacts = false;
   private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
@@ -210,6 +213,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       }
       this.mapData = mapData;
       this.setActive(activeIdx);
+      this.indexPagination = this.setIndexPagination();
       if (this.interval) {
         this.interval.unsubscribe();
       }
@@ -221,6 +225,35 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     ).subscribe(() => this.updateDocument());
     }
     this.cd.markForCheck();
+  }
+
+  next() {
+    this.indexPagination += 1;
+
+    this.document = this.result[this.indexPagination].document;
+    this.uri = this.result[this.indexPagination].document.documentId;
+    this.highlight = this.result[this.indexPagination].unit.unitId;
+    this.map = undefined;
+    this.cd.markForCheck();
+
+    this.updateDocument();
+  }
+
+
+  previous() {
+      this.indexPagination -= 1;
+
+      this.document = this.result[this.indexPagination].document;
+      this.uri = this.result[this.indexPagination].document.documentId;
+      this.highlight = this.result[this.indexPagination].unit.unitId;
+
+      this.cd.markForCheck();
+      this.updateDocument();
+
+  }
+
+  setIndexPagination() {
+    return this.result.findIndex(i => i.unit.unitId === this.highlight);
   }
 
 }

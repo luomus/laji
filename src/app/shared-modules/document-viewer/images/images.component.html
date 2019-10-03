@@ -1,26 +1,8 @@
-<ng-container *ngIf="documentImages.length > 0 || gatheringImages.length > 0 || unitImages.length > 0 else noImages">
-  <ng-container *ngIf="unitImages.length > 0 else gathering">
-    <div>
-      <!--<laji-image-carousel-document [modalImages]="unitImages"></laji-image-carousel-document>-->
-      <laji-image-gallery
-      [showPopover]="showPopover"
-      [showViewSwitch]="showViewSwitch"
-      [showOverlay]="showOverlay"
-      [showExtraInfo]="showExtraInfo"
-      [showLinkToSpeciesCard]="showLinkToSpeciesCard"
-      [linkOptions]="linkOptions"
-      [view]="view"
-      [views]="views"
-      [modalImages]="unitImages"
-      [eventOnClick]="eventOnImageClick"
-      (imageSelect)="selected.emit($event)"
-    ></laji-image-gallery>
-
-    </div>
-  </ng-container>
-  <ng-template  #gathering>
-      <div *ngIf="gatheringImages.length > 0 else noImages">
-        <!--<laji-image-carousel-document [modalImages]="gatheringImages"></laji-image-carousel-document>-->
+<laji-spinner [spinning]="loading">
+  <ng-container *ngIf="documentImages.length > 0 || gatheringImages.length > 0 || unitImages.length > 0 else noImages">
+    <ng-container *ngIf="unitImages.length > 0 else gathering">
+      <div>
+        <!--<laji-image-carousel-document [modalImages]="unitImages"></laji-image-carousel-document>-->
         <laji-image-gallery
         [showPopover]="showPopover"
         [showViewSwitch]="showViewSwitch"
@@ -30,15 +12,35 @@
         [linkOptions]="linkOptions"
         [view]="view"
         [views]="views"
-        [modalImages]="gatheringImages"
+        [modalImages]="unitImages"
         [eventOnClick]="eventOnImageClick"
         (imageSelect)="selected.emit($event)"
       ></laji-image-gallery>
+  
       </div>
-  </ng-template>
-</ng-container>
-<ng-template #noImages>
-  <div class="background-no-images">
-    <p class="no-images">No images</p>
-  </div>
- </ng-template>
+    </ng-container>
+    <ng-template  #gathering>
+        <div *ngIf="gatheringImages.length > 0 else noImages">
+          <!--<laji-image-carousel-document [modalImages]="gatheringImages"></laji-image-carousel-document>-->
+          <laji-image-gallery
+          [showPopover]="showPopover"
+          [showViewSwitch]="showViewSwitch"
+          [showOverlay]="showOverlay"
+          [showExtraInfo]="showExtraInfo"
+          [showLinkToSpeciesCard]="showLinkToSpeciesCard"
+          [linkOptions]="linkOptions"
+          [view]="view"
+          [views]="views"
+          [modalImages]="gatheringImages"
+          [eventOnClick]="eventOnImageClick"
+          (imageSelect)="selected.emit($event)"
+        ></laji-image-gallery>
+        </div>
+    </ng-template>
+  </ng-container>
+  <ng-template #noImages>
+    <div class="background-no-images">
+      <p class="no-images">No images</p>
+    </div>
+   </ng-template>  
+</laji-spinner>

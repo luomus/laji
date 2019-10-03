@@ -20,4 +20,23 @@
   .column-modal {
     flex: 1;
   }
+
+  .arrow {
+    width:23px;
+    height:28px;
+    position: absolute;
+    cursor: pointer;
+    z-index: 1000;
+    top: 50%;
+    background:url('../../../../static/images/icons/arrow.png');
+    &.left{
+      left:-30px;
+      transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg);
+    }
+    &.right{
+      right:-30px;
+    }
+  }
   
