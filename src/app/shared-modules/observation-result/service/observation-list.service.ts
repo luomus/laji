@@ -1,5 +1,4 @@
-
-import {share, tap, switchMap, concat, take, delay, retryWhen, map} from 'rxjs/operators';
+import { concat, delay, map, retryWhen, share, switchMap, take, tap } from 'rxjs/operators';
 import { forkJoin as ObservableForkJoin, Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
@@ -10,7 +9,6 @@ import { CollectionService } from '../../../shared/service/collection.service';
 import { IdService } from '../../../shared/service/id.service';
 import { Util } from '../../../shared/service/util.service';
 import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
-
 
 
 @Injectable()

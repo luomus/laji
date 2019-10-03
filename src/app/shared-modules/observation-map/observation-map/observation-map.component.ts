@@ -1,4 +1,4 @@
-import {concat, take, retryWhen, delay, timeout, switchMap, tap, map} from 'rxjs/operators';
+import { concat, delay, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { of, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -6,7 +6,8 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges, OnDestroy,
+  OnChanges,
+  OnDestroy,
   Output,
   SimpleChanges,
   ViewChild

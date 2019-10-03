@@ -12,6 +12,7 @@ import { ISettingResultList } from '../../shared/service/user.service';
 })
 export class ObservationResultComponent {
 
+  @Input() basePath = '/observation';
   @Input() query: WarehouseQueryInterface = {};
   @Input() lgScreen = true;
   @Input() unitCount: number;

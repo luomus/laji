@@ -1,22 +1,14 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy,
-  Inject
-} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import {Subscription, combineLatest, Observable, of, throwError} from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import {catchError, concat, delay, retryWhen, take, tap} from 'rxjs/operators';
-import {Taxonomy} from '../../shared/model/Taxonomy';
-import {TaxonomyApi} from '../../shared/api/TaxonomyApi';
-import {Logger} from '../../shared/logger';
-import {Title} from '@angular/platform-browser';
-import {TranslateService} from '@ngx-translate/core';
-import {FooterService} from '../../shared/service/footer.service';
+import { catchError, concat, delay, retryWhen, take, tap } from 'rxjs/operators';
+import { Taxonomy } from '../../shared/model/Taxonomy';
+import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
+import { Logger } from '../../shared/logger';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
+import { FooterService } from '../../shared/service/footer.service';
 import { DOCUMENT } from '@angular/common';
 
 @Component({

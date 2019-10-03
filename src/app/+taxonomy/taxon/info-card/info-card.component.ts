@@ -1,22 +1,24 @@
 import { map, switchMap, tap } from 'rxjs/operators';
-import {Observable, of, Subscription} from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Inject,
   Input,
-  Output,
-  OnInit,
   OnChanges,
-  SimpleChanges,
-  PLATFORM_ID, EventEmitter, OnDestroy
+  OnDestroy,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+  SimpleChanges
 } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
-import {GalleryService} from '../../../shared/gallery/service/gallery.service';
-import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
-import {Image} from '../../../shared/gallery/image-gallery/image.interface';
-import {InfoCardQueryService} from './shared/service/info-card-query.service';
+import { GalleryService } from '../../../shared/gallery/service/gallery.service';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { Image } from '../../../shared/gallery/image-gallery/image.interface';
+import { InfoCardQueryService } from './shared/service/info-card-query.service';
 import { BrowserService } from '../../../shared/service/browser.service';
 
 

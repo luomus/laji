@@ -1,10 +1,5 @@
-import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import {
-  trigger,
-  style,
-  animate,
-  transition
-} from '@angular/animations';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 import { LineChartComponent } from '@swimlane/ngx-charts';
 

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WarehouseApi } from '../../api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
-import {PagedResult} from '../../model/PagedResult';
-import {Image} from '../image-gallery/image.interface';
+import { PagedResult } from '../../model/PagedResult';
+import { Image } from '../image-gallery/image.interface';
 
 
 @Injectable({providedIn: 'root'})

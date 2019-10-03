@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { routing } from './taxonomy.routes';
@@ -40,18 +41,14 @@ import { TaxonNamesComponent } from './taxon/info-card/taxon-taxonomy/taxon-name
 import { BrowseSpeciesComponent } from './browse-species/browse-species.component';
 import { InformalGroupSelectComponent } from './browse-species/informal-group-select/informal-group-select.component';
 import { InformalListComponent } from './browse-species/informal-group-select/informal-list/informal-list.component';
-import {
-  InformalListBreadcrumbComponent
-} from './browse-species/informal-group-select/informal-list-breadcrumb/informal-list-breadcrumb.component';
+import { InformalListBreadcrumbComponent } from './browse-species/informal-group-select/informal-list-breadcrumb/informal-list-breadcrumb.component';
 import { SelectedParentsComponent } from './species/species-list-options-modal/selected-parents/selected-parents.component';
 import { TaxonOverviewComponent } from './taxon/info-card/taxon-overview/taxon-overview.component';
 import { TaxonImagesComponent } from './taxon/info-card/taxon-images/taxon-images.component';
 import { TaxonBiologyComponent } from './taxon/info-card/taxon-biology/taxon-biology.component';
 import { TaxonTaxonomyComponent } from './taxon/info-card/taxon-taxonomy/taxon-taxonomy.component';
 import { DownloadModule } from '../shared-modules/download/download.module';
-import {
-  TaxonDescriptionSourceComponent
-} from './taxon/info-card/shared/component/taxon-description-source/taxon-description-source.component';
+import { TaxonDescriptionSourceComponent } from './taxon/info-card/shared/component/taxon-description-source/taxon-description-source.component';
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
 import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
 import { CheckLangService } from './taxon/service/check-lang.service';
@@ -69,6 +66,7 @@ import { BiogeographicalProvincesModule } from '../shared-modules/biogeographica
 import { TaxonOccurrenceMapComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence-map/taxon-occurrence-map.component';
 import { AdministrativeStatusComponent } from './taxon/info-card/shared/component/administrative-status/administrative-status.component';
 import { LicenseModule } from '../shared-modules/license/license.module';
+/* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,

@@ -23,7 +23,7 @@ import { DocumentObjectComponent } from './document-local/document-object/docume
 import { DocumentLocalViewerViewComponent } from './document-local/document-local-viewer-view/document-local-viewer-view.component';
 import { DocumentLocalPrintViewComponent } from './document-local/document-local-print-view/document-local-print-view.component';
 import { PrintMapComponent } from './print-map/print-map.component';
-import { PrintImagesComponent} from './print-images/print-images.component';
+import { PrintImagesComponent } from './print-images/print-images.component';
 import { DocumentPrintComponent } from './document-print/document-print.component';
 import { UnitRowsComponent } from './unit-rows/unit-rows.component';
 import { GatheringRowsComponent } from './gathering-rows/gathering-rows.component';

@@ -1,5 +1,4 @@
-
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SourceService } from '../../shared/service/source.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';

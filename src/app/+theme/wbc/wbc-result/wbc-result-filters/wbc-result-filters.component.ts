@@ -1,9 +1,6 @@
-import {
-  Component, OnInit, OnChanges, ChangeDetectorRef, Input, Output, EventEmitter,
-  SimpleChanges
-} from '@angular/core';
-import { WbcResultService, SEASON } from '../wbc-result.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { SEASON, WbcResultService } from '../wbc-result.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Area } from '../../../../shared/model/Area';
 
 @Component({

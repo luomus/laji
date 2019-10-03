@@ -1,4 +1,3 @@
-
 import { catchError, concatMap, map, take, tap } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';

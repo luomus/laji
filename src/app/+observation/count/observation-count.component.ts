@@ -1,4 +1,4 @@
-import { concat, take, delay, retryWhen, map, catchError, tap } from 'rxjs/operators';
+import { catchError, concat, delay, map, retryWhen, take, tap } from 'rxjs/operators';
 import { Observable, of, throwError as observableThrowError } from 'rxjs';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';

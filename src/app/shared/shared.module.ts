@@ -118,7 +118,7 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    UniquePipe, TruncatePipe
+    UniquePipe, TruncatePipe, LangModule
   ]
 })
 export class SharedModule {

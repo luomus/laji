@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';
 import { mergeMap, tap } from 'rxjs/operators';
+
 const { JSONPath } = require('jsonpath-plus');
 
 @Injectable()

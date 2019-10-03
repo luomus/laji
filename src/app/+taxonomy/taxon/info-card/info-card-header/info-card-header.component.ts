@@ -1,8 +1,17 @@
-import {Component, OnChanges, Input, SimpleChanges, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
-import {Taxonomy} from '../../../../shared/model/Taxonomy';
-import {Subscription, combineLatest} from 'rxjs';
-import {TaxonTaxonomyService} from '../../service/taxon-taxonomy.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
+import { Taxonomy } from '../../../../shared/model/Taxonomy';
+import { Subscription } from 'rxjs';
+import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'laji-info-card-header',

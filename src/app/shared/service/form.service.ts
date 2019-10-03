@@ -3,7 +3,7 @@ import { Observable, Observer, of, of as ObservableOf, throwError as observableT
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, concat, delay, map, retryWhen, share, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, concat, delay, map, retryWhen, share, take, tap } from 'rxjs/operators';
 import { Global } from '../../../environments/global';
 import { Form } from '../model/Form';
 

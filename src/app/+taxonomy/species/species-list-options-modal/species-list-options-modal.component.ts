@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, Output, ViewChild, ChangeDetectionStrategy} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
-import {TaxonomyColumns} from '../service/taxonomy-columns';
+import { TaxonomyColumns } from '../service/taxonomy-columns';
 
 @Component({
   selector: 'laji-species-list-options-modal',

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TaxonTaxonomyService } from '../service/taxon-taxonomy.service';
 import { TreeSkipParameter } from './tree/model/tree.interface';
 
