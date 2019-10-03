@@ -1,6 +1,6 @@
 <div class="annotations">
   <laji-spinner [spinning]="!annotations"></laji-spinner>
-  <div class="annotation" *ngFor="let annotation of annotations">
+  <div class="annotation" *ngFor="let annotation of annotations | sort: 'created': 'asc'">
     <div class="row">
       <div class="col-xs-12 row-title">
         <div *ngIf="annotation.byPerson; else annotationByPerson">
