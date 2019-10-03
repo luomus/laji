@@ -56,7 +56,8 @@ export class IdentifyComponent implements OnInit {
     this.documentViewerFacade.showDocumentID({
       document: event.documentId,
       highlight: event.unitId,
-      identifying: true
+      identifying: true,
+      result: undefined
     });
   }
 

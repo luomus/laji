@@ -32,7 +32,8 @@ export class ThemeObservationListComponent {
       this.documentViewerFacade.showDocumentID({
         highlight: row.unit.unitId,
         document: row.document.documentId,
-        useWorldMap: false
+        useWorldMap: false,
+        result: undefined
       });
     }
   }
