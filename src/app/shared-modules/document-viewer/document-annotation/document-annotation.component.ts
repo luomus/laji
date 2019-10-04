@@ -10,7 +10,9 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { interval as ObservableInterval, Subscription, throwError as observableThrowError, Observable } from 'rxjs';
@@ -40,6 +42,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   @Input() hideHeader = false;
   @Input() identifying = false;
 
+
   collectionContestFormId = Global.forms.collectionContest;
 
   externalViewUrl: string;
@@ -57,6 +60,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   isViewInited = false;
   showOnlyHighlighted = true;
   indexPagination: number;
+  isNavigation = false;
   @SessionStorage() showFacts = false;
   private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
@@ -156,8 +160,14 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.activeGathering.interpretations.country === 'http://tun.fi/ML.206'
     );
 
-    if (this.map) {
-      this.map.setActiveIndex(i);
+    if (this.isNavigation) {
+      this.map.data = this.mapData;
+      this.map.initDataAnnotation(i);
+      this.isNavigation = false;
+    } else {
+      if (this.map) {
+        this.map.setActiveIndex(i);
+      }
     }
   }
 
@@ -213,6 +223,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       }
       this.mapData = mapData;
       this.setActive(activeIdx);
+
       if (this.result) {
         this.indexPagination = this.setIndexPagination();
       }
@@ -231,25 +242,22 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
   next() {
+    this.isNavigation = true;
     this.indexPagination += 1;
-
     this.document = this.result[this.indexPagination].document;
     this.uri = this.result[this.indexPagination].document.documentId;
     this.highlight = this.result[this.indexPagination].unit.unitId;
-    this.map = undefined;
     this.cd.markForCheck();
-
     this.updateDocument();
   }
 
 
   previous() {
+      this.isNavigation = true;
       this.indexPagination -= 1;
-
       this.document = this.result[this.indexPagination].document;
       this.uri = this.result[this.indexPagination].document.documentId;
       this.highlight = this.result[this.indexPagination].unit.unitId;
-
       this.cd.markForCheck();
       this.updateDocument();
 

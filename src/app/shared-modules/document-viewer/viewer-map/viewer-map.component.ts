@@ -64,6 +64,11 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
+  initDataAnnotation(index: number) {
+    this.initData();
+    this.setActiveIndex(index);
+  }
+
   private initData() {
     if (!this.data) {
       return;
@@ -101,4 +106,5 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
       };
     }
   }
+
 }
