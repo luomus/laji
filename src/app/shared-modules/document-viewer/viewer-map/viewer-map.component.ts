@@ -56,6 +56,9 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   setActiveIndex(idx: number) {
     this.active = idx;
+    if (this.data[0].geoJSON && this._data.featureCollection !== this.getFeatureCollection(this.data[0].geoJSON) ) {
+      this.initData();
+    }
     if (this._data && this._data[idx]) {
       this.lajiMap.map.setDraw({...(<any> this.mapOptions.draw), ...(this._data[idx] || {})});
       this.lajiMap.map.zoomToData({maxZoom: this.lajiMap.map.getNormalizedZoom()});
@@ -68,6 +71,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     this.initData();
     this.setActiveIndex(index);
   }
+
 
   private initData() {
     if (!this.data) {
