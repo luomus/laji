@@ -179,6 +179,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
     if (this.map) {
       this.map.data = this.mapData;
+      this.map.useWorldMap = this.useWorldMap;
         this.map.setActiveIndex(i);
     }
 

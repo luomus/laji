@@ -2,6 +2,7 @@
   <div style="max-width: 400px; height: 300px; margin-top:20px;">
     <laji-map [options]="mapOptions"></laji-map>
   </div>
+  {{ useWorldMap }}
   <ng-container *ngIf="data">
     <laji-viewer-coordinates
       [sourceOfCoordinates]="data[active].sourceOfCoordinates"

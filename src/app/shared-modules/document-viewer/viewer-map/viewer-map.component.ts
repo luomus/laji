@@ -62,14 +62,14 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     if (this._data && this._data[idx]) {
       this.lajiMap.map.setDraw({...(<any> this.mapOptions.draw), ...(this._data[idx] || {})});
       this.lajiMap.map.zoomToData({maxZoom: this.lajiMap.map.getNormalizedZoom()});
+      if (this.useWorldMap) {
+        // this.lajiMap.map.setTileLayers({layers:{} ,active: 'world'});
+      } else {
+        // this.lajiMap.map.setTileLayers({active: 'finnish'});
+      }
     } else {
       this.lajiMap.map.setDraw(this.mapOptions.draw);
     }
-  }
-
-  initDataAnnotation(index: number) {
-    this.initData();
-    this.setActiveIndex(index);
   }
 
 
