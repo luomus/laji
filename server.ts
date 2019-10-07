@@ -78,7 +78,8 @@ app.get('*.*', express.static(BROWSER_PATH, {
 app.get('*', (req, res) => {
 
   // Skip cache for these requests
-  if (req.originalUrl.indexOf('/user') === 0) {
+  const parts = req.originalUrl.split('?');
+  if (req.originalUrl.indexOf('/user') === 0 || parts.length > 1) {
     res.render('index', {req, res}, (err, html) => {
       if (html) {
         res.send(html);

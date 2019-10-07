@@ -30,6 +30,7 @@ import { Util } from '../service/util.service';
 import { Document } from '../model/Document';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 'use strict';
 
@@ -114,8 +115,15 @@ export class DocumentApi {
       queryParameters['pageSize'] = pageSize;
     }
 
-    if (userToken !== undefined) {
+    if (!userToken) {
       queryParameters['personToken'] = userToken;
+    } else {
+      of({
+        currentPage: 0,
+        pageSize: 20,
+        results: [],
+        total: 0
+      });
     }
 
     if (observationYear !== undefined) {
@@ -169,8 +177,10 @@ export class DocumentApi {
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentFindByYearWithUser.');
     }
-    if (userToken !== undefined) {
+    if (!userToken) {
       queryParameters['personToken'] = userToken;
+    } else {
+      of([]);
     }
 
     return this.http.get(path, {params: queryParameters});
