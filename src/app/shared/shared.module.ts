@@ -58,13 +58,9 @@ import { LazyImageDirective } from './directive/lazy-image.directive';
 import { HideForIeDirective } from './directive/hide-for-ie.directive';
 import { SortPipe } from './pipe/sort.pipe';
 import { DateFormatPipe, MomentModule } from 'ngx-moment';
-<<<<<<< HEAD
 import { UniquePipe } from './pipe/unique.pipe';
 import { TruncatePipe } from './pipe/truncate.pipe';
-
-=======
 import { NotFoundComponent } from './not-found/not-found.component';
->>>>>>> origin/development
 
 
 @NgModule({
