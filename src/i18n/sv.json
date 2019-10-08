@@ -466,7 +466,7 @@
     "Undo": "Ångra",
     "Redo": "Redo",
     "Preview": "Förhandsgranskning",
-    "Labels on page": "En sida innehåller {{total}} etikett ({{cols}} kolumner {{rader}} rader).",
+    "Labels on page": "En sida innehåller {{total}} etikett ({{cols}} kolumner {{rows}} rader).",
     "Range start": "Område start",
     "Range end": "Område slut",
     "Getting started": "Hur kommer jag igång (en)",
