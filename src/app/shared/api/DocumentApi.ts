@@ -115,7 +115,7 @@ export class DocumentApi {
       queryParameters['pageSize'] = pageSize;
     }
 
-    if (!userToken) {
+    if (userToken) {
       queryParameters['personToken'] = userToken;
     } else {
       of({
@@ -177,7 +177,7 @@ export class DocumentApi {
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentFindByYearWithUser.');
     }
-    if (!userToken) {
+    if (userToken) {
       queryParameters['personToken'] = userToken;
     } else {
       of([]);
