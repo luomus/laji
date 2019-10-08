@@ -48,7 +48,7 @@ export class LabelDesignerComponent implements OnInit {
       border: Presets.Border.solid,
       label: {
         'height.mm': 20,
-        'width.mm': 50,
+        'width.mm': 60,
         'marginTop.mm': 1.5,
         'marginLeft.mm': 1.5,
         'marginBottom.mm': 1.5,
@@ -62,7 +62,7 @@ export class LabelDesignerComponent implements OnInit {
         x: i === 0 ? 0 : 15,
         fields: [a],
         style: {
-          'width.mm': i === 0 ? 13 : 33,
+          'width.mm': i === 0 ? 13 : 45,
           'height.mm': i === 0 ? 13 : 5
         }
       })).splice(0, 2)

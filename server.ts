@@ -66,19 +66,19 @@ app.engine('html', (_, options, callback) => {
 app.set('view engine', 'html');
 app.set('views', BROWSER_PATH);
 
-app.get('/redirect/**', (req, res) => {
-  const location = req.url.substring(10);
-  res.redirect(301, location);
-});
-
 app.get('*.*', express.static(BROWSER_PATH, {
   maxAge: '1y'
 }));
 
 app.get('*', (req, res) => {
 
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+
   // Skip cache for these requests
-  if (req.originalUrl.indexOf('/user') === 0) {
+  const parts = req.originalUrl.split('?');
+  if (req.originalUrl.indexOf('/user') === 0 || parts.length > 1) {
     res.render('index', {req, res}, (err, html) => {
       if (html) {
         res.send(html);

@@ -1,6 +1,6 @@
 import { catchError, concat, delay, map, retryWhen, take, tap } from 'rxjs/operators';
 import { Observable, of, throwError as observableThrowError } from 'rxjs';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -27,7 +27,8 @@ export class ObservationCountComponent implements OnChanges {
 
   constructor(
     private warehouseService: WarehouseApi,
-    private logger: Logger
+    private logger: Logger,
+    private cdr: ChangeDetectorRef
   ) {
   }
 
@@ -51,7 +52,8 @@ export class ObservationCountComponent implements OnChanges {
         this.logger.warn('Failed to update count', err);
         return of('');
       }),
-      tap(() => this.loading = false)
+      tap(() => this.loading = false),
+      tap(() => this.cdr.detectChanges())
     );
   }
 
