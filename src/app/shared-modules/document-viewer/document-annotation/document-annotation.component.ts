@@ -11,6 +11,7 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
+  HostListener,
   Output,
   EventEmitter
 } from '@angular/core';
@@ -42,6 +43,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   @Input() hideHeader = false;
   @Input() identifying = false;
 
+  @Output() close = new EventEmitter<boolean>();
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -266,6 +268,30 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   setIndexPagination() {
     return this.result.findIndex(i => i.unit.unitId === this.highlight);
+  }
+
+  closeDocument() {
+    this.close.emit(true);
+  }
+
+
+@HostListener('window:keydown', ['$event'])
+onKeyDown(e) {
+  e.stopPropagation();
+    if (e.keyCode === 37) { // left
+      if (this.result && this.indexPagination > 0) {
+        this.previous();
+      }
+    }
+    if (e.keyCode === 39) { // right
+      if (this.result && this.indexPagination < this.result.length - 1) {
+        this.next();
+      }
+    }
+
+    if (e.keyCode === 27) {
+     this.closeDocument();
+    }
   }
 
 }
