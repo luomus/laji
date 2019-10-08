@@ -100,6 +100,7 @@ export class ObservationFacade {
   });
 
   private hashCache: {[key: string]: string} = {};
+  private emptyQuery: WarehouseQueryInterface = emptyQuery;
 
   constructor(
     private browserService: BrowserService,
@@ -147,8 +148,12 @@ export class ObservationFacade {
     this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
   }
 
+  setEmptyQuery(query: WarehouseQueryInterface) {
+    this.emptyQuery = query;
+  }
+
   clearQuery() {
-    this.updateQuery(emptyQuery);
+    this.updateQuery(this.emptyQuery);
   }
 
   toggleIntro() {
