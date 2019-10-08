@@ -454,7 +454,8 @@
     },
     "make": "Make the labels",
     "designer": "Design label",
-    "id_short": "ID (short)"
+    "id_short": "ID (short)",
+    "domain": "Domain"
   },
   "lastCensus": "Previous census",
   "line": "line",
