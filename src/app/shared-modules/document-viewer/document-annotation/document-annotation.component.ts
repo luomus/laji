@@ -160,22 +160,9 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.activeGathering.interpretations.country === 'http://tun.fi/ML.206'
     );
 
-    /*if (this.isNavigation) {
-      this.map.data = this.mapData;
-      this.map.initDataAnnotation(i);
-      this.isNavigation = false;
-    } else {
-      if (this.map) {
-        this.map.setActiveIndex(i);
-      }
-    }*/
-    if (this.mapData.length > 0 ) {
-
-    } else {
+    if (this.mapData.length === 0 ) {
       this.map = undefined;
     }
-
-
 
     if (this.map) {
       this.map.data = this.mapData;
