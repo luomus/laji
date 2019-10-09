@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable, of, forkJoin, throwError } from 'rxjs';
-import { map, catchError, switchMap, take, mergeMap } from 'rxjs/operators';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { forkJoin, Observable, of, throwError } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, take } from 'rxjs/operators';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlaceQuery } from 'app/shared/api/NamedPlaceApi';
 import { FormService } from 'app/shared/service/form.service';

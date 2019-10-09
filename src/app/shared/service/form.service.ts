@@ -3,7 +3,7 @@ import { Observable, Observer, of, of as ObservableOf, throwError as observableT
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, concat, delay, map, retryWhen, share, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, concat, delay, map, retryWhen, share, take, tap } from 'rxjs/operators';
 import { Global } from '../../../environments/global';
 import { Form } from '../model/Form';
 
@@ -51,7 +51,7 @@ export class FormService {
     }
     this.setLang(lang);
     if (this.formCache[formId]) {
-      return ObservableOf(JSON.parse(JSON.stringify(this.formCache[formId])));
+      return ObservableOf(this.formCache[formId]);
     } else if (!this.formPending[formId]) {
       this.formPending[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
         catchError(error => error.status === 404 ? of(null) : observableThrowError(error)),
@@ -63,7 +63,7 @@ export class FormService {
     return new Observable((observer: Observer<Form.SchemaForm>) => {
       this.formPending[formId].subscribe(
         data => {
-          observer.next(JSON.parse(JSON.stringify(data)));
+          observer.next(data);
           observer.complete();
         },
         error => {

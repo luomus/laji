@@ -1,5 +1,4 @@
-
-import {switchMap, catchError,  map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 /* tslint:disable:no-use-before-declare */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -14,7 +13,6 @@ import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { Area } from '../../../shared/model/Area';
-
 
 
 export interface MetadataSelectPick {

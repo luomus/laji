@@ -61,9 +61,7 @@ export class FormPermissionService {
   }
 
   isAdmin(permission: FormPermission, person: Person) {
-    if (person.role && person.role.indexOf('MA.admin') > -1) {
-      return true;
-    } else if (permission.admins && permission.admins.indexOf(person.id) > -1) {
+    if (permission.admins && permission.admins.indexOf(person.id) > -1) {
       return true;
     }
     return false;

@@ -1,5 +1,5 @@
-import { Component, OnChanges, Input, ChangeDetectorRef } from '@angular/core';
-import { WbcResultService, SEASON } from '../../wbc-result.service';
+import { ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
+import { SEASON, WbcResultService } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 
 @Component({

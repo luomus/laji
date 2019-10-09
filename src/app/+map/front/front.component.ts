@@ -6,8 +6,8 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapOptions, LajiMapTileLayerName, LajiMapLang } from '@laji-map/laji-map.interface';
-import { latLng as LlatLng, GeometryUtil as LGeometryUtil } from 'leaflet';
+import { LajiMapLang, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { GeometryUtil as LGeometryUtil, latLng as LlatLng } from 'leaflet';
 
 @Component({
   selector: 'laji-map-front',

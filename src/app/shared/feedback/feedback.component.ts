@@ -1,4 +1,3 @@
-
 import { switchMap, take } from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Component, Inject, Input, ViewChild } from '@angular/core';

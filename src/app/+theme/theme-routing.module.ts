@@ -18,7 +18,6 @@ import { IdentifyComponent } from './identify/identify.component';
 import { QualityComponent } from './quality/quality.component';
 import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/named-place.component';
 import { ThemeComponent } from './theme.component';
-import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
 import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
@@ -30,10 +29,59 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
 import { Global } from '../../environments/global';
 import { HasFormPermission } from '../shared/route/has-form-permission';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
+import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
+  {
+    path: 'gene',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'search',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'list'
+          },
+          {
+            path: ':tab',
+            pathMatch: 'full',
+            component: GeneticResourceComponent,
+            data: {
+              noScrollToTop: true
+            }
+          }
+        ]
+      },
+    ],
+    data: {
+      formID: Global.forms.nafi,
+      title: '',
+      navLinks: {
+        search: {
+          routerLink: ['search'],
+          label: 'theme.gene.search'
+        },
+        instructions: {
+          label: 'theme.gene.instructions'
+        },
+        form: {hidden: true},
+        formPermissions: {hidden: true},
+        ownSubmissions: {hidden: true}
+      },
+      navLinksOrder: ['instructions', 'search'],
+      instructions: {
+        fi: '3284',
+        sv: '3288',
+        en: '3286'
+      },
+    }
+  },
   {
     path: 'nafi',
     component: MonitoringThemeBaseComponent,

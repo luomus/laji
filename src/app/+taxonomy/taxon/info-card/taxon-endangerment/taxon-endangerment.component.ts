@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, HostBinding, ChangeDetectionStrategy} from '@angular/core';
-import {Taxonomy} from '../../../../shared/model/Taxonomy';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Taxonomy } from '../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-endangerment',

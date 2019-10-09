@@ -1,5 +1,5 @@
-import { Observable, Subscription } from 'rxjs';
-import { map, share } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
@@ -8,7 +8,8 @@ import {
   EventEmitter,
   HostListener,
   Inject,
-  Input, OnDestroy,
+  Input,
+  OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,
@@ -135,6 +136,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'unitCount', 'observer', 'form', 'id'];
   _goToStartAfterViewCheck = false;
+  private lastSort: any;
 
   @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
   @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalDirective;
@@ -310,6 +312,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   onSort(event) {
+    this.lastSort = event;
     const rows = [...this.visibleRows];
     event.sorts.forEach((sort) => {
       const comparator = this.comparator(sort.prop);
@@ -403,6 +406,12 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.printState === 'none') {
       this.selectionType = 'checkbox';
       this.printState = 'select';
+      if (this.lastSort) {
+        // Sorting is lost when sorted by date type column and select type is given. This is work around for that issue.
+        setTimeout(() => {
+          this.table.onColumnSort(this.lastSort);
+        });
+      }
     } else if (this.printState === 'select') {
       this.selectionType = undefined;
       this.printState = 'none';

@@ -1,6 +1,6 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, distinctUntilChanged, map, share, startWith, switchMap, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { LocalStorage } from 'ngx-webstorage';
@@ -100,6 +100,7 @@ export class ObservationFacade {
   });
 
   private hashCache: {[key: string]: string} = {};
+  private emptyQuery: WarehouseQueryInterface = emptyQuery;
 
   constructor(
     private browserService: BrowserService,
@@ -147,8 +148,12 @@ export class ObservationFacade {
     this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
   }
 
+  setEmptyQuery(query: WarehouseQueryInterface) {
+    this.emptyQuery = query;
+  }
+
   clearQuery() {
-    this.updateQuery(emptyQuery);
+    this.updateQuery(this.emptyQuery);
   }
 
   toggleIntro() {

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { Presets, ILabelField, ISetup, ILabelPdf } from 'label-designer';
+import { ILabelField, ILabelPdf, ISetup, IViewSettings, Presets } from 'label-designer';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
@@ -7,6 +7,7 @@ import { PdfLabelService } from '../../../shared/service/pdf-label.service';
 import { Observable, of } from 'rxjs';
 import { share } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { LocalStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-label-designer',
@@ -18,8 +19,8 @@ export class LabelDesignerComponent implements OnInit {
   labelFields$: Observable<ILabelField[]>;
   newLabelFields$: Observable<ILabelField[]>;
   newSetup: ISetup;
-  setup: ISetup;
-  viewSettings: any = {magnification: 2};
+  @LocalStorage('label-designer-view', {magnification: 2}) viewSettings: IViewSettings;
+  @LocalStorage('label-designer', null) setup: ISetup;
   data: any;
   labelTranslations: any;
 
@@ -37,7 +38,7 @@ export class LabelDesignerComponent implements OnInit {
     const translations = this.translateService.instant('labelDesigner');
     this.labelTranslations = this.translateService.currentLang !== 'en' && typeof translations === 'object' ? translations : {};
     this.newLabelFields$ = this.labelFields$;
-    this.setup = {
+    this.newSetup = {
       page: {
         ...Presets.A4,
         'paddingTop.mm': 10,
@@ -48,7 +49,7 @@ export class LabelDesignerComponent implements OnInit {
       border: Presets.Border.solid,
       label: {
         'height.mm': 20,
-        'width.mm': 50,
+        'width.mm': 60,
         'marginTop.mm': 1.5,
         'marginLeft.mm': 1.5,
         'marginBottom.mm': 1.5,
@@ -62,13 +63,15 @@ export class LabelDesignerComponent implements OnInit {
         x: i === 0 ? 0 : 15,
         fields: [a],
         style: {
-          'width.mm': i === 0 ? 13 : 33,
+          'width.mm': i === 0 ? 13 : 45,
           'height.mm': i === 0 ? 13 : 5
         }
       })).splice(0, 2)
     };
+    if (this.setup === null) {
+      this.setup = JSON.parse(JSON.stringify(this.newSetup));
+    }
     this.data = this.pdfLabelService.getData();
-    this.newSetup = JSON.parse(JSON.stringify(this.setup));
   }
 
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { of, forkJoin, Observable } from 'rxjs';
-import { map, tap, share } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
+import { map, share, tap } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Global } from '../../../../environments/global';
 import { PagedResult } from '../../../shared/model/PagedResult';

@@ -15,6 +15,7 @@ import { InfoModule } from '../info/info.module';
 import { IncludesPipe } from './includes.pipe';
 import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 import { HabitatSelectComponent } from './habitat-select/habitat-select.component';
+
 /* tslint:enable:max-line-length */
 
 @NgModule({

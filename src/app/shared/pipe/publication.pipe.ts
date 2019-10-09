@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PublicationService } from '../service/publication.service';
 import { Publication } from '../model/Publication';
-import { of, forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Pipe({

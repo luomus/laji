@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 

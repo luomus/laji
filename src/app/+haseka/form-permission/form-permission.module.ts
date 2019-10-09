@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RequestComponent } from './request/request.component';
-import { RequestDescriptionComponent} from './request/request-description/request-description.component';
+import { RequestDescriptionComponent } from './request/request-description/request-description.component';
 import { SharedModule } from '../../shared/shared.module';
 import { AdminComponent } from './admin/admin.component';
 import { IntroComponent } from './admin/intro/intro.component';

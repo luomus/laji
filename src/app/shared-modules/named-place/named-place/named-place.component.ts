@@ -1,15 +1,7 @@
-
-import {catchError, filter} from 'rxjs/operators';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
-import { ActivatedRoute, Router, Event, NavigationStart, NavigationError, NavigationEnd, NavigationCancel } from '@angular/router';
-import { Subscription, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { of, Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
 import { NpChooseComponent } from '../np-choose/np-choose.component';

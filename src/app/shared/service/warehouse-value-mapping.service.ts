@@ -1,6 +1,6 @@
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseApi } from '../api/WarehouseApi';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { delay, map, retryWhen, share, take, timeout } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})

@@ -1,6 +1,6 @@
-import { Component, OnChanges, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
-import { Observable, Subscription, forkJoin, of } from 'rxjs';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Document } from '../../../shared/model/Document';
@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { Global } from '../../../../environments/global';
 import { Image } from '../../../shared/model/Image';
+
 const { JSONPath } = require('jsonpath-plus');
 
 @Component({

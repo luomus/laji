@@ -29,10 +29,11 @@
 
 .form-filters {
   z-index: 1029;
-  position: fixed;
-  top: 50px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
   right: 0;
-  height: calc(100vh - 50px);
   padding: 0;
 }
 
@@ -53,9 +54,7 @@
 
 @media only screen and (max-width : 767px) {
   .form-filters {
-    top: 0;
     height: auto;
-    position: absolute;
     width: 100%;
     bottom: 0;
     top: 40px;

@@ -1,5 +1,4 @@
-
-import { take, combineLatest, map, switchMap } from 'rxjs/operators';
+import { combineLatest, map, switchMap, take } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';

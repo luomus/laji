@@ -1,13 +1,20 @@
-import {Component, OnChanges, OnDestroy, Input, Output, ChangeDetectorRef, EventEmitter,
-ChangeDetectionStrategy, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
-import { Label } from 'ng2-charts';
-import { Color } from 'ng2-charts';
+import { Chart, ChartDataSets } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({

@@ -4,7 +4,6 @@ import { LicenseComponent } from './license.component';
 import { SharedModule } from '../../shared/shared.module';
 
 
-
 @NgModule({
   declarations: [LicenseComponent],
   imports: [

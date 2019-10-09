@@ -10,7 +10,8 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  SimpleChanges, ViewChild
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { FormApiClient } from '../../../shared/api/FormApiClient';
 import { IUserSettings, UserService } from '../../../shared/service/user.service';

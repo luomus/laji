@@ -8,6 +8,7 @@ import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -37,7 +38,7 @@ const routes: Routes = [
   {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule'},
   {path: 'kartta', loadChildren: './+map/map.module#MapModule'},
   {path: 'map', loadChildren: './+map/map.module#MapModule', data: {title: 'navigation.map'}},
-  {path: 'error', loadChildren: './+error/error.module#ErrorModule'},
+  {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
   {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule'},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
@@ -57,7 +58,7 @@ const routesWithLang: Routes = [
     {path: 'lepakot', redirectTo: '/en/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'valio', redirectTo: '/en/theme/valio/instructions', pathMatch: 'full'},
     ...routes,
-    {path: '**', redirectTo: '/en/error/404'}
+    {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
     {path: 'nafi', redirectTo: '/sv/theme/nafi/instructions', pathMatch: 'full'},
@@ -71,7 +72,7 @@ const routesWithLang: Routes = [
     {path: 'lepakot', redirectTo: '/sv/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'valio', redirectTo: '/sv/theme/valio/instructions', pathMatch: 'full'},
     ...routes,
-    {path: '**', redirectTo: '/sv/error/404'}
+    {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
   {path: '', data: {lang: 'fi'}, children: [
     {path: 'nafi', redirectTo: '/theme/nafi/instructions', pathMatch: 'full'},
@@ -88,7 +89,7 @@ const routesWithLang: Routes = [
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
     ...routes,
-    {path: '**', redirectTo: '/error/404'}
+    {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
 ];
 

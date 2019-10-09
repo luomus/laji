@@ -1,5 +1,4 @@
-
-import { startWith, tap, map, filter, switchMap, take, catchError, retryWhen, delay, concat } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import {
   AfterViewInit,
   ApplicationRef,

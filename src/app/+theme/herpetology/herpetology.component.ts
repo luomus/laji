@@ -1,5 +1,4 @@
-
-import {filter, merge, tap, switchMap, map} from 'rxjs/operators';
+import { filter, map, merge, switchMap, tap } from 'rxjs/operators';
 /**
  * Created by mjtahtin on 18.4.2017.
  */
