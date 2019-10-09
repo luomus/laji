@@ -60,14 +60,8 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   ogWidth = 0;
   widthBeforeDrag = 0;
 
-/*   @Input() draggable = true;
-  @Input() open = true; */
-
   @ViewChild('sidebarRef', {static: false}) sidebarRef: ElementRef;
   @ViewChild('navWrapper', {static: false}) navWrapperRef: ElementRef;
-
-/*   minWidthThreshold = 200;
-  prevWidth = 0; */
 
   destroyResizeListener: Function;
   destroyDragMoveListener: Function;
@@ -127,6 +121,9 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
+    if (this.destroyResizeListener) {
+      this.destroyResizeListener();
+    }
     if (this.destroyDragMoveListener) {
       this.destroyDragMoveListener();
     }
