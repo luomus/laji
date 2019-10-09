@@ -1,4 +1,4 @@
-<form id="wrapper" *ngIf="vm$ | async; let vm">
+<!-- <form id="wrapper" *ngIf="vm$ | async; let vm">
   <div class="row">
     <div *ngIf="!showMobile && !statusFilterMobile" class="close-filters-mobile"><div (click)="toggleMobile()"><label>{{ 'search.result.'+_activeTab | translate }}</label><i class="glyphicon glyphicon-arrow-right"></i></div></div>
     <div *ngIf="showMobile || (!statusFilterMobile && !showMobile)" class="form-filters"
@@ -39,21 +39,60 @@
           <div [innerHtml]="'observation.intro' | translate"></div>
         </alert>
       </ng-container>
-      <div #tabs>
-        <laji-observation-result
-          [lang]="translate.currentLang"
-          [loadingUnits]="vm.loadingUnits"
-          [loadingTaxa]="vm.loadingTaxa"
-          [lgScreen]="vm.lgScreen"
-          [speciesCount]="vm.countTaxa"
-          [unitCount]="vm.countUnit"
-          [active]="activeTab"
-          [query]="vm.query"
-          (queryChange)="onQueryChange($event)"
-          [listSettings]="vm.settingsList"
-          (listSettingsChange)="onListSettingsChange($event)"
-        ></laji-observation-result>
-      </div>
+      <laji-observation-result
+        [lang]="translate.currentLang"
+        [loadingUnits]="vm.loadingUnits"
+        [loadingTaxa]="vm.loadingTaxa"
+        [lgScreen]="vm.lgScreen"
+        [speciesCount]="vm.countTaxa"
+        [unitCount]="vm.countUnit"
+        [active]="activeTab"
+        [query]="vm.query"
+        (queryChange)="onQueryChange($event)"
+        [listSettings]="vm.settingsList"
+        (listSettingsChange)="onListSettingsChange($event)"
+      ></laji-observation-result>
     </div>
   </div>
-</form>
+</form> -->
+
+<lu-sidebar [position]="'right'" *ngIf="vm$ | async; let vm">
+  <main>
+    <ng-container *lajiBrowserOnly>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="pull-right toggle-intro" *ngIf="!vm.showIntro">
+            <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+          </div>
+        </div>
+      </div>
+      <alert *ngIf="vm.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+        <div [innerHtml]="'observation.intro' | translate"></div>
+      </alert>
+    </ng-container>
+    <laji-observation-result
+      [lang]="translate.currentLang"
+      [loadingUnits]="vm.loadingUnits"
+      [loadingTaxa]="vm.loadingTaxa"
+      [lgScreen]="vm.lgScreen"
+      [speciesCount]="vm.countTaxa"
+      [unitCount]="vm.countUnit"
+      [active]="activeTab"
+      [query]="vm.query"
+      (queryChange)="onQueryChange($event)"
+      [listSettings]="vm.settingsList"
+      (listSettingsChange)="onListSettingsChange($event)"
+    ></laji-observation-result>
+  </main>
+  <nav>
+    <laji-observation-form
+      [query]="vm.query"
+      [invasiveStatuses]="invasiveStatuses"
+      [dateFormat]="dateFormat"
+      [advancedMode]="vm.advanced"
+      (advancedModeChange)="onAdvanceModeChange($event)"
+      (queryChange)="onQueryChange($event)"
+      (mapDraw)="draw($event)"
+    ></laji-observation-form>
+  </nav>
+</lu-sidebar>

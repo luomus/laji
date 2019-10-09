@@ -1,4 +1,13 @@
 @import '../../../styles/variables';
+@import 'vars';
+
+.mode-select {
+  display: flex;
+  flex-flow: row nowrap;
+
+  border-bottom: 1px solid $neutral-4;
+}
+
 
 hr {
   margin: 4px 0;
@@ -32,10 +41,6 @@ label {
 .small-label {
   font-weight: normal;
   font-size: smaller;
-}
-.mode-select {
-  margin-top: -12px;
-  border-bottom: 1px solid #e1e1e1;
 }
 .badge {
   background: none;

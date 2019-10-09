@@ -49,7 +49,6 @@ export class ObservationResultComponent {
   lastTabActive = 'map';
   hasMonthDayData: boolean;
   hasYearData: boolean;
-  showMenu = false;
   selectedIndex = 0;
 
   private _active;
@@ -63,7 +62,6 @@ export class ObservationResultComponent {
     }
     this._active = value;
     this.activated[value] = true;
-    this.showMenu = false;
     if (value !== 'finnish') {
       this.lastTabActive = value;
     }
@@ -97,10 +95,6 @@ export class ObservationResultComponent {
       query.coordinates = undefined;
     }
     this.queryChange.emit(query);
-  }
-
-  toggleMenuMobile() {
-    this.showMenu = !this.showMenu;
   }
 
   onSelect(tabIndex: number) {

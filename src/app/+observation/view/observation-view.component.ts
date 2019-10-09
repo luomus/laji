@@ -22,7 +22,6 @@ import { ISettingResultList } from '../../shared/service/user.service';
 export class ObservationViewComponent implements OnInit, OnDestroy {
 
   _activeTab: string;
-  @ViewChild('tabs', { static: false }) tabs;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
   @ViewChild(ObservationFormComponent, { static: false }) form: ObservationFormComponent;
   showMobile: any;
