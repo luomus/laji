@@ -24,7 +24,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Person } from '../../../shared/model/Person';
-import { PagedResult } from 'app/shared/model/PagedResult';
+import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -63,6 +63,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   showOnlyHighlighted = true;
   indexPagination: number;
   isNavigation = false;
+  childEvent = false;
+  childComunicationsubscription: Subscription;
   @SessionStorage() showFacts = false;
   private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
@@ -74,7 +76,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private warehouseApi: WarehouseApi,
     private userService: UserService,
     private cd: ChangeDetectorRef,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    private childComunication: DocumentViewerChildComunicationService
   ) { }
 
   ngOnInit() {
@@ -87,6 +90,10 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       }
       this.cd.markForCheck();
     });
+
+    this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
+      this.childEvent = info;
+   });
   }
 
   ngAfterViewInit() {
@@ -108,6 +115,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     if (this.metaFetch) {
       this.metaFetch.unsubscribe();
     }
+    this.childComunicationsubscription.unsubscribe();
   }
 
   updateDocument() {
@@ -276,22 +284,23 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
 
 @HostListener('window:keydown', ['$event'])
-onKeyDown(e) {
-  e.stopPropagation();
-    if (e.keyCode === 37) { // left
-      if (this.result && this.indexPagination > 0) {
-        this.previous();
+  keyEvent(e: KeyboardEvent) {
+    e.stopPropagation();
+      if (e.keyCode === 37 && !this.childEvent) { // left
+        if (this.result && this.indexPagination > 0) {
+          this.previous();
+        }
       }
-    }
-    if (e.keyCode === 39) { // right
-      if (this.result && this.indexPagination < this.result.length - 1) {
-        this.next();
+      if (e.keyCode === 39 && !this.childEvent) { // right
+        if (this.result && this.indexPagination < this.result.length - 1) {
+          this.next();
+        }
       }
+
+    if (e.keyCode === 27 && !this.childEvent) {
+       this.closeDocument();
     }
 
-    if (e.keyCode === 27) {
-     this.closeDocument();
-    }
   }
 
 }

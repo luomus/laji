@@ -1,5 +1,6 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { Image } from './image.interface';
+import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 
 @Component({
   selector: 'laji-image-gallery-overlay',
@@ -15,17 +16,19 @@ export class ImageModalOverlayComponent implements OnInit {
   public showLinkToSpeciesCard: boolean;
   @Output() cancelEvent = new EventEmitter<any>();
 
-  constructor() {
+  constructor(
+   private childComunication: DocumentViewerChildComunicationService
+  ) {
 
   }
 
   ngOnInit() {
+    console.log('images');
   }
 
 
   @HostListener('window:keydown', ['$event'])
-  onKeyDown(e) {
-    e.stopPropagation();
+  keyEvent(e: KeyboardEvent)  {
     if (e.keyCode === 27) { // esc
       this.closeGallery();
     }
@@ -42,6 +45,7 @@ export class ImageModalOverlayComponent implements OnInit {
       this.close();
     }
     this.cancelEvent.emit(null);
+    this.childComunication.emitChildEvent(false);
   }
 
   prevImage() {
@@ -68,6 +72,7 @@ export class ImageModalOverlayComponent implements OnInit {
     if (this.modalImages[index]) {
       this.img = this.modalImages[index];
     }
+    this.childComunication.emitChildEvent(true);
   }
 
   handleLoading(loading) {
