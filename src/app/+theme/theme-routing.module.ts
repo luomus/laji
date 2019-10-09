@@ -29,7 +29,7 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
 import { Global } from '../../environments/global';
 import { HasFormPermission } from '../shared/route/has-form-permission';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
-import { SearchComponent } from './search/search.component';
+import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -51,7 +51,7 @@ const routes: Routes = [
           {
             path: ':tab',
             pathMatch: 'full',
-            component: SearchComponent,
+            component: GeneticResourceComponent,
             data: {
               noScrollToTop: true
             }

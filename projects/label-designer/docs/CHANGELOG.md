@@ -1,3 +1,19 @@
+<a name="3.1.7"></a>
+# 3.1.6 (2019-10-09)
+
+### Bug fixes
+* **editor:** schema service now recognises lists with enum
+
+<a name="3.1.6"></a>
+# 3.1.6 (2019-10-08)
+
+### Features
+* **editor:** when opening a setup will now try to update the label to match current language.
+
+### Bug fixes
+* **editor:** when loading setup merge the defaultAvailableFields mappings to the loaded data 
+* **editor:** fixed few typos 
+
 <a name="3.1.5"></a>
 # 3.1.5 (2019-09-05)
 

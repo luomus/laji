@@ -12,6 +12,7 @@ import {
 } from 'label-designer';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'label-designer',
   templateUrl: './label-designer.component.html',
   styleUrls: ['./label-designer.component.scss'],

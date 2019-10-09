@@ -39,6 +39,7 @@ import { environment } from '../../../environments/environment';
 @Injectable({providedIn: 'root'})
 export class WarehouseApi {
   public static readonly longTimeout = 10000;
+  public pathList = '/warehouse/query/list';
   protected basePath = environment.apiBase;
 
   constructor(protected http: HttpClient, private queryService: SearchQueryService) {
@@ -292,7 +293,7 @@ export class WarehouseApi {
    * @param page Set current page.
    */
   public warehouseQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
-    const path = this.basePath + '/warehouse/query/list';
+    const path = this.basePath + this.pathList;
 
     if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
       query = {...query, cache: true};

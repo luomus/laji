@@ -123,18 +123,59 @@ export class PdfLabelService {
 
   private documentKeysToLabel(document: Document, keyMap): Document {
     const result: Document = {...document};
-    if (result.gatheringEvent && result.gatheringEvent.leg) {
-      result.gatheringEvent = {...document.gatheringEvent, leg: this.keysToLabel(result.gatheringEvent.leg, keyMap)};
+    if (result.gatheringEvent) {
+      result.gatheringEvent = this.openGathering({...document.gatheringEvent}, keyMap);
     }
     if (Array.isArray(result.gatherings)) {
-      result.gatherings = [...document.gatherings.map(gathering => {
-        if (gathering.leg) {
-          return {...gathering, leg: this.keysToLabel(gathering.leg, keyMap)};
+      result.gatherings = [...document.gatherings.map(originalGathering => {
+        const gathering = {...originalGathering};
+
+        if (Array.isArray(gathering.units)) {
+          gathering.units = [...gathering.units.map(originalUnit => {
+            const unit = {...originalUnit};
+
+            if (Array.isArray(unit.identifications)) {
+              unit.identifications = [...unit.identifications.map(originalIdentification => {
+                const identification = {...originalIdentification};
+                if (identification.detDate) {
+                  identification.detDate = this.ISODateToLocal(identification.detDate);
+                }
+                return identification;
+              })];
+            }
+
+            if (unit.unitGathering) {
+              unit.unitGathering = this.openGathering({...unit.unitGathering}, keyMap);
+            }
+
+            return unit;
+          })];
         }
-        return gathering;
+
+        return this.openGathering(gathering, keyMap);
       })];
     }
     return result;
+  }
+
+  private openGathering(gathering, keyMap) {
+    if (gathering.leg) {
+      gathering.leg = this.keysToLabel(gathering.leg, keyMap);
+    }
+    if (gathering.dateBegin) {
+      gathering.dateBegin = this.ISODateToLocal(gathering.dateBegin);
+    }
+    if (gathering.dateEnd) {
+      gathering.dateEnd = this.ISODateToLocal(gathering.dateEnd);
+    }
+    return gathering;
+  }
+
+  private ISODateToLocal(value: string) {
+    if (typeof value !== 'string') {
+      return value;
+    }
+    return value.replace(/([0-9]+)-([0-9]+)-([0-9]+)/, '$3.$2.$1').replace('T', ' ');
   }
 
   private keysToLabel(value, keyMap) {

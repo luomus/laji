@@ -66,7 +66,7 @@ import { FormComponent } from './common/form/form.component';
 import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/theme-own-submissions.component';
 import { ObservationFacade } from '../+observation/observation.facade';
 import { ObservationComponentModule } from '../+observation/observation-component.module';
-import { SearchComponent } from './search/search.component';
+import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
 
 /* tslint:enable:max-line-length */
 
@@ -136,8 +136,8 @@ import { SearchComponent } from './search/search.component';
     MonitoringThemeBaseComponent,
     FormComponent,
     ThemeOwnSubmissionsComponent,
-    SearchComponent,
+    GeneticResourceComponent,
   ],
-  providers: [ ResultService, QualityService, WbcResultService, ObservationFacade ]
+  providers: [ ResultService, QualityService, WbcResultService ]
 })
 export class ThemeModule { }

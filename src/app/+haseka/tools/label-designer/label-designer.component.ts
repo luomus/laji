@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { ILabelField, ILabelPdf, ISetup, Presets } from 'label-designer';
+import { ILabelField, ILabelPdf, ISetup, IViewSettings, Presets } from 'label-designer';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
@@ -7,6 +7,7 @@ import { PdfLabelService } from '../../../shared/service/pdf-label.service';
 import { Observable, of } from 'rxjs';
 import { share } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { LocalStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-label-designer',
@@ -18,8 +19,8 @@ export class LabelDesignerComponent implements OnInit {
   labelFields$: Observable<ILabelField[]>;
   newLabelFields$: Observable<ILabelField[]>;
   newSetup: ISetup;
-  setup: ISetup;
-  viewSettings: any = {magnification: 2};
+  @LocalStorage('label-designer-view', {magnification: 2}) viewSettings: IViewSettings;
+  @LocalStorage('label-designer', null) setup: ISetup;
   data: any;
   labelTranslations: any;
 
@@ -37,7 +38,7 @@ export class LabelDesignerComponent implements OnInit {
     const translations = this.translateService.instant('labelDesigner');
     this.labelTranslations = this.translateService.currentLang !== 'en' && typeof translations === 'object' ? translations : {};
     this.newLabelFields$ = this.labelFields$;
-    this.setup = {
+    this.newSetup = {
       page: {
         ...Presets.A4,
         'paddingTop.mm': 10,
@@ -67,8 +68,10 @@ export class LabelDesignerComponent implements OnInit {
         }
       })).splice(0, 2)
     };
+    if (this.setup === null) {
+      this.setup = JSON.parse(JSON.stringify(this.newSetup));
+    }
     this.data = this.pdfLabelService.getData();
-    this.newSetup = JSON.parse(JSON.stringify(this.setup));
   }
 
 
