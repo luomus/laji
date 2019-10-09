@@ -1,3 +1,9 @@
+<a name="3.1.7"></a>
+# 3.1.6 (2019-10-09)
+
+### Bug fixes
+* **editor:** schema service now recognises lists with enum
+
 <a name="3.1.6"></a>
 # 3.1.6 (2019-10-08)
 
