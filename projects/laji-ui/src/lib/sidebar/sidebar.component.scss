@@ -107,7 +107,13 @@ $sidebarMinWidth: 50px;
   flex-grow: 1;
   padding: 20px 40px;
   &.mobile {
-    margin-left: $sidebarMinWidth;
     padding: 10px;
   }
+}
+
+.content.left.mobile {
+  margin-left: $sidebarMinWidth;
+}
+.content.right.mobile {
+  margin-right: $sidebarMinWidth;
 }
