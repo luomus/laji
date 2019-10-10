@@ -72,7 +72,7 @@ export class DatatableUtil {
         observable = ObservableOf(value.status.replace('MX.iucn', '') + ' (' + value.year + ')');
         break;
       case 'user':
-        observable = this.userService.getPersonInfo(value);
+        observable = this.getUsers(value);
         break;
       case 'taxonName':
         observable = ObservableOf(
@@ -87,36 +87,24 @@ export class DatatableUtil {
   }
 
   private getLabels(values): Observable<string> {
-    if (!Array.isArray(values)) {
-      values = [values];
-    }
-    const labelObservables = [];
-    for (let i = 0; i < values.length; i++) {
-      labelObservables.push(
-        this.labelService.get(values[i], this.translate.currentLang)
-      );
-    }
-    return ObservableForkJoin(labelObservables).pipe(
-      map(labels => labels.join('; '))
-    );
+    return this.getArray(values, (value) => {
+      return this.labelService.get(value, this.translate.currentLang);
+    }, '; ');
   }
 
   private getPublications(values): Observable<string> {
-    if (!Array.isArray(values)) {
-      values = [values];
-    }
-    const labelObservables = [];
-    for (let i = 0; i < values.length; i++) {
-      labelObservables.push(
-        this.publicationService.getPublication(values[i], this.translate.currentLang).pipe(
-          map((res: Publication) => {
-            return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : values[i];
-          }))
-      );
-    }
-    return ObservableForkJoin(labelObservables).pipe(
-      map(labels => labels.join('; '))
-    );
+    return this.getArray(values, (value) => {
+      return this.publicationService.getPublication(value, this.translate.currentLang).pipe(
+        map((res: Publication) => {
+          return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : value;
+        }));
+    }, '; ');
+  }
+
+  private getUsers(values): Observable<string> {
+    return this.getArray(values, (value) => {
+      return this.userService.getPersonInfo(value, 'fullNameWithGroup');
+    }, '; ');
   }
 
   private getHabitats(obj): Observable<string> {
@@ -126,6 +114,16 @@ export class DatatableUtil {
     const habitats = (obj.primaryHabitat ? [obj.primaryHabitat] : []).concat(obj.secondaryHabitats || []);
     return ObservableForkJoin(habitats.map(h => this.getLabels(h.habitat))).pipe(
       map(data => data.join('; '))
+    );
+  }
+
+  private getArray(values: string|string[], getObservable: (string) => Observable<string>, separator: string): Observable<string> {
+    if (!Array.isArray(values)) {
+      values = [values];
+    }
+    const observables = values.map(value => getObservable(value));
+    return ObservableForkJoin(observables).pipe(
+      map((labels: string[]) => labels.join(separator))
     );
   }
 }

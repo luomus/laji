@@ -119,7 +119,7 @@
 </ng-template>
 <ng-template let-value="value" #toSemicolon>
   <span *ngIf="value" title="{{value | values:'; '}}">
-    {{ value | values }}
+    {{ value | values:'; ' }}
   </span>
 </ng-template>
 <ng-template let-value="value" #numeric>
@@ -177,8 +177,8 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #user>
-    <span *ngIf="value" title="{{value | users}}">
-    {{ value | users }}
+    <span *ngIf="value" title="{{value | users | values:'; '}}">
+    {{ value | users | values:'; ' }}
   </span>
 </ng-template>
 <ng-template let-value="value" #publication>
