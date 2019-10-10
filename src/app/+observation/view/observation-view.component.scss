@@ -1,5 +1,14 @@
 @import "../../../styles/variables";
 
+:host {
+  min-height: 100%;
+}
+
+laji-observation-form {
+  display: block;
+  max-width: 250px;
+}
+
 .result-list {
   display: flex;
   flex-direction: column;

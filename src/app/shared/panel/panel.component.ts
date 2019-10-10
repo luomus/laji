@@ -5,7 +5,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 @Component({
   selector: '[laji-panel]',
   templateUrl: './panel.component.html',
-  styleUrls: ['./panel.component.css'],
+  styleUrls: ['./panel.component.scss'],
   animations: [
     trigger('visibilityState', [
       state('in' , style({ height: '*' })),

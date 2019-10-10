@@ -1,12 +1,14 @@
+@import 'vars';
+
 .lj-filter {
-  margin-top: 4px;
+  margin-top: 10px;
 }
 .lj-item-container {
   max-height: 50vh;
   overflow: auto;
   margin: 0 -15px;
-  padding: 0 15px;
-  border-bottom: 1px solid #ccc;
+  padding: 10px 15px;
+  border-bottom: 1px solid $neutral-4;
 }
 .lj-item {
   display: block;
@@ -27,8 +29,7 @@
   background-color: #f1f1f1;
 }
 .lj-title {
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid $neutral-4;
   margin: 0 -15px;
   padding: 6px 15px;
   display: block;
@@ -37,7 +38,7 @@
 }
 .lj-title:after {
   font-family: "Glyphicons Halflings";
-  color: #ccc;
+  color: $neutral-4;
   position: absolute;
   right: 3px;
   top: 50%;
@@ -52,6 +53,7 @@
 }
 .lj-select {
   position: relative;
+  margin-bottom: 5px;
 }
 .lj-disabled {
   cursor: not-allowed;
