@@ -17,9 +17,6 @@ $sidebarMinWidth: 50px;
   background-color: $neutral-3;
   overflow-x: hidden;
   min-width: $sidebarMinWidth;
-  &:not(.mobile) {
-    box-shadow: inset -10px 0 10px -10px rgba(#000, 0.1);
-  }
   &.mobile {
     position: fixed;
     height: 100%;
@@ -31,6 +28,14 @@ $sidebarMinWidth: 50px;
       right: 0;
     }
   }
+}
+
+.sidebar.left:not(.mobile) {
+  box-shadow: inset -10px 0 10px -10px rgba(#000, 0.1);
+}
+
+.sidebar.right:not(.mobile) {
+  box-shadow: inset 10px 0 10px -10px rgba(#000, 0.1);
 }
 
 // DRAGBAR
