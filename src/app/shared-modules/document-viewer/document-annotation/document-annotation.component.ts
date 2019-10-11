@@ -94,6 +94,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;
       this.cd.markForCheck();
+
    });
   }
 
