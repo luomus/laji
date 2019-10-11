@@ -63,8 +63,8 @@
           </div>
       </div>
   </div>
-  <div class="row taxon" *ngIf="!isEditor">
-    <div class="col-lg-5 col-md-12 col-sm-12" *ngIf="!isEditor">
+  <div class="row taxon" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
+    <div class="col-lg-5 col-md-12 col-sm-12" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
       <label>{{ 'taxonomy.taxonomy' | translate }}</label> 
       <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon)" (click)="copyCurrentTaxon()">Copy current</span>
       <input #taxon
@@ -96,7 +96,7 @@
       <input type="checkbox" class="form-control input-sm">
     </div>
 
-    <div class="col-lg-5 col-md-9 col-sm-12" *ngIf="!isEditor">
+    <div class="col-lg-5 col-md-9 col-sm-12" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
         <label>Taxon specifier </label>
         <input
         type="text"
