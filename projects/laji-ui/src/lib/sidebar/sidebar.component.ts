@@ -95,11 +95,15 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   onDrag(mousemove) {
     const width = this.calcSidebarWidth(mousemove.clientX);
     if (width <= sidebarMinWidth) {
-      this.open = false;
-      this.cdr.markForCheck();
+      if (this.open) {
+        this.open = false;
+        this.cdr.markForCheck();
+      }
     } else {
-      this.open = true;
-      this.cdr.markForCheck();
+      if (!this.open) {
+        this.open = true;
+        this.cdr.markForCheck();
+      }
     }
     this.renderer.setStyle(this.sidebarRef.nativeElement, 'width', `${Math.max(sidebarMinWidth, width)}px`);
   }
