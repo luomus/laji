@@ -1,6 +1,7 @@
 <div class="modal fade" bsModal #documentModal="bs-modal"
      (onHidden)="onModalHide()"
      (onShow)="pnModalShow()"
+     [config]="{ keyboard: false}" 
      tabindex="-1" role="dialog" aria-hidden="true">
     <div *ngIf="vm$ | async; let vm" class="modal-dialog" [ngClass]="{'modal-lg': !vm.openAnnotation, 'modal-annotation': vm.openAnnotation}">
         <div class="modal-content">
@@ -28,11 +29,12 @@
                                 [openAnnotation]="vm.openAnnotation"
                                 [identifying]="vm.identifying"
                                 [useWorldMap]="vm.useWorldMap"
+                                (close)="closeModal($event)"
                   >
                   </laji-document>
                 </ng-template>
                 <ng-template #local>
-                  <laji-document-local [document]="vm.document">
+                  <laji-document-local [document]="vm.document" (close)="closeModal($event)">
                   </laji-document-local>
                 </ng-template>
               </ng-container>

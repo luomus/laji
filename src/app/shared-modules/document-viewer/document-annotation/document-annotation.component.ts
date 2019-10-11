@@ -93,6 +93,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;
+      this.cd.markForCheck();
    });
   }
 
@@ -111,11 +112,12 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ngOnDestroy() {
     if (this.interval) {
       this.interval.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
     }
     if (this.metaFetch) {
       this.metaFetch.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
     }
-    this.childComunicationsubscription.unsubscribe();
   }
 
   updateDocument() {
@@ -284,8 +286,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
 
 @HostListener('window:keydown', ['$event'])
-  keyEvent(e: KeyboardEvent) {
-    e.stopPropagation();
+  annotationKeyDown(e: KeyboardEvent) {
       if (e.keyCode === 37 && !this.childEvent) { // left
         if (this.result && this.indexPagination > 0) {
           this.previous();
@@ -298,8 +299,9 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       }
 
     if (e.keyCode === 27 && !this.childEvent) {
+       e.stopImmediatePropagation();
        this.closeDocument();
-    }
+      }
 
   }
 

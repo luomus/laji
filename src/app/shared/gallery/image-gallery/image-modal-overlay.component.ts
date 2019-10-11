@@ -28,7 +28,8 @@ export class ImageModalOverlayComponent implements OnInit {
 
 
   @HostListener('window:keydown', ['$event'])
-  keyEvent(e: KeyboardEvent)  {
+  modalKeyDown(e: KeyboardEvent)  {
+    e.stopImmediatePropagation();
     if (e.keyCode === 27) { // esc
       this.closeGallery();
     }

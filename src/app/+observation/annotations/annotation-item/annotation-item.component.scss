@@ -3,6 +3,7 @@
 div {
     &.item-content{
         padding-bottom: 10px;
+        min-height: 250px;
         div {
             &.gathering {
                margin-top: 5px;
