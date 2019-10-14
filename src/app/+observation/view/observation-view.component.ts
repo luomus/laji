@@ -12,6 +12,18 @@ import { tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { ISettingResultList } from '../../shared/service/user.service';
 
+export interface VisibleSections {
+  finnish?: boolean;
+  counts?: boolean;
+  map?: boolean;
+  list?: boolean;
+  images?: boolean;
+  species?: boolean;
+  statistics?: boolean;
+  download?: boolean;
+  annotations?: boolean;
+  info?: boolean;
+}
 
 @Component({
   selector: 'laji-observation-view',
@@ -22,6 +34,18 @@ import { ISettingResultList } from '../../shared/service/user.service';
 export class ObservationViewComponent implements OnInit, OnDestroy {
 
   @Input() basePath = '/observation';
+  @Input() visible: VisibleSections = {
+    info: true,
+    finnish: true,
+    counts: true,
+    map: true,
+    list: true,
+    images: true,
+    species: true,
+    statistics: true,
+    download: true,
+    annotations: true,
+  };
   _activeTab: string;
   @ViewChild('tabs', { static: false }) tabs;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
