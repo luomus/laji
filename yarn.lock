@@ -5736,17 +5736,17 @@ label-designer@^3.1.7:
   dependencies:
     tslib "^1.9.0"
 
-laji-form@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-2.0.4.tgz#e207a87793a1b1d4f6f9477ce112c99376bf862e"
-  integrity sha512-ROQreYvunc7r/XfUd0reIsOTRQ76eQAVDKgvYZdJZPc8UTLyVEtpk8fJ9nQ0TMZ+/DKh3xcO59aOvXtNdvqCQw==
+laji-form@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-2.0.7.tgz#1084d38fa87379df901c5526f744809513004e1a"
+  integrity sha512-4eZqHCpbzkNsLjDJeiM2fAZvhCNsH4bDhsn4fXZZKVVSOtj6uXhTUSfkqQt0ZG5hKi4EwEiCHKbSbN0CEY+aHQ==
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     exif-js "^2.3.0"
     immutability-helper "^2.1.2"
-    laji-map "^2.1.0"
+    laji-map "^3.0.0"
     laji-validate "0.0.77"
     moment "*"
     prop-types "^15.5.8"
@@ -5765,10 +5765,10 @@ laji-form@^2.0.4:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@2.1.2, laji-map@^1.0.507, laji-map@^2.1.0:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-2.1.2.tgz#133994f0492ecef27c20b93ed4a1d7123684188b"
-  integrity sha512-O6KTdwAp8/ws7ZEIL5HaYVIA//alIWRtvLjWA8iKZPICgXvESbCnN04ljry5Jvp7mWLOOc8KmF7MGpeS+ohNVA==
+laji-map@3.0.0, laji-map@^1.0.507, laji-map@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-3.0.0.tgz#19ed3812a3c9c519929bfcba314782f9196a7e98"
+  integrity sha512-mz65mRcqeiJzeqVLR3etN/zehAcN/dqGafGd2S7omEx36xlyjQOoS4dQaM6hW29qG1tx/EwxQ9oSP97XUFm5Tw==
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.4.0"
