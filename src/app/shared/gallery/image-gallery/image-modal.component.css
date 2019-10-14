@@ -37,6 +37,10 @@
   cursor: pointer;
 }
 
+.image-container.annotation {
+  background-color: black;
+}
+
 .image-container .main-annotation-image {
   max-width: 100%;
   max-height: 500px;

@@ -32,7 +32,7 @@
 
 <ng-template #annotation>
   <ng-container *ngIf="view === 'annotation' else fullView">
-    <div class="image-container">
+    <div class="image-container annotation">
       <ng-container *ngIf="showPopover else onlyImage">
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
              [popover]="info"
