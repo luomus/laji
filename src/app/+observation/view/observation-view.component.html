@@ -29,19 +29,22 @@
          }"
     >
       <ng-container *lajiBrowserOnly>
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="pull-right toggle-intro" *ngIf="!vm.showIntro">
-              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+        <ng-container *ngIf="visible.info">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="pull-right toggle-intro" *ngIf="!vm.showIntro">
+                <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+              </div>
             </div>
           </div>
-        </div>
-        <alert *ngIf="vm.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-          <div [innerHtml]="'observation.intro' | translate"></div>
-        </alert>
+          <alert *ngIf="vm.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+            <div [innerHtml]="'observation.intro' | translate"></div>
+          </alert>
+        </ng-container>
       </ng-container>
       <div #tabs>
         <laji-observation-result
+          [visible]="visible"
           [basePath]="basePath"
           [lang]="translate.currentLang"
           [loadingUnits]="vm.loadingUnits"
