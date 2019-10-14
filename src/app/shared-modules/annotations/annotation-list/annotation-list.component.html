@@ -1,6 +1,6 @@
 <div class="annotations">
   <laji-spinner [spinning]="!annotations"></laji-spinner>
-  <div class="annotation" *ngFor="let annotation of annotations | sort: 'created': 'asc'">
+  <div class="annotation" *ngFor="let annotation of annotations | sort: 'created': 'asc'; let i = index">
     <div class="row">
       <div class="col-xs-12 row-title">
         <div *ngIf="annotation.byPerson; else annotationByPerson">
@@ -85,9 +85,13 @@
         {{ annotation.opinion }}
       </div>
     </div>
-    <p class="content" *ngIf="annotation.notes">
-      {{ annotation.notes }}
-    </p>
+    <div class="content" *ngIf="annotation.notes">
+      <div [ngClass]="{'': (annotation.notes.length <= 250 || open[i]), 'closed': (annotation.notes.length > 250 && !open[i]) }">
+          {{ annotation.notes }}
+      </div>
+      <span class="read-more" *ngIf="(annotation.notes.length > 250 && !open[i])" (click)="readMore(i)">Read more</span>
+      <span class="read-more" *ngIf="open[i]" (click)="readMore(i)">Hide</span>
+    </div>
   </div>
   <div class="no-annotations" *ngIf="annotations && annotations.length === 0">
     {{ 'annotation.none' | translate }}
