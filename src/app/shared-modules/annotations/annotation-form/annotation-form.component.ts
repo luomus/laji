@@ -181,6 +181,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     .subscribe(
       (resultArray: AnnotationTag[]) => {
         this.tagsAdd = resultArray;
+        this.cd.detectChanges();
       },
       error => console.log('Error :: ' + error)
     );
@@ -190,6 +191,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     .subscribe(
       (resultArray: AnnotationTag[]) => {
         this.tagsRemove = resultArray;
+        this.cd.detectChanges();
       },
       error => console.log('Error :: ' + error)
     );
