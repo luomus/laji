@@ -121,7 +121,7 @@ export class WbcRouteTableComponent implements OnInit {
   }
 
   private isLastRow(row: any) {
-    return row.name === 'speciesCount' || row.name === 'individualCount' || row.name === 'documentIds';
+    return row.name.indexOf('SpeciesCount') > -1 || row.name.indexOf('IndividualCount') > -1 || row.name === 'documentIds';
   }
 
   private getSortingComparator(prop: string): (a, b) => number {
