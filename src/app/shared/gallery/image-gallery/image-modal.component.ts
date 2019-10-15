@@ -169,7 +169,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @HostListener('window:keydown', ['$event'])
   keyEvent(e: KeyboardEvent) {
     e.stopPropagation();
-      if (e.keyCode === 80) { // openImage
+      if (e.keyCode === 73 && e.ctrlKey) { // openImage
         this.openImage(this.tmpImg['index']);
       }
   }
