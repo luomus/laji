@@ -62,13 +62,25 @@ $sidebarMinWidth: 50px;
 
 .open-btn {
   position: absolute;
-  top: 10px;
+  top: 15px;
   left: 5px;
   cursor: pointer;
 }
 
+.menu-svg {
+  height: 18px;
+}
+
+.close-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+}
+
 .close-btn {
   cursor: pointer;
+  font-weight: 900;
+  color: $neutral-6;
 }
 
 // SIDEBAR NAV
