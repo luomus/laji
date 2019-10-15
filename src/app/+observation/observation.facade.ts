@@ -100,7 +100,7 @@ export class ObservationFacade {
   });
 
   private hashCache: {[key: string]: string} = {};
-  private emptyQuery: WarehouseQueryInterface = emptyQuery;
+  private _emptyQuery: WarehouseQueryInterface = emptyQuery;
 
   constructor(
     private browserService: BrowserService,
@@ -132,7 +132,7 @@ export class ObservationFacade {
   }
 
   updateQuery(warehouseQuery: WarehouseQueryInterface) {
-    const query = {...warehouseQuery};
+    const query = {...this.emptyQuery, ...warehouseQuery};
 
     ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
       if (query[key] === ObservationFacade.PERSON_TOKEN) {
@@ -148,8 +148,12 @@ export class ObservationFacade {
     this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
   }
 
-  setEmptyQuery(query: WarehouseQueryInterface) {
-    this.emptyQuery = query;
+  set emptyQuery(query: WarehouseQueryInterface) {
+    this._emptyQuery = query;
+  }
+
+  get emptyQuery() {
+    return this._emptyQuery;
   }
 
   clearQuery() {

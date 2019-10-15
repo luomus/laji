@@ -1,11 +1,11 @@
 <ul class="nav nav-pills" *ngIf="visible.finnish || visible.counts">
   <li *ngIf="visible.finnish" role="presentation" [ngClass]="{active: active !== 'finnish'}">
-    <a [routerLink]="[basePath + '', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery">
+    <a [routerLink]="[basePath + '', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
       <strong>{{ 'search.result.all' | translate }}</strong>
     </a>
   </li>
   <li *ngIf="visible.finnish" role="presentation" class="beta" [ngClass]="{active: active === 'finnish'}">
-    <a [routerLink]="basePath + '/finnish' | localize" [queryParams]="query | toSafeQuery">
+    <a [routerLink]="basePath + '/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
       <strong>{{ 'search.result.finnish' | translate }}</strong>
     </a>
   </li>
@@ -53,37 +53,37 @@
   <div class="whole-data-list" *ngIf="(showMenu && !lgScreen) || lgScreen">
     <ul class="nav nav-tabs nav-justified">
       <li *ngIf="visible.list" role="presentation" [ngClass]="{active: active === 'list'}">
-        <a [routerLink]="basePath + '/list' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/list' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.list' | translate }}
         </a>
       </li>
       <li *ngIf="visible.map" role="presentation" [ngClass]="{active: active === 'map'}">
-        <a [routerLink]="basePath + '/map' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/map' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.map' | translate }}
         </a>
       </li>
       <li *ngIf="visible.images" role="presentation" [ngClass]="{active: active === 'images'}">
-        <a [routerLink]="basePath + '/images' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/images' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.images' | translate }}
         </a>
       </li>
       <li *ngIf="visible.species" role="presentation" [ngClass]="{active: active === 'species'}">
-        <a [routerLink]="basePath + '/species' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/species' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.species' | translate }}
         </a>
       </li>
       <li *ngIf="visible.statistics" role="presentation" [ngClass]="{active: active === 'stats'}">
-        <a [routerLink]="basePath + '/stats' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/stats' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.stats' | translate }}
         </a>
       </li>
       <li *ngIf="visible.download" role="presentation" [ngClass]="{active: active === 'load'}">
-        <a [routerLink]="basePath + '/load' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]="basePath + '/load' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.load' | translate }}
         </a>
       </li>
       <li *ngIf="visible.annotations" role="presentation" [ngClass]="{active: active === 'annotation'}">
-        <a [routerLink]=" basePath + '/annotation' | localize" [queryParams]="query | toSafeQuery">
+        <a [routerLink]=" basePath + '/annotation' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.annotation' | translate }}
         </a>
       </li>
