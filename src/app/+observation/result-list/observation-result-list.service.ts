@@ -6,7 +6,9 @@ export interface IColumnGroup {
   fields: string[];
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ObservationResultListService {
 
   private _defaultFields: string[] = [
@@ -227,5 +229,9 @@ export class ObservationResultListService {
 
   get allColumns() {
     return this._allColumns;
+  }
+
+  getColumn(name: string): ObservationTableColumn {
+    return this._allColumns.find(col => col.name === name);
   }
 }

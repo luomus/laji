@@ -5,4 +5,6 @@ export interface ObservationTableColumn extends DatatableColumn {
   aggregateBy?: string;
   selectField?: string;
   aggregate?: boolean;
+  fact?: string;
+  open?: 'label';
 }
