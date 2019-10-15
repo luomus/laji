@@ -40,6 +40,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   unIdentifyable = false;
   isEditor: boolean;
   sending = false;
+  infoModal = true;
   needsAck: boolean;
   annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
   tagsAdd: Array<AnnotationTag>;
@@ -246,6 +247,10 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
           this.sending = false;
         }
       );
+  }
+
+  toggleInfo() {
+    this.infoModal = !this.infoModal;
   }
 
 }

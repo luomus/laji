@@ -17,6 +17,7 @@ label {
 .annotation-form {
   margin: 0 -5px;
   padding: 5px 5px 10px 5px;
+  position: relative;
 }
 .annotation-unidentifiable label {
   font-weight: normal;
@@ -129,6 +130,44 @@ div.annotation-marker {
 .annotation-form label {
   color: black;
   font-weight: bold;
+}
+
+.info {
+  padding: 2px 5px;
+  font-size: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+ ul.list-info {
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.info-button {
+  position: absolute;
+  top: -20px;
+  right: 10px;
+  font-size: 16px;
+  color: #31708f;
+}
+
+.close-info {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  color: #555;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: .2;
+  position: absolute;
+  right: 15px;
+  top: 6px;
+  cursor: pointer;
+}
+
+.close-info:hover {
+  color: #000;
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1600px) {

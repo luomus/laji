@@ -1,5 +1,5 @@
 <form [hidden]="!visible" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
-  <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
+  <!--<alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
     {{ 'haseka.form.error' | translate }}
   </alert>
   <div class="row annotation-unidentifiable" *ngIf="!isEditor && identifying">
@@ -14,6 +14,19 @@
         {{ 'MAN.typeUnidentifiable' | label }}
       </label>
     </div>
+  </div>-->
+  <div class="info-button pull-right toggle-intro" *ngIf="!infoModal">
+      <i class="link glyphicon glyphicon-info-sign" (click)="toggleInfo()"></i>
+  </div>
+  <div class="info alert-info" *ngIf="infoModal">
+    <div *ngIf="expert && personRoleAnnotation === 'MMAN.expert'; else basicform">
+      <div [innerHtml]="'annotation.info.expert' | translate"></div>
+      <div class="close-info" (click)="toggleInfo()">x</div>
+    </div>
+    <ng-template #basicform>
+      <div [innerHtml]="'annotation.info.basic' | translate"></div>
+      <div class="close-info" (click)="toggleInfo()">x</div>
+    </ng-template>
   </div>
   <div class="tags">
       <div class="row add-tags">

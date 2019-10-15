@@ -17,6 +17,8 @@
   "annotation.removedTags": "Removed tags",
   "annotation.newIdentification": "New identification",
   "annotationBySystem": "This observation has been automatically annotated for quality.",
+  "annotation.info.expert": "- Comment is obbligatory<br/>- If you add a tag, taxon is obbligatory",
+  "annotation.info.basic": "- Comment is obbligatory",
   "asIs": "Value as is",
   "checkAll": "Check all",
   "checked": "checked",

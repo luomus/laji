@@ -16,6 +16,8 @@
   "annotation.addAnnotationExpert" : "Add expert annotation",
   "annotation.removedTags": "Removed tags",
   "annotation.newIdentification": "New identification",
+  "annotation.info.expert": "- Comment is obbligatory<br/>- If you add a tag, taxon is obbligatory",
+  "annotation.info.basic": "- Comment is obbligatory",
   "annotationBySystem": "Denna observation har blivit annoterad automatiskt för kvalitet.",
   "asIs": "Värde som det är",
   "checkAll": "Markera alla",
