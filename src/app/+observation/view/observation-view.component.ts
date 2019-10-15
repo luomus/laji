@@ -46,6 +46,11 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     download: true,
     annotations: true,
   };
+  @Input() skipUrlParameters: string[] = [
+    'selected',
+    'pageSize',
+    'page'
+  ];
   _activeTab: string;
   @ViewChild('tabs', { static: false }) tabs;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;

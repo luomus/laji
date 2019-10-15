@@ -15,6 +15,11 @@ export abstract class AbstractObservation {
   protected observationFacade: ObservationFacade;
   protected route: ActivatedRoute;
   protected searchQuery: SearchQueryService;
+  public skipUrlParams: string[] = [
+    'selected',
+    'pageSize',
+    'page'
+  ];
 
   init() {
     this.activeTab$ = this.observationFacade.activeTab$;
@@ -22,7 +27,10 @@ export abstract class AbstractObservation {
       this.observationFacade.activeTab(value['tab'] || 'map');
     });
     this.subQuery = this.observationFacade.query$.pipe(
-      tap(query => this.updateUrlQueryParamsFromQuery(query))
+      tap(query => {
+        this.onQueryChange(query);
+        this.updateUrlQueryParamsFromQuery(query);
+      })
     ).subscribe();
     this.updateQueryFromQueryParams(this.route.snapshot.queryParams);
   }
@@ -45,11 +53,7 @@ export abstract class AbstractObservation {
   }
 
   private updateUrlQueryParamsFromQuery(query: WarehouseQueryInterface) {
-    this.searchQuery.updateUrl(query, [
-      'selected',
-      'pageSize',
-      'page'
-    ]);
+    this.searchQuery.updateUrl(query, this.skipUrlParams);
   }
 
   private updateQueryFromQueryParams(queryParams) {
@@ -59,4 +63,6 @@ export abstract class AbstractObservation {
     }
     this.observationFacade.updateQuery(query);
   }
+
+  protected onQueryChange(query: WarehouseQueryInterface) { }
 }

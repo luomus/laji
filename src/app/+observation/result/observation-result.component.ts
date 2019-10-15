@@ -23,6 +23,11 @@ export class ObservationResultComponent {
     download: true,
     annotations: true,
   };
+  @Input() skipUrlParameters: string[] = [
+    'selected',
+    'pageSize',
+    'page'
+  ];
   @Input() basePath = '/observation';
   @Input() query: WarehouseQueryInterface = {};
   @Input() lgScreen = true;
