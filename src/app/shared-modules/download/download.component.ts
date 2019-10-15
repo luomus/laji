@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 
+type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
+
 @Component({
   selector: 'laji-download',
   template: `
@@ -17,16 +19,22 @@ import { ModalDirective } from 'ngx-bootstrap';
           </div>
           <div class="modal-body">
             <div>
-              <div class="radio">
+              <div class="radio" *ngIf="_formats.indexOf('csv') > -1">
+                <label>
+                  <input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">
+                  {{ 'species.download.textFile' | translate }} (.csv)
+                </label>
+              </div>
+              <div class="radio" *ngIf="_formats.indexOf('tsv') > -1">
                 <label>
                   <input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">
                   {{ 'species.download.textFile' | translate }} (.tsv)
                 </label>
               </div>
-              <div class="radio">
+              <div class="radio" *ngIf="_formats.indexOf('ods') > -1">
                 <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">OpenDocument Spreadsheet (.ods)</label>
               </div>
-              <div class="radio">
+              <div class="radio" *ngIf="_formats.indexOf('xlsx') > -1">
                 <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">Excel (.xlsx)</label>
               </div>
             </div>
@@ -53,10 +61,19 @@ export class DownloadComponent {
   @Input() downloadLoading = false;
   @Input() linkClass = 'link';
 
+  _formats: FORMAT[] = ['tsv', 'ods', 'xlsx'];
+
   fileType = 'tsv';
 
   @Output() download = new EventEmitter<string>();
   @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalDirective;
+
+  @Input() set formats(formats: FORMAT[]) {
+    if (formats.length > 0) {
+      this._formats = formats;
+      this.fileType = formats[0];
+    }
+  }
 
   constructor() { }
 
