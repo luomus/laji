@@ -23,7 +23,7 @@
 </laji-datatable>
 
 <ng-template let-value="value" let-row="row" #textOrTranslationKey>
-  <ng-container *ngIf="row.name !== 'speciesCount' && row.name !== 'individualCount' && row.name !== 'documentIds'; else translationKey">
+  <ng-container *ngIf="row.name.indexOf('SpeciesCount') === -1 && row.name.indexOf('IndividualCount') === -1 && row.name !== 'documentIds'; else translationKey">
     <span *ngIf="value" [title]="value">{{ value }}</span>
   </ng-container>
   <ng-template #translationKey>
