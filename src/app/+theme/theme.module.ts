@@ -67,6 +67,7 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
 import { ObservationFacade } from '../+observation/observation.facade';
 import { ObservationComponentModule } from '../+observation/observation-component.module';
 import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
+import { DownloadModule } from '../shared-modules/download/download.module';
 
 /* tslint:enable:max-line-length */
 
@@ -92,7 +93,8 @@ import { GeneticResourceComponent } from './genetic-resource/genetic-resource.co
     NavigationThumbnailModule,
     LatestDocumentsModule,
     InfoPageModule,
-    ObservationComponentModule
+    ObservationComponentModule,
+    DownloadModule
   ],
   declarations: [
     HerpetologyComponent,

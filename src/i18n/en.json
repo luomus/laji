@@ -1178,6 +1178,7 @@
   "wbc.stats.route.table": "Taulukko havaituista lajeista",
   "wbc.stats.route.table.info": "Punainen tausta: lintuja ainakin 50 % vähemmän kuin keskimäärin (lasketaan vain lajeille, joita keskimäärin ainakin 5 yksilöä); vihreä tausta: lintuja ainakin 100 % enemmän kuin keskimäärin; vihreä numero: ennätys; punainen numero: vähyysennätys.",
   "wbc.stats.route.table.link": "Katso",
+  "wbc.stats.route.table.download": "Download results",
   "wbc.stats.route.censuses": "Reitin laskennat",
   "wbc.stats.route.begin": "Date",
   "wbc.stats.route.team": "Observers",

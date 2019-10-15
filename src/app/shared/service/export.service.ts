@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import {utils as XLSXUtils} from 'xlsx';
 
 @Injectable({providedIn: 'root'})
 export class ExportService {
@@ -29,4 +31,20 @@ export class ExportService {
     FileSaver.saveAs(data, fileName + '.' + fileExtension);
   }
 
+  getBufferFromAoa(aoa: string[][], fileType: any): any {
+    const sheet = XLSX.utils.aoa_to_sheet(aoa);
+
+    if (fileType === 'csv') {
+      return XLSXUtils.sheet_to_csv(sheet);
+    }
+
+    if (fileType === 'tsv') {
+      return XLSX.utils.sheet_to_csv(sheet, {FS: '\t'});
+    }
+
+    const book = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(book, sheet);
+
+    return XLSX.write(book, {bookType: fileType, type: 'array'});
+  }
 }

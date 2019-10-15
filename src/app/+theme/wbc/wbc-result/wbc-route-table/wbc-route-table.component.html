@@ -5,6 +5,16 @@
   <p>{{ 'wbc.stats.route.table.info' | translate }}</p>
 </alert>
 
+<div class="download-row">
+  <laji-download
+    [downloadLoading]="downloadLoading"
+    [formats]="['csv', 'tsv', 'ods', 'xlsx']"
+    (download)="download($event)"
+    [linkClass]="'btn btn-default inline-block'"
+  ><span><i class="glyphicon glyphicon-download-alt"></i> {{ 'wbc.stats.route.table.download' | translate }} </span>
+  </laji-download>
+</div>
+
 <laji-datatable
   #dataTable
   [showHeader]="true"
@@ -27,7 +37,7 @@
     <span *ngIf="value" [title]="value">{{ value }}</span>
   </ng-container>
   <ng-template #translationKey>
-    <span *ngIf="value" [title]="'species.stats.route.' + value | translate">
+    <span *ngIf="value" [title]="'wbc.stats.route.' + value | translate">
       {{ 'wbc.stats.route.' + value | translate }}
     </span>
   </ng-template>
