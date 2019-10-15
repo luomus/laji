@@ -58,6 +58,7 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       ]},
       { header: 'observation.form.date', fields: [
           'gathering.displayDateTime',
+          'document.facts.legID',
         ]},
       { header: 'persons', fields: [
           'gathering.team',
@@ -99,7 +100,7 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       { name: 'sample.notes', sortable: false, label: 'result.document.notes' },
       { name: 'unit.det'},
       { name: 'gathering.conversions.wgs84', prop: 'gathering.conversions.wgs84.verbatim', sortable: false },
-      { name: 'document.facts.legID', prop: 'document.facts', sortable: false },
+      { name: 'document.facts.legID', prop: 'document.facts', sortable: false, fact: 'MY.legID'},
     ];
   }
 

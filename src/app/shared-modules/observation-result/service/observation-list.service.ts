@@ -1,5 +1,12 @@
-import { concat, delay, map, retryWhen, share, switchMap, take, tap } from 'rxjs/operators';
-import { forkJoin as ObservableForkJoin, Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
+import { concat, delay, map, retryWhen, share, shareReplay, switchMap, take, tap, toArray } from 'rxjs/operators';
+import {
+  forkJoin as ObservableForkJoin,
+  from,
+  Observable,
+  Observer,
+  of as ObservableOf,
+  throwError as observableThrowError
+} from 'rxjs';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
@@ -9,27 +16,27 @@ import { CollectionService } from '../../../shared/service/collection.service';
 import { IdService } from '../../../shared/service/id.service';
 import { Util } from '../../../shared/service/util.service';
 import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { ObservationResultListService } from '../../../+observation/result-list/observation-result-list.service';
 
 
 @Injectable()
 export class ObservationListService {
 
   private key: string;
-  private data: PagedResult<any>;
-  private pending: Observable<any>;
-  private pendingKey: string;
+  private data: Observable<PagedResult<any>>;
 
   private aggregateKey: string;
-  private aggregateData: PagedResult<any>;
-  private aggregatePending: Observable<any>;
-  private aggregatePendingKey: string;
+  private aggregateData: Observable<PagedResult<any>>;
   private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCount'];
   private coordinatePipe = new CoordinatePipe();
 
   constructor(
     private warehouseApi: WarehouseApi,
     private sourceService: SourceService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private triplestoreLabelService: TriplestoreLabelService,
+    private observationResultListService: ObservationResultListService
   ) { }
 
   getAggregate(
@@ -41,45 +48,35 @@ export class ObservationListService {
     lang: string,
     useStatistics: boolean = false
   ): Observable<PagedResult<any>> {
-    aggregateBy = this.prepareFields(aggregateBy).filter(val => this.removeAggregateFields.indexOf(val) === -1);
-    const key = JSON.stringify(query) + [aggregateBy.join(','), orderBy.join(','), lang, page, pageSize].join(':');
-    if (this.aggregateKey === key && this.aggregateData) {
-      return ObservableOf(this.aggregateData);
-    } else if (this.aggregatePendingKey === key && this.aggregatePending) {
-      return Observable.create((observer: Observer<any>) => {
-        const onComplete = (res: any) => {
-          observer.next(res);
-          observer.complete();
-        };
-        this.aggregatePending.subscribe(
-          (data) => { onComplete(data); }
-        );
-      });
+    const _aggregateBy = this.prepareFields(aggregateBy).filter(val => this.removeAggregateFields.indexOf(val) === -1);
+    const key = JSON.stringify(query) + [_aggregateBy.join(','), orderBy.join(','), lang, page, pageSize, useStatistics].join(':');
+    if (this.aggregateKey !== key && this.aggregateData) {
+      this.aggregateKey = key;
+      this.aggregateData = undefined;
     }
-    this.aggregatePendingKey = key;
-    const method = useStatistics
-      ? this.warehouseApi.warehouseQueryStatisticsGet
-      : this.warehouseApi.warehouseQueryAggregateGet;
 
-    this.aggregatePending = method(
-      {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
-      [...aggregateBy],
-      orderBy,
-      pageSize,
-      page,
-      false,
-      false
-    ).pipe(
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
-      map(data => Util.clone(data)),
-      map(data => this.convertAggregateResult(data))).pipe(
-      switchMap(data => this.openValues(data, aggregateBy, lang)),
-      tap(data => {
-        this.aggregateData = data;
-        this.aggregateKey = key;
-      }),
-      share(), );
-    return this.aggregatePending;
+    if (!this.aggregateData) {
+      const method = useStatistics
+        ? this.warehouseApi.warehouseQueryStatisticsGet
+        : this.warehouseApi.warehouseQueryAggregateGet;
+
+      this.aggregateData = method(
+        {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
+        [..._aggregateBy],
+        orderBy,
+        pageSize,
+        page,
+        false,
+        false
+      ).pipe(
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+        map(data => Util.clone(data)),
+        map(data => this.convertAggregateResult(data))).pipe(
+        switchMap(data => this.openValues(data, aggregateBy, lang)),
+        shareReplay(1)
+      );
+    }
+    return this.aggregateData;
   }
 
   getList(
@@ -90,49 +87,42 @@ export class ObservationListService {
     orderBy: string[] = [],
     lang: string
   ): Observable<PagedResult<any>> {
-    selected = this.prepareFields(selected);
-    const key = JSON.stringify(query) + [selected.join(','), orderBy.join(','), lang, page, pageSize].join(':');
-    if (this.key === key && this.data) {
-      return ObservableOf(this.data);
-    } else if (this.pendingKey === key && this.pending) {
-      return Observable.create((observer: Observer<any>) => {
-        const onComplete = (res: any) => {
-          observer.next(res);
-          observer.complete();
-        };
-        this.pending.subscribe(
-          (data) => { onComplete(data); }
-        );
-      });
+    const _selected = this.prepareFields(selected);
+    const key = JSON.stringify(query) + [_selected.join(','), orderBy.join(','), lang, page, pageSize].join(':');
+    if (this.key !== key) {
+      this.key = key;
+      this.data = undefined;
     }
-    this.pendingKey = key;
-    this.pending = this.warehouseApi.warehouseQueryListGet(
-      {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
-      [...selected, 'unit.unitId', 'document.documentId'],
-      orderBy,
-      pageSize,
-      page
-    ).pipe(
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
-      map(data => Util.clone(data))).pipe(
-      switchMap(data => this.openValues(data, selected, lang)),
-      tap(data => {
-        this.data = data;
-        this.key = key;
-      }),
-      share(), );
-    return this.pending;
+    if (!this.data) {
+      this.data = this.warehouseApi.warehouseQueryListGet(
+        {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
+        [..._selected, 'unit.unitId', 'document.documentId'],
+        orderBy,
+        pageSize,
+        page
+      ).pipe(
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+        map(data => Util.clone(data))).pipe(
+        switchMap(data => this.openValues(data, selected, lang)),
+        shareReplay(1)
+      );
+    }
+    return this.data;
   }
 
   private prepareFields(select: string[]): string[] {
     const exist = {};
-    return select.join(',').split(',').filter((val) => {
-      if (exist[val]) {
-        return false;
+    return select.join(',').split(',').reduce((prev, val) => {
+      const factPos = val.indexOf('.facts.');
+      if (factPos > -1) {
+        val = val.substr(0, factPos + 6);
       }
-      exist[val] = true;
-      return true;
-    });
+      if (!exist[val]) {
+        exist[val] = true;
+        prev.push(val);
+      }
+      return prev;
+    }, []);
   }
 
   private convertAggregateResult(data) {
@@ -172,6 +162,14 @@ export class ObservationListService {
   private openValues(data, selected: string[], lang: string): Observable<any> {
     const allMappers = [];
     const uriCache = {};
+    const facts = [];
+
+    selected.forEach(col => {
+      const column = this.observationResultListService.getColumn(col);
+      if (column.fact) {
+        facts.push(column);
+      }
+    });
 
     if (selected.indexOf('document.sourceId') > -1) {
       allMappers.push(this.sourceService.getAllAsLookUp(lang).pipe(map(sources => ({'document.sourceId': sources}))));
@@ -191,6 +189,11 @@ export class ObservationListService {
         return {...cumulative, ...current};
       }, {})));
 
+    return from(data.results || []).pipe(
+      map(document => this.convertCoordinates(document)),
+      toArray()
+    );
+   /*
     return ObservableForkJoin(
       ObservableOf(data),
       mappers$,
@@ -214,21 +217,12 @@ export class ObservationListService {
                 mappers['document.collectionId'][qname] : document.document.collectionId;
             }
           }
-
-          if (document.gathering && document.gathering.conversions) {
-            ['ykj', 'euref', 'wgs84', 'ykj10km', 'ykj10kmCenter', 'ykj1km', 'ykj1kmCenter'].forEach(type => {
-              if (selected.indexOf(`gathering.conversions.${type}`) && document.gathering.conversions[type]) {
-                document.gathering.conversions[type].verbatim =
-                  this.coordinatePipe.transform(document.gathering.conversions[type], type);
-              }
-            });
-          }
-
           return document;
         });
         return data;
       }
     );
+    */
   }
 
   private stringToObj(path, value, obj) {
@@ -246,4 +240,15 @@ export class ObservationListService {
   }
 
 
+  private convertCoordinates(document: any) {
+    if (document && document.gathering && document.gathering.conversions) {
+      ['ykj', 'euref', 'wgs84', 'ykj10km', 'ykj10kmCenter', 'ykj1km', 'ykj1kmCenter'].forEach(type => {
+        if (selected.indexOf(`gathering.conversions.${type}`) && document.gathering.conversions[type]) {
+          document.gathering.conversions[type].verbatim =
+            this.coordinatePipe.transform(document.gathering.conversions[type], type);
+        }
+      });
+    }
+    return document;
+  }
 }
