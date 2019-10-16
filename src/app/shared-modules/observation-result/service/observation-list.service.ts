@@ -190,7 +190,7 @@ export class ObservationListService {
       }, {})));
 
     return from(data.results || []).pipe(
-      map(document => this.convertCoordinates(document)),
+      map(document => this.convertCoordinates(document, selected)),
       toArray()
     );
    /*
@@ -240,7 +240,7 @@ export class ObservationListService {
   }
 
 
-  private convertCoordinates(document: any) {
+  private convertCoordinates(document: any, selected: string[]) {
     if (document && document.gathering && document.gathering.conversions) {
       ['ykj', 'euref', 'wgs84', 'ykj10km', 'ykj10kmCenter', 'ykj1km', 'ykj1kmCenter'].forEach(type => {
         if (selected.indexOf(`gathering.conversions.${type}`) && document.gathering.conversions[type]) {
