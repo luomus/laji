@@ -88,6 +88,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   onDragStart(mousedown) {
     this.widthBeforeDrag = this.sidebarRef.nativeElement.offsetWidth;
     this.disableWidthAnim = true;
+    this.destroyDragListeners();
     this.destroyDragMoveListener = this.renderer.listen(document, 'mousemove', this.onDrag.bind(this));
     this.destroyDragEndListener = this.renderer.listen(document, 'mouseup', this.onDragEnd.bind(this));
   }
@@ -120,16 +121,20 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     this.destroyDragEndListener();
   }
 
-  ngOnDestroy() {
-    if (this.destroyResizeListener) {
-      this.destroyResizeListener();
-    }
+  destroyDragListeners() {
     if (this.destroyDragMoveListener) {
       this.destroyDragMoveListener();
     }
     if (this.destroyDragEndListener) {
       this.destroyDragEndListener();
     }
+  }
+
+  ngOnDestroy() {
+    if (this.destroyResizeListener) {
+      this.destroyResizeListener();
+    }
+    this.destroyDragListeners();
   }
 
   calcSidebarWidth(mouseX) {
