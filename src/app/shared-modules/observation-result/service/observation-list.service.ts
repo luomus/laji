@@ -172,6 +172,9 @@ export class ObservationListService {
 
     selected.forEach(col => {
       const column = this.observationResultListService.getColumn(col);
+      if (!column) {
+        return;
+      }
       if (column.fact) {
         column.fact = IdService.getUri(column.fact);
         facts.push(column);

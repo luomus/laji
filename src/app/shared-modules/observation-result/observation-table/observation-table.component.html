@@ -1,4 +1,27 @@
 <div class="observation-table-wrapper">
+  <div class="menu-row" *ngIf="showSettingsMenu || showDownloadMenu">
+    <div class="link btn btn-default btn-sm pull-right" style="margin-left: 5px;" (click)="openModal()" *ngIf="showSettingsMenu">
+      {{ 'iucn.results.selectColumns' | translate }}
+      <i class="glyphicon glyphicon-cog"></i>
+    </div>
+    <ng-container *ngIf="showDownloadMenu">
+      <laji-download
+        *ngIf="maxDownload >= result.total else tooMany"
+        linkClass="link btn btn-default btn-sm pull-right"
+        [downloadLoading]="false"
+        (download)="download($event)">
+      <span>
+        {{ 'haseka.submissions.download' | translate }}
+        <i class="glyphicon glyphicon-download-alt"></i>
+      </span>
+      </laji-download>
+      <ng-template #tooMany>
+        <div class="btn btn-default btn-sm pull-right disabled">
+          Max {{ maxDownload }}
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
   <laji-datatable
     #dataTable
     class="observation-table"
@@ -20,9 +43,6 @@
     [totalMessage]="'haseka.submissions.total' | translate"
     [columns]="columns">
   </laji-datatable>
-  <div class="setting-menu link" (click)="openModal()" *ngIf="showSettingsMenu">
-    <i class="glyphicon glyphicon-cog"></i>
-  </div>
 </div>
 
 <div bsModal #settingsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -73,7 +93,7 @@
             </div>
           </ng-container>
         </div>
-        
+
         <div class="row">
           <div class="col-sm-6">
             <div *ngIf="showPageSize">

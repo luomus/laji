@@ -115,6 +115,7 @@
   </div>
   <div [hidden]="active !== 'list'" *ngIf="activated['list']">
     <laji-observation-result-list
+      [showDownloadMenu]="true"
       [settings]="listSettings"
       (settingsChange)="listSettingsChange.emit($event)"
       [visible]="active === 'list'"

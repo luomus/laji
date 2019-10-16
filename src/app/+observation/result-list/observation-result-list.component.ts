@@ -17,6 +17,7 @@ export class ObservationResultListComponent {
   @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
+  @Input() showDownloadMenu = false;
 
   @Output() settingsChange = new EventEmitter<ISettingResultList>();
 
