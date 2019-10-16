@@ -140,6 +140,8 @@ export interface WarehouseQueryInterface {
   /** used only on sample endpoint */
   sampleType?: Array<string>;
   /** used only on sample endpoint */
+  sampleMaterial?: Array<string>;
+  /** used only on sample endpoint */
   sampleMultiple?: boolean;
   /** used only on sample endpoint */
   sampleQuality?: Array<string>;
@@ -150,6 +152,9 @@ export interface WarehouseQueryInterface {
   /** used only on sample endpoint */
   sampleId?: Array<string>;
   collectionId?: Array<string>;
+  documentFact?: Array<string>;
+  gatheringFact?: Array<string>;
+  unitFact?: Array<string>;
   collectionIdNot?: Array<string>;
   wild?: Array<string>;
   coordinateAccuracyMax?: number;

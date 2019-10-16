@@ -1,0 +1,320 @@
+<div class="taxon-panel">
+  <div class="form-group">
+    <div class="col-lg-12">
+      <label>{{ 'observation.form.target' | translate }}</label>
+    </div>
+    <div class="col-lg-12">
+      <input
+        type="text"
+        class="form-control input-sm"
+        name="target"
+        [(ngModel)]="formQuery.taxon"
+        (keyup)="onTaxonSelect($event)"
+        autocomplete="off"
+        autocorrect="off"
+      >
+      <laji-pill-list
+        [isLabel]="true"
+        [list]="query.target || []"
+        (updateList)="updateSearchQuery('target', $event)"
+      ></laji-pill-list>
+    </div>
+    <div class="col-sm-12" style="margin-top: 15px;">
+      <laji-select
+        [(selected)]="query.keyword"
+        (selectedChange)="onQueryChange()"
+        [multiple]="true"
+        [useFilter]="false"
+        [title]="'observation.form.sampleDataset' | translate"
+        [options]="[
+            {id: 'http://tun.fi/GX.8216', value: 'Aves'},
+            {id: 'http://tun.fi/GX.7575', value: 'Coleoptera'},
+            {id: 'http://tun.fi/GX.8056', value: 'Crustacea'},
+            {id: 'http://tun.fi/GX.1910', value: 'Diptera'},
+            {id: 'http://tun.fi/GX.6735', value: 'Fungi'},
+            {id: 'http://tun.fi/GX.8055', value: 'Hymenoptera'},
+            {id: 'http://tun.fi/GX.8215', value: 'Hymenoptera, Apidae'},
+            {id: 'http://tun.fi/GX.7596', value: 'Lichens'},
+            {id: 'http://tun.fi/GX.8057', value: 'Mollusca'},
+            {id: 'http://tun.fi/GX.8515', value: 'Vascular plants'}
+          ]"></laji-select>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div laji-panel [title]="'MF.sample' | label" [autoToggle]="true" [open]="visible['sample']">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="query.sampleType"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          [whiteList]="['MF.preparationTypeTissue', 'MF.preparationTypeDNAExtract']"
+          [placeholder]="'MF.preparationType' | label"
+          name="sampleType"
+          [alt]="'MF.preparationTypeEnum'"></laji-metadata-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="query.sampleMaterial"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          [placeholder]="'MF.material' | label"
+          name="sampleMaterial"
+          [alt]="'MF.materialEnum'"></laji-metadata-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <label>{{ 'MY.DNAVolumeMicroliters' | label }}</label>
+      </div>
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="number" name="individualCountMin"
+                   class="form-control input-sm"
+                   placeholder="{{'observation.form.countMin' | translate}}"
+                   (blur)="onFactsChange()"
+                   [(ngModel)]="facts['MY.DNAVolumeMicroliters'].min">
+          </div>
+          <div class="col-sm-6">
+            <input type="number" name="individualCountMax"
+                   class="form-control input-sm"
+                   placeholder="{{'observation.form.countMax' | translate}}"
+                   (blur)="onFactsChange()"
+                   [(ngModel)]="facts['MY.DNAVolumeMicroliters'].max">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <label>{{ 'MY.DNARatioOfAbsorbance260And280' | label }}</label>
+      </div>
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="number" name="individualCountMin"
+                   class="form-control input-sm"
+                   placeholder="{{'observation.form.countMin' | translate}}"
+                   (blur)="onFactsChange()"
+                   [(ngModel)]="facts['MY.DNARatioOfAbsorbance260And280'].min">
+          </div>
+          <div class="col-sm-6">
+            <input type="number" name="individualCountMax"
+                   class="form-control input-sm"
+                   placeholder="{{'observation.form.countMax' | translate}}"
+                   (blur)="onFactsChange()"
+                   [(ngModel)]="facts['MY.DNARatioOfAbsorbance260And280'].max">
+          </div>
+        </div>
+      </div>
+    </div>    <div class="form-group">
+      <div class="col-lg-12">
+        <label>{{ 'MY.DNAConcentrationNgPerMicroliter' | label }}</label>
+      </div>
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="number" name="individualCountMin"
+                   class="form-control input-sm"
+                   placeholder="{{'observation.form.countMin' | translate}}"
+                   (blur)="onFactsChange()"
+                   [(ngModel)]="facts['MY.DNAConcentrationNgPerMicroliter'].min">
+          </div>
+          <div class="col-sm-6">
+            <input type="number" name="individualCountMax"
+                   class="form-control input-sm"
+                   placeholder="{{'observation.form.countMax' | translate}}"
+                   (blur)="onFactsChange()"
+                   [(ngModel)]="facts['MY.DNAConcentrationNgPerMicroliter'].max">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="query.sampleQuality"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          [placeholder]="'MF.quality' | label"
+          name="sampleQuality"
+          [alt]="'MF.qualityEnum'"></laji-metadata-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="query.sampleStatus"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          [placeholder]="'MF.status' | label"
+          name="sampleStatus"
+          [alt]="'MY.statuses'"></laji-metadata-select>
+      </div>
+    </div>
+  </div>
+  <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']">
+    <div class="row">
+      <div class="col-sm-12">
+        <label>{{ 'observation.form.time' | translate }}</label><laji-info>{{ 'observation.info.time' | translate }}
+      </laji-info>
+        <laji-datepicker
+          [(ngModel)]="formQuery.timeStart"
+          [viewFormat]="'DD.MM.YYYY'"
+          [otherFormats]="['D.M.YYYY', 'YYYY']"
+          [format]="dateFormat"
+          (select)="onFormQueryChange()"
+          (change)="onFormQueryChange()"
+          name="timeStart"></laji-datepicker>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <laji-datepicker
+          [(ngModel)]="formQuery.timeEnd"
+          [viewFormat]="'DD.MM.YYYY'"
+          [otherFormats]="['D.M.YYYY', 'YYYY']"
+          [toLastOfYear]="true"
+          [format]="dateFormat"
+          (select)="onFormQueryChange()"
+          (change)="onFormQueryChange()"
+          name="timeEnd"></laji-datepicker>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <div class="btn-group">
+          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">{{ 'observations.form.1d' | translate }}</button>
+          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">{{ 'observations.form.7d' | translate }}</button>
+          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
+            {{ 'observation.form.thisYear' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div laji-panel
+       [autoToggle]="true"
+       [open]="showPlace || visible['place']"
+       (activate)="togglePlace($event)"
+       [title]="'observation.form.place' | translate">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [info]="'observation.info.country' | translate"
+          [(ngModel)]="query.countryId"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [firstOptions]="['ML.206']"
+          [placeholder]="'result.gathering.country'"
+          name="countryId"
+          [field]="areaType.Country"></laji-metadata-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [info]="'observation.info.municipality' | translate"
+          [(ngModel)]="query.finnishMunicipalityId"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [placeholder]="'observation.form.municipality'"
+          name="finnishMunicipalityId"
+          [field]="areaType.Municipality"></laji-metadata-select>
+      </div>
+    </div>
+    <hr>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <label>{{ 'observation.form.map.intro'|translate }}</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Rectangle')">
+          <i class="lji-icon lji-crop"></i>
+        </button>
+        {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate }}
+      </div>
+    </div>
+  </div>
+  <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">
+    <div class="row">
+      <div class="col-lg-12">
+        <label>{{ 'observation.form.team' | translate }}</label><laji-info>{{ 'observation.info.team' | translate }}
+      </laji-info>
+      </div>
+      <div class="col-lg-12">
+        <laji-team
+          [(memberIds)]="query.teamMemberId"
+          [(members)]="query.teamMember"
+          (update)="onQueryChange()"
+        ></laji-team>
+      </div>
+    </div>
+  </div>
+  <div laji-panel *ngIf="advancedMode || visibleAdvanced['individual']" [title]="'observation.form.unit' | translate" [autoToggle]="true"  [open]="visible['individual']">
+    <div class="form-group">
+      <div class="col-lg-12">
+        <laji-metadata-select
+          [(ngModel)]="query.lifeStage"
+          (ngModelChange)="onQueryChange()"
+          [alt]="'MY.lifeStages'"
+          [multiple]="true"
+          [useFilter]="false"
+          [placeholder]="'MY.lifeStage' | label"
+          [mapToWarehouse]="true"
+          name="lifeStage"></laji-metadata-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <laji-metadata-select
+          [(ngModel)]="query.sex"
+          [alt]="'MY.sexes'"
+          [multiple]="true"
+          [placeholder]="'observation.form.sex'"
+          (ngModelChange)="onQueryChange()"
+          [mapToWarehouse]="true"
+          [useFilter]="false"
+          name="sex"></laji-metadata-select>
+      </div>
+    </div>
+  </div>
+  <div laji-panel [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
+    <div class="form-group">
+      <div class="col-lg-12">
+        <label>{{ 'observation.form.keyword' | translate }}</label><laji-info>{{ 'observation.info.keyword' | translate }}</laji-info>
+      </div>
+      <div class="col-lg-12">
+        <input
+          class="form-control input-sm"
+          type="text"
+          name="documentId"
+          (ngModelChange)="delayedQueryChange()"
+          [(ngModel)]="query.keyword">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <label>{{ 'observation.form.sampleId' | translate }}</label><laji-info>{{ 'observation.info.sampleId' | translate }}</laji-info>
+      </div>
+      <div class="col-lg-12">
+        <input
+          class="form-control input-sm"
+          type="text"
+          name="documentId"
+          (ngModelChange)="delayedQueryChange()"
+          [(ngModel)]="query.sampleId">
+      </div>
+    </div>
+  </div>
+</div>
