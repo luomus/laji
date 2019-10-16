@@ -12,7 +12,8 @@ export class UniquePipe implements PipeTransform {
 
 
   transform(value: AnnotationTag[], args: Annotation[]): any[] {
-    if ( value === undefined || args === undefined) {
+
+    if ( value === undefined || args === undefined ) {
       return value;
     }
 
@@ -36,9 +37,11 @@ export class UniquePipe implements PipeTransform {
 
     active = this.arr_diff(this.mergeUniqueValues(addedTags), this.mergeUniqueValues(removedTags));
 
-    value = value.filter(
-      item => active.includes(item.id)
-    );
+    if (value) {
+      value = value.filter(
+        item => active.includes(item.id)
+      );
+    }
 
     return value;
   }

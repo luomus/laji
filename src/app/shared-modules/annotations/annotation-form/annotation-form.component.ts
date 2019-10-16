@@ -45,8 +45,9 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
   tagsAdd: Array<AnnotationTag>;
   tagsRemove: Array<AnnotationTag>;
+  annotationAddadableTags$: Observable<AnnotationTag[]>;
+  annotationRemovableTags$: Observable<AnnotationTag[]>;
   annotationAddadableTags: Subscription;
-  annotationRemovableTags: Subscription;
   types = Annotation.TypeEnum;
   selectedOptions: string[] = [];
   deletedOptions: string[] = [];
@@ -178,25 +179,8 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
 
   initAnnotationTags() {
-    this.annotationAddadableTags = this.annotationService.getAllAddableTags(this.translate.currentLang)
-    .subscribe(
-      (resultArray: AnnotationTag[]) => {
-        this.tagsAdd = resultArray;
-        this.cd.detectChanges();
-      },
-      error => console.log('Error :: ' + error)
-    );
-
-
-    this.annotationRemovableTags = this.annotationService.getAllRemovableTags(this.translate.currentLang)
-    .subscribe(
-      (resultArray: AnnotationTag[]) => {
-        this.tagsRemove = resultArray;
-        this.cd.detectChanges();
-      },
-      error => console.log('Error :: ' + error)
-    );
-
+    this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang);
+    this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang);
   }
 
 
