@@ -11,6 +11,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { ISettingResultList } from '../../shared/service/user.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -83,6 +84,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private observationFacade: ObservationFacade,
     private browserService: BrowserService,
+    private localizeRouterService: LocalizeRouterService,
     private route: Router
   ) {}
 
@@ -120,7 +122,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   draw(type: string) {
     this.drawingShape = type;
     if (this.activeTab !== 'map') {
-      this.route.navigate([this.basePath + '/map'], {preserveQueryParams: true});
+      this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), {preserveQueryParams: true});
     }
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);
