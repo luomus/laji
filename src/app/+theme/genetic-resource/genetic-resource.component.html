@@ -1,1 +1,6 @@
-<laji-observation-view [activeTab]="activeTab$ | async" basePath="/theme/gene/search"></laji-observation-view>
+<laji-observation-view
+  [skipUrlParameters]="skipUrlParams"
+  [activeTab]="activeTab$ | async"
+  [visible]="{map: true, list: true}"
+  basePath="/theme/luomusgrc/search"
+></laji-observation-view>

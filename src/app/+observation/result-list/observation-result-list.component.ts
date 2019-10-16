@@ -3,6 +3,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
+import { ObservationResultListService } from './observation-result-list.service';
 
 const DEFAULT_PAGE_SIZE = 100;
 
@@ -13,31 +14,22 @@ const DEFAULT_PAGE_SIZE = 100;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultListComponent {
-  private static readonly defaultFields: string[] = [
-    'unit.taxon',
-    'unit.abundanceString',
-    'gathering.displayDateTime',
-    'gathering.interpretations.countryDisplayname',
-    'gathering.interpretations.biogeographicalProvinceDisplayname',
-    'gathering.interpretations.municipalityDisplayname',
-    'gathering.locality',
-    'document.collectionId',
-    'gathering.team'
-  ];
-
   @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
 
   @Output() settingsChange = new EventEmitter<ISettingResultList>();
 
-  selectedFields = ObservationResultListComponent.defaultFields;
+  selectedFields: string[];
   pageSize: number;
   aggregateBy: string[] = [];
 
   constructor(
-    private documentViewerFacade: DocumentViewerFacade
-  ) {}
+    private documentViewerFacade: DocumentViewerFacade,
+    private observationResultListService: ObservationResultListService
+  ) {
+    this.selectedFields = observationResultListService.defaultFields;
+  }
 
   @Input()
   set settings(settings: ISettingResultList) {
@@ -75,7 +67,7 @@ export class ObservationResultListComponent {
   }
 
   resetSelectedFields() {
-    this.selectedFields = [ ...ObservationResultListComponent.defaultFields ];
+    this.selectedFields = this.observationResultListService.defaultFields;
     this.saveSettings();
   }
 

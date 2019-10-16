@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewCh
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
+import { VisibleSections } from '..';
 
 
 @Component({
@@ -11,7 +12,22 @@ import { ISettingResultList } from '../../shared/service/user.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultComponent {
-
+  @Input() visible: VisibleSections = {
+    finnish: true,
+    counts: true,
+    map: true,
+    list: true,
+    images: true,
+    species: true,
+    statistics: true,
+    download: true,
+    annotations: true,
+  };
+  @Input() skipUrlParameters: string[] = [
+    'selected',
+    'pageSize',
+    'page'
+  ];
   @Input() basePath = '/observation';
   @Input() query: WarehouseQueryInterface = {};
   @Input() lgScreen = true;

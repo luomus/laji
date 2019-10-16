@@ -16,12 +16,9 @@ export class SearchQueryService implements SearchQueryInterface {
     'teamMember': ';'
   };
 
-  arrayTypes = [
+  arrayTypes: Array<keyof WarehouseQueryInterface|'aggregateBy'|'selected'|'orderBy'> = [
     'taxonId',
     'target',
-    'originalTarget',
-    'exactTarget',
-    'originalExactTarget',
     'informalTaxonGroupId',
     'informalTaxonGroupIdIncludingReported',
     'administrativeStatusId',
@@ -61,12 +58,18 @@ export class SearchQueryService implements SearchQueryInterface {
     'taxonCensus',
     'primaryHabitat',
     'anyHabitat',
+    'sampleId',
+    'sampleFact',
+    'sampleType',
+    'sampleQuality',
+    'sampleStatus',
+    'sampleCollectionId',
     'aggregateBy',
     'selected',
     'orderBy',
   ];
 
-  booleanTypes = [
+  booleanTypes: Array<keyof WarehouseQueryInterface|'geoJSON'|'excludeNulls'|'onlyCount'|'pessimisticDateRangeHandling'> = [
     'pessimisticDateRangeHandling',
     'excludeNulls',
     'pairCounts',
@@ -75,6 +78,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'includeNonValidTaxa',
     'finnish',
     'invasive',
+    'sampleMultiple',
     'typeSpecimen',
     'hasDocumentMedia',
     'hasGatheringMedia',
@@ -93,7 +97,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'annotated'
   ];
 
-  numericTypes = [
+  numericTypes: Array<keyof WarehouseQueryInterface|'page'|'pageSize'> = [
     'dayOfYearBegin',
     'dayOfYearEnd',
     'individualCountMin',
@@ -103,7 +107,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'pageSize'
   ];
 
-  stringTypes = [
+  stringTypes: Array<keyof WarehouseQueryInterface|'xValue'|'annotatedBefore'|'annotatedLaterThan'> = [
     'taxonRankId',
     'xValue',
     'ykj10kmCenter',
@@ -121,7 +125,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'formId'
   ];
 
-  obscure = [
+  obscure: Array<keyof WarehouseQueryInterface> = [
     'editorPersonToken',
     'observerPersonToken',
     'editorOrObserverPersonToken'
@@ -235,7 +239,7 @@ export class SearchQueryService implements SearchQueryInterface {
           continue;
         }
         if (query[i] !== undefined) {
-          result[i] = obscure ? 'true' : query[i];
+          result[i] = (obscure ? 'true' : query[i]) as any;
         }
       }
     }

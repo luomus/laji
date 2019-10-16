@@ -197,7 +197,7 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <strong>{{ 'theme.research.title' | translate }}</strong>
+      <strong>{{ 'theme.research.main' | translate }}</strong>
     </div>
     <div class="panel-body">
       <table class="table table-bordered">
@@ -210,6 +210,16 @@
             </th>
             <td>
               {{ 'theme.research.intro' | translate }}
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <a [routerLink]="['/theme/luomusgrc'] | localize">
+                {{ 'theme.grc.title' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.grc.intro' | translate }}
             </td>
           </tr>
         </tbody>

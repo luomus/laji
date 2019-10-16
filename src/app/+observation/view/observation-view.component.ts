@@ -11,7 +11,20 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { ISettingResultList } from '../../shared/service/user.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
+export interface VisibleSections {
+  finnish?: boolean;
+  counts?: boolean;
+  map?: boolean;
+  list?: boolean;
+  images?: boolean;
+  species?: boolean;
+  statistics?: boolean;
+  download?: boolean;
+  annotations?: boolean;
+  info?: boolean;
+}
 
 @Component({
   selector: 'laji-observation-view',
@@ -22,6 +35,23 @@ import { ISettingResultList } from '../../shared/service/user.service';
 export class ObservationViewComponent implements OnInit, OnDestroy {
 
   @Input() basePath = '/observation';
+  @Input() visible: VisibleSections = {
+    info: true,
+    finnish: true,
+    counts: true,
+    map: true,
+    list: true,
+    images: true,
+    species: true,
+    statistics: true,
+    download: true,
+    annotations: true,
+  };
+  @Input() skipUrlParameters: string[] = [
+    'selected',
+    'pageSize',
+    'page'
+  ];
   _activeTab: string;
   @ViewChild('tabs', { static: false }) tabs;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
@@ -54,6 +84,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private observationFacade: ObservationFacade,
     private browserService: BrowserService,
+    private localizeRouterService: LocalizeRouterService,
     private route: Router
   ) {}
 
@@ -91,7 +122,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   draw(type: string) {
     this.drawingShape = type;
     if (this.activeTab !== 'map') {
-      this.route.navigate([this.basePath + '/map'], {preserveQueryParams: true});
+      this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), {preserveQueryParams: true});
     }
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);

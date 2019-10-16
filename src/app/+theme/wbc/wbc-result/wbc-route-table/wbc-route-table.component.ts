@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 import { LocalStorage } from 'ngx-webstorage';
+import { ExportService } from '../../../../shared/service/export.service';
+import { TranslateService } from '@ngx-translate/core';
+import { SEASON } from '../wbc-result.service';
 
 @Component({
   selector: 'laji-wbc-route-table',
@@ -8,11 +11,16 @@ import { LocalStorage } from 'ngx-webstorage';
   styleUrls: ['./wbc-route-table.component.scss']
 })
 export class WbcRouteTableComponent implements OnInit {
+  @Input() routeId: string;
+  @Input() season: SEASON;
+
   rows: any[];
   columns: DatatableColumn[] = [];
 
   _getRowClass: (data: any) => string = this.getRowClass.bind(this);
   _getCellClass: (data: any) => string = this.getCellClass.bind(this);
+
+  downloadLoading = false;
 
   @LocalStorage() showWbcRouteTableInfo;
 
@@ -34,7 +42,10 @@ export class WbcRouteTableComponent implements OnInit {
     }
   }
 
-  constructor() { }
+  constructor(
+    private translate: TranslateService,
+    private exportService: ExportService
+  ) { }
 
   ngOnInit() {
     if (this.showWbcRouteTableInfo === null) {
@@ -91,6 +102,37 @@ export class WbcRouteTableComponent implements OnInit {
     });
   }
 
+  download(format: string) {
+    this.downloadLoading = true;
+
+    this.exportService.exportArrayBuffer(
+      this.exportService.getBufferFromAoa(this.getAoa(), format),
+      'route_' + this.routeId.split('.')[1] + '_' + this.season,
+      format
+      );
+      this.downloadLoading = false;
+  }
+
+  private getAoa(): string[][] {
+    const aoa = [[]];
+
+    for (let i = 0; i < this.columns.length; i++) {
+      aoa[0].push(this.translate.instant(this.columns[i].label));
+    }
+    for (let i = 0; i < this.rows.length; i++) {
+      aoa.push([]);
+      for (let j = 0; j < this.columns.length; j++) {
+        let value = this.rows[i][this.columns[j].name];
+        if (j === 0 && this.isLastRowName(value)) {
+          value = this.translate.instant('wbc.stats.route.' + value);
+        }
+        const key = i + 1;
+        aoa[key][j] = Array.isArray(value) ? value.join(', ') : value;
+      }
+    }
+    return aoa;
+  }
+
   private getRowClass(row: any) {
     if (this.isLastRow(row)) {
       return 'last-rows';
@@ -121,7 +163,11 @@ export class WbcRouteTableComponent implements OnInit {
   }
 
   private isLastRow(row: any) {
-    return row.name === 'speciesCount' || row.name === 'individualCount' || row.name === 'documentIds';
+    return this.isLastRowName(row.name);
+  }
+
+  private isLastRowName(name: string) {
+    return name.indexOf('SpeciesCount') > -1 || name.indexOf('IndividualCount') > -1 || name === 'documentIds';
   }
 
   private getSortingComparator(prop: string): (a, b) => number {

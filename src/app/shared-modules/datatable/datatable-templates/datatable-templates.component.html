@@ -106,11 +106,11 @@
 </ng-template>
 <ng-template let-value="value" #label>
   <span *ngIf="value" title="{{value | label}}">
-    {{ value | label }}
+    {{ value | toQName | label }}
   </span>
 </ng-template>
 <ng-template let-value="value" #labelArray>
-  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | label}"></ng-container>
+  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | toQName | label}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #warehouseLabel>
   <span *ngIf="value" title="{{value | label: 'warehouse'}}">

@@ -71,17 +71,17 @@ export class ObservationFacade {
   private store  = new BehaviorSubject<IObservationState>(_state);
   state$ = this.store.asObservable();
 
-  lgScreen$      = this.browserService.lgScreen$;
-  query$         = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
-  loading$       = this.state$.pipe(map((state) => state.loadingUnits));
-  loadingTaxa$   = this.state$.pipe(map((state) => state.loadingTaxa));
-  advanced$      = this.state$.pipe(map((state) => state.advanced));
-  activeTab$     = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
-  showIntro$     = this.state$.pipe(map((state) => state.showIntro));
-  countUnit$     = this.query$.pipe(switchMap((query) => this.countUnits(query)));
-  countTaxa$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
-  filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
-  settingsMap$   = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
+  readonly lgScreen$      = this.browserService.lgScreen$;
+  readonly query$         = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
+  readonly loading$       = this.state$.pipe(map((state) => state.loadingUnits));
+  readonly loadingTaxa$   = this.state$.pipe(map((state) => state.loadingTaxa));
+  readonly advanced$      = this.state$.pipe(map((state) => state.advanced));
+  readonly activeTab$     = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
+  readonly showIntro$     = this.state$.pipe(map((state) => state.showIntro));
+  readonly countUnit$     = this.query$.pipe(switchMap((query) => this.countUnits(query)));
+  readonly countTaxa$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
+  readonly filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
+  readonly settingsMap$   = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
   settingsList$  = this.userService.getUserSetting('resultList');
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
@@ -100,7 +100,8 @@ export class ObservationFacade {
   });
 
   private hashCache: {[key: string]: string} = {};
-  private emptyQuery: WarehouseQueryInterface = emptyQuery;
+  private _emptyQuery: WarehouseQueryInterface = emptyQuery;
+  private _settingsKey = 'resultList';
 
   constructor(
     private browserService: BrowserService,
@@ -132,7 +133,7 @@ export class ObservationFacade {
   }
 
   updateQuery(warehouseQuery: WarehouseQueryInterface) {
-    const query = {...warehouseQuery};
+    const query = {...this.emptyQuery, ...warehouseQuery};
 
     ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
       if (query[key] === ObservationFacade.PERSON_TOKEN) {
@@ -148,8 +149,17 @@ export class ObservationFacade {
     this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
   }
 
-  setEmptyQuery(query: WarehouseQueryInterface) {
-    this.emptyQuery = query;
+  set emptyQuery(query: WarehouseQueryInterface) {
+    this._emptyQuery = query;
+  }
+
+  get emptyQuery() {
+    return this._emptyQuery;
+  }
+
+  set settingsKey(key: string) {
+    this._settingsKey = key;
+    this.settingsList$  = this.userService.getUserSetting(key);
   }
 
   clearQuery() {
@@ -182,7 +192,7 @@ export class ObservationFacade {
   }
 
   updateListSettings(settings: ISettingResultList) {
-    this.userService.setUserSetting('resultList', settings);
+    this.userService.setUserSetting(this._settingsKey, settings);
   }
 
   showFooter() {

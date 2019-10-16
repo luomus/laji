@@ -37,18 +37,7 @@ export class TaxonExportService {
   private getBuffer(cols: DatatableColumn[], data: Taxonomy[], type, firstRow?: string[]): Observable<string> {
     return this.getAoa(cols, data, firstRow)
       .pipe(
-        map((aoa) => {
-          const sheet = XLSX.utils.aoa_to_sheet(aoa);
-
-          if (type === 'tsv') {
-            return XLSX.utils.sheet_to_csv(sheet, {FS: '\t'});
-          }
-
-          const book = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(book, sheet);
-
-          return XLSX.write(book, {bookType: type, type: 'array'});
-        })
+        map((aoa) => this.exportService.getBufferFromAoa(aoa, type))
       );
   }
 
