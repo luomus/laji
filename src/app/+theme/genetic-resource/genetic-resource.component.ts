@@ -44,38 +44,46 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       'sample.type',
       'sample.material',
       'sample.quality',
+      'sample.facts.qualityCheckMethod',
+      'sample.facts.DNAVolumeMicroliters',
+      'sample.facts.DNARatioOfAbsorbance260And280',
+      'sample.facts.DNAConcentrationNgPerMicroliter',
     ];
     this.observationResultListService.columnGroups = [
-      { header: 'sample', fields: [
-          'sample.sampleId',
-          'sample.type',
-          'sample.material',
-          'sample.quality',
-          'sample.status',
-        ]},
-      { header: 'identification', fields: [
-        'unit.taxonVerbatim'
+      { header: 'Identification', fields: [
+        'unit.taxonVerbatim',
+        'unit.det'
       ]},
-      { header: 'observation.form.date', fields: [
+      { header: 'Date', fields: [
           'gathering.displayDateTime',
-          'document.facts.legID',
         ]},
-      { header: 'persons', fields: [
-          'gathering.team',
-          'unit.det'
-        ]},
-      { header: 'observation.form.unit', fields: [
+      { header: 'Individual', fields: [
           'unit.lifeStage',
           'unit.sex'
         ]},
-      { header: 'observation.form.place', fields: [
-          'gathering.interpretations.countryDisplayname'
+      { header: 'Preparation/Sample', fields: [
+          'sample.type',
+          'sample.material',
+          'sample.quality',
+          'sample.facts.qualityCheckMethod',
+          'sample.facts.DNAVolumeMicroliters',
+          'sample.facts.DNARatioOfAbsorbance260And280',
+          'sample.facts.DNAConcentrationNgPerMicroliter',
+          'sample.facts.preparationProcess',
+          'sample.facts.elutionMedium',
+          'sample.status',
+          'sample.facts.additionalIDs',
+          'sample.sampleId',
         ]},
-      { header: 'result.gathering.coordinatesVerbatim', fields: [
+      { header: 'Locality', fields: [
+          'gathering.interpretations.country',
           'gathering.conversions.wgs84',
+          'gathering.team'
         ]},
       { header: 'observation.filters.other', fields: [
           'sample.notes',
+          'document.collectionId',
+          'document.facts.legID',
         ]}
     ];
     this.observationResultListService.allColumns = [
@@ -83,7 +91,7 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
         prop: 'unit.taxonVerbatim',
         label: 'taxonVerbatim' },
       { name: 'gathering.team', cellTemplate: 'toSemicolon' },
-      { name: 'gathering.interpretations.countryDisplayname', label: 'result.gathering.country' },
+      { name: 'gathering.interpretations.country', cellTemplate: 'label', label: 'result.gathering.country' },
       { name: 'gathering.team.memberName',
         label: 'observation.form.team',
         aggregateBy: 'gathering.team.memberId,gathering.team.memberName'
@@ -100,7 +108,14 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       { name: 'sample.notes', sortable: false, label: 'result.document.notes' },
       { name: 'unit.det'},
       { name: 'gathering.conversions.wgs84', prop: 'gathering.conversions.wgs84.verbatim', sortable: false },
-      { name: 'document.facts.legID', prop: 'document.facts', sortable: false, fact: 'MY.legID'},
+      { name: 'document.facts.legID', sortable: false, fact: 'MY.legID'},
+      { name: 'sample.facts.preparationProcess', cellTemplate: 'label', sortable: false, fact: 'MF.preparationProcess'},
+      { name: 'sample.facts.elutionMedium', cellTemplate: 'label', sortable: false, fact: 'MF.elutionMedium'},
+      { name: 'sample.facts.additionalIDs', sortable: false, fact: 'MF.additionalIDs'},
+      { name: 'sample.facts.qualityCheckMethod', cellTemplate: 'label', sortable: false, fact: 'MF.qualityCheckMethod'},
+      { name: 'sample.facts.DNAVolumeMicroliters', sortable: false, fact: 'MY.DNAVolumeMicroliters'},
+      { name: 'sample.facts.DNARatioOfAbsorbance260And280', sortable: false, fact: 'MY.DNARatioOfAbsorbance260And280'},
+      { name: 'sample.facts.DNAConcentrationNgPerMicroliter', sortable: false, fact: 'MY.DNAConcentrationNgPerMicroliter'},
     ];
   }
 

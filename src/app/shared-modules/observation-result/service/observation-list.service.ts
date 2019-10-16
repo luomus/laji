@@ -18,6 +18,7 @@ import { Util } from '../../../shared/service/util.service';
 import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { ObservationResultListService } from '../../../+observation/result-list/observation-result-list.service';
+import { ObservationTableColumn } from '../model/observation-table-column';
 
 
 @Injectable()
@@ -30,6 +31,14 @@ export class ObservationListService {
   private aggregateData: Observable<PagedResult<any>>;
   private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCount'];
   private coordinatePipe = new CoordinatePipe();
+
+  private static trueFieldPath(field: string) {
+    const factPos = field.indexOf('.facts.');
+    if (factPos > -1) {
+      field = field.substr(0, factPos + 6);
+    }
+    return field;
+  }
 
   constructor(
     private warehouseApi: WarehouseApi,
@@ -113,10 +122,7 @@ export class ObservationListService {
   private prepareFields(select: string[]): string[] {
     const exist = {};
     return select.join(',').split(',').reduce((prev, val) => {
-      const factPos = val.indexOf('.facts.');
-      if (factPos > -1) {
-        val = val.substr(0, factPos + 6);
-      }
+      val = ObservationListService.trueFieldPath(val);
       if (!exist[val]) {
         exist[val] = true;
         prev.push(val);
@@ -161,13 +167,17 @@ export class ObservationListService {
 
   private openValues(data, selected: string[], lang: string): Observable<any> {
     const allMappers = [];
-    const uriCache = {};
-    const facts = [];
+    const labels: ObservationTableColumn[] = [];
+    const facts: ObservationTableColumn[] = [];
 
     selected.forEach(col => {
       const column = this.observationResultListService.getColumn(col);
       if (column.fact) {
+        column.fact = IdService.getUri(column.fact);
         facts.push(column);
+      }
+      if (column.cellTemplate === 'label') {
+        // TODO: move opening label values here
       }
     });
 
@@ -190,8 +200,14 @@ export class ObservationListService {
       }, {})));
 
     return from(data.results || []).pipe(
+      // take(1),
       map(document => this.convertCoordinates(document, selected)),
-      toArray()
+      map(document => this.addFacts(document, facts)),
+      toArray(),
+      map(results => ({
+        ...data,
+        results
+      }))
     );
    /*
     return ObservableForkJoin(
@@ -250,5 +266,45 @@ export class ObservationListService {
       });
     }
     return document;
+  }
+
+  private addFacts(document: object, cols: ObservationTableColumn[]) {
+    cols.forEach(col => {
+      const paths = ObservationListService.trueFieldPath(col.name).split('.');
+      const targetPaths = (col.name).split('.');
+      const facts = this.pickFacts(document, paths, col.fact);
+      if (facts.length > 0) {
+        this.setValue(document, targetPaths, facts);
+      }
+    });
+
+    return document;
+  }
+
+  private setValue(document: object, paths: string[], value: any) {
+    const path = paths.shift();
+    if (paths.length > 0) {
+      if (!document[path]) {
+        document[path] = {};
+      }
+      return this.setValue(document[path], paths, value);
+    }
+    document[path] = value;
+  }
+
+  private pickFacts(document: object, paths: string[], fact: string): string[] {
+    const path = paths.shift();
+    if (paths.length > 0) {
+      return document[path] ? this.pickFacts(document[path], paths, fact) : [];
+    }
+    if (Array.isArray(document[path])) {
+      return document[path].reduce((prev, doc) => {
+        if (doc.fact === fact) {
+          prev.push(doc.value);
+        }
+        return prev;
+      }, []);
+    }
+    return [];
   }
 }
