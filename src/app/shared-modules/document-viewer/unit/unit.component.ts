@@ -40,7 +40,7 @@ export class UnitComponent implements OnInit {
   ngOnInit() {
     if (this.unit) {
       if (this.unit.linkings) {
-        this.unit.linkings.taxonId = this.toQname.transform(this.unit.linkings.taxon.qname);
+        this.unit.linkings.taxonId = this.toQname.transform(this.unit.linkings.taxon.id);
       }
       if (Array.isArray(this.unit.facts)) {
         this.unit.facts = this.unit.facts.reduce((cumulative, current) => {
