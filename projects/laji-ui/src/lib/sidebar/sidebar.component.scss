@@ -104,6 +104,7 @@ $sidebarMinWidth: 50px;
 // CONTENT
 
 .content {
+  overflow-x: hidden;
   flex-grow: 1;
   padding: 20px 40px;
   &.mobile {
