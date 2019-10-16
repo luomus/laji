@@ -123,7 +123,7 @@
   <div class="row message">
     <div class="col-sm-12">
       <label>{{ 'MAN.notes' | label }}</label>
-      <textarea #notes="ngModel"
+      <textarea #comment
                 name="notes"
                 class="form-control feedback-text input-sm"
                 [required]="(!expert || personRoleAnnotation!==annotationRole.expert) || ((annotation.addedTags.length > 0 && annotation.identification.taxon == '') || annotation.identification.taxon == '')"

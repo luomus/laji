@@ -1,6 +1,7 @@
 
 import {map,  mergeMap } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit,
+Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
@@ -34,6 +35,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   @Output() cancel = new EventEmitter<any>();
 
   @ViewChild('taxon', {static: false}) taxonElement: ElementRef;
+  @ViewChild('comment', {static: false}) commentElement: ElementRef;
   @ViewChild('annotationForm', {static: false}) formAnnotation: any;
   taxonAutocomplete: Observable<any>;
   error: any;
@@ -235,6 +237,48 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
 
   toggleInfo() {
     this.infoModal = !this.infoModal;
+  }
+
+
+  @HostListener('window:keydown', ['$event'])
+  annotationKeyDown(e: KeyboardEvent) {
+      if (e.keyCode === 84 && e.altKey) { // alt + t --> focus input taxon
+          this.taxonElement.nativeElement.focus();
+      }
+
+      if (e.keyCode === 67 && e.altKey) { // alt + c --> focus comment textarea
+          this.commentElement.nativeElement.focus();
+      }
+
+      if (e.keyCode === 49 && e.altKey) { // alt + 1 --> add convincing
+        if (this.showOption('MMAN.6') && this.annotationAddadableTags$.pipe(
+          map((tags: AnnotationTag[]) => tags.findIndex(tag => tag.id === 'MMAN.6')))
+        && this.personRoleAnnotation === Annotation.AnnotationRoleEnum.expert) {
+          this.annotation.addedTags.push('MMAN.6');
+        }
+      }
+
+      if (e.keyCode === 48 && e.altKey) { // alt + 0 --> add erroneus
+        if (this.showOption('MMAN.9') && this.annotationAddadableTags$.pipe(
+          map((tags: AnnotationTag[]) => tags.findIndex(tag => tag.id === 'MMAN.9')))
+        && this.personRoleAnnotation === Annotation.AnnotationRoleEnum.expert) {
+          this.annotation.addedTags.push('MMAN.9');
+        }
+      }
+
+      if (e.keyCode === 82 && e.altKey) {
+        this.annotation.addedTags = [];
+        this.annotation.removedTags = [];
+      }
+
+      if (e.keyCode === 83 && e.ctrlKey) {
+        if (this.formAnnotation.form.valid) {
+          e.preventDefault();
+          this.saveAnnotation();
+        }
+      }
+
+
   }
 
 }
