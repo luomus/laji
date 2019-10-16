@@ -42,6 +42,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() isAggregate = true;
   @Input() height = '100%';
   @Input() showSettingsMenu = false;
+  @Input() showDownloadMenu = false;
   @Input() showPageSize = true;
   @Input() showHeader = true;
   @Input() showFooter = true;
@@ -71,6 +72,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Output() rowSelect = new EventEmitter<any>();
   @Output() total = new EventEmitter<number>();
 
+  maxDownload = 2000;
   lang: string;
   cache: any = {};
   orderBy: string[] = [];
@@ -308,5 +310,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   private setLangParams(value: string) {
     return (value || '')
       .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
+  }
+
+  download($event: string) {
+
   }
 }
