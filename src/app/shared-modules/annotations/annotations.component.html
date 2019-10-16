@@ -26,25 +26,25 @@
           {{ 'annotation.addAnnotationExpert' | translate }}
       </span>
       <ng-template #expertAnnotation>
-        <span class="comment-title">Add basic annotation</span>
+        <span class="comment-title">{{ 'annotation.addBasicAnnotation' | translate }}</span>
       </ng-template>
       <span *lajiLoggedIn="true">
-        <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()"> Switch to basic</span>
+        <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()">{{ 'annotation.switchToBasic' | translate }}</span>
         <ng-template #basicMode>
-          <span class="switch-mode expert" (click)="changeModeForm()"> Switch to expert</span>
+          <span class="switch-mode expert" (click)="changeModeForm()">{{ 'annotation.switchToExpert' | translate }}</span>
         </ng-template>  
       </span>
   </ng-container>
   <ng-template #basicForm>
     <ng-container *ngIf="formVisible; else noForm">
         <span class="comment-title">
-            Add an annotation
+            {{ 'annotation.addAnAnnotation' | translate }}
         </span>
     </ng-container>
   </ng-template>
   <ng-template #noForm>
       <span class="comment-title">
-          Add an annotation
+        {{ 'annotation.addAnAnnotation' | translate }}
       </span>
       <span *lajiLoggedIn="true" class="comment-title">
           <button class="btn btn-xs btn-success" (click)="showDocument()"><i class="glyphicon glyphicon-plus"></i></button>

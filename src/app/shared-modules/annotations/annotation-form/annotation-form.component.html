@@ -31,7 +31,7 @@
   <div class="tags">
       <div class="row add-tags">
           <div class="col-lg-6 col-md-12 col-sm-12">
-            <label>Add Tags</label> 
+            <label>{{ 'annotation.addTags' | translate }}</label> 
             <select name="addTags" class="input-sm" (change)="onChangeSelectBox($event, 'added')">
                 <option value="" [selected]="isSelected"> Please choose one </option>
                 <ng-template ngFor let-item [ngForOf]="annotationAddadableTags$ | async">
@@ -54,9 +54,9 @@
       </div>
       <div class="row removed-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert'">
           <div class="col-lg-6 col-md-12 col-sm-12">
-              <label>Remove Tags</label>
+              <label>{{ 'annotation.removeTags' | translate }}</label>
               <select name="removeTags" class="input-sm" (change)="onChangeSelectBox($event, 'removed')">
-                <option value="" [selected]="isSelected"> Please choose one </option>
+                <option value="" [selected]="isSelected"> {{ 'annotation.chooseTag' | translate }} </option>
                   <ng-template ngFor let-item [ngForOf]="annotationRemovableTags$ | async | activeTags: annotations">
                         <option *ngIf="showOptionDeleted(item.id | toQName)" value="{{ item.id | toQName}}">
                             {{ item.id | toQName | label }}
@@ -79,7 +79,7 @@
   <div class="row taxon" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
     <div class="col-lg-5 col-md-12 col-sm-12" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
       <label>{{ 'taxonomy.taxonomy' | translate }}</label> 
-      <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon)" (click)="copyCurrentTaxon()">Copy current</span>
+      <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon)" (click)="copyCurrentTaxon()">{{ 'annotation.copyCurrentTag' | translate }}</span>
       <input #taxon
         [ngClass]="{loading: typeaheadLoading}"
         type="text"
@@ -105,12 +105,12 @@
     </div>
 
     <div class="col-lg-2 col-md-3 col-sm-3 text-center">
-      <label>Coll</label>
+      <label>{{ 'annotation.coll' | translate }}</label>
       <input type="checkbox" class="form-control input-sm">
     </div>
 
     <div class="col-lg-5 col-md-9 col-sm-12" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
-        <label>Taxon specifier </label>
+        <label>{{ 'annotation.taxonSpecifier' | translate }}</label>
         <input
         type="text"
         class="form-control input-sm"
@@ -132,7 +132,7 @@
   </div>
   <div class="actions">
     <!--<button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button>-->
-    <button type="submit" [disabled]="annotationForm.pristine || !annotationForm.form.valid || sending" class="btn btn-success btn-sm">Send annotation</button>
+    <button type="submit" [disabled]="annotationForm.pristine || !annotationForm.form.valid || sending" class="btn btn-success btn-sm">{{ 'annotation.sendAnnotation' | translate }}</button>
   </div>
 </form>
 <div [hidden]="!visible" *lajiLoggedIn="false" class="annotation-form">
