@@ -12,7 +12,11 @@
        [@sidebarOpen]="disableWidthAnim ? 'disabled' : (open ? 'open' : 'closed')"
        #sidebarRef>
     <div *ngIf="!mobile" class="dragbar" (mousedown)="onDragStart($event)"></div>
-    <div class="sidebar-content-wrapper" [@sidebarContentOpen]="open ? 'open' : 'closed'" #navWrapper >
+    <div class="sidebar-content-wrapper"
+         [@sidebarContentOpen]="open ? 'open' : 'closed'"
+         [ngClass]="{'static-width': staticWidth}"
+         [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}"
+         #navWrapper>
       <div class="close-btn" (click)="onSwitchOpen()">Close</div>
       <ng-content select="nav"></ng-content>
     </div>

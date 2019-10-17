@@ -60,7 +60,11 @@ $sidebarMinWidth: 50px;
 .sidebar-content-wrapper {
   min-width: max-content;
   padding: 10px 20px;
+  &.static-width {
+    min-width: unset;
+  }
 }
+
 
 .open-btn {
   position: absolute;

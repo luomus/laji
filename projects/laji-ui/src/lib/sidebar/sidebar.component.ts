@@ -52,6 +52,7 @@ const sidebarMinWidth = 50;
 })
 export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() position: 'left' | 'right' = 'left';
+  @Input() staticWidth;
 
   open = true;
   disableWidthAnim = false;
