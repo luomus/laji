@@ -77,7 +77,6 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
         ]},
       { header: 'Locality', fields: [
           'gathering.interpretations.country',
-          'gathering.interpretations.municipalityDisplayname',
           'gathering.conversions.wgs84',
           'gathering.team'
         ]},
@@ -91,7 +90,6 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       COLUMNS['unit.taxonVerbatim'],
       COLUMNS['gathering.team'],
       COLUMNS['gathering.interpretations.country'],
-      COLUMNS['gathering.interpretations.municipalityDisplayname'],
       COLUMNS['gathering.team.memberName'],
       COLUMNS['sample.sampleId'],
       COLUMNS['sample.type'],
