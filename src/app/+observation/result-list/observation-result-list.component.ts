@@ -3,7 +3,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
-import { ObservationResultListService } from './observation-result-list.service';
+import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 
 const DEFAULT_PAGE_SIZE = 100;
 
@@ -27,9 +27,9 @@ export class ObservationResultListComponent {
 
   constructor(
     private documentViewerFacade: DocumentViewerFacade,
-    private observationResultListService: ObservationResultListService
+    private tableColumnService: TableColumnService
   ) {
-    this.selectedFields = observationResultListService.defaultFields;
+    this.selectedFields = tableColumnService.defaultFields;
   }
 
   @Input()
@@ -67,7 +67,7 @@ export class ObservationResultListComponent {
   }
 
   resetSelectedFields() {
-    this.selectedFields = this.observationResultListService.defaultFields;
+    this.selectedFields = this.tableColumnService.defaultFields;
     this.saveSettings();
   }
 
