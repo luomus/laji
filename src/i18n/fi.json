@@ -993,7 +993,7 @@
   "result.sample.facts.preparationMaterials": "Preparation process materials",
   "result.sample.facts.elutionMedium": "Elution medium",
   "result.sample.facts.additionalIDs": "Additional ID",
-  "result.document.facts.legID": "",
+  "result.document.facts.legID": "Collector's ID",
   "result.scientificName": "Tieteellinen nimi",
   "result.settings.aggregate": "Tilaston asetukset",
   "result.settings.list": "Luettelon asetukset",
