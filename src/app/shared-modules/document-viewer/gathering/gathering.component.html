@@ -3,8 +3,8 @@
   <laji-gathering-rows [gathering]="gathering"></laji-gathering-rows>
   <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
   <ng-container *ngFor="let unit of gathering?.units">
-    <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlighted) || !showOnlyHighlighted">
-      <laji-unit [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit>
+    <ng-container *ngIf="(showOnlyHighlighted && highlightParents.indexOf(unit.unitId) !== -1) || !showOnlyHighlighted">
+      <laji-unit [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight" [highlightParents]="highlightParents" [showOnlyHighlighted]="showOnlyHighlighted"></laji-unit>
     </ng-container>
   </ng-container>
   <laji-row [showWithoutValue]="true" *ngIf="showOnlyHighlighted && unitCnt > 1">

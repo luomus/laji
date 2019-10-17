@@ -18,6 +18,7 @@ export class ObservationResultListComponent {
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
   @Input() showDownloadMenu = false;
+  @Input() resultBase: 'unit' | 'sample' = 'unit';
 
   @Output() settingsChange = new EventEmitter<ISettingResultList>();
 
@@ -48,7 +49,7 @@ export class ObservationResultListComponent {
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
       this.documentViewerFacade.showDocumentID({
         document: row.document.documentId,
-        highlight: row.unit.unitId,
+        highlight: this.resultBase === 'sample' ? row.sample.sampleId : row.unit.unitId,
         own: query && (!!query.observerPersonToken || !!query.editorPersonToken || !!query.editorOrObserverPersonToken)
       });
     }

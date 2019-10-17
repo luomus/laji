@@ -28,6 +28,7 @@ export class ObservationResultComponent {
     'pageSize',
     'page'
   ];
+  @Input() resultBase: 'unit'|'sample' = 'unit';
   @Input() basePath = '/observation';
   @Input() query: WarehouseQueryInterface = {};
   @Input() lgScreen = true;

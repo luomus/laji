@@ -1,6 +1,8 @@
 <hr>
 <div class="sample" [ngClass]="{'highlight': highlight === sample.sampleId}">
-  <laji-row [title]="'MF.sample' | label" [value]="sample.sampleId"></laji-row>
+  <laji-row [title]="'MF.sample' | label">
+    <a target="_blank" rel="noopener nofollow" href="{{ sample.sampleId }}">{{ sample.sampleId }}</a>
+  </laji-row>
   <laji-row [title]="'MF.preparationType' | label" [value]="facts['http://tun.fi/MF.preparationType'] | toQName | label | values:'; '"></laji-row>
   <laji-row [title]="'MF.material' | label" [value]="facts['http://tun.fi/MF.material'] | toQName | label | values:'; '"></laji-row>
   <ng-container *ngIf="showFacts">

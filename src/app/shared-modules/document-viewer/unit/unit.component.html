@@ -38,7 +38,7 @@
   </ng-container>
   <div class="samples">
     <ng-container *ngFor="let sample of unit?.samples">
-      <ng-container *ngIf="(sample.sampleId === highlight && showOnlyHighlighted) || !showOnlyHighlighted">
+      <ng-container *ngIf="(showOnlyHighlighted && sample.sampleId ) || !showOnlyHighlighted">
         <laji-sample [sample]="sample" [showFacts]="showFacts" [highlight]="highlight"></laji-sample>
       </ng-container>
     </ng-container>
