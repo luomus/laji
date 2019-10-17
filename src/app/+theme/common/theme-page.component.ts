@@ -55,11 +55,16 @@ import { UserService } from '../../shared/service/user.service';
     }
     .content {
         padding: 2em 2em;
-        padding-top: 1em;
+        padding-top: 1.5em;
     }
     .nested li a {
       padding-left: 55px;
     }
+
+    .content h1 {
+        padding-top: 10px;
+    }
+
     @media only screen and (min-width : 768px) {
         #wrapper {
             display: flex;
