@@ -46,6 +46,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
+          [open]="true"
           [(ngModel)]="query.sampleType"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
