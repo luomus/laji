@@ -105,7 +105,7 @@ export class ObservationListService {
     if (!this.data) {
       this.data = this.warehouseApi.warehouseQueryListGet(
         {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
-        [..._selected, 'unit.sampleId', 'unit.unitId', 'document.documentId'],
+        [..._selected, 'sample.sampleId', 'unit.unitId', 'document.documentId'],
         orderBy,
         pageSize,
         page
