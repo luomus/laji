@@ -1240,6 +1240,7 @@
   "viewer.fixedName": "Korjattu määritys",
   "viewer.gathering": "Keruutapahtumat",
   "viewer.hideFacts": "Piilota lisämuuttujat",
+  "viewer.facts.title": "Lisämuuttujat",
   "viewer.issue": "Ongelma",
   "viewer.loadDate": "Ladattu Lajitietokeskukseen",
   "viewer.notFound": "Havaintoerää ei ole vielä ladattu Lajitietokeskuksen tietovarastoon, ole hyvä ja odota hetki.",

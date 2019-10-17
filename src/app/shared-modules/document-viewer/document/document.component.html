@@ -117,7 +117,8 @@
   <div class="row">
     <div class="col-sm-7">
       <ng-container *ngFor="let gathering of document.gatherings; let i=index">
-        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
+        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt"
+                        [showOnlyHighlighted]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
       </ng-container>
     </div>
     <div class="col-sm-5">
