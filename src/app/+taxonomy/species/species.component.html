@@ -1,3 +1,35 @@
+<lu-sidebar [position]="'right'" [staticWidth]="300">
+  <main>
+    <div>
+      <h1>{{ 'species.search' | translate }}</h1>
+      <h2><small>{{ 'species.title.short' | translate }}</small></h2>
+      <p>{{ 'species.title.long' | translate }}</p>
+    </div>
+    <lu-tabs [selectedIndex]="selectedIndex" (select)="onSelect($event)">
+      <lu-tab [heading]="'species.list' | translate">
+        <laji-species-list [searchQuery]="searchQuery"
+                           [countStartText]="'species.list.count1' | translate"
+                           [countEndText]="'species.list.count2' | translate">
+        </laji-species-list>
+      </lu-tab>
+      <lu-tab [heading]="'species.images' | translate">
+        <laji-species-images [searchQuery]="searchQuery"
+                             [countStartText]="'species.images.count1' | translate"
+                             [countEndText]="'species.images.count2' | translate">
+        </laji-species-images>
+      </lu-tab>
+    </lu-tabs>
+  </main>
+  <nav>
+    <laji-species-form [searchQuery]="searchQuery"
+                       [showFilter]="showFilter"
+                       (showFilterChange)="showFilter = $event">
+    </laji-species-form>
+  </nav>
+</lu-sidebar>
+
+
+<!--
 <div style="background-color: #ECF0F1; padding: 20px;" #header>
   <h1 style="margin: 0">{{ 'species.search' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
   <div>{{ 'species.title.long' | translate }}</div>
@@ -48,3 +80,4 @@
   </div>
 </div>
 
+ -->

@@ -60,7 +60,7 @@
 }
 .lj-disabled .lj-title {
   pointer-events: none;
-  background-color: #eee
+  color: $neutral-5;
 }
 @media only screen and (max-width : 767px) {
   .lj-item {
