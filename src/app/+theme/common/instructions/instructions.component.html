@@ -8,7 +8,7 @@
         <laji-request *ngIf="data.collectionID && data.rights === Rights.NotAllowed && data.loggedIn"
                       [collectionId]="data.collectionID" [disableDescription]="data.disableRequestDescription">
         </laji-request>
-        <h3 *ngIf="data.loggedIn === false">
+        <h3 *ngIf="data.requireLogin !== false && data.loggedIn === false">
           {{ 'force.login' | translate }}
         </h3>
       </ng-container>

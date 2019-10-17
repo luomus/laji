@@ -1,0 +1,11 @@
+<hr>
+<div class="sample" [ngClass]="{'highlight': highlight === sample.sampleId}">
+  <laji-row [title]="'MF.sample' | label" [value]="sample.sampleId"></laji-row>
+  <laji-row [title]="'MF.preparationType' | label" [value]="facts['http://tun.fi/MF.preparationType'] | toQName | label | values:'; '"></laji-row>
+  <laji-row [title]="'MF.material' | label" [value]="facts['http://tun.fi/MF.material'] | toQName | label | values:'; '"></laji-row>
+  <ng-container *ngIf="showFacts">
+    <laji-row [title]="'MF.preparationMaterials' | label" [value]="facts['http://tun.fi/MF.preparationMaterials'] | toQName | label | values:'; '"></laji-row>
+    <laji-row [title]="'MF.collectionID' | label" [value]="facts['http://tun.fi/MF.collectionID'] | toQName | label | values:'; '"></laji-row>
+  </ng-container>
+  <laji-facts [show]="showFacts" [facts]="sample.facts | factNotIn:pickFacts"></laji-facts>
+</div>
