@@ -1,6 +1,6 @@
 <hr>
 <div class="sample" [ngClass]="{'highlight': highlight === sample.sampleId}">
-  <laji-row [title]="'MF.sample' | label">
+  <laji-row [title]="'result.sample.sampleId' | translate">
     <a target="_blank" rel="noopener nofollow" href="{{ sample.sampleId }}">{{ sample.sampleId }}</a>
   </laji-row>
   <laji-row [title]="'MF.preparationType' | label" [value]="facts['http://tun.fi/MF.preparationType'] | toQName | label | values:'; '"></laji-row>
