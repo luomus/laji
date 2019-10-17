@@ -36,8 +36,7 @@ import { GatheringComponent } from './annotations/gathering/gathering.component'
 import { GatheringRowsComponent } from './annotations/gathering-rows/gathering-rows.component';
 import { TaxonNameComponent } from './annotations/taxon-name/taxon-name.component';
 import { AnnotationItemComponent } from './annotations/annotation-item/annotation-item.component';
-
-
+import { FormSampleComponent } from './form-sample/form-sample.component';
 
 @NgModule({
   imports: [
@@ -79,7 +78,8 @@ import { AnnotationItemComponent } from './annotations/annotation-item/annotatio
     GatheringRowsComponent,
     GatheringComponent,
     TaxonNameComponent,
-    AnnotationItemComponent
+    AnnotationItemComponent,
+    FormSampleComponent
   ],
   exports: [
     ObservationViewComponent

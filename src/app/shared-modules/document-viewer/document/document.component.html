@@ -105,19 +105,26 @@
         </div>
       </div>
     </div>
-    <div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
-      <ul class="nav nav-tabs link">
-        <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
-          <a (click)="setActive(i)">
-           {{ i + 1 }}
-          </a>
-        </li>
-      </ul>
+  <div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
+    <ul class="nav nav-tabs link">
+      <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
+        <a (click)="setActive(i)">
+         {{ i + 1 }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-sm-7">
+      <ng-container *ngFor="let gathering of document.gatherings; let i=index">
+        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt"
+                        [showOnlyHighlighted]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
+      </ng-container>
     </div>
     <div class="row">
       <div class="col-sm-7">
         <ng-container *ngFor="let gathering of document.gatherings; let i=index">
-          <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
+          <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlighted]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
         </ng-container>
       </div>
       <div class="col-sm-5">
@@ -125,6 +132,7 @@
         <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
       </div>
     </div>
+  </div>  
 </ng-container>
   <ng-container *ngIf="hasDoc === false">
     <div class="page-header">

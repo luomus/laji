@@ -34,6 +34,7 @@ export interface VisibleSections {
 })
 export class ObservationViewComponent implements OnInit, OnDestroy {
 
+  @Input() formType: 'unit'|'sample' = 'unit';
   @Input() basePath = '/observation';
   @Input() visible: VisibleSections = {
     info: true,

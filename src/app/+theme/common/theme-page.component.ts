@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
+import { Global } from '../../../environments/global';
 
 @Component({
     selector: 'laji-theme-page',
@@ -30,7 +31,7 @@ import { UserService } from '../../shared/service/user.service';
             </ul>
             <laji-haseka-latest [forms]="[formID]"
                                 [tmpOnly]="true"
-                                *ngIf="userService.isLoggedIn$ | async">
+                                *ngIf="noLatestForForm !== formID && (userService.isLoggedIn$ | async)">
             </laji-haseka-latest>
             <ng-content select='nav'></ng-content>
         </div>
@@ -55,11 +56,16 @@ import { UserService } from '../../shared/service/user.service';
     }
     .content {
         padding: 2em 2em;
-        padding-top: 1em;
+        padding-top: 1.5em;
     }
     .nested li a {
       padding-left: 55px;
     }
+
+    .content h1 {
+        padding-top: 10px;
+    }
+
     @media only screen and (min-width : 768px) {
         #wrapper {
             display: flex;
@@ -75,6 +81,8 @@ export class ThemePageComponent {
         }[];
     @Input() showNav ? = true;
     @Input() formID: string;
+
+    noLatestForForm = Global.forms.default;
 
     constructor(private userService: UserService) { }
 }

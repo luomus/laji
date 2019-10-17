@@ -17,7 +17,7 @@ import { IdService } from '../../../shared/service/id.service';
 import { Util } from '../../../shared/service/util.service';
 import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
-import { ObservationResultListService } from '../../../+observation/result-list/observation-result-list.service';
+import { TableColumnService } from '../../datatable/service/table-column.service';
 import { ObservationTableColumn } from '../model/observation-table-column';
 
 
@@ -45,7 +45,7 @@ export class ObservationListService {
     private sourceService: SourceService,
     private collectionService: CollectionService,
     private triplestoreLabelService: TriplestoreLabelService,
-    private observationResultListService: ObservationResultListService
+    private tableColumnService: TableColumnService
   ) { }
 
   getAggregate(
@@ -171,7 +171,7 @@ export class ObservationListService {
     const facts: ObservationTableColumn[] = [];
 
     selected.forEach(col => {
-      const column = this.observationResultListService.getColumn(col);
+      const column = this.tableColumnService.getColumn(col);
       if (!column) {
         return;
       }
@@ -183,7 +183,7 @@ export class ObservationListService {
         // TODO: move opening label values here
       }
     });
-
+    /*
     if (selected.indexOf('document.sourceId') > -1) {
       allMappers.push(this.sourceService.getAllAsLookUp(lang).pipe(map(sources => ({'document.sourceId': sources}))));
     }
@@ -201,7 +201,7 @@ export class ObservationListService {
       map(mappers => mappers.reduce((cumulative, current) => {
         return {...cumulative, ...current};
       }, {})));
-
+    */
     return from(data.results || []).pipe(
       // take(1),
       map(document => this.convertCoordinates(document, selected)),

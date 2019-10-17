@@ -10,15 +10,28 @@
          [queryType]="'observation'"
          [showFilter]="vm.filterVisible"
          (showFilterChange)="filterVisible($event)">
-        <laji-observation-form
-          [query]="vm.query"
-          [invasiveStatuses]="invasiveStatuses"
-          [dateFormat]="dateFormat"
-          [advancedMode]="vm.advanced"
-          (advancedModeChange)="onAdvanceModeChange($event)"
-          (queryChange)="onQueryChange($event)"
-          (mapDraw)="draw($event)"
-        ></laji-observation-form>
+        <ng-container [ngSwitch]="formType">
+          <laji-form-sample
+            *ngSwitchCase="'sample'"
+            [query]="vm.query"
+            [invasiveStatuses]="invasiveStatuses"
+            [dateFormat]="dateFormat"
+            [advancedMode]="vm.advanced"
+            (advancedModeChange)="onAdvanceModeChange($event)"
+            (queryChange)="onQueryChange($event)"
+            (mapDraw)="draw($event)"
+          ></laji-form-sample>
+          <laji-observation-form
+            *ngSwitchDefault
+            [query]="vm.query"
+            [invasiveStatuses]="invasiveStatuses"
+            [dateFormat]="dateFormat"
+            [advancedMode]="vm.advanced"
+            (advancedModeChange)="onAdvanceModeChange($event)"
+            (queryChange)="onQueryChange($event)"
+            (mapDraw)="draw($event)"
+          ></laji-observation-form>
+        </ng-container>
       </laji-search-filters>
     </div>
     <div *ngIf="!showMobile && statusFilterMobile" class="close-filters-mobile"><div (click)="toggleMobile()"><label>{{ 'observation.active' | translate }}</label><i class="glyphicon glyphicon-arrow-left"></i></div></div>

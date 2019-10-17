@@ -63,6 +63,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'sampleType',
     'sampleQuality',
     'sampleStatus',
+    'sampleMaterial',
     'sampleCollectionId',
     'aggregateBy',
     'selected',

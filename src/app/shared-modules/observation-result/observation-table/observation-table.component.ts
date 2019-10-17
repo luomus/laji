@@ -22,8 +22,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 import {
   IColumnGroup,
-  ObservationResultListService
-} from '../../../+observation/result-list/observation-result-list.service';
+  TableColumnService
+} from '../../datatable/service/table-column.service';
 
 @Component({
   selector: 'laji-observation-table',
@@ -117,10 +117,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     private modalService: BsModalService,
     private logger: Logger,
     private translate: TranslateService,
-    private observationResultListService: ObservationResultListService
+    private tableColumnService: TableColumnService
   ) {
-    this.allColumns = observationResultListService.allColumns;
-    this.columnGroups = observationResultListService.columnGroups;
+    this.allColumns = tableColumnService.allColumns;
+    this.columnGroups = tableColumnService.columnGroups;
   }
 
   @Input() set selected(sel: string[]) {

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { routing } from './observation.routes';
 import { ObservationFacade } from './observation.facade';
 import { ObservationComponentModule } from './observation-component.module';
-import { ObservationResultListService } from './result-list/observation-result-list.service';
+import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
 
 
 @NgModule({
@@ -13,7 +13,7 @@ import { ObservationResultListService } from './result-list/observation-result-l
   declarations: [],
   providers: [
     ObservationFacade,
-    ObservationResultListService
+    TableColumnService
   ]
 })
 export class ObservationModule {

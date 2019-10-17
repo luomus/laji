@@ -68,6 +68,18 @@
     width: 100%;
     background: #c7c7c7;
     padding: 0 15px;
+    top: 50px;
+  }
+
+  .grc .close-filters-mobile {
+    position: absolute;
+    display: block;
+    height: 40px;
+    z-index: 1059;
+    width: 100%;
+    background: #c7c7c7;
+    padding: 0 15px;
+    top: 0px;
   }
 
   .close-filters-mobile div {

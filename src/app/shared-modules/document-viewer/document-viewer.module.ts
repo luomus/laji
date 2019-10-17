@@ -39,6 +39,7 @@ import { GatheringAnnotationComponent } from './gathering-annotation/gathering-a
 import { UnitAnnotationRowsComponent } from './unit-annotation-rows/unit-annotation-rows.component';
 import { UnitAnnotationListComponent } from './unit-annotation-list/unit-annotation-list.component';
 import { LicenseModule } from '../license/license.module';
+import { SampleComponent } from './sample/sample.component';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { LicenseModule } from '../license/license.module';
     GatheringAnnotationsRowsComponent,
     GatheringAnnotationComponent,
     UnitAnnotationRowsComponent,
-    UnitAnnotationListComponent
+    UnitAnnotationListComponent,
+    SampleComponent
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent]
 })

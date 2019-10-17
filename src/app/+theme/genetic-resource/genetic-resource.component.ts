@@ -6,13 +6,13 @@ import { SearchQueryService } from '../../+observation';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
-import { ObservationResultListService } from '../../+observation/result-list/observation-result-list.service';
+import { COLUMNS, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 
 @Component({
   selector: 'laji-genetic-resource',
   templateUrl: './genetic-resource.component.html',
   styleUrls: ['./genetic-resource.component.scss'],
-  providers: [ObservationFacade, WarehouseApi, ObservationResultListService],
+  providers: [ObservationFacade, WarehouseApi, TableColumnService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GeneticResourceComponent extends AbstractObservation implements OnInit, OnDestroy {
@@ -28,7 +28,7 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
     protected route: ActivatedRoute,
     protected searchQuery: SearchQueryService,
     protected warehouseApi: WarehouseApi,
-    private observationResultListService: ObservationResultListService
+    private tableColumnService: TableColumnService
   ) {
     super();
     this.warehouseApi.subPath = '/warehouse/query/sample/';
@@ -37,7 +37,7 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       sampleType: ['MF.preparationTypeDNAExtract', 'MF.preparationTypeTissue']
     };
     this.observationFacade.settingsKey = 'sampleList';
-    this.observationResultListService.defaultFields = [
+    this.tableColumnService.defaultFields = [
       'sample.sampleId',
       'unit.taxonVerbatim',
       'gathering.interpretations.countryDisplayname',
@@ -49,7 +49,7 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       'sample.facts.DNARatioOfAbsorbance260And280',
       'sample.facts.DNAConcentrationNgPerMicroliter',
     ];
-    this.observationResultListService.columnGroups = [
+    this.tableColumnService.columnGroups = [
       { header: 'Identification', fields: [
         'unit.taxonVerbatim',
         'unit.det'
@@ -77,6 +77,7 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
         ]},
       { header: 'Locality', fields: [
           'gathering.interpretations.country',
+          'gathering.interpretations.municipalityDisplayname',
           'gathering.conversions.wgs84',
           'gathering.team'
         ]},
@@ -86,36 +87,32 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
           'document.facts.legID',
         ]}
     ];
-    this.observationResultListService.allColumns = [
-      { name: 'unit.taxonVerbatim',
-        prop: 'unit.taxonVerbatim',
-        label: 'taxonVerbatim' },
-      { name: 'gathering.team', cellTemplate: 'toSemicolon' },
-      { name: 'gathering.interpretations.country', cellTemplate: 'label', label: 'result.gathering.country' },
-      { name: 'gathering.team.memberName',
-        label: 'observation.form.team',
-        aggregateBy: 'gathering.team.memberId,gathering.team.memberName'
-      },
-      { name: 'sample.sampleId', width: 300, sortable: false },
-      { name: 'sample.type', cellTemplate: 'label', sortable: false },
-      { name: 'sample.material', cellTemplate: 'label', sortable: false },
-      { name: 'sample.quality', cellTemplate: 'label', sortable: false },
-      { name: 'sample.status', cellTemplate: 'label', sortable: false },
-      { name: 'gathering.displayDateTime' },
-      { name: 'unit.lifeStage', cellTemplate: 'warehouseLabel', label: 'observation.form.lifeStage' },
-      { name: 'unit.sex', cellTemplate: 'warehouseLabel', label: 'observation.form.sex' },
-      { name: 'document.collectionId', prop: 'document.collection', width: 300, sortable: false },
-      { name: 'sample.notes', sortable: false, label: 'result.document.notes' },
-      { name: 'unit.det'},
-      { name: 'gathering.conversions.wgs84', prop: 'gathering.conversions.wgs84.verbatim', sortable: false },
-      { name: 'document.facts.legID', sortable: false, fact: 'MY.legID'},
-      { name: 'sample.facts.preparationProcess', cellTemplate: 'label', sortable: false, fact: 'MF.preparationProcess'},
-      { name: 'sample.facts.elutionMedium', cellTemplate: 'label', sortable: false, fact: 'MF.elutionMedium'},
-      { name: 'sample.facts.additionalIDs', sortable: false, fact: 'MF.additionalIDs'},
-      { name: 'sample.facts.qualityCheckMethod', cellTemplate: 'label', sortable: false, fact: 'MF.qualityCheckMethod'},
-      { name: 'sample.facts.DNAVolumeMicroliters', sortable: false, fact: 'MY.DNAVolumeMicroliters'},
-      { name: 'sample.facts.DNARatioOfAbsorbance260And280', sortable: false, fact: 'MY.DNARatioOfAbsorbance260And280'},
-      { name: 'sample.facts.DNAConcentrationNgPerMicroliter', sortable: false, fact: 'MY.DNAConcentrationNgPerMicroliter'},
+    this.tableColumnService.allColumns = [
+      COLUMNS['unit.taxonVerbatim'],
+      COLUMNS['gathering.team'],
+      COLUMNS['gathering.interpretations.country'],
+      COLUMNS['gathering.interpretations.municipalityDisplayname'],
+      COLUMNS['gathering.team.memberName'],
+      COLUMNS['sample.sampleId'],
+      COLUMNS['sample.type'],
+      COLUMNS['sample.material'],
+      COLUMNS['sample.quality'],
+      COLUMNS['sample.status'],
+      COLUMNS['gathering.displayDateTime'],
+      COLUMNS['unit.lifeStage'],
+      COLUMNS['unit.sex'],
+      COLUMNS['document.collectionId'],
+      COLUMNS['sample.notes'],
+      COLUMNS['unit.det'],
+      COLUMNS['gathering.conversions.wgs84'],
+      COLUMNS['document.facts.legID'],
+      COLUMNS['sample.facts.preparationProcess'],
+      COLUMNS['sample.facts.elutionMedium'],
+      COLUMNS['sample.facts.additionalIDs'],
+      COLUMNS['sample.facts.qualityCheckMethod'],
+      COLUMNS['sample.facts.DNAVolumeMicroliters'],
+      COLUMNS['sample.facts.DNARatioOfAbsorbance260And280'],
+      COLUMNS['sample.facts.DNAConcentrationNgPerMicroliter'],
     ];
   }
 
