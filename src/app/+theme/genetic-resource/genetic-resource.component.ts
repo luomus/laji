@@ -101,7 +101,6 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       COLUMNS['gathering.displayDateTime'],
       COLUMNS['unit.lifeStage'],
       COLUMNS['unit.sex'],
-      COLUMNS['document.collectionId'],
       COLUMNS['sample.notes'],
       COLUMNS['unit.det'],
       COLUMNS['gathering.conversions.wgs84'],

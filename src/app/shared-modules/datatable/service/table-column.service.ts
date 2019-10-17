@@ -63,6 +63,7 @@ export interface IColumns {
   'sample.quality': ObservationTableColumn;
   'sample.status': ObservationTableColumn;
   'sample.notes': ObservationTableColumn;
+  'sample.collectionId': ObservationTableColumn;
   'document.facts.legID': ObservationTableColumn;
   'sample.facts.preparationMaterials': ObservationTableColumn;
   'sample.facts.elutionMedium': ObservationTableColumn;
@@ -300,6 +301,7 @@ export const COLUMNS: IColumns = {
   'sample.quality': {name: 'sample.quality', cellTemplate: 'label', sortable: false},
   'sample.status': {name: 'sample.status', cellTemplate: 'label', sortable: false},
   'sample.notes': {name: 'sample.notes', sortable: false, label: 'result.document.notes'},
+  'sample.collectionId': {name: 'sample.collectionId', sortable: false, label: 'result.document.collectionId'},
   'document.facts.legID': {name: 'document.facts.legID', sortable: false, fact: 'MY.legID'},
   'sample.facts.preparationMaterials': {
     name: 'sample.facts.preparationMaterials',
