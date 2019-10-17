@@ -15,7 +15,8 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 export interface VisibleSections {
   finnish?: boolean;
-  counts?: boolean;
+  countTaxa?: boolean;
+  countHits?: boolean;
   map?: boolean;
   list?: boolean;
   images?: boolean;
@@ -39,7 +40,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @Input() visible: VisibleSections = {
     info: true,
     finnish: true,
-    counts: true,
+    countTaxa: true,
+    countHits: true,
     map: true,
     list: true,
     images: true,

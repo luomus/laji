@@ -14,7 +14,8 @@ import { VisibleSections } from '..';
 export class ObservationResultComponent {
   @Input() visible: VisibleSections = {
     finnish: true,
-    counts: true,
+    countTaxa: true,
+    countHits: true,
     map: true,
     list: true,
     images: true,
