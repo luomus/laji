@@ -64,7 +64,7 @@ export interface IColumns {
   'sample.status': ObservationTableColumn;
   'sample.notes': ObservationTableColumn;
   'document.facts.legID': ObservationTableColumn;
-  'sample.facts.preparationProcess': ObservationTableColumn;
+  'sample.facts.preparationMaterials': ObservationTableColumn;
   'sample.facts.elutionMedium': ObservationTableColumn;
   'sample.facts.additionalIDs': ObservationTableColumn;
   'sample.facts.qualityCheckMethod': ObservationTableColumn;
@@ -301,11 +301,11 @@ export const COLUMNS: IColumns = {
   'sample.status': {name: 'sample.status', cellTemplate: 'label', sortable: false},
   'sample.notes': {name: 'sample.notes', sortable: false, label: 'result.document.notes'},
   'document.facts.legID': {name: 'document.facts.legID', sortable: false, fact: 'MY.legID'},
-  'sample.facts.preparationProcess': {
-    name: 'sample.facts.preparationProcess',
+  'sample.facts.preparationMaterials': {
+    name: 'sample.facts.preparationMaterials',
     cellTemplate: 'label',
     sortable: false,
-    fact: 'MF.preparationProcess'
+    fact: 'MF.preparationMaterials'
   },
   'sample.facts.elutionMedium': {
     name: 'sample.facts.elutionMedium',
