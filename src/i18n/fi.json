@@ -823,6 +823,7 @@
   "observation.form.redListStatusId": "Uhanalaisuus",
   "observation.form.reliabilityOfCollection": "Aineiston laatuluokitus",
   "observation.form.reliable": "Varmistetut",
+  "observation.form.sampleDataset": "Taxonomic datasets",
   "observation.form.search": "Hae",
   "observation.form.season": "Havainnon vuodenaika",
   "observation.form.secureLevel": "Karkeistustaso",
