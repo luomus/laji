@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';
 import { PublicationService } from '../../../shared/service/publication.service';
 import { Publication } from '../../../shared/model/Publication';
 import { UserService } from '../../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
+import { IdService } from '../../../shared/service/id.service';
+import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,8 @@ export class DatatableUtil {
     private labelService: TriplestoreLabelService,
     private publicationService: PublicationService,
     private userService: UserService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private warehouseValueMappingService: WarehouseValueMappingService
   ) { }
 
   getVisibleValue(value, row, template): Observable<string> {
@@ -29,6 +32,9 @@ export class DatatableUtil {
 
     let observable;
     switch (template) {
+      case 'warehouseLabel':
+        observable = this.getWarehouseLabels(value);
+        break;
       case 'label':
       case 'labelArray':
         observable = this.getLabels(value);
@@ -86,9 +92,17 @@ export class DatatableUtil {
     return observable || ObservableOf(value);
   }
 
+  private getWarehouseLabels(values): Observable<string> {
+    return this.getArray(values, (value) => {
+      return this.warehouseValueMappingService.getOriginalKey(value).pipe(
+        concatMap(key => this.labelService.get(IdService.getId(key), this.translate.currentLang))
+      );
+    }, '; ');
+  }
+
   private getLabels(values): Observable<string> {
     return this.getArray(values, (value) => {
-      return this.labelService.get(value, this.translate.currentLang);
+      return this.labelService.get(IdService.getId(value), this.translate.currentLang);
     }, '; ');
   }
 

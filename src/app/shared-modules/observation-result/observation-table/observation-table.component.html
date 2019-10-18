@@ -8,7 +8,7 @@
       <laji-download
         *ngIf="maxDownload >= result.total else tooMany"
         linkClass="link btn btn-default btn-sm pull-right"
-        [downloadLoading]="false"
+        [downloadLoading]="downloadLoading"
         (download)="download($event)">
       <span>
         {{ 'haseka.submissions.download' | translate }}

@@ -85,7 +85,6 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
         ]},
       { header: 'observation.filters.other', fields: [
           'sample.notes',
-          'document.collectionId',
           'document.facts.legID',
         ]}
     ];

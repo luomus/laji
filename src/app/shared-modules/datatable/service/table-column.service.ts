@@ -219,11 +219,11 @@ export const COLUMNS: IColumns = {
     cellTemplate: 'warehouseLabel',
     label: 'observation.filterBy.image'
   },
-  'document.collectionId': {name: 'document.collectionId', prop: 'document.collection', width: 300, sortable: false},
+  'document.collectionId': {name: 'document.collectionId', transform: 'label', width: 300, sortable: false},
   'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.document.notes'},
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
-  'document.sourceId': {name: 'document.sourceId', prop: 'document.source', sortable: false},
+  'document.sourceId': {name: 'document.sourceId', transform: 'label', sortable: false},
   'document.quality.reliabilityOfCollection': {name: 'document.quality.reliabilityOfCollection'},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
@@ -292,33 +292,33 @@ export const COLUMNS: IColumns = {
   },
   'gathering.interpretations.country': {
     name: 'gathering.interpretations.country',
-    cellTemplate: 'label',
+    transform: 'label',
     label: 'result.gathering.country'
   },
   'sample.sampleId': {name: 'sample.sampleId', width: 300, sortable: false},
-  'sample.type': {name: 'sample.type', cellTemplate: 'label', sortable: false},
-  'sample.material': {name: 'sample.material', cellTemplate: 'label', sortable: false},
-  'sample.quality': {name: 'sample.quality', cellTemplate: 'label', sortable: false},
-  'sample.status': {name: 'sample.status', cellTemplate: 'label', sortable: false},
+  'sample.type': {name: 'sample.type', transform: 'label', sortable: false},
+  'sample.material': {name: 'sample.material', transform: 'label', sortable: false},
+  'sample.quality': {name: 'sample.quality', transform: 'label', sortable: false},
+  'sample.status': {name: 'sample.status', transform: 'label', sortable: false},
   'sample.notes': {name: 'sample.notes', sortable: false, label: 'result.document.notes'},
-  'sample.collectionId': {name: 'sample.collectionId', sortable: false, label: 'result.document.collectionId'},
+  'sample.collectionId': {name: 'sample.collectionId', transform: 'label', sortable: false, label: 'result.document.collectionId'},
   'document.facts.legID': {name: 'document.facts.legID', sortable: false, fact: 'MY.legID'},
   'sample.facts.preparationMaterials': {
     name: 'sample.facts.preparationMaterials',
-    cellTemplate: 'label',
+    transform: 'label',
     sortable: false,
     fact: 'MF.preparationMaterials'
   },
   'sample.facts.elutionMedium': {
     name: 'sample.facts.elutionMedium',
-    cellTemplate: 'label',
+    transform: 'label',
     sortable: false,
     fact: 'MF.elutionMedium'
   },
   'sample.facts.additionalIDs': {name: 'sample.facts.additionalIDs', sortable: false, fact: 'MF.additionalIDs'},
   'sample.facts.qualityCheckMethod': {
     name: 'sample.facts.qualityCheckMethod',
-    cellTemplate: 'label',
+    transform: 'label',
     sortable: false,
     fact: 'MF.qualityCheckMethod'
   },

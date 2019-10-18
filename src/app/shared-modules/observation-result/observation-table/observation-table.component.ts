@@ -15,7 +15,7 @@ import { ObservationListService } from '../service/observation-list.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { BsModalService, ModalDirective } from 'ngx-bootstrap';
-import { Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,6 +24,10 @@ import {
   IColumnGroup,
   TableColumnService
 } from '../../datatable/service/table-column.service';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { DatatableColumn } from '../../datatable/model/datatable-column';
+import { ExportService } from '../../../shared/service/export.service';
 
 @Component({
   selector: 'laji-observation-table',
@@ -73,6 +77,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Output() total = new EventEmitter<number>();
 
   maxDownload = 2000;
+  downloadLoading = false;
   lang: string;
   cache: any = {};
   orderBy: string[] = [];
@@ -117,7 +122,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     private modalService: BsModalService,
     private logger: Logger,
     private translate: TranslateService,
-    private tableColumnService: TableColumnService
+    private tableColumnService: TableColumnService,
+    private exportService: ExportService
   ) {
     this.allColumns = tableColumnService.allColumns;
     this.columnGroups = tableColumnService.columnGroups;
@@ -312,7 +318,35 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
   }
 
-  download($event: string) {
+  download(type: string) {
+    this.downloadLoading = true;
+    this.getAllObservations().pipe(
+      switchMap(data => this.exportService.getAoa<any>(this.columns, data)),
+      map(aoa => this.exportService.getBufferFromAoa(aoa, type)),
+    ).subscribe(buffer => {
+      this.exportService.exportArrayBuffer(buffer, this.translate.instant('result.allObservation'), type);
+      this.downloadLoading = false;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
 
+  private getAllObservations(data: any[] = [], page = 1, pageSize = 1000): Observable<any[]> {
+    return this.resultService.getList(
+      this.query,
+      this.getSelectFields(this.columnSelector.columns, this.query),
+      page,
+      pageSize,
+      [...this.orderBy, this.defaultOrder],
+      this.lang
+    ).pipe(
+      switchMap(result => {
+        data.push(...result.results);
+        if (result.lastPage > result.currentPage) {
+          return this.getAllObservations(data, result.currentPage + 1);
+        } else {
+          return of(data);
+        }
+      })
+    );
   }
 }
