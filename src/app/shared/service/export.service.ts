@@ -73,7 +73,7 @@ export class ExportService {
     for (let i = 0; i < data.length; i++) {
       aoa.push([]);
       for (let j = 0; j < cols.length; j++) {
-        const value = Util.parseJSONPath(data[i], cols[j].name);
+        const value = this.getValue(data[i], cols[j]);
         const key = i + (firstRow ? 2 : 1);
 
         const template = cols[j].cellTemplate;
@@ -92,5 +92,13 @@ export class ExportService {
     return observables.length > 0 ? ObservableForkJoin(observables).pipe(
       map(() => aoa)
     ) : ObservableOf(aoa);
+  }
+
+  private getValue(obj: any, col: DatatableColumn) {
+    let value = Util.parseJSONPath(obj, col.name);
+    if (typeof value === 'undefined') {
+      value = Util.parseJSONPath(obj, '' + col.prop);
+    }
+    return value;
   }
 }

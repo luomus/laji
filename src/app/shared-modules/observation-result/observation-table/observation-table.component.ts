@@ -320,8 +320,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   download(type: string) {
     this.downloadLoading = true;
+    const columns = this.tableColumnService.getColumns(this._originalSelected);
     this.getAllObservations().pipe(
-      switchMap(data => this.exportService.getAoa<any>(this.columns, data)),
+      switchMap(data => this.exportService.getAoa<any>(columns, data)),
       map(aoa => this.exportService.getBufferFromAoa(aoa, type)),
     ).subscribe(buffer => {
       this.exportService.exportArrayBuffer(buffer, 'laji-data', type);

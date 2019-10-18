@@ -429,7 +429,6 @@ export class TableColumnService {
 
   private _allColumns: ObservationTableColumn[] = [
     COLUMNS['unit.taxon'],
-    COLUMNS['unit.taxon'],
     COLUMNS['unit.taxonVerbatim'],
     COLUMNS['unit.linkings.taxon.vernacularName'],
     COLUMNS['unit.linkings.taxon.scientificName'],
@@ -508,5 +507,9 @@ export class TableColumnService {
 
   getColumn(name: string): ObservationTableColumn {
     return this._allColumns.find(col => col.name === name);
+  }
+
+  getColumns(name: string[]): ObservationTableColumn[] {
+    return name.map(n => this.getColumn(n));
   }
 }

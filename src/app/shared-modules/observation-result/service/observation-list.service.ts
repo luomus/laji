@@ -4,35 +4,25 @@ import {
   delay,
   map,
   retryWhen,
-  share,
   shareReplay,
   switchMap,
   take,
-  tap,
   toArray
 } from 'rxjs/operators';
 import {
-  forkJoin,
-  forkJoin as ObservableForkJoin,
   from,
   Observable,
-  Observer,
-  of as ObservableOf,
   throwError as observableThrowError
 } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { PagedResult } from '../../../shared/model/PagedResult';
-import { SourceService } from '../../../shared/service/source.service';
-import { CollectionService } from '../../../shared/service/collection.service';
 import { IdService } from '../../../shared/service/id.service';
 import { Util } from '../../../shared/service/util.service';
 import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
-import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { TableColumnService } from '../../datatable/service/table-column.service';
 import { ObservationTableColumn } from '../model/observation-table-column';
-import { TranslateService } from '@ngx-translate/core';
 import { DatatableUtil } from '../../datatable/service/datatable-util.service';
 
 interface IInternalObservationTableColumn extends ObservationTableColumn {

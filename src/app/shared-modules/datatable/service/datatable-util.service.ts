@@ -80,6 +80,9 @@ export class DatatableUtil {
       case 'user':
         observable = this.getUsers(value);
         break;
+      case 'taxon':
+        observable = this.getTaxon(value);
+        break;
       case 'taxonName':
         observable = ObservableOf(
           (row.scientificName || '') + (row.scientificName && row.vernacularName ? ' – ' : '') + (row.vernacularName || '')
@@ -139,5 +142,17 @@ export class DatatableUtil {
     return ObservableForkJoin(observables).pipe(
       map((labels: string[]) => labels.join(separator))
     );
+  }
+
+  private getTaxon(value: any): Observable<string> {
+    if (value.linkings && value.linkings.taxon && value.linkings.taxon.id) {
+      return ObservableOf(MultiLangService.getValue(value.linkings.taxon.vernacularName, this.translate.currentLang, '%value% (%lang%)') +
+        (value.linkings.taxon.scientificName && value.linkings.taxon.vernacularName  ? ' — ' + value.linkings.taxon.scientificName : ''));
+    } else if (value.taxonVerbatim) {
+      return ObservableOf(value.taxonVerbatim);
+    } else if (value.reportedInformalTaxonGroup) {
+      return this.getLabels(value.reportedInformalTaxonGroup);
+    }
+    return ObservableOf('');
   }
 }
