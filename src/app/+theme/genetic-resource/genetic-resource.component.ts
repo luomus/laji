@@ -39,7 +39,6 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       sampleCollectionId: ['HR.77', 'HR.2831'],
       sampleType: ['MF.preparationTypeDNAExtract', 'MF.preparationTypeTissue']
     };
-    this.observationFacade.settingsKey = 'sampleList';
     this.tableColumnService.defaultFields = [
       'sample.sampleId',
       'unit.taxonVerbatim',
