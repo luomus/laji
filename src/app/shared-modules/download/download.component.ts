@@ -41,9 +41,9 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
           </div>
           <div class="modal-footer">
             <div class="row">
-              <div class="col-xs-push-10 col-xs-2 col-sm-push-8 col-sm-4">
+              <div class="col-sm-12">
                 <laji-spinner [spinning]="downloadLoading" [overlay]="true">
-                  <button type="button" class="btn btn-default" [disabled]="downloadLoading" (click)="onDownload()">
+                  <button type="button" class="btn btn-default pull-right" [disabled]="downloadLoading" (click)="onDownload()">
                     <span>{{ "haseka.submissions.download" | translate }}</span>
                   </button>
                 </laji-spinner>
