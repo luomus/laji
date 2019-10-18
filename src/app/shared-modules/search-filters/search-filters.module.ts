@@ -46,7 +46,8 @@ import { HabitatSelectComponent } from './habitat-select/habitat-select.componen
     SelectComponent,
     CheckboxComponent,
     AdminStatusInfoPipe,
-    HabitatSelectComponent
+    HabitatSelectComponent,
+    ObservationActiveComponent
   ]
 })
 export class SearchFiltersModule { }

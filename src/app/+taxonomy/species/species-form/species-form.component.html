@@ -1,3 +1,5 @@
+<laji-observation-active [(query)]="searchQuery.query" (queryChange)="onQueryChange()" [queryType]="searchQuery.queryType"></laji-observation-active>
+
 <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>
 <laji-observation-group-select
   [(ngModel)]="searchQuery.query.informalGroupFilters"
