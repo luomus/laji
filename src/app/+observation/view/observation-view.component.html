@@ -56,7 +56,7 @@
           </alert>
         </ng-container>
       </ng-container>
-      <div #tabs *ngIf="settingsList$ | async as settings">
+      <div #tabs>
         <laji-observation-result
           [resultBase]="formType"
           [visible]="visible"
@@ -71,7 +71,7 @@
           [active]="activeTab"
           [query]="vm.query"
           (queryChange)="onQueryChange($event)"
-          [listSettings]="settings"
+          [listSettings]="settingsList$ | async"
           (listSettingsChange)="onListSettingsChange($event)"
         ></laji-observation-result>
       </div>
