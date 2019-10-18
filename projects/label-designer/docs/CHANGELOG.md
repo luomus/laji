@@ -1,8 +1,18 @@
-<a name="3.1.7"></a>
-# 3.1.7 (2019-10-18)
+<a name="3.1.8"></a>
+# 3.1.8 (2019-10-18)
+
+### Features
+* **core:** added default font to presets.
+* **editor:** keep label value when using text type field.
 
 ### Bug fixes
+* **editor:** fixed some of the fonts not being rendered correctly on the pdf
 * **tools:** schema service now recognises lists with enum
+* **tools:** fix schema service only picking first object from an array of objects
+
+<a name="3.1.7"></a>
+# 3.1.7 (2019-10-09)
+
 * **tools:** fix schema service only picking first object from an array of objects
 
 <a name="3.1.6"></a>
