@@ -1,8 +1,9 @@
 <a name="3.1.7"></a>
-# 3.1.6 (2019-10-09)
+# 3.1.7 (2019-10-18)
 
 ### Bug fixes
-* **editor:** schema service now recognises lists with enum
+* **tools:** schema service now recognises lists with enum
+* **tools:** fix schema service only picking first object from an array of objects
 
 <a name="3.1.6"></a>
 # 3.1.6 (2019-10-08)
