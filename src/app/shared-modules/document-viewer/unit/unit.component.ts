@@ -19,6 +19,7 @@ export class UnitComponent implements OnInit {
   @Input() documentID: string;
   @Input() unit: any;
   @Input() highlight: string;
+  @Input() highlightParents: string[] = [];
   @Input() identifying: boolean;
   @Input() openAnnotation: boolean;
   @Input() showFacts = false;

@@ -1,4 +1,10 @@
-<ul class="nav nav-pills" *ngIf="visible.finnish || visible.counts">
+<strong class="counts" style="padding: 0" *ngIf="!(visible.countTaxa && visible.countHits) && visible.countHits">
+  <laji-observation-count
+    [loading]="loadingUnits"
+    [value]="unitCount"></laji-observation-count>
+  {{ 'observation.results.hits' | translate }}
+</strong>
+<ul class="nav nav-pills" *ngIf="visible.finnish || (visible.countTaxa && visible.countHits)">
   <li *ngIf="visible.finnish" role="presentation" [ngClass]="{active: active !== 'finnish'}">
     <a [routerLink]="[basePath + '', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
       <strong>{{ 'search.result.all' | translate }}</strong>
@@ -9,13 +15,15 @@
       <strong>{{ 'search.result.finnish' | translate }}</strong>
     </a>
   </li>
-  <li class="counts" *ngIf="visible.counts">
+  <li class="counts" *ngIf="visible.countTaxa || visible.countHits">
     <strong *ngIf="active !== 'finnish'">
       <laji-observation-count
+        *ngIf="visible.countHits"
         [loading]="loadingUnits"
         [value]="unitCount"></laji-observation-count>
       {{ 'observation.results.observation' | translate }}
       <laji-observation-count
+        *ngIf="visible.countTaxa"
         [loading]="loadingTaxa"
         [value]="speciesCount">
       </laji-observation-count>
@@ -23,10 +31,12 @@
     </strong>
     <strong *ngIf="active === 'finnish'">
       <laji-observation-count
+        *ngIf="visible.countHits"
         [overrideInQuery]="{countryId: 'ML.206'}"
         [query]="query"></laji-observation-count>
       {{ 'observation.results.observation' | translate }}
       <laji-observation-count
+        *ngIf="visible.countTaxa"
         [overrideInQuery]="{countryId: 'ML.206', includeNonValidTaxa: false}"
         [query]="query"
         [field]="'unit.linkings.taxon.speciesId'">
@@ -117,6 +127,7 @@
   </div>
   <div [hidden]="active !== 'list'" *ngIf="activated['list']">
     <laji-observation-result-list
+      [resultBase]="resultBase"
       [showDownloadMenu]="true"
       [settings]="listSettings"
       (settingsChange)="listSettingsChange.emit($event)"

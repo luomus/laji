@@ -7,12 +7,13 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
 import { COLUMNS, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
+import { ObservationListService } from '../../shared-modules/observation-result/service/observation-list.service';
 
 @Component({
   selector: 'laji-genetic-resource',
   templateUrl: './genetic-resource.component.html',
   styleUrls: ['./genetic-resource.component.scss'],
-  providers: [ObservationFacade, WarehouseApi, TableColumnService],
+  providers: [ObservationFacade, WarehouseApi, TableColumnService, ObservationListService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GeneticResourceComponent extends AbstractObservation implements OnInit, OnDestroy {
@@ -28,9 +29,11 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
     protected route: ActivatedRoute,
     protected searchQuery: SearchQueryService,
     protected warehouseApi: WarehouseApi,
-    private tableColumnService: TableColumnService
+    private tableColumnService: TableColumnService,
+    private observationListService: ObservationListService
   ) {
     super();
+    this.observationListService.idFields = ['sample.sampleId', 'unit.unitId', 'document.documentId'];
     this.warehouseApi.subPath = '/warehouse/query/sample/';
     this.observationFacade.emptyQuery = {
       sampleCollectionId: ['HR.77', 'HR.2831'],
@@ -69,7 +72,7 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
           'sample.facts.DNAVolumeMicroliters',
           'sample.facts.DNARatioOfAbsorbance260And280',
           'sample.facts.DNAConcentrationNgPerMicroliter',
-          'sample.facts.preparationProcess',
+          'sample.facts.preparationMaterials',
           'sample.facts.elutionMedium',
           'sample.status',
           'sample.facts.additionalIDs',
@@ -77,7 +80,6 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
         ]},
       { header: 'Locality', fields: [
           'gathering.interpretations.country',
-          'gathering.interpretations.municipalityDisplayname',
           'gathering.conversions.wgs84',
           'gathering.team'
         ]},
@@ -91,7 +93,6 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       COLUMNS['unit.taxonVerbatim'],
       COLUMNS['gathering.team'],
       COLUMNS['gathering.interpretations.country'],
-      COLUMNS['gathering.interpretations.municipalityDisplayname'],
       COLUMNS['gathering.team.memberName'],
       COLUMNS['sample.sampleId'],
       COLUMNS['sample.type'],
@@ -101,12 +102,11 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       COLUMNS['gathering.displayDateTime'],
       COLUMNS['unit.lifeStage'],
       COLUMNS['unit.sex'],
-      COLUMNS['document.collectionId'],
       COLUMNS['sample.notes'],
       COLUMNS['unit.det'],
       COLUMNS['gathering.conversions.wgs84'],
       COLUMNS['document.facts.legID'],
-      COLUMNS['sample.facts.preparationProcess'],
+      COLUMNS['sample.facts.preparationMaterials'],
       COLUMNS['sample.facts.elutionMedium'],
       COLUMNS['sample.facts.additionalIDs'],
       COLUMNS['sample.facts.qualityCheckMethod'],

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { map, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-viewer',
@@ -18,10 +19,16 @@ export class ViewerComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.subQuery = this.route.queryParams.subscribe(params => {
-      const fragment = this.route.snapshot.fragment;
-      this.uri = params['uri'] || '';
-      this.highlight = fragment ? this.uri + '#' + fragment : (params['highlight'] || '').replace('%23', '#');
+    this.subQuery = this.route.queryParams.pipe(
+      mergeMap(params => this.route.fragment.pipe(
+        map(fragment => ({
+          ...params,
+          highlight: fragment ? (params['uri'] || '') + '#' + fragment : (params['highlight'] || '').replace('%23', '#')
+        }))
+      ))
+    ).subscribe(params => {
+      this.uri = params['uri'];
+      this.highlight = params['highlight'];
       this.own = params['own'] === 'true';
       this.openAnnotation = params['openAnnotation'] === 'true';
     });

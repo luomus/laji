@@ -78,8 +78,8 @@ const routes: Routes = [
       },
       navLinksOrder: ['instructions', 'search'],
       instructions: {
-        fi: '3284',
-        sv: '3288',
+        fi: '3286', // '3284',
+        sv: '3286', // '3288',
         en: '3286'
       },
     }

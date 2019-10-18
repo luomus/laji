@@ -13,6 +13,7 @@ export class GatheringComponent {
   @Input() documentID: string;
   @Input() gathering: any;
   @Input() highlight: string;
+  @Input() highlightParents: string[] = [];
   @Input() visible = true;
   @Input() showFacts = false;
   @Input() unitCnt: number;

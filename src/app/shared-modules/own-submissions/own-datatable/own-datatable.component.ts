@@ -402,6 +402,11 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.selected = event.selected;
   }
 
+  cancelLabels() {
+    this.selectionType = undefined;
+    this.printState = 'none';
+  }
+
   doLabels() {
     if (this.printState === 'none') {
       this.selectionType = 'checkbox';

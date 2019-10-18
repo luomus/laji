@@ -24,6 +24,8 @@ import { ObservationTableColumn } from '../model/observation-table-column';
 @Injectable()
 export class ObservationListService {
 
+  public idFields = ['unit.unitId', 'document.documentId'];
+
   private key: string;
   private data: Observable<PagedResult<any>>;
 
@@ -96,8 +98,7 @@ export class ObservationListService {
     orderBy: string[] = [],
     lang: string
   ): Observable<PagedResult<any>> {
-    const _selected = this.prepareFields(selected);
-    const key = JSON.stringify(query) + [_selected.join(','), orderBy.join(','), lang, page, pageSize].join(':');
+    const key = JSON.stringify(query) + [this.prepareFields(selected, false).join(','), orderBy.join(','), lang, page, pageSize].join(':');
     if (this.key !== key) {
       this.key = key;
       this.data = undefined;
@@ -105,7 +106,7 @@ export class ObservationListService {
     if (!this.data) {
       this.data = this.warehouseApi.warehouseQueryListGet(
         {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
-        [..._selected, 'unit.unitId', 'document.documentId'],
+        [...this.prepareFields(selected), ...this.idFields],
         orderBy,
         pageSize,
         page
@@ -119,10 +120,12 @@ export class ObservationListService {
     return this.data;
   }
 
-  private prepareFields(select: string[]): string[] {
+  private prepareFields(select: string[], useTrueFieldPath = true): string[] {
     const exist = {};
     return select.join(',').split(',').reduce((prev, val) => {
-      val = ObservationListService.trueFieldPath(val);
+      if (useTrueFieldPath) {
+        val = ObservationListService.trueFieldPath(val);
+      }
       if (!exist[val]) {
         exist[val] = true;
         prev.push(val);

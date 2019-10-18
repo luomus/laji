@@ -14,7 +14,8 @@ import { VisibleSections } from '..';
 export class ObservationResultComponent {
   @Input() visible: VisibleSections = {
     finnish: true,
-    counts: true,
+    countTaxa: true,
+    countHits: true,
     map: true,
     list: true,
     images: true,
@@ -28,6 +29,7 @@ export class ObservationResultComponent {
     'pageSize',
     'page'
   ];
+  @Input() resultBase: 'unit'|'sample' = 'unit';
   @Input() basePath = '/observation';
   @Input() query: WarehouseQueryInterface = {};
   @Input() lgScreen = true;
