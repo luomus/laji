@@ -98,13 +98,13 @@ export class SchemaService {
     }
 
     arrays.forEach(key => {
-      this.convertData(data[key][0], fields, select, result, base, this.getPath(parent, key), lvl + 1);
+      const path = this.getPath(parent, key);
+      data[key].forEach(item => this.convertData(item, fields, select, result, base, path, lvl + 1));
     });
 
     selected.forEach(key => {
-      data[key].forEach(item => {
-        result.push(this.convertData(item, fields, select, result, {...base}, this.getPath(parent, key), lvl + 1));
-      });
+      const path = this.getPath(parent, key);
+      data[key].forEach(item => result.push(this.convertData(item, fields, select, result, {...base}, path, lvl + 1)));
     });
 
     if (lvl === 0) {
