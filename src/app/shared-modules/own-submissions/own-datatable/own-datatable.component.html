@@ -11,9 +11,16 @@
         <button *ngIf="printState === 'none'" type="button" class="btn btn-default inline-block" (click)="doLabels()">
           <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.select.label' | translate }}</span>
         </button>
-        <button *ngIf="printState === 'select'" type="button" class="btn btn-success inline-block" (click)="doLabels()" [disabled]="!selected || selected.length === 0">
-          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
-        </button>
+        <ng-container *ngIf="printState === 'select'">
+          <div class="btn-group">
+            <button type="button" class="btn btn-success" (click)="doLabels()" [disabled]="!selected || selected.length === 0">
+              <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
+            </button>
+            <button type="button" class="btn btn-default" (click)="cancelLabels()">
+              <span><i class="glyphicon glyphicon-remove"></i></span>
+            </button>
+          </div>
+        </ng-container>
       </div>
 
       <div *ngIf="printState === 'select'" class="print-actions text-block" [innerHtml]="'label.select.intro' | translate">
