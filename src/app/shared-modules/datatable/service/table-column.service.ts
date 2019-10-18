@@ -481,6 +481,10 @@ export class TableColumnService {
     COLUMNS['gathering.interpretations.coordinateAccuracy'],
   ];
 
+  constructor() {
+    this.allColumns = this._allColumns;
+  }
+
   set defaultFields(fields: Array<keyof IColumns>) {
     this._defaultFields = fields;
   }
@@ -498,15 +502,19 @@ export class TableColumnService {
   }
 
   set allColumns(cols: ObservationTableColumn[]) {
-    this._allColumns = cols;
+    this._allColumns = cols.map(col => ({
+      ...col,
+      label: col.label || 'result.' + col.name
+    }));
   }
 
   get allColumns() {
-    return this._allColumns;
+    return this._allColumns.map(col => ({...col}));
   }
 
   getColumn(name: string): ObservationTableColumn {
-    return this._allColumns.find(col => col.name === name);
+    const column = this._allColumns.find(col => col.name === name);
+    return column ? {...column} : undefined;
   }
 
   getColumns(name: string[]): ObservationTableColumn[] {

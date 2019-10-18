@@ -64,11 +64,6 @@ export class ExportService {
     for (let i = 0; i < cols.length; i++) {
       const labels = this.translateService.instant(cols[i].label);
       aoa[labelRow].push(typeof labels === 'string' ? labels : Object.values(labels).join(', '));
-      observables.push(
-        this.translateService.get(cols[i].label).pipe(tap((label) => {
-          aoa[labelRow][i] = Array.isArray(cols[i].label) ? (cols[i].label as string[]).map(key => label[key]).join(', ') : label;
-        }))
-      );
     }
     for (let i = 0; i < data.length; i++) {
       aoa.push([]);

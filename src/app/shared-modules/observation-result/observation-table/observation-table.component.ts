@@ -179,14 +179,11 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       [...this.columnSelector.columns, 'count', ...this.numberColumnSelector.columns] :
       [...this.columnSelector.columns];
 
-    this.allColumns = this.allColumns
-      .map(column => {
-        this.columnLookup[column.name] = column;
-        if (!column.label) {
-          column.label = 'result.' + column.name;
-        }
-        return column;
-      });
+    this.columnLookup = this.allColumns
+      .reduce((prev, column) => {
+        prev[column.name] = column;
+        return prev;
+      }, {});
 
     this.aggregateBy = [];
 
@@ -324,11 +321,13 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.getAllObservations().pipe(
       switchMap(data => this.exportService.getAoa<any>(columns, data)),
       map(aoa => this.exportService.getBufferFromAoa(aoa, type)),
-    ).subscribe(buffer => {
-      this.exportService.exportArrayBuffer(buffer, 'laji-data', type);
-      this.downloadLoading = false;
-      this.changeDetectorRef.markForCheck();
-    });
+      map(buffer => this.exportService.exportArrayBuffer(buffer, 'laji-data', type))
+    ).subscribe(
+      () => {
+        this.downloadLoading = false;
+        this.changeDetectorRef.markForCheck();
+      },
+      (err) => this.logger.error('Simple download failed', err));
   }
 
   private getAllObservations(data: any[] = [], page = 1, pageSize = 1000): Observable<any[]> {
