@@ -15,7 +15,6 @@ export class FontSettingsComponent implements OnInit {
   fontFamily: string[] = [
     'Cormorant Garamond',
     'Merriweather',
-    'Noto sans',
     'Noto serif',
     'Open Sans',
     'Open sans Condensed',
