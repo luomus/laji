@@ -7,11 +7,7 @@
     left: 50%;
     transform: translate(-50% , -50%);
     position: absolute;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
 }
 
-.background-no-images {
-    height: 100%;
-    border: 1px solid #a7a7a7;
-}
