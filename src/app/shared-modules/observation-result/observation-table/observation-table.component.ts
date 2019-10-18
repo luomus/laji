@@ -324,7 +324,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       switchMap(data => this.exportService.getAoa<any>(this.columns, data)),
       map(aoa => this.exportService.getBufferFromAoa(aoa, type)),
     ).subscribe(buffer => {
-      this.exportService.exportArrayBuffer(buffer, this.translate.instant('result.allObservation'), type);
+      this.exportService.exportArrayBuffer(buffer, 'laji-data', type);
       this.downloadLoading = false;
       this.changeDetectorRef.markForCheck();
     });
