@@ -13,6 +13,8 @@
   "allSelected": "All selected",
   "annotation.none": "No comments",
   "annotation.title": "Comments",
+  "annotation.list": "Annotations List",
+  "annotation.data.info": "Data Info",
   "annotation.addAnnotationExpert" : "Add expert annotation",
   "annotation.removedTags": "Removed tags",
   "annotation.newIdentification": "New identification",

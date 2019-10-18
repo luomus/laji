@@ -1,5 +1,34 @@
 <ng-container *ngIf="hasDoc && document">
-        <div class="row">
+    <div class="row">
+        <div class="col-sm-12">
+          <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
+            <h3 ngPreserveWhitespaces>
+              {{ 'viewer.document' | translate }}
+              <small>
+                <a [routerLink]="['/view'] | localize" [queryParams]="{uri: document.documentId}" target="_blank">
+                  {{ document.documentId }}
+                </a>
+              </small>
+              <a type="button"
+                 class="btn btn-sm btn-default"
+                 [routerLink]="['/view/print'] | localize"
+                 [queryParams]="(document.formId | toQName) === collectionContestFormId && own ? {id: (document.documentId | toQName), showFacts: showFacts} : {uri: document.documentId, own: own, showFacts: showFacts}"
+                 target="_blank"
+                 [tooltip]="'haseka.submissions.toPrint' | translate">
+                {{ 'print' | translate }}
+                <img src="/static/images/icons/pdf_16x16.png">
+              </a>
+              <laji-edit-link
+                [editors]="editors"
+                [personID]="personID"
+                [documentID]="document.documentId"
+                [formID]="document.formId"
+              ></laji-edit-link>
+            </h3>
+          </div>
+        </div> 
+    </div>  
+        <!--<div class="row">
           <div class="col-sm-7">
             <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
               <h3 ngPreserveWhitespaces>
@@ -28,7 +57,7 @@
             </div>
            
            
-            <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
+            <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>
             
           </div>
           <div class="col-sm-5">
@@ -61,13 +90,13 @@
                 </button>
               </div>
             </div>
-            <!--<div class="row" *ngIf="document.media">
+            <div class="row" *ngIf="document.media">
               <div class="col-sm-12">
                 <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
               </div>
-            </div>-->
+            </div>
           </div>
-        </div>
+        </div>-->
         <!--<div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
           <ul class="nav nav-tabs link">
             <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
@@ -79,14 +108,17 @@
         </div>-->
         <div class="row container-col">
           <div class="col-sm-4 column-modal" *ngIf="document.gatherings && document.gatherings[0].units">
+            <div class="title">{{ 'observation.active.hasMedia' | translate }}</div>
             <laji-images [document]="document" [highlight]="highlight"></laji-images>
           </div>
           <div class="col-sm-4 column-modal">
+              <div class="title">{{ 'annotation.list' | translate }}</div>
             <ng-container *ngFor="let gathering of document.gatherings; let i=index">
               <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="gathering" [highlight]="highlight" [visible]="active === i" [showAnnotation]="true"></laji-gathering-annotation>
             </ng-container>
           </div>
           <div class="col-sm-4 column-modal">
+            <div class="title">{{ 'annotation.data.info' | translate }}</div>
                 <div>
                   <alert [type]="document.secured ?  'warning' : 'info'">
                     <span *ngIf="!document.secured; else isSecured">

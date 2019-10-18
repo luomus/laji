@@ -13,6 +13,8 @@
   "allSelected": "Alla valda",
   "annotation.none": "Inga kommentarer",
   "annotation.title": "kommentarer",
+  "annotation.list": "Annotations List",
+  "annotation.data.info": "Data Info",
   "annotation.addAnnotationExpert" : "Add expert annotation",
   "annotation.removedTags": "Removed tags",
   "annotation.newIdentification": "New identification",
