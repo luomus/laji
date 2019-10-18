@@ -24,6 +24,8 @@ import { ObservationTableColumn } from '../model/observation-table-column';
 @Injectable()
 export class ObservationListService {
 
+  public idFields = ['unit.unitId', 'document.documentId'];
+
   private key: string;
   private data: Observable<PagedResult<any>>;
 
@@ -104,7 +106,7 @@ export class ObservationListService {
     if (!this.data) {
       this.data = this.warehouseApi.warehouseQueryListGet(
         {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
-        [...this.prepareFields(selected), 'sample.sampleId', 'unit.unitId', 'document.documentId'],
+        [...this.prepareFields(selected), ...this.idFields],
         orderBy,
         pageSize,
         page

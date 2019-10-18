@@ -7,12 +7,13 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
 import { COLUMNS, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
+import { ObservationListService } from '../../shared-modules/observation-result/service/observation-list.service';
 
 @Component({
   selector: 'laji-genetic-resource',
   templateUrl: './genetic-resource.component.html',
   styleUrls: ['./genetic-resource.component.scss'],
-  providers: [ObservationFacade, WarehouseApi, TableColumnService],
+  providers: [ObservationFacade, WarehouseApi, TableColumnService, ObservationListService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GeneticResourceComponent extends AbstractObservation implements OnInit, OnDestroy {
@@ -28,9 +29,11 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
     protected route: ActivatedRoute,
     protected searchQuery: SearchQueryService,
     protected warehouseApi: WarehouseApi,
-    private tableColumnService: TableColumnService
+    private tableColumnService: TableColumnService,
+    private observationListService: ObservationListService
   ) {
     super();
+    this.observationListService.idFields = ['sample.sampleId', 'unit.unitId', 'document.documentId'];
     this.warehouseApi.subPath = '/warehouse/query/sample/';
     this.observationFacade.emptyQuery = {
       sampleCollectionId: ['HR.77', 'HR.2831'],
