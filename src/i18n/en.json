@@ -928,7 +928,7 @@
   "species.tree.info.showMainLevels": "Hides taxa from classification, whose taxonomic level does not belong to the main levels. Main levels are biota, domain, kingdom, phylum, class, order, family, genus and species.",
   "species.tree.showMainLevels": "Show only the main taxonomic levels",
   "species.tree.taxonSearch": "Taxon search",
-  "taxonVerbatim": "Original name",
+  "taxonVerbatim": "Original taxon name",
   "taxonomy.browseSpeciesPage": "Discover species",
   "taxonomy.browseSpeciesPage.intro": "Browse species images and information",
   "taxonomy.speciesPage": "List of species",
