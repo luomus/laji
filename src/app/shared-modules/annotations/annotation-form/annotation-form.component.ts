@@ -130,7 +130,37 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   }
 
   showOption(optionId: string): boolean {
-      return this.annotation.addedTags.indexOf(optionId) === -1;
+     // return this.annotation.addedTags.indexOf(optionId) === -1;  add tags without control if positive or negative
+
+     // add tags and filter after add a positive or negative tag
+     if (this.annotation.addedTags.length === 0) {
+      if (this.annotation.addedTags.indexOf(optionId) === -1) {
+          return true;
+        }
+      } else {
+        if (this.annotation.addedTags.indexOf(optionId) === -1) {
+          if (this.findFirstTagNegativePositive(this.annotation.addedTags, Global.annotationTags) !== undefined ) {
+            if ((Global.annotationTags[optionId].quality ===
+              Global.annotationTags[this.findFirstTagNegativePositive(this.annotation.addedTags, Global.annotationTags)].quality) ||
+            Global.annotationTags[optionId].quality === 'check' ||
+            Global.annotationTags[optionId].quality === 'neutral') {
+              return true;
+            }
+          } else {
+            return true;
+          }
+        }
+      }
+  }
+
+  // add tags and filter after add a positive or negative tag
+  findFirstTagNegativePositive(tags, quality): any {
+    for (let i = 0; i < tags.length; i++) {
+      if (quality[tags[i]].quality !== 'check' && quality[tags[i]].quality !== 'neutral') {
+        return tags[i];
+      } else {
+      }
+    }
   }
 
   showOptionDeleted(optionId: string): boolean {
