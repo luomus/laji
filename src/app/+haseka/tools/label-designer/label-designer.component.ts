@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ILabelField, ILabelPdf, ISetup, IViewSettings, Presets } from 'label-designer';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
@@ -12,7 +12,8 @@ import { LocalStorage } from 'ngx-webstorage';
 @Component({
   selector: 'laji-label-designer',
   templateUrl: './label-designer.component.html',
-  styleUrls: ['./label-designer.component.scss']
+  styleUrls: ['./label-designer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LabelDesignerComponent implements OnInit {
 
@@ -23,12 +24,14 @@ export class LabelDesignerComponent implements OnInit {
   @LocalStorage('label-designer', null) setup: ISetup;
   data: any;
   labelTranslations: any;
+  downloading = false;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private lajiApiService: LajiApiService,
     private pdfLabelService: PdfLabelService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -79,7 +82,9 @@ export class LabelDesignerComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, data.html)
         .subscribe((response) => {
+          this.downloading = false;
           FileSaver.saveAs(response,  data.filename || 'labels.pdf');
+          this.cdr.markForCheck();
         });
     }
   }
