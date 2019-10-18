@@ -180,13 +180,11 @@ export const COLUMNS: IColumns = {
   },
   'gathering.interpretations.biogeographicalProvinceDisplayname': {
     name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
-    cellTemplate: 'warehouseLabel',
     label: 'result.gathering.biogeographicalProvince',
     aggregateBy: 'gathering.interpretations.biogeographicalProvince,gathering.interpretations.biogeographicalProvinceDisplayname'
   },
   'gathering.interpretations.municipalityDisplayname': {
     name: 'gathering.interpretations.municipalityDisplayname',
-    cellTemplate: 'warehouseLabel',
     label: 'observation.form.municipality',
     aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname'
   },

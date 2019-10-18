@@ -72,15 +72,17 @@ export class ExportService {
         const key = i + (firstRow ? 2 : 1);
 
         const template = cols[j].cellTemplate;
-        aoa[key][j] = (value == null || (Array.isArray(value) && value.length === 0)) ? '' : value;
+        aoa[key][j] = this.hasScalarValue(value) ? value : (Array.isArray(value) ? value.join('; ') : '');
 
         if (!template) {
           continue;
         }
 
         const observable = this.datatableUtil.getVisibleValue(value, data[i], template);
-        observables.push(observable.pipe(tap(((val) => {
-          aoa[key][j] = val;
+        observables.push(observable.pipe(map(((val) => {
+          if (this.hasScalarValue(val)) {
+            aoa[key][j] = val;
+          }
         }))));
       }
     }
@@ -90,10 +92,18 @@ export class ExportService {
   }
 
   private getValue(obj: any, col: DatatableColumn) {
-    let value = Util.parseJSONPath(obj, col.name);
-    if (typeof value === 'undefined') {
-      value = Util.parseJSONPath(obj, '' + col.prop);
+    const nameValue = Util.parseJSONPath(obj, col.name);
+    if (!this.hasScalarValue(nameValue) && typeof col.prop !== 'undefined') {
+      const propValue = Util.parseJSONPath(obj, '' + col.prop);
+      if (typeof propValue !== 'undefined') {
+        return propValue;
+      }
     }
-    return value;
+    return nameValue;
+  }
+
+  private hasScalarValue(value: any): boolean {
+    const type = typeof value;
+    return ['boolean', 'number', 'string'].includes(type);
   }
 }

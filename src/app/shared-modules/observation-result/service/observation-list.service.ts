@@ -269,19 +269,16 @@ export class ObservationListService {
   }
 
   private pickFacts(document: object, paths: string[], fact: string): string[] {
-    const path = paths.shift();
-    if (paths.length > 0) {
-      return document[path] ? this.pickFacts(document[path], paths, fact) : [];
+    const facts = this.getValue(document, paths);
+    if (!Array.isArray(facts) || fact.length === 0) {
+      return [];
     }
-    if (Array.isArray(document[path])) {
-      return document[path].reduce((prev, doc) => {
-        if (doc.fact === fact) {
-          prev.push(doc.value);
-        }
-        return prev;
-      }, []);
-    }
-    return [];
+    return facts.reduce((prev, doc) => {
+      if (doc.fact === fact) {
+        prev.push(doc.value);
+      }
+      return prev;
+    }, []);
   }
 
   private transformDocument(document: object, transforms: IInternalObservationTableColumn[]): Observable<any> {
