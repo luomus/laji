@@ -10,13 +10,13 @@
       [downloadLoading]="downloadLoading"
       (download)="download.emit($event)">
       <span>
-        {{ 'haseka.submissions.download' | translate }}
+        {{ downloadText }}
         <i class="glyphicon glyphicon-download-alt"></i>
       </span>
     </laji-download>
     <ng-template #tooMany>
       <div class="btn btn-default btn-sm pull-right disabled">
-        {{ 'haseka.submissions.download' | translate }} max {{ maxDownload }}
+        {{ downloadText }} max {{ maxDownload }}
       </div>
     </ng-template>
   </ng-container>

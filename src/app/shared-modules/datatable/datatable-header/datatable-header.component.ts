@@ -12,6 +12,7 @@ export class DatatableHeaderComponent implements OnInit {
   @Input() downloadLoading = false;
   @Input() maxDownload = false;
   @Input() count = false;
+  @Input() downloadText = 'Download';
 
   @Output() openSettingsMenu = new EventEmitter<void>();
   @Output() download = new EventEmitter<string>();
