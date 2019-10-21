@@ -1,16 +1,17 @@
-<div class="row">
-  <div class="col-8">
-    <ng-container *ngIf="instructionsData$ | async as data">
-      <laji-info-page *ngIf="data.instructions"
-                      [child]="data.instructions | multiLang"
-        ></laji-info-page>
-      <laji-request *ngIf="data.collectionID && data.rights === Rights.NotAllowed && data.loggedIn"
-                    [collectionId]="data.collectionID" [disableDescription]="data.disableRequestDescription">
-      </laji-request>
-      <h3 *ngIf="data.loggedIn === false">
-        {{ 'force.login' | translate }}
-      </h3>
-    </ng-container>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+      <ng-container *ngIf="instructionsData$ | async as data">
+        <laji-info-page *ngIf="data.instructions"
+                        [child]="data.instructions | multiLang"
+          ></laji-info-page>
+        <laji-request *ngIf="data.collectionID && data.rights === Rights.NotAllowed && data.loggedIn"
+                      [collectionId]="data.collectionID" [disableDescription]="data.disableRequestDescription">
+        </laji-request>
+        <h3 *ngIf="data.requireLogin !== false && data.loggedIn === false">
+          {{ 'force.login' | translate }}
+        </h3>
+      </ng-container>
+    </div>
   </div>
 </div>
-

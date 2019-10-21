@@ -1,0 +1,13 @@
+<hr>
+<div class="sample" [ngClass]="{'highlight': highlight === sample.sampleId}">
+  <laji-row [title]="'result.sample.sampleId' | translate">
+    <a target="_blank" rel="noopener nofollow" href="{{ sample.sampleId }}">{{ sample.sampleId }}</a>
+  </laji-row>
+  <laji-row [title]="'MF.preparationType' | label" [value]="sample.type | toQName | label"></laji-row>
+  <laji-row [title]="'MF.material' | label" [value]="sample.material | toQName | label | values:'; '"></laji-row>
+  <ng-container *ngIf="showFacts">
+    <laji-row [title]="'MF.preparationMaterials' | label" [value]="facts['http://tun.fi/MF.preparationMaterials'] | toQName | label | values:'; '"></laji-row>
+    <laji-row [title]="'MF.collectionID' | label" [value]="sample.collectionId | toQName | label | values:'; '"></laji-row>
+  </ng-container>
+  <laji-facts [show]="showFacts" [facts]="sample.facts | factNotIn:pickFacts"></laji-facts>
+</div>

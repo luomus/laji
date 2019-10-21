@@ -1,4 +1,4 @@
-import { ILabelField, ISetup } from './label-designer.interface';
+import { FieldType, ILabelField, ISetup } from './label-designer.interface';
 import { LabelService } from './label.service';
 
 /**
@@ -19,7 +19,9 @@ export class LabelDesignerHelper {
 
     LabelService.forEachField(setup, (field) => {
       if (map[field.field]) {
-
+        if (map[field.field].type === FieldType.text) {
+          return;
+        }
         // merge values that are mapped
         if (map[field.field].valueMap) {
           if (!field.valueMap) {

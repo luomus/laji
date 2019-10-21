@@ -1,6 +1,6 @@
 {
   "name": "laji-front",
-  "version": "1.0.40",
+  "version": "1.0.41",
   "main": "dist/electron",
   "description": "laji.fi frontend",
   "scripts": {
@@ -98,9 +98,9 @@
     "intl": "^1.2.5",
     "jsonpath-plus": "^0.20.1",
     "jw-bootstrap-switch-ng2": "^2.0.5",
-    "label-designer": "^3.1.7",
-    "laji-form": "^2.0.4",
-    "laji-map": "2.1.2",
+    "label-designer": "^3.1.9",
+    "laji-form": "^2.0.11",
+    "laji-map": "3.0.2",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.7.3",
     "moment": "2.24.0",
@@ -187,7 +187,7 @@
     "proj4": "2.3.16",
     "leaflet": "1.4.0",
     "@types/leaflet-draw": "0.4.14",
-    "laji-map": "2.1.2",
+    "laji-map": "3.0.2",
     "tslint": "5.10.0",
     "typescript": "3.4.5"
   },

@@ -31,6 +31,7 @@ import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
 import { ExistsPipe } from './pipe/exists.pipe';
 import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 import { AnnotationsComponent } from './annotations/annotations.component';
+import { FormSampleComponent } from './form-sample/form-sample.component';
 
 @NgModule({
   imports: [
@@ -67,7 +68,8 @@ import { AnnotationsComponent } from './annotations/annotations.component';
     RemoveLeadingPipe,
     ExistsPipe,
     ToSafeQueryPipe,
-    AnnotationsComponent
+    AnnotationsComponent,
+    FormSampleComponent
   ],
   exports: [
     ObservationViewComponent

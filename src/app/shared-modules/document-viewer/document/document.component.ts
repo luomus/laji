@@ -52,6 +52,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   unitCnt;
   isViewInited = false;
   showOnlyHighlighted = true;
+  highlightParents: string[] = [];
   @SessionStorage() showFacts = false;
   private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
@@ -101,7 +102,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
         catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
         map(doc => doc.document),
-        tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight))
+        tap((doc) => {
+          this.highlightParents = [];
+          this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight);
+        })
       );
     findDox$
       .subscribe(
@@ -114,20 +118,21 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     if (!highlight) {
       return false;
     }
-    if (
-      (doc.gatheringId && doc.gatheringId === highlight) ||
-      (doc.unitId && doc.unitId === highlight)
-    ) {
+    const id = this.getId(doc);
+    if (id === highlight) {
+      this.highlightParents.push(id);
       return true;
     }
     let hasHighlight = false;
-    ['gatherings', 'units'].forEach(level => {
+    ['gatherings', 'units', 'samples'].forEach(level => {
       if (Array.isArray(doc[level])) {
         doc[level].forEach(subLevel => {
-          if (hasHighlight) {
-            return hasHighlight;
+          if (!hasHighlight) {
+            hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
+            if (hasHighlight) {
+              this.highlightParents.push(id);
+            }
           }
-          hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
         });
       }
     });
@@ -156,6 +161,16 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
 
   toggleShowOnlyHighlighted() {
     this.showOnlyHighlighted = !this.showOnlyHighlighted;
+  }
+
+  private getId(doc): string {
+    let id = '';
+    ['documentId', 'gatheringId', 'unitId', 'sampleId'].forEach(field => {
+      if (doc[field]) {
+        id = doc[field];
+      }
+    });
+    return id;
   }
 
   private parseDoc(doc, found) {
@@ -210,7 +225,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
           filter(stable => stable),
           take(1),
           switchMap(() => ObservableInterval(this.recheckIterval))
-    ).subscribe(() => this.updateDocument());
+        ).subscribe(() => this.updateDocument());
     }
     this.cd.markForCheck();
   }

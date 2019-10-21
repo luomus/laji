@@ -1,1 +1,8 @@
-<laji-observation-view [activeTab]="activeTab$ | async" basePath="/theme/gene/search"></laji-observation-view>
+<laji-observation-view
+  [settingsKeyList]="'sampleList'"
+  [formType]="'sample'"
+  [skipUrlParameters]="skipUrlParams"
+  [activeTab]="activeTab$ | async"
+  [visible]="{map: true, list: true, countHits: true}"
+  basePath="/theme/luomusgrc/search"
+></laji-observation-view>

@@ -1,21 +1,29 @@
-<ul class="nav nav-pills">
-  <li role="presentation" [ngClass]="{active: active !== 'finnish'}">
-    <a [routerLink]="[basePath + '', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery">
+<strong class="counts" style="padding: 0" *ngIf="!(visible.countTaxa && visible.countHits) && visible.countHits">
+  <laji-observation-count
+    [loading]="loadingUnits"
+    [value]="unitCount"></laji-observation-count>
+  {{ 'observation.results.hits' | translate }}
+</strong>
+<ul class="nav nav-pills" *ngIf="visible.finnish || (visible.countTaxa && visible.countHits)">
+  <li *ngIf="visible.finnish" role="presentation" [ngClass]="{active: active !== 'finnish'}">
+    <a [routerLink]="[basePath + '', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
       <strong>{{ 'search.result.all' | translate }}</strong>
     </a>
   </li>
-  <li role="presentation" class="beta" [ngClass]="{active: active === 'finnish'}">
-    <a [routerLink]="basePath + '/finnish' | localize" [queryParams]="query | toSafeQuery">
+  <li *ngIf="visible.finnish" role="presentation" class="beta" [ngClass]="{active: active === 'finnish'}">
+    <a [routerLink]="basePath + '/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
       <strong>{{ 'search.result.finnish' | translate }}</strong>
     </a>
   </li>
-  <li class="counts">
+  <li class="counts" *ngIf="visible.countTaxa || visible.countHits">
     <strong *ngIf="active !== 'finnish'">
       <laji-observation-count
+        *ngIf="visible.countHits"
         [loading]="loadingUnits"
         [value]="unitCount"></laji-observation-count>
       {{ 'observation.results.observation' | translate }}
       <laji-observation-count
+        *ngIf="visible.countTaxa"
         [loading]="loadingTaxa"
         [value]="speciesCount">
       </laji-observation-count>
@@ -23,10 +31,12 @@
     </strong>
     <strong *ngIf="active === 'finnish'">
       <laji-observation-count
+        *ngIf="visible.countHits"
         [overrideInQuery]="{countryId: 'ML.206'}"
         [query]="query"></laji-observation-count>
       {{ 'observation.results.observation' | translate }}
       <laji-observation-count
+        *ngIf="visible.countTaxa"
         [overrideInQuery]="{countryId: 'ML.206', includeNonValidTaxa: false}"
         [query]="query"
         [field]="'unit.linkings.taxon.speciesId'">
@@ -52,38 +62,38 @@
 
   <div class="whole-data-list" *ngIf="(showMenu && !lgScreen) || lgScreen">
     <ul class="nav nav-tabs nav-justified">
-      <li role="presentation" [ngClass]="{active: active === 'map'}">
-        <a [routerLink]="basePath + '/map' | localize" [queryParams]="query | toSafeQuery">
-          {{ 'search.result.map' | translate }}
-        </a>
-      </li>
-      <li role="presentation" [ngClass]="{active: active === 'list'}">
-        <a [routerLink]="basePath + '/list' | localize" [queryParams]="query | toSafeQuery">
+      <li *ngIf="visible.list" role="presentation" [ngClass]="{active: active === 'list'}">
+        <a [routerLink]="basePath + '/list' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.list' | translate }}
         </a>
       </li>
-      <li role="presentation" [ngClass]="{active: active === 'images'}">
-        <a [routerLink]="basePath + '/images' | localize" [queryParams]="query | toSafeQuery">
+      <li *ngIf="visible.map" role="presentation" [ngClass]="{active: active === 'map'}">
+        <a [routerLink]="basePath + '/map' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
+          {{ 'search.result.map' | translate }}
+        </a>
+      </li>
+      <li *ngIf="visible.images" role="presentation" [ngClass]="{active: active === 'images'}">
+        <a [routerLink]="basePath + '/images' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.images' | translate }}
         </a>
       </li>
-      <li role="presentation" [ngClass]="{active: active === 'species'}">
-        <a [routerLink]="basePath + '/species' | localize" [queryParams]="query | toSafeQuery">
+      <li *ngIf="visible.species" role="presentation" [ngClass]="{active: active === 'species'}">
+        <a [routerLink]="basePath + '/species' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.species' | translate }}
         </a>
       </li>
-      <li role="presentation" [ngClass]="{active: active === 'stats'}">
-        <a [routerLink]="basePath + '/stats' | localize" [queryParams]="query | toSafeQuery">
+      <li *ngIf="visible.statistics" role="presentation" [ngClass]="{active: active === 'stats'}">
+        <a [routerLink]="basePath + '/stats' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.stats' | translate }}
         </a>
       </li>
-      <li role="presentation" [ngClass]="{active: active === 'load'}">
-        <a [routerLink]="basePath + '/load' | localize" [queryParams]="query | toSafeQuery">
+      <li *ngIf="visible.download" role="presentation" [ngClass]="{active: active === 'load'}">
+        <a [routerLink]="basePath + '/load' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.load' | translate }}
         </a>
       </li>
-      <li role="presentation" [ngClass]="{active: active === 'annotation'}" *lajiForTypes="['dev']">
-        <a [routerLink]=" basePath + '/annotation' | localize" [queryParams]="query | toSafeQuery">
+      <li *ngIf="visible.annotations" role="presentation" [ngClass]="{active: active === 'annotation'}">
+        <a [routerLink]=" basePath + '/annotation' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
           {{ 'search.result.annotation' | translate }}
         </a>
       </li>
@@ -115,6 +125,8 @@
   </div>
   <div [hidden]="active !== 'list'" *ngIf="activated['list']">
     <laji-observation-result-list
+      [resultBase]="resultBase"
+      [showDownloadMenu]="true"
       [settings]="listSettings"
       (settingsChange)="listSettingsChange.emit($event)"
       [visible]="active === 'list'"

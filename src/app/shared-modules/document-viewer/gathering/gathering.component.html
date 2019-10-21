@@ -3,11 +3,11 @@
   <laji-gathering-rows [gathering]="gathering"></laji-gathering-rows>
   <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
   <ng-container *ngFor="let unit of gathering?.units">
-    <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
-      <laji-unit [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit>
+    <ng-container *ngIf="(showOnlyHighlighted && highlightParents.indexOf(unit.unitId) !== -1) || !showOnlyHighlighted">
+      <laji-unit [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight" [highlightParents]="highlightParents" [showOnlyHighlighted]="showOnlyHighlighted"></laji-unit>
     </ng-container>
   </ng-container>
-  <laji-row [showWithoutValue]="true" *ngIf="showOnlyHighlightedUnit && unitCnt > 1">
+  <laji-row [showWithoutValue]="true" *ngIf="showOnlyHighlighted && unitCnt > 1">
     <button type="button" (click)="showAllUnits.emit()" class="btn btn-default btn-sm all-units-btn">
       {{ 'viewer.otherUnits' | translate:{cnt: unitCnt - 1} }}
     </button>

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';
 import { PublicationService } from '../../../shared/service/publication.service';
 import { Publication } from '../../../shared/model/Publication';
 import { UserService } from '../../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
+import { IdService } from '../../../shared/service/id.service';
+import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,8 @@ export class DatatableUtil {
     private labelService: TriplestoreLabelService,
     private publicationService: PublicationService,
     private userService: UserService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private warehouseValueMappingService: WarehouseValueMappingService
   ) { }
 
   getVisibleValue(value, row, template): Observable<string> {
@@ -29,6 +32,9 @@ export class DatatableUtil {
 
     let observable;
     switch (template) {
+      case 'warehouseLabel':
+        observable = this.getWarehouseLabels(value);
+        break;
       case 'label':
       case 'labelArray':
         observable = this.getLabels(value);
@@ -72,7 +78,13 @@ export class DatatableUtil {
         observable = ObservableOf(value.status.replace('MX.iucn', '') + ' (' + value.year + ')');
         break;
       case 'user':
-        observable = this.userService.getPersonInfo(value);
+        observable = this.getUsers(value);
+        break;
+      case 'species':
+        observable = this.getTaxon(value, 'speciesScientificName');
+        break;
+      case 'taxon':
+        observable = this.getTaxon(value);
         break;
       case 'taxonName':
         observable = ObservableOf(
@@ -86,37 +98,33 @@ export class DatatableUtil {
     return observable || ObservableOf(value);
   }
 
-  private getLabels(values): Observable<string> {
-    if (!Array.isArray(values)) {
-      values = [values];
-    }
-    const labelObservables = [];
-    for (let i = 0; i < values.length; i++) {
-      labelObservables.push(
-        this.labelService.get(values[i], this.translate.currentLang)
+  private getWarehouseLabels(values): Observable<string> {
+    return this.getArray(values, (value) => {
+      return this.warehouseValueMappingService.getOriginalKey(value).pipe(
+        concatMap(key => this.labelService.get(IdService.getId(key), this.translate.currentLang))
       );
-    }
-    return ObservableForkJoin(labelObservables).pipe(
-      map(labels => labels.join('; '))
-    );
+    }, '; ');
+  }
+
+  private getLabels(values): Observable<string> {
+    return this.getArray(values, (value) => {
+      return this.labelService.get(IdService.getId(value), this.translate.currentLang);
+    }, '; ');
   }
 
   private getPublications(values): Observable<string> {
-    if (!Array.isArray(values)) {
-      values = [values];
-    }
-    const labelObservables = [];
-    for (let i = 0; i < values.length; i++) {
-      labelObservables.push(
-        this.publicationService.getPublication(values[i], this.translate.currentLang).pipe(
-          map((res: Publication) => {
-            return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : values[i];
-          }))
-      );
-    }
-    return ObservableForkJoin(labelObservables).pipe(
-      map(labels => labels.join('; '))
-    );
+    return this.getArray(values, (value) => {
+      return this.publicationService.getPublication(value, this.translate.currentLang).pipe(
+        map((res: Publication) => {
+          return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : value;
+        }));
+    }, '; ');
+  }
+
+  private getUsers(values): Observable<string> {
+    return this.getArray(values, (value) => {
+      return this.userService.getPersonInfo(value, 'fullNameWithGroup');
+    }, '; ');
   }
 
   private getHabitats(obj): Observable<string> {
@@ -127,5 +135,28 @@ export class DatatableUtil {
     return ObservableForkJoin(habitats.map(h => this.getLabels(h.habitat))).pipe(
       map(data => data.join('; '))
     );
+  }
+
+  private getArray(values: string|string[], getObservable: (string) => Observable<string>, separator: string): Observable<string> {
+    if (!Array.isArray(values)) {
+      values = [values];
+    }
+    const observables = values.map(value => getObservable(value));
+    return ObservableForkJoin(observables).pipe(
+      map((labels: string[]) => labels.join(separator))
+    );
+  }
+
+  private getTaxon(value: any, sciName: 'scientificName' | 'speciesScientificName' = 'scientificName'): Observable<string> {
+    if (value.linkings && value.linkings.taxon && value.linkings.taxon.id) {
+      return ObservableOf(MultiLangService.getValue(value.linkings.taxon.vernacularName, this.translate.currentLang, '%value% (%lang%)') +
+        (value.linkings.taxon[sciName] && value.linkings.taxon.vernacularName  ? ' — ' + value.linkings.taxon[sciName] :
+        (value.linkings.taxon[sciName] || '')));
+    } else if (value.taxonVerbatim) {
+      return ObservableOf(value.taxonVerbatim);
+    } else if (value.reportedInformalTaxonGroup) {
+      return this.getLabels(value.reportedInformalTaxonGroup);
+    }
+    return ObservableOf('');
   }
 }

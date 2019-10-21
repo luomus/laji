@@ -33,6 +33,7 @@ import { PrintTaxonHeaderComponent } from './document-local/collection-contest-l
 import { CoordinatesViewerComponent } from './viewer-coordinates/viewer-coordinates.component';
 import { ViewerModalComponent } from './viewer-modal/viewer-modal.component';
 import { LicenseModule } from '../license/license.module';
+import { SampleComponent } from './sample/sample.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import { LicenseModule } from '../license/license.module';
     PrintRowComponent,
     PrintTaxonHeaderComponent,
     CoordinatesViewerComponent,
-    ViewerModalComponent
+    ViewerModalComponent,
+    SampleComponent
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent]
 })

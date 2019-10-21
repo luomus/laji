@@ -27,6 +27,9 @@ export class UsersPipe implements PipeTransform {
     if (!value || value.length === 0) {
       return value;
     }
+    if (Array.isArray(value)) {
+      return value.map(v => this.transform(v, format));
+    }
     // if we ask another time for the same key, return the last value
     if (value === this.lastId && format === this.lastFormat) {
       return this.value;

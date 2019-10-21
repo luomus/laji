@@ -5,19 +5,33 @@
          [ngClass]="{'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': vm.filterVisible}">
       <laji-search-filters
          [query]="vm.query"
+         [activeSkip]="skipUrlParameters"
          (queryChange)="onQueryChange($event)"
          [queryType]="'observation'"
          [showFilter]="vm.filterVisible"
          (showFilterChange)="filterVisible($event)">
-        <laji-observation-form
-          [query]="vm.query"
-          [invasiveStatuses]="invasiveStatuses"
-          [dateFormat]="dateFormat"
-          [advancedMode]="vm.advanced"
-          (advancedModeChange)="onAdvanceModeChange($event)"
-          (queryChange)="onQueryChange($event)"
-          (mapDraw)="draw($event)"
-        ></laji-observation-form>
+        <ng-container [ngSwitch]="formType">
+          <laji-form-sample
+            *ngSwitchCase="'sample'"
+            [query]="vm.query"
+            [invasiveStatuses]="invasiveStatuses"
+            [dateFormat]="dateFormat"
+            [advancedMode]="vm.advanced"
+            (advancedModeChange)="onAdvanceModeChange($event)"
+            (queryChange)="onQueryChange($event)"
+            (mapDraw)="draw($event)"
+          ></laji-form-sample>
+          <laji-observation-form
+            *ngSwitchDefault
+            [query]="vm.query"
+            [invasiveStatuses]="invasiveStatuses"
+            [dateFormat]="dateFormat"
+            [advancedMode]="vm.advanced"
+            (advancedModeChange)="onAdvanceModeChange($event)"
+            (queryChange)="onQueryChange($event)"
+            (mapDraw)="draw($event)"
+          ></laji-observation-form>
+        </ng-container>
       </laji-search-filters>
     </div>
     <div *ngIf="!showMobile && statusFilterMobile" class="close-filters-mobile"><div (click)="toggleMobile()"><label>{{ 'observation.active' | translate }}</label><i class="glyphicon glyphicon-arrow-left"></i></div></div>
@@ -29,19 +43,24 @@
          }"
     >
       <ng-container *lajiBrowserOnly>
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="pull-right toggle-intro" *ngIf="!vm.showIntro">
-              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+        <ng-container *ngIf="visible.info">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="pull-right toggle-intro" *ngIf="!vm.showIntro">
+                <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+              </div>
             </div>
           </div>
-        </div>
-        <alert *ngIf="vm.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-          <div [innerHtml]="'observation.intro' | translate"></div>
-        </alert>
+          <alert *ngIf="vm.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+            <div [innerHtml]="'observation.intro' | translate"></div>
+          </alert>
+        </ng-container>
       </ng-container>
       <div #tabs>
         <laji-observation-result
+          [resultBase]="formType"
+          [visible]="visible"
+          [skipUrlParameters]="skipUrlParameters"
           [basePath]="basePath"
           [lang]="translate.currentLang"
           [loadingUnits]="vm.loadingUnits"
@@ -52,7 +71,7 @@
           [active]="activeTab"
           [query]="vm.query"
           (queryChange)="onQueryChange($event)"
-          [listSettings]="vm.settingsList"
+          [listSettings]="settingsList$ | async"
           (listSettingsChange)="onListSettingsChange($event)"
         ></laji-observation-result>
       </div>

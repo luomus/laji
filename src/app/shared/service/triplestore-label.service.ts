@@ -18,6 +18,7 @@ import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
 import { Publication } from '../model/Publication';
 import { NamedPlaceApi } from '../api/NamedPlaceApi';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
+import { CollectionService } from './collection.service';
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -42,7 +43,8 @@ export class TriplestoreLabelService {
               private userService: UserService,
               private areaService: AreaService,
               private annotationService: AnnotationService,
-              private redListTaxonGroupApi: RedListTaxonGroupApi
+              private redListTaxonGroupApi: RedListTaxonGroupApi,
+              private collectionService: CollectionService
   ) {
     this.pending = this.getAllLabels();
     this.pending.subscribe();
@@ -142,6 +144,8 @@ export class TriplestoreLabelService {
             );
           }
           return TriplestoreLabelService.requestCache[key];
+        case 'HR':
+          return this.collectionService.getName(key, lang).pipe(share());
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'}).pipe(

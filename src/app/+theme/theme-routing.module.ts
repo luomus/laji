@@ -35,7 +35,7 @@ import { GeneticResourceComponent } from './genetic-resource/genetic-resource.co
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
   {
-    path: 'gene',
+    path: 'luomusgrc',
     component: MonitoringThemeBaseComponent,
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
@@ -60,15 +60,17 @@ const routes: Routes = [
       },
     ],
     data: {
-      formID: Global.forms.nafi,
-      title: '',
+      formID: Global.forms.default,
+      title: 'theme.grc.title',
+      requireLogin: false,
+      titlePosition: 'body',
       navLinks: {
         search: {
           routerLink: ['search'],
-          label: 'theme.gene.search'
+          label: 'theme.grc.search'
         },
         instructions: {
-          label: 'theme.gene.instructions'
+          label: 'theme.grc.instructions'
         },
         form: {hidden: true},
         formPermissions: {hidden: true},
@@ -76,8 +78,8 @@ const routes: Routes = [
       },
       navLinksOrder: ['instructions', 'search'],
       instructions: {
-        fi: '3284',
-        sv: '3288',
+        fi: '3286', // '3284',
+        sv: '3286', // '3288',
         en: '3286'
       },
     }
