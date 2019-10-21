@@ -219,13 +219,13 @@ export const COLUMNS: IColumns = {
     cellTemplate: 'warehouseLabel',
     label: 'observation.filterBy.image'
   },
-  'document.collectionId': {name: 'document.collectionId', transform: 'label', width: 300, sortable: false},
+  'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false},
   'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.document.notes'},
   'document.documentId': {name: 'document.documentId'},
   'unit.unitId': {name: 'unit.unitId'},
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
-  'document.sourceId': {name: 'document.sourceId', transform: 'label', sortable: false},
+  'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
   'document.quality.reliabilityOfCollection': {name: 'document.quality.reliabilityOfCollection'},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
@@ -305,7 +305,7 @@ export const COLUMNS: IColumns = {
   'sample.notes': {name: 'sample.notes', sortable: false, label: 'result.document.notes'},
   'sample.collectionId': {
     name: 'sample.collectionId',
-    transform: 'label',
+    cellTemplate: 'label',
     sortable: false,
     label: 'result.document.collectionId'
   },
