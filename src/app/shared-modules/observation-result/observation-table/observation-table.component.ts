@@ -24,9 +24,7 @@ import {
   IColumnGroup,
   TableColumnService
 } from '../../datatable/service/table-column.service';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { DatatableColumn } from '../../datatable/model/datatable-column';
+import { map, switchMap } from 'rxjs/operators';
 import { ExportService } from '../../../shared/service/export.service';
 
 @Component({
@@ -105,7 +103,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   columns: ObservationTableColumn[] = [];
   allColumns: ObservationTableColumn[];
-  columnGroups: IColumnGroup[];
+  columnGroups: IColumnGroup[][];
 
   private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCountSum'];
 

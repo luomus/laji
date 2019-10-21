@@ -1,12 +1,6 @@
 .observation-table-wrapper {
   position: relative;
 }
-.menu-row {
-  height: 37px;
-  border-top: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-}
 
 .clear-btn {
   margin-top: 26px;
