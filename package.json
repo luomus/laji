@@ -44,7 +44,9 @@
     "build:ssr:local": "yarn run build:server:local && yarn run build:local",
     "package:label-designer": "yarn run build:label-designer-electron && yarn run prepare:package:label-designer",
     "package:label-designer-element": "yarn run build:label-designer-element && cat ./dist/label-designer-element/runtime.js ./dist/label-designer-element/polyfills.js ./dist/label-designer-element/scripts.js ./dist/label-designer-element/main.js > ./dist/label-designer.js",
-    "prepare:package:label-designer": "electron-packager ./dist \"Label Designer\" --out=packages --all --asar --executableName=LabelDesigner --appBundleId=fi.laji.labelDesigner --app-category-type=public.app-category.graphics-design --overwrite ",
+    "package:label-designer-linux": "electron-packager ./dist \"Label Designer\" --out=release-builds --platform=linux --arch=x64 --asar --executableName=LabelDesigner --overwrite --prune",
+    "package:label-designer-mac": "electron-packager ./dist \"Label Designer\" --out=release-builds --platform=darwin  --arch=x64 --asar --executableName=LabelDesigner --overwrite --prune --appBundleId=fi.laji.labelDesigner --app-category-type=public.app-category.graphics-design",
+    "package:label-designer-win": "electron-packager ./dist \"Label Designer\" --out=release-builds --platform=win32 --arch=ia32 --asar --executableName=LabelDesigner --overwrite --prune",
     "server": "node dist/server",
     "msg-a": "node ./scripts/echo.js \"\nLint check!\n**Please note that warnings can be ignored, only errors will prevent the commit!**\n\n\""
   },
