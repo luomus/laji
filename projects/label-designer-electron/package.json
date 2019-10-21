@@ -18,7 +18,7 @@
   "peerDependencies": {
     "electron": "^4.1.0",
     "electron-packager": "^13.1.1",
-    "label-designer": "^0.0.10"
+    "label-designer": "^3.0.0"
   },
   "keywords": [
     "label",
