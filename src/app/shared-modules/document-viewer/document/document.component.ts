@@ -29,7 +29,6 @@ import { Global } from '../../../../environments/global';
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
   @Input() uri: string;
-  @Input() highlight: string;
   @Input() own: boolean;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
@@ -55,6 +54,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   highlightParents: string[] = [];
   @SessionStorage() showFacts = false;
   private _uri: string;
+  private _highlight: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
   private metaFetch: Subscription;
@@ -139,6 +139,14 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     return hasHighlight;
   }
 
+  @Input() set highlight(id: string) {
+    this._highlight = IdService.getUri(id);
+  }
+
+  get highlight() {
+    return this._highlight;
+  }
+
   setActive(i) {
     this.active = i;
     if (this.document && this.document.gatherings) {
@@ -205,10 +213,17 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
           if (this.highlight && gathering.gatheringId === this.highlight) {
             activeIdx = idx;
           }
-          if (gathering.units) {
+          if (gathering.units && this.highlight) {
             this.unitCnt += gathering.units.length;
-            gathering.units.map(unit => {
-              if (this.highlight && unit.unitId === this.highlight) {
+            gathering.units.forEach(unit => {
+              if (unit.samples) {
+                unit.samples.forEach(sample => {
+                  if (sample.sampleId === this.highlight) {
+                    activeIdx = idx;
+                  }
+                });
+              }
+              if (unit.unitId === this.highlight) {
                 activeIdx = idx;
               }
             });
