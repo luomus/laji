@@ -198,11 +198,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       } else {
         this.editors = [];
       }
-      let activeIdx = 0;
+      let activeGatheringIdx = 0;
       if (doc && doc.gatherings) {
-        doc.gatherings.map((gathering, idx) => {
+        doc.gatherings.map((gathering, gatheringIdx) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
-            mapData[idx] = {
+            mapData[gatheringIdx] = {
               ...gathering.conversions,
               geoJSON: gathering.conversions.wgs84Geo,
               coordinateAccuracy: gathering.interpretations && gathering.interpretations.coordinateAccuracy,
@@ -211,7 +211,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
             this.hasMapData = true;
           }
           if (this.highlight && gathering.gatheringId === this.highlight) {
-            activeIdx = idx;
+            activeGatheringIdx = gatheringIdx;
           }
           if (gathering.units && this.highlight) {
             this.unitCnt += gathering.units.length;
@@ -219,19 +219,19 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
               if (unit.samples) {
                 unit.samples.forEach(sample => {
                   if (sample.sampleId === this.highlight) {
-                    activeIdx = idx;
+                    activeGatheringIdx = gatheringIdx;
                   }
                 });
               }
               if (unit.unitId === this.highlight) {
-                activeIdx = idx;
+                activeGatheringIdx = gatheringIdx;
               }
             });
           }
         });
       }
       this.mapData = mapData;
-      this.setActive(activeIdx);
+      this.setActive(activeGatheringIdx);
       if (this.interval) {
         this.interval.unsubscribe();
       }
