@@ -1,7 +1,7 @@
 node {
   nvm('v11.3.0') {
     stage('Prepare environment') {
-      git branch: 'development', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
+      git branch: 'persigio', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
       sh 'npm install -g yarn'
       sh 'yarn install --silent --frozen-lockfile --check-files'
     }
