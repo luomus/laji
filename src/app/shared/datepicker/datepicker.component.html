@@ -10,7 +10,7 @@
 </div>
 
 <div *ngIf="opened">
-  <div class="ng-datepicker" [lajiFixedBelow]="dateInput" (lajiClickOutSide)="close()">
+  <div class="ng-datepicker" [ngClass]="popoverAlign" [lajiFixedBelow]="dateInput" (lajiClickOutSide)="close()">
     <div class="controls">
       <div class="left">
         <i class="glyphicon glyphicon-backward" (click)="prevYear()"></i>
