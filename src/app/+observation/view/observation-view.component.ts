@@ -109,7 +109,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
-    this.settingsList$ = this.userService.getUserSetting(this.settingsKeyList);
+    this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
     this.subQueryUpdate = this.observationFacade.query$.pipe(
       tap(() => { if (this.results) { this.results.resetActivated(); }})

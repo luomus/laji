@@ -449,7 +449,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
       }
     } else if (this.printState === 'select' && !this.labelLoading) {
       this.labelLoading = true;
-      this.userService.getUserSetting(this.labelSettingsKey).pipe(
+      this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
         take(1),
       ).subscribe(settings => {
         this.label.emit({
