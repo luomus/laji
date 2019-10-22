@@ -30,11 +30,6 @@ import { MemberIdPillListComponent } from './form/team/member-id-pill-list/membe
 import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
 import { ExistsPipe } from './pipe/exists.pipe';
 import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
-import { AnnotationListComponent } from './annotations/annotations-list/annotations-list.component';
-import { GatheringComponent } from './annotations/gathering/gathering.component';
-import { GatheringRowsComponent } from './annotations/gathering-rows/gathering-rows.component';
-import { TaxonNameComponent } from './annotations/taxon-name/taxon-name.component';
-import { AnnotationItemComponent } from './annotations/annotation-item/annotation-item.component';
 import { FormSampleComponent } from './form-sample/form-sample.component';
 import { AnnotationModule } from './annotations/annotations.module';
 
@@ -74,11 +69,6 @@ import { AnnotationModule } from './annotations/annotations.module';
     RemoveLeadingPipe,
     ExistsPipe,
     ToSafeQueryPipe,
-    AnnotationListComponent,
-    GatheringRowsComponent,
-    GatheringComponent,
-    TaxonNameComponent,
-    AnnotationItemComponent,
     FormSampleComponent
   ],
   exports: [
