@@ -1,3 +1,4 @@
+@import '../../../../styles/_styles.scss'; 
 .tight {
     margin-top: 0;
   }
@@ -14,11 +15,37 @@
   }
   
   .container-col {
-    display: flex
+    display: flex;
+    @include media-query-tablet {
+      justify-content: space-between;
+      display: flex;
+      flex-direction: column-reverse;
+      flex-wrap: wrap;
+      flex-direction: row;
+    }
   }
   
   .column-modal {
     flex: 1;
+    @include media-query-tablet {
+      padding: 5px 15px;
+      flex: none;
+    }
+  }
+
+  .column-modal:nth-child(1), .column-modal:nth-child(3) {
+    @include media-query-tablet {
+      width: 48%;
+      order: 1;
+      display: inline-block;
+    }
+  }
+
+  .column-modal:nth-child(2) {
+    @include media-query-tablet {
+      width: 100%;
+      order: 0;
+    }
   }
 
   .column-modal .title {
@@ -54,4 +81,7 @@
       right:-30px;
     }
   }
+
+
+
   
