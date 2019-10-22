@@ -16,6 +16,7 @@ app.on('activate', () => {
 
 function createWindow() {
   win = new BrowserWindow({ width: 1200, height: 720 });
+  win.setMenuBarVisibility(false);
 
   win.loadURL(
     url.format({

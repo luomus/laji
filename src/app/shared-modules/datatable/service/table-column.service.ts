@@ -7,6 +7,8 @@ export interface IColumnGroup {
 }
 
 export interface IColumns {
+  'document.documentId': ObservationTableColumn;
+  'unit.unitId': ObservationTableColumn;
   'unit.taxon': ObservationTableColumn;
   'unit.taxonVerbatim': ObservationTableColumn;
   'unit.linkings.taxon.vernacularName': ObservationTableColumn;
@@ -180,13 +182,11 @@ export const COLUMNS: IColumns = {
   },
   'gathering.interpretations.biogeographicalProvinceDisplayname': {
     name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
-    cellTemplate: 'warehouseLabel',
     label: 'result.gathering.biogeographicalProvince',
     aggregateBy: 'gathering.interpretations.biogeographicalProvince,gathering.interpretations.biogeographicalProvinceDisplayname'
   },
   'gathering.interpretations.municipalityDisplayname': {
     name: 'gathering.interpretations.municipalityDisplayname',
-    cellTemplate: 'warehouseLabel',
     label: 'observation.form.municipality',
     aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname'
   },
@@ -219,11 +219,13 @@ export const COLUMNS: IColumns = {
     cellTemplate: 'warehouseLabel',
     label: 'observation.filterBy.image'
   },
-  'document.collectionId': {name: 'document.collectionId', prop: 'document.collection', width: 300, sortable: false},
+  'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false},
   'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.document.notes'},
+  'document.documentId': {name: 'document.documentId'},
+  'unit.unitId': {name: 'unit.unitId'},
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
-  'document.sourceId': {name: 'document.sourceId', prop: 'document.source', sortable: false},
+  'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
   'document.quality.reliabilityOfCollection': {name: 'document.quality.reliabilityOfCollection'},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
@@ -292,33 +294,38 @@ export const COLUMNS: IColumns = {
   },
   'gathering.interpretations.country': {
     name: 'gathering.interpretations.country',
-    cellTemplate: 'label',
+    transform: 'label',
     label: 'result.gathering.country'
   },
   'sample.sampleId': {name: 'sample.sampleId', width: 300, sortable: false},
-  'sample.type': {name: 'sample.type', cellTemplate: 'label', sortable: false},
-  'sample.material': {name: 'sample.material', cellTemplate: 'label', sortable: false},
-  'sample.quality': {name: 'sample.quality', cellTemplate: 'label', sortable: false},
-  'sample.status': {name: 'sample.status', cellTemplate: 'label', sortable: false},
+  'sample.type': {name: 'sample.type', transform: 'label', sortable: false},
+  'sample.material': {name: 'sample.material', transform: 'label', sortable: false},
+  'sample.quality': {name: 'sample.quality', transform: 'label', sortable: false},
+  'sample.status': {name: 'sample.status', transform: 'label', sortable: false},
   'sample.notes': {name: 'sample.notes', sortable: false, label: 'result.document.notes'},
-  'sample.collectionId': {name: 'sample.collectionId', sortable: false, label: 'result.document.collectionId'},
+  'sample.collectionId': {
+    name: 'sample.collectionId',
+    cellTemplate: 'label',
+    sortable: false,
+    label: 'result.document.collectionId'
+  },
   'document.facts.legID': {name: 'document.facts.legID', sortable: false, fact: 'MY.legID'},
   'sample.facts.preparationMaterials': {
     name: 'sample.facts.preparationMaterials',
-    cellTemplate: 'label',
+    transform: 'label',
     sortable: false,
     fact: 'MF.preparationMaterials'
   },
   'sample.facts.elutionMedium': {
     name: 'sample.facts.elutionMedium',
-    cellTemplate: 'label',
+    transform: 'label',
     sortable: false,
     fact: 'MF.elutionMedium'
   },
   'sample.facts.additionalIDs': {name: 'sample.facts.additionalIDs', sortable: false, fact: 'MF.additionalIDs'},
   'sample.facts.qualityCheckMethod': {
     name: 'sample.facts.qualityCheckMethod',
-    cellTemplate: 'label',
+    transform: 'label',
     sortable: false,
     fact: 'MF.qualityCheckMethod'
   },
@@ -356,79 +363,87 @@ export class TableColumnService {
     'gathering.team',
   ];
 
-  private _columnGroups: IColumnGroup[] = [
-    {
-      header: 'identification', fields: [
-        'unit.taxon',
-        'unit.linkings.taxon.vernacularName',
-        'unit.linkings.taxon.scientificName',
-        'unit.taxonVerbatim'
-      ]
-    },
-    {
-      header: 'observation.form.date', fields: [
-        'gathering.displayDateTime',
-        'gathering.conversions.dayOfYearBegin',
-        'gathering.conversions.dayOfYearEnd'
-      ]
-    },
-    {
-      header: 'persons', fields: [
-        'gathering.team',
-        'unit.det'
-      ]
-    },
-    {
-      header: 'observation.form.unit', fields: [
-        'unit.abundanceString',
-        'unit.interpretations.individualCount',
-        'unit.lifeStage',
-        'unit.sex'
-      ]
-    },
-    {
-      header: 'observation.form.place', fields: [
-        'gathering.locality',
-        'gathering.interpretations.municipalityDisplayname',
-        'gathering.interpretations.biogeographicalProvinceDisplayname',
-        'gathering.interpretations.countryDisplayname'
-      ]
-    },
-    {
-      header: 'result.gathering.coordinatesVerbatim', fields: [
-        'gathering.conversions.ykj',
-        'gathering.conversions.ykj10kmCenter',
-        'gathering.conversions.ykj10km',
-        'gathering.conversions.ykj1kmCenter',
-        'gathering.conversions.ykj1km',
-        'gathering.conversions.euref',
-        'gathering.conversions.wgs84',
-        'gathering.interpretations.coordinateAccuracy'
-      ]
-    },
-    {
-      header: 'reliability', fields: [
-        'unit.reportedTaxonConfidence',
-        'unit.quality.taxon.reliability',
-        'unit.quality.taxon.source',
-        'document.quality.reliabilityOfCollection',
-        'unit.recordBasis'
-      ]
-    },
-    {
-      header: 'observation.filters.other', fields: [
-        'unit.notes',
-        'unit.recordBasis',
-        'document.collectionId',
-        'document.sourceId',
-        'document.secureLevel',
-        'document.secureReasons'
-      ]
-    }
+  private _columnGroups: IColumnGroup[][] = [
+    [
+      {
+        header: 'identification', fields: [
+          'unit.taxon',
+          'unit.linkings.taxon.vernacularName',
+          'unit.linkings.taxon.scientificName',
+          'unit.taxonVerbatim'
+        ]
+      },
+      {
+        header: 'observation.form.date', fields: [
+          'gathering.displayDateTime',
+          'gathering.conversions.dayOfYearBegin',
+          'gathering.conversions.dayOfYearEnd'
+        ]
+      },
+      {
+        header: 'persons', fields: [
+          'gathering.team',
+          'unit.det'
+        ]
+      },
+      {
+        header: 'observation.form.unit', fields: [
+          'unit.abundanceString',
+          'unit.interpretations.individualCount',
+          'unit.lifeStage',
+          'unit.sex'
+        ]
+      },
+    ],
+    [
+      {
+        header: 'observation.form.place', fields: [
+          'gathering.locality',
+          'gathering.interpretations.municipalityDisplayname',
+          'gathering.interpretations.biogeographicalProvinceDisplayname',
+          'gathering.interpretations.countryDisplayname'
+        ]
+      },
+      {
+        header: 'result.gathering.coordinatesVerbatim', fields: [
+          'gathering.conversions.ykj',
+          'gathering.conversions.ykj10kmCenter',
+          'gathering.conversions.ykj10km',
+          'gathering.conversions.ykj1kmCenter',
+          'gathering.conversions.ykj1km',
+          'gathering.conversions.euref',
+          'gathering.conversions.wgs84',
+          'gathering.interpretations.coordinateAccuracy'
+        ]
+      },
+    ],
+    [
+      {
+        header: 'reliability', fields: [
+          'unit.reportedTaxonConfidence',
+          'unit.quality.taxon.reliability',
+          'unit.quality.taxon.source',
+          'document.quality.reliabilityOfCollection',
+          'unit.recordBasis'
+        ]
+      },
+      {
+        header: 'observation.filters.other', fields: [
+          'unit.notes',
+          'document.collectionId',
+          'document.sourceId',
+          'document.secureLevel',
+          'document.secureReasons',
+          'document.documentId',
+          'unit.unitId',
+        ]
+      }
+    ]
   ];
 
   private _allColumns: ObservationTableColumn[] = [
-    COLUMNS['unit.taxon'],
+    COLUMNS['document.documentId'],
+    COLUMNS['unit.unitId'],
     COLUMNS['unit.taxon'],
     COLUMNS['unit.taxonVerbatim'],
     COLUMNS['unit.linkings.taxon.vernacularName'],
@@ -482,6 +497,10 @@ export class TableColumnService {
     COLUMNS['gathering.interpretations.coordinateAccuracy'],
   ];
 
+  constructor() {
+    this.allColumns = this._allColumns;
+  }
+
   set defaultFields(fields: Array<keyof IColumns>) {
     this._defaultFields = fields;
   }
@@ -490,23 +509,31 @@ export class TableColumnService {
     return [...this._defaultFields];
   }
 
-  set columnGroups(groups: IColumnGroup[]) {
+  set columnGroups(groups: IColumnGroup[][]) {
     this._columnGroups = groups;
   }
 
-  get columnGroups() {
+  get columnGroups(): IColumnGroup[][] {
     return this._columnGroups;
   }
 
   set allColumns(cols: ObservationTableColumn[]) {
-    this._allColumns = cols;
+    this._allColumns = cols.map(col => ({
+      ...col,
+      label: col.label || 'result.' + col.name
+    }));
   }
 
   get allColumns() {
-    return this._allColumns;
+    return this._allColumns.map(col => ({...col}));
   }
 
   getColumn(name: string): ObservationTableColumn {
-    return this._allColumns.find(col => col.name === name);
+    const column = this._allColumns.find(col => col.name === name);
+    return column ? {...column} : undefined;
+  }
+
+  getColumns(name: string[]): ObservationTableColumn[] {
+    return name.map(n => this.getColumn(n));
   }
 }

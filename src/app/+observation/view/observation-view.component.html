@@ -71,7 +71,7 @@
           [active]="activeTab"
           [query]="vm.query"
           (queryChange)="onQueryChange($event)"
-          [listSettings]="vm.settingsList"
+          [listSettings]="settingsList$ | async"
           (listSettingsChange)="onListSettingsChange($event)"
         ></laji-observation-result>
       </div>

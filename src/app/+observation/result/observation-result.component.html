@@ -94,11 +94,13 @@
           {{ 'search.result.load' | translate }}
         </a>
       </li>
-      <li *ngIf="visible.annotations" role="presentation" [ngClass]="{active: active === 'annotation'}">
-        <a [routerLink]=" basePath + '/annotation' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
-          {{ 'search.result.annotation' | translate }}
-        </a>
-      </li>
+      <ng-container *lajiForTypes="['dev']">
+        <li *ngIf="visible.annotations" role="presentation" [ngClass]="{active: active === 'annotation'}">
+          <a [routerLink]=" basePath + '/annotation' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters">
+            {{ 'search.result.annotation' | translate }}
+          </a>
+        </li>
+      </ng-container>
     </ul>
   </div>
 </ng-container>

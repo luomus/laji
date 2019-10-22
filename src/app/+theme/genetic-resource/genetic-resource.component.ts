@@ -39,7 +39,6 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       sampleCollectionId: ['HR.77', 'HR.2831'],
       sampleType: ['MF.preparationTypeDNAExtract', 'MF.preparationTypeTissue']
     };
-    this.observationFacade.settingsKey = 'sampleList';
     this.tableColumnService.defaultFields = [
       'sample.sampleId',
       'unit.taxonVerbatim',
@@ -53,41 +52,58 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
       'sample.facts.DNAConcentrationNgPerMicroliter',
     ];
     this.tableColumnService.columnGroups = [
-      { header: 'Identification', fields: [
-        'unit.taxonVerbatim',
-        'unit.det'
-      ]},
-      { header: 'Date', fields: [
-          'gathering.displayDateTime',
-        ]},
-      { header: 'Individual', fields: [
-          'unit.lifeStage',
-          'unit.sex'
-        ]},
-      { header: 'Preparation/Sample', fields: [
-          'sample.type',
-          'sample.material',
-          'sample.quality',
-          'sample.facts.qualityCheckMethod',
-          'sample.facts.DNAVolumeMicroliters',
-          'sample.facts.DNARatioOfAbsorbance260And280',
-          'sample.facts.DNAConcentrationNgPerMicroliter',
-          'sample.facts.preparationMaterials',
-          'sample.facts.elutionMedium',
-          'sample.status',
-          'sample.facts.additionalIDs',
-          'sample.sampleId',
-        ]},
-      { header: 'Locality', fields: [
-          'gathering.interpretations.country',
-          'gathering.conversions.wgs84',
-          'gathering.team'
-        ]},
-      { header: 'observation.filters.other', fields: [
-          'sample.notes',
-          'document.collectionId',
-          'document.facts.legID',
-        ]}
+      [
+        {
+          header: 'Identification', fields: [
+            'unit.taxonVerbatim',
+            'unit.det'
+          ]
+        },
+        {
+          header: 'Date', fields: [
+            'gathering.displayDateTime',
+          ]
+        },
+        {
+          header: 'Individual', fields: [
+            'unit.lifeStage',
+            'unit.sex'
+          ]
+        },
+        {
+          header: 'Locality', fields: [
+            'gathering.interpretations.country',
+            'gathering.conversions.wgs84',
+            'gathering.team'
+          ]
+        },
+      ],
+      [
+        {
+          header: 'Preparation/Sample', fields: [
+            'sample.type',
+            'sample.material',
+            'sample.quality',
+            'sample.facts.qualityCheckMethod',
+            'sample.facts.DNAVolumeMicroliters',
+            'sample.facts.DNARatioOfAbsorbance260And280',
+            'sample.facts.DNAConcentrationNgPerMicroliter',
+            'sample.facts.preparationMaterials',
+            'sample.facts.elutionMedium',
+            'sample.status',
+            'sample.facts.additionalIDs',
+            'sample.sampleId',
+          ]
+        },
+      ],
+      [
+        {
+          header: 'observation.filters.other', fields: [
+            'sample.notes',
+            'document.facts.legID',
+          ]
+        }
+      ]
     ];
     this.tableColumnService.allColumns = [
       COLUMNS['unit.taxonVerbatim'],

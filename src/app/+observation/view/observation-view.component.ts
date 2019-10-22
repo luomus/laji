@@ -10,7 +10,7 @@ import { IObservationViewModel, ObservationFacade } from '../observation.facade'
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
-import { ISettingResultList } from '../../shared/service/user.service';
+import { ISettingResultList, UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 export interface VisibleSections {
@@ -55,6 +55,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     'pageSize',
     'page'
   ];
+  @Input() settingsKeyList = 'resultList';
   _activeTab: string;
   @ViewChild('tabs', { static: false }) tabs;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
@@ -80,6 +81,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   subQueryUpdate: Subscription;
 
   vm$: Observable<IObservationViewModel>;
+  settingsList$: Observable<ISettingResultList>;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -88,7 +90,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     private observationFacade: ObservationFacade,
     private browserService: BrowserService,
     private localizeRouterService: LocalizeRouterService,
-    private route: Router
+    private route: Router,
+    private userService: UserService
   ) {}
 
   @Input()
@@ -106,6 +109,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
+    this.settingsList$ = this.userService.getUserSetting(this.settingsKeyList);
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
     this.subQueryUpdate = this.observationFacade.query$.pipe(
       tap(() => { if (this.results) { this.results.resetActivated(); }})
@@ -154,7 +158,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   onListSettingsChange(settings: ISettingResultList) {
-    this.observationFacade.updateListSettings(settings);
+    this.userService.setUserSetting(this.settingsKeyList, settings);
   }
 
   toggleMobile() {

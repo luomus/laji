@@ -1,27 +1,14 @@
 <div class="observation-table-wrapper">
-  <div class="menu-row" *ngIf="showSettingsMenu || showDownloadMenu">
-    <div class="link btn btn-default btn-sm pull-right" style="margin-left: 5px;" (click)="openModal()" *ngIf="showSettingsMenu">
-      {{ 'iucn.results.selectColumns' | translate }}
-      <i class="glyphicon glyphicon-cog"></i>
-    </div>
-    <ng-container *ngIf="showDownloadMenu">
-      <laji-download
-        *ngIf="maxDownload >= result.total else tooMany"
-        linkClass="link btn btn-default btn-sm pull-right"
-        [downloadLoading]="false"
-        (download)="download($event)">
-      <span>
-        {{ 'haseka.submissions.download' | translate }}
-        <i class="glyphicon glyphicon-download-alt"></i>
-      </span>
-      </laji-download>
-      <ng-template #tooMany>
-        <div class="btn btn-default btn-sm pull-right disabled">
-          {{ 'haseka.submissions.download' | translate }} max {{ maxDownload }}
-        </div>
-      </ng-template>
-    </ng-container>
-  </div>
+  <laji-datatable-header
+    [downloadText]="'haseka.submissions.download' | translate"
+    [downloadLoading]="downloadLoading"
+    [showDownloadMenu]="showDownloadMenu"
+    [showSettingsMenu]="showSettingsMenu"
+    [count]="result.total"
+    [maxDownload]="maxDownload"
+    (openSettingsMenu)="openModal()"
+    (download)="download($event)"
+  ></laji-datatable-header>
   <laji-datatable
     #dataTable
     class="observation-table"
@@ -79,9 +66,9 @@
         </div>
 
         <div class="row" *ngIf="!isAggregate">
-          <ng-container *ngFor="let col of [[0, 4], [4, 2], [6, 2]]">
+          <ng-container *ngFor="let col of columnGroups ">
             <div class="col-sm-6 col-md-4">
-              <ng-container *ngFor="let group of columnGroups | slice:col[0]:col[0] + col[1]">
+              <ng-container *ngFor="let group of col">
                 <laji-selected-field-group
                   [header]="group.header"
                   [fields]="group.fields"

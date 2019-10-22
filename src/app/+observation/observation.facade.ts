@@ -7,7 +7,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ISettingResultList, UserService } from '../shared/service/user.service';
+import { UserService } from '../shared/service/user.service';
 import { Autocomplete } from '../shared/model/Autocomplete';
 import { FooterService } from '../shared/service/footer.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
@@ -26,7 +26,6 @@ interface IObservationState extends IPersistentState {
   countUnit: number;
   loadingTaxa: boolean;
   loadingUnits: boolean;
-  settingsList: ISettingResultList;
 }
 
 interface ITaxonAutocomplete extends Autocomplete {
@@ -55,7 +54,6 @@ let _state: IObservationState = {
   countUnit: 0,
   loadingTaxa: false,
   loadingUnits: false,
-  settingsList: {},
   settingsMap: {}
 };
 
@@ -82,7 +80,6 @@ export class ObservationFacade {
   readonly countTaxa$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
   readonly filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
   readonly settingsMap$   = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
-  settingsList$  = this.userService.getUserSetting('resultList');
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
@@ -95,13 +92,11 @@ export class ObservationFacade {
     countUnit: this.countUnit$,
     countTaxa: this.countTaxa$,
     filterVisible: this.filterVisible$,
-    settingsList: this.settingsList$,
     settingsMap: this.settingsMap$
   });
 
   private hashCache: {[key: string]: string} = {};
   private _emptyQuery: WarehouseQueryInterface = emptyQuery;
-  private _settingsKey = 'resultList';
 
   constructor(
     private browserService: BrowserService,
@@ -157,11 +152,6 @@ export class ObservationFacade {
     return this._emptyQuery;
   }
 
-  set settingsKey(key: string) {
-    this._settingsKey = key;
-    this.settingsList$  = this.userService.getUserSetting(key);
-  }
-
   clearQuery() {
     this.updateQuery(this.emptyQuery);
   }
@@ -189,10 +179,6 @@ export class ObservationFacade {
         return {...item, groups};
       }))
     );
-  }
-
-  updateListSettings(settings: ISettingResultList) {
-    this.userService.setUserSetting(this._settingsKey, settings);
   }
 
   showFooter() {

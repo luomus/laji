@@ -14,7 +14,6 @@ import { ObservationMonthDayChartComponent } from './observation-month-day-chart
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartsModule } from 'ng2-charts';
 import { ChartsModuleBarVerticalGroup } from '../bar-chart/ng2-charts.module';
-import { DownloadModule } from '../download/download.module';
 
 @NgModule({
   imports: [
@@ -25,8 +24,7 @@ import { DownloadModule } from '../download/download.module';
     SharedModule,
     DatatableModule,
     ChartsModule,
-    ChartsModuleBarVerticalGroup,
-    DownloadModule
+    ChartsModuleBarVerticalGroup
   ],
   declarations: [
     ObservationTableComponent,

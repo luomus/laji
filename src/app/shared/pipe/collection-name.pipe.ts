@@ -20,9 +20,7 @@ export class CollectionNamePipe extends AbstractLabelPipe implements PipeTransfo
 
   protected _updateValue(key: string): Observable<string> {
     this.key = key;
-    return this.collectionService
-        .getName(key, this.translate.currentLang).pipe(
-        map(col => (col[0] || {value: ''}).value));
+    return this.collectionService.getName(key, this.translate.currentLang, '');
   }
 
   protected _parseValue(res: string): string {

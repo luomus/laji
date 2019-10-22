@@ -25,7 +25,7 @@ const NEW_SETUP: ISetup = {
     'marginLeft.mm': 1.5,
     'marginBottom.mm': 1.5,
     'marginRight.mm': 1.5,
-    'font-family': 'Arial',
+    'font-family': Presets.DefaultFont,
     'font-size.pt': 9
   },
   border: Presets.Border.solid,
@@ -72,16 +72,8 @@ export class AppComponent implements OnInit {
   @ViewChild('notebookImport', { static: false }) notebookImport;
   @ViewChild('notebookImportActions', { static: false }) notebookImportActions;
 
-  availableFields$: Observable<ILabelField[]>;
-  defaultAvailableFields$: Observable<ILabelField[]>;
-
-  skipFields: string[] = [
-    'secureLevel',
-    'gatheringEvent.legPublic',
-    'gatherings.namedPlaceID',
-    'gatherings.images',
-    'gatherings.units.unitFact.autocompleteSelectedTaxonID',
-  ];
+  availableFields: ILabelField[];
+  defaultAvailableFields: ILabelField[];
 
   constructor(
     private http: HttpClient,
@@ -92,19 +84,16 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.defaultAvailableFields$ = this.http.get<any>(environment.form).pipe(
-      map(form => this.formService.schemaToAvailableFields(form.schema, [
-        {field: 'uri', content: 'http://example.com/ID', label: 'URI - QRCode', type: FieldType.qrCode},
-        {field: 'uri', content: 'http://example.com/ID', label: 'URI', type: FieldType.uri},
-        {field: 'domain', content: 'http://example.com/', label: 'Domain', type: FieldType.domain},
-        {field: 'id', content: 'ID', label: 'ID', type: FieldType.id},
-        {field: '', content: 'Text', label: 'Text', type: FieldType.text}
-      ], {
-        skip: this.skipFields
-      })),
-      share()
-    );
-    this.availableFields$ = this.defaultAvailableFields$;
+    this.availableFields = [
+      {field: 'uri', content: 'http://example.com/ID', label: 'URI - QRCode', type: FieldType.qrCode},
+      {field: 'uri', content: 'http://example.com/ID', label: 'URI', type:  FieldType.uri},
+      {field: '', content: 'Text', label: 'Text', type: FieldType.text}
+    ];
+    this.defaultAvailableFields = [
+      {field: 'uri', content: 'http://example.com/ID', label: 'URI - QRCode', type: FieldType.qrCode},
+      {field: 'uri', content: 'http://example.com/ID', label: 'URI', type:  FieldType.uri},
+      {field: '', content: 'Text', label: 'Text', type: FieldType.text}
+    ];
   }
 
   htmlToPdf(result: ILabelPdf) {
@@ -147,7 +136,7 @@ export class AppComponent implements OnInit {
         })
       ]
     };
-    this.availableFields$ = of(fields);
+    this.availableFields = fields;
   }
 
   onDataChange(data: object[]) {

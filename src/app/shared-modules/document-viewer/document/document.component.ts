@@ -33,7 +33,6 @@ import { DocumentViewerChildComunicationService } from '../../../shared-modules/
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
   @Input() uri: string;
-  @Input() highlight: string;
   @Input() own: boolean;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
@@ -63,6 +62,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   highlightParents: string[] = [];
   @SessionStorage() showFacts = false;
   private _uri: string;
+  private _highlight: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
   private metaFetch: Subscription;
@@ -154,6 +154,14 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     return hasHighlight;
   }
 
+  @Input() set highlight(id: string) {
+    this._highlight = IdService.getUri(id);
+  }
+
+  get highlight() {
+    return this._highlight;
+  }
+
   setActive(i) {
     this.active = i;
     if (this.document && this.document.gatherings) {
@@ -205,11 +213,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       } else {
         this.editors = [];
       }
-      let activeIdx = 0;
+      let activeGatheringIdx = 0;
       if (doc && doc.gatherings) {
-        doc.gatherings.map((gathering, idx) => {
+        doc.gatherings.map((gathering, gatheringIdx) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
-            mapData[idx] = {
+            mapData[gatheringIdx] = {
               ...gathering.conversions,
               geoJSON: gathering.conversions.wgs84Geo,
               coordinateAccuracy: gathering.interpretations && gathering.interpretations.coordinateAccuracy,
@@ -218,20 +226,27 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
             this.hasMapData = true;
           }
           if (this.highlight && gathering.gatheringId === this.highlight) {
-            activeIdx = idx;
+            activeGatheringIdx = gatheringIdx;
           }
-          if (gathering.units) {
+          if (gathering.units && this.highlight) {
             this.unitCnt += gathering.units.length;
-            gathering.units.map(unit => {
-              if (this.highlight && unit.unitId === this.highlight) {
-                activeIdx = idx;
+            gathering.units.forEach(unit => {
+              if (unit.samples) {
+                unit.samples.forEach(sample => {
+                  if (sample.sampleId === this.highlight) {
+                    activeGatheringIdx = gatheringIdx;
+                  }
+                });
+              }
+              if (unit.unitId === this.highlight) {
+                activeGatheringIdx = gatheringIdx;
               }
             });
           }
         });
       }
       this.mapData = mapData;
-      this.setActive(activeIdx);
+      this.setActive(activeGatheringIdx);
       if (this.interval) {
         this.interval.unsubscribe();
       }

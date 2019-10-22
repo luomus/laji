@@ -1,25 +1,33 @@
-import { concat, delay, map, retryWhen, share, shareReplay, switchMap, take, tap, toArray } from 'rxjs/operators';
 import {
-  forkJoin as ObservableForkJoin,
+  concat,
+  concatMap,
+  delay,
+  map,
+  retryWhen,
+  shareReplay,
+  switchMap,
+  take,
+  toArray
+} from 'rxjs/operators';
+import {
   from,
   Observable,
-  Observer,
-  of as ObservableOf,
   throwError as observableThrowError
 } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { PagedResult } from '../../../shared/model/PagedResult';
-import { SourceService } from '../../../shared/service/source.service';
-import { CollectionService } from '../../../shared/service/collection.service';
 import { IdService } from '../../../shared/service/id.service';
 import { Util } from '../../../shared/service/util.service';
 import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
-import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { TableColumnService } from '../../datatable/service/table-column.service';
 import { ObservationTableColumn } from '../model/observation-table-column';
+import { DatatableUtil } from '../../datatable/service/datatable-util.service';
 
+interface IInternalObservationTableColumn extends ObservationTableColumn {
+  _paths: string[];
+}
 
 @Injectable()
 export class ObservationListService {
@@ -44,10 +52,8 @@ export class ObservationListService {
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private sourceService: SourceService,
-    private collectionService: CollectionService,
-    private triplestoreLabelService: TriplestoreLabelService,
-    private tableColumnService: TableColumnService
+    private tableColumnService: TableColumnService,
+    private datatableUtil: DatatableUtil
   ) { }
 
   getAggregate(
@@ -83,7 +89,7 @@ export class ObservationListService {
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
         map(data => Util.clone(data)),
         map(data => this.convertAggregateResult(data))).pipe(
-        switchMap(data => this.openValues(data, aggregateBy, lang)),
+        switchMap(data => this.openValues(data, aggregateBy)),
         shareReplay(1)
       );
     }
@@ -113,7 +119,7 @@ export class ObservationListService {
       ).pipe(
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
         map(data => Util.clone(data))).pipe(
-        switchMap(data => this.openValues(data, selected, lang)),
+        switchMap(data => this.openValues(data, selected)),
         shareReplay(1)
       );
     }
@@ -168,9 +174,8 @@ export class ObservationListService {
     return data;
   }
 
-  private openValues(data, selected: string[], lang: string): Observable<any> {
-    const allMappers = [];
-    const labels: ObservationTableColumn[] = [];
+  private openValues(data, selected: string[]): Observable<any> {
+    const transform: IInternalObservationTableColumn[] = [];
     const facts: ObservationTableColumn[] = [];
 
     selected.forEach(col => {
@@ -182,69 +187,22 @@ export class ObservationListService {
         column.fact = IdService.getUri(column.fact);
         facts.push(column);
       }
-      if (column.cellTemplate === 'label') {
-        // TODO: move opening label values here
+      if (column.transform) {
+        transform.push({...column, _paths: ('' + (column.prop || column.name)).split('.')});
       }
     });
-    /*
-    if (selected.indexOf('document.sourceId') > -1) {
-      allMappers.push(this.sourceService.getAllAsLookUp(lang).pipe(map(sources => ({'document.sourceId': sources}))));
-    }
-    if (selected.indexOf('document.collectionId') > -1) {
-      allMappers.push(this.collectionService.getAll(lang).pipe(
-        map(collections => {
-          const lookUp = {};
-          collections.map(collection => lookUp[collection.id] = collection.value);
-          return lookUp;
-        }),
-        map(collections => ({'document.collectionId': collections})), ));
-    }
 
-    const mappers$ = allMappers.length === 0 ? ObservableOf({}) : ObservableForkJoin(allMappers).pipe(
-      map(mappers => mappers.reduce((cumulative, current) => {
-        return {...cumulative, ...current};
-      }, {})));
-    */
     return from(data.results || []).pipe(
       // take(1),
       map(document => this.convertCoordinates(document, selected)),
       map(document => this.addFacts(document, facts)),
+      concatMap(document => this.transformDocument(document, transform)),
       toArray(),
       map(results => ({
         ...data,
         results
       }))
     );
-   /*
-    return ObservableForkJoin(
-      ObservableOf(data),
-      mappers$,
-      (response, mappers) => {
-        response.results = response.results.map(document => {
-          if (document.document) {
-            if (mappers['document.sourceId'] && document.document.sourceId) {
-              if (!uriCache[document.document.sourceId]) {
-                uriCache[document.document.sourceId] = IdService.getId(document.document.sourceId);
-              }
-              const qname = uriCache[document.document.sourceId];
-              document.document.source = mappers['document.sourceId'][qname] ?
-                mappers['document.sourceId'][qname] : document.document.sourceId;
-            }
-            if (mappers['document.collectionId'] && document.document.collectionId) {
-              if (!uriCache[document.document.collectionId]) {
-                uriCache[document.document.collectionId] = IdService.getId(document.document.collectionId);
-              }
-              const qname = uriCache[document.document.collectionId];
-              document.document.collection = mappers['document.collectionId'][qname] ?
-                mappers['document.collectionId'][qname] : document.document.collectionId;
-            }
-          }
-          return document;
-        });
-        return data;
-      }
-    );
-    */
   }
 
   private stringToObj(path, value, obj) {
@@ -287,30 +245,53 @@ export class ObservationListService {
     return document;
   }
 
-  private setValue(document: object, paths: string[], value: any) {
-    const path = paths.shift();
-    if (paths.length > 0) {
-      if (!document[path]) {
-        document[path] = {};
+  private getValue(document: object, paths: string[]) {
+    let pointer = document;
+    paths.forEach(path => {
+      if (pointer) {
+        pointer = pointer[path];
       }
-      return this.setValue(document[path], paths, value);
+    });
+    return pointer;
+  }
+
+  private setValue(document: object, paths: string[], value: any) {
+    let pointer = document;
+    let key = paths[0];
+    for (let i = 0; i < paths.length - 1; i++) {
+      if (!pointer[key]) {
+        pointer[key] = {};
+      }
+      pointer = pointer[key];
+      key = paths[i + 1];
     }
-    document[path] = value;
+    pointer[key] = value;
   }
 
   private pickFacts(document: object, paths: string[], fact: string): string[] {
-    const path = paths.shift();
-    if (paths.length > 0) {
-      return document[path] ? this.pickFacts(document[path], paths, fact) : [];
+    const facts = this.getValue(document, paths);
+    if (!Array.isArray(facts) || fact.length === 0) {
+      return [];
     }
-    if (Array.isArray(document[path])) {
-      return document[path].reduce((prev, doc) => {
-        if (doc.fact === fact) {
-          prev.push(doc.value);
-        }
-        return prev;
-      }, []);
-    }
-    return [];
+    return facts.reduce((prev, doc) => {
+      if (doc.fact === fact) {
+        prev.push(doc.value);
+      }
+      return prev;
+    }, []);
+  }
+
+  private transformDocument(document: object, transforms: IInternalObservationTableColumn[]): Observable<any> {
+    return from(transforms).pipe(
+      concatMap(transform => this.transformField(this.getValue(document, transform._paths), transform).pipe(
+        map(value => this.setValue(document, transform._paths, value))
+      )),
+      toArray(),
+      map(() => document)
+    );
+  }
+
+  private transformField(value: object, transforms: IInternalObservationTableColumn): Observable<any> {
+    return this.datatableUtil.getVisibleValue(value, null, transforms.transform);
   }
 }

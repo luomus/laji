@@ -8,6 +8,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { DataTableFooterComponent } from './data-table-footer/data-table-footer.component';
 import { DatatableTemplatesComponent } from './datatable-templates/datatable-templates.component';
 import { InfoModule } from '../info/info.module';
+import { DatatableHeaderComponent } from './datatable-header/datatable-header.component';
+import { DownloadModule } from '../download/download.module';
 
 @NgModule({
   imports: [
@@ -16,9 +18,10 @@ import { InfoModule } from '../info/info.module';
     LangModule,
     SpinnerModule,
     SharedModule,
-    InfoModule
+    InfoModule,
+    DownloadModule
   ],
-  declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent],
-  exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent]
+  declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent],
+  exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent]
 })
 export class DatatableModule { }

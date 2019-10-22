@@ -25,6 +25,14 @@
     </div>
   </div>
   <div class="species-table-wrapper">
+    <laji-datatable-header
+      [showSettingsMenu]="true"
+      (openSettingsMenu)="openModal()"
+      [showDownloadMenu]="showDownloadAndBrowse"
+      [downloadLoading]="downloadLoading"
+      [downloadText]="'species.download' | translate"
+      (download)="download($event)"
+    ></laji-datatable-header>
     <laji-datatable
       #dataTable
       (rowSelect)="onRowSelect($event)"
@@ -41,30 +49,8 @@
       [pageSize]="speciesPage.pageSize"
       [columns]="columns">
     </laji-datatable>
-    <div class="setting-menu link" (click)="openModal()">
-      <i class="glyphicon glyphicon-cog"></i>
-    </div>
   </div>
 </div>
-
-<ng-container *ngIf="showDownloadAndBrowse">
-  <div class="row">
-    <div class="col-sm-5">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">{{ 'species.download' | translate }}</h4>
-        </div>
-        <div class="panel-body">
-          <laji-download #speciesDownload
-                         [downloadLoading]="downloadLoading"
-                         (download)="download($event)">{{ 'species.download' | translate }}</laji-download>
-        </div>
-      </div>
-    </div>
-  </div>
-  <laji-species-browse-observations [searchQuery]="searchQuery"
-  ></laji-species-browse-observations>
-</ng-container>
 
 <laji-species-list-options-modal #settingsModal
                                  (settingsChange)="onSettingsChange()"
