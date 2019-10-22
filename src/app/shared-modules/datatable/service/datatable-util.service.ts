@@ -107,24 +107,9 @@ export class DatatableUtil {
   }
 
   private getLabels(values): Observable<string> {
-<<<<<<< HEAD
-    if (!Array.isArray(values)) {
-      values = [values];
-    }
-    const labelObservables = [];
-    for (let i = 0; i < values.length; i++) {
-      labelObservables.push(
-        this.labelService.get(values[i], this.translate.currentLang)
-      );
-    }
-    return ObservableForkJoin(labelObservables).pipe(
-      map(labels => labels.join('; '))
-    );
-=======
     return this.getArray(values, (value) => {
       return this.labelService.get(IdService.getId(value), this.translate.currentLang);
     }, '; ');
->>>>>>> origin/development
   }
 
   private getPublications(values): Observable<string> {
@@ -154,8 +139,6 @@ export class DatatableUtil {
       map(data => data.join('; '))
     );
   }
-<<<<<<< HEAD
-=======
 
   private getArray(values: string|string[], getObservable: (string) => Observable<string>, separator: string): Observable<string> {
     if (!Array.isArray(values)) {
@@ -179,5 +162,4 @@ export class DatatableUtil {
     }
     return ObservableOf('');
   }
->>>>>>> origin/development
 }
