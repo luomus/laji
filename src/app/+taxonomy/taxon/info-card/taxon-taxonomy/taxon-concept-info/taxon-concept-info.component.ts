@@ -1,9 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { TaxonConceptService } from './taxon-concept.service';
 import { TaxonMatch } from './taxon-match.model';
-import { Subscription, of } from 'rxjs';
-import {Taxonomy} from '../../../../../shared/model/Taxonomy';
-import {catchError} from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
+import { Taxonomy } from '../../../../../shared/model/Taxonomy';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-taxon-concept-info',

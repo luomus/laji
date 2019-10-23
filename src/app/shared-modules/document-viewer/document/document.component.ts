@@ -1,5 +1,4 @@
-
-import { startWith, tap, map, filter, switchMap, take, catchError, retryWhen, delay, concat } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -30,7 +29,6 @@ import { Global } from '../../../../environments/global';
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
   @Input() uri: string;
-  @Input() highlight: string;
   @Input() own: boolean;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
@@ -53,8 +51,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   unitCnt;
   isViewInited = false;
   showOnlyHighlighted = true;
+  highlightParents: string[] = [];
   @SessionStorage() showFacts = false;
   private _uri: string;
+  private _highlight: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
   private metaFetch: Subscription;
@@ -102,7 +102,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
         catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
         map(doc => doc.document),
-        tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight))
+        tap((doc) => {
+          this.highlightParents = [];
+          this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight);
+        })
       );
     findDox$
       .subscribe(
@@ -115,24 +118,33 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     if (!highlight) {
       return false;
     }
-    if (
-      (doc.gatheringId && doc.gatheringId === highlight) ||
-      (doc.unitId && doc.unitId === highlight)
-    ) {
+    const id = this.getId(doc);
+    if (id === highlight) {
+      this.highlightParents.push(id);
       return true;
     }
     let hasHighlight = false;
-    ['gatherings', 'units'].forEach(level => {
+    ['gatherings', 'units', 'samples'].forEach(level => {
       if (Array.isArray(doc[level])) {
         doc[level].forEach(subLevel => {
-          if (hasHighlight) {
-            return hasHighlight;
+          if (!hasHighlight) {
+            hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
+            if (hasHighlight) {
+              this.highlightParents.push(id);
+            }
           }
-          hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
         });
       }
     });
     return hasHighlight;
+  }
+
+  @Input() set highlight(id: string) {
+    this._highlight = IdService.getUri(id);
+  }
+
+  get highlight() {
+    return this._highlight;
   }
 
   setActive(i) {
@@ -159,6 +171,16 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     this.showOnlyHighlighted = !this.showOnlyHighlighted;
   }
 
+  private getId(doc): string {
+    let id = '';
+    ['documentId', 'gatheringId', 'unitId', 'sampleId'].forEach(field => {
+      if (doc[field]) {
+        id = doc[field];
+      }
+    });
+    return id;
+  }
+
   private parseDoc(doc, found) {
     this.hasDoc = found;
     this.unitCnt = 0;
@@ -176,11 +198,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       } else {
         this.editors = [];
       }
-      let activeIdx = 0;
+      let activeGatheringIdx = 0;
       if (doc && doc.gatherings) {
-        doc.gatherings.map((gathering, idx) => {
+        doc.gatherings.map((gathering, gatheringIdx) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
-            mapData[idx] = {
+            mapData[gatheringIdx] = {
               ...gathering.conversions,
               geoJSON: gathering.conversions.wgs84Geo,
               coordinateAccuracy: gathering.interpretations && gathering.interpretations.coordinateAccuracy,
@@ -189,20 +211,27 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
             this.hasMapData = true;
           }
           if (this.highlight && gathering.gatheringId === this.highlight) {
-            activeIdx = idx;
+            activeGatheringIdx = gatheringIdx;
           }
-          if (gathering.units) {
+          if (gathering.units && this.highlight) {
             this.unitCnt += gathering.units.length;
-            gathering.units.map(unit => {
-              if (this.highlight && unit.unitId === this.highlight) {
-                activeIdx = idx;
+            gathering.units.forEach(unit => {
+              if (unit.samples) {
+                unit.samples.forEach(sample => {
+                  if (sample.sampleId === this.highlight) {
+                    activeGatheringIdx = gatheringIdx;
+                  }
+                });
+              }
+              if (unit.unitId === this.highlight) {
+                activeGatheringIdx = gatheringIdx;
               }
             });
           }
         });
       }
       this.mapData = mapData;
-      this.setActive(activeIdx);
+      this.setActive(activeGatheringIdx);
       if (this.interval) {
         this.interval.unsubscribe();
       }
@@ -211,7 +240,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
           filter(stable => stable),
           take(1),
           switchMap(() => ObservableInterval(this.recheckIterval))
-    ).subscribe(() => this.updateDocument());
+        ).subscribe(() => this.updateDocument());
     }
     this.cd.markForCheck();
   }

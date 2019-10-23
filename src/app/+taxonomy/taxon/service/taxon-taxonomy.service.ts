@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Observable, of } from 'rxjs';
-import {tap, share, map, switchMap} from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()

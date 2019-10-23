@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class CheckLangService {

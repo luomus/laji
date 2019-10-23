@@ -84,7 +84,7 @@
     <div class="col-sm-12">
       <laji-select
         [selected]="query.typeOfOccurrenceId"
-        (selectedChanged)="indirectQueryChange('typeOfOccurrenceId', $event)"
+        (selectedChange)="indirectQueryChange('typeOfOccurrenceId', $event)"
         [useFilter]="false"
         [title]="'observation.commonness' | translate"
         [info]="'observation.info.commonness' | translate"
@@ -125,7 +125,7 @@
         <div class="col-sm-12">
           <laji-select
             [selected]="[query.qualityIssues]"
-            (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
+            (selectedChange)="indirectQueryChange('qualityIssues', $event[0])"
             [multiple]="false"
             [useFilter]="false"
             [title]="'observation.form.qualityIssues' | translate"
@@ -488,7 +488,7 @@
       <div class="col-sm-12">
         <laji-select
           [selected]="[query.breedingSite]"
-          (selectedChanged)="indirectQueryChange('breedingSite', $event[0])"
+          (selectedChange)="indirectQueryChange('breedingSite', $event[0])"
           [multiple]="false"
           [useFilter]="false"
           [title]="'observation.form.breedingSite' | translate"
@@ -559,7 +559,7 @@
         <div class="col-sm-12">
           <laji-select
             [selected]="[query.annotated]"
-            (selectedChanged)="indirectQueryChange('annotated', $event[0])"
+            (selectedChange)="indirectQueryChange('annotated', $event[0])"
             [multiple]="false"
             [useFilter]="false"
             [title]="'observation.form.annotated' | translate"
@@ -575,7 +575,7 @@
         <div class="col-sm-12">
           <laji-select
             [selected]="[query.qualityIssues]"
-            (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
+            (selectedChange)="indirectQueryChange('qualityIssues', $event[0])"
             [multiple]="false"
             [useFilter]="false"
             [title]="'observation.form.qualityIssues' | translate"
@@ -607,7 +607,7 @@
       <div class="col-sm-12">
         <laji-select
           [selected]="query.reliabilityOfCollection"
-          (selectedChanged)="indirectQueryChange('reliabilityOfCollection', $event)"
+          (selectedChange)="indirectQueryChange('reliabilityOfCollection', $event)"
           [multiple]="true"
           [useFilter]="false"
           [title]="'observation.form.reliabilityOfCollection' | translate"

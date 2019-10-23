@@ -1,4 +1,4 @@
-import { map, catchError, tap, share, filter, distinctUntilChanged, mergeMap, take } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, map, mergeMap, share, tap } from 'rxjs/operators';
 import { isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -78,6 +78,10 @@ export class UserService {
     + '?target=' + environment.systemID
     + '&redirectMethod=GET&locale=%lang%'
     + '&next=' + next).replace('%lang%', lang);
+  }
+
+  static isAdmin(person: Person): boolean {
+    return person && person.role && person.role.includes('MA.admin');
   }
 
   constructor(
@@ -172,7 +176,7 @@ export class UserService {
     );
   }
 
-  getUserSetting(key: keyof IUserSettings): Observable<any> {
+  getUserSetting<T>(key: keyof IUserSettings): Observable<T> {
     return this.settings$.pipe(map(settings => settings[key]));
   }
 

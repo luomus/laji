@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../shared/service/user.service';
 import { FormService } from '../../../shared/service/form.service';
 import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
@@ -14,6 +14,7 @@ export enum Rights {
 }
 
 interface InstructionsData {
+  requireLogin?: boolean;
   loggedIn: boolean;
   rights: Rights;
   instructions: string;
@@ -44,7 +45,8 @@ export class InstructionsComponent implements OnInit {
         mergeMap(loggedIn => this.themeFormService.getForm(this.route).pipe(
           mergeMap(form => this.formPermissionService.getRights(form).pipe(
             mergeMap(rights => this.route.parent.data.pipe(
-              map(({instructions, hasRightsInstructions}) => ({
+              map(({instructions, hasRightsInstructions, requireLogin}) => ({
+                requireLogin,
                 loggedIn,
                 rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
                 collectionID: form.collectionID,

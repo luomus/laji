@@ -11,9 +11,17 @@
         <button *ngIf="printState === 'none'" type="button" class="btn btn-default inline-block" (click)="doLabels()">
           <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.select.label' | translate }}</span>
         </button>
-        <button *ngIf="printState === 'select'" type="button" class="btn btn-success inline-block" (click)="doLabels()" [disabled]="!selected || selected.length === 0">
-          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
-        </button>
+        <ng-container *ngIf="printState === 'select'">
+          <div class="btn-group">
+            <laji-spinner [spinning]="labelLoading" [overlay]="true"></laji-spinner>
+            <button type="button" class="btn btn-success" (click)="doLabels()" [disabled]="!selected || selected.length === 0 || labelLoading">
+              <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
+            </button>
+            <button type="button" class="btn btn-default" (click)="cancelLabels()">
+              <span><i class="glyphicon glyphicon-remove"></i></span>
+            </button>
+          </div>
+        </ng-container>
       </div>
 
       <div *ngIf="printState === 'select'" class="print-actions text-block" [innerHtml]="'label.select.intro' | translate">
@@ -24,6 +32,22 @@
              placeholder="{{'haseka.submissions.filter' | translate}}"
              (keyup)='updateFilter($event)'/>
     </div>
+  </div>
+  <div class="label-filters" [@labelFilter]="printState === 'select' ? 'open' : 'close'">
+    <ng-container *ngIf="labelFilter$ | async as labelFilter">
+      <div class="label-filter-field"><label><input type="checkbox" (change)="updateLabelFilter('onlyPreservedSpecimen', !labelFilter.onlyPreservedSpecimen)" [checked]="labelFilter.onlyPreservedSpecimen"> {{ 'observations.label.onlyPreserved' | translate }}</label></div>
+      <div class="label-filter-field"><label><input type="checkbox" (change)="updateLabelFilter('multiplyByCount', !labelFilter.multiplyByCount)" [checked]="labelFilter.multiplyByCount"> {{ 'observations.label.multiplyByCount' | translate }}</label></div>
+      <div class="label-filter-field">
+        <label>{{ 'observations.label.detAfter' | translate }}&nbsp;</label>
+        <div class="date-picker-wrapper"><laji-datepicker
+        [(ngModel)]="labelFilter.detLaterThan"
+        [viewFormat]="'DD.MM.YYYY'"
+        [otherFormats]="['D.M.YYYY', 'YYYY']"
+        [format]="'YYYY-MM-DD'"
+        [popoverAlign]="'left'"
+        (select)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"
+        (change)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"></laji-datepicker></div></div>
+    </ng-container>
   </div>
   <ngx-datatable
     class="material striped"

@@ -1,6 +1,6 @@
 {
   "name": "laji-front",
-  "version": "1.0.40",
+  "version": "1.0.41",
   "main": "dist/electron",
   "description": "laji.fi frontend",
   "scripts": {
@@ -16,9 +16,9 @@
     "start:embedded": "ng serve --configuration=embedded --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
     "start:vir": "ng serve --configuration=vir --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
     "start:iucn": "ng serve iucn --configuration=dev --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
-    "start:label-designer-element": "ng serve label-designer-element",
+    "start:label-designer-element": "ng serve label-designer-element --host 0.0.0.0",
     "start:label-designer:element": "yarn run build:label-designer-electron && electron ./dist/electron",
-    "start:label-designer-electron": "ng serve label-designer-electron",
+    "start:label-designer-electron": "ng serve label-designer-electron --host 0.0.0.0",
     "build:label-designer": "ng build label-designer",
     "build:prod": "yarn run ng-high-memory build --prod --configuration=production --base-href https://laji.fi/",
     "build:local": "ng build --configuration=local --prod --base-href http://localhost:3000/",
@@ -44,7 +44,9 @@
     "build:ssr:local": "yarn run build:server:local && yarn run build:local",
     "package:label-designer": "yarn run build:label-designer-electron && yarn run prepare:package:label-designer",
     "package:label-designer-element": "yarn run build:label-designer-element && cat ./dist/label-designer-element/runtime.js ./dist/label-designer-element/polyfills.js ./dist/label-designer-element/scripts.js ./dist/label-designer-element/main.js > ./dist/label-designer.js",
-    "prepare:package:label-designer": "electron-packager ./dist \"Label Designer\" --out=packages --all --asar --executableName=LabelDesigner --appBundleId=fi.laji.labelDesigner --app-category-type=public.app-category.graphics-design --overwrite ",
+    "package:label-designer-linux": "electron-packager ./dist \"Label Designer\" --out=release-builds --platform=linux --arch=x64 --asar --executableName=LabelDesigner --overwrite --prune",
+    "package:label-designer-mac": "electron-packager ./dist \"Label Designer\" --out=release-builds --platform=darwin  --arch=x64 --asar --executableName=LabelDesigner --overwrite --prune --appBundleId=fi.laji.labelDesigner --app-category-type=public.app-category.graphics-design",
+    "package:label-designer-win": "electron-packager ./dist \"Label Designer\" --out=release-builds --platform=win32 --arch=ia32 --asar --executableName=LabelDesigner --overwrite --prune",
     "server": "node dist/server",
     "msg-a": "node ./scripts/echo.js \"\nLint check!\n**Please note that warnings can be ignored, only errors will prevent the commit!**\n\n\""
   },
@@ -98,9 +100,9 @@
     "intl": "^1.2.5",
     "jsonpath-plus": "^0.20.1",
     "jw-bootstrap-switch-ng2": "^2.0.5",
-    "label-designer": "^3.1.5",
-    "laji-form": "^1.2.7",
-    "laji-map": "2.1.0",
+    "label-designer": "^3.1.9",
+    "laji-form": "^2.0.11",
+    "laji-map": "3.0.2",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.7.3",
     "moment": "2.24.0",
@@ -186,7 +188,8 @@
   "resolutions": {
     "proj4": "2.3.16",
     "leaflet": "1.4.0",
-    "laji-map": "2.1.0",
+    "@types/leaflet-draw": "0.4.14",
+    "laji-map": "3.0.2",
     "tslint": "5.10.0",
     "typescript": "3.4.5"
   },

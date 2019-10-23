@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { WbcResultService } from '../wbc-result.service';
 import { IdService } from '../../../../shared/service/id.service';
 import { Router } from '@angular/router';

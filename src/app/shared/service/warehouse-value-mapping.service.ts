@@ -1,20 +1,14 @@
-import { Observable, Observer, of as ObservableOf } from 'rxjs';
+import { Observable } from 'rxjs';
 import { WarehouseApi } from '../api/WarehouseApi';
-import { Injectable, OnInit } from '@angular/core';
-import { delay, map, retryWhen, share, take, timeout } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { delay, map, retryWhen, shareReplay, take, timeout } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class WarehouseValueMappingService {
 
-  private mapping;
-  private reverse;
-  private pending: Observable<any>;
+  private request: Observable<any>;
 
-  constructor(private warehouseService: WarehouseApi) {
-    if (!this.pending) {
-      this.pending = this.fetchLabels();
-    }
-  }
+  constructor(private warehouseService: WarehouseApi) {}
 
   public getOriginalKey(value): Observable<string> {
     return this.get(value, 'mapping');
@@ -25,45 +19,39 @@ export class WarehouseValueMappingService {
   }
 
   public get(value, list): Observable<string> {
-    if (!this[list]) {
-      if (!this.pending) {
-        this.pending = this.fetchLabels();
-      }
-      return Observable.create((observer: Observer<string>) => {
-        const onComplete = (res: string) => {
-          observer.next(res);
-          observer.complete();
-        };
-        this.pending.subscribe(
-          (_: any) => { onComplete(this[list][value] || value); },
-          () => { onComplete(value); }
-          );
-      });
-    } else {
-      return ObservableOf(this[list][value] || value);
-    }
+    return this.fetchLabels().pipe(
+      map(data => data && data[list] && data[list][value] || value)
+    );
   }
 
-  private parseResult(result) {
-    this.mapping = {};
-    this.reverse = {};
-    result.results.map(translation => {
-      const key = translation.enumeration || '';
-      const value = translation.property || '';
-      this.mapping[key] = value;
-      this.reverse[value] = key;
+  private parseResult(data) {
+    const result = {
+      mapping: {},
+      reverse: {}
+    };
+    data.results.forEach(mapping => {
+      const key = mapping.enumeration || '';
+      const value = mapping.property || '';
+      if (key && value) {
+        result.mapping[key] = value;
+        result.reverse[value] = key;
+      }
     });
+    return result;
   }
 
   private fetchLabels() {
-    return this.warehouseService.warehouseEnumerationLabels().pipe(
-      timeout(WarehouseApi.longTimeout),
-      retryWhen(errors => errors.pipe(
-        delay(1000),
-        take(3)
-      )),
-      map(data => this.parseResult(data)),
-      share()
-    );
+    if (!this.request) {
+      this.request = this.warehouseService.warehouseEnumerationLabels().pipe(
+        timeout(WarehouseApi.longTimeout),
+        retryWhen(errors => errors.pipe(
+          delay(1000),
+          take(3)
+        )),
+        map(data => this.parseResult(data)),
+        shareReplay(1)
+      );
+    }
+    return this.request;
   }
 }

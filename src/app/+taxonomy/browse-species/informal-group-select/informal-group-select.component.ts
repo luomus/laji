@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription, combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';

@@ -1,5 +1,4 @@
-
-import {switchMap, catchError,  map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 /* tslint:disable:no-use-before-declare */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -14,7 +13,6 @@ import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { Area } from '../../../shared/model/Area';
-
 
 
 export interface MetadataSelectPick {
@@ -45,6 +43,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() useFilter = true;
   @Input() firstOptions = [];
   @Input() info: string;
+  @Input() whiteList: string[];
   @Input() skip: string[];
   @Input() skipBefore: string;
   @Input() open: boolean;
@@ -244,6 +243,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
         this.addMetadataInfo(options, data);
         return options;
       })),
+      map(options => this.whiteList ? options.filter(option => this.whiteList.includes(option.id)) : options),
       map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options),
       map(options => this.skipBefore ? options.slice(options.findIndex(o => o.id === this.skipBefore)) : options)
     );

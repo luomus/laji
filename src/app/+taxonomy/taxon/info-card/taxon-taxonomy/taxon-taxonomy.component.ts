@@ -1,16 +1,8 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  SimpleChanges,
-  ChangeDetectionStrategy
-} from '@angular/core';
-import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
-import {Subscription} from 'rxjs';
-import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
-import {TranslateService} from '@ngx-translate/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
+import { Subscription } from 'rxjs';
+import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-taxon-taxonomy',

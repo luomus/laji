@@ -1,9 +1,9 @@
-import {Component, OnChanges, Input, ChangeDetectionStrategy, Inject} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { IdService } from '../../../../shared/service/id.service';
 import { DOCUMENT } from '@angular/common';
-import {WarehouseQueryInterface} from '../../../../shared/model/WarehouseQueryInterface';
-import {InfoCardQueryService} from '../shared/service/info-card-query.service';
+import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
+import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({

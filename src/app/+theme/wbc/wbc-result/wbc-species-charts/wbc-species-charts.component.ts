@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { WbcResultService, SEASON } from '../wbc-result.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription, forkJoin } from 'rxjs';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { SEASON, WbcResultService } from '../wbc-result.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { IdService } from '../../../../shared/service/id.service';
 

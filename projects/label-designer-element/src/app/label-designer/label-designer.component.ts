@@ -12,6 +12,7 @@ import {
 } from 'label-designer';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'label-designer',
   templateUrl: './label-designer.component.html',
   styleUrls: ['./label-designer.component.scss'],
@@ -70,7 +71,7 @@ export class LabelDesignerComponent {
       'marginLeft.mm': 1.5,
       'marginBottom.mm': 1.5,
       'marginRight.mm': 1.5,
-      'font-family': 'Arial',
+      'font-family': Presets.DefaultFont,
       'font-size.pt': 9
     },
     border: Presets.Border.solid,

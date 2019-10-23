@@ -1,0 +1,23 @@
+<div class="menu-row" *ngIf="showSettingsMenu || showDownloadMenu">
+  <div class="link btn btn-default btn-sm pull-right" style="margin-left: 5px;" (click)="openSettingsMenu.emit()" *ngIf="showSettingsMenu">
+    {{ 'iucn.results.selectColumns' | translate }}
+    <i class="glyphicon glyphicon-cog"></i>
+  </div>
+  <ng-container *ngIf="showDownloadMenu">
+    <laji-download
+      *ngIf="maxDownload >= count else tooMany"
+      linkClass="link btn btn-default btn-sm pull-right"
+      [downloadLoading]="downloadLoading"
+      (download)="download.emit($event)">
+      <span>
+        {{ downloadText }}
+        <i class="glyphicon glyphicon-download-alt"></i>
+      </span>
+    </laji-download>
+    <ng-template #tooMany>
+      <div class="btn btn-default btn-sm pull-right disabled">
+        {{ downloadText }} max {{ maxDownload }}
+      </div>
+    </ng-template>
+  </ng-container>
+</div>
