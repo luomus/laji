@@ -17,7 +17,9 @@
          [ngClass]="{'static-width': staticWidth}"
          [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}"
          #navWrapper>
-      <div class="close-btn" (click)="onSwitchOpen()">X</div>
+      <div class="close-wrapper">
+        <div class="close-btn" (click)="onSwitchOpen()">X</div>
+      </div>
       <ng-content select="nav"></ng-content>
     </div>
     <div [@sidebarOpenbtnOpen]="open ? 'open' : 'closed'" class="open-btn" (click)="onSwitchOpen()">
