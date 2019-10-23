@@ -224,6 +224,17 @@
                 }
               ]
             },
+            "beta": {
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.beta.ts"
+                }
+              ]
+            },
             "dev": {
               "sourceMap": false,
               "namedChunks": false,
