@@ -176,7 +176,7 @@ export class UserService {
     );
   }
 
-  getUserSetting(key: keyof IUserSettings): Observable<any> {
+  getUserSetting<T>(key: keyof IUserSettings): Observable<T> {
     return this.settings$.pipe(map(settings => settings[key]));
   }
 

@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { MainResultService } from './main-result.service';
-import { UserService } from '../../shared/service/user.service';
+import { ISettingResultList, UserService } from '../../shared/service/user.service';
 import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
 import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
 import { BrowserService } from '../../shared/service/browser.service';
@@ -105,7 +105,7 @@ export class MainResultComponent implements OnInit, OnChanges {
     this.viewerSub = this.documentViewerFacade.showModal$.pipe(
       tap(visible => this.documentModalVisible = visible)
     ).subscribe();
-    this.userService.getUserSetting('resultList').subscribe(data => {
+    this.userService.getUserSetting<ISettingResultList>('resultList').subscribe(data => {
         if (data) {
           // change aggregatedBy field to another if needed!
           if (data.aggregateBy) {

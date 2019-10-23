@@ -1,5 +1,5 @@
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { delay, map, take } from 'rxjs/operators';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
@@ -31,6 +31,7 @@ import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
 import { isPlatformBrowser } from '@angular/common';
 import { Global } from '../../../../environments/global';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 export interface RowDocument {
   creator: string;
@@ -64,17 +65,38 @@ export interface TemplateEvent {
   documentID: string;
 }
 
+export interface LabelFilter {
+  onlyPreservedSpecimen?: boolean;
+  detLaterThan?: string|Date;
+  multiplyByCount?: boolean;
+}
+
 export interface LabelEvent {
   documentIDs: string[];
   year: string;
   label: string;
+  filter: LabelFilter;
 }
 
 @Component({
   selector: 'laji-own-datatable',
   templateUrl: './own-datatable.component.html',
-  styleUrls: ['./own-datatable.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./own-datatable.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('labelFilter', [
+      state('close', style({
+        height: '0',
+        padding: '0 15px'
+      })),
+      state('open', style({
+        height: '*',
+        padding: '*'
+      })),
+      transition('close=>open', animate('500ms ease-out')),
+      transition('open=>close', animate('100ms ease-in'))
+    ]),
+  ]
 })
 export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Input() year: string;
@@ -124,6 +146,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   filterBy: string;
   selectionType: string;
   selectedLabel: string;
+  labelLoading = false;
 
   displayMode: string;
   defaultSort: any;
@@ -143,6 +166,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
   @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;
 
+  labelFilter$: Observable<LabelFilter>;
+  private readonly labelSettingsKey = 'label-filters';
+
   constructor(
     @Inject(WINDOW) private window: Window,
     @Inject(PLATFORM_ID) private platformID: object,
@@ -156,7 +182,11 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     private toastService: ToastsService,
     private logger: Logger,
     private cd: ChangeDetectorRef
-  ) {}
+  ) {
+    this.labelFilter$ = this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
+      map(value => value || {})
+    );
+  }
 
   @Input()
   set documents(docs: RowDocument[]) {
@@ -417,14 +447,28 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
           this.table.onColumnSort(this.lastSort);
         });
       }
-    } else if (this.printState === 'select') {
-      this.selectionType = undefined;
-      this.printState = 'none';
-      this.label.emit({
-        documentIDs: this.selected.map(doc => doc.id),
-        year: this.year,
-        label: this.selectedLabel
-      });
+    } else if (this.printState === 'select' && !this.labelLoading) {
+      this.labelLoading = true;
+      this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
+        take(1),
+      ).subscribe(settings => {
+        this.label.emit({
+          documentIDs: this.selected.map(doc => doc.id),
+          year: this.year,
+          label: this.selectedLabel,
+          filter: settings || {}
+        });
+      }, () => {
+          this.labelLoading = false;
+          this.cd.markForCheck();
+        }
+      );
     }
+  }
+
+  updateLabelFilter(key: keyof LabelFilter, value: any) {
+    this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
+      map(settings => ({...settings, [key]: value})),
+    ).subscribe(settings => this.userService.setUserSetting(this.labelSettingsKey, settings));
   }
 }

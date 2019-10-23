@@ -127,7 +127,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.subSet.unsubscribe();
     }
     if (key) {
-      this.subSet = this.userService.getUserSetting(this._settingsKey)
+      this.subSet = this.userService.getUserSetting<LajiMap.Options>(this._settingsKey)
         .pipe(take(1))
         .subscribe(settings => {
           this.userSettings = settings || {};

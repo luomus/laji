@@ -2,9 +2,6 @@ import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild } 
 import { LocalStorage, SessionStorage } from 'ngx-webstorage';
 import { FieldType, ILabelPdf, ILabelField, ISetup, IViewSettings, Presets } from 'label-designer';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { environment } from '../environments/environment';
-import { map, share } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../../src/app/shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';

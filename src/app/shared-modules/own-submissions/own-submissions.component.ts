@@ -416,7 +416,7 @@ export class OwnSubmissionsComponent implements OnChanges {
       map(documents => documents.filter(doc => event.documentIDs.indexOf(doc.id) > -1))
     );
     (event.documentIDs.length > 10 ? year$ : documents$).pipe(
-      mergeMap(docs => this.pdfLabelService.setData(docs)),
+      mergeMap(docs => this.pdfLabelService.setData(docs, event.filter)),
       tap(() => {
         this.loading = false;
         this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/tools/label']));
