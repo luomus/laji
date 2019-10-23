@@ -19,6 +19,8 @@
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
+    padding: 6px 4px;
+    font-size: 16px;
   }
 
   .laji-form-help-glyph strong {
