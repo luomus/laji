@@ -1,13 +1,18 @@
 version: '3'
 
 services:
+  redis:
+    image: 'redis'
+    ports:
+      - '6379:6379'
   front:
-    container_name: laji
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      - 'redis'
     volumes:
-      - '.:/app'
+      - '.:/app:delegated'
       - '/app/node_modules'
     ports:
       - '3000:3000'
@@ -15,3 +20,5 @@ services:
       - '49153:49153'
     environment:
       - NODE_ENV=dev
+      - REDIS_HOST=redis
+#    command: 'yarn run start:ssr:local'

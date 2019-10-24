@@ -27,7 +27,9 @@ global['KeyboardEvent'] = domino.impl.Event;
 win.devicePixelRatio = 2; // this is used by the leaflet library
 Object.assign(global, domino.impl);
 
-const RedisClient = redis.createClient();
+const RedisClient = redis.createClient({
+  host: process.env.REDIS_HOST || 'localhost'
+});
 const Lock = new Redlock([RedisClient]);
 
 app.use(compression());
