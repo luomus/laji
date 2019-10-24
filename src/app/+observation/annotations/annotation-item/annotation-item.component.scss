@@ -12,9 +12,63 @@ div {
                 padding: 0 10px;
                 margin-top: 5px;
             }
+            &.addedTags {
+                padding: 0 10px;
+                margin-top: 5px;
+            }
             &.information {
                 padding: 0 10px;
                 margin-top: 5px;
+            }
+            &.tags {
+                display: inline-block;
+                margin-right: 5px;
+                margin-bottom: 5px;
+            }
+            &.annotation-marker {
+                padding: 3px;
+                border-radius: 6px;
+                -webkit-border-radius: 6px;
+                -moz-border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                display: inline-block;
+                border: 1px solid;
+                &.positive {
+                  color: #008400;
+                }
+                &.annotation-marker.neutral{
+                  color: #000;
+                }
+                &.annotation-marker.check {
+                  color: #E16200;
+                } 
+                &.annotation-marker.negative {
+                  color: #FF0000;
+                }
+            }    
+        }
+        span {
+            &.annotation-star {
+                width: 22px;
+                height: 22px;
+                display: inline-block;
+                vertical-align: bottom;
+                background: url('../../../../static/images/icons/sprite-stars-annotations.png') 0 0 no-repeat;
+                background-repeat: no-repeat;
+                &.positive {
+                    background-position: -5px -3px;
+                  }
+                &.neutral {
+                    background-position: -29px -3px;
+                  }
+                &.check {
+                    background: none;
+                    width: 0px
+                }
+                &.negative {
+                    background-position: -77px -3px;
+                }
             }
         }
     }

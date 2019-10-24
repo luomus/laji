@@ -68,6 +68,20 @@ div {
                     left: 50%;
                     margin-right: -50%;
                     transform: translate(-50%, -50%);
+                    font-weight: bold;
+                    @include font-size(3.2);
+                    &.need-id {
+                        color: $needId;
+                        &::after {
+                            content: "?";
+                        }
+                    }
+                    &.disagreed {
+                        color: $disagreed;
+                        &::after {
+                            content: "!";
+                        }
+                    }    
                 }
             }
 

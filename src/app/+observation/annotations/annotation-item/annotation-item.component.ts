@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter,
 Output, NgZone } from '@angular/core';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-annotation-item',
@@ -9,6 +10,9 @@ Output, NgZone } from '@angular/core';
 export class AnnotationItemComponent implements OnInit {
 
   @Input() item: any;
+
+  // addedTags = ['MMAN.3', 'MMAN.5', 'MMAN.6', 'MMAN.7', 'MMAN.8', 'MMAN.11', 'MMAN.22', 'MMAN.23'];
+  annotationTagsObservation = Global.annotationTags;
 
 
   constructor(
