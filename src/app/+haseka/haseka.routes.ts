@@ -34,7 +34,7 @@ export const hasekaRoutes: Routes = [
           {path: 'templates', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: TemplatesComponent},
           {path: 'statistics', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
           {path: 'statistics/:documentID', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
-          {path: 'tools',  canActivate: [OnlyLoggedIn], loadChildren: './tools/tools.module#ToolsModule'},
+          {path: 'tools',  canActivate: [OnlyLoggedIn], loadChildren: () => import('./tools/tools.module').then(m => m.ToolsModule)},
         ]
       },
       {

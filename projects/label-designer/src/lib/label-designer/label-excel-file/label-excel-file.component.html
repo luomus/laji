@@ -7,7 +7,7 @@
       <td style="width: 70%">
         <label class="link fill" for="excel-file">
           <span style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 240px; display: block" *ngIf="filename; else noFile">
-            {{filename}}
+            {{ filename }}
           </span>
           <ng-template #noFile>
             {{ 'Choose the file (XLS, CSV or ODS)' | translate }}
@@ -28,7 +28,7 @@
       <td>{{ 'Sheet' | translate }}:</td>
       <td>
         <select style="width: 100%" class="form-control input-sm" (change)="loadSheet($event.target.value)">
-          <option *ngFor="let sheet of sheets" [value]="sheet">{{sheet}}</option>
+          <option *ngFor="let sheet of sheets" [value]="sheet">{{ sheet }}</option>
         </select>
       </td>
     </tr>
@@ -36,7 +36,7 @@
       <td>{{ 'Id column' | translate }}:</td>
       <td>
         <select style="width: 100%" class="form-control input-sm" (change)="changeIdCol($event.target.value)">
-          <option *ngFor="let header of headers" [value]="header" [selected]="header === uriCol">{{header}}</option>
+          <option *ngFor="let header of headers" [value]="header" [selected]="header === uriCol">{{ header }}</option>
         </select>
       </td>
     </tr>
