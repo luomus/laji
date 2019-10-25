@@ -1,6 +1,6 @@
 {
   "name": "laji-front",
-  "version": "1.0.43",
+  "version": "1.0.44",
   "main": "dist/electron",
   "description": "laji.fi frontend",
   "scripts": {
