@@ -4,6 +4,7 @@
 ### Features
 * **editor:** Moved add to backside select in label field higher.
 * **editor:** improved border printing on the pdf.
+* **editor:** improved loading pdf indicator.
 
 ### Bug fixes
 * **editor:** fix an issue with two sided printing where the text lines where not rendered correctly
