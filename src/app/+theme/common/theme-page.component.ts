@@ -7,7 +7,7 @@ import { Global } from '../../../environments/global';
     template: `
 <lu-sidebar>
   <nav>
-    <h1 [innerHTML]="title | translate"></h1>
+    <h3 [innerHTML]="title | translate"></h3>
     <lu-sidebar-link *ngFor="let link of navLinks" [link]="link.routerLink" routerLinkActive>
       {{ link.label | translate }}
       <lu-sidebar-link *ngFor="let child of link.children" [link]="child.routerLink">
