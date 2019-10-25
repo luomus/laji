@@ -6,6 +6,7 @@ services:
     ports:
       - '6379:6379'
   front:
+    container_name: laji
     build:
       context: .
       dockerfile: Dockerfile
