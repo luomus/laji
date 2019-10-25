@@ -20,6 +20,7 @@ export class LabelDesignerComponent implements OnInit {
   labelFields$: Observable<ILabelField[]>;
   newLabelFields$: Observable<ILabelField[]>;
   newSetup: ISetup;
+  @LocalStorage('label-designer-col-map', {}) fileColumnMap;
   @LocalStorage('label-designer-view', {magnification: 2}) viewSettings: IViewSettings;
   @LocalStorage('label-designer', null) setup: ISetup;
   data: any;

@@ -48,7 +48,7 @@
       <ll-field-settings [allowDelete]="canDelete" [field]="field" (fieldChange)="fieldUpdate($event, i)" (fieldRemove)="fieldRemove(i)"></ll-field-settings>
     </div>
   </div>
-  <ll-field-add *ngIf="showFieldFont" [availableFields]="availableFields" (add)="fieldAdd($event)"></ll-field-add>
+  <ll-available-fields *ngIf="showFieldFont" [availableFields]="availableFields" (valueChange)="fieldAdd($event)"></ll-available-fields>
 </ng-container>
 <ng-template #missingField>
   <h3 class="first">{{ 'Field' | translate }}</h3>

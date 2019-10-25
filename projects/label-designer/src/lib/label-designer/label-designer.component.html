@@ -195,7 +195,12 @@
   <button (click)="generateData()" class="btn btn-default btn-sm pull-right">{{ 'Generate' | translate }}</button>
 </ng-template>
 <ng-template #excelTpl>
-  <ll-label-excel-file #excelFile [defaultDomain]="defaultDomain"></ll-label-excel-file>
+  <ll-label-excel-file #excelFile
+                       [defaultDomain]="defaultDomain"
+                       [availableFields]="availableFields"
+                       [columnMap]="fileColumnMap"
+                       (columnMapChange)="fileColumnMapChange.emit($event)"
+  ></ll-label-excel-file>
 </ng-template>
 <ng-template #excelActionsTpl>
   <button (click)="loadExcelData()" class="btn btn-default btn-sm pull-right">{{ 'Load' | translate }}</button>
