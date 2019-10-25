@@ -4,6 +4,9 @@
 ### Features
 * **editor:** improved border printing on the pdf.
 
+### Bug fixes
+* **editor:** fix an issue with two sided printing where the text lines where not rendered correctly
+
 <a name="3.1.8"></a>
 # 3.1.8 (2019-10-18)
 
