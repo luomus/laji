@@ -58,7 +58,7 @@ export class LabelDesignerComponent implements OnInit {
         'marginLeft.mm': 1.5,
         'marginBottom.mm': 1.5,
         'marginRight.mm': 1.5,
-        'font-family': 'Open Sans',
+        'font-family': Presets.DefaultFont,
         'font-size.pt': 9
       },
       labelItems: this.pdfLabelService.defaultFields.map((a, i) => ({
