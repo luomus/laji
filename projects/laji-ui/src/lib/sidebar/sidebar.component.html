@@ -1,6 +1,6 @@
 <ng-container *ngIf="position === 'right' else sidebar"></ng-container>
 
-<div class="content" [ngClass]="{'mobile': mobile, 'left': position === 'left', 'right': position === 'right'}">
+<div class="content" [ngClass]="{'mobile': mobile, 'left': position === 'left', 'right': position === 'right'}" #contentRef>
   <ng-content select="main"></ng-content>
 </div>
 

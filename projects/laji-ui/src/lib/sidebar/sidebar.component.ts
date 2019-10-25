@@ -62,11 +62,14 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   widthBeforeDrag = 0;
 
   @ViewChild('sidebarRef', {static: false}) sidebarRef: ElementRef;
+  @ViewChild('contentRef', {static: false}) contentRef: ElementRef;
   @ViewChild('navWrapper', {static: false}) navWrapperRef: ElementRef;
 
   destroyResizeListener: Function;
   destroyDragMoveListener: Function;
   destroyDragEndListener: Function;
+
+  destroyCloseOnClickListener: Function;
 
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
 
@@ -74,6 +77,13 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     this.detectMobileMode();
     this.destroyResizeListener = this.renderer.listen(window, 'resize', this.detectMobileMode.bind(this));
     this.ogWidth = this.sidebarRef.nativeElement.offsetWidth;
+
+    this.destroyCloseOnClickListener = this.renderer.listen(this.contentRef.nativeElement, 'click', () => {
+      if (this.mobile) {
+        this.open = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   detectMobileMode() {
@@ -138,6 +148,9 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   ngOnDestroy() {
     if (this.destroyResizeListener) {
       this.destroyResizeListener();
+    }
+    if (this.destroyCloseOnClickListener) {
+      this.destroyCloseOnClickListener();
     }
     this.destroyDragListeners();
   }
