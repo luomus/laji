@@ -6,7 +6,14 @@ import { InformationItem } from '../../shared/model/InformationItem';
 
 @Component({
   selector: 'laji-info-page',
-  template: '<div [innerHtml]="content$ | async"></div>'
+  template: `
+<div *ngIf="content$ | async; else loading; let content" [innerHtml]="content"></div>
+<ng-template #loading>
+  <lu-ghost-paragraph [length]="10"></lu-ghost-paragraph>
+  <lu-ghost-paragraph [length]="300"></lu-ghost-paragraph>
+  <lu-ghost-paragraph [length]="200"></lu-ghost-paragraph>
+</ng-template>
+`
 })
 export class InfoPageComponent implements OnChanges {
 
