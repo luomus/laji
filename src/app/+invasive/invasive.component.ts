@@ -1,5 +1,4 @@
-
-import {tap, map} from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { WarehouseApi } from '../shared/api/WarehouseApi';

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,8 +10,22 @@ import { IObservationViewModel, ObservationFacade } from '../observation.facade'
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
-import { ISettingResultList } from '../../shared/service/user.service';
+import { ISettingResultList, UserService } from '../../shared/service/user.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
+export interface VisibleSections {
+  finnish?: boolean;
+  countTaxa?: boolean;
+  countHits?: boolean;
+  map?: boolean;
+  list?: boolean;
+  images?: boolean;
+  species?: boolean;
+  statistics?: boolean;
+  download?: boolean;
+  annotations?: boolean;
+  info?: boolean;
+}
 
 @Component({
   selector: 'laji-observation-view',
@@ -21,6 +35,27 @@ import { ISettingResultList } from '../../shared/service/user.service';
 })
 export class ObservationViewComponent implements OnInit, OnDestroy {
 
+  @Input() formType: 'unit'|'sample' = 'unit';
+  @Input() basePath = '/observation';
+  @Input() visible: VisibleSections = {
+    info: true,
+    finnish: true,
+    countTaxa: true,
+    countHits: true,
+    map: true,
+    list: true,
+    images: true,
+    species: true,
+    statistics: true,
+    download: true,
+    annotations: true,
+  };
+  @Input() skipUrlParameters: string[] = [
+    'selected',
+    'pageSize',
+    'page'
+  ];
+  @Input() settingsKeyList = 'resultList';
   _activeTab: string;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
   @ViewChild(ObservationFormComponent, { static: false }) form: ObservationFormComponent;
@@ -45,6 +80,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   subQueryUpdate: Subscription;
 
   vm$: Observable<IObservationViewModel>;
+  settingsList$: Observable<ISettingResultList>;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -52,7 +88,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private observationFacade: ObservationFacade,
     private browserService: BrowserService,
-    private route: Router
+    private localizeRouterService: LocalizeRouterService,
+    private route: Router,
+    private userService: UserService
   ) {}
 
   @Input()
@@ -70,6 +108,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
+    this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
     this.subQueryUpdate = this.observationFacade.query$.pipe(
       tap(() => { if (this.results) { this.results.resetActivated(); }})
@@ -89,7 +128,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   draw(type: string) {
     this.drawingShape = type;
     if (this.activeTab !== 'map') {
-      this.route.navigate(['/observation/map'], {preserveQueryParams: true});
+      this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), {preserveQueryParams: true});
     }
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);
@@ -118,7 +157,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   onListSettingsChange(settings: ISettingResultList) {
-    this.observationFacade.updateListSettings(settings);
+    this.userService.setUserSetting(this.settingsKeyList, settings);
   }
 
   toggleMobile() {

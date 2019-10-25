@@ -1,9 +1,17 @@
 import {
-  Component, OnInit, OnChanges, ChangeDetectorRef, Input, Output, EventEmitter, ViewChild, TemplateRef,
-  SimpleChanges
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
-import { WbcResultService, SEASON } from '../../wbc-result.service';
-import { Observable, Subscription, forkJoin, of } from 'rxjs';
+import { SEASON, WbcResultService } from '../../wbc-result.service';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 

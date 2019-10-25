@@ -1,37 +1,27 @@
-
-import { combineLatest, take } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormPermissionService } from '../../form-permission.service';
-import { ToastsService } from '../../../../shared/service/toasts.service';
-import { FormPermission } from '../../../../shared/model/FormPermission';
 import { UserService } from '../../../../shared/service/user.service';
-import { Logger } from '../../../../shared/logger/logger.service';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
+import { AbstractPermission } from '../abstract-permission';
 
 @Component({
   selector: 'laji-accept',
   templateUrl: './accept.component.html',
   styleUrls: ['./accept.component.css']
 })
-export class AcceptComponent implements OnInit, OnDestroy {
-
-  formPermission: FormPermission;
-  isAllowed = false;
-  collectionId: string;
+export class AcceptComponent extends AbstractPermission implements OnInit, OnDestroy {
 
   private subParam: Subscription;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private formPermissionService: FormPermissionService,
-    private localizeRouterService: LocalizeRouterService,
-    private toastsService: ToastsService,
-    private userService: UserService,
-    private logger: Logger
-  ) { }
+    protected router: Router,
+    protected formPermissionService: FormPermissionService,
+    protected localizeRouterService: LocalizeRouterService,
+    protected userService: UserService,
+    private route: ActivatedRoute
+  ) { super(); }
 
   ngOnInit() {
     this.subParam = this.route.parent.params.subscribe(params => {
@@ -63,26 +53,4 @@ export class AcceptComponent implements OnInit, OnDestroy {
       this.accept(event.id);
     }
   }
-
-  private initFormPermission() {
-    if (!this.collectionId) {
-      return;
-    }
-    this.formPermissionService
-      .getFormPermission(this.collectionId, this.userService.getToken()).pipe(
-      combineLatest(
-        this.userService.user$.pipe(take(1)),
-        (permission, person) => ({permission, person})
-      ))
-      .subscribe((data) => {
-        this.formPermission = data.permission;
-        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person);
-        if (!this.isAllowed) {
-          this.router.navigate(
-            this.localizeRouterService.translateRoute(['/vihko'])
-          );
-        }
-      });
-  }
-
 }

@@ -3,6 +3,7 @@ import { ObservationMapComponent } from '../../shared-modules/observation-map/ob
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
+import { VisibleSections } from '..';
 
 const tabNameToIndex = {
   map: 0,
@@ -30,7 +31,25 @@ const tabIndexToName = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultComponent {
-
+  @Input() visible: VisibleSections = {
+    finnish: true,
+    countTaxa: true,
+    countHits: true,
+    map: true,
+    list: true,
+    images: true,
+    species: true,
+    statistics: true,
+    download: true,
+    annotations: true,
+  };
+  @Input() skipUrlParameters: string[] = [
+    'selected',
+    'pageSize',
+    'page'
+  ];
+  @Input() resultBase: 'unit'|'sample' = 'unit';
+  @Input() basePath = '/observation';
   @Input() query: WarehouseQueryInterface = {};
   @Input() lgScreen = true;
   @Input() unitCount: number;

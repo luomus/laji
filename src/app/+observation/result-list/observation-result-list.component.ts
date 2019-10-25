@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
+import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 
 const DEFAULT_PAGE_SIZE = 100;
 
@@ -13,31 +14,24 @@ const DEFAULT_PAGE_SIZE = 100;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultListComponent {
-  private static readonly defaultFields: string[] = [
-    'unit.taxon',
-    'unit.abundanceString',
-    'gathering.displayDateTime',
-    'gathering.interpretations.countryDisplayname',
-    'gathering.interpretations.biogeographicalProvinceDisplayname',
-    'gathering.interpretations.municipalityDisplayname',
-    'gathering.locality',
-    'document.collectionId',
-    'gathering.team'
-  ];
-
   @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
+  @Input() showDownloadMenu = false;
+  @Input() resultBase: 'unit' | 'sample' = 'unit';
 
   @Output() settingsChange = new EventEmitter<ISettingResultList>();
 
-  selectedFields = ObservationResultListComponent.defaultFields;
+  selectedFields: string[];
   pageSize: number;
   aggregateBy: string[] = [];
 
   constructor(
-    private documentViewerFacade: DocumentViewerFacade
-  ) {}
+    private documentViewerFacade: DocumentViewerFacade,
+    private tableColumnService: TableColumnService
+  ) {
+    this.selectedFields = tableColumnService.defaultFields;
+  }
 
   @Input()
   set settings(settings: ISettingResultList) {
@@ -55,7 +49,7 @@ export class ObservationResultListComponent {
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
       this.documentViewerFacade.showDocumentID({
         document: row.document.documentId,
-        highlight: row.unit.unitId,
+        highlight: this.resultBase === 'sample' ? row.sample.sampleId : row.unit.unitId,
         own: query && (!!query.observerPersonToken || !!query.editorPersonToken || !!query.editorOrObserverPersonToken)
       });
     }
@@ -74,7 +68,7 @@ export class ObservationResultListComponent {
   }
 
   resetSelectedFields() {
-    this.selectedFields = [ ...ObservationResultListComponent.defaultFields ];
+    this.selectedFields = this.tableColumnService.defaultFields;
     this.saveSettings();
   }
 

@@ -1,8 +1,8 @@
 /**
  * TODO: Change this to use taxon-select component
  */
-import { switchMap, distinctUntilChanged, tap, map, catchError } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
+import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable, of, of as ObservableOf } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Autocomplete } from '../../shared/model/Autocomplete';

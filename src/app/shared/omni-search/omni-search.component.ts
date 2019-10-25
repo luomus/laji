@@ -1,4 +1,4 @@
-import {tap, combineLatest, debounceTime} from 'rxjs/operators';
+import { combineLatest, debounceTime, tap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,

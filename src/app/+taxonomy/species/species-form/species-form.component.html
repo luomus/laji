@@ -26,7 +26,7 @@
 
 <laji-select
   [selected]="searchQuery.query.typesOfOccurrenceFilters"
-  (selectedChanged)="updateQuery('typesOfOccurrenceFilters', $event)"
+  (selectedChange)="updateQuery('typesOfOccurrenceFilters', $event)"
   [useFilter]="false"
   [title]="'observation.commonness' | translate"
   [info]="'observation.info.commonness' | translate"
@@ -90,4 +90,4 @@
               [title]="'observation.form.invasive' | translate"
               [useFilter]="false"
               [outputOnlyId]="true"
-              (selectedChanged)="onInvasiveChange($event)"></laji-select>
+              (selectedChange)="onInvasiveChange($event)"></laji-select>

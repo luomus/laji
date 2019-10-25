@@ -65,6 +65,10 @@ import { ThemePageComponent } from './common/theme-page.component';
 import { FormComponent } from './common/form/form.component';
 import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/theme-own-submissions.component';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
+import { ObservationFacade } from '../+observation/observation.facade';
+import { ObservationComponentModule } from '../+observation/observation-component.module';
+import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
+import { DownloadModule } from '../shared-modules/download/download.module';
 
 /* tslint:enable:max-line-length */
 
@@ -90,7 +94,9 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
     NavigationThumbnailModule,
     LatestDocumentsModule,
     InfoPageModule,
-    LajiUiModule
+    LajiUiModule,
+    ObservationComponentModule,
+    DownloadModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -134,6 +140,7 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
     MonitoringThemeBaseComponent,
     FormComponent,
     ThemeOwnSubmissionsComponent,
+    GeneticResourceComponent,
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })

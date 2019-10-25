@@ -1,5 +1,5 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import {Component, Inject, NgZone, PLATFORM_ID, ViewContainerRef} from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ViewContainerRef } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { isPlatformBrowser, Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
@@ -10,7 +10,6 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { HistoryService } from '../../shared/service/history.service';
 import { Global } from '../../../environments/global';
-
 
 
 declare const ga: Function;

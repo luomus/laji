@@ -2,6 +2,35 @@
   margin-bottom: 5px;
 }
 
+.label-filters {
+  background-color: #ecf0f1;
+  width: 100%;
+  padding: 15px;
+  border-radius: 5px 5px 0 0;
+}
+
+.label-filter-field {
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+
+  .date-picker-wrapper {
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  label {
+    margin: 0;
+    height: 20px;
+    vertical-align: middle;
+    font-weight: normal;
+  }
+
+  input[type="checkbox"] {
+    margin: 0;
+  }
+}
+
 :host >>> .empty-header {
   height: 38px;
 }

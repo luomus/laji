@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ContentChild, TemplateRef} from '@angular/core';
+import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'laji-taxon-info-row',

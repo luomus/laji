@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';

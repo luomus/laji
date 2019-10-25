@@ -1,15 +1,15 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   Input,
   OnChanges,
   OnDestroy,
   SimpleChanges,
-  ContentChild,
-  TemplateRef,
-  ChangeDetectionStrategy
+  TemplateRef
 } from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TreeNode, TreeSkipParameter } from './model/tree.interface';
 import { Tree } from './service/tree';
 

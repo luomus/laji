@@ -23,7 +23,7 @@ import { DocumentObjectComponent } from './document-local/document-object/docume
 import { DocumentLocalViewerViewComponent } from './document-local/document-local-viewer-view/document-local-viewer-view.component';
 import { DocumentLocalPrintViewComponent } from './document-local/document-local-print-view/document-local-print-view.component';
 import { PrintMapComponent } from './print-map/print-map.component';
-import { PrintImagesComponent} from './print-images/print-images.component';
+import { PrintImagesComponent } from './print-images/print-images.component';
 import { DocumentPrintComponent } from './document-print/document-print.component';
 import { UnitRowsComponent } from './unit-rows/unit-rows.component';
 import { GatheringRowsComponent } from './gathering-rows/gathering-rows.component';
@@ -32,6 +32,8 @@ import { PrintRowComponent } from './document-local/collection-contest-local-pri
 import { PrintTaxonHeaderComponent } from './document-local/collection-contest-local-print/print-taxon-header/print-taxon-header.component';
 import { CoordinatesViewerComponent } from './viewer-coordinates/viewer-coordinates.component';
 import { ViewerModalComponent } from './viewer-modal/viewer-modal.component';
+import { LicenseModule } from '../license/license.module';
+import { SampleComponent } from './sample/sample.component';
 
 @NgModule({
   imports: [
@@ -39,7 +41,8 @@ import { ViewerModalComponent } from './viewer-modal/viewer-modal.component';
     TypeaheadModule,
     LangModule,
     AnnotationsModule,
-    LajiMapModule
+    LajiMapModule,
+    LicenseModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
@@ -51,7 +54,8 @@ import { ViewerModalComponent } from './viewer-modal/viewer-modal.component';
     PrintRowComponent,
     PrintTaxonHeaderComponent,
     CoordinatesViewerComponent,
-    ViewerModalComponent
+    ViewerModalComponent,
+    SampleComponent
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent]
 })

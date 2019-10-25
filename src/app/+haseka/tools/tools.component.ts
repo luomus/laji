@@ -1,18 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'laji-tools',
   templateUrl: './tools.component.html',
   styleUrls: ['./tools.component.css']
 })
-export class ToolsComponent implements OnInit {
-
-  env = environment.type;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class ToolsComponent {}

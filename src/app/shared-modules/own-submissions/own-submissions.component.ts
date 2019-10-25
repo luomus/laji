@@ -1,12 +1,5 @@
 import { catchError, concatMap, map, mergeMap, share, switchMap, tap, toArray } from 'rxjs/operators';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
@@ -423,7 +416,7 @@ export class OwnSubmissionsComponent implements OnChanges {
       map(documents => documents.filter(doc => event.documentIDs.indexOf(doc.id) > -1))
     );
     (event.documentIDs.length > 10 ? year$ : documents$).pipe(
-      mergeMap(docs => this.pdfLabelService.setData(docs)),
+      mergeMap(docs => this.pdfLabelService.setData(docs, event.filter)),
       tap(() => {
         this.loading = false;
         this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/tools/label']));

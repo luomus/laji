@@ -1,5 +1,4 @@
-
-import {switchMap} from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Component, Input, OnInit } from '@angular/core';
 import { Profile } from '../../shared/model/Profile';
 import { UserService } from '../../shared/service/user.service';

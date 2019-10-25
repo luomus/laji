@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, combineLatest as ObservableCombineLatest } from 'rxjs';
-import { WbcResultService, SEASON } from '../wbc-result.service';
+import { combineLatest as ObservableCombineLatest, Subscription } from 'rxjs';
+import { SEASON, WbcResultService } from '../wbc-result.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({

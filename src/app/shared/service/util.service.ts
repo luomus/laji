@@ -11,11 +11,11 @@ export class Util {
   }
 
   /**
-   * Checks the equality using JSON stringify
+   * Checks the equality of arrays
    * @returns boolean
    */
-  public static equals(o1, o2) {
-    return JSON.stringify(o1) === JSON.stringify(o2);
+  public static equalsArray(a1, a2) {
+    return a1 && a2 && a1.length === a2.length && a1.sort().every((value, index) => value === a2.sort()[index]);
   }
 
   /**

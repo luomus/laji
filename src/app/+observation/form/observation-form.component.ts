@@ -1,4 +1,4 @@
-import { switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -72,6 +72,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       'coordinateAccuracyMax',
       'sourceOfCoordinates'
     ],
+    sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
     quality: ['taxonReliability', 'annotated', 'qualityIssues'],
@@ -360,7 +361,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     return date;
   }
 
-  private searchQueryToFormQuery(query: WarehouseQueryInterface): ObservationFormQuery {
+  protected searchQueryToFormQuery(query: WarehouseQueryInterface): ObservationFormQuery {
     const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
     return {
       taxon: '',
@@ -385,7 +386,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     };
   }
 
-  private formQueryToSearchQuery(formQuery: ObservationFormQuery) {
+  protected formQueryToSearchQuery(formQuery: ObservationFormQuery) {
     const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
     const query = this.query;
 

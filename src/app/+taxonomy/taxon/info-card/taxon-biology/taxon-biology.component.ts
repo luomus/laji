@@ -1,6 +1,6 @@
-import {Component, Input, Output, OnChanges, SimpleChanges, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
-import {CheckLangService} from '../../service/check-lang.service';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
+import { CheckLangService } from '../../service/check-lang.service';
 
 @Component({
   selector: 'laji-taxon-biology',

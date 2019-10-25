@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { HistoryService } from '../shared/service/history.service';
 import { Observable } from 'rxjs';

@@ -1,10 +1,10 @@
-import {Component, OnChanges, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
-import {WarehouseQueryInterface} from '../../../../shared/model/WarehouseQueryInterface';
-import {InfoCardQueryService} from '../shared/service/info-card-query.service';
+import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
+import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 
 @Component({
   selector: 'laji-taxon-overview',

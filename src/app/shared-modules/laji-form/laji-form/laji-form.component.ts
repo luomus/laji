@@ -10,7 +10,8 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  SimpleChanges, ViewChild
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { FormApiClient } from '../../../shared/api/FormApiClient';
 import { IUserSettings, UserService } from '../../../shared/service/user.service';
@@ -118,9 +119,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
     import('laji-form').then((formPackage) => {
       this.lajiFormWrapperProto = formPackage.default;
-      this.userService.getUserSetting(this.settingsKey).pipe(
-        concatMap(globalSettings => this.userService.getUserSetting(GLOBAL_SETTINGS).pipe(
-          map(settings => ({...globalSettings, ...settings}))
+      this.userService.getUserSetting<any>(this.settingsKey).pipe(
+        concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
+          map(globalSettings => ({...globalSettings, ...settings}))
         )),
         take(1)
       ).subscribe(settings => {

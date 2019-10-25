@@ -1,5 +1,4 @@
-
-import {debounceTime} from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
