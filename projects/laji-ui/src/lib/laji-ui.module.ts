@@ -8,18 +8,20 @@ import { TabComponent } from './tabs/tab/tab.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SidebarLinkComponent } from './sidebar/sidebar-link/sidebar-link.component';
 import { RouterModule } from '@angular/router';
-
-
+import { GhostParagraphComponent } from './ghosts/ghost-paragraph/ghost-paragraph.component';
 
 @NgModule({
   declarations: [
     ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
-    SidebarLinkComponent
+    SidebarLinkComponent, GhostParagraphComponent
   ],
   imports: [
     CommonModule,
     RouterModule
   ],
-  exports: [ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent, SidebarLinkComponent]
+  exports: [
+    ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
+    SidebarLinkComponent, GhostParagraphComponent
+  ]
 })
 export class LajiUiModule { }
