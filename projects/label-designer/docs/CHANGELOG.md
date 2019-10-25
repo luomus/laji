@@ -2,6 +2,7 @@
 # 3.1.10 (2019-10-25)
 
 ### Features
+* **editor:** Moved add to backside select in label field higher.
 * **editor:** improved border printing on the pdf.
 
 ### Bug fixes
