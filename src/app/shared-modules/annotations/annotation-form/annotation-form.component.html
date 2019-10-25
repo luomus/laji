@@ -35,7 +35,7 @@
             <select name="addTags" class="input-sm" (change)="onChangeSelectBox($event, 'added')">
                 <option value="" [selected]="isSelected"> Please choose one </option>
                 <ng-template ngFor let-item [ngForOf]="annotationAddadableTags$ | async">
-                   <option *ngIf="showOption(item.id)" value="{{item.id}}">
+                   <option *ngIf="showOption(item.id)" value="{{item.id}}" [disabled]="disableTags(item.id | toQName)">
                       {{ item.name }}
                    </option>
                 </ng-template>

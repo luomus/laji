@@ -213,6 +213,10 @@ laji-locale-sv > div,
   background-position: center right !important;
 }
 
+option:disabled {
+  color: #bababa;
+}
+
 /** Viewer **/
 laji-document {
   .facts {
