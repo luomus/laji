@@ -1,3 +1,9 @@
+<a name="3.1.10"></a>
+# 3.1.10 (2019-10-25)
+
+### Features
+* **editor:** improved border printing on the pdf.
+
 <a name="3.1.8"></a>
 # 3.1.8 (2019-10-18)
 
