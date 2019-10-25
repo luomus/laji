@@ -296,7 +296,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
       }
 
       if (e.keyCode === 49 && e.altKey) { // alt + 1 --> add convincing
-        if (this.showOption('MMAN.6') && this.annotationAddadableTags$.pipe(
+        if (this.showOption('MMAN.6') && !this.disableTags('MMAN.6') && this.annotationAddadableTags$.pipe(
           map((tags: AnnotationTag[]) => tags.findIndex(tag => tag.id === 'MMAN.6')))
         && this.personRoleAnnotation === Annotation.AnnotationRoleEnum.expert) {
           this.annotation.addedTags.push('MMAN.6');
@@ -304,7 +304,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
       }
 
       if (e.keyCode === 48 && e.altKey) { // alt + 0 --> add erroneus
-        if (this.showOption('MMAN.9') && this.annotationAddadableTags$.pipe(
+        if (this.showOption('MMAN.9') && !this.disableTags('MMAN.9') && this.annotationAddadableTags$.pipe(
           map((tags: AnnotationTag[]) => tags.findIndex(tag => tag.id === 'MMAN.9')))
         && this.personRoleAnnotation === Annotation.AnnotationRoleEnum.expert) {
           this.annotation.addedTags.push('MMAN.9');
