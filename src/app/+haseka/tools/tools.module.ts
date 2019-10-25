@@ -36,7 +36,7 @@ import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mappi
 import { LabelDesignerComponent } from './label-designer/label-designer.component';
 import { ImportContainerComponent } from './importer/import-container.component';
 import { CanSplitToPipe } from './excel-generator/pipes/can-split-to.pipe';
-import { LabelDesignerModule } from 'label-designer';
+import { LabelDesignerModule } from '../../../../projects/label-designer/src/lib/label-designer.module';
 
 @NgModule({
   imports: [
