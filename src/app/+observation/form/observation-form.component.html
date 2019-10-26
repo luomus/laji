@@ -1,3 +1,5 @@
+<laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
+
 <div class="mode-select">
   <span class="badge link" [class.active]="!advancedMode" (click)="setAdvancedMode(false)">
     {{ 'observation.form.modeBasic' | translate }}
