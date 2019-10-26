@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { map } from 'rxjs/operators';
 import { AbstractCachedHttpService } from './abstract-cached-http.service';

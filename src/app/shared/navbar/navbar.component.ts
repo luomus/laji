@@ -1,5 +1,4 @@
-
-import {startWith, delay, tap, map,  filter, switchMap, take } from 'rxjs/operators';
+import { delay, filter, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,

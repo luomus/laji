@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges} from '@angular/core';
-import {Taxonomy, TaxonomyDescription} from '../../../../shared/model/Taxonomy';
-import {WarehouseQueryInterface} from '../../../../shared/model/WarehouseQueryInterface';
-import {InfoCardQueryService} from '../shared/service/info-card-query.service';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
+import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
+import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 
 @Component({
   selector: 'laji-taxon-occurrence',

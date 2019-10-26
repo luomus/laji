@@ -5,12 +5,12 @@ import { NgxChartsPieChartComponent } from './ngx-charts-pie-chart/ngx-charts-pi
 import { NgxChartsAdvancedPieChartComponent } from './ngx-charts-advanced-pie-chart/ngx-charts-advanced-pie-chart.component';
 import {
   NgxChartsChartComponent,
-  NgxXAxisComponent,
-  NgxYAxisComponent,
-  NgxLineSeriesComponent,
-  NgxTooltipAreaComponent,
   NgxCircleSeriesComponent,
-  NgxTimelineComponent
+  NgxLineSeriesComponent,
+  NgxTimelineComponent,
+  NgxTooltipAreaComponent,
+  NgxXAxisComponent,
+  NgxYAxisComponent
 } from './ngx-charts-chart/ngx-charts-chart.component';
 import { NgxChartsTreeMapComponent } from './ngx-charts-tree-map/ngx-charts-tree-map.component';
 import { NgxChartsBarVerticalComponent } from './ngx-charts-bar-vertical/ngx-charts-bar-vertical.component';

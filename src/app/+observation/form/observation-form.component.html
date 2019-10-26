@@ -70,7 +70,7 @@
 
   <laji-select
     [selected]="query.typeOfOccurrenceId"
-    (selectedChanged)="indirectQueryChange('typeOfOccurrenceId', $event)"
+    (selectedChange)="indirectQueryChange('typeOfOccurrenceId', $event)"
     [useFilter]="false"
     [title]="'observation.commonness' | translate"
     [info]="'observation.info.commonness' | translate"
@@ -105,7 +105,7 @@
   <ng-container *ngIf="formQuery.asEditor || formQuery.asObserver || query.qualityIssues">
     <laji-select
       [selected]="[query.qualityIssues]"
-      (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
+      (selectedChange)="indirectQueryChange('qualityIssues', $event[0])"
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.qualityIssues' | translate"
@@ -410,7 +410,7 @@
   <div>
     <laji-select
       [selected]="[query.breedingSite]"
-      (selectedChanged)="indirectQueryChange('breedingSite', $event[0])"
+      (selectedChange)="indirectQueryChange('breedingSite', $event[0])"
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.breedingSite' | translate"
@@ -461,7 +461,7 @@
   <ng-container *ngIf="advancedMode || query.annotated">
     <laji-select
       [selected]="[query.annotated]"
-      (selectedChanged)="indirectQueryChange('annotated', $event[0])"
+      (selectedChange)="indirectQueryChange('annotated', $event[0])"
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.annotated' | translate"
@@ -473,7 +473,7 @@
   <ng-container *ngIf="advancedMode || query.qualityIssues">
     <laji-select
       [selected]="[query.qualityIssues]"
-      (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
+      (selectedChange)="indirectQueryChange('qualityIssues', $event[0])"
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.qualityIssues' | translate"
@@ -498,7 +498,7 @@
     name="collectionID"></laji-metadata-select>
   <laji-select
     [selected]="query.reliabilityOfCollection"
-    (selectedChanged)="indirectQueryChange('reliabilityOfCollection', $event)"
+    (selectedChange)="indirectQueryChange('reliabilityOfCollection', $event)"
     [multiple]="true"
     [useFilter]="false"
     [title]="'observation.form.reliabilityOfCollection' | translate"

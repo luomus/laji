@@ -36,7 +36,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
-  @Output() selectedChanged = new EventEmitter<string[]|string>();
+  @Output() selectedChange = new EventEmitter<string[]|string>();
   @Input() multiple = true;
   @Input() info: string;
   @ViewChild('filter', { static: false }) filter: ElementRef;
@@ -99,9 +99,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedIdx = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
-      this.selectedChanged.emit(id);
+      this.selectedChange.emit(id);
     } else {
-      this.selectedChanged.emit(this.selected);
+      this.selectedChange.emit(this.selected);
     }
   }
 
@@ -110,9 +110,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedIdx = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
-      this.selectedChanged.emit(id);
+      this.selectedChange.emit(id);
     } else {
-      this.selectedChanged.emit(this.selected);
+      this.selectedChange.emit(this.selected);
     }
   }
 

@@ -1,4 +1,14 @@
 <div class="observation-table-wrapper">
+  <laji-datatable-header
+    [downloadText]="'haseka.submissions.download' | translate"
+    [downloadLoading]="downloadLoading"
+    [showDownloadMenu]="showDownloadMenu"
+    [showSettingsMenu]="showSettingsMenu"
+    [count]="result.total"
+    [maxDownload]="maxDownload"
+    (openSettingsMenu)="openModal()"
+    (download)="download($event)"
+  ></laji-datatable-header>
   <laji-datatable
     #dataTable
     class="observation-table"
@@ -20,9 +30,6 @@
     [totalMessage]="'haseka.submissions.total' | translate"
     [columns]="columns">
   </laji-datatable>
-  <div class="setting-menu link" (click)="openModal()" *ngIf="showSettingsMenu">
-    <i class="glyphicon glyphicon-cog"></i>
-  </div>
 </div>
 
 <div bsModal #settingsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -59,9 +66,9 @@
         </div>
 
         <div class="row" *ngIf="!isAggregate">
-          <ng-container *ngFor="let col of [[0, 4], [4, 2], [6, 2]]">
+          <ng-container *ngFor="let col of columnGroups ">
             <div class="col-sm-6 col-md-4">
-              <ng-container *ngFor="let group of columnGroups | slice:col[0]:col[0] + col[1]">
+              <ng-container *ngFor="let group of col">
                 <laji-selected-field-group
                   [header]="group.header"
                   [fields]="group.fields"
@@ -73,7 +80,7 @@
             </div>
           </ng-container>
         </div>
-        
+
         <div class="row">
           <div class="col-sm-6">
             <div *ngIf="showPageSize">

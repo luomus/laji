@@ -33,6 +33,13 @@
   color: $color-main-dark;
 }
 
+.download-row {
+  text-align: right;
+  margin-bottom: 5px;
+}
+.download-row > * {
+  text-align: initial;
+}
 
 :host ::ng-deep .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
   border-right: none;

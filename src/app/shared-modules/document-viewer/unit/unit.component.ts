@@ -1,5 +1,4 @@
-
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
@@ -20,9 +19,11 @@ export class UnitComponent implements OnInit {
   @Input() documentID: string;
   @Input() unit: any;
   @Input() highlight: string;
+  @Input() highlightParents: string[] = [];
   @Input() identifying: boolean;
   @Input() openAnnotation: boolean;
   @Input() showFacts = false;
+  @Input() showOnlyHighlighted: boolean;
 
   annotationVisible = false;
   annotationClass$: Observable<string>;
@@ -41,7 +42,7 @@ export class UnitComponent implements OnInit {
   ngOnInit() {
     if (this.unit) {
       if (this.unit.linkings) {
-        this.unit.linkings.taxonId = this.toQname.transform(this.unit.linkings.taxon.qname);
+        this.unit.linkings.taxonId = this.toQname.transform(this.unit.linkings.taxon.id);
       }
       if (Array.isArray(this.unit.facts)) {
         this.unit.facts = this.unit.facts.reduce((cumulative, current) => {

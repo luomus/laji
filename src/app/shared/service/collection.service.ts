@@ -22,9 +22,10 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     return this.fetchList(this.metadataService.metadataFindPropertiesRanges('MY.collectionID', lang, false, true), lang);
   }
 
-  getName(id: string, lang): Observable<ICollectionRange[]> {
+  getName(id: string, lang, empty: null|string = null): Observable<string> {
     return this.getAll(lang).pipe(
-      map(data => data.filter(col => col.id === id))
+      map(data => data.find(col => col.id === id)),
+      map(col => col ? col.value : (empty === null ? id : empty))
     );
   }
 }

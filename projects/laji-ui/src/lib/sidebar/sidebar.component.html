@@ -1,6 +1,6 @@
 <ng-container *ngIf="position === 'right' else sidebar"></ng-container>
 
-<div class="content" [ngClass]="{'mobile': mobile, 'left': position === 'left', 'right': position === 'right'}">
+<div class="content" [ngClass]="{'mobile': mobile, 'left': position === 'left', 'right': position === 'right'}" #contentRef>
   <ng-content select="main"></ng-content>
 </div>
 
@@ -17,7 +17,9 @@
          [ngClass]="{'static-width': staticWidth}"
          [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}"
          #navWrapper>
-      <div class="close-btn" (click)="onSwitchOpen()">X</div>
+      <div class="close-wrapper">
+        <div class="close-btn" (click)="onSwitchOpen()">X</div>
+      </div>
       <ng-content select="nav"></ng-content>
     </div>
     <div [@sidebarOpenbtnOpen]="open ? 'open' : 'closed'" class="open-btn" (click)="onSwitchOpen()">

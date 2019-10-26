@@ -75,17 +75,7 @@ export class DocumentExportService {
                       const mergedData = [].concat.apply([], data);
 
                       const aoa = this.convertDataToAoA(this.getUsedFields(fields), mergedData);
-                      const sheet = XLSXUtils.aoa_to_sheet(aoa);
-
-                      if (type === 'csv') {
-                        return XLSXUtils.sheet_to_csv(sheet);
-                      } else if (type === 'tsv') {
-                        return XLSXUtils.sheet_to_csv(sheet, {FS: '\t'});
-                      }
-
-                      const book = XLSXUtils.book_new();
-                      XLSXUtils.book_append_sheet(book, sheet);
-                      return XLSXWrite(book, {bookType: type, type: 'array'});
+                      return this.exportService.getBufferFromAoa(aoa, type);
                     })
                   );
               })
@@ -404,12 +394,7 @@ export class DocumentExportService {
 
     if (key.match(new RegExp('^' + this.valuePrefixes.collection + '\.[0-9]+$'))) {
       return this.collectionService
-        .getName(key, this.translate.currentLang)
-        .pipe(
-          map((name: any[]) => {
-            return name.length > 0 && name[0].value ? name[0].value : key;
-          })
-        );
+        .getName(key, this.translate.currentLang);
     }
 
     return ObservableOf(key);

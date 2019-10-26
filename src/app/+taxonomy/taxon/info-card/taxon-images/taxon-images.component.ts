@@ -1,4 +1,4 @@
-import {Component, OnChanges, Input, SimpleChanges, ChangeDetectionStrategy} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';

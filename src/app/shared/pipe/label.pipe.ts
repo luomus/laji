@@ -1,5 +1,4 @@
-
-import {concat, take, delay, retryWhen, timeout, map} from 'rxjs/operators';
+import { concat, delay, map, retryWhen, take, timeout } from 'rxjs/operators';
 import { Subscription, throwError as observableThrowError } from 'rxjs';
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';

@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnDestroy, OnChanges, Output} from '@angular/core';
-import {Subscription} from 'rxjs';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-habitat-select',

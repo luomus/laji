@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from '../service/footer.service';
 import { of, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';

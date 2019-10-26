@@ -1,49 +1,64 @@
-<div class="finnish-selector">
-  <lu-button [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery" [disabled]="active !== 'finnish'">
-    {{ 'search.result.all' | translate }}</lu-button>
-  <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery" [disabled]="active === 'finnish'">
-    {{ 'search.result.finnish' | translate }}</lu-button>
-  <ng-container *ngIf="active !== 'finnish'">
-    <div>
-      <strong>
-        <laji-observation-count
-          [loading]="loadingUnits"
-          [value]="unitCount"></laji-observation-count>
-      </strong>
-      {{ 'observation.results.observation' | translate }}
-    </div>
-    <div>
-      <strong>
-        <laji-observation-count
-          [loading]="loadingTaxa"
-          [value]="speciesCount"></laji-observation-count>
-      </strong>
-      {{ 'observation.results.species' | translate }}
-    </div>
+
+<strong class="counts" style="padding: 0" *ngIf="!(visible.countTaxa && visible.countHits) && visible.countHits">
+  <laji-observation-count
+    [loading]="loadingUnits"
+    [value]="unitCount"></laji-observation-count>
+  {{ 'observation.results.hits' | translate }}
+</strong>
+<div class="finnish-selector" *ngIf="visible.finnish || (visible.countTaxa && visible.countHits)">
+  <ng-container *ngIf="visible.finnish">
+    <lu-button [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="active !== 'finnish'">
+      {{ 'search.result.all' | translate }}</lu-button>
+    <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="active === 'finnish'">
+      {{ 'search.result.finnish' | translate }}</lu-button>
   </ng-container>
-  <ng-container *ngIf="active === 'finnish'">
-    <div>
-      <strong>
-        <laji-observation-count
-          [overrideInQuery]="{countryId: 'ML.206'}"
-          [query]="query"></laji-observation-count>
-      </strong>
-      {{ 'observation.results.observation' | translate }}
-    </div>
-    <div>
-      <strong>
-        <laji-observation-count
-          [overrideInQuery]="{countryId: 'ML.206', includeNonValidTaxa: false}"
-          [query]="query"
-          [field]="'unit.linkings.taxon.speciesId'"></laji-observation-count>
+  <ng-container *ngIf="visible.countTaxa || visible.countHits">
+    <ng-container *ngIf="active !== 'finnish'">
+      <div>
+        <strong>
+          <laji-observation-count
+            *ngIf="visible.countHits"
+            [loading]="loadingUnits"
+            [value]="unitCount"></laji-observation-count>
+        </strong>
+        {{ 'observation.results.observation' | translate }}
+      </div>
+      <div>
+        <strong>
+          <laji-observation-count
+            *ngIf="visible.countTaxa"
+            [loading]="loadingTaxa"
+            [value]="speciesCount"></laji-observation-count>
+        </strong>
         {{ 'observation.results.species' | translate }}
-      </strong>
-    </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="active === 'finnish'">
+      <div>
+        <strong>
+          <laji-observation-count
+            *ngIf="visible.countHits"
+            [overrideInQuery]="{countryId: 'ML.206'}"
+            [query]="query"></laji-observation-count>
+        </strong>
+        {{ 'observation.results.observation' | translate }}
+      </div>
+      <div>
+        <strong>
+          <laji-observation-count
+            *ngIf="visible.countTaxa"
+            [overrideInQuery]="{countryId: 'ML.206', includeNonValidTaxa: false}"
+            [query]="query"
+            [field]="'unit.linkings.taxon.speciesId'"></laji-observation-count>
+          {{ 'observation.results.species' | translate }}
+        </strong>
+      </div>
+    </ng-container>
   </ng-container>
 </div>
 
 <lu-tabs *ngIf="active !== 'finnish'" [selectedIndex]="selectedIndex" (select)="onSelect($event)">
-  <lu-tab [heading]="'search.result.map' | translate">
+  <lu-tab *ngIf="visible.map" [heading]="'search.result.map' | translate">
     <laji-observation-map
       [ready]="!loadingUnits"
       [unitCount]="unitCount"
@@ -57,15 +72,17 @@
       (create)="pickLocation($event)"
     ></laji-observation-map>
   </lu-tab>
-  <lu-tab [heading]="'search.result.list' | translate">
+  <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate">
     <laji-observation-result-list
+      [resultBase]="resultBase"
+      [showDownloadMenu]="true"
       [settings]="listSettings"
       (settingsChange)="listSettingsChange.emit($event)"
       [visible]="active === 'list'"
       [query]="query"
     ></laji-observation-result-list>
   </lu-tab>
-  <lu-tab [heading]="'search.result.images' | translate">
+  <lu-tab *ngIf="visible.images" [heading]="'search.result.images' | translate">
     <div style="min-height: 180px; padding: 0 10px 0 0">
       <laji-gallery
         [showPopover]="true"
@@ -74,7 +91,7 @@
       </laji-gallery>
     </div>
   </lu-tab>
-  <lu-tab [heading]="'search.result.species' | translate">
+  <lu-tab *ngIf="visible.species" [heading]="'search.result.species' | translate">
     <div class="species-list">
       <div class="row">
         <div class="col-sm-12">
@@ -92,7 +109,7 @@
       </div>
     </div>
   </lu-tab>
-  <lu-tab [heading]="'search.result.stats' | translate">
+  <lu-tab *ngIf="visible.statistics" [heading]="'search.result.stats' | translate">
     <div *ngIf="activated['stats']">
       <div class="form-group">
         <div class="col-sm-12" style="height: 300px">
@@ -144,18 +161,21 @@
       </div>
     </div>
   </lu-tab>
-  <lu-tab [heading]="'search.result.load' | translate">
+  <lu-tab *ngIf="visible.download" [heading]="'search.result.load' | translate">
     <laji-observation-download
       [speciesCount]="speciesCount"
       [unitCount]="unitCount"
       [query]="query"
     ></laji-observation-download>
   </lu-tab>
-  <lu-tab [heading]="'search.result.annotation' | translate">
-    <laji-annotations [query]="query"></laji-annotations>
-  </lu-tab>
+
+  <ng-container *lajiForTypes="['dev']">
+    <lu-tab *ngIf="visible.annotations" [heading]="'search.result.annotation' | translate">
+      <laji-annotations [query]="query"></laji-annotations>
+    </lu-tab>
+  </ng-container>
 </lu-tabs>
 
-<div [hidden]="active !== 'finnish'" *ngIf="activated['finnish']">
+<div [hidden]="active !== 'finnish'" *ngIf="activated['finnish'] && visible.finnish">
   <laji-main-result [query]="query" [visible]="active === 'finnish'"></laji-main-result>
 </div>

@@ -1,6 +1,7 @@
 <laji-observation-table
   #datatable
   [visible]="visible"
+  [showDownloadMenu]="showDownloadMenu"
   (rowSelect)="showDocument($event)"
   (pageSizeChange)="setPageSize($event)"
   (selectChange)="setSelectedFields($event)"
@@ -11,5 +12,6 @@
   [showSettingsMenu]="true"
   [isAggregate]="false"
   [selected]="selectedFields"
+  [allAggregateFields]="[]"
 ></laji-observation-table>
 

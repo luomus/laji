@@ -12,7 +12,7 @@
   <laji-row [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.reportedInformalTaxonGroup | toQName | label"></laji-row>
 </ng-template>
 <laji-row
-  *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname) || !unit.linkings.originalTaxon)"
+  *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.id !== unit.linkings.originalTaxon.id) || !unit.linkings.originalTaxon)"
   [title]="'viewer.fixedName'|translate">
   <laji-taxon-name [taxon]="unit.linkings.taxon" [addLink]="showLinks"></laji-taxon-name>
 </laji-row>

@@ -1,21 +1,22 @@
-
-import {take,  map, tap, share, debounceTime } from 'rxjs/operators';
+import { debounceTime, map, share, tap } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Inject,
   Input,
-  Output,
-  ViewChild,
   NgZone,
+  OnDestroy,
+  OnInit,
+  Output,
   PLATFORM_ID,
-  Inject, OnDestroy, OnInit
+  ViewChild
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
-import { of as ObservableOf, Subject, Subscription, Observable } from 'rxjs';
+import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';

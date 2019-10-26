@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { WbcResultService, SEASON } from '../wbc-result.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { SEASON, WbcResultService } from '../wbc-result.service';
 import { Subscription } from 'rxjs';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 

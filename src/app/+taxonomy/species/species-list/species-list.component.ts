@@ -1,4 +1,4 @@
-import {switchMap,  map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -89,7 +89,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       }
     );
 
-    this.userService.getUserSetting('taxonomyList').subscribe(data => {
+    this.userService.getUserSetting<any>('taxonomyList').subscribe(data => {
         if (data && data.selected) {
           this.searchQuery.listOptions.selected = data.selected;
         }

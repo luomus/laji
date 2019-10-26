@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, OnDestroy, PipeTransform} from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, PipeTransform } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 

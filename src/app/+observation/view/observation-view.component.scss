@@ -32,10 +32,11 @@ laji-observation-form {
 
 .form-filters {
   z-index: 1029;
-  position: fixed;
-  top: 50px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
   right: 0;
-  height: calc(100vh - 50px);
   padding: 0;
 }
 
@@ -56,9 +57,7 @@ laji-observation-form {
 
 @media only screen and (max-width : 767px) {
   .form-filters {
-    top: 0;
     height: auto;
-    position: absolute;
     width: 100%;
     bottom: 0;
     top: 40px;
@@ -72,6 +71,18 @@ laji-observation-form {
     width: 100%;
     background: #c7c7c7;
     padding: 0 15px;
+    top: 50px;
+  }
+
+  .grc .close-filters-mobile {
+    position: absolute;
+    display: block;
+    height: 40px;
+    z-index: 1059;
+    width: 100%;
+    background: #c7c7c7;
+    padding: 0 15px;
+    top: 0px;
   }
 
   .close-filters-mobile div {

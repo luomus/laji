@@ -13,7 +13,7 @@ import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { interval as ObservableInterval, Subscription } from 'rxjs';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
-import { filter, switchMap, take, map } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Global } from '../../../../environments/global';
 
 @Component({

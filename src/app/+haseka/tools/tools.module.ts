@@ -35,8 +35,8 @@ import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete
 import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
 import { LabelDesignerComponent } from './label-designer/label-designer.component';
 import { ImportContainerComponent } from './importer/import-container.component';
-import { LabelDesignerModule } from 'label-designer';
 import { CanSplitToPipe } from './excel-generator/pipes/can-split-to.pipe';
+import { LabelDesignerModule } from '../../../../projects/label-designer/src/lib/label-designer.module';
 
 @NgModule({
   imports: [

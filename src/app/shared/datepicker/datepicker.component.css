@@ -12,9 +12,13 @@
   border: none;
 }
 
+.ng-datepicker.right {
+  right: 15px;
+}
+
+
 .ng-datepicker {
   position: fixed;
-  right: 15px;
   z-index: 9999;
   width: 253px;
   background: #fff;

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of, Subscription, merge, Subject } from 'rxjs';
+import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '../../shared/service/footer.service';
 import { ComponentCanDeactivate } from '../../shared/guards/document-de-activate.guard';

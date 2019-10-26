@@ -1,5 +1,4 @@
-
-import { share, map, mergeMap, toArray } from 'rxjs/operators';
+import { map, mergeMap, share, toArray } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';

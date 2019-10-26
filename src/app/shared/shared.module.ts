@@ -58,6 +58,7 @@ import { LazyImageDirective } from './directive/lazy-image.directive';
 import { HideForIeDirective } from './directive/hide-for-ie.directive';
 import { SortPipe } from './pipe/sort.pipe';
 import { DateFormatPipe, MomentModule } from 'ngx-moment';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 @NgModule({
@@ -73,7 +74,7 @@ import { DateFormatPipe, MomentModule } from 'ngx-moment';
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
     ObservationGroupSelectComponent, IucnGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
-    TaxonNameComponent,
+    TaxonNameComponent, NotFoundComponent,
     ChecklistPipe,
     FactNotInPipe,
     ForTypesDirective,

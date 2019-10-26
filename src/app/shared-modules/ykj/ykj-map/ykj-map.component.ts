@@ -8,12 +8,13 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Output, SimpleChanges,
+  Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { forkJoin, of, Observable, Subscription } from 'rxjs';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
