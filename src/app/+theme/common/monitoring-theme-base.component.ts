@@ -10,7 +10,6 @@ import { NavLink, ThemeFormService } from './theme-form.service';
 
 interface NavData {
   title: string;
-  titlePosition?: string; // body | nav (default)
   navLinks: NavLink[];
   formID: string;
 }
