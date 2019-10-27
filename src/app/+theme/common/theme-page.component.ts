@@ -7,7 +7,7 @@ import { Global } from '../../../environments/global';
     template: `
 <lu-sidebar>
   <nav>
-    <h3 [innerHTML]="title | translate"></h3>
+    <h4 [innerHTML]="title | translate"></h4>
     <lu-sidebar-link *ngFor="let link of navLinks" [link]="link.routerLink" routerLinkActive>
       {{ link.label | translate }}
       <lu-sidebar-link *ngFor="let child of link.children" [link]="child.routerLink">
@@ -23,7 +23,16 @@ import { Global } from '../../../environments/global';
     <ng-content select='*'></ng-content>
   </main>
 </lu-sidebar>
-    `
+    `,
+    styles: [`
+h4 {
+  max-width: 200px;
+}
+
+main {
+  padding: 20px 40px;
+}
+    `]
 })
 export class ThemePageComponent {
     @Input() title: string;
