@@ -37,7 +37,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const {AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap, renderModuleFactory} = require('./dist/server/main');
+const {AppServerModuleNgFactory, LAZY_MODULE_MAP, provideModuleMap, renderModuleFactory} = require('./dist/server/main');
 
 app.engine('html', (_, options, callback) => {
   renderModuleFactory(AppServerModuleNgFactory, {
