@@ -144,7 +144,7 @@ export class UserService {
     if (_state.allUsers[id]) {
       return pickValue(isObservable(_state.allUsers[id]) ? _state.allUsers[id] as Observable<Person> : of(_state.allUsers[id] as Person));
     }
-    if (id === _state.user.id) {
+    if (_state.user && id === _state.user.id) {
       return pickValue(of(_state.user));
     }
 

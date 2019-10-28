@@ -471,6 +471,20 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@phenomnomnominal/angular-lazy-routes-fix@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@phenomnomnominal/angular-lazy-routes-fix/-/angular-lazy-routes-fix-0.1.5.tgz#517e1fd4ea9e234ffe505ee13861d92e1a6463ec"
+  integrity sha512-Cbl566TJHwTTgqrQPC10aU9ONAtZ1WrxIGXXV0sF77PtuIUEhxkMgpqvk6fkIzxiDhHOmmZ2FKij7LsDyHCvlw==
+  dependencies:
+    "@phenomnomnominal/tsquery" "^3.0.0"
+
+"@phenomnomnominal/tsquery@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@phenomnomnominal/tsquery/-/tsquery-3.0.0.tgz#6f2f4dbf6304ff52b12cc7a5b979f20c3794a22a"
+  integrity sha512-SW8lKitBHWJ9fAYkJ9kJivuctwNYCh3BUxLdH0+XiR1GPBiu+7qiZzh8p8jqlj1LgVC1TbvfNFroaEsmYlL8Iw==
+  dependencies:
+    esquery "^1.0.1"
+
 "@schematics/angular@8.3.6":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-8.3.6.tgz#409873ef29affac0a1851f88db312fedc7528e57"
@@ -3648,6 +3662,13 @@ esprima@^4.0.0:
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
 
+esquery@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/esquery/-/esquery-1.0.1.tgz#406c51658b1f5991a5f9b62b1dc25b00e3e5c708"
+  integrity sha512-SmiyZ5zIWH9VM+SRUReLS5Q8a7GxtRdxEBVZpm98rJM7Sb+A9DVCndXfkeFUd3byderg+EbDkfnevfCwynWaNA==
+  dependencies:
+    estraverse "^4.0.0"
+
 esrecurse@^4.1.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/esrecurse/-/esrecurse-4.2.1.tgz#007a3b9fdbc2b3bb87e4879ea19c92fdbd3942cf"
@@ -3655,7 +3676,7 @@ esrecurse@^4.1.0:
   dependencies:
     estraverse "^4.1.0"
 
-estraverse@^4.1.0, estraverse@^4.1.1:
+estraverse@^4.0.0, estraverse@^4.1.0, estraverse@^4.1.1:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/estraverse/-/estraverse-4.3.0.tgz#398ad3f3c5a24948be7725e83d11a7de28cdbd1d"
   integrity sha512-39nnKffWz8xN1BU/2c79n9nB9HDzo0niYUqx6xyqUnyoAnQyyWpOTdZEeiCch8BBu515t4wp9ZmgVfVhn9EBpw==
@@ -5729,10 +5750,10 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-label-designer@^3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/label-designer/-/label-designer-3.1.9.tgz#e8ea94bd632ea1f82872d165b6efcfa0775c8c34"
-  integrity sha512-rPmkRASJ66PkqwLPppAhl446DKq3ItD9ISGhFch0waREMsF9GELDJH/3ZJJTZiZ5Uo+pVDIwIBhKgu9suvLj/g==
+label-designer@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/label-designer/-/label-designer-3.2.0.tgz#6fdda0718562f64ef313ddd07d599989100b8edb"
+  integrity sha512-ogK0TpxCfCxwlYiqIQnbZJPUe8l/loT6aAfHuJowD6v4iLMy3P+MMfD7sqcuf+k22vuA9NIMswRPebiOrdweDA==
   dependencies:
     tslib "^1.9.0"
 

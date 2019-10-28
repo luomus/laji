@@ -20,26 +20,26 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
 }
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule', data: {preload: true}},
-  {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {title: 'news.title'}},
-  {path: 'about', loadChildren: './+information/information.module#InformationModule'},
-  {path: 'user', loadChildren: './+user/user.module#UserModule'},
-  {path: 'view', loadChildren: './+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
-  {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule'},
-  {path: 'vihko', loadChildren: './+haseka/haseka.module#HasekaModule', data: {title: 'haseka.title'}},
-  {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule', data: {
+  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule), data: {preload: true}},
+  {path: 'news', loadChildren: () => import('./+news/news.module').then(m => m.NewsModule), data: {title: 'news.title'}},
+  {path: 'about', loadChildren: () => import('./+information/information.module').then(m => m.InformationModule)},
+  {path: 'user', loadChildren: () => import('./+user/user.module').then(m => m.UserModule)},
+  {path: 'view', loadChildren: () => import('./+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
+  {path: 'invasive', loadChildren: () => import('./+invasive/invasive.module').then(m => m.InvasiveModule)},
+  {path: 'vihko', loadChildren: () => import('./+haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title'}},
+  {path: 'observation', loadChildren: () => import('./+observation/observation.module').then(m => m.ObservationModule), data: {
     preload: true,
     title: 'navigation.observation'
   }},
-  {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule', data: {
+  {path: 'taxon', loadChildren: () => import('./+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
     preload: true,
     title: 'navigation.taxonomy'
   }},
-  {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule'},
-  {path: 'kartta', loadChildren: './+map/map.module#MapModule'},
-  {path: 'map', loadChildren: './+map/map.module#MapModule', data: {title: 'navigation.map'}},
+  {path: 'collection', loadChildren: () => import('./+collection/collection.module').then(m => m.CollectionModule)},
+  {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule)},
+  {path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {title: 'navigation.map'}},
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
-  {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule'},
+  {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule)},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
   {path: 'forum', component: ForumComponent}

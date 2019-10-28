@@ -2,7 +2,7 @@
 <div class="container-fluid" *ngIf="queryParams">
   <div class="row">
     <div class="col-sm-8">
-      <h1>{{'iucn.results.title' | translate}}</h1>
+      <h1>{{ 'iucn.results.title' | translate }}</h1>
       <div class="year-select">
         <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
       </div>
