@@ -25,6 +25,10 @@ import { Global } from '../../../environments/global';
 </lu-sidebar>
     `,
     styles: [`
+:host {
+  width: 100%;
+}
+
 h4 {
   max-width: 200px;
 }

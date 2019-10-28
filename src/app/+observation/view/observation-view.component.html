@@ -1,16 +1,18 @@
 <lu-sidebar [position]="'right'" *ngIf="vm$ | async; let vm">
   <main>
     <ng-container *lajiBrowserOnly>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="pull-right toggle-intro" *ngIf="!vm.showIntro">
-            <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+      <ng-container *ngIf="visible.info">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="pull-right toggle-intro" *ngIf="!vm.showIntro">
+              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+            </div>
           </div>
         </div>
-      </div>
-      <alert *ngIf="vm.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-        <div [innerHtml]="'observation.intro' | translate"></div>
-      </alert>
+        <alert *ngIf="vm.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+          <div [innerHtml]="'observation.intro' | translate"></div>
+        </alert>
+      </ng-container>
     </ng-container>
     <laji-observation-result
       [resultBase]="formType"
@@ -31,14 +33,27 @@
     ></laji-observation-result>
   </main>
   <nav>
-    <laji-observation-form
-      [query]="vm.query"
-      [invasiveStatuses]="invasiveStatuses"
-      [dateFormat]="dateFormat"
-      [advancedMode]="vm.advanced"
-      (advancedModeChange)="onAdvanceModeChange($event)"
-      (queryChange)="onQueryChange($event)"
-      (mapDraw)="draw($event)"
-    ></laji-observation-form>
+    <ng-container [ngSwitch]="formType">
+      <laji-form-sample
+        *ngSwitchCase="'sample'"
+        [query]="vm.query"
+        [invasiveStatuses]="invasiveStatuses"
+        [dateFormat]="dateFormat"
+        [advancedMode]="vm.advanced"
+        (advancedModeChange)="onAdvanceModeChange($event)"
+        (queryChange)="onQueryChange($event)"
+        (mapDraw)="draw($event)"
+      ></laji-form-sample>
+      <laji-observation-form
+        *ngSwitchDefault
+        [query]="vm.query"
+        [invasiveStatuses]="invasiveStatuses"
+        [dateFormat]="dateFormat"
+        [advancedMode]="vm.advanced"
+        (advancedModeChange)="onAdvanceModeChange($event)"
+        (queryChange)="onQueryChange($event)"
+        (mapDraw)="draw($event)"
+      ></laji-observation-form>
+    </ng-container>
   </nav>
 </lu-sidebar>
