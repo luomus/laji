@@ -11,7 +11,7 @@
        [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile, 'open': open}"
        [@sidebarOpen]="disableWidthAnim ? 'disabled' : (open ? 'open' : 'closed')"
        #sidebarRef>
-    <div *ngIf="!mobile" class="dragbar" (mousedown)="onDragStart($event)"></div>
+    <div *ngIf="!mobile && !staticWidth" class="dragbar" (mousedown)="onDragStart($event)"></div>
     <div class="sidebar-content-wrapper"
          [@sidebarContentOpen]="open ? 'open' : 'closed'"
          [ngClass]="{'static-width': staticWidth}"

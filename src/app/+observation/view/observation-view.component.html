@@ -1,4 +1,4 @@
-<lu-sidebar [position]="'right'" *ngIf="vm$ | async; let vm">
+<lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm">
   <main>
     <ng-container *lajiBrowserOnly>
       <ng-container *ngIf="visible.info">
