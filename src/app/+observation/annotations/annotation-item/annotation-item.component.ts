@@ -10,6 +10,7 @@ import { Global } from '../../../../environments/global';
 export class AnnotationItemComponent implements OnInit {
 
   @Input() item: any;
+  addedTags: Array<string>;
 
   // addedTags = ['MMAN.3', 'MMAN.5', 'MMAN.6', 'MMAN.7', 'MMAN.8', 'MMAN.11', 'MMAN.22', 'MMAN.23'];
   annotationTagsObservation = Global.annotationTags;
