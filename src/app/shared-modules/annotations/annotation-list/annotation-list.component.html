@@ -93,7 +93,7 @@
       <span class="read-more" *ngIf="open[i]" (click)="readMore(i)">Hide</span>
     </div>
   </div>
-  <div class="no-annotations" *ngIf="annotations && annotations.length === 0">
+  <div class="no-annotations alert alert-warning" *ngIf="annotations && annotations.length === 0">
     {{ 'annotation.none' | translate }}
   </div>
 </div>
