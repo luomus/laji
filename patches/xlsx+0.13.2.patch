@@ -1,12 +1,4 @@
 diff --git a/node_modules/xlsx/node_modules/.bin/adler32 b/node_modules/xlsx/node_modules/.bin/adler32
-deleted file mode 120000
-index 7b1fa5e..0000000
---- a/node_modules/xlsx/node_modules/.bin/adler32
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../adler-32/bin/adler32.njs
-\ No newline at end of file
-diff --git a/node_modules/xlsx/node_modules/.bin/adler32 b/node_modules/xlsx/node_modules/.bin/adler32
 new file mode 100755
 index 0000000..2e31986
 --- /dev/null
@@ -99,14 +91,6 @@ index 0000000..2e31986
 +if(filename === "-") process.stdin.pipe(writable);
 +else if(fs.existsSync(filename)) fs.createReadStream(filename).pipe(writable);
 +else die("adler32: " + filename + ": No such file or directory", 2);
-diff --git a/node_modules/xlsx/node_modules/.bin/cfb b/node_modules/xlsx/node_modules/.bin/cfb
-deleted file mode 120000
-index 6129e49..0000000
---- a/node_modules/xlsx/node_modules/.bin/cfb
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../cfb/bin/cfb.njs
-\ No newline at end of file
 diff --git a/node_modules/xlsx/node_modules/.bin/cfb b/node_modules/xlsx/node_modules/.bin/cfb
 new file mode 100755
 index 0000000..2d69a59
@@ -245,14 +229,6 @@ index 0000000..2d69a59
 +	else write(cfb.FullPaths[i], cfb.FileIndex[i]);
 +}
 diff --git a/node_modules/xlsx/node_modules/.bin/codepage b/node_modules/xlsx/node_modules/.bin/codepage
-deleted file mode 120000
-index dd6ae49..0000000
---- a/node_modules/xlsx/node_modules/.bin/codepage
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../codepage/bin/codepage.njs
-\ No newline at end of file
-diff --git a/node_modules/xlsx/node_modules/.bin/codepage b/node_modules/xlsx/node_modules/.bin/codepage
 new file mode 100755
 index 0000000..d09e1b0
 --- /dev/null
@@ -357,14 +333,6 @@ index 0000000..d09e1b0
 +	fs.appendFileSync(o, out);
 +}
 diff --git a/node_modules/xlsx/node_modules/.bin/crc32 b/node_modules/xlsx/node_modules/.bin/crc32
-deleted file mode 120000
-index aa1fc22..0000000
---- a/node_modules/xlsx/node_modules/.bin/crc32
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../crc-32/bin/crc32.njs
-\ No newline at end of file
-diff --git a/node_modules/xlsx/node_modules/.bin/crc32 b/node_modules/xlsx/node_modules/.bin/crc32
 new file mode 100755
 index 0000000..657291a
 --- /dev/null
@@ -458,14 +426,6 @@ index 0000000..657291a
 +else if(fs.existsSync(filename)) fs.createReadStream(filename).pipe(writable);
 +else die("crc32: " + filename + ": No such file or directory", 2);
 diff --git a/node_modules/xlsx/node_modules/.bin/ssf b/node_modules/xlsx/node_modules/.bin/ssf
-deleted file mode 120000
-index 31d63f8..0000000
---- a/node_modules/xlsx/node_modules/.bin/ssf
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../ssf/bin/ssf.njs
-\ No newline at end of file
-diff --git a/node_modules/xlsx/node_modules/.bin/ssf b/node_modules/xlsx/node_modules/.bin/ssf
 new file mode 100755
 index 0000000..79610a5
 --- /dev/null
@@ -485,7 +445,7 @@ index 0000000..79610a5
 +}
 +console.log(X.format(argv[0],argv[1]) + "|" + X.format(argv[0],+(argv[1])) + "|");
 diff --git a/node_modules/xlsx/xlsx.js b/node_modules/xlsx/xlsx.js
-index 1b68b6e..167dd6d 100644
+index 1b68b6e..1dc27c7 100644
 --- a/node_modules/xlsx/xlsx.js
 +++ b/node_modules/xlsx/xlsx.js
 @@ -12460,6 +12460,19 @@ return function parse_ws_xml_data(sdata, s, opts, guess, themes, styles) {
