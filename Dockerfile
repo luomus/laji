@@ -9,22 +9,18 @@ RUN apt-get update && apt-get install -yq google-chrome-stable
 # set working directory
 WORKDIR /app
 
-# switch to non root user and prepare the env (npm will not run script if using root)
+# prepare the env (npm will not run script if using root)
 ENV PATH=$PATH:/app/node_modules/.bin
 
-# install system globals
-RUN npm install -g yarn
-
 # install and cache app dependencies
-COPY package.json .
-COPY yarn.lock .
 COPY patches ./patches
 COPY scripts ./scripts
+COPY package* ./
 
-RUN yarn install --frozen-lockfile --network-concurrency 1 --check-files
+RUN npm ci --unsafe-perm
 
 # add app
 COPY . .
 
 # start app
-CMD yarn run start
+CMD npm run start
