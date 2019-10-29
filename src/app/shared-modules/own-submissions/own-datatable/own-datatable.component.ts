@@ -435,18 +435,14 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   cancelLabels() {
     this.selectionType = undefined;
     this.printState = 'none';
+    this.resortTable();
   }
 
   doLabels() {
     if (this.printState === 'none') {
       this.selectionType = 'checkbox';
       this.printState = 'select';
-      if (this.lastSort) {
-        // Sorting is lost when sorted by date type column and select type is given. This is work around for that issue.
-        setTimeout(() => {
-          this.table.onColumnSort(this.lastSort);
-        });
-      }
+      this.resortTable();
     } else if (this.printState === 'select' && !this.labelLoading) {
       this.labelLoading = true;
       this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
@@ -470,5 +466,14 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
       map(settings => ({...settings, [key]: value})),
     ).subscribe(settings => this.userService.setUserSetting(this.labelSettingsKey, settings));
+  }
+
+  private resortTable() {
+    if (this.lastSort) {
+      // Sorting is lost when sorted by date type column and select type is given. This is work around for that issue.
+      setTimeout(() => {
+        this.table.onColumnSort(this.lastSort);
+      });
+    }
   }
 }
