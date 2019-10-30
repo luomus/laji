@@ -482,6 +482,8 @@
     "Undo": "Peruuta",
     "Redo": "Tee uudelleen",
     "Preview": "Esikatselu",
+    "First data row": "Data alkaa riviltä",
+    "Map column": "Linkitä sarakkeet",
     "Labels on page": "Yhdelle sivulle mahtuu {{total}} etikettiä ({{cols}} saraketta {{rows}} riviä).",
     "Range start": "Alue alkaa",
     "Range end": "Alue loppuu",
