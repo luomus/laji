@@ -282,7 +282,6 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   open() {
-    console.log('OPENING');
     this.opened = true;
   }
 
