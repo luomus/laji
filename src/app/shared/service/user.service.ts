@@ -144,7 +144,7 @@ export class UserService {
     if (_state.allUsers[id]) {
       return pickValue(isObservable(_state.allUsers[id]) ? _state.allUsers[id] as Observable<Person> : of(_state.allUsers[id] as Person));
     }
-    if (id === _state.user.id) {
+    if (_state.user && id === _state.user.id) {
       return pickValue(of(_state.user));
     }
 
@@ -176,7 +176,7 @@ export class UserService {
     );
   }
 
-  getUserSetting(key: keyof IUserSettings): Observable<any> {
+  getUserSetting<T>(key: keyof IUserSettings): Observable<T> {
     return this.settings$.pipe(map(settings => settings[key]));
   }
 

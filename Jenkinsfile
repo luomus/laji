@@ -1,16 +1,15 @@
 node {
-  nvm('v11.3.0') {
+  nvm('v10.17.0') {
     stage('Prepare environment') {
       git branch: 'development', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
-      sh 'npm install -g yarn'
-      sh 'yarn install --silent --frozen-lockfile --check-files'
+      sh 'npm ci'
     }
     stage('Quality') {
-      sh 'yarn run lint'
+      sh 'npm run lint'
     }
     stage('Build') {
       milestone()
-      sh 'yarn run --silent build:ssr:dev'
+      sh 'npm run --silent build:ssr:dev'
       sh 'pre-compress-web-assets dist/browser'
     }
     stage('Archive') {

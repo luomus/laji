@@ -1,12 +1,7 @@
-import * as moment from 'moment';
 import { enableProdMode } from '@angular/core';
-import { environment } from './environments/environment';
+enableProdMode();
 
-if (environment.production) {
-  enableProdMode();
-}
-
-const now = moment();
-console.log(now);
-
-export {AppServerModule} from './app/app.server.module';
+export { AppServerModule } from './app/app.server.module';
+export { ngExpressEngine } from '@nguniversal/express-engine';
+export { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
+export { renderModuleFactory } from '@angular/platform-server';

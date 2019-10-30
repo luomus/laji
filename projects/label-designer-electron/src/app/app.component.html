@@ -1,8 +1,8 @@
 <ll-label-designer
   [defaultDomain]="'http://tun.fi/'"
-  [defaultAvailableFields]="defaultAvailableFields$ | async"
+  [defaultAvailableFields]="defaultAvailableFields"
   [defaultSetup]="defaultSetup"
-  [availableFields]="availableFields$ | async"
+  [availableFields]="availableFields"
   (availableFieldsChange)="setAvailableFields($event)"
   [(viewSettings)]="viewSetting"
   [(setup)]="setup"

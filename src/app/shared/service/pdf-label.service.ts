@@ -8,9 +8,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { IdService } from './id.service';
 import { SessionStorage } from 'ngx-webstorage';
-import { SchemaService } from '../../../../projects/label-designer/src/lib/schema.service';
-import { ILabelData } from '../../../../projects/label-designer/src/lib/label-designer.interface';
+import { SchemaService, ILabelData } from 'label-designer';
 import { TriplestoreLabelService } from './triplestore-label.service';
+import { LabelFilter } from '../../shared-modules/own-submissions/own-datatable/own-datatable.component';
+import { Units } from '../model/Units';
+import { Global } from '../../../environments/global';
 
 
 @Injectable({
@@ -20,6 +22,7 @@ export class PdfLabelService {
 
   @SessionStorage('pdf-data', [])
   private data: ILabelData[];
+  private memoryData: ILabelData[];
 
   skipFields: string[] = [
     '@type',
@@ -54,8 +57,10 @@ export class PdfLabelService {
     });
   }
 
-  setData(documents: Document[]): Observable<boolean> {
-    return this.openDocuments(documents).pipe(
+  setData(documents: Document[], filter: LabelFilter): Observable<boolean> {
+    this.memoryData = undefined;
+    return this.filterDocuments(documents, filter).pipe(
+      switchMap(docs => this.openDocuments(docs)),
       switchMap(openDocuments => this.allPossibleFields().pipe(
         map(fields => this.schemaService.convertDataToLabelData(
           [...fields, {field: 'id', label: ''}], openDocuments, 'gatherings.units')
@@ -67,14 +72,20 @@ export class PdfLabelService {
             .replace(item['gatherings.units.id_short'] as string, '');
           return item;
         })),
-        tap(data => this.data = data),
+        tap(data => {
+          try {
+            this.data = data;
+          } catch (e) {
+            this.memoryData = data;
+          }
+        }),
         map(() => true)
       ))
     );
   }
 
   getData(): ILabelData[] {
-    return this.data || [];
+    return this.memoryData || this.data || [];
   }
 
   allPossibleFields(): Observable<ILabelField[]> {
@@ -83,11 +94,83 @@ export class PdfLabelService {
     );
   }
 
+  private filterDocuments(documents: Document[], filter: LabelFilter): Observable<Document[]> {
+    if (this.isEmptyLabelFilter(filter)) {
+      return of(documents);
+    }
+    return from(documents).pipe(
+      map(doc => this.filterDocument(doc, filter)),
+      toArray(),
+      map(docs => docs.filter(doc => !!doc)),
+    );
+  }
+
+  private filterDocument(doc: Document, filter: LabelFilter): Document {
+    if (!doc.gatherings) {
+      return null;
+    }
+    doc.gatherings = doc.gatherings.reduce((gatheringPrev, gathering) => {
+      if (!gathering || !gathering.units || gathering.units.length === 0) {
+        return gatheringPrev;
+      }
+      gathering.units = gathering.units.reduce((unitPrev, unit) => {
+        // Filter out preserved specimen
+        if (filter.onlyPreservedSpecimen && unit.recordBasis !== Units.RecordBasisEnum.RecordBasisPreservedSpecimen) {
+          return unitPrev;
+        }
+
+        // Filter out units that have older det date than the on in the filters
+        if (filter.detLaterThan &&
+          (
+            !unit.identifications || !unit.identifications[0] || !unit.identifications[0].detDate ||
+            new Date(unit.identifications[0].detDate) <= new Date(filter.detLaterThan)
+          )) {
+          return unitPrev;
+        }
+
+        // Repeat the unit if the user selected the multiplyByCount filter
+        const unitCount = filter.multiplyByCount ? this.countIndividuals(unit) : 1;
+        console.log(unitCount);
+        for (let i = 0; i < unitCount; i++) {
+          unitPrev.push(unit);
+        }
+        return unitPrev;
+      }, []);
+
+      // Only add gatherings that have some unit information in them
+      if (gathering.units.length > 0) {
+        gatheringPrev.push(gathering);
+      }
+      return gatheringPrev;
+    }, []);
+
+    // Only return documents that have some gathering information in them
+    if (doc.gatherings.length === 0) {
+      return null;
+    }
+    return doc;
+  }
+
+  private countIndividuals(unit: Units): number {
+    let cnt = 0;
+    Global.documentCountUnitProperties.forEach(prop => {
+      const num = Number(unit[prop]);
+      if (!isNaN(num)) {
+        cnt += num;
+      }
+    });
+    return cnt > 0 ? cnt : 1;
+  }
+
   private openDocuments(documents: Document[]): Observable<Document[]> {
     return from(documents).pipe(
       concatMap((document) => this.openDocument(document)),
       toArray()
     );
+  }
+
+  private isEmptyLabelFilter(filter: LabelFilter): boolean {
+    return !(filter.multiplyByCount || filter.onlyPreservedSpecimen || !!filter.detLaterThan);
   }
 
   private openDocument(document: Document): Observable<Document> {
