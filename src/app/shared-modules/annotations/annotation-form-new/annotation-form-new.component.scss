@@ -1,0 +1,278 @@
+label {
+    margin-right: 10px;
+  }
+  
+  .switch-mode {
+    color: #3498DB;
+    cursor: pointer;
+  }
+  
+  .actions {
+    margin-top: 10px;
+  }
+  .radio {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+  }
+  .annotation-form {
+    margin: 0 -5px;
+    padding: 5px 5px 10px 5px;
+    position: relative;
+  }
+  .annotation-unidentifiable label {
+    font-weight: normal;
+  }
+  
+  .tags, .taxon {
+    margin-bottom: 30px;
+  }
+  
+  .tags label {
+    display: block;
+    width: 100%;
+  }
+  
+  .add-tags, .removed-tags {
+    margin-bottom: 20px;
+  }
+  
+  .add-tags input, .removed-tags input.form-control {
+    display: inline-block;
+    width: 100%;
+  }
+  
+  .add-tags label, .removed-tags label {
+    font-weight: normal;
+  }
+  
+  .add-tags .selected-tags, .removed-tags .selected-tags {
+    box-sizing: border-box;
+    padding: 0 20px;
+    margin-top: 5px;
+  }
+  
+  .container-annotation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+  }
+  
+  .container-annotation div:nth-child(2) {
+    display: inline-block;
+    text-align: right;
+    width: 24px;
+    height: 24px;
+    background: url('../../../../static/images/icons/remove.png') 0 0 no-repeat;
+  }
+  
+  div.annotation-marker {
+    padding: 5px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 5px;
+    max-width: 200px;
+  }
+
+  .annotation-marker-new {
+    padding: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    background: white;
+  }
+
+ .annotation-marker-new:hover {
+    cursor: pointer;
+  }
+  
+  .new-identification span {
+    color: #008400;
+    font-weight: bold;
+  }
+  
+  .annotation-marker.positive {
+    color: #008400;
+  }
+  
+  .annotation-marker.neutral{
+    color: #000;
+  }
+  
+  .annotation-marker.check {
+    color: #E16200;
+  }
+  
+  .annotation-marker.negative {
+    color: #FF0000;
+  }
+
+
+  .annotation-marker-new.positive {
+    color: #008400;
+    border: 1px solid #008400;
+  }
+  
+  .annotation-marker-new.neutral{
+    color: #000;
+    border: 1px solid #000;
+  }
+  
+  .annotation-marker-new.check {
+    color: #E16200;
+    border: 1px solid #E16200;
+  }
+  
+  .annotation-marker-new.negative {
+    color: #FF0000;
+    border: 1px solid #ff0000;
+  }
+
+  .annotation-marker-new.positive:hover, .annotation-marker-new.positive.on {
+    background: #008400;
+    color:white;
+  }
+  
+  .annotation-marker-new.neutral:hover, .annotation-marker-new.neutral.on {
+    background: #000;
+    color:white;
+  }
+  
+  .annotation-marker-new.check:hover, .annotation-marker-new.check.on  {
+    background:#E16200;
+    color:white;
+  }
+  
+  .annotation-marker-new.negative:hover , .annotation-marker-new.negative.on {
+    background:#ff0000;
+    color:white;
+  }
+
+  
+  .annotation-marker-new.positive.off, .annotation-marker-new.neutral.off, .annotation-marker-new.check.off, .annotation-marker-new.negative.off {
+    background: #dedede;
+    color: #9e9e9e;
+    border: 1px solid #9e9e9e;
+    cursor: default;
+  }
+
+
+  
+  .annotation-star {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+  
+  .annotation-star {
+    background: url('../../../../static/images/icons/sprite-stars-annotations.png') 0 0 no-repeat;
+    background-repeat: no-repeat;
+  }
+  
+  .annotation-star.positive {
+    background-position: -5px -3px;
+  }
+  
+  .annotation-star.neutral {
+    background-position: -29px -3px;
+  }
+  
+  .annotation-star.check {
+    background: none;
+    width: 0px
+  }
+  
+  .annotation-star.negative {
+    background-position: -77px -3px;
+  }
+  
+  .annotation-form label {
+    color: black;
+    font-weight: bold;
+  }
+  
+  .info {
+    padding: 2px 5px;
+    font-size: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  
+   ul.list-info {
+    margin-bottom: 0;
+    padding: 0;
+  }
+  
+  .info-button {
+    position: absolute;
+    top: -20px;
+    right: 10px;
+    font-size: 16px;
+    color: #31708f;
+  }
+  
+  .close-info {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    color: #555;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+    position: absolute;
+    right: 15px;
+    top: 6px;
+    cursor: pointer;
+  }
+  
+  .close-info:hover {
+    color: #000;
+  }
+
+  .tag-value {
+    display: inline-block;
+    position: relative;
+  }
+
+  .delete {
+    position: absolute;
+    left: 50%;
+    margin-left: -13px;
+    width: 15px;
+    height: 15px;
+    background: red;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    top: 33px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  
+  @media only screen and (min-width: 992px) and (max-width: 1600px) {
+    .taxon label {
+      height: 35px;
+    }
+  
+    .switch-mode {
+      display: block;
+      position: absolute;
+      top: 15px;
+    }
+  
+  }
+  
+  @media only screen and (min-width: 768px) and (max-width: 1200px)  {
+   .taxon div:nth-child(2) label, .taxon div:nth-child(3) label {
+     height: auto;
+     margin-top: 10px;
+   }
+  }
+  
+  

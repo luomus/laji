@@ -4,6 +4,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { AnnotationsComponent } from './annotations.component';
 import { AnnotationListComponent } from './annotation-list/annotation-list.component';
 import { AnnotationFormComponent } from './annotation-form/annotation-form.component';
+import { AnnotationFormNewComponent } from './annotation-form-new/annotation-form-new.component';
 import { LangModule } from '../lang/lang.module';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { ConvertAnnotationsPipe } from './convert-annotations.pipe';
@@ -15,7 +16,8 @@ import { ConvertAnnotationsPipe } from './convert-annotations.pipe';
     LangModule,
     SharedModule
   ],
-  declarations: [AnnotationsComponent, AnnotationListComponent, AnnotationFormComponent, ConvertAnnotationsPipe],
+  declarations: [AnnotationsComponent, AnnotationListComponent, AnnotationFormComponent,
+    AnnotationFormNewComponent, ConvertAnnotationsPipe],
   exports: [AnnotationsComponent]
 })
 export class AnnotationsModule { }

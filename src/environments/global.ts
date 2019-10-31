@@ -95,7 +95,7 @@ export const Global = {
     'femaleIndividualCount',
     'areaInSquareMeters'
   ],
-  annotationTags: {
+  /*annotationTags: {
     'MMAN.3': {
       value: 'MMAN.3',
       quality: 'negative'
@@ -199,6 +199,116 @@ export const Global = {
     'MMAN.29': {
       value: 'MMAN.29',
       quality: 'negative'
+    },
+    'MMAN.30': {
+      value: 'MMAN.30',
+      quality: 'check'
+    }
+  }*/
+  annotationTags: {
+    'MMAN.3': {
+      value: 'MMAN.3',
+      quality: 'negative'
+    },
+    'MMAN.5': {
+      value: 'MMAN.5',
+      quality: 'positive'
+    },
+    'MMAN.6': {
+      value: 'MMAN.6',
+      quality: 'positive'
+    },
+    'MMAN.7': {
+      value: 'MMAN.7',
+      quality: 'neutral'
+    },
+    'MMAN.8': {
+      value: 'MMAN.8',
+      quality: 'negative'
+    },
+    'MMAN.9': {
+      value: 'MMAN.9',
+      quality: 'negative'
+    },
+    'MMAN.10': {
+      value: 'MMAN.10',
+      quality: 'check'
+    },
+    'MMAN.11': {
+      value: 'MMAN.11',
+      quality: 'check'
+    },
+    'MMAN.12': {
+      value: 'MMAN.12',
+      quality: 'negative'
+    },
+    'MMAN.13': {
+      value: 'MMAN.13',
+      quality: 'negative'
+    },
+    'MMAN.14': {
+      value: 'MMAN.14',
+      quality: 'check'
+    },
+    'MMAN.15': {
+      value: 'MMAN.15',
+      quality: 'check'
+    },
+    'MMAN.16': {
+      value: 'MMAN.16',
+      quality: 'neutral'
+    },
+    'MMAN.17': {
+      value: 'MMAN.17',
+      quality: 'negative'
+    },
+    'MMAN.18': {
+      value: 'MMAN.18',
+      quality: 'self'
+    },
+    'MMAN.19': {
+      value: 'MMAN.19',
+      quality: 'negative'
+    },
+    'MMAN.20': {
+      value: 'MMAN.20',
+      quality: 'check'
+    },
+    'MMAN.21': {
+      value: 'MMAN.21',
+      quality: 'check'
+    },
+    'MMAN.22': {
+      value: 'MMAN.22',
+      quality: 'check'
+    },
+    'MMAN.23': {
+      value: 'MMAN.23',
+      quality: 'check'
+    },
+    'MMAN.24': {
+      value: 'MMAN.24',
+      quality: 'check'
+    },
+    'MMAN.25': {
+      value: 'MMAN.25',
+      quality: 'check'
+    },
+    'MMAN.26': {
+      value: 'MMAN.26',
+      quality: 'check'
+    },
+    'MMAN.27': {
+      value: 'MMAN.27',
+      quality: 'check'
+    },
+    'MMAN.28': {
+      value: 'MMAN.28',
+      quality: 'self'
+    },
+    'MMAN.29': {
+      value: 'MMAN.29',
+      quality: 'check'
     },
     'MMAN.30': {
       value: 'MMAN.30',
