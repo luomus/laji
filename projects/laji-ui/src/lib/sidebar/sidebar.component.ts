@@ -2,33 +2,32 @@ import { Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, 
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
 
 const mobileBreakpoint = 768;
-const sidebarMinWidth = 50;
 
 @Component({
   selector: 'lu-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
   animations: [
-    trigger('sidebarOpen', [
+    trigger('sidebarOpen_wrapper', [
       state('closed', style({
-        'width': `${sidebarMinWidth}px`
-      })),
+        'width': '{{sidebarMinWidth}}px'
+      }), {params: {sidebarMinWidth: 0}}),
       state('open', style({
       })),
       transition('open=>closed', group([
-        query('@sidebarContentOpen', [
+        query('@sidebarOpen_content', [
           animateChild()
         ]),
-        query('@sidebarOpenbtnOpen', [
+        query('@sidebarOpen_menu', [
           animateChild()
-        ]),
+        ], {optional: true}),
         animate('300ms ease')
       ])),
       transition('closed=>open', group([
         animate('300ms ease'),
       ])),
     ]),
-    trigger('sidebarContentOpen', [
+    trigger('sidebarOpen_content', [
       state('closed', style({
         opacity: 0,
         display: 'none'
@@ -38,7 +37,7 @@ const sidebarMinWidth = 50;
       })),
       transition('closed<=>open', animate('300ms ease')),
     ]),
-    trigger('sidebarOpenbtnOpen', [
+    trigger('sidebarOpen_menu', [
       state('closed', style({
         opacity: 1,
       })),
@@ -52,10 +51,20 @@ const sidebarMinWidth = 50;
 })
 export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() position: 'left' | 'right' = 'left';
-  @Input() staticWidth;
+  @Input() staticWidth: number;
 
-  open = true;
-  disableWidthAnim = false;
+  sidebarMinWidth = 50;
+
+  private _open = true;
+  set open(b) {
+    this._open = b;
+    this.checkCloseOnClickListener();
+  }
+  get open() {
+    return this._open;
+  }
+
+  dragging = false;
   mobile = false;
 
   ogWidth = 0;
@@ -74,21 +83,33 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
-    this.detectMobileMode();
-    this.destroyResizeListener = this.renderer.listen(window, 'resize', this.detectMobileMode.bind(this));
+    this.checkScreenWidth();
+    this.destroyResizeListener = this.renderer.listen(window, 'resize', this.checkScreenWidth.bind(this));
     this.ogWidth = this.sidebarRef.nativeElement.offsetWidth;
-
-    this.destroyCloseOnClickListener = this.renderer.listen(this.contentRef.nativeElement, 'click', () => {
-      if (this.mobile) {
-        this.open = false;
-        this.cdr.detectChanges();
-      }
-    });
+    this.checkCloseOnClickListener();
   }
 
-  detectMobileMode() {
-    this.mobile = window.innerWidth < mobileBreakpoint;
+  checkScreenWidth() {
+    const isMobile = window.innerWidth < mobileBreakpoint;
+    if (isMobile) {
+      this.sidebarMinWidth = 0;
+      this.open = false;
+    } else {
+      this.sidebarMinWidth = 50;
+      this.open = true;
+    }
+    this.mobile = isMobile;
     this.cdr.detectChanges();
+  }
+
+  checkCloseOnClickListener() {
+    if (this.mobile && this.open && this.contentRef && !this.destroyCloseOnClickListener) {
+      setTimeout(() => {
+        this.destroyCloseOnClickListener = this.renderer.listen(this.contentRef.nativeElement, 'click', this.onContentClick.bind(this));
+      });
+    } else if (this.destroyCloseOnClickListener) {
+      this.destroyCloseOnClickListener = this.destroyCloseOnClickListener();
+    }
   }
 
   onSwitchOpen() {
@@ -98,15 +119,22 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   onDragStart(mousedown) {
     this.widthBeforeDrag = this.sidebarRef.nativeElement.offsetWidth;
-    this.disableWidthAnim = true;
+    this.dragging = true;
     this.destroyDragListeners();
     this.destroyDragMoveListener = this.renderer.listen(document, 'mousemove', this.onDrag.bind(this));
     this.destroyDragEndListener = this.renderer.listen(document, 'mouseup', this.onDragEnd.bind(this));
   }
 
+  onContentClick() {
+    if (this.mobile) {
+      this.open = false;
+      this.cdr.detectChanges();
+    }
+  }
+
   onDrag(mousemove) {
     const width = this.calcSidebarWidth(mousemove.clientX);
-    if (width <= sidebarMinWidth) {
+    if (width <= this.sidebarMinWidth) {
       if (this.open) {
         this.open = false;
         this.cdr.markForCheck();
@@ -117,11 +145,11 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
         this.cdr.markForCheck();
       }
     }
-    this.renderer.setStyle(this.sidebarRef.nativeElement, 'width', `${Math.max(sidebarMinWidth, width)}px`);
+    this.renderer.setStyle(this.sidebarRef.nativeElement, 'width', `${Math.max(this.sidebarMinWidth, width)}px`);
   }
 
   onDragEnd(mouseup) {
-    this.disableWidthAnim = false;
+    this.dragging = false;
     const currentWidth = this.calcSidebarWidth(mouseup.clientX);
     if (currentWidth < this.ogWidth) {
       if (currentWidth > this.widthBeforeDrag) {
@@ -138,25 +166,25 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   destroyDragListeners() {
     if (this.destroyDragMoveListener) {
-      this.destroyDragMoveListener();
+      this.destroyDragMoveListener = this.destroyDragMoveListener();
     }
     if (this.destroyDragEndListener) {
-      this.destroyDragEndListener();
+      this.destroyDragMoveListener = this.destroyDragEndListener();
     }
   }
 
   ngOnDestroy() {
     if (this.destroyResizeListener) {
-      this.destroyResizeListener();
+      this.destroyResizeListener = this.destroyResizeListener();
     }
     if (this.destroyCloseOnClickListener) {
-      this.destroyCloseOnClickListener();
+      this.destroyCloseOnClickListener = this.destroyCloseOnClickListener();
     }
     this.destroyDragListeners();
   }
 
   calcSidebarWidth(mouseX) {
-    let width = sidebarMinWidth;
+    let width = this.sidebarMinWidth;
     if (this.position === 'left') {
       width = Math.abs(this.sidebarRef.nativeElement.clientLeft - mouseX);
     } else {

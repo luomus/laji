@@ -1,10 +1,8 @@
 @import 'vars';
 
 $mobileBreakpoint: 768px;
-$sidebarMinWidth: 50px;
 
 :host {
-  position: relative;
   height: 100%;
   width: 100%;
   display: flex;
@@ -17,7 +15,6 @@ $sidebarMinWidth: 50px;
   z-index: 5;
   background-color: $neutral-3;
   overflow-x: hidden;
-  min-width: $sidebarMinWidth;
   &.mobile {
     position: fixed;
     padding-bottom: 50px;
@@ -71,6 +68,9 @@ $sidebarMinWidth: 50px;
   position: absolute;
   top: 15px;
   left: 5px;
+  cursor: pointer;
+}
+.open-btn-mobile {
   cursor: pointer;
 }
 
@@ -130,9 +130,3 @@ $sidebarMinWidth: 50px;
   }
 }
 
-.content.left.mobile {
-  margin-left: $sidebarMinWidth;
-}
-.content.right.mobile {
-  margin-right: $sidebarMinWidth;
-}
