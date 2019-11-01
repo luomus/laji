@@ -8,7 +8,7 @@ import {
   PresetSetup,
   QRCodeErrorCorrectionLevel,
   LabelDesignerTranslationsInterface,
-  ILabelPdf
+  ILabelPdf, IColumnMap
 } from 'label-designer';
 
 @Component({
@@ -37,6 +37,9 @@ export class LabelDesignerComponent {
 
   @Input()
   defaultAvailableFields: ILabelField[] = [];
+
+  @Input()
+  fileColumnMap: IColumnMap;
 
   @Input()
   viewSetting: IViewSettings = {
@@ -71,7 +74,7 @@ export class LabelDesignerComponent {
       'marginLeft.mm': 1.5,
       'marginBottom.mm': 1.5,
       'marginRight.mm': 1.5,
-      'font-family': Presets.DefaultFont,
+      'font-family': 'Open Sans',
       'font-size.pt': 9
     },
     border: Presets.Border.solid,
@@ -109,6 +112,8 @@ export class LabelDesignerComponent {
   setupChange = new EventEmitter<ISetup>();
   @Output()
   pdfLoadingChange = new EventEmitter<boolean>();
+  @Output()
+  fileColumnMapChange = new EventEmitter<IColumnMap>();
 
   pdfTimeout: any;
 

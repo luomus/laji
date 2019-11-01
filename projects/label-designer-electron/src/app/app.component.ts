@@ -22,7 +22,7 @@ const NEW_SETUP: ISetup = {
     'marginLeft.mm': 1.5,
     'marginBottom.mm': 1.5,
     'marginRight.mm': 1.5,
-    'font-family': Presets.DefaultFont,
+    'font-family': 'Open Sans',
     'font-size.pt': 9
   },
   border: Presets.Border.solid,

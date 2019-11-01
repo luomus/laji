@@ -1,8 +1,5 @@
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
-import { renderModuleFactory } from '@angular/platform-server';
-import { enableProdMode } from '@angular/core';
-import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
 
 import * as redis from 'redis';
@@ -14,8 +11,6 @@ import * as compression from 'compression';
 import { join } from 'path';
 import { readFileSync } from 'fs';
 const domino = require('domino');
-
-enableProdMode();
 
 const app = express();
 
@@ -32,14 +27,17 @@ global['KeyboardEvent'] = domino.impl.Event;
 win.devicePixelRatio = 2; // this is used by the leaflet library
 Object.assign(global, domino.impl);
 
-const RedisClient = redis.createClient();
+const RedisClient = redis.createClient({
+  host: process.env.REDIS_HOST || 'localhost'
+});
 const Lock = new Redlock([RedisClient]);
 
 app.use(compression());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main');
+
+const {AppServerModuleNgFactory, LAZY_MODULE_MAP, provideModuleMap, renderModuleFactory} = require('./dist/server/main');
 
 app.engine('html', (_, options, callback) => {
   renderModuleFactory(AppServerModuleNgFactory, {

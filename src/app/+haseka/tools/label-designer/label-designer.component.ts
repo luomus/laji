@@ -20,6 +20,7 @@ export class LabelDesignerComponent implements OnInit {
   labelFields$: Observable<ILabelField[]>;
   newLabelFields$: Observable<ILabelField[]>;
   newSetup: ISetup;
+  @LocalStorage('label-designer-col-map', {}) fileColumnMap;
   @LocalStorage('label-designer-view', {magnification: 2}) viewSettings: IViewSettings;
   @LocalStorage('label-designer', null) setup: ISetup;
   data: any;
@@ -57,7 +58,7 @@ export class LabelDesignerComponent implements OnInit {
         'marginLeft.mm': 1.5,
         'marginBottom.mm': 1.5,
         'marginRight.mm': 1.5,
-        'font-family': 'Arial',
+        'font-family': Presets.DefaultFont,
         'font-size.pt': 9
       },
       labelItems: this.pdfLabelService.defaultFields.map((a, i) => ({
