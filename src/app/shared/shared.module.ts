@@ -61,6 +61,8 @@ import { DateFormatPipe, MomentModule } from 'ngx-moment';
 import { UniquePipe } from './pipe/unique.pipe';
 import { TruncatePipe } from './pipe/truncate.pipe';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { AfterIfDirective } from './directive/after-if.directive';
+import { FilterValuePipe } from './pipe/filter-value.pipe';
 
 
 @NgModule({
@@ -90,7 +92,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
     HideForIeDirective,
     SortPipe,
     UniquePipe,
-    TruncatePipe
+    TruncatePipe,
+    AfterIfDirective,
+    FilterValuePipe
   ],
   imports: [
     FormsModule,
@@ -118,7 +122,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    UniquePipe, TruncatePipe, LangModule
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe
   ]
 })
 export class SharedModule {

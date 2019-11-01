@@ -32,6 +32,7 @@
   "annotation.switchToBasic": "Switch to basic",
   "annotation.switchToExpert": "Switch to expert",
   "annotation.addAnAnnotation": "Add an annotation",
+  "annotation.isSpam": "Tämä on roskapostia tai vitsi",
   "asIs": "Arvo sellaisenaan",
   "checkAll": "Valitse kaikki",
   "checked": "valittu",

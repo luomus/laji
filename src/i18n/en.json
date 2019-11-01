@@ -32,6 +32,7 @@
   "annotation.switchToBasic": "Switch to basic",
   "annotation.switchToExpert": "Switch to expert",
   "annotation.addAnAnnotation": "Add an annotation",
+  "annotation.isSpam": "This is spam or joke",
   "asIs": "Value as is",
   "checkAll": "Check all",
   "checked": "checked",
