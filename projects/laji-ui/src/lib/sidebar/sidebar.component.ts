@@ -1,5 +1,6 @@
-import { Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
+import { isPlatformBrowser } from '@angular/common';
 
 const mobileBreakpoint = 768;
 
@@ -80,7 +81,11 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   destroyCloseOnClickListener: Function;
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.open = !(window.innerWidth < mobileBreakpoint);
+    }
+  }
 
   ngAfterViewInit() {
     this.checkScreenWidth();
