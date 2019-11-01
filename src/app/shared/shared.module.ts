@@ -62,6 +62,7 @@ import { UniquePipe } from './pipe/unique.pipe';
 import { TruncatePipe } from './pipe/truncate.pipe';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AfterIfDirective } from './directive/after-if.directive';
+import { FilterValuePipe } from './pipe/filter-value.pipe';
 
 
 @NgModule({
@@ -92,7 +93,8 @@ import { AfterIfDirective } from './directive/after-if.directive';
     SortPipe,
     UniquePipe,
     TruncatePipe,
-    AfterIfDirective
+    AfterIfDirective,
+    FilterValuePipe
   ],
   imports: [
     FormsModule,
@@ -120,7 +122,7 @@ import { AfterIfDirective } from './directive/after-if.directive';
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    UniquePipe, TruncatePipe, LangModule, AfterIfDirective
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe
   ]
 })
 export class SharedModule {

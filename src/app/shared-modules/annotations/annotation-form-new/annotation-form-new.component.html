@@ -29,7 +29,7 @@
       </ng-template>
     </div>-->
     <div class="tags-step-1">
-        <div *ngFor="let item of annotationAddadableTags$ | async; let i = index" [ngSwitch]="item.id | toQName" class="tag-value">
+        <!--<div *ngFor="let item of tagsAdd; let i = index" [ngSwitch]="item.id | toQName" class="tag-value">
             <span *ngIf="showOnlyPositiveNegative(item.id)">
                 <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected(annotation.addedTags, item.id)">X</div>
                 <button *ngSwitchCase="annotationTagsObservation[item.id | toQName].value" class="annotation-marker-new {{ annotationTagsObservation[item.id | toQName].quality }}"
@@ -37,6 +37,13 @@
                     <span>{{ item.name }}</span>
             </button>
             </span>
+        </div>-->
+        <div *ngFor="let item of tagsAdd | filterValue: 'quality': ['positive','negative']: 'include': 'id': ['MMAN.11']; let i = index;" class="tag-value">
+              <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected(annotation.addedTags, item.id)">X</div>
+              <button class="annotation-marker-new {{ item.quality }}"
+                [ngClass]="{'off': annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) === -1, 'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id);" [disabled]="checkAddTags()">
+                    <span>{{ item.id | toQName | label }}</span>
+            </button>
         </div>
     </div>
     <!--<div class="tags">
@@ -94,7 +101,7 @@
                 </option>-->
         <label>{{ 'annotation.removeTags' | translate }}</label>
         <div *ngFor="let item of annotationRemovableTags$ | async | activeTags: annotations" class="list-checkbox">
-          <input type="checkbox"> {{ item.id | toQName | label }}
+          <input type="checkbox" value="{{ item.id | toQName}}" (click)="addToRemoveTags(item.id)"> {{ item.id | toQName | label }}
         </div>
       </div>
   </div>
@@ -141,6 +148,14 @@
           [(ngModel)]="annotation.identification.taxonSpecifier"
         >
       </div>
+    </div>
+    <div class="row removed-tags" *ngIf="annotation.addedTags.length > 0 && this.annotation.addedTags.indexOf('MMAN.3') === -1 && this.annotation.addedTags.indexOf('MMAN.5') === -1">
+        <div class="col-sm-12">
+          <label>Check tags</label>
+          <div *ngFor="let item of tagsAdd | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'];" class="list-checkbox">
+              <input type="checkbox" value="{{ item.id | toQName}}"> {{ item.id | toQName | label }}
+          </div>
+        </div>
     </div>
     <div class="row message" *ngIf="annotation.addedTags.length >0" (lajiAfterIf)="initElements()">
       <div class="col-sm-12">

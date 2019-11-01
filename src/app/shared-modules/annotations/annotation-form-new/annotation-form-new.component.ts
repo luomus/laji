@@ -103,23 +103,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     this.initAnnotationTags();
   }
 
-  onChangeSelectBox(event: any, option, index) {
-    const value: string = event.target.value;
-    if (value === '') {
-      return;
-    }
-
-    if (option === 'added') {
-      if (this.annotation.addedTags.indexOf(value) === -1) {
-        this.annotation.addedTags.push(value);
-      }
-    } else {
-      if (this.annotation.removedTags.indexOf(value) === -1) {
-        this.annotation.removedTags.push(value);
-      }
-    }
-  }
-
   deleteSelected(array, item) {
     const index = array.indexOf(item);
     if (index > -1) {
@@ -129,6 +112,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     this.annotation.identification.taxon = '';
     this.annotation.identification.taxonSpecifier = '';
     this.annotation.notes = '';
+    this.annotation.removedTags = [];
 
   }
 
@@ -186,6 +170,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
    Global.annotationTags[id].value === 'MMAN.11') && Global.annotationTags[id].quality !== 'self';
   }
 
+  showOnlyCheck(id) {
+    return Global.annotationTags[id].quality === 'check' && Global.annotationTags[id].value !== 'MMAN.11';
+   }
+
   showOptionDeleted(optionId: string): boolean {
     return this.annotation.removedTags.indexOf(optionId) === -1;
   }
@@ -193,14 +181,12 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
   copyCurrentTaxon() {
     if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
       if (this.unit.linkings.taxon) {
-        this.taxonElement.nativeElement.focus();
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
           this.unit.linkings.taxon.vernacularName, this.unit, this.translate.currentLang
           );
           this.cd.detectChanges();
           this.formAnnotation.control.markAsDirty();
       } else {
-        this.taxonElement.nativeElement.focus();
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
           this.unit.linkings.originalTaxon.vernacularName, this.unit, this.translate.currentLang
           );
@@ -213,7 +199,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
   }
 
   initComment() {
-    this.commentElement.nativeElement.focus();
     this.annotation.notes = this.translate.instant('annotation.isSpam');
   }
 
@@ -241,6 +226,16 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
   initAnnotationTags() {
     this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang);
     this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang);
+
+    const transformedData = this.annotationAddadableTags$.pipe(
+      map(data => {
+        return data.map(element => {
+          return { id: element['id'], quality: this.annotationTagsObservation[element.id].quality };
+        });
+      })
+    ).subscribe(data => {
+      this.tagsAdd = data;
+    });
   }
 
 
@@ -299,6 +294,15 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
 
   addToAddTags(value) {
     this.annotation.addedTags.push(value);
+  }
+
+  addToRemoveTags(value) {
+    const index = this.annotation.removedTags.indexOf(value);
+    if (index > -1) {
+      this.annotation.removedTags.splice(index, 1);
+    } else {
+      this.annotation.removedTags.push(value);
+    }
   }
 
   initElements() {
