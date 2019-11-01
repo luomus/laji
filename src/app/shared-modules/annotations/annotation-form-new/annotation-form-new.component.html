@@ -87,10 +87,21 @@
             </div>
         </div>
     </div>-->
-    <div class="row taxon" *ngIf="(!isEditor || personRoleAnnotation===annotationRole.expert) && annotation.addedTags.length >0">
+  <div class="row removed-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert' && annotation.addedTags.length > 0 && (annotationRemovableTags$ | async | activeTags: annotations)?.length > 0">
+      <div class="col-sm-12">
+                <!--<option *ngIf="showOptionDeleted(item.id | toQName)" value="{{ item.id | toQName}}">
+                        {{ item.id | toQName | label }}
+                </option>-->
+        <label>{{ 'annotation.removeTags' | translate }}</label>
+        <div *ngFor="let item of annotationRemovableTags$ | async | activeTags: annotations" class="list-checkbox">
+          <input type="checkbox"> {{ item.id | toQName | label }}
+        </div>
+      </div>
+  </div>
+    <div class="row taxon" *ngIf="(!isEditor || personRoleAnnotation===annotationRole.expert) && annotation.addedTags.length >0 && this.annotation.addedTags.indexOf('MMAN.3') === -1" (lajiAfterIf)="initElements()">
       <div class="col-lg-5 col-md-12 col-sm-12" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
-        <label>{{ 'taxonomy.taxonomy' | translate }}</label> 
-        <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon)" (click)="copyCurrentTaxon()">{{ 'annotation.copyCurrentTag' | translate }}</span>
+        <label class="taxonomy">{{ 'taxonomy.taxonomy' | translate }}</label> 
+        <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.5' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.copyCurrentTag' | translate }}</span>
         <input #taxon
           [ngClass]="{loading: typeaheadLoading}"
           type="text"
@@ -131,7 +142,7 @@
         >
       </div>
     </div>
-    <div class="row message" *ngIf="annotation.addedTags.length >0">
+    <div class="row message" *ngIf="annotation.addedTags.length >0" (lajiAfterIf)="initElements()">
       <div class="col-sm-12">
         <label>{{ 'MAN.notes' | label }}</label>
         <textarea #comment
@@ -143,7 +154,7 @@
     </div>
     <div class="actions">
       <!--<button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button>-->
-      <button type="submit" [disabled]="annotationForm.pristine || !annotationForm.form.valid || sending" class="btn btn-success btn-sm">{{ 'annotation.sendAnnotation' | translate }}</button>
+      <button type="submit" [disabled]="disableSend()" class="btn btn-success btn-sm">{{ 'annotation.sendAnnotation' | translate }}</button>
     </div>
   </form>
   <div [hidden]="!visible" *lajiLoggedIn="false" class="annotation-form">

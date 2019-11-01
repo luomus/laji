@@ -125,6 +125,11 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     if (index > -1) {
       array.splice(index, 1);
     }
+
+    this.annotation.identification.taxon = '';
+    this.annotation.identification.taxonSpecifier = '';
+    this.annotation.notes = '';
+
   }
 
   showOption(optionId: string): boolean {
@@ -205,6 +210,11 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     } else {
       return;
     }
+  }
+
+  initComment() {
+    this.commentElement.nativeElement.focus();
+    this.annotation.notes = this.translate.instant('annotation.isSpam');
   }
 
 
@@ -291,8 +301,31 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     this.annotation.addedTags.push(value);
   }
 
+  initElements() {
+    if (this.annotation.addedTags.indexOf('MMAN.5') !== -1 ) {
+      this.copyCurrentTaxon();
+    }
+
+    if (this.annotation.addedTags.indexOf('MMAN.3') !== -1 ) {
+      this.initComment();
+    }
+
+  }
+
   checkAddTags() {
     return this.annotation.addedTags.length > 0;
+  }
+
+  disableSend() {
+    if (this.annotation.addedTags.length === 0) {
+      return true;
+    } else {
+      if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.3') === -1 ) {
+        return true;
+      } else {
+
+      }
+    }
   }
 
 

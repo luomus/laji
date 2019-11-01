@@ -195,6 +195,13 @@ label {
   .annotation-form label {
     color: black;
     font-weight: bold;
+    display: block;
+    margin-bottom: 0px;
+  }
+
+  .annotation-form label.taxonomy {
+    display: inline;
+    margin-bottom: 5px;
   }
   
   .info {
@@ -253,6 +260,20 @@ label {
     top: 33px;
     font-size: 12px;
     cursor: pointer;
+  }
+
+  .list-checkbox {
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  .list-checkbox input[type=checkbox]{
+    position: relative;
+    top: 2px;
+  }
+
+  .list-checkbox:last-child {
+    margin-right: 0;
   }
   
   @media only screen and (min-width: 992px) and (max-width: 1600px) {
