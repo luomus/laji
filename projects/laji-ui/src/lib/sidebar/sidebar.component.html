@@ -1,0 +1,44 @@
+<ng-container *ngIf="position === 'right' else sidebar"></ng-container>
+
+<div class="content" #contentRef
+  [ngClass]="{'mobile': mobile}"
+  [ngStyle]="{
+    'margin-left': position === 'left' ? sidebarMinWidth : unset,
+    'margin-right': position === 'right' ? sidebarMinWidth : unset
+  }">
+  <div *ngIf="mobile" class="open-btn-mobile" (click)="onSwitchOpen()">
+    <!-- Open menu -->
+    <svg class="menu-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="810 473 40 30" width="40" height="30"><defs><clipPath id="_clipPath_gf4epY0OmIxdtyNET5wm6eT70FR2RVN5"><rect x="810" y="473" width="40" height="30"/></clipPath></defs><g clip-path="url(#_clipPath_gf4epY0OmIxdtyNET5wm6eT70FR2RVN5)"><path d="M 811.176 473 L 848.824 473 C 849.473 473 850 473.527 850 474.176 L 850 477.824 C 850 478.473 849.473 479 848.824 479 L 811.176 479 C 810.527 479 810 478.473 810 477.824 L 810 474.176 C 810 473.527 810.527 473 811.176 473 Z" style="stroke:none;fill:#73828c;stroke-miterlimit:10;"/><path d="M 811.176 485 L 848.824 485 C 849.473 485 850 485.527 850 486.176 L 850 489.824 C 850 490.473 849.473 491 848.824 491 L 811.176 491 C 810.527 491 810 490.473 810 489.824 L 810 486.176 C 810 485.527 810.527 485 811.176 485 Z" style="stroke:none;fill:#73828c;stroke-miterlimit:10;"/><path d="M 811.176 497 L 848.824 497 C 849.473 497 850 497.527 850 498.176 L 850 501.824 C 850 502.473 849.473 503 848.824 503 L 811.176 503 C 810.527 503 810 502.473 810 501.824 L 810 498.176 C 810 497.527 810.527 497 811.176 497 Z" style="stroke:none;fill:#73828c;stroke-miterlimit:10;"/></g></svg>
+  </div>
+  <ng-content select="main"></ng-content>
+</div>
+
+<ng-container *ngIf="position === 'left' else sidebar"></ng-container>
+
+<ng-template #sidebar>
+  <div class="sidebar"
+       [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile, 'open': open}"
+       [@sidebarOpen_wrapper]="{
+         value: dragging ? 'disabled' : (open ? 'open' : 'closed'),
+         params: {
+           sidebarMinWidth: sidebarMinWidth
+         }
+        }"
+       #sidebarRef>
+    <div *ngIf="!mobile && !staticWidth" class="dragbar" (mousedown)="onDragStart($event)"></div>
+    <div class="sidebar-content-wrapper"
+         [@sidebarOpen_content]="open ? 'open' : 'closed'"
+         [ngClass]="{'static-width': staticWidth}"
+         [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}"
+         #navWrapper>
+      <div class="close-wrapper">
+        <div class="close-btn" (click)="onSwitchOpen()">X</div>
+      </div>
+      <ng-content select="nav"></ng-content>
+    </div>
+    <div *ngIf="!mobile" [@sidebarOpen_menu]="open ? 'open' : 'closed'" class="open-btn" (click)="onSwitchOpen()">
+      <!-- Open menu -->
+      <svg class="menu-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="810 473 40 30" width="40" height="30"><defs><clipPath id="_clipPath_gf4epY0OmIxdtyNET5wm6eT70FR2RVN5"><rect x="810" y="473" width="40" height="30"/></clipPath></defs><g clip-path="url(#_clipPath_gf4epY0OmIxdtyNET5wm6eT70FR2RVN5)"><path d="M 811.176 473 L 848.824 473 C 849.473 473 850 473.527 850 474.176 L 850 477.824 C 850 478.473 849.473 479 848.824 479 L 811.176 479 C 810.527 479 810 478.473 810 477.824 L 810 474.176 C 810 473.527 810.527 473 811.176 473 Z" style="stroke:none;fill:#73828c;stroke-miterlimit:10;"/><path d="M 811.176 485 L 848.824 485 C 849.473 485 850 485.527 850 486.176 L 850 489.824 C 850 490.473 849.473 491 848.824 491 L 811.176 491 C 810.527 491 810 490.473 810 489.824 L 810 486.176 C 810 485.527 810.527 485 811.176 485 Z" style="stroke:none;fill:#73828c;stroke-miterlimit:10;"/><path d="M 811.176 497 L 848.824 497 C 849.473 497 850 497.527 850 498.176 L 850 501.824 C 850 502.473 849.473 503 848.824 503 L 811.176 503 C 810.527 503 810 502.473 810 501.824 L 810 498.176 C 810 497.527 810.527 497 811.176 497 Z" style="stroke:none;fill:#73828c;stroke-miterlimit:10;"/></g></svg>
+    </div>
+  </div>
+</ng-template>

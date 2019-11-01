@@ -10,7 +10,6 @@ import { NavLink, ThemeFormService } from './theme-form.service';
 
 interface NavData {
   title: string;
-  titlePosition?: string; // body | nav (default)
   navLinks: NavLink[];
   formID: string;
 }
@@ -18,11 +17,10 @@ interface NavData {
 @Component({
   template: `
     <laji-theme-page *ngIf="navData$ | async as data"
-                     [title]="data.titlePosition !== 'body' ? data.title : ''"
+                     [title]="data.title"
                      [formID]="data.formID"
                      [showNav]="showNav$ | async"
                      [navLinks]="data.navLinks">
-        <h1 *ngIf="data.titlePosition === 'body'">{{ data.title | translate }}</h1>
         <router-outlet></router-outlet>
     </laji-theme-page>
   `,
@@ -86,12 +84,11 @@ export class MonitoringThemeBaseComponent implements OnInit {
       return _navLinks;
     };
     this.navData$ = this.route.data.pipe(
-      switchMap(({title, formID, titlePosition}: {titlePosition: string, title: string, formID: string}) =>
+      switchMap(({title, formID}: {title: string, formID: string}) =>
         this.themeFormService.getNavLinks$(this.route).pipe(
         switchMap(navLinks => urls$.pipe(
           map(url => ({
             title,
-            titlePosition,
             navLinks: markActive(navLinks, url),
             formID
           }))

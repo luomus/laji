@@ -1,0 +1,85 @@
+@import 'vars';
+
+:host {
+  background: $neutral-2;
+  min-height: 100vh;
+}
+
+.color-rect {
+  height: 50px;
+  width: 100px;
+}
+
+.n1 {
+  background: $neutral-1;
+  color: $neutral-8;
+}
+.n2 {
+  background: $neutral-2;
+  color: $neutral-8;
+}
+.n3 {
+  background: $neutral-3;
+  color: $neutral-8;
+}
+.n4 {
+  background: $neutral-4;
+  color: $neutral-8;
+}
+.n5 {
+  background: $neutral-5;
+  color: $neutral-1;
+}
+.n6 {
+  background: $neutral-6;
+  color: $neutral-1;
+}
+.n7 {
+  background: $neutral-7;
+  color: $neutral-1;
+}
+.n8 {
+  background: $neutral-8;
+  color: $neutral-1;
+}
+.n9 {
+  background: $neutral-9;
+  color: $neutral-1;
+}
+
+.p1 {
+  background: $primary-1;
+  color: $primary-8;
+}
+.p2 {
+  background: $primary-2;
+  color: $primary-8;
+}
+.p3 {
+  background: $primary-3;
+  color: $primary-8;
+}
+.p4 {
+  background: $primary-4;
+  color: $primary-8;
+}
+.p5 {
+  background: $primary-5;
+  color: $primary-1;
+}
+.p6 {
+  background: $primary-6;
+  color: $primary-1;
+}
+.p7 {
+  background: $primary-7;
+  color: $primary-1;
+}
+.p8 {
+  background: $primary-8;
+  color: $primary-1;
+}
+.p9 {
+  background: $primary-9;
+  color: $primary-1;
+}

@@ -63,7 +63,6 @@ const routes: Routes = [
       formID: Global.forms.default,
       title: 'theme.grc.title',
       requireLogin: false,
-      titlePosition: 'body',
       navLinks: {
         search: {
           routerLink: ['search'],

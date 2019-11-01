@@ -1,0 +1,9 @@
+<ul class="tabs-list">
+  <li *ngFor="let tab of tabComponents; let index = index"
+      [ngClass]="{active: index === selectedIndex}"
+      [@activeTab]="index === selectedIndex ? 'active' : 'inactive'"
+      (click)="onSelect(index)">{{tab.heading}}</li>
+</ul>
+<div class="tab-content">
+  <ng-content></ng-content>
+</div>
