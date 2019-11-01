@@ -20,4 +20,4 @@ services:
     environment:
       - NODE_ENV=dev
       - REDIS_HOST=redis
-#    command: 'yarn run start:ssr:local'
+#    command: 'npm run start:ssr:local'
