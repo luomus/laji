@@ -11,30 +11,25 @@ import { takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckboxComponent implements OnDestroy{
-  unsubscribe$ = new Subject();
+  private unsubscribe$ = new Subject();
   @ViewChild('checkbox', {static: true}) checkbox: ElementRef;
+  isChecked = false;
 
   /**
    * Set initial state of checkbox
    */
-  @Input() set init(checked: boolean) {
+  @Input('checked') set checkedInput(checked: boolean) {
+    this.isChecked = checked;
     this.checkbox.nativeElement.checked = checked;
   }
-  /**
-   * Observable of changes to initial state of checkbox
-   */
-  @Input() set init$(observable: Observable<boolean>) {
-    this.unsubscribe$.next();
-    observable.pipe(takeUntil(this.unsubscribe$)).subscribe((checked) => {
-      this.checkbox.nativeElement.checked = checked;
-    });
-  }
+
   /**
    * Changes to state of checkbox that were triggered by user
    */
   @Output() checked = new EventEmitter<boolean>();
 
   onInput(event: Event) {
+    this.isChecked = event.target['checked'];
     this.checked.emit(event.target['checked']);
   }
 
