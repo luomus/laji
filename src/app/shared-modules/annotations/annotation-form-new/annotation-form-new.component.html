@@ -1,107 +1,21 @@
 <form [hidden]="!visible" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
-    <!--<alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
-      {{ 'haseka.form.error' | translate }}
-    </alert>
-    <div class="row annotation-unidentifiable" *ngIf="!isEditor && identifying">
-      <div class="col-sm-12">
-        <label>
-          <input
-            type="checkbox"
-            name="unIdentifyable"
-            [(ngModel)]="unIdentifyable"
-            [disabled]="!!annotation.opinion || annotation.annotationClass !== emptyAnnotationClass"
-          >
-          {{ 'MAN.typeUnidentifiable' | label }}
-        </label>
-      </div>
-    </div>-->
-    <!--<div class="info-button pull-right toggle-intro" *ngIf="!infoModal">
-        <i class="link glyphicon glyphicon-info-sign" (click)="toggleInfo()"></i>
-    </div>
-    <div class="info alert-info" *ngIf="infoModal">
-      <div *ngIf="expert && personRoleAnnotation === 'MMAN.expert'; else basicform">
-        <div [innerHtml]="'annotation.info.expert' | translate"></div>
-        <div class="close-info" (click)="toggleInfo()">x</div>
-      </div>
-      <ng-template #basicform>
-        <div [innerHtml]="'annotation.info.basic' | translate"></div>
-        <div class="close-info" (click)="toggleInfo()">x</div>
-      </ng-template>
-    </div>-->
     <div class="tags-step-1">
-        <!--<div *ngFor="let item of tagsAdd; let i = index" [ngSwitch]="item.id | toQName" class="tag-value">
-            <span *ngIf="showOnlyPositiveNegative(item.id)">
-                <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected(annotation.addedTags, item.id)">X</div>
-                <button *ngSwitchCase="annotationTagsObservation[item.id | toQName].value" class="annotation-marker-new {{ annotationTagsObservation[item.id | toQName].quality }}"
-                [ngClass]="{'off': annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) === -1, 'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id);" [disabled]="checkAddTags()">
-                    <span>{{ item.name }}</span>
-            </button>
-            </span>
-        </div>-->
         <div *ngFor="let item of tagsAdd | filterValue: 'quality': ['positive','negative']: 'include': 'id': ['MMAN.11']; let i = index;" class="tag-value">
-              <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected(annotation.addedTags, item.id)">X</div>
+              <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected()">X</div>
               <button class="annotation-marker-new {{ item.quality }}"
-                [ngClass]="{'off': annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) === -1, 'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id);" [disabled]="checkAddTags()">
+                [ngClass]="{'off': annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) === -1, 'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" [disabled]="checkAddTags()">
                     <span>{{ item.id | toQName | label }}</span>
             </button>
         </div>
     </div>
-    <!--<div class="tags">
-        <div class="row add-tags">
-            <div class="col-lg-6 col-md-12 col-sm-12">
-              <label>{{ 'annotation.addTags' | translate }}</label> 
-              <select name="addTags" class="input-sm" (change)="onChangeSelectBox($event, 'added')">
-                  <option value="" [selected]="isSelected"> Please choose one </option>
-                  <ng-template ngFor let-item [ngForOf]="annotationAddadableTags$ | async">
-                     <option *ngIf="showOption(item.id)" value="{{item.id}}" [disabled]="disableTags(item.id | toQName)">
-                        {{ item.name }}
-                     </option>
-                  </ng-template>
-                </select>
-            </div>
-        
-            <div class="col-lg-6 col-md-12 col-sm-12 selected-tags">
-              <span *ngFor="let selected of annotation.addedTags; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
-                  <div *ngSwitchCase="annotationTagsObservation[selected | toQName].value" class="annotation-marker {{ annotationTagsObservation[selected | toQName].quality }}" >
-                      <span class="annotation-star {{ annotationTagsObservation[selected | toQName].quality }}"></span>
-                      <span>{{ selected | toQName | label }}</span>
-                  </div>
-                  <div (click)="deleteSelected(annotation.addedTags, selected)"></div>
-              </span>
-            </div>
-        </div>
-        <div class="row removed-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert'">
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <label>{{ 'annotation.removeTags' | translate }}</label>
-                <select name="removeTags" class="input-sm" (change)="onChangeSelectBox($event, 'removed')">
-                  <option value="" [selected]="isSelected"> {{ 'annotation.chooseTag' | translate }} </option>
-                    <ng-template ngFor let-item [ngForOf]="annotationRemovableTags$ | async | activeTags: annotations">
-                          <option *ngIf="showOptionDeleted(item.id | toQName)" value="{{ item.id | toQName}}">
-                              {{ item.id | toQName | label }}
-                          </option>
-                    </ng-template>
-                </select>
-            </div>
-          
-            <div class="col-lg-6 col-md-12 col-sm-12 selected-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert'">
-                <span *ngFor="let selected of annotation.removedTags; let i = index" [ngSwitch]="selected | toQName" class="container-annotation">
-                    <div *ngSwitchCase="annotationTagsObservation[selected | toQName].value" class="annotation-marker {{ annotationTagsObservation[selected | toQName].quality }}" >
-                        <span class="annotation-star {{ annotationTagsObservation[selected | toQName].quality }}"></span>
-                        <span>{{ selected | toQName | label }}</span>
-                    </div>
-                    <div (click)="deleteSelected(annotation.removedTags, selected)"></div>
-                </span>
-            </div>
-        </div>
-    </div>-->
+    <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
+      In this type of annotation, you need to add at lest 1 check tag or a taxon
+    </div>
   <div class="row removed-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert' && annotation.addedTags.length > 0 && (annotationRemovableTags$ | async | activeTags: annotations)?.length > 0">
       <div class="col-sm-12">
-                <!--<option *ngIf="showOptionDeleted(item.id | toQName)" value="{{ item.id | toQName}}">
-                        {{ item.id | toQName | label }}
-                </option>-->
         <label>{{ 'annotation.removeTags' | translate }}</label>
         <div *ngFor="let item of annotationRemovableTags$ | async | activeTags: annotations" class="list-checkbox">
-          <input type="checkbox" value="{{ item.id | toQName}}" (click)="addToRemoveTags(item.id)"> {{ item.id | toQName | label }}
+          <input type="checkbox" value="{{ item.id | toQName}}" [checked]="annotation.removedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.removedTags)"> {{ item.id | toQName | label }}
         </div>
       </div>
   </div>
@@ -153,7 +67,7 @@
         <div class="col-sm-12">
           <label>Check tags</label>
           <div *ngFor="let item of tagsAdd | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'];" class="list-checkbox">
-              <input type="checkbox" value="{{ item.id | toQName}}"> {{ item.id | toQName | label }}
+              <input type="checkbox" value="{{ item.id | toQName}}" [checked]="annotation.addedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.addedTags)"> {{ item.id | toQName | label }}
           </div>
         </div>
     </div>

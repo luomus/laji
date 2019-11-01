@@ -1,6 +1,6 @@
 import {map,  mergeMap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit,
-Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener } from '@angular/core';
+Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
@@ -15,7 +15,9 @@ import { format } from 'd3-format';
 @Component({
   selector: 'laji-annotation-form-new',
   templateUrl: './annotation-form-new.component.html',
-  styleUrls: ['./annotation-form-new.component.scss']
+  styleUrls: ['./annotation-form-new.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class AnnotationFormNewComponent implements OnInit , OnChanges {
   static readonly lang = ['en', 'fi', 'sv'];
@@ -48,6 +50,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
   annotationAddadableTags$: Observable<AnnotationTag[]>;
   annotationRemovableTags$: Observable<AnnotationTag[]>;
   annotationAddadableTags: Subscription;
+  alertNotSpamVerified: boolean;
   types = Annotation.TypeEnum;
   selectedOptions: string[] = [];
   deletedOptions: string[] = [];
@@ -103,16 +106,13 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     this.initAnnotationTags();
   }
 
-  deleteSelected(array, item) {
-    const index = array.indexOf(item);
-    if (index > -1) {
-      array.splice(index, 1);
-    }
-
+  deleteSelected() {
     this.annotation.identification.taxon = '';
     this.annotation.identification.taxonSpecifier = '';
     this.annotation.notes = '';
     this.annotation.removedTags = [];
+    this.annotation.addedTags = [];
+    this.alertNotSpamVerified = false;
 
   }
 
@@ -296,13 +296,14 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     this.annotation.addedTags.push(value);
   }
 
-  addToRemoveTags(value) {
-    const index = this.annotation.removedTags.indexOf(value);
+  addToRemoveTags(value, array) {
+    const index = array.indexOf(value);
     if (index > -1) {
-      this.annotation.removedTags.splice(index, 1);
+      array.splice(index, 1);
     } else {
-      this.annotation.removedTags.push(value);
+      array.push(value);
     }
+    this.cd.detectChanges();
   }
 
   initElements() {
@@ -321,13 +322,17 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
   }
 
   disableSend() {
+    this.alertNotSpamVerified = false;
+
     if (this.annotation.addedTags.length === 0) {
       return true;
     } else {
       if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.3') === -1 ) {
-        return true;
+        if (this.annotation.addedTags.length <= 1 && this.annotation.identification.taxon === '') {
+          this.alertNotSpamVerified = true;
+          return true;
+        }
       } else {
-
       }
     }
   }
