@@ -111,6 +111,8 @@ laji-observation-form {
 
 }
 
-main {
-  padding: 20px 40px;
+@media only screen and (min-width : 768px) {
+  main {
+    padding: 20px 40px;
+  }
 }

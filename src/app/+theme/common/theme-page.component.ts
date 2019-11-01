@@ -33,8 +33,10 @@ h4 {
   max-width: 200px;
 }
 
-main {
-  padding: 20px 40px;
+@media only screen and (min-width : 768px) {
+  main {
+    padding: 20px 40px;
+  }
 }
     `]
 })
