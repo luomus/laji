@@ -203,6 +203,11 @@ label {
     display: inline;
     margin-bottom: 5px;
   }
+
+  .annotation-form label.check-delete {
+    display:block;
+    font-weight: normal;
+  }
   
   .info {
     padding: 2px 5px;
@@ -279,6 +284,10 @@ label {
   @media only screen and (min-width: 992px) and (max-width: 1600px) {
     .taxon label {
       height: 35px;
+    }
+
+    .annotation-form label.taxonomy {
+      display: block;
     }
   
     .switch-mode {

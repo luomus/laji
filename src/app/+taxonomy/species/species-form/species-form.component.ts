@@ -12,9 +12,6 @@ import { SpeciesFormQuery } from './species-form-query.interface';
 export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
 
-  @Input() showFilter = true;
-  @Output() showFilterChange = new EventEmitter<boolean>();
-
   public taxonSelectFilters: {
     informalTaxonGroup: string,
     onlyFinnish: boolean
@@ -170,11 +167,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.searchQuery.updateUrl();
     this.searchQuery.query = {...this.searchQuery.query};
     return false;
-  }
-
-  onShowFilterChange(showFilter: boolean) {
-    this.showFilter = showFilter;
-    this.showFilterChange.emit(showFilter);
   }
 
   updateQuery(key: string, value: any) {

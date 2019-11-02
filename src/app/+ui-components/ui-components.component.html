@@ -1,0 +1,71 @@
+<lu-sidebar>
+  <nav>
+    <h4>Sidebar demo</h4>
+    <lu-sidebar-link [link]="['ui-components']">Instructions</lu-sidebar-link>
+    <lu-sidebar-link>Results</lu-sidebar-link>
+    <lu-sidebar-link>Send observations</lu-sidebar-link>
+  </nav>
+  <main class="lu">
+    <h1>UI Components and styleguide</h1>
+    <section>
+      <h2>Colors</h2>
+      <div class="flex-row">
+        <div>
+          <div class="color-rect n1">$neutral-1</div>
+          <div class="color-rect n2">$neutral-2</div>
+          <div class="color-rect n3">$neutral-3</div>
+          <div class="color-rect n4">$neutral-4</div>
+          <div class="color-rect n5">$neutral-5</div>
+          <div class="color-rect n6">$neutral-6</div>
+          <div class="color-rect n7">$neutral-7</div>
+          <div class="color-rect n8">$neutral-8</div>
+          <div class="color-rect n9">$neutral-9</div>
+        </div>
+        <div>
+          <div class="color-rect p1">$primary-1</div>
+          <div class="color-rect p2">$primary-2</div>
+          <div class="color-rect p3">$primary-3</div>
+          <div class="color-rect p4">$primary-4</div>
+          <div class="color-rect p5">$primary-5</div>
+          <div class="color-rect p6">$primary-6</div>
+          <div class="color-rect p7">$primary-7</div>
+          <div class="color-rect p8">$primary-8</div>
+          <div class="color-rect p9">$primary-9</div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2>Font sizes</h2>
+      <div class="fs-1">$fs-1</div>
+      <div class="fs-2">$fs-2</div>
+      <div class="fs-3">$fs-3</div>
+      <div class="fs-4">$fs-4</div>
+      <div class="fs-5">$fs-5</div>
+      <div class="fs-6">$fs-6</div>
+      <div class="fs-7">$fs-7</div>
+      <div class="fs-8">$fs-8</div>
+      <div class="fs-9">$fs-9</div>
+    </section>
+    <section>
+      <h2>Buttons</h2>
+      <div class="flex-row">
+        <lu-button [disabled]="testDisable" [role]="'primary'">Primary button</lu-button>
+        <lu-button [disabled]="testDisable">Secondary button</lu-button>
+        <lu-button [disabled]="true">Disabled button</lu-button>
+      </div>
+      <lu-checkbox (checked)="testDisable = $event">Disable buttons</lu-checkbox>
+    </section>
+    <section>
+      <h2>Tabs</h2>
+      <lu-tabs>
+        <lu-tab [heading]="'Map'">Map content</lu-tab>
+        <lu-tab [heading]="'List'">List content</lu-tab>
+        <lu-tab [heading]="'Images'">Images content</lu-tab>
+        <lu-tab [heading]="'Species'">Species content</lu-tab>
+        <lu-tab [heading]="'Statistics'">Statistics content</lu-tab>
+        <lu-tab [heading]="'Download as a file'">Download as a file content</lu-tab>
+      </lu-tabs>
+    </section>
+    <br>
+  </main>
+</lu-sidebar>

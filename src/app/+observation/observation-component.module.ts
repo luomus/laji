@@ -32,6 +32,7 @@ import { ExistsPipe } from './pipe/exists.pipe';
 import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 import { FormSampleComponent } from './form-sample/form-sample.component';
 import { AnnotationModule } from './annotations/annotations.module';
+import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { AnnotationModule } from './annotations/annotations.module';
     NgxChartsModule,
     ChartsModule,
     JwBootstrapSwitchNg2Module,
-    AnnotationModule
+    AnnotationModule,
+    LajiUiModule
   ],
   declarations: [
     ObservationComponent,

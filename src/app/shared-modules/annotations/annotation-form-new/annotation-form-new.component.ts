@@ -235,6 +235,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
       })
     ).subscribe(data => {
       this.tagsAdd = data;
+      this.cd.detectChanges();
     });
   }
 

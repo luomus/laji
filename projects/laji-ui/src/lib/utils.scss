@@ -1,0 +1,39 @@
+@import 'vars';
+.lu {
+  .flex-row, &.flex-row {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 0 auto;
+    * {
+      margin-right: 0.5em;
+    }
+  }
+
+  .fs-1, &.fs-1 {
+    font-size: $fs-1;
+  }
+  .fs-2, &.fs-2 {
+    font-size: $fs-2;
+  }
+  .fs-3, &.fs-3 {
+    font-size: $fs-3;
+  }
+  .fs-4, &.fs-4 {
+    font-size: $fs-4;
+  }
+  .fs-5, &.fs-5 {
+    font-size: $fs-5;
+  }
+  .fs-6, &.fs-6 {
+    font-size: $fs-6;
+  }
+  .fs-7, &.fs-7 {
+    font-size: $fs-7;
+  }
+  .fs-8, &.fs-8 {
+    font-size: $fs-8;
+  }
+  .fs-9, &.fs-9 {
+    font-size: $fs-9;
+  }
+}

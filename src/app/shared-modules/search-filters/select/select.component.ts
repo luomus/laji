@@ -23,7 +23,7 @@ interface SelectOptions {
 @Component({
   selector: 'laji-select',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.css'],
+  styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectComponent implements OnInit, OnChanges, OnDestroy {

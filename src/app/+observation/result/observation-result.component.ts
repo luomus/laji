@@ -2,8 +2,27 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewCh
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
+import { Router } from '@angular/router';
 import { VisibleSections } from '..';
 
+const tabNameToIndex = {
+  map: 0,
+  list: 1,
+  images: 2,
+  species: 3,
+  stats: 4,
+  load: 5,
+  annotation: 6
+};
+const tabIndexToName = {
+  0: 'map',
+  1: 'list',
+  2: 'images',
+  3: 'species',
+  4: 'stats',
+  5: 'load',
+  6: 'annotation'
+};
 
 @Component({
   selector: 'laji-observation-result',
@@ -49,10 +68,11 @@ export class ObservationResultComponent {
   lastTabActive = 'map';
   hasMonthDayData: boolean;
   hasYearData: boolean;
-  showMenu = false;
+  selectedIndex = 0;
 
   private _active;
 
+  constructor(private router: Router) {}
 
   @Input()
   set active(value) {
@@ -61,10 +81,10 @@ export class ObservationResultComponent {
     }
     this._active = value;
     this.activated[value] = true;
-    this.showMenu = false;
     if (value !== 'finnish') {
       this.lastTabActive = value;
     }
+    this.selectedIndex = tabNameToIndex[this.active];
   }
 
   get active() {
@@ -96,7 +116,8 @@ export class ObservationResultComponent {
     this.queryChange.emit(query);
   }
 
-  toggleMenuMobile() {
-    this.showMenu = !this.showMenu;
+  onSelect(tabIndex: number) {
+    this.lastTabActive = tabIndexToName[tabIndex];
+    this.router.navigate(['observation', tabIndexToName[tabIndex]], {queryParams: this.query});
   }
 }

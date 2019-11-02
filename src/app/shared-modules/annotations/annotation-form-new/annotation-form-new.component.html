@@ -15,7 +15,7 @@
       <div class="col-sm-12">
         <label>{{ 'annotation.removeTags' | translate }}</label>
         <div *ngFor="let item of annotationRemovableTags$ | async | activeTags: annotations" class="list-checkbox">
-          <input type="checkbox" value="{{ item.id | toQName}}" [checked]="annotation.removedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.removedTags)"> {{ item.id | toQName | label }}
+          <label class="check-delete"><input type="checkbox" value="{{ item.id | toQName}}" [checked]="annotation.removedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.removedTags)"> {{ item.id | toQName | label }}</label>
         </div>
       </div>
   </div>
@@ -67,7 +67,7 @@
         <div class="col-sm-12">
           <label>Check tags</label>
           <div *ngFor="let item of tagsAdd | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'];" class="list-checkbox">
-              <input type="checkbox" value="{{ item.id | toQName}}" [checked]="annotation.addedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.addedTags)"> {{ item.id | toQName | label }}
+              <label class="check-delete"><input type="checkbox" value="{{ item.id | toQName}}" [checked]="annotation.addedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.addedTags)"> {{ item.id | toQName | label }}</label>
           </div>
         </div>
     </div>
