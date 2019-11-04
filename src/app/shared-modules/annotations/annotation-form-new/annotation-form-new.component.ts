@@ -1,6 +1,7 @@
 import {map,  mergeMap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit,
-Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener, ChangeDetectionStrategy } from '@angular/core';
+Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
+ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
@@ -19,7 +20,7 @@ import { format } from 'd3-format';
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class AnnotationFormNewComponent implements OnInit , OnChanges {
+export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterContentChecked {
   static readonly lang = ['en', 'fi', 'sv'];
 
   @Input() editors: string[];
@@ -82,6 +83,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     );
   }
 
+  ngAfterContentChecked() {
+    this.cd.detectChanges();
+  }
+
   public getTaxa(token: string): Observable<any> {
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
@@ -113,6 +118,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     this.annotation.removedTags = [];
     this.annotation.addedTags = [];
     this.alertNotSpamVerified = false;
+    this.cd.detectChanges();
 
   }
 
@@ -301,11 +307,13 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
     const index = array.indexOf(value);
     if (index > -1) {
       array.splice(index, 1);
+      this.cd.detectChanges();
     } else {
       array.push(value);
+      this.cd.detectChanges();
     }
-    this.cd.detectChanges();
   }
+
 
   initElements() {
     if (this.annotation.addedTags.indexOf('MMAN.5') !== -1 ) {
@@ -342,31 +350,30 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges {
   @HostListener('window:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
       if (e.keyCode === 84 && e.altKey) { // alt + t --> focus input taxon
+        if (this.annotation.addedTags.length > 0) {
           this.taxonElement.nativeElement.focus();
+        }
       }
 
       if (e.keyCode === 67 && e.altKey) { // alt + c --> focus comment textarea
+        if (this.annotation.addedTags.length > 0) {
           this.commentElement.nativeElement.focus();
+        }
       }
 
       if (e.keyCode === 49 && e.altKey) { // alt + 1 --> add convincing
-        if (this.showOption('MMAN.6') && !this.disableTags('MMAN.6') && this.annotationAddadableTags$.pipe(
-          map((tags: AnnotationTag[]) => tags.findIndex(tag => tag.id === 'MMAN.6')))
-        && this.personRoleAnnotation === Annotation.AnnotationRoleEnum.expert) {
+        if (this.annotation.addedTags.length === 0) {
           this.annotation.addedTags.push('MMAN.6');
         }
       }
 
       if (e.keyCode === 48 && e.altKey) { // alt + 0 --> add erroneus
-        if (this.showOption('MMAN.9') && !this.disableTags('MMAN.9') && this.annotationAddadableTags$.pipe(
-          map((tags: AnnotationTag[]) => tags.findIndex(tag => tag.id === 'MMAN.9')))
-        && this.personRoleAnnotation === Annotation.AnnotationRoleEnum.expert) {
+        if (this.annotation.addedTags.length === 0) {
           this.annotation.addedTags.push('MMAN.9');
         }
       }
 
       if (e.keyCode === 82 && e.altKey) {
-        this.annotation.addedTags = [];
         this.annotation.removedTags = [];
       }
 
