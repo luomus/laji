@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AnnotationService } from '../document-viewer/service/annotation.service';
 import { Annotation } from '../../shared/model/Annotation';
 import { IdService } from '../../shared/service/id.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
+import { AnnotationFormNewComponent } from './annotation-form-new/annotation-form-new.component';
 
 @Component({
   selector: 'laji-annotations',
@@ -22,6 +23,8 @@ export class AnnotationsComponent implements OnInit {
   @Input() formVisible: boolean;
   @Output() close = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
+
+  @ViewChild('formAnnotation', {static: false}) formAnnotation: AnnotationFormNewComponent;
   error = false;
   adding = false;
   expert = true;
@@ -70,6 +73,7 @@ export class AnnotationsComponent implements OnInit {
 
   changeModeForm() {
    this.expert = !this.expert;
+   this.formAnnotation.cleanForm();
   }
 
   onDelete(annotation: Annotation) {
