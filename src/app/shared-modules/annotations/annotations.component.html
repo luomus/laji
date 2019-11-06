@@ -26,7 +26,7 @@
           {{ 'annotation.addAnnotationExpert' | translate }}
       </span>
       <ng-template #expertAnnotation>
-        <span class="comment-title">{{ 'annotation.addBasicAnnotation' | translate }}</span>
+        <span class="comment-title">{{ 'annotation.addBasicAnnotation' | translate }} </span>
       </ng-template>
       <span *lajiLoggedIn="true">
         <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()">{{ 'annotation.switchToBasic' | translate }}</span>

@@ -1,18 +1,18 @@
 <form [hidden]="!visible" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
-    <div class="tags-step-1" *ngIf="expert; else showCheckTags">
+    <div class="tags-step-1" *ngIf="expert else checkTags">
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['positive','negative']: 'exclude': 'id': ['MMAN.5'] | sort: 'position'; let i = index;" class="tag-value">
-              <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected()">X</div>
+              <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected(item.id)">X</div>
               <button class="annotation-marker-new {{ item.quality }}" name="add{{ item.id | toQName}}"
-                [ngClass]="{'off': annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) === -1, 'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" [disabled]="checkAddTags()">
+                [ngClass]="{'off': annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) === -1, 'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" [disabled]="checkAddTags(item.id)">
                     <span>{{ item.id | toQName | label }}</span>
               </button>
         </div>
     </div>
-    <ng-template #showCheckTags>
-        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11']; let i = index;" class="tag-value">
-            <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected()">X</div>
+    <ng-template #checkTags>
+        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'] | sort: 'position'; let i = index;" class="tag-value">
+            <div class="delete" *ngIf="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected(item.id)">X</div>
             <button class="annotation-marker-new {{ item.quality }}" name="add{{ item.id | toQName}}"
-              [ngClass]="{'off': annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) === -1, 'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" [disabled]="checkAddTags()">
+              [ngClass]="{'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" [disabled]="checkAddTags(item.id)">
                   <span>{{ item.id | toQName | label }}</span>
             </button>
       </div>

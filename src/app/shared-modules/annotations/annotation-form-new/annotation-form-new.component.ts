@@ -111,38 +111,29 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.initAnnotation();
   }
 
-  deleteSelected() {
+  deleteSelected(id) {
     this.cd.detectChanges();
+    if (this.expert) {
+      this.cleanForm();
+    } else {
+      const index = this.annotation.addedTags.indexOf(id);
+      this.annotation.addedTags.splice(index, 1);
+      if (this.annotation.addedTags.length === 0) {
+        this.cleanForm();
+      }
+    }
+  }
+
+  cleanForm() {
     this.annotation.identification.taxon = '';
     this.annotation.identification.taxonSpecifier = '';
     this.annotation.notes = '';
     this.annotation.removedTags = [];
     this.annotation.addedTags = [];
-    this.alertNotSpamVerified = false;
   }
 
   showOption(optionId: string): boolean {
      return this.annotation.addedTags.indexOf(optionId) === -1; // add tags without control if positive or negative
-
-     // add tags and filter after add a positive or negative tag
-     /*if (this.annotation.addedTags.length === 0) {
-      if (this.annotation.addedTags.indexOf(optionId) === -1) {
-          return true;
-        }
-      } else {
-        if (this.annotation.addedTags.indexOf(optionId) === -1) {
-          if (this.findFirstTagNegativePositive(this.annotation.addedTags, Global.annotationTags) !== undefined ) {
-            if ((Global.annotationTags[optionId].quality ===
-              Global.annotationTags[this.findFirstTagNegativePositive(this.annotation.addedTags, Global.annotationTags)].quality) ||
-            Global.annotationTags[optionId].quality === 'check' ||
-            Global.annotationTags[optionId].quality === 'neutral') {
-              return true;
-            }
-          } else {
-            return true;
-          }
-        }
-      }*/
   }
 
   disableTags(optionId: string): boolean {
@@ -325,8 +316,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   }
 
-  checkAddTags() {
-    return this.annotation.addedTags.length > 0;
+  checkAddTags(id) {
+    return (this.expert && this.annotation.addedTags.length > 0) || (!this.expert && this.annotation.addedTags.indexOf(id) !== -1);
   }
 
   disableSend() {
