@@ -332,10 +332,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       return true;
     } else {
       if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.3') === -1 ) {
-        if (this.annotation.addedTags.length <= 1 && this.annotation.identification.taxon === '') {
-          this.alertNotSpamVerified = true;
-          return true;
-        }
+
       } else {
       }
     }
