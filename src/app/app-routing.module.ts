@@ -43,7 +43,7 @@ const routes: Routes = [
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
   {path: 'forum', component: ForumComponent},
-  {path: 'ui-components', loadChildren: './+ui-components/ui-components.module#UiComponentsModule'}
+  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule)}
 ];
 
 const routesWithLang: Routes = [
