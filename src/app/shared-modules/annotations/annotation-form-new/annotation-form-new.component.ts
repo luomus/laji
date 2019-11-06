@@ -76,6 +76,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   ) { }
 
   ngOnInit() {
+    this.initAnnotationTags();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.identification.taxon);
     }).pipe(
@@ -108,18 +109,16 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   ngOnChanges() {
     this.initAnnotation();
-    this.initAnnotationTags();
   }
 
   deleteSelected() {
+    this.cd.detectChanges();
     this.annotation.identification.taxon = '';
     this.annotation.identification.taxonSpecifier = '';
     this.annotation.notes = '';
     this.annotation.removedTags = [];
     this.annotation.addedTags = [];
     this.alertNotSpamVerified = false;
-    this.cd.detectChanges();
-
   }
 
   showOption(optionId: string): boolean {
@@ -230,19 +229,16 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
 
   initAnnotationTags() {
-    this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang);
-    this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang);
-
-    const transformedData = this.annotationAddadableTags$.pipe(
+    this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang).pipe(
       map(data => {
         return data.map(element => {
           return { id: element['id'], quality: this.annotationTagsObservation[element.id].quality };
         });
       })
-    ).subscribe(data => {
-      this.tagsAdd = data;
-      this.cd.detectChanges();
-    });
+    );
+
+    this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang);
+
   }
 
 
@@ -307,11 +303,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     const index = array.indexOf(value);
     if (index > -1) {
       array.splice(index, 1);
-      this.cd.detectChanges();
     } else {
       array.push(value);
-      this.cd.detectChanges();
     }
+    this.annotation.addedTags = [...this.annotation.addedTags];
   }
 
 

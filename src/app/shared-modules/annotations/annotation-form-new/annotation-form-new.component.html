@@ -1,11 +1,11 @@
 <form [hidden]="!visible" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
     <div class="tags-step-1">
-        <div *ngFor="let item of tagsAdd | filterValue: 'quality': ['positive','negative']: 'include': 'id': ['MMAN.11']; let i = index;" class="tag-value">
+        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['positive','negative']: 'include': 'id': ['MMAN.11']; let i = index;" class="tag-value">
               <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected()">X</div>
-              <button class="annotation-marker-new {{ item.quality }}"
+              <button class="annotation-marker-new {{ item.quality }}" name="add{{ item.id | toQName}}"
                 [ngClass]="{'off': annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) === -1, 'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" [disabled]="checkAddTags()">
                     <span>{{ item.id | toQName | label }}</span>
-            </button>
+              </button>
         </div>
     </div>
     <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
@@ -15,7 +15,7 @@
       <div class="col-sm-12">
         <label>{{ 'annotation.removeTags' | translate }}</label>
         <div *ngFor="let item of annotationRemovableTags$ | async | activeTags: annotations" class="list-checkbox">
-          <label class="check-delete"><input type="checkbox" value="{{ item.id | toQName}}" [checked]="annotation.removedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.removedTags)"> {{ item.id | toQName | label }}</label>
+          <label class="check-delete"><input type="checkbox" name="delete{{ item.id | toQName}}" value="{{ item.id | toQName}}" [checked]="annotation.removedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.removedTags)"> {{ item.id | toQName | label }}</label>
         </div>
       </div>
   </div>
@@ -66,11 +66,13 @@
     <div class="row removed-tags" *ngIf="annotation.addedTags.length > 0 && this.annotation.addedTags.indexOf('MMAN.3') === -1 && this.annotation.addedTags.indexOf('MMAN.5') === -1">
         <div class="col-sm-12">
           <label>Check tags</label>
-          <div *ngFor="let item of tagsAdd | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'];" class="list-checkbox">
-              <label class="check-delete"><input type="checkbox" value="{{ item.id | toQName}}" [checked]="annotation.addedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.addedTags)"> {{ item.id | toQName | label }}</label>
+          <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'];" class="list-checkbox">
+              <label class="check-delete"><input type="checkbox" name="check{{ item.id | toQName}}" value="{{ item.id | toQName}}" [checked]="annotation.addedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.addedTags)"> {{ item.id | toQName | label }}</label>
           </div>
         </div>
+       
     </div>
+
     <div class="row message" *ngIf="annotation.addedTags.length >0" (lajiAfterIf)="initElements()">
       <div class="col-sm-12">
         <label>{{ 'MAN.notes' | label }}</label>

@@ -8,16 +8,18 @@ import { AnnotationFormNewComponent } from './annotation-form-new/annotation-for
 import { LangModule } from '../lang/lang.module';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { ConvertAnnotationsPipe } from './convert-annotations.pipe';
+import { SearchFiltersModule } from '../search-filters/search-filters.module';
 
 @NgModule({
   imports: [
     CommonModule,
     TypeaheadModule,
     LangModule,
-    SharedModule
+    SharedModule,
+    SearchFiltersModule
   ],
   declarations: [AnnotationsComponent, AnnotationListComponent, AnnotationFormComponent,
-    AnnotationFormNewComponent, ConvertAnnotationsPipe],
+    AnnotationFormNewComponent, ConvertAnnotationsPipe ],
   exports: [AnnotationsComponent]
 })
 export class AnnotationsModule { }
