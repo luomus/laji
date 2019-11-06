@@ -232,7 +232,11 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang).pipe(
       map(data => {
         return data.map(element => {
-          return { id: element['id'], quality: this.annotationTagsObservation[element.id].quality };
+          if (element['id'] === 'MMAN.3') {
+            return { id: element['id'], quality: this.annotationTagsObservation[element.id].quality, position: 1 };
+          } else {
+            return { id: element['id'], quality: this.annotationTagsObservation[element.id].quality, position: 0 };
+          }
         });
       })
     );
