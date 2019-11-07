@@ -306,6 +306,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       } else {
         // this.annotation.addedTags.push(value);
       }
+
+      /*if (value === 'MMAN.3') {
+        this.removeAllcheckTags();
+      }*/
     } else {
       const index = this.annotation.addedTags.indexOf(value);
       if (index > -1) {
@@ -315,6 +319,16 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       }
     }
     this.annotation.addedTags = [...this.annotation.addedTags];
+  }
+
+
+  removeAllcheckTags() {
+    this.annotation.addedTags.forEach(function(element, i) {
+      if (this.annotationTagsObservation[element['id']].quality === 'check') {
+        this.annotation.addedTags.splice(i, 1);
+      }
+    });
+
   }
 
   addToRemoveTags(value, array) {
@@ -355,7 +369,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       }
     }*/
 
-    if (this.annotation.notes === '' || this.annotation.notes === undefined) {
+    if ((this.annotation.notes === '' || this.annotation.notes === undefined) && this.annotation.addedTags.length === 0) {
       return true;
     }
   }
