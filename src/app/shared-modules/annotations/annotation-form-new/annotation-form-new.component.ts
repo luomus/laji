@@ -303,6 +303,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
       if (index_same === -1 ) {
         this.annotation.addedTags.push(value);
+        if (value === 'MMAN.3') {
+          this.removeAllTagsByCategory(this.annotation.addedTags, 'check');
+        }
       } else {
         // this.annotation.addedTags.push(value);
       }
@@ -322,12 +325,15 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
 
-  removeAllcheckTags() {
-    this.annotation.addedTags.forEach(function(element, i) {
-      if (this.annotationTagsObservation[element['id']].quality === 'check') {
-        this.annotation.addedTags.splice(i, 1);
+  removeAllTagsByCategory(array, category) {
+    let index = array.length - 1;
+    while (index >= 0) {
+      if (this.annotationTagsObservation[this.annotation.addedTags[index]].quality === category) {
+        array.splice(index, 1);
       }
-    });
+
+      index -= 1;
+    }
 
   }
 
