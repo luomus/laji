@@ -1,26 +1,35 @@
 <form [hidden]="!visible" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
     <div class="tags-step-1" *ngIf="expert else checkTags">
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['positive','negative']: 'exclude': 'id': ['MMAN.5'] | sort: 'position'; let i = index;" class="tag-value">
-              <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected(item.id)">X</div>
-              <button class="annotation-marker-new {{ item.quality }}" name="add{{ item.id | toQName}}"
-                [ngClass]="{'off': annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) === -1, 'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" [disabled]="checkAddTags(item.id)">
+              <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)">X</div>
+              <div class="annotation-marker-new {{ item.quality }}"
+                [ngClass]="{'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)">
                     <span>{{ item.id | toQName | label }}</span>
-              </button>
+              </div>
         </div>
+        <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-top: 10px; margin-bottom:10px">
+          <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+            <div class="delete" *ngIf="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)">X</div>
+            <div class="annotation-marker-new {{ item.quality }}"
+              [ngClass]="{'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" >
+                  <span>{{ item.id | toQName | label }}</span>
+          </div>
+        </div>
+    </div>
     </div>
     <ng-template #checkTags>
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'] | sort: 'position'; let i = index;" class="tag-value">
-            <div class="delete" *ngIf="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="deleteSelected(item.id)">X</div>
-            <button class="annotation-marker-new {{ item.quality }}" name="add{{ item.id | toQName}}"
-              [ngClass]="{'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" [disabled]="checkAddTags(item.id)">
+            <div class="delete" *ngIf="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)">X</div>
+            <div class="annotation-marker-new {{ item.quality }}" 
+              [ngClass]="{'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)">
                   <span>{{ item.id | toQName | label }}</span>
-            </button>
-      </div>
+            </div>
+        </div>
     </ng-template>
     <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
       In this type of annotation, you need to add at lest 1 check tag or a taxon
     </div>
-  <div class="row removed-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert' && annotation.addedTags.length > 0 && (annotationRemovableTags$ | async | activeTags: annotations)?.length > 0">
+  <div class="row removed-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert' && (annotationRemovableTags$ | async | activeTags: annotations)?.length > 0">
       <div class="col-sm-12">
         <label>{{ 'annotation.removeTags' | translate }}</label>
         <div *ngFor="let item of annotationRemovableTags$ | async | activeTags: annotations" class="list-checkbox">
@@ -28,7 +37,7 @@
         </div>
       </div>
   </div>
-    <div class="row taxon" *ngIf="(!isEditor || personRoleAnnotation===annotationRole.expert) && annotation.addedTags.length >0 && this.annotation.addedTags.indexOf('MMAN.3') === -1" (lajiAfterIf)="initElements()">
+    <div class="row taxon" *ngIf="(!isEditor || personRoleAnnotation===annotationRole.expert) && this.annotation.addedTags.indexOf('MMAN.3') === -1">
       <div class="col-lg-5 col-md-12 col-sm-12" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
         <label class="taxonomy">{{ 'taxonomy.taxonomy' | translate }}</label> 
         <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.5' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.copyCurrentTag' | translate }}</span>
@@ -72,7 +81,7 @@
         >
       </div>
     </div>
-    <div class="row removed-tags" *ngIf="expert && annotation.addedTags.length > 0 && this.annotation.addedTags.indexOf('MMAN.3') === -1 && this.annotation.addedTags.indexOf('MMAN.5') === -1">
+    <!--<div class="row removed-tags" *ngIf="expert && annotation.addedTags.length > 0 && this.annotation.addedTags.indexOf('MMAN.3') === -1 && this.annotation.addedTags.indexOf('MMAN.5') === -1">
         <div class="col-sm-12">
           <label>Check tags</label>
           <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'];" class="list-checkbox">
@@ -80,9 +89,9 @@
           </div>
         </div>
        
-    </div>
+    </div>-->
 
-    <div class="row message" *ngIf="annotation.addedTags.length >0" (lajiAfterIf)="initElements()">
+    <div class="row message" (lajiAfterIf)="initElements()">
       <div class="col-sm-12">
         <label>{{ 'MAN.notes' | label }}</label>
         <textarea #comment

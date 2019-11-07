@@ -291,7 +291,30 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   addToAddTags(value) {
-    this.annotation.addedTags.push(value);
+
+    if ( this.annotationTagsObservation[value].quality === 'positive' || this.annotationTagsObservation[value].quality === 'negative') {
+      const index = this.annotation.addedTags.indexOf(
+        this.findFirstTagNegativePositive(this.annotation.addedTags, this.annotationTagsObservation)
+      );
+      const index_same = this.annotation.addedTags.indexOf(value);
+      if (index !== -1) {
+        this.annotation.addedTags.splice(index, 1);
+      }
+
+      if (index_same === -1 ) {
+        this.annotation.addedTags.push(value);
+      } else {
+        // this.annotation.addedTags.push(value);
+      }
+    } else {
+      const index = this.annotation.addedTags.indexOf(value);
+      if (index > -1) {
+        this.annotation.addedTags.splice(index, 1);
+      } else {
+        this.annotation.addedTags.push(value);
+      }
+    }
+    this.annotation.addedTags = [...this.annotation.addedTags];
   }
 
   addToRemoveTags(value, array) {
@@ -306,9 +329,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
 
   initElements() {
-    if (this.annotation.addedTags.indexOf('MMAN.5') !== -1 ) {
+    /*if (this.annotation.addedTags.indexOf('MMAN.5') !== -1 ) {
       this.copyCurrentTaxon();
-    }
+    }*/
 
     if (this.annotation.addedTags.indexOf('MMAN.3') !== -1 ) {
       this.initComment();
@@ -323,13 +346,17 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   disableSend() {
     this.alertNotSpamVerified = false;
 
-    if (this.annotation.addedTags.length === 0) {
+    /*if (this.annotation.addedTags.length === 0) {
       return true;
     } else {
       if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.3') === -1 ) {
 
       } else {
       }
+    }*/
+
+    if (this.annotation.notes === '' || this.annotation.notes === undefined) {
+      return true;
     }
   }
 
