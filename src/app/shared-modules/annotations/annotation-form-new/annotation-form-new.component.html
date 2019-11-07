@@ -18,7 +18,7 @@
     </div>
     </div>
     <ng-template #checkTags>
-        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'] | sort: 'position'; let i = index;" class="tag-value">
+        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
             <div class="delete" *ngIf="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)">X</div>
             <div class="annotation-marker-new {{ item.quality }}" 
               [ngClass]="{'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)">
