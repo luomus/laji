@@ -103,7 +103,7 @@
     "jsonpath-plus": "^0.20.1",
     "jw-bootstrap-switch-ng2": "^2.0.5",
     "label-designer": "^3.2.0",
-    "laji-form": "^2.0.14",
+    "laji-form": "^2.1.0",
     "laji-map": "3.0.2",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.7.3",
