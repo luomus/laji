@@ -5,7 +5,7 @@ import { Global } from '../../../environments/global';
 @Component({
     selector: 'laji-theme-page',
     template: `
-<lu-sidebar>
+<lu-sidebar [open]="showNav">
   <nav>
     <h4 [innerHTML]="title | translate"></h4>
     <lu-sidebar-link *ngFor="let link of navLinks" [link]="link.routerLink" routerLinkActive>
