@@ -1,5 +1,7 @@
+.lj-select {
+  margin-bottom: 5px;
+}
 .lj-title {
-  border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   margin: 0 -15px;
   padding: 6px 15px;

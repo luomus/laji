@@ -1,0 +1,132 @@
+@import 'vars';
+
+$mobileBreakpoint: 768px;
+
+:host {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.sidebar {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 5;
+  background-color: $neutral-3;
+  overflow-x: hidden;
+  &.mobile {
+    position: fixed;
+    padding-bottom: 50px;
+    z-index: 1000;
+    height: 100%;
+    box-shadow: 0 0 10px 0 rgba(#000, 0.2);
+    &.open {
+      box-shadow: 0 0 50px 0 rgba(#000, 0.2);
+    }
+    &.right {
+      right: 0;
+    }
+  }
+}
+
+.sidebar.left:not(.mobile) {
+  box-shadow: inset -10px 0 10px -10px rgba(#000, 0.1);
+}
+
+.sidebar.right:not(.mobile) {
+  box-shadow: inset 10px 0 10px -10px rgba(#000, 0.1);
+}
+
+// DRAGBAR
+.dragbar {
+  position: absolute;
+  height: 100%;
+  width: 3px;
+  cursor: col-resize;
+  user-select: none;
+}
+.sidebar.left .dragbar {
+  left: unset;
+  right: 0;
+}
+.sidebar.right .dragbar {
+  left: 0;
+  right: unset;
+}
+
+.sidebar-content-wrapper {
+  min-width: max-content;
+  padding: 10px 20px;
+  &.static-width {
+    min-width: unset;
+  }
+}
+
+
+.open-btn {
+  position: absolute;
+  top: 15px;
+  left: 5px;
+  cursor: pointer;
+}
+.open-btn-mobile {
+  cursor: pointer;
+}
+
+.menu-svg {
+  height: 18px;
+}
+
+.close-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+}
+
+.close-btn {
+  cursor: pointer;
+  font-weight: 900;
+  color: $neutral-6;
+}
+
+// SIDEBAR NAV
+:host .sidebar ::ng-deep lu-sidebar-link div {
+  position: relative;
+  z-index: 1;
+  padding: 10px 20px;
+  cursor: pointer;
+  &:hover:not(.active) {
+    background-color: $neutral-6;
+    color: $neutral-2;
+  }
+  &.active {
+    background-color: $neutral-2;
+    cursor: default;
+  }
+}
+:host .sidebar.left ::ng-deep lu-sidebar-link div {
+  padding-right: 30px;
+  margin-right: -20px;
+  &.active {
+    box-shadow: -4px 4px 5px -4px rgba(0,0,0,0.1), -4px -3px 5px -4px rgba(0,0,0,0.1);
+  }
+}
+:host .sidebar.right ::ng-deep lu-sidebar-link div {
+  padding-left: 30px;
+  margin-left: -20px;
+  &.active {
+    box-shadow: 4px 4px 5px -4px rgba(0,0,0,0.1), 4px -3px 5px -4px rgba(0,0,0,0.1);
+  }
+}
+
+// CONTENT
+
+.content {
+  overflow-x: hidden;
+  flex-grow: 1;
+  &.mobile {
+    padding: 10px;
+  }
+}
+

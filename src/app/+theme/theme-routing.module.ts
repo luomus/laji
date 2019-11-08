@@ -63,7 +63,6 @@ const routes: Routes = [
       formID: Global.forms.default,
       title: 'theme.grc.title',
       requireLogin: false,
-      titlePosition: 'body',
       navLinks: {
         search: {
           routerLink: ['search'],
@@ -228,6 +227,7 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form'],
       instructions: '2846'
     },
     children: [

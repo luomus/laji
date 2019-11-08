@@ -31,6 +31,7 @@ import { AppComponentModule } from './shared-modules/app-component/app-component
 import { TimeoutInterceptor } from './shared/interceptor/timeout.interceptor';
 import { ChartsModule } from 'ng2-charts';
 import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
+import { LajiUiModule } from '../../projects/laji-ui/src/public-api';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -67,7 +68,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     AppRoutingModule,
     TransferHttpCacheModule,
-    ChartsModule
+    ChartsModule,
+    LajiUiModule
   ],
   exports: [
     TranslateModule

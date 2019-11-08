@@ -1230,5 +1230,11 @@
   "readMore": "Read more",
   "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead",
   "bats.navLinks.form": "Record information",
-  "np.list.col.deviceID": "Device number"
+  "np.list.col.deviceID": "Device number",
+  "form.participants.export.id":  "ID",
+  "form.participants.export.fullName": "Name",
+  "form.participants.export.emailAddress": "Email address",
+  "form.participants.export.lintuvaaraLoginName":  "Lintuvaara ID",
+  "form.participants.export.lastDoc": "Last participated",
+  "form.participants.export.docCount":  "Document count"
 }

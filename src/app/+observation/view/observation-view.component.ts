@@ -57,7 +57,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ];
   @Input() settingsKeyList = 'resultList';
   _activeTab: string;
-  @ViewChild('tabs', { static: false }) tabs;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
   @ViewChild(ObservationFormComponent, { static: false }) form: ObservationFormComponent;
   showMobile: any;
