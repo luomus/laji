@@ -2,6 +2,7 @@ import {map,  mergeMap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit,
 Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
@@ -17,6 +18,17 @@ import { format } from 'd3-format';
   selector: 'laji-annotation-form-new',
   templateUrl: './annotation-form-new.component.html',
   styleUrls: ['./annotation-form-new.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition('void => *', [
+        style({opacity: 0}),
+        animate(400, style({opacity: 1}))
+      ]),
+      transition('* => void', [
+        animate(600, style({opacity: 0}))
+      ])
+    ])
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })

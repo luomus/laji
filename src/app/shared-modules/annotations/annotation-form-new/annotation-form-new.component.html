@@ -7,7 +7,7 @@
                     <span>{{ item.id | toQName | label }}</span>
               </div>
         </div>
-        <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-bottom:10px">
+        <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-bottom:10px" [@fadeInOut]>
           <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
             <div class="delete" *ngIf="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)">X</div>
             <div class="annotation-marker-new {{ item.quality }}"
@@ -40,7 +40,7 @@
         </div>
       </div>
   </div>
-    <div class="row taxon" *ngIf="!isEditor && this.annotation.addedTags.indexOf('MMAN.3') === -1">
+    <div class="row taxon" *ngIf="!isEditor && this.annotation.addedTags.indexOf('MMAN.3') === -1" [@fadeInOut]>
       <div>
         <div class="col-lg-3 col-md-12 col-sm-12">
             <label class="taxonomy">{{ 'taxonomy.taxonomy' | translate }}</label> 
