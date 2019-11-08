@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PlatformService } from '../service/platform.service';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';
 
-const SSR_TIMEOUT = 1000;
+const SSR_TIMEOUT = 5000;
 const GLOBAL_TIMEOUT = 30000;
 
 @Injectable()
@@ -19,7 +19,7 @@ export class TimeoutInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       timeout(timeoutValue),
-      catchError(err => this.platformService.isServer ? of(null) : throwError(err))
+      catchError(err => this.platformService.isServer ? EMPTY : throwError(err))
     );
   }
 }
