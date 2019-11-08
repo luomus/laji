@@ -2,10 +2,7 @@
         [disabled]="disabled"
         [@clicked]="{
           value: clicked,
-          params: {
-            bg: clickedStyles['background-color'],
-            color: clickedStyles['color']
-          }
+          params: clickedStyles
         }"
         (@clicked.done)="onAnimationDone()"
-        (click)="onClick()"><ng-content></ng-content></button>
+        (click)="onClick($event)"><ng-content></ng-content></button>
