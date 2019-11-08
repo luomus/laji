@@ -385,41 +385,31 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   @HostListener('window:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
       if (e.keyCode === 84 && e.altKey) { // alt + t --> focus input taxon
-        if (this.annotation.addedTags.length > 0) {
           this.taxonElement.nativeElement.focus();
-        }
       }
 
       if (e.keyCode === 67 && e.altKey) { // alt + c --> focus comment textarea
-        if (this.annotation.addedTags.length > 0) {
           this.commentElement.nativeElement.focus();
-        }
       }
 
       if (e.keyCode === 49 && e.altKey) { // alt + 1 --> add convincing
-        if (this.annotation.addedTags.length === 0) {
-          this.annotation.addedTags.push('MMAN.6');
-        }
+          this.addToAddTags('MMAN.6');
       }
 
       if (e.keyCode === 48 && e.altKey) { // alt + 0 --> add erroneus
-        if (this.annotation.addedTags.length === 0) {
-          this.annotation.addedTags.push('MMAN.9');
-        }
+        this.addToAddTags('MMAN.9');
       }
 
-      if (e.keyCode === 82 && e.altKey) {
-        this.annotation.removedTags = [];
+      if (e.keyCode === 82 && e.altKey) { // alt + r --> delete all added tags
+        this.annotation.addedTags = [];
       }
 
-      if (e.keyCode === 83 && e.ctrlKey) {
-        if (this.formAnnotation.form.valid) {
+      if (e.altKey && e.keyCode === 83) { // alt + s --> save
+        if ((this.annotation.notes !== '' && this.annotation.notes !== undefined) || this.annotation.addedTags.length > 0) {
           e.preventDefault();
           this.saveAnnotation();
         }
       }
-
-
   }
 
 
