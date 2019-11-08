@@ -23,8 +23,8 @@ label {
     font-weight: normal;
   }
   
-  .tags, .taxon {
-    margin-bottom: 30px;
+  .tags, .taxon, .message {
+    margin-top: 10px;
   }
   
   .tags label {
@@ -33,7 +33,7 @@ label {
   }
   
   .add-tags, .removed-tags {
-    margin-bottom: 20px;
+    margin-top: 10px;
   }
   
   .add-tags input, .removed-tags input.form-control {
