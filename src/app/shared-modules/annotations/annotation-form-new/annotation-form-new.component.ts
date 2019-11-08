@@ -344,6 +344,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     } else {
       array.push(value);
     }
+
     this.annotation.addedTags = [...this.annotation.addedTags];
   }
 

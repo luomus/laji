@@ -120,7 +120,7 @@ label {
   
   .annotation-marker-new.neutral{
     color: #000;
-    border: 1px solid #000;
+    border: 1px solid #c0c0c0;
   }
   
   .annotation-marker-new.check {
@@ -138,9 +138,17 @@ label {
     color:white;
   }
   
-  .annotation-marker-new.neutral:hover, .annotation-marker-new.neutral.on {
-    background: #000;
-    color:white;
+  .annotation-marker-new.neutral:hover {
+    border: 1px solid black;
+  }
+
+  .annotation-marker-new.neutral.on {
+    color: red;
+    text-decoration: line-through;
+  }
+
+  .annotation-marker-new.neutral.on span {
+    color: #000;
   }
   
   .annotation-marker-new.check:hover, .annotation-marker-new.check.on  {

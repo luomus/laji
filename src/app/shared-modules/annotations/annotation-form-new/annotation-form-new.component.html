@@ -33,7 +33,10 @@
       <div class="col-sm-12">
         <label>{{ 'annotation.removeTags' | translate }}</label>
         <div *ngFor="let item of annotationRemovableTags$ | async | activeTags: annotations" class="list-checkbox">
-          <label class="check-delete"><input type="checkbox" name="delete{{ item.id | toQName}}" value="{{ item.id | toQName}}" [checked]="annotation.removedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.removedTags)"> {{ item.id | toQName | label }}</label>
+          <!--<label class="check-delete"><input type="checkbox" name="delete{{ item.id | toQName}}" value="{{ item.id | toQName}}" [checked]="annotation.removedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.removedTags)"> {{ item.id | toQName | label }}</label>-->
+          <div class="annotation-marker-new neutral" [ngClass]="{'on': annotation.removedTags.indexOf(item.id) >= 0 }" (click)="addToRemoveTags(item.id, annotation.removedTags)">
+              <span>{{ item.id | toQName | label }}</span>
+          </div>
         </div>
       </div>
   </div>
