@@ -7,7 +7,7 @@
                     <span>{{ item.id | toQName | label }}</span>
               </div>
         </div>
-        <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-top: 10px; margin-bottom:10px">
+        <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-bottom:10px">
           <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
             <div class="delete" *ngIf="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)">X</div>
             <div class="annotation-marker-new {{ item.quality }}"
@@ -37,60 +37,66 @@
         </div>
       </div>
   </div>
-    <div class="row taxon" *ngIf="(!isEditor || personRoleAnnotation===annotationRole.expert) && this.annotation.addedTags.indexOf('MMAN.3') === -1">
-      <div class="col-lg-5 col-md-12 col-sm-12" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
-        <label class="taxonomy">{{ 'taxonomy.taxonomy' | translate }}</label> 
-        <span class="switch-mode" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.5' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.copyCurrentTag' | translate }}</span>
-        <input #taxon
-          [ngClass]="{loading: typeaheadLoading}"
-          type="text"
-          class="form-control input-sm"
-          name="opinion"
-          [disabled]="unIdentifyable"
-          [required]="expert && personRoleAnnotation===annotationRole.expert && (annotation.addedTags.length > 0)"
-          [(ngModel)]="annotation.identification.taxon"
-          [typeahead]="taxonAutocomplete"
-          [typeaheadOptionsLimit]="20"
-          [typeaheadWaitMs]="200"
-          [typeaheadMinLength]="3"
-          [typeaheadOptionField]="'value'"
-          [typeaheadItemTemplate]="taxonItem"
-          autocomplete="off"
-          autocorrect="off"
-        >
-        <ng-template #taxonItem let-model="item">
-          <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-            {{ model.value }}
-          </h5>
-        </ng-template>
+    <div class="row taxon" *ngIf="!isEditor && this.annotation.addedTags.indexOf('MMAN.3') === -1">
+      <div>
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <label class="taxonomy">{{ 'taxonomy.taxonomy' | translate }}</label> 
+            <span class="switch-mode block" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.5' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.copyCurrentTag' | translate }}</span>
+        </div>
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <input #taxon
+            [ngClass]="{loading: typeaheadLoading}"
+            type="text"
+            class="form-control input-sm"
+            name="opinion"
+            [disabled]="unIdentifyable"
+            [required]="expert && personRoleAnnotation===annotationRole.expert && (annotation.addedTags.length > 0)"
+            [(ngModel)]="annotation.identification.taxon"
+            [typeahead]="taxonAutocomplete"
+            [typeaheadOptionsLimit]="20"
+            [typeaheadWaitMs]="200"
+            [typeaheadMinLength]="3"
+            [typeaheadOptionField]="'value'"
+            [typeaheadItemTemplate]="taxonItem"
+            autocomplete="off"
+            autocorrect="off"
+          >
+          <ng-template #taxonItem let-model="item">
+            <h5 class="autosuggest-value {{model.groups}} informal-group-image">
+              {{ model.value }}
+            </h5>
+          </ng-template>
+        </div>
       </div>
-  
-      <div class="col-lg-2 col-md-3 col-sm-3 text-center">
-        <label>{{ 'annotation.coll' | translate }}</label>
-        <input type="checkbox" class="form-control input-sm">
-      </div>
-  
-      <div class="col-lg-5 col-md-9 col-sm-12" *ngIf="!isEditor || personRoleAnnotation===annotationRole.expert">
-          <label>{{ 'annotation.taxonSpecifier' | translate }}</label>
-          <input
-          type="text"
-          class="form-control input-sm"
-          name="taxonSpecifier"
-          [disabled]="annotation.identification.taxon===''"
-          [(ngModel)]="annotation.identification.taxonSpecifier"
-        >
-      </div>
-    </div>
-    <!--<div class="row removed-tags" *ngIf="expert && annotation.addedTags.length > 0 && this.annotation.addedTags.indexOf('MMAN.3') === -1 && this.annotation.addedTags.indexOf('MMAN.5') === -1">
-        <div class="col-sm-12">
-          <label>Check tags</label>
-          <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': ['MMAN.11'];" class="list-checkbox">
-              <label class="check-delete"><input type="checkbox" name="check{{ item.id | toQName}}" value="{{ item.id | toQName}}" [checked]="annotation.addedTags.indexOf(item.id) >= 0" (change)="addToRemoveTags(item.id, annotation.addedTags)"> {{ item.id | toQName | label }}</label>
+
+      <div *ngIf="personRoleAnnotation===annotationRole.expert && expert">
+        <div class="col-sm-12 no-padding" style="margin-top: 10px;">
+          <div class="col-sm-3">
+            <div class="col-lg-9 col-sm-12 no-padding">
+              <label>{{ 'annotation.coll' | translate }}</label>
+            </div>
+            <div class="col-lg-3 col-sm-12 no-padding">
+              <label><input type="checkbox"></label>
+            </div>
+          </div>
+          <div class="col-sm-9">
+            <div class="col-lg-4 col-sm-12 no-padding">
+              <label>{{ 'annotation.taxonSpecifier' | translate }}</label>
+            </div>
+            <div class="col-lg-8 col-sm-12 no-padding">
+              <input
+              type="text"
+              class="form-control input-sm"
+              name="taxonSpecifier"
+              [disabled]="annotation.identification.taxon===''"
+              [(ngModel)]="annotation.identification.taxonSpecifier"
+              >
+            </div>
           </div>
         </div>
-       
-    </div>-->
-
+      </div>
+    </div>
+    
     <div class="row message" (lajiAfterIf)="initElements()">
       <div class="col-sm-12">
         <label>{{ 'MAN.notes' | label }}</label>
