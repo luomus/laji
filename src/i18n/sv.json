@@ -1319,5 +1319,11 @@
   "readMore": "Läs mer",
   "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead",
   "bats.navLinks.form": "Registrera information",
-  "np.list.col.deviceID": "Apparatsidentifieringsnummer"
+  "np.list.col.deviceID": "Apparatsidentifieringsnummer",
+  "form.participants.export.id":  "ID",
+  "form.participants.export.fullName": "Namn",
+  "form.participants.export.emailAddress": "E-postaddress",
+  "form.participants.export.lintuvaaraLoginName":  "Lintuvaara ID",
+  "form.participants.export.lastDoc": "Senast deltagit",
+  "form.participants.export.docCount":  "Dokumeträkning"
 }

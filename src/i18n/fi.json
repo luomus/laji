@@ -1398,5 +1398,11 @@
   "readMore": "Lue lisää",
   "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead",
   "bats.navLinks.form": "Kirjaa tietoja",
-  "np.list.col.deviceID": "Laitteen nro"
+  "np.list.col.deviceID": "Laitteen nro",
+  "form.participants.export.id":  "ID",
+  "form.participants.export.fullName": "Nimi",
+  "form.participants.export.emailAddress": "Sähköpostiosoite",
+  "form.participants.export.lintuvaaraLoginName":  "Lintuvaara ID",
+  "form.participants.export.lastDoc": "Viimeksi osallistunut",
+  "form.participants.export.docCount":  "Dokumenttien määrä"
 }

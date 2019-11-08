@@ -227,6 +227,7 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form'],
       instructions: '2846'
     },
     children: [
