@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Document } from '../../../../shared/model/Document';
 
 @Component({
   selector: 'laji-document-local-print-view',

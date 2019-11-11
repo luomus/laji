@@ -50,4 +50,6 @@ export class DatatableTemplatesComponent {
   onTaxonLinkClick(event: MouseEvent) {
     event.stopPropagation();
   }
+
+  void() {}
 }
