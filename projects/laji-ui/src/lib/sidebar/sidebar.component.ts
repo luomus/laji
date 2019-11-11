@@ -57,7 +57,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   sidebarMinWidth = 50;
 
   private _open = true;
-  set open(b) {
+  @Input() set open(b) {
     this._open = b;
     this.checkCloseOnClickListener();
   }
