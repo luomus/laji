@@ -8,6 +8,26 @@ import * as moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
 import { Area } from '../../shared/model/Area';
 
+interface ISections {
+  taxon?: Array<keyof WarehouseQueryInterface>;
+  own?: Array<keyof WarehouseQueryInterface>;
+  time: Array<keyof WarehouseQueryInterface>;
+  place?: Array<keyof WarehouseQueryInterface>;
+  coordinate?: Array<keyof WarehouseQueryInterface>;
+  sample?: Array<keyof WarehouseQueryInterface>;
+  observer?: Array<keyof WarehouseQueryInterface>;
+  individual: Array<keyof WarehouseQueryInterface>;
+  quality?: Array<keyof WarehouseQueryInterface>;
+  dataset: Array<keyof WarehouseQueryInterface>;
+  collection: Array<keyof WarehouseQueryInterface>;
+  keywords: Array<keyof WarehouseQueryInterface>;
+  features?: Array<keyof WarehouseQueryInterface>;
+  invasive?: Array<keyof WarehouseQueryInterface>;
+  image: Array<keyof WarehouseQueryInterface>;
+  secure: Array<keyof WarehouseQueryInterface>;
+  identify: Array<keyof WarehouseQueryInterface>;
+}
+
 
 @Component({
   selector: 'laji-observation-form',
@@ -57,12 +77,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   autocompleteLimit = 10;
   logCoordinateAccuracyMax = 4;
 
-  visible: {[key: string]: boolean} = {};
-  visibleAdvanced: {[key: string]: boolean} = {};
+  visible: {[key in keyof ISections]?: boolean} = {};
+  visibleAdvanced: {[key in keyof ISections]?: boolean} = {};
 
-  section = {
+  sections: ISections = {
     own: ['observerPersonToken', 'editorOrObserverPersonToken', 'editorPersonToken'],
-    time: ['time', 'season', 'firstLoadedLaterThan', 'firstLoadedBefore'],
+    time: ['time', 'season', 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore', 'loadedSameOrAfter', 'loadedSameOrBefore'],
     place: [
       'countryId',
       'biogeographicalProvinceId',
@@ -82,13 +102,13 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'invasive', 'finnish'],
     invasive: [],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
-    secret: ['secured', 'secureLevel'],
+    secure: ['secured', 'secureLevel'],
     identify: ['unidentified'],
   };
 
-  advancedSections = {
+  advancedSections: ISections = {
     taxon: ['useIdentificationAnnotations', 'includeSubTaxa'],
-    time: ['firstLoadedLaterThan', 'firstLoadedBefore'],
+    time: ['firstLoadedSameOrAfter', 'firstLoadedSameOrBefore', 'loadedSameOrAfter', 'loadedSameOrBefore'],
     coordinate: ['coordinates' , 'coordinateAccuracyMax', 'sourceOfCoordinates'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
     dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
@@ -127,6 +147,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateVisibleSections();
+    this.updateVisibleAdvancedSections();
   }
 
   ngOnDestroy(): void {
@@ -149,23 +170,23 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     return this._query;
   }
 
-  updateTime(dates, target = 'time') {
+  updateTime(dates, startTarget: 'time');
+  updateTime(dates, startTarget: keyof WarehouseQueryInterface, endTarget: keyof WarehouseQueryInterface );
+  updateTime(dates, startTarget: 'time' | keyof WarehouseQueryInterface = 'time', endTarget?: keyof WarehouseQueryInterface ) {
     if (dates === 365) {
       const today = new Date();
       const oneJan = new Date(today.getFullYear(), 0, 1);
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
     }
     const now = moment();
-    if (target === 'time') {
+    if (startTarget === 'time') {
       this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
       this.formQuery.timeEnd = '';
       this.onFormQueryChange();
-    } else if (target === 'loaded') {
-      this.query.firstLoadedSameOrAfter = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.query.firstLoadedSameOrBefore = undefined;
-      this.onQueryChange();
     } else {
-      console.error('invalid target for updateTime');
+      this.query[startTarget] = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.query[endTarget] = undefined;
+      this.onQueryChange();
     }
   }
 
@@ -320,10 +341,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private updateVisibleSections() {
-    Object.keys(this.section).forEach(section => {
+    Object.keys(this.sections).forEach(section => {
       let visible = false;
-      for (let i = 0; i < this.section[section].length; i++) {
-        const value = this.query[this.section[section][i]];
+      for (let i = 0; i < this.sections[section].length; i++) {
+        const value = this.query[this.sections[section][i]];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
