@@ -170,7 +170,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     return this._query;
   }
 
-  updateTime(dates, startTarget: 'time');
+  updateTime(dates, startTarget?: 'time');
   updateTime(dates, startTarget: keyof WarehouseQueryInterface, endTarget: keyof WarehouseQueryInterface );
   updateTime(dates, startTarget: 'time' | keyof WarehouseQueryInterface = 'time', endTarget?: keyof WarehouseQueryInterface ) {
     if (dates === 365) {
