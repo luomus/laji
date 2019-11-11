@@ -9,6 +9,8 @@ import { DocumentInfoService } from '../../../shared/service/document-info.servi
 
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { WINDOW } from '@ng-toolkit/universal';
+import { getLocality$ } from '../../own-submissions/own-submissions.component';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
 
 @Component({
@@ -43,6 +45,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     public formService: FormService,
     private router: Router,
     private translate: TranslateService,
+    private labelService: TriplestoreLabelService,
     private localizeRouterService: LocalizeRouterService,
     @Inject(WINDOW) private window: Window
   ) {}
@@ -75,10 +78,13 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.unitList = gatheringInfo.unitList;
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
-    this.locality = gatheringInfo.locality;
-    this.namedPlaceID = gatheringInfo.namedPlaceID;
 
     this.loading = false;
+  }
+
+  getLocality$() {
+    const gatheringInfo = DocumentInfoService.getGatheringInfo(this.document, this.form);
+    return getLocality$(this.translate, this.labelService, gatheringInfo, this.document);
   }
 
   editDocument(formId, documentId) {

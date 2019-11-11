@@ -1,16 +1,6 @@
 <div class="link latest-container" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading" ngPreserveWhitespaces>
     <div class="info">
-        <div class="observation-title" *ngIf="locality">{{ locality }}</div>
-        <div class="observation-title" *ngIf="!locality">
-          <ng-container *ngIf="namedPlaceID; else missingLocality">
-            {{ namedPlaceID | label }}  
-          </ng-container>
-          <ng-template #missingLocality>
-            <ng-container>
-              {{ 'haseka.users.latest.localityMissing' | translate }} 
-            </ng-container>
-          </ng-template>
-        </div>
+        <div class="observation-title">{{ getLocality$() | async }}</div>
         <div class="published" *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
             <span>
                 <span class="label label-warning link inline-block">{{ 'result.latestObservationsLabel' | translate }}</span>
