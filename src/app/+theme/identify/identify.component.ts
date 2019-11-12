@@ -56,6 +56,7 @@ export class IdentifyComponent implements OnInit {
       document: event.documentId,
       highlight: event.unitId,
       identifying: true,
+      openAnnotation: true,
       result: undefined
     });
   }

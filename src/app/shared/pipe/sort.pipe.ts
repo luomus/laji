@@ -6,7 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class SortPipe implements PipeTransform {
 
   transform(value: any, property?: string): any {
-    console.log('filter');
     if (!Array.isArray(value)) {
       return value;
     }
