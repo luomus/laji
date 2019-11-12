@@ -76,7 +76,7 @@ export class OwnSubmissionsComponent implements OnChanges {
     dateEdited: 'dateEdited',
     form: 'formID',
     dateObserved: 'gatheringEvent.dateEnd,gatheringEvent.dateBegin,gatherings.dateBegin,gatherings.dateEnd',
-    locality: 'gatherings.locality,namedPlaceID,gatherings.namedPlaceID',
+    locality: 'gatherings.locality,namedPlaceID,gatherings.namedPlaceID,gatherings.municipality',
     unitCount: 'gatherings.units',
     observer: 'gatheringEvent.leg',
     namedPlaceName: 'namedPlaceID,gatherings.namedPlaceID',
@@ -327,7 +327,7 @@ export class OwnSubmissionsComponent implements OnChanges {
       switchMap((form) => {
         const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
         return ObservableForkJoin(
-          this.getLocality(gatheringInfo, document.namedPlaceID),
+          this.getLocality(gatheringInfo, document),
           this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
           this.getNamedPlaceName(document.namedPlaceID),
           this.getTaxon(gatheringInfo.taxonID)
@@ -364,18 +364,8 @@ export class OwnSubmissionsComponent implements OnChanges {
     );
   }
 
-  private getLocality(gatheringInfo: any, namedPlaceID): Observable<string> {
-    let locality$ = ObservableOf(gatheringInfo);
-    const npID = gatheringInfo.namedPlaceID || namedPlaceID;
-
-    if (!gatheringInfo.locality && npID) {
-      locality$ = this.labelService.get(npID, 'multi').pipe(
-        map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
-    }
-
-    return locality$.pipe(
-      switchMap((gathering) => this.translate.get('haseka.users.latest.localityMissing').pipe(
-        map(missing => gathering.locality || missing))));
+  private getLocality(gatheringInfo: any, document): Observable<string> {
+    return getLocality$(this.translate, this.labelService, gatheringInfo, document);
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
@@ -423,4 +413,30 @@ export class OwnSubmissionsComponent implements OnChanges {
       })
     ).subscribe();
   }
+}
+
+export function getLocality$(translate: TranslateService,
+                             labelService: TriplestoreLabelService,
+                             gatheringInfo: any,
+                             document: any): Observable<string> {
+  let locality$ = ObservableOf(gatheringInfo);
+  const npID = gatheringInfo.namedPlaceID || document.namedPlaceID;
+
+  if (!gatheringInfo.locality && npID) {
+    locality$ = labelService.get(npID, 'multi').pipe(
+      map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
+  }
+  if (!gatheringInfo.locality) {
+    if (document.npID) {
+      locality$ = labelService.get(npID, 'multi').pipe(
+        map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
+    } else if (document.gatherings[0].municipality) {
+      locality$ = ObservableOf({...gatheringInfo, municipality: document.gatherings[0].municipality});
+    }
+  }
+
+
+  return locality$.pipe(
+    switchMap((gathering) => translate.get('haseka.users.latest.localityMissing').pipe(
+      map(missing => gathering.locality || gathering.municipality || missing))));
 }
