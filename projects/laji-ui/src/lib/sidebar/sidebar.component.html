@@ -24,6 +24,7 @@
            sidebarMinWidth: sidebarMinWidth
          }
         }"
+        (@sidebarOpen_wrapper.done)="onResizeAnimationComplete()"
        #sidebarRef>
     <div *ngIf="!mobile && !staticWidth" class="dragbar" (mousedown)="onDragStart($event)"></div>
     <div class="sidebar-content-wrapper"
