@@ -1,5 +1,9 @@
 @import 'vars';
 
+:host {
+  display: inline-block;
+}
+
 button {
   color: $neutral-8;
   border: none;
