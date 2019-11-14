@@ -1,7 +1,28 @@
-import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, HostBinding, HostListener } from '@angular/core';
+import { trigger, style, transition, animate, keyframes } from '@angular/animations';
 
-type Role = 'primary' | 'secondary';
+interface IButtonStyle {
+  backgroundColor: string;
+  color: string;
+}
+
+interface IButtons {
+  primary: IButtonStyle;
+  secondary: IButtonStyle;
+}
+
+type Role = keyof IButtons;
+
+const clickedStyles: IButtons = {
+  primary: {
+    backgroundColor: '#0f598a',
+    color: '#e3e6e8'
+  },
+  secondary: {
+    backgroundColor: '#cfeafc',
+    color: '#1f74ad'
+  }
+};
 
 @Component({
   selector: 'lu-button',
@@ -10,56 +31,57 @@ type Role = 'primary' | 'secondary';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('clicked', [
-      state('unclicked', style({
-        'box-shadow': '*',
-        'background-color': '*',
-        'color': '*'
-      })),
-      state('clicked', style({
-        'box-shadow': '0 0px 1px #c7cdd1',
-        'background-color': '{{bg}}',
-        'color': '{{color}}'
-      }), {params: {
-        bg: '#cfeafc',
-        color: '#1f74ad',
-      }}),
-      transition('unclicked<=>clicked', animate('200ms')),
+      transition('unclicked=>clicked', animate('400ms', keyframes([
+        style({
+          'box-shadow': '*',
+          'background-color': '*',
+          'color': '*'
+        }),
+        style({
+          'box-shadow': '0 0px 1px #c7cdd1',
+          'background-color': '{{backgroundColor}}',
+          'color': '{{color}}'
+        }),
+        style({
+          'box-shadow': '*',
+          'background-color': '*',
+          'color': '*'
+        }, )
+      ])), {params: clickedStyles.secondary}
+      ),
     ])
   ]
 })
-export class ButtonComponent implements OnDestroy {
+export class ButtonComponent {
   private _role: Role = 'secondary';
+
   @Input() set role(role: Role) {
     this._role = role;
-    switch(role) {
-      case 'primary':
-        this.clickedStyles["background-color"] = '#0f598a'
-        this.clickedStyles["color"] = '#e3e6e8';
-        break;
-      case 'secondary':
-        this.clickedStyles["background-color"] = '#cfeafc'
-        this.clickedStyles["color"] = '#1f74ad';
-        break;
-    }
+    this.clickedStyles = clickedStyles[role];
   }
   get role(): Role {
     return this._role;
   }
   @Input() disabled = false;
+  @Output() click = new EventEmitter<MouseEvent>();
 
-  clickedStyles = {}
+  clickedStyles = clickedStyles[this._role];
   clicked: 'unclicked' | 'clicked' = 'unclicked';
-  constructor(private cdr: ChangeDetectorRef) {}
-  onClick() {
-    this.clicked = 'clicked';
+
+  @HostListener('click', ['$event'])
+  onHostClick(event) {
+    event.stopImmediatePropagation();
   }
+
+  onClick(event: MouseEvent) {
+    event.stopImmediatePropagation();
+    if (this.clicked === 'unclicked') {
+      this.clicked = 'clicked';
+      this.click.emit(event); // this is here in case we want to limit the click rate?
+    }
+  }
+
   onAnimationDone() {
-    setTimeout(() => {
-      this.clicked = 'unclicked';
-      this.cdr.markForCheck();
-    });
-  }
-  ngOnDestroy() {
-    this.cdr.detach();
+    this.clicked = 'unclicked';
   }
 }

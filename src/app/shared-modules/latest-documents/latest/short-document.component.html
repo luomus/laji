@@ -92,11 +92,11 @@
         <div class="observation-title" *ngIf="locality">{{ locality }}</div>
         <div class="observation-title" *ngIf="!locality">
           <ng-container *ngIf="namedPlaceID; else missingLocality">
-            {{ namedPlaceID | label }}  
+            {{ namedPlaceID | label }}
           </ng-container>
           <ng-template #missingLocality>
             <ng-container>
-              {{ 'haseka.users.latest.localityMissing' | translate }} 
+              {{ 'haseka.users.latest.localityMissing' | translate }}
             </ng-container>
           </ng-template>
         </div>
@@ -110,14 +110,14 @@
         <div class="observation-end" *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</div>
 
         <span *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</span>
-  
+
         <div class="nowrap padding-top-bottom-5 inline-block" (click)="showUnitList($event)">
           <small>
             <span>{{ unitList.length }} </span>
             <span *ngIf="unitList.length === 1">{{ 'haseka.users.latest.gathered.singular' | translate }} </span>
             <span *ngIf="unitList.length !== 1">{{ 'haseka.users.latest.gathered' | translate }} </span>
           </small>
-      
+
           <span *ngIf="unitList && unitList.length > 0"
                 class="link"
                 (click)="showUnitList($event)">
@@ -125,7 +125,7 @@
                    style="font-size:0.8em"
                    [ngClass]="{ 'glyphicon-triangle-bottom': showList, 'glyphicon-triangle-right': !showList }"></i>
           </span>
-      
+
           <br>
           <small>
             <ul *ngIf="showList" style="margin-bottom: 2px">
@@ -136,9 +136,9 @@
             </ul>
           </small>
         </div>
-        
-      
-        <span *ngIf="showFormName" class="label label-default form-name">{{ document.formID | formName }}</span>        
+
+
+        <span *ngIf="showFormName" class="label label-default form-name">{{ document.formID | formName }}</span>
     </div>
     <div class="observation-tools">
         <span class="nowrap">
@@ -150,13 +150,13 @@
                 <i class="glyphicon glyphicon-eye-open"></i>
               </span>
             </span>
-        </span>  
+        </span>
     </div>
 
     <div class="delete_tmp" *ngIf="document._hasChanges">
         <span class="alert-box">{{ 'haseka.form.hasChanges' | translate }}</span>
-        <span class="label label-default button-tools link inline-block"><i class="glyphicon glyphicon-trash" (click)="removeDocument($event, document)"></i></span>
-    </div>             
-    
+        <span class="label label-default button-tools link inline-block"><i class="glyphicon glyphicon-trash" (click)="removeDocument($event)"></i></span>
+    </div>
+
   </div>
 

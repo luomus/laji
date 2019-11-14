@@ -46,8 +46,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   public barChartLabelsDay: number[];
   public barChartData: any[];
   public daybarChartData: any[][];
+  public barChartOptions: any;
   private barChartPlugins: any;
-  private barChartOptions: any;
 
 
   monthFormatting: (number) => string = this.getMonthLabel.bind(this);

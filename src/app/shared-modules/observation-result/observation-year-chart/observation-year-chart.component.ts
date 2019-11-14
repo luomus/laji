@@ -32,19 +32,20 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   newData: ChartDataSets[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
 
-  private allSubData: number[];
+  allSubData: number[];
+  allDataNew: any[];
+  barChartLabels: number[];
+  barChartOptionsYear: any = {
+    animation: {
+      duration: 500
+    }
+  };
+
   private allSubBackground: string[];
   private getDataSub: Subscription;
-  private allDataNew: any[];
-  private barChartLabels: number[];
   private subBarChartLabels: number[];
   private allBarChartsLabel: number[];
   private barChartPlugins: any;
-  private barChartOptionsYear: any = {
-      animation: {
-        duration: 500
-      }
-  };
 
 
   @Output() hasData = new EventEmitter<boolean>();

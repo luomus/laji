@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { LocalStorage, SessionStorage } from 'ngx-webstorage';
-import { FieldType, ILabelPdf, ILabelField, ISetup, IViewSettings, Presets } from 'label-designer';
+import { FieldType, ILabelPdf, ILabelField, ISetup, IViewSettings, Presets, IColumnMap } from 'label-designer';
 import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../../src/app/shared/service/laji-api.service';
@@ -63,6 +63,7 @@ export class AppComponent implements OnInit {
   pdfLoading = false;
   defaultSetup: ISetup = NEW_SETUP;
   @LocalStorage('viewSetting', {magnification: 2}) viewSetting: IViewSettings;
+  @LocalStorage('columnMap', {}) colMap: IColumnMap;
   @LocalStorage('setup', NEW_SETUP) setup: ISetup;
   @SessionStorage('data', []) data: object[];
 

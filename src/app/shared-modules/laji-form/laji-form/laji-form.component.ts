@@ -161,7 +161,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           schema: this.formData.schema,
           uiSchema: this.formData.uiSchema,
           uiSchemaContext: this.formData.uiSchemaContext,
-          formData: this.formData.formData,
+          formData: this.fillFormDataWithDefaults(this.formData.formData, this.formData.schema),
           validators: this.formData.validators,
           warnings: this.formData.warnings,
           onSubmit: this._onSubmit.bind(this),
@@ -224,5 +224,25 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     } catch (err) {
       this.logger.warn('Unmounting failed', err);
     }
+  }
+
+  /**
+   * LajiForm doesn't add default values for nested properties if the
+   * container has a value already, so we compute the defaults deeply here.
+   */
+  private fillFormDataWithDefaults(formData: any, schema: any) {
+    if (formData === undefined && schema.hasOwnProperty('default')) {
+      formData = schema.default;
+    }
+    if (formData && schema.properties) {
+      return Object.keys(schema.properties).reduce((_formData, key) => ({
+        ..._formData,
+        [key]: this.fillFormDataWithDefaults(formData[key], schema.properties[key])
+      }), formData);
+    }
+    if (formData && schema.items) {
+      return formData.map(item => this.fillFormDataWithDefaults(item, schema.items));
+    }
+    return formData;
   }
 }

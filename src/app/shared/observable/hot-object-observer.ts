@@ -1,5 +1,5 @@
 import { combineLatest, Observable, ObservableInput } from 'rxjs';
-import { map, share } from 'rxjs/operators';
+import { debounceTime, map, shareReplay } from 'rxjs/operators';
 
 export function hotObjectObserver<T>(obj: { [K in keyof T]: ObservableInput<T[K]> }): Observable<T> {
   const keys = Object.keys(obj);
@@ -13,6 +13,7 @@ export function hotObjectObserver<T>(obj: { [K in keyof T]: ObservableInput<T[K]
 
       return result;
     }),
-    share()
+    debounceTime(1),
+    shareReplay({bufferSize: 1, refCount: true})
   );
 }

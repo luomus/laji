@@ -8,6 +8,15 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import * as moment from 'moment';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
 
+interface IAggregated {
+  isNew: boolean;
+  isNewThisYear: boolean;
+  count: number;
+  individualCountSum: number;
+  oldestRecord: string;
+  newestRecord: string;
+}
+
 @Component({
   selector: 'laji-invasive',
   templateUrl: './invasive.component.html',
@@ -18,7 +27,7 @@ export class InvasiveComponent implements OnInit {
   static taxa;
 
   taxa: Observable<Taxonomy[]>;
-  aggr: {[key: string]: number} = {};
+  aggr: {[key: string]: IAggregated} = {};
   daysBack;
   invasiveQuery = {
     countryId: ['ML.206'],
