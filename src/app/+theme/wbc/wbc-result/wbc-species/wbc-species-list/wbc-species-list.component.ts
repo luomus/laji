@@ -29,6 +29,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   @Input() filterBy = '';
   @Output() rowSelect = new EventEmitter<string>();
 
+  @ViewChild('vernacularName', { static: true }) vernacularNameTpl: TemplateRef<any>;
   @ViewChild('scientificName', { static: true }) scientificNameTpl: TemplateRef<any>;
 
   loading = true;
@@ -54,7 +55,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
     this.defaultColumns = [
       {
         name: 'unit.linkings.taxon.speciesNameFinnish',
-        cellTemplate: 'link',
+        cellTemplate: this.vernacularNameTpl,
         label: 'result.unit.taxonVerbatim'
       },
       {
