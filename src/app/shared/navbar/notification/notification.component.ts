@@ -6,7 +6,7 @@ import { IdService } from '../../service/id.service';
 @Component({
   selector: '[laji-notification]',
   templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.css'],
+  styleUrls: ['./notification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationComponent implements OnInit {
