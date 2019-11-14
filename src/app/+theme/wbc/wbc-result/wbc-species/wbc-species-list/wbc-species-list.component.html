@@ -16,10 +16,25 @@
   [count]="rows?.length">
 </laji-datatable>
 
-<ng-template let-row="row" #scientificName>
-  <a *ngIf="row['unit.linkings.taxon.speciesScientificName']" title="{{row['unit.linkings.taxon.speciesScientificName']}}">
+<ng-template let-value="value" let-row="row" #vernacularName>
+  <a
+    *ngIf="value"
+    [routerLink]="['/theme/talvilintulaskenta/stats/species', row['unit.linkings.taxon.speciesId'] | toQName] | localize"
+    (click)="$event.stopPropagation()"
+    title="{{ value }}"
+  >
+    {{ value }}
+  </a>
+</ng-template>
+<ng-template let-value="value" let-row="row" #scientificName>
+  <a
+    *ngIf="value"
+    [routerLink]="['/theme/talvilintulaskenta/stats/species', row['unit.linkings.taxon.speciesId'] | toQName] | localize"
+    (click)="$event.stopPropagation()"
+    title="{{ value }}"
+  >
     <span class="cursive">
-    {{ row['unit.linkings.taxon.speciesScientificName'] }}
+    {{ value }}
     </span>
   </a>
 </ng-template>

@@ -12,7 +12,7 @@
 </ng-template>
 <ng-template #taxonCensus let-value="value">
   <laji-row [title]="'MY.taxonCensus' | label">
-    <ul class="comma-list">
+    <ul class="separated-list">
       <li *ngFor="let census of value" [tooltip]="census.taxonCensusType | label" [isDisabled]="hideTooltips">
         {{ census.censusTaxonID | taxon }}
       </li>

@@ -157,6 +157,17 @@
     {{ value }}
   </span>
 </ng-template>
+<ng-template let-row="row" #synonyms>
+  <ul class="semicolon separated-list">
+    <ng-container *ngFor="let field of synonymKeys">
+      <ng-container *ngIf="row[field]">
+        <ng-container *ngFor="let synonymTaxon of row[field]">
+          <li><laji-taxon-name [taxon]="synonymTaxon" [addAuthor]="true"></laji-taxon-name></li>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ul>
+</ng-template>
 <ng-template let-value="value" #boolean>
   <span *ngIf="value === true" title="{{'yes' | translate}}">
     {{ 'yes' | translate }}
