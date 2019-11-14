@@ -147,7 +147,7 @@ export interface Taxonomy {
 
   synonymOf?: Taxonomy;
 
-  synonymNames?: Array<string>;
+  synonymNames?: string;
 
   synonyms?: Array<Taxonomy>;
 
