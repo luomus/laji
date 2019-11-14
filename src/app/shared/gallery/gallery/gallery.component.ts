@@ -27,6 +27,7 @@ export class GalleryComponent implements OnChanges {
   @Input() showOverlay = true;
   @Input() showExtraInfo = true;
   @Input() showLinkToSpeciesCard = false;
+  @Input() shortcut: boolean;
   @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
   @Input() sort: string[];
   @Input() view: 'compact'|'annotation'|'full'|'full2' = 'compact';

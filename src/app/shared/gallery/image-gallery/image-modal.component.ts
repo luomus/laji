@@ -77,6 +77,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @Input() showPopover = false;
   @Input() showOverlay = true;
   @Input() showLinkToSpeciesCard = false;
+  @Input() shortcut: boolean;
   @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
@@ -168,9 +169,11 @@ export class ImageModalComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keydown', ['$event'])
   keyEvent(e: KeyboardEvent) {
-    e.stopPropagation();
+    e.preventDefault();
       if (e.keyCode === 73 && e.altKey) { // openImage
-        this.openImage(this.tmpImg['index']);
+        if (this.shortcut) {
+          this.openImage(this.tmpImg['index']);
+        }
       }
   }
 

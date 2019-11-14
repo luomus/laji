@@ -18,6 +18,7 @@ export class ImagesComponent implements OnChanges {
   @Input() showLinkToSpeciesCard = false;
   @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
   @Input() sort: string[];
+  @Input() shortcut = true;
   @Input() view: 'compact'|'annotation'|'full'|'full2' = 'annotation';
   @Input() views = ['compact', 'full'];
 

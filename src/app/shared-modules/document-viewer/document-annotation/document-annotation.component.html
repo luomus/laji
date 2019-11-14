@@ -109,7 +109,7 @@
         <div class="row container-col">
           <div class="col-sm-4 column-modal" *ngIf="document.gatherings && document.gatherings[0].units">
             <div class="title">{{ 'observation.active.hasMedia' | translate }}</div>
-            <laji-images [document]="document" [highlight]="highlight"></laji-images>
+            <laji-images [document]="document" [highlight]="highlight" [shortcut]="true"></laji-images>
           </div>
           <div class="col-sm-4 column-modal">
               <div class="title">{{ 'annotation.list' | translate }}</div>

@@ -14,6 +14,7 @@
         [views]="views"
         [modalImages]="unitImages"
         [eventOnClick]="eventOnImageClick"
+        [shortcut]="shortcut"
         (imageSelect)="selected.emit($event)"
       ></laji-image-gallery>
   
@@ -33,6 +34,7 @@
           [views]="views"
           [modalImages]="gatheringImages"
           [eventOnClick]="eventOnImageClick"
+          [shortcut]="shortcut"
           (imageSelect)="selected.emit($event)"
         ></laji-image-gallery>
         </div>
