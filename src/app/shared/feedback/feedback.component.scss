@@ -1,3 +1,5 @@
+@import "../../../styles/variables";
+
 .fixed-icon {
   position: fixed;
   bottom: 7px;
@@ -21,15 +23,6 @@
   margin-bottom: 10px;
 }
 
-
-@media only screen and (max-width : 1024px) {
-  .icon {
-    width: 30px;
-    height: 28px;
-  }
-
-  .icon .fa {
-    font-size: 1em;
-    line-height: 1.4em;
-  }
+.modal-footer lu-button {
+  margin-left: $sp-default;
 }

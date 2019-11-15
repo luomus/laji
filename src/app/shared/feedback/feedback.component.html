@@ -54,7 +54,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <a class="btn btn-danger" (click)="closeModal()">{{ 'feedback.cancel' | translate }}</a>
-    <a class="btn btn-success" (click)="sendFeedback()">{{ 'feedback.send' | translate }}</a>
+    <lu-button (click)="closeModal()">{{ 'feedback.cancel' | translate }}</lu-button>
+    <lu-button role="primary" (click)="sendFeedback()">{{ 'feedback.send' | translate }}</lu-button>
   </div>
 </ng-template>

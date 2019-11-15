@@ -11,7 +11,7 @@ import { LajiApi, LajiApiService } from '../service/laji-api.service';
 
 @Component({
   selector: 'laji-feedback',
-  styleUrls: ['./feedback.component.css'],
+  styleUrls: ['./feedback.component.scss'],
   templateUrl: './feedback.component.html'
 })
 export class FeedbackComponent {
