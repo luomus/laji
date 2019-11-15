@@ -17,6 +17,7 @@ import { LajiApi, LajiApiService } from '../service/laji-api.service';
 export class FeedbackComponent {
 
   @Input() iconOnly = false;
+  @Input() fixed = true;
 
   @SessionStorage() public feedback: IFeedback = {
     subject: '',

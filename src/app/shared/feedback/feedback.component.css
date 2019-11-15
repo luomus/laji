@@ -1,17 +1,8 @@
-.icon {
+.fixed-icon {
   position: fixed;
-  bottom: 13px;
+  bottom: 7px;
   z-index: 1060;
-  right: 5px;
-  border: 1px solid #4cae4c;
-  border-radius: 4px;
-  background-color: #5cb85c;
-  width: 28px;
-  height: 28px;
-  font-size: 17px;
-  font-weight: bold;
-  color: white;
-  text-align: center;
+  right: 10px;
 }
 
 .feedback-text {

@@ -1,8 +1,8 @@
-<a class="link icon no-print" (click)="openModal()" *ngIf="iconOnly; else label">
+<lu-button class="no-print" [class.fixed-icon]="fixed" (click)="openModal()" *ngIf="iconOnly; else label">
   <i class="fa fa-envelope-o" placement="left" [tooltip]="'feedback' | translate"
      container="body"
      [adaptivePosition]="false"></i>
-</a>
+</lu-button>
 <ng-template #label>
   <a class="link" (click)="openModal()">
     {{ 'feedback' | translate }}
