@@ -32,9 +32,7 @@ export class AppComponent {
   public hasAnalytics = true;
   public isEmbedded: boolean;
   public onFrontPage = false;
-  public onMapPage = false;
-  public onVihkoPage = false;
-  public hideFeedBack = false;
+  public displayFeedback = true;
   private currentRoute: string;
 
   constructor(
@@ -101,9 +99,9 @@ export class AppComponent {
             });
           });
 
-        // Hide feedback when data has hideFeedBack: true
-        this.getDeepest<boolean>(router.routerState.snapshot.root, 'hideFeedBack', false).subscribe(
-          (hide) => this.hideFeedBack = hide
+        // Hide feedback when data has displayFeedback: false
+        this.getDeepest<boolean>(router.routerState.snapshot.root, 'displayFeedback', true).subscribe(
+          (hide) => this.displayFeedback = hide
         );
 
         this.currentRoute = newRoute;
@@ -111,9 +109,8 @@ export class AppComponent {
         this.onFrontPage = router.isActive('/', true)
           || router.isActive('/en', true)
           || router.isActive('/sv', true);
-        this.onMapPage = router.isActive('/map', false);
-        this.onVihkoPage = router.isActive('/vihko', false);
       }
+
       // Use analytics
       if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
         try {

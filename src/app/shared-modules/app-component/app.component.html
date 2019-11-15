@@ -6,5 +6,5 @@
 </div>
 <laji-footer class="footer" [onFrontPage]="onFrontPage" *lajiForTypes="['dev', 'prod']"></laji-footer>
 <laji-iucn-footer class="footer" *lajiForTypes="['iucn']"></laji-iucn-footer>
-<laji-feedback *ngIf="!isEmbedded && !onMapPage && !onVihkoPage && !hideFeedBack" [iconOnly]="true"></laji-feedback>
+<laji-feedback *ngIf="!isEmbedded && displayFeedback" [iconOnly]="true"></laji-feedback>
 <laji-viewer-modal></laji-viewer-modal>
