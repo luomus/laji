@@ -65,6 +65,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   isNavigation = false;
   childEvent = false;
   childComunicationsubscription: Subscription;
+  showShortcuts = false;
   @SessionStorage() showFacts = false;
   private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
@@ -282,6 +283,10 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   closeDocument() {
     this.close.emit(true);
+  }
+
+  toggleShortcuts() {
+    this.showShortcuts = !this.showShortcuts;
   }
 
 

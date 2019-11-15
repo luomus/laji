@@ -24,7 +24,7 @@
       <ng-template #onlyImage>
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
              class="ng-thumb compact"
-             alt="Image {{ index + 1 }}" />
+             alt="Image {{ index + 1 }}" />    
       </ng-template>
     </div>
   </ng-container>
@@ -44,6 +44,7 @@
       </ng-container>
       <ng-template #onlyImage>
         <img class="main-annotation-image" src="{{ tmpImg.mainURL }}" (click)="openImage(tmpImg.index)">
+        <span class="hover-click alert-info" (click)="openImage(tmpImg.index)"></span>
       </ng-template>
     </div>
     <div *ngFor ="let img of modalImages; let index = index">

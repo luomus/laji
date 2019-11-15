@@ -16,6 +16,7 @@
   
   .container-col {
     display: flex;
+    min-height: 700px;
     @include media-query-tablet {
       justify-content: space-between;
       display: flex;
@@ -61,6 +62,44 @@
   .page-header h3 {
     margin-top: 0px;
     margin-bottom: 5px;
+    max-width: none;
+  }
+
+  .shortcuts {
+    width: 24px;
+    height: 24px;
+    background: url('../../../../static/images/icons/keyboard_24px.svg') center no-repeat;
+    float: right;
+    cursor: pointer;
+  }
+
+  .shortcut-content {
+    position: absolute;
+    width: 300px;
+    z-index: 9999;
+    background: white;
+    height: 95%;
+    padding: -15px;
+    -webkit-box-shadow: 10px 10px 11px -9px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 11px -9px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 11px -9px rgba(0,0,0,0.75);
+    border: 1px solid #e0e0e0;
+    -webkit-transition:  height 0.5s ease;
+    -moz-transition: height 0.5s ease;
+    -ms-transition: height 0.5s ease;
+    -o-transition: height 0.5s ease;
+    transition: height 0.5s ease;
+  }
+
+  .shortcut-item {
+    margin-bottom: 10px;
+  }
+
+  .shortcut-item .close {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 
   .arrow {

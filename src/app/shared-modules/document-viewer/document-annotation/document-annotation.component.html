@@ -1,4 +1,21 @@
 <ng-container *ngIf="hasDoc && document">
+    <div class="shortcut-content" *ngIf="showShortcuts">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="shortcut-item col-sm-12">
+              <h3>Shortcuts</h3>
+              <span class="close" (click)="toggleShortcuts()">x</span>
+            </div>
+             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>i</code> Open popup image</div>
+             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>c</code> Focus comment</div>
+             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>t</code> Focus taxon</div>
+             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>1</code> Add Convincing tag</div>
+             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>0</code> Add Erroneus tag</div>
+             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>r</code> Delete added tags</div>
+             <div class="shortcut-item col-sm-12"><code>ctrl</code> + <code>s</code> Save annotation</div>
+          </div>
+        </div>  
+    </div>
     <div class="row">
         <div class="col-sm-12">
           <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
@@ -24,88 +41,11 @@
                 [documentID]="document.documentId"
                 [formID]="document.formId"
               ></laji-edit-link>
+              <span class="shortcuts" (click)="toggleShortcuts()"></span>
             </h3>
           </div>
         </div> 
-    </div>  
-        <!--<div class="row">
-          <div class="col-sm-7">
-            <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
-              <h3 ngPreserveWhitespaces>
-                {{ 'viewer.document' | translate }}
-                <small>
-                  <a [routerLink]="['/view'] | localize" [queryParams]="{uri: document.documentId}" target="_blank">
-                    {{ document.documentId }}
-                  </a>
-                </small>
-                <a type="button"
-                   class="btn btn-sm btn-default"
-                   [routerLink]="['/view/print'] | localize"
-                   [queryParams]="(document.formId | toQName) === collectionContestFormId && own ? {id: (document.documentId | toQName), showFacts: showFacts} : {uri: document.documentId, own: own, showFacts: showFacts}"
-                   target="_blank"
-                   [tooltip]="'haseka.submissions.toPrint' | translate">
-                  {{ 'print' | translate }}
-                  <img src="/static/images/icons/pdf_16x16.png">
-                </a>
-                <laji-edit-link
-                  [editors]="editors"
-                  [personID]="personID"
-                  [documentID]="document.documentId"
-                  [formID]="document.formId"
-                ></laji-edit-link>
-              </h3>
-            </div>
-           
-           
-            <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>
-            
-          </div>
-          <div class="col-sm-5">
-            <div class="row">
-              <div class="col-sm-12 doc-meta" *ngIf="!hideHeader">
-                <ng-template #docMeta>
-                  <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName">
-                    {{ document.linkings.editors | values:', ':'fullName' }}
-                  </laji-row>
-                  <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-                  <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-                  <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-                </ng-template>
-                <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
-                   *ngIf="externalViewUrl"
-                   href="{{externalViewUrl}}" rel="noopener" target="_blank"
-                    [tooltip]="'information.more' | translate"
-                    placement="left">
-                  <i class="glyphicon glyphicon-new-window small"></i>
-                </a>
-                <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
-                        [popover]="docMeta"
-                        placement="left"
-                        triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
-                </button>
-                <button class="btn btn-default btn-xs pull-right"
-                        (click)="toggleFacts()">
-                  {{ showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate) }}
-                  <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
-                </button>
-              </div>
-            </div>
-            <div class="row" *ngIf="document.media">
-              <div class="col-sm-12">
-                <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
-              </div>
-            </div>
-          </div>
-        </div>-->
-        <!--<div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
-          <ul class="nav nav-tabs link">
-            <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
-              <a (click)="setActive(i)">
-               {{ i + 1 }}
-              </a>
-            </li>
-          </ul>
-        </div>-->
+    </div>
         <div class="row container-col">
           <div class="col-sm-4 column-modal" *ngIf="document.gatherings && document.gatherings[0].units">
             <div class="title">{{ 'observation.active.hasMedia' | translate }}</div>

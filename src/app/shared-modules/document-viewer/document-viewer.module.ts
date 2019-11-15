@@ -40,6 +40,7 @@ import { UnitAnnotationRowsComponent } from './unit-annotation-rows/unit-annotat
 import { UnitAnnotationListComponent } from './unit-annotation-list/unit-annotation-list.component';
 import { LicenseModule } from '../license/license.module';
 import { SampleComponent } from './sample/sample.component';
+import { InfoModule } from '../info/info.module';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { SampleComponent } from './sample/sample.component';
     LangModule,
     AnnotationsModule,
     LajiMapModule,
-    LicenseModule
+    LicenseModule,
+    InfoModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,

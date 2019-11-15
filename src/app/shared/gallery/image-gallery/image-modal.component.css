@@ -33,12 +33,12 @@
   display: inline-block;
 }
 .image-container {
-  cursor: hand;
-  cursor: pointer;
+  cursor: zoom-in;
 }
 
 .image-container.annotation {
   background-color: black;
+  position: relative;
 }
 
 .image-container .main-annotation-image {
@@ -47,6 +47,37 @@
   display: block;
   margin: 0 auto;
 }
+
+
+.hover-click {
+  position: absolute;
+	bottom: 10px;
+	z-index: -1;
+	display: block;
+  width: 30px;
+  height: 30px;
+	text-decoration: none;
+	text-align: center;
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+  opacity: 0;
+  position: absolute;
+  right: 10px;
+  font-weight: bold;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  background: url('../../../../static/images/icons/zoom-in.png') center no-repeat;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+.image-container:hover .hover-click {
+  bottom: 10px;
+  opacity: 1;
+  z-index: 10;
+}
+
 
 .full-container {
   width: 360px;
