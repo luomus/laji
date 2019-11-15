@@ -15,7 +15,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { interval as ObservableInterval, of as ObservableOf, Subscription } from 'rxjs';
+import { interval as ObservableInterval, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
 import { DialogService } from '../service/dialog.service';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
@@ -77,10 +77,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.notificationsNotSeen = state.unseenCount;
       this.changeDetector.markForCheck();
     });
-    ObservableInterval(60000).pipe(
-      startWith(0),
-      delay(1000)
-    ).subscribe(() => {
+    timer(1000, 60000).subscribe(() => {
       this.notificationsFacade.loadAll(0, this.notificationPageSize);
     });
   }
