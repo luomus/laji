@@ -77,9 +77,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.notificationsNotSeen = state.unseenCount;
       this.changeDetector.markForCheck();
     });
-    timer(1000, 60000).subscribe(() => {
-      this.notificationsFacade.loadAll(0, this.notificationPageSize);
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      timer(1000, 60000).subscribe(() => {
+        this.notificationsFacade.loadAll(0, this.notificationPageSize);
+      });
+    }
   }
 
   nextNotificationPage() {
