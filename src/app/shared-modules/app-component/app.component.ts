@@ -34,6 +34,7 @@ export class AppComponent {
   public onFrontPage = false;
   public onMapPage = false;
   public onVihkoPage = false;
+  public hideFeedBack = false;
   private currentRoute: string;
 
   constructor(
@@ -99,6 +100,12 @@ export class AppComponent {
               }
             });
           });
+
+        // Hide feedback when data has hideFeedBack: true
+        this.getDeepest<boolean>(router.routerState.snapshot.root, 'hideFeedBack', false).subscribe(
+          (hide) => this.hideFeedBack = hide
+        );
+
         this.currentRoute = newRoute;
 
         this.onFrontPage = router.isActive('/', true)
