@@ -101,7 +101,7 @@ export class AppComponent {
 
         // Hide feedback when data has displayFeedback: false
         this.getDeepest<boolean>(router.routerState.snapshot.root, 'displayFeedback', true).subscribe(
-          (hide) => this.displayFeedback = hide
+          (displayFeedback) => this.displayFeedback = displayFeedback
         );
 
         this.currentRoute = newRoute;
