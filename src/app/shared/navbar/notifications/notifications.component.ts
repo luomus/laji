@@ -1,9 +1,10 @@
-import { Component, ChangeDetectionStrategy, OnDestroy, OnInit, Input, Output, ChangeDetectorRef, Renderer2, ElementRef, AfterViewInit, EventEmitter } from '@angular/core';
+import {
+  Component, ChangeDetectionStrategy, OnDestroy, OnInit, Input, Output,
+  ChangeDetectorRef, Renderer2, ElementRef, AfterViewInit, EventEmitter
+} from '@angular/core';
 import { PagedResult } from 'app/shared/model/PagedResult';
-import { Subject, of } from 'rxjs';
-import { UserService } from 'app/shared/service/user.service';
-import { LajiApiService, LajiApi } from 'app/shared/service/laji-api.service';
-import { takeUntil, filter, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { NotificationsFacade } from './notifications.facade';
 import { TranslateService } from '@ngx-translate/core';
 import { Notification } from '../../model/Notification';
@@ -17,7 +18,7 @@ import { DialogService } from 'app/shared/service/dialog.service';
 })
 export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() notifications: PagedResult<Notification>;
-  @Input() pageSize: number = 5;
+  @Input() pageSize = 5;
 
   @Output() close = new EventEmitter<void>();
 
