@@ -1,5 +1,5 @@
 <div class="position">
-  <ul class="comma-list">
+  <ul class="separated-list">
       <li *ngIf="gathering.country">{{ gathering.country }}</li>
       <li *ngIf="gathering.biogeographicalProvince">{{ gathering.biogeographicalProvince }}</li>
       <li *ngIf="gathering.municipality">{{ gathering.municipality }}</li>
@@ -15,7 +15,7 @@
       <!--<div *ngFor="let member of gathering.team">
             <span class="member">{{ member | truncate : 80 : true }}</span>
       </div>-->
-      <ul class="comma-list">
+      <ul class="separated-list">
             <li *ngFor="let member of gathering.team"><span class="member">{{ member }}</span></li>
       </ul>
 </div>
