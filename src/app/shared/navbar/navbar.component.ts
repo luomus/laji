@@ -18,7 +18,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { interval as ObservableInterval, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
 import { DialogService } from '../service/dialog.service';
-import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { PagedResult } from '../model/PagedResult';
 import { Notification } from '../model/Notification';
 import { isPlatformBrowser } from '@angular/common';
@@ -55,7 +54,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private changeDetector: ChangeDetectorRef,
     public translate: TranslateService,
-    private dialogService: DialogService,
     private notificationsFacade: NotificationsFacade
   ) {
     this.isProd = environment.production;
@@ -77,29 +75,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.notificationsNotSeen = state.unseenCount;
       this.changeDetector.markForCheck();
     });
-    if (isPlatformBrowser(this.platformId)) {
-      timer(1000, 60000).subscribe(() => {
-        this.notificationsFacade.loadAll(0, this.notificationPageSize);
-      });
-    }
+    timer(1000, 60000).subscribe(() => {
+      this.notificationsFacade.loadAll(0, this.notificationPageSize);
+    });
   }
 
-  nextNotificationPage() {
-    this.gotoNotificationPage(this.notifications.currentPage + 1);
-  }
-
-  prevNotificationPage() {
-    this.gotoNotificationPage(this.notifications.currentPage - 1);
-  }
-
-  private gotoNotificationPage(page) {
-    if (this.notifications.currentPage !== page) {
-      this.notificationsFacade.loadNotifications(page, this.notificationPageSize);
-    }
-    this.dropDown.autoClose = false;
-    setTimeout(() => {
-      this.dropDown.autoClose = true;
-    }, 100);
+  onClose() {
+    this.dropDown.hide();
   }
 
   ngOnDestroy() {
@@ -135,25 +117,4 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.router.navigate(this.localizeRouterService.translateRoute(['/forum']), {skipLocationChange: true});
   }
 
-  trackNotification(idx, notification) {
-    return notification ? notification.id : undefined;
-  }
-
-  markAsSeen(notification: Notification) {
-    this.notificationsFacade.markAsSeen(notification).subscribe(() => this.changeDetector.markForCheck());
-  }
-
-  removeNotification(notification: Notification) {
-    this.translate.get('notification.delete').pipe(
-      switchMap(msg => notification.seen ? ObservableOf(true) : this.dialogService.confirm(msg))
-    ).subscribe(result => {
-      this.dropDown.autoClose = false;
-      setTimeout(() => {
-        this.dropDown.autoClose = true;
-      }, 100);
-      if (result && notification.id) {
-        this.notificationsFacade.remove(notification).subscribe(() => this.changeDetector.markForCheck());
-      }
-    });
-  }
 }

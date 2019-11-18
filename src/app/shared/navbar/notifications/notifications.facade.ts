@@ -128,8 +128,8 @@ export class NotificationsFacade {
   markAsSeen(notification: Notification): Observable<void> {
     const subject = new Subject<void>();
     if (notification.seen) {
-      subject.error('Notification already seen.');
-      return subject;
+      subject.complete();
+      return subject.asObservable();
     }
     notification.seen = true;
     this.lajiApi

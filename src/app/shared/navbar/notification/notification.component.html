@@ -1,14 +1,16 @@
-<a class="notification" [class.unseen]="!notification.seen"
-   (click)="notificationSeen.emit(notification)"
-   [class.seen]="notification.seen"
-   [routerLink]="[targetPath] | localize"
-   [queryParams]="targetQuery">
-  <small>{{ notification.created | amTimeAgo }}</small><br>
-  <ng-container [ngSwitch]="type">
-    <small *ngSwitchCase="'annotation'" [innerHtml]="'notification.annotation' | translate: {uri: target, person: (by | users:'fullName')}"></small>
-    <small *ngSwitchCase="'annotationCommented'" [innerHtml]="'notification.annotationCommented' | translate: {uri: target, person: (by | users:'fullName')}"></small>
-    <small *ngSwitchCase="'friendRequest'" [innerHtml]="'notification.friendRequest' | translate: {uri: target, person: (by | users:'fullName')}"></small>
-    <small *ngSwitchCase="'friendRequestAccepted'" [innerHtml]="'notification.friendRequestAccepted' | translate: {uri: target, person: (by | users:'fullName')}"></small>
-  </ng-container>
-</a>
-<button type="button" class="delete" (click)="onRemove(notification)"><i class="glyphicon glyphicon-remove"></i></button>
+<div class="notification-container">
+  <a class="notification" [class.unseen]="!notification.seen"
+    (click)="notificationSeen.emit(notification)"
+    [class.seen]="notification.seen"
+    [routerLink]="[targetPath] | localize"
+    [queryParams]="targetQuery">
+    <small>{{ notification.created | amTimeAgo }}</small><br>
+    <ng-container [ngSwitch]="type">
+      <small *ngSwitchCase="'annotation'" [innerHtml]="'notification.annotation' | translate: {uri: target, person: (by | users:'fullName')}"></small>
+      <small *ngSwitchCase="'annotationCommented'" [innerHtml]="'notification.annotationCommented' | translate: {uri: target, person: (by | users:'fullName')}"></small>
+      <small *ngSwitchCase="'friendRequest'" [innerHtml]="'notification.friendRequest' | translate: {uri: target, person: (by | users:'fullName')}"></small>
+      <small *ngSwitchCase="'friendRequestAccepted'" [innerHtml]="'notification.friendRequestAccepted' | translate: {uri: target, person: (by | users:'fullName')}"></small>
+    </ng-container>
+  </a>
+  <button type="button" class="delete" (click)="onRemove(notification)"><i class="glyphicon glyphicon-remove"></i></button>
+</div>
