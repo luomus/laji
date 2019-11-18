@@ -2,24 +2,24 @@
   <div id="filter-row-container" class="row">
     <div class="col-sm-12">
       <div id="download-button-container" *ngIf="showDownloadAll">
-        <button type="button" class="btn btn-default inline-block" (click)="openChooseFileTypeModal()">
+        <lu-button (click)="openChooseFileTypeModal()">
           <span><i class="glyphicon glyphicon-download-alt"></i> {{ "haseka.submissions.download" | translate }} {{ "haseka.submissions.submissions" | translate }}</span>
-        </button>
+        </lu-button>
       </div>
 
       <div class="print-actions" *ngIf="showPrintLabels">
-        <button *ngIf="printState === 'none'" type="button" class="btn btn-default inline-block" (click)="doLabels()">
+        <lu-button *ngIf="printState === 'none'" (click)="doLabels()">
           <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.select.label' | translate }}</span>
-        </button>
+        </lu-button>
         <ng-container *ngIf="printState === 'select'">
           <div class="btn-group">
             <laji-spinner [spinning]="labelLoading" [overlay]="true"></laji-spinner>
-            <button type="button" class="btn btn-success" (click)="doLabels()" [disabled]="!selected || selected.length === 0 || labelLoading">
+            <lu-button (click)="doLabels()" [disabled]="!selected || selected.length === 0 || labelLoading">
               <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
-            </button>
-            <button type="button" class="btn btn-default" (click)="cancelLabels()">
+            </lu-button>
+            <lu-button (click)="cancelLabels()">
               <span><i class="glyphicon glyphicon-remove"></i></span>
-            </button>
+            </lu-button>
           </div>
         </ng-container>
       </div>

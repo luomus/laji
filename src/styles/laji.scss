@@ -39,6 +39,10 @@ p, li, h1, h2, h3, h4, h5, h6, blockquote, caption {
   max-width: 1600px;
 }
 
+.fill-space {
+  flex-grow: 1;
+}
+
 @media (min-width: 1650px) {
     .container {
       width: 1600px;

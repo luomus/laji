@@ -12,6 +12,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { IucnFooterComponent } from '../../shared/iucn-footer/footer.component';
 import { LangModule } from '../lang/lang.module';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
+import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DocumentViewerModule } from '../document-viewer/document-viewer.module'
     LangModule,
     CommonModule,
     SharedModule,
-    DocumentViewerModule
+    DocumentViewerModule,
+    LajiUiModule
   ],
   exports: [
     NavbarComponent,
