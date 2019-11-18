@@ -38,7 +38,8 @@ export class TaxonomyColumns {
     {
       name: 'synonymNames',
       label: 'taxonomy.synonyms',
-      cellTemplate: 'cursive',
+      selectField: '*.scientificName,*.scientificNameAuthorship,*.cursiveName',
+      cellTemplate: 'synonyms',
       width: 200
     },
     {

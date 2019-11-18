@@ -63,19 +63,20 @@ import { TruncatePipe } from './pipe/truncate.pipe';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AfterIfDirective } from './directive/after-if.directive';
 import { FilterValuePipe } from './pipe/filter-value.pipe';
+import { NotificationsComponent } from './navbar/notifications/notifications.component';
 
 
 @NgModule({
   entryComponents: [ImageModalOverlayComponent],
   declarations: [
-    NewsListComponent, LocalizePipe, NotificationComponent,
+    NewsListComponent, LocalizePipe, NotificationComponent, NotificationsComponent,
     ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
     AreaNamePipe, TaxonNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, GalleryComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, NlToBrPipe,
-    NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
+    HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
     ObservationGroupSelectComponent, IucnGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
     TaxonNameComponent, NotFoundComponent,
@@ -110,7 +111,7 @@ import { FilterValuePipe } from './pipe/filter-value.pipe';
   ],
   providers: [ ], // keep this empty!
   exports: [
-    CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
+    CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent, NotificationsComponent,
     AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
     ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,

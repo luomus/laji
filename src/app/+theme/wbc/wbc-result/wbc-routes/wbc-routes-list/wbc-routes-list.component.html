@@ -18,3 +18,14 @@
   [columns]="columns"
   [count]="rows?.length">
 </laji-datatable>
+
+<ng-template let-value="value" let-row="row" #routeLink>
+  <a
+    *ngIf="value"
+    [routerLink]="['/theme/talvilintulaskenta/stats/routes', row['document.namedPlace.id'] | toQName] | localize"
+    (click)="$event.stopPropagation()"
+    title="{{ value }}"
+  >
+    {{ value }}
+  </a>
+</ng-template>

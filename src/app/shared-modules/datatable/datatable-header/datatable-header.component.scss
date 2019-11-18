@@ -1,5 +1,8 @@
+@import "vars";
+
 .menu-row {
-  height: 37px;
+  font-size: $fs-1;
+  height: 40px;
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;

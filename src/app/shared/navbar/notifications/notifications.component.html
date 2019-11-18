@@ -1,0 +1,27 @@
+<li class="dropdown-header">
+  {{ 'notification.title' | translate }}:
+  <span *ngIf="notifications?.lastPage > 1">
+    ({{ notifications?.currentPage }} / {{ notifications?.lastPage }})
+  </span>
+</li>
+<li role="menuitem"
+    class="notifications"
+    *ngFor="let notification of notifications?.results; trackBy: trackNotification"
+    laji-notification
+    (notificationSeen)="markAsSeen($event)"
+    (removeNotification)="removeNotification($event)"
+    [notification]="notification"></li>
+<li *ngIf="notifications && notifications?.lastPage > 1">
+  <div class="btn-group notification-pager" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-default"
+            [disabled]="notifications.currentPage <= 1"
+            (click)="prevNotificationPage()">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+    </button>
+    <button type="button" class="btn btn-default"
+            [disabled]="notifications.currentPage >= notifications.lastPage"
+            (click)="nextNotificationPage()">
+      <i class="glyphicon glyphicon-chevron-right"></i>
+    </button>
+  </div>
+</li>

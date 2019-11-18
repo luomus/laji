@@ -23,7 +23,7 @@ export class UsersPipe implements PipeTransform {
               private _ref: ChangeDetectorRef) {
   }
 
-  transform(value: string, format: keyof Person | 'fullNameWithGroup'): any {
+  transform(value: string, format?: keyof Person | 'fullNameWithGroup'): any {
     if (!value || value.length === 0) {
       return value;
     }

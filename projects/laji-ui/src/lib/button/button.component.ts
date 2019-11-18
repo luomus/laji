@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, HostBinding, HostListener } from '@angular/core';
 import { trigger, style, transition, animate, keyframes } from '@angular/animations';
 
 interface IButtonStyle {
@@ -67,6 +67,11 @@ export class ButtonComponent {
 
   clickedStyles = clickedStyles[this._role];
   clicked: 'unclicked' | 'clicked' = 'unclicked';
+
+  @HostListener('click', ['$event'])
+  onHostClick(event) {
+    event.stopImmediatePropagation();
+  }
 
   onClick(event: MouseEvent) {
     event.stopImmediatePropagation();

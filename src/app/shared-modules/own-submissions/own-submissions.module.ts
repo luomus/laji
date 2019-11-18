@@ -8,6 +8,7 @@ import { FilterColumnsPipe } from './own-datatable/filter-columns.pipe';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
+import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { DocumentViewerModule } from '../document-viewer/document-viewer.module'
     RouterModule,
     SharedModule,
     NgxDatatableModule,
-    DocumentViewerModule
+    DocumentViewerModule,
+    LajiUiModule
   ],
   declarations: [
     OwnSubmissionsComponent,

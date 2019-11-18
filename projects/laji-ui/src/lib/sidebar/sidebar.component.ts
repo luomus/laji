@@ -1,6 +1,10 @@
-import { Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID
+} from '@angular/core';
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
+import { fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 const mobileBreakpoint = 768;
 
@@ -89,12 +93,18 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.checkScreenWidth();
-    this.destroyResizeListener = this.renderer.listen(window, 'resize', this.checkScreenWidth.bind(this));
+    fromEvent(window, 'resize').pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe(this.checkScreenWidth.bind(this));
     this.ogWidth = this.sidebarRef.nativeElement.offsetWidth;
     this.checkCloseOnClickListener();
   }
 
-  checkScreenWidth() {
+  checkScreenWidth(event?) {
+    if (event && event['ignore-sidebar']) {
+      return;
+    }
     const isMobile = window.innerWidth < mobileBreakpoint;
     if (isMobile) {
       this.sidebarMinWidth = 0;
@@ -120,6 +130,18 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   onSwitchOpen() {
     this.open = !this.open;
     this.cdr.detectChanges();
+  }
+
+  onResizeAnimationComplete() {
+    try {
+      const event = new Event('resize');
+      event['ignore-sidebar'] = true;
+      window.dispatchEvent(event);
+    } catch (e) {
+      const evt = window.document.createEvent('UIEvents');
+      evt.initUIEvent('resize', true, false, window, 0);
+      window.dispatchEvent(evt);
+    }
   }
 
   onDragStart(mousedown) {

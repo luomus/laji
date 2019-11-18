@@ -1,0 +1,44 @@
+/* tslint:disable */
+import { DwSingle_UnitQuality } from './dw-single-_unit-quality';
+import { DwSingle_UnitDWLinkings } from './dw-single-_unit-dwlinkings';
+import { DwSingle_UnitInterpretations } from './dw-single-_unit-interpretations';
+import { DwSingle_Annotation } from './dw-single-_annotation';
+import { DwSingle_Fact } from './dw-single-_fact';
+import { DwSingle_MediaObject } from './dw-single-_media-object';
+import { DwSingle_Sample } from './dw-single-_sample';
+export interface DwSingle_Unit {
+  breedingSite?: boolean;
+  unitId?: string;
+  taxonVerbatim?: string;
+  quality?: DwSingle_UnitQuality;
+  reportedTaxonConfidence?: 'SURE' | 'UNSURE' | 'SUBSPECIES_UNSURE';
+  linkings?: DwSingle_UnitDWLinkings;
+  referencePublication?: string;
+  abundanceString?: string;
+  interpretations?: DwSingle_UnitInterpretations;
+  superRecordBasis?: 'PRESERVED_SPECIMEN' | 'LIVING_SPECIMEN' | 'FOSSIL_SPECIMEN' | 'SUBFOSSIL_SPECIMEN' | 'MICROBIAL_SPECIMEN' | 'HUMAN_OBSERVATION_UNSPECIFIED' | 'HUMAN_OBSERVATION_SEEN' | 'HUMAN_OBSERVATION_HEARD' | 'HUMAN_OBSERVATION_PHOTO' | 'HUMAN_OBSERVATION_INDIRECT' | 'HUMAN_OBSERVATION_HANDLED' | 'HUMAN_OBSERVATION_VIDEO' | 'HUMAN_OBSERVATION_RECORDED_AUDIO' | 'MACHINE_OBSERVATION_UNSPECIFIED' | 'MACHINE_OBSERVATION_VIDEO' | 'MACHINE_OBSERVATION_AUDIO' | 'MACHINE_OBSERVATION_GEOLOGGER' | 'MACHINE_OBSERVATION_SATELLITE_TRANSMITTER' | 'LITERATURE';
+  recordBasis?: 'PRESERVED_SPECIMEN' | 'LIVING_SPECIMEN' | 'FOSSIL_SPECIMEN' | 'SUBFOSSIL_SPECIMEN' | 'MICROBIAL_SPECIMEN' | 'HUMAN_OBSERVATION_UNSPECIFIED' | 'HUMAN_OBSERVATION_SEEN' | 'HUMAN_OBSERVATION_HEARD' | 'HUMAN_OBSERVATION_PHOTO' | 'HUMAN_OBSERVATION_INDIRECT' | 'HUMAN_OBSERVATION_HANDLED' | 'HUMAN_OBSERVATION_VIDEO' | 'HUMAN_OBSERVATION_RECORDED_AUDIO' | 'MACHINE_OBSERVATION_UNSPECIFIED' | 'MACHINE_OBSERVATION_VIDEO' | 'MACHINE_OBSERVATION_AUDIO' | 'MACHINE_OBSERVATION_GEOLOGGER' | 'MACHINE_OBSERVATION_SATELLITE_TRANSMITTER' | 'LITERATURE';
+  typeSpecimen?: boolean;
+  det?: string;
+  sex?: 'MALE' | 'FEMALE' | 'WORKER' | 'UNKNOWN' | 'NOT_APPLICABLE' | 'GYNANDROMORPH' | 'MULTIPLE' | 'CONFLICTING';
+  lifeStage?: 'ADULT' | 'JUVENILE' | 'IMMATURE' | 'EGG' | 'TADPOLE' | 'PUPA' | 'NYMPH' | 'SUBIMAGO' | 'LARVA' | 'SNAG' | 'EMBRYO' | 'SUBADULT' | 'MATURE' | 'STERILE' | 'FERTILE' | 'SPROUT' | 'DEAD_SPROUT' | 'BUD' | 'FLOWER' | 'WITHERED_FLOWER' | 'SEED' | 'RIPENING_FRUIT' | 'RIPE_FRUIT' | 'SUBTERRANEAN';
+  wild?: boolean;
+  keywords?: Array<string>;
+  unitOrder?: number;
+  individualId?: string;
+  invasiveControlEffectiveness?: 'FULL' | 'PARTIAL' | 'NO_EFFECT' | 'NOT_FOUND';
+  notes?: string;
+  annotationCount?: number;
+  annotations?: Array<DwSingle_Annotation>;
+  author?: string;
+  facts?: Array<DwSingle_Fact>;
+  individualCountFemale?: number;
+  individualCountMale?: number;
+  invasiveControlled?: boolean;
+  media?: Array<DwSingle_MediaObject>;
+  mediaCount?: number;
+  reportedInformalTaxonGroup?: string;
+  reportedTaxonId?: string;
+  sampleCount?: number;
+  samples?: Array<DwSingle_Sample>;
+}

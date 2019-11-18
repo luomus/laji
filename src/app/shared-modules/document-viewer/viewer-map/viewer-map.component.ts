@@ -15,6 +15,13 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     geoJSON: any;
     wgs84: any;
     ykj: any;
+    sourceOfCoordinates: any;
+    coordinateAccuracy: any;
+    wgs84CenterPoint: any;
+    ykj1km: any;
+    ykj1kmCenter: any;
+    ykj10km: any;
+    ykj10kmCenter: any;
   }[];
   @Input() height = 300;
   @Input() visible = true;

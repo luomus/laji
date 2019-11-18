@@ -37,7 +37,10 @@ const routes: Routes = [
   }},
   {path: 'collection', loadChildren: () => import('./+collection/collection.module').then(m => m.CollectionModule)},
   {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule)},
-  {path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {title: 'navigation.map'}},
+  {
+    path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
+    data: {title: 'navigation.map', displayFeedback: false }
+  },
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
   {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule)},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},

@@ -63,7 +63,6 @@ $mobileBreakpoint: 768px;
   }
 }
 
-
 .open-btn {
   position: absolute;
   top: 15px;
@@ -72,6 +71,11 @@ $mobileBreakpoint: 768px;
 }
 .open-btn-mobile {
   cursor: pointer;
+}
+
+:host lu-button.open-btn-mobile ::ng-deep button {
+  display: flex;
+  padding: 10px 10px;
 }
 
 .menu-svg {
