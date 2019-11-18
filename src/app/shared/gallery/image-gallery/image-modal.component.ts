@@ -169,9 +169,9 @@ export class ImageModalComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keydown', ['$event'])
   keyEvent(e: KeyboardEvent) {
-    e.preventDefault();
       if (e.keyCode === 73 && e.altKey) { // openImage
         if (this.shortcut) {
+          e.preventDefault();
           this.openImage(this.tmpImg['index']);
         }
       }

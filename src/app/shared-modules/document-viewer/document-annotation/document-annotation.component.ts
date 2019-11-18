@@ -273,6 +273,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.document = this.result[this.indexPagination].document;
     this.uri = this.result[this.indexPagination].document.documentId;
     this.highlight = this.result[this.indexPagination].unit.unitId;
+    this.showShortcuts = false;
     this.cd.markForCheck();
     this.updateDocument();
   }
@@ -284,6 +285,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.document = this.result[this.indexPagination].document;
       this.uri = this.result[this.indexPagination].document.documentId;
       this.highlight = this.result[this.indexPagination].unit.unitId;
+      this.showShortcuts = false;
       this.cd.markForCheck();
       this.updateDocument();
 
