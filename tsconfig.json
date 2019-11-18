@@ -27,6 +27,12 @@
       ],
       "laji-ui/*": [
         "dist/laji-ui/*"
+      ],
+      "laji-api-client": [
+        "dist/laji-api-client"
+      ],
+      "laji-api-client/*": [
+        "dist/laji-api-client/*"
       ]
     },
     "typeRoots": [

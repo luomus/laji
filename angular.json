@@ -700,6 +700,41 @@
           }
         }
       }
+    },
+    "laji-api-client": {
+      "projectType": "library",
+      "root": "projects/laji-api-client",
+      "sourceRoot": "projects/laji-api-client/src",
+      "prefix": "la",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/laji-api-client/tsconfig.lib.json",
+            "project": "projects/laji-api-client/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/laji-api-client/src/test.ts",
+            "tsConfig": "projects/laji-api-client/tsconfig.spec.json",
+            "karmaConfig": "projects/laji-api-client/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/laji-api-client/tsconfig.lib.json",
+              "projects/laji-api-client/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "laji",

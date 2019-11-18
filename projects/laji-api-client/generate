@@ -1,0 +1,18 @@
+#!/bin/bash
+
+rm -rf generated/*
+rm -rf swagger*
+
+wget https://api.laji.fi/explorer/swagger.json -O swagger.json
+
+cat swagger.json \
+ | sed 's|"$ref":"#/definitions/positiveInteger"|"type":\ "integer"|g' \
+ | sed 's/Point2D/Point2d/g' \
+ | sed 's/definitions\/Geometry/definitions\/geometry/g' \
+> swagger-fixed.json
+
+node_modules/.bin/ng-swagger-gen -i swagger-fixed.json -o generated/
+
+find generated/models -type f -exec sed -i '' "s/dc:bibliographicCitation/'dc:bibliographicCitation'/g" {} +
+find generated/models -type f -exec sed -i '' "s/@type/'@type'/g" {} +
+find generated/models -type f -exec sed -i '' "s/@context/'@context'/g" {} +
