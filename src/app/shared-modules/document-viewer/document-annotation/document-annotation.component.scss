@@ -66,11 +66,31 @@
   }
 
   .shortcuts {
+    position: relative;
     width: 24px;
     height: 24px;
     background: url('../../../../static/images/icons/keyboard_24px.svg') center no-repeat;
     float: right;
     cursor: pointer;
+  }
+
+  .shortcuts:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 90%;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid rgba(0, 0, 0, .54);
+    clear: both;
+    margin-left: -5px;
+  }
+
+  .shortcuts.up:after {
+    border-bottom: 5px solid rgba(0, 0, 0, .54);
+    border-top: 0;
   }
 
   .shortcut-content {
@@ -79,7 +99,6 @@
     z-index: 9999;
     background: white;
     height: 95%;
-    padding: -15px;
     -webkit-box-shadow: 10px 10px 11px -9px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 11px -9px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 11px -9px rgba(0,0,0,0.75);

@@ -20,6 +20,11 @@ p, li, h1, h2, h3, h4, h5, h6, blockquote, caption {
   max-width: 800px;
 }
 
+code {
+  color: #217dbb;
+  background-color: #d9edf7;
+}
+
 #lajiApp {
   height: 100%;
   display: flex;

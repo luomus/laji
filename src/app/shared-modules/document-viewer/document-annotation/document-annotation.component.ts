@@ -16,6 +16,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { interval as ObservableInterval, Subscription, throwError as observableThrowError, Observable } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
@@ -29,7 +30,18 @@ import { DocumentViewerChildComunicationService } from '../../../shared-modules/
 @Component({
   selector: 'laji-document-annotation',
   templateUrl: './document-annotation.component.html',
-  styleUrls: ['./document-annotation.component.scss']
+  styleUrls: ['./document-annotation.component.scss'],
+  animations: [
+    trigger('shortcutsInOut', [
+        transition('void => *', [
+           style({opacity: 0, transform: 'translateX(-30px)'}),
+            animate(400, style({transform: 'translateX(0px)', opacity: 1 }))
+        ]),
+        transition('* => void', [
+            animate(400, style({opacity: 0, transform: 'translateX(-30px)'}))
+        ])
+    ])
+  ]
 })
 export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
@@ -297,10 +309,15 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
           this.previous();
         }
       }
+
       if (e.keyCode === 39 && !this.childEvent) { // right
         if (this.result && this.indexPagination < this.result.length - 1) {
           this.next();
         }
+      }
+
+      if (e.keyCode === 187 && e.altKey) { // alt + ? --> open shortcuts div
+        this.toggleShortcuts();
       }
 
     if (e.keyCode === 27 && !this.childEvent) {

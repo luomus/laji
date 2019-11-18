@@ -1,18 +1,22 @@
 <ng-container *ngIf="hasDoc && document">
-    <div class="shortcut-content" *ngIf="showShortcuts">
+    <div class="shortcut-content" *ngIf="showShortcuts" [@shortcutsInOut]>
         <div class="row">
           <div class="col-sm-12">
             <div class="shortcut-item col-sm-12">
               <h3>Shortcuts</h3>
               <span class="close" (click)="toggleShortcuts()">x</span>
             </div>
-             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>i</code> Open popup image</div>
-             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>c</code> Focus comment</div>
-             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>t</code> Focus taxon</div>
-             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>1</code> Add Convincing tag</div>
-             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>0</code> Add Erroneus tag</div>
-             <div class="shortcut-item col-sm-12"><code>alt</code> + <code>r</code> Delete added tags</div>
-             <div class="shortcut-item col-sm-12"><code>ctrl</code> + <code>s</code> Save annotation</div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>Esc</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.closePopup' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>i</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.openImage' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>←</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.previousImage' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>→</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.nextImage' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>c</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.focusComment' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>t</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.focusTaxon' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>1</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.addConvincing' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>0</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.addErroneus' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>r</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.deleteAddedTags' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>ctrl</code> + <code>s</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.saveAnnotation' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>?</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.showShortcuts' | translate }}</div></div>
           </div>
         </div>  
     </div>
@@ -41,7 +45,7 @@
                 [documentID]="document.documentId"
                 [formID]="document.formId"
               ></laji-edit-link>
-              <span class="shortcuts" (click)="toggleShortcuts()"></span>
+              <span class="shortcuts" [ngClass]="{'down': !showShortcuts, 'up': showShortcuts }" (click)="toggleShortcuts()"></span>
             </h3>
           </div>
         </div> 
