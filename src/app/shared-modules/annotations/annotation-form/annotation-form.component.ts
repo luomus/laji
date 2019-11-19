@@ -30,6 +30,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   isEditor: boolean;
   sending = false;
   needsAck: boolean;
+  typeaheadLoading = false;
   annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
   types = Annotation.TypeEnum;
   ownerTypes = [
