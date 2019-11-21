@@ -1,6 +1,5 @@
-import { delay, filter, map, startWith, switchMap, take, tap, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import {
-  ApplicationRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -15,7 +14,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { interval as ObservableInterval, of as ObservableOf, Subscription, timer, Subject } from 'rxjs';
+import { timer, Subject } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
 import { DialogService } from '../service/dialog.service';
 import { PagedResult } from '../model/PagedResult';
@@ -73,8 +72,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.notificationsNotSeen = state.unseenCount;
       this.changeDetector.markForCheck();
     });
-    timer(1000, 60000).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+    this.userService.isLoggedIn$.pipe(
+      filter(res => !!res),
+      switchMap(() => timer(1000, 60000)),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(() => {
       this.notificationsFacade.loadAll(0, this.notificationPageSize);
+      this.changeDetector.markForCheck();
     });
   }
 
