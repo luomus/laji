@@ -44,6 +44,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   sending = false;
   infoModal = true;
   needsAck: boolean;
+  typeaheadLoading = false;
   annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
   tagsAdd: Array<AnnotationTag>;
   tagsRemove: Array<AnnotationTag>;
