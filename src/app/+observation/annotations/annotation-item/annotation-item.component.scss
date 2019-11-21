@@ -31,20 +31,23 @@ div {
                 -webkit-border-radius: 6px;
                 -moz-border-radius: 6px;
                 font-size: 12px;
-                font-weight: bold;
+                /*font-weight: bold;*/
                 display: inline-block;
-                border: 1px solid;
+                /*border: 1px solid;*/
                 &.positive {
-                  color: #008400;
+                  /*color: #008400;*/
+                  background: #dff7df;
                 }
                 &.annotation-marker.neutral{
                   color: #000;
                 }
                 &.annotation-marker.check {
-                  color: #E16200;
+                  /*color: #E16200;*/
+                  background: #ffe8c5;
                 } 
                 &.annotation-marker.negative {
-                  color: #FF0000;
+                  /*color: #FF0000;*/
+                  background: #ffc1b7;
                 }
             }    
         }
