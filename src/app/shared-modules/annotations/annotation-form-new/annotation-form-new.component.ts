@@ -64,6 +64,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   annotationRemovableTags$: Observable<AnnotationTag[]>;
   annotationAddadableTags: Subscription;
   alertNotSpamVerified: boolean;
+  typeaheadLoading = false;
   types = Annotation.TypeEnum;
   selectedOptions: string[] = [];
   deletedOptions: string[] = [];

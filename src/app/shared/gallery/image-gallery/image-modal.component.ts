@@ -86,7 +86,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   private _isShown = false;
   mainURL: string;
   index: number;
-  tmpImg: Object;
+  tmpImg: any;
 
 
   constructor(_viewContainerRef: ViewContainerRef,

@@ -106,7 +106,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     this.initAnnotationTags();
   }
 
-  onChangeSelectBox(event: any, option, index) {
+  onChangeSelectBox(event: any, option) {
     const value: string = event.target.value;
     if (value === '') {
       return;

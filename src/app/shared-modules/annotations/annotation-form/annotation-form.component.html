@@ -33,7 +33,7 @@
           <div class="col-lg-6 col-md-12 col-sm-12">
             <label>{{ 'annotation.addTags' | translate }}</label> 
             <select name="addTags" class="input-sm" (change)="onChangeSelectBox($event, 'added')">
-                <option value="" [selected]="isSelected"> Please choose one </option>
+                <option value=""> Please choose one </option>
                 <ng-template ngFor let-item [ngForOf]="annotationAddadableTags$ | async">
                    <option *ngIf="showOption(item.id)" value="{{item.id}}" [disabled]="disableTags(item.id | toQName)">
                       {{ item.name }}
@@ -56,7 +56,7 @@
           <div class="col-lg-6 col-md-12 col-sm-12">
               <label>{{ 'annotation.removeTags' | translate }}</label>
               <select name="removeTags" class="input-sm" (change)="onChangeSelectBox($event, 'removed')">
-                <option value="" [selected]="isSelected"> {{ 'annotation.chooseTag' | translate }} </option>
+                <option value=""> {{ 'annotation.chooseTag' | translate }} </option>
                   <ng-template ngFor let-item [ngForOf]="annotationRemovableTags$ | async | activeTags: annotations">
                         <option *ngIf="showOptionDeleted(item.id | toQName)" value="{{ item.id | toQName}}">
                             {{ item.id | toQName | label }}

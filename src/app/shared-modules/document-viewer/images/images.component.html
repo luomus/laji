@@ -15,7 +15,6 @@
         [modalImages]="unitImages"
         [eventOnClick]="eventOnImageClick"
         [shortcut]="shortcut"
-        (imageSelect)="selected.emit($event)"
       ></laji-image-gallery>
   
       </div>
@@ -35,7 +34,6 @@
           [modalImages]="gatheringImages"
           [eventOnClick]="eventOnImageClick"
           [shortcut]="shortcut"
-          (imageSelect)="selected.emit($event)"
         ></laji-image-gallery>
         </div>
     </ng-template>

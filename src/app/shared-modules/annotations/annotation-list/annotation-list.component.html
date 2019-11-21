@@ -1,6 +1,6 @@
 <div class="annotations">
   <laji-spinner [spinning]="!annotations"></laji-spinner>
-  <div class="annotation" *ngFor="let annotation of annotations | sort: 'created': 'asc'; let i = index">
+  <div class="annotation" *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="row">
       <div class="col-xs-12 row-title">
         <div *ngIf="annotation.byPerson; else annotationByPerson">
@@ -19,7 +19,7 @@
          <div class="added-tags" *ngIf="annotation.addedTags.length > 0">
            <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | toQName">
              <div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].quality }}" >
-                <span class="annotation-star {{ annotationTagsObservation[addedTag | toQName].quality }}"></span>
+                <!--<span class="annotation-star {{ annotationTagsObservation[addedTag | toQName].quality }}"></span>-->
                 <span>{{ addedTag | toQName | label }}</span>
              </div>
            </div>
