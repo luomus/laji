@@ -1,0 +1,12 @@
+.notification-list {
+  padding: 0;
+  list-style: none;
+  width: max-content;
+}
+
+.notification-pager {
+  display: flex;
+  > * {
+    flex-grow: 1;
+  }
+}

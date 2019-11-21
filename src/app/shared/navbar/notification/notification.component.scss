@@ -1,12 +1,22 @@
+@import 'vars';
+
 :host {
   position: relative;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
 
+.notification-container {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
 .notification {
+  padding: 3px 20px;
+  display: block;
   border-top: 1px solid #ccc;
-  padding-right: 40px;
+  text-decoration: none;
+  color: $neutral-7;
 }
 
 .notification:hover {
@@ -23,10 +33,6 @@
 }
 
 .delete {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
   width: 30px;
   background: #f5f5f5;
   border: 1px solid #ccc;
