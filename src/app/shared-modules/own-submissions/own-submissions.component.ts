@@ -426,15 +426,15 @@ export function getLocality$(translate: TranslateService,
     locality$ = labelService.get(npID, 'multi').pipe(
       map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
   }
+  const {gatherings = []} = document;
   if (!gatheringInfo.locality) {
     if (document.npID) {
       locality$ = labelService.get(npID, 'multi').pipe(
         map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
-    } else if (document.gatherings[0].municipality) {
-      locality$ = ObservableOf({...gatheringInfo, municipality: document.gatherings[0].municipality});
+    } else if (gatherings[0].municipality) {
+      locality$ = ObservableOf({...gatheringInfo, municipality: gatherings[0].municipality});
     }
   }
-
 
   return locality$.pipe(
     switchMap((gathering) => translate.get('haseka.users.latest.localityMissing').pipe(
