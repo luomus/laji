@@ -70,7 +70,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   hasMapData = false;
   hasDoc: boolean;
   active = 0;
-  unitCnt;
+  unitCnt: number;
   isViewInited = false;
   showOnlyHighlighted = true;
   indexPagination: number;

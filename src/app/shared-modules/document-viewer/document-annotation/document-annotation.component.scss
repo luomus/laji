@@ -121,6 +121,10 @@
     right: 10px;
   }
 
+  ::ng-deep .key {
+    text-align: left;
+  }
+
   .arrow {
     width:23px;
     height:28px;

@@ -15,6 +15,8 @@ export class GatheringAnnotationComponent implements OnInit {
   @Input() personID: string;
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() documentID: string;
+  @Input() loadDate: string;
+  @Input() observerId: string;
   @Input() gathering: any;
   @Input() highlight: string;
   @Input() visible = true;
