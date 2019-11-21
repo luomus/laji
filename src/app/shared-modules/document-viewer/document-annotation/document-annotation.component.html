@@ -97,10 +97,11 @@
                   </alert>
                 </div>
             <laji-issues [data]="document"></laji-issues>
-            <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName" [noTitleSpace]="false" ngPreserveWhitespaces>
+            <laji-row [title]="'MY.collectionID' | label" [noTitleSpace]="false" ngPreserveWhitespaces>
+                <span><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
             </laji-row>
             <laji-row [title]="'observation.filterBy.collectionName' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-                <span><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
+                <span>{{ document.collectionId | toQName | collectionName }}</span>
             </laji-row>
             <laji-row *ngIf="document.editorUserIds" [title]="'observation.form.observer' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
                 <span>
