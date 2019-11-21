@@ -1026,7 +1026,7 @@
   "result.unit.nativeOccurrence": "Luonnonvarainen esiintymä",
   "result.unit.quality.source": "Hav. luotettavuuden lähde",
   "result.unit.quality.taxon": "Havainnon luotettavuus",
-  "result.unit.reportedTaxonConfidence": "Havainnoisijan oman määrityksen varmuus",
+  "result.unit.reportedTaxonConfidence": "Havainnoitsijan oman määrityksen varmuus",
   "result.unit.taxonVerbatim": "Laji",
   "route.nro": "Reitin numero",
   "search-bar.input": "Hae",
