@@ -15,14 +15,4 @@
                     </ng-container>    
                 </ng-template>
             </ng-container>
-
-
-        <div class="observations" *ngIf="!showAnnotation">
-            <div class="number-observations" *ngIf="unitCnt > 0 else nobservations">
-                {{ unitCnt }} <span *ngIf="unitCnt == 1">{{ 'haseka.users.latest.gathered.singular' | translate }}</span> <span *ngIf="unitCnt > 1">{{ 'haseka.users.latest.gathered' | translate }}</span> 
-            </div>
-            <ng-template #nobservations>
-            <span>{{ 'observations.list.empty' | translate }}</span>
-        </ng-template>
-      </div>
       

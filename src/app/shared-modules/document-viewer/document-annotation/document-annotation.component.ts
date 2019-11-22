@@ -78,6 +78,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   childEvent = false;
   childComunicationsubscription: Subscription;
   showShortcuts = false;
+  showCoordinates = true;
   @SessionStorage() showFacts = false;
   private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found

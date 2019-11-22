@@ -28,6 +28,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() active = 0;
   @Input() useWorldMap = true;
   @Input() settingsKey: any;
+  @Input() hideCoordinates: boolean;
 
   _data: any;
   mapOptions: LajiMapOptions = {
