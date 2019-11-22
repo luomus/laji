@@ -3,12 +3,13 @@ import {
   ChangeDetectorRef, Renderer2, ElementRef, AfterViewInit, EventEmitter
 } from '@angular/core';
 import { PagedResult } from 'app/shared/model/PagedResult';
-import { of, Subject } from 'rxjs';
+import { of, Subject, Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { switchMap, takeUntil, filter } from 'rxjs/operators';
 import { NotificationsFacade } from './notifications.facade';
 import { TranslateService } from '@ngx-translate/core';
 import { Notification } from '../../model/Notification';
 import { DialogService } from 'app/shared/service/dialog.service';
+import { DataSource, CollectionViewer } from '@angular/cdk/collections';
 
 @Component({
   selector: 'laji-notifications',
@@ -22,6 +23,8 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   @Input() notifications: PagedResult<Notification>;
   @Input() pageSize = 5;
 
+  notificationSource: NotificationDataSource;
+
   @Output() close = new EventEmitter<void>();
 
   constructor(
@@ -34,6 +37,10 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   ) {}
 
   ngOnInit(): void {
+    this.notificationSource = new NotificationDataSource(this.notificationsFacade);
+    this.notificationsFacade.notifications$.pipe(takeUntil(this.unsubscribe$)).subscribe(notifications => {
+      this.notificationSource.receivePage(notifications);
+    });
   }
 
   ngAfterViewInit() {
@@ -104,5 +111,58 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+}
+
+// tslint:disable-next-line:max-classes-per-file
+export class NotificationDataSource extends DataSource<Notification> {
+  private pageSize = 5;
+  private cachedData = [];
+  private fetchedPages = new Set<number>();
+  private dataStream = new BehaviorSubject<Notification[]>(this.cachedData);
+  private subscription = new Subscription();
+
+  constructor(private facade: NotificationsFacade) { super(); }
+
+  connect(collectionViewer: CollectionViewer): Observable<Notification[]> {
+    this.subscription.add(collectionViewer.viewChange.subscribe(range => {
+      const startPage = this.getPageForIndex(range.start);
+      const endPage = this.getPageForIndex(range.end - 1);
+      for (let i = startPage; i <= endPage; i++) {
+        this.fetchPage(i);
+      }
+    }));
+    return this.dataStream;
+  }
+
+  disconnect(): void {
+    this.subscription.unsubscribe();
+  }
+
+  private getPageForIndex(index: number): number {
+    return Math.floor(index / this.pageSize);
+  }
+
+  private fetchPage(page: number) {
+    if (this.fetchedPages.has(page)) {
+      return;
+    }
+    this.fetchedPages.add(page);
+
+    this.facade.loadNotifications(page, this.pageSize);
+  }
+
+  receivePage(notifications: PagedResult<Notification>) {
+    if (this.cachedData.length === 0) {
+      console.log('len is 0');
+      this.cachedData = new Array(notifications.total);
+    }
+    console.log(this.cachedData);
+    this.cachedData.splice(
+      notifications.currentPage * this.pageSize,
+      this.pageSize,
+      ...notifications.results);
+    console.log(this.cachedData);
+    this.dataStream.next(this.cachedData);
   }
 }

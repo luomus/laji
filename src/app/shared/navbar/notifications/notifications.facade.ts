@@ -1,14 +1,33 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, forkJoin, Subject } from 'rxjs';
 import { PagedResult } from 'app/shared/model/PagedResult';
-import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from 'app/shared/service/laji-api.service';
 import { UserService } from 'app/shared/service/user.service';
 import { Notification } from 'app/shared/model/Notification';
 
+/**
+ * REFACTOR PLAN
+1. get unseen notification count (on navbar load)
+2. get total notification count and initialize datasource with it
+3. bind notification sub to datasource
+4. let datasource call fetchpage
+
+- remove, mark as seen: remain unchanged
+- loadAll/subscribeAll/reduceAll are removed
+- loading is removed: instead initialize datasource with empty "loading" objects that are then treated as ghosts in UI
+
+UI CHANGES
+- scroll container has a static px width
+- notification component container gets 'display: flex' and the "left side" gets 'flex-grow: 1'
+- pagination indicator is removed
+- pagination controls are removed
+ */
+
 interface State {
   notifications: PagedResult<Notification>;
   unseenCount: number;
+  loading: boolean;
 }
 
 @Injectable()
@@ -20,7 +39,8 @@ export class NotificationsFacade {
       total: 0,
       results: []
     },
-    unseenCount: 0
+    unseenCount: 0,
+    loading: true
   });
 
   state$: Observable<State> = this.store$.asObservable();
@@ -29,11 +49,13 @@ export class NotificationsFacade {
     distinctUntilChanged()
   );
 
+  private _loading = 0;
+
   constructor(private userService: UserService, private lajiApi: LajiApiService) {}
 
   private allReducer(data: {notifications, unseen}) {
       this.store$.next({
-          notifications: data.notifications, unseenCount: data.unseen
+        ...this.store$.getValue(), notifications: data.notifications, unseenCount: data.unseen
       });
   }
 
@@ -47,6 +69,28 @@ export class NotificationsFacade {
       this.store$.next({
         ...this.store$.getValue(), unseenCount
       });
+  }
+
+  private loadingReducer(loading: boolean) {
+      this.store$.next({
+        ...this.store$.getValue(), loading
+      });
+  }
+
+  private incrementLoading() {
+    if (this._loading >= 0) {
+      console.log('loading: true');
+      this.loadingReducer(true);
+    }
+    this._loading++;
+  }
+
+  private decrementLoading() {
+    this._loading--;
+    if (this._loading <= 0) {
+      console.log('loading: false');
+      this.loadingReducer(false);
+    }
   }
 
   private localUnseenCountReducer(amount = 1) {
@@ -92,11 +136,15 @@ export class NotificationsFacade {
 
   private subscribeNotifications(page = 0, pageSize = 5): Observable<void> {
     return subscribeWithWrapper(
-      this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-        personToken: this.userService.getToken(),
-        page: page,
-        pageSize: pageSize
-      }),
+      of({}).pipe(
+        tap(this.incrementLoading.bind(this)),
+        switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+          personToken: this.userService.getToken(),
+          page: page,
+          pageSize: pageSize
+        })),
+        tap(this.decrementLoading.bind(this))
+      ),
       this.notificationsReducer.bind(this)
     );
   }
@@ -115,18 +163,6 @@ export class NotificationsFacade {
     );
   }
 
-  loadNotifications(page, pageSize) {
-    this.subscribeNotifications(page, pageSize);
-  }
-
-  loadUnseenCount() {
-    this.subscribeUnseenCount();
-  }
-
-  loadAll(page, pageSize) {
-    this.subscribeAll(page, pageSize);
-  }
-
   private subscribeMarkAsSeen(notification: Notification): Observable<void> {
     if (notification.seen) {
       const subject = new Subject<void>();
@@ -138,6 +174,32 @@ export class NotificationsFacade {
       this.lajiApi.update(LajiApi.Endpoints.notifications, notification, {personToken: this.userService.getToken()}),
       this.localUnseenCountReducer.bind(this, [1])
     );
+  }
+
+  private subscribeRemove(notification: Notification): Observable<void> {
+    if (!notification || !notification.id) {
+      const subject = new Subject<void>();
+      subject.error('Notification not provided.');
+      return subject;
+    }
+    if (!notification.seen) {
+      this.localUnseenCountReducer();
+    }
+    return subscribeWithWrapper(
+      this.lajiApi.remove(LajiApi.Endpoints.notifications, notification.id, {personToken: this.userService.getToken()})
+    );
+  }
+
+  loadNotifications(page, pageSize) {
+    this.subscribeNotifications(page, pageSize);
+  }
+
+  loadUnseenCount() {
+    this.subscribeUnseenCount();
+  }
+
+  loadAll(page, pageSize) {
+    this.subscribeAll(page, pageSize);
   }
 
   markAsSeen(notification: Notification): Observable<void> {
@@ -156,20 +218,6 @@ export class NotificationsFacade {
       switchMap((notifications) => forkJoin(notifications.results.map((notification) => this.subscribeMarkAsSeen(notification)))),
       switchMap(() => this.subscribeNotifications())
     ));
-  }
-
-  private subscribeRemove(notification: Notification): Observable<void> {
-    if (!notification || !notification.id) {
-      const subject = new Subject<void>();
-      subject.error('Notification not provided.');
-      return subject;
-    }
-    if (!notification.seen) {
-      this.localUnseenCountReducer();
-    }
-    return subscribeWithWrapper(
-      this.lajiApi.remove(LajiApi.Endpoints.notifications, notification.id, {personToken: this.userService.getToken()})
-    );
   }
 
   remove(notification: Notification): Observable<void> {

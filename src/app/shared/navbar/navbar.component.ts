@@ -68,6 +68,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     });
     this.notificationsFacade.state$.pipe(takeUntil(this.unsubscribe$)).subscribe((state) => {
+      console.log(state);
       this.notifications = state.notifications;
       this.notificationsNotSeen = state.unseenCount;
       this.changeDetector.markForCheck();

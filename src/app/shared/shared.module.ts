@@ -60,6 +60,7 @@ import { SortPipe } from './pipe/sort.pipe';
 import { DateFormatPipe, MomentModule } from 'ngx-moment';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NotificationsComponent } from './navbar/notifications/notifications.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 
 @NgModule({
@@ -99,6 +100,7 @@ import { NotificationsComponent } from './navbar/notifications/notifications.com
     MomentModule,
     SpinnerModule,
     PaginatorModule,
+    ScrollingModule,
     TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule
   ],
   providers: [ ], // keep this empty!

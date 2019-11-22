@@ -9,13 +9,43 @@
   <a class="fs-1" (click)="removeAll()">{{'notification.deleteAll' | translate}}</a>
   <a class="fs-1" (click)="markAllAsSeen()">{{'notification.markAll' | translate}}</a>
 </header>
-<ul class="notification-list">
-  <li laji-notification
-      *ngFor="let notification of notifications?.results; trackBy: trackNotification"
-      (notificationSeen)="markAsSeen($event); onClose()"
-      (removeNotification)="removeNotification($event)"
-      [notification]="notification"></li>
-</ul>
+
+<cdk-virtual-scroll-viewport [itemSize]="50" style="height: 400px; width: 400px;">
+  <ul class="notification-list">
+    <li laji-notification
+        style="height: 50px"
+        *cdkVirtualFor="let notification of notificationSource; trackBy: trackNotification"
+        (notificationSeen)="markAsSeen($event); onClose()"
+        (removeNotification)="removeNotification($event)"
+        [notification]="notification"></li>
+  </ul>
+</cdk-virtual-scroll-viewport>
+
+<!-- <ul class="notification-list">
+  <ng-container *ngIf="notifications.results.length > 0; else notificationsGhosts">
+    <li laji-notification
+        *ngFor="let notification of notifications?.results; trackBy: trackNotification"
+        (notificationSeen)="markAsSeen($event); onClose()"
+        (removeNotification)="removeNotification($event)"
+        [notification]="notification"></li>
+  </ng-container>
+  <ng-template #notificationsGhosts>
+    <ng-container *ngIf="notifications.total <= 0">
+      <li>asd</li>
+    </ng-container>
+    <ng-container *ngIf="notifications.total > 0 && notifications.total < 5">
+      <li *ngFor="let notification of notifications.results">asd</li>
+    </ng-container>
+    <ng-container *ngIf="notifications.total >= 5">
+      <li>asd</li>
+      <li>asd</li>
+      <li>asd</li>
+      <li>asd</li>
+      <li>asd</li>
+    </ng-container>
+  </ng-template>
+</ul> -->
+
 <nav *ngIf="notifications && notifications?.lastPage > 1" class="btn-group notification-pager" role="group">
   <button type="button" class="btn btn-default"
           [disabled]="notifications.currentPage <= 1"
