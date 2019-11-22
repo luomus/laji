@@ -9,7 +9,7 @@
     </ul>
   </span>
 </laji-row>
-<laji-row [title]="'result.gathering.conversions.wgs84CenterPoint' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+<laji-row *ngIf="gathering.interpretations" [title]="'result.gathering.conversions.wgs84CenterPoint' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
   <ul class="separated-list">
     <li *ngIf="gathering.higherGeography" [tooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
       {{ gathering.higherGeography }}</li>
@@ -35,10 +35,10 @@
       {{ gathering.locality }}</li>
   </ul>
 </laji-row>
-<laji-row [title]="'MY.coordinatesVerbatim' | label" [value]="gathering.coordinatesVerbatim" [noTitleSpace]="true"></laji-row>
+<!--<laji-row [title]="'MY.coordinatesVerbatim' | label" [value]="gathering.coordinatesVerbatim" [noTitleSpace]="true"></laji-row>
 <laji-row [title]="'MY.notes' | label" [value]="gathering.notes" [noTitleSpace]="true"></laji-row>
 <laji-row [title]="'MY.taxonCensus' | label" *ngIf="gathering.taxonCensus" [noTitleSpace]="true">
   <ul class="separated-list">
     <li *ngFor="let census of gathering.taxonCensus" [tooltip]="census.type | toQName | label" [isDisabled]="hideTooltips">{{ census.taxonId | toQName | taxon }}</li>
   </ul>
-</laji-row>
+</laji-row>-->

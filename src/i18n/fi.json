@@ -51,6 +51,8 @@
   "annotation.quality.grade": "Quality grade",
   "annotation.mediaFiles": "Media Files",
   "annotation.observedBy": "Observed by",
+  "annotation.observationDataFrom": "Observation data from",
+  "annotation.observationDataEntered": "entered on",
   "asIs": "Arvo sellaisenaan",
   "checkAll": "Valitse kaikki",
   "checked": "valittu",

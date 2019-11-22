@@ -41,6 +41,7 @@ import { UnitAnnotationListComponent } from './unit-annotation-list/unit-annotat
 import { LicenseModule } from '../license/license.module';
 import { SampleComponent } from './sample/sample.component';
 import { InfoModule } from '../info/info.module';
+import { AnnotationDataObservationComponent } from './annotation-data-observation/annotation-data-observation.component';
 
 @NgModule({
   imports: [
@@ -69,7 +70,8 @@ import { InfoModule } from '../info/info.module';
     GatheringAnnotationComponent,
     UnitAnnotationRowsComponent,
     UnitAnnotationListComponent,
-    SampleComponent
+    SampleComponent,
+    AnnotationDataObservationComponent
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent]
 })

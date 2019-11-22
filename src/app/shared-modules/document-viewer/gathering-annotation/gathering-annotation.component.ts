@@ -7,7 +7,6 @@ import { Annotation } from '../../../shared/model/Annotation';
   templateUrl: './gathering-annotation.component.html',
   styleUrls: ['./gathering-annotation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
-
 })
 export class GatheringAnnotationComponent implements OnInit {
 
@@ -15,7 +14,9 @@ export class GatheringAnnotationComponent implements OnInit {
   @Input() personID: string;
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() documentID: string;
+  @Input() createdDate: any;
   @Input() loadDate: string;
+  @Input() collectionId: string;
   @Input() observerId: string;
   @Input() gathering: any;
   @Input() highlight: string;

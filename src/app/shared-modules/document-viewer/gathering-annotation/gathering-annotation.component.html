@@ -2,11 +2,12 @@
             <ng-container *ngFor="let unit of gathering?.units">
                 <ng-container *ngIf="!showAnnotation; else annotation">
                     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
-                                <laji-unit-annotation [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit-annotation>
+                        <laji-unit-annotation [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit-annotation>
                     </ng-container>
                 </ng-container>
                 <ng-template #annotation>
                     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
+                        <laji-annotation-data-observation [gathering]="gathering" [unit]="unit" [editors]="editors" [collectionId]="collectionId" [createdDate]="createdDate"></laji-annotation-data-observation>
                         <laji-unit-annotation-list [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [personRoleAnnotation]="personRoleAnnotation" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit-annotation-list>
                     </ng-container>    
                 </ng-template>
