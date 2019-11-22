@@ -13,6 +13,7 @@
                 </ng-template>
             </ng-container>
             <ng-container *ngIf="!showAnnotation">
+                <laji-observation-effective-tags-taxon></laji-observation-effective-tags-taxon>
                 <laji-gathering-annotations-rows [gathering]="gathering"></laji-gathering-annotations-rows>
                 <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
             </ng-container>

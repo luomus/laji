@@ -3,7 +3,7 @@
 div {
     &.info {
         margin: 15px 0;
-        @include font-size(1.2);
+        @include font-size(1.4);
         div {
             &.title {
                 font-weight: bold;

@@ -42,6 +42,7 @@ import { LicenseModule } from '../license/license.module';
 import { SampleComponent } from './sample/sample.component';
 import { InfoModule } from '../info/info.module';
 import { AnnotationDataObservationComponent } from './annotation-data-observation/annotation-data-observation.component';
+import { ObservationEffectiveTagsTaxonComponent } from './observation-effective-tags-taxon/observation-effective-tags-taxon.component';
 
 @NgModule({
   imports: [
@@ -71,7 +72,8 @@ import { AnnotationDataObservationComponent } from './annotation-data-observatio
     UnitAnnotationRowsComponent,
     UnitAnnotationListComponent,
     SampleComponent,
-    AnnotationDataObservationComponent
+    AnnotationDataObservationComponent,
+    ObservationEffectiveTagsTaxonComponent
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent]
 })

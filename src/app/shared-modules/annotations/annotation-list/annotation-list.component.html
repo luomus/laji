@@ -11,10 +11,6 @@
           <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
           <span>{{ annotation.created | date: 'dd.MM.yyyy' }}</span>
         </ng-template>
-        <p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
-            <span>{{ 'annotation.newIdentification' | translate }}:</span> {{ annotation.identification.taxon }}
-            <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''">,{{ annotation.identification.taxonSpecifier }}</ng-container>
-        </p>
         <div class="tags" *ngIf="annotation.addedTags || annotation.addedTags">
          <div class="added-tags" *ngIf="annotation.addedTags.length > 0">
            <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | toQName">
@@ -33,6 +29,10 @@
             </ul>
           </div>
         </div>
+        <p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
+            <span>{{ 'annotation.newIdentification' | translate }}:</span> {{ annotation.identification.taxon }}
+            <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''">,{{ annotation.identification.taxonSpecifier }}</ng-container>
+        </p>
         <!--<span class="person pull-right">
           <button
             type="button"

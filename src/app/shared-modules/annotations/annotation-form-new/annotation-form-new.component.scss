@@ -66,11 +66,11 @@ label {
   }
   
   div.annotation-marker {
-    padding: 5px;
+    padding: 3px;
     border-radius: 6px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     display: inline-block;
     margin-bottom: 5px;
@@ -101,7 +101,8 @@ label {
   
   .annotation-marker.positive {
     /*color: #008400;*/
-    background: #dff7df;
+    background: #DFF0D8;
+    border: 1px solid #7BC95A;
   }
   
   .annotation-marker.neutral{
@@ -110,19 +111,22 @@ label {
   
   .annotation-marker.check {
     /*color: #E16200;*/
-    background: #ffe8c5;
+    background: #FCF8E3;
+    border: 1px solid #DAC867;
   }
   
   .annotation-marker.negative {
     /*color: #FF0000;*/
     background: #ffc1b7;
+    border: 1px solid #ff5e46;
   }
 
 
   .annotation-marker-new.positive {
     /*color: #008400;
     border: 1px solid #008400;*/
-    background: #dff7df;
+    background: #DFF0D8;
+    border: 1px solid #7BC95A;
   }
   
   .annotation-marker-new.neutral{
@@ -133,13 +137,15 @@ label {
   .annotation-marker-new.check {
     /*color: #E16200;
     border: 1px solid #E16200;*/
-    background: #ffe8c5;
+    background: #FCF8E3;
+    border: 1px solid #DAC867;
   }
   
   .annotation-marker-new.negative {
     /*color: #FF0000;
     border: 1px solid #ff0000;*/
     background: #ffc1b7;
+    border: 1px solid #ff5e46;
   }
 
   .annotation-marker-new.positive:hover, .annotation-marker-new.positive.on {
