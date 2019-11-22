@@ -1,27 +1,31 @@
-<li class="dropdown-header">
-  {{ 'notification.title' | translate }}:
-  <span *ngIf="notifications?.lastPage > 1">
-    ({{ notifications?.currentPage }} / {{ notifications?.lastPage }})
+<ng-container *ngIf="notifications?.total > 0">
+<header class="lu">
+  <span class="notifications-title fs-2">
+    {{ 'notification.title' | translate }}:
+    <span *ngIf="notifications?.lastPage > 1">
+      ({{ notifications?.currentPage }} / {{ notifications?.lastPage }})
+    </span>
   </span>
-</li>
-<li role="menuitem"
-    class="notifications"
-    *ngFor="let notification of notifications?.results; trackBy: trackNotification"
-    laji-notification
-    (notificationSeen)="markAsSeen($event)"
-    (removeNotification)="removeNotification($event)"
-    [notification]="notification"></li>
-<li *ngIf="notifications && notifications?.lastPage > 1">
-  <div class="btn-group notification-pager" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-default"
-            [disabled]="notifications.currentPage <= 1"
-            (click)="prevNotificationPage()">
-      <i class="glyphicon glyphicon-chevron-left"></i>
-    </button>
-    <button type="button" class="btn btn-default"
-            [disabled]="notifications.currentPage >= notifications.lastPage"
-            (click)="nextNotificationPage()">
-      <i class="glyphicon glyphicon-chevron-right"></i>
-    </button>
-  </div>
-</li>
+  <a class="fs-1" (click)="removeAll()">{{'notification.deleteAll' | translate}}</a>
+  <a class="fs-1" (click)="markAllAsSeen()">{{'notification.markAll' | translate}}</a>
+</header>
+<ul class="notification-list">
+  <li laji-notification
+      *ngFor="let notification of notifications?.results; trackBy: trackNotification"
+      (notificationSeen)="markAsSeen($event); onClose()"
+      (removeNotification)="removeNotification($event)"
+      [notification]="notification"></li>
+</ul>
+<nav *ngIf="notifications && notifications?.lastPage > 1" class="btn-group notification-pager" role="group">
+  <button type="button" class="btn btn-default"
+          [disabled]="notifications.currentPage <= 1"
+          (click)="prevNotificationPage()">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+  </button>
+  <button type="button" class="btn btn-default"
+          [disabled]="notifications.currentPage >= notifications.lastPage"
+          (click)="nextNotificationPage()">
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </button>
+</nav>
+</ng-container>

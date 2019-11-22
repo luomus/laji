@@ -1,6 +1,5 @@
-import { delay, filter, map, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import {
-  ApplicationRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -15,10 +14,9 @@ import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { interval as ObservableInterval, of as ObservableOf, Subscription, timer } from 'rxjs';
+import { timer, Subject } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
 import { DialogService } from '../service/dialog.service';
-import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { PagedResult } from '../model/PagedResult';
 import { Notification } from '../model/Notification';
 import { isPlatformBrowser } from '@angular/common';
@@ -33,6 +31,7 @@ import { NotificationsFacade } from './notifications/notifications.facade';
   providers: [NotificationsFacade]
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  unsubscribe$ = new Subject<null>();
 
   @ViewChild('userMenu', { static: false }) public dropDown: BsDropdownDirective;
 
@@ -45,9 +44,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   notificationPageSize = 5;
   env = environment.type;
 
-  private subParams: Subscription;
-  private subUser: Subscription;
-
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     public userService: UserService,
@@ -55,7 +51,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private changeDetector: ChangeDetectorRef,
     public translate: TranslateService,
-    private dialogService: DialogService,
     private notificationsFacade: NotificationsFacade
   ) {
     this.isProd = environment.production;
@@ -66,47 +61,34 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    this.subParams = this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.unsubscribe$)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.closeMenu();
         this.changeDetector.markForCheck();
       }
     });
-    this.notificationsFacade.state$.subscribe((state) => {
+    this.notificationsFacade.state$.pipe(takeUntil(this.unsubscribe$)).subscribe((state) => {
       this.notifications = state.notifications;
       this.notificationsNotSeen = state.unseenCount;
       this.changeDetector.markForCheck();
     });
-    timer(1000, 60000).subscribe(() => {
+    this.userService.isLoggedIn$.pipe(
+      filter(res => !!res),
+      switchMap(() => timer(1000, 60000)),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(() => {
       this.notificationsFacade.loadAll(0, this.notificationPageSize);
+      this.changeDetector.markForCheck();
     });
   }
 
-  nextNotificationPage() {
-    this.gotoNotificationPage(this.notifications.currentPage + 1);
-  }
-
-  prevNotificationPage() {
-    this.gotoNotificationPage(this.notifications.currentPage - 1);
-  }
-
-  private gotoNotificationPage(page) {
-    if (this.notifications.currentPage !== page) {
-      this.notificationsFacade.loadNotifications(page, this.notificationPageSize);
-    }
-    this.dropDown.autoClose = false;
-    setTimeout(() => {
-      this.dropDown.autoClose = true;
-    }, 100);
+  onClose() {
+    this.dropDown.hide();
   }
 
   ngOnDestroy() {
-    if (this.subUser) {
-      this.subUser.unsubscribe();
-    }
-    if (this.subParams) {
-      this.subParams.unsubscribe();
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   updateView() {
@@ -133,25 +115,4 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.router.navigate(this.localizeRouterService.translateRoute(['/forum']), {skipLocationChange: true});
   }
 
-  trackNotification(idx, notification) {
-    return notification ? notification.id : undefined;
-  }
-
-  markAsSeen(notification: Notification) {
-    this.notificationsFacade.markAsSeen(notification).subscribe(() => this.changeDetector.markForCheck());
-  }
-
-  removeNotification(notification: Notification) {
-    this.translate.get('notification.delete').pipe(
-      switchMap(msg => notification.seen ? ObservableOf(true) : this.dialogService.confirm(msg))
-    ).subscribe(result => {
-      this.dropDown.autoClose = false;
-      setTimeout(() => {
-        this.dropDown.autoClose = true;
-      }, 100);
-      if (result && notification.id) {
-        this.notificationsFacade.remove(notification).subscribe(() => this.changeDetector.markForCheck());
-      }
-    });
-  }
 }

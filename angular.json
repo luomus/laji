@@ -28,7 +28,7 @@
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/styles/laji.scss",
-              "projects/laji-ui/src/lib/utils.scss"
+              "projects/laji-ui/src/lib/exports.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["projects/laji-ui/src/lib"]

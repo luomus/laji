@@ -31,6 +31,7 @@ export class TriplestoreLabelService {
 
   private labels;
   private pending: Observable<any>;
+  private guidRegEx: RegExp;
 
   constructor(private metadataApi: MetadataApi,
               private metadataService: MetadataService,
@@ -48,6 +49,7 @@ export class TriplestoreLabelService {
   ) {
     this.pending = this.getAllLabels();
     this.pending.subscribe();
+    this.guidRegEx = /^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/gi;
   }
 
   public getAll(keys: string[], lang): Observable<{[key: string]: string}> {
@@ -85,8 +87,8 @@ export class TriplestoreLabelService {
       }
       return ObservableOf(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
     }
-    const parts = key.split('.');
-    if (parts && typeof parts[1] === 'string' && !isNaN(parts[1])) {
+    const parts = key.replace(':', '.').split('.');
+    if (parts && typeof parts[1] === 'string' && (!isNaN(parts[1]) || this.guidRegEx.test(parts[1]))) {
       switch (parts[0]) {
         case 'MNP':
           if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {
@@ -144,6 +146,7 @@ export class TriplestoreLabelService {
             );
           }
           return TriplestoreLabelService.requestCache[key];
+        case 'gbif-dataset':
         case 'HR':
           return this.collectionService.getName(key, lang).pipe(share());
         case 'MX':
