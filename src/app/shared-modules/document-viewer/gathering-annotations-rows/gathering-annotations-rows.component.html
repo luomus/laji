@@ -1,10 +1,15 @@
-<laji-row [title]="'viewer.field.observer' | translate"  *ngIf="gathering.team" [noTitleSpace]="true">
-  Saved by {{ gathering.team }}</laji-row>
 <laji-issues [data]="gathering"></laji-issues>
-<laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="true">
-  {{ gathering.displayDateTime }}
+<laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="false">
+  {{ gathering.displayDateTime | date:'dd-MM-yyyy' }}
 </laji-row>
-<laji-row [title]="'MY.locality' | label" [noTitleSpace]="true">
+<laji-row *ngIf="gathering.team" [title]="'observation.form.observer' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+  <span>
+    <ul class="separated-list">
+      <li *ngFor="let user of gathering.team; let i=index">{{ user | toQName | label }}</li> 
+    </ul>
+  </span>
+</laji-row>
+<laji-row [title]="'result.gathering.conversions.wgs84CenterPoint' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
   <ul class="separated-list">
     <li *ngIf="gathering.higherGeography" [tooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
       {{ gathering.higherGeography }}</li>

@@ -52,7 +52,7 @@
     </div>
         <div class="row container-col">
           <div class="col-sm-4 column-modal" *ngIf="document.gatherings && document.gatherings[0].units">
-            <div class="title">{{ 'observation.active.hasMedia' | translate }}</div>
+            <div class="title">{{ 'annotation.mediaFiles' | translate }}</div>
             <laji-images [document]="document" [highlight]="highlight" [shortcut]="true"></laji-images>
           </div>
           <div class="col-sm-4 column-modal">
@@ -103,12 +103,12 @@
             <laji-row [title]="'observation.filterBy.collectionName' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
                 <span>{{ document.collectionId | toQName | collectionName }}</span>
             </laji-row>
-            <laji-row *ngIf="document.editorUserIds" [title]="'observation.form.observer' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+            <laji-row *ngIf="document.editorUserIds" [title]="'annotation.observedBy' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
                 <span>
                   <ul class="separated-list">
-                    <li *ngFor="let user of document.editorUserIds; let i=index"><a target="_blank" href="{{user}}">{{ user | toQName | label }}</a></li> 
+                    <li *ngFor="let user of document.editorUserIds; let i=index"><a target="_blank" href="/user/{{ user | toQName }}">{{ user | toQName | label }}</a></li> 
                   </ul>
-                  on {{ document.firstLoadDate | date: 'dd-MM-yyyy' }}</span>
+                  on {{ document.createdDate | date: 'dd-MM-yyyy' }}</span>
             </laji-row>
             <laji-row [title]="'haseka.submissions.unitCount' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
                   <span>{{ unitCnt }}

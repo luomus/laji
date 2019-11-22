@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 @Component({
   selector: 'laji-unit-annotation-rows',
@@ -12,5 +12,6 @@ export class UnitAnnotationRowsComponent {
   @Input() showLinks = true;
 
   constructor() { }
+
 
 }

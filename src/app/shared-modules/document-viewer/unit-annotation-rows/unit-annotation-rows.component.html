@@ -1,8 +1,8 @@
-<laji-row [title]="'result.unit.id' | translate" [noTitleSpace]="true" *ngIf="showFacts">
+<!--<laji-row [title]="'result.unit.id' | translate" [noTitleSpace]="true" *ngIf="showFacts">
         <a *ngIf="showLinks; else nonlink" target="_blank" href="{{ unit.unitId }}">{{ unit.unitId }}</a>
         <ng-template #nonlink><small>({{ unit.unitId }})</small></ng-template>
-      </laji-row>
-      <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [noTitleSpace]="true" [title]="'result.unit.taxonVerbatim' | translate">
+      </laji-row>-->
+      <!--<laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [noTitleSpace]="true" [title]="'result.unit.taxonVerbatim' | translate">
         <laji-taxon-name [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
       </laji-row>
       <ng-template #taxonVerbatim>
@@ -20,28 +20,28 @@
       <laji-row *ngIf="showFacts" [noTitleSpace]="true" [title]="'MY.recordBasis' | label" [value]="unit.recordBasis | label: 'warehouse'"></laji-row>
       <laji-row [title]="'MY.det' | label" [value]="unit.det" [noTitleSpace]="true"></laji-row>
       <ng-container *ngIf="unit.reportedTaxonConfidence && (showFacts || unit.reportedTaxonConfidence !== 'SURE')">
-        <laji-row [noTitleSpace]="true" [title]="'result.unit.reportedTaxonConfidence' | translate" [value]="unit.reportedTaxonConfidence | label: 'warehouse'"></laji-row>
-      </ng-container>
+        <laji-row [noTitleSpace]="false" [title]="'result.unit.reportedTaxonConfidence' | translate" [value]="unit.reportedTaxonConfidence | label: 'warehouse'"></laji-row>
+      </ng-container>-->
       <ng-container *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
-        <laji-row [noTitleSpace]="true" [title]="'result.unit.quality.taxon'|translate">
+        <laji-row [noTitleSpace]="false" [title]="'annotation.quality.grade'|translate">
           {{ unit.quality.taxon.reliability | label: 'warehouse' }}
           <span *ngIf="unit.quality.taxon.source">
                 ({{ unit.quality.taxon.source | label: 'warehouse' }})
               </span>
         </laji-row>
       </ng-container>
-      <laji-issues [data]="unit"></laji-issues>
+      <!--<laji-issues [data]="unit"></laji-issues>
       <laji-row [noTitleSpace]="true" [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
       <laji-row [noTitleSpace]="true" [title]="'MY.femaleIndividualCount' | label" [value]="unit.individualCountFemale"></laji-row>
       <laji-row [noTitleSpace]="true" [title]="'MY.maleIndividualCount' | label" [value]="unit.individualCountMale"></laji-row>
-      <!--
+      
       <ng-container *ngIf="unit.interpretations">
         <ng-container *ngIf="unit.abundanceString !== '' + unit.interpretations.individualCount">
           <laji-row [title]="'result.unit.interpretations.individualCount' | translate" [value]="unit.interpretations.individualCount"></laji-row>
         </ng-container>
       </ng-container>
-      -->
+      
       <laji-row [noTitleSpace]="true" [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
       <laji-row [noTitleSpace]="true" [title]="'MY.sex' | label" [value]="unit.sex | label: 'warehouse'"></laji-row>
-      <laji-row [noTitleSpace]="true" [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>
+      <laji-row [noTitleSpace]="true" [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>-->
       
