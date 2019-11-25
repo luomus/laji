@@ -11,6 +11,16 @@ interface State {
   unseenCount: number;
 }
 
+const subscribeWithWrapper = (observable: Observable<any>, callback?) => {
+  const subject = new Subject<void>();
+  observable.subscribe((res) => {
+    if (callback) { callback(res); }
+    subject.next();
+    subject.complete();
+  });
+  return subject.asObservable();
+};
+
 @Injectable()
 export class NotificationsFacade {
   private store$ = new BehaviorSubject<State>({
@@ -192,13 +202,3 @@ export class NotificationsFacade {
     ));
   }
 }
-
-const subscribeWithWrapper = (observable: Observable<any>, callback?) => {
-  const subject = new Subject<void>();
-  observable.subscribe((res) => {
-    if (callback) { callback(res); }
-    subject.next();
-    subject.complete();
-  });
-  return subject.asObservable();
-};

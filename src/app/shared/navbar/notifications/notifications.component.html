@@ -6,8 +6,8 @@
       ({{ notifications?.currentPage }} / {{ notifications?.lastPage }})
     </span>
   </span>
-  <a class="fs-1" (click)="removeAll()">{{'notification.deleteAll' | translate}}</a>
-  <a class="fs-1" (click)="markAllAsSeen()">{{'notification.markAll' | translate}}</a>
+  <a class="fs-1" (click)="removeAll()">{{ 'notification.deleteAll' | translate }}</a>
+  <a class="fs-1" (click)="markAllAsSeen()">{{ 'notification.markAll' | translate }}</a>
 </header>
 <ul class="notification-list">
   <li laji-notification
