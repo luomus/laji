@@ -53,9 +53,8 @@
       <div>
         <div class="col-lg-3 col-md-12 col-sm-12">
             <label class="taxonomy">{{ 'taxonomy.taxonomy' | translate }}</label> 
-            <span class="switch-mode block" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.5' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.copyCurrentTag' | translate }}</span>
         </div>
-        <div class="col-lg-9 col-md-12 col-sm-12">
+        <div class="col-lg-6 col-md-12 col-sm-12">
             <input #taxon
             [ngClass]="{loading: typeaheadLoading}"
             type="text"
@@ -78,6 +77,9 @@
               {{ model.value }}
             </h5>
           </ng-template>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12">
+          <div class="agree" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.5' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.obsercation.agree' | translate }}</div>
         </div>
       </div>
 

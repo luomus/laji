@@ -161,13 +161,10 @@ label {
     -moz-transition: ease-in-out 0.3s;
   }
 
-  :host ::ng-deep lu-checkbox input {
-    display: none
-  }
 
   :host ::ng-deep lu-checkbox label {
     cursor: pointer;
-    margin-right: 5px;
+    margin-right: 15px;
   }
 
   :host ::ng-deep lu-checkbox label.checked .danger {
@@ -185,6 +182,24 @@ label {
     color: white;
   }
 
+  .agree {
+    border: none;
+    border-radius: 5px;
+    padding: 0.4em 0.4em;
+    margin: 0 0;
+    background-color: #fcfdfd;
+    color: #5c6870;
+    box-shadow: 0 1px 3px rgba(65, 79, 88, 0.2);
+    font-size: 12px;
+    text-align: center;
+    line-height: 12px;
+  }
+
+  .agree:hover {
+    background-color: #e6f5ff;
+    color: #0f598a;
+    cursor: pointer;
+  }
   
   @media only screen and (min-width: 992px) and (max-width: 1600px) {
     .taxon label {
@@ -209,6 +224,10 @@ label {
    .taxon div:nth-child(2) label, .taxon div:nth-child(3) label {
      height: auto;
      margin-top: 10px;
+   }
+
+   .agree {
+     margin-top: 5px;
    }
   }
   
