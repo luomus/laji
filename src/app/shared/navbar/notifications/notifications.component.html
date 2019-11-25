@@ -1,8 +1,13 @@
-<header class="dropdown-header">
-  {{ 'notification.title' | translate }}:
-  <span *ngIf="notifications?.lastPage > 1">
-    ({{ notifications?.currentPage }} / {{ notifications?.lastPage }})
+<ng-container *ngIf="notifications?.total > 0">
+<header class="lu">
+  <span class="notifications-title fs-2">
+    {{ 'notification.title' | translate }}:
+    <span *ngIf="notifications?.lastPage > 1">
+      ({{ notifications?.currentPage }} / {{ notifications?.lastPage }})
+    </span>
   </span>
+  <a class="fs-1" (click)="removeAll()">{{ 'notification.deleteAll' | translate }}</a>
+  <a class="fs-1" (click)="markAllAsSeen()">{{ 'notification.markAll' | translate }}</a>
 </header>
 <ul class="notification-list">
   <li laji-notification
@@ -23,3 +28,4 @@
     <i class="glyphicon glyphicon-chevron-right"></i>
   </button>
 </nav>
+</ng-container>

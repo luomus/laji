@@ -3,8 +3,8 @@ import {
   ChangeDetectorRef, Renderer2, ElementRef, AfterViewInit, EventEmitter
 } from '@angular/core';
 import { PagedResult } from 'app/shared/model/PagedResult';
-import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { switchMap, takeUntil, filter } from 'rxjs/operators';
 import { NotificationsFacade } from './notifications.facade';
 import { TranslateService } from '@ngx-translate/core';
 import { Notification } from '../../model/Notification';
@@ -17,6 +17,8 @@ import { DialogService } from 'app/shared/service/dialog.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit {
+  unsubscribe$ = new Subject<void>();
+
   @Input() notifications: PagedResult<Notification>;
   @Input() pageSize = 5;
 
@@ -59,17 +61,39 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
   }
 
+  markAllAsSeen() {
+    this.notificationsFacade.markAllAsSeen().pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe(() => {
+      this.notificationsFacade.loadNotifications(this.notifications.currentPage, this.pageSize);
+      this.cdr.markForCheck();
+    });
+  }
+
+  removeAll() {
+    this.translate.get('notification.delete').pipe(
+      takeUntil(this.unsubscribe$),
+      switchMap(msg => this.dialogService.confirm(msg)),
+      switchMap(res => res ? this.notificationsFacade.removeAll() : of(true))
+    ).subscribe(() => {
+      this.notificationsFacade.loadNotifications(0, this.pageSize);
+      this.cdr.markForCheck();
+    });
+  }
+
   markAsSeen(notification: Notification) {
-    this.notificationsFacade.markAsSeen(notification).subscribe(() => this.cdr.markForCheck());
+    this.notificationsFacade.markAsSeen(notification).subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 
   removeNotification(notification: Notification) {
     this.translate.get('notification.delete').pipe(
-      switchMap(msg => notification.seen ? of(true) : this.dialogService.confirm(msg))
+      switchMap(msg => notification.seen ? of(true) : this.dialogService.confirm(msg)),
+      filter(result => !!(result && notification.id)),
+      switchMap(() => this.notificationsFacade.remove(notification))
     ).subscribe(result => {
-      if (result && notification.id) {
-        this.notificationsFacade.remove(notification).subscribe(() => this.cdr.markForCheck());
-      }
+      this.cdr.markForCheck();
     });
   }
 
@@ -78,5 +102,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

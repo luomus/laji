@@ -277,15 +277,13 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   download(fileType: string) {
     this.downloadLoading = true;
 
-    const columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
-    this.fetchAllPages()
-      .subscribe(data =>  {
-        this.taxonExportService.downloadTaxons(columns, data, fileType)
-          .subscribe(() => {
-            this.downloadLoading = false;
-            this.speciesDownload.modal.hide();
-            this.cd.markForCheck();
-          });
+    this.columnService.getColumns$(this.searchQuery.listOptions.selected).pipe(
+      switchMap(columns => this.fetchAllPages().pipe(map((data) => ({data, columns})))),
+      switchMap(res => this.taxonExportService.downloadTaxons(res.columns, res.data, fileType))
+    ).subscribe(() =>  {
+          this.downloadLoading = false;
+          this.speciesDownload.modal.hide();
+          this.cd.markForCheck();
       });
   }
 
