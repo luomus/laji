@@ -12,6 +12,7 @@ export class AnnotationDataObservationComponent implements OnInit {
   @Input() editors: Array<string>;
   @Input() createdDate: any;
   @Input() collectionId: string;
+  @Input() hideTooltips = false;
 
   constructor() { }
 

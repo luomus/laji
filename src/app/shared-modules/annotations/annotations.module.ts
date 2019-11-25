@@ -9,6 +9,7 @@ import { LangModule } from '../lang/lang.module';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { ConvertAnnotationsPipe } from './convert-annotations.pipe';
 import { SearchFiltersModule } from '../search-filters/search-filters.module';
+import { LajiUiModule } from '../../../../projects/laji-ui/src/public-api';
 
 @NgModule({
   imports: [
@@ -16,10 +17,11 @@ import { SearchFiltersModule } from '../search-filters/search-filters.module';
     TypeaheadModule,
     LangModule,
     SharedModule,
-    SearchFiltersModule
+    SearchFiltersModule,
+    LajiUiModule
   ],
   declarations: [AnnotationsComponent, AnnotationListComponent, AnnotationFormComponent,
     AnnotationFormNewComponent, ConvertAnnotationsPipe ],
-  exports: [AnnotationsComponent]
+  exports: [AnnotationsComponent, LajiUiModule]
 })
 export class AnnotationsModule { }
