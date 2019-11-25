@@ -1040,7 +1040,7 @@
   "taxonomy.browse.title": "Bläddra och ladda ner",
   "taxonomy.browseAndDownload": "Bläddra och ladda ner observationer",
   "taxonomy.card": "Artkort",
-  "taxonomy.card.id": "ID",
+  "taxonomy.card.id": "identifiering",
   "taxonomy.card.search": "Sök taxon",
   "taxonomy.card.download": "Taxons information i maskinläsbar form",
   "taxonomy.checklist": "Artlista",
