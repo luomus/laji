@@ -1,12 +1,10 @@
-/* tslint:disable */
+/* tslint:disable:max-line-length */
+
+import { GeometryObject } from 'geojson';
 
 /**
  * GeoJSon geometry
  */
-export interface Geometry {
-
-  /**
-   * the geometry type
-   */
-  type: 'Point' | 'LineString' | 'Polygon' | 'MultiPoint' | 'MultiLineString' | 'MultiPolygon';
+export interface Geometry extends GeometryObject {
+  coordinateVerbatim?: string;
 }
