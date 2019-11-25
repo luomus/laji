@@ -2,31 +2,37 @@
     <div class="tags-step-1" *ngIf="expert else checkTags">
       <label>{{ 'annotation.opinion' | translate }}</label>
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['positive','negative']: 'exclude': 'id': ['MMAN.5'] | sort: 'position'; let i = index;" class="tag-value">
-              <div class="delete" *ngIf="annotation.addedTags.length > 0 && annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)">X</div>
-              <div class="annotation-marker-new {{ item.quality }}"
-                [ngClass]="{'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)">
-                    <span>{{ item.id | toQName | label }}</span>
-              </div>
+            <main class="lu">
+                <!--<lu-button [disabled]="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)"
+                class="pill" [ngClass]="{'success': item.quality==='positive', 'alert': item.quality==='check', 'danger': item.quality==='negative' }" >{{ item.id | toQName | label }}</lu-button>-->
+                <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+                  <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</div>
+                </lu-checkbox>
+            </main>
         </div>
         <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-bottom:10px" [@fadeInOut]>
           <label>{{ 'annotation.check' | translate }}</label>
           <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
-            <div class="delete" *ngIf="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)">X</div>
-            <div class="annotation-marker-new {{ item.quality }}"
-              [ngClass]="{'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)" >
-                  <span>{{ item.id | toQName | label }}</span>
-          </div>
+              <main class="lu">
+                  <!--<lu-button [disabled]="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)"
+                  class="pill" [ngClass]="{'success': item.quality==='positive', 'alert': item.quality==='check', 'danger': item.quality==='negative' }" >{{ item.id | toQName | label }}</lu-button>-->
+                  <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+                    <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</div>
+                  </lu-checkbox>
+              </main>
+          </div>    
         </div>
-    </div>
     </div>
     <ng-template #checkTags>
         <label>Something to check?</label>
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
-            <div class="delete" *ngIf="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)">X</div>
-            <div class="annotation-marker-new {{ item.quality }}" 
-              [ngClass]="{'on': annotation.addedTags.indexOf(item.id | toQName) !== -1 }"  (click)="addToAddTags(item.id)">
-                  <span>{{ item.id | toQName | label }}</span>
-            </div>
+            <main class="lu">
+                <!--<lu-button [disabled]="annotation.addedTags.indexOf(item.id | toQName) !== -1" (click)="addToAddTags(item.id)"
+                class="pill" [ngClass]="{'success': item.quality==='positive', 'alert': item.quality==='check', 'danger': item.quality==='negative' }" >{{ item.id | toQName | label }}</lu-button>-->
+                <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+                  <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</div>
+                </lu-checkbox>
+            </main>           
         </div>
     </ng-template>
     <div class="alert alert-warning" *ngIf="alertNotSpamVerified">

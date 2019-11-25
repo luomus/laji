@@ -161,19 +161,30 @@ label {
     -moz-transition: ease-in-out 0.3s;
   }
 
-  :host(*):disabled  {
-    border:0;
+  :host ::ng-deep lu-checkbox input {
+    display: none
   }
 
-  label.checked div.check {
-    background-color:#E16200;
-    color:white;
+  :host ::ng-deep lu-checkbox label {
+    cursor: pointer;
+    margin-right: 5px;
   }
 
-  label.checked div.negative {
-    background-color:#ff0000;
-    color:white;
+  :host ::ng-deep lu-checkbox label.checked .danger {
+    background-color: #ff0000;
+    color: #FFF;
   }
+
+  :host ::ng-deep lu-checkbox label.checked .success {
+    background: #008400;
+    color: white;
+  }
+
+  :host ::ng-deep lu-checkbox label.checked .warning {
+    background: #E16200;
+    color: white;
+  }
+
   
   @media only screen and (min-width: 992px) and (max-width: 1600px) {
     .taxon label {
