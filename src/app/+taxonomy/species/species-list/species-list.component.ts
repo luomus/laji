@@ -331,6 +331,23 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
         '1000',
         this.searchQuery.listOptions.sortOrder,
         query.extraParameters
+      ).pipe(
+        map(data => {
+          if (data && Array.isArray(data.results)) {
+            data.results = data.results.map(taxon => {
+              if (taxon.parent && Array.isArray(taxon.nonHiddenParentsIncludeSelf)) {
+                return {...taxon, parent: Object.keys(taxon.parent).reduce((parent, level) => {
+                  if (taxon.nonHiddenParentsIncludeSelf.includes(taxon.parent[level].id)) {
+                    parent[level] = taxon.parent[level];
+                  }
+                  return parent;
+                }, {})};
+              }
+              return taxon;
+            });
+          }
+          return data;
+        })
       );
   }
 
@@ -361,9 +378,12 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       return arr;
     }, []);
 
-    if (selects.indexOf('id') === -1) {
-      selects.push('id');
-    }
+    ['id', 'nonHiddenParentsIncludeSelf'].forEach(field => {
+      if (selects.indexOf(field) === -1) {
+        selects.push(field);
+      }
+    });
+
     return selects.join(',');
   }
 
