@@ -134,6 +134,6 @@ export class LabelDesignerComponent {
     this.pdfTimeout = setTimeout(() => {
       this.pdfLoading = false;
       this.cdr.detectChanges();
-    }, 10000);
+    }, 600000);
   }
 }
