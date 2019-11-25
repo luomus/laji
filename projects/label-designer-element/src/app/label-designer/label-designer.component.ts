@@ -16,7 +16,8 @@ import {
   selector: 'label-designer',
   templateUrl: './label-designer.component.html',
   styleUrls: ['./label-designer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // This needs to be default otherwise initial changes are not populated on the places where the element is used!
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class LabelDesignerComponent {
 
@@ -134,6 +135,6 @@ export class LabelDesignerComponent {
     this.pdfTimeout = setTimeout(() => {
       this.pdfLoading = false;
       this.cdr.detectChanges();
-    }, 10000);
+    }, 600000);
   }
 }
