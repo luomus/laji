@@ -167,6 +167,17 @@ label {
     margin-right: 15px;
   }
 
+  :host ::ng-deep lu-checkbox label .pill {
+    color: #000;
+    background: #c4c4c4;
+    border: 1px solid black;
+  }
+
+  :host ::ng-deep lu-checkbox label.checked .pill {
+    color: #fff;
+    background: #000;
+  }
+
   :host ::ng-deep lu-checkbox label.checked .danger {
     background-color: #ff0000;
     color: #FFF;

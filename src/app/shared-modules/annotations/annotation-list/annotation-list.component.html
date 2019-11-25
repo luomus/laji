@@ -30,7 +30,16 @@
           </div>
         </div>
         <p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
-            <span>Taxon:</span> {{ annotation.identification.taxon }}
+            <span><b>Taxon: </b></span>
+            <span *ngIf="annotation.identification && annotation.identification.taxon.originalTaxon; else taxonVerbatim">
+                <laji-taxon-name [taxon]="annotation.identification.taxon.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
+            </span>
+            <ng-template #taxonVerbatim>
+              <span *ngIf="annotation.identification.taxon.taxonVerbatim; else reportedInformalTaxonGroup"></span>
+            </ng-template>
+            <ng-template #reportedInformalTaxonGroup>
+              <span>{{ annotation.identification.taxon }}</span>
+            </ng-template>
             <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''">,{{ annotation.identification.taxonSpecifier }}</ng-container>
         </p>
         <!--<span class="person pull-right">

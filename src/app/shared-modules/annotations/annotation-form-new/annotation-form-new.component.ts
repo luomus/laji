@@ -350,15 +350,15 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   }
 
-  addToRemoveTags(value, array) {
-    const index = array.indexOf(value);
+  addToRemoveTags(value) {
+    const index = this.annotation.removedTags.indexOf(value);
     if (index > -1) {
-      array.splice(index, 1);
+      this.annotation.removedTags.splice(index, 1);
     } else {
-      array.push(value);
+      this.annotation.removedTags.push(value);
     }
 
-    this.annotation.addedTags = [...this.annotation.addedTags];
+    this.annotation.removedTags = [...this.annotation.removedTags];
   }
 
 
