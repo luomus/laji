@@ -174,7 +174,7 @@ export class TaxonomyColumns {
         name: 'parent.' + parent + '.scientificName',
         prop: 'parent.' + parent,
         label: ['MX.' + parent, 'MX.scientificName'],
-        selectField: ['parent.' + parent + '.scientificName', 'parent.' + parent + '.cursiveName'],
+        selectField: ['parent.' + parent + '.scientificName', 'parent.' + parent + '.cursiveName', 'parent.' + parent + '.id'],
         cellTemplate: 'scientificName',
         headerTemplate: 'labelHeader'
       });
