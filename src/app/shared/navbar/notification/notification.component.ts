@@ -30,7 +30,7 @@ export class NotificationComponent implements OnInit {
   }
 
   initTargets() {
-    if (this.notification.annotation) {
+    if (this.notification && this.notification.annotation) {
       this.type = this.notification.notificationReason &&
         this.notification.notificationReason === Notification.NotificationReasonEnum.notificationReasonAnnotatedDocumentAnnotated ?
         'annotationCommented' : 'annotation';
@@ -44,11 +44,11 @@ export class NotificationComponent implements OnInit {
         own: this.notification.notificationReason !== Notification.NotificationReasonEnum.notificationReasonAnnotatedDocumentAnnotated,
         openAnnotation: 'true'
       };
-    } else if (this.notification.friendRequest) {
+    } else if (this.notification && this.notification.friendRequest) {
       this.type = 'friendRequest';
       this.by = IdService.getId(this.notification.friendRequest);
       this.targetPath = '/user/' + this.notification.toPerson;
-    } else if (this.notification.friendRequestAccepted) {
+    } else if (this.notification && this.notification.friendRequestAccepted) {
       this.type = 'friendRequestAccepted';
       this.by = IdService.getId(this.notification.friendRequestAccepted);
       this.targetPath = '/user/' + this.notification.toPerson;

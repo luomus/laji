@@ -30,6 +30,16 @@ interface State {
   loading: boolean;
 }
 
+const subscribeWithWrapper = (observable: Observable<any>, callback?) => {
+  const subject = new Subject<void>();
+  observable.subscribe((res) => {
+    if (callback) { callback(res); }
+    subject.next();
+    subject.complete();
+  });
+  return subject.asObservable();
+};
+
 @Injectable()
 export class NotificationsFacade {
   private store$ = new BehaviorSubject<State>({
@@ -79,7 +89,6 @@ export class NotificationsFacade {
 
   private incrementLoading() {
     if (this._loading >= 0) {
-      console.log('loading: true');
       this.loadingReducer(true);
     }
     this._loading++;
@@ -88,7 +97,6 @@ export class NotificationsFacade {
   private decrementLoading() {
     this._loading--;
     if (this._loading <= 0) {
-      console.log('loading: false');
       this.loadingReducer(false);
     }
   }
@@ -240,13 +248,3 @@ export class NotificationsFacade {
     ));
   }
 }
-
-const subscribeWithWrapper = (observable: Observable<any>, callback?) => {
-  const subject = new Subject<void>();
-  observable.subscribe((res) => {
-    if (callback) { callback(res); }
-    subject.next();
-    subject.complete();
-  });
-  return subject.asObservable();
-};

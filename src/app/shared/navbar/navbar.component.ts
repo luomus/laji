@@ -16,7 +16,6 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { timer, Subject } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
-import { DialogService } from '../service/dialog.service';
 import { PagedResult } from '../model/PagedResult';
 import { Notification } from '../model/Notification';
 import { isPlatformBrowser } from '@angular/common';
@@ -68,7 +67,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     });
     this.notificationsFacade.state$.pipe(takeUntil(this.unsubscribe$)).subscribe((state) => {
-      console.log(state);
       this.notifications = state.notifications;
       this.notificationsNotSeen = state.unseenCount;
       this.changeDetector.markForCheck();
