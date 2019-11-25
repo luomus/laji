@@ -243,6 +243,8 @@ export interface Taxonomy {
   typeSpecimenURI?: string;
 
   hasLatestRedListEvaluation?: boolean;
+
+  nonHiddenParentsIncludeSelf?: string[];
 }
 
 export interface RedListEvaluation {
