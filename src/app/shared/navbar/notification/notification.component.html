@@ -15,5 +15,8 @@
   <button type="button" class="delete" (click)="onRemove(notification)"><i class="glyphicon glyphicon-remove"></i></button>
 </div>
 <ng-template #ghost>
-  placeholder
+  <div class="notification-container">
+    <div class="notification ghost"></div>
+    <div class="delete ghost"></div>
+  </div>
 </ng-template>

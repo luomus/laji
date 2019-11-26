@@ -79,11 +79,7 @@
                   </li>
                   <li role="separator" class="divider"></li>
                   <li #notificationsRef>
-                    <laji-notifications
-                      [notifications]="notifications"
-                      [pageSize]="notificationPageSize"
-                      (close)="onClose()">
-                    </laji-notifications>
+                    <laji-notifications (close)="onClose()"></laji-notifications>
                   </li>
                 </ul>
               </li>

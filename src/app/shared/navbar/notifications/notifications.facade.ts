@@ -6,28 +6,9 @@ import { LajiApi, LajiApiService } from 'app/shared/service/laji-api.service';
 import { UserService } from 'app/shared/service/user.service';
 import { Notification } from 'app/shared/model/Notification';
 
-/**
- * REFACTOR PLAN
-1. get unseen notification count (on navbar load)
-2. get total notification count and initialize datasource with it
-3. bind notification sub to datasource
-4. let datasource call fetchpage
-
-- remove, mark as seen: remain unchanged
-- loadAll/subscribeAll/reduceAll are removed
-- loading is removed: instead initialize datasource with empty "loading" objects that are then treated as ghosts in UI
-
-UI CHANGES
-- scroll container has a static px width
-- notification component container gets 'display: flex' and the "left side" gets 'flex-grow: 1'
-- pagination indicator is removed
-- pagination controls are removed
- */
-
 interface State {
   notifications: PagedResult<Notification>;
   unseenCount: number;
-  loading: boolean;
 }
 
 const subscribeWithWrapper = (observable: Observable<any>, callback?) => {
@@ -50,7 +31,6 @@ export class NotificationsFacade {
       results: []
     },
     unseenCount: 0,
-    loading: true
   });
 
   state$: Observable<State> = this.store$.asObservable();
@@ -58,8 +38,12 @@ export class NotificationsFacade {
     map(state => state.notifications),
     distinctUntilChanged()
   );
+  unseenCount$: Observable<number> = this.store$.asObservable().pipe(
+    map(state => state.unseenCount),
+    distinctUntilChanged()
+  );
 
-  private _loading = 0;
+  pageSize = 5;
 
   constructor(private userService: UserService, private lajiApi: LajiApiService) {}
 
@@ -81,26 +65,6 @@ export class NotificationsFacade {
       });
   }
 
-  private loadingReducer(loading: boolean) {
-      this.store$.next({
-        ...this.store$.getValue(), loading
-      });
-  }
-
-  private incrementLoading() {
-    if (this._loading >= 0) {
-      this.loadingReducer(true);
-    }
-    this._loading++;
-  }
-
-  private decrementLoading() {
-    this._loading--;
-    if (this._loading <= 0) {
-      this.loadingReducer(false);
-    }
-  }
-
   private localUnseenCountReducer(amount = 1) {
     const currentState = this.store$.getValue();
     const unseenCount = currentState.unseenCount - amount;
@@ -109,8 +73,8 @@ export class NotificationsFacade {
     });
   }
 
-  private getUnseenNotificationsCount$(notifications: PagedResult<Notification>, pageSize: number): Observable<number> {
-    const allNotificationsInCurrentPage = notifications.total <= pageSize;
+  private getUnseenNotificationsCount$(notifications: PagedResult<Notification>): Observable<number> {
+    const allNotificationsInCurrentPage = notifications.total <= this.pageSize;
     const fromCurrentPage = () => {
       return of(notifications.results.reduce((cumulative, current) => cumulative + (current.seen ? 0 : 1), 0));
     };
@@ -128,30 +92,28 @@ export class NotificationsFacade {
     return allNotificationsInCurrentPage ? fromCurrentPage() : fromApi();
   }
 
-  private subscribeAll(page, pageSize) {
+  private subscribeAll(page) {
     return subscribeWithWrapper(
       this.lajiApi.getList(LajiApi.Endpoints.notifications, {
         personToken: this.userService.getToken(),
         page: page,
-        pageSize: pageSize
+        pageSize: this.pageSize
       }).pipe(
-        switchMap((notifications) => forkJoin(of(notifications), this.getUnseenNotificationsCount$(notifications, pageSize))),
+        switchMap((notifications) => forkJoin(of(notifications), this.getUnseenNotificationsCount$(notifications))),
         map((res) => ({notifications: res[0], unseen: res[1]}))
       ),
       this.allReducer.bind(this)
     );
   }
 
-  private subscribeNotifications(page = 0, pageSize = 5): Observable<void> {
+  private subscribeNotifications(page = 0): Observable<void> {
     return subscribeWithWrapper(
       of({}).pipe(
-        tap(this.incrementLoading.bind(this)),
         switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
           personToken: this.userService.getToken(),
           page: page,
-          pageSize: pageSize
-        })),
-        tap(this.decrementLoading.bind(this))
+          pageSize: this.pageSize
+        }))
       ),
       this.notificationsReducer.bind(this)
     );
@@ -198,16 +160,16 @@ export class NotificationsFacade {
     );
   }
 
-  loadNotifications(page, pageSize) {
-    this.subscribeNotifications(page, pageSize);
+  loadNotifications(page) {
+    this.subscribeNotifications(page);
   }
 
   loadUnseenCount() {
     this.subscribeUnseenCount();
   }
 
-  loadAll(page, pageSize) {
-    this.subscribeAll(page, pageSize);
+  loadAll(page) {
+    this.subscribeAll(page);
   }
 
   markAsSeen(notification: Notification): Observable<void> {

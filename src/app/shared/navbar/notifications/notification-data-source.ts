@@ -8,35 +8,56 @@ const pushFront = <T>(amt: number, arr: Array<T>): T[] => new Array(amt).fill(un
 export class NotificationDataSource extends DataSource<Notification> {
   private data$ = new BehaviorSubject<Notification[]>(undefined);
   private cachedData: Notification[] = [];
+  private fetchedPages = new Set<number>();
 
-  constructor(private facade: NotificationsFacade, private pageSize) {
+  constructor(private facade: NotificationsFacade) {
     super();
     facade.notifications$.subscribe((notifications) => {
-      if (notifications.total > this.cachedData.length) {
-        // new notifications are added to the front of the list since they are in chronological order
-        this.cachedData = pushFront(notifications.total - this.cachedData.length, this.cachedData);
-      } else if (notifications.total < this.cachedData.length) {
+      const newNotificationsExist = notifications.total > this.cachedData.length;
+      const notificationsWereRemoved = notifications.total < this.cachedData.length;
+      let refetch = new Set<number>();
+      if (newNotificationsExist) {
+        // notifications are assumed to be received in chronological order
+        const newNotificationAmount = notifications.total - this.cachedData.length;
+        this.cachedData = pushFront(newNotificationAmount, this.cachedData);
+
+        // shift fetched page numbers forward and refetch new stuff
+        const shiftAmt = this.getPageForIndex(newNotificationAmount - 1);
+        const remap = Array.from(this.fetchedPages.values()).map((pageNumber) => pageNumber + shiftAmt);
+        this.fetchedPages.clear();
+        remap.forEach((pageNumber) => this.fetchedPages.add(pageNumber));
+        for (let i = 0; i <= shiftAmt; i++) {
+          refetch.add(i);
+        }
+      } else if (notificationsWereRemoved) {
         this.cachedData = new Array(notifications.total).fill(undefined);
+        refetch = new Set(this.fetchedPages);
+        this.fetchedPages.clear();
+      }
+      this.fetchedPages.add(notifications.currentPage - 1);
+      if (newNotificationsExist || notificationsWereRemoved) {
+        this.fetchPages(Math.min(...refetch.values()),
+                        Math.min(
+                                Math.max(...refetch.values()),
+                                this.getPageForIndex(notifications.total - 1)
+                        ));
       }
       this.cachedData.splice(
         (notifications.currentPage - 1) * notifications.pageSize,
         notifications.pageSize,
         ...notifications.results
       );
-      console.log(this.cachedData);
       this.data$.next(this.cachedData);
     });
   }
 
   connect(collectionViewer: CollectionViewer): Observable<Notification[]> {
     collectionViewer.viewChange.subscribe(range => {
-      console.log(range);
       const firstMissingIndex = this.getFirstMissingIndexWithin(range);
       if (firstMissingIndex >= 0) {
         const lastMissingIndex = this.getLastMissingIndexWithin(range);
-        const startPage = this.getPageForIndex(firstMissingIndex);
-        const endPage = this.getPageForIndex(lastMissingIndex);
-        console.log(startPage, endPage);
+        const startPage = this.getPageForIndex(range.start + firstMissingIndex);
+        const endPage = this.getPageForIndex(range.end - lastMissingIndex);
         this.fetchPages(startPage, endPage);
       }
     });
@@ -46,44 +67,21 @@ export class NotificationDataSource extends DataSource<Notification> {
   disconnect(): void {
   }
 
-  private getFirstMissingIndexWithin(range: ListRange) {
-    return range.start + [...this.cachedData].splice(range.start, range.end).findIndex((d) => !d);
-/*     for (let i = range.start; i < range.end; i++) {
-      if (!this.cachedData[i]) {
-        out = range.start + i;
-      }
-    }
-    return out; */
-  }
-
-  private getLastMissingIndexWithin(range: ListRange) {
-    return range.end - [...this.cachedData].splice(range.start, range.end).reverse().findIndex((d) => !d);
-/*     let out = -1;
-    for (let i = range.end; i > range.start; i--) {
-      if (!this.cachedData[i]) {
-        out = range.end - i;
-      }
-    }
-    return out; */
-  }
+  private getFirstMissingIndexWithin = (range: ListRange) =>
+  [...this.cachedData].splice(range.start, range.end).findIndex((d) => !d)
+  private getLastMissingIndexWithin = (range: ListRange) =>
+  [...this.cachedData].splice(range.start, range.end).reverse().findIndex((d) => !d)
 
   private fetchPages(start: number, end: number) {
-    for (let i = start; i < end; i++) {
-      console.log('fetching page ', i);
-      this.facade.loadNotifications(i, this.pageSize);
+    for (let i = start; i <= end; i++) {
+      if (!this.fetchedPages.has(i)) {
+        this.facade.loadNotifications(i);
+        this.fetchedPages.add(i);
+      }
     }
   }
 
   private getPageForIndex(index: number): number {
-    return Math.floor(index / this.pageSize);
+    return Math.ceil(index / this.facade.pageSize);
   }
 }
-
-
-/*
-cachedData
-
-- initialize with the first page
-- if the size changes: shift all elements down by the amount that size was increased (assume)
-
-*/

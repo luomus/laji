@@ -9,25 +9,25 @@ import { IdService } from '../../service/id.service';
   styleUrls: ['./notification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotificationComponent implements OnInit {
-
+export class NotificationComponent {
   targetPath: string;
   targetQuery: any;
   target: string;
   by: string;
   type: 'annotation'|'annotationCommented'|'friendRequest'|'friendRequestAccepted';
 
-  @Input() notification: Notification;
+  private _notification: Notification;
+  @Input() set notification (notification: Notification) {
+    this._notification = notification;
+    this.initTargets();
+  }
+  get notification() {
+    return this._notification;
+  }
   @Output() removeNotification = new EventEmitter<Notification>();
   @Output() notificationSeen = new EventEmitter<Notification>();
 
-  constructor(
-    private changeDetectorRef: ChangeDetectorRef
-  ) { }
-
-  ngOnInit() {
-    this.initTargets();
-  }
+  constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
   initTargets() {
     if (this.notification && this.notification.annotation) {

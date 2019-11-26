@@ -1,10 +1,6 @@
-<ng-container *ngIf="notifications?.total > 0">
 <header class="lu">
   <span class="notifications-title fs-2">
     {{ 'notification.title' | translate }}:
-    <span *ngIf="notifications?.lastPage > 1">
-      ({{ notifications?.currentPage }} / {{ notifications?.lastPage }})
-    </span>
   </span>
   <a class="fs-1" (click)="removeAll()">{{ 'notification.deleteAll' | translate }}</a>
   <a class="fs-1" (click)="markAllAsSeen()">{{ 'notification.markAll' | translate }}</a>
@@ -20,17 +16,3 @@
         [notification]="notification"></li>
   </ul>
 </cdk-virtual-scroll-viewport>
-
-<nav *ngIf="notifications && notifications?.lastPage > 1" class="btn-group notification-pager" role="group">
-  <button type="button" class="btn btn-default"
-          [disabled]="notifications.currentPage <= 1"
-          (click)="prevNotificationPage()">
-    <i class="glyphicon glyphicon-chevron-left"></i>
-  </button>
-  <button type="button" class="btn btn-default"
-          [disabled]="notifications.currentPage >= notifications.lastPage"
-          (click)="nextNotificationPage()">
-    <i class="glyphicon glyphicon-chevron-right"></i>
-  </button>
-</nav>
-</ng-container>

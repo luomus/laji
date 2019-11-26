@@ -38,9 +38,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   redTheme = false;
   isProd = false;
   showSearch = false;
-  notifications: PagedResult<Notification>;
   notificationsNotSeen = 0;
-  notificationPageSize = 5;
   env = environment.type;
 
   constructor(
@@ -67,7 +65,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     });
     this.notificationsFacade.state$.pipe(takeUntil(this.unsubscribe$)).subscribe((state) => {
-      this.notifications = state.notifications;
       this.notificationsNotSeen = state.unseenCount;
       this.changeDetector.markForCheck();
     });
@@ -76,7 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       switchMap(() => timer(1000, 60000)),
       takeUntil(this.unsubscribe$)
     ).subscribe(() => {
-      this.notificationsFacade.loadAll(0, this.notificationPageSize);
+      this.notificationsFacade.loadAll(0);
       this.changeDetector.markForCheck();
     });
   }

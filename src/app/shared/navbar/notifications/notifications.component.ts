@@ -20,9 +20,6 @@ import { DialogService } from 'app/shared/service/dialog.service';
 export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit {
   unsubscribe$ = new Subject<void>();
 
-  @Input() notifications: PagedResult<Notification>;
-  @Input() pageSize = 5;
-
   notificationSource: NotificationDataSource;
 
   @Output() close = new EventEmitter<void>();
@@ -37,7 +34,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   ) {}
 
   ngOnInit(): void {
-    this.notificationSource = new NotificationDataSource(this.notificationsFacade, this.pageSize);
+    this.notificationSource = new NotificationDataSource(this.notificationsFacade);
   }
 
   ngAfterViewInit() {
@@ -51,25 +48,10 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.close.emit();
   }
 
-  nextNotificationPage() {
-    this.gotoNotificationPage(this.notifications.currentPage + 1);
-  }
-
-  prevNotificationPage() {
-    this.gotoNotificationPage(this.notifications.currentPage - 1);
-  }
-
-  private gotoNotificationPage(page) {
-    if (this.notifications.currentPage !== page) {
-      this.notificationsFacade.loadNotifications(page, this.pageSize);
-    }
-  }
-
   markAllAsSeen() {
     this.notificationsFacade.markAllAsSeen().pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe(() => {
-      this.notificationsFacade.loadNotifications(this.notifications.currentPage, this.pageSize);
       this.cdr.markForCheck();
     });
   }
@@ -80,7 +62,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
       switchMap(msg => this.dialogService.confirm(msg)),
       switchMap(res => res ? this.notificationsFacade.removeAll() : of(true))
     ).subscribe(() => {
-      this.notificationsFacade.loadNotifications(0, this.pageSize);
+      this.notificationsFacade.loadNotifications(0);
       this.cdr.markForCheck();
     });
   }
@@ -96,7 +78,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
       switchMap(msg => notification.seen ? of(true) : this.dialogService.confirm(msg)),
       filter(result => !!(result && notification.id)),
       switchMap(() => this.notificationsFacade.remove(notification))
-    ).subscribe(result => {
+    ).subscribe(() => {
       this.cdr.markForCheck();
     });
   }
