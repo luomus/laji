@@ -1,3 +1,10 @@
+<a name="3.2.1"></a>
+# 3.2.1 (2019-11-25)
+
+### Bug fixes
+
+* **editor:** fix adding fields dropdown not showing all the available fields.
+
 <a name="3.2.0"></a>
 # 3.2.0 (2019-10-25)
 
