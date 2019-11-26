@@ -30,7 +30,8 @@ export enum FormError {
   notFoundDocument,
   loadFailed,
   missingNamedPlace,
-  noAccess
+  noAccess,
+  noAccessToDocument
 }
 
 export enum Readonly {
@@ -295,7 +296,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
             return document;
           }),
           catchError(err => {
-            this.updateState({..._state, error: err.status === 404 ? FormError.notFoundDocument : FormError.loadFailed});
+            this.updateState({..._state, error:
+                 err.status === 404 ? FormError.notFoundDocument :
+                (err.status === 403 ? FormError.noAccessToDocument : FormError.loadFailed)});
             return of(null);
           })
         ))

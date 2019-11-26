@@ -187,6 +187,7 @@
   "haseka.form.failure": "Tallennus epäonnistui!",
   "haseka.form.formNotFound": "Lomaketta id:llä {{formId}} ei löytynyt.",
   "haseka.form.genericError": "Odottamaton virhe tapahtui. Yritä hetken kuluttua uudestaan ja jos virhe ei korjaannu, ota yhteyttä ylläpitoon.",
+  "haseka.form.noAccessToDocument": "Sinulla ei ole oikeuksia muokata tätä dokumenttia.",
   "haseka.form.hasChanges": "Havaintoerässä on muutoksia, joita ei ole vielä tallennettu",
   "haseka.form.localData": "Tästä lomakkeesta on tallentamaton havaintoerä. Klikkaa tästä palataksesi siihen.",
   "haseka.form.private": "Havaintoerää ei ole vielä julkaistu",
