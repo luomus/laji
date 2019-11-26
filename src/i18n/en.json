@@ -227,6 +227,7 @@
   "haseka.form.failure": "Failed to save!",
   "haseka.form.formNotFound": "Form with id {{formId}} was not found.",
   "haseka.form.genericError": "Unfortunately an unexpected error occurred. Please wait a while and try again in a little while. If the error doesn't get repaired, please contact support",
+  "haseka.form.noAccessToDocument": "You have no permissions to edit this document.",
   "haseka.form.hasChanges": "Submission has local changes that are not yet saved",
   "haseka.form.localData": "There’s an unsaved submission of this form. Click here to return to it.",
   "haseka.form.private": "Submission has not been published yet",
