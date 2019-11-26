@@ -19,6 +19,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy {
   annotationClass = Annotation.AnnotationClassEnum;
   changingLocale = false;
   open: boolean[] = undefined;
+  showLinks = false;
 
   constructor() { }
 
