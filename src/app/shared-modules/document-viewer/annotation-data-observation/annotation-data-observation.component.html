@@ -1,7 +1,7 @@
 <ng-container>
     <div class="info">
         <div class="title">
-            {{ 'annotation.observationDataFrom' | translate }} {{ collectionId | toQName | collectionName }}<span *ngIf="createdDate">, {{ 'annotation.observationDataEntered' | translate }} {{ createdDate | date: 'dd/MM/yyyy' }}</span>
+            {{ 'annotation.observationDataFrom' | translate }} {{ collectionId | toQName | collectionName }}<span *ngIf="createdDate">, {{ 'annotation.observationDataEntered' | translate }} {{ createdDate | date: 'yyyy-MM-dd' }}</span>
         </div>
               
         <div class="content">
@@ -21,19 +21,17 @@
                 <li *ngIf="gathering.eventDate || gathering.displayDateTime">
                     <b>{{ 'observation.form.date' | translate }}: </b>
                     <span *ngIf="gathering.eventDate && gathering.eventDate.begin !== gathering.eventDate.end; else oneDate">
-                        {{ gathering.eventDate.begin | date: 'dd/MM/yyyy' }} - {{ gathering.eventDate.end | date: 'dd/MM/yyyy' }}
+                        {{ gathering.eventDate.begin }} - {{ gathering.eventDate.end }}
                     </span>
                     <ng-template #oneDate>
-                        {{ gathering.displayDateTime | date: 'dd/MM/yyyy' }}
+                        {{ gathering.displayDateTime }}
                     </ng-template>
                 </li>
                 <li *ngIf="editors.length > 0">
-                    <b>
-                        <span *ngIf="editors.length === 1; else multiple">{{ 'observation.form.observer' | translate }}:</span> 
-                        <ng-template #multiple>
-                           <span *ngIf="editors.length > 1">{{ 'wbc.stats.route.team' | translate }}:</span> 
-                        </ng-template>
-                    </b>
+                    <b *ngIf="editors.length === 1; else multiple">{{ 'observation.form.observer' | translate }}: </b>
+                    <ng-template #multiple>
+                        <b *ngIf="editors.length > 1">{{ 'wbc.stats.route.team' | translate }}: </b>
+                    </ng-template>
                     <span>
                         <ul class="separated-list">
                             <li *ngFor="let user of editors; let i=index">{{ user | toQName | label }}</li> 

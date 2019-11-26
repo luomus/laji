@@ -74,8 +74,8 @@ label {
   }
 
   .annotation-form label.taxonomy {
-    display: inline;
-    line-height: initial;
+    display: block;
+    line-height: 16px;
   }
 
   .annotation-form label.check-delete {
@@ -214,7 +214,7 @@ label {
   
   @media only screen and (min-width: 992px) and (max-width: 1600px) {
     .taxon label {
-      height: 35px;
+      height: 20px;
       line-height: 15px;
     }
 
@@ -233,7 +233,7 @@ label {
   
   @media only screen and (min-width: 768px) and (max-width: 1200px)  {
    .taxon div:nth-child(2) label, .taxon div:nth-child(3) label {
-     height: auto;
+     height: 20px;
      margin-top: 10px;
    }
 

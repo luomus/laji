@@ -11,6 +11,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy {
 
   @Input() annotations: Annotation[];
   @Input() personID: string;
+  @Input() showLinks = true;
   @Output() remove = new EventEmitter<Annotation>();
 
   annotationTagsObservation = Global.annotationTags;

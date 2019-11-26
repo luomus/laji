@@ -13,6 +13,7 @@ import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.servic
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { Global } from '../../../../environments/global';
 import { format } from 'd3-format';
+import { IdService } from '../../../shared/service/id.service';
 
 @Component({
   selector: 'laji-annotation-form-new',
@@ -124,6 +125,11 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.initAnnotation();
   }
 
+  select(event) {
+    this.annotation.identification.taxonID = event.item.key;
+    this.annotation.identification.taxon = event.value;
+  }
+
   deleteSelected(id) {
     this.cd.detectChanges();
     if (this.expert) {
@@ -139,6 +145,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   cleanForm() {
     this.annotation.identification.taxon = '';
+    this.annotation.identification.taxonID = '';
     this.annotation.identification.taxonSpecifier = '';
     this.annotation.notes = '';
     this.annotation.removedTags = [];
@@ -193,12 +200,14 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
           this.unit.linkings.taxon.vernacularName, this.unit, this.translate.currentLang
           );
+          this.annotation.identification.taxonID =  IdService.getId(this.unit.linkings.taxon.id);
           this.cd.detectChanges();
           this.formAnnotation.control.markAsDirty();
       } else {
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
           this.unit.linkings.originalTaxon.vernacularName, this.unit, this.translate.currentLang
           );
+          this.annotation.identification.taxonID =  IdService.getId(this.unit.linkings.originalTaxon.id);
           this.cd.detectChanges();
           this.formAnnotation.control.markAsDirty();
       }
@@ -389,7 +398,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       }
     }*/
 
-    if ((this.annotation.notes === '' || this.annotation.notes === undefined) && this.annotation.addedTags.length === 0) {
+    if ((this.annotation.notes === '' || this.annotation.notes === undefined) && this.annotation.addedTags.length === 0 &&
+    (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)) {
       return true;
     }
   }

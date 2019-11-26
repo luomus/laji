@@ -69,6 +69,7 @@ export namespace Annotation {
 
   export interface Identification {
     taxon: string;
+    taxonID: string;
     taxonSpecifier: string;
   }
 

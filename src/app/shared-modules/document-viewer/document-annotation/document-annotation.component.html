@@ -109,7 +109,7 @@
                   <ul class="separated-list">
                     <li *ngFor="let user of document.editorUserIds; let i=index"><a target="_blank" href="/user/{{ user | toQName }}">{{ user | toQName | label }}</a></li> 
                   </ul>
-                  <span *ngIf="document.createdDate">on {{ document.createdDate | date: 'dd-MM-yyyy' }}</span></span>
+                  <span *ngIf="document.createdDate">on {{ document.createdDate | date: 'yyyy-MM-dd' }}</span></span>
             </laji-row>
             <laji-row [title]="'haseka.submissions.unitCount' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
                   <span>{{ unitCnt }}

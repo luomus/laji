@@ -1,6 +1,6 @@
 <laji-issues [data]="gathering"></laji-issues>
 <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="false">
-  {{ gathering.displayDateTime | date:'dd-MM-yyyy' }}
+  {{ gathering.displayDateTime }}
 </laji-row>
 <laji-row *ngIf="gathering.team" [title]="'observation.form.observer' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
   <span>

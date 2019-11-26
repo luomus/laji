@@ -13,7 +13,12 @@
                 </ng-template>
             </ng-container>
             <ng-container *ngIf="!showAnnotation">
-                <laji-observation-effective-tags-taxon></laji-observation-effective-tags-taxon>
+                <ng-container *ngFor="let unit of gathering?.units">
+                    <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
+                        <laji-row *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability" [title]="'annotation.quality.grade' | translate" [noTitleSpace]="false" ngPreserveWhitespaces> {{ unit.quality.taxon.reliability | label: 'warehouse' }}</laji-row>
+                        <laji-observation-effective-tags-taxon [unit]="unit"></laji-observation-effective-tags-taxon>
+                    </ng-container>
+                </ng-container>   
                 <laji-gathering-annotations-rows [gathering]="gathering"></laji-gathering-annotations-rows>
                 <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
             </ng-container>

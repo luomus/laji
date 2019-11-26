@@ -50,6 +50,7 @@ export class AnnotationsComponent implements OnInit {
       targetID: IdService.getId(this.targetID),
       identification: {
         taxon: '',
+        taxonID: '',
         taxonSpecifier: ''
       },
       addedTags: [],

@@ -47,9 +47,10 @@
     <div class="row taxon" *ngIf="!isEditor && this.annotation.addedTags.indexOf('MMAN.3') === -1" [@fadeInOut]>
       <div>
         <div class="col-lg-3 col-md-12 col-sm-12">
-            <label class="taxonomy">{{ 'taxonomy.taxonomy' | translate }}</label> 
+            <label class="taxonomy">{{ 'annotation.addIdentification' | translate }}</label> 
         </div>
-        <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="col-md-12 col-sm-12" [ngClass]="{'col-lg-6': unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.5' | toQName) === -1,
+        'col-lg-9': !unit.linkings || (!unit.linkings.originalTaxon || !unit.linkings.taxon) || annotation.addedTags.indexOf('MMAN.5' | toQName) !== -1}">
             <input #taxon
             [ngClass]="{loading: typeaheadLoading}"
             type="text"
@@ -66,6 +67,7 @@
             [typeaheadItemTemplate]="taxonItem"
             autocomplete="off"
             autocorrect="off"
+            (typeaheadOnSelect)="select($event)"
           >
           <ng-template #taxonItem let-model="item">
             <h5 class="autosuggest-value {{model.groups}} informal-group-image">
@@ -82,10 +84,10 @@
         <div class="col-sm-12 no-padding" style="margin-top: 10px;">
           <div class="col-sm-3">
             <div class="col-lg-9 col-sm-12 no-padding">
-              <label>{{ 'annotation.coll' | translate }}</label>
+              <label class="taxonomy">{{ 'annotation.coll' | translate }}</label>
             </div>
             <div class="col-lg-3 col-sm-12 no-padding">
-              <label><input type="checkbox"></label>
+              <label><lu-checkbox></lu-checkbox></label>
             </div>
           </div>
           <div class="col-sm-9">
