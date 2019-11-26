@@ -1,6 +1,6 @@
 <form [hidden]="!visible" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
     <div class="tags-step-1" *ngIf="expert else checkTags">
-      <label>{{ 'annotation.opinion' | translate }}</label>
+      <label>{{ 'annotation.addTags' | translate }}</label>
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['positive','negative']: 'exclude': 'id': ['MMAN.5'] | sort: 'position'; let i = index;" class="tag-value">
             <main class="lu">
                 <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
@@ -8,8 +8,7 @@
                 </lu-checkbox>
             </main>
         </div>
-        <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-bottom:10px" [@fadeInOut]>
-          <label>{{ 'annotation.check' | translate }}</label>
+        <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-top:10px; margin-bottom:10px" [@fadeInOut]>
           <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
               <main class="lu">
                   <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
@@ -20,7 +19,7 @@
         </div>
     </div>
     <ng-template #checkTags>
-        <label>Something to check?</label>
+        <label>{{ 'annotation.addTags' | translate }}</label>
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
             <main class="lu">
                 <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
