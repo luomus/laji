@@ -121,6 +121,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       })));
   }
 
+
   ngOnChanges() {
     this.initAnnotation();
   }
@@ -128,6 +129,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   select(event) {
     this.annotation.identification.taxonID = event.item.key;
     this.annotation.identification.taxon = event.value;
+  }
+
+  saveTaxon(event) {
+    this.annotation.identification.taxonID = '';
   }
 
   deleteSelected(id) {
