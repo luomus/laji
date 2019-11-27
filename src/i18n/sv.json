@@ -218,6 +218,7 @@
   "haseka.form.failure": "Det gick inte att spara!",
   "haseka.form.formNotFound": "Formulär med id {{formId}} hittades inte.",
   "haseka.form.genericError": "Tyvärr ett oväntat fel inträffade. Vänta ett tag och försök igen om en liten stund. Om felet inte försvinner, kontakta support.",
+  "haseka.form.noAccessToDocument": "Du har inga behörigheter att redigera det här observationbatch.",
   "haseka.form.hasChanges": "Observationbatch har lokala ändringar som ännu inte har sparats.",
   "haseka.form.localData": "Det finns en osparad inlämning av detta formulär. Klicka här för att återvända till det.",
   "haseka.form.private": "Observationbatch är inte ännu publicerat",
