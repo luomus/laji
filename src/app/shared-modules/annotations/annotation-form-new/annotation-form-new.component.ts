@@ -300,7 +300,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   saveAnnotation() {
-    return;
     if (this.sending) {
       return;
     }
