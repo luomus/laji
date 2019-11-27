@@ -2,9 +2,8 @@ import {
   Component, ChangeDetectionStrategy, OnDestroy, OnInit, Input, Output,
   ChangeDetectorRef, Renderer2, ElementRef, AfterViewInit, EventEmitter
 } from '@angular/core';
-import { PagedResult } from 'app/shared/model/PagedResult';
 import { of, Subject } from 'rxjs';
-import { switchMap, takeUntil, filter } from 'rxjs/operators';
+import { switchMap, takeUntil, filter, tap } from 'rxjs/operators';
 import { NotificationsFacade } from './notifications.facade';
 import { NotificationDataSource } from './notification-data-source';
 import { TranslateService } from '@ngx-translate/core';
@@ -60,6 +59,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.translate.get('notification.delete').pipe(
       takeUntil(this.unsubscribe$),
       switchMap(msg => this.dialogService.confirm(msg)),
+      tap(() => this.notificationSource.removeAllNotificationsFromCache()),
       switchMap(res => res ? this.notificationsFacade.removeAll() : of(true))
     ).subscribe(() => {
       this.notificationsFacade.loadNotifications(0);
@@ -77,6 +77,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.translate.get('notification.delete').pipe(
       switchMap(msg => notification.seen ? of(true) : this.dialogService.confirm(msg)),
       filter(result => !!(result && notification.id)),
+      tap(() => this.notificationSource.removeNotificationFromCache(notification.id)),
       switchMap(() => this.notificationsFacade.remove(notification))
     ).subscribe(() => {
       this.cdr.markForCheck();

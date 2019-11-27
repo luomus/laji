@@ -64,8 +64,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.changeDetector.markForCheck();
       }
     });
-    this.notificationsFacade.state$.pipe(takeUntil(this.unsubscribe$)).subscribe((state) => {
-      this.notificationsNotSeen = state.unseenCount;
+    this.notificationsFacade.unseenCount$.pipe(takeUntil(this.unsubscribe$)).subscribe((unseenCount) => {
+      this.notificationsNotSeen = unseenCount;
       this.changeDetector.markForCheck();
     });
     this.userService.isLoggedIn$.pipe(
@@ -73,7 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       switchMap(() => timer(1000, 60000)),
       takeUntil(this.unsubscribe$)
     ).subscribe(() => {
-      this.notificationsFacade.loadAll(0);
+      this.notificationsFacade.loadEmptyPageAndUnseenCount();
       this.changeDetector.markForCheck();
     });
   }

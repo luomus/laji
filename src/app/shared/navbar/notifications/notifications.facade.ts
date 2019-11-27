@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, forkJoin, Subject } from 'rxjs';
 import { PagedResult } from 'app/shared/model/PagedResult';
-import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap, take } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from 'app/shared/service/laji-api.service';
 import { UserService } from 'app/shared/service/user.service';
 import { Notification } from 'app/shared/model/Notification';
@@ -34,11 +34,11 @@ export class NotificationsFacade {
   });
 
   state$: Observable<State> = this.store$.asObservable();
-  notifications$: Observable<PagedResult<Notification>> = this.store$.asObservable().pipe(
+  notifications$: Observable<PagedResult<Notification>> = this.state$.pipe(
     map(state => state.notifications),
     distinctUntilChanged()
   );
-  unseenCount$: Observable<number> = this.store$.asObservable().pipe(
+  unseenCount$: Observable<number> = this.state$.pipe(
     map(state => state.unseenCount),
     distinctUntilChanged()
   );
@@ -47,7 +47,7 @@ export class NotificationsFacade {
 
   constructor(private userService: UserService, private lajiApi: LajiApiService) {}
 
-  private allReducer(data: {notifications, unseen}) {
+  private notificationsAndUnseenCountReducer(data: {notifications, unseen}) {
       this.store$.next({
         ...this.store$.getValue(), notifications: data.notifications, unseenCount: data.unseen
       });
@@ -92,29 +92,27 @@ export class NotificationsFacade {
     return allNotificationsInCurrentPage ? fromCurrentPage() : fromApi();
   }
 
-  private subscribeAll(page) {
+  private subscribeEmptyPageAndUnseenCount() {
+    return subscribeWithWrapper(
+      this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+        personToken: this.userService.getToken(),
+        page: 0,
+        pageSize: 1
+      }).pipe(
+        switchMap((notifications) => forkJoin(of(notifications), this.getUnseenNotificationsCount$(notifications))),
+        map((res) => ({notifications: res[0], unseen: res[1]}))
+      ),
+      this.notificationsAndUnseenCountReducer.bind(this)
+    );
+  }
+
+  private subscribeNotifications(page = 1): Observable<void> {
     return subscribeWithWrapper(
       this.lajiApi.getList(LajiApi.Endpoints.notifications, {
         personToken: this.userService.getToken(),
         page: page,
         pageSize: this.pageSize
-      }).pipe(
-        switchMap((notifications) => forkJoin(of(notifications), this.getUnseenNotificationsCount$(notifications))),
-        map((res) => ({notifications: res[0], unseen: res[1]}))
-      ),
-      this.allReducer.bind(this)
-    );
-  }
-
-  private subscribeNotifications(page = 0): Observable<void> {
-    return subscribeWithWrapper(
-      of({}).pipe(
-        switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-          personToken: this.userService.getToken(),
-          page: page,
-          pageSize: this.pageSize
-        }))
-      ),
+      }),
       this.notificationsReducer.bind(this)
     );
   }
@@ -168,25 +166,26 @@ export class NotificationsFacade {
     this.subscribeUnseenCount();
   }
 
-  loadAll(page) {
-    this.subscribeAll(page);
+  loadEmptyPageAndUnseenCount() {
+    this.subscribeEmptyPageAndUnseenCount();
   }
 
   markAsSeen(notification: Notification): Observable<void> {
-    return subscribeWithWrapper(this.subscribeMarkAsSeen(notification).pipe(
-      switchMap(() => this.subscribeNotifications())
-    ));
+    return subscribeWithWrapper(this.subscribeMarkAsSeen(notification));
   }
 
   markAllAsSeen(): Observable<void> {
     return subscribeWithWrapper(this.notifications$.pipe(
+      take(1),
       switchMap((notifications) => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
         personToken: this.userService.getToken(),
-        page: 0,
+        page: 1,
         pageSize: notifications.total
       })),
-      switchMap((notifications) => forkJoin(notifications.results.map((notification) => this.subscribeMarkAsSeen(notification)))),
-      switchMap(() => this.subscribeNotifications())
+      tap((notifications) => this.notificationsReducer(
+          {...notifications, results: notifications.results.map((notification) => ({...notification, seen: true}))}
+      )),
+      switchMap((notifications) => forkJoin(notifications.results.map((notification) => this.subscribeMarkAsSeen(notification))))
     ));
   }
 
