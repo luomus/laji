@@ -16,7 +16,7 @@
     <div class="alert alert-warning">
         {{ 'annotation.comment.processing' | translate }}
     </div>
-    <laji-row *ngIf="unit.linkings && unit.linkings.taxon" [title]="'annotation.effectiveTaxon' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+    <laji-row *ngIf="unit.linkings && unit.linkings.taxon || unit.taxonVerbatim || unit.reportedInformalTaxonGroup" [title]="'annotation.effectiveTaxon' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
         <span *ngIf="unit.linkings && unit.linkings.taxon; else taxonVerbatim">
             <laji-taxon-name [taxon]="unit.linkings.taxon"></laji-taxon-name>
         </span>
