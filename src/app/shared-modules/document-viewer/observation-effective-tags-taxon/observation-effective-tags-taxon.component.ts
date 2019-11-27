@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Global } from '../../../../environments/global';
 
 
 @Component({
@@ -10,9 +11,12 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit {
 
   @Input() unit: any;
 
+  annotationTagsObservation = Global.annotationTags;
+
   constructor() { }
 
   ngOnInit() {
+     this.unit.addedTags = [];
   }
 
 }

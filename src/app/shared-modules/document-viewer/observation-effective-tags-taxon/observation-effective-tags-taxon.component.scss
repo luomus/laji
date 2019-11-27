@@ -1,0 +1,15 @@
+div {
+    &.effective-taxon-tags {
+        margin-bottom:20px;
+        span {
+            &.small-text {
+                display: block;
+                font-size: 12px;
+            }
+        }
+    }
+    &.tag {
+        display:inline-block;
+        margin: 0 5px 5px 0;
+    }
+}
