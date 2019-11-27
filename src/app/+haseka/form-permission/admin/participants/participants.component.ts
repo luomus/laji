@@ -7,6 +7,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { Subscription } from 'rxjs';
 import { ExportService } from '../../../../shared/service/export.service';
 import * as moment from 'moment';
+import { BookType } from 'xlsx';
 
 @Component({
   selector: 'laji-form-participants',
@@ -77,9 +78,7 @@ export class ParticipantsComponent implements OnInit, OnDestroy {
     this.fetching = true;
     this.participants$ = this.formService.getParticipants(this.form).pipe(
       map(this.formatData),
-      switchMap(data => this.exportService.getAoa<any>(this.columns, data)),
-      map(aoa => this.exportService.getBufferFromAoa(aoa, type)),
-      map(buffer => this.exportService.exportArrayBuffer(buffer, `laji-${this.form.id}-participants`, type))
+      switchMap(data => this.exportService.export(data, this.columns, type as BookType, `laji-${this.form.id}-participants`))
     ).subscribe(() => {
       this.fetching = false;
     });

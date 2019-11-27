@@ -536,4 +536,18 @@ export class TableColumnService {
   getColumns(name: string[]): ObservationTableColumn[] {
     return name.map(n => this.getColumn(n));
   }
+
+  getSelectFields(selected: string[], query?: any) {
+    const columnLookup = this.allColumns.reduce((prev, column) => {
+        prev[column.name] = column;
+        return prev;
+      }, {});
+    const selects = selected.map(field => columnLookup[field].selectField || field);
+    if (query) {
+      if (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken) {
+        selects.push('document.quality,gathering.quality,unit.quality');
+      }
+    }
+    return selects;
+  }
 }

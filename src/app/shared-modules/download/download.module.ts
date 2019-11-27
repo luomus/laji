@@ -5,6 +5,7 @@ import { SpinnerModule } from '../spinner/spinner.module';
 import { ModalModule } from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
+import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 
 @NgModule({
   declarations: [DownloadComponent],
@@ -13,7 +14,8 @@ import { FormsModule } from '@angular/forms';
     ModalModule,
     TranslateModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    LajiUiModule
   ],
   exports: [DownloadComponent]
 })

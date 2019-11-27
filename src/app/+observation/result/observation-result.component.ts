@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
-import { VisibleSections } from '..';
+import { ObservationDownloadComponent, VisibleSections } from '..';
 
 const tabNameToIndex = {
   map: 0,
@@ -63,6 +63,7 @@ export class ObservationResultComponent {
   @Output() listSettingsChange = new EventEmitter<ISettingResultList>();
 
   @ViewChild(ObservationMapComponent, { static: false }) observationMap: ObservationMapComponent;
+  @ViewChild(ObservationDownloadComponent, { static: true }) downloadModal: ObservationDownloadComponent;
 
   activated = {};
   lastTabActive = 'map';
@@ -72,7 +73,9 @@ export class ObservationResultComponent {
 
   private _active;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router
+  ) {}
 
   @Input()
   set active(value) {
@@ -119,5 +122,9 @@ export class ObservationResultComponent {
   onSelect(tabIndex: number) {
     this.lastTabActive = tabIndexToName[tabIndex];
     this.router.navigate(['observation', tabIndexToName[tabIndex]], {queryParams: this.query});
+  }
+
+  openDownloadModal() {
+    this.downloadModal.openModal();
   }
 }

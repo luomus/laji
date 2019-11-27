@@ -11,7 +11,7 @@ import {
 } from 'rxjs/operators';
 import {
   from,
-  Observable,
+  Observable, of,
   throwError as observableThrowError
 } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -30,7 +30,7 @@ interface IInternalObservationTableColumn extends ObservationTableColumn {
 }
 
 @Injectable()
-export class ObservationListService {
+export class ObservationResultService {
 
   public idFields = ['unit.unitId', 'document.documentId'];
 
@@ -126,11 +126,46 @@ export class ObservationListService {
     return this.data;
   }
 
+  getAll(
+    query: WarehouseQueryInterface,
+    selected: string[],
+    orderBy: string[],
+    lang: string
+  ): Observable<any[]> {
+    return this._getAll(
+      query,
+      selected,
+      orderBy,
+      lang
+    );
+  }
+
+  private _getAll(
+    query: WarehouseQueryInterface,
+    selected: string[],
+    orderBy: string[],
+    lang: string,
+    data: any[] = [],
+    page = 1,
+    pageSize = 1000
+  ): Observable<any> {
+    return this.getList(query, selected, page, pageSize, orderBy, lang).pipe(
+      switchMap(result => {
+        data.push(...result.results);
+        if (result.lastPage > result.currentPage) {
+          return this._getAll(query, selected, orderBy, lang, data, result.currentPage + 1);
+        } else {
+          return of(data);
+        }
+      })
+    );
+  }
+
   private prepareFields(select: string[], useTrueFieldPath = true): string[] {
     const exist = {};
     return select.join(',').split(',').reduce((prev, val) => {
       if (useTrueFieldPath) {
-        val = ObservationListService.trueFieldPath(val);
+        val = ObservationResultService.trueFieldPath(val);
       }
       if (!exist[val]) {
         exist[val] = true;
@@ -234,7 +269,7 @@ export class ObservationListService {
 
   private addFacts(document: object, cols: ObservationTableColumn[]) {
     cols.forEach(col => {
-      const paths = ObservationListService.trueFieldPath(col.name).split('.');
+      const paths = ObservationResultService.trueFieldPath(col.name).split('.');
       const targetPaths = (col.name).split('.');
       const facts = this.pickFacts(document, paths, col.fact);
       if (facts.length > 0) {

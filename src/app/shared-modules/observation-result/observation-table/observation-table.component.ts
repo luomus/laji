@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { ObservationListService } from '../service/observation-list.service';
+import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { BsModalService, ModalDirective } from 'ngx-bootstrap';
@@ -26,12 +26,13 @@ import {
 } from '../../datatable/service/table-column.service';
 import { map, switchMap } from 'rxjs/operators';
 import { ExportService } from '../../../shared/service/export.service';
+import { BookType } from 'xlsx';
 
 @Component({
   selector: 'laji-observation-table',
   templateUrl: './observation-table.component.html',
   styleUrls: ['./observation-table.component.css'],
-  providers: [ObservationListService],
+  providers: [ObservationResultService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
@@ -115,7 +116,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() showRowAsLink = true;
 
   constructor(
-    private resultService: ObservationListService,
+    private resultService: ObservationResultService,
     private changeDetectorRef: ChangeDetectorRef,
     private modalService: BsModalService,
     private logger: Logger,
@@ -316,35 +317,18 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   download(type: string) {
     this.downloadLoading = true;
     const columns = this.tableColumnService.getColumns(this._originalSelected);
-    this.getAllObservations().pipe(
-      switchMap(data => this.exportService.getAoa<any>(columns, data)),
-      map(aoa => this.exportService.getBufferFromAoa(aoa, type)),
-      map(buffer => this.exportService.exportArrayBuffer(buffer, 'laji-data', type))
+    this.resultService.getAll(
+      this.query,
+      this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
+      [...this.orderBy, this.defaultOrder],
+      this.lang
+    ).pipe(
+      switchMap(data => this.exportService.export(data, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;
         this.changeDetectorRef.markForCheck();
       },
       (err) => this.logger.error('Simple download failed', err));
-  }
-
-  private getAllObservations(data: any[] = [], page = 1, pageSize = 1000): Observable<any[]> {
-    return this.resultService.getList(
-      this.query,
-      this.getSelectFields(this.columnSelector.columns, this.query),
-      page,
-      pageSize,
-      [...this.orderBy, this.defaultOrder],
-      this.lang
-    ).pipe(
-      switchMap(result => {
-        data.push(...result.results);
-        if (result.lastPage > result.currentPage) {
-          return this.getAllObservations(data, result.currentPage + 1);
-        } else {
-          return of(data);
-        }
-      })
-    );
   }
 }

@@ -7,13 +7,13 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
 import { COLUMNS, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
-import { ObservationListService } from '../../shared-modules/observation-result/service/observation-list.service';
+import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 
 @Component({
   selector: 'laji-genetic-resource',
   templateUrl: './genetic-resource.component.html',
   styleUrls: ['./genetic-resource.component.scss'],
-  providers: [ObservationFacade, WarehouseApi, TableColumnService, ObservationListService],
+  providers: [ObservationFacade, WarehouseApi, TableColumnService, ObservationResultService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GeneticResourceComponent extends AbstractObservation implements OnInit, OnDestroy {
@@ -30,7 +30,7 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
     protected searchQuery: SearchQueryService,
     protected warehouseApi: WarehouseApi,
     private tableColumnService: TableColumnService,
-    private observationListService: ObservationListService
+    private observationListService: ObservationResultService
   ) {
     super();
     this.observationListService.idFields = ['sample.sampleId', 'unit.unitId', 'document.documentId'];

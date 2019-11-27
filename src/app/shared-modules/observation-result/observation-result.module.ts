@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ObservationTableComponent } from './observation-table/observation-table.component';
-import { ObservationListService } from './service/observation-list.service';
+import { ObservationResultService } from './service/observation-result.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
 import { SharedModule } from '../../shared/shared.module';
@@ -34,7 +34,7 @@ import { ChartsModuleBarVerticalGroup } from '../bar-chart/ng2-charts.module';
     ObservationYearChartComponent,
     ObservationMonthDayChartComponent
   ],
-  providers: [ObservationListService],
+  providers: [ObservationResultService],
   exports: [ObservationTableComponent, SelectedFieldGroupComponent, ObservationYearChartComponent, ObservationMonthDayChartComponent]
 })
 export class ObservationResultModule { }

@@ -1,7 +1,7 @@
-import { map } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
+import { map, switchMap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, ViewChild } from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
-import { UserService } from '../../shared/service/user.service';
+import { ISettingResultList, UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { ToastsService } from '../../shared/service/toasts.service';
@@ -9,6 +9,11 @@ import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { BsModalService, ModalDirective } from 'ngx-bootstrap';
+import { BookType } from 'xlsx';
+import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
+import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
+import { ExportService } from '../../shared/service/export.service';
 
 
 enum RequestStatus {
@@ -24,15 +29,20 @@ enum RequestStatus {
 })
 export class ObservationDownloadComponent implements OnDestroy {
 
+  @ViewChild('downloadModal', { static: true }) modal: ModalDirective;
+
   @Input() unitCount: number;
   @Input() speciesCount: number;
   @Input() taxaLimit = 1000;
   @Input() loadLimit = 2000000;
+  @Input() maxSimpleDownload = 10000;
+  @Input() settings: ISettingResultList;
 
   privateCount: number;
   hasPersonalData = false;
   requests: {[place: string]: RequestStatus} = {};
   requestStatus = RequestStatus;
+  downloadLoading = false;
   description = '';
   csvParams = '';
 
@@ -47,16 +57,24 @@ export class ObservationDownloadComponent implements OnDestroy {
   constructor(public searchQuery: SearchQueryService,
               public userService: UserService,
               public translate: TranslateService,
+              private observationResultService: ObservationResultService,
               private toastsService: ToastsService,
               private warehouseService: WarehouseApi,
               private logger: Logger,
-              private cd: ChangeDetectorRef
+              private cd: ChangeDetectorRef,
+              private tableColumnService: TableColumnService,
+              private exportService: ExportService,
+              private modalService: BsModalService
   ) { }
 
   ngOnDestroy(): void {
     if (this.cntSub) {
       this.cntSub.unsubscribe();
     }
+  }
+
+  openModal() {
+    this.modal.show();
   }
 
   @Input() set query(query: WarehouseQueryInterface) {
@@ -129,6 +147,7 @@ export class ObservationDownloadComponent implements OnDestroy {
           'result.load.thanksPublic' : 'result.load.thanksRequest'
         ));
         this.requests[type] = RequestStatus.done;
+        this.modal.hide();
         this.cd.markForCheck();
       },
       err => {
@@ -137,6 +156,32 @@ export class ObservationDownloadComponent implements OnDestroy {
         this.logger.warn('Failed to make download request', err);
         this.cd.markForCheck();
       }
+    );
+  }
+
+  close() {
+    this.modal.hide();
+  }
+
+  download(type: any) {
+    this.downloadLoading = true;
+    const selected = this.settings ? this.settings.selected : this.tableColumnService.defaultFields;
+    const columns = this.tableColumnService.getColumns(selected);
+    this.observationResultService.getAll(
+      this.query,
+      this.tableColumnService.getSelectFields(selected, this.query),
+      [],
+      this.translate.currentLang
+    ).pipe(
+      switchMap(data => this.exportService.export(data, columns, type as BookType, 'laji-data'))
+    ).subscribe(
+      () => {
+        this.downloadLoading = false;
+        this.modalService.hide(this.modalService.getModalsCount());
+        this.modal.hide();
+        this.cd.markForCheck();
+      },
+      (err) => this.logger.error('Simple download failed', err)
     );
   }
 }
