@@ -10,10 +10,12 @@ import { Observable, Subscription } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { Global } from '../../../../environments/global';
 import { format } from 'd3-format';
 import { IdService } from '../../../shared/service/id.service';
+import { LajiTaxonSearch } from '../../../shared/model/LajiTaxonSearch';
 
 @Component({
   selector: 'laji-annotation-form-new',
@@ -63,6 +65,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   tagsRemove: Array<AnnotationTag>;
   annotationAddadableTags$: Observable<AnnotationTag[]>;
   annotationRemovableTags$: Observable<AnnotationTag[]>;
+  annotationTaxonMatch$: Observable<LajiTaxonSearch>;
   annotationAddadableTags: Subscription;
   alertNotSpamVerified: boolean;
   typeaheadLoading = false;
@@ -84,6 +87,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     private annotationService: AnnotationService,
     private loggerService: Logger,
     private lajiApi: LajiApiService,
+    private taxonApi: TaxonomyApi,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
     private el: ElementRef
@@ -121,6 +125,17 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       })));
   }
 
+  public getMatchTaxon(taxonomy: string) {
+    this.annotationTaxonMatch$ = this.taxonApi.taxonomySearch(taxonomy, '5', undefined, {matchType: 'exact'} );
+    this.annotationTaxonMatch$.subscribe((result: any) => {
+      result.forEach(taxon => {
+        if (taxon.matchingName.toLowerCase() === taxonomy.toLowerCase()) {
+          this.annotation.identification.taxonID = taxon.id;
+          return;
+        }
+      });
+    });
+  }
 
   ngOnChanges() {
     this.initAnnotation();
@@ -133,6 +148,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   saveTaxon(event) {
     this.annotation.identification.taxonID = '';
+    this.getMatchTaxon(this.annotation.identification.taxon);
   }
 
   deleteSelected(id) {
@@ -284,6 +300,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   saveAnnotation() {
+    return;
     if (this.sending) {
       return;
     }
