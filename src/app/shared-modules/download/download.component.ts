@@ -6,7 +6,7 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
 @Component({
   selector: 'laji-download',
   template: `
-    <lu-button (click)="openModal(modal)" [role]="role"><ng-content></ng-content></lu-button>
+    <lu-button [disabled]="disabled" (click)="openModal(modal)" [role]="role"><ng-content></ng-content></lu-button>
     <ng-template #modal>
       <div class="modal-header">
         <button class="close pull-right" type="button" (click)="modalRef.hide()">
@@ -53,6 +53,7 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
 })
 export class DownloadComponent {
 
+  @Input() disabled = false;
   @Input() downloadLoading = false;
   @Input() showBackdrop = true;
   @Input() role = 'secondary';

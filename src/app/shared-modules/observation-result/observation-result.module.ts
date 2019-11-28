@@ -14,6 +14,7 @@ import { ObservationMonthDayChartComponent } from './observation-month-day-chart
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartsModule } from 'ng2-charts';
 import { ChartsModuleBarVerticalGroup } from '../bar-chart/ng2-charts.module';
+import { ObservationTableSettingsComponent } from './observation-table/observation-table-settings.component';
 
 @NgModule({
   imports: [
@@ -32,9 +33,16 @@ import { ChartsModuleBarVerticalGroup } from '../bar-chart/ng2-charts.module';
     PageSizeSelectComponent,
     SelectedFieldItemComponent,
     ObservationYearChartComponent,
-    ObservationMonthDayChartComponent
+    ObservationMonthDayChartComponent,
+    ObservationTableSettingsComponent
   ],
   providers: [ObservationResultService],
-  exports: [ObservationTableComponent, SelectedFieldGroupComponent, ObservationYearChartComponent, ObservationMonthDayChartComponent]
+  exports: [
+    ObservationTableComponent,
+    ObservationTableSettingsComponent,
+    SelectedFieldGroupComponent,
+    ObservationYearChartComponent,
+    ObservationMonthDayChartComponent
+  ]
 })
 export class ObservationResultModule { }

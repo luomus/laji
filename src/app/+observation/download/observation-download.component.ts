@@ -1,5 +1,13 @@
 import { map, switchMap } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component, EventEmitter,
+  Input,
+  OnDestroy, Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
 import { ISettingResultList, UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,12 +17,20 @@ import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { BsModalService, ModalDirective } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap';
 import { BookType } from 'xlsx';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
-import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
+import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ExportService } from '../../shared/service/export.service';
 import { Global } from '../../../environments/global';
+import { DownloadComponent } from '../../shared-modules/download/download.component';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import {
+  ObservationTableSettingsComponent
+} from '../../shared-modules/observation-result/observation-table/observation-table-settings.component';
+import { ColumnSelector } from '../../shared/columnselector/ColumnSelector';
+import { ObservationTableColumn } from '../../shared-modules/observation-result/model/observation-table-column';
+import { IColumns } from '../../shared-modules/datatable/service/observation-table-column.service';
 
 
 enum RequestStatus {
@@ -30,14 +46,17 @@ enum RequestStatus {
 })
 export class ObservationDownloadComponent implements OnDestroy {
 
-  @ViewChild('downloadModal', { static: true }) modal: ModalDirective;
+  @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal: ObservationTableSettingsComponent;
+  @ViewChild(DownloadComponent, { static: false }) downloadTypeSelectModal: DownloadComponent;
+  @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
 
   @Input() unitCount: number;
   @Input() speciesCount: number;
   @Input() taxaLimit = 1000;
   @Input() loadLimit = 2000000;
   @Input() maxSimpleDownload = Global.limit.simpleDownload;
-  @Input() settings: ISettingResultList;
+
+  @Output() settingsChange = new EventEmitter<ISettingResultList>();
 
   privateCount: number;
   hasPersonalData = false;
@@ -46,9 +65,17 @@ export class ObservationDownloadComponent implements OnDestroy {
   downloadLoading = false;
   description = '';
   csvParams = '';
+  columnSelector = new ColumnSelector;
+  allColumns: ObservationTableColumn[];
+  columnGroups: IColumnGroup<IColumns>[][];
+  columnLookup = {};
 
+  private _originalSelected: string[];
+  private _settings: ISettingResultList;
+  private modalRef: BsModalRef;
   private cntSub: Subscription;
   private _query: WarehouseQueryInterface;
+  private _originalQuery: WarehouseQueryInterface;
   private taxaDownloadAggregateBy = {
     'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
     'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
@@ -63,10 +90,16 @@ export class ObservationDownloadComponent implements OnDestroy {
               private warehouseService: WarehouseApi,
               private logger: Logger,
               private cd: ChangeDetectorRef,
-              private tableColumnService: TableColumnService,
+              private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
               private exportService: ExportService,
               private modalService: BsModalService
-  ) { }
+  ) {
+    this.allColumns = tableColumnService.getAllColumns();
+    this.columnGroups = tableColumnService.getColumnGroups();
+    this.columnLookup = tableColumnService.getAllColumnLookup();
+    this.columnSelector.columns = this.tableColumnService.getDefaultFields();
+    this._originalSelected = this.tableColumnService.getDefaultFields();
+  }
 
   ngOnDestroy(): void {
     if (this.cntSub) {
@@ -75,10 +108,29 @@ export class ObservationDownloadComponent implements OnDestroy {
   }
 
   openModal() {
-    this.modal.show();
+    this.modalRef = this.modalService.show(this.downloadModal, {class: 'modal-lg'});
+  }
+
+  closeModal() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+  }
+
+  @Input() set settings(settings: ISettingResultList) {
+    this._settings = settings;
+    if (settings && settings.selected) {
+      this._originalSelected = [...settings.selected];
+      this.columnSelector.columns = settings.selected;
+    }
+  }
+
+  get settings() {
+    return this._settings;
   }
 
   @Input() set query(query: WarehouseQueryInterface) {
+    this._originalQuery = query;
     if (!query) {
       return;
     }
@@ -148,7 +200,7 @@ export class ObservationDownloadComponent implements OnDestroy {
           'result.load.thanksPublic' : 'result.load.thanksRequest'
         ));
         this.requests[type] = RequestStatus.done;
-        this.modal.hide();
+        this.closeModal();
         this.cd.markForCheck();
       },
       err => {
@@ -160,16 +212,12 @@ export class ObservationDownloadComponent implements OnDestroy {
     );
   }
 
-  close() {
-    this.modal.hide();
-  }
-
-  download(type: any) {
+  simpleDownload(type: any) {
     this.downloadLoading = true;
-    const selected = this.settings ? this.settings.selected : this.tableColumnService.getDefaultFields();
+    const selected = this.columnSelector.columns;
     const columns = this.tableColumnService.getColumns(selected);
     this.observationResultService.getAll(
-      this.query,
+      this._originalQuery,
       this.tableColumnService.getSelectFields(selected, this.query),
       [],
       this.translate.currentLang
@@ -178,11 +226,31 @@ export class ObservationDownloadComponent implements OnDestroy {
     ).subscribe(
       () => {
         this.downloadLoading = false;
-        this.modalService.hide(this.modalService.getModalsCount());
-        this.modal.hide();
+        this.modalService.hide(1);
+        this.modalService.hide(1);
         this.cd.markForCheck();
       },
       (err) => this.logger.error('Simple download failed', err)
     );
+  }
+
+  openColumnSelectModal() {
+    this.settingsModal.openModal();
+  }
+
+  onCloseColumnSettingsModal(ok: boolean) {
+    if (ok) {
+      this._originalSelected = [...this.columnSelector.columns];
+      this.settingsChange.emit({
+        ...this._settings,
+        selected: this.columnSelector.columns
+      });
+    } else {
+      this.columnSelector.columns = [...this._originalSelected];
+    }
+  }
+
+  resetColumnSelects() {
+    this.columnSelector.columns = [...this._originalSelected];
   }
 }

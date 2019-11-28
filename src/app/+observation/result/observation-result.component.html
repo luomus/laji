@@ -176,6 +176,7 @@
 
 <laji-observation-download
   [settings]="listSettings"
+  (settingsChange)="listSettingsChange.emit($event)"
   [speciesCount]="speciesCount"
   [unitCount]="unitCount"
   [query]="query"

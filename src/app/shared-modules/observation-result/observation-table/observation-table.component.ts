@@ -29,6 +29,7 @@ import { ExportService } from '../../../shared/service/export.service';
 import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
+import { ObservationTableSettingsComponent } from './observation-table-settings.component';
 
 @Component({
   selector: 'laji-observation-table',
@@ -39,7 +40,7 @@ import { IColumns } from '../../datatable/service/observation-table-column.servi
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
-  @ViewChild('settingsModal', { static: true }) public modalRef: ModalDirective;
+  @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal: ObservationTableSettingsComponent;
 
   @Input() query: WarehouseQueryInterface;
   @Input() pageSize;
@@ -199,22 +200,17 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   openModal() {
-    this.modalRef.show();
-    this.modalSub = this.modalRef.onHide.subscribe((modal: ModalDirective) => {
-      if (modal.dismissReason !== null) {
-        this.columnSelector.columns = [...this._originalSelected];
-        this.numberColumnSelector.columns = [...this._originalSelectedNumbers];
-      }
-      this.modalSub.unsubscribe();
-    });
+    this.settingsModal.openModal();
   }
 
-  closeOkModal() {
-    if (this.columnSelector.hasChanges || this.numberColumnSelector.hasChanges) {
+  onCloseSettingsModal(ok: boolean) {
+    if (!ok) {
+      this.columnSelector.columns = [...this._originalSelected];
+      this.numberColumnSelector.columns = [...this._originalSelectedNumbers];
+    } else if (this.columnSelector.hasChanges || this.numberColumnSelector.hasChanges) {
       this.orderBy = [];
       this.selectChange.emit([...this.columnSelector.columns, ...this.numberColumnSelector.columns]);
     }
-    this.modalRef.hide();
   }
 
   onReorder(event) {

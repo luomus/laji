@@ -31,7 +31,7 @@ export abstract class TableColumnService<T extends DatatableColumn = DatatableCo
 
   getColumn(name: string): T {
     const column = this.allColumns.find(col => col.name === name);
-    return column ? {...column} : undefined;
+    return column ? this.prepareColumn(column) : undefined;
   }
 
   getColumns(name: string[]): T[] {
@@ -39,15 +39,23 @@ export abstract class TableColumnService<T extends DatatableColumn = DatatableCo
   }
 
   getAllColumns(): T[] {
-    return this.allColumns.map(col => ({
-      ...col,
-      label: col.label || this.defaultLabelPrefix + col.name
-    }));
+    return this.allColumns.map(col => this.prepareColumn(col));
   }
 
   getSelectFields(selected: string[], query?: any): string[] {
-    const columnLookup = this.getAllColumns().reduce((prev, column) => { prev[column.name] = column; return prev; }, {});
+    const columnLookup = this.getAllColumnLookup();
 
     return selected.map(field => columnLookup[field].selectField || field);
+  }
+
+  getAllColumnLookup() {
+    return this.getAllColumns().reduce((prev, column) => { prev[column.name] = column; return prev; }, {});
+  }
+
+  protected prepareColumn(column: T): T {
+    return {
+      ...column,
+      label: column.label || this.defaultLabelPrefix + column.name
+    };
   }
 }
