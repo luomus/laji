@@ -13,6 +13,8 @@ export interface IGenericColumn {
 @Injectable()
 export abstract class TableColumnService<T extends DatatableColumn = DatatableColumn, G = IGenericColumn> {
 
+  protected defaultLabelPrefix = 'result.';
+
   protected defaultFields: Array<keyof G> = [];
 
   protected columnGroups: IColumnGroup<G>[][] = [];
@@ -39,18 +41,13 @@ export abstract class TableColumnService<T extends DatatableColumn = DatatableCo
   getAllColumns(): T[] {
     return this.allColumns.map(col => ({
       ...col,
-      label: col.label || 'result.' + col.name
+      label: col.label || this.defaultLabelPrefix + col.name
     }));
   }
 
-  getSelectFields(selected: string[], query?: any) {
+  getSelectFields(selected: string[], query?: any): string[] {
     const columnLookup = this.getAllColumns().reduce((prev, column) => { prev[column.name] = column; return prev; }, {});
-    const selects = selected.map(field => columnLookup[field].selectField || field);
-    if (query) {
-      if (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken) {
-        selects.push('document.quality,gathering.quality,unit.quality');
-      }
-    }
-    return selects;
+
+    return selected.map(field => columnLookup[field].selectField || field);
   }
 }

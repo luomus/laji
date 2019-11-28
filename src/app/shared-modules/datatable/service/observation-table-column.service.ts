@@ -345,6 +345,7 @@ export const COLUMNS: IColumns = {
 
 @Injectable()
 export class ObservationTableColumnService extends TableColumnService<ObservationTableColumn, IColumns> {
+
   protected defaultFields: Array<keyof IColumns> = [
     'unit.taxon',
     'unit.abundanceString',
@@ -491,4 +492,13 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     ]
   ];
 
+  getSelectFields(selected: string[], query?: any): string[] {
+    const selects = super.getSelectFields(selected, query);
+    if (query) {
+      if (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken) {
+        selects.push('document.quality,gathering.quality,unit.quality');
+      }
+    }
+    return selects;
+  }
 }
