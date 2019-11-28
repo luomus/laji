@@ -66,7 +66,6 @@ export class ObservationDownloadComponent implements OnDestroy {
   description = '';
   csvParams = '';
   columnSelector = new ColumnSelector;
-  allColumns: ObservationTableColumn[];
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
 
@@ -94,7 +93,6 @@ export class ObservationDownloadComponent implements OnDestroy {
               private exportService: ExportService,
               private modalService: BsModalService
   ) {
-    this.allColumns = tableColumnService.getAllColumns();
     this.columnGroups = tableColumnService.getColumnGroups();
     this.columnLookup = tableColumnService.getAllColumnLookup();
     this.columnSelector.columns = this.tableColumnService.getDefaultFields();
@@ -251,6 +249,6 @@ export class ObservationDownloadComponent implements OnDestroy {
   }
 
   resetColumnSelects() {
-    this.columnSelector.columns = [...this._originalSelected];
+    this.columnSelector.columns = this.tableColumnService.getDefaultFields();
   }
 }
