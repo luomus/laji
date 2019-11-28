@@ -8,7 +8,8 @@
                 <ng-template #annotation>
                     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
                         <laji-annotation-data-observation [gathering]="gathering" [unit]="unit" [editors]="editors" [collectionId]="collectionId" [createdDate]="createdDate"></laji-annotation-data-observation>
-                        <laji-unit-annotation-list [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [personRoleAnnotation]="personRoleAnnotation" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit-annotation-list>
+                        <laji-unit-annotation-list [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID"
+                        [personRoleAnnotation]="personRoleAnnotation" [documentID]="documentID" [unit]="unit" [highlight]="highlight" (annotationPending)="checkPending($event)"></laji-unit-annotation-list>
                     </ng-container>    
                 </ng-template>
             </ng-container>
@@ -16,7 +17,7 @@
                 <ng-container *ngFor="let unit of gathering?.units">
                     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
                         <laji-row *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability" [title]="'annotation.quality.grade' | translate" [noTitleSpace]="false" ngPreserveWhitespaces> {{ unit.quality.taxon.reliability | label: 'warehouse' }}</laji-row>
-                        <laji-observation-effective-tags-taxon [unit]="unit"></laji-observation-effective-tags-taxon>
+                        <laji-observation-effective-tags-taxon [unit]="unit" [parentSubject]="parentSubject"></laji-observation-effective-tags-taxon>
                     </ng-container>
                 </ng-container>   
                 <laji-gathering-annotations-rows [gathering]="gathering"></laji-gathering-annotations-rows>

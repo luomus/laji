@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter,
+  Input, Output, OnInit, OnDestroy} from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
+import { Subject } from 'rxjs';
+import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 
 
 @Component({
@@ -8,7 +11,7 @@ import { Annotation } from '../../../shared/model/Annotation';
   styleUrls: ['./gathering-annotation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GatheringAnnotationComponent implements OnInit {
+export class GatheringAnnotationComponent implements OnInit, OnDestroy {
 
   @Input() editors: string[];
   @Input() personID: string;
@@ -29,10 +32,22 @@ export class GatheringAnnotationComponent implements OnInit {
   @Input() showAnnotation: boolean;
   @Output() showAllUnits = new EventEmitter();
 
+  pendingAnnotation: boolean;
+  parentSubject: Subject<boolean> = new Subject();
 
-  constructor() { }
+  constructor(private taxonTagEffective: TaxonTagEffectiveService) { }
 
   ngOnInit() {
+  }
+
+
+  checkPending(value: boolean) {
+   this.pendingAnnotation = value;
+   this.taxonTagEffective.emitChildEvent(value);
+  }
+
+  ngOnDestroy() {
+    this.taxonTagEffective.emitChildEvent(false);
   }
 
 }

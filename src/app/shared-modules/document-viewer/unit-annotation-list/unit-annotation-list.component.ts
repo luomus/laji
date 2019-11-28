@@ -1,5 +1,5 @@
 import {map} from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
@@ -22,6 +22,7 @@ export class UnitAnnotationListComponent implements OnInit {
   @Input() openAnnotation: boolean;
   @Input() showFacts = false;
   @Input() showAnnotation: boolean;
+  @Output() annotationPending = new EventEmitter<boolean>();
 
   annotationVisible = false;
   annotationClass$: Observable<string>;
@@ -66,6 +67,7 @@ export class UnitAnnotationListComponent implements OnInit {
     if (annotation) {
       annotations.push(annotation);
       this.unit.annotations = annotations;
+      this.annotationPending.emit(true);
     }
     this.annotationClass$ = this.annotationService
       .getAnnotationClassInEffect(annotations).pipe(
