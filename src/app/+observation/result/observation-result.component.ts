@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { VisibleSections } from '../view/observation-view.component';
 import { ObservationDownloadComponent } from '../download/observation-download.component';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { SearchQueryService } from '../search-query.service';
 
 const tabNameToIndex = {
   map: 0,
@@ -77,7 +78,8 @@ export class ObservationResultComponent {
 
   constructor(
     private router: Router,
-    private localizeRouterService: LocalizeRouterService
+    private localizeRouterService: LocalizeRouterService,
+    private searchQueryService: SearchQueryService
   ) {}
 
   @Input()
@@ -125,7 +127,10 @@ export class ObservationResultComponent {
   onSelect(tabIndex: number) {
     this.lastTabActive = tabIndexToName[tabIndex];
     this.router.navigate(
-      this.localizeRouterService.translateRoute([this.basePath, tabIndexToName[tabIndex]]), {queryParams: this.query}
+      this.localizeRouterService.translateRoute([this.basePath, tabIndexToName[tabIndex]]), {
+        // Query object should not be but directly to the request params! It can include person token and we don't want that to be visible!
+        queryParams: this.searchQueryService.getQueryObject(this.query, ['selected', 'pageSize', 'page'])
+      }
     );
   }
 
