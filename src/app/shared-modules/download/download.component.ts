@@ -79,6 +79,12 @@ export class DownloadComponent {
     this.modalRef = this.modalService.show(template, {backdrop: this.showBackdrop, class: 'modal-sm'});
   }
 
+  closeModal() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+  }
+
   onDownload() {
     this.download.emit(this.fileType);
   }

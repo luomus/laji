@@ -32,7 +32,7 @@ export class TaxonExportService {
   public downloadTaxons(columns: DatatableColumn[], data: Taxonomy[], type = 'tsv', firstRow?: string[]): Observable<boolean> {
     return this.analyzeTaxa(columns, data)
       .pipe(
-        concatMap(taxa => this.exportService.export(taxa, columns, type as BookType, 'taxon-export', firstRow)),
+        concatMap(taxa => this.exportService.exportFromData(taxa, columns, type as BookType, 'taxon-export', firstRow)),
         map(() => true)
       );
   }

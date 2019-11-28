@@ -78,7 +78,7 @@ export class ParticipantsComponent implements OnInit, OnDestroy {
     this.fetching = true;
     this.participants$ = this.formService.getParticipants(this.form).pipe(
       map(this.formatData),
-      switchMap(data => this.exportService.export(data, this.columns, type as BookType, `laji-${this.form.id}-participants`))
+      switchMap(data => this.exportService.exportFromData(data, this.columns, type as BookType, `laji-${this.form.id}-participants`))
     ).subscribe(() => {
       this.fetching = false;
     });

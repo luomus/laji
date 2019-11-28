@@ -24,6 +24,7 @@ import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
 import { TableColumnService } from '../../datatable/service/table-column.service';
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { DatatableUtil } from '../../datatable/service/datatable-util.service';
+import { IColumns } from '../../datatable/service/observation-table-column.service';
 
 interface IInternalObservationTableColumn extends ObservationTableColumn {
   _paths: string[];
@@ -52,7 +53,7 @@ export class ObservationResultService {
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private tableColumnService: TableColumnService,
+    private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private datatableUtil: DatatableUtil
   ) { }
 

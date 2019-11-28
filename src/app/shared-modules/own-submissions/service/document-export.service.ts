@@ -7,7 +7,7 @@ import { CollectionService } from '../../../shared/service/collection.service';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
-import { utils as XLSXUtils, write as XLSXWrite } from 'xlsx';
+import { BookType } from 'xlsx';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
@@ -34,27 +34,25 @@ export class DocumentExportService {
 
   public downloadDocuments(docs$: Observable<Document[]>, year: number, type: string) {
     docs$.pipe(
-      switchMap(docs => this.getBuffer(docs, type))
-    ).subscribe((buffer) => {
-      this.translate.get('haseka.submissions.submissions').subscribe((msg) => {
-        const fileName = msg + '_' + year;
-        this.exportService.exportArrayBuffer(buffer, fileName, type);
-      });
-    });
+      switchMap(docs => this._downloadDocuments(docs, type, this.translate.instant('haseka.submissions.submissions') + '_' + year))
+    ).subscribe(() => {});
   }
 
   public downloadDocument(doc$: Observable<Document>, type: string) {
     doc$.pipe(
-      switchMap(doc => this.getBuffer([doc], type).pipe(map(buffer => ({doc, buffer}))))
-    ).subscribe((data) => {
-      this.translate.get('haseka.submissions.submission').subscribe((msg) => {
-        const fileName = msg + '_' + data.doc.id.split('.')[1];
-        this.exportService.exportArrayBuffer(data.buffer, fileName, type);
-      });
-    });
+      switchMap(doc =>
+        this._downloadDocuments([doc], type, this.translate.instant('haseka.submissions.submission') + '_' + doc.id.split('.')[1])
+      )
+    ).subscribe(() => {});
   }
 
-  private getBuffer(docs: Document[], type: any): Observable<any> {
+  private _downloadDocuments(docs: Document[], type: string, filename): Observable<void> {
+    return this.getAoa(docs).pipe(
+      switchMap(aoa => this.exportService.export(aoa, type as BookType, filename))
+    );
+  }
+
+  private getAoa(docs: Document[]): Observable<any> {
     return this.getJsonForms(docs)
       .pipe(
         switchMap(jsonForms => {
@@ -74,8 +72,7 @@ export class DocumentExportService {
                     map(data => {
                       const mergedData = [].concat.apply([], data);
 
-                      const aoa = this.convertDataToAoA(this.getUsedFields(fields), mergedData);
-                      return this.exportService.getBufferFromAoa(aoa, type);
+                      return this.convertDataToAoA(this.getUsedFields(fields), mergedData);
                     })
                   );
               })

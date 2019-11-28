@@ -27,6 +27,8 @@ import {
 import { map, switchMap } from 'rxjs/operators';
 import { ExportService } from '../../../shared/service/export.service';
 import { BookType } from 'xlsx';
+import { Global } from '../../../../environments/global';
+import { IColumns } from '../../datatable/service/observation-table-column.service';
 
 @Component({
   selector: 'laji-observation-table',
@@ -75,7 +77,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Output() rowSelect = new EventEmitter<any>();
   @Output() total = new EventEmitter<number>();
 
-  maxDownload = 2000;
+  maxDownload = Global.limit.simpleDownload;
   downloadLoading = false;
   lang: string;
   cache: any = {};
@@ -104,7 +106,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   columns: ObservationTableColumn[] = [];
   allColumns: ObservationTableColumn[];
-  columnGroups: IColumnGroup[][];
+  columnGroups: IColumnGroup<IColumns>[][];
 
   private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCountSum'];
 
@@ -121,11 +123,11 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     private modalService: BsModalService,
     private logger: Logger,
     private translate: TranslateService,
-    private tableColumnService: TableColumnService,
+    private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private exportService: ExportService
   ) {
-    this.allColumns = tableColumnService.allColumns;
-    this.columnGroups = tableColumnService.columnGroups;
+    this.allColumns = tableColumnService.getAllColumns();
+    this.columnGroups = tableColumnService.getColumnGroups();
   }
 
   @Input() set selected(sel: string[]) {
@@ -323,7 +325,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       [...this.orderBy, this.defaultOrder],
       this.lang
     ).pipe(
-      switchMap(data => this.exportService.export(data, columns, type as BookType, 'laji-data'))
+      switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;

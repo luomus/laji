@@ -94,5 +94,8 @@ export const Global = {
     'maleIndividualCount',
     'femaleIndividualCount',
     'areaInSquareMeters'
-  ]
+  ],
+  limit: {
+    simpleDownload: 10000
+  }
 };

@@ -14,6 +14,7 @@ import { BookType } from 'xlsx';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ExportService } from '../../shared/service/export.service';
+import { Global } from '../../../environments/global';
 
 
 enum RequestStatus {
@@ -35,7 +36,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   @Input() speciesCount: number;
   @Input() taxaLimit = 1000;
   @Input() loadLimit = 2000000;
-  @Input() maxSimpleDownload = 10000;
+  @Input() maxSimpleDownload = Global.limit.simpleDownload;
   @Input() settings: ISettingResultList;
 
   privateCount: number;
@@ -165,7 +166,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   download(type: any) {
     this.downloadLoading = true;
-    const selected = this.settings ? this.settings.selected : this.tableColumnService.defaultFields;
+    const selected = this.settings ? this.settings.selected : this.tableColumnService.getDefaultFields();
     const columns = this.tableColumnService.getColumns(selected);
     this.observationResultService.getAll(
       this.query,
@@ -173,7 +174,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       [],
       this.translate.currentLang
     ).pipe(
-      switchMap(data => this.exportService.export(data, columns, type as BookType, 'laji-data'))
+      switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;

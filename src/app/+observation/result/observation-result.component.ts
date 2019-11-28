@@ -3,7 +3,8 @@ import { ObservationMapComponent } from '../../shared-modules/observation-map/ob
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
-import { ObservationDownloadComponent, VisibleSections } from '..';
+import { VisibleSections } from '../view/observation-view.component';
+import { ObservationDownloadComponent } from '../download/observation-download.component';
 
 const tabNameToIndex = {
   map: 0,
