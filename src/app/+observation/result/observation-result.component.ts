@@ -5,6 +5,7 @@ import { ISettingResultList } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { VisibleSections } from '../view/observation-view.component';
 import { ObservationDownloadComponent } from '../download/observation-download.component';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 const tabNameToIndex = {
   map: 0,
@@ -75,7 +76,8 @@ export class ObservationResultComponent {
   private _active;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService
   ) {}
 
   @Input()
@@ -122,7 +124,9 @@ export class ObservationResultComponent {
 
   onSelect(tabIndex: number) {
     this.lastTabActive = tabIndexToName[tabIndex];
-    this.router.navigate(['observation', tabIndexToName[tabIndex]], {queryParams: this.query});
+    this.router.navigate(
+      this.localizeRouterService.translateRoute([this.basePath, tabIndexToName[tabIndex]]), {queryParams: this.query}
+    );
   }
 
   openDownloadModal() {
