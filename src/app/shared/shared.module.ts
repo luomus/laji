@@ -61,6 +61,7 @@ import { DateFormatPipe, MomentModule } from 'ngx-moment';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NotificationsComponent } from './navbar/notifications/notifications.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 
 
 @NgModule({
@@ -101,6 +102,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     SpinnerModule,
     PaginatorModule,
     ScrollingModule,
+    LajiUiModule,
     TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule
   ],
   providers: [ ], // keep this empty!

@@ -46,3 +46,7 @@
 .delete:not(.ghost):focus {
   background: $neutral-3;
 }
+
+:host .ghost ::ng-deep p {
+  margin: 0;
+}

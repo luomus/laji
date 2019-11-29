@@ -62,7 +62,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
       tap(() => this.notificationSource.removeAllNotificationsFromCache()),
       switchMap(res => res ? this.notificationsFacade.removeAll() : of(true))
     ).subscribe(() => {
-      this.notificationsFacade.loadNotifications(0);
+      this.notificationsFacade.loadNotifications(1);
       this.cdr.markForCheck();
     });
   }
@@ -80,9 +80,10 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
       tap(() => this.notificationSource.removeNotificationFromCache(notification.id)),
       switchMap(() => this.notificationsFacade.remove(notification))
     ).subscribe(() => {
+      this.notificationsFacade.loadNotifications(1);
       this.cdr.markForCheck();
     });
-  }
+}
 
   trackNotification(idx, notification) {
     return notification ? notification.id : undefined;
