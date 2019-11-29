@@ -31,6 +31,7 @@ export class NotificationDataSource extends DataSource<Notification> {
         this.fetchedPages = setFilter(this.fetchedPages, (page) => page <= this.getPageForIndex(notifications.total - 1));
       } else if (notificationsWereRemoved) {
         this.cachedData = new Array(notifications.total).fill(undefined);
+        this.lastViewedRange.end = Math.min(this.lastViewedRange.end, notifications.total - 1);
         this.fetchedPages.clear();
       }
       this.fetchedPages.add(notifications.currentPage - 1);
