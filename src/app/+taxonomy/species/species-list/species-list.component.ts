@@ -282,7 +282,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       switchMap(res => this.taxonExportService.downloadTaxons(res.columns, res.data, fileType))
     ).subscribe(() =>  {
           this.downloadLoading = false;
-          this.speciesDownload.modal.hide();
+          this.speciesDownload.closeModal();
           this.cd.markForCheck();
       });
   }

@@ -314,5 +314,8 @@ export const Global = {
       value: 'MMAN.30',
       quality: 'check'
     }
+  },
+  limit: {
+    simpleDownload: 10000
   }
 };

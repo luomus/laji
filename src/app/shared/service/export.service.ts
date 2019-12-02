@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import {utils as XLSXUtils} from 'xlsx';
+import { BookType, utils as XLSXUtils } from 'xlsx';
 import { DatatableColumn } from '../../shared-modules/datatable/model/datatable-column';
-import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { forkJoin as ObservableForkJoin, Observable, of, of as ObservableOf, pipe } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { Util } from './util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableUtil } from '../../shared-modules/datatable/service/datatable-util.service';
-import { TriplestoreLabelService } from './triplestore-label.service';
 
 @Injectable({providedIn: 'root'})
 export class ExportService {
@@ -19,9 +18,21 @@ export class ExportService {
 
   constructor(
     private translateService: TranslateService,
-    private datatableUtil: DatatableUtil,
-    private triplestoreLabelService: TriplestoreLabelService
+    private datatableUtil: DatatableUtil
   ) { }
+
+  exportFromData(data: any[], cols: DatatableColumn[], type: BookType, filename: string, firstRow?: string[]): Observable<void> {
+    return this.getAoa<any>(cols, data, firstRow).pipe(
+      switchMap((aoa) => this.export(aoa, type, filename))
+    );
+  }
+
+  export(aoa: string[][], type: BookType, filename: string): Observable<void> {
+    return of(aoa).pipe(
+      map(data => this.getBufferFromAoa(data, type)),
+      map(buffer => this.exportArrayBuffer(buffer, filename, type))
+    );
+  }
 
   exportArrayBuffer(buffer: any, fileName: string, fileExtension: string) {
     let type;
@@ -42,7 +53,7 @@ export class ExportService {
     FileSaver.saveAs(data, fileName + '.' + fileExtension);
   }
 
-  getBufferFromAoa(aoa: string[][], fileType: any): any {
+  private getBufferFromAoa(aoa: string[][], fileType: any): any {
     const sheet = XLSX.utils.aoa_to_sheet(aoa);
 
     if (fileType === 'csv') {
@@ -59,7 +70,7 @@ export class ExportService {
     return XLSX.write(book, {bookType: fileType, type: 'array'});
   }
 
-  public getAoa<T>(cols: DatatableColumn[], data: T[], firstRow?: string[]): Observable<string[][]> {
+  private getAoa<T>(cols: DatatableColumn[], data: T[], firstRow?: string[]): Observable<string[][]> {
     const aoa: any = firstRow ? [firstRow, []] : [[]];
     const labelRow = firstRow ? 1 : 0;
     const observables = [];

@@ -1,23 +1,21 @@
 <div class="menu-row" *ngIf="showSettingsMenu || showDownloadMenu">
-  <div class="link btn btn-default btn-sm pull-right" style="margin-left: 5px;" (click)="openSettingsMenu.emit()" *ngIf="showSettingsMenu">
-    {{ 'iucn.results.selectColumns' | translate }}
-    <i class="glyphicon glyphicon-cog"></i>
-  </div>
+  <div class="fill-space"></div>
   <ng-container *ngIf="showDownloadMenu">
     <laji-download
       *ngIf="maxDownload >= count else tooMany"
-      linkClass="link btn btn-default btn-sm pull-right"
       [downloadLoading]="downloadLoading"
       (download)="download.emit($event)">
-      <span>
-        {{ downloadText }}
-        <i class="glyphicon glyphicon-download-alt"></i>
-      </span>
+      <i class="glyphicon glyphicon-download-alt"></i>
+      {{ downloadText }}
     </laji-download>
     <ng-template #tooMany>
-      <div class="btn btn-default btn-sm pull-right disabled">
+      <lu-button [disabled]="true">
         {{ downloadText }} max {{ maxDownload }}
-      </div>
+      </lu-button>
     </ng-template>
   </ng-container>
+  <lu-button (click)="openSettingsMenu.emit()" *ngIf="showSettingsMenu" style="margin-left: 5px;">
+    <i class="glyphicon glyphicon-cog"></i>
+    {{ 'iucn.results.selectColumns' | translate }}
+  </lu-button>
 </div>
