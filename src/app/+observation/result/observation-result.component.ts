@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
-import { VisibleSections } from '..';
+import { VisibleSections } from '../view/observation-view.component';
+import { ObservationDownloadComponent } from '../download/observation-download.component';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { SearchQueryService } from '../search-query.service';
 
 const tabNameToIndex = {
   map: 0,
@@ -63,6 +66,7 @@ export class ObservationResultComponent {
   @Output() listSettingsChange = new EventEmitter<ISettingResultList>();
 
   @ViewChild(ObservationMapComponent, { static: false }) observationMap: ObservationMapComponent;
+  @ViewChild(ObservationDownloadComponent, { static: true }) downloadModal: ObservationDownloadComponent;
 
   activated = {};
   lastTabActive = 'map';
@@ -72,7 +76,11 @@ export class ObservationResultComponent {
 
   private _active;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService,
+    private searchQueryService: SearchQueryService
+  ) {}
 
   @Input()
   set active(value) {
@@ -118,6 +126,15 @@ export class ObservationResultComponent {
 
   onSelect(tabIndex: number) {
     this.lastTabActive = tabIndexToName[tabIndex];
-    this.router.navigate(['observation', tabIndexToName[tabIndex]], {queryParams: this.query});
+    this.router.navigate(
+      this.localizeRouterService.translateRoute([this.basePath, tabIndexToName[tabIndex]]), {
+        // Query object should not be but directly to the request params! It can include person token and we don't want that to be visible!
+        queryParams: this.searchQueryService.getQueryObject(this.query, ['selected', 'pageSize', 'page'])
+      }
+    );
+  }
+
+  openDownloadModal() {
+    this.downloadModal.openModal();
   }
 }

@@ -1,52 +1,112 @@
-<div *lajiLoggedIn="false">
-  {{ 'force.login' | translate }}
-</div>
-<div *lajiLoggedIn="true">
-  <alert *ngIf="hasPersonalData">
-    <strong>{{ 'result.load.personalData' | translate }}</strong>
-  </alert>
-  <h3>{{ 'observation.download.publicTitle' | translate }}</h3>
-  <div class="form-group">
-    <div class="col-sm-12" *ngIf="loadLimit < unitCount">
-      {{ 'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}
-    </div>
-    <div class="col-sm-12" *ngIf="unitCount == 0">
-      {{ 'observation.export.tooLittle' | translate }}
-    </div>
-    <div class="col-sm-12" *ngIf="loadLimit >= unitCount && unitCount > 0" style="margin-bottom: 15px;">
-      <p [innerHtml]="'result.load.introPublic' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')} ">
-      </p>
-      <a [ngClass]="{disabled: requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading}" class="btn btn-default" (click)="makePublicRequest()">{{ 'observation.download.loadPublic' | translate }}</a>
-    </div>
+<ng-template #downloadModal>
+  <div class="modal-header">
+    <button class="close pull-right" type="button" (click)="closeModal()">
+      <i class="glyphicon glyphicon-remove"></i>
+    </button>
+    <h3 class="modal-title">{{ 'search.result.load' | translate }}</h3>
   </div>
-  <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
-  <div class="form-group">
-    <div class="col-sm-12" *ngIf="loadLimit < unitCount">
-      {{ 'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}
-    </div>
+  <div class="modal-body">
+    <p
+      *ngIf="!hasPersonalData"
+      [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
+    </p>
+    <section>
+      <h3>{{ 'result.load.titleSimple' | translate }}</h3>
+      <alert *ngIf="maxSimpleDownload < unitCount || unitCount === 0; else simpleDownloadTpl">
+        <span [innerHTML]="(unitCount === 0 ? 'observation.export.tooLittle' : 'result.load.error.tooManySimple') | translate:{max: (maxSimpleDownload | formattedNumber:'&nbsp;')}"></span>
+      </alert>
+      <ng-template #simpleDownloadTpl>
+        <p [innerHTML]="'result.load.introSimple' | translate"></p>
+        <div class="action-group">
+          <laji-download
+            role="primary"
+            [showBackdrop]="false"
+            (download)="simpleDownload($event)"
+            [downloadLoading]="downloadLoading">
+            <i class="glyphicon glyphicon-download-alt"></i>
+            {{ 'haseka.submissions.download' | translate }}
+          </laji-download>
+          <lu-button style="margin-left: 15px" (click)="openColumnSelectModal()">
+            <i class="glyphicon glyphicon-cog"></i>
+            {{ 'iucn.results.selectColumns' | translate }}
+          </lu-button>
+        </div>
+      </ng-template>
+    </section>
+    <section>
+      <h3>{{ 'observation.download.publicTitle' | translate }}</h3>
+      <alert *lajiLoggedIn="false">
+        {{ 'result.load.error.notLoggedIn' | translate }}
+      </alert>
+      <alert *ngIf="loadLimit < unitCount">
+        <span [innerHTML]="'observation.export.tooMany' | translate:{max: (loadLimit | formattedNumber:'&nbsp;')}"></span>
+      </alert>
+      <alert *ngIf="unitCount == 0">
+        {{ 'observation.export.tooLittle' | translate }}
+      </alert>
+      <ng-container *lajiLoggedIn="true">
+        <div *ngIf="loadLimit >= unitCount && unitCount > 0" style="margin-bottom: 15px;">
+          <p
+            [innerHtml]="'result.load.introPublic' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')} ">
+          </p>
+          <alert *ngIf="hasPersonalData">
+            <strong>{{ 'result.load.personalData' | translate }}</strong>
+          </alert>
+          <lu-button
+            [disabled]="requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading"
+            (click)="makePublicRequest()">
+            {{ 'observation.download.loadPublic' | translate }}
+          </lu-button>
+        </div>
+      </ng-container>
+    </section>
+    <section>
+      <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
+      <alert *lajiLoggedIn="false">
+        {{ 'result.load.error.notLoggedIn' | translate }}
+      </alert>
+      <alert *ngIf="loadLimit < unitCount">
+        <span [innerHTML]="'observation.export.tooMany' | translate:{max: (loadLimit | formattedNumber:'&nbsp;')}"></span>
+      </alert>
+      <ng-container *lajiLoggedIn="true">
+        <div *ngIf="loadLimit >= unitCount">
+          <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
+          <alert *ngIf="hasPersonalData">
+            <strong>{{ 'result.load.personalData' | translate }}</strong>
+          </alert>
+          <lu-button
+            [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading"
+            (click)="makePrivateRequest()">
+            {{ 'observation.download.loadPrivate' | translate }}
+          </lu-button>
+        </div>
+      </ng-container>
+    </section>
+    <section>
+      <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
+      <alert *ngIf="taxaLimit < speciesCount">
+        <span [innerHTML]="'observation.export.tooManySpecies' | translate:{max: (taxaLimit | formattedNumber:'&nbsp;')}"></span>
+      </alert>
+      <div *ngIf="speciesCount == 0">
+        {{ 'observation.export.tooLittle' | translate }}
+      </div>
+      <div *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
+        <p [innerHtml]="'result.load.introSpecies' | translate"></p>
+        <lu-button
+          routerLink="/api/warehouse/query/aggregate?{{ csvParams }}&format=csv">
+          {{ 'observation.download.loadSpecies' | translate }}
+        </lu-button>
+      </div>
+    </section>
   </div>
-  <div class="form-group">
-    <div class="col-sm-12" *ngIf="loadLimit >= unitCount">
-      <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
-      <a [ngClass]="{disabled: requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading}" class="btn btn-default" (click)="makePrivateRequest()" style="margin-bottom: 15px;">{{ 'observation.download.loadPrivate' | translate }}</a>
-    </div>
-  </div>
-  <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
-  <div class="form-group">
-    <div class="col-sm-12" *ngIf="taxaLimit < speciesCount">
-      {{ 'observation.export.tooManySpecies' | translate:{max:(taxaLimit | formattedNumber:'&nbsp;')} }}
-    </div>
-    <div class="col-sm-12" *ngIf="speciesCount == 0">
-      {{ 'observation.export.tooLittle' | translate }}
-    </div>
-    <div class="col-sm-12" *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
-      <p [innerHtml]="'result.load.introSpecies' | translate">
-      </p>
-      <a [ngClass]="{disabled: requests['species'] === requestStatus.loading}"
-         class="btn btn-default"
-         href="/api/warehouse/query/aggregate?{{csvParams}}&format=csv">
-        {{ 'observation.download.loadSpecies' | translate }}
-      </a>
-    </div>
-  </div>
-</div>
+</ng-template>
+
+<laji-observation-table-settings
+  [columnSelector]="columnSelector"
+  [columnLookup]="columnLookup"
+  [columnGroups]="columnGroups"
+  [isAggregate]="false"
+  [showPageSize]="false"
+  (resetColumns)="resetColumnSelects()"
+  (close)="onCloseColumnSettingsModal($event)"
+></laji-observation-table-settings>

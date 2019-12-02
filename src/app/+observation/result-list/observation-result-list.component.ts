@@ -30,7 +30,7 @@ export class ObservationResultListComponent {
     private documentViewerFacade: DocumentViewerFacade,
     private tableColumnService: TableColumnService
   ) {
-    this.selectedFields = tableColumnService.defaultFields;
+    this.selectedFields = tableColumnService.getDefaultFields();
   }
 
   @Input()
@@ -69,7 +69,7 @@ export class ObservationResultListComponent {
   }
 
   resetSelectedFields() {
-    this.selectedFields = this.tableColumnService.defaultFields;
+    this.selectedFields = this.tableColumnService.getDefaultFields();
     this.saveSettings();
   }
 

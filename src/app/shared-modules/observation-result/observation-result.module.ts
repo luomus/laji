@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ObservationTableComponent } from './observation-table/observation-table.component';
-import { ObservationListService } from './service/observation-list.service';
+import { ObservationResultService } from './service/observation-result.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
 import { SharedModule } from '../../shared/shared.module';
@@ -14,6 +14,7 @@ import { ObservationMonthDayChartComponent } from './observation-month-day-chart
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartsModule } from 'ng2-charts';
 import { ChartsModuleBarVerticalGroup } from '../bar-chart/ng2-charts.module';
+import { ObservationTableSettingsComponent } from './observation-table/observation-table-settings.component';
 
 @NgModule({
   imports: [
@@ -32,9 +33,16 @@ import { ChartsModuleBarVerticalGroup } from '../bar-chart/ng2-charts.module';
     PageSizeSelectComponent,
     SelectedFieldItemComponent,
     ObservationYearChartComponent,
-    ObservationMonthDayChartComponent
+    ObservationMonthDayChartComponent,
+    ObservationTableSettingsComponent
   ],
-  providers: [ObservationListService],
-  exports: [ObservationTableComponent, SelectedFieldGroupComponent, ObservationYearChartComponent, ObservationMonthDayChartComponent]
+  providers: [ObservationResultService],
+  exports: [
+    ObservationTableComponent,
+    ObservationTableSettingsComponent,
+    SelectedFieldGroupComponent,
+    ObservationYearChartComponent,
+    ObservationMonthDayChartComponent
+  ]
 })
 export class ObservationResultModule { }

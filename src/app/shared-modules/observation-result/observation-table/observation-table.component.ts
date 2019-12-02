@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { ObservationListService } from '../service/observation-list.service';
+import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { BsModalService, ModalDirective } from 'ngx-bootstrap';
@@ -26,17 +26,21 @@ import {
 } from '../../datatable/service/table-column.service';
 import { map, switchMap } from 'rxjs/operators';
 import { ExportService } from '../../../shared/service/export.service';
+import { BookType } from 'xlsx';
+import { Global } from '../../../../environments/global';
+import { IColumns } from '../../datatable/service/observation-table-column.service';
+import { ObservationTableSettingsComponent } from './observation-table-settings.component';
 
 @Component({
   selector: 'laji-observation-table',
   templateUrl: './observation-table.component.html',
   styleUrls: ['./observation-table.component.css'],
-  providers: [ObservationListService],
+  providers: [ObservationResultService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
-  @ViewChild('settingsModal', { static: true }) public modalRef: ModalDirective;
+  @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal: ObservationTableSettingsComponent;
 
   @Input() query: WarehouseQueryInterface;
   @Input() pageSize;
@@ -74,7 +78,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Output() rowSelect = new EventEmitter<any>();
   @Output() total = new EventEmitter<number>();
 
-  maxDownload = 2000;
+  maxDownload = Global.limit.simpleDownload;
   downloadLoading = false;
   lang: string;
   cache: any = {};
@@ -103,7 +107,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   columns: ObservationTableColumn[] = [];
   allColumns: ObservationTableColumn[];
-  columnGroups: IColumnGroup[][];
+  columnGroups: IColumnGroup<IColumns>[][];
 
   private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCountSum'];
 
@@ -115,16 +119,16 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() showRowAsLink = true;
 
   constructor(
-    private resultService: ObservationListService,
+    private resultService: ObservationResultService,
     private changeDetectorRef: ChangeDetectorRef,
     private modalService: BsModalService,
     private logger: Logger,
     private translate: TranslateService,
-    private tableColumnService: TableColumnService,
+    private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private exportService: ExportService
   ) {
-    this.allColumns = tableColumnService.allColumns;
-    this.columnGroups = tableColumnService.columnGroups;
+    this.allColumns = tableColumnService.getAllColumns();
+    this.columnGroups = tableColumnService.getColumnGroups();
   }
 
   @Input() set selected(sel: string[]) {
@@ -196,22 +200,17 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   openModal() {
-    this.modalRef.show();
-    this.modalSub = this.modalRef.onHide.subscribe((modal: ModalDirective) => {
-      if (modal.dismissReason !== null) {
-        this.columnSelector.columns = [...this._originalSelected];
-        this.numberColumnSelector.columns = [...this._originalSelectedNumbers];
-      }
-      this.modalSub.unsubscribe();
-    });
+    this.settingsModal.openModal();
   }
 
-  closeOkModal() {
-    if (this.columnSelector.hasChanges || this.numberColumnSelector.hasChanges) {
+  onCloseSettingsModal(ok: boolean) {
+    if (!ok) {
+      this.columnSelector.columns = [...this._originalSelected];
+      this.numberColumnSelector.columns = [...this._originalSelectedNumbers];
+    } else if (this.columnSelector.hasChanges || this.numberColumnSelector.hasChanges) {
       this.orderBy = [];
       this.selectChange.emit([...this.columnSelector.columns, ...this.numberColumnSelector.columns]);
     }
-    this.modalRef.hide();
   }
 
   onReorder(event) {
@@ -316,35 +315,18 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   download(type: string) {
     this.downloadLoading = true;
     const columns = this.tableColumnService.getColumns(this._originalSelected);
-    this.getAllObservations().pipe(
-      switchMap(data => this.exportService.getAoa<any>(columns, data)),
-      map(aoa => this.exportService.getBufferFromAoa(aoa, type)),
-      map(buffer => this.exportService.exportArrayBuffer(buffer, 'laji-data', type))
+    this.resultService.getAll(
+      this.query,
+      this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
+      [...this.orderBy, this.defaultOrder],
+      this.lang
+    ).pipe(
+      switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;
         this.changeDetectorRef.markForCheck();
       },
       (err) => this.logger.error('Simple download failed', err));
-  }
-
-  private getAllObservations(data: any[] = [], page = 1, pageSize = 1000): Observable<any[]> {
-    return this.resultService.getList(
-      this.query,
-      this.getSelectFields(this.columnSelector.columns, this.query),
-      page,
-      pageSize,
-      [...this.orderBy, this.defaultOrder],
-      this.lang
-    ).pipe(
-      switchMap(result => {
-        data.push(...result.results);
-        if (result.lastPage > result.currentPage) {
-          return this.getAllObservations(data, result.currentPage + 1);
-        } else {
-          return of(data);
-        }
-      })
-    );
   }
 }
