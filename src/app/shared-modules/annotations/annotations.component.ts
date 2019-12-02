@@ -38,7 +38,6 @@ export class AnnotationsComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log('annotations');
     this.initEmptyAnnotation();
     if (this.identifying) {
       this.adding = true;
