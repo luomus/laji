@@ -43,6 +43,7 @@ export class TaxonSpecimensComponent implements OnChanges {
       this.documentViewerFacade.showDocumentID({
         highlight: row.unit.unitId,
         document: row.document.documentId,
+        openAnnotation: false,
         result: undefined
       });
     }

@@ -276,7 +276,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     );
 
     this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang);
-
   }
 
 

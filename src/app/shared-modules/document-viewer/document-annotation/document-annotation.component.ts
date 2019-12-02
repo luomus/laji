@@ -114,12 +114,14 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ngAfterViewInit() {
     this.isViewInited = true;
     this.updateDocument();
+    this.cd.detectChanges();
   }
 
   ngOnChanges() {
     this.hasDoc = undefined;
     if (this.isViewInited) {
       this.updateDocument();
+      this.cd.detectChanges();
     }
   }
 
@@ -207,6 +209,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
   private parseDoc(doc, found) {
+    this.cd.detectChanges();
     this.hasDoc = found;
     this.unitCnt = 0;
     if (found) {

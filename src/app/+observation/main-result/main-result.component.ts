@@ -198,6 +198,7 @@ export class MainResultComponent implements OnInit, OnChanges {
       this.documentViewerFacade.showDocumentID({
         document: row.document.documentId,
         highlight: row.unit.unitId,
+        openAnnotation: false,
         own: listQuery && (!!listQuery.observerPersonToken || !!listQuery.editorPersonToken || !!listQuery.editorOrObserverPersonToken),
         result: undefined
       });

@@ -50,6 +50,7 @@ export class ObservationResultListComponent {
       this.documentViewerFacade.showDocumentID({
         document: row.document.documentId,
         highlight: this.resultBase === 'sample' ? row.sample.sampleId : row.unit.unitId,
+        openAnnotation: false,
         own: query && (!!query.observerPersonToken || !!query.editorPersonToken || !!query.editorOrObserverPersonToken),
         result: undefined
       });

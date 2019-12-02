@@ -38,6 +38,7 @@ export class AnnotationsComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    console.log('annotations');
     this.initEmptyAnnotation();
     if (this.identifying) {
       this.adding = true;
@@ -95,11 +96,12 @@ export class AnnotationsComponent implements OnInit {
   }
 
   showDocument() {
-      this.documentViewerFacade.showDocumentID({
-        highlight: this.unit.unitId,
-        document: this.documentID,
-        openAnnotation: true
-      });
+    this.documentViewerFacade.showDocumentID({
+      highlight: this.unit.unitId,
+      document: this.documentID,
+      openAnnotation: true,
+      result: undefined
+    });
   }
 
 }

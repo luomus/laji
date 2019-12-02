@@ -38,6 +38,7 @@ export class GatheringAnnotationComponent implements OnInit, OnDestroy {
   constructor(private taxonTagEffective: TaxonTagEffectiveService) { }
 
   ngOnInit() {
+    console.log('gathering-annotation');
   }
 
 
