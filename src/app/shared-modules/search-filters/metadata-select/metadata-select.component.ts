@@ -9,10 +9,10 @@ import { CollectionService } from '../../../shared/service/collection.service';
 import { AreaService } from '../../../shared/service/area.service';
 import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
-import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { Area } from '../../../shared/model/Area';
+import { GraphQLDataService } from '../../../graph-ql/graph-ql-data.service';
 
 
 export interface MetadataSelectPick {
@@ -78,7 +78,8 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
               private cd: ChangeDetectorRef,
               private logger: Logger,
               private translate: TranslateService,
-              private adminStatusInfoPipe: AdminStatusInfoPipe
+              private adminStatusInfoPipe: AdminStatusInfoPipe,
+              private graphQLDataService: GraphQLDataService
   ) {
   }
 
@@ -237,12 +238,12 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       }
     }
     this.shouldSort = false;
-    return this.metadataService.getRange(this.alt).pipe(
-      map(range => range.map(data => {
-        const options = {id: data.id, value: MultiLangService.getValue(data.value, this.lang)};
-        this.addMetadataInfo(options, data);
-        return options;
-      })),
+    return this.graphQLDataService.getBaseData({
+      lang: this.translate.currentLang
+    }).pipe(
+      map(data => data.alts),
+      map(alts => alts.find(alt => alt.id === this.alt)),
+      map(alt => (alt && alt.options || []).map(option => ({id: option.id, value: option.label}))),
       map(options => this.whiteList ? options.filter(option => this.whiteList.includes(option.id)) : options),
       map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options),
       map(options => this.skipBefore ? options.slice(options.findIndex(o => o.id === this.skipBefore)) : options)
