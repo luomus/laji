@@ -743,7 +743,7 @@
   "observation.download.label": "Vapaavalintainen kuvaus aineistopyynnölle",
   "observation.download.loadPrivate": "Tee aineistopyyntö",
   "observation.download.loadPublic": "Lataa aineisto",
-  "observation.download.loadSpecies": "Lataa lajiluettelo",
+  "observation.download.loadSpecies": "Lataa taksoniluettelo",
   "observation.download.privateTitle": "Aineistopyyntö (käyttörajoitettu aineisto)",
   "observation.download.publicTitle": "Viittauskelpoinen tiedosto (julkinen aineisto)",
   "observation.download.specimenTitle": "Lataa taksoniluettelo",
