@@ -64,7 +64,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   requestStatus = RequestStatus;
   downloadLoading = false;
   description = '';
-  csvParams = '';
+  csvParams = {};
   columnSelector = new ColumnSelector;
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
@@ -168,8 +168,8 @@ export class ObservationDownloadComponent implements OnDestroy {
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
     queryParams['includeNonValidTaxa'] = 'false';
     queryParams['pageSize'] = '' + this.taxaLimit;
-    const params = new HttpParams({fromObject: <any>queryParams});
-    this.csvParams = params.toString();
+    queryParams['format'] = 'csv';
+    this.csvParams = queryParams;
   }
 
   makePrivateRequest() {
