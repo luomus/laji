@@ -992,7 +992,7 @@
   "result.gathering.locality": "Sijainti",
   "result.gathering.municipality": "Eliömaakunta",
   "result.gathering.team": "Henkilö",
-  "result.load.intro": "Rajauksesi kattaa {{count}} havaintoa {{species}} lajista. Havainnoista {{public}} on kokonaisuudessaan julkisia. {{private}} havainnon tietoja on karkeistettu kättörajoitusten vuoksi.",
+  "result.load.intro": "Rajauksesi kattaa {{count}} havaintoa {{species}} lajista. Havainnoista {{public}} on kokonaisuudessaan julkisia. {{private}} havainnon tietoja on karkeistettu käyttörajoitusten vuoksi.",
   "result.load.error.tooManySimple": "Liian paljon havaintoja. Enimmäismäärä tälle lataukselle on <strong>{{max}}</strong>, joten rajaa hakua lisää.",
   "result.load.error.notLoggedIn": "Sinun täytyy kirjautua käyttääksesi tätä toimintoa",
   "result.load.titleSimple": "Havainnot: yksinkertainen taulukko",
