@@ -232,7 +232,7 @@ export const Global = {
     },
     'MMAN.10': {
       value: 'MMAN.10',
-      quality: 'check'
+      quality: 'self'
     },
     'MMAN.11': {
       value: 'MMAN.11',

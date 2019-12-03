@@ -2,19 +2,28 @@
     <div class="tags-step-1" *ngIf="expert else checkTags">
       <label>{{ 'annotation.addTags' | translate }}</label>
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['positive','negative']: 'exclude': 'id': ['MMAN.5'] | sort: 'position'; let i = index;" class="tag-value">
-            <main class="lu">
-                <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-                  <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</div>
-                </lu-checkbox>
-            </main>
+          <main class="lu">
+            <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+              <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+            </lu-checkbox>
+          </main>
+        </div>
+        <div *ngIf="isEditor" style="margin-top:10px; margin-bottom:10px">
+            <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['self']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+                <main class="lu">
+                    <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+                      <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+                    </lu-checkbox>
+                </main>
+            </div>
         </div>
         <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-top:10px; margin-bottom:10px" [@fadeInOut]>
           <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
-              <main class="lu">
-                  <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-                    <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</div>
-                  </lu-checkbox>
-              </main>
+            <main class="lu">
+              <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+                <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+              </lu-checkbox>
+            </main>
           </div>    
         </div>
     </div>
@@ -31,7 +40,7 @@
     <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
       In this type of annotation, you need to add at lest 1 check tag or a taxon
     </div>
-  <div class="row removed-tags" *ngIf="expert && personRoleAnnotation == 'MMAN.expert' && (annotationRemovableTags$ | async | activeTags: annotations)?.length > 0">
+  <div class="row removed-tags" *ngIf="expert && personRoleAnnotation === 'MMAN.expert' && (annotationRemovableTags$ | async | activeTags: annotations)?.length > 0">
       <div class="col-sm-12">
         <label>{{ 'annotation.removeTags' | translate }}</label>
         <div *ngFor="let item of annotationRemovableTags$ | async | activeTags: annotations" class="list-checkbox">

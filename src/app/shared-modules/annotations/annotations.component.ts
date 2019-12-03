@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild,
+ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { AnnotationService } from '../document-viewer/service/annotation.service';
 import { Annotation } from '../../shared/model/Annotation';
 import { IdService } from '../../shared/service/id.service';
@@ -8,7 +9,9 @@ import { AnnotationFormNewComponent } from './annotation-form-new/annotation-for
 @Component({
   selector: 'laji-annotations',
   templateUrl: './annotations.component.html',
-  styleUrls: ['./annotations.component.css']
+  styleUrls: ['./annotations.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class AnnotationsComponent implements OnInit {
   @Input() rootID: string;
@@ -34,7 +37,8 @@ export class AnnotationsComponent implements OnInit {
 
   constructor(
     private annotationService: AnnotationService,
-    private documentViewerFacade: DocumentViewerFacade
+    private documentViewerFacade: DocumentViewerFacade,
+    private cd: ChangeDetectorRef
     ) { }
 
   ngOnInit() {
@@ -75,6 +79,7 @@ export class AnnotationsComponent implements OnInit {
   changeModeForm() {
    this.expert = !this.expert;
    this.formAnnotation.cleanForm();
+   this.cd.markForCheck();
   }
 
   onDelete(annotation: Annotation) {

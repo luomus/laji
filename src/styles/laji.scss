@@ -1133,6 +1133,12 @@ div.annotation-marker {
   border: 1px solid #d19494;
 }
 
+.annotation-marker.self {
+  color: #337799;
+  background-color: #ecf4f9;
+  border: 1px solid #94bdd1;
+}
+
 
 .annotation-marker-new.positive {
   color: #559933;

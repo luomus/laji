@@ -83,12 +83,12 @@ label {
     font-weight: normal;
   }
   
-  .info {
+  /*.info {
     padding: 2px 5px;
     font-size: 12px;
     border-radius: 6px;
     margin-bottom: 10px;
-  }
+  }*/
   
    ul.list-info {
     margin-bottom: 0;
@@ -190,6 +190,11 @@ label {
 
   :host ::ng-deep lu-checkbox label.checked .warning {
     background: #E16200;
+    color: white;
+  }
+
+  :host ::ng-deep lu-checkbox label.checked .info {
+    background: #403eff;
     color: white;
   }
 

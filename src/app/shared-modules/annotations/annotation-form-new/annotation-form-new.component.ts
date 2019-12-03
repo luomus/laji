@@ -195,7 +195,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   // add tags and filter after add a positive or negative tag
   findFirstTagNegativePositive(tags, quality): any {
     for (let i = 0; i < tags.length; i++) {
-      if (quality[tags[i]].quality !== 'check' && quality[tags[i]].quality !== 'neutral') {
+      if (quality[tags[i]].quality !== 'check' && quality[tags[i]].quality !== 'neutral' && quality[tags[i]].quality !== 'self') {
         return tags[i];
       } else {
       }
@@ -333,7 +333,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   addToAddTags(value) {
-
     if ( this.annotationTagsObservation[value].quality === 'positive' || this.annotationTagsObservation[value].quality === 'negative') {
       const index = this.annotation.addedTags.indexOf(
         this.findFirstTagNegativePositive(this.annotation.addedTags, this.annotationTagsObservation)
