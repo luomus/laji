@@ -1,4 +1,6 @@
-<laji-observation-active [(query)]="searchQuery.query" (queryChange)="onQueryChange()" [queryType]="searchQuery.queryType"></laji-observation-active>
+<div class="observation-active-container">
+  <laji-observation-active [(query)]="searchQuery.query" (queryChange)="onQueryChange()" [queryType]="searchQuery.queryType"></laji-observation-active>
+</div>
 
 <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>
 <laji-observation-group-select

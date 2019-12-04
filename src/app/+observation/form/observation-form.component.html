@@ -1,12 +1,13 @@
-<laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
-
 <div class="mode-select">
-  <span class="badge link" [class.active]="!advancedMode" (click)="setAdvancedMode(false)">
-    {{ 'observation.form.modeBasic' | translate }}
-  </span>
-  <span class="badge link" [class.active]="advancedMode" (click)="setAdvancedMode(true)">
-    {{ 'observation.form.modeAdvanced' | translate }}
-  </span>
+  <div>
+    <span class="badge link" [class.active]="!advancedMode" (click)="setAdvancedMode(false)">
+      {{ 'observation.form.modeBasic' | translate }}
+    </span>
+    <span class="badge link" [class.active]="advancedMode" (click)="setAdvancedMode(true)">
+      {{ 'observation.form.modeAdvanced' | translate }}
+    </span>
+  </div>
+  <laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
 </div>
 
 <section class="top-section">
