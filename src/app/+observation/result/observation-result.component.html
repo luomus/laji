@@ -6,12 +6,6 @@
   {{ 'observation.results.hits' | translate }}
 </strong>
 <div class="finnish-selector" *ngIf="visible.finnish || (visible.countTaxa && visible.countHits)">
-  <ng-container *ngIf="visible.finnish">
-    <lu-button [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="active !== 'finnish'">
-      {{ 'search.result.all' | translate }}</lu-button>
-    <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="active === 'finnish'">
-      {{ 'search.result.finnish' | translate }}</lu-button>
-  </ng-container>
   <ng-container *ngIf="visible.countTaxa || visible.countHits">
     <ng-container *ngIf="active !== 'finnish'">
       <div>
@@ -55,6 +49,14 @@
       </div>
     </ng-container>
   </ng-container>
+  <lu-button *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</lu-button>
+  <div class="fill-space"></div>
+  <div *ngIf="visible.finnish">
+    <lu-button [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="active !== 'finnish'">
+      {{ 'search.result.all' | translate }}</lu-button>
+    <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="active === 'finnish'">
+      {{ 'search.result.finnish' | translate }}</lu-button>
+  </div>
 </div>
 
 <lu-tabs *ngIf="active !== 'finnish'" [selectedIndex]="selectedIndex" (select)="onSelect($event)">
@@ -161,14 +163,6 @@
       </div>
     </div>
   </lu-tab>
-  <lu-tab *ngIf="visible.download" [heading]="'search.result.load' | translate">
-    <laji-observation-download
-      [speciesCount]="speciesCount"
-      [unitCount]="unitCount"
-      [query]="query"
-    ></laji-observation-download>
-  </lu-tab>
-
   <ng-container *lajiForTypes="['dev']">
     <lu-tab *ngIf="visible.annotations" [heading]="'search.result.annotation' | translate">
       <laji-annotations [query]="query"></laji-annotations>
@@ -179,3 +173,11 @@
 <div [hidden]="active !== 'finnish'" *ngIf="activated['finnish'] && visible.finnish">
   <laji-main-result [query]="query" [visible]="active === 'finnish'"></laji-main-result>
 </div>
+
+<laji-observation-download
+  [settings]="listSettings"
+  (settingsChange)="listSettingsChange.emit($event)"
+  [speciesCount]="speciesCount"
+  [unitCount]="unitCount"
+  [query]="query"
+></laji-observation-download>

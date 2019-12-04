@@ -5,6 +5,7 @@ import { ExportService } from '../../../shared/service/export.service';
 import { concatMap, map, toArray } from 'rxjs/operators';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { BookType } from 'xlsx';
 
 export const SYNONYM_KEYS = [
   'basionyms',
@@ -31,12 +32,8 @@ export class TaxonExportService {
   public downloadTaxons(columns: DatatableColumn[], data: Taxonomy[], type = 'tsv', firstRow?: string[]): Observable<boolean> {
     return this.analyzeTaxa(columns, data)
       .pipe(
-        concatMap(taxa => this.exportService.getAoa<Taxonomy>(columns, taxa, firstRow)),
-        map(aoa => this.exportService.getBufferFromAoa(aoa, type)),
-        map((buffer) => {
-          this.exportService.exportArrayBuffer(buffer, this.translate.instant('taxon-export'), type);
-          return true;
-        })
+        concatMap(taxa => this.exportService.exportFromData(taxa, columns, type as BookType, 'taxon-export', firstRow)),
+        map(() => true)
       );
   }
 

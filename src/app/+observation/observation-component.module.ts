@@ -33,6 +33,7 @@ import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 import { AnnotationsComponent } from './annotations/annotations.component';
 import { FormSampleComponent } from './form-sample/form-sample.component';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
+import { DownloadModule } from '../shared-modules/download/download.module';
 
 @NgModule({
   imports: [
@@ -49,7 +50,8 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
     NgxChartsModule,
     ChartsModule,
     JwBootstrapSwitchNg2Module,
-    LajiUiModule
+    LajiUiModule,
+    DownloadModule
   ],
   declarations: [
     ObservationComponent,

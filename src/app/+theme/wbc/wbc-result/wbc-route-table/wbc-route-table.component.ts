@@ -4,6 +4,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import { ExportService } from '../../../../shared/service/export.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SEASON } from '../wbc-result.service';
+import { BookType } from 'xlsx';
 
 @Component({
   selector: 'laji-wbc-route-table',
@@ -105,12 +106,13 @@ export class WbcRouteTableComponent implements OnInit {
   download(format: string) {
     this.downloadLoading = true;
 
-    this.exportService.exportArrayBuffer(
-      this.exportService.getBufferFromAoa(this.getAoa(), format),
-      'route_' + this.routeId.split('.')[1] + '_' + this.season,
-      format
-      );
+    this.exportService.export(
+      this.getAoa(),
+      format as BookType,
+      'route_' + this.routeId.split('.')[1] + '_' + this.season
+    ).subscribe(() => {
       this.downloadLoading = false;
+    });
   }
 
   private getAoa(): string[][] {

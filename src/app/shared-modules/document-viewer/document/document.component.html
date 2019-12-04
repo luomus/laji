@@ -65,17 +65,15 @@
           </button>
           <div style="margin-top: 35px;">
             <alert [type]="document.secured ?  'warning' : 'info'">
+              <span *ngIf="document.partial">
+                {{ 'viewer.secured.partial' | translate }}
+              </span>
               <span *ngIf="!document.secured; else isSecured">
                 {{ 'viewer.secured.none' | translate }}
               </span>
               <ng-template #isSecured>
                 <span *ngIf="document.public">
-                  <span *ngIf="document.secureLevel !== 'NONE' || (document.secureReasons && document.secureReasons.length > 0)">
-                    {{ 'viewer.secured.secured' | translate }}
-                  </span>
-                  <span *ngIf="document.partial">
-                    {{ 'viewer.secured.partial' | translate }}
-                  </span>
+                  {{ 'viewer.secured.secured' | translate }}
                 </span>
                 <span *ngIf="!document.public">
                   {{ 'viewer.secured.own1' | translate }}

@@ -3,6 +3,7 @@ import { routing } from './observation.routes';
 import { ObservationFacade } from './observation.facade';
 import { ObservationComponentModule } from './observation-component.module';
 import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
+import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
 
 @NgModule({
   imports: [
@@ -12,7 +13,7 @@ import { TableColumnService } from '../shared-modules/datatable/service/table-co
   declarations: [],
   providers: [
     ObservationFacade,
-    TableColumnService
+    {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })
 export class ObservationModule {

@@ -277,15 +277,13 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   download(fileType: string) {
     this.downloadLoading = true;
 
-    const columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
-    this.fetchAllPages()
-      .subscribe(data =>  {
-        this.taxonExportService.downloadTaxons(columns, data, fileType)
-          .subscribe(() => {
-            this.downloadLoading = false;
-            this.speciesDownload.modal.hide();
-            this.cd.markForCheck();
-          });
+    this.columnService.getColumns$(this.searchQuery.listOptions.selected).pipe(
+      switchMap(columns => this.fetchAllPages().pipe(map((data) => ({data, columns})))),
+      switchMap(res => this.taxonExportService.downloadTaxons(res.columns, res.data, fileType))
+    ).subscribe(() =>  {
+          this.downloadLoading = false;
+          this.speciesDownload.closeModal();
+          this.cd.markForCheck();
       });
   }
 
@@ -331,6 +329,23 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
         '1000',
         this.searchQuery.listOptions.sortOrder,
         query.extraParameters
+      ).pipe(
+        map(data => {
+          if (data && Array.isArray(data.results)) {
+            data.results = data.results.map(taxon => {
+              if (taxon.parent && Array.isArray(taxon.nonHiddenParentsIncludeSelf)) {
+                return {...taxon, parent: Object.keys(taxon.parent).reduce((parent, level) => {
+                  if (taxon.nonHiddenParentsIncludeSelf.includes(taxon.parent[level].id)) {
+                    parent[level] = taxon.parent[level];
+                  }
+                  return parent;
+                }, {})};
+              }
+              return taxon;
+            });
+          }
+          return data;
+        })
       );
   }
 
@@ -361,9 +376,12 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       return arr;
     }, []);
 
-    if (selects.indexOf('id') === -1) {
-      selects.push('id');
-    }
+    ['id', 'nonHiddenParentsIncludeSelf'].forEach(field => {
+      if (selects.indexOf(field) === -1) {
+        selects.push(field);
+      }
+    });
+
     return selects.join(',');
   }
 

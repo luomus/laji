@@ -10,6 +10,7 @@ import { DatatableTemplatesComponent } from './datatable-templates/datatable-tem
 import { InfoModule } from '../info/info.module';
 import { DatatableHeaderComponent } from './datatable-header/datatable-header.component';
 import { DownloadModule } from '../download/download.module';
+import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { DownloadModule } from '../download/download.module';
     SpinnerModule,
     SharedModule,
     InfoModule,
-    DownloadModule
+    DownloadModule,
+    LajiUiModule
   ],
   declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent],
   exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent]

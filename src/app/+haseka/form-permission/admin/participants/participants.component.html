@@ -15,15 +15,16 @@
 <div class="row">
   <div class="col-sm-3">
     <laji-spinner [spinning]="!loaded" [hideContentWhileLoading]="true">
-      <laji-download
-        linkClass="link btn btn-default btn-sm pull-right"
-        [downloadLoading]="fetching"
-        (download)="getParticipants($event)">
-        <span>
-          Tee raportti
-          <i class="glyphicon glyphicon-download-alt"></i>
-        </span>
-      </laji-download>
+      <div class="pull-right">
+        <laji-download
+          [downloadLoading]="fetching"
+          (download)="getParticipants($event)">
+          <span>
+            Tee raportti
+            <i class="glyphicon glyphicon-download-alt"></i>
+          </span>
+        </laji-download>
+      </div>
     </laji-spinner>
   </div>
 </div>
