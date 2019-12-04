@@ -29,8 +29,12 @@ a {
   margin-top: 30px;
   background: #f9f9f9;
   padding: 10px;
-  border: 2px solid #b2b2b2;
+  border: 1px solid #b2b2b2;
+  box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
 }
+
 
 hr {
   border-top: 2px solid #eee;
