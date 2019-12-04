@@ -1,3 +1,9 @@
+<a name="3.2.2"></a>
+# 3.2.2 (2019-12-04)
+
+### Features
+* **core:** use canvas instead of svg for faster page rendering
+
 <a name="3.2.1"></a>
 # 3.2.1 (2019-11-25)
 

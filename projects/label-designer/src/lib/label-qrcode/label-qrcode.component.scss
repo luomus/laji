@@ -1,0 +1,5 @@
+:host .print ::ng-deep img {
+  transform-origin: top left;
+  // When changing scale there two other places needing to be changed (ll-label-style && label-print.component.ts)
+  transform: scale(0.25);
+}

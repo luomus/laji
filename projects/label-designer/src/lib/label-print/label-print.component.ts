@@ -30,7 +30,6 @@ const style = `
 }
 .ll-label-item {
   position: absolute;
-  overflow: hidden;
 }
 .ll-label {
   direction: ltr;
@@ -39,6 +38,10 @@ const style = `
 }
 .ll-label.preview {
   border: 1px solid #333;
+}
+img {
+  transform-origin: top left;
+  transform: scale(0.25);
 }
 `;
 /* tslint:enable:max-line-length */
