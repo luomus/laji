@@ -3,9 +3,17 @@
 
 .mode-select {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
+  justify-content: space-between;
 
   border-bottom: 1px solid $neutral-4;
+  > div {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  laji-observation-active {
+    align-self: center;
+  }
 }
 
 .top-section {

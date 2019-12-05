@@ -14,11 +14,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { timer, Subject } from 'rxjs';
+import { timer, Subject, Observable } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
-import { DialogService } from '../service/dialog.service';
-import { PagedResult } from '../model/PagedResult';
-import { Notification } from '../model/Notification';
 import { isPlatformBrowser } from '@angular/common';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
@@ -39,10 +36,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   redTheme = false;
   isProd = false;
   showSearch = false;
-  notifications: PagedResult<Notification>;
-  notificationsNotSeen = 0;
-  notificationPageSize = 5;
   env = environment.type;
+
+  notificationsNotSeen = 0;
+  notificationsTotal$: Observable<number>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -67,18 +64,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.changeDetector.markForCheck();
       }
     });
-    this.notificationsFacade.state$.pipe(takeUntil(this.unsubscribe$)).subscribe((state) => {
-      this.notifications = state.notifications;
-      this.notificationsNotSeen = state.unseenCount;
-      this.changeDetector.markForCheck();
+    this.notificationsFacade.unseenCount$.pipe(takeUntil(this.unsubscribe$)).subscribe((unseenCount) => {
+      this.notificationsNotSeen = unseenCount;
+      this.changeDetector.detectChanges();
     });
+    this.notificationsTotal$ = this.notificationsFacade.total$;
     this.userService.isLoggedIn$.pipe(
       filter(res => !!res),
       switchMap(() => timer(1000, 60000)),
       takeUntil(this.unsubscribe$)
     ).subscribe(() => {
-      this.notificationsFacade.loadAll(0, this.notificationPageSize);
-      this.changeDetector.markForCheck();
+      this.notificationsFacade.loadUnseenCount();
+      this.notificationsFacade.loadNotifications(1);
     });
   }
 
