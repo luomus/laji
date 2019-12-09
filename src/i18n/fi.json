@@ -46,7 +46,7 @@
   "error": "Virhe",
   "error.404.intro": "Tarkista, että kirjoitit osoitteen oikein.",
   "error.404.title": "Sivua ei löydy",
-  "error.500.intro": "Valitettavasti jotain odottamatonta tapahtui. Odota hetki ja yritä uudestaan, jos ongelma jatkuu ota yhteyttä ylläpitoon.",
+  "error.500.intro": "Valitettavasti jotain odottamatonta tapahtui. Tästä on lähetetty viesti ylläpidolle, jota selvittää pian asiaa. Odota hetki ja yritä uudestaan, jos ongelma jatkuu ota yhteyttä ylläpitoon.",
   "error.500.title": "Hups, jotain meni pieleen",
   "error.login": "Sisäänkirjautuminen epäonnistui. Yritä hetken kuluttua uudelleen.",
   "error.logout": "Uloskirjautuminen epäonnistui. Yritä hetken kuluttua uudelleen.",
