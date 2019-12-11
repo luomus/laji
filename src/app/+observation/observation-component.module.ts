@@ -34,6 +34,8 @@ import { AnnotationsComponent } from './annotations/annotations.component';
 import { FormSampleComponent } from './form-sample/form-sample.component';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { DownloadModule } from '../shared-modules/download/download.module';
+import { ChartsModuleBarVerticalGroup } from '../shared-modules/bar-chart/ng2-charts.module';
+import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
 
 @NgModule({
   imports: [
@@ -51,7 +53,8 @@ import { DownloadModule } from '../shared-modules/download/download.module';
     ChartsModule,
     JwBootstrapSwitchNg2Module,
     LajiUiModule,
-    DownloadModule
+    DownloadModule,
+    ChartsModuleBarVerticalGroup
   ],
   declarations: [
     ObservationComponent,
@@ -73,7 +76,8 @@ import { DownloadModule } from '../shared-modules/download/download.module';
     ExistsPipe,
     ToSafeQueryPipe,
     AnnotationsComponent,
-    FormSampleComponent
+    FormSampleComponent,
+    HorizontalChartComponent
   ],
   exports: [
     ObservationViewComponent

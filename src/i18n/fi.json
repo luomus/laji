@@ -1211,6 +1211,8 @@
   "taxonomy.observations.yearChart.yAxis": "Havaintomäärä",
   "taxonomy.observations.monthDayChart": "Esiintyminen vuodenaikoina Suomessa",
   "taxonomy.observations.secureLevels": "Salausperusteet",
+  "taxonomy.observations.showMore": "Show 20 results more",
+  "taxonomy.observations.hideMore": "Hide 20 results",
   "taxonomy.endangerment.iucnLink": "Lisää tietoa punaisen kirjan tulospalvelussa",
   "taxonomy.endangerment.evaluation": "Arvionti",
   "taxonomy.endangerment.evaluationHistory": "Arviontihistoria",
