@@ -1132,6 +1132,8 @@
   "taxonomy.observations.yearChart.yAxis": "Abservation antal",
   "taxonomy.observations.monthDayChart": "Händelse under säsongerna i Finland",
   "taxonomy.observations.secureLevels": "Salausperusteet",
+  "taxonomy.observations.showMore": "Show 20 results more",
+  "taxonomy.observations.hideMore": "Hide 20 results",
   "taxonomy.endangerment.iucnLink": "Lisää tietoa punaisen kirjan tulospalvelussa",
   "taxonomy.endangerment.evaluation": "Arvionti",
   "taxonomy.endangerment.evaluationHistory": "Arviontihistoria",
