@@ -1,3 +1,10 @@
+.view-mode-selector {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  padding-bottom: 5px;
+}
+
 .more {
   position: absolute;
   /* margin: 0px; */
@@ -329,13 +336,6 @@ uiload > div {
 a:focus em, a:hover em {
   text-decoration: underline;
 }
-
-.btn-group {
-  position: absolute;
-  top: -25px;
-  right: 0px;
-}
-
 
 @media only screen and (max-width : 1024px) {
   .full2-container {

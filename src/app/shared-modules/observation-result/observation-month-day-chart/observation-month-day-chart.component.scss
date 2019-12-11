@@ -27,3 +27,7 @@ canvas {
   width: 500px;
   height: 200px;
 }
+
+:host ::ng-deep laji-bar-chart {
+  height: 450px;
+}

@@ -30,10 +30,13 @@ import { MemberIdPillListComponent } from './form/team/member-id-pill-list/membe
 import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
 import { ExistsPipe } from './pipe/exists.pipe';
 import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
+import { AnnotationsComponent } from './annotations/annotations.component';
 import { FormSampleComponent } from './form-sample/form-sample.component';
 import { AnnotationModule } from './annotations/annotations.module';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { DownloadModule } from '../shared-modules/download/download.module';
+import { ChartsModuleBarVerticalGroup } from '../shared-modules/bar-chart/ng2-charts.module';
+import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
 
 @NgModule({
   imports: [
@@ -52,7 +55,8 @@ import { DownloadModule } from '../shared-modules/download/download.module';
     JwBootstrapSwitchNg2Module,
     AnnotationModule,
     LajiUiModule,
-    DownloadModule
+    DownloadModule,
+    ChartsModuleBarVerticalGroup
   ],
   declarations: [
     ObservationComponent,
@@ -73,7 +77,9 @@ import { DownloadModule } from '../shared-modules/download/download.module';
     RemoveLeadingPipe,
     ExistsPipe,
     ToSafeQueryPipe,
-    FormSampleComponent
+    AnnotationsComponent,
+    FormSampleComponent,
+    HorizontalChartComponent
   ],
   exports: [
     ObservationViewComponent
