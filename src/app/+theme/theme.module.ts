@@ -69,6 +69,8 @@ import { ObservationFacade } from '../+observation/observation.facade';
 import { ObservationComponentModule } from '../+observation/observation-component.module';
 import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
 import { DownloadModule } from '../shared-modules/download/download.module';
+import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
+import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
 
 /* tslint:enable:max-line-length */
 
@@ -142,6 +144,11 @@ import { DownloadModule } from '../shared-modules/download/download.module';
     ThemeOwnSubmissionsComponent,
     GeneticResourceComponent,
   ],
-  providers: [ ResultService, QualityService, WbcResultService ]
+  providers: [
+    ResultService,
+    QualityService,
+    WbcResultService,
+    {provide: TableColumnService, useClass: ObservationTableColumnService},
+  ]
 })
 export class ThemeModule { }
