@@ -113,8 +113,15 @@
   </lu-tab>
   <lu-tab *ngIf="visible.statistics" [heading]="'search.result.stats' | translate">
     <div *ngIf="activated['stats']">
-      <div class="form-group">
-        <div class="col-sm-12">
+      <div class="row">
+        <div class="col-xs-12">
+          <div
+            class="panel panel-default"
+            laji-panel
+            [title]="'observation.horizontalBar.title' | translate"
+            [open]="true"
+            [autoToggle]="true"
+          >
           <!--<laji-observation-chart
             [lang]="lang"
             [query]="query"
@@ -123,14 +130,15 @@
             [showLegend]="true"
             [visible]="active === 'stats'"
           ></laji-observation-chart>-->
-          <laji-horizontal-chart
-            [lang]="lang"
-            [query]="query"
-            (queryChange)="queryChange.emit($event)"
-            [height]="300"
-            [showLegend]="true"
-            [visible]="active === 'stats'"
-          ></laji-horizontal-chart>
+            <laji-horizontal-chart
+              [lang]="lang"
+              [query]="query"
+              (queryChange)="queryChange.emit($event)"
+              [height]="300"
+              [showLegend]="true"
+              [visible]="active === 'stats'"
+            ></laji-horizontal-chart>
+          </div>
         </div>
       </div>
       <div class="row">

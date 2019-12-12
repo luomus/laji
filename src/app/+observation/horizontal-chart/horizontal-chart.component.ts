@@ -38,12 +38,11 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
   };
 
  classification = [
-   { data: 'phylumId', label: 'Phylum'},
-   { data: 'classId', label: 'Class'},
-   { data: 'orderId', label: 'Order'},
-   { data: 'familyId', label: 'Family'},
-   { data: 'speciesId', label: this.translate.instant('haseka.submissions.taxon')},
-   { data: 'genusId', label: 'Genus'}
+   { data: 'phylumId', label: this.translate.instant('observation.label.phylum')},
+   { data: 'classId', label: this.translate.instant('observation.label.class')},
+   { data: 'orderId', label: this.translate.instant('observation.label.order')},
+   { data: 'familyId', label: this.translate.instant('observation.label.family')},
+   { data: 'genusId', label: this.translate.instant('observation.label.genus')}
   ];
 
   classificationValue = 'classId';
@@ -115,7 +114,7 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
       res.map(r => {
         this.subDataBarChart.push(r.count);
         this.subLabelBarChart.push(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
-        this.subBackgroundColors.push('#FFBB33');
+        this.subBackgroundColors.push('#3498db');
       });
 
     this.allDataBarChart = this.subDataBarChart;
