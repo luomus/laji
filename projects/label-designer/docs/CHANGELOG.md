@@ -1,3 +1,9 @@
+<a name="3.2.3"></a>
+# 3.2.3 (2019-12-05)
+
+### Bug fix
+* **core:** fix the issue where firefox would not include QRCode in the print
+
 <a name="3.2.2"></a>
 # 3.2.2 (2019-12-04)
 

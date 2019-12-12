@@ -199,11 +199,12 @@ export class LajiFormDocumentFacade implements OnDestroy {
         formData: {..._state.form.formData, locked: lock},
         uiSchema: {..._state.form.uiSchema, 'ui:disabled': this.isAdmin(_state.form) ? false : lock}
     }});
-    this.dataChange.next();
   }
 
   dataUpdate(doc: Document) {
-    this.updateState({..._state, hasChanges: true, form: {..._state.form, formData: doc}});
+    // Change data directly so that it would not trigger change detection. (Laji-form keeps state)
+    _state.form.formData = doc;
+    this.updateState({..._state, hasChanges: true});
     this.dataChange.next();
   }
 
