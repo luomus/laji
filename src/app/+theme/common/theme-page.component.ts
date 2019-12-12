@@ -8,9 +8,9 @@ import { Global } from '../../../environments/global';
 <lu-sidebar [open]="showNav">
   <nav>
     <h4 [innerHTML]="title | translate"></h4>
-    <lu-sidebar-link *ngFor="let link of navLinks" [link]="link.routerLink" routerLinkActive>
+    <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink" routerLinkActive>
       {{ link.label | translate }}
-      <lu-sidebar-link *ngFor="let child of link.children" [link]="child.routerLink">
+      <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink">
         {{ child.label | translate }}
       </lu-sidebar-link>
     </lu-sidebar-link>
@@ -44,7 +44,7 @@ export class ThemePageComponent {
     @Input() title: string;
     @Input() navLinks?:
         {
-            routerLink: string[], label: string, visible: boolean
+            routerLink: string[], label: string, visible: boolean, children: any
         }[];
     @Input() showNav ? = true;
     @Input() formID: string;
@@ -52,4 +52,8 @@ export class ThemePageComponent {
     noLatestForForm = Global.forms.default;
 
     constructor(public userService: UserService) { }
+
+    trackByLabel(index, link) {
+      return link.label;
+    }
 }
