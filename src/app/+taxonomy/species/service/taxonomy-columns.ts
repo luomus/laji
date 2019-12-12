@@ -162,6 +162,7 @@ export class TaxonomyColumns {
     'subtribe',
     'genus',
     'subgenus',
+    'aggregate',
     'species'
   ];
 
