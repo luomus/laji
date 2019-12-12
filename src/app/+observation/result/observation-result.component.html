@@ -77,7 +77,7 @@
   <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate">
     <laji-observation-result-list
       [resultBase]="resultBase"
-      [showDownloadMenu]="true"
+      [showDownloadMenu]="visible.downloadList"
       [settings]="listSettings"
       (settingsChange)="listSettingsChange.emit($event)"
       [visible]="active === 'list'"
