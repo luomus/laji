@@ -23,6 +23,7 @@ export interface VisibleSections {
   species?: boolean;
   statistics?: boolean;
   download?: boolean;
+  downloadList?: boolean;
   annotations?: boolean;
   info?: boolean;
 }
