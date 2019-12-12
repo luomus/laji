@@ -38,12 +38,11 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
   };
 
  classification = [
-   { data: 'phylumId', label: 'Phylum'},
-   { data: 'classId', label: 'Class'},
-   { data: 'orderId', label: 'Order'},
-   { data: 'familyId', label: 'Family'},
-   { data: 'speciesId', label: this.translate.instant('haseka.submissions.taxon')},
-   { data: 'genusId', label: 'Genus'}
+   { data: 'phylumId', label: this.translate.instant('observation.label.phylum')},
+   { data: 'classId', label: this.translate.instant('observation.label.class')},
+   { data: 'orderId', label: this.translate.instant('observation.label.order')},
+   { data: 'familyId', label: this.translate.instant('observation.label.family')},
+   { data: 'genusId', label: this.translate.instant('observation.label.genus')}
   ];
 
   classificationValue = 'classId';
@@ -115,10 +114,8 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
       res.map(r => {
         this.subDataBarChart.push(r.count);
         this.subLabelBarChart.push(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
-        this.subBackgroundColors.push('#FFBB33');
+        this.subBackgroundColors.push('#3498db');
       });
-
-    this.initializeGraph();
 
     this.allDataBarChart = this.subDataBarChart;
     this.allLabelBarChart = this.subLabelBarChart;
@@ -132,17 +129,8 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
     this.barChartData[0].backgroundColor = this.subBackgroundColors;
     this.barChartLabels = this.subLabelBarChart;
 
-    switch (true) {
-      case (this.allDataBarChart.length <= 5):
-      this.componentHeight = 200;
-      break;
-      case (this.allDataBarChart.length > 10 && this.allDataBarChart.length <= 20):
-      this.componentHeight = 400;
-      break;
-      case (this.allDataBarChart.length > 20):
-      this.componentHeight = 600;
-      break;
-   }
+    this.initializeGraph();
+
     this.cd.markForCheck();
     this.loading = false;
     });
@@ -151,10 +139,12 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
   toggleShowAllData() {
     this.initializeGraph();
     if (this.barChartData[0].data.length < this.allDataBarChart.length) {
+      this.componentHeight = 500;
       this.barChartData[0].data = this.allDataBarChart;
       this.barChartLabels = this.allLabelBarChart;
       this.barChartData[0].backgroundColor = this.allBackgroundColors;
     } else {
+      this.componentHeight = 300;
       this.barChartData[0].data = this.subDataBarChart;
       this.barChartLabels = this.subLabelBarChart;
       this.barChartData[0].backgroundColor = this.subBackgroundColors;
@@ -196,6 +186,27 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
         duration: 700
       }
     };
+
+    switch (true) {
+      case (this.barChartData[0].data.length === 0):
+      this.componentHeight = 100;
+      break;
+      case (this.barChartData[0].data.length === 1):
+      this.componentHeight = 100;
+      break;
+      case (this.barChartData[0].data.length > 1 && this.barChartData[0].data.length <= 5):
+      this.componentHeight = 200;
+      break;
+      case (this.barChartData[0].data.length > 5 && this.barChartData[0].data.length <= 10):
+      this.componentHeight = 300;
+      break;
+      case (this.barChartData[0].data.length > 10 && this.barChartData[0].data.length <= 20):
+      this.componentHeight = 400;
+      break;
+      case (this.barChartData[0].data.length > 20):
+      this.componentHeight = 500;
+      break;
+    }
   }
 
 }

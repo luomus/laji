@@ -10,7 +10,7 @@
         <laji-info [placement]="'left'">{{ 'observation.info.stats' | translate }}</laji-info>
       </div>
       <ng-container *ngIf="!loading">
-        <div>
+        <div style="position: relative;">
           <div> 
             <laji-bar-chart  [style.height.px]="componentHeight"
               [datasets]="barChartData"
@@ -20,6 +20,9 @@
               [chartType]="'horizontalBar'"
               >
             </laji-bar-chart>
+          </div>
+          <div class="noData" *ngIf="allDataBarChart.length === 0">
+            <span class="label label-warning">No Data</span>
           </div>
           <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="allDataBarChart.length > 10">
               {{ (barChartData[0].data.length < allDataBarChart.length ? 'taxonomy.observations.showMore' : 'taxonomy.observations.hideMore') | translate }}
