@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
-import { fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 const mobileBreakpoint = 768;
 
@@ -55,6 +55,8 @@ const mobileBreakpoint = 768;
   ]
 })
 export class SidebarComponent implements OnDestroy, AfterViewInit {
+  private unsubscribe$ = new Subject<null>();
+
   @Input() position: 'left' | 'right' = 'left';
   @Input() staticWidth: number;
 
@@ -94,6 +96,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.checkScreenWidth();
     fromEvent(window, 'resize').pipe(
+      takeUntil(this.unsubscribe$),
       debounceTime(500),
       distinctUntilChanged()
     ).subscribe(this.checkScreenWidth.bind(this));
@@ -201,6 +204,8 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
     if (this.destroyResizeListener) {
       this.destroyResizeListener = this.destroyResizeListener();
     }
