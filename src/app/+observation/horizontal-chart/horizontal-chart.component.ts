@@ -2,7 +2,7 @@ import { map } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges,
 OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { forkJoin as ObservableForkJoin, Observable, of, Subscription } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of, Subscription, timer, interval } from 'rxjs';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -36,6 +36,8 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
   barChartOptions: any = {
     legend: { display: false, labels: { fontColor: 'black' } }
   };
+  subscription: Subscription;
+  timer: Observable<any>;
 
  classification = [
    { data: 'phylumId', label: this.translate.instant('observation.label.phylum')},
@@ -68,6 +70,7 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
+    console.log('hola');
     Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
       return coordinates;
     };
@@ -83,6 +86,7 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.dataClasses.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   private updateClasses() {
@@ -130,15 +134,16 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
     this.barChartLabels = this.subLabelBarChart;
 
     this.initializeGraph();
-
     this.cd.markForCheck();
+    this.hideYLabels();
     this.loading = false;
     });
   }
 
   toggleShowAllData() {
-    this.initializeGraph();
     if (this.barChartData[0].data.length < this.allDataBarChart.length) {
+      this.initializeGraph();
+      this.hideYLabels();
       this.componentHeight = 500;
       this.barChartData[0].data = this.allDataBarChart;
       this.barChartLabels = this.allLabelBarChart;
@@ -168,6 +173,7 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
       },
       scales: {
         yAxes: [{
+          display: false,
           ticks: {
             beginAtZero: true
           },
@@ -207,6 +213,43 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
       this.componentHeight = 500;
       break;
     }
+  }
+
+  hideYLabels() {
+    this.subscription = timer(3000).subscribe(() => {
+      this.barChartOptions = {
+        legend: { display: false, labels: { fontColor: 'black' } },
+        responsive: true,
+        maintainAspectRatio: false,
+        scaleShowValues: true,
+        tooltips: {
+        enabled: true,
+        mode: 'index',
+        position: 'cursor'
+        },
+        scales: {
+          yAxes: [{
+            display: true,
+            ticks: {
+              beginAtZero: true
+            },
+            gridLines: {
+              color: 'rgba(255,255,255,0)',
+              lineWidth: 0.5
+            }
+          }]
+        },
+        plugins: {
+          datalabels: {
+            display: false
+          },
+        },
+        animation: {
+          duration: 700
+        }
+      };
+      this.cd.markForCheck();
+    });
   }
 
 }
