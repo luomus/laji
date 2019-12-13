@@ -18,7 +18,9 @@ export namespace Form {
     Administer = <any> 'MHL.featureAdminister',
     DocumentsViewableForAll = <any> 'MHL.featureDocumentsViewableForAll',
     AdminLockable = <any> 'MHL.featureAdminLockable',
-    Mobile = <any> 'MHL.featureMobile'
+    Mobile = <any> 'MHL.featureMobile',
+    EditingOldWarning = <any> 'MHL.featureEditingOldDocumentWarning',
+    AutoLock = <any> 'MHL.featureAutoLock'
   }
   export enum PrintType {
     lineTransect = 'MHL.printTypeLineTransect',
@@ -71,7 +73,8 @@ export namespace Form {
       season?: {
         start: string;
         end: string;
-      }
+      },
+      editingOldWarningDuration?: string
     };
     namedPlaceOptions?: {
       description?: string;

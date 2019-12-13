@@ -10,9 +10,13 @@
         <laji-info [placement]="'left'">{{ 'observation.info.stats' | translate }}</laji-info>
       </div>
       <ng-container *ngIf="!loading">
+        <div class="spinnerLabel">
+          <laji-spinner [spinning]="loadLabels" [overlay]="true"></laji-spinner>
+        </div>
         <div style="position: relative;">
-          <div> 
-            <laji-bar-chart  [style.height.px]="componentHeight"
+          <div [ngClass]="{'hideLabels': loadLabels, '': !loadLabels}"> 
+            <laji-bar-chart  [style.height.px]="componentHeight" 
+              #barChart
               [datasets]="barChartData"
               [labels]="barChartLabels | label"
               [options]="barChartOptions"
@@ -21,9 +25,6 @@
               >
             </laji-bar-chart>
           </div>
-          <div class="noData" *ngIf="allDataBarChart.length === 0">
-            <span class="label label-warning">No Data</span>
-          </div>
           <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="allDataBarChart.length > 10">
               {{ (barChartData[0].data.length < allDataBarChart.length ? 'taxonomy.observations.showMore' : 'taxonomy.observations.hideMore') | translate }}
           </button>
@@ -31,23 +32,3 @@
       </ng-container>
     </div>
   </div>
-  
-  <!--<div class="observation-chart-wrapper">
-      <div class="observation-chart" style="min-height: 100px">
-        <laji-spinner [spinning]="loading" [overlay]="true">
-          <ng-container *ngIf="data$ | async; let data">
-            <div class="stat-info">
-              <laji-info [placement]="'left'">{{ 'observation.info.stats' | translate }}</laji-info>
-            </div>
-            <laji-pie-chart
-                  [visible]="visible"
-                  [data]="data"
-                  [height]="height"
-                  [showLegend]="showLegend"
-                  [legendPosition]="legendPosition"
-                  (sectionSelect)="onPieClick($event)">
-            </laji-pie-chart>
-          </ng-container>
-        </laji-spinner>
-      </div>
-    </div>-->
