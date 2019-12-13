@@ -26,6 +26,14 @@ div {
     top: 50%;
     transform: translate(-50%,-50%);
   }
+  &.spinnerLabel{
+    position: absolute;
+    top: 50%;
+  }
+  &.hideLabels{
+    width:calc(100% - 100px);
+    margin-left: 100px;
+  }
 }
 
 select {
