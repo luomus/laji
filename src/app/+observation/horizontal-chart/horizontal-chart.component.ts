@@ -33,6 +33,7 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
   dataClasses: Subscription;
   taxa: string;
   componentHeight: number;
+  loadLabels = false;
   barChartOptions: any = {
     legend: { display: false, labels: { fontColor: 'black' } }
   };
@@ -70,7 +71,6 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-    console.log('hola');
     Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
       return coordinates;
     };
@@ -213,10 +213,11 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
       this.componentHeight = 500;
       break;
     }
+    this.loadLabels = true;
   }
 
   hideYLabels() {
-    this.subscription = timer(3000).subscribe(() => {
+    this.subscription = timer(3500).subscribe(() => {
       this.barChartOptions = {
         legend: { display: false, labels: { fontColor: 'black' } },
         responsive: true,
@@ -248,6 +249,7 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
           duration: 700
         }
       };
+      this.loadLabels = false;
       this.cd.markForCheck();
     });
   }
