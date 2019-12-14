@@ -77,14 +77,12 @@
                   <li role="menuitem">
                     <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
                   </li>
-                  <li role="separator" class="divider"></li>
-                  <li #notificationsRef>
-                    <laji-notifications
-                      [notifications]="notifications"
-                      [pageSize]="notificationPageSize"
-                      (close)="onClose()">
-                    </laji-notifications>
-                  </li>
+                  <ng-container *ngIf="(notificationsTotal$ | async) > 0">
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <laji-notifications (close)="onClose()"></laji-notifications>
+                    </li>
+                  </ng-container>
                 </ul>
               </li>
               <li *ngIf="!(userService.isLoggedIn$ | async)">

@@ -2,10 +2,10 @@ import {
   Component, ChangeDetectionStrategy, OnDestroy, OnInit, Input, Output,
   ChangeDetectorRef, Renderer2, ElementRef, AfterViewInit, EventEmitter
 } from '@angular/core';
-import { PagedResult } from 'app/shared/model/PagedResult';
 import { of, Subject } from 'rxjs';
-import { switchMap, takeUntil, filter } from 'rxjs/operators';
+import { switchMap, takeUntil, filter, tap } from 'rxjs/operators';
 import { NotificationsFacade } from './notifications.facade';
+import { NotificationDataSource } from './notification-data-source';
 import { TranslateService } from '@ngx-translate/core';
 import { Notification } from '../../model/Notification';
 import { DialogService } from 'app/shared/service/dialog.service';
@@ -19,8 +19,7 @@ import { DialogService } from 'app/shared/service/dialog.service';
 export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit {
   unsubscribe$ = new Subject<void>();
 
-  @Input() notifications: PagedResult<Notification>;
-  @Input() pageSize = 5;
+  notificationSource: NotificationDataSource;
 
   @Output() close = new EventEmitter<void>();
 
@@ -34,6 +33,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   ) {}
 
   ngOnInit(): void {
+    this.notificationSource = new NotificationDataSource(this.notificationsFacade);
   }
 
   ngAfterViewInit() {
@@ -47,25 +47,10 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.close.emit();
   }
 
-  nextNotificationPage() {
-    this.gotoNotificationPage(this.notifications.currentPage + 1);
-  }
-
-  prevNotificationPage() {
-    this.gotoNotificationPage(this.notifications.currentPage - 1);
-  }
-
-  private gotoNotificationPage(page) {
-    if (this.notifications.currentPage !== page) {
-      this.notificationsFacade.loadNotifications(page, this.pageSize);
-    }
-  }
-
   markAllAsSeen() {
     this.notificationsFacade.markAllAsSeen().pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe(() => {
-      this.notificationsFacade.loadNotifications(this.notifications.currentPage, this.pageSize);
       this.cdr.markForCheck();
     });
   }
@@ -74,9 +59,10 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.translate.get('notification.delete').pipe(
       takeUntil(this.unsubscribe$),
       switchMap(msg => this.dialogService.confirm(msg)),
+      tap(() => this.notificationSource.removeAllNotificationsFromCache()),
       switchMap(res => res ? this.notificationsFacade.removeAll() : of(true))
     ).subscribe(() => {
-      this.notificationsFacade.loadNotifications(0, this.pageSize);
+      this.notificationsFacade.loadNotifications(1);
       this.cdr.markForCheck();
     });
   }
@@ -91,11 +77,13 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.translate.get('notification.delete').pipe(
       switchMap(msg => notification.seen ? of(true) : this.dialogService.confirm(msg)),
       filter(result => !!(result && notification.id)),
+      tap(() => this.notificationSource.removeNotificationFromCache(notification.id)),
       switchMap(() => this.notificationsFacade.remove(notification))
-    ).subscribe(result => {
+    ).subscribe(() => {
+      this.notificationsFacade.loadNotifications(1);
       this.cdr.markForCheck();
     });
-  }
+}
 
   trackNotification(idx, notification) {
     return notification ? notification.id : undefined;

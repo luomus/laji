@@ -63,6 +63,10 @@ $mobileBreakpoint: 768px;
   }
 }
 
+.mobile .sidebar-content-wrapper.static-width {
+  max-width: 80vw;
+}
+
 .open-btn {
   position: absolute;
   top: 15px;

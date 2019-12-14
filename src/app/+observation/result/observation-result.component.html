@@ -77,7 +77,7 @@
   <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate">
     <laji-observation-result-list
       [resultBase]="resultBase"
-      [showDownloadMenu]="true"
+      [showDownloadMenu]="visible.downloadList"
       [settings]="listSettings"
       (settingsChange)="listSettingsChange.emit($event)"
       [visible]="active === 'list'"
@@ -113,16 +113,32 @@
   </lu-tab>
   <lu-tab *ngIf="visible.statistics" [heading]="'search.result.stats' | translate">
     <div *ngIf="activated['stats']">
-      <div class="form-group">
-        <div class="col-sm-12" style="height: 300px">
-          <laji-observation-chart
+      <div class="row">
+        <div class="col-xs-12">
+          <div
+            class="panel panel-default"
+            laji-panel
+            [title]="'observation.horizontalBar.title' | translate"
+            [open]="true"
+            [autoToggle]="true"
+          >
+          <!--<laji-observation-chart
             [lang]="lang"
             [query]="query"
             (queryChange)="queryChange.emit($event)"
             [height]="300"
             [showLegend]="true"
             [visible]="active === 'stats'"
-          ></laji-observation-chart>
+          ></laji-observation-chart>-->
+            <laji-horizontal-chart
+              [lang]="lang"
+              [query]="query"
+              (queryChange)="queryChange.emit($event)"
+              [height]="300"
+              [showLegend]="true"
+              [visible]="active === 'stats'"
+            ></laji-horizontal-chart>
+          </div>
         </div>
       </div>
       <div class="row">

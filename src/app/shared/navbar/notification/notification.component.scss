@@ -9,36 +9,44 @@
 .notification-container {
   display: flex;
   flex-flow: row nowrap;
+  height: 100%;
+  border-top: 1px solid $neutral-4;
 }
 
 .notification {
   padding: 3px 20px;
   display: block;
-  border-top: 1px solid #ccc;
   text-decoration: none;
-  color: $neutral-7;
+  background-color: $neutral-2;
+  color: $neutral-8;
+  flex-grow: 1;
 }
 
-.notification:hover {
-  color: #333 !important;
-  background: #dfdfdf !important;
+.notification:not(.ghost):hover {
+  background-color: $neutral-3;
 }
 
-.unseen {
+.notification.unseen {
   background-color: #fcf8e3;
 }
 
-.unseen:hover {
+.notification.unseen:hover {
   background-color: #faebcc;
 }
 
 .delete {
   width: 30px;
-  background: #f5f5f5;
-  border: 1px solid #ccc;
+  background-color: $neutral-2;
+  border: 1px solid $neutral-4;
+  border-top: none;
+  border-bottom: none;
 }
 
-.delete:hover,
-.delete:focus {
-  background: #c2c2c2;
+.delete:not(.ghost):hover,
+.delete:not(.ghost):focus {
+  background: $neutral-3;
+}
+
+:host .ghost ::ng-deep p {
+  margin: 0;
 }

@@ -1,4 +1,4 @@
-<div class="notification-container">
+<div class="notification-container" *ngIf="notification; else ghost">
   <a class="notification" [class.unseen]="!notification.seen"
     (click)="notificationSeen.emit(notification)"
     [class.seen]="notification.seen"
@@ -14,3 +14,12 @@
   </a>
   <button type="button" class="delete" (click)="onRemove(notification)"><i class="glyphicon glyphicon-remove"></i></button>
 </div>
+<ng-template #ghost>
+  <div class="notification-container">
+    <div class="notification ghost">
+      <lu-ghost-paragraph [length]="24"></lu-ghost-paragraph>
+      <lu-ghost-paragraph [length]="48"></lu-ghost-paragraph>
+    </div>
+    <div class="delete ghost"></div>
+  </div>
+</ng-template>
