@@ -12,7 +12,7 @@ import { MetadataService } from '../../../shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { Area } from '../../../shared/model/Area';
-import { GraphQLDataService } from '../../../graph-ql/graph-ql-data.service';
+import { BaseDataService } from '../../../graph-ql/service/base-data.service';
 
 
 export interface MetadataSelectPick {
@@ -79,7 +79,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
               private logger: Logger,
               private translate: TranslateService,
               private adminStatusInfoPipe: AdminStatusInfoPipe,
-              private graphQLDataService: GraphQLDataService
+              private baseDataService: BaseDataService
   ) {
   }
 
@@ -238,9 +238,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       }
     }
     this.shouldSort = false;
-    return this.graphQLDataService.getBaseData({
-      lang: this.translate.currentLang
-    }).pipe(
+    return this.baseDataService.getBaseData().pipe(
       map(data => data.alts),
       map(alts => alts.find(alt => alt.id === this.alt)),
       map(alt => (alt && alt.options || []).map(option => ({id: option.id, value: option.label}))),

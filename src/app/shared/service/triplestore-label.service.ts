@@ -16,8 +16,7 @@ import { Publication } from '../model/Publication';
 import { NamedPlaceApi } from '../api/NamedPlaceApi';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 import { CollectionService } from './collection.service';
-import { IBaseQuery } from '../../graph-ql/base-query';
-import { GraphQLDataService } from '../../graph-ql/graph-ql-data.service';
+import { BaseDataService, IBaseData } from '../../graph-ql/service/base-data.service';
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -40,7 +39,7 @@ export class TriplestoreLabelService {
               private annotationService: AnnotationService,
               private redListTaxonGroupApi: RedListTaxonGroupApi,
               private collectionService: CollectionService,
-              private graphQLDataService: GraphQLDataService
+              private baseDataService: BaseDataService
   ) {
     this.guidRegEx = /^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/gi;
   }
@@ -162,7 +161,7 @@ export class TriplestoreLabelService {
   private getAllLabels(lang: string): Observable<{[key: string]: string}> {
     if (this.currentLang !== lang) {
       this.currentLang = lang;
-      this.metaData = this.graphQLDataService.getBaseData({lang}).pipe(
+      this.metaData = this.baseDataService.getBaseData().pipe(
         map((data) => this.dataToLookup(data)),
         shareReplay(1)
       );
@@ -170,7 +169,7 @@ export class TriplestoreLabelService {
     return this.metaData;
   }
 
-  private dataToLookup(data: IBaseQuery) {
+  private dataToLookup(data: IBaseData) {
     const labelMap = {};
     data.classes.forEach((meta) => {
       labelMap[meta.id] = meta.label;

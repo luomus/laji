@@ -6,7 +6,7 @@ import { Logger } from '../logger/logger.service';
 import { LajiApiService } from '../service/laji-api.service';
 import { map } from 'rxjs/operators';
 import { HeaderImage, HeaderImageService } from '../service/header-image.service';
-import { GraphQLDataService } from '../../graph-ql/graph-ql-data.service';
+import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
 @Component({
   selector: 'laji-footer',
@@ -34,7 +34,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private logger: Logger,
     private headerImageService: HeaderImageService,
-    private graphQLDataService: GraphQLDataService
+    private baseDataService: BaseDataService
   ) {
   }
 
@@ -52,14 +52,13 @@ export class FooterComponent implements OnInit, OnDestroy {
     }
   }
 
-    fetchTreeData() {
-        if (this.currentLang !== this.translate.currentLang) {
-          this.tree$ = this.graphQLDataService.getBaseData({
-            lang: this.translate.currentLang
-          }).pipe(
-            map(data => data.information && data.information.children || [])
-          );
-        }
-      return this.tree$;
+  fetchTreeData() {
+    if (this.currentLang !== this.translate.currentLang) {
+      this.currentLang = this.translate.currentLang;
+      this.tree$ = this.baseDataService.getBaseData().pipe(
+        map(data => data.information && data.information.children || [])
+      );
     }
+    return this.tree$;
+  }
 }

@@ -7,10 +7,12 @@ import { ImageHeaderComponent } from './image-header/image-header.component';
 import { StatItemComponent } from './image-header/stat-item.component';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
+import { HomeDataService } from '../graph-ql/service/home-data.service';
 
 @NgModule({
   imports: [routing, SharedModule, CarouselModule, ObservationMapModule, NavigationThumbnailModule],
-  declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent]
+  declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent],
+  providers: [HomeDataService]
 })
 export class HomeModule {
 }

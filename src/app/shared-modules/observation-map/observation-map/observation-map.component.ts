@@ -295,7 +295,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateMapData() {
-    if (!this.ready) {
+    if (!this.ready || (typeof undefined !== 'undefined' && this.unitCount === 0)) {
       return;
     }
     const cacheKey = this.getCacheKey(this.query);

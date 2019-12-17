@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 
 import { Apollo, ApolloModule } from 'apollo-angular';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-
-const uri = 'http://localhost:3001/graphql';
+import { environment } from '../../environments/environment';
+import { AcceptLanguageInterceptor } from './accept-language.interceptor';
+import { TranslateService } from '@ngx-translate/core';
+import { concatMap } from 'rxjs/operators';
+import { from } from 'rxjs';
 
 @NgModule({
   declarations: [],
@@ -13,16 +16,30 @@ const uri = 'http://localhost:3001/graphql';
     HttpClientModule,
     ApolloModule,
     HttpLinkModule
+  ],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AcceptLanguageInterceptor, multi: true},
   ]
 })
 export class GraphQLModule {
-  constructor(apollo: Apollo, httpLink: HttpLink) {
+  constructor(
+    apollo: Apollo,
+    httpLink: HttpLink,
+    translateService: TranslateService
+  ) {
 
-    const http = httpLink.create({ uri });
+    const cache = new InMemoryCache();
+    const http = httpLink.create({
+      uri: `${environment.apiBase}/graphql`
+    });
+
+    translateService.onLangChange.pipe(
+      concatMap(() => from(cache.reset()))
+    ).subscribe(() => {}, (e) => console.error(e));
 
     apollo.create({
       link: http,
-      cache: new InMemoryCache()
+      cache
     });
   }
 }

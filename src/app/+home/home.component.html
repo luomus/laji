@@ -40,11 +40,10 @@
               <div class="panel-body resent-map">
                 <div class="link blocking-overlay"></div>
                 <!--<laji-biogeographical-province height="438" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: ['ML.206'], cache: true}"></laji-biogeographical-province>-->
-                <laji-observation-map [settingsKey]="'frontMap'" [height]="438" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="2000" [draw]="false" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"></laji-observation-map>
+                <laji-observation-map [unitCount]="(homeData$ | async)?.today.total" [settingsKey]="'frontMap'" [height]="438" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="2000" [draw]="false" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"></laji-observation-map>
                 <div class="numbers">
                   <span class="no-break">
-                    <laji-observation-count [lightLoader]="true" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}">
-                    </laji-observation-count>
+                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today.total"></laji-observation-count>
                     {{ 'viewer.unit' | translate }}
                     </span>
                   <span class="no-break">
