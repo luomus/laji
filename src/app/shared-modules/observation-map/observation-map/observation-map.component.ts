@@ -375,7 +375,21 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     const count$ = (typeof this.unitCount === 'undefined' ? countRemote$ : of(this.unitCount)).pipe(
       switchMap(cnt => {
-        if (cnt < this.showItemsWhenLessThan) {
+        if (!cnt) {
+          return of({
+            lastPage: 1,
+            featureCollection: {
+              'type': 'FeatureCollection',
+              'features': []
+            },
+            cluster: {
+              spiderfyOnMaxZoom: true,
+              showCoverageOnHover: true,
+              singleMarkerMode: true,
+              maxClusterRadius: 20
+            }
+          });
+        } else if (cnt < this.showItemsWhenLessThan) {
           return items$;
         } else {
           return (this.warehouseService.warehouseQueryAggregateGet(

@@ -37,13 +37,10 @@
         <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.observations.total"></laji-observation-count>
       </laji-stat-item>
       <laji-stat-item [colClass]="'col-md-3 col-sm-4'" [description]="'home.carousel.species' | translate">
-        <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
-                                [query]="{taxonRankId: 'MX.species', cache: true}">
-        </laji-observation-count>
+        <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.species.total"></laji-observation-count>
       </laji-stat-item>
       <laji-stat-item [colClass]="'col-md-3 col-sm-3'" [description]="'home.carousel.collections' | translate">
-        <laji-observation-count [lightLoader]="true" [field]="'document.collectionId'"
-                                [query]="{cache: true}"></laji-observation-count>
+        <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.sources.total"></laji-observation-count>
       </laji-stat-item>
     </div>
   </div>

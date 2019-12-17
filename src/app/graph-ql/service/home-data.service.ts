@@ -12,7 +12,13 @@ export interface IHomeData {
   today: {
     total: number
   };
+  speciesToday: {
+    total: number
+  };
   species: {
+    total: number
+  };
+  sources: {
     total: number
   };
   preservedSpecimens: {
@@ -42,7 +48,13 @@ const HOME_QUERY = gql`
     today: observations(countryId: "ML.206", firstLoadedSameOrAfter: $after) {
       total
     }
-    species: observations(taxonRankId: "MX.species") {
+    speciesToday: observations(aggregateBy: "unit.linkings.taxon.id", countryId: "ML.206", firstLoadedSameOrAfter: $after) {
+      total
+    }
+    species: observations(aggregateBy: "unit.linkings.taxon.id", taxonRankId: "MX.species") {
+      total
+    }
+    sources: observations(aggregateBy: "document.collectionId") {
       total
     }
     preservedSpecimens: observations(superRecordBasis: "PRESERVED_SPECIMEN") {
@@ -57,6 +69,7 @@ const HOME_QUERY = gql`
       results {
         id,
         title,
+        tag,
         posted,
         external,
         externalURL
