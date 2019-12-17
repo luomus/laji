@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import * as moment from 'moment';
+import { GraphQLService } from './graph-ql.service';
 
 export interface IHomeData {
   observations: {
@@ -81,14 +81,14 @@ const HOME_QUERY = gql`
 @Injectable()
 export class HomeDataService {
   constructor(
-    private apollo: Apollo
+    private graphQLService: GraphQLService
   ) { }
 
   getHomeData(): Observable<IHomeData> {
     const start = moment();
     start.subtract(1, 'd');
 
-    return this.apollo.query<IHomeData>({
+    return this.graphQLService.query<IHomeData>({
       query: HOME_QUERY,
       variables: {
         after: start.format('YYYY-MM-DD')

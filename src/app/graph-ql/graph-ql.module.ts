@@ -9,6 +9,7 @@ import { AcceptLanguageInterceptor } from './accept-language.interceptor';
 import { TranslateService } from '@ngx-translate/core';
 import { concatMap } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { GraphQLService } from './service/graph-ql.service';
 
 @NgModule({
   declarations: [],
@@ -19,6 +20,7 @@ import { from } from 'rxjs';
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AcceptLanguageInterceptor, multi: true},
+    GraphQLService
   ]
 })
 export class GraphQLModule {

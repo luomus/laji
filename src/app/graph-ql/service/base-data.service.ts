@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
+import { GraphQLService } from './graph-ql.service';
 
 export interface IBaseData {
   classes: {
@@ -71,11 +71,11 @@ const BASE_QUERY = gql`
 })
 export class BaseDataService {
   constructor(
-    private apollo: Apollo
+    private graphQLService: GraphQLService
   ) { }
 
   getBaseData(): Observable<IBaseData> {
-    return this.apollo.query<IBaseData>({
+    return this.graphQLService.query<IBaseData>({
       query: BASE_QUERY,
       errorPolicy: 'all'
     }).pipe(
