@@ -42,25 +42,25 @@ export interface IHomeData {
 
 const HOME_QUERY = gql`
   query($pageSize: Int = 5, $after: String = "") {
-    observations {
+    observations: units {
       total
     }
-    today: observations(countryId: "ML.206", firstLoadedSameOrAfter: $after) {
+    today: units(countryId: "ML.206", firstLoadedSameOrAfter: $after) {
       total
     }
-    speciesToday: observations(aggregateBy: "unit.linkings.taxon.id", countryId: "ML.206", firstLoadedSameOrAfter: $after) {
+    speciesToday: units(aggregateBy: "unit.linkings.taxon.id", countryId: "ML.206", firstLoadedSameOrAfter: $after) {
       total
     }
-    species: observations(aggregateBy: "unit.linkings.taxon.id", taxonRankId: "MX.species") {
+    species: units(aggregateBy: "unit.linkings.taxon.id", taxonRankId: "MX.species") {
       total
     }
-    sources: observations(aggregateBy: "document.collectionId") {
+    sources: units(aggregateBy: "document.collectionId") {
       total
     }
-    preservedSpecimens: observations(superRecordBasis: "PRESERVED_SPECIMEN") {
+    preservedSpecimens: units(superRecordBasis: "PRESERVED_SPECIMEN") {
       total
     }
-    preservedSpecimensWithImage: observations(superRecordBasis: "PRESERVED_SPECIMEN", hasMedia: true) {
+    preservedSpecimensWithImage: units(superRecordBasis: "PRESERVED_SPECIMEN", hasMedia: true) {
       total
     },
     news(pageSize: $pageSize) {
