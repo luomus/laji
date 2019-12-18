@@ -7,6 +7,7 @@ import { NewsService } from '../service/news.service';
 import { Logger } from '../logger/logger.service';
 import { NewsStore } from '../../+news/news.store';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { HomeDataService } from '../../+home/home-data.service';
 
 @Component({
   selector: 'laji-news-list',
@@ -27,7 +28,8 @@ export class NewsListComponent implements OnInit, OnDestroy {
     private newsService: NewsService,
     private translate: TranslateService,
     private logger: Logger,
-    private store: NewsStore
+    private store: NewsStore,
+    private homeDataService: HomeDataService
   ) {
   }
 
@@ -35,12 +37,6 @@ export class NewsListComponent implements OnInit, OnDestroy {
     this.news$ = this.store.state$.pipe(
       map(state => state.list),
       distinctUntilChanged()
-    );
-    this.subLang = this.translate.onLangChange.subscribe(
-      () => {
-        this.currentPage = 1;
-        this.initNews();
-      }
     );
     this.initNews();
   }
@@ -64,7 +60,15 @@ export class NewsListComponent implements OnInit, OnDestroy {
     if (this.store.state.currentList === list) {
       return;
     }
-    this.newsService.getPage(this.translate.currentLang, this.currentPage, this.pageSize)
-      .subscribe(data => this.store.setList(list, data));
+    if (this.currentPage === 1) {
+      this.homeDataService.getHomeData().subscribe(
+        (data) => {
+          this.store.setList(list, data.news as any);
+        }
+      );
+    } else {
+      this.newsService.getPage(this.translate.currentLang, this.currentPage, this.pageSize)
+        .subscribe(data => this.store.setList(list, data));
+    }
   }
 }

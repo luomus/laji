@@ -15,13 +15,11 @@ export class AdminStatusInfoPipe implements PipeTransform {
       return '';
     }
     let info = '';
-    const description = MultiLangService.getValue(value.administrativeStatusDescription, this.translate.currentLang);
-    const link = MultiLangService.getValue(value.administrativeStatusLink, this.translate.currentLang);
-    if (description) {
-      info += '<p>' + description + '</p>';
+    if (value.description) {
+      info += '<p>' + value.description + '</p>';
     }
-    if (link) {
-      info += '<p>' + this.translate.instant('readMore') + ': <a href="' + link + '" target="_blank">' + link + '</a>';
+    if (value.link) {
+      info += '<p>' + this.translate.instant('readMore') + ': <a href="' + value.link + '" target="_blank">' + value.link + '</a>';
     }
     return info;
   }

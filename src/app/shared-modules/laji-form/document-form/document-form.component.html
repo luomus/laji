@@ -21,6 +21,7 @@
   </div>
   <laji-document-form-header *ngIf="showHeader && vm.error === errors.ok"
       [formID]="vm.form.id"
+      [edit]="!!documentId"
       [namedPlace]="namedPlace"
       [isAdmin]="isAdmin"
       [formData]="vm.form.formData"

@@ -32,6 +32,7 @@ import { TimeoutInterceptor } from './shared/interceptor/timeout.interceptor';
 import { ChartsModule } from 'ng2-charts';
 import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 import { LajiUiModule } from '../../projects/laji-ui/src/public-api';
+import { GraphQLModule } from './graph-ql/graph-ql.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -44,6 +45,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 @NgModule({
   imports: [
     AppComponentModule,
+    GraphQLModule,
     BrowserModule.withServerTransition({appId: 'laji-app'}),
     CommonModule,
     HttpClientModule,

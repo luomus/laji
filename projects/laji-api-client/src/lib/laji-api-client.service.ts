@@ -56,8 +56,6 @@ export class LajiApiClient {
   getList(endpoint: LajiApiClient.Endpoints.information, query: LajiApiClient.InformationParams): Observable<Information>;
   getList(endpoint: LajiApiClient.Endpoints.metadataClasses, query: LajiApiClient.MetadataParams): Observable<PagedResult<Metadata>>;
   getList(endpoint: LajiApiClient.Endpoints.metadataProperties, query: LajiApiClient.MetadataParams): Observable<PagedResult<Property>>;
-  getList(endpoint: LajiApiClient.Endpoints.metadataRanges, query: LajiApiClient.MetadataRangesParams): Observable<{[alt: string]: Range}>;
-  getList(endpoint: LajiApiClient.Endpoints.metadataRanges, query: LajiApiClient.MetadataRangesLookupParams): Observable<{[alt: string]: string}>;
   getList(endpoint: LajiApiClient.Endpoints.news, query: LajiApiClient.NewsFindAllParams): Observable<PagedResult<News>>;
   getList(endpoint: LajiApiClient.Endpoints.notifications, query: LajiApiClient.NotificationFindParams): Observable<PagedResult<Notification>>;
   getList(endpoint: LajiApiClient.Endpoints.sources, query: LajiApiClient.SourceFindParams): Observable<PagedResult<Source>>;
@@ -159,7 +157,6 @@ export namespace LajiApiClient {
     information = 'information',
     metadataClasses = 'metadata/classes',
     metadataProperties = 'metadata/properties',
-    metadataRanges = 'metadata/ranges',
     news = 'news',
     notifications = 'notifications',
     publications = 'publications',
