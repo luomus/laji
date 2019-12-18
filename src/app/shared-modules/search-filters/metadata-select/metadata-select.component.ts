@@ -241,7 +241,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     return this.baseDataService.getBaseData().pipe(
       map(data => data.alts),
       map(alts => alts.find(alt => alt.id === this.alt)),
-      map(alt => (alt && alt.options || []).map(option => ({id: option.id, value: option.label}))),
+      map(alt => (alt && alt.options || []).map(option => ({id: option.id, value: option.label, info: this.addOptionInfo(option)}))),
       map(options => this.whiteList ? options.filter(option => this.whiteList.includes(option.id)) : options),
       map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options),
       map(options => this.skipBefore ? options.slice(options.findIndex(o => o.id === this.skipBefore)) : options)
@@ -260,9 +260,10 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     }, []);
   }
 
-  private addMetadataInfo(options, data) {
+  private addOptionInfo(option) {
     if (this.alt === 'MX.adminStatusEnum') {
-      options['info'] = this.adminStatusInfoPipe.transform(data);
+      return this.adminStatusInfoPipe.transform(option);
     }
+    return undefined;
   }
 }

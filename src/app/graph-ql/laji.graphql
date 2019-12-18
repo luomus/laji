@@ -6686,6 +6686,9 @@ type Option {
   value: String!
 
   """ optional link parameter"""
+  description: String
+
+  """ optional link parameter"""
   link: String
 }
 

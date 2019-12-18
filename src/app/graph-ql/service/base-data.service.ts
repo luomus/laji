@@ -48,7 +48,9 @@ const BASE_QUERY = gql`
       id: alt
       options {
         id
-        label: value
+        label: value,
+        description,
+        link
       }
     }
     information {
