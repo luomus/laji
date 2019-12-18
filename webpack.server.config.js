@@ -25,6 +25,11 @@ module.exports = {
   module: {
     noParse: /polyfills-.*\.js/,
     rules: [
+      {
+        test: /\.scss$/,
+        loaders: ["sass-loader"],
+        include: path.resolve(__dirname, "../src/styles")
+      },
       { test: /\.ts$/, loader: 'ts-loader', exclude: ['/app/projects/**/*']},
       {
         // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
