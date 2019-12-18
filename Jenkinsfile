@@ -9,7 +9,7 @@ node {
     }
     stage('Build') {
       milestone()
-      sh 'npm run --silent build:dev'
+      sh 'yarn run --silent build:ssr:dev'
       sh 'pre-compress-web-assets dist/browser'
     }
     stage('Archive') {
@@ -19,6 +19,7 @@ node {
     stage('Deploy staging') {
       milestone()
       sh 'scp -r dist node@192.168.10.26:/data/dev_laji_fi/'
+      sh 'ssh node@192.168.10.26 "pm2 restart dev"'
     }
   }
 }
