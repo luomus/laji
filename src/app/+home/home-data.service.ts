@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import * as moment from 'moment';
-import { GraphQLService } from './graph-ql.service';
+import { GraphQLService } from '../graph-ql/service/graph-ql.service';
 
 export interface IHomeData {
   observations: {
@@ -42,25 +42,25 @@ export interface IHomeData {
 
 const HOME_QUERY = gql`
   query($pageSize: Int = 5, $after: String = "") {
-    observations: units {
+    observations: units(cache: true) {
       total
     }
-    today: units(countryId: "ML.206", firstLoadedSameOrAfter: $after) {
+    today: units(cache: true, countryId: "ML.206", firstLoadedSameOrAfter: $after) {
       total
     }
-    speciesToday: units(aggregateBy: "unit.linkings.taxon.id", countryId: "ML.206", firstLoadedSameOrAfter: $after) {
+    speciesToday: units(cache: true, aggregateBy: "unit.linkings.taxon.id", countryId: "ML.206", firstLoadedSameOrAfter: $after) {
       total
     }
-    species: units(aggregateBy: "unit.linkings.taxon.id", taxonRankId: "MX.species") {
+    species: units(cache: true, aggregateBy: "unit.linkings.taxon.id", taxonRankId: "MX.species") {
       total
     }
-    sources: units(aggregateBy: "document.collectionId") {
+    sources: units(cache: true, aggregateBy: "document.collectionId") {
       total
     }
-    preservedSpecimens: units(superRecordBasis: "PRESERVED_SPECIMEN") {
+    preservedSpecimens: units(cache: true, superRecordBasis: "PRESERVED_SPECIMEN") {
       total
     }
-    preservedSpecimensWithImage: units(superRecordBasis: "PRESERVED_SPECIMEN", hasMedia: true) {
+    preservedSpecimensWithImage: units(cache: true, superRecordBasis: "PRESERVED_SPECIMEN", hasMedia: true) {
       total
     },
     news(pageSize: $pageSize) {
@@ -84,14 +84,18 @@ export class HomeDataService {
     private graphQLService: GraphQLService
   ) { }
 
-  getHomeData(): Observable<IHomeData> {
+  public static getRecentDate(): string {
     const start = moment();
-    start.subtract(1, 'd');
+    start.subtract(0, 'd');
 
+    return start.format('YYYY-MM-DD');
+  }
+
+  getHomeData(): Observable<IHomeData> {
     return this.graphQLService.query<IHomeData>({
       query: HOME_QUERY,
       variables: {
-        after: start.format('YYYY-MM-DD')
+        after: HomeDataService.getRecentDate()
       },
       fetchPolicy: 'no-cache',
       errorPolicy: 'all'

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderImage, HeaderImageService } from 'app/shared/service/header-image.service';
-import { HomeDataService, IHomeData } from '../../graph-ql/service/home-data.service';
+import { HomeDataService, IHomeData } from '../home-data.service';
 import { Observable } from 'rxjs';
 
 @Component({

@@ -295,7 +295,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateMapData() {
-    if (!this.ready || (typeof undefined !== 'undefined' && this.unitCount === 0)) {
+    if (!this.ready || (typeof this.unitCount !== 'undefined' && (this.unitCount === 0 || this.unitCount === null))) {
       return;
     }
     const cacheKey = this.getCacheKey(this.query);
@@ -381,12 +381,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
             featureCollection: {
               'type': 'FeatureCollection',
               'features': []
-            },
-            cluster: {
-              spiderfyOnMaxZoom: true,
-              showCoverageOnHover: true,
-              singleMarkerMode: true,
-              maxClusterRadius: 20
             }
           });
         } else if (cnt < this.showItemsWhenLessThan) {

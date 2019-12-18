@@ -7,7 +7,7 @@ import { NewsService } from '../service/news.service';
 import { Logger } from '../logger/logger.service';
 import { NewsStore } from '../../+news/news.store';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { HomeDataService } from '../../graph-ql/service/home-data.service';
+import { HomeDataService } from '../../+home/home-data.service';
 
 @Component({
   selector: 'laji-news-list',

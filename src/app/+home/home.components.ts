@@ -5,9 +5,8 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
 import { Global } from '../../environments/global';
-import { HomeDataService, IHomeData } from '../graph-ql/service/home-data.service';
+import { HomeDataService, IHomeData } from './home-data.service';
 
 @Component({
   selector: 'laji-home',
@@ -30,9 +29,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    const start = moment();
-    start.subtract(1, 'd');
-    this.mapStartDate = start.format('YYYY-MM-DD');
+    this.mapStartDate = HomeDataService.getRecentDate();
     this.homeData$ = this.homeDataService.getHomeData();
     this.imagesQuery$ = this.sourceService.getAllAsLookUp().pipe(
       map(sources => Object.keys(sources).filter((source) => source !== Global.sources.kotka)),
