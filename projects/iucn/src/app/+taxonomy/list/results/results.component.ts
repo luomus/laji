@@ -643,7 +643,7 @@ export class ResultsComponent implements OnChanges {
       switchMap(data => this.taxonExportService.downloadTaxons(columns, data, type, first))
     ).subscribe(() => {
       this.downloadLoading = false;
-      this.speciesDownload.modal.hide();
+      this.speciesDownload.closeModal();
       this.cdr.markForCheck();
     });
   }
