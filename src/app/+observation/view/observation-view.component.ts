@@ -112,7 +112,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
     this.subQueryUpdate = this.observationFacade.query$.pipe(
-      tap(() => { if (this.results) { this.results.resetActivated(); }})
+      tap(() => { if (this.results) { this.results.reloadTabs(); }})
     ).subscribe();
   }
 
