@@ -1,15 +1,51 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, forkJoin, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, Subject } from 'rxjs';
 import { PagedResult } from 'app/shared/model/PagedResult';
 import { distinctUntilChanged, map, switchMap, tap, take } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from 'app/shared/service/laji-api.service';
 import { UserService } from 'app/shared/service/user.service';
 import { Notification } from 'app/shared/model/Notification';
+import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
+import gql from 'graphql-tag';
 
 interface State {
   notifications: PagedResult<Notification>;
   unseenCount: number;
 }
+
+interface IRefreshDataResult {
+  notifications: PagedResult<Notification>;
+  unseenCount: {
+    total: number;
+  };
+}
+
+const REFRESH_QUERY = gql`
+  query($pageSize: Int, $personToken: String = "") {
+    notifications(personToken: $personToken, pageSize: $pageSize) {
+      currentPage
+      pageSize
+      total
+      results {
+        id
+        created
+        friendRequest
+        friendRequestAccepted
+        seen
+        toPerson
+        annotation {
+          rootID
+          targetID
+          annotationByPerson
+          annotationBySystem
+        }
+      }
+    }
+    unseenCount: notifications(personToken: $personToken, onlyUnSeen: true, pageSize: 0) {
+      total
+    }
+  }
+`;
 
 const subscribeWithWrapper = (observable: Observable<any>, callback?) => {
   const subject = new Subject<void>();
@@ -49,7 +85,11 @@ export class NotificationsFacade {
 
   pageSize = 5;
 
-  constructor(private userService: UserService, private lajiApi: LajiApiService) {}
+  constructor(
+    private userService: UserService,
+    private lajiApi: LajiApiService,
+    private graphQLService: GraphQLService
+  ) {}
 
   private notificationsReducer(notifications: PagedResult<Notification>) {
       this.store$.next({
@@ -115,6 +155,18 @@ export class NotificationsFacade {
     return subscribeWithWrapper(
       this.lajiApi.remove(LajiApi.Endpoints.notifications, notification.id, {personToken: this.userService.getToken()})
     );
+  }
+
+  checkForNewNotifications() {
+    this.graphQLService.query<IRefreshDataResult>({
+      query: REFRESH_QUERY,
+      variables: {personToken: this.userService.getToken(), pageSize: this.pageSize}
+    }).pipe(
+      map(({data}) => data),
+    ).subscribe((data) => {
+      this.unseenCountReducer(data.unseenCount.total);
+      this.notificationsReducer(data.notifications);
+    });
   }
 
   loadNotifications(page) {

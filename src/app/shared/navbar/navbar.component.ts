@@ -1,4 +1,4 @@
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -19,6 +19,7 @@ import { BsDropdownDirective } from 'ngx-bootstrap';
 import { isPlatformBrowser } from '@angular/common';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
+import { BrowserService } from '../service/browser.service';
 
 @Component({
   selector: 'laji-navbar',
@@ -48,7 +49,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private changeDetector: ChangeDetectorRef,
     public translate: TranslateService,
-    private notificationsFacade: NotificationsFacade
+    private notificationsFacade: NotificationsFacade,
+    private browserService: BrowserService
   ) {
     this.isProd = environment.production;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
@@ -69,13 +71,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.changeDetector.detectChanges();
     });
     this.notificationsTotal$ = this.notificationsFacade.total$;
-    this.userService.isLoggedIn$.pipe(
+    timer(1000, 6000).pipe(
+      switchMap(() => this.browserService.visibility$),
+      filter(visible => visible),
+      switchMap(() => this.userService.isLoggedIn$),
       filter(res => !!res),
-      switchMap(() => timer(1000, 60000)),
       takeUntil(this.unsubscribe$)
     ).subscribe(() => {
-      this.notificationsFacade.loadUnseenCount();
-      this.notificationsFacade.loadNotifications(1);
+      this.notificationsFacade.checkForNewNotifications();
     });
   }
 
