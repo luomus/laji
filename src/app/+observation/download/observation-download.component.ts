@@ -218,7 +218,8 @@ export class ObservationDownloadComponent implements OnDestroy {
       this._originalQuery,
       this.tableColumnService.getSelectFields(selected, this.query),
       [],
-      this.translate.currentLang
+      this.translate.currentLang,
+      true
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
     ).subscribe(
