@@ -231,7 +231,7 @@ export class WarehouseApi {
     return this.http.post<string>(path, undefined, {params: queryParameters});
   }
 
-  public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string, extraHttpRequestParams?: any): Observable<string> {
+  public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, downloadType?: string, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/query/download';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -256,8 +256,8 @@ export class WarehouseApi {
       queryParameters['locale'] = locale;
     }
 
-    if (description !== undefined) {
-      queryParameters['description'] = description;
+    if (downloadType !== undefined) {
+      queryParameters['downloadType'] = downloadType;
     }
 
 
