@@ -1,4 +1,5 @@
 import {
+  catchError,
   concat,
   concatMap,
   delay,
@@ -25,6 +26,7 @@ import { TableColumnService } from '../../datatable/service/table-column.service
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { DatatableUtil } from '../../datatable/service/datatable-util.service';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
+import { UserService } from '../../../shared/service/user.service';
 
 interface IInternalObservationTableColumn extends ObservationTableColumn {
   _paths: string[];
@@ -54,7 +56,8 @@ export class ObservationResultService {
   constructor(
     private warehouseApi: WarehouseApi,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
-    private datatableUtil: DatatableUtil
+    private datatableUtil: DatatableUtil,
+    private userService: UserService
   ) { }
 
   getAggregate(
@@ -131,8 +134,19 @@ export class ObservationResultService {
     query: WarehouseQueryInterface,
     selected: string[],
     orderBy: string[],
-    lang: string
+    lang: string,
+    sendDownloadMark = false
   ): Observable<any[]> {
+    if (sendDownloadMark) {
+      this.warehouseApi.download(
+        this.userService.getToken(),
+        '',
+        '',
+        query,
+        lang,
+        'LIGHTWEIGHT'
+      ).pipe(catchError(() => of(null))).subscribe();
+    }
     return this._getAll(
       query,
       selected,
