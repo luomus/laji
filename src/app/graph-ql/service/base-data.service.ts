@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import gql from 'graphql-tag';
-import { GraphQLService } from './graph-ql.service';
+import { GraphQLService, QueryRef } from './graph-ql.service';
 
 export interface IBaseData {
   classes: {
@@ -72,16 +72,23 @@ const BASE_QUERY = gql`
   providedIn: 'root'
 })
 export class BaseDataService {
+
+  ref: QueryRef<IBaseData>;
+
   constructor(
     private graphQLService: GraphQLService
-  ) { }
+  ) {
+    this.ref = this.graphQLService.watchQuery({
+      query: BASE_QUERY,
+      errorPolicy: 'ignore',
+      fetchPolicy: 'cache-first'
+    });
+  }
 
   getBaseData(): Observable<IBaseData> {
-    return this.graphQLService.query<IBaseData>({
-      query: BASE_QUERY,
-      errorPolicy: 'all'
-    }).pipe(
-      map(({data}) => data)
+    return this.ref.valueChanges.pipe(
+      map(({data}) => data),
+      take(1)
     );
   }
 }
