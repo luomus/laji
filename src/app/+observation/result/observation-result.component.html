@@ -59,7 +59,7 @@
   </div>
 </div>
 
-<lu-tabs *ngIf="mode === 'all'" [selectedIndex]="selectedTabIdx" (select)="onSelect($event)">
+<lu-tabs *ngIf="loadedModes.isLoaded('all')" [hidden]="mode !== 'all'" [selectedIndex]="selectedTabIdx" (select)="onSelect($event)">
   <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate">
     <laji-observation-result-list
       *ngIf="loadedTabs.isLoaded('list')"
@@ -194,7 +194,7 @@
   </ng-container>
 </lu-tabs>
 
-<div [hidden]="mode !== 'finnish'" *ngIf="mode === 'finnish' && visible.finnish">
+<div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">
   <laji-main-result [query]="query" [visible]="true"></laji-main-result>
 </div>
 

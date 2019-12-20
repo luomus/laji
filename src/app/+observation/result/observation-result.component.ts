@@ -65,21 +65,18 @@ export class ObservationResultComponent {
   @ViewChild(ObservationDownloadComponent, { static: true }) downloadModal: ObservationDownloadComponent;
 
   /**
-   * Always either on 'all' mode or 'finnish' mode
-   * When we return from finnish  mode to all mode we need to remember which tab we were on
-   * Load tabs AND all/finnish mode contents when user has selected the tab/mode
-   * Keep the contents loaded even after user changes mode/tab
+   * Prevent re-fetching data by keeping loaded pages in memory
    */
-  // TODO: KEEP TRACK OF LOADED MODES and keep them in memory
-  // also theres a bug with datatable not re-rendering (adding cdr doesnt seem to help)
   mode: 'all' | 'finnish' = 'all';
+  loadedModes: LoadedElementsStore = new LoadedElementsStore(['all', 'finnish']);
+
   lastTabActive = 'list';
   loadedTabs: LoadedElementsStore = new LoadedElementsStore(tabOrder);
 
   hasMonthDayData: boolean;
   hasYearData: boolean;
 
-  selectedTabIdx = 0; // stores which tab index was provided by queryparams
+  selectedTabIdx = 0; // stores which tab index was provided by @Input active
 
   constructor(
     private router: Router,
@@ -92,8 +89,10 @@ export class ObservationResultComponent {
   set active(value) {
     if (value === 'finnish') {
       this.mode = 'finnish';
+      this.loadedModes.load('finnish');
     } else {
       this.mode = 'all';
+      this.loadedModes.load('all');
       this.loadedTabs.load(value);
       this.selectedTabIdx = this.loadedTabs.getIdxFromName(value);
     }
