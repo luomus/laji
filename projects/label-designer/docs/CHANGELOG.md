@@ -1,3 +1,9 @@
+<a name="3.2.4"></a>
+# 3.2.4 (2019-12-20)
+
+### Bug fix
+* **core:** fix the issue where page margins where making the content smaller
+
 <a name="3.2.3"></a>
 # 3.2.3 (2019-12-05)
 

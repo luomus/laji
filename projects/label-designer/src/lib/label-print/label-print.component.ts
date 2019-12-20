@@ -18,7 +18,9 @@ import { IPageLayout, LabelService } from '../label.service';
  */
 const style = `
 @import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond|Merriweather|Noto+Serif|Old+Standard+TT|Open+Sans|Open+Sans+Condensed|Source+Code+Pro:300&display=swap');
-
+.ll-page {
+  box-sizing: border-box;
+}
 .ll-print-content {
   display: grid;
   grid-gap: 0;
