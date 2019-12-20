@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
@@ -81,8 +81,7 @@ export class ObservationResultComponent {
   constructor(
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private searchQueryService: SearchQueryService,
-    private cdr: ChangeDetectorRef
+    private searchQueryService: SearchQueryService
   ) {}
 
   @Input()
@@ -107,7 +106,6 @@ export class ObservationResultComponent {
         queryParams: this.searchQueryService.getQueryObject(this.query, ['selected', 'pageSize', 'page'])
       }
     );
-    this.cdr.detectChanges();
   }
 
   reloadTabs() {
