@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
@@ -7,26 +7,9 @@ import { VisibleSections } from '../view/observation-view.component';
 import { ObservationDownloadComponent } from '../download/observation-download.component';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { SearchQueryService } from '../search-query.service';
+import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 
-const tabNameToIndex = {
-  map: 0,
-  list: 1,
-  images: 2,
-  species: 3,
-  stats: 4,
-  load: 5,
-  annotation: 6
-};
-const tabIndexToName = {
-  0: 'map',
-  1: 'list',
-  2: 'images',
-  3: 'species',
-  4: 'stats',
-  5: 'load',
-  6: 'annotation'
-};
-
+const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations'];
 @Component({
   selector: 'laji-observation-result',
   templateUrl: './observation-result.component.html',
@@ -34,7 +17,7 @@ const tabIndexToName = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultComponent {
-  @Input() visible: VisibleSections = {
+  private _visible: VisibleSections = {
     finnish: true,
     countTaxa: true,
     countHits: true,
@@ -46,6 +29,19 @@ export class ObservationResultComponent {
     download: true,
     annotations: true,
   };
+  @Input() set visible(v: VisibleSections) {
+    this._visible = v;
+    const tabs = Object.entries(v).filter(([key, val]) => val && tabOrder.includes(key)).map(([key, val]) => key);
+    tabs.sort((a, b) => {
+      const i = tabOrder.findIndex(name => name === a);
+      const j = tabOrder.findIndex(name => name === b);
+      if (i > j) { return 1; }
+      if (i < j) { return -1; }
+      return 0;
+    });
+    this.loadedTabs = new LoadedElementsStore(tabs);
+  }
+  get visible() { return this._visible; }
   @Input() skipUrlParameters: string[] = [
     'selected',
     'pageSize',
@@ -68,13 +64,19 @@ export class ObservationResultComponent {
   @ViewChild(ObservationMapComponent, { static: false }) observationMap: ObservationMapComponent;
   @ViewChild(ObservationDownloadComponent, { static: true }) downloadModal: ObservationDownloadComponent;
 
-  activated = {};
-  lastTabActive = 'map';
+  /**
+   * Prevent re-fetching data by keeping loaded pages in memory
+   */
+  mode: 'all' | 'finnish' = 'all';
+  loadedModes: LoadedElementsStore = new LoadedElementsStore(['all', 'finnish']);
+
+  lastTabActive = 'list';
+  loadedTabs: LoadedElementsStore = new LoadedElementsStore(tabOrder);
+
   hasMonthDayData: boolean;
   hasYearData: boolean;
-  selectedIndex = 0;
 
-  private _active;
+  selectedTabIdx = 0; // stores which tab index was provided by @Input active
 
   constructor(
     private router: Router,
@@ -84,23 +86,30 @@ export class ObservationResultComponent {
 
   @Input()
   set active(value) {
-    if (this._active === value) {
-      return;
+    if (value === 'finnish') {
+      this.mode = 'finnish';
+      this.loadedModes.load('finnish');
+    } else {
+      this.mode = 'all';
+      this.loadedModes.load('all');
+      this.loadedTabs.load(value);
+      this.selectedTabIdx = this.loadedTabs.getIdxFromName(value);
     }
-    this._active = value;
-    this.activated[value] = true;
-    if (value !== 'finnish') {
-      this.lastTabActive = value;
-    }
-    this.selectedIndex = tabNameToIndex[this.active];
   }
 
-  get active() {
-    return this._active;
+  onSelect(tabIndex: number) {
+    const tabName = this.loadedTabs.getNameFromIdx(tabIndex);
+    this.lastTabActive = tabName;
+    this.router.navigate(
+      this.localizeRouterService.translateRoute([this.basePath, tabName]), {
+        // Query object should not be but directly to the request params! It can include person token and we don't want that to be visible!
+        queryParams: this.searchQueryService.getQueryObject(this.query, ['selected', 'pageSize', 'page'])
+      }
+    );
   }
 
-  resetActivated() {
-    this.activated = {[this._active]: true};
+  reloadTabs() {
+    this.loadedTabs.reset();
   }
 
   pickLocation(e) {
@@ -122,16 +131,6 @@ export class ObservationResultComponent {
       query.coordinates = undefined;
     }
     this.queryChange.emit(query);
-  }
-
-  onSelect(tabIndex: number) {
-    this.lastTabActive = tabIndexToName[tabIndex];
-    this.router.navigate(
-      this.localizeRouterService.translateRoute([this.basePath, tabIndexToName[tabIndex]]), {
-        // Query object should not be but directly to the request params! It can include person token and we don't want that to be visible!
-        queryParams: this.searchQueryService.getQueryObject(this.query, ['selected', 'pageSize', 'page'])
-      }
-    );
   }
 
   openDownloadModal() {

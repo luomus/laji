@@ -7,7 +7,7 @@
 </strong>
 <div class="finnish-selector" *ngIf="visible.finnish || (visible.countTaxa && visible.countHits)">
   <ng-container *ngIf="visible.countTaxa || visible.countHits">
-    <ng-container *ngIf="active !== 'finnish'">
+    <ng-container *ngIf="mode === 'all'">
       <div>
         <strong>
           <laji-observation-count
@@ -27,7 +27,7 @@
         {{ 'observation.results.species' | translate }}
       </div>
     </ng-container>
-    <ng-container *ngIf="active === 'finnish'">
+    <ng-container *ngIf="mode === 'finnish'">
       <div>
         <strong>
           <laji-observation-count
@@ -52,16 +52,28 @@
   <lu-button *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</lu-button>
   <div class="fill-space"></div>
   <div *ngIf="visible.finnish">
-    <lu-button [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="active !== 'finnish'">
+    <lu-button [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
       {{ 'search.result.all' | translate }}</lu-button>
-    <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="active === 'finnish'">
+    <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode === 'finnish'">
       {{ 'search.result.finnish' | translate }}</lu-button>
   </div>
 </div>
 
-<lu-tabs *ngIf="active !== 'finnish'" [selectedIndex]="selectedIndex" (select)="onSelect($event)">
+<lu-tabs *ngIf="loadedModes.isLoaded('all')" [hidden]="mode !== 'all'" [selectedIndex]="selectedTabIdx" (select)="onSelect($event)">
+  <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate">
+    <laji-observation-result-list
+      *ngIf="loadedTabs.isLoaded('list')"
+      [resultBase]="resultBase"
+      [showDownloadMenu]="visible.downloadList"
+      [settings]="listSettings"
+      (settingsChange)="listSettingsChange.emit($event)"
+      [visible]="true"
+      [query]="query"
+    ></laji-observation-result-list>
+  </lu-tab>
   <lu-tab *ngIf="visible.map" [heading]="'search.result.map' | translate">
     <laji-observation-map
+      *ngIf="loadedTabs.isLoaded('map')"
       [ready]="!loadingUnits"
       [unitCount]="unitCount"
       [showItemsWhenLessThan]="2000"
@@ -74,18 +86,10 @@
       (create)="pickLocation($event)"
     ></laji-observation-map>
   </lu-tab>
-  <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate">
-    <laji-observation-result-list
-      [resultBase]="resultBase"
-      [showDownloadMenu]="visible.downloadList"
-      [settings]="listSettings"
-      (settingsChange)="listSettingsChange.emit($event)"
-      [visible]="active === 'list'"
-      [query]="query"
-    ></laji-observation-result-list>
-  </lu-tab>
   <lu-tab *ngIf="visible.images" [heading]="'search.result.images' | translate">
-    <div style="min-height: 180px; padding: 0 10px 0 0">
+    <div style="min-height: 180px; padding: 0 10px 0 0"
+      *ngIf="loadedTabs.isLoaded('images')"
+    >
       <laji-gallery
         [showPopover]="true"
         [showViewSwitch]="true"
@@ -95,11 +99,13 @@
     </div>
   </lu-tab>
   <lu-tab *ngIf="visible.species" [heading]="'search.result.species' | translate">
-    <div class="species-list">
+    <div class="species-list"
+      *ngIf="loadedTabs.isLoaded('species')"
+    >
       <div class="row">
         <div class="col-sm-12">
           <laji-observation-table
-            [visible]="active === 'species'"
+            [visible]="true"
             [pageSize]="100"
             [height]="'calc(80vh - 40px)'"
             [query]="query"
@@ -113,82 +119,84 @@
     </div>
   </lu-tab>
   <lu-tab *ngIf="visible.statistics" [heading]="'search.result.stats' | translate">
-    <div *ngIf="activated['stats']">
-      <div class="row">
-        <div class="col-xs-12">
-          <div
-            class="panel panel-default"
-            laji-panel
-            [title]="'observation.horizontalBar.title' | translate"
-            [open]="true"
-            [autoToggle]="true"
-          >
-          <!--<laji-observation-chart
+    <div class="row"
+      *ngIf="loadedTabs.isLoaded('statistics')"
+    >
+      <div class="col-xs-12">
+        <div
+          class="panel panel-default"
+          laji-panel
+          [title]="'observation.horizontalBar.title' | translate"
+          [open]="true"
+          [autoToggle]="true"
+        >
+        <!--<laji-observation-chart
+          [lang]="lang"
+          [query]="query"
+          (queryChange)="queryChange.emit($event)"
+          [height]="300"
+          [showLegend]="true"
+          [visible]="active === 'stats'"
+        ></laji-observation-chart>-->
+          <laji-horizontal-chart
             [lang]="lang"
             [query]="query"
             (queryChange)="queryChange.emit($event)"
             [height]="300"
             [showLegend]="true"
-            [visible]="active === 'stats'"
-          ></laji-observation-chart>-->
-            <laji-horizontal-chart
-              [lang]="lang"
-              [query]="query"
-              (queryChange)="queryChange.emit($event)"
-              [height]="300"
-              [showLegend]="true"
-              [visible]="active === 'stats'"
-            ></laji-horizontal-chart>
-          </div>
+            [visible]="true"
+          ></laji-horizontal-chart>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div [hidden]="!hasYearData"
-               class="panel panel-default"
-               laji-panel
-               [title]="'observation.results.yearChart' | translate"
-               [open]="true"
-               [autoToggle]="true"
-          >
-            <p class="disclaimer">
-              {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
-            </p>
-            <laji-observation-year-chart
-              [query]="query"
-              (hasData)="hasYearData = $event"
-            ></laji-observation-year-chart>
-          </div>
-          <div [hidden]="!hasMonthDayData"
-               class="panel panel-default"
-               laji-panel
-               [title]="'observation.results.monthDayChart' | translate"
-               [open]="true"
-               [autoToggle]="true"
-          >
-            <laji-observation-month-day-chart
-              [query]="query"
-              (hasData)="hasMonthDayData = $event"
-            ></laji-observation-month-day-chart>
-          </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div [hidden]="!hasYearData"
+              class="panel panel-default"
+              laji-panel
+              [title]="'observation.results.yearChart' | translate"
+              [open]="true"
+              [autoToggle]="true"
+        >
+          <p class="disclaimer">
+            {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
+          </p>
+          <laji-observation-year-chart
+            [query]="query"
+            (hasData)="hasYearData = $event"
+          ></laji-observation-year-chart>
+        </div>
+        <div [hidden]="!hasMonthDayData"
+              class="panel panel-default"
+              laji-panel
+              [title]="'observation.results.monthDayChart' | translate"
+              [open]="true"
+              [autoToggle]="true"
+        >
+          <laji-observation-month-day-chart
+            [query]="query"
+            (hasData)="hasMonthDayData = $event"
+          ></laji-observation-month-day-chart>
         </div>
       </div>
-      <div class="form-group spacer">
-        <div class="col-lg-12">
-          <laji-observation-filters [visible]="active === 'stats'" [query]="query" (queryChange)="queryChange.emit($event)"></laji-observation-filters>
-        </div>
+    </div>
+    <div class="form-group spacer">
+      <div class="col-lg-12">
+        <laji-observation-filters [visible]="true" [query]="query" (queryChange)="queryChange.emit($event)"></laji-observation-filters>
       </div>
     </div>
   </lu-tab>
   <ng-container *lajiForTypes="['dev']">
     <lu-tab *ngIf="visible.annotations" [heading]="'search.result.annotation' | translate">
-      <laji-annotations [query]="query"></laji-annotations>
+      <laji-annotations [query]="query"
+        *ngIf="loadedTabs.isLoaded('annotations')"
+      ></laji-annotations>
     </lu-tab>
   </ng-container>
 </lu-tabs>
 
-<div [hidden]="active !== 'finnish'" *ngIf="activated['finnish'] && visible.finnish">
-  <laji-main-result [query]="query" [visible]="active === 'finnish'"></laji-main-result>
+<div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">
+  <laji-main-result [query]="query" [visible]="true"></laji-main-result>
 </div>
 
 <laji-observation-download

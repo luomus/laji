@@ -1,4 +1,4 @@
-import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -71,7 +71,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.changeDetector.detectChanges();
     });
     this.notificationsTotal$ = this.notificationsFacade.total$;
-    timer(1000, 6000).pipe(
+    timer(1000, 60000).pipe(
       switchMap(() => this.browserService.visibility$),
       filter(visible => visible),
       switchMap(() => this.userService.isLoggedIn$),
