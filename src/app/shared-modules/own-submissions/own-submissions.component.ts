@@ -431,7 +431,7 @@ export function getLocality$(translate: TranslateService,
     if (document.npID) {
       locality$ = labelService.get(npID, 'multi').pipe(
         map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
-    } else if (gatherings[0].municipality) {
+    } else if (gatherings[0] && gatherings[0].municipality) {
       locality$ = ObservableOf({...gatheringInfo, municipality: gatherings[0].municipality});
     }
   }
