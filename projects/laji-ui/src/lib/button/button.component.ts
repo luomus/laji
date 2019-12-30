@@ -11,7 +11,8 @@ type Role = 'primary' | 'secondary';
 export class ButtonComponent {
   @Input() role: Role = 'secondary';
   @Input() disabled = false; // note: can't disable anchors
-  @Input() anchor = false;
+  @Input('anchor') routerLink;
+  @Input() target;
   @Output() click = new EventEmitter<MouseEvent>();
 
   pressed = false;
