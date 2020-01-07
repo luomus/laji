@@ -118,6 +118,10 @@
         <lu-button [disabled]="true">Disabled button</lu-button>
       </div>
       <lu-checkbox (checked)="testDisable = $event">Disable buttons</lu-checkbox>
+      <section>
+        The anchor property works the same way as routerLink. It also switches the button from a button element to an a element.
+        <lu-button [anchor]="['/taxon']" [target]="'_blank'">This button is an anchor</lu-button>
+      </section>
     </section>
     <section>
       <h2>Tabs</h2>

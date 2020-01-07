@@ -5,13 +5,11 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  PLATFORM_ID,
   SimpleChanges
 } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
@@ -19,8 +17,13 @@ import { GalleryService } from '../../../shared/gallery/service/gallery.service'
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Image } from '../../../shared/gallery/image-gallery/image.interface';
 import { InfoCardQueryService } from './shared/service/info-card-query.service';
-import { BrowserService } from '../../../shared/service/browser.service';
+import { LoadedElementsStore } from '../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
+import { LocalizeRouterService } from 'app/locale/localize-router.service';
+import { Router } from '@angular/router';
 
+const tabOrder = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
+                   'observations', 'specimens', 'endangerment', 'invasive' ];
+const basePath = '/taxon';
 
 @Component({
   selector: 'laji-info-card',
@@ -29,10 +32,21 @@ import { BrowserService } from '../../../shared/service/browser.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
+  loadedTabs: LoadedElementsStore = new LoadedElementsStore(tabOrder);
+
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive';
+  @Input() set activeTab(tab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
+    this.selectedTabIdx = this.loadedTabs.getIdxFromName(tab);
+    this.loadedTabs.load(tab);
+  }
+  get activeTab() {
+    // @ts-ignore
+    return this.loadedTabs.getNameFromIdx(this.selectedTabIdx);
+  }
+
+  selectedTabIdx = 0; // stores which tab index was provided by @Input
 
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<Image>;
@@ -40,14 +54,9 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   hasImageData: boolean;
   hasBiologyData: boolean;
   isEndangered: boolean;
-  showMenu = false;
   images = [];
 
-  activatedTabs = {};
-
   sub: Subscription;
-  currentValueTab: any;
-  lgScreen: boolean;
 
   private imageSub: Subscription;
 
@@ -56,32 +65,27 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private cd: ChangeDetectorRef,
     private galleryService: GalleryService,
-    private browserService: BrowserService,
-    @Inject(PLATFORM_ID) private platformId: object,
+    private localizeRouterService: LocalizeRouterService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.sub = this.browserService.lgScreen$.pipe(
-      tap(data => {
-        this.lgScreen = data;
-        this.cd.markForCheck();
-      })
-    )
-    .subscribe();
     if (this.hasImageData === undefined) {
       this.hasImageData = this.activeTab === 'images';
     }
   }
 
+  onSelect(tabIndex) {
+    const tabName = this.loadedTabs.getNameFromIdx(tabIndex);
+    const route = [basePath, this.taxon.id];
+    if (tabName !== 'overview') { route.push(tabName); }
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(route)
+    );
+  }
+
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.activeTab) {
-      this.activatedTabs[this.activeTab] = true;
-      this.showMenu = false;
-    }
-
     if (changes.taxon) {
-      this.activatedTabs = {[this.activeTab]: true};
-
       this.taxonImages = (this.taxon.multimedia || []).map(img => {
         if (img['taxon']) {
           img['taxonId'] = img['taxon']['id'];
@@ -110,10 +114,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       }
 
       this.setImages();
-
     }
-
-    this.showMenu = false;
   }
 
   ngOnDestroy() {
@@ -202,10 +203,5 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     return false;
-  }
-
-
-  toggleMenuMobile() {
-    this.showMenu = !this.showMenu;
   }
 }

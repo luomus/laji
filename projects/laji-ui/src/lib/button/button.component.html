@@ -1,8 +1,25 @@
-<button [ngClass]="role"
+<a      *ngIf="routerLink; else button"
+        tabindex="-1"
+        [routerLink]="routerLink"
+        target="target"
+        [ngClass]="role"
+        [class.pressed]="pressed"
+        (click)="onClick($event)"
+        (mousedown)="onMouseDown($event)"
+        (mouseup)="onMouseUp($event)"><ng-container *ngTemplateOutlet="content" ></ng-container></a>
+
+<ng-template #button>
+<button
+        tabindex="-1"
+        [ngClass]="role"
+        [class.pressed]="pressed"
         [disabled]="disabled"
-        [@clicked]="{
-          value: clicked,
-          params: clickedStyles
-        }"
-        (@clicked.done)="onAnimationDone()"
-        (click)="onClick($event)"><ng-content></ng-content></button>
+        (click)="onClick($event)"
+        (mousedown)="onMouseDown($event)"
+        (mouseup)="onMouseUp($event)"><ng-container *ngTemplateOutlet="content" ></ng-container></button>
+
+</ng-template>
+
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>

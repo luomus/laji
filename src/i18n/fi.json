@@ -615,7 +615,11 @@
     "make": "Tee etiketit",
     "designer": "Suunnittele etiketti",
     "id_short": "ID (lyhyt)",
-    "domain": "Domain"
+    "domain": "Domain",
+    "error": {
+      "tooLarge": "Etikettejä oli liian paljon. Tee etiketit pienemmässä erässä ja yritä uudelleen.",
+      "generic": "Etikettien luonti epäonnistui. Yritä hetken kuluttua uudelleen, jos ongelma jatkuu ota yhteyttä ylläpitoon."
+    }
   },
   "lastCensus": "Edellinen laskenta",
   "line": "rivi",

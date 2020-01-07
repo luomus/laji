@@ -9,6 +9,7 @@ import { LocaleFiComponent } from './locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { LocalizeInGuard } from './locale/localize-in.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -50,6 +51,9 @@ const routes: Routes = [
 ];
 
 const routesWithLang: Routes = [
+  {path: 'in', children: [
+    {path: '**', component: NotFoundComponent}
+  ], component: LocaleEnComponent, canActivate: [LocalizeInGuard]},
   {path: 'en', data: {lang: 'en'}, children: [
     {path: 'nafi', redirectTo: '/en/theme/nafi/instructions', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},

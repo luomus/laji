@@ -1,19 +1,19 @@
 <lu-sidebar [position]="'right'">
   <main>
-      <h1>{{ 'haseka.title' | translate }}</h1>
+      <h1>{{ 'haseka.title' | translate }}</h1>
       <ng-container *lajiBrowserOnly>
         <div class="row" *lajiLoggedIn="false">
           <div class="col-sm-8">
             <alert [type]="'warning'">
-              {{ 'haseka.pleaseLogin' | translate }}
+              {{ 'haseka.pleaseLogin' | translate }}
             </alert>
           </div>
         </div>
       </ng-container>
       <div [innerHtml]="'haseka.intro' | translate" *ngIf="isFront"></div>
       <laji-haseka-terms *ngIf="isFront"></laji-haseka-terms>
-      <a [routerLink]="'/about/2336' | localize" target="_blank">{{ 'haseka.instructions' | translate }}</a> |
-      <a [routerLink]="'/vihko/terms-of-service' | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
+      <a [routerLink]="'/about/823' | localize" target="_blank">{{ 'haseka.instructions' | translate }}</a> |
+      <a [routerLink]="'/vihko/terms-of-service' | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
       <router-outlet></router-outlet>
   </main>
   <nav>
