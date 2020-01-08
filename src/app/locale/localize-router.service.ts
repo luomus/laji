@@ -13,8 +13,8 @@ export class LocalizeRouterService {
 
 
   static translatePath(path: string, lang): string {
-    if (path.match(/^\/(in|en|sv|fi)\//)) {
-      return path.replace(/^\/(in|en|sv|fi)\//, lang === 'fi' ? '/' : `/${lang}/`);
+    if (path.match(/^\/(in|en|sv|fi)\b/)) {
+      return path.replace(/^\/(in|en|sv|fi)\b/, lang === 'fi' ? '' : `/${lang}`);
     } else if (lang === 'fi') {
       return path;
     }
