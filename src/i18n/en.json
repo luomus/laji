@@ -502,7 +502,11 @@
     "make": "Make the labels",
     "designer": "Design label",
     "id_short": "ID (short)",
-    "domain": "Domain"
+    "domain": "Domain",
+    "error": {
+      "tooLarge": "There were too many labels to print. Try making labels in a smaller batches and try again.",
+      "generic": "Failed to create labels. Please try again in a few moments. If the error doesn't go away, please contact support."
+    }
   },
   "lastCensus": "Previous census",
   "line": "line",

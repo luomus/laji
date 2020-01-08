@@ -82,11 +82,21 @@ export class LabelDesignerComponent implements OnInit {
   htmlToPdf(data: ILabelPdf) {
     if (isPlatformBrowser(this.platformId)) {
       this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, data.html)
-        .subscribe((response) => {
-          this.downloading = false;
-          FileSaver.saveAs(response,  data.filename || 'labels.pdf');
-          this.cdr.markForCheck();
-        });
+        .subscribe(
+          (response) => {
+            this.downloading = false;
+            FileSaver.saveAs(response,  data.filename || 'labels.pdf');
+            this.cdr.markForCheck();
+          },
+          (err) => {
+            if (err.status === 413) {
+              alert(this.translateService.instant('label.error.tooLarge'));
+            } else {
+              alert(this.translateService.instant('label.error.generic'));
+            }
+            this.downloading = false;
+            this.cdr.markForCheck();
+          });
     }
   }
 
