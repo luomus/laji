@@ -700,7 +700,7 @@
   "observation.download.label": "Valfri beskrivning för en begäran om data",
   "observation.download.loadPrivate": "Begär data",
   "observation.download.loadPublic": "Hämta data",
-  "observation.download.loadSpecies": "Ladda ner artlistan",
+  "observation.download.loadSpecies": "Ladda ner taxonlistan",
   "observation.download.privateTitle": "Diffuserade och dolda data",
   "observation.download.publicTitle": "Offentliga data",
   "observation.download.specimenTitle": "Nedladning av artlistan",
