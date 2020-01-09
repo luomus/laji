@@ -1,5 +1,5 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LocaleComponent } from './locale.component';
 import * as moment from 'moment';
@@ -8,7 +8,7 @@ import * as moment from 'moment';
   selector: 'laji-locale-en',
   template: '<router-outlet></router-outlet>'
 })
-export class LocaleEnComponent extends LocaleComponent implements OnInit {
+export class LocaleEnComponent extends LocaleComponent {
 
   constructor(
     @Inject(PLATFORM_ID) protected platformId,
@@ -18,8 +18,5 @@ export class LocaleEnComponent extends LocaleComponent implements OnInit {
     super();
     moment.locale('en');
     this.setLocale('en');
-  }
-
-  ngOnInit() {
   }
 }

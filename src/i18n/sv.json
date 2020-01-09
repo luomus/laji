@@ -547,7 +547,11 @@
     "make": "Gör etiketterna",
     "designer": "Designetikett",
     "id_short": "ID (kort)",
-    "domain": "Domain"
+    "domain": "Domain",
+    "error": {
+      "tooLarge": "Det fanns för många etiketter för att skriva ut. Försök skapa etiketter i mindre partier och försök igen.",
+      "generic": "Det gick inte att skapa etiketter. Försök igen om några ögonblick. Om felet inte försvinner, kontakta supporten."
+    }
   },
   "line": "rad",
   "line-transect-result.chart": "framsteg av artens mängd",

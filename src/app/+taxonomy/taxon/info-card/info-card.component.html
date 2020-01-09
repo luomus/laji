@@ -5,125 +5,74 @@
     (taxonSelect)="updateRoute($event)"
   ></laji-info-card-header>
 
-  <a *ngIf="!lgScreen" class="btn btn-mobile" (click)="toggleMenuMobile()" >
-    <span class="menu glyphicon glyphicon-menu-hamburger"></span>
-    <ng-container [ngSwitch]="activeTab">
-        <span class="current-tab" *ngSwitchCase="'overview'">{{ "taxonomy.overview" | translate }}</span>
-        <span class="current-tab" *ngSwitchCase="'images'"> {{ "species.images" | translate }}</span>
-        <span class="current-tab" *ngSwitchCase="'biology'"> {{ "taxonomy.biology" | translate }}</span>
-        <span class="current-tab" *ngSwitchCase="'taxonomy'">{{ "taxonomy.taxonomy" | translate }}</span>
-        <span class="current-tab" *ngSwitchCase="'occurrence'"> {{ "taxonomy.occurrence" | translate }}</span>
-        <span class="current-tab" *ngSwitchCase="'observations'">{{ "taxonomy.observations" | translate }}</span>
-        <span class="current-tab" *ngSwitchCase="'specimens'">{{ "taxonomy.specimens" | translate }}</span>
-        <span class="current-tab" *ngSwitchCase="'endangerment'">{{ "taxonomy.endangerment" | translate }}</span>
-        <span class="current-tab" *ngSwitchCase="'invasive'">{{ "taxonomy.invasive" | translate }}</span>
-    </ng-container>
-  </a>
-  <ul *ngIf="((showMenu && !lgScreen) || lgScreen)" class="nav nav-tabs nav-justified">
-          <li role="presentation"  [ngClass]="{active: activeTab === 'overview'}">
-              <a [routerLink]="['/taxon', taxon.id] | localize" [queryParamsHandling]="'preserve'">
-                {{ "taxonomy.overview" | translate }}
-              </a>
-            </li>
-            <li role="presentation" [ngClass]="{active: activeTab === 'images'}" *ngIf="hasImageData">
-              <a [routerLink]="['/taxon', taxon.id, 'images'] | localize" [queryParamsHandling]="'preserve'">
-                {{ "species.images" | translate }}
-              </a>
-            </li>
-            <li role="presentation" [ngClass]="{active: activeTab === 'biology'}" *ngIf="hasBiologyData">
-              <a [routerLink]="['/taxon', taxon.id, 'biology'] | localize" [queryParamsHandling]="'preserve'">
-                {{ "taxonomy.biology" | translate }}
-              </a>
-            </li>
-            <li role="presentation" [ngClass]="{active: activeTab === 'taxonomy'}">
-              <a [routerLink]="['/taxon', taxon.id, 'taxonomy'] | localize" [queryParamsHandling]="'preserve'">
-                {{ "taxonomy.taxonomy" | translate }}
-              </a>
-            </li>
-            <li role="presentation" [ngClass]="{active: activeTab === 'occurrence'}">
-              <a [routerLink]="['/taxon', taxon.id, 'occurrence'] | localize" [queryParamsHandling]="'preserve'">
-                {{ "taxonomy.occurrence" | translate }}
-              </a>
-            </li>
-            <li role="presentation" [ngClass]="{active: activeTab === 'observations'}" *ngIf="isFromMasterChecklist">
-              <a [routerLink]="['/taxon', taxon.id, 'observations'] | localize" [queryParamsHandling]="'preserve'">
-                {{ "taxonomy.observations" | translate }}
-              </a>
-            </li>
-            <li role="presentation" [ngClass]="{active: activeTab === 'specimens'}" *ngIf="isFromMasterChecklist">
-              <a [routerLink]="['/taxon', taxon.id, 'specimens'] | localize" [queryParamsHandling]="'preserve'">
-                {{ "taxonomy.specimens" | translate }}
-              </a>
-            </li>
-            <li role="presentation" [ngClass]="{active: activeTab === 'endangerment'}" *ngIf="isEndangered">
-              <a [routerLink]="['/taxon', taxon.id, 'endangerment'] | localize" [queryParamsHandling]="'preserve'">
-                {{ "taxonomy.endangerment" | translate }}
-              </a>
-            </li>
-            <li role="presentation" [ngClass]="{active: activeTab === 'invasive'}" *ngIf="taxon.invasiveSpecies">
-              <a [routerLink]="['/taxon', taxon.id, 'invasive'] | localize" [queryParamsHandling]="'preserve'">
-                {{ "taxonomy.invasive" | translate }}
-              </a>
-            </li>
-  </ul>
-
-  <laji-taxon-overview
-    [class.hidden]="activeTab !== 'overview'"
-    *ngIf="activatedTabs['overview']"
-    [taxon]="taxon"
-    [isFromMasterChecklist]="isFromMasterChecklist"
-    [taxonDescription]="taxonDescription"
-    [images]="images"
-    (taxonSelect)="updateRoute($event)"
-  ></laji-taxon-overview>
-  <laji-taxon-images
-    [class.hidden]="activeTab !== 'images'"
-    *ngIf="activatedTabs['images'] && hasImageData"
-    [taxon]="taxon"
-    [taxonImages]="taxonImages"
-    [isFromMasterChecklist]="isFromMasterChecklist"
-  ></laji-taxon-images>
-  <laji-taxon-biology
-    [class.hidden]="activeTab !== 'biology'"
-    *ngIf="activatedTabs['biology'] && hasBiologyData"
-    [taxon]="taxon"
-    [taxonDescription]="taxonDescription"
-    [context]="context"
-    (contextChange)="updateRoute(taxon.id, activeTab, $event)"
-  ></laji-taxon-biology>
-  <laji-taxon-taxonomy
-    [class.hidden]="activeTab !== 'taxonomy'"
-    *ngIf="activatedTabs['taxonomy']"
-    [taxon]="taxon"
-    [taxonDescription]="taxonDescription"
-  ></laji-taxon-taxonomy>
-  <laji-taxon-occurrence
-    [class.hidden]="activeTab !== 'occurrence'"
-    *ngIf="activatedTabs['occurrence']"
-    [taxon]="taxon"
-    [taxonDescription]="taxonDescription"
-    [isFromMasterChecklist]="isFromMasterChecklist"
-  ></laji-taxon-occurrence>
-  <laji-taxon-observations
-    [class.hidden]="activeTab !== 'observations'"
-    *ngIf="activatedTabs['observations'] && isFromMasterChecklist"
-    [taxon]="taxon"
-  ></laji-taxon-observations>
-  <laji-taxon-specimens
-    [class.hidden]="activeTab !== 'specimens'"
-    *ngIf="activatedTabs['specimens'] && isFromMasterChecklist"
-    [taxon]="taxon"
-  ></laji-taxon-specimens>
-  <laji-taxon-endangerment
-    [class.hidden]="activeTab !== 'endangerment'"
-    *ngIf="activatedTabs['endangerment'] && isEndangered"
-    [taxon]="taxon"
-  ></laji-taxon-endangerment>
-  <laji-taxon-invasive
-    [class.hidden]="activeTab !== 'invasive'"
-    *ngIf="activatedTabs['invasive'] && taxon.invasiveSpecies"
-    [taxon]="taxon"
-    [taxonDescription]="taxonDescription"
-  ></laji-taxon-invasive>
+  <lu-tabs [selectedIndex]="selectedTabIdx" (select)="onSelect($event)">
+    <lu-tab [heading]="'taxonomy.overview' | translate">
+      <laji-taxon-overview
+        *ngIf="loadedTabs.isLoaded('overview')"
+        [taxon]="taxon"
+        [isFromMasterChecklist]="isFromMasterChecklist"
+        [taxonDescription]="taxonDescription"
+        [images]="images"
+        (taxonSelect)="updateRoute($event)"
+      ></laji-taxon-overview>
+    </lu-tab>
+    <lu-tab [heading]="'species.images' | translate" *ngIf="hasImageData">
+      <laji-taxon-images
+        *ngIf="loadedTabs.isLoaded('images')"
+        [taxon]="taxon"
+        [taxonImages]="taxonImages"
+        [isFromMasterChecklist]="isFromMasterChecklist"
+      ></laji-taxon-images>
+    </lu-tab>
+    <lu-tab [heading]="'taxonomy.biology' | translate" *ngIf="hasBiologyData">
+      <laji-taxon-biology
+        *ngIf="loadedTabs.isLoaded('biology')"
+        [taxon]="taxon"
+        [taxonDescription]="taxonDescription"
+        [context]="context"
+        (contextChange)="updateRoute(taxon.id, activeTab, $event)"
+      ></laji-taxon-biology>
+    </lu-tab>
+    <lu-tab [heading]="'taxonomy.taxonomy' | translate">
+      <laji-taxon-taxonomy
+        *ngIf="loadedTabs.isLoaded('taxonomy')"
+        [taxon]="taxon"
+        [taxonDescription]="taxonDescription"
+      ></laji-taxon-taxonomy>
+    </lu-tab>
+    <lu-tab [heading]="'taxonomy.occurrence' | translate">
+      <laji-taxon-occurrence
+        *ngIf="loadedTabs.isLoaded('occurrence')"
+        [taxon]="taxon"
+        [taxonDescription]="taxonDescription"
+        [isFromMasterChecklist]="isFromMasterChecklist"
+      ></laji-taxon-occurrence>
+    </lu-tab>
+    <lu-tab [heading]="'taxonomy.observations' | translate" *ngIf="isFromMasterChecklist">
+      <laji-taxon-observations
+        *ngIf="loadedTabs.isLoaded('observations')"
+        [taxon]="taxon"
+      ></laji-taxon-observations>
+    </lu-tab>
+    <lu-tab [heading]="'taxonomy.specimens' | translate" *ngIf="isFromMasterChecklist">
+      <laji-taxon-specimens
+        *ngIf="loadedTabs.isLoaded('specimens')"
+        [taxon]="taxon"
+      ></laji-taxon-specimens>
+    </lu-tab>
+    <lu-tab [heading]="'taxonomy.endangerment' | translate" *ngIf="isEndangered">
+      <laji-taxon-endangerment
+        *ngIf="loadedTabs.isLoaded('endangerment')"
+        [taxon]="taxon"
+      ></laji-taxon-endangerment>
+    </lu-tab>
+    <lu-tab [heading]="'taxonomy.invasive' | translate" *ngIf="taxon.invasiveSpecies">
+      <laji-taxon-invasive
+        *ngIf="loadedTabs.isLoaded('invasive')"
+        [taxon]="taxon"
+        [taxonDescription]="taxonDescription"
+      ></laji-taxon-invasive>
+    </lu-tab>
+  </lu-tabs>
 </div>
 
