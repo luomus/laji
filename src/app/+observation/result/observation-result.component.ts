@@ -92,6 +92,7 @@ export class ObservationResultComponent {
     } else {
       this.mode = 'all';
       this.loadedModes.load('all');
+      this.lastTabActive = value;
       this.loadedTabs.load(value);
       this.selectedTabIdx = this.loadedTabs.getIdxFromName(value);
     }
@@ -99,7 +100,6 @@ export class ObservationResultComponent {
 
   onSelect(tabIndex: number) {
     const tabName = this.loadedTabs.getNameFromIdx(tabIndex);
-    this.lastTabActive = tabName;
     this.router.navigate(
       this.localizeRouterService.translateRoute([this.basePath, tabName]), {
         // Query object should not be but directly to the request params! It can include person token and we don't want that to be visible!
@@ -110,6 +110,7 @@ export class ObservationResultComponent {
 
   reloadTabs() {
     this.loadedTabs.reset();
+    this.loadedTabs.load(this.lastTabActive);
   }
 
   pickLocation(e) {
