@@ -613,7 +613,7 @@
   "observation.download.label": "Optional description for data request",
   "observation.download.loadPrivate": "Request data",
   "observation.download.loadPublic": "Download data",
-  "observation.download.loadSpecies": "Download species list",
+  "observation.download.loadSpecies": "Download taxon list",
   "observation.download.privateTitle": "Coarsened and hidden data",
   "observation.download.publicTitle": "Public data",
   "observation.download.specimenTitle": "Downloading of species list",
