@@ -26,7 +26,7 @@ button, a {
 .primary {
   background-color: $primary-5;
   color: adjust-hue($color: $neutral-1, $degrees: -20%);
-  box-shadow: 0 2px 6px rgba($neutral-8, 0.2);
+  box-shadow: 0 2px 6px rgba($neutral-8, 0.3);
   &:hover {
     background-color: darken($primary-5, 5%);
   }
@@ -39,7 +39,7 @@ button, a {
 .secondary {
   background-color: $neutral-1;
   color: $neutral-7;
-  box-shadow: 0 1px 3px rgba($neutral-8, 0.2);
+  box-shadow: 0 1px 3px rgba($neutral-8, 0.3);
   &:hover {
     background-color: $primary-1;
   }
@@ -56,4 +56,8 @@ button, a {
   box-shadow: 0 0 0 rgba(0,0,0,0);
 
   cursor: unset;
+
+  &:hover {
+    background-color: unset;
+  }
 }
