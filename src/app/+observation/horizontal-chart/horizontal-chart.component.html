@@ -10,15 +10,12 @@
         <laji-info [placement]="'left'">{{ 'observation.info.stats' | translate }}</laji-info>
       </div>
       <ng-container *ngIf="!loading">
-        <div class="spinnerLabel">
-          <laji-spinner [spinning]="loadLabels" [overlay]="true"></laji-spinner>
-        </div>
         <div style="position: relative;">
-          <div [ngClass]="{'hideLabels': loadLabels, '': !loadLabels}"> 
-            <laji-bar-chart  [style.height.px]="componentHeight" 
+          <div> 
+            <laji-bar-chart [style.height.px]="componentHeight" 
               #barChart
               [datasets]="barChartData"
-              [labels]="barChartLabels | label"
+              [labels]="subLabelBarChart"
               [options]="barChartOptions"
               [legend]="false"
               [chartType]="'horizontalBar'"

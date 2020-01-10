@@ -12,13 +12,11 @@ $mobileBreakpoint: 768px;
 .sidebar {
   flex-shrink: 0;
   position: relative;
-  z-index: 5;
   background-color: $neutral-3;
   overflow-x: hidden;
   &.mobile {
     position: fixed;
     padding-bottom: 50px;
-    z-index: 1000;
     height: 100%;
     box-shadow: 0 0 10px 0 rgba(#000, 0.2);
     &.open {
@@ -101,7 +99,6 @@ $mobileBreakpoint: 768px;
 // SIDEBAR NAV
 :host .sidebar ::ng-deep lu-sidebar-link div {
   position: relative;
-  z-index: 1;
   padding: 10px 20px;
   cursor: pointer;
   &:hover:not(.active) {

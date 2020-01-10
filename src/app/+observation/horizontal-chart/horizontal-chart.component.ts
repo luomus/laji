@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges,
 OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
@@ -10,15 +10,16 @@ import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-ch
 import { Chart, ChartDataSets } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
+import { HorizontalChartData, HorizontalchartDataService } from './horizontal-chart-data.service';
 
 @Component({
   selector: 'laji-horizontal-chart',
   templateUrl: './horizontal-chart.component.html',
   styleUrls: ['./horizontal-chart.component.scss'],
-  providers: [InformalTaxonGroupApi],
+  providers: [InformalTaxonGroupApi, HorizontalchartDataService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
+export class HorizontalChartComponent implements OnInit, OnChanges, OnDestroy {
   @Input() query: WarehouseQueryInterface;
   @Input() height = 150;
   @Input() showLegend = false;
@@ -30,7 +31,9 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
 
 
   loading = false;
+  maiale: HorizontalChartData;
   dataClasses: Subscription;
+  porcoddio: Subscription;
   taxa: string;
   componentHeight: number;
   loadLabels = false;
@@ -66,7 +69,8 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private warehouseService: WarehouseApi,
               private cd: ChangeDetectorRef,
               private toQname: ToQNamePipe,
-              private translate: TranslateService
+              private translate: TranslateService,
+              private horizontalDataService: HorizontalchartDataService
   ) {
   }
 
@@ -78,16 +82,65 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['query']) {
-      this.cd.detectChanges();
       this.updateClasses();
     }
   }
 
-
   ngOnDestroy() {
     this.dataClasses.unsubscribe();
-    this.subscription.unsubscribe();
   }
+
+  /*private updateClasses() {
+    if (this.dataClasses) {
+      this.dataClasses.unsubscribe();
+    }
+
+    this.barChartData = [];
+    this.barChartLabels = [];
+    this.allDataBarChart = [];
+    this.allLabelBarChart = [];
+    this.subDataBarChart = [];
+    this.subLabelBarChart = [];
+    this.subBackgroundColors = [];
+    this.allBackgroundColors = [];
+
+    this.barChartData = [{ data: [], backgroundColor: [], label: this.translate.instant('all') }];
+
+
+    this.loading = true;
+      this.dataClasses = this.warehouseService.warehouseQueryAggregateGet(
+        this.query,
+        ['unit.linkings.taxon.' + this.classificationValue ],
+        undefined,
+        30
+      ).pipe(
+        map(res => res.results)
+      ).subscribe((res) => {
+        res.map(r => {
+          this.subDataBarChart.push(r.count);
+          this.subBackgroundColors.push('#3498db');
+          this.subLabelBarChart.push(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
+          this.getLabelsGraph(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
+        });
+
+      this.allDataBarChart = this.subDataBarChart;
+      this.allLabelBarChart = this.subLabelBarChart;
+      this.allBackgroundColors = this.subBackgroundColors;
+
+      this.subDataBarChart = this.subDataBarChart.slice(0, 10);
+      this.subLabelBarChart = this.subLabelBarChart.slice(0, 10);
+      this.subBackgroundColors = this.subBackgroundColors.slice(0, 10);
+
+      this.barChartData[0].data = this.subDataBarChart;
+      this.barChartData[0].backgroundColor = this.subBackgroundColors;
+      this.barChartLabels = this.subLabelBarChart;
+
+      this.initializeGraph();
+      this.cd.markForCheck();
+      this.loading = false;
+      });
+
+  }*/
 
   private updateClasses() {
     if (this.dataClasses) {
@@ -107,43 +160,55 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
 
 
     this.loading = true;
-    this.dataClasses = this.warehouseService.warehouseQueryAggregateGet(
-      this.query,
-      ['unit.linkings.taxon.' + this.classificationValue ],
-      undefined,
-      30
-    ).pipe(
-      map(res => res.results)
-    ).subscribe((res) => {
-      res.map(r => {
-        this.subDataBarChart.push(r.count);
-        this.subLabelBarChart.push(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
-        this.subBackgroundColors.push('#3498db');
-      });
+      this.dataClasses = this.warehouseService.warehouseQueryAggregateGet(
+        this.query,
+        ['unit.linkings.taxon.' + this.classificationValue ],
+        undefined,
+        30
+      ).pipe(
+        map(res => res.results),
+        map(res => {
+            return res.map(r => {
+              this.subDataBarChart.push(r.count);
+              this.subBackgroundColors.push('#3498db');
+              this.subLabelBarChart.push(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
+              // this.getLabelsGraph(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
+            });
+        })
+    )
+    .subscribe(() => {
+      this.allDataBarChart = this.subDataBarChart;
+      this.allLabelBarChart = this.subLabelBarChart;
+      this.allBackgroundColors = this.subBackgroundColors;
 
-    this.allDataBarChart = this.subDataBarChart;
-    this.allLabelBarChart = this.subLabelBarChart;
-    this.allBackgroundColors = this.subBackgroundColors;
+      this.subDataBarChart = this.subDataBarChart.slice(0, 10);
+      this.subLabelBarChart = this.subLabelBarChart.slice(0, 10);
+      this.subBackgroundColors = this.subBackgroundColors.slice(0, 10);
 
-    this.subDataBarChart = this.subDataBarChart.slice(0, 10);
-    this.subLabelBarChart = this.subLabelBarChart.slice(0, 10);
-    this.subBackgroundColors = this.subBackgroundColors.slice(0, 10);
+      this.barChartData[0].data = this.subDataBarChart;
+      this.barChartData[0].backgroundColor = this.subBackgroundColors;
+      this.barChartLabels = this.subLabelBarChart;
 
-    this.barChartData[0].data = this.subDataBarChart;
-    this.barChartData[0].backgroundColor = this.subBackgroundColors;
-    this.barChartLabels = this.subLabelBarChart;
+      this.initializeGraph();
+      this.cd.markForCheck();
+      this.loading = false;
+    });
 
-    this.initializeGraph();
-    this.cd.markForCheck();
-    this.hideYLabels();
-    this.loading = false;
+  }
+
+
+  getLabelsGraph(id) {
+    this.maiale = null;
+    this.horizontalDataService.getChartDataLabels(id).subscribe((res) => {
+      this.maiale = res;
+      console.log(this.maiale);
+      this.subLabelBarChart.push(this.maiale.data.taxon.scientificName);
     });
   }
 
+
   toggleShowAllData() {
     if (this.barChartData[0].data.length < this.allDataBarChart.length) {
-      this.initializeGraph();
-      this.hideYLabels();
       this.componentHeight = 500;
       this.barChartData[0].data = this.allDataBarChart;
       this.barChartLabels = this.allLabelBarChart;
@@ -173,7 +238,7 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
       },
       scales: {
         yAxes: [{
-          display: false,
+          display: true,
           ticks: {
             beginAtZero: true
           },
@@ -216,42 +281,5 @@ export class HorizontalChartComponent implements OnInit, OnDestroy, OnChanges {
     this.loadLabels = true;
   }
 
-  hideYLabels() {
-    this.subscription = timer(3500).subscribe(() => {
-      this.barChartOptions = {
-        legend: { display: false, labels: { fontColor: 'black' } },
-        responsive: true,
-        maintainAspectRatio: false,
-        scaleShowValues: true,
-        tooltips: {
-        enabled: true,
-        mode: 'index',
-        position: 'cursor'
-        },
-        scales: {
-          yAxes: [{
-            display: true,
-            ticks: {
-              beginAtZero: true
-            },
-            gridLines: {
-              color: 'rgba(255,255,255,0)',
-              lineWidth: 0.5
-            }
-          }]
-        },
-        plugins: {
-          datalabels: {
-            display: false
-          },
-        },
-        animation: {
-          duration: 700
-        }
-      };
-      this.loadLabels = false;
-      this.cd.markForCheck();
-    });
-  }
 
 }
