@@ -49,7 +49,7 @@
       </div>
     </ng-container>
   </ng-container>
-  <lu-button *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</lu-button>
+  <lu-button role="primary" *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</lu-button>
   <div class="fill-space"></div>
   <div *ngIf="visible.finnish">
     <lu-button [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">

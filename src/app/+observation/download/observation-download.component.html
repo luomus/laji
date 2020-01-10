@@ -93,7 +93,8 @@
       <div *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
         <p [innerHtml]="'result.load.introSpecies' | translate"></p>
         <lu-button
-          routerLink="/api/warehouse/query/aggregate" [queryParams]="csvParams">
+          target="_blank"
+          anchor="/api/warehouse/query/aggregate?{{csvParams}}">
           {{ 'observation.download.loadSpecies' | translate }}
         </lu-button>
       </div>
