@@ -1,7 +1,7 @@
 <a      *ngIf="routerLink; else button"
         tabindex="-1"
         [routerLink]="routerLink"
-        target="target"
+        [target]="target"
         [ngClass]="role"
         [class.pressed]="pressed"
         (click)="onClick($event)"
