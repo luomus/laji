@@ -1,6 +1,6 @@
 import { map, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges,
-OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
+OnInit, ChangeDetectorRef} from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { forkJoin as ObservableForkJoin, Observable, of, Subscription, timer, interval } from 'rxjs';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
@@ -10,7 +10,7 @@ import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-ch
 import { Chart, ChartDataSets } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
-import { HorizontalChartData, HorizontalchartDataService } from './horizontal-chart-data.service';
+import {  HorizontalchartDataService } from './horizontal-chart-data.service';
 
 @Component({
   selector: 'laji-horizontal-chart',
@@ -19,7 +19,7 @@ import { HorizontalChartData, HorizontalchartDataService } from './horizontal-ch
   providers: [InformalTaxonGroupApi, HorizontalchartDataService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HorizontalChartComponent implements OnInit, OnChanges, OnDestroy {
+export class HorizontalChartComponent implements OnInit, OnChanges {
   @Input() query: WarehouseQueryInterface;
   @Input() height = 150;
   @Input() showLegend = false;
@@ -31,9 +31,8 @@ export class HorizontalChartComponent implements OnInit, OnChanges, OnDestroy {
 
 
   loading = false;
-  maiale: HorizontalChartData;
+  queryQL: Subscription;
   dataClasses: Subscription;
-  porcoddio: Subscription;
   taxa: string;
   componentHeight: number;
   loadLabels = false;
@@ -86,61 +85,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.dataClasses.unsubscribe();
-  }
 
-  /*private updateClasses() {
-    if (this.dataClasses) {
-      this.dataClasses.unsubscribe();
-    }
-
-    this.barChartData = [];
-    this.barChartLabels = [];
-    this.allDataBarChart = [];
-    this.allLabelBarChart = [];
-    this.subDataBarChart = [];
-    this.subLabelBarChart = [];
-    this.subBackgroundColors = [];
-    this.allBackgroundColors = [];
-
-    this.barChartData = [{ data: [], backgroundColor: [], label: this.translate.instant('all') }];
-
-
-    this.loading = true;
-      this.dataClasses = this.warehouseService.warehouseQueryAggregateGet(
-        this.query,
-        ['unit.linkings.taxon.' + this.classificationValue ],
-        undefined,
-        30
-      ).pipe(
-        map(res => res.results)
-      ).subscribe((res) => {
-        res.map(r => {
-          this.subDataBarChart.push(r.count);
-          this.subBackgroundColors.push('#3498db');
-          this.subLabelBarChart.push(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
-          this.getLabelsGraph(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
-        });
-
-      this.allDataBarChart = this.subDataBarChart;
-      this.allLabelBarChart = this.subLabelBarChart;
-      this.allBackgroundColors = this.subBackgroundColors;
-
-      this.subDataBarChart = this.subDataBarChart.slice(0, 10);
-      this.subLabelBarChart = this.subLabelBarChart.slice(0, 10);
-      this.subBackgroundColors = this.subBackgroundColors.slice(0, 10);
-
-      this.barChartData[0].data = this.subDataBarChart;
-      this.barChartData[0].backgroundColor = this.subBackgroundColors;
-      this.barChartLabels = this.subLabelBarChart;
-
-      this.initializeGraph();
-      this.cd.markForCheck();
-      this.loading = false;
-      });
-
-  }*/
 
   private updateClasses() {
     if (this.dataClasses) {
@@ -167,13 +112,23 @@ export class HorizontalChartComponent implements OnInit, OnChanges, OnDestroy {
         30
       ).pipe(
         map(res => res.results),
+        switchMap(res => {
+          const taxaIds = res.map(r => this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
+          return this.horizontalDataService.getChartDataLabels(taxaIds).pipe(
+            map(labels => {
+              return res.map((r, idx) => ({
+                ...r,
+                label: labels['r' + idx]
+              }));
+            })
+          );
+        }),
         map(res => {
-            return res.map(r => {
-              this.subDataBarChart.push(r.count);
-              this.subBackgroundColors.push('#3498db');
-              this.subLabelBarChart.push(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
-              // this.getLabelsGraph(this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
-            });
+          return res.map(r => {
+            this.subDataBarChart.push(r.count);
+            this.subBackgroundColors.push('#3498db');
+            this.subLabelBarChart.push(r.label.vernacularName ? r.label.vernacularName : r.label.scientificName);
+          });
         })
     )
     .subscribe(() => {
@@ -194,16 +149,6 @@ export class HorizontalChartComponent implements OnInit, OnChanges, OnDestroy {
       this.loading = false;
     });
 
-  }
-
-
-  getLabelsGraph(id) {
-    this.maiale = null;
-    this.horizontalDataService.getChartDataLabels(id).subscribe((res) => {
-      this.maiale = res;
-      console.log(this.maiale);
-      this.subLabelBarChart.push(this.maiale.data.taxon.scientificName);
-    });
   }
 
 
@@ -278,7 +223,6 @@ export class HorizontalChartComponent implements OnInit, OnChanges, OnDestroy {
       this.componentHeight = 500;
       break;
     }
-    this.loadLabels = true;
   }
 
 
