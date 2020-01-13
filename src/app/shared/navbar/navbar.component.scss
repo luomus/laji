@@ -1,5 +1,9 @@
 @import '../../../styles/variables';
 
+#navbar {
+  flex: none;
+}
+
 .env {
   position: absolute;
   left:0;
