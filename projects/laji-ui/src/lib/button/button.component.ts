@@ -11,11 +11,17 @@ type Role = 'primary' | 'secondary';
 export class ButtonComponent {
   @Input() role: Role = 'secondary';
   @Input() disabled = false; // note: can't disable anchors
-  @Input('anchor') routerLink;
   @Input() target;
   @Output() click = new EventEmitter<MouseEvent>();
 
+  routerLink;
+  useHref = false;
   pressed = false;
+
+  @Input() set anchor(url: string) {
+    this.routerLink = url;
+    this.useHref = url.includes('?');
+  }
 
   @HostListener('click', ['$event'])
   onHostClick(event) {
