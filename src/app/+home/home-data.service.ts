@@ -78,7 +78,9 @@ const HOME_QUERY = gql`
   }
 `;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class HomeDataService {
   constructor(
     private graphQLService: GraphQLService
