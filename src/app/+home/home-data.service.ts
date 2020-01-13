@@ -78,7 +78,9 @@ const HOME_QUERY = gql`
   }
 `;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class HomeDataService {
   constructor(
     private graphQLService: GraphQLService
@@ -97,7 +99,7 @@ export class HomeDataService {
       variables: {
         after: HomeDataService.getRecentDate()
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'cache-first',
       errorPolicy: 'all'
     }).pipe(
       map(({data}) => data)
