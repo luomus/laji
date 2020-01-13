@@ -36,10 +36,6 @@ export interface IObservationViewModel extends IObservationState {
   lgScreen: boolean;
 }
 
-const emptyQuery: WarehouseQueryInterface = {
-  _coordinatesIntersection: 100
-};
-
 const _persistentState: IPersistentState = {
   showIntro: true,
   advanced: false
@@ -47,7 +43,7 @@ const _persistentState: IPersistentState = {
 
 let _state: IObservationState = {
   ..._persistentState,
-  query: {...emptyQuery},
+  query: {},
   filterVisible: true,
   activeTab: 'map',
   countTaxa: 0,
@@ -96,7 +92,7 @@ export class ObservationFacade {
   });
 
   private hashCache: {[key: string]: string} = {};
-  private _emptyQuery: WarehouseQueryInterface = emptyQuery;
+  private _emptyQuery: WarehouseQueryInterface = {};
 
   constructor(
     private browserService: BrowserService,

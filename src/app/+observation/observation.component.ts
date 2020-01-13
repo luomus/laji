@@ -15,7 +15,7 @@ import { AbstractObservation } from './abstract-observation';
       z-index: auto;
     }
   `],
-  providers: [SearchQueryService],
+  providers: [SearchQueryService, ObservationFacade],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationComponent extends AbstractObservation implements OnInit, OnDestroy {
@@ -29,6 +29,9 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
   }
 
   ngOnInit() {
+    this.observationFacade.emptyQuery = {
+      _coordinatesIntersection: 100
+    };
     this.observationFacade.hideFooter();
     this.init();
   }
