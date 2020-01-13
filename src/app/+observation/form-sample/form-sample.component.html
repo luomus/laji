@@ -1,4 +1,4 @@
-<laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
+<laji-observation-active [skip]="skipActiveFilters" [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
 
 <div>
   <label>{{ 'observation.form.target' | translate }}</label>

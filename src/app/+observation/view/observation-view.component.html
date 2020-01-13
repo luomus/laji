@@ -37,6 +37,7 @@
       <laji-form-sample
         *ngSwitchCase="'sample'"
         [query]="vm.query"
+        [skipActiveFilters]="skipUrlParameters"
         [invasiveStatuses]="invasiveStatuses"
         [dateFormat]="dateFormat"
         [advancedMode]="vm.advanced"
