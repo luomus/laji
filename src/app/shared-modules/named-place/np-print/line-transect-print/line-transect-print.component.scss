@@ -7,6 +7,7 @@ $baseFontSize: 12pt;
   margin: 0;
 }
 .page {
+  background-color: #fff;
   position: relative;
   margin: 10mm;
   width: 190mm;
@@ -25,6 +26,7 @@ $baseFontSize: 12pt;
 @media not print {
   .page {
     margin: 20px auto;
+    padding: 10px;
   }
 }
 
