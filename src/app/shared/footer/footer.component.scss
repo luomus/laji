@@ -1,10 +1,23 @@
-:host >>> .info-footer a {
-  color: #fff;
-}
+@import "../../../styles/styles";
 
-:host >>> .info-footer a:focus {
-  color: #fff;
-  text-decoration: none;
+:host ::ng-deep {
+  footer {
+    flex: none;
+    background-color: $color-main;
+    width: 100%;
+  }
+
+  footer a,
+  footer li,
+  footer h3,
+  .intro,
+  .info {
+    color: #fff;
+  }
+  a:focus {
+    color: #fff;
+    text-decoration: none;
+  }
 }
 
 .partners-footer {
