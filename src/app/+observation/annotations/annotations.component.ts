@@ -81,6 +81,7 @@ export class AnnotationsComponent implements OnInit, OnChanges {
       [
         'document.documentId',
         'unit.media.thumbnailURL',
+        'document.createdDate',
         'unit.media.fullURL',
         'gathering.displayDateTime',
         'gathering.country',
@@ -94,9 +95,10 @@ export class AnnotationsComponent implements OnInit, OnChanges {
         'unit.linkings.taxon.vernacularName',
         'unit.linkings.originalTaxon.vernacularName',
         'unit.quality.taxon.reliability',
-        'unit.annotations.type'
+        'unit.annotations.type',
+        'unit.unitId'
       ],
-      ['gathering.displayDateTime DESC'],
+      ['document.createdDate DESC', 'unit.unitId ASC'],
       18,
       this.page
     ).subscribe(data => {
