@@ -148,7 +148,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   saveTaxon(event) {
     this.annotation.identification.taxonID = '';
-    this.getMatchTaxon(this.annotation.identification.taxon);
+    if (this.annotation.identification.taxon !== '') {
+      this.getMatchTaxon(this.annotation.identification.taxon);
+    }
   }
 
   deleteSelected(id) {
@@ -408,17 +410,18 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   disableSend() {
     this.alertNotSpamVerified = false;
 
-    /*if (this.annotation.addedTags.length === 0) {
-      return true;
-    } else {
-      if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.3') === -1 ) {
-
-      } else {
-      }
-    }*/
-
-    if ((this.annotation.notes === '' || this.annotation.notes === undefined) && this.annotation.addedTags.length === 0 &&
-    (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)) {
+    if (
+    ((
+    (this.annotation.notes === '' || this.annotation.notes === undefined) &&
+    (this.annotation.addedTags.length === 0) &&
+    (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)
+    ) && this.annotation.removedTags.length === 0) || (
+      (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
+      (this.annotation.addedTags.indexOf('MMAN.3') !== -1 || this.annotation.addedTags.indexOf('MMAN.6') !== -1 ||
+      this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1)
+      && this.personRoleAnnotation === this.annotationRole.expert && this.expert
+      )
+      ) {
       return true;
     }
   }

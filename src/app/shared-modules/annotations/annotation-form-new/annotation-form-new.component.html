@@ -17,7 +17,7 @@
                 </main>
             </div>
         </div>
-        <div *ngIf="annotation.addedTags.indexOf('MMAN.3') === -1" style="margin-top:10px; margin-bottom:10px" [@fadeInOut]>
+        <div style="margin-top:10px; margin-bottom:10px">
           <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['check']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
             <main class="lu">
               <lu-checkbox (input)="addToAddTags(item.id)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
@@ -52,7 +52,7 @@
         </div>
       </div>
   </div>
-    <div class="row taxon" *ngIf="!isEditor && this.annotation.addedTags.indexOf('MMAN.3') === -1" [@fadeInOut]>
+    <div class="row taxon" *ngIf="!isEditor">
       <div>
         <div class="col-lg-3 col-md-12 col-sm-12">
             <label class="taxonomy">{{ 'annotation.addIdentification' | translate }}</label> 
