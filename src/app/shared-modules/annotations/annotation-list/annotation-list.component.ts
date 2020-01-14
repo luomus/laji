@@ -36,4 +36,9 @@ export class AnnotationListComponent implements OnInit, OnDestroy {
   }
 
 
+  onTaxonLinkClick(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+
 }
