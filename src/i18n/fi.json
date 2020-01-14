@@ -59,6 +59,7 @@
   "annotation.effectiveTags": "Effective tag(s)",
   "annotation.effectiveTaxon": "Effective observation taxon",
   "annotation.effectiveTaxon.comment": "Changed based on comment(s)",
+  "annotation.isEditorTaxon": "Olet toimittaja, et voi lisätä uutta taksonomiaa",
   "asIs": "Arvo sellaisenaan",
   "checkAll": "Valitse kaikki",
   "checked": "valittu",

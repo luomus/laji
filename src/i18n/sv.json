@@ -59,6 +59,7 @@
   "annotation.effectiveTags": "Effective tag(s)",
   "annotation.effectiveTaxon": "Effective observation taxon",
   "annotation.effectiveTaxon.comment": "Changed based on comment(s)",
+  "annotation.isEditorTaxon": "Du är redaktör, du kan inte lägga till en ny taxonomi",
   "asIs": "Värde som det är",
   "checkAll": "Markera alla",
   "checked": "vald",

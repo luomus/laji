@@ -52,7 +52,7 @@
         </div>
       </div>
   </div>
-    <div class="row taxon" *ngIf="!isEditor">
+    <div class="row taxon" *ngIf="!isEditor; else editorMessage">
       <div>
         <div class="col-lg-3 col-md-12 col-sm-12">
             <label class="taxonomy">{{ 'annotation.addIdentification' | translate }}</label> 
@@ -116,6 +116,9 @@
         </div>
       </div>
     </div>
+    <ng-template #editorMessage>
+      <div class="alert alert-warning">{{ 'annotation.isEditorTaxon' | translate }}</div>
+    </ng-template>
     
     <div class="row message" (lajiAfterIf)="initElements()">
       <div class="col-sm-12">

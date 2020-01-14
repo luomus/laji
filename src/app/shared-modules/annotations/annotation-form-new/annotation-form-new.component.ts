@@ -417,9 +417,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)
     ) && this.annotation.removedTags.length === 0) || (
       (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
-      (this.annotation.addedTags.indexOf('MMAN.3') !== -1 || this.annotation.addedTags.indexOf('MMAN.6') !== -1 ||
+      (this.annotation.addedTags.indexOf('MMAN.6') !== -1 ||
       this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1)
-      && this.personRoleAnnotation === this.annotationRole.expert && this.expert
+      && this.personRoleAnnotation === this.annotationRole.expert && this.expert && !this.isEditor
       )
       ) {
       return true;
