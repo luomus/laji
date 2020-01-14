@@ -77,7 +77,6 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
       return coordinates;
     };
-    console.log('hola');
   }
 
   ngOnChanges(changes: SimpleChanges) {
