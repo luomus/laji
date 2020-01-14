@@ -2,7 +2,7 @@
   margin-left: 5px;
   border-radius: 9px;
   color: white;
-  padding: 0 4px;
+  padding: 0 6px;
   font-size: 13px;
 }
 .modal {
@@ -19,9 +19,6 @@
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
-  }
-
-  .laji-form-help-glyph strong {
     font-size: 18px;
     line-height: 28px;
   }
