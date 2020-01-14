@@ -13,7 +13,7 @@ import { LocalizeInGuard } from './locale/localize-in.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
-    const delay = typeof process !== 'undefined' && process.release.name === 'node' ? 0 : 50;
+    const delay = typeof process !== 'undefined' && process.release && process.release.name === 'node' ? 0 : 50;
     const loadRoute = () => ObservableTimer(delay).pipe(flatMap(() => load()), catchError(() => ObservableOf(null)));
 
     return route.data && route.data.preload ? loadRoute() : ObservableOf(null);

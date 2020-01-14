@@ -7,6 +7,7 @@ const MAX_HISTORY = 30;
 @Injectable({providedIn: 'root'})
 export class HistoryService {
   private history = [];
+  private hasBack = false;
 
   constructor(
     private router: Router
@@ -18,6 +19,7 @@ export class HistoryService {
         return;
       }
       if (this.history[this.history.length - 2] === urlAfterRedirects) {
+        this.hasBack = true;
         this.history.pop();
       } else {
         this.history = [...this.history, urlAfterRedirects];
@@ -38,5 +40,9 @@ export class HistoryService {
 
   public getPrevious(): string {
     return this.history[this.history.length - 2] || '';
+  }
+
+  public isFirstLoad() {
+    return !(this.hasPrevious() || this.hasBack);
   }
 }

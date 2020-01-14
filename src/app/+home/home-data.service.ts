@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import * as moment from 'moment';
 import { GraphQLService } from '../graph-ql/service/graph-ql.service';
+import { HistoryService } from '../shared/service/history.service';
 
 export interface IHomeData {
   observations: {
@@ -83,7 +84,8 @@ const HOME_QUERY = gql`
 })
 export class HomeDataService {
   constructor(
-    private graphQLService: GraphQLService
+    private graphQLService: GraphQLService,
+    private historyService: HistoryService
   ) { }
 
   public static getRecentDate(): string {
@@ -99,7 +101,8 @@ export class HomeDataService {
       variables: {
         after: HomeDataService.getRecentDate()
       },
-      fetchPolicy: 'no-cache',
+      // On first load we want to use the cached data from the server. On following loads we want to load the each time.
+      fetchPolicy: this.historyService.isFirstLoad() ? 'cache-first' : 'no-cache',
       errorPolicy: 'all'
     }).pipe(
       map(({data}) => data)
