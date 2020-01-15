@@ -1011,7 +1011,7 @@
   "result.load.introPrivate": "Rajauksesi kattaa <strong>{{private}}</strong> karkeistettua havaintoa. Lisäksi rajaus saattaa kattaa kokonaan salattuja havaintoja.</p><p>Voit tehdä aineistopyynnön saadaksesi käyttöösi karkeistetun ja salatun aineiston tarkat tiedot. Pyyntösi käsitellään yksilöllisesti ja saat lisäohjeita sähköpostitse. Perustelut datan käyttöön sekä käyttöehtojen hyväksyminen kysytään myöhemmässä vaiheessa.",
   "result.load.introPublic": "Viittauskelpoinen lataus tuottaa tiedoston, jossa on kaikki havainnoista Lajitietokeskuksessa oleva tieto. Tiedosto säilytetään Lajitietokeskuksen palvelussa pysyvästi ja siihen voidaan viitata esim. julkaisuista. Viittausta varten tiedostolle luodaan pysyvä tunniste. Saat sähköpostiisi linkin aineiston lataussivulle, kun lataus on valmistunut. Latausaika riippuu aineiston koosta.",
   "result.load.introSpecies": "Luettelo lajeista ja muista taksoneista (suvuista, heimoista jne.) havaintomäärän mukaisessa järjestyksessä.",
-  "result.load.personalData": "Tässä ei oteta huomioon omat havainnot -rajausta.",
+  "result.load.personalData": "Tätä ominaisuutta ei voi käyttää etsiessäsi omia havaintojasi. Poista omat havainnot -rajaus jatkaaksesi.",
   "result.load.thanksPublic": "Kiitos, saat linkin aineistoon sähköpostitse.",
   "result.load.thanksRequest": "Kiitos, saat ohjeita sähköpostitse.",
   "result.newestRecord": "Uusin",

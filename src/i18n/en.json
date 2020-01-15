@@ -872,7 +872,7 @@
   "result.load.introPrivate": "<p>Your search contains <strong>{{private}}</strong> coarsened observations. Additionally it may contain hidden observations.</p><p>You can make a request to receive coarsened and hidden data. Your request will be handled individually and you'll receive additional instructions by e-mail. Justification for data use and approval of terms of use will be asked at a later stage.</p>",
   "result.load.introPublic": "The citeable download creates a file that contains all information about observations stored in FinBIF. The file is permanently stored in FinBIF services an it can be cited in publications. For citations the file will get a permanent identifier. You'll receive a link to data download page by e-mail when the download is ready. Time for download depends on the size of the data.",
   "result.load.introSpecies": "The observation statistics have a list of species in order of the number of observations",
-  "result.load.personalData": "Please note that the own observations filters are ignore on this page.",
+  "result.load.personalData": "This feature cannot be used when searching your own observations. Remove own observations filters to continue.",
   "result.load.thanksPublic": "Thank you, you'll receive link to the data by e-mail",
   "result.load.thanksRequest": "Thank you, you'll receive additional instructions by e-mail",
   "result.newestRecord": "Newest",

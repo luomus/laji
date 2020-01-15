@@ -53,7 +53,7 @@
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
           <lu-button
-            [disabled]="requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading"
+            [disabled]="requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
             (click)="makePublicRequest()">
             {{ 'observation.download.loadPublic' | translate }}
           </lu-button>
@@ -75,7 +75,7 @@
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
           <lu-button
-            [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading"
+            [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading || hasPersonalData"
             (click)="makePrivateRequest()">
             {{ 'observation.download.loadPrivate' | translate }}
           </lu-button>
