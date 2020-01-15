@@ -191,7 +191,14 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
             color: 'rgba(255,255,255,0)',
             lineWidth: 0.5
           }
-        }]
+        }],
+        xAxes: [
+          {
+            ticks: {
+              beginAtZero: true
+            }
+          }
+        ]
       },
       plugins: {
         datalabels: {
