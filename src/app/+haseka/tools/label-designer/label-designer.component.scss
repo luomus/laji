@@ -1,3 +1,7 @@
+:host ::ng-deep .editor-container img {
+  max-width: none !important;
+}
+
 .editor-container {
   position: absolute;
   top: 0;

@@ -17,6 +17,7 @@ import { TemplatesComponent } from './templates/templates.component';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
+import { ParticipantsComponent } from './form-permission/admin/participants/participants.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -58,7 +59,8 @@ export const hasekaRoutes: Routes = [
         children: [
           {path: '', pathMatch: 'full', component: IntroComponent},
           {path: 'accept', pathMatch: 'full', component: AcceptComponent},
-          {path: 'manage/:type', pathMatch: 'full', component: ManageComponent}
+          {path: 'manage/:type', pathMatch: 'full', component: ManageComponent},
+          {path: 'participants', pathMatch: 'full', component: ParticipantsComponent},
         ]
       },
       {

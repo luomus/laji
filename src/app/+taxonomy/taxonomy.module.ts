@@ -65,16 +65,26 @@ import { TaxonInfoRowComponent } from './taxon/info-card/shared/component/taxon-
 import { BiogeographicalProvincesModule } from '../shared-modules/biogeographical-provinces/biogeographical-provinces.module';
 import { TaxonOccurrenceMapComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence-map/taxon-occurrence-map.component';
 import { AdministrativeStatusComponent } from './taxon/info-card/shared/component/administrative-status/administrative-status.component';
+import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { LicenseModule } from '../shared-modules/license/license.module';
+import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
+import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
 /* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
-    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LicenseModule
+    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule
   ],
-  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonTaxonomyService, CheckLangService],
+  providers: [
+    TaxonomyApi,
+    InformalTaxonGroupApi,
+    TaxonomySearchQuery,
+    TaxonTaxonomyService,
+    CheckLangService,
+    {provide: TableColumnService, useClass: ObservationTableColumnService},
+  ],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
     TaxonTreeComponent, SpeciesListComponent, TaxonComponent,
     BoldSequenceComponent, SpeciesFormComponent, SpeciesComponent,

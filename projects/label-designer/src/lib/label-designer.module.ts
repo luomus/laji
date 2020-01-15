@@ -40,6 +40,7 @@ import { SeparatorPipe } from './pipe/separator.pipe';
 import { LabelMakerFacade } from './label-designer/label-maker.facade';
 import { FieldKeyPipe } from './pipe/field-key.pipe';
 import { IsNumericPipe } from './pipe/is-numeric.pipe';
+import { LabelQRCodeComponent } from './label-qrcode/label-qrcode.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { IsNumericPipe } from './pipe/is-numeric.pipe';
     HasValuePipe,
     SeparatorPipe,
     FieldKeyPipe,
-    IsNumericPipe
+    IsNumericPipe,
+    LabelQRCodeComponent
   ],
   imports: [
     CommonModule,

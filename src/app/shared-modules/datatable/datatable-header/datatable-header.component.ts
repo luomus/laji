@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-datatable-header',
   templateUrl: './datatable-header.component.html',
-  styleUrls: ['./datatable-header.component.scss']
+  styleUrls: ['./datatable-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatatableHeaderComponent implements OnInit {
+export class DatatableHeaderComponent {
 
   @Input() showSettingsMenu = false;
   @Input() showDownloadMenu = false;
@@ -16,10 +17,5 @@ export class DatatableHeaderComponent implements OnInit {
 
   @Output() openSettingsMenu = new EventEmitter<void>();
   @Output() download = new EventEmitter<string>();
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

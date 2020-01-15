@@ -9,10 +9,11 @@ import { LocaleFiComponent } from './locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { LocalizeInGuard } from './locale/localize-in.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
-    const delay = typeof process !== 'undefined' && process.release.name === 'node' ? 0 : 50;
+    const delay = typeof process !== 'undefined' && process.release && process.release.name === 'node' ? 0 : 50;
     const loadRoute = () => ObservableTimer(delay).pipe(flatMap(() => load()), catchError(() => ObservableOf(null)));
 
     return route.data && route.data.preload ? loadRoute() : ObservableOf(null);
@@ -37,15 +38,22 @@ const routes: Routes = [
   }},
   {path: 'collection', loadChildren: () => import('./+collection/collection.module').then(m => m.CollectionModule)},
   {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule)},
-  {path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {title: 'navigation.map'}},
+  {
+    path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
+    data: {title: 'navigation.map', displayFeedback: false }
+  },
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
   {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule)},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
-  {path: 'forum', component: ForumComponent}
+  {path: 'forum', component: ForumComponent},
+  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule)}
 ];
 
 const routesWithLang: Routes = [
+  {path: 'in', children: [
+    {path: '**', component: NotFoundComponent}
+  ], component: LocaleEnComponent, canActivate: [LocalizeInGuard]},
   {path: 'en', data: {lang: 'en'}, children: [
     {path: 'nafi', redirectTo: '/en/theme/nafi/instructions', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},

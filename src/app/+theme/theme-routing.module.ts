@@ -63,7 +63,6 @@ const routes: Routes = [
       formID: Global.forms.default,
       title: 'theme.grc.title',
       requireLogin: false,
-      titlePosition: 'body',
       navLinks: {
         search: {
           routerLink: ['search'],
@@ -91,13 +90,21 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
       {path: 'stats', pathMatch: 'full', component: NafiResultComponent},
-      {path: 'form', pathMatch: 'full', component: FormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
       {
         path: 'form/:id',
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'templates', pathMatch: 'full', component: NafiTemplatesComponent, canActivate: [OnlyLoggedIn]},
@@ -154,15 +161,18 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
       {
         path: 'form', component: FormComponent,
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:formID', component: FormComponent,
-        canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]
+        canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:formID/:id', component: FormComponent,
         canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -228,6 +238,7 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form'],
       instructions: '2846'
     },
     children: [
@@ -240,13 +251,20 @@ const routes: Routes = [
         {path: 'routes/:id', pathMatch: 'full', component: WbcRouteComponent},
         {path: 'censuses', pathMatch: 'full', component: WbcCensusesComponent},
       ]},
-      {path: 'form', pathMatch: 'full', component: FormComponent, canDeactivate: [DocumentDeActivateGuard]},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
       {
         path: 'form/:id',
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
@@ -284,7 +302,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -292,6 +311,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -336,7 +356,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -344,6 +365,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -387,7 +409,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -395,6 +418,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -432,7 +456,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -440,6 +465,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -483,7 +509,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -491,6 +518,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',

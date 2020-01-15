@@ -30,6 +30,9 @@
             {{ formPermission.admins.length }}
           </span>
         </a></li>
+        <li><a [routerLink]="['participants']">
+          Osallistujaraportti
+        </a></li>
         <li *ngIf="backPath"><a [routerLink]="[backPath]" [queryParams]="backQuery">
           Takaisin
         </a></li>

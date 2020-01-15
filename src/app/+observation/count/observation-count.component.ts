@@ -13,7 +13,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 })
 export class ObservationCountComponent implements OnChanges {
 
-  @Input() value: number | string; // If this is set this will be always used
+  @Input() value: null | number | string; // If this is set this will be always used (null means that the value is loading)
   @Input() field: string;
   @Input() pick: any;
   @Input() query: any;
@@ -41,6 +41,7 @@ export class ObservationCountComponent implements OnChanges {
   update() {
     if (typeof this.value !== 'undefined' || !this.query) {
       this.count$ = of('' + (this.value || 0));
+      this.loading = this.value === null;
       return;
     }
 

@@ -6,31 +6,31 @@ import { IdService } from '../../service/id.service';
 @Component({
   selector: '[laji-notification]',
   templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.css'],
+  styleUrls: ['./notification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotificationComponent implements OnInit {
-
+export class NotificationComponent {
   targetPath: string;
   targetQuery: any;
   target: string;
   by: string;
   type: 'annotation'|'annotationCommented'|'friendRequest'|'friendRequestAccepted';
 
-  @Input() notification: Notification;
+  private _notification: Notification;
+  @Input() set notification (notification: Notification) {
+    this._notification = notification;
+    this.initTargets();
+  }
+  get notification() {
+    return this._notification;
+  }
   @Output() removeNotification = new EventEmitter<Notification>();
   @Output() notificationSeen = new EventEmitter<Notification>();
 
-  constructor(
-    private changeDetectorRef: ChangeDetectorRef
-  ) { }
-
-  ngOnInit() {
-    this.initTargets();
-  }
+  constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
   initTargets() {
-    if (this.notification.annotation) {
+    if (this.notification && this.notification.annotation) {
       this.type = this.notification.notificationReason &&
         this.notification.notificationReason === Notification.NotificationReasonEnum.notificationReasonAnnotatedDocumentAnnotated ?
         'annotationCommented' : 'annotation';
@@ -44,11 +44,11 @@ export class NotificationComponent implements OnInit {
         own: this.notification.notificationReason !== Notification.NotificationReasonEnum.notificationReasonAnnotatedDocumentAnnotated,
         openAnnotation: 'true'
       };
-    } else if (this.notification.friendRequest) {
+    } else if (this.notification && this.notification.friendRequest) {
       this.type = 'friendRequest';
       this.by = IdService.getId(this.notification.friendRequest);
       this.targetPath = '/user/' + this.notification.toPerson;
-    } else if (this.notification.friendRequestAccepted) {
+    } else if (this.notification && this.notification.friendRequestAccepted) {
       this.type = 'friendRequestAccepted';
       this.by = IdService.getId(this.notification.friendRequestAccepted);
       this.targetPath = '/user/' + this.notification.toPerson;

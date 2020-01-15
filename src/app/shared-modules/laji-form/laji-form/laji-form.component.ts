@@ -151,7 +151,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         if (this.lajiFormWrapper) {
           this.unMount();
         }
-
         this.apiClient.lang = this.translate.currentLang;
         this.apiClient.personToken = this.userService.getToken();
         this.apiClient.formID = this.formData.id;
@@ -192,11 +191,15 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onSettingsChange(settings: object, global = false) {
-    this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
+    this.ngZone.run(() => {
+      this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
+    });
   }
 
   private _onChange(formData) {
-    this.dataChange.emit(formData);
+    this.ngZone.run(() => {
+      this.dataChange.emit(formData);
+    });
   }
 
   private _onSubmit(data) {

@@ -32,69 +32,15 @@
   </laji-datatable>
 </div>
 
-<div bsModal #settingsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">{{ isAggregate ? ('result.settings.aggregate' | translate) : ('result.settings.list' | translate) }}</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row" *ngIf="isAggregate">
-          <div class="col-sm-6 col-md-4">
-            <laji-selected-field-group
-              header="result.aggregate.fields"
-              [fields]="allAggregateFields"
-              [columnsLookup]="columnLookup"
-              [columnSelector]="columnSelector"
-              [selected]="columnSelector.columns"
-            ></laji-selected-field-group>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <laji-selected-field-group
-              header="result.aggregate.numbers"
-              [fields]="[
-                'individualCountSum',
-                'individualCountMax',
-                'oldestRecord',
-                'newestRecord'
-                ]"
-              [columnsLookup]="columnLookup"
-              [columnSelector]="numberColumnSelector"
-              [selected]="numberColumnSelector.columns"
-            ></laji-selected-field-group>
-          </div>
-        </div>
-
-        <div class="row" *ngIf="!isAggregate">
-          <ng-container *ngFor="let col of columnGroups ">
-            <div class="col-sm-6 col-md-4">
-              <ng-container *ngFor="let group of col">
-                <laji-selected-field-group
-                  [header]="group.header"
-                  [fields]="group.fields"
-                  [columnsLookup]="columnLookup"
-                  [columnSelector]="columnSelector"
-                  [selected]="columnSelector.columns"
-                  ></laji-selected-field-group>
-              </ng-container>
-            </div>
-          </ng-container>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-6">
-            <div *ngIf="showPageSize">
-              <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
-            </div>
-          </div>
-          <div class="col-sm-6 clear-btn">
-            <div class="pull-right">
-              <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="this.resetColumns.emit()">{{ 'result.reset' | translate }}</button>
-              <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="closeOkModal()">Ok</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<laji-observation-table-settings
+  [allAggregateFields]="allAggregateFields"
+  [columnSelector]="columnSelector"
+  [numberColumnSelector]="numberColumnSelector"
+  [columnGroups]="columnGroups"
+  [columnLookup]="columnLookup"
+  [isAggregate]="isAggregate"
+  [pageSize]="pageSize"
+  (pageSizeChange)="onPageSizeChange($event)"
+  (close)="onCloseSettingsModal($event)"
+  (resetColumns)="resetColumns.emit()"
+></laji-observation-table-settings>

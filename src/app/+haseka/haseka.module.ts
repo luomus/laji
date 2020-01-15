@@ -24,6 +24,7 @@ import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest
 import { HasekaTermsComponent } from './terms/haseka-terms.component';
 import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
 import { AppComponentModule } from '../shared-modules/app-component/app-component.module';
+import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { AppComponentModule } from '../shared-modules/app-component/app-componen
     StatisticsModule,
     FormPermissionModule,
     LatestDocumentsModule,
-    AppComponentModule
+    AppComponentModule,
+    LajiUiModule
   ],
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,

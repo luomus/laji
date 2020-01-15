@@ -1,4 +1,5 @@
 @import "styles";
+@import '../../../../projects/laji-ui/src/lib/vars';
 
 html {
   position: relative;
@@ -7,6 +8,7 @@ html {
 }
 
 body {
+  background-color: $neutral-2;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding-top: 50px;
   height: 100%;
@@ -37,14 +39,17 @@ p, li, h1, h2, h3, h4, h5, h6, blockquote, caption {
   max-width: 1600px;
 }
 
+.fill-space {
+  flex-grow: 1;
+}
+
 @media (min-width: 1650px) {
     .container {
       width: 1600px;
     }
 }
 
-
-.footer, #navbar {
+.footer {
   flex: none;
 }
 
@@ -146,20 +151,6 @@ laji-locale-sv > div,
 }
 
 /** /Common helpers */
-
-.footer footer {
-  flex: none;
-  background-color: $color-main;
-  width: 100%;
-}
-
-.footer footer a,
-.footer footer li,
-.footer footer h3,
-.footer .intro,
-.footer .info {
-  color: #fff;
-}
 
 .breadcrumb {
   margin-top: 15px;

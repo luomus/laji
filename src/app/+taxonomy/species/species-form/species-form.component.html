@@ -1,143 +1,97 @@
-<laji-search-filters
-     [queryType]="searchQuery.queryType"
-     [(query)]="searchQuery.query"
-     (queryChange)="onQueryChange()"
-     [showFilter]="showFilter"
-     (showFilterChange)="onShowFilterChange($event)">
-  <div class="taxon-panel">
-    <div class="row">
-      <div class="col-sm-12">
-        <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>
-      </div>
-      <div class="col-sm-12">
-        <laji-observation-group-select
-          [(ngModel)]="searchQuery.query.informalGroupFilters"
-          name="informalTaxonGroupId"
-          (select)="onQueryChange()">
-          {{ 'observation.active.informalTaxonGroupAll'|translate }}
-        </laji-observation-group-select>
-      </div>
-    </div>
+<div class="observation-active-container">
+  <laji-observation-active [(query)]="searchQuery.query" (queryChange)="onQueryChange()" [queryType]="searchQuery.queryType"></laji-observation-active>
+</div>
 
-    <div class="form-group">
-      <label class="col-sm-12">
-        {{ 'species.form.specimen' | translate }}:
-      </label>
-      <div class="col-sm-12">
-        <laji-taxon-select
-          (taxonIdChange)="onTaxonSelect($event)"
-          [taxonId]="formQuery.taxon"
-          [searchParams]="taxonSelectFilters">
-        </laji-taxon-select>
-      </div>
-    </div>
+<label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>
+<laji-observation-group-select
+  [(ngModel)]="searchQuery.query.informalGroupFilters"
+  name="informalTaxonGroupId"
+  (select)="onQueryChange()">
+  {{ 'observation.active.informalTaxonGroupAll'|translate }}
+</laji-observation-group-select>
 
-    <div class="form-group">
-      <div class="col-sm-12">
-        <bSwitch
-          name="onlyFinnish"
-          [switch-off-text]="'species.form.all' | translate"
-          [switch-on-text]="'species.form.finnish' | translate"
-          [switch-on-color]="'primary'"
-          [switch-size]="'small'"
-          [(ngModel)]="formQuery.onlyFinnish"
-          [switch-base-class]="'bootstrap-switch'"
-          (changeState)="onQueryChange()">
-        </bSwitch>
-      </div>
-    </div>
+<label>{{ 'species.form.specimen' | translate }}:</label>
+<laji-taxon-select
+  (taxonIdChange)="onTaxonSelect($event)"
+  [taxonId]="formQuery.taxon"
+  [searchParams]="taxonSelectFilters">
+</laji-taxon-select>
 
-    <div class="form-group">
-      <div class="col-sm-12">
-        <laji-select
-          [selected]="searchQuery.query.typesOfOccurrenceFilters"
-          (selectedChange)="updateQuery('typesOfOccurrenceFilters', $event)"
-          [useFilter]="false"
-          [title]="'observation.commonness' | translate"
-          [info]="'observation.info.commonness' | translate"
-          [options]="[
-              {id: 'MX.typeOfOccurrenceCommon', value: ('MX.typeOfOccurrenceCommon' | label)},
-              {id: 'MX.typeOfOccurrenceRare', value: ('MX.typeOfOccurrenceRare' | label)},
-              {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
-            ]"></laji-select>
-      </div>
-    </div>
+<bSwitch
+  name="onlyFinnish"
+  [switch-off-text]="'species.form.all' | translate"
+  [switch-on-text]="'species.form.finnish' | translate"
+  [switch-on-color]="'primary'"
+  [switch-size]="'small'"
+  [(ngModel)]="formQuery.onlyFinnish"
+  [switch-base-class]="'bootstrap-switch'"
+  (changeState)="onQueryChange()">
+</bSwitch>
 
-    <div class="form-group">
-      <div class="col-sm-12">
-        <laji-metadata-select
-          [(ngModel)]="searchQuery.query.taxonRanks"
-          (ngModelChange)="onQueryChange()"
-          [multiple]="true"
-          [useFilter]="false"
-          name="taxonRanks"
-          [placeholder]="'taxonomy.active.taxonRanks'"
-          [alt]="'MX.taxonRankEnum'"
-          [skipBefore]="'MX.species'"
-        ></laji-metadata-select>
-      </div>
-    </div>
+<laji-select
+  [selected]="searchQuery.query.typesOfOccurrenceFilters"
+  (selectedChange)="updateQuery('typesOfOccurrenceFilters', $event)"
+  [useFilter]="false"
+  [title]="'observation.commonness' | translate"
+  [info]="'observation.info.commonness' | translate"
+  [options]="[
+      {id: 'MX.typeOfOccurrenceCommon', value: ('MX.typeOfOccurrenceCommon' | label)},
+      {id: 'MX.typeOfOccurrenceRare', value: ('MX.typeOfOccurrenceRare' | label)},
+      {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
+    ]"></laji-select>
 
-    <div class="form-group">
-      <div class="col-sm-12">
-        <laji-metadata-select
-          [(ngModel)]="searchQuery.query.redListStatusFilters"
-          (ngModelChange)="onQueryChange()"
-          [multiple]="true"
-          [useFilter]="false"
-          name="redListStatusFilters"
-          [placeholder]="'observation.form.redListStatusId'"
-          [alt]="'MX.iucnStatuses'"></laji-metadata-select>
-      </div>
-    </div>
+<laji-metadata-select
+  [(ngModel)]="searchQuery.query.taxonRanks"
+  (ngModelChange)="onQueryChange()"
+  [multiple]="true"
+  [useFilter]="false"
+  name="taxonRanks"
+  [placeholder]="'taxonomy.active.taxonRanks'"
+  [alt]="'MX.taxonRankEnum'"
+  [skipBefore]="'MX.species'"
+></laji-metadata-select>
 
-    <laji-habitat-select
-      [query]="searchQuery.query"
-      (select)="onHabitatChange($event)"
-    ></laji-habitat-select>
+<laji-metadata-select
+  [(ngModel)]="searchQuery.query.redListStatusFilters"
+  (ngModelChange)="onQueryChange()"
+  [multiple]="true"
+  [useFilter]="false"
+  name="redListStatusFilters"
+  [placeholder]="'observation.form.redListStatusId'"
+  [alt]="'MX.iucnStatuses'"></laji-metadata-select>
 
-    <div class="form-group">
-      <div class="col-sm-12">
-        <laji-metadata-select
-          [(ngModel)]="searchQuery.query.adminStatusFilters"
-          (ngModelChange)="onAdministrativeStatusChange()"
-          [multiple]="true"
-          [placeholder]="'MX.hasAdminStatus' | label"
-          name="adminStatusFilters"
-          [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
-      </div>
-    </div>
+<laji-habitat-select
+  [query]="searchQuery.query"
+  (select)="onHabitatChange($event)"
+></laji-habitat-select>
 
-    <div class="form-group">
-      <div class="col-sm-12">
-        <laji-three-state-multi-switch
-          [title]="'observation.form.typeOfOccurrenceId' | translate"
-          [trueValue]="searchQuery.query.typesOfOccurrenceFilters"
-          [falseValue]="searchQuery.query.typesOfOccurrenceNotFilters"
-          [alt]="'MX.typeOfOccurrenceEnum'"
-          (update)="updateTypesOfOccurrence($event)"
-        ></laji-three-state-multi-switch>
-      </div>
-    </div>
+<laji-metadata-select
+  [(ngModel)]="searchQuery.query.adminStatusFilters"
+  (ngModelChange)="onAdministrativeStatusChange()"
+  [multiple]="true"
+  [placeholder]="'MX.hasAdminStatus' | label"
+  name="adminStatusFilters"
+  [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
 
-    <div class="form-group">
-      <div class="col-sm-12">
-        <laji-select [options]="[
-                        {id: 'onlyInvasive', value: 'observation.form.invasive' | translate},
-                        {id: 'onlyNonInvasive', value: 'observation.form.nonInvasive' | translate},
-                        {id: 'euInvasiveSpeciesList', value: 'MX.euInvasiveSpeciesList' | label},
-                        {id: 'nationallySignificantInvasiveSpecies', value: 'MX.nationallySignificantInvasiveSpecies' | label},
-                        {id: 'quarantinePlantPest', value: 'MX.quarantinePlantPest' | label},
-                        {id: 'controllingRisksOfInvasiveAlienSpecies', value: 'MX.controllingRisksOfInvasiveAlienSpecies' | label},
-                        {id: 'allInvasiveSpecies', value: 'observation.form.allInvasive' | translate}
-                     ]"
-                     [selected]="invasiveSelected"
-                     [title]="'observation.form.invasive' | translate"
-                     [useFilter]="false"
-                     [outputOnlyId]="true"
-                     (selectedChange)="onInvasiveChange($event)"></laji-select>
-      </div>
-    </div>
-  </div>
-</laji-search-filters>
+<laji-three-state-multi-switch
+  [title]="'observation.form.typeOfOccurrenceId' | translate"
+  [trueValue]="searchQuery.query.typesOfOccurrenceFilters"
+  [falseValue]="searchQuery.query.typesOfOccurrenceNotFilters"
+  [alt]="'MX.typeOfOccurrenceEnum'"
+  (update)="updateTypesOfOccurrence($event)"
+></laji-three-state-multi-switch>
 
+<laji-select [options]="[
+                {id: 'onlyInvasive', value: 'observation.form.invasive' | translate},
+                {id: 'onlyNonInvasive', value: 'observation.form.nonInvasive' | translate},
+                {id: 'euInvasiveSpeciesList', value: 'MX.euInvasiveSpeciesList' | label},
+                {id: 'nationallySignificantInvasiveSpecies', value: 'MX.nationallySignificantInvasiveSpecies' | label},
+                {id: 'quarantinePlantPest', value: 'MX.quarantinePlantPest' | label},
+                {id: 'controllingRisksOfInvasiveAlienSpecies', value: 'MX.controllingRisksOfInvasiveAlienSpecies' | label},
+                {id: 'allInvasiveSpecies', value: 'observation.form.allInvasive' | translate}
+              ]"
+              [selected]="invasiveSelected"
+              [title]="'observation.form.invasive' | translate"
+              [useFilter]="false"
+              [outputOnlyId]="true"
+              (selectedChange)="onInvasiveChange($event)"></laji-select>

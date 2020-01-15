@@ -1,3 +1,28 @@
+<a name="3.2.4"></a>
+# 3.2.4 (2019-12-20)
+
+### Bug fix
+* **core:** fix the issue where page margins where making the content smaller
+
+<a name="3.2.3"></a>
+# 3.2.3 (2019-12-05)
+
+### Bug fix
+* **core:** fix the issue where firefox would not include QRCode in the print
+
+<a name="3.2.2"></a>
+# 3.2.2 (2019-12-04)
+
+### Features
+* **core:** use canvas instead of svg for faster page rendering
+
+<a name="3.2.1"></a>
+# 3.2.1 (2019-11-25)
+
+### Bug fixes
+
+* **editor:** fix adding fields dropdown not showing all the available fields.
+
 <a name="3.2.0"></a>
 # 3.2.0 (2019-10-25)
 

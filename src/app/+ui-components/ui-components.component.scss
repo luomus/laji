@@ -1,0 +1,95 @@
+@import '../../../projects/laji-ui/src/lib/vars';
+
+:host {
+  background: $neutral-2;
+  min-height: 100vh;
+}
+
+main {
+  padding: 20px 40px;
+}
+
+lu-checkbox {
+  padding-top: 10px;
+}
+
+.color-rect {
+  height: 50px;
+  width: 100px;
+}
+
+@mixin color-demo($name, $bg, $c) {
+  .#{$name} {
+    background: $bg;
+    color: $c;
+  }
+}
+
+@include color-demo("n1", $neutral-1, $neutral-8);
+@include color-demo("n2", $neutral-2, $neutral-8);
+@include color-demo("n3", $neutral-3, $neutral-8);
+@include color-demo("n4", $neutral-4, $neutral-8);
+@include color-demo("n5", $neutral-5, $neutral-1);
+@include color-demo("n6", $neutral-6, $neutral-1);
+@include color-demo("n7", $neutral-7, $neutral-1);
+@include color-demo("n8", $neutral-8, $neutral-1);
+@include color-demo("n9", $neutral-9, $neutral-1);
+
+@include color-demo("p1", $primary-1, $primary-8);
+@include color-demo("p2", $primary-2, $primary-8);
+@include color-demo("p3", $primary-3, $primary-8);
+@include color-demo("p4", $primary-4, $primary-8);
+@include color-demo("p5", $primary-5, $primary-1);
+@include color-demo("p6", $primary-6, $primary-1);
+@include color-demo("p7", $primary-7, $primary-1);
+@include color-demo("p8", $primary-8, $primary-1);
+@include color-demo("p9", $primary-9, $primary-1);
+
+@include color-demo("s1", $success-1, $success-8);
+@include color-demo("s2", $success-2, $success-8);
+@include color-demo("s3", $success-3, $success-8);
+@include color-demo("s4", $success-4, $success-8);
+@include color-demo("s5", $success-5, $success-1);
+@include color-demo("s6", $success-6, $success-1);
+@include color-demo("s7", $success-7, $success-1);
+@include color-demo("s8", $success-8, $success-1);
+@include color-demo("s9", $success-9, $success-1);
+
+@include color-demo("i1", $info-1, $info-8);
+@include color-demo("i2", $info-2, $info-8);
+@include color-demo("i3", $info-3, $info-8);
+@include color-demo("i4", $info-4, $info-8);
+@include color-demo("i5", $info-5, $info-1);
+@include color-demo("i6", $info-6, $info-1);
+@include color-demo("i7", $info-7, $info-1);
+@include color-demo("i8", $info-8, $info-1);
+@include color-demo("i9", $info-9, $info-1);
+
+@include color-demo("w1", $warning-1, $warning-8);
+@include color-demo("w2", $warning-2, $warning-8);
+@include color-demo("w3", $warning-3, $warning-8);
+@include color-demo("w4", $warning-4, $warning-8);
+@include color-demo("w5", $warning-5, $warning-1);
+@include color-demo("w6", $warning-6, $warning-1);
+@include color-demo("w7", $warning-7, $warning-1);
+@include color-demo("w8", $warning-8, $warning-1);
+@include color-demo("w9", $warning-9, $warning-1);
+
+@include color-demo("d1", $danger-1, $danger-8);
+@include color-demo("d2", $danger-2, $danger-8);
+@include color-demo("d3", $danger-3, $danger-8);
+@include color-demo("d4", $danger-4, $danger-8);
+@include color-demo("d5", $danger-5, $danger-1);
+@include color-demo("d6", $danger-6, $danger-1);
+@include color-demo("d7", $danger-7, $danger-1);
+@include color-demo("d8", $danger-8, $danger-1);
+@include color-demo("d9", $danger-9, $danger-1);
+
+.checkbox-list {
+  list-style: none;
+  padding: 0;
+}
+
+.pill {
+  margin-right: 5px;
+}

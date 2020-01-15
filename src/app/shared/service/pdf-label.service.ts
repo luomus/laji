@@ -130,7 +130,6 @@ export class PdfLabelService {
 
         // Repeat the unit if the user selected the multiplyByCount filter
         const unitCount = filter.multiplyByCount ? this.countIndividuals(unit) : 1;
-        console.log(unitCount);
         for (let i = 0; i < unitCount; i++) {
           unitPrev.push(unit);
         }

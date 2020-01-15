@@ -6,6 +6,17 @@ import { LajiApi, LajiApiService } from './laji-api.service';
 import { catchError, concat, delay, map, retryWhen, shareReplay, take } from 'rxjs/operators';
 import { Global } from '../../../environments/global';
 import { Form } from '../model/Form';
+import { UserService } from './user.service';
+import { HttpClient } from '@angular/common/http';
+
+export interface Participant {
+  id?: string;
+  fullName?: string;
+  emailAddress?: string;
+  address?: string;
+  lintuvaaraLoginName?: string[];
+  lastDoc?: number;
+}
 
 @Injectable({providedIn: 'root'})
 export class FormService {
@@ -32,8 +43,12 @@ export class FormService {
   private jsonFormCache: {[key: string]: Observable<Form.SchemaForm>} = {};
   private allForms: Observable<Form.List[]>;
 
+  protected basePath = environment.apiBase;
+
   constructor(
-    private lajiApi: LajiApiService
+    private lajiApi: LajiApiService,
+    private http: HttpClient,
+    private userService: UserService
   ) {}
 
   static hasFeature(form: Form.List, feature: Form.Feature): boolean {
@@ -95,6 +110,13 @@ export class FormService {
 
   getEditUrlPath(formId, documentId) {
     return `${this.getAddUrlPath(formId)}/${documentId}`;
+  }
+
+  getParticipants(form: Form.List) {
+    return this.http.get(
+      `${this.basePath}/${LajiApi.Endpoints.forms}/${form.id}/participants`,
+    {params: {personToken: this.userService.getToken()}}
+    ) as Observable<Participant[]>;
   }
 
   private isFormAllowed(formId: string) {

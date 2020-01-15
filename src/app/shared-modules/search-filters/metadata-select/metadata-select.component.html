@@ -1,6 +1,6 @@
 <laji-select
   [options]="_options || []"
-  [title]="placeholder | translate"
+  [title]="(placeholder || '') | translate"
   [filterPlaceHolder]="'haseka.submissions.filter' | translate"
   [useFilter]="useFilter"
   [selected]="active"

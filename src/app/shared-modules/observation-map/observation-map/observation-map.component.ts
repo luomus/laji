@@ -295,7 +295,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateMapData() {
-    if (!this.ready) {
+    if (!this.ready || (typeof this.unitCount !== 'undefined' && (this.unitCount === 0 || this.unitCount === null))) {
       return;
     }
     const cacheKey = this.getCacheKey(this.query);
@@ -375,7 +375,15 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     const count$ = (typeof this.unitCount === 'undefined' ? countRemote$ : of(this.unitCount)).pipe(
       switchMap(cnt => {
-        if (cnt < this.showItemsWhenLessThan) {
+        if (!cnt) {
+          return of({
+            lastPage: 1,
+            featureCollection: {
+              'type': 'FeatureCollection',
+              'features': []
+            }
+          });
+        } else if (cnt < this.showItemsWhenLessThan) {
           return items$;
         } else {
           return (this.warehouseService.warehouseQueryAggregateGet(

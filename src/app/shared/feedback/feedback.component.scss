@@ -1,0 +1,28 @@
+@import "../../../styles/variables";
+
+.fixed-icon {
+  position: fixed;
+  bottom: 7px;
+  z-index: 1060;
+  right: 10px;
+}
+
+.feedback-text {
+  height: 200px;
+}
+
+.modal-header {
+  color: #2C3E50;
+}
+
+.message, .other {
+  margin-top: 10px;
+}
+
+.message, .email {
+  margin-bottom: 10px;
+}
+
+.modal-footer lu-button {
+  margin-left: $sp-default;
+}

@@ -9,7 +9,7 @@ import 'moment/locale/fi';
   selector: 'laji-locale-fi',
   template: '<router-outlet></router-outlet>'
 })
-export class LocaleFiComponent extends LocaleComponent implements OnInit {
+export class LocaleFiComponent extends LocaleComponent {
 
   constructor(
     @Inject(PLATFORM_ID) protected platformId,
@@ -19,8 +19,5 @@ export class LocaleFiComponent extends LocaleComponent implements OnInit {
     super();
     moment.locale('fi');
     this.setLocale('fi');
-  }
-
-  ngOnInit() {
   }
 }

@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-sm-6">
+    <h3>Osallistujaraportti</h3>
+
+    Tästä voit hakea projektiin osallistuneiden henkilöiden tiedot. Huomioi että tiedot ovat henkilötietoja, ja niiden käytössä on huomioitava tietosuoja:
+
+    <ul>
+      <li>Tietoja ei saa luovuttaa muille kuin projektin ylläpitoon osallistuville. Tämä sisältää myös ulkoiset verkkopalvelut, kuten Google Docsin tai Gmailin.</li>
+      <li>Tietoja ei saa käyttää mihinkään muuhun kuin tähän projektiin liittyvään toimintaan.</li>
+      <li>Tiedot pitää tuhota heti kun niitä ei enää tarvita siihen tarkoitukseen, mihin ne tältä sivulta haettiin.</li>
+      <li>Tietojen käytössä pitää noudattaa Lajitietokeskuksen tietosuojaperiaatteita, ks. https://laji.fi/about/713</li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-3">
+    <laji-spinner [spinning]="!loaded" [hideContentWhileLoading]="true">
+      <div class="pull-right">
+        <laji-download
+          [downloadLoading]="fetching"
+          (download)="getParticipants($event)">
+          <span>
+            Tee raportti
+            <i class="glyphicon glyphicon-download-alt"></i>
+          </span>
+        </laji-download>
+      </div>
+    </laji-spinner>
+  </div>
+</div>

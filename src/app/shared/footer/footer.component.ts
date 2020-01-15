@@ -1,25 +1,24 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from '../service/footer.service';
-import { of, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
-import { LajiApi, LajiApiService } from '../service/laji-api.service';
+import { LajiApiService } from '../service/laji-api.service';
 import { map } from 'rxjs/operators';
 import { HeaderImage, HeaderImageService } from '../service/header-image.service';
+import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
 @Component({
   selector: 'laji-footer',
-  styleUrls: ['./footer.component.css'],
+  styleUrls: ['./footer.component.scss'],
   templateUrl: './footer.component.html'
 })
 export class FooterComponent implements OnInit, OnDestroy {
 
-  private static treeData;
-
   @Input() onFrontPage = false;
 
   public subLangChange: Subscription;
-  public tree$;
+  public tree$: Observable<any>;
   public columns = [
     'col-sm-offset-1 col-sm-6 col-md-3',
     'col-sm-5 col-md-2',
@@ -27,20 +26,21 @@ export class FooterComponent implements OnInit, OnDestroy {
     'col-sm-5 col-md-3'
   ];
   public headerImage: HeaderImage;
+  private currentLang: string;
 
   constructor(
     public footerService: FooterService,
     private lajiApi: LajiApiService,
     private translate: TranslateService,
     private logger: Logger,
-    private headerImageService: HeaderImageService
+    private headerImageService: HeaderImageService,
+    private baseDataService: BaseDataService
   ) {
   }
 
   ngOnInit() {
     this.headerImage = this.headerImageService.getCurrentSeason();
-    this.tree$ = of(FooterComponent.treeData);
-    this.fetchTreeData(false);
+    this.fetchTreeData();
     this.subLangChange = this.translate.onLangChange.subscribe(() => {
       this.fetchTreeData();
     });
@@ -52,18 +52,13 @@ export class FooterComponent implements OnInit, OnDestroy {
     }
   }
 
-  fetchTreeData(force = true) {
-    if (!force && FooterComponent.treeData) {
-      return;
-    }
-    this.lajiApi.get(LajiApi.Endpoints.information, 'index', {lang: this.translate.currentLang}).pipe(
-      map(tree => tree.children || [])
-    ).subscribe(
-        tree => {
-          FooterComponent.treeData = tree;
-          this.tree$ = of(FooterComponent.treeData);
-        },
-        err =>  this.logger.error('Failed to fetch information tree', err)
+  fetchTreeData() {
+    if (this.currentLang !== this.translate.currentLang) {
+      this.currentLang = this.translate.currentLang;
+      this.tree$ = this.baseDataService.getBaseData().pipe(
+        map(data => data.information && data.information.children || [])
       );
+    }
+    return this.tree$;
   }
 }

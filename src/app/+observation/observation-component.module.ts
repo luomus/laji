@@ -32,6 +32,10 @@ import { ExistsPipe } from './pipe/exists.pipe';
 import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 import { AnnotationsComponent } from './annotations/annotations.component';
 import { FormSampleComponent } from './form-sample/form-sample.component';
+import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
+import { DownloadModule } from '../shared-modules/download/download.module';
+import { ChartsModuleBarVerticalGroup } from '../shared-modules/bar-chart/ng2-charts.module';
+import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
 
 @NgModule({
   imports: [
@@ -47,7 +51,10 @@ import { FormSampleComponent } from './form-sample/form-sample.component';
     InfoModule,
     NgxChartsModule,
     ChartsModule,
-    JwBootstrapSwitchNg2Module
+    JwBootstrapSwitchNg2Module,
+    LajiUiModule,
+    DownloadModule,
+    ChartsModuleBarVerticalGroup
   ],
   declarations: [
     ObservationComponent,
@@ -69,7 +76,8 @@ import { FormSampleComponent } from './form-sample/form-sample.component';
     ExistsPipe,
     ToSafeQueryPipe,
     AnnotationsComponent,
-    FormSampleComponent
+    FormSampleComponent,
+    HorizontalChartComponent
   ],
   exports: [
     ObservationViewComponent

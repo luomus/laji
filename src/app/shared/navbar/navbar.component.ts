@@ -1,6 +1,5 @@
-import { delay, filter, map, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import {
-  ApplicationRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -15,22 +14,22 @@ import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { interval as ObservableInterval, of as ObservableOf, Subscription } from 'rxjs';
+import { timer, Subject, Observable } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
-import { DialogService } from '../service/dialog.service';
-import { LajiApi, LajiApiService } from '../service/laji-api.service';
-import { PagedResult } from '../model/PagedResult';
-import { Notification } from '../model/Notification';
 import { isPlatformBrowser } from '@angular/common';
 import { Global } from '../../../environments/global';
+import { NotificationsFacade } from './notifications/notifications.facade';
+import { BrowserService } from '../service/browser.service';
 
 @Component({
   selector: 'laji-navbar',
   styleUrls: ['./navbar.component.scss'],
   templateUrl: './navbar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NotificationsFacade]
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  unsubscribe$ = new Subject<null>();
 
   @ViewChild('userMenu', { static: false }) public dropDown: BsDropdownDirective;
 
@@ -38,18 +37,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   redTheme = false;
   isProd = false;
   showSearch = false;
-  notifications: PagedResult<Notification>;
-  notificationsNotSeen = 0;
-  currentNotificationPage = 1;
-  visibleNotificationPage = 1;
-  notificationPageSize = 5;
   env = environment.type;
 
-  private subParams: Subscription;
-  private subUser: Subscription;
-  private subNotification: Subscription;
-  private sublangChange: Subscription;
-  private subNotificationPage: Subscription;
+  notificationsNotSeen = 0;
+  notificationsTotal$: Observable<number>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -57,10 +48,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private changeDetector: ChangeDetectorRef,
-    private lajiApi: LajiApiService,
     public translate: TranslateService,
-    private dialogService: DialogService,
-    private appRef: ApplicationRef
+    private notificationsFacade: NotificationsFacade,
+    private browserService: BrowserService
   ) {
     this.isProd = environment.production;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
@@ -70,109 +60,35 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    this.subParams = this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.unsubscribe$)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.closeMenu();
         this.changeDetector.markForCheck();
       }
     });
-    this.subNotification = this.appRef.isStable.pipe(
-        filter(stable => stable),
-        take(1),
-        switchMap(() => ObservableInterval(60000).pipe(
-          startWith(0),
-          delay(5000), ).pipe(
-          switchMap(() => this.userService.isLoggedIn$.pipe(take(1))),
-          filter((loggedIn) => loggedIn),
-          switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-              personToken: this.userService.getToken(),
-              page: this.currentNotificationPage,
-              pageSize: this.notificationPageSize
-            }).pipe(
-              switchMap((notifications) => notifications.total <= this.notificationPageSize ?
-                ObservableOf({
-                  ...notifications,
-                  unseen: notifications.results.reduce((cumulative, current) => cumulative + (current.seen ? 0 : 1), 0)
-                }) :
-                this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-                  personToken: this.userService.getToken(),
-                  page: 1,
-                  pageSize: 1,
-                  onlyUnSeen: true
-                }).pipe(
-                  map(unseen => ({...notifications, unseen: unseen.total || 0})))
-              ))
-          ), )
-        )
-    ).subscribe(
-        (notifications: any) => {
-          this.notifications = notifications;
-          this.notificationsNotSeen = notifications.unseen;
-          this.changeDetector.markForCheck();
-        },
-        err => console.log(err)
-      );
-    let notificationsCache;
-    this.sublangChange = this.translate.onLangChange.pipe(
-      filter(() => !!this.notifications),
-      switchMap(() => this.userService.isLoggedIn$.pipe(take(1))),
-      filter((loggedIn) => loggedIn), ).pipe(
-      tap(() => notificationsCache = [...this.notifications.results]),
-      tap(() => this.notifications.results = []),
-      tap(() => this.changeDetector.markForCheck()), ).pipe(
-      delay(10))
-      .subscribe(() => {
-        this.notifications.results = notificationsCache;
-        this.changeDetector.markForCheck();
-      });
+    this.notificationsFacade.unseenCount$.pipe(takeUntil(this.unsubscribe$)).subscribe((unseenCount) => {
+      this.notificationsNotSeen = unseenCount;
+      this.changeDetector.detectChanges();
+    });
+    this.notificationsTotal$ = this.notificationsFacade.total$;
+    timer(1000, 60000).pipe(
+      switchMap(() => this.browserService.visibility$),
+      filter(visible => visible),
+      switchMap(() => this.userService.isLoggedIn$),
+      filter(res => !!res),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(() => {
+      this.notificationsFacade.checkForNewNotifications();
+    });
   }
 
-  nextNotificationPage() {
-    this.currentNotificationPage++;
-    this.gotoNotificationPage(this.currentNotificationPage);
-  }
-
-  prevNotificationPage() {
-    this.currentNotificationPage--;
-    this.gotoNotificationPage(this.currentNotificationPage);
-  }
-
-  private gotoNotificationPage(page) {
-    this.dropDown.autoClose = false;
-    setTimeout(() => {
-      this.dropDown.autoClose = true;
-    }, 100);
-    if (this.subNotificationPage) {
-      this.subNotificationPage.unsubscribe();
-    }
-    if (this.visibleNotificationPage === page) {
-      return;
-    }
-    this.subNotificationPage = this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-      personToken: this.userService.getToken(),
-      page: page,
-      pageSize: this.notificationPageSize
-    })
-      .subscribe(notifications => {
-        this.notifications = notifications;
-        this.visibleNotificationPage = notifications.currentPage;
-        this.changeDetector.markForCheck();
-      }, () => {});
+  onClose() {
+    this.dropDown.hide();
   }
 
   ngOnDestroy() {
-    if (this.subUser) {
-      this.subUser.unsubscribe();
-    }
-    if (this.subParams) {
-      this.subParams.unsubscribe();
-    }
-    if (this.subNotification) {
-      this.subNotification.unsubscribe();
-    }
-    if (this.sublangChange) {
-      this.sublangChange.unsubscribe();
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   updateView() {
@@ -199,51 +115,4 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.router.navigate(this.localizeRouterService.translateRoute(['/forum']), {skipLocationChange: true});
   }
 
-  trackNotification(idx, notification) {
-    return notification ? notification.id : undefined;
-  }
-
-  markAsSeen(notification: Notification) {
-    if (notification.seen) {
-      return;
-    }
-    notification.seen = true;
-    this.lajiApi
-      .update(LajiApi.Endpoints.notifications, notification, {personToken: this.userService.getToken()})
-      .subscribe(() => {
-        this.notificationsNotSeen--;
-        this.changeDetector.markForCheck();
-      }, () => {});
-  }
-
-  removeNotification(notification: Notification) {
-    if (!notification || !notification.id) {
-      return;
-    }
-    this.translate.get('notification.delete').pipe(
-      switchMap(msg => notification.seen ? ObservableOf(true) : this.dialogService.confirm(msg)))
-      .subscribe(result => {
-        this.dropDown.autoClose = false;
-        setTimeout(() => {
-          this.dropDown.autoClose = true;
-        }, 100);
-        if (result && notification.id) {
-          if (!notification.seen) {
-            this.notificationsNotSeen--;
-          }
-          this.changeDetector.markForCheck();
-          this.lajiApi
-            .remove(LajiApi.Endpoints.notifications, notification.id, {personToken: this.userService.getToken()}).pipe(
-            switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-              personToken: this.userService.getToken(),
-              page: this.currentNotificationPage,
-              pageSize: this.notificationPageSize
-            })))
-            .subscribe((notifications) => {
-              this.notifications = notifications;
-              this.changeDetector.markForCheck();
-            }, () => {});
-        }
-      });
-  }
 }

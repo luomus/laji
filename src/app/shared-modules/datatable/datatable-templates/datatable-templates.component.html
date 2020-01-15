@@ -1,6 +1,6 @@
 <ng-template let-label="label" let-info="info" let-sort="sort" #headerTpl>
   <span class="datatable-header-cell-wrapper sort-full-width"
-        (click)="$event.target.classList.contains('no-propagation') ? return : sort()" title="{{ label }}">
+        (click)="$event.target.classList.contains('no-propagation') ? void() : sort()" title="{{ label }}">
     <span class="datatable-header-cell-label draggable">
       {{ label }}
     </span>

@@ -1,0 +1,39 @@
+@import '../vars';
+
+$selector-vertical-padding: 12px;
+$selector-horizontal-padding: 24px;
+
+.tabs-list {
+  display: flex;
+  flex-flow: row nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: flex-end;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  padding: 0;
+  box-shadow: inset 0 -5px 5px -5px rgba(#000, 0.1), inset 0 -0.5px 0 0 $neutral-4;
+  li {
+    display: block;
+    padding: $selector-vertical-padding $selector-horizontal-padding;
+    margin-right: 8px;
+    margin-bottom: -1px;
+    cursor: pointer;
+    border: 1px solid $neutral-4;
+    &:not(.active) {
+      box-shadow: inset 0 -5px 5px -5px rgba(#000, 0.1), inset 0 -0.5px 0 0 $neutral-4;
+    }
+    &.active {
+      border-bottom: none;
+      padding-bottom: $selector-vertical-padding + 1px;
+      margin-bottom: -2px;
+      cursor: unset;
+      $blur: 3px;
+      box-shadow: 5px 0px $blur -5px rgba(#000, 0.1), -5px 0px $blur -5px rgba(#000, 0.1), 0px -5px $blur -5px rgba(#000, 0.1);
+    }
+    &:hover:not(.active) {
+      background-color: lighten($neutral-3, 3) !important;
+    }
+  }
+}

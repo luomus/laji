@@ -23,6 +23,7 @@ export interface VisibleSections {
   species?: boolean;
   statistics?: boolean;
   download?: boolean;
+  downloadList?: boolean;
   annotations?: boolean;
   info?: boolean;
 }
@@ -57,7 +58,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ];
   @Input() settingsKeyList = 'resultList';
   _activeTab: string;
-  @ViewChild('tabs', { static: false }) tabs;
   @ViewChild(ObservationResultComponent, { static: false }) results: ObservationResultComponent;
   @ViewChild(ObservationFormComponent, { static: false }) form: ObservationFormComponent;
   showMobile: any;
@@ -112,7 +112,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
     this.subQueryUpdate = this.observationFacade.query$.pipe(
-      tap(() => { if (this.results) { this.results.resetActivated(); }})
+      tap(() => { if (this.results) { this.results.reloadTabs(); }})
     ).subscribe();
   }
 

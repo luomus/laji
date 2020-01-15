@@ -1,4 +1,34 @@
 @import '../../../styles/variables';
+@import '../../../../projects/laji-ui/src/lib/vars';
+
+.mode-select {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  border-bottom: 1px solid $neutral-4;
+  > div {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  laji-observation-active {
+    align-self: center;
+  }
+}
+
+.top-section {
+  padding: 15px;
+}
+
+.laji-panel {
+  background-color: $neutral-2;
+  box-shadow: 0 1px 3px 0 $neutral-4;
+  margin-bottom: 10px;
+}
+
+laji-select, laji-metadata-select {
+  margin-bottom: 5px;
+}
 
 hr {
   margin: 4px 0;
@@ -32,10 +62,6 @@ label {
 .small-label {
   font-weight: normal;
   font-size: smaller;
-}
-.mode-select {
-  margin-top: -12px;
-  border-bottom: 1px solid #e1e1e1;
 }
 .badge {
   background: none;

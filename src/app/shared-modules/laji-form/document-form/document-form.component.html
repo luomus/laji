@@ -14,10 +14,14 @@
       <alert type="danger" *ngSwitchCase="errors.loadFailed">
         {{ 'haseka.form.genericError' | translate }}
       </alert>
+      <alert type="danger" *ngSwitchCase="errors.noAccessToDocument">
+        {{ 'haseka.form.noAccessToDocument' | translate }}
+      </alert>
     </ng-container>
   </div>
   <laji-document-form-header *ngIf="showHeader && vm.error === errors.ok"
       [formID]="vm.form.id"
+      [edit]="!!documentId"
       [namedPlace]="namedPlace"
       [isAdmin]="isAdmin"
       [formData]="vm.form.formData"

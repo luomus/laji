@@ -1,15 +1,18 @@
 @import "../../../styles/variables";
 
+:host {
+  min-height: 100%;
+}
+
+laji-observation-form {
+  display: block;
+  max-width: 250px;
+}
+
 .result-list {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
-}
-:host {
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  z-index: auto;
 }
 :host >>> .alert.alert-info {
   margin-right: 10px;
@@ -106,4 +109,10 @@
     z-index: 9999;
   }
 
+}
+
+@media only screen and (min-width : 768px) {
+  main {
+    padding: 20px 40px;
+  }
 }

@@ -1,0 +1,30 @@
+@import '../../../../../projects/laji-ui/src/lib/vars';
+
+header {
+  display: flex;
+  flex-direction: row;
+  padding: 5px 10px;
+  align-items: flex-end;
+  .notifications-title {
+    padding-left: 10px;
+    color: $neutral-6;
+    flex-grow: 1;
+  }
+  > a {
+    margin-left: 15px;
+    cursor: pointer;
+  }
+}
+
+.notification-list {
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.notification-pager {
+  display: flex;
+  > * {
+    flex-grow: 1;
+  }
+}

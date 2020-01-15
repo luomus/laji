@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of as ObservableOf, Subscription } from 'rxjs';
-import { ObservationListService } from '../../../../shared-modules/observation-result/service/observation-list.service';
+import { ObservationResultService } from '../../../../shared-modules/observation-result/service/observation-result.service';
 import { Logger } from '../../../../shared/logger';
 import { combineLatest, map, tap } from 'rxjs/operators';
 import { PagedResult } from '../../../../shared/model/PagedResult';
@@ -47,7 +47,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private resultService: ObservationListService,
+    private resultService: ObservationResultService,
     private warehouseApi: WarehouseApi,
     private logger: Logger,
     private cdr: ChangeDetectorRef

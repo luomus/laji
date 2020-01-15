@@ -1,0 +1,35 @@
+#!/bin/bash
+
+rm -rf generated/*
+rm -rf swagger*
+
+wget https://api.laji.fi/explorer/swagger.json -O swagger.json
+
+# Prepare swagger to be digested
+
+cat swagger.json \
+ | sed 's|"$ref":"#/definitions/positiveInteger"|"type":\ "integer"|g' \
+ | sed 's/Point2D/Point2d/g' \
+ | sed 's/definitions\/Geometry/definitions\/geometry/g' \
+> swagger-fixed.json
+
+# 1. Step generate models
+
+docker run --rm -v ${PWD}:/local swaggerapi/swagger-codegen-cli:unstable generate \
+    -i /local/swagger-fixed.json \
+    -l typescript-angular \
+    -o /local/generated \
+    --additional-properties allowUnicodeIdentifiers=true \
+    --additional-properties ngVersion=8 \
+    --additional-properties providedInRoot=false \
+    --additional-properties npmName=LajiApiClient
+
+for file in generated/model/*.ts
+do
+    perl -i -p0e "s|    /\*\*\n     \* This field is automatically populated with the objects type and any user given value in here will be ignored!\n     \*/\n    type\?: string;||se" $file
+    sed -i '' '1s/^/\/\* tslint:disable:max-line-length \*\/ /' $file
+done
+
+# 2. Generate api clients
+
+#ng-swagger-gen -i swagger-fixed.json -o generated/

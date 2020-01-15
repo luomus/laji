@@ -1,0 +1,17 @@
+@import '../../../../projects/laji-ui/src/lib/vars';
+
+.closed {
+  overflow: hidden;
+}
+.link .panel-title {
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  -o-user-select: none;
+  user-select: none;
+  /*font-size: inherit;*/
+}
+
+.panel-body {
+  border-left: 3px solid $primary-5;
+}

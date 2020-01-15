@@ -1,5 +1,9 @@
 @import '../../../styles/variables';
 
+#navbar {
+  flex: none;
+}
+
 .env {
   position: absolute;
   left:0;
@@ -15,9 +19,6 @@
 
 .env.dev, .env.staging {
   background-image: url("/static/images/dev.png");
-}
-.notifications {
-  background: white;
 }
 .search {
   max-width: 170px;
@@ -38,13 +39,6 @@
   right: 1px;
   top: 7px;
   font-size: 0.75em;
-}
-
-.notification-pager {
-  width: 100%;
-}
-.notification-pager .btn {
-  width: 50%;
 }
 
 .navbar-profile {
