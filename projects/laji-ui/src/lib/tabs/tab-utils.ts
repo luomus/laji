@@ -15,30 +15,26 @@ export class LoadedElementsStore {
   }
 
   getNameFromIdx(i: number): string {
-    return Object.keys(this.loaded)[i];
+    return this.names[i];
   }
 
   getIdxFromName(s: string): number {
-    return Object.keys(this.loaded).findIndex(name => name === s);
+    return this.names.findIndex(name => name === s);
   }
 
   isLoaded(i: number | string): boolean {
-    if (typeof i === 'number') {
-      return this.loaded[Object.keys(this.loaded)[i]];
-    } else {
-      return this.loaded[i];
-    }
+    return this.loaded[this.getName(i)];
   }
 
   load(i: number | string) {
-    if (typeof i === 'number') {
-      this.loaded[Object.keys(this.loaded)[i]] = true;
-    } else {
-      this.loaded[i] = true;
-    }
+    this.loaded[this.getName(i)] = true;
   }
 
   reset() {
     this.names.forEach((name) => this.loaded[name] = false);
+  }
+
+  private getName(i: number | string): string {
+    return typeof i === 'number' ? this.getNameFromIdx(i) : i;
   }
 }

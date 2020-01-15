@@ -16,7 +16,7 @@
         (taxonSelect)="updateRoute($event)"
       ></laji-taxon-overview>
     </lu-tab>
-    <lu-tab [heading]="'species.images' | translate" *ngIf="hasImageData">
+    <lu-tab [heading]="'species.images' | translate" *ngIf="hasImageData || 1 === 1">
       <laji-taxon-images
         *ngIf="loadedTabs.isLoaded('images')"
         [taxon]="taxon"
@@ -24,7 +24,7 @@
         [isFromMasterChecklist]="isFromMasterChecklist"
       ></laji-taxon-images>
     </lu-tab>
-    <lu-tab [heading]="'taxonomy.biology' | translate" *ngIf="hasBiologyData">
+    <lu-tab [heading]="'taxonomy.biology' | translate" *ngIf="hasBiologyData || 1 === 1">
       <laji-taxon-biology
         *ngIf="loadedTabs.isLoaded('biology')"
         [taxon]="taxon"
@@ -48,13 +48,13 @@
         [isFromMasterChecklist]="isFromMasterChecklist"
       ></laji-taxon-occurrence>
     </lu-tab>
-    <lu-tab [heading]="'taxonomy.observations' | translate" *ngIf="isFromMasterChecklist">
+    <lu-tab [heading]="'taxonomy.observations' | translate" *ngIf="isFromMasterChecklist || 1 === 1">
       <laji-taxon-observations
         *ngIf="loadedTabs.isLoaded('observations')"
         [taxon]="taxon"
       ></laji-taxon-observations>
     </lu-tab>
-    <lu-tab [heading]="'taxonomy.specimens' | translate" *ngIf="isFromMasterChecklist">
+    <lu-tab [heading]="'taxonomy.specimens' | translate" *ngIf="isFromMasterChecklist || 1 === 1">
       <laji-taxon-specimens
         *ngIf="loadedTabs.isLoaded('specimens')"
         [taxon]="taxon"
