@@ -38,15 +38,15 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
   @Input() set activeTab(tab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
-    this.selectedTabIdx = this.loadedTabs.getIdxFromName(tab);
+    this.initiallySelectedTab = tab;
     this.loadedTabs.load(tab);
   }
   get activeTab() {
     // @ts-ignore
-    return this.loadedTabs.getNameFromIdx(this.selectedTabIdx);
+    return this.initiallySelectedTab;
   }
 
-  selectedTabIdx = 0; // stores which tab index was provided by @Input
+  initiallySelectedTab = 'overview'; // stores which tab index was provided by @Input
 
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<Image>;
@@ -76,12 +76,12 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onSelect(tabIndex) {
-    const tabName = this.loadedTabs.getNameFromIdx(tabIndex);
+    const tabName = this.getTabNameFromVisibleIndex(tabIndex);
     const route = [basePath, this.taxon.id];
     if (tabName !== 'overview') { route.push(tabName); }
     this.router.navigate(
       this.localizeRouterService.translateRoute(route),
-      { preserveQueryParams: true }
+      { queryParamsHandling: 'preserve' }
     );
   }
 
@@ -206,30 +206,50 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     return false;
   }
 
-  private getTabIndex(tab: string) {
-    // There's a varying number of tabs relative to hasBiologyData, hasImageData etc.
-    // this.loadedTabs stores all of the tabs regardless if they are loaded in or not
-    const loadedIdx = this.loadedTabs.getIdxFromName(tab);
-    let idx = loadedIdx;
-    const biologyIdx = this.loadedTabs.getIdxFromName('biology')
-    const imageIdx = this.loadedTabs.getIdxFromName('images')
-    const observationsIdx = this.loadedTabs.getIdxFromName('observations')
-    if (!this.hasBiologyData && biologyIdx < loadedIdx) {
-      idx--;
-    }
-    if (!this.hasImageData && imageIdx < loadedIdx) {
-      idx--;
-    }
-    if (!this.isFromMasterChecklist && observationsIdx < loadedIdx) {
-      idx--;
-    }
-    const conditionals = [
-      {enabled: this.hasBiologyData, tabName: 'biology'}
-    ]
-    for (const c in conditionals) {
-      if (!c.enabled && this.loadedTabs.getIdxFromName(c.tabName) < loadedIdx) {
-        idx--;
+  // used for translating tab indices
+  private getTabConditionals(): {e, t}[] {
+    return [
+      {e: this.hasImageData, t: 'images'},
+      {e: this.hasBiologyData, t: 'biology'},
+      {e: this.isFromMasterChecklist, t: 'observations'},
+      {e: this.isFromMasterChecklist, t: 'specimens'},
+      {e: this.isEndangered, t: 'endangerment'},
+      {e: this.taxon && this.taxon.invasiveSpecies, t: 'invasive'},
+    ];
+  }
+
+  /**
+   * Translates absolute tab index to visible tab index
+   */
+  private getVisibleTabIndex(absIdx: number): number {
+    let shifted = absIdx;
+    for (const c of this.getTabConditionals()) {
+      if (!c.e && this.loadedTabs.getIdxFromName(c.t) < absIdx) {
+        shifted--;
       }
     }
+    return shifted;
+  }
+
+  /**
+   * Translates tab name to visible tab index
+   */
+  private getVisibleTabIndexFromTabName(tab: string): number {
+    const loadedIdx = this.loadedTabs.getIdxFromName(tab);
+    return this.getVisibleTabIndex(loadedIdx);
+  }
+
+  /**
+   * Translates visible index to its tab name
+   */
+  private getTabNameFromVisibleIndex(visIdx: number): string {
+    // this method returns tab name from the actual visible (shifted) index
+    let shifted = visIdx;
+    for (const c of this.getTabConditionals()) {
+      if (!c.e && this.getVisibleTabIndexFromTabName(c.t) - 1 < visIdx) {
+        shifted++;
+      }
+    }
+    return this.loadedTabs.getNameFromIdx(shifted);
   }
 }
