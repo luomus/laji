@@ -204,7 +204,10 @@ export class ObservationDownloadComponent implements OnDestroy {
       },
       err => {
         this.requests[type] = RequestStatus.error;
-        this.toastsService.showError(this.translate.instant('observation.download.error'));
+        this.toastsService.showError(this.translate.instant(err && err.status ?
+          'observation.download.limitExceededException' :
+          'observation.download.error'
+        ));
         this.logger.warn('Failed to make download request', err);
         this.cd.markForCheck();
       }
