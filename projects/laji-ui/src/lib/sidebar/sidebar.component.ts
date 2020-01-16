@@ -109,12 +109,14 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
       return;
     }
     const isMobile = window.innerWidth < mobileBreakpoint;
-    if (isMobile) {
-      this.sidebarMinWidth = 0;
-      this.open = false;
-    } else {
-      this.sidebarMinWidth = 50;
-      this.open = true;
+    if (this.mobile !== isMobile) {
+      if (isMobile) {
+        this.sidebarMinWidth = 0;
+        this.open = false;
+      } else {
+        this.sidebarMinWidth = 50;
+        this.open = true;
+      }
     }
     this.mobile = isMobile;
     this.cdr.detectChanges();
