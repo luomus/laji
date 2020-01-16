@@ -205,4 +205,31 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     return false;
   }
+
+  private getTabIndex(tab: string) {
+    // There's a varying number of tabs relative to hasBiologyData, hasImageData etc.
+    // this.loadedTabs stores all of the tabs regardless if they are loaded in or not
+    const loadedIdx = this.loadedTabs.getIdxFromName(tab);
+    let idx = loadedIdx;
+    const biologyIdx = this.loadedTabs.getIdxFromName('biology')
+    const imageIdx = this.loadedTabs.getIdxFromName('images')
+    const observationsIdx = this.loadedTabs.getIdxFromName('observations')
+    if (!this.hasBiologyData && biologyIdx < loadedIdx) {
+      idx--;
+    }
+    if (!this.hasImageData && imageIdx < loadedIdx) {
+      idx--;
+    }
+    if (!this.isFromMasterChecklist && observationsIdx < loadedIdx) {
+      idx--;
+    }
+    const conditionals = [
+      {enabled: this.hasBiologyData, tabName: 'biology'}
+    ]
+    for (const c in conditionals) {
+      if (!c.enabled && this.loadedTabs.getIdxFromName(c.tabName) < loadedIdx) {
+        idx--;
+      }
+    }
+  }
 }
