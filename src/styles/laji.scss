@@ -691,6 +691,10 @@ body > .ui-select-bootstrap.open {
   background-color: rgb(236, 240, 241);
 }
 
+.sidebar.mobile {
+  z-index: 1000;
+}
+
 .sidebar-nav {
   margin: 0;
   padding: 0 0 20px 0;

@@ -80,7 +80,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     const route = [basePath, this.taxon.id];
     if (tabName !== 'overview') { route.push(tabName); }
     this.router.navigate(
-      this.localizeRouterService.translateRoute(route)
+      this.localizeRouterService.translateRoute(route),
+      { preserveQueryParams: true }
     );
   }
 
