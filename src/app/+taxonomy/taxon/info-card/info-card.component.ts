@@ -234,7 +234,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Translates tab name to visible tab index
    */
-  private getVisibleTabIndexFromTabName(tab: string): number {
+  getVisibleTabIndexFromTabName(tab: string): number {
     const loadedIdx = this.loadedTabs.getIdxFromName(tab);
     return this.getVisibleTabIndex(loadedIdx);
   }
