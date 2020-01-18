@@ -66,6 +66,11 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
   @Input() ready = true;
   @Input() unitCount: number;
+  /**
+   * height < 0: fill remaining height in window
+   * height > 0: set absolute height
+   * else: height: 100%
+   */
   @Input() height;
   @Input() selectColor = '#00aa00';
   @Input() color: any;
