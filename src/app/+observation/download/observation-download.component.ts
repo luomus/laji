@@ -1,4 +1,4 @@
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -31,6 +31,7 @@ import {
 import { ColumnSelector } from '../../shared/columnselector/ColumnSelector';
 import { ObservationTableColumn } from '../../shared-modules/observation-result/model/observation-table-column';
 import { IColumns } from '../../shared-modules/datatable/service/observation-table-column.service';
+import { ObservationDataService } from '../observation-data.service';
 
 
 enum RequestStatus {
@@ -91,7 +92,8 @@ export class ObservationDownloadComponent implements OnDestroy {
               private cd: ChangeDetectorRef,
               private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
               private exportService: ExportService,
-              private modalService: BsModalService
+              private modalService: BsModalService,
+              private observationDataService: ObservationDataService
   ) {
     this.columnGroups = tableColumnService.getColumnGroups();
     this.columnLookup = tableColumnService.getAllColumnLookup();
@@ -152,13 +154,16 @@ export class ObservationDownloadComponent implements OnDestroy {
   }
 
   updateCount() {
-    this.cntSub = this.warehouseService.warehouseQueryCountGet({
-      ...this.query,
-      secured: true
-    }).pipe(
-      map(result => result.total)
-    ).subscribe(cnt => {
-      this.privateCount = cnt;
+    this.observationDataService.getData(this._originalQuery).pipe(
+      map(data => data.private.total),
+      catchError(() => this.warehouseService.warehouseQueryCountGet({
+        ...this.query,
+        secured: true
+      }).pipe(
+        map(result => result.total)
+      ))
+    ).subscribe(total => {
+      this.privateCount = total;
       this.cd.markForCheck();
     });
   }
