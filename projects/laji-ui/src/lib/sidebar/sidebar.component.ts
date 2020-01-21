@@ -59,6 +59,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   @Input() position: 'left' | 'right' = 'left';
   @Input() staticWidth: number;
+  @Input() menuTitle: string;
 
   sidebarMinWidth = 50;
 

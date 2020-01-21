@@ -766,6 +766,7 @@
   "observation.filters.collection": "Aineisto",
   "observation.filters.other": "Muut",
   "observation.filters.unit": "Näyte",
+  "observation.form.menuTitle": "Rajaukset",
   "observation.form.administrativeStatus": "Hallinnollinen asema",
   "observation.form.allInvasive": "Kaikki vieraslajit",
   "observation.form.nonInvasive": "Ei-vieraslajit",

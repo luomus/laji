@@ -718,6 +718,7 @@
   "observation.filters.collection": "Samling",
   "observation.filters.other": "Andra",
   "observation.filters.unit": "Prov",
+  "observation.form.menuTitle": "Filtrera",
   "observation.form.administrativeStatus": "Administrativ status",
   "observation.form.allInvasive": "Alla främmander arter",
   "observation.form.nonInvasive": "Ej-främmander arter",

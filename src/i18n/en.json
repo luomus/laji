@@ -631,6 +631,7 @@
   "observation.filters.collection": "Collection",
   "observation.filters.other": "Others",
   "observation.filters.unit": "Specimen",
+  "observation.form.menuTitle": "Filters",
   "observation.form.administrativeStatus": "Administrative status",
   "observation.form.allInvasive": "All invasive species",
   "observation.form.nonInvasive": "Noninvasive species",
