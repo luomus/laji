@@ -1,11 +1,11 @@
 <div class="mode-select">
   <div>
-    <span class="badge link" [class.active]="!advancedMode" (click)="setAdvancedMode(false)">
+    <button class="mode-switch-btn" [class.active]="!advancedMode" (click)="setAdvancedMode(false)">
       {{ 'observation.form.modeBasic' | translate }}
-    </span>
-    <span class="badge link" [class.active]="advancedMode" (click)="setAdvancedMode(true)">
+    </button>
+    <button class="mode-switch-btn" [class.active]="advancedMode" (click)="setAdvancedMode(true)">
       {{ 'observation.form.modeAdvanced' | translate }}
-    </span>
+    </button>
   </div>
   <laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
 </div>

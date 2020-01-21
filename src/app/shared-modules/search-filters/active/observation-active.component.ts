@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from
 @Component({
   selector: 'laji-observation-active',
   templateUrl: './observation-active.component.html',
-  styleUrls: ['./observation-active.component.css'],
+  styleUrls: ['./observation-active.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationActiveComponent {
