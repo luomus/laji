@@ -1,4 +1,4 @@
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
@@ -31,7 +31,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   sending = false;
   needsAck: boolean;
   typeaheadLoading = false;
-  annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
+  annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, label: string}[]>;
   types = Annotation.TypeEnum;
   ownerTypes = [
     Annotation.AnnotationClassEnum.AnnotationClassNeutral,

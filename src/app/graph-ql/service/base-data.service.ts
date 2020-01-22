@@ -18,6 +18,8 @@ export interface IBaseData {
     options: {
       id: string;
       label: string;
+      description: string;
+      link: string;
     }[]
   }[];
   information: {
