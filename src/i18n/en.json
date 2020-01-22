@@ -1263,5 +1263,7 @@
   "form.participants.export.emailAddress": "Email address",
   "form.participants.export.lintuvaaraLoginName":  "Lintuvaara ID",
   "form.participants.export.lastDoc": "Last participated",
-  "form.participants.export.docCount":  "Document count"
+  "form.participants.export.docCount":  "Document count",
+  "navigation.syke-butterfly": "SYKE butterfly census",
+  "theme.syke-butterfly.intro": "SYKE butterfly census"
 }

@@ -1411,5 +1411,7 @@
   "form.participants.export.emailAddress": "Sähköpostiosoite",
   "form.participants.export.lintuvaaraLoginName":  "Lintuvaara ID",
   "form.participants.export.lastDoc": "Viimeksi osallistunut",
-  "form.participants.export.docCount":  "Dokumenttien määrä"
+  "form.participants.export.docCount":  "Dokumenttien määrä",
+  "navigation.syke-butterfly": "SYKE päiväperhosseuranta",
+  "theme.syke-butterfly.intro": "SYKE päiväperhosseuranta"
 }
