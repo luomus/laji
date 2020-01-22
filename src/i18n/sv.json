@@ -1373,5 +1373,7 @@
   "form.participants.export.emailAddress": "E-postaddress",
   "form.participants.export.lintuvaaraLoginName":  "Lintuvaara ID",
   "form.participants.export.lastDoc": "Senast deltagit",
-  "form.participants.export.docCount":  "Dokumeträkning"
+  "form.participants.export.docCount":  "Dokumeträkning",
+  "navigation.syke-butterfly": "SYKE riksomfattande dagfjärilsmonitoringen",
+  "theme.syke-butterfly.intro": "SYKE riksomfattande dagfjärilsmonitoringen"
 }
