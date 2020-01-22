@@ -23,7 +23,7 @@
               name="annotationClass"
               class="form-control input-sm">
         <option *ngFor="let option of annotationOptions$ | async" [value]="option.id">
-          {{ option.value | multiLang }}
+          {{ option.label }}
         </option>
       </select>
     </div>
