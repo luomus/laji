@@ -33,7 +33,7 @@ $selector-horizontal-padding: 24px;
       box-shadow: 5px 0px $blur -5px rgba(#000, 0.1), -5px 0px $blur -5px rgba(#000, 0.1), 0px -5px $blur -5px rgba(#000, 0.1);
     }
     &:hover:not(.active) {
-      background-color: lighten($neutral-3, 3) !important;
+      background-color: $neutral-2 !important;
     }
   }
 }

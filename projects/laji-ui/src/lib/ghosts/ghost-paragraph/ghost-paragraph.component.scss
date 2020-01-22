@@ -1,8 +1,8 @@
 @import '../../vars';
 
 @keyframes loading {
-  from {box-shadow: inset 0 -8px $neutral-3;}
-  to {box-shadow: inset 0 -8px lighten($neutral-3, 3);}
+  from {box-shadow: inset 0 -8px $neutral-4;}
+  to {box-shadow: inset 0 -8px lighten($neutral-4, 3);}
 }
 
 .ghost {
