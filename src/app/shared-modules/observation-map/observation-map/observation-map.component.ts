@@ -296,6 +296,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private updateMapData() {
     if (!this.ready || (typeof this.unitCount !== 'undefined' && (this.unitCount === 0 || this.unitCount === null))) {
+      if (this.unitCount === 0) {
+        this.emptyMap();
+      }
       return;
     }
     const cacheKey = this.getCacheKey(this.query);
@@ -516,6 +519,17 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           this.logger.log('Failed to display popup for the map', e);
         }
       });
+  }
+
+  private emptyMap() {
+    const mapData = [];
+    this.clearDrawData();
+
+    if (this.query.coordinates) {
+      this.initDrawData();
+      mapData.push(this.drawData);
+    }
+    this.mapData = mapData;
   }
 }
 
