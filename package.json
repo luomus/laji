@@ -198,7 +198,7 @@
     "proj4": "2.3.16",
     "leaflet": "1.6.0",
     "@types/leaflet-draw": "0.4.14",
-    "laji-map": "3.0.2",
+    "laji-map": "3.0.4",
     "tslint": "5.10.0",
     "typescript": "3.4.5"
   },
