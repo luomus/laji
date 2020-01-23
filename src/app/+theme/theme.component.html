@@ -190,6 +190,16 @@
               {{ 'theme.lolife.intro' | translate }}
             </td>
           </tr>
+          <tr *lajiForTypes="['dev']">
+            <th>
+              <a [routerLink]="['/theme/syke-perhoset'] | localize">
+                {{ 'navigation.syke-butterfly' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.syke-butterfly.intro' | translate }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

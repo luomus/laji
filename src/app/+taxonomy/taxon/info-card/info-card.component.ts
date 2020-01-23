@@ -38,15 +38,15 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
   @Input() set activeTab(tab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
-    this.selectedTabIdx = this.loadedTabs.getIdxFromName(tab);
+    this.initiallySelectedTab = tab;
     this.loadedTabs.load(tab);
   }
   get activeTab() {
     // @ts-ignore
-    return this.loadedTabs.getNameFromIdx(this.selectedTabIdx);
+    return this.initiallySelectedTab;
   }
 
-  selectedTabIdx = 0; // stores which tab index was provided by @Input
+  initiallySelectedTab = 'overview'; // stores which tab index was provided by @Input
 
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<Image>;
@@ -76,11 +76,12 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onSelect(tabIndex) {
-    const tabName = this.loadedTabs.getNameFromIdx(tabIndex);
+    const tabName = this.getTabNameFromVisibleIndex(tabIndex);
     const route = [basePath, this.taxon.id];
     if (tabName !== 'overview') { route.push(tabName); }
     this.router.navigate(
-      this.localizeRouterService.translateRoute(route)
+      this.localizeRouterService.translateRoute(route),
+      { queryParamsHandling: 'preserve' }
     );
   }
 
@@ -203,5 +204,52 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     return false;
+  }
+
+  // used for translating tab indices
+  private getTabConditionals(): {e, t}[] {
+    return [
+      {e: this.hasImageData, t: 'images'},
+      {e: this.hasBiologyData, t: 'biology'},
+      {e: this.isFromMasterChecklist, t: 'observations'},
+      {e: this.isFromMasterChecklist, t: 'specimens'},
+      {e: this.isEndangered, t: 'endangerment'},
+      {e: this.taxon && this.taxon.invasiveSpecies, t: 'invasive'},
+    ];
+  }
+
+  /**
+   * Translates absolute tab index to visible tab index
+   */
+  private getVisibleTabIndex(absIdx: number): number {
+    let shifted = absIdx;
+    for (const c of this.getTabConditionals()) {
+      if (!c.e && this.loadedTabs.getIdxFromName(c.t) < absIdx) {
+        shifted--;
+      }
+    }
+    return shifted;
+  }
+
+  /**
+   * Translates tab name to visible tab index
+   */
+  getVisibleTabIndexFromTabName(tab: string): number {
+    const loadedIdx = this.loadedTabs.getIdxFromName(tab);
+    return this.getVisibleTabIndex(loadedIdx);
+  }
+
+  /**
+   * Translates visible index to its tab name
+   */
+  private getTabNameFromVisibleIndex(visIdx: number): string {
+    // this method returns tab name from the actual visible (shifted) index
+    let shifted = visIdx;
+    for (const c of this.getTabConditionals()) {
+      if (!c.e && this.getVisibleTabIndexFromTabName(c.t) - 1 < visIdx) {
+        shifted++;
+      }
+    }
+    return this.loadedTabs.getNameFromIdx(shifted);
   }
 }

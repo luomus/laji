@@ -214,7 +214,10 @@
           "options": {
             "outputPath": "dist/server",
             "main": "src/main.server.ts",
-            "tsConfig": "src/tsconfig.server.json"
+            "tsConfig": "src/tsconfig.server.json",
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/laji-ui/src/lib"]
+            }
           },
           "configurations": {
             "production": {
