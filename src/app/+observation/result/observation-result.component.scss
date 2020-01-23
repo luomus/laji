@@ -45,6 +45,10 @@
   }
 }
 
-.finnish-selector-buttons *:first-child {
+.finnish-selector-buttons {
+  margin-right: 0px !important;
+}
+
+.finnish-selector-buttons > *:first-child {
   margin-right: 10px;
 }
