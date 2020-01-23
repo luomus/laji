@@ -130,24 +130,23 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
             this.subLabelBarChart.push(r.label.vernacularName ? r.label.vernacularName : r.label.scientificName);
           });
         })
-    )
-    .subscribe(() => {
-      this.allDataBarChart = this.subDataBarChart;
-      this.allLabelBarChart = this.subLabelBarChart;
-      this.allBackgroundColors = this.subBackgroundColors;
+      )
+      .subscribe(() => {
+        this.allDataBarChart = this.subDataBarChart;
+        this.allLabelBarChart = this.subLabelBarChart;
+        this.allBackgroundColors = this.subBackgroundColors;
 
-      this.subDataBarChart = this.subDataBarChart.slice(0, 10);
-      this.subLabelBarChart = this.subLabelBarChart.slice(0, 10);
-      this.subBackgroundColors = this.subBackgroundColors.slice(0, 10);
+        this.subDataBarChart = this.subDataBarChart.slice(0, 10);
+        this.subLabelBarChart = this.subLabelBarChart.slice(0, 10);
+        this.subBackgroundColors = this.subBackgroundColors.slice(0, 10);
 
-      this.barChartData[0].data = this.subDataBarChart;
-      this.barChartData[0].backgroundColor = this.subBackgroundColors;
-      this.barChartLabels = this.subLabelBarChart;
-
-      this.initializeGraph();
-      this.cd.markForCheck();
-      this.loading = false;
-    });
+        this.barChartData[0].data = this.subDataBarChart;
+        this.barChartData[0].backgroundColor = this.subBackgroundColors;
+        this.barChartLabels = this.subLabelBarChart;
+        this.initializeGraph();
+        this.cd.markForCheck();
+        this.loading = false;
+      });
 
   }
 
