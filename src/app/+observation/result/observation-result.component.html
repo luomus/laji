@@ -127,6 +127,7 @@
             [title]="'observation.horizontalBar.title' | translate"
             [open]="true"
             [autoToggle]="true"
+            [hidden]="!hasTaxonData"
           >
           <!--<laji-observation-chart
             [lang]="lang"
@@ -143,6 +144,7 @@
               [height]="300"
               [showLegend]="true"
               [visible]="true"
+              (hasData)="hasTaxonData = $event"
             ></laji-horizontal-chart>
           </div>
         </div>

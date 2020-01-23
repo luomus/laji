@@ -28,6 +28,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   @Input() lang: string;
 
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
+  @Output() hasData = new EventEmitter<boolean>();
 
 
   loading = false;
@@ -145,6 +146,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         this.barChartLabels = this.subLabelBarChart;
         this.initializeGraph();
         this.cd.markForCheck();
+        this.hasData.emit(this.allDataBarChart.length > 0);
         this.loading = false;
       });
 
