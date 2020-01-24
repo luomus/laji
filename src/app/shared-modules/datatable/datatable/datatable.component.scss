@@ -1,5 +1,21 @@
+@import 'vars';
+
 :host ::ng-deep .datatable-body-row.active {
   background-color: #a0b6ce !important;
+}
+
+:host ::ng-deep .ngx-datatable.material {
+  background: unset;
+  background-color: $neutral-1;
+
+  .datatable-header .datatable-header-cell {
+    background-color: $neutral-1;
+  }
+}
+
+:host ::ng-deep .ngx-datatable.striped .datatable-row-odd {
+  background: unset;
+  background-color: $neutral-2;
 }
 
 /* Workaround for ngx-datatable bug where a black bar appears on some rows

@@ -8,6 +8,7 @@ import { ObservationDownloadComponent } from '../download/observation-download.c
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { SearchQueryService } from '../search-query.service';
 import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
+import { BrowserService } from '../../shared/service/browser.service';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations'];
 @Component({
@@ -75,13 +76,15 @@ export class ObservationResultComponent {
 
   hasMonthDayData: boolean;
   hasYearData: boolean;
+  hasTaxonData: boolean;
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
 
   constructor(
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private searchQueryService: SearchQueryService
+    private searchQueryService: SearchQueryService,
+    private browserService: BrowserService
   ) {}
 
   @Input()
@@ -96,6 +99,7 @@ export class ObservationResultComponent {
       this.loadedTabs.load(value);
       this.selectedTabIdx = this.loadedTabs.getIdxFromName(value);
     }
+    this.browserService.triggerResizeEvent();
   }
 
   onSelect(tabIndex: number) {

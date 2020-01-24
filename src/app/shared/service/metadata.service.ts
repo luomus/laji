@@ -15,7 +15,7 @@ export class MetadataService {
   /**
    * Gets a specific range of all the ranges
    */
-  getRange(range: string): Observable<any[]> {
+  getRange(range: string): Observable<{id: any, label: string, }[]> {
     return this.baseDataService.getBaseData().pipe(
       map(data => data.alts),
       map(alts => alts.find(alt => alt.id === range)),

@@ -1,60 +1,64 @@
 <div class="mode-select">
   <div>
-    <span class="badge link" [class.active]="!advancedMode" (click)="setAdvancedMode(false)">
+    <button class="mode-switch-btn" [class.active]="!advancedMode" (click)="setAdvancedMode(false)">
       {{ 'observation.form.modeBasic' | translate }}
-    </span>
-    <span class="badge link" [class.active]="advancedMode" (click)="setAdvancedMode(true)">
+    </button>
+    <button class="mode-switch-btn" [class.active]="advancedMode" (click)="setAdvancedMode(true)">
       {{ 'observation.form.modeAdvanced' | translate }}
-    </span>
+    </button>
   </div>
   <laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
 </div>
 
 <section class="top-section">
   <div>
-    <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>
-    <laji-info>{{ 'observation.info.informalTaxonGroup' | translate }}</laji-info>
+    <div>
+      <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>
+      <laji-info>{{ 'observation.info.informalTaxonGroup' | translate }}</laji-info>
+    </div>
+    <laji-observation-group-select
+      [(ngModel)]="formQuery.informalTaxonGroupId"
+      name="informalTaxonGroupId"
+      (select)="onFormQueryChange()">
+      {{ 'observation.active.informalTaxonGroupAll'|translate }}
+    </laji-observation-group-select>
   </div>
-  <laji-observation-group-select
-    [(ngModel)]="formQuery.informalTaxonGroupId"
-    name="informalTaxonGroupId"
-    (select)="onFormQueryChange()">
-    {{ 'observation.active.informalTaxonGroupAll'|translate }}
-  </laji-observation-group-select>
 
   <div>
-    <label>{{ 'observation.form.target' | translate }}</label>
-    <laji-info><span [innerHtml]="'observation.info.target' | translate"></span></laji-info>
+    <div>
+      <label>{{ 'observation.form.target' | translate }}</label>
+      <laji-info><span [innerHtml]="'observation.info.target' | translate"></span></laji-info>
+    </div>
+    <input
+      [ngClass]="{loading: typeaheadLoading}"
+      type="text"
+      class="form-control input-sm"
+      name="target"
+      [(ngModel)]="formQuery.taxon"
+      [typeahead]="dataSource"
+      [typeaheadOptionsLimit]="autocompleteLimit"
+      [typeaheadWaitMs]="200"
+      [typeaheadMinLength]="3"
+      [typeaheadSelectFirstItem]="false"
+      [typeaheadOptionField]="'value'"
+      [typeaheadItemTemplate]="taxonItem"
+      (typeaheadLoading)="changeTypeaheadLoading($event)"
+      (typeaheadOnSelect)="onTaxonSelect($event)"
+      (keyup)="onTaxonSelect($event)"
+      autocomplete="off"
+      autocorrect="off"
+    >
+    <ng-template #taxonItem let-model="item">
+      <h5 class="autosuggest-value {{model.groups}} informal-group-image">
+        {{ model.value }}
+      </h5>
+    </ng-template>
+    <laji-pill-list
+      [isLabel]="true"
+      [list]="query.target || []"
+      (updateList)="updateSearchQuery('target', $event)"
+    ></laji-pill-list>
   </div>
-  <input
-    [ngClass]="{loading: typeaheadLoading}"
-    type="text"
-    class="form-control input-sm"
-    name="target"
-    [(ngModel)]="formQuery.taxon"
-    [typeahead]="dataSource"
-    [typeaheadOptionsLimit]="autocompleteLimit"
-    [typeaheadWaitMs]="200"
-    [typeaheadMinLength]="3"
-    [typeaheadSelectFirstItem]="false"
-    [typeaheadOptionField]="'value'"
-    [typeaheadItemTemplate]="taxonItem"
-    (typeaheadLoading)="changeTypeaheadLoading($event)"
-    (typeaheadOnSelect)="onTaxonSelect($event)"
-    (keyup)="onTaxonSelect($event)"
-    autocomplete="off"
-    autocorrect="off"
-  >
-  <ng-template #taxonItem let-model="item">
-    <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-      {{ model.value }}
-    </h5>
-  </ng-template>
-  <laji-pill-list
-    [isLabel]="true"
-    [list]="query.target || []"
-    (updateList)="updateSearchQuery('target', $event)"
-  ></laji-pill-list>
 
   <div *ngIf="advancedMode || visibleAdvanced['taxon']">
     <div>
@@ -124,101 +128,106 @@
 <!-- DATE -->
 <section class="laji-panel" laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']">
   <div>
-    <label>{{ 'observation.form.time' | translate }}</label>
-    <laji-info>{{ 'observation.info.time' | translate }}</laji-info>
-  </div>
-  <laji-datepicker
-    [(ngModel)]="formQuery.timeStart"
-    [viewFormat]="'DD.MM.YYYY'"
-    [otherFormats]="['D.M.YYYY', 'YYYY']"
-    [format]="dateFormat"
-    (select)="onFormQueryChange()"
-    (change)="onFormQueryChange()"
-    name="timeStart"></laji-datepicker>
-  <laji-datepicker
-    [(ngModel)]="formQuery.timeEnd"
-    [viewFormat]="'DD.MM.YYYY'"
-    [otherFormats]="['D.M.YYYY', 'YYYY']"
-    [toLastOfYear]="true"
-    [format]="dateFormat"
-    (select)="onFormQueryChange()"
-    (change)="onFormQueryChange()"
-    name="timeEnd"></laji-datepicker>
-  <div class="btn-group">
-    <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">{{ 'observations.form.1d' | translate }}</button>
-    <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">{{ 'observations.form.7d' | translate }}</button>
-    <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
-      {{ 'observation.form.thisYear' | translate }}
-    </button>
+    <div>
+      <label>{{ 'observation.form.time' | translate }}</label>
+      <laji-info>{{ 'observation.info.time' | translate }}</laji-info>
+    </div>
+    <laji-datepicker
+      [(ngModel)]="formQuery.timeStart"
+      [viewFormat]="'DD.MM.YYYY'"
+      [otherFormats]="['D.M.YYYY', 'YYYY']"
+      [format]="dateFormat"
+      (select)="onFormQueryChange()"
+      (change)="onFormQueryChange()"
+      name="timeStart"></laji-datepicker>
+    <laji-datepicker
+      [(ngModel)]="formQuery.timeEnd"
+      [viewFormat]="'DD.MM.YYYY'"
+      [otherFormats]="['D.M.YYYY', 'YYYY']"
+      [toLastOfYear]="true"
+      [format]="dateFormat"
+      (select)="onFormQueryChange()"
+      (change)="onFormQueryChange()"
+      name="timeEnd"></laji-datepicker>
+    <div class="btn-group">
+      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">{{ 'observations.form.1d' | translate }}</button>
+      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">{{ 'observations.form.7d' | translate }}</button>
+      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
+        {{ 'observation.form.thisYear' | translate }}
+      </button>
+    </div>
   </div>
 
-  <ng-container *ngIf="advancedMode || query.season">
+  <div *ngIf="advancedMode || query.season">
     <div>
       <label>{{ 'observation.form.season' | translate }}</label>
       <laji-info>{{ 'observation.info.season' | translate }}</laji-info>
     </div>
     <laji-season [season]="query.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
-  </ng-container>
+  </div>
   <ng-container *ngIf="advancedMode || visibleAdvanced['time']">
     <div>
-      <label>{{ 'observation.form.loaded' | translate }}</label>
-      <laji-info>{{ 'observation.info.loaded' | translate }}</laji-info>
+      <div>
+        <label>{{ 'observation.form.loaded' | translate }}</label>
+        <laji-info>{{ 'observation.info.loaded' | translate }}</laji-info>
+      </div>
+      <laji-datepicker
+        [(ngModel)]="query.loadedSameOrAfter"
+        [viewFormat]="'DD.MM.YYYY'"
+        [otherFormats]="['D.M.YYYY', 'YYYY']"
+        [format]="dateFormat"
+        (select)="onQueryChange()"
+        (change)="onQueryChange()"
+        name="timeStart"></laji-datepicker>
+      <laji-datepicker
+        [(ngModel)]="query.loadedSameOrBefore"
+        [viewFormat]="'DD.MM.YYYY'"
+        [otherFormats]="['D.M.YYYY', 'YYYY']"
+        [toLastOfYear]="true"
+        [format]="dateFormat"
+        (select)="onQueryChange()"
+        (change)="onQueryChange()"
+        name="timeEnd"></laji-datepicker>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
+        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.7d' | translate }}</button>
+        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'loadedSameOrAfter', 'loadedSameOrBefore')">
+          {{ 'observation.form.thisYear' | translate }}
+        </button>
+      </div>
     </div>
-    <laji-datepicker
-      [(ngModel)]="query.loadedSameOrAfter"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
-      [format]="dateFormat"
-      (select)="onQueryChange()"
-      (change)="onQueryChange()"
-      name="timeStart"></laji-datepicker>
 
-    <laji-datepicker
-      [(ngModel)]="query.loadedSameOrBefore"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
-      [toLastOfYear]="true"
-      [format]="dateFormat"
-      (select)="onQueryChange()"
-      (change)="onQueryChange()"
-      name="timeEnd"></laji-datepicker>
-
-    <div class="btn-group">
-      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
-      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.7d' | translate }}</button>
-      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'loadedSameOrAfter', 'loadedSameOrBefore')">
-        {{ 'observation.form.thisYear' | translate }}
-      </button>
-    </div>
     <div>
-      <label>{{ 'observation.form.firstLoaded' | translate }}</label>
-      <laji-info>{{ 'observation.info.firstLoaded' | translate }}</laji-info>
-    </div>
-    <laji-datepicker
-      [(ngModel)]="query.firstLoadedSameOrAfter"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
-      [format]="dateFormat"
-      (select)="onQueryChange()"
-      (change)="onQueryChange()"
-      name="timeStart"></laji-datepicker>
+      <div>
+        <label>{{ 'observation.form.firstLoaded' | translate }}</label>
+        <laji-info>{{ 'observation.info.firstLoaded' | translate }}</laji-info>
+      </div>
+      <laji-datepicker
+        [(ngModel)]="query.firstLoadedSameOrAfter"
+        [viewFormat]="'DD.MM.YYYY'"
+        [otherFormats]="['D.M.YYYY', 'YYYY']"
+        [format]="dateFormat"
+        (select)="onQueryChange()"
+        (change)="onQueryChange()"
+        name="timeStart"></laji-datepicker>
 
-    <laji-datepicker
-      [(ngModel)]="query.firstLoadedSameOrBefore"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
-      [toLastOfYear]="true"
-      [format]="dateFormat"
-      (select)="onQueryChange()"
-      (change)="onQueryChange()"
-      name="timeEnd"></laji-datepicker>
+      <laji-datepicker
+        [(ngModel)]="query.firstLoadedSameOrBefore"
+        [viewFormat]="'DD.MM.YYYY'"
+        [otherFormats]="['D.M.YYYY', 'YYYY']"
+        [toLastOfYear]="true"
+        [format]="dateFormat"
+        (select)="onQueryChange()"
+        (change)="onQueryChange()"
+        name="timeEnd"></laji-datepicker>
 
-    <div class="btn-group">
-      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
-      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.7d' | translate }}</button>
-      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">
-        {{ 'observation.form.thisYear' | translate }}
-      </button>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
+        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.7d' | translate }}</button>
+        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">
+          {{ 'observation.form.thisYear' | translate }}
+        </button>
+      </div>
     </div>
   </ng-container>
 </section>
@@ -272,23 +281,25 @@
   <hr>
 
   <div>
-      <label>{{ 'observation.form.map.intro'|translate }}</label>
-  </div>
-  <div>
-    <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Rectangle')">
-      <i class="lji-icon lji-crop"></i>
-    </button>
-    {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate }}
-  </div>
-  <div>
-    <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Coordinates')">
-      YKJ
-    </button>
-    {{ 'observation.form.map.coordinates'|translate }}
+    <div>
+        <label>{{ 'observation.form.map.intro'|translate }}</label>
+    </div>
+    <div>
+      <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Rectangle')">
+        <i class="lji-icon lji-crop"></i>
+      </button>
+      {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate }}
+    </div>
+    <div>
+      <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Coordinates')">
+        YKJ
+      </button>
+      {{ 'observation.form.map.coordinates'|translate }}
+    </div>
   </div>
 
   <ng-container *ngIf="advancedMode || visibleAdvanced['coordinate']">
-    <ng-container *ngIf="query.coordinates">
+    <div *ngIf="query.coordinates">
       <div>
         <label class="small-label">{{ 'observation.form.coordinateIntersection' | translate }}</label><laji-info>{{ 'observation.info.coordinateIntersection' | translate }}</laji-info>
         <div class="input-group" style="max-width: 110px;">
@@ -336,43 +347,44 @@
           </button>
         </div>
       </div>
-    </ng-container>
+    </div>
 
     <hr>
 
     <div>
-      <label>{{ 'observation.form.coordinateAccuracyMax' | translate }}</label>
-      <laji-info>{{ 'observation.info.coordinateAccuracyMax' | translate }}</laji-info>
-    </div>
-    <div class="input-group" style="max-width: 110px;">
-      <input type="number" name="coordinateAccuracyMax"
-              style="padding: 3px 7px;"
-              class="form-control input-sm"
-              (change)="onAccuracyValueChange()"
-              [(ngModel)]="query.coordinateAccuracyMax">
-      <span class="input-group-addon">m</span>
-    </div>
-
-    <div>
-      <input id="logCoordinateAccuracyMax"
-              [ngClass]="{faded: !query.coordinateAccuracyMax}"
-              type="range" name="logCoordinateAccuracyMax"
-              class="form-control input-sm"
-              step="1"
-              min="0"
-              max="5"
-              list="accuracyPowers"
-              (click)="enableAccuracySlider()"
-              (change)="onAccuracySliderChange()"
-              [(ngModel)]="logCoordinateAccuracyMax">
-      <datalist id="accuracyPowers">
-        <option value="0">
-        <option value="1">
-        <option value="2">
-        <option value="3">
-        <option value="4">
-        <option value="5">
-      </datalist>
+      <div>
+        <label>{{ 'observation.form.coordinateAccuracyMax' | translate }}</label>
+        <laji-info>{{ 'observation.info.coordinateAccuracyMax' | translate }}</laji-info>
+      </div>
+      <div class="input-group" style="max-width: 110px;">
+        <input type="number" name="coordinateAccuracyMax"
+                style="padding: 3px 7px;"
+                class="form-control input-sm"
+                (change)="onAccuracyValueChange()"
+                [(ngModel)]="query.coordinateAccuracyMax">
+        <span class="input-group-addon">m</span>
+      </div>
+      <div>
+        <input id="logCoordinateAccuracyMax"
+                [ngClass]="{faded: !query.coordinateAccuracyMax}"
+                type="range" name="logCoordinateAccuracyMax"
+                class="form-control input-sm"
+                step="1"
+                min="0"
+                max="5"
+                list="accuracyPowers"
+                (click)="enableAccuracySlider()"
+                (change)="onAccuracySliderChange()"
+                [(ngModel)]="logCoordinateAccuracyMax">
+        <datalist id="accuracyPowers">
+          <option value="0">
+          <option value="1">
+          <option value="2">
+          <option value="3">
+          <option value="4">
+          <option value="5">
+        </datalist>
+      </div>
     </div>
 
     <div>
@@ -384,14 +396,16 @@
 
 <section class="laji-panel" laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">
   <div>
-    <label>{{ 'observation.form.team' | translate }}</label>
-    <laji-info>{{ 'observation.info.team' | translate }}</laji-info>
+    <div>
+      <label>{{ 'observation.form.team' | translate }}</label>
+      <laji-info>{{ 'observation.info.team' | translate }}</laji-info>
+    </div>
+    <laji-team
+      [(memberIds)]="query.teamMemberId"
+      [(members)]="query.teamMember"
+      (update)="onQueryChange()"
+    ></laji-team>
   </div>
-  <laji-team
-    [(memberIds)]="query.teamMemberId"
-    [(members)]="query.teamMember"
-    (update)="onQueryChange()"
-  ></laji-team>
 </section>
 
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['individual']" [title]="'observation.form.unit' | translate" [autoToggle]="true"  [open]="visible['individual']">
@@ -574,25 +588,29 @@
 
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['keywords']" [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
   <div>
-    <label>{{ 'observation.form.documentId' | translate }}</label>
-    <laji-info>{{ 'observation.info.documentId' | translate }}</laji-info>
+    <div>
+      <label>{{ 'observation.form.documentId' | translate }}</label>
+      <laji-info>{{ 'observation.info.documentId' | translate }}</laji-info>
+    </div>
+    <input
+      class="form-control input-sm"
+      type="text"
+      name="documentId"
+      (ngModelChange)="delayedQueryChange()"
+      [(ngModel)]="query.documentId">
   </div>
-  <input
-    class="form-control input-sm"
-    type="text"
-    name="documentId"
-    (ngModelChange)="delayedQueryChange()"
-    [(ngModel)]="query.documentId">
   <div>
-    <label>{{ 'observation.form.keyword' | translate }}</label>
-    <laji-info>{{ 'observation.info.keyword' | translate }}</laji-info>
+    <div>
+      <label>{{ 'observation.form.keyword' | translate }}</label>
+      <laji-info>{{ 'observation.info.keyword' | translate }}</laji-info>
+    </div>
+    <input
+      class="form-control input-sm"
+      type="text"
+      name="documentId"
+      (ngModelChange)="delayedQueryChange()"
+      [(ngModel)]="query.keyword">
   </div>
-  <input
-    class="form-control input-sm"
-    type="text"
-    name="documentId"
-    (ngModelChange)="delayedQueryChange()"
-    [(ngModel)]="query.keyword">
 </section>
 
 <section class="laji-panel" laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
@@ -638,15 +656,17 @@
     ></laji-three-state-multi-switch>
   </ng-container>
   <div>
-    <label>{{ 'observation.form.invasive' | translate }}</label><laji-info>{{ 'observation.info.invasive' | translate }}</laji-info><br>
+    <div>
+      <label>{{ 'observation.form.invasive' | translate }}</label><laji-info>{{ 'observation.info.invasive' | translate }}</laji-info><br>
+    </div>
+    <laji-three-state-switch
+      (change)="onQueryChange()"
+      [onText]="'yes' | translate"
+      [offText]="'no' | translate"
+      [(value)]="query.invasive">
+    </laji-three-state-switch>
   </div>
-  <laji-three-state-switch
-    (change)="onQueryChange()"
-    [onText]="'yes' | translate"
-    [offText]="'no' | translate"
-    [(value)]="query.invasive">
-  </laji-three-state-switch>
-  <ng-container *ngIf="advancedMode || (query.finnish | exists)">
+  <div *ngIf="advancedMode || (query.finnish | exists)">
     <div>
       <label>{{ 'observation.form.finnish' | translate }}</label><laji-info>{{ 'observation.info.finnish' | translate }}</laji-info><br>
     </div>
@@ -656,7 +676,7 @@
       [offText]="'no' | translate"
       [(value)]="query.finnish">
     </laji-three-state-switch>
-  </ng-container>
+  </div>
 </section>
 
 <section class="laji-panel" laji-panel *ngIf="advancedMode" [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true"  [open]="visible['invasive']">

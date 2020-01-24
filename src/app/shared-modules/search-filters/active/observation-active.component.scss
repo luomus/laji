@@ -1,22 +1,15 @@
-.title {
-  font-weight: lighter;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
+@import 'vars';
+
+.open-select {
+  background: unset;
+  border: unset;
+  color: $neutral-7;
+  cursor: pointer;
+  &:hover {
+    color: $primary-5;
+  }
 }
-.title i {
-  font-size: 20px;
-}
-.title .badge {
-  z-index: 10;
-  margin-right: -15px;
-  position: relative;
-}
-.title .badge.has {
-  background-color: #d9534f;
-}
+
 .active-list {
   position: absolute;
   margin-top: 10px;

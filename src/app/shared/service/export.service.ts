@@ -8,6 +8,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { Util } from './util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableUtil } from '../../shared-modules/datatable/service/datatable-util.service';
+import { TriplestoreLabelService } from './triplestore-label.service';
 
 @Injectable({providedIn: 'root'})
 export class ExportService {
@@ -18,7 +19,8 @@ export class ExportService {
 
   constructor(
     private translateService: TranslateService,
-    private datatableUtil: DatatableUtil
+    private datatableUtil: DatatableUtil,
+    private triplestoreLabelService: TriplestoreLabelService
   ) { }
 
   exportFromData(data: any[], cols: DatatableColumn[], type: BookType, filename: string, firstRow?: string[]): Observable<void> {

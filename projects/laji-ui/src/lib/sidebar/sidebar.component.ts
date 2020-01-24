@@ -59,6 +59,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   @Input() position: 'left' | 'right' = 'left';
   @Input() staticWidth: number;
+  @Input() menuTitle: string;
 
   sidebarMinWidth = 50;
 
@@ -109,12 +110,14 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
       return;
     }
     const isMobile = window.innerWidth < mobileBreakpoint;
-    if (isMobile) {
-      this.sidebarMinWidth = 0;
-      this.open = false;
-    } else {
-      this.sidebarMinWidth = 50;
-      this.open = true;
+    if (this.mobile !== isMobile) {
+      if (isMobile) {
+        this.sidebarMinWidth = 0;
+        this.open = false;
+      } else {
+        this.sidebarMinWidth = 50;
+        this.open = true;
+      }
     }
     this.mobile = isMobile;
     this.cdr.detectChanges();

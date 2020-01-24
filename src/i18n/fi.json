@@ -745,6 +745,7 @@
   "observation.count": "Havaintojen määrä",
   "observation.download.description.left": "merkkiä jäljellä",
   "observation.download.error": "Pyynnön lähetys epäonnistui!",
+  "observation.download.limitExceededException": "Pyynnön epäonnistui! Voit tehdä vain 10 viittauskelpoista tiedoston per päivä",
   "observation.download.label": "Vapaavalintainen kuvaus aineistopyynnölle",
   "observation.download.loadPrivate": "Tee aineistopyyntö",
   "observation.download.loadPublic": "Lataa aineisto",
@@ -765,6 +766,7 @@
   "observation.filters.collection": "Aineisto",
   "observation.filters.other": "Muut",
   "observation.filters.unit": "Näyte",
+  "observation.form.menuTitle": "Rajaukset",
   "observation.form.administrativeStatus": "Hallinnollinen asema",
   "observation.form.allInvasive": "Kaikki vieraslajit",
   "observation.form.nonInvasive": "Ei-vieraslajit",
@@ -1007,11 +1009,11 @@
   "result.load.error.tooManySimple": "Liian paljon havaintoja. Enimmäismäärä tälle lataukselle on <strong>{{max}}</strong>, joten rajaa hakua lisää.",
   "result.load.error.notLoggedIn": "Kirjaudu sisään käyttääksesi tätä toimintoa.",
   "result.load.titleSimple": "Havainnot: yksinkertainen taulukko",
-  "result.load.introSimple": "Lataa valitsemiesi sarakkeiden tiedot itsellesi taulukkotiedostona (TSV, Excel tai OpenOffice). Tämä lataus ei sisällä kaikkea havaintoon liittyvää tietoa vaan ainoastaan tulostaulukossa näkyvät valitsemasi sarakkeet. Tähän lataukseen ei myöskään voida asianmukaisesti viitata esim. julkaisuissa.<br>Kattavat tiedot saat tekemällä viittauskeltoisen tiedoston (alla).",
+  "result.load.introSimple": "Lataa valitsemiesi sarakkeiden tiedot itsellesi taulukkotiedostona (TSV, Excel tai OpenOffice). Tämä lataus ei sisällä kaikkea havaintoon liittyvää tietoa vaan ainoastaan tulostaulukossa näkyvät valitsemasi sarakkeet. Tähän lataukseen ei myöskään voida asianmukaisesti viitata esim. julkaisuissa.<br>Kattavat tiedot saat tekemällä viittauskelpoisen tiedoston (alla).",
   "result.load.introPrivate": "Rajauksesi kattaa <strong>{{private}}</strong> karkeistettua havaintoa. Lisäksi rajaus saattaa kattaa kokonaan salattuja havaintoja.</p><p>Voit tehdä aineistopyynnön saadaksesi käyttöösi karkeistetun ja salatun aineiston tarkat tiedot. Pyyntösi käsitellään yksilöllisesti ja saat lisäohjeita sähköpostitse. Perustelut datan käyttöön sekä käyttöehtojen hyväksyminen kysytään myöhemmässä vaiheessa.",
   "result.load.introPublic": "Viittauskelpoinen lataus tuottaa tiedoston, jossa on kaikki havainnoista Lajitietokeskuksessa oleva tieto. Tiedosto säilytetään Lajitietokeskuksen palvelussa pysyvästi ja siihen voidaan viitata esim. julkaisuista. Viittausta varten tiedostolle luodaan pysyvä tunniste. Saat sähköpostiisi linkin aineiston lataussivulle, kun lataus on valmistunut. Latausaika riippuu aineiston koosta.",
   "result.load.introSpecies": "Luettelo lajeista ja muista taksoneista (suvuista, heimoista jne.) havaintomäärän mukaisessa järjestyksessä.",
-  "result.load.personalData": "Tässä ei oteta huomioon omat havainnot -rajausta.",
+  "result.load.personalData": "Tätä ominaisuutta ei voi käyttää etsiessäsi omia havaintojasi. Poista omat havainnot -rajaus jatkaaksesi.",
   "result.load.thanksPublic": "Kiitos, saat linkin aineistoon sähköpostitse.",
   "result.load.thanksRequest": "Kiitos, saat ohjeita sähköpostitse.",
   "result.newestRecord": "Uusin",
@@ -1409,5 +1411,7 @@
   "form.participants.export.emailAddress": "Sähköpostiosoite",
   "form.participants.export.lintuvaaraLoginName":  "Lintuvaara ID",
   "form.participants.export.lastDoc": "Viimeksi osallistunut",
-  "form.participants.export.docCount":  "Dokumenttien määrä"
+  "form.participants.export.docCount":  "Dokumenttien määrä",
+  "navigation.syke-butterfly": "SYKE päiväperhosseuranta",
+  "theme.syke-butterfly.intro": "SYKE päiväperhosseuranta"
 }
