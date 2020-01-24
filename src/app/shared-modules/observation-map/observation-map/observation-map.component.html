@@ -1,4 +1,6 @@
-<div class="observation-map" [ngStyle]="{height: height ? height + 'px' : '100%'}">
+<div class="observation-map"
+     [luFillHeight]="{ disabled: !height || height >= 0 }"
+     [ngStyle]="height > 0 ? { height: height + 'px'} : null">
   <laji-map
           *ngIf="!reloading"
           [options]="_mapOptions"
@@ -16,3 +18,4 @@
     </ul>
   </laji-map>
 </div>
+

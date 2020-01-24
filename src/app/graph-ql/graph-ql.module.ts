@@ -61,7 +61,7 @@ export class GraphQLModule {
         uri: `${environment.apiBase}/graphql`
       }),
       cache: this.cache,
-      ...(isBrowser ? { ssrForceFetchDelay: 500 } : { ssrMode: true })
+      ...(isBrowser ? { ssrForceFetchDelay: 5000 } : { ssrMode: true })
     });
 
     if (isBrowser) {

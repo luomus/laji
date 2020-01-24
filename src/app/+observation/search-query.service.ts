@@ -12,11 +12,11 @@ export class SearchQueryService implements SearchQueryInterface {
 
   public query: WarehouseQueryInterface = {};
 
-  separator = {
+  private readonly separator = {
     'teamMember': ';'
   };
 
-  arrayTypes: Array<keyof WarehouseQueryInterface|'aggregateBy'|'selected'|'orderBy'> = [
+  private readonly array: Array<keyof WarehouseQueryInterface|'aggregateBy'|'selected'|'orderBy'> = [
     'taxonId',
     'target',
     'informalTaxonGroupId',
@@ -26,6 +26,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'countryId',
     'finnishMunicipalityId',
     'biogeographicalProvinceId',
+    'wgs84CenterPoint',
     'area',
     'time',
     'keyword',
@@ -39,8 +40,13 @@ export class SearchQueryService implements SearchQueryInterface {
     'superRecordBasis',
     'recordBasis',
     'lifeStage',
+    'formId',
+    'invasiveControl',
     'sex',
     'documentId',
+    'documentFact',
+    'gatheringFact',
+    'unitFact',
     'gatheringId',
     'unitId',
     'individualId',
@@ -70,13 +76,14 @@ export class SearchQueryService implements SearchQueryInterface {
     'orderBy',
   ];
 
-  booleanTypes: Array<keyof WarehouseQueryInterface|'geoJSON'|'excludeNulls'|'onlyCount'|'pessimisticDateRangeHandling'> = [
+  private readonly boolean: Array<keyof WarehouseQueryInterface|'geoJSON'|'excludeNulls'|'onlyCount'|'pessimisticDateRangeHandling'> = [
     'pessimisticDateRangeHandling',
     'excludeNulls',
     'pairCounts',
     'onlyCount',
     'geoJSON',
     'includeNonValidTaxa',
+    'invasiveControlled',
     'finnish',
     'invasive',
     'sampleMultiple',
@@ -85,6 +92,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'hasGatheringMedia',
     'hasUnitMedia',
     'hasMedia',
+    'hasSample',
     'secured',
     'cache',
     'reliable',
@@ -98,7 +106,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'annotated'
   ];
 
-  numericTypes: Array<keyof WarehouseQueryInterface|'page'|'pageSize'> = [
+  private readonly numeric: Array<keyof WarehouseQueryInterface|'page'|'pageSize'> = [
     'dayOfYearBegin',
     'dayOfYearEnd',
     'individualCountMin',
@@ -108,7 +116,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'pageSize'
   ];
 
-  stringTypes: Array<keyof WarehouseQueryInterface|'xValue'|'annotatedBefore'|'annotatedLaterThan'> = [
+  private readonly string: Array<keyof WarehouseQueryInterface|'xValue'|'annotatedBefore'|'annotatedLaterThan'> = [
     'taxonRankId',
     'xValue',
     'ykj10kmCenter',
@@ -126,47 +134,61 @@ export class SearchQueryService implements SearchQueryInterface {
     'formId'
   ];
 
-  obscure: Array<keyof WarehouseQueryInterface> = [
+  private readonly obscure: Array<keyof WarehouseQueryInterface> = [
     'editorPersonToken',
     'observerPersonToken',
     'editorOrObserverPersonToken'
   ];
+
+  public static isEmpty(query: WarehouseQueryInterface, key: string) {
+    return typeof query[key] === 'undefined' || query[key] === null || query[key] === '';
+  }
 
   constructor(
     private router: Router
   ) {
   }
 
+  public forEachType(opt: {
+    skip?: string[],
+    cb: (type: 'array'|'boolean'|'numeric'|'string'|'obscure', key: string) => void
+  }) {
+    const types: Array<'array'|'boolean'|'numeric'|'string'|'obscure'> = ['array', 'boolean', 'numeric', 'string', 'obscure'];
+    types.forEach(type => {
+      for (const key of this[type]) {
+        if (opt.skip && opt.skip.includes(key)) {
+          continue;
+        }
+        opt.cb(type, key);
+      }
+    });
+  }
+
   public getQueryFromUrlQueryParams(params): WarehouseQueryInterface {
     const result: WarehouseQueryInterface = {};
-    for (const i of this.arrayTypes) {
-      if (typeof params[i] !== 'undefined') {
-        result[i] = decodeURIComponent(params[i])
-          .split(this.separator[i] || ',')
-          .map(value => value);
-      }
-    }
 
-    for (const i of this.booleanTypes) {
-      if (typeof params[i] !== 'undefined') {
-        result[i] = params[i] === 'true';
+    this.forEachType({cb: (type, key) => {
+      if (typeof params[key] === 'undefined') {
+        return;
       }
-    }
-
-    for (const i of this.numericTypes) {
-      if (typeof params[i] !== 'undefined') {
-        const value = +params[i];
-        if (!isNaN(value)) {
-          result[i] = value;
-        }
+      switch (type) {
+        case 'array':
+          result[key] = decodeURIComponent(params[key])
+            .split(this.separator[key] || ',');
+          break;
+        case 'boolean':
+          result[key] = params[key] === 'true';
+          break;
+        case 'numeric':
+          const value = +params[key];
+          if (!isNaN(value)) {
+            result[key] = value;
+          }
+          break;
+        default:
+          result[key] = params[key];
       }
-    }
-
-    for (const i of [...this.stringTypes, ...this.obscure]) {
-      if (typeof params[i] !== 'undefined') {
-        result[i] = params[i];
-      }
-    }
+    }});
 
     if (result.coordinates) {
       result.coordinates = result.coordinates.map(coordinate => {
@@ -187,64 +209,49 @@ export class SearchQueryService implements SearchQueryInterface {
   public getQueryObject(query: WarehouseQueryInterface, skipParams: string[] = [], obscure = true) {
     const result: {[field: string]: string | string[]}  = {};
     if (query) {
-      for (const i of this.arrayTypes) {
-        if (skipParams.indexOf(i) > -1) {
-          continue;
-        }
-        if (query[i] !== undefined) {
-          if (query[i].length < 1 || query[0] === '') {
-            continue;
+      this.forEachType({
+        skip: skipParams,
+        cb: (type, key) => {
+          if (SearchQueryService.isEmpty(query, key)) {
+            return;
           }
-          if (typeof query[i] === 'string') {
-            query[i] = [query[i]];
-          }
-          const queries = query[i]
-            .filter(val => typeof val === 'string' && val.trim().length > 0)
-            .join(this.separator[i] || ',');
-          if (queries.length > 0) {
-            result[i] = queries;
-          }
+          switch (type) {
+            case 'array':
+              if (query[key].length < 1 || query[0] === '') {
+                return;
+              }
+              if (typeof query[key] === 'string') {
+                query[key] = [query[key]];
+              }
+              const queries = query[key]
+                .filter(val => typeof val === 'string' && val.trim().length > 0)
+                .join(this.separator[key] || ',');
+              if (queries.length > 0) {
+                result[key] = queries;
+              }
+              break;
+            case 'boolean':
+              result[key] = query[key] ? 'true' : 'false';
+              break;
+            case 'numeric':
+              result[key] = String(query[key]);
+              break;
+            case 'string':
+              if (query[key] !== '') {
+                result[key] =  query[key];
+              }
+              break;
+            case 'obscure':
+              result[key] = (obscure ? 'true' : query[key]) as any;
+              break;
         }
-      }
-
-      for (const i of this.booleanTypes) {
-        if (skipParams.indexOf(i) > -1) {
-          continue;
-        }
-        if (query[i] !== undefined) {
-          result[i] = query[i] ? 'true' : 'false';
-        }
-      }
-
-      for (const i of this.numericTypes) {
-        if (skipParams.indexOf(i) > -1) {
-          continue;
-        }
-        const type = typeof query[i];
-        if (type === 'number' || type === 'string') {
-          result[i] = String(query[i]);
-        }
-      }
-
-      for (const i of this.stringTypes) {
-        if (skipParams.indexOf(i) > -1) {
-          continue;
-        }
-        if (query[i] !== undefined && query[i] !== '') {
-          result[i] =  query[i];
-        }
-      }
-
-      for (const i of this.obscure) {
-        if (skipParams.indexOf(i) > -1) {
-          continue;
-        }
-        if (query[i] !== undefined) {
-          result[i] = (obscure ? 'true' : query[i]) as any;
-        }
-      }
+      }});
     }
 
+    return this.getQuery(result, query);
+  }
+
+  public getQuery(result, query: WarehouseQueryInterface) {
     if (result.coordinates && typeof query._coordinatesIntersection !== 'undefined') {
       result.coordinates += ':' + query._coordinatesIntersection / 100;
     }

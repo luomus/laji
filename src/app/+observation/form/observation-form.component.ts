@@ -37,6 +37,7 @@ interface ISections {
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
 
+  @Input() skipActiveFilters: string[] = [];
   @Input() invasiveStatuses: string[] = [];
   @Input() dateFormat = 'YYYY-MM-DD';
   @Input() advancedMode = false;

@@ -186,7 +186,7 @@ export class MainResultComponent implements OnInit, OnChanges {
           }
         });
     } catch (e) { console.log(e); }
-    this.title = title.join('<br>');
+    this.title = title.join('; ');
     this.mapQuery = mapQuery;
     this.listQuery = {...mapQuery};
   }

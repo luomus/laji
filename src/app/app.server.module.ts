@@ -9,12 +9,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   bootstrap: [AppComponent],
   imports: [
-    BrowserModule.withServerTransition({appId: 'laji-app'}),
     AppModule,
     ServerModule,
     NoopAnimationsModule,
     ModuleMapLoaderModule,
-    ServerTransferStateModule
+    ServerTransferStateModule,
+    BrowserModule.withServerTransition({appId: 'laji-app'})
   ]
 })
 export class AppServerModule {

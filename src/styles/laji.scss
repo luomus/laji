@@ -1,5 +1,5 @@
 @import "styles";
-@import '../../../../projects/laji-ui/src/lib/vars';
+@import 'vars';
 
 html {
   position: relative;
@@ -58,8 +58,7 @@ code {
     }
 }
 
-
-.footer, #navbar {
+.footer {
   flex: none;
 }
 
@@ -161,20 +160,6 @@ laji-locale-sv > div,
 }
 
 /** /Common helpers */
-
-.footer footer {
-  flex: none;
-  background-color: $color-main;
-  width: 100%;
-}
-
-.footer footer a,
-.footer footer li,
-.footer footer h3,
-.footer .intro,
-.footer .info {
-  color: #fff;
-}
 
 .breadcrumb {
   margin-top: 15px;
@@ -716,7 +701,11 @@ body > .ui-select-bootstrap.open {
 .more-info {
   padding-bottom: 10px;
   padding-top: 15px;
-  background-color: rgb(236, 240, 241);
+  background-color: $neutral-3;
+}
+
+.sidebar.mobile {
+  z-index: 1000;
 }
 
 .sidebar-nav {
@@ -894,7 +883,7 @@ body > .ui-select-bootstrap.open {
 }
 
 .ngx-datatable.material.striped .datatable-row-odd {
-  background-color: #f9f9f9;
+  background-color: $neutral-2;
 }
 
 .ngx-datatable.material .datatable-footer .page-count {

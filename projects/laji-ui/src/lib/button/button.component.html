@@ -1,23 +1,38 @@
-<a      *ngIf="routerLink; else button"
-        tabindex="-1"
-        [routerLink]="routerLink"
-        target="target"
-        [ngClass]="role"
-        [class.pressed]="pressed"
-        (click)="onClick($event)"
-        (mousedown)="onMouseDown($event)"
-        (mouseup)="onMouseUp($event)"><ng-container *ngTemplateOutlet="content" ></ng-container></a>
-
-<ng-template #button>
 <button
-        tabindex="-1"
-        [ngClass]="role"
-        [class.pressed]="pressed"
-        [disabled]="disabled"
-        (click)="onClick($event)"
-        (mousedown)="onMouseDown($event)"
-        (mouseup)="onMouseUp($event)"><ng-container *ngTemplateOutlet="content" ></ng-container></button>
-
+  *ngIf="!routerLink; else anchor"
+  tabindex="-1"
+  [ngClass]="role"
+  [class.pressed]="pressed"
+  [disabled]="disabled"
+  (click)="onClick($event)"
+  (mousedown)="onMouseDown($event)"
+  (mouseup)="onMouseUp($event)">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</button>
+<ng-template #anchor>
+  <a *ngIf="useHref"
+     tabindex="-1"
+     rel="noopener nofollow"
+     [href]="routerLink"
+     [target]="target"
+     [ngClass]="role"
+     [class.pressed]="pressed"
+     (click)="onClick($event)"
+     (mousedown)="onMouseDown($event)"
+     (mouseup)="onMouseUp($event)">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </a>
+  <a *ngIf="!useHref"
+     tabindex="-1"
+     [routerLink]="routerLink"
+     [target]="target"
+     [ngClass]="role"
+     [class.pressed]="pressed"
+     (click)="onClick($event)"
+     (mousedown)="onMouseDown($event)"
+     (mouseup)="onMouseUp($event)">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </a>
 </ng-template>
 
 <ng-template #content>

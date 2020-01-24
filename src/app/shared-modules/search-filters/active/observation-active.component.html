@@ -1,7 +1,7 @@
-<strong class="title link" (click)="toggleActiveList()" [ngClass]="{link: active.length > 0}">
+<button class="open-select" (click)="toggleActiveList()" [ngClass]="{link: active.length > 0}">
   {{ 'observation.active' | translate }}
   <span class="badge" [ngClass]="{has: active.length > 0}">{{ active.length }}</span>
-</strong>
+</button>
 <div class="active-list" *ngIf="showList" (lajiClickOutSide)="toggleActiveList()">
   <ul>
     <li>

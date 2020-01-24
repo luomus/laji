@@ -1,13 +1,9 @@
-<lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm">
+<lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm" [menuTitle]="'observation.form.menuTitle' | translate">
   <main>
     <ng-container *lajiBrowserOnly>
       <ng-container *ngIf="visible.info">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="pull-right toggle-intro" *ngIf="!vm.showIntro">
-              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-            </div>
-          </div>
+        <div class="toggle-intro" *ngIf="!vm.showIntro">
+          <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
         </div>
         <alert *ngIf="vm.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
           <div [innerHtml]="'observation.intro' | translate"></div>
@@ -37,6 +33,7 @@
       <laji-form-sample
         *ngSwitchCase="'sample'"
         [query]="vm.query"
+        [skipActiveFilters]="skipUrlParameters"
         [invasiveStatuses]="invasiveStatuses"
         [dateFormat]="dateFormat"
         [advancedMode]="vm.advanced"

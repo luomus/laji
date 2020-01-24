@@ -31,7 +31,7 @@ interface Settings {[key: string]: DatatableColumn; }
 @Component({
   selector: 'laji-datatable',
   templateUrl: './datatable.component.html',
-  styleUrls: ['./datatable.component.css'],
+  styleUrls: ['./datatable.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {

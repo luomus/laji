@@ -10,7 +10,7 @@ import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
 @Component({
   selector: 'laji-footer',
-  styleUrls: ['./footer.component.css'],
+  styleUrls: ['./footer.component.scss'],
   templateUrl: './footer.component.html'
 })
 export class FooterComponent implements OnInit, OnDestroy {

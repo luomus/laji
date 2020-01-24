@@ -1,5 +1,5 @@
 @import '../../../../styles/variables';
-@import '../../../../../projects/laji-ui/src/lib/vars';
+@import 'vars';
 
 .form-footer {
   overflow: scroll;
@@ -12,11 +12,13 @@
   background-color: rgba(44, 62, 80, 0.9);
   display: flex;
   flex-flow: row nowrap;
-  > div, > lu-button {
+  > div, > button, > lu-button {
     margin-right: $sp-default;
   }
-  .lock-button {
-    margin-right: 0;
+
+  button, .lock-button {
+    height: 27px;
+    align-self: center;
   }
 }
 

@@ -1,14 +1,14 @@
 <div class='form-footer' *ngIf="_admin || (_form && !_locked)">
   <div class="lock-button" *ngIf="_admin && _locked !== undefined">
     <ng-container *ngIf="_locked; else open">
-      <lu-button role="primary" [disabled]="saving" (click)="lock.emit(false)"><i class="fa fa-lock"></i></lu-button>
+      <button type="button" [disabled]="saving" class="btn btn-danger btn-sm" (click)="lock.emit(false)"><i class="fa fa-lock"></i></button>
     </ng-container>
     <ng-template #open>
-      <lu-button [disabled]="saving" (click)="lock.emit(true)"><i class="fa fa-unlock"></i></lu-button>
+      <button type="button" [disabled]="saving" class="btn btn-success btn-sm" (click)="lock.emit(true)"><i class="fa fa-unlock"></i></button>
     </ng-template>
   </div>
-  <lu-button *ngIf="show.save" role="primary" [disabled]="saving" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</lu-button>
-  <lu-button *ngIf="show.temp" [disabled]="saving" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</lu-button>
+  <button *ngIf="show.save" class="btn btn-success btn-sm" [disabled]="saving" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
+  <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
   <div [ngSwitch]="status" class="fill-space status">
     <div *ngSwitchCase="'success'" class="success">
       {{ 'haseka.form.success'|translate }}
@@ -28,6 +28,6 @@
         {{ 'haseka.form.readonly' | translate }}
       </span>
   </div>
-  <lu-button *ngIf="show.cancel" [disabled]="saving" (click)="cancel.emit()">{{ buttonLabel('cancel') | translate }}</lu-button>
+  <button *ngIf="show.cancel" class="btn btn-danger btn-sm pull-right" [disabled]="saving" type="submit" (click)="cancel.emit()">{{ buttonLabel('cancel') | translate }}</button>
   <laji-feedback *ngIf="displayFeedback" [iconOnly]="true" [fixed]="false"></laji-feedback>
 </div>

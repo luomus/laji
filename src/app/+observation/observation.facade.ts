@@ -11,6 +11,7 @@ import { UserService } from '../shared/service/user.service';
 import { Autocomplete } from '../shared/model/Autocomplete';
 import { FooterService } from '../shared/service/footer.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
+import { ObservationDataService } from './observation-data.service';
 
 interface IPersistentState {
   showIntro: boolean;
@@ -36,10 +37,6 @@ export interface IObservationViewModel extends IObservationState {
   lgScreen: boolean;
 }
 
-const emptyQuery: WarehouseQueryInterface = {
-  _coordinatesIntersection: 100
-};
-
 const _persistentState: IPersistentState = {
   showIntro: true,
   advanced: false
@@ -47,7 +44,7 @@ const _persistentState: IPersistentState = {
 
 let _state: IObservationState = {
   ..._persistentState,
-  query: {...emptyQuery},
+  query: {},
   filterVisible: true,
   activeTab: 'map',
   countTaxa: 0,
@@ -96,7 +93,7 @@ export class ObservationFacade {
   });
 
   private hashCache: {[key: string]: string} = {};
-  private _emptyQuery: WarehouseQueryInterface = emptyQuery;
+  private _emptyQuery: WarehouseQueryInterface = {};
 
   constructor(
     private browserService: BrowserService,
@@ -104,7 +101,8 @@ export class ObservationFacade {
     private translateService: TranslateService,
     private userService: UserService,
     private footerService: FooterService,
-    private warehouseApi: WarehouseApi
+    private warehouseApi: WarehouseApi,
+    private observationDataService: ObservationDataService
   ) {
     this.updateState({..._state, ...this.persistentState});
   }
@@ -190,27 +188,32 @@ export class ObservationFacade {
   }
 
   private countUnits(query: WarehouseQueryInterface): Observable<number> {
-    return this.count(this.warehouseApi.warehouseQueryCountGet(query), 'loadingUnits', 'countUnit');
+    return this.observationDataService.getData(query).pipe(
+      map(data => data.units.total),
+      catchError(() => this.count(this.warehouseApi.warehouseQueryCountGet(query), 'loadingUnits', 'countUnit'))
+    );
   }
 
   private countTaxa(query: WarehouseQueryInterface): Observable<number> {
-    return this.count(
-      this.warehouseApi.warehouseQueryAggregateGet(
-        {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species'},
-        ['unit.linkings.taxon.speciesId'], [], 1, 1
-      ),
-      'loadingTaxa',
-      'countTaxa'
+    return this.observationDataService.getData(query).pipe(
+      map(data => data.species.total),
+      catchError(() => this.count(
+        this.warehouseApi.warehouseQueryAggregateGet(
+          {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species'},
+          ['unit.linkings.taxon.speciesId'], [], 1, 1
+        ),
+        'loadingTaxa',
+        'countTaxa'
+      ))
     );
   }
 
   private count(src: Observable<any>, loadingKey: keyof IObservationState, countKey:  keyof IObservationState) {
     return src.pipe(
-      map(result => result.total || 0),
-      catchError((e) => of(0)),
+      map(result => result.total),
+      catchError(() => of(null)),
       distinctUntilChanged(),
       tap((cnt) => this.updateState({..._state, [loadingKey]: false, [countKey]: cnt})),
-      startWith(''),
       share()
     );
   }
