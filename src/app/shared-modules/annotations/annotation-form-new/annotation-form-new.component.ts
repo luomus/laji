@@ -60,7 +60,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   sending = false;
   infoModal = true;
   needsAck: boolean;
-  annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
+  annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, label: string}[]>;
   tagsAdd: Array<AnnotationTag>;
   tagsRemove: Array<AnnotationTag>;
   annotationAddadableTags$: Observable<AnnotationTag[]>;
