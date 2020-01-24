@@ -262,9 +262,62 @@
       kuvattaessa. Sitä tarkemmat aluejaot puolestaan perustuvat yleensä <a [routerLink]="'/ykj' | localize">yhtenäiskoordinaatistoon</a>.
     </p>
     <p>
-      Myös Lajitietokeskus ylläpitää valtakunnallisessa taksonitietokannassa lajien statustietoja eliömaakunnittain.
+      Lajitietokeskus ylläpitää valtakunnallisessa taksonitietokannassa lajien statustietoja eliömaakunnittain.
       Nämä tiedot perustuvat lajien esiintymisestä tehtyihin havaintoihin, mutta eivät välttämättä ole täysin yhteneviä
       Lajitietokeskuksen havaintoaineistosta johdetun luettelon kanssa.
     </p>
+    <h3>Eliömaakuntajat paikkatietoaineistona</h3>
+    <p>
+        Eliömaakuntien rajat ladattavissa paikkatietoformaateissa: <a href="https://cdn.laji.fi/files/biogeographical-province/FI_FMNH_BGR_20161118.zip">FI_FMNH_BGR_20161118.zip</a>
+    </p>
+    <p>    
+      Eliömaakuntia on 21 koostuen 30 polygonista. Useammasta kuin yhdestä polygonista muodostuvat maakunnat:
+    </p>
+    <ul>
+        <li>Etelä-Karjala: Valtakunnanraja jakaa kahteen osaan</li>
+        <li>Laatokan Karjala: Valtakunnanraja jakaa kahteen osaan</li>
+        <li>Etelä-Häme: Yksi enklaavi Etelä-Savon rajalla</li>
+        <li>Pohjois-Savo: Kaksi enklaavia Etelä-Savon rajalla</li>
+        <li>Keski-Pohjanmaa: Kaksi enklaavia Pohjois-Hämeen rajalla</li>
+        <li>Oulun Pohjanmaa: Yksi enklaavi Keski-Pohjanmaan rajalla</li>
+        <li>Perä-Pohjanmaa: Yksi enklaavi Oulun Pohjanmaan rajalla</li>
+    </ul>
+    <p>
+        Osat ja enklaavit on merkitty <a href="https://cdn.laji.fi/files/biogeographical-province/FI_FMNH_BGR.pdf">karttaan</a> polygonisentroideina.
+    </p>
+    <p>
+        <strong>Koordinaatistot:</strong>
+    </p>
+    <ul>
+        <li>EPSG:2393  -  KKJ3 (YKJ)</li>
+        <li>EPSG:3035  -  ETRS89 / ETRS-LAEA (EEA:n käyttämä)</li>
+        <li>EPSG:3047  -  ETRS89 / TM35</li>
+        <li>EPSG:3067  -  ETRS89 / TM35FIN  (koordinaattiarvoiltaan sama kuin EPSG:3047)</li>
+        <li>EPSG:4326  -  WGS84</li>
+    </ul>
+    <p>
+      Muissa kuin WGS84-datassa koordinaatit on esitetty kolmen desimaalin tarkuudella.
+    </p>
+    <p>
+        <strong>Tiedostoformaatit:</strong>
+    </p>
+    <ul>
+        <li>ESRI Shapefile (.shp, .cpg, .dbf, .prj, .qpj, .shx)</li>
+        <li>GeoJSON (.geojson)</li>
+        <li>GML (.gml, .gfs)</li>
+    </ul>
+    <p>
+      Merkistö on kaikissa formaateissa ISO-8859-1.
+    </p>
+    <p>
+      Ominaisuustiedot: Shapefile-formaatissa ominaisuustietokenttien maksimipituus on kymmenen merkkiä. Kenttien nimien vastaavuudet:
+    </p>
+    <ul>
+        <li>MAAKUNTALY  =  MAAKUNTALYH_FI</li>
+        <li>MAAKUNTA_1  =  MAAKUNTALYH_LAT</li>
+        <li>MAAKUNTA_F  =  MAAKUNTA_FI</li>
+        <li>MAAKUNTA_L  =  MAAKUNTA_LAT</li>
+    </ul>
+ 
   </div>
 </div>
