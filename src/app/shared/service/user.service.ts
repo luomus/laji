@@ -1,4 +1,4 @@
-import { catchError, distinctUntilChanged, filter, map, share, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, map, share, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
@@ -171,10 +171,12 @@ export class UserService {
     return pickValue(_state.allUsers[id] as Observable<Person>);
   }
 
-  redirectToLogin(returnUrl?: string): void {
+  redirectToLogin(returnUrl?: string, routeData?: any): void {
     if (this.platformService.isBrowser) {
       this.currentRouteData$.pipe(
-        take(1)
+        startWith(of(routeData)),
+        filter(data => !!data),
+        take(1),
       ).subscribe(data => {
         returnUrl = data.loginLanding || returnUrl || this.location.path(true);
         this.updatePersistentState({...this.persistentState, returnUrl});
@@ -204,6 +206,10 @@ export class UserService {
     const settings = {..._state.settings, [key]: value};
     this.updateState({..._state, settings});
     this.storage.store(this.personsCacheKey(personID), settings);
+  }
+
+  getPersistentState(): IPersistentState {
+    return {...this.persistentState};
   }
 
   private personsCacheKey(personID): string {
