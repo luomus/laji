@@ -10,18 +10,27 @@ export const userRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: UserComponent
+    component: UserComponent,
+    data: {
+      title: 'navigation.user.profile'
+    }
   },
   {
     path: 'login',
     pathMatch: 'full',
     component: UserLoginComponent,
-    canActivate: [UserLoginGuard]
+    canActivate: [UserLoginGuard],
+    data: {
+      loginLanding: '/'
+    }
   },
   {
     path: 'logout',
     pathMatch: 'full',
-    component: UserLogoutComponent
+    component: UserLogoutComponent,
+    data: {
+      loginLanding: '/'
+    }
   },
   {
     path: ':userId',

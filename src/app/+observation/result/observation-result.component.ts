@@ -76,6 +76,7 @@ export class ObservationResultComponent {
 
   hasMonthDayData: boolean;
   hasYearData: boolean;
+  hasTaxonData: boolean;
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
 

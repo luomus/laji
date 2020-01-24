@@ -13,7 +13,7 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     if (this.options.disabled) { return; }
-    if (document.readyState === "complete") {
+    if (document.readyState === 'complete') {
       this.onLoad();
     } else {
       this.destroyLoadListener = this.renderer.listen('window', 'load', this.onLoad.bind(this));
@@ -43,14 +43,14 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
     } catch (e) {
       const evt = window.document.createEvent('UIEvents');
       evt['ignore-fill-height'] = true;
-      //@ts-ignore
+      // @ts-ignore
       evt.initUIEvent('resize', true, false, window, 0);
       window.dispatchEvent(evt);
     }
   }
 
   ngOnDestroy() {
-    if (this.destroyLoadListener) { this.destroyLoadListener() }
-    if (this.destroyResizeListener) { this.destroyResizeListener() }
+    if (this.destroyLoadListener) { this.destroyLoadListener(); }
+    if (this.destroyResizeListener) { this.destroyResizeListener(); }
   }
 }
