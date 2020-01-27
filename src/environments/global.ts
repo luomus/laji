@@ -316,6 +316,18 @@ export const Global = {
     'MMAN.30': {
       value: 'MMAN.30',
       quality: 'check'
+    },
+    'MMAN.31': {
+      value: 'MMAN.31',
+      quality: 'check'
+    },
+    'MMAN.32': {
+      value: 'MMAN.32',
+      quality: 'check'
+    },
+    'MMAN.33': {
+      value: 'MMAN.33',
+      quality: 'check'
     }
   },
   limit: {
