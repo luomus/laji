@@ -14,10 +14,15 @@
         <div class="tags" *ngIf="annotation.addedTags || annotation.addedTags">
          <div class="added-tags" *ngIf="annotation.addedTags.length > 0">
            <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | toQName">
-             <div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].type }}" >
-                <!--<span class="annotation-star {{ annotationTagsObservation[addedTag | toQName].quality }}"></span>-->
-                <span>{{ addedTag | toQName | label }}</span>
+             <div *ngIf="annotationTagsObservation[addedTag | toQName]; else noCategory">
+                <div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].type }}" >
+                  <!--<span class="annotation-star {{ annotationTagsObservation[addedTag | toQName].quality }}"></span>-->
+                  <span>{{ addedTag | toQName | label }}</span>
+                </div>
              </div>
+             <ng-template #noCategory>
+              <span>{{ addedTag | toQName | label }}</span>
+             </ng-template>
            </div>
          </div>
          <div class="removed-tags" *ngIf="annotation.removedTags.length > 0">
