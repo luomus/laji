@@ -90,7 +90,7 @@ export class HomeDataService {
 
   public static getRecentDate(): string {
     const start = moment();
-    start.subtract(0, 'd');
+    start.subtract(1, 'd');
 
     return start.format('YYYY-MM-DD');
   }
