@@ -1,18 +1,18 @@
 <form [hidden]="!visible" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
     <div class="tags-step-1" *ngIf="expert else checkTags">
       <label>{{ 'annotation.addTags' | translate }}</label>
-        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typePositiveQuality','MMAN.typeNegativeQuality']: 'exclude': 'id': ['MMAN.5'] | sort: 'position'; let i = index;" class="tag-value">
+        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typePositiveQuality','MMAN.typeNegativeQuality']: 'include': 'id': ['MMAN.3'] | sort: 'position'; let i = index;" class="tag-value">
           <main class="lu">
             <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-              <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+              <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': (item.quality==='MMAN.typeNegativeQuality' || item.quality==='MMAN.typeAdmin'), 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
             </lu-checkbox>
           </main>
         </div>
         <div *ngIf="isEditor" style="margin-top:10px; margin-bottom:10px">
-            <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeAdmin']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+            <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeInfo']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
                 <main class="lu">
                     <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-                      <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+                      <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='MMAN.typeInfo' }">{{ item.id | toQName | label }}</div>
                     </lu-checkbox>
                 </main>
             </div>
@@ -57,8 +57,8 @@
         <div class="col-lg-3 col-md-12 col-sm-12">
             <label class="taxonomy">{{ 'annotation.addIdentification' | translate }}</label> 
         </div>
-        <div class="col-md-12 col-sm-12" [ngClass]="{'col-lg-6': unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.5' | toQName) === -1,
-        'col-lg-9': !unit.linkings || (!unit.linkings.originalTaxon || !unit.linkings.taxon) || annotation.addedTags.indexOf('MMAN.5' | toQName) !== -1}">
+        <div class="col-md-12 col-sm-12" [ngClass]="{'col-lg-6': unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1,
+        'col-lg-9': !unit.linkings || (!unit.linkings.originalTaxon || !unit.linkings.taxon) || annotation.addedTags.indexOf('MMAN.3' | toQName) !== -1}">
             <input #taxon
             [ngClass]="{loading: typeaheadLoading}"
             type="text"
@@ -85,7 +85,7 @@
           </ng-template>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
-          <div class="agree" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.5' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.obsercation.agree' | translate }}</div>
+          <div class="agree" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.obsercation.agree' | translate }}</div>
         </div>
       </div>
 

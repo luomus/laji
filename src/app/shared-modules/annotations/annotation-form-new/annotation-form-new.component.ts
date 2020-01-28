@@ -94,7 +94,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   ) { }
 
   ngOnInit() {
-    console.log('hola');
     this.initAnnotationTags();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.identification.taxon);
@@ -322,7 +321,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   addToAddTags(value) {
-    if ( value.quality === 'MMAN.typePositiveQuality' || value.quality === 'MMAN.typeNegativeQuality') {
+    if ( value.quality === 'MMAN.typePositiveQuality' || value.quality === 'MMAN.typeNegativeQuality' || value.id === 'MMAN.3') {
       const index = this.annotation.addedTags.indexOf(
         this.findFirstTagNegativePositive(this.annotation.addedTags)
       );
@@ -401,7 +400,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)
     ) && this.annotation.removedTags.length === 0) || (
       (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
-      (this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1)
+      (this.annotation.addedTags.indexOf('MMAN.5') !== -1 || this.annotation.addedTags.indexOf('MMAN.8') !== -1 ||
+      this.annotation.addedTags.indexOf('MMAN.9') !== -1)
       && this.personRoleAnnotation === this.annotationRole.expert && this.expert && !this.isEditor
       )
       ) {
