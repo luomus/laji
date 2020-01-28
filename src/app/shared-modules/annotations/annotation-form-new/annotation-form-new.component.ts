@@ -94,6 +94,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   ) { }
 
   ngOnInit() {
+    console.log('hola');
     this.initAnnotationTags();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.identification.taxon);
@@ -179,25 +180,11 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
      return this.annotation.addedTags.indexOf(optionId) === -1; // add tags without control if positive or negative
   }
 
-  disableTags(optionId: string): boolean {
-        if (this.annotation.addedTags.indexOf(optionId) === -1) {
-          if (this.findFirstTagNegativePositive(this.annotation.addedTags, Global.annotationTags) !== undefined ) {
-            if ((Global.annotationTags[optionId].quality !==
-              Global.annotationTags[this.findFirstTagNegativePositive(this.annotation.addedTags, Global.annotationTags)].quality) && (
-            Global.annotationTags[optionId].quality !== 'check' &&
-            Global.annotationTags[optionId].quality !== 'neutral')) {
-              return true;
-            }
-          } else {
-            return false;
-          }
-        }
-  }
-
   // add tags and filter after add a positive or negative tag
-  findFirstTagNegativePositive(tags, quality): any {
+  findFirstTagNegativePositive(tags): any {
     for (let i = 0; i < tags.length; i++) {
-      if (quality[tags[i]].quality !== 'check' && quality[tags[i]].quality !== 'neutral' && quality[tags[i]].quality !== 'self') {
+      if (Global.annotationTags[tags[i]].quality !== 'MMAN.typeCheck' && Global.annotationTags[tags[i]].quality !== 'MMAN.typeInfo'
+      && Global.annotationTags[tags[i]].quality !== 'MMAN.typeInvasive') {
         return tags[i];
       } else {
       }
@@ -269,9 +256,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       map(data => {
         return data.map(element => {
           if (element['id'] === 'MMAN.3') {
-            return { id: element['id'], quality: this.annotationTagsObservation[element.id].quality, position: 1 };
+            return { id: element['id'], quality: element['type'], position: 1 };
           } else {
-            return { id: element['id'], quality: this.annotationTagsObservation[element.id].quality, position: 0 };
+            return { id: element['id'], quality: element['type'], position: 0 };
           }
         });
       })
@@ -335,33 +322,30 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   addToAddTags(value) {
-    if ( this.annotationTagsObservation[value].quality === 'positive' || this.annotationTagsObservation[value].quality === 'negative') {
+    if ( value.quality === 'MMAN.typePositiveQuality' || value.quality === 'MMAN.typeNegativeQuality') {
       const index = this.annotation.addedTags.indexOf(
-        this.findFirstTagNegativePositive(this.annotation.addedTags, this.annotationTagsObservation)
+        this.findFirstTagNegativePositive(this.annotation.addedTags)
       );
-      const index_same = this.annotation.addedTags.indexOf(value);
+      const index_same = this.annotation.addedTags.indexOf(value.id);
       if (index !== -1) {
         this.annotation.addedTags.splice(index, 1);
       }
 
       if (index_same === -1 ) {
-        this.annotation.addedTags.push(value);
+        this.annotation.addedTags.push(value.id);
         if (value === 'MMAN.3') {
-          this.removeAllTagsByCategory(this.annotation.addedTags, 'check');
+          this.removeAllTagsByCategory(this.annotation.addedTags, 'MMAN.typeCheck');
         }
       } else {
-        // this.annotation.addedTags.push(value);
+
       }
 
-      /*if (value === 'MMAN.3') {
-        this.removeAllcheckTags();
-      }*/
     } else {
-      const index = this.annotation.addedTags.indexOf(value);
+      const index = this.annotation.addedTags.indexOf(value.id);
       if (index > -1) {
         this.annotation.addedTags.splice(index, 1);
       } else {
-        this.annotation.addedTags.push(value);
+        this.annotation.addedTags.push(value.id);
       }
     }
     this.annotation.addedTags = [...this.annotation.addedTags];
@@ -417,8 +401,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)
     ) && this.annotation.removedTags.length === 0) || (
       (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
-      (this.annotation.addedTags.indexOf('MMAN.6') !== -1 ||
-      this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1)
+      (this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1)
       && this.personRoleAnnotation === this.annotationRole.expert && this.expert && !this.isEditor
       )
       ) {
