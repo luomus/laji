@@ -36,7 +36,10 @@ export class TabsComponent implements AfterContentInit {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterContentInit(): void {
-    this.tabComponents.toArray()[this.selectedIndex].active = true;
+    const tabs = this.tabComponents.toArray();
+    if (tabs[this.selectedIndex]) {
+      tabs[this.selectedIndex].active = true;
+    }
   }
 
   @Input() set selectedIndex(idx) {
