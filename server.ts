@@ -92,7 +92,7 @@ app.get('*', (req, res) => {
   const CACHE_TIME = 60 * 30; // This is time in sec for how long will the content be stored in cache
   const CACHE_UPDATE = 60;    // This is time when the content will be updated even if there is already one in the cache
 
-  const redisKey = 'LajiPage:' + req.originalUrl;
+  const redisKey = 'LajiPage:' + req.originalUrl.trimEnd('/');
   RedisClient.get(redisKey, (errRedis: any, resultRedis: string) => {
     let hit = false;
     if (resultRedis) {
