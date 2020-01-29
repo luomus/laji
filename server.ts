@@ -74,6 +74,7 @@ app.get('*', (req, res) => {
   res.header('Expires', '-1');
   res.header('Pragma', 'no-cache');
 
+  console.log('REQUEST: ' + req.originalUrl);
   // Skip cache for these requests
   const parts = req.originalUrl.split('?');
   if (req.originalUrl.indexOf('/user') === 0 || parts.length > 1) {
@@ -92,10 +93,11 @@ app.get('*', (req, res) => {
   const CACHE_TIME = 60 * 30; // This is time in sec for how long will the content be stored in cache
   const CACHE_UPDATE = 60;    // This is time when the content will be updated even if there is already one in the cache
 
-  const redisKey = 'LajiPage:' + req.originalUrl.trimEnd('/');
+  const redisKey = 'LajiPage:' + req.originalUrl.replace(/\/$/, '');
   RedisClient.get(redisKey, (errRedis: any, resultRedis: string) => {
     let hit = false;
     if (resultRedis) {
+      console.log('HIT: ' +  req.originalUrl);
       res.send(resultRedis);
       hit = true;
     }
@@ -104,6 +106,7 @@ app.get('*', (req, res) => {
       const lockKey = '_lock:' + key;
       Lock.lock(lockKey, CACHE_UPDATE * 1000, (err, lock) => {
         if (lock) {
+          console.log('UPDATE: ' +  req.originalUrl);
           cb();
         }
       });
@@ -115,6 +118,7 @@ app.get('*', (req, res) => {
           updateLock(redisKey, () => {
             res.render('index', {req, res}, (err, html) => {
               if (err) {
+                console.log('ERROR: ' +  req.originalUrl);
                 console.error(err);
                 return;
               }
@@ -126,8 +130,10 @@ app.get('*', (req, res) => {
         }
       });
     } else {
+      console.log('MISS: ' + req.originalUrl);
       res.render('index', {req, res}, (err, html) => {
         if (err) {
+          console.log('ERROR: ' +  req.originalUrl);
           console.error(err);
           return res.sendFile(join(BROWSER_PATH, 'index.html'));
         }
