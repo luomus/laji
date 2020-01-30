@@ -225,7 +225,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   ngAfterViewChecked() {
     if (this._goToStartAfterViewCheck) {
       this._goToStartAfterViewCheck = false;
-      this.table.offset = 0;
+      if (this.table) {
+        this.table.offset = 0;
+      }
     }
   }
 
