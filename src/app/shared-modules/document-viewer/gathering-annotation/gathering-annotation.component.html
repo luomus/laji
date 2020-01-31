@@ -8,7 +8,7 @@
                 <ng-template #annotation>
                     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
                         <laji-annotation-data-observation [gathering]="gathering" [unit]="unit" [editors]="editors" [collectionId]="collectionId" [createdDate]="createdDate"></laji-annotation-data-observation>
-                        <laji-unit-annotation-list [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID"
+                        <laji-unit-annotation-list [gathering]="gathering" [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID"
                         [personRoleAnnotation]="personRoleAnnotation" [documentID]="documentID" [unit]="unit" [highlight]="highlight" (annotationPending)="checkPending($event)"></laji-unit-annotation-list>
                     </ng-container>    
                 </ng-template>

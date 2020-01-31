@@ -1,3 +1,5 @@
+import { DecimalPipe } from '@angular/common';
+
 /**
  * API documentation
  * To use this api you need an access token.  To getList the token, send a post request with your email address to api-users
@@ -64,6 +66,8 @@ export interface Annotation {
   addedTags?: string[];
   removedTags?: string[];
 
+  occurrenceAtTimeOfAnnotation?: Annotation.Occurrence;
+
 }
 export namespace Annotation {
 
@@ -100,6 +104,18 @@ export namespace Annotation {
       TypeComment = <any> 'MAN.typeComment',
       TypeAcknowledged = <any> 'MAN.typeAcknowledged',
       TypeUnidentifiable = <any> 'MAN.typeUnidentifiable'
+  }
+
+  export interface Occurrence {
+    countryVerbatim: string;
+    dateBegin: string;
+    dateEnd: string;
+    locality: string;
+    municipalityVerbatim: string;
+    taxonId: string;
+    taxonVerbatim: string;
+    wgs84centerPointLat: number;
+    wgs84centerPointLon: number;
   }
 
 

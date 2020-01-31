@@ -17,6 +17,7 @@ export class UnitAnnotationListComponent implements OnInit {
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() documentID: string;
   @Input() unit: any;
+  @Input() gathering: any;
   @Input() highlight: string;
   @Input() identifying: boolean;
   @Input() openAnnotation: boolean;

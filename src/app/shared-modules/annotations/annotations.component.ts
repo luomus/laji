@@ -22,6 +22,7 @@ export class AnnotationsComponent implements OnInit {
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() identifying = false;
   @Input() unit: any;
+  @Input() gathering: any;
   @Input() annotations: Annotation[] = [];
   @Input() formVisible: boolean;
   @Output() close = new EventEmitter<any>();
@@ -59,7 +60,18 @@ export class AnnotationsComponent implements OnInit {
       },
       addedTags: [],
       removedTags: [],
-      type: Annotation.TypeEnum.TypeOpinion
+      type: Annotation.TypeEnum.TypeOpinion,
+      occurrenceAtTimeOfAnnotation: {
+        countryVerbatim: this.gathering.country ? this.gathering.country : '',
+        dateBegin: this.gathering.eventDate.begin ? this.gathering.eventDate.begin : '',
+        dateEnd: this.gathering.eventDate.end ? this.gathering.eventDate.end : '',
+        locality: this.gathering.locality ? this.gathering.locality : '',
+        municipalityVerbatim: this.gathering.municipalityVerbatim ? this.gathering.municipalityVerbatim : '',
+        taxonId : this.unit.linkings.originalTaxon ? this.unit.linkings.originalTaxon.id : '' ,
+        taxonVerbatim: this.unit.taxonVerbatim ? this.unit.taxonVerbatim : '',
+        wgs84centerPointLat: this.gathering.conversions.wgs84CenterPoint ? this.gathering.conversions.wgs84CenterPoint.lat : '',
+        wgs84centerPointLon: this.gathering.conversions.wgs84CenterPoint ? this.gathering.conversions.wgs84CenterPoint.lon : ''
+      }
     };
   }
 

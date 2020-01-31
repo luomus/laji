@@ -31,7 +31,7 @@ export class BarChartComponent implements OnInit {
   constructor(
     public elm: ElementRef<HTMLCanvasElement>
     ) {
-    const top = elm.nativeElement.getBoundingClientRect().top;
+     const top = elm.nativeElement.getBoundingClientRect().top;
   }
 
   initActiveClickAreas = false;
