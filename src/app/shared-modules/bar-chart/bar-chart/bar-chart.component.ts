@@ -4,7 +4,7 @@ import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'laji-bar-chart',
-  template: `<ng-container *lajiBrowserOnly><canvas #mycanvas="base-chart" id="myChart" baseChart
+  template: `<canvas #mycanvas="base-chart" id="myChart" baseChart
   [datasets]="datasets"
   [labels]="labels"
   [colors]="colors"
@@ -14,7 +14,7 @@ import { BaseChartDirective } from 'ng2-charts';
   [chartType]="chartType"
   (chartClick)="onClick($event)"
   >
-  </canvas></ng-container>`,
+  </canvas>`,
   styles: [':host { display:block;}']
 })
 export class BarChartComponent implements OnInit {
