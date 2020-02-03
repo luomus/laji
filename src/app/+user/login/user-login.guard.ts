@@ -18,7 +18,7 @@ export class UserLoginGuard implements CanActivate {
     if (!route.queryParams['token']) {
       return of(this.router.parseUrl('/error/404'));
     }
-    this.location.replaceState('/', '');
+    this.location.replaceState(this.location.path().split('?')[0], '');
 
     return this.userService.login(route.queryParams['token']).pipe(
       map(() => this.router.parseUrl(this.userService.getReturnUrl()))

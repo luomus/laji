@@ -65,6 +65,9 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   setActiveIndex(idx: number) {
     this.active = idx;
+    if (!this.lajiMap.map) {
+      return;
+    }
     if (this.data[0].geoJSON && this._data.featureCollection !== this.getFeatureCollection(this.data[0].geoJSON) ) {
       this.initData();
     }
