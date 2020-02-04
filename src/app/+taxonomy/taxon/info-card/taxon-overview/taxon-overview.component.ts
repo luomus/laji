@@ -22,8 +22,8 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   taxonChildren: Taxonomy[] = [];
   ingress: any;
   description: any;
-  ylesta: any = [];
-  ylestaTitle: any = {};
+  ylesta: any;
+  ylestaTitle: any;
   _taxonDescription: TaxonomyDescription;
 
   mapQuery: WarehouseQueryInterface;

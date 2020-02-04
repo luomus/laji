@@ -27,19 +27,21 @@
       </select>
       <span class="check-translations" *ngIf="translationKo">{{ "translationsMissing" | translate }}</span>
       <div class="panel-group" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default"
-             *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index"
+        <div *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index">
+          <div class="panel panel-default"
+             *ngIf="group.group !== 'MX.SDVG14'"
              [title]="group.title | multiLang"
              [open]="true"
              [autoToggle]="true"
              [index]="i"
              laji-panel>
-          <div *ngFor="let variable of group.variables">
-            <h4 *ngIf="variable.variable !== 'MX.ingressText'">
-              {{ variable.title | multiLang }}
-            </h4>
-            <strong *ngIf="variable.variable === 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></strong>
-            <span *ngIf="variable.variable !== 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></span>
+            <div *ngFor="let variable of group.variables">
+              <h4 *ngIf="variable.variable !== 'MX.ingressText'">
+                {{ variable.title | multiLang }}
+              </h4>
+              <strong *ngIf="variable.variable === 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></strong>
+              <span *ngIf="variable.variable !== 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></span>
+            </div>
           </div>
         </div>
       </div>

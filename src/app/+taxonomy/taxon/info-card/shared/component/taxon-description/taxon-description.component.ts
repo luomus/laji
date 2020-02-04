@@ -19,7 +19,6 @@ export class TaxonDescriptionComponent implements OnChanges {
   ngOnChanges() {
     this.descriptionGroup = undefined;
     this.taxonDescription = this.taxonDescriptions && this.taxonDescriptions.length > 0 ? this.taxonDescriptions[0] : undefined;
-
     if (this.taxonDescription) {
       (this.taxonDescription.groups || []).forEach(group => {
         if (group.group === this.groupId) {

@@ -58,6 +58,11 @@
         [taxon]="taxon"
       ></laji-taxon-concept-info>
     </div>
+      <laji-taxon-description
+      [taxonDescriptions]="taxonDescription"
+      [groupId]="'MX.SDVG14'"
+      [title]="'taxonomy.taxonomy' | translate"
+    ></laji-taxon-description>
     <div class="panel panel-default"
          laji-panel
          [title]="'taxonomy.bold' | translate"
@@ -72,11 +77,6 @@
       <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
       <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
     </div>
-    <laji-taxon-description
-      [taxonDescriptions]="taxonDescription"
-      [groupId]="'MX.SDVG14'"
-      [title]="'taxonomy.description' | translate"
-    ></laji-taxon-description>
     <div class="panel panel-default"
          *ngIf="taxon.taxonExpert"
          laji-panel
