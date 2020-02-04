@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges,
+Output, EventEmitter } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
+import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 
 @Component({
   selector: 'laji-taxon-taxonomy',
@@ -13,6 +15,8 @@ import { TranslateService } from '@ngx-translate/core';
 export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() taxonDescription: TaxonomyDescription[];
+
+  @Output() taxonSelect = new EventEmitter<string>();
 
   synonymType: string;
   synonymTypes = [
@@ -30,14 +34,18 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   ];
 
   private synonymSub: Subscription;
+  taxonChildren: Taxonomy[] = [];
+  private childrenSub: Subscription;
 
   constructor(
     private translate: TranslateService,
     private taxonService: TaxonomyApi,
+    private taxonomyService: TaxonTaxonomyService,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.getChildren();
     if (changes.taxon) {
       if (this.synonymSub) {
         this.synonymSub.unsubscribe();
@@ -64,6 +72,10 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
     if (this.synonymSub) {
       this.synonymSub.unsubscribe();
     }
+
+    if (this.childrenSub) {
+      this.childrenSub.unsubscribe();
+    }
   }
 
   private getSynonymType(taxon: Taxonomy): string {
@@ -76,5 +88,17 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
         }
       }
     }
+  }
+
+  private getChildren() {
+    if (this.childrenSub) {
+      this.childrenSub.unsubscribe();
+    }
+    this.childrenSub = this.taxonomyService
+      .getChildren(this.taxon.id)
+      .subscribe(data => {
+        this.taxonChildren = data;
+        this.cd.markForCheck();
+      });
   }
 }

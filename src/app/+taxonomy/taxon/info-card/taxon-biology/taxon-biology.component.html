@@ -43,7 +43,15 @@
           </div>
         </div>
       </div>
-      <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
+      <div class="panel panel-default"
+         laji-panel
+         *ngIf="taxonDescription[activeDescription]"
+         [title]="'taxonomy.author' | translate"
+         [open]="true"
+         [autoToggle]="true"
+      >
+        <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
+      </div>
     </ng-container>
   </div>
 </div>

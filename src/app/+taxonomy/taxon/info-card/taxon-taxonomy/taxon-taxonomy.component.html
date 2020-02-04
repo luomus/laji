@@ -87,5 +87,47 @@
         {{ expert | users }}
       </div>
     </div>
+    <div *ngIf="taxon.hasChildren"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.belongs.to' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-datatable
+        (rowSelect)="taxonSelect.emit($event.row.id)"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [clientSideSorting]="true"
+        [rows]="taxonChildren"
+        [count]="taxonChildren.length"
+        [page]="1"
+        [pageSize]="taxonChildren.length"
+        [columns]="[
+          {
+            name: 'vernacularName',
+            label: 'taxonomy.vernacular.name',
+            sortable: true
+          },
+          {
+            name: 'scientificName',
+            label: 'taxonomy.scientific.name',
+            cellTemplate: 'taxonScientificName',
+            sortable: true
+          },
+          {
+            name: 'finnish',
+            label: 'taxonomy.finnish',
+            cellTemplate: 'boolean',
+            sortable: true
+          },
+          {
+            name: 'observationCountFinland',
+            label: 'taxonomy.finnishObservations',
+            sortable: true
+          }
+        ]">
+      </laji-datatable>
+    </div>
   </div>
 </div>

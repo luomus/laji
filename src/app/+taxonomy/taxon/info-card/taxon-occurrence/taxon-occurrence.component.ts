@@ -18,6 +18,7 @@ export class TaxonOccurrenceComponent implements OnChanges {
   chartQuery: WarehouseQueryInterface;
 
   hasMonthDayData: boolean;
+  hasYearData: boolean;
 
   constructor() { }
 
@@ -26,6 +27,7 @@ export class TaxonOccurrenceComponent implements OnChanges {
     this.chartQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id);
 
     this.hasMonthDayData = undefined;
+    this.hasYearData = undefined;
   }
 
 }
