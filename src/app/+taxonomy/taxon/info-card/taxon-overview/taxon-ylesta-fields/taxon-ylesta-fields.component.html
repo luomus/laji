@@ -1,0 +1,6 @@
+<div>
+    <div *ngFor="let field of info">
+        <h4>{{ field.title | multiLang }}</h4>
+        <span [innerHTML]="field.content | multiLang"></span>
+    </div>
+</div>

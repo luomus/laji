@@ -22,7 +22,8 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   taxonChildren: Taxonomy[] = [];
   ingress: any;
   description: any;
-  ylesta: any;
+  ylesta: any = [];
+  ylestaTitle: any = {};
   _taxonDescription: TaxonomyDescription;
 
   mapQuery: WarehouseQueryInterface;
@@ -32,19 +33,27 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
     this.ingress = undefined;
     this.description = undefined;
+    this.ylesta = undefined;
+    this.ylestaTitle = undefined;
     this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription[0] : undefined;
     if (this._taxonDescription && this._taxonDescription.groups.length > 0) {
-      const group = taxonDescription[0].groups[0];
-      if (group.group === 'MX.SDVG1') {
-        (group.variables || []).forEach(variable => {
-          if (variable.variable === 'MX.ingressText') {
-            this.ingress = variable.content;
-          }
-          if (variable.variable === 'MX.descriptionText') {
-            this.description = variable.content;
-          }
-        });
-      }
+      const groups = taxonDescription[0].groups;
+      (groups || []).forEach(gruppo => {
+        if (gruppo.group === 'MX.SDVG1') {
+          (gruppo.variables || []).forEach(variable => {
+            if (variable.variable === 'MX.ingressText') {
+              this.ingress = variable.content;
+            }
+            if (variable.variable === 'MX.descriptionText') {
+              this.description = variable.content;
+            }
+          });
+        }
+        if (gruppo.group === 'MX.SDVG8') {
+          this.ylestaTitle = gruppo.title;
+          this.ylesta = gruppo.variables;
+        }
+      });
     }
   }
 

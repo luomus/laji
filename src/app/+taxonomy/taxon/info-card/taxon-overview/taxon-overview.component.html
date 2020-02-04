@@ -56,6 +56,16 @@
     </ng-container>
 
     <div class="panel panel-default"
+         *ngIf="ylesta"
+         laji-panel
+         [title]="ylestaTitle | multiLang"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
+    </div>
+
+    <div class="panel panel-default"
          laji-panel
          [title]="'taxonomy.browse.title' | translate"
          [open]="true"
@@ -83,15 +93,6 @@
           </a>
         </li>
       </ul>
-    </div>
-
-    <div class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.browse.title' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-    aaaa
     </div>
 
     <div class="panel panel-default"

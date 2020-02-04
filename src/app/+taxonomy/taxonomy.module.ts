@@ -69,6 +69,7 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { LicenseModule } from '../shared-modules/license/license.module';
 import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
+import { TaxonYlestaFieldsComponent } from './taxon/info-card/taxon-overview/taxon-ylesta-fields/taxon-ylesta-fields.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -108,7 +109,8 @@ import { ObservationTableColumnService } from '../shared-modules/datatable/servi
     TaxonDescriptionComponent,
     TaxonInfoRowComponent,
     TaxonOccurrenceMapComponent,
-    AdministrativeStatusComponent
+    AdministrativeStatusComponent,
+    TaxonYlestaFieldsComponent
   ],
 })
 export class TaxonomyModule {
