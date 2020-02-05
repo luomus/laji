@@ -15,11 +15,10 @@ export class CheckLoginGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean|Observable<boolean> {
-    if (this.isChecked || route.queryParams['token'] || !this.userService.getPersistentState().isLoggedIn) {
+    if (this.isChecked || route.queryParams['token']) {
       this.isChecked = true;
       return true;
     }
-
     return this.userService.checkLogin();
   }
 }

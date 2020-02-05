@@ -220,6 +220,10 @@ export class UserService {
     return `users-${personID }-settings`;
   }
 
+  /**
+   * Checks that user status is correct and return true when status check is done
+   * It's considered to be done when no other actions are needed
+   */
   private _checkLogin(rawToken?: string): Observable<boolean> {
     if (!this.platformService.isBrowser) {
       this.doLoginState({}, '');
@@ -235,15 +239,21 @@ export class UserService {
         catchError(() => of(false)),
         tap(user => this.doLoginState(user, token)),
         map(user => !!user),
-        tap(loggedIn => {if (!loggedIn) { this.doLogoutState(); }}),
+        map(loggedIn => {
+          if (!loggedIn) {
+            this.doLogoutState();
+          }
+          return true;
+        }),
         share()
       );
     } else if (this.persistentState.isLoggedIn) {
       this.redirectToLogin();
+      return of(false);
     } else {
       this.doLogoutState();
     }
-    return of(false);
+    return of(true);
   }
 
   private doLoginState(user: Person, token) {
