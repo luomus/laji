@@ -10,6 +10,7 @@ import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { LocalizeInGuard } from './locale/localize-in.guard';
+import { CheckLoginGuard } from './+user/login/check-login.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -104,8 +105,12 @@ const routesWithLang: Routes = [
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
 ];
 
+const allRoutes: Routes = [
+  {path: '', children: routesWithLang, canActivate: [CheckLoginGuard]}
+];
+
 @NgModule({
-  imports: [RouterModule.forRoot(routesWithLang, {
+  imports: [RouterModule.forRoot(allRoutes, {
     enableTracing: false,
     preloadingStrategy: PreloadSelectedModulesList,
     initialNavigation: 'enabled'

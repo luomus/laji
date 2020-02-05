@@ -110,15 +110,19 @@ export class UserService {
       switchMap(() => this.browserService.visibility$),
       filter(visible => visible),
     ).subscribe(() => {
-      this.checkLogin();
+      this._checkLogin();
     });
+  }
+
+  checkLogin(): Observable<boolean> {
+    return this._checkLogin();
   }
 
   login(userToken: string): Observable<boolean> {
     if (_state.token === userToken || !this.platformService.isBrowser) {
       return of(true);
     }
-    return this.checkLogin(userToken);
+    return this._checkLogin(userToken);
   }
 
   logout(): void {
@@ -216,7 +220,7 @@ export class UserService {
     return `users-${personID }-settings`;
   }
 
-  private checkLogin(rawToken?: string): Observable<boolean> {
+  private _checkLogin(rawToken?: string): Observable<boolean> {
     if (!this.platformService.isBrowser) {
       this.doLoginState({}, '');
       return of(true);
