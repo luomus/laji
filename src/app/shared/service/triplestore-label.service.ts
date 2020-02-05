@@ -9,7 +9,7 @@ import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, map, share, shareReplay, tap } from 'rxjs/operators';
+import { catchError, map, share, shareReplay, take, tap } from 'rxjs/operators';
 import { AreaService } from './area.service';
 import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
 import { Publication } from '../model/Publication';
@@ -162,8 +162,9 @@ export class TriplestoreLabelService {
     if (this.currentLang !== lang) {
       this.currentLang = lang;
       this.metaData = this.baseDataService.getBaseData().pipe(
-        map((data) => this.dataToLookup(data)),
-        shareReplay(1)
+          take(1),
+          map((data) => this.dataToLookup(data)),
+          shareReplay(1)
       );
     }
     return this.metaData;
