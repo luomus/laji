@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
 
@@ -17,6 +17,7 @@ export class MetadataService {
    */
   getRange(range: string): Observable<{id: any, label: string, }[]> {
     return this.baseDataService.getBaseData().pipe(
+      take(1),
       map(data => data.alts),
       map(alts => alts.find(alt => alt.id === range)),
       map(alt => alt && alt.options || [])
