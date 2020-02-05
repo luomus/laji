@@ -43,7 +43,7 @@ export class BiogeographicalProvinceComponent {
   @Input() fill: BiogeographicalArea = {};
   @Input() height = '100%';
 
-  borderColor = '#333';
+  borderColor = '#000';
   loading = false;
   results$: Observable<BiogeographicalArea>;
 

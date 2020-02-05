@@ -36,7 +36,7 @@
              [index]="i"
              laji-panel>
              <div  *ngIf="group.group === 'MX.SDVG5'">
-                <h4>{{ 'MKV.habitat' | label }}</h4>
+                <!--<h4>{{ 'iucn.filter.habitat' | translate }}</h4>-->
                 <laji-taxon-info-row *ngIf="taxon.primaryHabitat" [label]="'taxonomy.habitat.primary' | translate">
                   <laji-habitat [habitat]="taxon.primaryHabitat"></laji-habitat>
                 </laji-taxon-info-row>
