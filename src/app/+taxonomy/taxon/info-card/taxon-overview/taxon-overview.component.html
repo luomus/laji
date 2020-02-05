@@ -20,6 +20,9 @@
         <div *ngIf="ingress || description">
           <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
         </div>
+        <div *ngIf="ylesta">
+          <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
+        </div>
       </div>
     </div>
 
@@ -54,17 +57,7 @@
     <ng-container *ngIf="isFromMasterChecklist">
       <ng-container [ngTemplateOutlet]="taxonInfo"></ng-container>
     </ng-container>
-
-    <div class="panel panel-default"
-         *ngIf="ylesta"
-         laji-panel
-         [title]="ylestaTitle | multiLang"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
-    </div>
-
+    
     <div class="panel panel-default"
          laji-panel
          [title]="'taxonomy.browse.title' | translate"
