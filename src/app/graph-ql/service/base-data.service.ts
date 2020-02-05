@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import { GraphQLService, QueryRef } from './graph-ql.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface IBaseData {
   classes: {
@@ -73,24 +74,35 @@ const BASE_QUERY = gql`
 @Injectable({
   providedIn: 'root'
 })
-export class BaseDataService {
+export class BaseDataService implements OnDestroy {
 
   ref: QueryRef<IBaseData>;
 
+  private readonly langSub: Subscription;
+
   constructor(
-    private graphQLService: GraphQLService
+    private graphQLService: GraphQLService,
+    private translationService: TranslateService
   ) {
     this.ref = this.graphQLService.watchQuery({
       query: BASE_QUERY,
       errorPolicy: 'ignore',
       fetchPolicy: 'cache-first'
     });
+    this.langSub = this.translationService.onLangChange.subscribe(() => {
+      this.ref.refetch();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSub) {
+      this.langSub.unsubscribe();
+    }
   }
 
   getBaseData(): Observable<IBaseData> {
     return this.ref.valueChanges.pipe(
-      map(({data}) => data),
-      take(1)
+      map(({data}) => data)
     );
   }
 }
