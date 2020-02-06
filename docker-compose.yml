@@ -8,8 +8,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    depends_on:
-      - 'redis'
     volumes:
       - '.:/app:delegated'
       - '/app/node_modules'
@@ -19,6 +17,4 @@ services:
       - '49153:49153'
     environment:
       - NODE_ENV=dev
-      - REDIS_HOST=redis
     command: 'npm run start'
-    #command: 'npm run start:ssr:local'
