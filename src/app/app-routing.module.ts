@@ -10,7 +10,7 @@ import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { LocalizeInGuard } from './locale/localize-in.guard';
-import { CheckLoginGuard } from './+user/login/check-login.guard';
+import { CheckLoginGuard } from './shared/guards/check-login.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
