@@ -8,6 +8,7 @@ import { UserService } from '../../shared/service/user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
+import { PlatformService } from '../../shared/service/platform.service';
 
 export interface Rights {
   edit: boolean;
@@ -25,7 +26,8 @@ export class FormPermissionService {
     private formPermissionApi: FormPermissionApi,
     private formService: FormService,
     private userService: UserService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private platformService: PlatformService
   ) {}
 
   hasAccessToForm(formID: string, personToken?: string): Observable<boolean> {
@@ -61,9 +63,7 @@ export class FormPermissionService {
   }
 
   isAdmin(permission: FormPermission, person: Person) {
-    if (person.role && person.role.indexOf('MA.admin') > -1) {
-      return true;
-    } else if (permission.admins && permission.admins.indexOf(person.id) > -1) {
+    if (permission.admins && permission.admins.indexOf(person.id) > -1) {
       return true;
     }
     return false;
@@ -128,7 +128,7 @@ export class FormPermissionService {
     return this.userService.isLoggedIn$.pipe(
       take(1),
       switchMap(login => {
-        if (!login) {
+        if (!login || this.platformService.isServer) {
           return ObservableOf(notLoggedIn);
         } else if (!form.collectionID || !form.features || (
           form.features.indexOf(Form.Feature.Restricted) === -1 &&

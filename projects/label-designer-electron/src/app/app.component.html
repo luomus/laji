@@ -1,8 +1,8 @@
 <ll-label-designer
   [defaultDomain]="'http://tun.fi/'"
-  [defaultAvailableFields]="defaultAvailableFields$ | async"
+  [defaultAvailableFields]="defaultAvailableFields"
   [defaultSetup]="defaultSetup"
-  [availableFields]="availableFields$ | async"
+  [availableFields]="availableFields"
   (availableFieldsChange)="setAvailableFields($event)"
   [(viewSettings)]="viewSetting"
   [(setup)]="setup"
@@ -10,5 +10,6 @@
   [(pdfLoading)]="pdfLoading"
   (dataChange)="onDataChange($event)"
   (html)="htmlToPdf($event)"
-  [showIntro]="false">
-</ll-label-designer>
+  [showIntro]="false"
+  [(fileColumnMap)]="colMap"
+></ll-label-designer>

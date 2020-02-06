@@ -1,3 +1,68 @@
+<a name="3.2.4"></a>
+# 3.2.4 (2019-12-20)
+
+### Bug fix
+* **core:** fix the issue where page margins where making the content smaller
+
+<a name="3.2.3"></a>
+# 3.2.3 (2019-12-05)
+
+### Bug fix
+* **core:** fix the issue where firefox would not include QRCode in the print
+
+<a name="3.2.2"></a>
+# 3.2.2 (2019-12-04)
+
+### Features
+* **core:** use canvas instead of svg for faster page rendering
+
+<a name="3.2.1"></a>
+# 3.2.1 (2019-11-25)
+
+### Bug fixes
+
+* **editor:** fix adding fields dropdown not showing all the available fields.
+
+<a name="3.2.0"></a>
+# 3.2.0 (2019-10-25)
+
+### Features
+* **editor:** added column mapping when user is importing a file.
+* **editor:** added more options to line spacing.
+* **editor:** Moved add to backside select in label field higher.
+* **editor:** improved border printing on the pdf.
+* **editor:** improved loading pdf indicator.
+
+### Bug fixes
+* **editor:** fix an issue with two sided printing where the text lines where not rendered correctly
+
+<a name="3.1.8"></a>
+# 3.1.8 (2019-10-18)
+
+### Features
+* **core:** added default font to presets.
+* **editor:** keep label value when using text type field.
+
+### Bug fixes
+* **editor:** fixed some of the fonts not being rendered correctly on the pdf
+* **tools:** schema service now recognises lists with enum
+* **tools:** fix schema service only picking first object from an array of objects
+
+<a name="3.1.7"></a>
+# 3.1.7 (2019-10-09)
+
+* **tools:** fix schema service only picking first object from an array of objects
+
+<a name="3.1.6"></a>
+# 3.1.6 (2019-10-08)
+
+### Features
+* **editor:** when opening a setup will now try to update the label to match current language.
+
+### Bug fixes
+* **editor:** when loading setup merge the defaultAvailableFields mappings to the loaded data 
+* **editor:** fixed few typos 
+
 <a name="3.1.5"></a>
 # 3.1.5 (2019-09-05)
 

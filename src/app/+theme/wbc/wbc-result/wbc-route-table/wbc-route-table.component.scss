@@ -1,3 +1,4 @@
+@import 'vars';
 @import '../../../../../styles/variables';
 
 :host ::ng-deep .datatable-body-row.last-rows,
@@ -33,12 +34,16 @@
   color: $color-main-dark;
 }
 
+.download-row {
+  text-align: right;
+  margin-bottom: 5px;
+}
+.download-row > * {
+  text-align: initial;
+}
 
 :host ::ng-deep .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
   border-right: none;
-}
-:host ::ng-deep .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover):not(:focus) .datatable-row-left {
-  background-color: #f9f9f9;
 }
 :host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active,
 :host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-left,

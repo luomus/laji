@@ -8,10 +8,13 @@ import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { LocalizeInGuard } from './locale/localize-in.guard';
+import { CheckLoginGuard } from './shared/guards/check-login.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
-    const delay = typeof process !== 'undefined' && process.release.name === 'node' ? 0 : 50;
+    const delay = typeof process !== 'undefined' && process.release && process.release.name === 'node' ? 0 : 50;
     const loadRoute = () => ObservableTimer(delay).pipe(flatMap(() => load()), catchError(() => ObservableOf(null)));
 
     return route.data && route.data.preload ? loadRoute() : ObservableOf(null);
@@ -19,32 +22,39 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
 }
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule', data: {preload: true}},
-  {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {title: 'news.title'}},
-  {path: 'about', loadChildren: './+information/information.module#InformationModule'},
-  {path: 'user', loadChildren: './+user/user.module#UserModule'},
-  {path: 'view', loadChildren: './+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
-  {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule'},
-  {path: 'vihko', loadChildren: './+haseka/haseka.module#HasekaModule', data: {title: 'haseka.title'}},
-  {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule', data: {
+  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule), data: {preload: true}},
+  {path: 'news', loadChildren: () => import('./+news/news.module').then(m => m.NewsModule), data: {title: 'news.title'}},
+  {path: 'about', loadChildren: () => import('./+information/information.module').then(m => m.InformationModule)},
+  {path: 'user', loadChildren: () => import('./+user/user.module').then(m => m.UserModule)},
+  {path: 'view', loadChildren: () => import('./+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
+  {path: 'invasive', loadChildren: () => import('./+invasive/invasive.module').then(m => m.InvasiveModule)},
+  {path: 'vihko', loadChildren: () => import('./+haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title'}},
+  {path: 'observation', loadChildren: () => import('./+observation/observation.module').then(m => m.ObservationModule), data: {
     preload: true,
     title: 'navigation.observation'
   }},
-  {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule', data: {
+  {path: 'taxon', loadChildren: () => import('./+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
     preload: true,
     title: 'navigation.taxonomy'
   }},
-  {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule'},
-  {path: 'kartta', loadChildren: './+map/map.module#MapModule'},
-  {path: 'map', loadChildren: './+map/map.module#MapModule', data: {title: 'navigation.map'}},
-  {path: 'error', loadChildren: './+error/error.module#ErrorModule'},
-  {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule'},
+  {path: 'collection', loadChildren: () => import('./+collection/collection.module').then(m => m.CollectionModule)},
+  {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule)},
+  {
+    path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
+    data: {title: 'navigation.map', displayFeedback: false }
+  },
+  {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
+  {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule)},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
-  {path: 'forum', component: ForumComponent}
+  {path: 'forum', component: ForumComponent},
+  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule)}
 ];
 
 const routesWithLang: Routes = [
+  {path: 'in', children: [
+    {path: '**', component: NotFoundComponent}
+  ], component: LocaleEnComponent, canActivate: [LocalizeInGuard]},
   {path: 'en', data: {lang: 'en'}, children: [
     {path: 'nafi', redirectTo: '/en/theme/nafi/instructions', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
@@ -56,8 +66,9 @@ const routesWithLang: Routes = [
     {path: 'lolife', redirectTo: '/en/theme/lolife/instructions', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/en/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'valio', redirectTo: '/en/theme/valio/instructions', pathMatch: 'full'},
+    {path: 'syke-perhoset', redirectTo: '/en/theme/syke-perhoset/instructions', pathMatch: 'full'},
     ...routes,
-    {path: '**', redirectTo: '/en/error/404'}
+    {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
     {path: 'nafi', redirectTo: '/sv/theme/nafi/instructions', pathMatch: 'full'},
@@ -70,8 +81,9 @@ const routesWithLang: Routes = [
     {path: 'lolife', redirectTo: '/sv/theme/lolife/instructions', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/sv/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'valio', redirectTo: '/sv/theme/valio/instructions', pathMatch: 'full'},
+    {path: 'syke-perhoset', redirectTo: '/sv/theme/syke-perhoset/instructions', pathMatch: 'full'},
     ...routes,
-    {path: '**', redirectTo: '/sv/error/404'}
+    {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
   {path: '', data: {lang: 'fi'}, children: [
     {path: 'nafi', redirectTo: '/theme/nafi/instructions', pathMatch: 'full'},
@@ -84,16 +96,21 @@ const routesWithLang: Routes = [
     {path: 'lolife', redirectTo: '/theme/lolife/instructions', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'valio', redirectTo: '/theme/valio/instructions', pathMatch: 'full'},
+    {path: 'syke-perhoset', redirectTo: '/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
     ...routes,
-    {path: '**', redirectTo: '/error/404'}
+    {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
 ];
 
+const allRoutes: Routes = [
+  {path: '', children: routesWithLang, canActivate: [CheckLoginGuard]}
+];
+
 @NgModule({
-  imports: [RouterModule.forRoot(routesWithLang, {
+  imports: [RouterModule.forRoot(allRoutes, {
     enableTracing: false,
     preloadingStrategy: PreloadSelectedModulesList,
     initialNavigation: 'enabled'

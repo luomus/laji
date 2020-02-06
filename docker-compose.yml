@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  redis:
+    image: 'redis'
+  front:
+    container_name: laji
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app:delegated'
+      - '/app/node_modules'
+    ports:
+      - '3000:3000'
+      - '4200:4200'
+      - '49153:49153'
+    environment:
+      - NODE_ENV=dev
+    command: 'npm run start'

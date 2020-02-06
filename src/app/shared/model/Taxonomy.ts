@@ -147,7 +147,7 @@ export interface Taxonomy {
 
   synonymOf?: Taxonomy;
 
-  synonymNames?: Array<string>;
+  synonymNames?: string;
 
   synonyms?: Array<Taxonomy>;
 
@@ -243,6 +243,8 @@ export interface Taxonomy {
   typeSpecimenURI?: string;
 
   hasLatestRedListEvaluation?: boolean;
+
+  nonHiddenParentsIncludeSelf?: string[];
 }
 
 export interface RedListEvaluation {

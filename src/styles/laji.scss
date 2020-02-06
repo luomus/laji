@@ -1,4 +1,5 @@
 @import "styles";
+@import 'vars';
 
 html {
   position: relative;
@@ -7,6 +8,7 @@ html {
 }
 
 body {
+  background-color: $neutral-2;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding-top: 50px;
   height: 100%;
@@ -14,7 +16,7 @@ body {
   -moz-osx-font-smoothing:grayscale;
 }
 
-p {
+p, li, h1, h2, h3, h4, h5, h6, blockquote, caption {
   max-width: 800px;
 }
 
@@ -37,14 +39,17 @@ p {
   max-width: 1600px;
 }
 
+.fill-space {
+  flex-grow: 1;
+}
+
 @media (min-width: 1650px) {
     .container {
       width: 1600px;
     }
 }
 
-
-.footer, #navbar {
+.footer {
   flex: none;
 }
 
@@ -118,22 +123,26 @@ laji-locale-sv > div,
   padding: 0;
 }
 
-.comma-list {
+.separated-list {
   display: inline;
   list-style: none;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.comma-list li {
+.separated-list li {
   display: inline;
 }
 
-.comma-list li:after {
+.separated-list li:after {
   content: ", ";
 }
 
-.comma-list li:last-of-type:after {
+.separated-list.semicolon li:after {
+  content: "; ";
+}
+
+.separated-list li:last-of-type:after {
   content: "";
 }
 
@@ -142,20 +151,6 @@ laji-locale-sv > div,
 }
 
 /** /Common helpers */
-
-.footer footer {
-  flex: none;
-  background-color: $color-main;
-  width: 100%;
-}
-
-.footer footer a,
-.footer footer li,
-.footer footer h3,
-.footer .intro,
-.footer .info {
-  color: #fff;
-}
 
 .breadcrumb {
   margin-top: 15px;
@@ -212,6 +207,15 @@ laji-locale-sv > div,
   background-size: 20px auto !important;
   background-position: center right !important;
 }
+
+/** Viewer **/
+laji-document {
+  .facts {
+    max-width: 100%;
+    overflow: auto;
+  }
+}
+/** /Viewer **/
 
 /** Observation **/
 .dropdown-toggle .caret {
@@ -684,7 +688,11 @@ body > .ui-select-bootstrap.open {
 .more-info {
   padding-bottom: 10px;
   padding-top: 15px;
-  background-color: rgb(236, 240, 241);
+  background-color: $neutral-3;
+}
+
+.sidebar.mobile {
+  z-index: 1000;
 }
 
 .sidebar-nav {
@@ -848,7 +856,7 @@ body > .ui-select-bootstrap.open {
 }
 
 .ngx-datatable.material.striped .datatable-row-odd {
-  background-color: #f9f9f9;
+  background-color: $neutral-2;
 }
 
 .ngx-datatable.material .datatable-footer .page-count {

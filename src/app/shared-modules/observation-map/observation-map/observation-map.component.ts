@@ -1,4 +1,4 @@
-import {concat, take, retryWhen, delay, timeout, switchMap, tap, map} from 'rxjs/operators';
+import { concat, delay, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { of, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -6,7 +6,8 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges, OnDestroy,
+  OnChanges,
+  OnDestroy,
   Output,
   SimpleChanges,
   ViewChild
@@ -65,6 +66,11 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
   @Input() ready = true;
   @Input() unitCount: number;
+  /**
+   * height < 0: fill remaining height in window
+   * height > 0: set absolute height
+   * else: height: 100%
+   */
   @Input() height;
   @Input() selectColor = '#00aa00';
   @Input() color: any;
@@ -294,7 +300,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateMapData() {
-    if (!this.ready) {
+    if (!this.ready || (typeof this.unitCount !== 'undefined' && (this.unitCount === 0 || this.unitCount === null))) {
+      if (this.unitCount === 0) {
+        this.emptyMap();
+      }
       return;
     }
     const cacheKey = this.getCacheKey(this.query);
@@ -374,7 +383,15 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     const count$ = (typeof this.unitCount === 'undefined' ? countRemote$ : of(this.unitCount)).pipe(
       switchMap(cnt => {
-        if (cnt < this.showItemsWhenLessThan) {
+        if (!cnt) {
+          return of({
+            lastPage: 1,
+            featureCollection: {
+              'type': 'FeatureCollection',
+              'features': []
+            }
+          });
+        } else if (cnt < this.showItemsWhenLessThan) {
           return items$;
         } else {
           return (this.warehouseService.warehouseQueryAggregateGet(
@@ -507,6 +524,17 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           this.logger.log('Failed to display popup for the map', e);
         }
       });
+  }
+
+  private emptyMap() {
+    const mapData = [];
+    this.clearDrawData();
+
+    if (this.query.coordinates) {
+      this.initDrawData();
+      mapData.push(this.drawData);
+    }
+    this.mapData = mapData;
   }
 }
 

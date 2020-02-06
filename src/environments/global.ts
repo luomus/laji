@@ -23,6 +23,7 @@ export const Global = {
     valio: 'MHL.57',
     batForm: 'MHL.50',
     valioForm: 'MHL.57',
+    sykeButterfly: 'MHL.59'
   },
   _forms: {
     'MHL.3': {
@@ -65,7 +66,8 @@ export const Global = {
     lineTransectEiVakio: 'HR.2691',
     lineTransectKartoitus: 'HR.2692',
     invasiveControl: 'HR.2049',
-    municipalityMonitoring: 'HR.2891'
+    municipalityMonitoring: 'HR.2891',
+    sykeButterfly: 'HR.3431'
   },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
@@ -81,6 +83,7 @@ export const Global = {
     'MHL.45': '/lolife',
     'MHL.50': '/lepakot',
     'MHL.57': '/valio',
+    'MHL.59': '/syke-perhoset',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {
@@ -94,5 +97,8 @@ export const Global = {
     'maleIndividualCount',
     'femaleIndividualCount',
     'areaInSquareMeters'
-  ]
+  ],
+  limit: {
+    simpleDownload: 10000
+  }
 };

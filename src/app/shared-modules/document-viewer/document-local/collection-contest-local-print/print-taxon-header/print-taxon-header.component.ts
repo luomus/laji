@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonomyApi } from '../../../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';

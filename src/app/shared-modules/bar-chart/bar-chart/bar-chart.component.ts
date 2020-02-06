@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, OnInit, ElementRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 
 
@@ -15,7 +15,7 @@ import { BaseChartDirective } from 'ng2-charts';
   (chartClick)="onClick($event)"
   >
   </canvas>`,
-  styles: [':host { display:block; height:450px }']
+  styles: [':host { display:block;}']
 })
 export class BarChartComponent implements OnInit {
   @ViewChild('mycanvas', { static: true }) baseChartComponent: BaseChartDirective;
@@ -30,9 +30,7 @@ export class BarChartComponent implements OnInit {
 
   constructor(
     public elm: ElementRef<HTMLCanvasElement>
-    ) {
-    const top = elm.nativeElement.getBoundingClientRect().top;
-  }
+    ) {}
 
   initActiveClickAreas = false;
 

@@ -1,80 +1,59 @@
 import { Component, Input } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
+import { Global } from '../../../environments/global';
 
 @Component({
     selector: 'laji-theme-page',
     template: `
-<div class="container-fluid">
-    <div class="row" id="wrapper">
-        <div *ngIf='showNav' class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
-            <h1 [innerHTML]="title | translate"></h1>
-            <ul *ngIf="navLinks">
-                <ng-container *ngFor="let link of navLinks">
-                    <li>
-                        <a [class]="link.active ? 'laji-sidebar-active' : ''"
-                           [routerLink]="link.routerLink">
-                            {{ link.label | translate }}
-                        </a>
-                        <ul *ngIf="link.children && link.active" class="nested">
-                          <ng-container *ngFor="let childLink of link.children">
-                            <li>
-                              <a [class]="childLink.active ? 'laji-sidebar-active' : ''"
-                                 [routerLink]="childLink.routerLink" >
-                                {{ childLink.label | translate }}
-                              </a>
-                            </li>
-                          </ng-container>
-                        </ul>
-                    </li>
-                </ng-container>
-            </ul>
-            <laji-haseka-latest [forms]="[formID]"
-                                [tmpOnly]="true"
-                                *ngIf="userService.isLoggedIn$ | async">
-            </laji-haseka-latest>
-            <ng-content select='nav'></ng-content>
-        </div>
-        <div class="content"
-        [ngClass]="{'col-sm-9 col-md-10 col-lg-10': showNav}">
-            <ng-content select='*'></ng-content>
-        </div>
-    </div>
-</div>
+<lu-sidebar [open]="showNav">
+  <nav>
+    <h4 [innerHTML]="title | translate"></h4>
+    <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink" routerLinkActive>
+      {{ link.label | translate }}
+      <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink">
+        {{ child.label | translate }}
+      </lu-sidebar-link>
+    </lu-sidebar-link>
+    <laji-haseka-latest [forms]="[formID]"
+                        [tmpOnly]="true"
+                        *ngIf="noLatestForForm !== formID && (userService.isLoggedIn$ | async)">
+    </laji-haseka-latest>
+  </nav>
+  <main>
+    <ng-content select='*'></ng-content>
+  </main>
+</lu-sidebar>
     `,
     styles: [`
-    :host {
-        display: flex;
-        flex-direction: column;
-        flex: 1 0;
-    }
-    h1 {
-        padding-left: 10px;
-    }
-    .sidebar-nav {
-        background-color: #ECF0F1;
-    }
-    .content {
-        padding: 2em 2em;
-        padding-top: 1em;
-    }
-    .nested li a {
-      padding-left: 55px;
-    }
-    @media only screen and (min-width : 768px) {
-        #wrapper {
-            display: flex;
-        }
-    }
+:host {
+  width: 100%;
+}
+
+h4 {
+  max-width: 200px;
+}
+
+@media only screen and (min-width : 768px) {
+  main {
+    padding: 20px 40px;
+  }
+}
     `]
 })
 export class ThemePageComponent {
     @Input() title: string;
     @Input() navLinks?:
         {
-            routerLink: string[], label: string, visible: boolean
+            routerLink: string[], label: string, visible: boolean, children: any
         }[];
     @Input() showNav ? = true;
     @Input() formID: string;
 
-    constructor(private userService: UserService) { }
+    noLatestForForm = Global.forms.default;
+
+    constructor(public userService: UserService) { }
+
+    trackByLabel(index, link) {
+      return link.label;
+    }
 }

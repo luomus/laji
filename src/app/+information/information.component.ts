@@ -13,7 +13,7 @@ import { InformationStore } from './information.store';
 @Component({
   selector: 'laji-information',
   templateUrl: './information.component.html',
-  styleUrls: ['./information.component.css'],
+  styleUrls: ['./information.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformationComponent implements OnDestroy {

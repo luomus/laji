@@ -45,7 +45,21 @@ export class LabelPageComponent implements AfterViewInit {
     // QRCodes will not be included if there is no setTimeout here
     setTimeout(() => {
       this.ready.emit();
-    });
+    }, 300);
+  }
+
+  shouldPrintBorderVertical(idx: number): boolean {
+    if (!this._dim) {
+      return false;
+    }
+    return idx < this._dim.rows;
+  }
+
+  shouldPrintBorderHorizontal(idx: number): boolean {
+    if (!this._dim) {
+      return false;
+    }
+    return idx % this._dim.rows === 0;
   }
 
   @Input()

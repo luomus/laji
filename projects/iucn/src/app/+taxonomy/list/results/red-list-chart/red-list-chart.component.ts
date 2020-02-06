@@ -70,8 +70,8 @@ export class RedListChartComponent implements AfterViewInit {
     this.resize();
   }
 
-  @HostListener('window:resize', ['$event.target'])
-  private resize() {
+  @HostListener('window:resize')
+  resize() {
     this.view = [
       this.el.nativeElement.offsetWidth,
       this.height

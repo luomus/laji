@@ -12,7 +12,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
-import { debounceTime, take } from 'rxjs/operators';
+import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
 
 interface SelectOptions {
@@ -23,10 +23,11 @@ interface SelectOptions {
 @Component({
   selector: 'laji-select',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.css'],
+  styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectComponent implements OnInit, OnChanges, OnDestroy {
+  private unsubscribe$ = new Subject<null>();
 
   @Input() options: SelectOptions[];
   @Input() title: string;
@@ -36,7 +37,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
-  @Output() selectedChanged = new EventEmitter<string[]|string>();
+  @Output() selectedChange = new EventEmitter<string[]|string>();
   @Input() multiple = true;
   @Input() info: string;
   @ViewChild('filter', { static: false }) filter: ElementRef;
@@ -47,16 +48,15 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   filterBy: string;
   selectedIdx = -1;
 
-  private filterSub: Subscription;
-
   constructor(
     private cd: ChangeDetectorRef,
     private filterService: FilterService
   ) { }
 
   ngOnInit() {
-    this.filterSub = this.filterInput
+    this.filterInput
       .asObservable().pipe(
+        takeUntil(this.unsubscribe$),
         debounceTime(200)
       )
       .subscribe((value) => {
@@ -74,9 +74,8 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.filterSub) {
-      this.filterSub.unsubscribe();
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   toggleValue(id: string) {
@@ -99,9 +98,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedIdx = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
-      this.selectedChanged.emit(id);
+      this.selectedChange.emit(id);
     } else {
-      this.selectedChanged.emit(this.selected);
+      this.selectedChange.emit(this.selected);
     }
   }
 
@@ -110,9 +109,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedIdx = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
-      this.selectedChanged.emit(id);
+      this.selectedChange.emit(id);
     } else {
-      this.selectedChanged.emit(this.selected);
+      this.selectedChange.emit(this.selected);
     }
   }
 
@@ -122,7 +121,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.open = !this.open;
     if (this.open && this.useFilter) {
-      ObservableInterval(10).pipe(take(1))
+      ObservableInterval(10).pipe(takeUntil(this.unsubscribe$), take(1))
         .subscribe(() => {
           try {
             // No IE support

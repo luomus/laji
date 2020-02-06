@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  front:
+    depends_on:
+      - 'redis'
+    environment:
+      - REDIS_HOST=redis
+    command: 'npm run start:ssr:local'

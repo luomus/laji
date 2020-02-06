@@ -1,25 +1,26 @@
 @import "../../../styles/variables";
 
+:host {
+  min-height: 100%;
+}
+
+laji-observation-form {
+  display: block;
+  max-width: 250px;
+}
+
 .result-list {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
 }
-:host {
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  z-index: auto;
-}
 :host >>> .alert.alert-info {
   margin-right: 10px;
 }
 .toggle-intro {
-  position: absolute;
-  right: 0;
-  margin-top: -5px;
-  padding: 0 30px 0 0;
-  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 5px;
   font-size: 13px;
   color: $color-main-dark;
 }
@@ -29,10 +30,11 @@
 
 .form-filters {
   z-index: 1029;
-  position: fixed;
-  top: 50px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
   right: 0;
-  height: calc(100vh - 50px);
   padding: 0;
 }
 
@@ -53,9 +55,7 @@
 
 @media only screen and (max-width : 767px) {
   .form-filters {
-    top: 0;
     height: auto;
-    position: absolute;
     width: 100%;
     bottom: 0;
     top: 40px;
@@ -69,6 +69,18 @@
     width: 100%;
     background: #c7c7c7;
     padding: 0 15px;
+    top: 50px;
+  }
+
+  .grc .close-filters-mobile {
+    position: absolute;
+    display: block;
+    height: 40px;
+    z-index: 1059;
+    width: 100%;
+    background: #c7c7c7;
+    padding: 0 15px;
+    top: 0px;
   }
 
   .close-filters-mobile div {
@@ -95,4 +107,10 @@
     z-index: 9999;
   }
 
+}
+
+@media only screen and (min-width : 768px) {
+  main {
+    padding: 20px 40px;
+  }
 }

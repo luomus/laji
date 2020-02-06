@@ -1,4 +1,4 @@
-import {delay, tap} from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from '../../../shared/model/Document';

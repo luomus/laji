@@ -1,0 +1,54 @@
+@import "../../../styles/styles";
+
+:host ::ng-deep {
+  footer {
+    flex: none;
+    background-color: $color-main;
+    width: 100%;
+  }
+
+  footer a,
+  footer li,
+  footer h3,
+  .intro,
+  .info {
+    color: #fff;
+  }
+  a:focus {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.partners-footer {
+  background-color: #fff;
+}
+
+.title {
+  display: inline-block;
+  margin: 10px 0 5px 13px;
+  color: #7d7d7d;
+}
+
+.partners ul, .partners li  {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.partners img {
+  max-height: 25px;
+}
+
+.partners li {
+  padding: 0 8px 13px 8px;
+  display: inline-block;
+}
+
+.partners.front img {
+  max-height: 50px;
+}
+
+.partners.front li {
+  padding: 0 8px 25px 8px;
+}

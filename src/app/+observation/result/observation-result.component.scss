@@ -34,3 +34,21 @@
     margin-bottom: 10px;
   }
 }
+
+.finnish-selector {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  margin-bottom: 10px;
+  > * {
+    margin-right: 10px;
+  }
+}
+
+.finnish-selector-buttons {
+  margin-right: 0px !important;
+}
+
+.finnish-selector-buttons > *:first-child {
+  margin-right: 10px;
+}

@@ -25,12 +25,12 @@ import { environment } from '../environments/environment';
 import { DocumentService } from './shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { TransferHttpCacheModule } from '@nguniversal/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { AppComponentModule } from './shared-modules/app-component/app-component.module';
 import { TimeoutInterceptor } from './shared/interceptor/timeout.interceptor';
 import { ChartsModule } from 'ng2-charts';
 import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
+import { LajiUiModule } from '../../projects/laji-ui/src/public-api';
+import { GraphQLModule } from './graph-ql/graph-ql.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -43,7 +43,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 @NgModule({
   imports: [
     AppComponentModule,
-    BrowserModule.withServerTransition({appId: 'laji-app'}),
+    GraphQLModule,
     CommonModule,
     HttpClientModule,
     NgtUniversalModule,
@@ -66,8 +66,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     AppRoutingModule,
-    TransferHttpCacheModule,
-    ChartsModule
+    ChartsModule,
+    LajiUiModule
   ],
   exports: [
     TranslateModule

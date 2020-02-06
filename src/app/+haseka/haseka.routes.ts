@@ -17,6 +17,7 @@ import { TemplatesComponent } from './templates/templates.component';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
+import { ParticipantsComponent } from './form-permission/admin/participants/participants.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -34,7 +35,7 @@ export const hasekaRoutes: Routes = [
           {path: 'templates', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: TemplatesComponent},
           {path: 'statistics', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
           {path: 'statistics/:documentID', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
-          {path: 'tools',  canActivate: [OnlyLoggedIn], loadChildren: './tools/tools.module#ToolsModule'},
+          {path: 'tools',  canActivate: [OnlyLoggedIn], loadChildren: () => import('./tools/tools.module').then(m => m.ToolsModule)},
         ]
       },
       {
@@ -58,7 +59,8 @@ export const hasekaRoutes: Routes = [
         children: [
           {path: '', pathMatch: 'full', component: IntroComponent},
           {path: 'accept', pathMatch: 'full', component: AcceptComponent},
-          {path: 'manage/:type', pathMatch: 'full', component: ManageComponent}
+          {path: 'manage/:type', pathMatch: 'full', component: ManageComponent},
+          {path: 'participants', pathMatch: 'full', component: ParticipantsComponent},
         ]
       },
       {

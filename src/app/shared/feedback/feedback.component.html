@@ -1,8 +1,8 @@
-<a class="link icon no-print" (click)="openModal()" *ngIf="iconOnly; else label">
+<lu-button class="no-print" [class.fixed-icon]="fixed" (click)="openModal()" *ngIf="iconOnly; else label">
   <i class="fa fa-envelope-o" placement="left" [tooltip]="'feedback' | translate"
      container="body"
      [adaptivePosition]="false"></i>
-</a>
+</lu-button>
 <ng-template #label>
   <a class="link" (click)="openModal()">
     {{ 'feedback' | translate }}
@@ -18,8 +18,10 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-sm-12">
-        <p *lajiForTypes="['dev', 'prod', 'vir']">{{ 'feedback.intro' | translate }}</p>
-        <p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p>
+        <span *lajiLoggedIn><p *lajiForTypes="['dev', 'prod', 'vir']">{{ 'feedback.intro' | translate }}</p></span>
+        <span *lajiLoggedIn><p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p></span>
+        <span *lajiLoggedIn="false"><p *lajiForTypes="['dev', 'prod', 'vir']">{{ 'feedback.intro.notLogged' | translate }}</p></span>
+        <span *lajiLoggedIn="false"><p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p></span>
       </div>
     </div>
     <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
@@ -54,7 +56,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <a class="btn btn-danger" (click)="closeModal()">{{ 'feedback.cancel' | translate }}</a>
-    <a class="btn btn-success" (click)="sendFeedback()">{{ 'feedback.send' | translate }}</a>
+    <lu-button (click)="closeModal()">{{ 'feedback.cancel' | translate }}</lu-button>
+    <lu-button role="primary" (click)="sendFeedback()">{{ 'feedback.send' | translate }}</lu-button>
   </div>
 </ng-template>

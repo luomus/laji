@@ -1,13 +1,20 @@
-import {Component, OnChanges, OnDestroy, Input, Output, ChangeDetectorRef, EventEmitter,
-ChangeDetectionStrategy, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
-import { Label } from 'ng2-charts';
-import { Color } from 'ng2-charts';
+import { Chart, ChartDataSets } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -25,19 +32,20 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   newData: ChartDataSets[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
 
-  private allSubData: number[];
+  allSubData: number[];
+  allDataNew: any[];
+  barChartLabels: number[];
+  barChartOptionsYear: any = {
+    animation: {
+      duration: 500
+    }
+  };
+
   private allSubBackground: string[];
   private getDataSub: Subscription;
-  private allDataNew: any[];
-  private barChartLabels: number[];
   private subBarChartLabels: number[];
   private allBarChartsLabel: number[];
   private barChartPlugins: any;
-  private barChartOptionsYear: any = {
-      animation: {
-        duration: 500
-      }
-  };
 
 
   @Output() hasData = new EventEmitter<boolean>();

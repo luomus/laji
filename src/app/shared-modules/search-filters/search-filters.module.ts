@@ -15,6 +15,7 @@ import { InfoModule } from '../info/info.module';
 import { IncludesPipe } from './includes.pipe';
 import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 import { HabitatSelectComponent } from './habitat-select/habitat-select.component';
+
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -46,7 +47,8 @@ import { HabitatSelectComponent } from './habitat-select/habitat-select.componen
     SelectComponent,
     CheckboxComponent,
     AdminStatusInfoPipe,
-    HabitatSelectComponent
+    HabitatSelectComponent,
+    ObservationActiveComponent
   ]
 })
 export class SearchFiltersModule { }

@@ -1,0 +1,21 @@
+<div class="menu-row" *ngIf="showSettingsMenu || showDownloadMenu">
+  <div class="fill-space"></div>
+  <ng-container *ngIf="showDownloadMenu">
+    <laji-download
+      *ngIf="maxDownload >= count else tooMany"
+      [downloadLoading]="downloadLoading"
+      (download)="download.emit($event)">
+      <i class="glyphicon glyphicon-download-alt"></i>
+      {{ downloadText }}
+    </laji-download>
+    <ng-template #tooMany>
+      <lu-button [disabled]="true">
+        {{ downloadText }} max {{ maxDownload }}
+      </lu-button>
+    </ng-template>
+  </ng-container>
+  <lu-button (click)="openSettingsMenu.emit()" *ngIf="showSettingsMenu" style="margin-left: 5px;">
+    <i class="glyphicon glyphicon-cog"></i>
+    {{ 'iucn.results.selectColumns' | translate }}
+  </lu-button>
+</div>

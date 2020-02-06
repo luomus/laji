@@ -7,6 +7,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { CombineToDocument } from './import.service';
+
 const { JSONPath } = require('jsonpath-plus');
 
 @Injectable({

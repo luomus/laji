@@ -31,4 +31,6 @@
 <laji-wbc-route-table *ngIf="season"
                       (documentClick)="openViewer($event)"
                       [data]="observationStats ? observationStats[season] : undefined"
+                      [routeId]="id"
+                      [season]="season"
 ></laji-wbc-route-table>

@@ -9,6 +9,9 @@ module.exports = {
   entry: {
     server: './server.ts',
   },
+  externals: {
+    './dist/server/main': 'require("./server/main")'
+  },
   target: 'node',
   resolve: { extensions: ['.ts', '.js'] },
   optimization: {
@@ -20,8 +23,9 @@ module.exports = {
     filename: '[name].js'
   },
   module: {
+    noParse: /polyfills-.*\.js/,
     rules: [
-      { test: /\.ts$/, loader: 'ts-loader' },
+      { test: /\.ts$/, loader: 'ts-loader', exclude: ['/app/projects/**/*']},
       {
         // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
         // Removing this will cause deprecation warnings to appear.
@@ -31,6 +35,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.IgnorePlugin({
+      resourceRegExp: /\/projects\//
+    }),
     new webpack.ContextReplacementPlugin(
       // fixes WARNING Critical dependency: the request of a dependency is an expression
       /(.+)?angular(\\|\/)core(.+)?/,
@@ -44,4 +51,4 @@ module.exports = {
       {}
     )
   ]
-}
+};

@@ -1,4 +1,3 @@
-
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
 /* tslint:disable:component-selector */
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
@@ -22,7 +21,7 @@ interface NavData {
                      [formID]="data.formID"
                      [showNav]="showNav$ | async"
                      [navLinks]="data.navLinks">
-      <router-outlet></router-outlet>
+        <router-outlet></router-outlet>
     </laji-theme-page>
   `,
   styles: [`
@@ -85,7 +84,8 @@ export class MonitoringThemeBaseComponent implements OnInit {
       return _navLinks;
     };
     this.navData$ = this.route.data.pipe(
-      switchMap(({title, formID}: {title: string, formID: string}) => this.themeFormService.getNavLinks$(this.route).pipe(
+      switchMap(({title, formID}: {title: string, formID: string}) =>
+        this.themeFormService.getNavLinks$(this.route).pipe(
         switchMap(navLinks => urls$.pipe(
           map(url => ({
             title,

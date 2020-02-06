@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostListener,
-  Inject,
-  Input,
-  PLATFORM_ID,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import { ModalDirective, PopoverDirective } from 'ngx-bootstrap';
 import { isPlatformBrowser } from '@angular/common';

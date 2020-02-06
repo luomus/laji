@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormService } from '../../shared/service/form.service';
-import { switchMap, map } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import merge from 'deepmerge';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
+import { UserService } from '../../shared/service/user.service';
 
 export interface NavLink {
   routerLink: string[];
@@ -16,6 +17,7 @@ export interface NavLink {
   active?: boolean;
   name?: string;
   activeMatch?: string;
+  hidden?: boolean;
 }
 
 @Injectable({
@@ -23,7 +25,7 @@ export interface NavLink {
 })
 export class ThemeFormService {
 
-  defaultNavLinks = {
+  defaultNavLinks: {[name: string]: NavLink} = {
     instructions: {
       routerLink: ['instructions'],
       label: 'instructions',
@@ -48,7 +50,8 @@ export class ThemeFormService {
 
   constructor(private formService: FormService,
               private formPermissionService: FormPermissionService,
-              private translateService: TranslateService
+              private translateService: TranslateService,
+              private userService: UserService
   ) { }
 
   getForm(route: ActivatedRoute): Observable<any> {
@@ -61,13 +64,17 @@ export class ThemeFormService {
     return route.data.pipe(
       switchMap(({formID, navLinks = {}, navLinksOrder = []}) => this.formService.getForm(formID, this.translateService.currentLang).pipe(
           switchMap(form => this.formPermissionService.getRights(form).pipe(
-            map(rights => (this.getNavLinks(
+            switchMap(rights => this.userService.user$.pipe(
+              take(1),
+              map((user) => UserService.isAdmin(user) ? {...rights, admin: true} : rights)
+            )),
+            map(rights => this.getNavLinks(
                 merge(this.defaultNavLinks, navLinks),
                 navLinksOrder,
                 rights,
                 form.collectionID
               )
-            ))
+            )
           ))
         )
       )
@@ -105,9 +112,10 @@ export class ThemeFormService {
         return ai - bi;
       })
       .reduce((links, name) => [...links, {name, ...navLinks[name]}], [])
-      .filter(({accessLevel, visible = true}) =>
-        visible
-        && (
+      .filter(({accessLevel, visible = true, hidden = false}) =>
+        !hidden &&
+        visible &&
+        (
           !accessLevel
           || accessLevel === 'admin' && rights.admin
           || accessLevel === 'editor' && rights.edit

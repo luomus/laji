@@ -96,20 +96,20 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     this.navigate(query);
   }
 
+  navigate(query: WarehouseQueryInterface) {
+    this.router.navigate([], {queryParams: {
+        grid: query.ykj10kmCenter,
+        time: query.yearMonth || 'all',
+        taxonId: query.taxonId,
+        page: this.page
+      }});
+  }
+
   private getCurrentSeason() {
     if (this.currentMonth >= this.startMonth) {
       return this.currentYear;
     }
     return this.year;
-  }
-
-  private navigate(query: WarehouseQueryInterface) {
-    this.router.navigate([], {queryParams: {
-      grid: query.ykj10kmCenter,
-      time: query.yearMonth || 'all',
-      taxonId: query.taxonId,
-      page: this.page
-    }});
   }
 
   private clone(obj) {

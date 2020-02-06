@@ -135,7 +135,26 @@ export interface WarehouseQueryInterface {
   dayOfYearBegin?: number;
   dayOfYearEnd?: number;
   keyword?: Array<string>;
+  /** used only on sample endpoint */
+  sampleFact?: Array<string>;
+  /** used only on sample endpoint */
+  sampleType?: Array<string>;
+  /** used only on sample endpoint */
+  sampleMaterial?: Array<string>;
+  /** used only on sample endpoint */
+  sampleMultiple?: boolean;
+  /** used only on sample endpoint */
+  sampleQuality?: Array<string>;
+  /** used only on sample endpoint */
+  sampleStatus?: Array<string>;
+  /** used only on sample endpoint */
+  sampleCollectionId?: Array<string>;
+  /** used only on sample endpoint */
+  sampleId?: Array<string>;
   collectionId?: Array<string>;
+  documentFact?: Array<string>;
+  gatheringFact?: Array<string>;
+  unitFact?: Array<string>;
   collectionIdNot?: Array<string>;
   wild?: Array<string>;
   coordinateAccuracyMax?: number;
@@ -151,6 +170,15 @@ export interface WarehouseQueryInterface {
   individualId?: Array<string>;
   individualCountMin?: number;
   individualCountMax?: number;
+  wgs84CenterPoint?: string;
+  ykj100kmCenter?: string;
+  ykj100km?: string;
+  ykj50kmCenter?: string;
+  ykj50km?: string;
+  ykj1kmCenter?: string;
+  ykj1km?: string;
+  invasiveControl?: Array<string>;
+  invasiveControlled?: boolean;
   loadedSameOrAfter?: string;
   loadedSameOrBefore?: string;
   coordinates?: Array<string>;
@@ -159,6 +187,7 @@ export interface WarehouseQueryInterface {
   hasGatheringMedia?: boolean;
   hasUnitMedia?: boolean;
   hasMedia?: boolean;
+  hasSample?: boolean;
   secureReason?: Array<string>;
   editorId?: Array<string>;
   secured?: boolean;

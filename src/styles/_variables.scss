@@ -1,4 +1,10 @@
+@import 'vars';
+
 /* Colors */
 
-$color-main: #3498DB;
-$color-main-dark: darken($color-main, 15%)
+$color-main: $primary-5;
+$color-main-dark: $primary-6;
+
+/* Spacers */
+
+$sp-default: 15px;

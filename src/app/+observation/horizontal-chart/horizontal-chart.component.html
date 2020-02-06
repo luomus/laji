@@ -1,0 +1,31 @@
+<div class="observation-chart-wrapper">
+    <div class="observation-chart" style="min-height: 100px">
+      <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
+      <div style="position: relative;">
+        <select [(ngModel)]="classificationValue" (ngModelChange)="changeClassification($event)">
+          <option *ngFor="let option of classification" [value]="option.data" [selected]="option.data === 'classificationValue'" >{{ option.label }}</option>
+        </select>
+      </div>
+      <div class="stat-info">
+        <laji-info [placement]="'left'">{{ 'observation.info.stats' | translate }}</laji-info>
+      </div>
+      <ng-container *ngIf="!loading">
+        <div style="position: relative;">
+          <div> 
+            <laji-bar-chart [style.height.px]="componentHeight" 
+              #barChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="false"
+              [chartType]="'horizontalBar'"
+              >
+            </laji-bar-chart>
+          </div>
+          <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="allDataBarChart.length > 10">
+              {{ (barChartData[0].data.length < allDataBarChart.length ? 'taxonomy.observations.showMore' : 'taxonomy.observations.hideMore') | translate }}
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </div>

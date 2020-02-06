@@ -13,14 +13,13 @@ import { IFontStyle } from '../../../label-designer.interface';
 export class FontSettingsComponent implements OnInit {
 
   fontFamily: string[] = [
-    'Arial',
-    'Arial Black',
-    'Courier New',
-    'Georgia',
-    'Lucida Console',
-    'Palatino Linotype',
-    'Times New Roman',
-    'Verdana',
+    'Cormorant Garamond',
+    'Merriweather',
+    'Noto serif',
+    'Open Sans',
+    'Open sans Condensed',
+    'Old Standard TT',
+    'Source Code pro',
   ];
   textTransform: string[] = [
     'capitalize',
@@ -32,7 +31,13 @@ export class FontSettingsComponent implements OnInit {
     0.9,
     1,
     1.15,
-    1.5,
+    1.2,
+    1.25,
+    1.3,
+    1.35,
+    1.4,
+    1.45,
+    1.50,
     1.75,
     2
   ];

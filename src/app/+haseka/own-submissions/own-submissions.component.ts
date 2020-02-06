@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'laji-submissions',
@@ -7,13 +6,4 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./own-submissions.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OwnSubmissionsComponent implements OnInit {
-
-  constructor() { }
-
-  isDev = environment.type === 'dev';
-
-  ngOnInit() {
-  }
-
-}
+export class OwnSubmissionsComponent { }

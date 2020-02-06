@@ -1,5 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
+import { SYNONYM_KEYS } from '../../../+taxonomy/species/service/taxon-export.service';
 
 @Component({
   selector: 'laji-datatable-templates',
@@ -12,6 +13,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('taxon', { static: true }) taxon: TemplateRef<any>;
   @ViewChild('originalTaxon', { static: true }) originalTaxon: TemplateRef<any>;
   @ViewChild('species', { static: true }) species: TemplateRef<any>;
+  @ViewChild('synonyms', { static: true }) synonyms: TemplateRef<any>;
   @ViewChild('eventDate', { static: true }) eventDate: TemplateRef<any>;
   @ViewChild('multiLang', { static: true }) multiLang: TemplateRef<any>;
   @ViewChild('multiLangAll', { static: true }) multiLangAll: TemplateRef<any>;
@@ -40,6 +42,7 @@ export class DatatableTemplatesComponent {
 
   annotationClass = Annotation.AnnotationClassEnum;
   annotationTypes = Annotation.TypeEnum;
+  synonymKeys = SYNONYM_KEYS;
 
   constructor() { }
 
@@ -50,4 +53,6 @@ export class DatatableTemplatesComponent {
   onTaxonLinkClick(event: MouseEvent) {
     event.stopPropagation();
   }
+
+  void() {}
 }

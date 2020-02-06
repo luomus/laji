@@ -8,14 +8,16 @@ import {
   PresetSetup,
   QRCodeErrorCorrectionLevel,
   LabelDesignerTranslationsInterface,
-  ILabelPdf
+  ILabelPdf, IColumnMap
 } from 'label-designer';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'label-designer',
   templateUrl: './label-designer.component.html',
   styleUrls: ['./label-designer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // This needs to be default otherwise initial changes are not populated on the places where the element is used!
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class LabelDesignerComponent {
 
@@ -36,6 +38,9 @@ export class LabelDesignerComponent {
 
   @Input()
   defaultAvailableFields: ILabelField[] = [];
+
+  @Input()
+  fileColumnMap: IColumnMap;
 
   @Input()
   viewSetting: IViewSettings = {
@@ -70,7 +75,7 @@ export class LabelDesignerComponent {
       'marginLeft.mm': 1.5,
       'marginBottom.mm': 1.5,
       'marginRight.mm': 1.5,
-      'font-family': 'Arial',
+      'font-family': 'Open Sans',
       'font-size.pt': 9
     },
     border: Presets.Border.solid,
@@ -108,6 +113,8 @@ export class LabelDesignerComponent {
   setupChange = new EventEmitter<ISetup>();
   @Output()
   pdfLoadingChange = new EventEmitter<boolean>();
+  @Output()
+  fileColumnMapChange = new EventEmitter<IColumnMap>();
 
   pdfTimeout: any;
 
@@ -128,6 +135,6 @@ export class LabelDesignerComponent {
     this.pdfTimeout = setTimeout(() => {
       this.pdfLoading = false;
       this.cdr.detectChanges();
-    }, 10000);
+    }, 600000);
   }
 }

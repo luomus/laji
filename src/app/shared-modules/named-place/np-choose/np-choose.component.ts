@@ -45,7 +45,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   _activeNP = -1;
 
-  private FEATURE_RESERVE = 'MHL.featureReserve';
+  FEATURE_RESERVE = 'MHL.featureReserve';
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -78,7 +78,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
     this._namedPlaces = extendedNamedPlaces;
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize() {
     this.updateHeight();
   }

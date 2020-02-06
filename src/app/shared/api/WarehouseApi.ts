@@ -39,6 +39,9 @@ import { environment } from '../../../environments/environment';
 @Injectable({providedIn: 'root'})
 export class WarehouseApi {
   public static readonly longTimeout = 10000;
+  public subPath:
+    '/warehouse/query/sample/' |
+    '/warehouse/query/' = '/warehouse/query/';
   protected basePath = environment.apiBase;
 
   constructor(protected http: HttpClient, private queryService: SearchQueryService) {
@@ -81,7 +84,7 @@ export class WarehouseApi {
    * @oaram onlyCount return only counts of items default true
    */
   public warehouseQueryAggregateGetCsv(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, onlyCount?: boolean): Observable<HttpResponse<any>> {
-    const path = this.basePath + '/warehouse/query/aggregate';
+    const path = this.basePath + this.subPath + 'aggregate';
 
     let queryParameters = {};
 
@@ -132,7 +135,7 @@ export class WarehouseApi {
   }
 
   private warehouseQueryGet(target: string, query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
-    const path = this.basePath + `/warehouse/query/${target}`;
+    const path = this.basePath + `${this.subPath}${target}`;
 
     let queryParameters = {};
 
@@ -228,7 +231,7 @@ export class WarehouseApi {
     return this.http.post<string>(path, undefined, {params: queryParameters});
   }
 
-  public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string, extraHttpRequestParams?: any): Observable<string> {
+  public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, downloadType?: string, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/query/download';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -253,8 +256,8 @@ export class WarehouseApi {
       queryParameters['locale'] = locale;
     }
 
-    if (description !== undefined) {
-      queryParameters['description'] = description;
+    if (downloadType !== undefined) {
+      queryParameters['downloadType'] = downloadType;
     }
 
 
@@ -269,7 +272,7 @@ export class WarehouseApi {
    * @param query to make to the warehouse
    */
   public warehouseQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<WarehouseCountResultInterface> {
-    const path = this.basePath + '/warehouse/query/count';
+    const path = this.basePath + this.subPath + 'count';
 
     if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
       query = {...query, cache: true};
@@ -292,7 +295,7 @@ export class WarehouseApi {
    * @param page Set current page.
    */
   public warehouseQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
-    const path = this.basePath + '/warehouse/query/list';
+    const path = this.basePath + this.subPath + 'list';
 
     if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
       query = {...query, cache: true};

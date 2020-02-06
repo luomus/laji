@@ -1,3 +1,4 @@
+/*
 import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
@@ -15,6 +16,7 @@ app.on('activate', () => {
 
 function createWindow() {
   win = new BrowserWindow({ width: 1200, height: 720 });
+  win.setMenuBarVisibility(false);
 
   win.loadURL(
     url.format({
@@ -35,3 +37,4 @@ ipcMain.on('getFiles', (event, arg) => {
   const files = fs.readdirSync(__dirname);
   win.webContents.send('getFilesResponse', files);
 });
+*/

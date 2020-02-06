@@ -1,0 +1,31 @@
+@import 'vars';
+
+@mixin pill($name, $c, $bg, $bd) {
+  .pill.#{$name} {
+    color: $c;
+    background-color: $bg;
+    border: 1px solid $bd;
+  }
+}
+
+.lu {
+  .pill {
+    display: inline-block;
+    border-radius: 50px;
+    padding: 2px 8px;
+    &.selected {
+      color: $neutral-6;
+      background-color: $neutral-2;
+      border: 1px solid $neutral-4;
+    }
+    &.disabled {
+      color: $neutral-5;
+    }
+  }
+  @include pill("primary", $primary-6, $primary-1, $primary-4);
+  @include pill("success", $success-6, $success-1, $success-4);
+  @include pill("info", $info-6, $info-1, $info-4);
+  @include pill("warning", $warning-6, $warning-1, $warning-4);
+  @include pill("danger", $danger-6, $danger-1, $danger-4);
+}
+

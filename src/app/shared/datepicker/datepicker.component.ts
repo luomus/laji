@@ -1,5 +1,5 @@
 /* tslint:disable:no-use-before-declare */
-import {debounceTime} from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 /**
  * Originally from here: https://github.com/jkuri/ng2-datepicker
  *
@@ -77,6 +77,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Input() firstWeekdaySunday: boolean;
   @Input() toLastOfYear = false;
   @Input() addonText: string;
+  @Input() popoverAlign: 'right' | 'left' = 'right';
   @Output() select = new EventEmitter();
 
   public validDate = true;

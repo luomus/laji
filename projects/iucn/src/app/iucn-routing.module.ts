@@ -7,6 +7,7 @@ import { LocaleSvComponent } from '../../../../src/app/locale/locale-sv.componen
 import { LocaleFiComponent } from '../../../../src/app/locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from '../../../../src/app/locale/localize.guard';
+import { NotFoundComponent } from '../../../../src/app/shared/not-found/not-found.component';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -17,27 +18,28 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
 }
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: './+home/iucn-home.module#IucnHomeModule', data: {preload: true}},
-  {path: 'about', loadChildren: './+about/about.module#AboutModule', data: {title: 'iucn.about.title'}},
-  {path: 'publications', loadChildren: './+publications/publications.module#PublicationsModule', data: {title: 'iucn.publications.title'}},
-  {path: 'user', loadChildren: '../../../../src/app/+user/user.module#UserModule'},
-  {path: 'view', loadChildren: '../../../../src/app/+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
-  {path: 'results', loadChildren: './+taxonomy/iucn-taxonomy.module#IucnTaxonomyModule', data: {preload: true}},
-  {path: 'error', loadChildren: '../../../../src/app/+error/error.module#ErrorModule'}
+  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/iucn-home.module').then(m => m.IucnHomeModule), data: {preload: true}},
+  {path: 'about', loadChildren: () => import('./+about/about.module').then(m => m.AboutModule), data: {title: 'iucn.about.title'}},
+  {path: 'publications', loadChildren: () => import('./+publications/publications.module')
+      .then(m => m.PublicationsModule), data: {title: 'iucn.publications.title'}},
+  {path: 'user', loadChildren: () => import('../../../../src/app/+user/user.module').then(m => m.UserModule)},
+  {path: 'view', loadChildren: () => import('../../../../src/app/+viewer/viewer.module')
+      .then(m => m.ViewerModule), data: {title: 'viewer.document'}},
+  {path: 'results', loadChildren: () => import('./+taxonomy/iucn-taxonomy.module').then(m => m.IucnTaxonomyModule), data: {preload: true}},
 ];
 
 const routesWithLang: Routes = [
   {path: 'en', children: [
       ...routes,
-      {path: '**', redirectTo: '/en/error/404'}
+      {path: '**', component: NotFoundComponent}
     ], component: LocaleEnComponent, canActivate: [LocalizeGuard], data: {lang: 'en'}},
   {path: 'sv', children: [
       ...routes,
-      {path: '**', redirectTo: '/sv/error/404'}
+      {path: '**', component: NotFoundComponent}
     ], component: LocaleSvComponent, canActivate: [LocalizeGuard], data: {lang: 'sv'}},
   {path: '', children: [
       ...routes,
-      {path: '**', redirectTo: '/error/404'}
+      {path: '**', component: NotFoundComponent}
     ], component: LocaleFiComponent, canActivate: [LocalizeGuard], data: {lang: 'fi'}}
 ];
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
@@ -65,10 +65,12 @@ export class WbcRoutesListComponent implements OnInit {
 
   @Output() rowSelect = new EventEmitter<string>();
 
+  @ViewChild('routeLink', { static: true }) routeLinkTpl: TemplateRef<any>;
+
   @Input() set selected(selected: string[]) {
     this.columns = this.allColumns.filter(val => {
       if (val.name === 'document.namedPlace.name' && this.showNameAsLink) {
-        val.cellTemplate = 'link';
+        val.cellTemplate = this.routeLinkTpl;
       } else if (val.name === 'count' && this.countLabel) {
         val.label = this.countLabel;
       }

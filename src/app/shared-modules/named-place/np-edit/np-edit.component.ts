@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { FormService } from '../../../shared/service/form.service';

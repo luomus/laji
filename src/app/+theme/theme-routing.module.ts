@@ -18,7 +18,6 @@ import { IdentifyComponent } from './identify/identify.component';
 import { QualityComponent } from './quality/quality.component';
 import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/named-place.component';
 import { ThemeComponent } from './theme.component';
-import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
 import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
@@ -30,10 +29,60 @@ import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/the
 import { Global } from '../../environments/global';
 import { HasFormPermission } from '../shared/route/has-form-permission';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
+import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
+  {
+    path: 'luomusgrc',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'search',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'list'
+          },
+          {
+            path: ':tab',
+            pathMatch: 'full',
+            component: GeneticResourceComponent,
+            data: {
+              noScrollToTop: true
+            }
+          }
+        ]
+      },
+    ],
+    data: {
+      formID: Global.forms.default,
+      title: 'theme.grc.title',
+      requireLogin: false,
+      navLinks: {
+        search: {
+          routerLink: ['search'],
+          label: 'theme.grc.search'
+        },
+        instructions: {
+          label: 'theme.grc.instructions'
+        },
+        form: {hidden: true},
+        formPermissions: {hidden: true},
+        ownSubmissions: {hidden: true}
+      },
+      navLinksOrder: ['instructions', 'search'],
+      instructions: {
+        fi: '3286', // '3284',
+        sv: '3286', // '3288',
+        en: '3286'
+      },
+    }
+  },
   {
     path: 'nafi',
     component: MonitoringThemeBaseComponent,
@@ -41,13 +90,21 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
       {path: 'stats', pathMatch: 'full', component: NafiResultComponent},
-      {path: 'form', pathMatch: 'full', component: FormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
       {
         path: 'form/:id',
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'templates', pathMatch: 'full', component: NafiTemplatesComponent, canActivate: [OnlyLoggedIn]},
@@ -104,15 +161,18 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
       {
         path: 'form', component: FormComponent,
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:formID', component: FormComponent,
-        canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]
+        canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:formID/:id', component: FormComponent,
         canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -178,6 +238,7 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form'],
       instructions: '2846'
     },
     children: [
@@ -190,13 +251,20 @@ const routes: Routes = [
         {path: 'routes/:id', pathMatch: 'full', component: WbcRouteComponent},
         {path: 'censuses', pathMatch: 'full', component: WbcCensusesComponent},
       ]},
-      {path: 'form', pathMatch: 'full', component: FormComponent, canDeactivate: [DocumentDeActivateGuard]},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
       {
         path: 'form/:id',
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
@@ -234,7 +302,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -242,6 +311,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -286,7 +356,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -294,6 +365,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -337,7 +409,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -345,6 +418,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -382,7 +456,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -390,6 +465,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -433,7 +509,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        canDeactivate: [DocumentDeActivateGuard]
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'form/:id',
@@ -441,6 +518,7 @@ const routes: Routes = [
         component: FormComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
       },
       {
         path: 'places/:collectionId/:formId',
@@ -463,6 +541,54 @@ const routes: Routes = [
       title: 'VALIO',
       instructions: '2759',
       hasRightsInstructions: '2761',
+    }
+  },
+  {
+    path: 'syke-perhoset',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'places',
+        pathMatch: 'full',
+        redirectTo: 'form',
+      },
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+      },
+      {
+        path: 'ownSubmissions',
+        pathMatch: 'full',
+        component: ThemeOwnSubmissionsComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+      }
+    ],
+    data: {
+      formID: Global.forms.sykeButterfly,
+      noFormPermissionRedirect: '/theme/syke-perhoset',
+      title: 'SYKE Päiväperhoset',
     }
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

@@ -56,7 +56,7 @@ export class FiltersComponent implements OnInit {
   }
 
   private mapMetadataToOptions(meta: any[]): SelectOption[] {
-    return meta.map(options => ({value: options.id, label: MultiLangService.getValue(options.value, this.lang)}));
+    return meta.map(options => ({value: options.id, label: options.label}));
   }
 
   private mapStatusesToOptions(groups: RedListTaxonGroup[], result: SelectOption[] = [], level = 0): SelectOption[] {

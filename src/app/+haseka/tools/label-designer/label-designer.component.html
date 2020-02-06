@@ -1,18 +1,23 @@
 <div class="editor-container" [class.fullscreen]="viewSettings.fullscreen">
-  <ll-label-designer
-    [translations]="labelTranslations"
-    defaultDomain="http://tun.fi/"
-    [showIntro]="false"
-    [data]="data"
-    [viewSettings]="viewSettings"
-    (viewSettingsChange)="viewSettings = $event"
-    [defaultSetup]="newSetup"
-    [setup]="setup"
-    [availableFields]="labelFields$ | async"
-    (availableFieldsChange)="changeAvailableFields($event)"
-    [defaultAvailableFields]="newLabelFields$ | async"
-    (setupChange)="setup = $event"
-    (html)="htmlToPdf($event)"
-  ></ll-label-designer>
+  <ng-container *ngIf="newLabelFields$ | async let newLabelFields">
+    <ll-label-designer
+      [translations]="labelTranslations"
+      defaultDomain="http://tun.fi/"
+      [showIntro]="false"
+      [(pdfLoading)]="downloading"
+      [data]="data"
+      [viewSettings]="viewSettings"
+      (viewSettingsChange)="viewSettings = $event"
+      [defaultSetup]="newSetup"
+      [setup]="setup"
+      [fileColumnMap]="fileColumnMap"
+      (fileColumnMapChange)="fileColumnMap = $event"
+      [availableFields]="labelFields$ | async"
+      (availableFieldsChange)="changeAvailableFields($event)"
+      [defaultAvailableFields]="newLabelFields"
+      (setupChange)="setup = $event"
+      (html)="htmlToPdf($event)"
+    ></ll-label-designer>
+  </ng-container>
 </div>
 <div class="editor-placeholder"></div>

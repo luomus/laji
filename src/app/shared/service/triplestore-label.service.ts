@@ -1,23 +1,22 @@
-import { forkJoin as ObservableForkJoin, Observable, Observer, of as ObservableOf } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
-import { MetadataService } from './metadata.service';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
-import { Util } from './util.service';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { Taxonomy } from '../model/Taxonomy';
 import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, filter, map, merge, share, take, tap } from 'rxjs/operators';
+import { catchError, map, share, shareReplay, take, tap } from 'rxjs/operators';
 import { AreaService } from './area.service';
 import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
 import { Publication } from '../model/Publication';
 import { NamedPlaceApi } from '../api/NamedPlaceApi';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
+import { CollectionService } from './collection.service';
+import { BaseDataService, IBaseData } from '../../graph-ql/service/base-data.service';
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -25,15 +24,11 @@ export class TriplestoreLabelService {
   static cache = {};
   static requestCache: any = {};
 
-  static readonly cacheProps = 'triplestoreLabels';
-  static readonly cacheClasses = 'triplestoreClassLabels';
+  private guidRegEx: RegExp;
+  private metaData: any;
+  private currentLang: string;
 
-  private labels;
-  private pending: Observable<any>;
-
-  constructor(private metadataApi: MetadataApi,
-              private metadataService: MetadataService,
-              private logger: Logger,
+  constructor(private logger: Logger,
               private informalTaxonService: InformalTaxonGroupApi,
               private namedPlaceApi: NamedPlaceApi,
               private sourceService: SourceService,
@@ -42,10 +37,11 @@ export class TriplestoreLabelService {
               private userService: UserService,
               private areaService: AreaService,
               private annotationService: AnnotationService,
-              private redListTaxonGroupApi: RedListTaxonGroupApi
+              private redListTaxonGroupApi: RedListTaxonGroupApi,
+              private collectionService: CollectionService,
+              private baseDataService: BaseDataService
   ) {
-    this.pending = this.getAllLabels();
-    this.pending.subscribe();
+    this.guidRegEx = /^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/gi;
   }
 
   public getAll(keys: string[], lang): Observable<{[key: string]: string}> {
@@ -83,8 +79,8 @@ export class TriplestoreLabelService {
       }
       return ObservableOf(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
     }
-    const parts = key.split('.');
-    if (parts && typeof parts[1] === 'string' && !isNaN(parts[1])) {
+    const parts = key.replace(':', '.').split('.');
+    if (parts && typeof parts[1] === 'string' && (!isNaN(parts[1]) || this.guidRegEx.test(parts[1]))) {
       switch (parts[0]) {
         case 'MNP':
           if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {
@@ -142,6 +138,9 @@ export class TriplestoreLabelService {
             );
           }
           return TriplestoreLabelService.requestCache[key];
+        case 'gbif-dataset':
+        case 'HR':
+          return this.collectionService.getName(key, lang).pipe(share());
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'}).pipe(
@@ -154,91 +153,38 @@ export class TriplestoreLabelService {
           return TriplestoreLabelService.requestCache[key];
       }
     }
-
-    if (this.labels) {
-      return ObservableOf(MultiLangService.getValue(this.labels[key] || '', lang));
-    } else {
-      if (!this.pending) {
-        this.pending = this.getAllLabels();
-      }
-      return Observable.create((observer: Observer<string>) => {
-        this.pending.subscribe(
-          (labels) => {
-            observer.next(MultiLangService.getValue(labels ? labels[key] : '', lang));
-          },
-          err => this.logger.warn('Failed to fetch label for ' + key, err),
-          () => observer.complete()
-        );
-      });
-    }
+    return this.getAllLabels(lang).pipe(
+      map(data => data[key])
+    );
   }
 
-  private getAllLabels() {
-    const cached = (cacheKey, apiCall: Observable<any>) => {
-      return this.cacheService.getItem(cacheKey).pipe(
-        merge(apiCall.pipe(
-            tap(data => {
-              if (!Util.isEmptyObj(data)) {
-                this.cacheService.setItem(cacheKey, data).subscribe();
-              }
-            })
-          )
-        ),
-        filter(result => {
-          return !Util.isEmptyObj(result);
-        })
+  private getAllLabels(lang: string): Observable<{[key: string]: string}> {
+    if (this.currentLang !== lang) {
+      this.currentLang = lang;
+      this.metaData = this.baseDataService.getBaseData().pipe(
+          take(1),
+          map((data) => this.dataToLookup(data)),
+          shareReplay(1)
       );
-    };
-
-    const fromApi$ = ObservableForkJoin(
-      this.metadataService.getAllRangesAsLookUp('multi').pipe(
-        take(1)
-      ),
-      cached(
-        TriplestoreLabelService.cacheProps,
-        this.metadataApi.metadataAllProperties('multi').pipe(
-          take(1),
-          map(data => {
-            const props = {};
-            if (data && data.results) {
-              data.results.map(property => {
-                props[property['shortName']] = property.label || '';
-                props[property['property']] = property.label || '';
-              });
-            }
-            return props;
-          })
-        )
-      ),
-      cached(
-        TriplestoreLabelService.cacheClasses,
-        this.metadataApi.metadataAllClasses('multi').pipe(
-          take(1),
-          map(data => {
-            const classes = {};
-            if (data && data.results) {
-              data.results.map(classData => {
-                classes[classData.class] = classData.label;
-              });
-            }
-            return classes;
-          })
-        )
-      )
-    );
-
-    return fromApi$.pipe(
-      map(data => this.parseResult(data)),
-      share()
-    );
+    }
+    return this.metaData;
   }
 
-  private parseResult(result) {
-    if (result.length !== 3 || Util.isEmptyObj(result[0]) || Util.isEmptyObj(result[1]) || Util.isEmptyObj(result[2])) {
-      return false;
-    }
-    this.labels = {...result[0], ...result[1], ...result[2]};
-
-    return this.labels;
+  private dataToLookup(data: IBaseData) {
+    const labelMap = {};
+    data.classes.forEach((meta) => {
+      labelMap[meta.id] = meta.label;
+    });
+    data.properties.forEach((meta) => {
+      labelMap[meta.id] = meta.label;
+    });
+    data.alts.forEach((meta) => {
+      if (meta.options) {
+        meta.options.forEach((option) => {
+          labelMap[option.id] = option.label;
+        });
+      }
+    });
+    return labelMap;
   }
 }

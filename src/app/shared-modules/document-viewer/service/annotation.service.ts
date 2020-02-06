@@ -30,21 +30,22 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
     return this.fetchById(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang, id);
   }
 
-  getAllAddableTags(lang: string): Observable<AnnotationTag[]> {
-    return this.annotatorsTags('requiredRolesAdd', lang);
+  getAllAddableTags(lang: string, own = false): Observable<AnnotationTag[]> {
+    return this.annotatorsTags('requiredRolesAdd', lang, own);
   }
 
-  getAllRemovableTags(lang: string): Observable<AnnotationTag[]> {
-    return this.annotatorsTags('requiredRolesRemove', lang);
+  getAllRemovableTags(lang: string, own = false): Observable<AnnotationTag[]> {
+    return this.annotatorsTags('requiredRolesRemove', lang, own);
   }
 
   private annotatorsTags(
     type: keyof Pick<AnnotationTag, 'requiredRolesAdd' | 'requiredRolesRemove'>,
-    lang
+    lang,
+    own
   ): Observable<AnnotationTag[]> {
     return this.userService.user$.pipe(
       take(1),
-      map(user => (user && user.roleAnnotation) || Annotation.AnnotationRoleEnum.basic),
+      map(user => own ? Annotation.AnnotationRoleEnum.owner : ((user && user.roleAnnotation) || Annotation.AnnotationRoleEnum.basic)),
       switchMap(annotatorsRole => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
         map(tags => tags.filter(tag => tag[type] && tag[type].includes(annotatorsRole)))
       ))

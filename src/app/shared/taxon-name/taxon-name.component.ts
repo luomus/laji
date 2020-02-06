@@ -18,6 +18,7 @@ export class TaxonNameComponent {
   };
   @Input() taxonID: string;
   @Input() addLink = true;
+  @Input() addAuthor = false;
   @Input() warningOnMissingTaxonID = false;
   @Input() showScientificNameFirst = false;
 

@@ -1,6 +1,6 @@
 <ng-template let-label="label" let-info="info" let-sort="sort" #headerTpl>
   <span class="datatable-header-cell-wrapper sort-full-width"
-        (click)="$event.target.classList.contains('no-propagation') ? return : sort()" title="{{ label }}">
+        (click)="$event.target.classList.contains('no-propagation') ? void() : sort()" title="{{ label }}">
     <span class="datatable-header-cell-label draggable">
       {{ label }}
     </span>
@@ -106,11 +106,11 @@
 </ng-template>
 <ng-template let-value="value" #label>
   <span *ngIf="value" title="{{value | label}}">
-    {{ value | label }}
+    {{ value | toQName | label }}
   </span>
 </ng-template>
 <ng-template let-value="value" #labelArray>
-  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | label}"></ng-container>
+  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | toQName | label}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #warehouseLabel>
   <span *ngIf="value" title="{{value | label: 'warehouse'}}">
@@ -119,7 +119,7 @@
 </ng-template>
 <ng-template let-value="value" #toSemicolon>
   <span *ngIf="value" title="{{value | values:'; '}}">
-    {{ value | values }}
+    {{ value | values:'; ' }}
   </span>
 </ng-template>
 <ng-template let-value="value" #numeric>
@@ -157,6 +157,17 @@
     {{ value }}
   </span>
 </ng-template>
+<ng-template let-row="row" #synonyms>
+  <ul class="semicolon separated-list">
+    <ng-container *ngFor="let field of synonymKeys">
+      <ng-container *ngIf="row[field]">
+        <ng-container *ngFor="let synonymTaxon of row[field]">
+          <li><laji-taxon-name [taxon]="synonymTaxon" [addAuthor]="true"></laji-taxon-name></li>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ul>
+</ng-template>
 <ng-template let-value="value" #boolean>
   <span *ngIf="value === true" title="{{'yes' | translate}}">
     {{ 'yes' | translate }}
@@ -177,8 +188,8 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #user>
-    <span *ngIf="value" title="{{value | users}}">
-    {{ value | users }}
+    <span *ngIf="value" title="{{value | users | values:'; '}}">
+    {{ value | users | values:'; ' }}
   </span>
 </ng-template>
 <ng-template let-value="value" #publication>

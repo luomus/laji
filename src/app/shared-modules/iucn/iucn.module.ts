@@ -8,6 +8,7 @@ import { IucnStatusPipe } from './pipe/iucn-status.pipe';
 import { IucnHyphensPipe } from './pipe/iucn-hyphens.pipe';
 import { StatusMarkComponent } from './status-mark/status-mark.component';
 import { ExplainCriteriaPipe } from './pipe/explain-criteria.pipe';
+
 /* tslint:enable:max-line-length */
 
 @NgModule({

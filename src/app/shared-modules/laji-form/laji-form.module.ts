@@ -10,6 +10,7 @@ import { LatestDocumentsModule } from '../latest-documents/latest-documents.modu
 import { AppComponentModule } from '../app-component/app-component.module';
 import { InfoPageModule } from '../info-page/info-page.module';
 import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
+import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
     OwnSubmissionsModule,
     LatestDocumentsModule,
     AppComponentModule,
-    InfoPageModule
+    InfoPageModule,
+    LajiUiModule
   ],
   declarations: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],
   exports: [LajiFormComponent, DocumentFormComponent, DocumentFormHeaderComponent, DocumentFormFooterComponent],

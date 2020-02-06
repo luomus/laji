@@ -1,27 +1,20 @@
-
-import { combineLatest, take } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormPermissionService } from '../form-permission.service';
-import { ToastsService } from '../../../shared/service/toasts.service';
 import { UserService } from '../../../shared/service/user.service';
-import { FormPermission } from '../../../shared/model/FormPermission';
-import { Logger } from '../../../shared/logger/logger.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { HistoryService } from '../../../shared/service/history.service';
 import { BrowserService } from '../../../shared/service/browser.service';
+import { AbstractPermission } from './abstract-permission';
 
 @Component({
   selector: 'laji-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit, OnDestroy {
+export class AdminComponent extends AbstractPermission implements OnInit, OnDestroy {
 
-  formPermission: FormPermission;
-  isAllowed = false;
-  collectionId: string;
   backPath: string;
   backQuery: any;
 
@@ -29,16 +22,16 @@ export class AdminComponent implements OnInit, OnDestroy {
   private subFPChanges: Subscription;
 
   constructor(
-    private router: Router,
+    protected router: Router,
+    protected formPermissionService: FormPermissionService,
+    protected localizeRouterService: LocalizeRouterService,
+    protected userService: UserService,
     private route: ActivatedRoute,
-    private formPermissionService: FormPermissionService,
-    private localizeRouterService: LocalizeRouterService,
-    private toastsService: ToastsService,
-    private userService: UserService,
-    private logger: Logger,
     private browserService: BrowserService,
     private historyService: HistoryService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     const [path, query] = this.browserService.getPathAndQueryFromUrl(this.historyService.getPrevious());
@@ -56,26 +49,4 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.subParam.unsubscribe();
     this.subFPChanges.unsubscribe();
   }
-
-  private initFormPermission() {
-    if (!this.collectionId) {
-      return;
-    }
-    this.formPermissionService
-      .getFormPermission(this.collectionId, this.userService.getToken()).pipe(
-      combineLatest(
-        this.userService.user$.pipe(take(1)),
-        (permission, person) => ({permission, person})
-      ))
-      .subscribe((data) => {
-        this.formPermission = data.permission;
-        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person);
-        if (!this.isAllowed) {
-          this.router.navigate(
-            this.localizeRouterService.translateRoute(['/vihko'])
-          );
-        }
-      });
-  }
-
 }

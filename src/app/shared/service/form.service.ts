@@ -1,11 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Observable, Observer, of, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
+import { Observable, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, concat, delay, map, retryWhen, share, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, concat, delay, map, retryWhen, shareReplay, take } from 'rxjs/operators';
 import { Global } from '../../../environments/global';
 import { Form } from '../model/Form';
+import { UserService } from './user.service';
+import { HttpClient } from '@angular/common/http';
+
+export interface Participant {
+  id?: string;
+  fullName?: string;
+  emailAddress?: string;
+  address?: string;
+  lintuvaaraLoginName?: string[];
+  lastDoc?: number;
+}
 
 @Injectable({providedIn: 'root'})
 export class FormService {
@@ -28,13 +39,16 @@ export class FormService {
 
   @LocalStorage() private formDataStorage;
   private currentLang: string;
-  private formCache: {[key: string]: Form.SchemaForm} = {};
-  private jsonFormCache: {[key: string]: Form.SchemaForm} = {};
-  private formPending: {[key: string]: Observable<Form.SchemaForm>} = {};
-  private allForms: Form.List[];
+  private formCache: {[key: string]: Observable<Form.SchemaForm>} = {};
+  private jsonFormCache: {[key: string]: Observable<Form.SchemaForm>} = {};
+  private allForms: Observable<Form.List[]>;
+
+  protected basePath = environment.apiBase;
 
   constructor(
-    private lajiApi: LajiApiService
+    private lajiApi: LajiApiService,
+    private http: HttpClient,
+    private userService: UserService
   ) {}
 
   static hasFeature(form: Form.List, feature: Form.Feature): boolean {
@@ -50,28 +64,14 @@ export class FormService {
       return ObservableOf(null);
     }
     this.setLang(lang);
-    if (this.formCache[formId]) {
-      return ObservableOf(this.formCache[formId]);
-    } else if (!this.formPending[formId]) {
-      this.formPending[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
-        catchError(error => error.status === 404 ? of(null) : observableThrowError(error)),
+    if (!this.formCache[formId]) {
+      this.formCache[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
+        catchError(error => error.status === 404 ? ObservableOf(null) : observableThrowError(error)),
         retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
-        tap((schema) => this.formCache[formId] = schema),
-        share()
+        shareReplay(1)
       );
     }
-    return new Observable((observer: Observer<Form.SchemaForm>) => {
-      this.formPending[formId].subscribe(
-        data => {
-          observer.next(data);
-          observer.complete();
-        },
-        error => {
-          observer.error(error);
-          observer.complete();
-        }
-      );
-    });
+    return this.formCache[formId];
   }
 
   getFormInJSONFormat(formId: string, lang: string): Observable<any> {
@@ -79,22 +79,23 @@ export class FormService {
       return ObservableOf({});
     }
     this.setLang(lang);
-    if (this.jsonFormCache[formId]) {
-      return ObservableOf(this.jsonFormCache[formId]);
-    } else {
-      return this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'}).pipe(
-        tap((jsonForm) => this.jsonFormCache[formId] = jsonForm));
+    if (!this.jsonFormCache[formId]) {
+      this.jsonFormCache[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'}).pipe(
+        shareReplay(1)
+      );
     }
+    return this.jsonFormCache[formId];
   }
 
   getAllForms(lang: string): Observable<Form.List[]> {
     this.setLang(lang);
-    return this.allForms ?
-      ObservableOf(this.allForms) :
-      this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
+    if (!this.allForms) {
+      this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
         map((forms) => forms.results.filter(form => this.isFormAllowed(form.id))),
-        tap((forms) => this.allForms = forms)
+        shareReplay(1)
       );
+    }
+    return this.allForms;
   }
 
   getAddUrlPath(formId) {
@@ -111,6 +112,13 @@ export class FormService {
     return `${this.getAddUrlPath(formId)}/${documentId}`;
   }
 
+  getParticipants(form: Form.List) {
+    return this.http.get(
+      `${this.basePath}/${LajiApi.Endpoints.forms}/${form.id}/participants`,
+    {params: {personToken: this.userService.getToken()}}
+    ) as Observable<Participant[]>;
+  }
+
   private isFormAllowed(formId: string) {
     const forms = environment.formWhitelist;
     if (forms.length === 0) {
@@ -122,7 +130,7 @@ export class FormService {
   private setLang(lang: string) {
     if (this.currentLang !== lang) {
       this.formCache = {};
-      this.formPending = {};
+      this.jsonFormCache = {};
       this.allForms = undefined;
       this.currentLang = lang;
     }

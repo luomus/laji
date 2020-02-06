@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild, ChangeDetectorRef} from '@angular/core';
-import {LajiMapOptions, LajiMapTileLayerName} from '@laji-map/laji-map.interface';
-import {LajiMapComponent} from '@laji-map/laji-map.component';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {map} from 'rxjs/operators';
-import {Subscription} from 'rxjs';
-import {Taxonomy} from '../../../shared/model/Taxonomy';
+import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { tileLayer as LtileLayer } from 'leaflet';
 
 @Component({

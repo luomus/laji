@@ -1,0 +1,23 @@
+:host {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  z-index: auto;
+  margin: -20px -40px;
+}
+
+@media only screen and (max-width: 767px) {
+  :host ::ng-deep laji-observation-view .close-filters-mobile{
+    position: absolute;
+    top: 0px;
+    margin-right: -12px;
+    margin-left: -12px;
+  }
+
+  @media only screen and (max-width: 767px) {
+    :host ::ng-deep laji-observation-view .result-list {
+      margin-top: 10px;
+    }
+  }
+}
+

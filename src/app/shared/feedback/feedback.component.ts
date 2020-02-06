@@ -1,4 +1,3 @@
-
 import { switchMap, take } from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Component, Inject, Input, ViewChild } from '@angular/core';
@@ -12,12 +11,13 @@ import { LajiApi, LajiApiService } from '../service/laji-api.service';
 
 @Component({
   selector: 'laji-feedback',
-  styleUrls: ['./feedback.component.css'],
+  styleUrls: ['./feedback.component.scss'],
   templateUrl: './feedback.component.html'
 })
 export class FeedbackComponent {
 
   @Input() iconOnly = false;
+  @Input() fixed = true;
 
   @SessionStorage() public feedback: IFeedback = {
     subject: '',

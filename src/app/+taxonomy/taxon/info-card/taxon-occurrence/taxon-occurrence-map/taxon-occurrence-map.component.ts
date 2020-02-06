@@ -1,5 +1,5 @@
-import { Component, OnChanges, Input } from '@angular/core';
-import {Occurrence} from '../../../../../shared/model/Taxonomy';
+import { Component, Input, OnChanges } from '@angular/core';
+import { Occurrence } from '../../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-occurrence-map',

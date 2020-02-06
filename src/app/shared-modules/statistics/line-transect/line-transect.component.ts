@@ -1,4 +1,3 @@
-
 import { catchError, combineLatest, map, take } from 'rxjs/operators';
 import {
   AfterViewInit,

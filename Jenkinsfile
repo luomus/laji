@@ -1,16 +1,16 @@
 node {
-  nvm('v11.3.0') {
+  nvm('v10.17.0') {
     stage('Prepare environment') {
       git branch: 'development', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
-      sh 'npm install -g yarn'
-      sh 'yarn install --silent --frozen-lockfile --check-files'
+      sh 'npm ci'
     }
     stage('Quality') {
-      sh 'yarn run lint'
+      sh 'npm run lint'
     }
     stage('Build') {
       milestone()
-      sh 'yarn run --silent build:ssr:dev'
+      sh 'rm -rf dist'
+      sh 'npm run --silent build:dev'
       sh 'pre-compress-web-assets dist/browser'
     }
     stage('Archive') {
@@ -20,7 +20,6 @@ node {
     stage('Deploy staging') {
       milestone()
       sh 'scp -r dist node@192.168.10.26:/data/dev_laji_fi/'
-      sh 'ssh node@192.168.10.26 "pm2 restart dev"'
     }
   }
 }

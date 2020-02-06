@@ -1,36 +1,14 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, of, of as ObservableOf, ReplaySubject, Subscription } from 'rxjs';
-import {
-  auditTime,
-  catchError, delay,
-  distinctUntilChanged,
-  map,
-  mergeMap,
-  share,
-  take,
-  tap,
-} from 'rxjs/operators';
-import { LocalStorage } from 'ngx-webstorage';
-import merge from 'deepmerge';
-import * as moment from 'moment';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { distinctUntilChanged, map, } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { BrowserService } from '../../shared/service/browser.service';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
-import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
-import { UserService } from '../../shared/service/user.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
-import { Util } from '../../shared/service/util.service';
-import { DocumentService } from '../own-submissions/service/document.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Annotation } from '../../shared/model/Annotation';
-import { DocumentApi } from '../../shared/api/DocumentApi';
-import { Logger } from '../../shared/logger';
 import { Form } from '../../shared/model/Form';
-import { NamedPlacesService } from '../named-place/named-places.service';
-import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
-import { Person } from '../../shared/model/Person';
-import { DocumentStorage } from '../../storage/document.storage';
+import { Rights } from '../../+haseka/form-permission/form-permission.service';
 
 export enum FormError {
   ok,

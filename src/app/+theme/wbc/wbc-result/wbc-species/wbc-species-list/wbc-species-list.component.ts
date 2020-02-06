@@ -1,9 +1,17 @@
 import {
-  Component, OnInit, OnChanges, ChangeDetectorRef, Input, Output, EventEmitter, ViewChild, TemplateRef,
-  SimpleChanges
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
-import { WbcResultService, SEASON } from '../../wbc-result.service';
-import { Observable, Subscription, forkJoin, of } from 'rxjs';
+import { SEASON, WbcResultService } from '../../wbc-result.service';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
@@ -21,6 +29,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   @Input() filterBy = '';
   @Output() rowSelect = new EventEmitter<string>();
 
+  @ViewChild('vernacularName', { static: true }) vernacularNameTpl: TemplateRef<any>;
   @ViewChild('scientificName', { static: true }) scientificNameTpl: TemplateRef<any>;
 
   loading = true;
@@ -46,7 +55,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
     this.defaultColumns = [
       {
         name: 'unit.linkings.taxon.speciesNameFinnish',
-        cellTemplate: 'link',
+        cellTemplate: this.vernacularNameTpl,
         label: 'result.unit.taxonVerbatim'
       },
       {

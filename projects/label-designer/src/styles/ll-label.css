@@ -2,9 +2,14 @@
 Content of this file needs to be copied to label-print.component.ts
 so that this styling will be included in the generated pdf
  */
+@import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond|Merriweather|Noto+Serif|Old+Standard+TT|Open+Sans|Open+Sans+Condensed|Source+Code+Pro:300&display=swap');
+
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+.ll-page {
   box-sizing: border-box;
 }
 .ll-print-content {
@@ -18,12 +23,16 @@ so that this styling will be included in the generated pdf
 }
 .ll-label-item {
   position: absolute;
-  overflow: hidden;
 }
 .ll-label {
+  direction: ltr;
   position: relative;
   overflow: hidden;
 }
 .ll-label.preview {
   border: 1px solid #333;
+}
+img {
+  transform-origin: top left;
+  transform: scale(0.25);
 }

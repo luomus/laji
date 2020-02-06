@@ -56,7 +56,7 @@ import { Title } from '@angular/platform-browser';
     .about {
       padding-bottom: 30px;
     }
-    
+
     .more-info {
       background: none;
     }

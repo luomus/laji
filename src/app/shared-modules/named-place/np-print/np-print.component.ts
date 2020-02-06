@@ -1,5 +1,4 @@
-
-import { startWith, catchError, map, switchMap, take } from 'rxjs/operators';
+import { catchError, map, startWith, switchMap, take } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as FileSaver from 'file-saver';

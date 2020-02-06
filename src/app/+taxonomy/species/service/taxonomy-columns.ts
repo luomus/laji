@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TaxonomyTableColumn } from '../model/taxonomy-table-column';
+import { from, Observable, of } from 'rxjs';
+import { concatMap, filter, map, toArray } from 'rxjs/operators';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +42,8 @@ export class TaxonomyColumns {
     {
       name: 'synonymNames',
       label: 'taxonomy.synonyms',
-      cellTemplate: 'cursive',
+      selectField: '*.scientificName,*.scientificNameAuthorship,*.cursiveName',
+      cellTemplate: 'synonyms',
       width: 200
     },
     {
@@ -144,6 +149,7 @@ export class TaxonomyColumns {
     'domain',
     'kingdom',
     'phylum',
+    'subphylum',
     'division',
     'class',
     'subclass',
@@ -156,16 +162,20 @@ export class TaxonomyColumns {
     'subtribe',
     'genus',
     'subgenus',
+    'aggregate',
     'species'
   ];
 
-  constructor() {
+  constructor(
+    private triplestoreLabelService: TriplestoreLabelService,
+    private translateService: TranslateService
+  ) {
     for (const parent of this.parents) {
       this.allColumns.push({
         name: 'parent.' + parent + '.scientificName',
         prop: 'parent.' + parent,
         label: ['MX.' + parent, 'MX.scientificName'],
-        selectField: ['parent.' + parent + '.scientificName', 'parent.' + parent + '.cursiveName'],
+        selectField: ['parent.' + parent + '.scientificName', 'parent.' + parent + '.cursiveName', 'parent.' + parent + '.id'],
         cellTemplate: 'scientificName',
         headerTemplate: 'labelHeader'
       });
@@ -197,7 +207,34 @@ export class TaxonomyColumns {
     }, []);
   }
 
+  /**
+   * Otherwise same as getColumns but opens the label headers and returns an observable
+   */
+  getColumns$(selected: string[]): Observable<TaxonomyTableColumn[]> {
+    return from(selected).pipe(
+      map<string, TaxonomyTableColumn>(name => this.columnLookup[name]),
+      filter(column => !!column),
+      concatMap(column => (column.headerTemplate === 'labelHeader' ?
+        this.openLabel(column.label, true) :
+        of(column.label)).pipe(map(label => ({...column, label})))
+      ),
+      toArray()
+    );
+  }
+
   getColumn(name: string): TaxonomyTableColumn {
     return this.columnLookup[name];
+  }
+
+  private openLabel(label: string|string[], capitalize: boolean = false): Observable<string|string[]> {
+    if (Array.isArray(label)) {
+      return from(label).pipe(
+        concatMap(l => (this.openLabel(l, capitalize) as any) as string),
+        toArray()
+      );
+    }
+    return this.triplestoreLabelService.get(label, this.translateService.currentLang).pipe(
+      map(l => capitalize && l ? l.charAt(0).toUpperCase() + l.slice(1) : l)
+    );
   }
 }

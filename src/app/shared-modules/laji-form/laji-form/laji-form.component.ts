@@ -10,7 +10,8 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  SimpleChanges, ViewChild
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { FormApiClient } from '../../../shared/api/FormApiClient';
 import { IUserSettings, UserService } from '../../../shared/service/user.service';
@@ -118,9 +119,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
     import('laji-form').then((formPackage) => {
       this.lajiFormWrapperProto = formPackage.default;
-      this.userService.getUserSetting(this.settingsKey).pipe(
-        concatMap(globalSettings => this.userService.getUserSetting(GLOBAL_SETTINGS).pipe(
-          map(settings => ({...globalSettings, ...settings}))
+      this.userService.getUserSetting<any>(this.settingsKey).pipe(
+        concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
+          map(globalSettings => ({...globalSettings, ...settings}))
         )),
         take(1)
       ).subscribe(settings => {
@@ -150,7 +151,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         if (this.lajiFormWrapper) {
           this.unMount();
         }
-
         this.apiClient.lang = this.translate.currentLang;
         this.apiClient.personToken = this.userService.getToken();
         this.apiClient.formID = this.formData.id;
@@ -191,11 +191,15 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onSettingsChange(settings: object, global = false) {
-    this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
+    this.ngZone.run(() => {
+      this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
+    });
   }
 
   private _onChange(formData) {
-    this.dataChange.emit(formData);
+    this.ngZone.run(() => {
+      this.dataChange.emit(formData);
+    });
   }
 
   private _onSubmit(data) {

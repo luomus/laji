@@ -1,14 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, of, of as ObservableOf, ReplaySubject, Subscription } from 'rxjs';
-import {
-  auditTime,
-  catchError, delay,
-  distinctUntilChanged,
-  map,
-  mergeMap, switchMap,
-  take,
-  tap,
-} from 'rxjs/operators';
+import { auditTime, catchError, delay, distinctUntilChanged, map, mergeMap, switchMap, take, tap, } from 'rxjs/operators';
 import { LocalStorage } from 'ngx-webstorage';
 import merge from 'deepmerge';
 import * as moment from 'moment';
@@ -38,7 +30,8 @@ export enum FormError {
   notFoundDocument,
   loadFailed,
   missingNamedPlace,
-  noAccess
+  noAccess,
+  noAccessToDocument
 }
 
 export enum Readonly {
@@ -190,7 +183,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
         if (!form.uiSchema) {
           form.uiSchema = {};
         }
-        form.uiSchema['ui:disabled'] = true;
+        form.uiSchema = {...form.uiSchema, 'ui:disabled': !this.isAdmin(form)};
       }
       this.updateState({..._state, loading: false, form, error: _state.error === FormError.incomplete ? FormError.ok : _state.error});
     });
@@ -204,13 +197,14 @@ export class LajiFormDocumentFacade implements OnDestroy {
     this.updateState({..._state, hasChanges: true, form: {
       ..._state.form,
         formData: {..._state.form.formData, locked: lock},
-        uiSchema: {..._state.form.uiSchema, 'ui:disabled': lock}
+        uiSchema: {..._state.form.uiSchema, 'ui:disabled': this.isAdmin(_state.form) ? false : lock}
     }});
-    this.dataChange.next();
   }
 
   dataUpdate(doc: Document) {
-    this.updateState({..._state, hasChanges: true, form: {..._state.form, formData: doc}});
+    // Change data directly so that it would not trigger change detection. (Laji-form keeps state)
+    _state.form.formData = doc;
+    this.updateState({..._state, hasChanges: true});
     this.dataChange.next();
   }
 
@@ -261,6 +255,10 @@ export class LajiFormDocumentFacade implements OnDestroy {
     }
   }
 
+  private isAdmin(form: FormWithData): boolean {
+    return form && form.rights && form.rights.admin;
+  }
+
   private getNewTmpId(): string {
     if (this.tmpDocId >= (Number.MAX_SAFE_INTEGER - 1003) ) {
       this.tmpDocId = 0;
@@ -299,7 +297,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
             return document;
           }),
           catchError(err => {
-            this.updateState({..._state, error: err.status === 404 ? FormError.notFoundDocument : FormError.loadFailed});
+            this.updateState({..._state, error:
+                 err.status === 404 ? FormError.notFoundDocument :
+                (err.status === 403 ? FormError.noAccessToDocument : FormError.loadFailed)});
             return of(null);
           })
         ))

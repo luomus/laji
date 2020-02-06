@@ -6,7 +6,7 @@ import { FormService } from '../../../shared/service/form.service';
 @Component({
   selector: 'laji-document-form-footer',
   templateUrl: './document-form-footer.component.html',
-  styleUrls: ['./document-form-footer.component.css'],
+  styleUrls: ['./document-form-footer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentFormFooterComponent {
@@ -30,10 +30,6 @@ export class DocumentFormFooterComponent {
   readonlyStates = Readonly;
 
   constructor() { }
-
-  displaysSaveContainer() {
-    return this._admin || this.show.save;
-  }
 
   @Input()
   set form(form: any) {

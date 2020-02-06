@@ -1,0 +1,71 @@
+#filter-row-container {
+  margin-bottom: 5px;
+}
+
+.label-filters {
+  background-color: #ecf0f1;
+  width: 100%;
+  padding: 15px;
+  border-radius: 5px 5px 0 0;
+}
+
+.label-filter-field {
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+
+  .date-picker-wrapper {
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  label {
+    margin: 0;
+    height: 20px;
+    vertical-align: middle;
+    font-weight: normal;
+  }
+
+  input[type="checkbox"] {
+    margin: 0;
+  }
+}
+
+:host >>> .empty-header {
+  height: 38px;
+}
+
+:host >>> .center-text {
+  text-align: center !important;
+  padding: 0 !important;
+}
+
+@media only screen and (min-width : 768px) {
+  #download-button-container, .print-actions {
+    float: right;
+  }
+
+  .print-actions {
+    margin-right: 5px;
+  }
+
+  .inline-block {
+    width: auto;
+    vertical-align: middle;
+  }
+}
+
+@media only screen and (max-width : 767px) {
+  #download-button-container, .print-actions{
+    float: none;
+    width: 100%;
+  }
+}
+
+.text-block {
+  margin-top: 7px;
+}
+
+.inline-block {
+  display: inline-block;
+}

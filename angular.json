@@ -18,7 +18,8 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/static",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/robots.txt"
             ],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
@@ -27,8 +28,12 @@
               "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
-              "src/styles/laji.scss"
+              "src/styles/laji.scss",
+              "projects/laji-ui/src/lib/exports.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/laji-ui/src/lib"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -36,7 +41,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": false,
+              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -46,6 +51,27 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/robots.txt",
+                  "with": "src/robots.allow.txt"
+                }
+              ]
+            },
+            "beta": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.beta.ts"
                 }
               ]
             },
@@ -53,7 +79,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": true,
-              "extractCss": false,
+              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -70,7 +96,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": false,
+              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -87,7 +113,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": false,
+              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -101,7 +127,7 @@
               ]
             },
             "local": {
-              "extractCss": false,
+              "extractCss": true,
               "vendorChunk": false,
               "fileReplacements": [
                 {
@@ -113,9 +139,9 @@
             "dev": {
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": true,
-              "extractCss": false,
-              "namedChunks": true,
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -134,6 +160,9 @@
             },
             "dev-embedded": {
               "browserTarget": "laji:build:dev-embedded"
+            },
+            "beta": {
+              "browserTarget": "laji:build:beta"
             },
             "embedded": {
               "browserTarget": "laji:build:embedded"
@@ -171,7 +200,8 @@
             ],
             "assets": [
               "src/static",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/robots.txt"
             ]
           }
         },
@@ -190,7 +220,10 @@
           "options": {
             "outputPath": "dist/server",
             "main": "src/main.server.ts",
-            "tsConfig": "src/tsconfig.server.json"
+            "tsConfig": "src/tsconfig.server.json",
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/laji-ui/src/lib"]
+            }
           },
           "configurations": {
             "production": {
@@ -201,6 +234,21 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/robots.txt",
+                  "with": "src/robots.allow.txt"
+                }
+              ]
+            },
+            "beta": {
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.beta.ts"
                 }
               ]
             },
@@ -326,6 +374,7 @@
             "tsConfig": "projects/iucn/tsconfig.app.json",
             "assets": [
               "projects/iucn/src/favicon.ico",
+              "projects/iucn/src/robots.txt",
               {
                 "glob": "**/*",
                 "input": "src/static",
@@ -341,6 +390,9 @@
               "src/styles/laji.scss",
               "projects/iucn/src/styles.css"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/laji-ui/src/lib"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -348,7 +400,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": false,
+              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -362,6 +414,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "projects/iucn/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/iucn/src/robots.txt",
+                  "with": "src/robots.allow.txt"
                 }
               ]
             },
@@ -372,8 +428,14 @@
                   "with": "projects/iucn/src/environments/environment.ts"
                 }
               ],
-              "extractCss": false,
-              "vendorChunk": false
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": true,
+              "aot": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
             }
           }
         },
@@ -635,7 +697,7 @@
       "projectType": "library",
       "root": "projects/laji-ui",
       "sourceRoot": "projects/laji-ui/src",
-      "prefix": "lib",
+      "prefix": "lu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -658,6 +720,41 @@
             "tsConfig": [
               "projects/laji-ui/tsconfig.lib.json",
               "projects/laji-ui/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "laji-api-client": {
+      "projectType": "library",
+      "root": "projects/laji-api-client",
+      "sourceRoot": "projects/laji-api-client/src",
+      "prefix": "la",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/laji-api-client/tsconfig.lib.json",
+            "project": "projects/laji-api-client/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/laji-api-client/src/test.ts",
+            "tsConfig": "projects/laji-api-client/tsconfig.spec.json",
+            "karmaConfig": "projects/laji-api-client/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/laji-api-client/tsconfig.lib.json",
+              "projects/laji-api-client/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {TaxonomySearchQuery} from '../service/taxonomy-search-query';
-import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
-import {Subscription} from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
+import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-species-count',

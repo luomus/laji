@@ -112,20 +112,20 @@ export class LineTransectResultGridComponent implements OnInit, OnDestroy {
     this.navigate(query);
   }
 
+  navigate(query: WarehouseQueryInterface) {
+    this.router.navigate([], {queryParams: {
+        grid: query.ykj10kmCenter,
+        time: query.time,
+        taxonId: query.taxonId,
+        page: this.page
+      }});
+  }
+
   private getCurrentSeason() {
     if (this.currentMonth >= this.startMonth) {
       return this.currentYear;
     }
     return this.lastYear;
-  }
-
-  private navigate(query: WarehouseQueryInterface) {
-    this.router.navigate([], {queryParams: {
-      grid: query.ykj10kmCenter,
-      time: query.time,
-      taxonId: query.taxonId,
-      page: this.page
-    }});
   }
 
   private clone(obj) {

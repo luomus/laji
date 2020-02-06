@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import { map, share } from 'rxjs/operators';
+import { delay, map, take } from 'rxjs/operators';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
@@ -8,7 +8,8 @@ import {
   EventEmitter,
   HostListener,
   Inject,
-  Input, OnDestroy,
+  Input,
+  OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,
@@ -30,6 +31,7 @@ import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
 import { isPlatformBrowser } from '@angular/common';
 import { Global } from '../../../../environments/global';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 export interface RowDocument {
   creator: string;
@@ -63,17 +65,38 @@ export interface TemplateEvent {
   documentID: string;
 }
 
+export interface LabelFilter {
+  onlyPreservedSpecimen?: boolean;
+  detLaterThan?: string|Date;
+  multiplyByCount?: boolean;
+}
+
 export interface LabelEvent {
   documentIDs: string[];
   year: string;
   label: string;
+  filter: LabelFilter;
 }
 
 @Component({
   selector: 'laji-own-datatable',
   templateUrl: './own-datatable.component.html',
-  styleUrls: ['./own-datatable.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./own-datatable.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('labelFilter', [
+      state('close', style({
+        height: '0',
+        padding: '0 15px'
+      })),
+      state('open', style({
+        height: '*',
+        padding: '*'
+      })),
+      transition('close=>open', animate('500ms ease-out')),
+      transition('open=>close', animate('100ms ease-in'))
+    ]),
+  ]
 })
 export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Input() year: string;
@@ -123,6 +146,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   filterBy: string;
   selectionType: string;
   selectedLabel: string;
+  labelLoading = false;
 
   displayMode: string;
   defaultSort: any;
@@ -135,11 +159,15 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'unitCount', 'observer', 'form', 'id'];
   _goToStartAfterViewCheck = false;
+  private lastSort: any;
 
   @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
   @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalDirective;
   @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
   @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;
+
+  labelFilter$: Observable<LabelFilter>;
+  private readonly labelSettingsKey = 'label-filters';
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -154,7 +182,11 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     private toastService: ToastsService,
     private logger: Logger,
     private cd: ChangeDetectorRef
-  ) {}
+  ) {
+    this.labelFilter$ = this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
+      map(value => value || {})
+    );
+  }
 
   @Input()
   set documents(docs: RowDocument[]) {
@@ -193,7 +225,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   ngAfterViewChecked() {
     if (this._goToStartAfterViewCheck) {
       this._goToStartAfterViewCheck = false;
-      this.table.offset = 0;
+      if (this.table) {
+        this.table.offset = 0;
+      }
     }
   }
 
@@ -310,6 +344,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   onSort(event) {
+    this.lastSort = event;
     const rows = [...this.visibleRows];
     event.sorts.forEach((sort) => {
       const comparator = this.comparator(sort.prop);
@@ -399,17 +434,47 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.selected = event.selected;
   }
 
+  cancelLabels() {
+    this.selectionType = undefined;
+    this.printState = 'none';
+    this.resortTable();
+  }
+
   doLabels() {
     if (this.printState === 'none') {
       this.selectionType = 'checkbox';
       this.printState = 'select';
-    } else if (this.printState === 'select') {
-      this.selectionType = undefined;
-      this.printState = 'none';
-      this.label.emit({
-        documentIDs: this.selected.map(doc => doc.id),
-        year: this.year,
-        label: this.selectedLabel
+      this.resortTable();
+    } else if (this.printState === 'select' && !this.labelLoading) {
+      this.labelLoading = true;
+      this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
+        take(1),
+      ).subscribe(settings => {
+        this.label.emit({
+          documentIDs: this.selected.map(doc => doc.id),
+          year: this.year,
+          label: this.selectedLabel,
+          filter: settings || {}
+        });
+      }, () => {
+          this.labelLoading = false;
+          this.cd.markForCheck();
+        }
+      );
+    }
+  }
+
+  updateLabelFilter(key: keyof LabelFilter, value: any) {
+    this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
+      map(settings => ({...settings, [key]: value})),
+    ).subscribe(settings => this.userService.setUserSetting(this.labelSettingsKey, settings));
+  }
+
+  private resortTable() {
+    if (this.lastSort) {
+      // Sorting is lost when sorted by date type column and select type is given. This is work around for that issue.
+      setTimeout(() => {
+        this.table.onColumnSort(this.lastSort);
       });
     }
   }

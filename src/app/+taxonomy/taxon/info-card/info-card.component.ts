@@ -1,24 +1,29 @@
 import { map, switchMap, tap } from 'rxjs/operators';
-import {Observable, of, Subscription} from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
+  EventEmitter,
   Input,
-  Output,
-  OnInit,
   OnChanges,
-  SimpleChanges,
-  PLATFORM_ID, EventEmitter, OnDestroy
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
 } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
-import {GalleryService} from '../../../shared/gallery/service/gallery.service';
-import {WarehouseQueryInterface} from '../../../shared/model/WarehouseQueryInterface';
-import {Image} from '../../../shared/gallery/image-gallery/image.interface';
-import {InfoCardQueryService} from './shared/service/info-card-query.service';
-import { BrowserService } from '../../../shared/service/browser.service';
+import { GalleryService } from '../../../shared/gallery/service/gallery.service';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { Image } from '../../../shared/gallery/image-gallery/image.interface';
+import { InfoCardQueryService } from './shared/service/info-card-query.service';
+import { LoadedElementsStore } from '../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
+import { LocalizeRouterService } from 'app/locale/localize-router.service';
+import { Router } from '@angular/router';
 
+const tabOrder = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
+                   'observations', 'specimens', 'endangerment', 'invasive' ];
+const basePath = '/taxon';
 
 @Component({
   selector: 'laji-info-card',
@@ -27,10 +32,21 @@ import { BrowserService } from '../../../shared/service/browser.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
+  loadedTabs: LoadedElementsStore = new LoadedElementsStore(tabOrder);
+
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() activeTab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive';
+  @Input() set activeTab(tab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
+    this.initiallySelectedTab = tab;
+    this.loadedTabs.load(tab);
+  }
+  get activeTab() {
+    // @ts-ignore
+    return this.initiallySelectedTab;
+  }
+
+  initiallySelectedTab = 'overview'; // stores which tab index was provided by @Input
 
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<Image>;
@@ -38,14 +54,9 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   hasImageData: boolean;
   hasBiologyData: boolean;
   isEndangered: boolean;
-  showMenu = false;
   images = [];
 
-  activatedTabs = {};
-
   sub: Subscription;
-  currentValueTab: any;
-  lgScreen: boolean;
 
   private imageSub: Subscription;
 
@@ -54,32 +65,28 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private cd: ChangeDetectorRef,
     private galleryService: GalleryService,
-    private browserService: BrowserService,
-    @Inject(PLATFORM_ID) private platformId: object,
+    private localizeRouterService: LocalizeRouterService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.sub = this.browserService.lgScreen$.pipe(
-      tap(data => {
-        this.lgScreen = data;
-        this.cd.markForCheck();
-      })
-    )
-    .subscribe();
     if (this.hasImageData === undefined) {
       this.hasImageData = this.activeTab === 'images';
     }
   }
 
+  onSelect(tabIndex) {
+    const tabName = this.getTabNameFromVisibleIndex(tabIndex);
+    const route = [basePath, this.taxon.id];
+    if (tabName !== 'overview') { route.push(tabName); }
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(route),
+      { queryParamsHandling: 'preserve' }
+    );
+  }
+
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.activeTab) {
-      this.activatedTabs[this.activeTab] = true;
-      this.showMenu = false;
-    }
-
     if (changes.taxon) {
-      this.activatedTabs = {[this.activeTab]: true};
-
       this.taxonImages = (this.taxon.multimedia || []).map(img => {
         if (img['taxon']) {
           img['taxonId'] = img['taxon']['id'];
@@ -108,10 +115,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       }
 
       this.setImages();
-
     }
-
-    this.showMenu = false;
   }
 
   ngOnDestroy() {
@@ -202,8 +206,50 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     return false;
   }
 
+  // used for translating tab indices
+  private getTabConditionals(): {e, t}[] {
+    return [
+      {e: this.hasImageData, t: 'images'},
+      {e: this.hasBiologyData, t: 'biology'},
+      {e: this.isFromMasterChecklist, t: 'observations'},
+      {e: this.isFromMasterChecklist, t: 'specimens'},
+      {e: this.isEndangered, t: 'endangerment'},
+      {e: this.taxon && this.taxon.invasiveSpecies, t: 'invasive'},
+    ];
+  }
 
-  toggleMenuMobile() {
-    this.showMenu = !this.showMenu;
+  /**
+   * Translates absolute tab index to visible tab index
+   */
+  private getVisibleTabIndex(absIdx: number): number {
+    let shifted = absIdx;
+    for (const c of this.getTabConditionals()) {
+      if (!c.e && this.loadedTabs.getIdxFromName(c.t) < absIdx) {
+        shifted--;
+      }
+    }
+    return shifted;
+  }
+
+  /**
+   * Translates tab name to visible tab index
+   */
+  getVisibleTabIndexFromTabName(tab: string): number {
+    const loadedIdx = this.loadedTabs.getIdxFromName(tab);
+    return this.getVisibleTabIndex(loadedIdx);
+  }
+
+  /**
+   * Translates visible index to its tab name
+   */
+  private getTabNameFromVisibleIndex(visIdx: number): string {
+    // this method returns tab name from the actual visible (shifted) index
+    let shifted = visIdx;
+    for (const c of this.getTabConditionals()) {
+      if (!c.e && this.getVisibleTabIndexFromTabName(c.t) - 1 < visIdx) {
+        shifted++;
+      }
+    }
+    return this.loadedTabs.getNameFromIdx(shifted);
   }
 }
