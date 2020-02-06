@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IFormField, splitType } from '../../../../+haseka/tools/model/excel';
+import { IFormField, splitType } from '../../model/excel';
 import { GeneratorService } from '../../service/generator.service';
 
 @Pipe({

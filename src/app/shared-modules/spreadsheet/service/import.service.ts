@@ -11,7 +11,7 @@ import {
   LEVEL_TAXON_CENSUS,
   LEVEL_UNIT,
   VALUE_IGNORE
-} from '../../../+haseka/tools/model/excel';
+} from '../model/excel';
 import { MappingService } from './mapping.service';
 import * as Hash from 'object-hash';
 

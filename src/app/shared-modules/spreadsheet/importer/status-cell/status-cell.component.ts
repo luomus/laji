@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { IFormField } from '../../../../+haseka/tools/model/excel';
+import { IFormField } from '../../model/excel';
 
 @Component({
   selector: 'laji-status-cell',

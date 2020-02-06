@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IFormField, VALUE_IGNORE } from '../../../../../+haseka/tools/model/excel';
+import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { MappingService } from '../../../service/mapping.service';
 import { UserService } from '../../../../../shared/service/user.service';
 import { InformalTaxonGroupApi } from '../../../../../shared/api/InformalTaxonGroupApi';

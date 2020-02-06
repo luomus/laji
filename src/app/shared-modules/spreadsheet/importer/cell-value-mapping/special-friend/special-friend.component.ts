@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IFormField, VALUE_AS_IS, VALUE_IGNORE } from '../../../../../+haseka/tools/model/excel';
+import { IFormField, VALUE_AS_IS, VALUE_IGNORE } from '../../../model/excel';
 import { FriendService } from '../../../../../shared/service/friend.service';
 
 @Component({

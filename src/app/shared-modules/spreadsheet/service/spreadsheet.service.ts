@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
-import { IFormField, LEVEL_DOCUMENT, VALUE_IGNORE } from '../../../+haseka/tools/model/excel';
+import { IFormField, LEVEL_DOCUMENT, VALUE_IGNORE } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 import { GeneratorService } from './generator.service';

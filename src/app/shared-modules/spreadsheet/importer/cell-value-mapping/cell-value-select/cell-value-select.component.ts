@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IFormField, VALUE_IGNORE } from '../../../../../+haseka/tools/model/excel';
+import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 
 @Component({
   selector: 'laji-cell-value-select',

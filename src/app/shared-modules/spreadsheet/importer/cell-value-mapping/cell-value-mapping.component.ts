@@ -9,7 +9,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { IFormField } from '../../../../+haseka/tools/model/excel';
+import { IFormField } from '../../model/excel';
 import { ImportService } from '../../service/import.service';
 import { MappingService, SpecialTypes } from '../../service/mapping.service';
 

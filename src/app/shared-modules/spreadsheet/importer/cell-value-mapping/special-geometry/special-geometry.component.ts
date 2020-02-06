@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { IFormField, VALUE_IGNORE } from '../../../../../+haseka/tools/model/excel';
+import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { CoordinateService } from '../../../../../shared/service/coordinate.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { IFormField, splitType } from '../../../+haseka/tools/model/excel';
+import { IFormField, splitType } from '../model/excel';
 import { UserService } from '../../../shared/service/user.service';
 import { MappingService, SpecialTypes } from './mapping.service';
 import { Person } from '../../../shared/model/Person';
