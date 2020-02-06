@@ -105,7 +105,8 @@ export class UserService {
       filter(event => event instanceof ActivationEnd && event.snapshot.children.length === 0)
     ).subscribe((event: ActivationEnd) => this.currentRouteData.next(event.snapshot.data));
 
-    this.currentRouteData$.pipe(
+    this.isLoggedIn$.pipe(
+      switchMap(() => this.currentRouteData$),
       take(1),
       switchMap(() => this.browserService.visibility$),
       filter(visible => visible),
@@ -212,10 +213,6 @@ export class UserService {
     this.storage.store(this.personsCacheKey(personID), settings);
   }
 
-  getPersistentState(): IPersistentState {
-    return {...this.persistentState};
-  }
-
   private personsCacheKey(personID): string {
     return `users-${personID }-settings`;
   }
@@ -234,11 +231,11 @@ export class UserService {
       this.doLogoutState();
     } else if (token) {
       return this.personApi.personFindByToken(token).pipe(
+        tap(user => this.doLoginState(user, token)),
+        map(user => !!user),
         httpOkError(404, false),
         retryWithBackoff(300),
         catchError(() => of(false)),
-        tap(user => this.doLoginState(user, token)),
-        map(user => !!user),
         map(loggedIn => {
           if (!loggedIn) {
             this.doLogoutState();

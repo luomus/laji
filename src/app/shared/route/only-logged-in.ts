@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angul
 
 import { UserService } from '../service/user.service';
 import { PlatformService } from '../service/platform.service';
+import { take, tap } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class OnlyLoggedIn implements CanActivate {
@@ -17,12 +18,12 @@ export class OnlyLoggedIn implements CanActivate {
     if (this.platformService.isServer) {
       return true;
     }
-    const isLoggedIn = this.userService.getPersistentState().isLoggedIn;
-    if (!isLoggedIn) {
-      this.userService.redirectToLogin(state.url, route.data);
-      return false;
-    }
-    return true;
+    return this.userService.isLoggedIn$.pipe(
+      take(1),
+      tap(isLoggedIn => { if (!isLoggedIn) {
+        this.userService.redirectToLogin(state.url, route.data);
+      }})
+    );
   }
 
 }
