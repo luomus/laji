@@ -934,7 +934,7 @@
   "observation.label.family": "Heimo",
   "observation.label.genus": "Suku",
   "omniSearch.allObservation": "havaintoa",
-  "omniSearch.groups": "Eliöryhmä",
+  "omniSearch.groups": "Muotoryhmä/eliöryhmä",
   "omniSearch.links": "Hyödyllistä",
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "Taksonominen taso",
