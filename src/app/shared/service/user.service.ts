@@ -236,12 +236,8 @@ export class UserService {
         httpOkError(404, false),
         retryWithBackoff(300),
         catchError(() => of(false)),
-        map(loggedIn => {
-          if (!loggedIn) {
-            this.doLogoutState();
-          }
-          return true;
-        }),
+        tap(loggedIn => { if (!loggedIn) { this.doLogoutState(); } }),
+        map(() => true),
         share()
       );
     } else if (this.persistentState.isLoggedIn) {
