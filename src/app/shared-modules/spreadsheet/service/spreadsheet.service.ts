@@ -78,8 +78,8 @@ export class SpreadsheetService {
 
   }
 
-  isValidType(type) {
-    return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
+  validTypes(): string[] {
+    return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes];
   }
 
   setRequiredFields(formID: string, fields: object) {

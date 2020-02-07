@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
+import { from as ObservableFrom, Observable, of, of as ObservableOf } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
@@ -19,6 +19,7 @@ import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { ExcelToolService } from '../service/excel-tool.service';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
 import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
+import { FileService, instanceOfFileLoad } from '../service/file.service';
 
 @Component({
   selector: 'laji-importer',
@@ -94,7 +95,8 @@ export class ImporterComponent implements OnInit {
     private dialogService: DialogService,
     private excelToolService: ExcelToolService,
     private latestFacade: LatestDocumentsFacade,
-    private spreadsheetFacade: SpreadsheetFacade
+    private spreadsheetFacade: SpreadsheetFacade,
+    private fileService: FileService
   ) {
     this.vm$ = spreadsheetFacade.vm$;
   }
@@ -103,33 +105,27 @@ export class ImporterComponent implements OnInit {
     this.spreadsheetFacade.clear();
   }
 
-  onFileChange(evt: any) {
-    const target: DataTransfer = <DataTransfer>(evt.target);
-    if (target.files.length !== 1) {
-      this.spreadsheetFacade.goToStep(Step.empty);
-      return;
-    }
-    const reader: FileReader = new FileReader();
-    const fileName = evt.target.value;
-    this.spreadsheetFacade.goToStep(Step.importingFile);
+  onFileChange(event: Event) {
     this.fileLoading = true;
-    reader.onload = (e: any) => {
-      evt.target.value = '';
-      this.valid = false;
+    this.valid = false;
+    this.errors = undefined;
+    this.parsedData = undefined;
+
+    this.spreadsheetFacade.goToStep(Step.importingFile);
+    this.fileService.load(event, this.spreadSheetService.validTypes()).pipe(
+      catchError((e) => {
+        this.spreadsheetFacade.goToStep(e === FileService.ERROR_INVALID_TYPE ? Step.invalidFileType : Step.empty);
+        return of(null);
+      })
+    ).subscribe((content) => {
+      if (instanceOfFileLoad(content)) {
+        this.bstr = content.content;
+        this.formID = this.spreadSheetService.findFormIdFromFilename(content.filename);
+        this.spreadsheetFacade.setFilename(content.filename);
+        this.initForm();
+      }
       this.fileLoading = false;
-      this.errors = undefined;
-      this.parsedData = undefined;
-      this.bstr = e.target.result;
-      this.formID = this.spreadSheetService.findFormIdFromFilename(fileName);
-      this.initForm();
-    };
-    if (this.spreadSheetService.isValidType(target.files[0].type)) {
-      this.spreadsheetFacade.setFilename(target.files[0].name);
-      reader.readAsArrayBuffer(target.files[0]);
-    } else {
-      this.spreadsheetFacade.goToStep(Step.invalidFileType);
-      this.fileLoading = false;
-    }
+    });
   }
 
   initForm() {
