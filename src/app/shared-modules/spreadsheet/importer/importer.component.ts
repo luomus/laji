@@ -320,6 +320,7 @@ export class ImporterComponent implements OnInit {
               map(error => ({result: {_error: error}, source: data}))
             ))
         )),
+        catchError(() => of({result: {_error: {status: 422}}, source: data})),
         tap(() => {
           if (this.current < this.total) {
             this.current++;
@@ -365,11 +366,15 @@ export class ImporterComponent implements OnInit {
     this.current = 1;
     ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
       concatMap(data => this.augmentService.augmentDocument(data.document).pipe(
-        concatMap(document => this.importService.sendData(document, publicityRestrictions).pipe(
+        concatMap(document => this.importService.sendData(
+          document,
+          publicityRestrictions,
+          [Document.DataOriginEnum.dataOriginSpreadsheetFile]
+        ).pipe(
           switchMap(result => ObservableOf({result: result, source: data})),
           catchError(err => ObservableOf(typeof err.json === 'function' ? err.json() : err).pipe(
-            map(body => body.error && body.error.details || body),
-            map(error => ({result: {_error: error}, source: data}))
+            map(error => error.error && error.error.details || error),
+            map(error => ({result: {_error: (error || {status: 422})}, source: data}))
           ))
         )),
         tap(() => {

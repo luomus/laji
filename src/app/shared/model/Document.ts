@@ -296,6 +296,8 @@ export interface Document {
 
     acknowledgedWarnings?: {location: string, messages: string[]}[];
 
+    dataOrigin?: Document.DataOriginEnum[];
+
   /**
    * Fields that tels if there is local changes on the form
    */
@@ -343,6 +345,11 @@ export namespace Document {
     publicityRestrictionsPublic = <any> 'MZ.publicityRestrictionsPublic',
     publicityRestrictionsProtected = <any> 'MZ.publicityRestrictionsProtected',
     publicityRestrictionsPrivate = <any> 'MZ.publicityRestrictionsPrivate',
+  }
+  export enum DataOriginEnum {
+      dataOriginPaperForm = <any> 'MY.dataOriginPaperForm',
+      dataOriginWebForm = <any> 'MY.dataOriginWebForm',
+      dataOriginSpreadsheetFile = <any> 'MY.dataOriginSpreadsheetFile',
   }
   export enum SecureLevelEnum {
     SecureLevelNone = <any> 'MX.secureLevelNone',

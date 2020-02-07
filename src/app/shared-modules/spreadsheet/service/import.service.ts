@@ -84,7 +84,12 @@ export class ImportService {
     });
   }
 
-  sendData(document: Document, publicityRestrictions: Document.PublicityRestrictionsEnum): Observable<any> {
+  sendData(
+    document: Document,
+    publicityRestrictions: Document.PublicityRestrictionsEnum,
+    dataOrigin: Document.DataOriginEnum[]
+  ): Observable<any> {
+    document.dataOrigin = dataOrigin;
     document.publicityRestrictions = publicityRestrictions;
     return this.documentApi.create(document, this.userService.getToken(), {
       lang: this.translateService.currentLang,
