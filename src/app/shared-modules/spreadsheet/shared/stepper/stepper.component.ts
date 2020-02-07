@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { States } from '../../importer/importer.component';
 import { TranslateService } from '@ngx-translate/core';
+import { Step } from '../../spreadsheet.facade';
 
 @Component({
   selector: 'laji-stepper',
@@ -10,34 +10,34 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class StepperComponent implements OnInit {
 
-  _state: States;
+  _state: Step;
   active: number;
-  @Output() activate = new EventEmitter<string>();
+  @Output() activate = new EventEmitter<Step>();
   @Output() title = new EventEmitter<string>();
 
   mapping = {
-    'empty': 'file',
-    'fileAlreadyUploadedPartially': 'file',
-    'fileAlreadyUploaded': 'file',
-    'ambiguousColumns': 'file',
-    'invalidFileType': 'file',
-    'importingFile': 'file',
-    'colMapping': 'colMapping',
-    'dataMapping': 'valueMapping',
-    'importReady': 'send',
-    'validating': 'send',
-    'invalidData': 'send',
-    'importing': 'send',
-    'doneWithErrors': 'done',
-    'doneOk': 'done'
+    [Step.empty]: 'file',
+    [Step.fileAlreadyUploadedPartially]: 'file',
+    [Step.fileAlreadyUploaded]: 'file',
+    [Step.ambiguousColumns]: 'file',
+    [Step.invalidFileType]: 'file',
+    [Step.importingFile]: 'file',
+    [Step.colMapping]: 'colMapping',
+    [Step.dataMapping]: 'valueMapping',
+    [Step.importReady]: 'send',
+    [Step.validating]: 'send',
+    [Step.invalidData]: 'send',
+    [Step.importing]: 'send',
+    [Step.doneWithErrors]: 'done',
+    [Step.doneOk]: 'done'
   };
 
-  steps: {name: string, label: string, returnState: string}[] = [
-    {name: 'file', label: 'excel.step1', returnState: 'empty'},
-    {name: 'colMapping', label: 'excel.step2', returnState: 'colMapping'},
-    {name: 'valueMapping', label: 'excel.step3', returnState: 'dataMapping'},
-    {name: 'send', label: 'excel.step4', returnState: 'empty'},
-    {name: 'done', label: 'excel.step5', returnState: 'importReady'}
+  steps: {name: string, label: string, returnState: Step}[] = [
+    {name: 'file', label: 'excel.step1', returnState: Step.empty},
+    {name: 'colMapping', label: 'excel.step2', returnState: Step.colMapping},
+    {name: 'valueMapping', label: 'excel.step3', returnState: Step.dataMapping},
+    {name: 'send', label: 'excel.step4', returnState: Step.empty},
+    {name: 'done', label: 'excel.step5', returnState: Step.importReady}
   ];
 
   private labels = false;
@@ -61,11 +61,11 @@ export class StepperComponent implements OnInit {
       });
   }
 
-  @Input() set state(state: States) {
-    this._state = state;
-    const mappedState = this.mapping[state] || 'file';
-    this.active = this.steps.findIndex((step) => {
-      return step.name === mappedState;
+  @Input() set state(step: Step) {
+    this._state = step;
+    const mappedState = this.mapping[step] || 'file';
+    this.active = this.steps.findIndex((item) => {
+      return item.name === mappedState;
     });
     this.sendActive();
   }

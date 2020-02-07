@@ -4,7 +4,14 @@ import { Observable } from 'rxjs';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { Document } from '../../../shared/model/Document';
 import { UserService } from '../../../shared/service/user.service';
-import { IFormField, LEVEL_DOCUMENT, LEVEL_GATHERING, LEVEL_TAXON_CENSUS, LEVEL_UNIT, VALUE_IGNORE } from '../model/excel';
+import {
+  IFormField,
+  LEVEL_DOCUMENT,
+  LEVEL_GATHERING,
+  LEVEL_TAXON_CENSUS,
+  LEVEL_UNIT,
+  VALUE_IGNORE
+} from '../model/excel';
 import { MappingService } from './mapping.service';
 import * as Hash from 'object-hash';
 
@@ -77,7 +84,12 @@ export class ImportService {
     });
   }
 
-  sendData(document: Document, publicityRestrictions: Document.PublicityRestrictionsEnum): Observable<any> {
+  sendData(
+    document: Document,
+    publicityRestrictions: Document.PublicityRestrictionsEnum,
+    dataOrigin: Document.DataOriginEnum[]
+  ): Observable<any> {
+    document.dataOrigin = dataOrigin;
     document.publicityRestrictions = publicityRestrictions;
     return this.documentApi.create(document, this.userService.getToken(), {
       lang: this.translateService.currentLang,

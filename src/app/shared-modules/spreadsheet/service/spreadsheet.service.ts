@@ -19,7 +19,7 @@ interface IColCombine {
 }
 
 @Injectable()
-export class SpreadSheetService {
+export class SpreadsheetService {
 
   public static readonly nameSeparator = ' - ';
 
@@ -78,8 +78,8 @@ export class SpreadSheetService {
 
   }
 
-  isValidType(type) {
-    return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
+  validTypes(): string[] {
+    return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes];
   }
 
   setRequiredFields(formID: string, fields: object) {
@@ -195,7 +195,7 @@ export class SpreadSheetService {
           col: key,
           field: newField,
           type: match[1],
-          groupId: group && group.groupId || SpreadSheetService.groupId++,
+          groupId: group && group.groupId || SpreadsheetService.groupId++,
           order: matches.indexOf(match[1])
         });
       }
@@ -328,7 +328,7 @@ export class SpreadSheetService {
             result.push({
               type: form.type,
               label: label,
-              fullLabel: label + SpreadSheetService.nameSeparator + (this.translations[parent] || parent),
+              fullLabel: label + SpreadsheetService.nameSeparator + (this.translations[parent] || parent),
               key: root,
               parent: parent,
               isArray: root.endsWith('[*]'),
@@ -364,7 +364,7 @@ export class SpreadSheetService {
         result.push({
           type: form.type,
           label: label,
-          fullLabel: label + SpreadSheetService.nameSeparator + (this.translations[parent] || parent),
+          fullLabel: label + SpreadsheetService.nameSeparator + (this.translations[parent] || parent),
           key: root,
           parent: parent,
           isArray: root.endsWith('[*]'),

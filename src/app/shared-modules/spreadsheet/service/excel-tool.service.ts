@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, switchMap } from 'rxjs/operators';
 import { FormService } from '../../../shared/service/form.service';
 import { Form } from '../../../shared/model/Form';
-import { NamedPlacesService } from '../../../shared-modules/named-place/named-places.service';
+import { NamedPlacesService } from '../../named-place/named-places.service';
 import { UserService } from '../../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';

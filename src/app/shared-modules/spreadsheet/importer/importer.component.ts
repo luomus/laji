@@ -1,39 +1,26 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { from as ObservableFrom, of as ObservableOf } from 'rxjs';
-import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
+import { from as ObservableFrom, Observable, of, of as ObservableOf } from 'rxjs';
+import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
-import { IFormField } from '../model/excel';
+import { IFormField, IUserMappings } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
-import { SpreadSheetService } from '../service/spread-sheet.service';
+import { SpreadsheetService } from '../service/spreadsheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ngx-webstorage';
 import * as Hash from 'object-hash';
-import { ImportTableColumn } from '../model/import-table-column';
-import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { ImportTableColumn } from '../../../+haseka/tools/model/import-table-column';
+import { catchError, concatMap, filter, map, switchMap, tap } from 'rxjs/operators';
 import { ExcelToolService } from '../service/excel-tool.service';
-import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
-
-export type States
-  = 'empty'
-  | 'fileAlreadyUploadedPartially'
-  | 'fileAlreadyUploaded'
-  | 'ambiguousColumns'
-  | 'invalidFileType'
-  | 'importingFile'
-  | 'colMapping'
-  | 'dataMapping'
-  | 'importReady'
-  | 'validating'
-  | 'invalidData'
-  | 'importing'
-  | 'doneOk'
-  | 'doneWithErrors';
+import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
+import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
+import { FileService, instanceOfFileLoad } from '../service/file.service';
+import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
 
 @Component({
   selector: 'laji-importer',
@@ -72,11 +59,8 @@ export class ImporterComponent implements OnInit {
   valid = false;
   priv = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
   publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
-  status: States = 'empty';
-  filename = '';
   excludedFromCopy: string[] = [];
   userMappings: any;
-  hasUserMapping = false;
   ambiguousColumns = [];
   separator = MappingService.valueSplitter;
   hash;
@@ -84,12 +68,16 @@ export class ImporterComponent implements OnInit {
   fileLoading = false;
   total = 0;
   current = 0;
+  step = Step;
+  currentUserMappingHash: string;
 
   combineOptions: CombineToDocument[] = [
     CombineToDocument.gathering,
     CombineToDocument.all,
     CombineToDocument.none
   ];
+
+  vm$: Observable<ISpreadsheetState>;
 
   private externalLabel = [
     'editors[*]',
@@ -98,50 +86,48 @@ export class ImporterComponent implements OnInit {
 
   constructor(
     private formService: FormService,
-    private spreadSheetService: SpreadSheetService,
+    private spreadSheetService: SpreadsheetService,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef,
     private importService: ImportService,
     private mappingService: MappingService,
+    private mappingFileService: MappingFileService,
     private toastsService: ToastsService,
     private augmentService: AugmentService,
     private dialogService: DialogService,
     private excelToolService: ExcelToolService,
-    private latestFacade: LatestDocumentsFacade
-  ) { }
-
-  ngOnInit() {
-    this.status = 'empty';
-    this.hasUserMapping = this.mappingService.hasUserMapping();
+    private latestFacade: LatestDocumentsFacade,
+    private spreadsheetFacade: SpreadsheetFacade,
+    private fileService: FileService
+  ) {
+    this.vm$ = spreadsheetFacade.vm$;
   }
 
-  onFileChange(evt: any) {
-    const target: DataTransfer = <DataTransfer>(evt.target);
-    if (target.files.length !== 1) {
-      this.status = 'empty';
-      return;
-    }
-    const reader: FileReader = new FileReader();
-    const fileName = evt.target.value;
-    this.status = 'importingFile';
+  ngOnInit() {
+    this.spreadsheetFacade.clear();
+  }
+
+  onFileChange(event: Event) {
     this.fileLoading = true;
-    reader.onload = (e: any) => {
-      evt.target.value = '';
-      this.valid = false;
+    this.valid = false;
+    this.errors = undefined;
+    this.parsedData = undefined;
+
+    this.spreadsheetFacade.goToStep(Step.importingFile);
+    this.fileService.load(event, this.spreadSheetService.validTypes()).pipe(
+      catchError((e) => {
+        this.spreadsheetFacade.goToStep(e === FileService.ERROR_INVALID_TYPE ? Step.invalidFileType : Step.empty);
+        return of(null);
+      })
+    ).subscribe((content) => {
+      if (instanceOfFileLoad(content)) {
+        this.bstr = content.content;
+        this.formID = this.spreadSheetService.findFormIdFromFilename(content.filename);
+        this.spreadsheetFacade.setFilename(content.filename);
+        this.initForm();
+      }
       this.fileLoading = false;
-      this.errors = undefined;
-      this.parsedData = undefined;
-      this.bstr = e.target.result;
-      this.formID = this.spreadSheetService.findFormIdFromFilename(fileName);
-      this.initForm();
-    };
-    if (this.spreadSheetService.isValidType(target.files[0].type)) {
-      this.filename = target.files[0].name;
-      reader.readAsArrayBuffer(target.files[0]);
-    } else {
-      this.status = 'invalidFileType';
-      this.fileLoading = false;
-    }
+    });
   }
 
   initForm() {
@@ -162,11 +148,11 @@ export class ImporterComponent implements OnInit {
         }
 
         if (this.partiallyUploadedFiles && this.partiallyUploadedFiles.indexOf(this.hash) > -1) {
-          this.status = 'fileAlreadyUploadedPartially';
+          this.spreadsheetFacade.goToStep(Step.fileAlreadyUploadedPartially);
           this.cdr.markForCheck();
           return;
         } else if (this.uploadedFiles && this.uploadedFiles.indexOf(this.hash) > -1) {
-          this.status = 'fileAlreadyUploaded';
+          this.spreadsheetFacade.goToStep(Step.fileAlreadyUploaded);
           this.cdr.markForCheck();
           return;
         }
@@ -196,10 +182,10 @@ export class ImporterComponent implements OnInit {
           }
         });
         if (hasAmbiguousColumns) {
-          this.status = 'ambiguousColumns';
+          this.spreadsheetFacade.goToStep(Step.ambiguousColumns);
           this.ambiguousColumns = Array.from(ambiguousCols);
         } else {
-          this.status = 'colMapping';
+          this.spreadsheetFacade.goToStep(Step.colMapping);
         }
         this.cdr.markForCheck();
         setTimeout(() => {
@@ -267,17 +253,16 @@ export class ImporterComponent implements OnInit {
   }
 
   colMappingDone(mapping) {
-    this.status = 'dataMapping';
+    this.spreadsheetFacade.goToStep(Step.dataMapping);
     this.colMap = mapping;
     this.cdr.markForCheck();
   }
 
   rowMappingDone(mappings?) {
-    this.status = 'importReady';
+    this.spreadsheetFacade.goToStep(Step.importReady);
     if (mappings) {
       this.mappingService.addUserValueMapping(mappings);
     }
-    this.hasUserMapping = this.mappingService.hasUserMapping();
     this.initParsedData();
     const skipped = [];
     const docs = {};
@@ -318,7 +303,11 @@ export class ImporterComponent implements OnInit {
   }
 
   validate() {
-    this.status = 'validating';
+    const userDataMap = Hash(this.mappingService.getUserMappings(), {algorithm: 'sha1'});
+    if (this.currentUserMappingHash !== userDataMap) {
+      this.spreadsheetFacade.setMappingFilename('');
+    }
+    this.spreadsheetFacade.goToStep(Step.validating);
     let success = true;
     this.total = this.parsedData.length;
     this.current = 1;
@@ -331,6 +320,7 @@ export class ImporterComponent implements OnInit {
               map(error => ({result: {_error: error}, source: data}))
             ))
         )),
+        catchError(() => of({result: {_error: {status: 422}}, source: data})),
         tap(() => {
           if (this.current < this.total) {
             this.current++;
@@ -356,31 +346,35 @@ export class ImporterComponent implements OnInit {
             this.errors = body.error.details;
           }
           this.valid = false;
-          this.status = 'invalidData';
+          this.spreadsheetFacade.goToStep(Step.invalidData);
           this.cdr.markForCheck();
           console.error(err);
         },
         () => {
           this.valid = success;
-          this.status = success ? 'importReady' : 'invalidData';
+          this.spreadsheetFacade.goToStep(success ? Step.importReady : Step.invalidData);
           this.cdr.markForCheck();
         }
       );
   }
 
   save(publicityRestrictions: Document.PublicityRestrictionsEnum) {
-    this.status = 'importing';
+    this.spreadsheetFacade.goToStep(Step.importing);
     let success = true;
     let hadSuccess = false;
     this.total = this.parsedData.length;
     this.current = 1;
     ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
       concatMap(data => this.augmentService.augmentDocument(data.document).pipe(
-        concatMap(document => this.importService.sendData(document, publicityRestrictions).pipe(
+        concatMap(document => this.importService.sendData(
+          document,
+          publicityRestrictions,
+          [Document.DataOriginEnum.dataOriginSpreadsheetFile]
+        ).pipe(
           switchMap(result => ObservableOf({result: result, source: data})),
           catchError(err => ObservableOf(typeof err.json === 'function' ? err.json() : err).pipe(
-            map(body => body.error && body.error.details || body),
-            map(error => ({result: {_error: error}, source: data}))
+            map(error => error.error && error.error.details || error),
+            map(error => ({result: {_error: (error || {status: 422})}, source: data}))
           ))
         )),
         tap(() => {
@@ -415,7 +409,7 @@ export class ImporterComponent implements OnInit {
         },
         () => {
           if (success) {
-            this.status = 'doneOk';
+            this.spreadsheetFacade.goToStep(Step.doneOk);
             this.valid = true;
             this.uploadedFiles = this.uploadedFiles ? [...this.uploadedFiles, this.hash] : [this.hash];
             this.translateService.get('excel.import.done')
@@ -424,7 +418,7 @@ export class ImporterComponent implements OnInit {
             if (hadSuccess) {
               this.partiallyUploadedFiles = this.partiallyUploadedFiles ? [...this.partiallyUploadedFiles, this.hash] : [this.hash];
             }
-            this.status = 'doneWithErrors';
+            this.spreadsheetFacade.goToStep(Step.doneWithErrors);
             this.toastsService.showError(this.translateService.instant('excel.import.failed'));
           }
           this.latestFacade.update();
@@ -446,28 +440,27 @@ export class ImporterComponent implements OnInit {
     }
   }
 
-  showUserMapping() {
-    if (!this.hasUserMapping) {
+  saveUserMapping() {
+    if (!this.mappingService.hasUserMapping()) {
       return;
     }
-    this.userMappings = this.mappingService.getUserMappings();
-    this.currentUserMapModal.show();
+    this.dialogService.prompt(this.translateService.instant('filename')).pipe(
+      filter(value => !!value),
+      switchMap(filename => this.mappingFileService.save(filename, this.mappingService.getUserMappings()))
+    ).subscribe((success) => {});
   }
 
-  useUserMapping(value) {
-    this.userMapModal.hide();
-    try {
-      this.mappingService.setUserMapping(JSON.parse(value));
-    } catch (err) {
-      console.log(err);
-      this.toastsService.showWarning('Kuvausta ei tunnistettu!');
-      return;
-    }
-    this.hasUserMapping = this.mappingService.hasUserMapping();
-    if (this.hasUserMapping) {
-      this.userColToColMap();
-      this.parsedData = undefined;
-    }
+  useUserMapping(value: IUserMappingFile) {
+    this.spreadsheetFacade.setMappingFilename(value.filename);
+    this.mappingService.setUserMapping(value.mappings);
+    this.userColToColMap();
+    this.parsedData = undefined;
+    this.spreadsheetFacade.hasUserMapping(this.mappingService.hasUserMapping());
+    this.currentUserMappingHash = Hash(value.mappings, {algorithm: 'sha1'});
+  }
+
+  userMappingLoadingFailed() {
+    this.toastsService.showError(this.translateService.instant('excel.mapping.load.failed'));
   }
 
   userColToColMap() {
@@ -482,34 +475,35 @@ export class ImporterComponent implements OnInit {
   }
 
   clearUserMapping() {
-    if (!this.hasUserMapping) {
-      return;
-    }
-    this.dialogService.confirm('Oletko varma että halut poistaa datan kuvauksen?')
+    this.dialogService.confirm(this.translateService.instant('excel.map.delete'))
       .subscribe((result) => {
         if (result) {
-          this.status = 'empty';
+          this.spreadsheetFacade.setMappingFilename('');
+          this.spreadsheetFacade.goToStep(Step.empty);
           this.mappingService.clearUserMapping();
-          this.hasUserMapping = this.mappingService.hasUserMapping();
         }
       });
   }
 
-  activate(status) {
-    if (status === 'dataMapping') {
+  clearFile() {
+    this.spreadsheetFacade.setFilename('');
+    this.bstr = undefined;
+  }
+
+  activate(step: Step) {
+    if (step === Step.dataMapping) {
       this.mappingService.clearUserValueMapping();
       this.valueMap = {};
-    } else if (status === 'colMapping' || status === 'empty') {
-      this.mappingService.clearUserColMapping();
-      this.mappingService.clearUserValueMapping();
+    } else if (step === Step.colMapping || step === Step.empty) {
+      this.mappingService.clearUserMapping();
+      this.spreadsheetFacade.setMappingFilename('');
       this.colMap = JSON.parse(JSON.stringify(this.origColMap));
       this.valueMap = {};
-      if (status === 'empty' && (this.status === 'doneOk' || this.status === 'doneWithErrors')) {
-        this.filename = '';
+      if (step === Step.empty) {
+        this.spreadsheetFacade.setFilename('');
       }
     }
-    this.hasUserMapping = this.mappingService.hasUserMapping();
-    this.status = status;
+    this.spreadsheetFacade.goToStep(step);
     this.cdr.markForCheck();
   }
 
@@ -535,10 +529,5 @@ export class ImporterComponent implements OnInit {
       }
     });
     return result;
-  }
-
-  clearFile() {
-    this.filename = '';
-    this.bstr = undefined;
   }
 }

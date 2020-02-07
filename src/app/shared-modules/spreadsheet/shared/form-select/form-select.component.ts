@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { from, Observable, of } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { FormService } from '../../../../shared/service/form.service';
-import { FormPermissionService } from '../../../form-permission/form-permission.service';
+import { FormPermissionService } from '../../../../+haseka/form-permission/form-permission.service';
 
 interface FormList {
   id: string;

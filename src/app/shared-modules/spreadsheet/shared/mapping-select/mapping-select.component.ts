@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IFormField, VALUE_AS_IS, VALUE_IGNORE } from '../../model/excel';
-import { SpreadSheetService } from '../../service/spread-sheet.service';
+import { SpreadsheetService } from '../../service/spreadsheet.service';
 
 @Component({
   selector: 'laji-mapping-select',
@@ -41,7 +41,7 @@ export class MappingSelectComponent implements OnInit {
     Object.keys(fields).forEach(key => {
       if (!groups[fields[key].parent]) {
         groups[fields[key].parent] = [];
-        const parts = fields[key].fullLabel.split(SpreadSheetService.nameSeparator);
+        const parts = fields[key].fullLabel.split(SpreadsheetService.nameSeparator);
         this.fieldGroupsLabel[fields[key].parent] = parts.pop();
       }
       groups[fields[key].parent].push(key);
