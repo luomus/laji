@@ -69,6 +69,8 @@
   "excel.import.failed": "Kaikkia havaintoeriä ei onnistuttu tallentamaan!",
   "excel.import.intro": "Tällä sivulla voit tuoda massatallennuspohjaan tallennetut havainnot osaksi Vihkon havaintoja. Voit myös tuoda havaintoja omilla tallennuspohjilla, kunhan niissä ensimmäinen rivi on otsikkorivi, joka kertoo mitä kenttä sisältää. Tuetut tiedostoformaatit ovat Microsoft Excel Open XML Spreadsheet (xlsx), OpenDocument Text (odt) ja comma separated values file (csv).",
   "excel.import.step1.addUserMapping": "Tuo datan kuvaus",
+  "filename": "Tiedostonimi",
+  "excel.mapping.load.failed": "Kuvauksen lataus epäonnistui",
   "excel.import.step1.hasUserMapping": "<strong>Huom</strong> olet lataamassa tiedostoa olemassaolevan kuvauksen kanssa. Jos et halunnut tätä niin voit poistaa kuvauksen oikealla olevasta ruksista.",
   "excel.import.step1.intro": "Valitse tiedosto alla olevaan kenttään. Jos tiedoston nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.",
   "excel.import.step1.removeUserMapping": "Poista datan kuvaus",

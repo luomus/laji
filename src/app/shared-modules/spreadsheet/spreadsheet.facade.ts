@@ -69,6 +69,10 @@ export class SpreadsheetFacade implements OnDestroy {
     this.updateState({..._state, filename});
   }
 
+  setMappingFilename(mappingFilename: string) {
+    this.updateState({..._state, mappingFilename});
+  }
+
   goToStep(step: Step) {
     this.updateState({..._state, step});
   }

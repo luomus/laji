@@ -4,7 +4,7 @@ import { from as ObservableFrom, Observable, of, of as ObservableOf } from 'rxjs
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
-import { IFormField } from '../model/excel';
+import { IFormField, IUserMappings } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
@@ -15,11 +15,12 @@ import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ngx-webstorage';
 import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../../../+haseka/tools/model/import-table-column';
-import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, tap } from 'rxjs/operators';
 import { ExcelToolService } from '../service/excel-tool.service';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
 import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
 import { FileService, instanceOfFileLoad } from '../service/file.service';
+import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
 
 @Component({
   selector: 'laji-importer',
@@ -60,7 +61,6 @@ export class ImporterComponent implements OnInit {
   publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
   excludedFromCopy: string[] = [];
   userMappings: any;
-  hasUserMapping = false;
   ambiguousColumns = [];
   separator = MappingService.valueSplitter;
   hash;
@@ -69,6 +69,7 @@ export class ImporterComponent implements OnInit {
   total = 0;
   current = 0;
   step = Step;
+  currentUserMappingHash: string;
 
   combineOptions: CombineToDocument[] = [
     CombineToDocument.gathering,
@@ -90,6 +91,7 @@ export class ImporterComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private importService: ImportService,
     private mappingService: MappingService,
+    private mappingFileService: MappingFileService,
     private toastsService: ToastsService,
     private augmentService: AugmentService,
     private dialogService: DialogService,
@@ -301,6 +303,10 @@ export class ImporterComponent implements OnInit {
   }
 
   validate() {
+    const userDataMap = Hash(this.mappingService.getUserMappings(), {algorithm: 'sha1'});
+    if (this.currentUserMappingHash !== userDataMap) {
+      this.spreadsheetFacade.setMappingFilename('');
+    }
     this.spreadsheetFacade.goToStep(Step.validating);
     let success = true;
     this.total = this.parsedData.length;
@@ -429,27 +435,27 @@ export class ImporterComponent implements OnInit {
     }
   }
 
-  showUserMapping() {
-    if (!this.hasUserMapping) {
+  saveUserMapping() {
+    if (!this.mappingService.hasUserMapping()) {
       return;
     }
-    this.userMappings = this.mappingService.getUserMappings();
-    this.currentUserMapModal.show();
+    this.dialogService.prompt(this.translateService.instant('filename')).pipe(
+      filter(value => !!value),
+      switchMap(filename => this.mappingFileService.save(filename, this.mappingService.getUserMappings()))
+    ).subscribe((success) => {});
   }
 
-  useUserMapping(value) {
-    this.userMapModal.hide();
-    try {
-      this.mappingService.setUserMapping(JSON.parse(value));
-    } catch (err) {
-      console.log(err);
-      this.toastsService.showWarning('Kuvausta ei tunnistettu!');
-      return;
-    }
-    if (this.mappingService.hasUserMapping()) {
-      this.userColToColMap();
-      this.parsedData = undefined;
-    }
+  useUserMapping(value: IUserMappingFile) {
+    this.spreadsheetFacade.setMappingFilename(value.filename);
+    this.mappingService.setUserMapping(value.mappings);
+    this.userColToColMap();
+    this.parsedData = undefined;
+    this.spreadsheetFacade.hasUserMapping(this.mappingService.hasUserMapping());
+    this.currentUserMappingHash = Hash(value.mappings, {algorithm: 'sha1'});
+  }
+
+  userMappingLoadingFailed() {
+    this.toastsService.showError(this.translateService.instant('excel.mapping.load.failed'));
   }
 
   userColToColMap() {
@@ -467,10 +473,16 @@ export class ImporterComponent implements OnInit {
     this.dialogService.confirm(this.translateService.instant('excel.map.delete'))
       .subscribe((result) => {
         if (result) {
+          this.spreadsheetFacade.setMappingFilename('');
           this.spreadsheetFacade.goToStep(Step.empty);
           this.mappingService.clearUserMapping();
         }
       });
+  }
+
+  clearFile() {
+    this.spreadsheetFacade.setFilename('');
+    this.bstr = undefined;
   }
 
   activate(step: Step) {
@@ -478,8 +490,8 @@ export class ImporterComponent implements OnInit {
       this.mappingService.clearUserValueMapping();
       this.valueMap = {};
     } else if (step === Step.colMapping || step === Step.empty) {
-      this.mappingService.clearUserColMapping();
-      this.mappingService.clearUserValueMapping();
+      this.mappingService.clearUserMapping();
+      this.spreadsheetFacade.setMappingFilename('');
       this.colMap = JSON.parse(JSON.stringify(this.origColMap));
       this.valueMap = {};
       if (step === Step.empty) {
@@ -512,10 +524,5 @@ export class ImporterComponent implements OnInit {
       }
     });
     return result;
-  }
-
-  clearFile() {
-    this.spreadsheetFacade.setFilename('');
-    this.bstr = undefined;
   }
 }

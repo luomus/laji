@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { MappingService } from '../../service/mapping.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { IUserMappingFile, MappingFileService } from '../../service/mapping-file.service';
 
 @Component({
   selector: 'laji-user-mapping-button',
@@ -12,12 +12,26 @@ export class UserMappingButtonComponent {
   @Input() hasUserMapping = false;
   @Input() showSave = false;
 
-  @Output() userMapping = new EventEmitter();
+  @Output() loadError = new EventEmitter();
+  @Output() userMapping = new EventEmitter<IUserMappingFile>();
   @Output() clearUserMapping = new EventEmitter();
 
-  constructor(private mappingService: MappingService) {}
+  constructor(
+    private mappingFileService: MappingFileService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  loadFile() {
-
+  loadFile(event: Event) {
+    this.mappingFileService.load(event).subscribe(
+      (data) => {
+        (event.target as HTMLInputElement).value = '';
+        this.userMapping.emit(data);
+        this.cdr.detectChanges();
+      },
+      () => {
+        this.loadError.emit();
+        this.cdr.detectChanges();
+      }
+    );
   }
 }

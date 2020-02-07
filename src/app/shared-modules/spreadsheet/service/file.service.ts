@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { saveAs } from 'file-saver';
 
 interface IFileLoad {
   filename: string;
@@ -61,5 +62,10 @@ export class FileService {
         return subscriber.error(FileService.ERROR_INVALID_TYPE);
       }
     });
+  }
+
+  save(filename: string, data: Blob): Observable<boolean> {
+    saveAs(data, filename);
+    return of(true);
   }
 }

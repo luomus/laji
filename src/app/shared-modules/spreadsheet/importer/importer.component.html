@@ -43,10 +43,17 @@
           <span *ngIf="fileLoading">{{ 'loading' | translate }}</span>
         </div>
         <div class="col-sm-3 map-buttons">
-          <laji-user-mapping-button
-            [hasUserMapping]="vm.hasUserMapping"
-            (clearUserMapping)="clearUserMapping()"
-          ></laji-user-mapping-button>
+          <div class="row">
+            <div class="col-xs-12">
+              <laji-user-mapping-button
+                [hasUserMapping]="vm.hasUserMapping"
+                (loadError)="userMappingLoadingFailed()"
+                (userMapping)="useUserMapping($event)"
+                (clearUserMapping)="clearUserMapping()"
+              ></laji-user-mapping-button>
+            </div>
+          </div>
+          <div class="pull-right mapping-file-name">{{ vm.mappingFilename }}</div>
         </div>
       </div>
       <div class="row data-container">
@@ -110,7 +117,7 @@
                     <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action" *ngIf="hasButton('temp')">
                       {{ buttonLabel('temp') | translate }}
                     </button>
-                    <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="showUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+                    <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
                       <i class="glyphicon glyphicon-open"></i>
                     </div>
                   </div>
@@ -165,7 +172,7 @@
     <ng-container *ngIf="vm.step === step.doneOk || vm.step === step.doneWithErrors">
       <div class="row">
         <div class="col-sm-12">
-          <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="showUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+          <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
             <i class="glyphicon glyphicon-save"></i>
           </div>
           <p *ngIf="vm.step === step.doneOk">
@@ -195,24 +202,6 @@
     </ng-container>
   </div>
 </ng-container>
-
-<div class="modal fade" bsModal #userMapModal="bs-modal" tabindex="-1" role="dialog"
-     aria-labelledby="column and value mapping" aria-hidden="true">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content">
-      <div class="modal-body mapping-body">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="userMapModal.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <div [innerHtml]="'excel.userMapping.add' | translate"></div>
-        <textarea rows="10" #userMapping class="form-control"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="useUserMapping(userMapping.value)">Käytä</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="modal fade" bsModal #currentUserMapModal="bs-modal" tabindex="-1" role="dialog"
      aria-labelledby="column and value mapping" aria-hidden="true">

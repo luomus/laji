@@ -13,3 +13,7 @@
 .map-buttons .btn {
   margin-left: 5px;
 }
+
+.mapping-file-name {
+  font-weight: bold;
+}
