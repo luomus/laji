@@ -62,15 +62,17 @@ export class AnnotationsComponent implements OnInit {
       removedTags: [],
       type: Annotation.TypeEnum.TypeOpinion,
       occurrenceAtTimeOfAnnotation: {
-        countryVerbatim: this.gathering.country ? this.gathering.country : '',
-        dateBegin: this.gathering.eventDate.begin ? this.gathering.eventDate.begin : '',
-        dateEnd: this.gathering.eventDate.end ? this.gathering.eventDate.end : '',
-        locality: this.gathering.locality ? this.gathering.locality : '',
-        municipalityVerbatim: this.gathering.municipalityVerbatim ? this.gathering.municipalityVerbatim : '',
-        taxonId : this.unit.linkings.originalTaxon ? this.unit.linkings.originalTaxon.id : '' ,
-        taxonVerbatim: this.unit.taxonVerbatim ? this.unit.taxonVerbatim : '',
-        wgs84centerPointLat: this.gathering.conversions.wgs84CenterPoint ? this.gathering.conversions.wgs84CenterPoint.lat : '',
-        wgs84centerPointLon: this.gathering.conversions.wgs84CenterPoint ? this.gathering.conversions.wgs84CenterPoint.lon : ''
+        countryVerbatim: this.gathering && this.gathering.country ? this.gathering.country : '',
+        dateBegin: this.gathering && this.gathering.eventDate.begin ? this.gathering.eventDate.begin : '',
+        dateEnd: this.gathering && this.gathering.eventDate.end ? this.gathering.eventDate.end : '',
+        locality: this.gathering && this.gathering.locality ? this.gathering.locality : '',
+        municipalityVerbatim: this.gathering && this.gathering.municipalityVerbatim ? this.gathering.municipalityVerbatim : '',
+        taxonId : this.unit && this.unit.linkings && this.unit.linkings.originalTaxon ? this.unit.linkings.originalTaxon.id : '' ,
+        taxonVerbatim: this.unit && this.unit.taxonVerbatim ? this.unit.taxonVerbatim : '',
+        wgs84centerPointLat: this.gathering && this.gathering.conversions.wgs84CenterPoint ?
+        this.gathering.conversions.wgs84CenterPoint.lat : '',
+        wgs84centerPointLon: this.gathering && this.gathering.conversions.wgs84CenterPoint ?
+        this.gathering.conversions.wgs84CenterPoint.lon : ''
       }
     };
   }

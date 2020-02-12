@@ -3,6 +3,15 @@
   <div class="annotation" *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="row">
       <div class="col-xs-12 row-title">
+        <span class="person pull-right">
+          <button
+            type="button"
+            class="btn btn-danger btn-xs"
+            (click)="remove.emit(annotation)"
+            *ngIf="(annotation.byPerson | toQName) === personID">
+            {{ 'annotation.delete' | translate }}
+          </button>
+        </span>
         <div *ngIf="annotation.byPerson; else annotationByPerson">
           <span class="annotation-person">{{ annotation.byPerson | toQName | users }} </span>
           <span>{{ annotation.created | date: 'dd.MM.yyyy' }}</span>

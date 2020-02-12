@@ -60,6 +60,7 @@
   "annotation.effectiveTaxon": "Effective observation taxon",
   "annotation.effectiveTaxon.comment": "Changed based on comment(s)",
   "annotation.isEditorTaxon": "Olet toimittaja, et voi lisätä uutta taksonomiaa",
+  "annotation.delete": "Poistaa",
   "asIs": "Arvo sellaisenaan",
   "checkAll": "Valitse kaikki",
   "checked": "valittu",

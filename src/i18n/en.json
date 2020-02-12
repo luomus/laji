@@ -60,6 +60,7 @@
   "annotation.effectiveTaxon": "Effective observation taxon",
   "annotation.effectiveTaxon.comment": "Changed based on comment(s)",
   "annotation.isEditorTaxon": "You are editor, you cannot add a new taxonomy",
+  "annotation.delete": "Delete",
   "asIs": "Value as is",
   "checkAll": "Check all",
   "checked": "checked",

@@ -60,6 +60,7 @@
   "annotation.effectiveTaxon": "Effective observation taxon",
   "annotation.effectiveTaxon.comment": "Changed based on comment(s)",
   "annotation.isEditorTaxon": "Du är redaktör, du kan inte lägga till en ny taxonomi",
+  "annotation.delete": "Radera",
   "asIs": "Värde som det är",
   "checkAll": "Markera alla",
   "checked": "vald",
