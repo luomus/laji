@@ -223,6 +223,17 @@ laji-document {
   margin-top: 7px;
 }
 
+/** taxon biology **/
+.error-content {
+  display: inline-block;
+  font-size: 12px;
+  background-color: #ff00004d;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 2px;
+}
+
 /** taxon tree **/
 .node-content-wrapper, .tree-children {
   position: relative;

@@ -1326,6 +1326,7 @@
   "map.exitFullScreen": "Avsluta helskärmsläge",
   "readMore": "Läs mer",
   "translationsMissing" : "Sorry, some content is missing for your language, showing (lang) instead",
+  "translationsMissingNew": "Sorry, that content is missing for your language, showing ",
   "bats.navLinks.form": "Registrera information",
   "np.list.col.deviceID": "Apparatsidentifieringsnummer",
   "form.participants.export.id":  "ID",

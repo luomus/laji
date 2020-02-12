@@ -16,7 +16,7 @@
           ></laji-image-gallery>
         </div>
         <strong *ngIf="ingress" [innerHTML]="ingress | multiLang"></strong>
-        <span *ngIf="description" [innerHTML]="description | multiLang"></span>
+        <span *ngIf="description" [innerHTML]="description | multiLang : true"></span>
         <div *ngIf="ingress || description">
           <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
         </div>

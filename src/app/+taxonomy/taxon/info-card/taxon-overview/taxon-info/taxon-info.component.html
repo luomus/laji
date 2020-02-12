@@ -13,7 +13,7 @@
 <laji-taxon-info-row [label]="'taxonomy.card.id' | translate">
   {{ taxon.id | toFullUri }}
 </laji-taxon-info-row>
-<laji-taxon-info-row [label]="'MX.taxonRank' | label">
+<laji-taxon-info-row [label]="'taxonomy.rank' | translate">
   {{ taxon.taxonRank | label }}
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">

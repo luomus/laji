@@ -25,7 +25,7 @@
           {{ description.title ? (description.title | multiLang) : description.id }}
         </option>
       </select>
-      <span class="check-translations" *ngIf="translationKo">{{ "translationsMissing" | translate }}</span>
+      <!-- <span class="check-translations" *ngIf="translationKo">{{ "translationsMissing" | translate }}</span> -->
       <div class="panel-group" role="tablist" aria-multiselectable="true">
         <div *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index">
           <div class="panel panel-default"
@@ -39,8 +39,8 @@
               <h4 *ngIf="variable.variable !== 'MX.ingressText'">
                 {{ variable.title | multiLang }}
               </h4>
-              <strong *ngIf="variable.variable === 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></strong>
-              <span *ngIf="variable.variable !== 'MX.ingressText'" [innerHTML]="variable.content | multiLang"></span>
+              <strong *ngIf="variable.variable === 'MX.ingressText'" [innerHTML]="variable.content | multiLang : true"></strong>
+              <span *ngIf="variable.variable !== 'MX.ingressText'" [innerHTML]="variable.content | multiLang : true"></span>
               <div *ngIf="group.group === 'MX.SDVG5'">
                 <div class="col-lg-6 col-md-6 col-xs-10">
                   <span *ngIf="!variable.variable"><h4>{{ 'iucn.filter.habitat' | translate }}</h4></span>
