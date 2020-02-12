@@ -11,7 +11,11 @@
 </ol>
 <div class="row form-meta">
   <div class="col-sm-5">
-    <laji-form-select [formID]="formID" (selected)="formSelected($event)" [disabled]="generating"></laji-form-select>
+    <laji-form-select
+      [forms]="forms"
+      [formID]="formID"
+      (selected)="formSelected($event)"
+      [disabled]="generating"></laji-form-select>
   </div>
   <div class="col-sm-5">
     <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID || generating">
