@@ -8,12 +8,12 @@
             type="button"
             class="btn btn-danger btn-xs"
             (click)="remove.emit(annotation)"
-            *ngIf="(annotation.byPerson | toQName) === personID">
+            *ngIf="(annotation.annotationByPerson | toQName) === personID">
             {{ 'annotation.delete' | translate }}
           </button>
         </span>
-        <div *ngIf="annotation.byPerson; else annotationByPerson">
-          <span class="annotation-person">{{ annotation.byPerson | toQName | users }} </span>
+        <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
+          <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
           <span>{{ annotation.created | date: 'dd.MM.yyyy' }}</span>
         </div>
         <ng-template #annotationByPerson>

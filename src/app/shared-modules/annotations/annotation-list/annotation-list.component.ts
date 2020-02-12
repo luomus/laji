@@ -24,6 +24,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.annotations);
     this.open = [...Array(this.annotations.length)].fill(false);
   }
 

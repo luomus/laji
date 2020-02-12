@@ -1,7 +1,7 @@
 <div class="annotation"  *ngIf="targetID">
   <laji-annotation-list
     [personID]="personID"
-    [annotations]="annotations | convertAnnotations"
+    [annotations]="annotations"
     (remove)="onDelete($event)">
   </laji-annotation-list>
 </div>
@@ -45,7 +45,7 @@
    
     <laji-annotation-form-new #formAnnotation
     [identifying]="identifying"
-    [annotations]="annotations | convertAnnotations"
+    [annotations]="annotations"
     [annotation]="annotation"
     [personID]="personID"
     [personRoleAnnotation]="personRoleAnnotation"

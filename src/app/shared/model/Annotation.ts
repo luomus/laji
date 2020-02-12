@@ -66,6 +66,8 @@ export interface Annotation {
   addedTags?: string[];
   removedTags?: string[];
 
+  deleted?: boolean;
+
   occurrenceAtTimeOfAnnotation?: Annotation.Occurrence;
 
 }

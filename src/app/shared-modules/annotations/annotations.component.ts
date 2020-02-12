@@ -60,6 +60,7 @@ export class AnnotationsComponent implements OnInit {
       },
       addedTags: [],
       removedTags: [],
+      deleted: false,
       type: Annotation.TypeEnum.TypeOpinion,
       occurrenceAtTimeOfAnnotation: {
         countryVerbatim: this.gathering && this.gathering.country ? this.gathering.country : '',
