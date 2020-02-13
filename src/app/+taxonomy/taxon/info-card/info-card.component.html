@@ -38,6 +38,7 @@
         *ngIf="loadedTabs.isLoaded('taxonomy')"
         [taxon]="taxon"
         [taxonDescription]="taxonDescription"
+        (taxonSelect)="updateRoute($event)"
       ></laji-taxon-taxonomy>
     </lu-tab>
     <lu-tab [heading]="'taxonomy.occurrence' | translate">
