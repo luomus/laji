@@ -2,10 +2,11 @@
 # 3.3.0 (2020-02-??)
 
 ### Features
+* **editor:** added option to skip n labels from the start of the pdf.
+* **editor:** added option to repeat labels n times when generating the pdf.
 
 ### Bug fix
 * **core:** remove empty page between pages  
-
 
 <a name="3.2.4"></a>
 # 3.2.4 (2019-12-20)

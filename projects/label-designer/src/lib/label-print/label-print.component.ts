@@ -54,6 +54,11 @@ img {
 `;
 /* tslint:enable:max-line-length */
 
+export interface IRenderPageOptions {
+  skip?: number;
+  repeat?: number;
+}
+
 /**
  * Convert the label setup together with data to html that can be used for printing.
  *
@@ -147,7 +152,7 @@ export class LabelPrintComponent implements OnChanges {
    *
    * This method can be used to start page rendering even if the button itself would not be visible.
    */
-  renderPages(): void {
+  renderPages(options?: IRenderPageOptions): void {
     if (!this.data || this.data.length === 0) {
       return;
     }
@@ -156,8 +161,10 @@ export class LabelPrintComponent implements OnChanges {
     this.pageLayout = this.labelService.countLabelsPerPage(this.setup);
     const perPage = this.pageLayout.rows * this.pageLayout.cols;
     const pages = [];
+    const skip = new Array(options.skip || 0).fill(null);
+    const data = [].concat(...new Array(options.repeat || 1).fill(this.data));
     let page = [];
-    this.data.forEach((item, idx) => {
+    [...skip, ...data].forEach((item, idx) => {
       if (idx % perPage === 0 && page.length > 0) {
         pages.push([...page]);
         page = [];

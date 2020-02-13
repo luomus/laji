@@ -35,6 +35,7 @@ export class LabelFileComponent {
   @Input() pdfLoading = false;
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
   @Input() presets: PresetSetup[];
+  @Input() allowLabelItemRepeat = false;
 
   @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string, availableFields: ILabelField[]}[];
 
@@ -55,6 +56,8 @@ export class LabelFileComponent {
     includeData: false
   };
   pdfFile = '';
+  skip = 0;
+  repeat = 1;
 
   constructor(
     private infoWindowService: InfoWindowService,
@@ -148,7 +151,10 @@ export class LabelFileComponent {
 
   doPrint() {
     this.infoWindowService.close();
-    this.printBtn.renderPages();
+    this.printBtn.renderPages({
+      skip: this.skip,
+      repeat: this.repeat
+    });
   }
 
   private updateResentFiles(data: {setup: ISetup, availableFields: ILabelField[]}, filename: string) {

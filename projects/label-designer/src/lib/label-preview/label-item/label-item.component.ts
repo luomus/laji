@@ -45,7 +45,11 @@ export class LabelItemComponent {
   }
 
   private initContent() {
-    if (!this._data || !this._item) {
+    if (!this._item || typeof this._data === 'undefined') {
+      return;
+    }
+    if (this._data === null) {
+      this._item = {...this._item, fields: []};
       return;
     }
     const fields: ILabelField[] = [];
