@@ -117,9 +117,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
     const params = {};
     const extra = {};
 
-    /*if (tab !== 'overview') {
+    if (tab !== 'overview' && tab !== 'taxonomy') {
       route.push(tab);
-    }*/
+    }
     if (context !== 'default' && id === this.taxon.id) {
       params['context'] = context;
     }

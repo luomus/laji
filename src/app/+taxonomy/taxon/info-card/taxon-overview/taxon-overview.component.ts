@@ -24,7 +24,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   description: any;
   ylesta: any;
   ylestaTitle: any;
-  _taxonDescription: TaxonomyDescription;
+  _taxonDescription: TaxonomyDescription[];
 
   mapQuery: WarehouseQueryInterface;
 
@@ -35,24 +35,27 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.description = undefined;
     this.ylesta = undefined;
     this.ylestaTitle = undefined;
-    this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription[0] : undefined;
-    if (this._taxonDescription && this._taxonDescription.groups.length > 0) {
+    this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription : undefined;
+    if (this._taxonDescription && this._taxonDescription.length > 0) {
       const groups = taxonDescription[0].groups;
-      (groups || []).forEach(gruppo => {
-        if (gruppo.group === 'MX.SDVG1') {
-          (gruppo.variables || []).forEach(variable => {
-            if (variable.variable === 'MX.ingressText') {
-              this.ingress = variable.content;
-            }
-            if (variable.variable === 'MX.descriptionText') {
-              this.description = variable.content;
-            }
-          });
-        }
-        if (gruppo.group === 'MX.SDVG8') {
-          this.ylestaTitle = gruppo.title;
-          this.ylesta = gruppo.variables;
-        }
+      this._taxonDescription.forEach(item => {
+        (item.groups || []).forEach((gruppo, index) => {
+          if (index === 0 && gruppo.group === 'MX.SDVG1') {
+            (gruppo.variables || []).forEach(variable => {
+              if (variable.variable === 'MX.ingressText') {
+                this.ingress = variable.content;
+              }
+              if (variable.variable === 'MX.descriptionText') {
+                this.description = variable.content;
+              }
+            });
+          }
+          if (gruppo.group === 'MX.SDVG8') {
+            this.ylestaTitle = gruppo.title;
+            this.ylesta = gruppo.variables;
+          }
+        });
+        return this.ylesta;
       });
     }
   }
