@@ -1,11 +1,17 @@
-<laji-info [glyphicon]="'user'" [placement]="'right'" [labelType]="'primary'" [showOnHover]="true">
+<!--<laji-info [glyphicon]="'user'" [placement]="'right'" [labelType]="'primary'" [showOnHover]="true">
   <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title | multiLang }}
   <ng-container *ngIf="taxonDescription?.speciesCardAuthors">
     <br>
     <strong>{{ taxonDescription?.speciesCardAuthors.title | multiLang }}:</strong>
     <span [innerHTML]="taxonDescription?.speciesCardAuthors.content | multiLang"></span>
   </ng-container>
-</laji-info>
+</laji-info>-->
+<strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title | multiLang }}
+<ng-container *ngIf="taxonDescription?.speciesCardAuthors">
+  <br>
+  <strong>{{ taxonDescription?.speciesCardAuthors.title | multiLang }}:</strong>
+  <span [innerHTML]="taxonDescription?.speciesCardAuthors.content | multiLang"></span>
+</ng-container>
 <span style="margin: 0 7px">
   <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
 </span>
