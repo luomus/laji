@@ -41,7 +41,7 @@
               </h4>
               <strong *ngIf="variable.variable === 'MX.ingressText'" [innerHTML]="variable.content | multiLang : true"></strong>
               <span *ngIf="variable.variable !== 'MX.ingressText'" [innerHTML]="variable.content | multiLang : true"></span>
-              <div *ngIf="group.group === 'MX.SDVG5'">
+              <div *ngIf="group.group === 'MX.SDVG5' && variable.variable === 'MX.habitat'">
                 <div class="col-lg-6 col-md-6 col-xs-10">
                   <span *ngIf="!variable.variable"><h4>{{ 'iucn.filter.habitat' | translate }}</h4></span>
                   <laji-taxon-info-row *ngIf="taxon.primaryHabitat" [label]="'taxonomy.habitat.primary' | translate">
@@ -51,7 +51,7 @@
                     <laji-habitat [habitat]="taxon.secondaryHabitats"></laji-habitat>
                   </laji-taxon-info-row>
                 </div>
-                <div class="col-lg-6 col-md-6 col-xs-2">
+                <div class="col-lg-6 col-md-6 col-xs-2" *ngIf="taxon.primaryHabitat || taxon.secondaryHabitats">
                   <laji-info><span [innerHtml]="'taxonomy.ymparisto' | translate"></span></laji-info>
                 </div>
              </div>
