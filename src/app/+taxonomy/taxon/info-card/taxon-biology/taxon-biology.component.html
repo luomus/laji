@@ -29,7 +29,7 @@
       <div class="panel-group" role="tablist" aria-multiselectable="true">
         <div *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index">
           <div class="panel panel-default"
-             *ngIf="group.group !== 'MX.SDVG14'"
+             *ngIf="(group.group !== 'MX.SDVG14') && (group.group !== 'MX.SDVG8')"
              [title]="group.title | multiLang"
              [open]="true"
              [autoToggle]="true"
@@ -54,6 +54,9 @@
                 <div class="col-lg-6 col-md-6 col-xs-2" *ngIf="taxon.primaryHabitat || taxon.secondaryHabitats">
                   <laji-info><span [innerHtml]="'taxonomy.ymparisto' | translate"></span></laji-info>
                 </div>
+             </div>
+             <div *ngIf="group.group === 'MX.SDVG1'">
+               <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
              </div>
             </div>
           </div>

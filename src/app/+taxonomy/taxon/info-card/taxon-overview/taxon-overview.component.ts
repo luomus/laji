@@ -42,11 +42,12 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
         (item.groups || []).forEach(gruppo => {
           if (gruppo.group === 'MX.SDVG1') {
             (gruppo.variables || []).forEach(variable => {
-              if (variable.variable === 'MX.ingressText') {
+              /*if (variable.variable === 'MX.ingressText') {
                 this.ingress = variable.content;
-              }
+              }*/
               if (variable.variable === 'MX.descriptionText') {
                 this.description = variable.content;
+                this.ingress = variable.title;
               }
             });
           }
