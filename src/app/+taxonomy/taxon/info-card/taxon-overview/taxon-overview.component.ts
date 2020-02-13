@@ -39,8 +39,8 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     if (this._taxonDescription && this._taxonDescription.length > 0) {
       const groups = taxonDescription[0].groups;
       this._taxonDescription.forEach(item => {
-        (item.groups || []).forEach((gruppo, index) => {
-          if (index === 0 && gruppo.group === 'MX.SDVG1') {
+        (item.groups || []).forEach(gruppo => {
+          if (gruppo.group === 'MX.SDVG1') {
             (gruppo.variables || []).forEach(variable => {
               if (variable.variable === 'MX.ingressText') {
                 this.ingress = variable.content;

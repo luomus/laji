@@ -17,11 +17,11 @@
         </div>
         <strong *ngIf="ingress" [innerHTML]="ingress | multiLang"></strong>
         <span *ngIf="description" [innerHTML]="description | multiLang : true"></span>
-        <div *ngIf="ingress || description">
-          <laji-taxon-description-source [taxonDescription]="_taxonDescription[0]"></laji-taxon-description-source>
-        </div>
         <div *ngIf="ylesta">
           <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
+        </div>
+        <div *ngIf="ingress || description">
+          <laji-taxon-description-source [taxonDescription]="_taxonDescription[0]"></laji-taxon-description-source>
         </div>
       </div>
     </div>
