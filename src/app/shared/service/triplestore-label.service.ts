@@ -172,13 +172,13 @@ export class TriplestoreLabelService {
 
   private dataToLookup(data: IBaseData) {
     const labelMap = {};
-    data.classes.forEach((meta) => {
+    (data.classes || []).forEach((meta) => {
       labelMap[meta.id] = meta.label;
     });
-    data.properties.forEach((meta) => {
+    (data.properties || []).forEach((meta) => {
       labelMap[meta.id] = meta.label;
     });
-    data.alts.forEach((meta) => {
+    (data.alts || []).forEach((meta) => {
       if (meta.options) {
         meta.options.forEach((option) => {
           labelMap[option.id] = option.label;
