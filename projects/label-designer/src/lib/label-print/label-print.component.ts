@@ -18,8 +18,16 @@ import { IPageLayout, LabelService } from '../label.service';
  */
 const style = `
 @import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond|Merriweather|Noto+Serif|Old+Standard+TT|Open+Sans|Open+Sans+Condensed|Source+Code+Pro:300&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .ll-page {
   box-sizing: border-box;
+  overflow: hidden;
+  border: 0;
 }
 .ll-print-content {
   display: grid;
@@ -27,8 +35,6 @@ const style = `
   grid-auto-flow: column;
   align-items: start;
   justify-items: start;
-  page-break-inside: avoid;
-  page-break-after: always;
 }
 .ll-label-item {
   position: absolute;

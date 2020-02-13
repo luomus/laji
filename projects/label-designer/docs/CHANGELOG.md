@@ -1,3 +1,12 @@
+<a name="3.3.0"></a>
+# 3.3.0 (2020-02-??)
+
+### Features
+
+### Bug fix
+* **core:** remove empty page between pages  
+
+
 <a name="3.2.4"></a>
 # 3.2.4 (2019-12-20)
 
