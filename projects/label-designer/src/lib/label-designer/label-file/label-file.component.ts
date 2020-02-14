@@ -16,6 +16,11 @@ export interface ILoadSetup {
   availableFields?: ILabelField[];
 }
 
+interface ISaveData {
+  file: string;
+  includeData: boolean;
+}
+
 /**
  * @internal
  */
@@ -51,7 +56,7 @@ export class LabelFileComponent {
   @ViewChild('makePdfActionsTpl', { static: true }) makePdfActionsTpl: TemplateRef<any>;
 
   filename = '';
-  saveData = {
+  saveData: ISaveData = {
     file: '',
     includeData: false
   };
@@ -114,7 +119,7 @@ export class LabelFileComponent {
     });
   }
 
-  doSave() {
+  doSave(): void {
     this.infoWindowService.close();
     if (this.saveData.file) {
       const filename = this.saveData.file + (this.saveData.file.endsWith('.label') ? '' : '.label');
@@ -138,7 +143,7 @@ export class LabelFileComponent {
     this.labelMakerFacade.hasChanges(false);
   }
 
-  print() {
+  print(): void {
     if (!this.data || this.data.length === 0) {
       return;
     }
@@ -149,7 +154,7 @@ export class LabelFileComponent {
     });
   }
 
-  doPrint() {
+  doPrint(): void {
     this.infoWindowService.close();
     this.printBtn.renderPages({
       skip: this.skip,
@@ -157,44 +162,28 @@ export class LabelFileComponent {
     });
   }
 
-  private updateResentFiles(data: {setup: ISetup, availableFields: ILabelField[]}, filename: string) {
-    const idx = this.recentFiles.findIndex(i => i.filename === filename);
-    if (idx === -1) {
-      this.recentFiles = [
-        {...data, filename},
-        ...this.recentFiles.slice(-2)
-      ];
-    } else {
-      this.recentFiles = [
-        {...data, filename},
-        ...this.recentFiles.slice(0, idx),
-        ...this.recentFiles.slice(idx + 1),
-      ];
-    }
-  }
-
-  removeRecent(idx: number) {
+  removeRecent(idx: number): void {
     this.recentFiles = [
       ...this.recentFiles.slice(0, idx),
       ...this.recentFiles.slice(idx + 1),
     ];
   }
 
-  makeNew() {
+  makeNew(): void {
     if (confirm(this.translateService.get('Are you sure that you want to start a new empty label?'))) {
       this.labelMakerFacade.loadedFile('');
       this.setupChange.emit(JSON.parse(JSON.stringify(this.newSetup)));
     }
   }
 
-  updateSaveData(key: string, value: any) {
+  updateSaveData<K extends keyof ISaveData, T extends ISaveData[K]>(key: K, value: T): void {
     this.saveData = {
       ...this.saveData,
       [key]: value
     };
   }
 
-  loadSetup(recent: ILoadSetup | PresetSetup) {
+  loadSetup(recent: ILoadSetup | PresetSetup): void {
     this.labelMakerFacade.hasChanges$.pipe(take(1)).subscribe(
       (hasChanges) => {
         if (hasChanges && !confirm(this.translateService.get('Do you want to discard the local changes?'))) {
@@ -209,17 +198,33 @@ export class LabelFileComponent {
       });
   }
 
-  startPdfLoading() {
+  startPdfLoading(): void {
     if (this.pdfLoading) {
       return;
     }
     this.pdfLoadingChange.emit(true);
   }
 
-  onHtml(html: string) {
+  onHtml(html: string): void {
     this.html.emit({
       filename: this.pdfFile.endsWith('.pdf') ? this.pdfFile : this.pdfFile + '.pdf',
       html
     });
+  }
+
+  private updateResentFiles(data: {setup: ISetup, availableFields: ILabelField[]}, filename: string): void {
+    const idx = this.recentFiles.findIndex(i => i.filename === filename);
+    if (idx === -1) {
+      this.recentFiles = [
+        {...data, filename},
+        ...this.recentFiles.slice(-2)
+      ];
+    } else {
+      this.recentFiles = [
+        {...data, filename},
+        ...this.recentFiles.slice(0, idx),
+        ...this.recentFiles.slice(idx + 1),
+      ];
+    }
   }
 }

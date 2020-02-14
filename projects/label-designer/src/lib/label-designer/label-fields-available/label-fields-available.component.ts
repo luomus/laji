@@ -70,7 +70,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
     this.checkIsSame();
   }
 
-  get defaultAvailableFields() {
+  get defaultAvailableFields(): ILabelField[] {
     return this._defaultAvailableFields;
   }
 
@@ -80,21 +80,21 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
     this.checkIsSame();
   }
 
-  get availableFields() {
+  get availableFields(): ILabelField[] {
     return this._availableFields;
   }
 
-  filter(value) {
+  filter(value: string): void {
     this.filterSubject.next(value);
   }
 
-  onNewFieldDragEnd(event: CdkDragRelease) {
+  onNewFieldDragEnd(event: CdkDragRelease): void {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
+    let targetBounds: any;
     const targetElem = document.getElementById('label-editor');
     const targetBackElem = document.getElementById('back-side-label-editor');
-    let targetBounds: any;
     const targetFrontBounds = targetElem.getBoundingClientRect();
     const targetBackBounds = targetBackElem ? targetBackElem.getBoundingClientRect() : false;
     const elemBounds = event.source.element.nativeElement.getBoundingClientRect();
@@ -131,7 +131,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
     event.source.reset();
   }
 
-  addField(field: ILabelField) {
+  addField(field: ILabelField): void {
     const width = field.type === FieldType.qrCode ? 10 : 25;
     const height = field.type === FieldType.qrCode ? 10 : 5;
     this.addLabelItem.emit({
@@ -148,7 +148,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
       }});
   }
 
-  toggleBackside() {
+  toggleBackside(): void {
     this.addToBackside = !this.addToBackside;
   }
 

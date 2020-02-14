@@ -30,12 +30,12 @@ export class InfoWindowService {
 
   private visibilitySource = new BehaviorSubject<boolean>(false);
   private dataSource = new BehaviorSubject<IInfoWindow>({content: '', actionTypes: 'ok'});
-  private closeSubject: Subject<any>;
+  private closeSubject: Subject<IInfoWindow>;
 
   /**
    * Opens the dialog window with an observable for the close value
    */
-  open(data: IInfoWindow): Observable<any> {
+  open(data: IInfoWindow): Observable<IInfoWindow> {
     this.dataSource.next(data);
     this.visibilitySource.next(true);
     this.closeSubject = new Subject();
@@ -45,7 +45,7 @@ export class InfoWindowService {
   /**
    * Closes the dialog and sends the closing value to the observable that was returned when the dialog was opened.
    */
-  close(value?: any) {
+  close(value?: IInfoWindow): void {
     this.closeSubject.next(value);
     this.visibilitySource.next(false);
   }
@@ -53,14 +53,14 @@ export class InfoWindowService {
   /**
    * @internal
    */
-  visibilityAsObservable() {
+  visibilityAsObservable(): Observable<boolean> {
     return this.visibilitySource.asObservable();
   }
 
   /**
    * @internal
    */
-  dataAsObservable() {
+  dataAsObservable(): Observable<IInfoWindow> {
     return this.dataSource.asObservable();
   }
 }

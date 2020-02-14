@@ -22,13 +22,13 @@ export class IconComponent {
   @HostBinding('style.height.px') height = ICON_SIZE;
   @HostBinding('style.width.px') width = ICON_SIZE;
 
-  @Input() set size(size) {
+  @Input() set size(size: number) {
     this.width = size;
     this.height = size;
     this._size = size;
   }
 
-  get size() {
+  get size(): number {
     return this._size;
   }
 }
