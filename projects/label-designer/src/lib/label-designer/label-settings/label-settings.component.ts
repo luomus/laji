@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ILabelField, ILabelItem, ISetup, FieldType, TLabelLocation } from '../../label-designer.interface';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslateService } from '../../translate/translate.service';
@@ -14,7 +14,7 @@ import { LabelMakerFacade } from '../label-maker.facade';
   styleUrls: ['./label-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelSettingsComponent implements OnInit {
+export class LabelSettingsComponent {
 
   @Input() setup: ISetup;
   @Input() availableFields: ILabelField[];
@@ -30,9 +30,6 @@ export class LabelSettingsComponent implements OnInit {
     private labelMakerFacade: LabelMakerFacade
   ) { }
 
-  ngOnInit() {
-  }
-
   @Input() set selectedLabelItem(item: ILabelItem) {
     this._selectedLabelItem = item;
     if (item && item.fields) {
@@ -44,11 +41,11 @@ export class LabelSettingsComponent implements OnInit {
     }
   }
 
-  get selectedLabelItem() {
+  get selectedLabelItem(): ILabelItem {
     return this._selectedLabelItem;
   }
 
-  change(field: string, value: any) {
+  change<K extends keyof ISetup, T extends ISetup[K]>(field: K, value: T): void {
     if (typeof value === 'object' && !Array.isArray(value)) {
       this.setupChange.emit({
         ...this.setup,
@@ -66,7 +63,7 @@ export class LabelSettingsComponent implements OnInit {
     this.labelMakerFacade.hasChanges(true);
   }
 
-  changeSelectedItem(field: string, item: any) {
+  changeSelectedItem<K extends keyof ILabelItem, T extends ILabelItem[K]>(field: K, item: T): void {
     const {itemIdx, location} = this.findItem();
     if (itemIdx === -1) {
       return;
@@ -84,7 +81,7 @@ export class LabelSettingsComponent implements OnInit {
     });
   }
 
-  remove(selectedLabelItem: ILabelItem) {
+  remove(selectedLabelItem: ILabelItem): void {
     const {itemIdx, location} = this.findItem(selectedLabelItem);
     if (itemIdx === -1) {
       return;
@@ -101,7 +98,7 @@ export class LabelSettingsComponent implements OnInit {
     }
   }
 
-  fieldRemove(idx: number) {
+  fieldRemove(idx: number): void {
     const {itemIdx, location} = this.findItem();
     if (itemIdx === -1) {
       return;
@@ -123,7 +120,7 @@ export class LabelSettingsComponent implements OnInit {
     this.labelMakerFacade.hasChanges(true);
   }
 
-  fieldAdd(labelField: ILabelField) {
+  fieldAdd(labelField: ILabelField): void {
     if (!labelField) {
       return;
     }
@@ -148,7 +145,7 @@ export class LabelSettingsComponent implements OnInit {
     this.labelMakerFacade.hasChanges(true);
   }
 
-  fieldUpdate(labelField: ILabelField, idx: number) {
+  fieldUpdate(labelField: ILabelField, idx: number): void {
     const {itemIdx, location} = this.findItem();
     if (itemIdx === -1) {
       return;
@@ -171,7 +168,7 @@ export class LabelSettingsComponent implements OnInit {
     this.labelMakerFacade.hasChanges(true);
   }
 
-  drop(event: CdkDragDrop<ILabelField[]>) {
+  drop(event: CdkDragDrop<ILabelField[]>): void {
     const {itemIdx, location} = this.findItem();
     if (itemIdx === -1) {
       return;
@@ -192,11 +189,11 @@ export class LabelSettingsComponent implements OnInit {
     this.labelMakerFacade.hasChanges(true);
   }
 
-  round(value: any) {
+  round(value: any): number {
     return Math.round(value * 1000) / 1000;
   }
 
-  changePosition(pos: string, event: Event) {
+  changePosition(pos: keyof Pick<ILabelItem, 'x' | 'y'>, event: Event): void {
     const element = event.target as HTMLInputElement;
     const value = Number(element.value);
     if (!value) {
@@ -204,13 +201,13 @@ export class LabelSettingsComponent implements OnInit {
     }
     const dim = pos === 'x' ? 'width.mm' : 'height.mm';
     if (value + this._selectedLabelItem.style[dim] > this.setup.label[dim]) {
-      element.value = this._selectedLabelItem[pos];
+      element.value = '' + this._selectedLabelItem[pos];
       return alert(this.translateService.get('Field cannot fit the label!'));
     }
     this.changeSelectedItem(pos, value);
   }
 
-  changeActiveStyle(style: string, event: Event) {
+  changeActiveStyle(style: string, event: Event): void {
     const element = event.target as HTMLInputElement;
     const value = Number(element.value);
     if (!value) {

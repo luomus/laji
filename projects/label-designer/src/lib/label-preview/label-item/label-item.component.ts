@@ -15,7 +15,7 @@ import { FieldKeyPipe } from '../../pipe/field-key.pipe';
 export class LabelItemComponent {
 
   _item: ILabelItem;
-  _originaleFields: ILabelField[];
+  _originalFields: ILabelField[];
   _data: object;
   _map: ILabelValueMap;
 
@@ -27,7 +27,7 @@ export class LabelItemComponent {
   @Input()
   set item(item: ILabelItem) {
     this._item = {...item, fields: [...item.fields]};
-    this._originaleFields = item.fields;
+    this._originalFields = item.fields;
     this.size = this.labelService.mmToPixel(Math.min(item.style['height.mm'], item.style['width.mm']));
     this.initContent();
   }
@@ -52,19 +52,37 @@ export class LabelItemComponent {
       this._item = {...this._item, fields: []};
       return;
     }
+
+    let prev: string;
+    const nextField = {};
     const fields: ILabelField[] = [];
-    this._originaleFields.forEach(field => {
+
+    this._originalFields.forEach((field) => {
+      const dataKey = FieldKeyPipe.getKey(field);
+      if (prev) {
+        nextField[prev] = dataKey;
+      }
+      prev = dataKey;
+    });
+    this._originalFields.forEach(field => {
+      const dataKey = FieldKeyPipe.getKey(field);
+      let newField: ILabelField;
       if (field.type === FieldType.text) {
-        const dataKey = FieldKeyPipe.getKey(field);
-        fields.push({
+        newField = {
           ...field,
           content: typeof this._data[dataKey] === 'undefined' ? field.content : this._data[dataKey]
-        });
-      } else if (field.separatorAlways || LabelService.hasValue(this._data[field.field])) {
-        fields.push({
+        };
+      } else if (field.separatorAlways || LabelService.hasValue(this._data[dataKey])) {
+        newField = {
           ...field,
-          content: LabelService.getFieldValue(field, this._data[field.field], this._map, true) as string
-        });
+          content: LabelService.getFieldValue(field, this._data[dataKey], this._map, true) as string
+        };
+      }
+      if (field.separatorOnlyWhenNextNotEmpty && nextField[dataKey] && !LabelService.hasValue(this._data[nextField[dataKey]])) {
+        newField.separator = '';
+      }
+      if (newField) {
+        fields.push(newField);
       }
     });
     this._item = {...this._item, fields};

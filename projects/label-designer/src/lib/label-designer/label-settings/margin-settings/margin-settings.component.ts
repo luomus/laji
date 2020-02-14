@@ -15,10 +15,10 @@ export class MarginSettingsComponent {
   @Input() type: 'padding'|'margin' = 'margin';
   @Output() styleChange = new EventEmitter<IPageStyle | ILabelStyle>();
 
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
+  top: string;
+  bottom: string;
+  left: string;
+  right: string;
 
   private _style;
 
@@ -32,7 +32,7 @@ export class MarginSettingsComponent {
     this.right = style[this.type + 'Right.mm'] || 0;
   }
 
-  change(place, value) {
+  change(place: keyof Pick<this, 'top' | 'bottom' | 'left' | 'right'>, value: string): void {
     this[place] = value;
     this.styleChange.emit({
       ...this._style,

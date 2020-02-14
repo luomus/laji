@@ -4,6 +4,7 @@
 ### Features
 * **editor:** added option to skip n labels from the start of the pdf.
 * **editor:** added option to repeat labels n times when generating the pdf.
+* **editor:** added option to include separator only if following field is empty.
 
 ### Bug fix
 * **core:** remove empty page between pages  
