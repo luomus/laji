@@ -40,6 +40,7 @@
       </td>
       <td style="padding: 5px;">
         <input type="checkbox" title="{{ 'Include separator even when there is no value' | translate }}" [checked]="field.separatorAlways" (change)="change(!field.separatorAlways, 'separatorAlways')">
+        <input type="checkbox" title="{{ 'Include separator only when following field has data' | translate }}" [checked]="field.separatorOnlyWhenNextNotEmpty" (change)="change(!field.separatorOnlyWhenNextNotEmpty, 'separatorOnlyWhenNextNotEmpty')">
       </td>
     </tr>
     <tr *ngIf="field.isArray">

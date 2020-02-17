@@ -2,7 +2,6 @@ import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs/operato
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { from, Observable, of } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
 import { FormService } from '../../../../shared/service/form.service';
 import { FormPermissionService } from '../../../../+haseka/form-permission/form-permission.service';
 
@@ -21,6 +20,7 @@ interface FormList {
 export class FormSelectComponent implements OnInit {
 
   @Input() formID = '';
+  @Input() forms: string[] = [];
   @Input() disabled = false;
   @Output() selected = new EventEmitter<any>();
 
@@ -35,7 +35,7 @@ export class FormSelectComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.forms$ = from(environment.massForms || []).pipe(
+    this.forms$ = from(this.forms).pipe(
       mergeMap(id => this.formService.getForm(id, this.translateService.currentLang).pipe(
         switchMap(form => this.formPermissionService.hasAccessToForm(id).pipe(
           catchError(() => of(false)),
@@ -48,7 +48,10 @@ export class FormSelectComponent implements OnInit {
       )),
       toArray(),
       map(forms => forms.sort((a, b) => a.title.localeCompare(b.title))),
-      tap(() => {
+      tap((forms) => {
+        if (forms.length === 1) {
+          this.selected.emit(forms[0].id);
+        }
         this.loaded = true;
         this.cdr.detectChanges();
       })

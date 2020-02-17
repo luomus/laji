@@ -70,6 +70,12 @@ import { GeneticResourceComponent } from './genetic-resource/genetic-resource.co
 import { DownloadModule } from '../shared-modules/download/download.module';
 import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
+import { DatasetsComponent } from './datasets/datasets.component';
+import { InfoModule } from '../shared-modules/info/info.module';
+import { ThemeImportComponent } from './common/theme-import/theme-import.component';
+import { SpreadsheetModule } from '../shared-modules/spreadsheet/spreadsheet.module';
+import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-spreadsheet/theme-generate-spreadsheet.component';
+import { GenericInstructionsComponent } from './common/instructions/generic-instructions/generic-instructions.component';
 
 /* tslint:enable:max-line-length */
 
@@ -97,7 +103,9 @@ import { ObservationTableColumnService } from '../shared-modules/datatable/servi
     InfoPageModule,
     LajiUiModule,
     ObservationComponentModule,
-    DownloadModule
+    DownloadModule,
+    InfoModule,
+    SpreadsheetModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -142,6 +150,10 @@ import { ObservationTableColumnService } from '../shared-modules/datatable/servi
     FormComponent,
     ThemeOwnSubmissionsComponent,
     GeneticResourceComponent,
+    DatasetsComponent,
+    ThemeImportComponent,
+    ThemeGenerateSpreadsheetComponent,
+    GenericInstructionsComponent,
   ],
   providers: [
     ResultService,

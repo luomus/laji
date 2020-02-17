@@ -21,7 +21,6 @@ import { StepperComponent } from './shared/stepper/stepper.component';
 import { TaxonAutocompleteModule } from '../taxon-autocomplete/taxon-autocomplete.module';
 // tslint:disable-next-line:max-line-length
 import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
-import { ImportContainerComponent } from './importer/import-container.component';
 import { CanSplitToPipe } from './excel-generator/pipes/can-split-to.pipe';
 import { SpreadsheetService } from './service/spreadsheet.service';
 import { MappingService } from './service/mapping.service';
@@ -56,7 +55,6 @@ import { SpreadsheetFacade } from './spreadsheet.facade';
     ToolSuccessComponent,
     StepperComponent,
     SpecialInformalTaxonGroupsComponent,
-    ImportContainerComponent,
     CanSplitToPipe,
     UserMappingButtonComponent
   ],

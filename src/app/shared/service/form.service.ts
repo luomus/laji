@@ -87,15 +87,20 @@ export class FormService {
     return this.jsonFormCache[formId];
   }
 
-  getAllForms(lang: string): Observable<Form.List[]> {
+  getAllForms(lang: string, includeOutsideOfWhitelist = false): Observable<Form.List[]> {
     this.setLang(lang);
     if (!this.allForms) {
       this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
-        map((forms) => forms.results.filter(form => this.isFormAllowed(form.id))),
+        map(data => data.results),
         shareReplay(1)
       );
     }
-    return this.allForms;
+    if (includeOutsideOfWhitelist) {
+      return this.allForms;
+    }
+    return this.allForms.pipe(
+      map((forms) => forms.filter(form => this.isFormAllowed(form.id))),
+    );
   }
 
   getAddUrlPath(formId) {
