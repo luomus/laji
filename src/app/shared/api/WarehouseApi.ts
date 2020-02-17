@@ -175,7 +175,7 @@ export class WarehouseApi {
   }
 
   /**
-   * Aggregates based on annotation
+   * Aggregates based on annotations
    *
    * @see warehouseQueryAggregateGet
    */
@@ -184,14 +184,14 @@ export class WarehouseApi {
   }
 
   /**
-   * Same as aggrate query, but performs the query on private data also.
+   * Same as aggregate query, but performs the query on private data
    */
   public warehouseQueryStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     return this.warehouseQueryGet('statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
 
   /**
-   * Same as aggrate query, but performs the query on private data also.
+   * Same as aggragate query, but performs the query on private data
    */
   public warehouseQueryGatheringStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     return this.warehouseQueryGet('gathering/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
