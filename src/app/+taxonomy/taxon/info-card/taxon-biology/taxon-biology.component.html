@@ -71,12 +71,12 @@
       </div>
       <div class="panel panel-default"
          laji-panel
-         *ngIf="taxonDescription[activeDescription]"
+         *ngIf="taxonDescription[activeDescription] && hasAuthorData"
          [title]="'taxonomy.author' | translate"
          [open]="true"
          [autoToggle]="true"
       >
-        <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
+        <laji-taxon-description-source (hasData)="hasAuthorData = $event" [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
       </div>
     </ng-container>
   </div>

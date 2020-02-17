@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
+import { CheckLangService } from '../../service/check-lang.service';
 
 @Component({
   selector: 'laji-taxon-overview',
@@ -25,6 +26,10 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   ylesta: any;
   ylestaTitle: any;
   _taxonDescription: TaxonomyDescription[];
+  groupHasTranslation: any[];
+  ylestaHasTranslation: any[];
+
+  contentHasLanguage: boolean;
 
   mapQuery: WarehouseQueryInterface;
 
@@ -34,26 +39,33 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.ingress = undefined;
     this.description = undefined;
     this.ylesta = undefined;
+    this.ylesta = [{'text': undefined, 'visible': undefined}];
     this.ylestaTitle = undefined;
+    this.groupHasTranslation = [];
+    this.ylestaHasTranslation = [];
     this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription : undefined;
     if (this._taxonDescription && this._taxonDescription.length > 0) {
       const groups = taxonDescription[0].groups;
-      this._taxonDescription.forEach(item => {
+      this.groupHasTranslation = this.checklang.checkValue(this._taxonDescription);
+      this._taxonDescription.forEach((item, idx) => {
         (item.groups || []).forEach(gruppo => {
           if (gruppo.group === 'MX.SDVG1') {
             (gruppo.variables || []).forEach(variable => {
-              /*if (variable.variable === 'MX.ingressText') {
-                this.ingress = variable.content;
-              }*/
               if (variable.variable === 'MX.descriptionText') {
                 this.description = variable.content;
                 this.ingress = variable.title;
+                this.contentHasLanguage = variable.content[this.translate.currentLang] ? true : false;
               }
             });
           }
           if (gruppo.group === 'MX.SDVG8') {
             this.ylestaTitle = gruppo.title;
-            this.ylesta = gruppo.variables;
+            this.ylesta[0].text = gruppo.variables;
+
+            this.ylestaHasTranslation = this.groupHasTranslation[idx].groups.filter(el =>
+              el.id === 'MX.SDVG8'
+            );
+            this.ylesta[0].visible = this.ylestaHasTranslation.length > 0 ? this.ylestaHasTranslation[0].values : [];
           }
         });
         return this.ylesta;
@@ -64,7 +76,8 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   constructor(
     public translate: TranslateService,
     private taxonomyService: TaxonTaxonomyService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private checklang: CheckLangService
   ) { }
 
   ngOnChanges() {

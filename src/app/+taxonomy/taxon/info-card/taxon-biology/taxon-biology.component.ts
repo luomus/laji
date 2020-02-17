@@ -18,7 +18,7 @@ export class TaxonBiologyComponent implements OnChanges {
   groupHasTranslation: any[];
   ylestaHasTranslation: any[];
 
-
+  hasAuthorData: boolean;
   activeDescription = 0;
   @Output() contextChange = new EventEmitter<string>();
 

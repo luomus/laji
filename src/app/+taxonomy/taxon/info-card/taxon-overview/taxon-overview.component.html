@@ -15,8 +15,8 @@
             [showLinkToSpeciesCard]="!taxon.species"
           ></laji-image-gallery>
         </div>
-        <h4 *ngIf="ingress" [innerHTML]="ingress | multiLang"></h4>
-        <span *ngIf="description" [innerHTML]="description | multiLang : true"></span>
+        <h4 *ngIf="ingress && contentHasLanguage" [innerHTML]="ingress | multiLang"></h4>
+        <span *ngIf="description && contentHasLanguage" [innerHTML]="description | multiLang : true"></span>
         <div *ngIf="ylesta">
           <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
         </div>
