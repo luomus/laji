@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
-import { ILabelItem, ILabelStyle, ISetup, TLabelLocation } from '../../label-designer.interface';
+import { ILabelItem, ILabelStyle, IPageStyle, ISetup, TLabelLocation } from '../../label-designer.interface';
 import { LabelService } from '../../label.service';
 import { TranslateService } from '../../translate/translate.service';
 import { LabelMakerFacade } from '../label-maker.facade';
-import { IFontStyle, IPageStyle } from 'label-designer';
 
 /**
  * @internal
