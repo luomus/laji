@@ -31,14 +31,17 @@ export class FormPermissionService {
   ) {}
 
   hasAccessToForm(formID: string, personToken?: string): Observable<boolean> {
-    const permission$ = (collectionID) => this.getFormPermission(collectionID, personToken || this.userService.getToken()).pipe(
-      switchMap(permission => this.userService.user$.pipe(
-        take(1),
-        switchMap(person => of(this.isEditAllowed(permission, person)))
-      ))
+    const token = personToken || this.userService.getToken();
+    if (!formID || !token) {
+      return of(false);
+    }
+
+    const permission$ = (collectionID) => this.formPermissionApi.findPermissions(token).pipe(
+      switchMap(permission => of(permission.admins.includes(collectionID) || permission.editors.includes(collectionID)))
     );
 
-    return this.formService.getForm(formID, this.translateService.currentLang).pipe(
+    return this.formService.getAllForms(this.translateService.currentLang, true).pipe(
+      map(forms => forms.find(f => f.id === formID)),
       switchMap(form => !form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1 ?
         of(true) :
         permission$(form.collectionID)
@@ -95,22 +98,6 @@ export class FormPermissionService {
     FormPermissionService.formPermissions[collectionID] = false;
     return this.formPermissionApi.revokeAccess(collectionID, personID, personToken).pipe(
       tap(fp => this.changes$.emit(fp)));
-  }
-
-  hasEditAccess(form: Form.List): Observable<boolean> {
-    return this.access(
-      form,
-      false,
-      true,
-      (formPermission: FormPermission, person: Person) => this.isEditAllowed(formPermission, person));
-  }
-
-  hasPendingAccess(form: Form.List): Observable<boolean> {
-    return this.access(
-      form,
-      false,
-      false,
-      (formPermission: FormPermission, person: Person) => this.isPending(formPermission, person));
   }
 
   getRights(form: Form.List): Observable<Rights> {

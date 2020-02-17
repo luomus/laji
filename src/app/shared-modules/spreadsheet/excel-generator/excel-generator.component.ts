@@ -54,7 +54,7 @@ export class ExcelGeneratorComponent implements OnInit {
             this.parents.push(field.parent);
           }
         });
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       });
   }
 

@@ -30,7 +30,7 @@ export class ThemeOwnSubmissionsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.themeFormService.getForm(this.route).subscribe(form => {
+    this.themeFormService.getForm(this.route.snapshot).subscribe(form => {
     this.collectionID = form.collectionID;
     const {options = {}, namedPlaceOptions = {}} = form;
     if (options.ownSubmissionsColumns) {

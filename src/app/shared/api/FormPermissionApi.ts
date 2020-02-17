@@ -137,6 +137,22 @@ export class FormPermissionApi {
     }
 
     /**
+     * Users permissions
+     */
+    public findPermissions(personToken: string, extraHttpRequestParams?: any): Observable<any> {
+      const path = this.basePath + `/formPermissions`;
+
+      const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+      // verify required parameter 'personToken' is not null or undefined
+      if (!personToken) {
+        throw new Error('Required parameter personToken was empty when calling findPermissions.');
+      }
+      queryParameters['personToken'] = personToken;
+
+      return this.http.get<FormPermission>(path, {params: queryParameters});
+    }
+
+    /**
      * Find form permission
      *
      * @param collectionID collection id

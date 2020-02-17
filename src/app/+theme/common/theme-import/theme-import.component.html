@@ -1,0 +1,13 @@
+<ng-container *ngIf="form$ | async; let form">
+  <h3>
+    {{ 'excel.import' | translate }}
+  </h3>
+  <div class="row">
+    <div class="col-sm-12">
+      <p>
+        {{ 'excel.import.intro' | translate:{maxUnits: maxUnitsPerDocument} }}
+      </p>
+    </div>
+  </div>
+  <laji-importer [forms]="[form.id]"></laji-importer>
+</ng-container>
