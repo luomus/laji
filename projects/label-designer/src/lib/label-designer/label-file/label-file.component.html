@@ -79,8 +79,8 @@
   <table class="save user-input">
     <tr><td><label for="saveFile">{{ 'Filename' | translate }}:</label></td><td><input id="pdfFile" (keyup)="pdfFile = $event.target.value" [value]="pdfFile || ''" type="text" class="form-control input-sm"></td></tr>
     <tr><td colspan="2">&nbsp;</td></tr>
-    <tr><td><label for="skipOnPdf">{{ 'Skip' | translate }}:</label></td><td><input id="skipOnPdf" (keyup)="skip = (+$event.target.value)" [value]="skip" type="number" min="0" class="form-control input-sm"></td></tr>
-    <tr *ngIf="allowLabelItemRepeat"><td><label for="skipOnPdf">{{ 'Repeat' | translate }}:</label></td><td><input id="repeat" (keyup)="repeat = (+$event.target.value)" [value]="repeat" type="number" min="1" class="form-control input-sm"></td></tr>
+    <tr><td><label for="skipOnPdf">{{ 'Skip' | translate }}:</label></td><td><input id="skipOnPdf" (change)="skip = (+$event.target.value)" [value]="skip" type="number" min="0" class="form-control input-sm"></td></tr>
+    <tr *ngIf="allowLabelItemRepeat"><td><label for="skipOnPdf">{{ 'Repeat' | translate }}:</label></td><td><input id="repeat" (change)="repeat = (+$event.target.value)" [value]="repeat" type="number" min="1" class="form-control input-sm"></td></tr>
   </table>
 </ng-template>
 <ng-template #makePdfActionsTpl>

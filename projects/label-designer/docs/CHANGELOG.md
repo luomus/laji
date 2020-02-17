@@ -1,5 +1,14 @@
+<a name="3.3.1"></a>
+# 3.3.1 (2020-02-17)
+
+### Features
+* **editor:** change repeat to use individual labels instead the whole data.
+
+### Bug fix
+* **editor:** fix skip & repeat inputs not reacting to array presses  
+
 <a name="3.3.0"></a>
-# 3.3.0 (2020-02-??)
+# 3.3.0 (2020-02-17)
 
 ### Features
 * **editor:** added option to skip n labels from the start of the pdf.
