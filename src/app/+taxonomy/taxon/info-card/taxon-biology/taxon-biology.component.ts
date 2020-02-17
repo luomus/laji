@@ -32,25 +32,24 @@ export class TaxonBiologyComponent implements OnChanges {
     if (changes.taxonDescription || changes.context) {
       this.activeDescription = 0;
       if (this.taxonDescription && this.context) {
+        this.groupHasTranslation = this.checklang.checkValue(this.taxonDescription);
         this.taxonDescription.forEach((description, idx) => {
           if (description.id === this.context) {
             this.activeDescription = idx;
-            this.groupHasTranslation = this.checklang.checkValue(description);
-            (description.groups || []).forEach(gruppo => {
-              if (gruppo.group === 'MX.SDVG8') {
-                this.ylestaTitle = gruppo.title;
-                this.ylesta[0].text = gruppo.variables;
-              }
-            });
           }
+
+          (description.groups || []).forEach(gruppo => {
+            if (gruppo.group === 'MX.SDVG8') {
+              this.ylestaTitle = gruppo.title;
+              this.ylesta[0].text = gruppo.variables;
+
+              this.ylestaHasTranslation = this.groupHasTranslation[idx].groups.filter(el =>
+                el.id === 'MX.SDVG8'
+              );
+              this.ylesta[0].visible = this.ylestaHasTranslation.length > 0 ? this.ylestaHasTranslation[0].values : [];
+            }
+          });
         });
-        console.log(this.groupHasTranslation);
-        this.ylestaHasTranslation = this.groupHasTranslation.filter(el =>
-          el.id === 'MX.SDVG8'
-        );
-        this.ylesta[0].visible = this.ylestaHasTranslation[0].values;
-        console.log(this.ylestaHasTranslation);
-        console.log(this.ylesta);
       }
     }
   }

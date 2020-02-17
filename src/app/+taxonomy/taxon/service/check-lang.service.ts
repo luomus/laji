@@ -8,7 +8,7 @@ export class CheckLangService {
   public current_lang: any;
   public value: any;
   public count: number;
-  public checktranslation: object[];
+  public checktranslation: any[];
   public ylesta_index: number;
   public info_index: number;
 
@@ -16,8 +16,11 @@ export class CheckLangService {
 
  public checkValue(info: any): any {
   this.checktranslation = [];
-    info.groups.forEach(item => {
-        this.translationExist(item, item.group);
+    info.forEach((item, index) => {
+      this.checktranslation.push({'id': item.id, 'groups': []});
+      (item.groups || []).forEach(group => {
+        this.translationExist(group, group.group, index);
+      });
     });
 
     this.checkYlestagroup(this.checktranslation);
@@ -25,7 +28,7 @@ export class CheckLangService {
     return this.checktranslation;
   }
 
-  translationExist(item: any, id: string): boolean {
+  translationExist(item: any, id: string, index: number): boolean {
     this.current_lang = this.translate.currentLang;
     this.count = 0;
     const tmp_array = [];
@@ -39,7 +42,7 @@ export class CheckLangService {
       }
     });
 
-    this.checktranslation.push({'id': id, 'values': tmp_array, 'checkYlesta': false});
+    this.checktranslation[index].groups.push({'id': id, 'values': tmp_array, 'checkYlesta': false});
 
     if (this.count > 0) {
       return true;
@@ -49,22 +52,25 @@ export class CheckLangService {
   }
 
   checkYlestagroup(data: any): any {
-    this.ylesta_index = undefined;
-    this.info_index = undefined;
-    data.forEach((element, index) => {
-      if (element.id === 'MX.SDVG8') {
-        this.ylesta_index = index;
-      }
-      if (element.id === 'MX.SDVG1') {
-        this.info_index = index;
+
+    data.forEach((item, i) => {
+      this.ylesta_index = undefined;
+      this.info_index = undefined;
+      item.groups.forEach((element, index) => {
+        if (element.id === 'MX.SDVG8') {
+          this.ylesta_index = index;
+        }
+        if (element.id === 'MX.SDVG1') {
+          this.info_index = index;
+        }
+      });
+
+      if (this.ylesta_index >= 0 && this.info_index >= 0) {
+        if (data[i].groups[this.ylesta_index].values.includes(false) && data[i].groups[this.info_index].values.includes(true)) {
+          data[i].groups[this.info_index].checkYlesta = true;
+        }
       }
     });
-
-    if (this.ylesta_index >= 0 && this.info_index >= 0) {
-      if (data[this.ylesta_index].values.includes(false) && data[this.info_index].values.includes(true)) {
-        data[this.info_index].checkYlesta = true;
-      }
-    }
 
   }
 
