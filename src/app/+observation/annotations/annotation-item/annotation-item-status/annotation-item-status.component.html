@@ -1,17 +1,17 @@
-<ng-content *ngIf="text; else iconTemplate">
-    <span *ngIf="interpretations.needsCheck" class="text-interpreatation">
+<div *ngIf="text; else iconTemplate">
+    <span *ngIf="interpretation.needsCheck" class="text-interpreatation needsCheck">
       {{ 'annotation.needsCheck' | translate }}
     </span>
-    <span *ngIf="interpretations.needsIdentification" class="text-interpreatation">
+    <span *ngIf="interpretation.needsIdentification" class="text-interpreatation needsIdentification">
         {{ 'annotation.needsId' | translate }}
     </span>
-</ng-content>
+</div>
 <ng-template #iconTemplate>
     <div class="interpretation">
-        <div *ngIf="interpretations.needsCheck">
+        <div *ngIf="interpretation.needsCheck">
             <span class="needsCheck">!</span>
         </div>
-        <div *ngIf="interpretations.needsIdentification">
+        <div *ngIf="interpretation.needsIdentification">
             <span class="needsIdentification">?</span>
         </div>
     </div>
