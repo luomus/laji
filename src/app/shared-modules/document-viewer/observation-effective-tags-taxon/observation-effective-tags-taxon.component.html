@@ -2,7 +2,7 @@
 
 <div class="effective-taxon-tags">
     <laji-row [title]="'annotation.effectiveTags' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-        <div *ngIf="!unit.interpretations || unit.interpretations.effectiveTags.length === 0; else tags">
+        <div *ngIf="!unit.interpretations || !unit.interpretations.effectiveTags || unit.interpretations.effectiveTags.length === 0; else tags">
           <span>-</span>
         </div>
         <ng-template #tags>
