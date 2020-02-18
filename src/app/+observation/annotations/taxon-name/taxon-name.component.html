@@ -10,4 +10,9 @@
             <div class="taxon" ><span class="specie" *ngIf="unit.linkings.originalTaxon.vernacularName">{{ unit.linkings.originalTaxon.vernacularName | multiLang }}  - </span><span class="scientificName" *ngIf="unit.linkings.originalTaxon.scientificName">{{ unit.linkings.originalTaxon.scientificName }}</span></div>
         </div>
     </div>
+    <laji-annotation-item-status
+    *ngIf="unit.interpretations && (unit.interpretations.needsCheck || unit.interpretations.needsIdentification)"
+    [interpretation]="unit.interpretations"
+    [text]="true"
+    ></laji-annotation-item-status>
 </div>
