@@ -70,7 +70,8 @@ export const Global = {
     lineTransectKartoitus: 'HR.2692',
     invasiveControl: 'HR.2049',
     municipalityMonitoring: 'HR.2891',
-    sykeButterfly: 'HR.3431'
+    sykeButterfly: 'HR.3431',
+    waterbird: 'HR.62'
   },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'

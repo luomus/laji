@@ -645,6 +645,61 @@ const routes: Routes = [
       title: 'SYKE Päiväperhoset',
     }
   },
+  {
+    path: 'vesilintulaskenta',
+    component: MonitoringThemeBaseComponent,
+    data: {
+      formID: Global.forms.waterbirdPairForm,
+      title: 'Vesilintulaskenta',
+      navLinks: {
+        'form': {
+          label: 'Parilaskenta',
+          accessLevel: undefined
+        },
+        'juvenileForm': {
+          routerLink: ['../vesilintulaskenta', 'poikuelaskenta'],
+          label: 'Poikuelaskenta',
+          activeMatch: `/places/${Global.collections.waterbird}`
+        }
+      },
+      navLinksOrder: ['instructions', 'form', 'juvenileForm', 'ownSubmissions'],
+      hideNavFor: ['/form']
+    },
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn],
+      },
+      {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
+      {
+        path: 'poikuelaskenta',
+        pathMatch: 'full',
+        redirectTo: `places/${Global.collections.waterbird}/${Global.forms.waterbirdJuvenileForm}`
+      }
+    ]
+  },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},
