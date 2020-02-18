@@ -495,12 +495,12 @@
 
 <section class="laji-panel" laji-panel [title]="'observation.form.qualityTitle' | translate" [autoToggle]="true" [open]="visible['quality']">
   <laji-metadata-select
-    [(ngModel)]="query.taxonReliability"
+    [(ngModel)]="query.recordQuality"
     [info]="'observation.info.reliability' | translate"
     (ngModelChange)="onQueryChange()"
     [multiple]="true"
     [useFilter]="false"
-    name="taxonReliability"
+    name="recordQuality"
     [mapToWarehouse]="true"
     [placeholder]="'reliability' | translate"
     [skip]="['MAN.annotationClassAcknowledged']"

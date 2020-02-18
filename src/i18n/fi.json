@@ -786,7 +786,7 @@
   "observation.active.sourceId": "Tietolähde",
   "observation.active.superRecordBasis": "Havaintotapa",
   "observation.active.target": "Lajin/taksonin nimi",
-  "observation.active.taxonReliability": "Havainnon luotettavuus",
+  "observation.active.recordQuality": "Havainnon luotettavuus",
   "observation.active.teamMember": "Havainnoijan nimi",
   "observation.active.teamMemberId": "Havainnoijan nimi",
   "observation.active.time": "Havaintoaika",

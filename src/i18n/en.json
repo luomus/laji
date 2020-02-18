@@ -646,7 +646,7 @@
   "observation.active.sourceId": "Source system",
   "observation.active.superRecordBasis": "Record basis",
   "observation.active.target": "Species/taxon name",
-  "observation.active.taxonReliability": "Reliability of observation",
+  "observation.active.recordQuality": "Reliability of observation",
   "observation.active.teamMember": "Observer name",
   "observation.active.teamMemberId": "Observer name",
   "observation.active.time": "Time of observation",

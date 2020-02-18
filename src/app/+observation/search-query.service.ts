@@ -52,7 +52,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'individualId',
     'secureReason',
     'editorId',
-    'taxonReliability',
+    'recordQuality',
     'annotationType',
     'namedPlaceId',
     'birdAssociationAreaId',

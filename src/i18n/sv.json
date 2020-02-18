@@ -732,7 +732,7 @@
   "observation.active.sourceId": "IT system",
   "observation.active.superRecordBasis": "Observationtyp",
   "observation.active.target": "Art/taxa namn",
-  "observation.active.taxonReliability": "Tillförlitlighet av observation",
+  "observation.active.recordQuality": "Tillförlitlighet av observation",
   "observation.active.teamMember": "Observer namn",
   "observation.active.teamMemberId": "Observer namn",
   "observation.active.time": "Observationstid",
