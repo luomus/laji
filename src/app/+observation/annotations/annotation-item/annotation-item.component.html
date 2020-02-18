@@ -1,5 +1,10 @@
 
 <div class="item-content">
+    <laji-annotation-item-status
+    *ngIf="item.unit.interpretations && (item.unit.interpretations.needsCheck || item.unit.interpretations.needsIdentification)"
+    [interpretation]="item.unit.interpretations"
+    [text]="false"
+    ></laji-annotation-item-status>
     <div class="unit-annotation"><laji-unit-annotation [showImage]="false" [unit]="item.unit"></laji-unit-annotation></div>
     <div class="gathering"><laji-gathering [visible]="true" [gathering]="item.gathering"></laji-gathering></div>
     <div class="information">

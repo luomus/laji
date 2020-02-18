@@ -9,6 +9,7 @@ import { GatheringComponent } from './gathering/gathering.component';
 import { GatheringRowsComponent } from './gathering-rows/gathering-rows.component';
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { AnnotationItemComponent } from './annotation-item/annotation-item.component';
+import { AnnotationItemStatusComponent } from './annotation-item/annotation-item-status/annotation-item-status.component';
 
 
 
@@ -23,7 +24,8 @@ import { AnnotationItemComponent } from './annotation-item/annotation-item.compo
   declarations: [AnnotationsComponent, AnnotationListComponent,
   GatheringComponent, GatheringRowsComponent,
   TaxonNameComponent,
-  AnnotationItemComponent],
+  AnnotationItemComponent,
+  AnnotationItemStatusComponent],
   providers: [],
   exports: [AnnotationsComponent]
 })

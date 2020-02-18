@@ -62,6 +62,8 @@
   "annotation.effectiveTaxon.comment": "Changed based on comment(s)",
   "annotation.isEditorTaxon": "Du är redaktör, du kan inte lägga till en ny taxonomi",
   "annotation.delete": "Radera",
+  "annotation.needsId": "Behöver id",
+  "annotation.needsCheck": "Vara oense",
   "asIs": "Värde som det är",
   "checkAll": "Markera alla",
   "checked": "vald",

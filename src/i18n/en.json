@@ -62,6 +62,8 @@
   "annotation.effectiveTaxon.comment": "Changed based on comment(s)",
   "annotation.isEditorTaxon": "You are editor, you cannot add a new taxonomy",
   "annotation.delete": "Delete",
+  "annotation.needsId": "Needs id",
+  "annotation.needsCheck": "Disagreed",
   "asIs": "Value as is",
   "checkAll": "Check all",
   "checked": "checked",

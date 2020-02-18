@@ -1,0 +1,31 @@
+
+@import '../../../../../styles/_styles.scss'; 
+
+div{
+    &.interpretation {
+        position: absolute;
+        right: 0px;
+        width: 40px;
+        z-index: 2;
+        font-size: 36px;
+        div {
+        position: relative;
+        height: 40px;
+        width: 40px;
+        background-color: #EBEBEB;
+        }
+    }
+}
+span {
+    &.needsCheck {
+        color:$disagreed
+    }
+    &.needsIdentification {
+        color: $needId
+    }
+    &.text-interpreatation {
+        &::first-child {
+            margin-right: 10px;
+        }
+    }
+}
