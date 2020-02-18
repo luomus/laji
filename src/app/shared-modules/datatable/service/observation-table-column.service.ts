@@ -80,12 +80,7 @@ export const COLUMNS: IColumns = {
     label: 'result.unit.taxonVerbatim',
     cellTemplate: 'taxon',
     sortBy: 'unit.linkings.taxon.name%longLang%,unit.linkings.taxon.scientificName,unit.taxonVerbatim,unit.reportedInformalTaxonGroup',
-    selectField: 'unit.linkings.taxon.id,' +
-      'unit.linkings.taxon.vernacularName,' +
-      'unit.linkings.taxon.scientificName,' +
-      'unit.linkings.taxon.vernacularName,' +
-      'unit.linkings.taxon.scientificName,' +
-      'unit.linkings.taxon.cursiveName',
+    selectField: 'unit',
     aggregateBy: 'unit.linkings.taxon.id,' +
       'unit.linkings.taxon.nameFinnish,' +
       'unit.linkings.taxon.nameEnglish,' +
@@ -131,12 +126,7 @@ export const COLUMNS: IColumns = {
     label: 'result.unit.taxonVerbatim',
     cellTemplate: 'species',
     sortBy: 'unit.linkings.taxon.speciesName%longLang%',
-    selectField: 'unit.linkings.taxon.speciesId,' +
-      'unit.linkings.taxon.speciesVernacularName,' +
-      'unit.linkings.taxon.speciesVernacularName,' +
-      'unit.linkings.taxon.speciesScientificName,' +
-      'unit.linkings.taxon.cursiveName,' +
-      'unit.taxonVerbatim',
+    selectField: 'unit',
     aggregateBy: 'unit.linkings.taxon.speciesId,' +
       'unit.linkings.taxon.speciesNameFinnish,' +
       'unit.linkings.taxon.speciesNameEnglish,' +
