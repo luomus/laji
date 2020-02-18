@@ -1,3 +1,9 @@
+<a name="3.3.2"></a>
+# 3.3.2 (2020-02-18)
+
+### Bug fix
+* **editor:** fix skip & repeat not reacting to inputs
+
 <a name="3.3.1"></a>
 # 3.3.1 (2020-02-17)
 

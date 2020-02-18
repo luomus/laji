@@ -161,8 +161,8 @@ export class LabelPrintComponent implements OnChanges {
     this.pageLayout = this.labelService.countLabelsPerPage(this.setup);
     const perPage = this.pageLayout.rows * this.pageLayout.cols;
     const pages = [];
-    const skip = new Array(Math.min(options.skip || 0, 0)).fill(null);
-    const repeat = Math.min(options.repeat || 1, 1);
+    const skip = new Array(Math.max(options.skip || 0, 0)).fill(null);
+    const repeat = Math.max(options.repeat || 1, 1);
     const data = this.data.reduce((all: any[], current) => {
       for (let i = 0; i < repeat; i++) {
         all.push(current);
