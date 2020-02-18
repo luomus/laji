@@ -8,16 +8,13 @@
         </span>
         <ng-template #noAnnotation>{{ 'annotation.none' | translate }}</ng-template>
     </div>
-    <div class="addedTags" *ngIf="addedTags && addedTags.length > 0">
-        <div class="tags" *ngFor="let tag of addedTags" [ngSwitch]="tag | toQName">
-            <div *ngSwitchCase="annotationTagsObservation[ tag | toQName].value" class="annotation-marker {{ annotationTagsObservation[ tag | toQName].quality }}" >
-                <span class=""></span>
-                <span>{{ tag | toQName | label }}</span>
-             </div>
+    <div class="addedTags" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 0">
+        <div class="tags" *ngFor="let tag of item.unit.interpretations.effectiveTags">
+            {{ tag | label }}
         </div>
     </div>
     <div class="quality">
-        <span *ngIf="item.unit.quality.taxon.reliability"> {{ 'observation.form.qualityTitle' | translate }}:  {{ item.unit.quality.taxon.reliability | label: 'warehouse' }} </span>
+        <span *ngIf="item.unit.interpretations && item.unit.interpretations.reliability"> {{ 'observation.form.qualityTitle' | translate }}:  {{ item.unit.interpretations.reliability | label: 'warehouse' }} </span>
     </div>
 </div>
 

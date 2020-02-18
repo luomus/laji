@@ -104,6 +104,9 @@
             <laji-row [title]="'observation.filterBy.collectionName' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
                 <span>{{ document.collectionId | toQName | collectionName }}</span>
             </laji-row>
+            <laji-row [title]="'annotation.collectionQuality' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+              <span>{{ document.linkings.collectionQuality | label }}</span>
+            </laji-row>
             <laji-row *ngIf="document.editorUserIds" [title]="'annotation.observedBy' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
                 <span>
                   <ul class="separated-list">

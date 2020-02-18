@@ -51,6 +51,7 @@
   "annotation.quality.grade": "Quality grade",
   "annotation.mediaFiles": "Media Files",
   "annotation.observedBy": "Observed by",
+  "annotation.collectionQuality": "Collection quality",
   "annotation.observationDataFrom": "Observation data from",
   "annotation.observationDataEntered": "entered on",
   "annotation.obsercation.agree": "Agree with current",

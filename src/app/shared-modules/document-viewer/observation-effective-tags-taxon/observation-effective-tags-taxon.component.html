@@ -2,14 +2,15 @@
 
 <div class="effective-taxon-tags">
     <laji-row [title]="'annotation.effectiveTags' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-        <div *ngIf="unit.addedTags.length === 0; else tags">
+        <div *ngIf="!unit.interpretations || unit.interpretations.effectiveTags.length === 0; else tags">
           <span>-</span>
         </div>
         <ng-template #tags>
-            <div class="tag" *ngFor="let addedTag of unit.addedTags" [ngSwitch]="addedTag | toQName">
-                <div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].quality }}" >
+            <div class="tag" *ngFor="let addedTag of unit.interpretations.effectiveTags" [ngSwitch]="addedTag | toQName">
+                <!--<div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].quality }}" >
                     <span>{{ addedTag | toQName | label }}</span>
-                </div>
+                </div>-->
+                <div class="annotation-marker">{{ addedTag | label }}</div>
             </div>
         </ng-template>
     </laji-row>
