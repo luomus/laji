@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { TaxonomyDescription } from '../../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -8,21 +8,19 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./taxon-description-source.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonDescriptionSourceComponent implements OnInit {
+export class TaxonDescriptionSourceComponent implements OnChanges {
   @Input() taxonDescription: TaxonomyDescription;
 
-  hasTranslation: boolean;
-  hasSpeciesCard: boolean;
-  @Output() hasData = new EventEmitter<boolean>();
+  currentLang: string;
+
 
 
   constructor(private checklang: TranslateService) { }
 
-  ngOnInit() {
-    this.hasTranslation = (this.taxonDescription.title && this.taxonDescription.title[this.checklang.currentLang]) ? true : false;
-    this.hasSpeciesCard = (this.taxonDescription.speciesCardAuthors &&
-    this.taxonDescription.speciesCardAuthors[this.checklang.currentLang]) ? true : false;
-    this.hasData.emit(this.hasTranslation || this.hasSpeciesCard);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.taxonDescription) {
+      this.currentLang = this.checklang.currentLang;
+    }
   }
 
 }

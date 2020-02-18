@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { CheckLangService } from '../../service/check-lang.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-taxon-biology',
@@ -16,19 +17,23 @@ export class TaxonBiologyComponent implements OnChanges {
   ylesta: any;
   ylestaTitle: any;
   groupHasTranslation: any[];
-  ylestaHasTranslation: any[];
+  ylestaHasTranslation: any;
 
-  hasAuthorData: boolean;
+  hasAuthorData = true;
   activeDescription = 0;
+  activeDescriptionContent: any;
+  currentLang: string;
   @Output() contextChange = new EventEmitter<string>();
 
-  constructor(private checklang: CheckLangService) { }
+  constructor(private checklang: CheckLangService, private translation: TranslateService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     this.ylesta = [{'text': undefined, 'visible': undefined}];
     this.ylestaTitle = undefined;
     this.groupHasTranslation = [];
     this.ylestaHasTranslation = [];
+    this.activeDescriptionContent = {};
+    this.currentLang = this.translation.currentLang;
     if (changes.taxonDescription || changes.context) {
       this.activeDescription = 0;
       if (this.taxonDescription && this.context) {

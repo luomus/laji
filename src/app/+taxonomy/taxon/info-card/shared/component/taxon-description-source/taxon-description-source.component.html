@@ -6,7 +6,7 @@
     <span [innerHTML]="taxonDescription?.speciesCardAuthors.content | multiLang"></span>
   </ng-container>
 </laji-info>-->
-<ng-container *ngIf="taxonDescription && taxonDescription?.title && hasTranslation">
+<ng-container *ngIf="taxonDescription && taxonDescription?.title[currentLang]">
   <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title | multiLang }}
 </ng-container>
 <ng-container *ngIf="taxonDescription?.speciesCardAuthors && hasSpeciesCard">
@@ -14,6 +14,6 @@
   <strong>{{ taxonDescription?.speciesCardAuthors.title | multiLang }}:</strong>
   <span [innerHTML]="taxonDescription?.speciesCardAuthors.content | multiLang"></span>
 </ng-container>
-<span style="margin: 0 7px" *ngIf="taxonDescription && (taxonDescription?.title || taxonDescription?.speciesCardAuthors) && (hasTranslation || hasSpeciesCard )">
+<span style="margin: 0 7px" *ngIf="taxonDescription && (taxonDescription?.title[currentLang] || taxonDescription?.speciesCardAuthors)">
   <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
 </span>
