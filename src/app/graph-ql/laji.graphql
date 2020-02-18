@@ -732,7 +732,6 @@ type DwUnitResult {
 }
 
 type DwDocumentQuality {
-  reliabilityOfCollection: Int
   issue: DwIssue
 }
 
@@ -930,6 +929,7 @@ type DwDocument {
 
 type DwDocumentLinkings {
   editors: [DwPerson!]
+  reliabilityOfCollection: String
 }
 
 type DwGathering {
