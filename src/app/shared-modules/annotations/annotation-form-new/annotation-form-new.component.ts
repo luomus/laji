@@ -270,7 +270,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   initAnnotation() {
     this.isEditor = this.editors && this.personID && this.editors.indexOf(this.personID) > -1;
     this.needsAck = this.annotations && this.annotations[0] && this.annotations[0].type !== Annotation.TypeEnum.TypeAcknowledged;
-    this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum').pipe(
+    this.annotationOptions$ = this.metadataService.getRange('MZ.recordQualityEnum').pipe(
       map(annotationOptions => annotationOptions.filter(annotation => this.isEditor ?
           this.ownerTypes.indexOf(annotation.id) > -1 :
           ((

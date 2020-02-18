@@ -503,8 +503,7 @@
     name="recordQuality"
     [mapToWarehouse]="true"
     [placeholder]="'reliability' | translate"
-    [skip]="['MAN.annotationClassAcknowledged']"
-    [alt]="'MAN.annotationClassEnum'"></laji-metadata-select>
+    [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>
   <ng-container *ngIf="advancedMode || query.annotated">
     <laji-select
       [selected]="[query.annotated]"
