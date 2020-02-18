@@ -1,3 +1,29 @@
+<a name="3.3.2"></a>
+# 3.3.2 (2020-02-18)
+
+### Bug fix
+* **editor:** fix skip & repeat not reacting to inputs
+
+<a name="3.3.1"></a>
+# 3.3.1 (2020-02-17)
+
+### Features
+* **editor:** change repeat to use individual labels instead the whole data.
+
+### Bug fix
+* **editor:** fix skip & repeat inputs not reacting to array presses  
+
+<a name="3.3.0"></a>
+# 3.3.0 (2020-02-17)
+
+### Features
+* **editor:** added option to skip n labels from the start of the pdf.
+* **editor:** added option to repeat labels n times when generating the pdf.
+* **editor:** added option to include separator only if following field is empty.
+
+### Bug fix
+* **core:** remove empty page between pages  
+
 <a name="3.2.4"></a>
 # 3.2.4 (2019-12-20)
 

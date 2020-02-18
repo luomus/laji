@@ -58,7 +58,7 @@ export class FontSettingsComponent implements OnInit {
     this.fontSizes = sizes;
   }
 
-  change(field: string, value: string|number, forceNumeric = false) {
+  change(field: keyof IFontStyle, value: string|number, forceNumeric = false): void {
     if (!value) {
       const result = {};
       const currentSetting = this.fontSettings || {};

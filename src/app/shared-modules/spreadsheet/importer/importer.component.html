@@ -59,7 +59,7 @@
       <div class="row data-container">
         <div class="col-sm-5">
           <ng-container *ngIf="!formID && !!bstr">
-            <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
+            <laji-form-select [forms]="forms" [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
           </ng-container>
         </div>
         <div class="col-sm-7">

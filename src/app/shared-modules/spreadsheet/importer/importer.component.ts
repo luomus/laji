@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { from as ObservableFrom, Observable, of, of as ObservableOf } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
-import { IFormField, IUserMappings } from '../model/excel';
+import { IFormField } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
@@ -21,6 +21,7 @@ import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.f
 import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
 import { FileService, instanceOfFileLoad } from '../service/file.service';
 import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'laji-importer',
@@ -41,6 +42,8 @@ export class ImporterComponent implements OnInit {
   @LocalStorage() partiallyUploadedFiles;
   @LocalStorage('importCombineBy', CombineToDocument.gathering) combineBy: CombineToDocument;
   @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
+
+  @Input() forms: string[] = environment.massForms || [];
 
   data: {[key: string]: any}[];
   mappedData: {[key: string]: any}[];

@@ -10,7 +10,7 @@ export class MultiLangService {
    * @returns boolean
    */
   static hasValue(multi: object, lang: string): boolean {
-    return !!multi[lang];
+    return multi && !!multi[lang];
   }
 
   /**
@@ -22,7 +22,7 @@ export class MultiLangService {
    * @returns any
    */
   static getValue(multi: object, lang: string, fallback = ''): string|any {
-    if (typeof multi !== 'object' || lang === 'multi') {
+    if (typeof multi !== 'object' || lang === 'multi' || multi === null) {
       return multi || '';
     }
     if (multi[lang]) {

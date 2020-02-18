@@ -30,6 +30,10 @@ import { Global } from '../../environments/global';
 import { HasFormPermission } from '../shared/route/has-form-permission';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
 import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
+import { DatasetsComponent } from './datasets/datasets.component';
+import { ThemeImportComponent } from './common/theme-import/theme-import.component';
+import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-spreadsheet/theme-generate-spreadsheet.component';
+import { DatasetsGuard } from './datasets/datasets.guard';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -70,10 +74,7 @@ const routes: Routes = [
         },
         instructions: {
           label: 'theme.grc.instructions'
-        },
-        form: {hidden: true},
-        formPermissions: {hidden: true},
-        ownSubmissions: {hidden: true}
+        }
       },
       navLinksOrder: ['instructions', 'search'],
       instructions: {
@@ -82,6 +83,59 @@ const routes: Routes = [
         en: '3286'
       },
     }
+  },
+  {
+    path: 'datasets',
+    children: [
+      {
+        path: '',
+        component: DatasetsComponent
+      },
+      {
+        path: ':formID',
+        component: MonitoringThemeBaseComponent,
+        children: [
+          {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+          {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+          {path: 'import', pathMatch: 'full', component: ThemeImportComponent, canActivate: [DatasetsGuard]},
+          {path: 'generate', pathMatch: 'full', component: ThemeGenerateSpreadsheetComponent, canActivate: [DatasetsGuard]},
+          {
+            path: 'form',
+            pathMatch: 'full',
+            component: FormComponent,
+            canActivate: [DatasetsGuard],
+            canDeactivate: [DocumentDeActivateGuard],
+            data: { displayFeedback: false }
+          },
+          {
+            path: 'form/:id',
+            pathMatch: 'full',
+            component: FormComponent,
+            canActivate: [DatasetsGuard],
+            canDeactivate: [DocumentDeActivateGuard],
+            data: { displayFeedback: false }
+          },
+          {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
+        ],
+        data: {
+          titleFromCollectionName: true,
+          title: '',
+          navLinks: {
+            generate: {
+              routerLink: ['./generate'],
+              label: 'excel.generate'
+            },
+            import: {
+              routerLink: ['./import'],
+              label: 'excel.import'
+            }
+          },
+          navLinksOrder: ['instructions', 'form', 'import', 'generate', 'ownSubmissions', 'formPermissions'],
+          navLinksSecondary: ['instructions', 'import', 'generate', 'formPermissions'],
+          navLinksNoAccess: ['instructions', 'formPermissions']
+        },
+      },
+    ],
   },
   {
     path: 'nafi',
@@ -122,7 +176,7 @@ const routes: Routes = [
           label: 'nafi.stats'
         },
       },
-      navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'templates'],
+      navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'templates', 'formPermissions'],
       instructions: '2668',
     }
   },

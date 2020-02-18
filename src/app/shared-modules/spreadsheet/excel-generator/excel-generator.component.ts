@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
 import { IFormField } from '../model/excel';
 import { SpreadsheetService } from '../service/spreadsheet.service';
 import { GeneratorService } from '../service/generator.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'laji-excel-generator',
@@ -15,7 +15,6 @@ import { GeneratorService } from '../service/generator.service';
 export class ExcelGeneratorComponent implements OnInit {
 
   type: 'ods'|'xlsx' = 'xlsx';
-  forms$: Observable<any>;
   formID = '';
   formTitle: string;
   fields: IFormField[] = [];
@@ -23,6 +22,9 @@ export class ExcelGeneratorComponent implements OnInit {
   selected: string[] = [];
   useLabels = true;
   generating = false;
+
+  @Input() forms: string[] = environment.massForms || [];
+  @Input() addSecondaryFields = false;
 
   constructor(
     private formService: FormService,
@@ -52,7 +54,7 @@ export class ExcelGeneratorComponent implements OnInit {
             this.parents.push(field.parent);
           }
         });
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       });
   }
 

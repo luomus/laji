@@ -18,8 +18,16 @@ import { IPageLayout, LabelService } from '../label.service';
  */
 const style = `
 @import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond|Merriweather|Noto+Serif|Old+Standard+TT|Open+Sans|Open+Sans+Condensed|Source+Code+Pro:300&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .ll-page {
   box-sizing: border-box;
+  overflow: hidden;
+  border: 0;
 }
 .ll-print-content {
   display: grid;
@@ -27,8 +35,6 @@ const style = `
   grid-auto-flow: column;
   align-items: start;
   justify-items: start;
-  page-break-inside: avoid;
-  page-break-after: always;
 }
 .ll-label-item {
   position: absolute;
@@ -47,6 +53,11 @@ img {
 }
 `;
 /* tslint:enable:max-line-length */
+
+export interface IRenderPageOptions {
+  skip?: number;
+  repeat?: number;
+}
 
 /**
  * Convert the label setup together with data to html that can be used for printing.
@@ -141,7 +152,7 @@ export class LabelPrintComponent implements OnChanges {
    *
    * This method can be used to start page rendering even if the button itself would not be visible.
    */
-  renderPages(): void {
+  renderPages(options?: IRenderPageOptions): void {
     if (!this.data || this.data.length === 0) {
       return;
     }
@@ -150,8 +161,16 @@ export class LabelPrintComponent implements OnChanges {
     this.pageLayout = this.labelService.countLabelsPerPage(this.setup);
     const perPage = this.pageLayout.rows * this.pageLayout.cols;
     const pages = [];
+    const skip = new Array(Math.max(options.skip || 0, 0)).fill(null);
+    const repeat = Math.max(options.repeat || 1, 1);
+    const data = this.data.reduce((all: any[], current) => {
+      for (let i = 0; i < repeat; i++) {
+        all.push(current);
+      }
+      return all;
+    }, []) as any[];
     let page = [];
-    this.data.forEach((item, idx) => {
+    [...skip, ...data].forEach((item, idx) => {
       if (idx % perPage === 0 && page.length > 0) {
         pages.push([...page]);
         page = [];

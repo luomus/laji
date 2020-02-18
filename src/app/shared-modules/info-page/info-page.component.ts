@@ -53,7 +53,7 @@ export class InfoPageComponent implements OnChanges {
       return;
     }
     this.currentPage = page;
-    this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, page, {}).pipe(
+    this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(page), {}).pipe(
       tap(result => {
         let afterRoot = false;
         this.title.emit(result.title);
@@ -69,6 +69,12 @@ export class InfoPageComponent implements OnChanges {
       map(result => result.content),
       startWith('')
     );
+  }
+
+  private lastFromPath(url: string) {
+    const parts = (url || '').split('/');
+
+    return parts.pop();
   }
 
 }

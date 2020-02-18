@@ -37,12 +37,12 @@ export class FieldSettingsComponent {
     {sep: '', label: 'none'},
   ];
 
-  onChange(event: Event, place = 'separator') {
+  onChange(event: Event, place: keyof ILabelField  = 'separator') {
     const select = event.target as HTMLSelectElement;
     this.change(select.value, place);
   }
 
-  change(value, place = 'separator') {
+  change(value, place: keyof ILabelField = 'separator') {
     this.fieldChange.emit({
       ...this.field,
       [place]: value,
@@ -70,7 +70,7 @@ export class FieldSettingsComponent {
     delete this.field._menuOpen;
   }
 
-  userInput(event: Event, place: string) {
+  userInput(event: Event, place: keyof ILabelField) {
     const element = event.target as HTMLInputElement;
     this.change(element.value.replace(/ /g, '&nbsp;'), place);
   }

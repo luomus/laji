@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import { GraphQLService, QueryRef } from './graph-ql.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -79,6 +79,8 @@ export class BaseDataService implements OnDestroy {
   ref: QueryRef<IBaseData>;
 
   private readonly langSub: Subscription;
+  private readonly langChangingSub = new BehaviorSubject(false);
+  private readonly langChangingObs = this.langChangingSub.asObservable();
 
   constructor(
     private graphQLService: GraphQLService,
@@ -90,7 +92,10 @@ export class BaseDataService implements OnDestroy {
       fetchPolicy: 'cache-first'
     });
     this.langSub = this.translationService.onLangChange.subscribe(() => {
-      this.ref.refetch();
+      this.langChangingSub.next(true);
+      this.ref.refetch().then(() => {
+        this.langChangingSub.next(false);
+      });
     });
   }
 
@@ -102,6 +107,10 @@ export class BaseDataService implements OnDestroy {
 
   getBaseData(): Observable<IBaseData> {
     return this.ref.valueChanges.pipe(
+      switchMap((data) => this.langChangingObs.pipe(
+        filter(loading => !loading),
+        map(() => data)
+      )),
       map(({data}) => data)
     );
   }
