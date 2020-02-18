@@ -31,6 +31,8 @@ export class FormService {
     [environment.lineTransectForm]: '/theme/linjalaskenta/form/MHL.1',
     [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/form/MHL.27',
     [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/form/MHL.28',
+    [environment.waterbirdPairForm]: '/theme/vesilintulaskenta/form/MHL.65',
+    [environment.waterbirdJuvenileForm]: '/theme/vesilintulaskenta/form/MHL.66',
     [environment.lolifeForm]: '/theme/lolife/form',
     [environment.batForm]: '/theme/lepakot/form',
     [environment.valioForm]: '/theme/valio/form',

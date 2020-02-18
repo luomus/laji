@@ -93,6 +93,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     this.subFetch = this.formService.getAllForms(this.loadedLang).pipe(
       switchMap(forms => this.triplestoreLabelService.getAll([...forms.map(form => form.category)], lang).pipe(
         map(labels => {
+          console.log(forms);
           this.categoryLabels = labels;
           return forms;
         })
