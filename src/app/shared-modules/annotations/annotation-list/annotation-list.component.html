@@ -1,7 +1,7 @@
 <div class="annotations">
+  <span class="title" *ngIf="annotations && annotations.length > 0">{{ 'annotation.titleListAnnotations' | translate }}</span>
   <laji-spinner [spinning]="!annotations"></laji-spinner>
-  <div class="annotation" *ngFor="let annotation of annotations let isOdd=odd"
-       [class.odd]="isOdd">
+  <div class="annotation" *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="row">
       <div class="col-xs-12 row-title">
         <span class="person pull-right">
@@ -10,9 +10,66 @@
             class="btn btn-danger btn-xs"
             (click)="remove.emit(annotation)"
             *ngIf="(annotation.annotationByPerson | toQName) === personID">
-            <i class="glyphicon glyphicon-remove"></i>
+            {{ 'annotation.delete' | translate }}
           </button>
         </span>
+        <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
+          <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
+          <span>{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
+        </div>
+        <ng-template #annotationByPerson>
+          <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
+          <span>{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
+        </ng-template>
+        <div class="tags" *ngIf="annotation.addedTags">
+         <div class="added-tags" *ngIf="annotation.addedTags.length > 0">
+           <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | toQName">
+             <div *ngIf="annotationTagsObservation[addedTag | toQName]; else noCategory">
+                <div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].type }}" >
+                  <!--<span class="annotation-star {{ annotationTagsObservation[addedTag | toQName].quality }}"></span>-->
+                  <span>{{ addedTag | toQName | label }}</span>
+                </div>
+             </div>
+             <ng-template #noCategory>
+              <span>{{ addedTag | toQName | label }}</span>
+             </ng-template>
+           </div>
+         </div>
+         <div class="removed-tags" *ngIf="annotation.removedTags && annotation.removedTags.length > 0">
+            <ul class="separated-list">
+              <b>{{ 'annotation.removedTags' | translate }}: </b>
+              <li *ngFor="let removedTag of annotation.removedTags">
+                    {{ removedTag | toQName | label }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!--<p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
+            <span><b>Taxon: </b></span>
+            <span *ngIf="annotation.identification && annotation.identification.taxon.originalTaxon; else taxonVerbatim">
+                <laji-taxon-name [taxon]="annotation.identification.taxon.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
+            </span>
+            <ng-template #taxonVerbatim>
+              <span *ngIf="annotation.identification.taxon.taxonVerbatim; else reportedInformalTaxonGroup"></span>
+            </ng-template>
+            <ng-template #reportedInformalTaxonGroup>
+              <span>{{ annotation.identification.taxon }}</span>
+            </ng-template>
+            <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''">,{{ annotation.identification.taxonSpecifier }}</ng-container>
+        </p>-->
+        <p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
+          <span *ngIf="annotation.identification.taxonID;else reportedInformalTaxonGroup">
+            {{ annotation.identification.taxon }}
+            <a (click)="onTaxonLinkClick($event)" [routerLink]="['/taxon/' + (annotation.identification.taxonID | toQName)] | localize" target="_blank"
+            [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
+              <i class="glyphicon glyphicon-tag"></i>
+            </a>
+          </span>
+          <ng-template #reportedInformalTaxonGroup>
+            <span>{{ annotation.identification.taxon }}</span>
+          </ng-template>
+          <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''"> ,{{ annotation.identification.taxonSpecifier }}</ng-container>
+        </p>
         <ng-container *ngIf="annotation.annotationClass">
           <span [ngSwitch]="annotation.annotationClass | toQName" [tooltip]="annotation.annotationClass | toQName | label"
             class="annotation-class">
@@ -47,8 +104,6 @@
             {{ 'MAN.typeUnidentifiable' | label }}
           </span>
           <span class="annotation-title" *ngIf="annotation.annotationClass">{{ annotation.annotationClass | toQName | label }}</span>
-          <span class="annotation-title" *ngIf="annotation.annotationByPerson">{{ annotation.annotationByPerson | toQName | users }}</span>
-          <span *ngIf="!changingLocale">{{ annotation.created | amTimeAgo }}</span>
         </small>
       </div>
     </div>
@@ -58,11 +113,15 @@
         {{ annotation.opinion }}
       </div>
     </div>
-    <p class="content" *ngIf="annotation.notes">
-      {{ annotation.notes }}
-    </p>
+    <div class="content" *ngIf="annotation.notes">
+      <div [ngClass]="{'': (annotation.notes.length <= 250 || open[i]), 'closed': (annotation.notes.length > 250 && !open[i]) }">
+          {{ annotation.notes }}
+      </div>
+      <span class="read-more" *ngIf="(annotation.notes.length > 250 && !open[i])" (click)="readMore(i)">Read more</span>
+      <span class="read-more" *ngIf="open[i]" (click)="readMore(i)">Hide</span>
+    </div>
   </div>
-  <div *ngIf="annotations && annotations.length === 0">
+  <div class="no-annotations alert alert-warning" *ngIf="annotations && annotations.length === 0">
     {{ 'annotation.none' | translate }}
   </div>
 </div>

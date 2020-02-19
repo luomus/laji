@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges,
+Output, EventEmitter, HostListener } from '@angular/core';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
@@ -22,6 +23,8 @@ export class DocumentLocalComponent implements OnChanges {
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
   @Input() gatheringGeometryJSONPath: string;
+
+  @Output() close = new EventEmitter<boolean>();
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -166,4 +169,21 @@ export class DocumentLocalComponent implements OnChanges {
       next: next
     };
   }
+
+  closeDocument() {
+    this.close.emit(true);
+  }
+
+
+  @HostListener('window:keydown', ['$event'])
+  annotationKeyDown(e: KeyboardEvent) {
+
+    if (e.keyCode === 27 ) {
+       e.stopImmediatePropagation();
+       this.closeDocument();
+      }
+
+  }
+
+
 }

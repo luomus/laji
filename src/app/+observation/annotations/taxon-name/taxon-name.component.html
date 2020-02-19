@@ -1,0 +1,18 @@
+<div class="unit" *ngIf="unit">
+    <div class="image" *ngIf="unit.media">
+        <img [src]="unit.media[0].thumbnailURL" />
+        <div class="number-images" *ngIf="unit.media.length > 1"><span>{{ unit.media.length }}</span></div>
+    </div>
+    <div class="image no-media" *ngIf="!unit.media"><span>No image</span></div>
+    <div class="status-annotation" *ngIf="unit.status"><span class="need-id"></span></div>
+    <div *ngIf="unit.linkings">
+        <div *ngIf="unit.linkings.originalTaxon">
+            <div class="taxon" ><span class="specie" *ngIf="unit.linkings.originalTaxon.vernacularName">{{ unit.linkings.originalTaxon.vernacularName | multiLang }}  - </span><span class="scientificName" *ngIf="unit.linkings.originalTaxon.scientificName">{{ unit.linkings.originalTaxon.scientificName }}</span></div>
+        </div>
+    </div>
+    <laji-annotation-item-status
+    *ngIf="unit.interpretations && (unit.interpretations.needsCheck || unit.interpretations.needsIdentification)"
+    [interpretation]="unit.interpretations"
+    [text]="true"
+    ></laji-annotation-item-status>
+</div>

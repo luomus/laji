@@ -1,29 +1,59 @@
-<div class="annotation">
-  <div class="header">
-    <button type="button" class="close" (click)="close.emit()">
-      <i class="glyphicon glyphicon-remove"></i>
-    </button>
-    <h4>
-      <span class="comment-title">
-        {{ 'annotation.title' | translate }}
-      </span>
-      <span *ngIf="!adding">
-        <button class="btn btn-xs btn-success" (click)="toggleAddForm()"><i class="glyphicon glyphicon-plus"></i></button>
-      </span>
-    </h4>
-  </div>
-  <laji-annotation-form *ngIf="adding"
-                        [identifying]="identifying"
-                        [annotations]="annotations"
-                        [annotation]="annotation"
-                        [personID]="personID"
-                        [editors]="editors"
-                        (success)="onSuccess($event)"
-                        (cancel)="closeAddForm()"
-  ></laji-annotation-form>
+<div class="annotation"  *ngIf="targetID">
   <laji-annotation-list
     [personID]="personID"
     [annotations]="annotations"
     (remove)="onDelete($event)">
   </laji-annotation-list>
+</div>
+
+<hr/>
+
+<div [ngClass]="{'annotation-form': formVisible, '': !formVisible}">
+  <ng-container *ngIf="personRoleAnnotation === annotationRole.expert; else basicForm">
+      <span class="comment-title"  *ngIf="expert; else expertAnnotation">
+          {{ 'annotation.addAnnotationExpert' | translate }}
+      </span>
+      <ng-template #expertAnnotation>
+        <span class="comment-title">{{ 'annotation.addBasicAnnotation' | translate }} </span>
+      </ng-template>
+      <span *lajiLoggedIn="true">
+        <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()">{{ 'annotation.switchToBasic' | translate }}</span>
+        <ng-template #basicMode>
+          <span class="switch-mode expert" (click)="changeModeForm()">{{ 'annotation.switchToExpert' | translate }}</span>
+        </ng-template>  
+      </span>
+  </ng-container>
+  <ng-template #basicForm>
+    <ng-container *ngIf="formVisible; else noForm">
+        <span class="comment-title">
+            {{ 'annotation.addAnAnnotation' | translate }}
+        </span>
+    </ng-container>
+  </ng-template>
+  <ng-template #noForm>
+      <span class="comment-title">
+        {{ 'annotation.addAnAnnotation' | translate }}
+      </span>
+      <span *lajiLoggedIn="true" class="comment-title">
+          <button class="btn btn-xs btn-success" (click)="showDocument()"><i class="glyphicon glyphicon-plus"></i></button>
+      </span>
+      <div *lajiLoggedIn="false" class="annotation-form">
+          {{ 'force.login' | translate }}
+      </div>
+  </ng-template>
+    
+   
+    <laji-annotation-form-new #formAnnotation
+    [identifying]="identifying"
+    [annotations]="annotations"
+    [annotation]="annotation"
+    [personID]="personID"
+    [personRoleAnnotation]="personRoleAnnotation"
+    [editors]="editors"
+    [expert]="expert"
+    [unit]="unit"
+    [visible]="formVisible"
+    (success)="onSuccess($event)"
+    (cancel)="closeAddForm()"
+  ></laji-annotation-form-new>
 </div>

@@ -58,7 +58,11 @@ import { LazyImageDirective } from './directive/lazy-image.directive';
 import { HideForIeDirective } from './directive/hide-for-ie.directive';
 import { SortPipe } from './pipe/sort.pipe';
 import { DateFormatPipe, MomentModule } from 'ngx-moment';
+import { UniquePipe } from './pipe/unique.pipe';
+import { TruncatePipe } from './pipe/truncate.pipe';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { AfterIfDirective } from './directive/after-if.directive';
+import { FilterValuePipe } from './pipe/filter-value.pipe';
 import { NotificationsComponent } from './navbar/notifications/notifications.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
@@ -89,7 +93,11 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
     HabitatComponent,
     LazyImageDirective,
     HideForIeDirective,
-    SortPipe
+    SortPipe,
+    UniquePipe,
+    TruncatePipe,
+    AfterIfDirective,
+    FilterValuePipe
   ],
   imports: [
     FormsModule,
@@ -118,7 +126,8 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
     ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe
   ]
 })
 export class SharedModule {

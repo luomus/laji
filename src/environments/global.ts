@@ -104,6 +104,123 @@ export const Global = {
     'femaleIndividualCount',
     'areaInSquareMeters'
   ],
+  annotationTags: {
+    'MMAN.3': {
+      value: 'MMAN.3',
+      quality: 'MMAN.typeAdmin',
+      type: 'admin'
+    },
+    'MMAN.5': {
+      value: 'MMAN.5',
+      quality: 'MMAN.typePositiveQuality',
+      type: 'positive'
+    },
+    'MMAN.8': {
+      value: 'MMAN.8',
+      quality: 'MMAN.typeNegativeQuality',
+      type: 'negative'
+    },
+    'MMAN.9': {
+      value: 'MMAN.9',
+      quality: 'MMAN.typeNegativeQuality',
+      type: 'negative'
+    },
+    'MMAN.10': {
+      value: 'MMAN.10',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.11': {
+      value: 'MMAN.11',
+      quality: 'MMAN.typeCensus',
+      type: 'census'
+    },
+    'MMAN.12': {
+      value: 'MMAN.12',
+      quality: 'MMAN.typeCensus',
+      type: 'census'
+    },
+    'MMAN.13': {
+      value: 'MMAN.13',
+      quality: '"MMAN.typeCensus',
+      type: 'census'
+    },
+    'MMAN.14': {
+      value: 'MMAN.14',
+      quality: 'MMAN.typeInvasive',
+      type: 'invasive'
+    },
+    'MMAN.15': {
+      value: 'MMAN.15',
+      quality: 'MMAN.typeInvasive',
+      type: 'invasive'
+    },
+    'MMAN.16': {
+      value: 'MMAN.16',
+      quality: 'MMAN.typeInvasive',
+      type: 'invasive'
+    },
+    'MMAN.17': {
+      value: 'MMAN.17',
+      quality: 'MMAN.typeInvasive',
+      type: 'invasive'
+    },
+    'MMAN.18': {
+      value: 'MMAN.18',
+      quality: 'MMAN.typeInfo',
+      type: 'self'
+    },
+    'MMAN.22': {
+      value: 'MMAN.22',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.23': {
+      value: 'MMAN.23',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.24': {
+      value: 'MMAN.24',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.25': {
+      value: 'MMAN.25',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.26': {
+      value: 'MMAN.26',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.29': {
+      value: 'MMAN.29',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.30': {
+      value: 'MMAN.30',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.31': {
+      value: 'MMAN.31',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.32': {
+      value: 'MMAN.32',
+      quality: 'MMAN.typeAdmin',
+      type: 'admin'
+    },
+    'MMAN.33': {
+      value: 'MMAN.33',
+      quality: 'MMAN.typeInfo',
+      type: 'info'
+    }
+  },
   limit: {
     simpleDownload: 10000
   }

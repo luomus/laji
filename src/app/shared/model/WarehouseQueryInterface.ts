@@ -162,7 +162,7 @@ export interface WarehouseQueryInterface {
   superRecordBasis?: Array<string>;
   recordBasis?: Array<string>;
   lifeStage?: Array<string>;
-  taxonReliability?: Array<string>;
+  recordQuality?: Array<string>;
   sex?: Array<string>;
   documentId?: Array<string>;
   gatheringId?: Array<string>;

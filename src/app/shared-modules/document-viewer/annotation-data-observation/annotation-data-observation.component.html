@@ -1,0 +1,75 @@
+<ng-container>
+    <div class="info">
+        <div class="title">
+            {{ 'annotation.annotationBeforeObservation' | translate }}
+        </div>
+              
+        <div class="content">
+            <ul>
+                <li *ngIf="(unit.linkings && unit.linkings.originalTaxon) || unit.taxonVerbatim || unit.reportedInformalTaxonGroup">
+                    <b>Taxon: </b>
+                    <span *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim">
+                        <laji-taxon-name [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
+                    </span>
+                    <ng-template #taxonVerbatim>
+                       <span *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup">{{ unit.taxonVerbatim | toQName | label }}</span>
+                    </ng-template>
+                    <ng-template #reportedInformalTaxonGroup>
+                        <span>{{ unit.reportedInformalTaxonGroup | toQName | label }}</span>
+                    </ng-template>
+                </li>
+                <li *ngIf="gathering.eventDate || gathering.displayDateTime">
+                    <b>{{ 'observation.form.date' | translate }}: </b>
+                    <span *ngIf="gathering.eventDate && gathering.eventDate.begin !== gathering.eventDate.end; else oneDate">
+                        {{ gathering.eventDate.begin }} - {{ gathering.eventDate.end }}
+                    </span>
+                    <ng-template #oneDate>
+                        {{ gathering.displayDateTime }}
+                    </ng-template>
+                </li>
+                <li *ngIf="editors.length > 0">
+                    <b *ngIf="editors.length === 1; else multiple">{{ 'observation.form.observer' | translate }}: </b>
+                    <ng-template #multiple>
+                        <b *ngIf="editors.length > 1">{{ 'wbc.stats.route.team' | translate }}: </b>
+                    </ng-template>
+                    <span>
+                        <ul class="separated-list">
+                            <li *ngFor="let user of editors; let i=index">{{ user | toQName | label }}</li> 
+                        </ul>
+                    </span>
+                </li>
+                <li *ngIf="gathering.interpretations">
+                    <b>{{ 'result.gathering.locality' | translate }}: </b>
+                    <span>
+                        <ul class="separated-list">
+                            <li *ngIf="gathering.higherGeography" [tooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
+                                {{ gathering.higherGeography }}</li>
+                            <li *ngIf="gathering.interpretations?.country" [tooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
+                                {{ gathering.interpretations.country | toQName | area }}</li>
+                            <li *ngIf="!gathering.interpretations?.country && gathering.country" [tooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
+                                {{ gathering.country }}</li>
+                            <li *ngIf="gathering.province" [tooltip]="'MY.province' | label" [isDisabled]="hideTooltips">
+                                {{ gathering.province }}</li>
+                            <li *ngIf="gathering.interpretations?.biogeographicalProvince" [tooltip]="'MY.biologicalProvince' | label" [isDisabled]="hideTooltips">{{ gathering.interpretations.biogeographicalProvince | toQName | area }}
+                                ({{ gathering.interpretations.biogeographicalProvince | toQName | area:'provinceCode' }})</li>
+                            <li [tooltip]="'MY.biologicalProvince' | label"[isDisabled]="hideTooltips"
+                                *ngIf="!gathering.interpretations?.biogeographicalProvince && gathering.biogeographicalProvince">
+                               {{ gathering.biogeographicalProvince }}</li>
+                            <li *ngIf="gathering.interpretations?.finnishMunicipalities; else municipality" [tooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
+                                {{ gathering.interpretations.finnishMunicipalities | toQName | area | values }}</li>
+                            <ng-template #municipality>
+                                <li *ngIf="gathering.municipality" [tooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
+                                  {{ gathering.municipality }}
+                                </li>
+                            </ng-template>
+                            <li *ngIf="gathering.locality" [tooltip]="'MY.locality' | label" [isDisabled]="hideTooltips">
+                                {{ gathering.locality }}
+                            </li>
+                        </ul>
+                    </span>
+                </li>
+            </ul>
+        </div> 
+    </div>
+</ng-container>    
+        

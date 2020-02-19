@@ -1,0 +1,44 @@
+@import '../../../../styles/_styles.scss'; 
+
+div {
+    &.item-content{
+        padding-bottom: 10px;
+        min-height: 250px;
+        div {
+            &.gathering {
+               margin-top: 5px;
+            }
+            &.quality{
+                padding: 0 10px;
+                margin-top: 5px;
+            }
+            &.addedTags {
+                padding: 0 10px;
+                margin-top: 5px;
+            }
+            &.information {
+                padding: 0 10px;
+                margin-top: 5px;
+            }
+            &.tags {
+                display: inline-block;
+                margin-right: 5px;
+            }
+        }
+    }
+    
+  }
+  span{
+      &.green{
+          color: $green;
+      }
+      &.gray{
+          color: $gray-text
+      }
+      &.red{
+          color: $red
+      }
+      &.white {
+          color: $white;
+      }
+  }

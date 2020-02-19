@@ -27,6 +27,8 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() visible = true;
   @Input() active = 0;
   @Input() useWorldMap = true;
+  @Input() settingsKey: any;
+  @Input() hideCoordinates: boolean;
 
   _data: any;
   mapOptions: LajiMapOptions = {
@@ -66,6 +68,9 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     if (!this.lajiMap.map) {
       return;
     }
+    if (this.data[0].geoJSON && this._data.featureCollection !== this.getFeatureCollection(this.data[0].geoJSON) ) {
+      this.initData();
+    }
     if (this._data && this._data[idx]) {
       this.lajiMap.map.setDraw({...(<any> this.mapOptions.draw), ...(this._data[idx] || {})});
       this.lajiMap.map.zoomToData({maxZoom: this.lajiMap.map.getNormalizedZoom()});
@@ -73,6 +78,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
       this.lajiMap.map.setDraw(this.mapOptions.draw);
     }
   }
+
 
   private initData() {
     if (!this.data) {
@@ -111,4 +117,5 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
       };
     }
   }
+
 }

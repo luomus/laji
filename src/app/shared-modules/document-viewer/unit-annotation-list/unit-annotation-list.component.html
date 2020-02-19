@@ -1,0 +1,24 @@
+
+<div class="unit" *ngIf="unit">
+  <ng-container>
+    <div class="row">
+      <div class="col-xs-12 annotations">
+        <laji-annotations
+          [identifying]="identifying"
+          [editors]="editors"
+          [personID]="personID"
+          [personRoleAnnotation]="personRoleAnnotation"
+          [rootID]="documentID"
+          [targetID]="unitID"
+          [unit] = unit
+          [gathering] = gathering
+          [annotations]="annotations"
+          [formVisible]="true"
+          (close)="hideAnnotations()"
+          (annotationChange)="initAnnotationStatus($event)"
+        ></laji-annotations>
+      </div>
+    </div>
+  </ng-container>
+</div>
+

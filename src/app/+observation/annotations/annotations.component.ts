@@ -1,19 +1,130 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnInit,
+ChangeDetectorRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { Subscription, Observable, forkJoin, of } from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { map, switchMap } from 'rxjs/operators';
+import { Annotation } from '../../shared/model/Annotation';
+import { PagedResult } from '../../shared/model/PagedResult';
+
+
 
 @Component({
   selector: 'laji-annotations',
   templateUrl: './annotations.component.html',
-  styleUrls: ['./annotations.component.scss']
+  styleUrls: ['./annotations.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AnnotationsComponent implements OnInit {
+export class AnnotationsComponent implements OnInit, OnChanges {
 
-  @Input()
-  query: WarehouseQueryInterface;
+  @Input() query: WarehouseQueryInterface;
+  @Input() showPaginator = true;
+  @Input() limit = 1000;
 
-  constructor() { }
+
+  @Output() hasData = new EventEmitter<boolean>();
+  annotations: any;
+  subAnnotation: Subscription;
+  gathering: any[];
+  result: PagedResult<any> = {
+    currentPage: 1,
+    lastPage: 1,
+    results: [],
+    total: 0,
+    pageSize: 0
+  };
+  lang: string;
+  loading: boolean;
+  page: number;
+  total: number;
+  count: number;
+  size: number;
+  paginatorDisplay: boolean;
+
+
+
+  constructor(
+    private warehouseApi: WarehouseApi,
+    private translations: TranslateService,
+    private cd: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
+    this.lang = this.translations.currentLang;
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (
+      changes['query'] || changes['size'] || changes['limit'] ) {
+      this.page = 1;
+      this.updateAnnotations();
+    }
+  }
+
+
+  updateAnnotations() {
+    if (!this.query) {
+      return;
+    }
+
+    if (this.subAnnotation) {
+      this.subAnnotation.unsubscribe();
+    }
+
+    this.annotations = [];
+    this.lang = this.translations.currentLang;
+    this.loading = true;
+    this.cd.markForCheck();
+    this.subAnnotation = this.warehouseApi.warehouseQueryListGet(
+      this.query,
+      [
+        'document.documentId',
+        'unit.media.thumbnailURL',
+        'document.createdDate',
+        'unit.media.fullURL',
+        'gathering.displayDateTime',
+        'gathering.country',
+        'gathering.biogeographicalProvince',
+        'gathering.locality',
+        'gathering.municipality',
+        'gathering.team',
+        'unit.annotationCount',
+        'unit.unitId',
+        'unit.linkings.originalTaxon.scientificName',
+        'unit.linkings.taxon.vernacularName',
+        'unit.linkings.originalTaxon.vernacularName',
+        'document.linkings.collectionQuality',
+        'unit.interpretations.reliability',
+        'unit.interpretations.effectiveTags',
+        'unit.interpretations.individualCount',
+        'unit.interpretations.invasiveControlEffectiveness',
+        'unit.interpretations.invasiveControlled',
+        'unit.interpretations.needsCheck',
+        'unit.interpretations.needsIdentification',
+        'unit.unitId'
+      ],
+      ['document.createdDate DESC', 'unit.unitId ASC'],
+      18,
+      this.page
+    ).subscribe(data => {
+      this.result = data;
+      this.paginatorDisplay = this.result.total > this.result.pageSize;
+      this.total = this.result.total;
+      this.count = this.result.total;
+      this.size = this.result.pageSize;
+      this.cd.markForCheck();
+      console.log(this.result);
+      this.loading = false;
+    });
+
+  }
+
+
+  pageChanged(event) {
+    this.page = event.page;
+    this.updateAnnotations();
+  }
+
 
 }

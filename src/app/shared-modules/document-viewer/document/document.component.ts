@@ -9,7 +9,10 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
+  HostListener,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { interval as ObservableInterval, Subscription, throwError as observableThrowError } from 'rxjs';
@@ -18,6 +21,7 @@ import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
+import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 
 
 @Component({
@@ -36,6 +40,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @Input() hideHeader = false;
   @Input() identifying = false;
 
+  @Output() close = new EventEmitter<boolean>();
+
   collectionContestFormId = Global.forms.collectionContest;
 
   externalViewUrl: string;
@@ -51,6 +57,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   unitCnt;
   isViewInited = false;
   showOnlyHighlighted = true;
+  childEvent = false;
+  childComunicationsubscription: Subscription;
   highlightParents: string[] = [];
   @SessionStorage() showFacts = false;
   private _uri: string;
@@ -59,11 +67,13 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   private interval: Subscription;
   private metaFetch: Subscription;
 
+
   constructor(
     private warehouseApi: WarehouseApi,
     private userService: UserService,
     private cd: ChangeDetectorRef,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    private childComunication: DocumentViewerChildComunicationService
   ) { }
 
   ngOnInit() {
@@ -71,6 +81,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       this.personID = person.id;
       this.cd.markForCheck();
     });
+
+    this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
+      this.childEvent = info;
+      this.cd.markForCheck();
+   });
   }
 
   ngAfterViewInit() {
@@ -243,6 +258,20 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         ).subscribe(() => this.updateDocument());
     }
     this.cd.markForCheck();
+  }
+
+  closeDocument() {
+    this.close.emit(true);
+  }
+
+
+  @HostListener('window:keydown', ['$event'])
+  annotationKeyDown(e: KeyboardEvent) {
+    if (e.keyCode === 27 && !this.childEvent) {
+       e.stopImmediatePropagation();
+       this.closeDocument();
+      }
+
   }
 
 }

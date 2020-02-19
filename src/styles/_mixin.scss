@@ -4,11 +4,15 @@
 }
 
 @mixin media-query-tablet {
-    @media (min-width: 768px) { @content; }
+    @media (max-width: 1024px) { @content; }
+}
+
+@mixin media-query-laptop {
+    @media (max-width: 1400px) { @content; }
 }
 
 @mixin media-query-desktop {
-    @media (min-width: 1200px) { @content; }
+    @media (max-width: 1799px) { @content; }
 }
 
 @mixin media-query-big-desktop {

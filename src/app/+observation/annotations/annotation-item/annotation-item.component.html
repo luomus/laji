@@ -1,0 +1,26 @@
+
+<div class="item-content">
+    <laji-annotation-item-status
+    *ngIf="item.unit.interpretations && (item.unit.interpretations.needsCheck || item.unit.interpretations.needsIdentification)"
+    [interpretation]="item.unit.interpretations"
+    [text]="false"
+    ></laji-annotation-item-status>
+    <div class="unit-annotation"><laji-unit-annotation [showImage]="false" [unit]="item.unit"></laji-unit-annotation></div>
+    <div class="gathering"><laji-gathering [visible]="true" [gathering]="item.gathering"></laji-gathering></div>
+    <div class="information">
+         <span *ngIf="item.unit.annotationCount; else noAnnotation">
+            <span>{{ item.unit.annotationCount }} {{ 'quality.qualityLabel' | translate }}</span>
+        </span>
+        <ng-template #noAnnotation>{{ 'annotation.none' | translate }}</ng-template>
+    </div>
+    <div class="addedTags" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 0">
+        <div class="tags" *ngFor="let tag of item.unit.interpretations.effectiveTags">
+            {{ tag | label }}
+        </div>
+    </div>
+    <div class="quality">
+        <span *ngIf="item.unit.interpretations && item.unit.interpretations.reliability"> {{ 'observation.form.qualityTitle' | translate }}:  {{ item.unit.interpretations.reliability | label: 'warehouse' }} </span>
+    </div>
+</div>
+
+

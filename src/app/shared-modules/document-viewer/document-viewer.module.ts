@@ -32,8 +32,17 @@ import { PrintRowComponent } from './document-local/collection-contest-local-pri
 import { PrintTaxonHeaderComponent } from './document-local/collection-contest-local-print/print-taxon-header/print-taxon-header.component';
 import { CoordinatesViewerComponent } from './viewer-coordinates/viewer-coordinates.component';
 import { ViewerModalComponent } from './viewer-modal/viewer-modal.component';
+import { DocumentAnnotationComponent } from './document-annotation/document-annotation.component';
+import { UnitAnnotationComponent } from './unit-annotation/unit-annotation.component';
+import { GatheringAnnotationsRowsComponent } from './gathering-annotations-rows/gathering-annotations-rows.component';
+import { GatheringAnnotationComponent } from './gathering-annotation/gathering-annotation.component';
+import { UnitAnnotationRowsComponent } from './unit-annotation-rows/unit-annotation-rows.component';
+import { UnitAnnotationListComponent } from './unit-annotation-list/unit-annotation-list.component';
 import { LicenseModule } from '../license/license.module';
 import { SampleComponent } from './sample/sample.component';
+import { InfoModule } from '../info/info.module';
+import { AnnotationDataObservationComponent } from './annotation-data-observation/annotation-data-observation.component';
+import { ObservationEffectiveTagsTaxonComponent } from './observation-effective-tags-taxon/observation-effective-tags-taxon.component';
 
 @NgModule({
   imports: [
@@ -42,7 +51,8 @@ import { SampleComponent } from './sample/sample.component';
     LangModule,
     AnnotationsModule,
     LajiMapModule,
-    LicenseModule
+    LicenseModule,
+    InfoModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
@@ -55,7 +65,15 @@ import { SampleComponent } from './sample/sample.component';
     PrintTaxonHeaderComponent,
     CoordinatesViewerComponent,
     ViewerModalComponent,
-    SampleComponent
+    DocumentAnnotationComponent,
+    UnitAnnotationComponent,
+    GatheringAnnotationsRowsComponent,
+    GatheringAnnotationComponent,
+    UnitAnnotationRowsComponent,
+    UnitAnnotationListComponent,
+    SampleComponent,
+    AnnotationDataObservationComponent,
+    ObservationEffectiveTagsTaxonComponent
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent]
 })
