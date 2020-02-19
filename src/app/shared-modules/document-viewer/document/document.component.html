@@ -30,6 +30,7 @@
       <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName" ngPreserveWhitespaces>
         <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
       </laji-row>
+      <laji-row [title]="'annotation.collectionQuality' | translate" [value]="document.linkings.collectionQuality | label" ngPreserveWhitespaces></laji-row>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
