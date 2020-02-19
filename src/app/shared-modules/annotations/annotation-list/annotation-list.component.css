@@ -6,6 +6,13 @@
   background-color: #F1F1F1;
 }
 
+.annotations .title {
+  font-weight: bold;
+    margin-bottom: 10px;
+    line-height: 16px;
+    display: block
+}
+
 .tags {
   margin-top: 10px;
 }

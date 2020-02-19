@@ -64,6 +64,8 @@
   "annotation.delete": "Radera",
   "annotation.needsId": "Behöver id",
   "annotation.needsCheck": "Vara oense",
+  "annotation.annotationBeforeObservation": "Observation före kommentarer",
+  "annotation.titleListAnnotations": "Kommentar",
   "asIs": "Värde som det är",
   "checkAll": "Markera alla",
   "checked": "vald",

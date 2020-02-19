@@ -64,6 +64,8 @@
   "annotation.delete": "Poistaa",
   "annotation.needsId": "Tarvitsee id",
   "annotation.needsCheck": "Riitaantua",
+  "annotation.annotationBeforeObservation": "Havainto ennen merkintöjä",
+  "annotation.titleListAnnotations": "Merkinnät",
   "asIs": "Arvo sellaisenaan",
   "checkAll": "Valitse kaikki",
   "checked": "valittu",

@@ -64,6 +64,8 @@
   "annotation.delete": "Delete",
   "annotation.needsId": "Needs id",
   "annotation.needsCheck": "Disagreed",
+  "annotation.annotationBeforeObservation": "Observation before annotations",
+  "annotation.titleListAnnotations": "Annotations",
   "asIs": "Value as is",
   "checkAll": "Check all",
   "checked": "checked",
