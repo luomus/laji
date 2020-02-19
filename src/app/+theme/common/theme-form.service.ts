@@ -49,6 +49,8 @@ export class ThemeFormService {
     }
   };
 
+  defaultNavLinksOrder = ['instructions', 'form', 'ownSubmissions', 'formPermissions'];
+
   static getFormId(route: ActivatedRouteSnapshot): string {
     let current = route;
     while (
@@ -86,10 +88,11 @@ export class ThemeFormService {
   getNavLinks$(route: ActivatedRoute): Observable<NavLink[]> {
     const formID = ThemeFormService.getFormId(route.snapshot);
     return route.data.pipe(
-      switchMap(({navLinks = {}, navLinksOrder = [], navLinksNoAccess, navLinksSecondary}) => this.formService.getForm(
-        formID,
-        this.translateService.currentLang
-      ).pipe(
+      switchMap(({navLinks = {}, navLinksOrder = this.defaultNavLinksOrder, navLinksNoAccess, navLinksSecondary}) =>
+        this.formService.getForm(
+          formID,
+          this.translateService.currentLang
+        ).pipe(
           switchMap(form => this.formPermissionService.getRights(form).pipe(
             switchMap(rights => this.userService.user$.pipe(
               take(1),

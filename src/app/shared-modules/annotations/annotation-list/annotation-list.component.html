@@ -1,4 +1,5 @@
 <div class="annotations">
+  <span class="title" *ngIf="annotations && annotations.length > 0">{{ 'annotation.titleListAnnotations' | translate }}</span>
   <laji-spinner [spinning]="!annotations"></laji-spinner>
   <div class="annotation" *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="row">
