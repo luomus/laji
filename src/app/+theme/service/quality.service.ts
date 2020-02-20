@@ -27,7 +27,7 @@ export class QualityService {
 
   getAnnotationList(page = 1, pageSize = 50, orderBy?, informalTaxonGroup?, timeStart?, timeEnd?): Observable<any> {
     const query: WarehouseQueryInterface = {cache: true};
-    query.annotationType = ['TAXON_RELIABILITY', 'IDENTIFICATION', 'UNIDENTIFIABLE', 'COMMENT'];
+    query.annotationType = ['USER_EFFECTIVE', 'USER_CHECK', 'COMMENT'];
     if (informalTaxonGroup) {
       query.informalTaxonGroupId = informalTaxonGroup;
     }
@@ -53,7 +53,7 @@ export class QualityService {
 
   getMostActiveUsers(maxLength = 50, informalTaxonGroup?, lastDate?): Observable<any> {
     const query: WarehouseQueryInterface = {cache: true};
-    query.annotationType = ['TAXON_RELIABILITY', 'IDENTIFICATION', 'UNIDENTIFIABLE'];
+    query.annotationType = ['USER_EFFECTIVE', 'USER_CHECK'];
     if (informalTaxonGroup) {
       query.informalTaxonGroupId = informalTaxonGroup;
     }
