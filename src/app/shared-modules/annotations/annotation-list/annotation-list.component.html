@@ -121,7 +121,7 @@
         <span class="read-more" *ngIf="open[i]" (click)="readMore(i)">Hide</span>
       </div>
     </div>
-    <div *ngIf="lastFalse!==-1 && i===lastFalse && annotation[i+1].valid">
+    <div>
       <laji-occurrence-at-time-of-annotation [occurrence]="annotation.occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>
     </div>
   </div>

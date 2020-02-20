@@ -12,7 +12,6 @@ export class OccurrenceAtTimeOfAnnotationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
   }
 
   onTaxonLinkClick(event: MouseEvent) {

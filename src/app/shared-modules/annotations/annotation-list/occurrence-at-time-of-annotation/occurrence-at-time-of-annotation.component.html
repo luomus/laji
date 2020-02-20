@@ -4,7 +4,7 @@
         <li *ngIf="occurrence.taxonId">
             <b>Taxon: </b>
             <span>
-                {{ occurrence.taxonVerbatim }}
+                {{ occurrence.taxonId | toQName | label }} - <em>{{ occurrence.taxonVerbatim }}</em>
                 <a (click)="onTaxonLinkClick($event)" [routerLink]="['/taxon/' + (occurrence.taxonId | toQName)] | localize" target="_blank"
                 [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
                   <i class="glyphicon glyphicon-tag"></i>
