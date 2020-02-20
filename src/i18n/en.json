@@ -1083,7 +1083,7 @@
   "taxonomy.endangerment.evaluationHistory": "Evaluation history",
   "taxonomy.invasive.invasiveLink": "See on Invasive Alien Species Portal",
   "taxonomy.occurrence.byArea": "Distribution by biogeographical provinces according to expert evaluation",
-  "taxonomy.ymparisto": "The habitats have been defined in the Finnish Species Threat Assessment 2019. Read more:<a href=\"https://punainenkirja.laji.fi/en\">The Web Service of the Red List of Finnish Species</a>",
+  "taxonomy.ymparisto": "The habitats have been mainly defined in the Finnish Species Threat Assessment 2019 and follow the national habitat classification. Read more:<a href=\"https://punainenkirja.laji.fi/en/about/r-109\">The Web Service of the Red List of Finnish Species – Habitat classification</a>",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Description",

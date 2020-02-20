@@ -1157,7 +1157,7 @@
   "taxonomy.endangerment.evaluationHistory": "Arviontihistoria",
   "taxonomy.invasive.invasiveLink": "Tarkastele vieraslajiportaalissa",
   "taxonomy.occurrence.byArea": "Esiintyminen eliömaakunnittain",
-  "taxonomy.ymparisto": "Habitat har definierats i Finska artens hotbedömning 2019. Läs mera:<a href=\"https://punainenkirja.laji.fi/sv\">Webbtjänsten för Rödlistan</a>",
+  "taxonomy.ymparisto": "Habitat har definierats huvudsakligen i Finska artens hotbedömning 2019 och följer den nationella habitat klassificeringen. Läs mera:<a href=\"https://punainenkirja.laji.fi/sv/about/r-125\">Webbtjänsten för Rödlistan – Habitat klassificeringen</a>",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Beskrivning",
