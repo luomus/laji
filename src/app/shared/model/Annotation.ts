@@ -68,6 +68,8 @@ export interface Annotation {
 
   deleted?: boolean;
 
+  valid?: boolean;
+
   occurrenceAtTimeOfAnnotation?: Annotation.Occurrence;
 
 }

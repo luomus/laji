@@ -10,6 +10,7 @@ import { TypeaheadModule } from 'ngx-bootstrap';
 import { ConvertAnnotationsPipe } from './convert-annotations.pipe';
 import { SearchFiltersModule } from '../search-filters/search-filters.module';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/public-api';
+import { OccurrenceAtTimeOfAnnotationComponent } from './annotation-list/occurrence-at-time-of-annotation/occurrence-at-time-of-annotation.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import { LajiUiModule } from '../../../../projects/laji-ui/src/public-api';
     LajiUiModule
   ],
   declarations: [AnnotationsComponent, AnnotationListComponent, AnnotationFormComponent,
-    AnnotationFormNewComponent, ConvertAnnotationsPipe ],
+    AnnotationFormNewComponent, ConvertAnnotationsPipe, OccurrenceAtTimeOfAnnotationComponent ],
   exports: [AnnotationsComponent, LajiUiModule]
 })
 export class AnnotationsModule { }

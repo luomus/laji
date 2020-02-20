@@ -19,12 +19,14 @@ export class AnnotationListComponent implements OnInit, OnDestroy {
   types = Annotation.TypeEnum;
   annotationClass = Annotation.AnnotationClassEnum;
   changingLocale = false;
+  lastFalse: number;
   open: boolean[] = undefined;
 
   constructor() { }
 
   ngOnInit() {
     console.log(this.annotations);
+    this.lastFalse = this.findLastIndex(this.annotations, 'valid', false);
     this.open = [...Array(this.annotations.length)].fill(false);
   }
 
@@ -39,6 +41,13 @@ export class AnnotationListComponent implements OnInit, OnDestroy {
 
   onTaxonLinkClick(event: MouseEvent) {
     event.stopPropagation();
+  }
+
+  findLastIndex(annotation, field, value) {
+    const index = annotation.slice().reverse().findIndex(x => x[field] === value);
+    const count = annotation.length - 1;
+    const finalIndex = index >= 0 ? count - index : index;
+    return finalIndex;
   }
 
 

@@ -66,6 +66,7 @@
   "annotation.needsCheck": "Vara oense",
   "annotation.annotationBeforeObservation": "Observation före kommentarer",
   "annotation.titleListAnnotations": "Kommentar",
+  "annotation.occurrenceAtTime": "Händelse vid tidpunkten för annotering",
   "asIs": "Värde som det är",
   "checkAll": "Markera alla",
   "checked": "vald",
