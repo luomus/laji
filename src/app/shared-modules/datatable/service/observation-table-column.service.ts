@@ -15,7 +15,7 @@ export interface IColumns {
   'unit.linkings.species.scientificName': ObservationTableColumn;
   'unit.linkings.species.taxonomicOrder': ObservationTableColumn;
   'unit.reportedTaxonConfidence': ObservationTableColumn;
-  'unit.quality.taxon.reliability': ObservationTableColumn;
+  'unit.interpretations.recordQuality': ObservationTableColumn;
   'gathering.team': ObservationTableColumn;
   'gathering.interpretations.countryDisplayname': ObservationTableColumn;
   'gathering.interpretations.biogeographicalProvinceDisplayname': ObservationTableColumn;
@@ -160,8 +160,8 @@ export const COLUMNS: IColumns = {
     width: 70
   },
   'unit.reportedTaxonConfidence': {name: 'unit.reportedTaxonConfidence', cellTemplate: 'warehouseLabel'},
-  'unit.quality.taxon.reliability': {
-    name: 'unit.quality.taxon.reliability',
+  'unit.interpretations.recordQuality': {
+    name: 'unit.interpretations.recordQuality',
     cellTemplate: 'warehouseLabel',
     label: 'result.unit.quality.taxon'
   },
@@ -365,7 +365,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.linkings.species.scientificName'],
     COLUMNS['unit.linkings.species.taxonomicOrder'],
     COLUMNS['unit.reportedTaxonConfidence'],
-    COLUMNS['unit.quality.taxon.reliability'],
+    COLUMNS['unit.interpretations.recordQuality'],
     COLUMNS['gathering.team'],
     COLUMNS['gathering.interpretations.countryDisplayname'],
     COLUMNS['gathering.interpretations.biogeographicalProvinceDisplayname'],
@@ -465,7 +465,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       {
         header: 'reliability', fields: [
           'unit.reportedTaxonConfidence',
-          'unit.quality.taxon.reliability',
+          'unit.interpretations.recordQuality',
           'document.quality.reliabilityOfCollection',
           'unit.recordBasis'
         ]
