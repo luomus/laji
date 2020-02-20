@@ -30,9 +30,6 @@
 <ng-container *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
   <laji-row [title]="'result.unit.quality.taxon'|translate">
     {{ unit.quality.taxon.reliability | label: 'warehouse' }}
-    <span *ngIf="unit.quality.taxon.source">
-          ({{ unit.quality.taxon.source | label: 'warehouse' }})
-        </span>
   </laji-row>
   <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="'result.unit.taxonVerbatim' | translate">
     <laji-taxon-name [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
@@ -57,9 +54,6 @@
   <ng-container *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
     <laji-row [title]="'result.unit.quality.taxon'|translate">
       {{ unit.quality.taxon.reliability | label: 'warehouse' }}
-      <span *ngIf="unit.quality.taxon.source">
-            ({{ unit.quality.taxon.source | label: 'warehouse' }})
-          </span>
     </laji-row>
   </ng-container>
   <laji-issues [data]="unit"></laji-issues>
@@ -76,5 +70,4 @@
   <laji-row [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
   <laji-row [title]="'MY.sex' | label" [value]="unit.sex | label: 'warehouse'"></laji-row>
   <laji-row [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>
-  
-  
+

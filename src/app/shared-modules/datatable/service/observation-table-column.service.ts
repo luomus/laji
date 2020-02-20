@@ -16,7 +16,6 @@ export interface IColumns {
   'unit.linkings.species.taxonomicOrder': ObservationTableColumn;
   'unit.reportedTaxonConfidence': ObservationTableColumn;
   'unit.quality.taxon.reliability': ObservationTableColumn;
-  'unit.quality.taxon.source': ObservationTableColumn;
   'gathering.team': ObservationTableColumn;
   'gathering.interpretations.countryDisplayname': ObservationTableColumn;
   'gathering.interpretations.biogeographicalProvinceDisplayname': ObservationTableColumn;
@@ -165,11 +164,6 @@ export const COLUMNS: IColumns = {
     name: 'unit.quality.taxon.reliability',
     cellTemplate: 'warehouseLabel',
     label: 'result.unit.quality.taxon'
-  },
-  'unit.quality.taxon.source': {
-    name: 'unit.quality.taxon.source',
-    cellTemplate: 'warehouseLabel',
-    label: 'result.unit.quality.source'
   },
   'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon'},
   'gathering.interpretations.countryDisplayname': {
@@ -372,7 +366,6 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.linkings.species.taxonomicOrder'],
     COLUMNS['unit.reportedTaxonConfidence'],
     COLUMNS['unit.quality.taxon.reliability'],
-    COLUMNS['unit.quality.taxon.source'],
     COLUMNS['gathering.team'],
     COLUMNS['gathering.interpretations.countryDisplayname'],
     COLUMNS['gathering.interpretations.biogeographicalProvinceDisplayname'],
@@ -473,7 +466,6 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
         header: 'reliability', fields: [
           'unit.reportedTaxonConfidence',
           'unit.quality.taxon.reliability',
-          'unit.quality.taxon.source',
           'document.quality.reliabilityOfCollection',
           'unit.recordBasis'
         ]
