@@ -1,9 +1,9 @@
 <div class="annotations">
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
-    <div class="deleted" *ngIf="annotation.deleted">
-      <span>{{ 'annotation.deleted' | translate }}</span>
-    </div>
     <div class="annotation">
+      <div class="deleted" *ngIf="annotation.deleted">
+        <span>{{ 'annotation.deleted' | translate }}</span>
+      </div>
       <div class="row">
         <div class="col-xs-12 row-title">
           <span class="person pull-right">
