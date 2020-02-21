@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class OccurrenceAtTimeOfAnnotationComponent implements OnInit {
 
   @Input() occurrence: any;
+  @Input() hideTooltips = false;
 
   constructor() { }
 

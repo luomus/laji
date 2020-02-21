@@ -35,7 +35,7 @@ export interface IColumns {
   'document.secureLevel': ObservationTableColumn;
   'document.secureReasons': ObservationTableColumn;
   'document.sourceId': ObservationTableColumn;
-  'document.quality.reliabilityOfCollection': ObservationTableColumn;
+  'document.linkings.collectionQuality': ObservationTableColumn;
   'unit.det': ObservationTableColumn;
   'gathering.conversions.dayOfYearBegin': ObservationTableColumn;
   'gathering.conversions.dayOfYearEnd': ObservationTableColumn;
@@ -216,7 +216,7 @@ export const COLUMNS: IColumns = {
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
-  'document.quality.reliabilityOfCollection': {name: 'document.quality.reliabilityOfCollection'},
+  'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality'},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
   'gathering.conversions.dayOfYearEnd': {name: 'gathering.conversions.dayOfYearEnd'},
@@ -386,7 +386,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.secureLevel'],
     COLUMNS['document.secureReasons'],
     COLUMNS['document.sourceId'],
-    COLUMNS['document.quality.reliabilityOfCollection'],
+    COLUMNS['document.linkings.collectionQuality'],
     COLUMNS['unit.det'],
     COLUMNS['gathering.conversions.dayOfYearBegin'],
     COLUMNS['gathering.conversions.dayOfYearEnd'],
@@ -466,7 +466,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
         header: 'reliability', fields: [
           'unit.reportedTaxonConfidence',
           'unit.interpretations.recordQuality',
-          'document.quality.reliabilityOfCollection',
+          'document.linkings.collectionQuality',
           'unit.recordBasis'
         ]
       },

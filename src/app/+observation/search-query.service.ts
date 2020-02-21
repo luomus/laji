@@ -57,7 +57,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'namedPlaceId',
     'birdAssociationAreaId',
     'yearMonth',
-    'reliabilityOfCollection',
+    'collectionQuality',
     'teamMember',
     'wild',
     'teamMemberId',
