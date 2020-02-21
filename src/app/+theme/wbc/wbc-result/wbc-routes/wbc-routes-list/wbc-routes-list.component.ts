@@ -38,11 +38,6 @@ export class WbcRoutesListComponent implements OnInit {
       label: 'wbc.stats.route.begin'
     },
     {
-      name: 'gathering.team',
-      label: 'wbc.stats.route.team',
-      width: 300
-    },
-    {
       name: 'oldestRecord',
       label: 'wbc.stats.routes.oldestRecord'
     },
