@@ -20,7 +20,6 @@ export class WbcCensusesComponent implements OnInit  {
     'document.namedPlace.municipalityDisplayName',
     'document.namedPlace.birdAssociationAreaDisplayName',
     'gathering.eventDate.begin',
-    'gathering.team',
     'count',
     'individualCountSum'
   ];
