@@ -1,7 +1,6 @@
 <div class="annotations">
-  <laji-spinner [spinning]="!annotations"></laji-spinner>
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
-    <div class="annotation">
+    <div class="annotation" [ngClass]="{'deleted': annotation.deleted, '': !annotation.deleted}">
       <div class="row">
         <div class="col-xs-12 row-title">
           <span class="person pull-right">
@@ -9,9 +8,10 @@
               type="button"
               class="btn btn-danger btn-xs"
               (click)="remove.emit(annotation)"
-              *ngIf="(annotation.annotationByPerson | toQName) === personID">
+              *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted">
               {{ 'annotation.delete' | translate }}
             </button>
+            <span style="color: black;font-weight: bold;" *ngIf="annotation.deleted">{{ 'annotation.deleted' | translate }}</span>
           </span>
           <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>

@@ -67,6 +67,7 @@
   "annotation.annotationBeforeObservation": "Observation before annotations",
   "annotation.titleListAnnotations": "Annotations",
   "annotation.occurrenceAtTime": "Occurrence at time of annotation",
+  "annotation.deleted": "Deleted",
   "asIs": "Value as is",
   "checkAll": "Check all",
   "checked": "checked",
