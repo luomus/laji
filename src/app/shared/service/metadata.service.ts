@@ -19,7 +19,7 @@ export class MetadataService {
     return this.baseDataService.getBaseData().pipe(
       take(1),
       map(data => data.alts),
-      map(alts => alts.find(alt => alt.id === range)),
+      map(alts => (alts || []).find(alt => alt.id === range)),
       map(alt => alt && alt.options || [])
     );
   }

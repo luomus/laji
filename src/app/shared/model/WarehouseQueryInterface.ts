@@ -208,7 +208,7 @@ export interface WarehouseQueryInterface {
   typeOfOccurrenceIdNot?: Array<string>;
   pairCounts?: boolean;
   birdAssociationAreaId?: Array<string>;
-  reliabilityOfCollection?: Array<string>;
+  collectionQuality?: Array<string>;
   secureLevel?: Array<string>;
   includeSubCollections?: boolean;
   nativeOccurrence?: boolean;

@@ -542,20 +542,14 @@
     [info]="'observation.info.dataset' | translate"
     [mapToWarehouse]="false"
     name="collectionID"></laji-metadata-select>
-  <laji-select
-    [selected]="query.reliabilityOfCollection"
-    (selectedChange)="indirectQueryChange('reliabilityOfCollection', $event)"
+  <laji-metadata-select
+    name="collectionQuality"
+    [(ngModel)]="query.collectionQuality"
     [multiple]="true"
     [useFilter]="false"
-    [title]="'observation.form.reliabilityOfCollection' | translate"
-    [info]="'observation.info.reliabilityOfCollection' | translate"
-    [options]="[
-      {id: '1', value: '★'},
-      {id: '2', value: '★★'},
-      {id: '3', value: '★★★'},
-      {id: '4', value: '★★★★'},
-      {id: '5', value: '★★★★★'}
-    ]"></laji-select>
+    [placeholder]="'MY.collectionQuality' | label"
+    [info]="'observation.info.collectionQuality' | translate"
+    [alt]="'MY.collectionQualityEnum'"></laji-metadata-select>
   <laji-metadata-select
     [(ngModel)]="query.sourceId"
     [info]="'observation.info.system' | translate"
