@@ -669,17 +669,17 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
       {
-        path: 'form',
-        pathMatch: 'full',
-        component: FormComponent,
+        path: 'form', component: FormComponent,
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'form/:formID', component: FormComponent,
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard],
         data: { displayFeedback: false }
       },
       {
-        path: 'form/:id',
-        pathMatch: 'full',
-        component: FormComponent,
+        path: 'form/:formID/:id', component: FormComponent,
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard],
         data: { displayFeedback: false }
@@ -690,7 +690,7 @@ const routes: Routes = [
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-        canActivate: [OnlyLoggedIn],
+        data: { noScrollToTop: true }
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {
