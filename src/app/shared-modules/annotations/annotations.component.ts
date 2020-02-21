@@ -35,6 +35,7 @@ export class AnnotationsComponent implements OnInit {
   type: Annotation.TypeEnum;
   annotation: Annotation = {};
   annotationRole = Annotation.AnnotationRoleEnum;
+  loading = false;
 
   constructor(
     private annotationService: AnnotationService,
@@ -64,15 +65,15 @@ export class AnnotationsComponent implements OnInit {
       type: Annotation.TypeEnum.TypeOpinion,
       occurrenceAtTimeOfAnnotation: {
         countryVerbatim: this.gathering && this.gathering.country ? this.gathering.country : '',
-        dateBegin: this.gathering && this.gathering.eventDate.begin ? this.gathering.eventDate.begin : '',
-        dateEnd: this.gathering && this.gathering.eventDate.end ? this.gathering.eventDate.end : '',
+        dateBegin: this.gathering && this.gathering.eventDate && this.gathering.eventDate.begin ? this.gathering.eventDate.begin : '',
+        dateEnd: this.gathering && this.gathering.eventDate && this.gathering.eventDate.end ? this.gathering.eventDate.end : '',
         locality: this.gathering && this.gathering.locality ? this.gathering.locality : '',
         municipalityVerbatim: this.gathering && this.gathering.municipalityVerbatim ? this.gathering.municipalityVerbatim : '',
         taxonId : this.unit && this.unit.linkings && this.unit.linkings.originalTaxon ? this.unit.linkings.originalTaxon.id : '' ,
         taxonVerbatim: this.unit && this.unit.taxonVerbatim ? this.unit.taxonVerbatim : '',
-        wgs84centerPointLat: this.gathering && this.gathering.conversions.wgs84CenterPoint ?
+        wgs84centerPointLat: this.gathering && this.gathering.conversions && this.gathering.conversions.wgs84CenterPoint ?
         this.gathering.conversions.wgs84CenterPoint.lat : '',
-        wgs84centerPointLon: this.gathering && this.gathering.conversions.wgs84CenterPoint ?
+        wgs84centerPointLon: this.gathering && this.gathering.conversions && this.gathering.conversions.wgs84CenterPoint ?
         this.gathering.conversions.wgs84CenterPoint.lon : ''
       }
     };
@@ -98,17 +99,22 @@ export class AnnotationsComponent implements OnInit {
   }
 
   onDelete(annotation: Annotation) {
+    this.loading = true;
     this.annotationService.delete(annotation)
       .subscribe(
         () => {
-          this.annotations = this.annotations.filter(value => value.id !== annotation.id);
+          // this.annotations = this.annotations.filter(value => value.id !== annotation.id);
           this.saveDone();
         },
-        (e) => console.log(e)
+        (e) => {
+          this.loading = false;
+          console.log(e);
+        }
       );
   }
 
   private saveDone(annotation?: Annotation) {
+    this.loading = false;
     this.annotationChange.emit(annotation);
     this.closeAddForm();
     this.initEmptyAnnotation();

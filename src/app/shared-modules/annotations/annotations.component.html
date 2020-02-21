@@ -1,5 +1,7 @@
 <div class="annotation"  *ngIf="targetID">
+  <laji-spinner [spinning]="loading"></laji-spinner>
   <laji-annotation-list
+    *ngIf="!loading"
     [personID]="personID"
     [annotations]="annotations"
     (remove)="onDelete($event)">
