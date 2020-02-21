@@ -1,6 +1,9 @@
 <div class="annotations">
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
-    <div class="annotation" [ngClass]="{'deleted': annotation.deleted, '': !annotation.deleted}">
+    <div class="deleted" *ngIf="annotation.deleted">
+      <span>{{ 'annotation.deleted' | translate }}</span>
+    </div>
+    <div class="annotation">
       <div class="row">
         <div class="col-xs-12 row-title">
           <span class="person pull-right">
@@ -11,7 +14,6 @@
               *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted">
               {{ 'annotation.delete' | translate }}
             </button>
-            <span style="color: black;font-weight: bold;" *ngIf="annotation.deleted">{{ 'annotation.deleted' | translate }}</span>
           </span>
           <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>

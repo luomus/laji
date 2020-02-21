@@ -25,6 +25,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.annotations);
     this.lastFalse = this.findLastIndex(this.annotations, 'valid', false);
     this.open = [...Array(this.annotations.length)].fill(false);
   }

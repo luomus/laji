@@ -102,8 +102,10 @@ export class AnnotationsComponent implements OnInit {
     this.loading = true;
     this.annotationService.delete(annotation)
       .subscribe(
-        () => {
+        (data: Annotation) => {
           // this.annotations = this.annotations.filter(value => value.id !== annotation.id);
+          const foundIndex = this.annotations.findIndex(x => IdService.getId(x.id) === IdService.getId(data.id));
+          this.annotations[foundIndex] = data;
           this.saveDone();
         },
         (e) => {
