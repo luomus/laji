@@ -79,6 +79,8 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   ogWidth = 0;
   widthBeforeDrag = 0;
 
+  preCheckScreenWidth = true;
+
   @ViewChild('sidebarRef', {static: false}) sidebarRef: ElementRef;
   @ViewChild('contentRef', {static: false}) contentRef: ElementRef;
   @ViewChild('navWrapper', {static: false}) navWrapperRef: ElementRef;
@@ -98,6 +100,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.checkScreenWidth();
+    this.preCheckScreenWidth = false;
     fromEvent(window, 'resize').pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),

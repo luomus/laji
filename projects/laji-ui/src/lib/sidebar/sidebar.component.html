@@ -20,7 +20,7 @@
   <div class="sidebar"
        [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile, 'open': open}"
        [@sidebarOpen_wrapper]="{
-         value: dragging ? 'disabled' : (open ? 'open' : 'closed'),
+         value: (dragging || preCheckScreenWidth) ? 'disabled' : (open ? 'open' : 'closed'),
          params: {
            sidebarMinWidth: sidebarMinWidth
          }
