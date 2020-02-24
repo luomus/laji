@@ -36,7 +36,7 @@ export class WbcRoutesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadedTabs.load('list');
+    this.loadedTabs.load(this.activeIndex);
     this.resultService.getRouteList()
       .subscribe(routes => {
         this.data = routes;

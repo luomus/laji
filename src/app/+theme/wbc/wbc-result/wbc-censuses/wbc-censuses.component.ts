@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SEASON, WbcResultService } from '../wbc-result.service';
 import { Subscription } from 'rxjs';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
+import { LoadedElementsStore } from '../../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
   selector: 'laji-wbc-censuses',
@@ -9,7 +10,8 @@ import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer
   styleUrls: ['./wbc-censuses.component.css']
 })
 export class WbcCensusesComponent implements OnInit  {
-  active: 'list'|'map' = 'list';
+  activeIndex = 0;
+  loadedTabs = new LoadedElementsStore(['list', 'map'])
 
   activeYear: number;
   activeSeason: SEASON;
@@ -40,6 +42,7 @@ export class WbcCensusesComponent implements OnInit  {
   ) { }
 
   ngOnInit() {
+    this.loadedTabs.load(this.activeIndex);
     this.onFilterChange();
   }
 
@@ -72,7 +75,8 @@ export class WbcCensusesComponent implements OnInit  {
     });
   }
 
-  setActive(newActive: 'list'|'map') {
-    this.active = newActive;
+  setActive(newActive: number) {
+    this.activeIndex = newActive;
+    this.loadedTabs.load(newActive);
   }
 }
