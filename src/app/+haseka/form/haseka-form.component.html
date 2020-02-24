@@ -15,6 +15,7 @@
         <laji-haseka-latest [forms]="(form$ | async).id"
                             [showFormNames]="false"
                             [complainLocality]="false"
+                            (showViewer)="showDocumentViewer($event)"
         ></laji-haseka-latest>
         <br />
         <ng-container *ngIf="form$ | async as form">
