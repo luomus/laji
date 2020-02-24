@@ -292,8 +292,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onTaxonSelect(event) {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
-      this.query['target'] = this.query['target'] ?
-        [...this.query['target'], this.formQuery.taxon] : [this.formQuery.taxon];
+      const target = event.item && event.item.key ? event.item.key : this.formQuery.taxon;
+      this.query['target'] = this.query['target'] ? [...this.query['target'], target] : [target];
       this.formQuery.taxon = '';
       this.onQueryChange();
     }

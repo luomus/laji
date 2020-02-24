@@ -279,6 +279,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
+  isFixedHeight() {
+    return this.height.substr(this.height.length - 2, 2).includes('px');
+  }
+
   private updateFilteredRows() {
     this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
     this._count = this._rows.length;

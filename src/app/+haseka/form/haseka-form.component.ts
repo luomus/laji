@@ -11,6 +11,8 @@ import { map, switchMap } from 'rxjs/operators';
 import { Form } from '../../shared/model/Form';
 import { take } from 'rxjs/internal/operators';
 import { BrowserService } from '../../shared/service/browser.service';
+import { DocumentViewerFacade } from 'app/shared-modules/document-viewer/document-viewer.facade';
+import { Document } from 'app/shared/model/Document';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -37,7 +39,8 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
               private cd: ChangeDetectorRef,
               private formService: FormService,
               private browserService: BrowserService,
-              public translate: TranslateService
+              public translate: TranslateService,
+              private documentViewerFacade: DocumentViewerFacade
   ) {
   }
 
@@ -127,5 +130,9 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   enterForm() {
     this.mobileWelcomePageClosed = true;
     this._mobileWelcomePageShown.next(false);
+  }
+
+  showDocumentViewer(document: Document) {
+    this.documentViewerFacade.showDocument({document, own: true});
   }
 }
