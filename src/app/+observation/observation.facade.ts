@@ -190,6 +190,7 @@ export class ObservationFacade {
   private countUnits(query: WarehouseQueryInterface): Observable<number> {
     return this.observationDataService.getData(query).pipe(
       map(data => data.units.total),
+      tap(countUnit => this.updateState({..._state, loadingUnits: false, countUnit})),
       catchError(() => this.count(this.warehouseApi.warehouseQueryCountGet(query), 'loadingUnits', 'countUnit'))
     );
   }
@@ -197,6 +198,7 @@ export class ObservationFacade {
   private countTaxa(query: WarehouseQueryInterface): Observable<number> {
     return this.observationDataService.getData(query).pipe(
       map(data => data.species.total),
+      tap(countTaxa => this.updateState({..._state, loadingTaxa: false, countTaxa})),
       catchError(() => this.count(
         this.warehouseApi.warehouseQueryAggregateGet(
           {...query, includeNonValidTaxa: false, taxonRankId: 'MX.species'},
