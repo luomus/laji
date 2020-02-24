@@ -18,7 +18,6 @@ import { AreaService } from '../../../shared/service/area.service';
 export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() formID: string;
-  @Input() namedPlace: any;
   @Input() isAdmin = false;
   @Input() printType: string;
   @Input() formData: any;
@@ -27,6 +26,17 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() description: string;
   @Input() displayTitle = true;
   @Input() edit: boolean;
+
+  namedPlaceHeader: Observable<string>[];
+  _namedPlace: any;
+  @Input('namedPlace')
+  get namedPlace(): any {
+    return this._namedPlace;
+  }
+  set namedPlace(np: any) {
+    this._namedPlace = np;
+    this.namedPlaceHeader = this.getNamedPlaceHeader(this._namedPlace);
+  }
 
   form: any;
   useLocalDocumentViewer = false;
@@ -88,18 +98,18 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     return moment(date).format('DD.MM.YYYY');
   }
 
-  getNamedPlaceTitle() {
+  getNamedPlaceHeader(namedPlace) {
     const fields: [string, ((value: string) => Observable<string>)?][] = [
       ['alternativeIDs'], ['name'], ['municipality', val => this.areaService.getName(val, this.translate.currentLang)]
     ];
     return fields.filter(f => {
-      const val = this.namedPlace[f[0]];
+      const val = namedPlace[f[0]];
       const hasValue = v => v || v === '0' || v === 0;
       if ((hasValue(val) && !Array.isArray(val)) || (Array.isArray(val) && val.filter(hasValue).length > 0)) {
         return true;
       }
     }).map(f => {
-      const val = this.namedPlace[f[0]];
+      const val = namedPlace[f[0]];
       if ((!f[1])) {
         return of(val);
       } else {
