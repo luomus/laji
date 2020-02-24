@@ -11,7 +11,7 @@ import { LoadedElementsStore } from '../../../../../../projects/laji-ui/src/lib/
 })
 export class WbcCensusesComponent implements OnInit  {
   activeIndex = 0;
-  loadedTabs = new LoadedElementsStore(['list', 'map'])
+  loadedTabs = new LoadedElementsStore(['list', 'map']);
 
   activeYear: number;
   activeSeason: SEASON;
