@@ -67,6 +67,7 @@
   "annotation.annotationBeforeObservation": "Observation före kommentarer",
   "annotation.titleListAnnotations": "Kommentar",
   "annotation.occurrenceAtTime": "Händelse vid tidpunkten för annotering",
+  "annotation.deleted": "Raderade",
   "asIs": "Värde som det är",
   "checkAll": "Markera alla",
   "checked": "vald",

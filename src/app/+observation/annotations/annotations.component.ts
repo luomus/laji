@@ -114,7 +114,6 @@ export class AnnotationsComponent implements OnInit, OnChanges {
       this.count = this.result.total;
       this.size = this.result.pageSize;
       this.cd.markForCheck();
-      console.log(this.result);
       this.loading = false;
     });
 

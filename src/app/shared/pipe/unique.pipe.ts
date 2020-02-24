@@ -24,13 +24,17 @@ export class UniquePipe implements PipeTransform {
     for (let i = 0; i < args.length; i++) {
       if (args[i].addedTags) {
         for ( let j = 0; j < args[i].addedTags.length; j++) {
-          addedTags.push(IdService.getId(args[i].addedTags[j]));
+          if (!args[i].deleted) {
+            addedTags.push(IdService.getId(args[i].addedTags[j]));
+          }
         }
       }
 
       if (args[i].removedTags) {
         for ( let j = 0; j < args[i].removedTags.length; j++) {
+          if (!args[i].deleted) {
           removedTags.push(IdService.getId(args[i].removedTags[j]));
+          }
         }
       }
     }

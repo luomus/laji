@@ -1,13 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnDestroy, OnChanges,
+ChangeDetectionStrategy} from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-annotation-list',
   templateUrl: './annotation-list.component.html',
-  styleUrls: ['./annotation-list.component.css']
+  styleUrls: ['./annotation-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AnnotationListComponent implements OnInit, OnDestroy {
+export class AnnotationListComponent implements OnDestroy, OnChanges {
 
   @Input() annotations: Annotation[];
   @Input() personID: string;
@@ -24,8 +26,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.annotations);
+  ngOnChanges() {
     this.lastFalse = this.findLastIndex(this.annotations, 'valid', false);
     this.open = [...Array(this.annotations.length)].fill(false);
   }

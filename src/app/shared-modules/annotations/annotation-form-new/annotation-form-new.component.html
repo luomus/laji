@@ -126,7 +126,7 @@
         <textarea #comment
                   name="notes"
                   class="form-control feedback-text input-sm"
-                  [required]="(!expert || personRoleAnnotation!==annotationRole.expert) || ((annotation.addedTags.length > 0 && annotation.identification.taxon == '') || annotation.identification.taxon == '')"
+                  [required]="(!expert || personRoleAnnotation!==annotationRole.expert) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
                   [(ngModel)]="annotation.notes"></textarea>
       </div>
     </div>
