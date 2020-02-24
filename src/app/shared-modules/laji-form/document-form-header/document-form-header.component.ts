@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { Form } from '../../../shared/model/Form';
 import { UserService } from '../../../shared/service/user.service';
 import { ILajiFormState } from '@laji-form/laji-form-document.facade';
 import * as moment from 'moment';
+import { AreaService } from '../../../shared/service/area.service';
 
 @Component({
   selector: 'laji-document-form-header',
@@ -40,7 +41,8 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     private formService: FormService,
     private userService: UserService,
     public translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private areaService: AreaService
   ) { }
 
   ngOnInit() {
@@ -86,4 +88,23 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     return moment(date).format('DD.MM.YYYY');
   }
 
+  getNamedPlaceTitle() {
+    const fields: [string, ((value: string) => Observable<string>)?][] = [
+      ['alternativeIDs'], ['name'], ['municipality', val => this.areaService.getName(val, this.translate.currentLang)]
+    ];
+    return fields.filter(f => {
+      const val = this.namedPlace[f[0]];
+      const hasValue = v => v || v === '0' || v === 0;
+      if ((hasValue(val) && !Array.isArray(val)) || (Array.isArray(val) && val.filter(hasValue).length > 0)) {
+        return true;
+      }
+    }).map(f => {
+      const val = this.namedPlace[f[0]];
+      if ((!f[1])) {
+        return of(val);
+      } else {
+        return f[1](val);
+      }
+    });
+  }
 }
