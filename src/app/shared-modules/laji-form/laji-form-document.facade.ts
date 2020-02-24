@@ -87,13 +87,15 @@ export class LajiFormDocumentFacade implements OnDestroy {
   loading$       = this.state$.pipe(map((state) => state.loading), distinctUntilChanged());
   saving$        = this.state$.pipe(map((state) => state.saving), distinctUntilChanged());
   error$         = this.state$.pipe(map((state) => state.error), distinctUntilChanged());
+  namedPlace$    = this.state$.pipe(map((state) => state.namedPlace), distinctUntilChanged());
 
   vm$: Observable<ILajiFormState> = hotObjectObserver<ILajiFormState>({
     form: this.form$,
     hasChanges: this.hasChanges$,
     saving: this.saving$,
     error: this.error$,
-    loading: this.loading$
+    loading: this.loading$,
+    namedPlace: this.namedPlace$
   });
 
   private readonly dataSub: Subscription;
@@ -169,6 +171,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
       )),
       mergeMap(form => this.fetchUiSchemaContext(form, documentID).pipe(
         map(uiSchemaContext => ({...form, uiSchemaContext}))
+      )),
+      mergeMap(form => this.fetchNamedPlace(form).pipe(
+        map(() => form)
       )),
       catchError((err) => {
         this.updateState({
@@ -395,5 +400,18 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   private updateState(state: ILajiFormState) {
     this.store.next(_state = state);
+  }
+
+  private fetchNamedPlace(form: FormWithData): Observable<void> {
+    if (form.formData && form.formData.namedPlaceID && (!_state.namedPlace || _state.namedPlace.id !== form.formData.namedPlaceID)) {
+      return this.namedPlacesService.getNamedPlace(form.formData.namedPlaceID, this.userService.getToken()).pipe(
+        catchError(() => of(null)),
+        tap(namedPlace => this.updateState({..._state, namedPlace})),
+        map(() => void 0)
+      );
+    } else if (!FormService.hasFeature(form, Form.Feature.NamedPlace) && _state.namedPlace) {
+      this.updateState({..._state, namedPlace: null});
+    }
+    return of(void 0);
   }
 }
