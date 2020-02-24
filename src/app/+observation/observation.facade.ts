@@ -206,7 +206,8 @@ export class ObservationFacade {
         ),
         'loadingTaxa',
         'countTaxa'
-      ))
+      )),
+      tap(() => this.browserService.triggerResizeEvent())
     );
   }
 
