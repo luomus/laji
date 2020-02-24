@@ -27,27 +27,29 @@
       [formData]="vm.form.formData"
       [displayObservationList]="!vm.form.formData?.id && vm.namedPlace?.namedPlace && vm.form.options?.displayOwnSubmissions"
   ></laji-document-form-header>
-  <div class="row" *ngIf="vm.namedPlace" style="margin-top: 10px">
-    <div class="col-sm-12">
-      <strong>{{ vm.namedPlace.name }}</strong>
+  <ng-container *ngIf="vm.error === errors.ok">
+    <div class="row" *ngIf="vm.namedPlace" style="margin-top: 10px">
+      <div class="col-sm-12">
+        <strong>{{ vm.namedPlace.name }}</strong>
+      </div>
     </div>
-  </div>
-  <div class="clear"></div>
-  <div class="laji-form" *ngIf="vm.error === errors.ok">
-    <laji-form
-            [formData]="vm.form"
-            [settingsKey]="formId"
-            [showShortcutButton]="showShortcutButton"
-            (dataChange)="onChange($event)"
-            (dataSubmit)="onSubmit($event)"></laji-form>
-    <laji-document-form-footer
-            [form]="vm.form"
-            [status]="status"
-            [readonly]="vm.form.readonly"
-            [edit]="documentId"
-            (lock)="lock($event)"
-            (submitPublic)="submitPublic()"
-            (submitPrivate)="submitPrivate()"
-            (cancel)="onCancel()"></laji-document-form-footer>
-  </div>
+    <div class="clear"></div>
+    <div class="laji-form" *ngIf="vm.error === errors.ok">
+      <laji-form
+        [formData]="vm.form"
+        [settingsKey]="formId"
+        [showShortcutButton]="showShortcutButton"
+        (dataChange)="onChange($event)"
+        (dataSubmit)="onSubmit($event)"></laji-form>
+      <laji-document-form-footer
+        [form]="vm.form"
+        [status]="status"
+        [readonly]="vm.form.readonly"
+        [edit]="documentId"
+        (lock)="lock($event)"
+        (submitPublic)="submitPublic()"
+        (submitPrivate)="submitPrivate()"
+        (cancel)="onCancel()"></laji-document-form-footer>
+    </div>
+  </ng-container>
 </ng-container>

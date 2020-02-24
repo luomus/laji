@@ -1,4 +1,4 @@
-import { map, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
+import { map, mergeMap, shareReplay, switchMap, tap, toArray } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { NamedPlaceApi, NamedPlaceQuery } from '../../shared/api/NamedPlaceApi';
 import { NamedPlace } from '../../shared/model/NamedPlace';
@@ -14,6 +14,7 @@ export class NamedPlacesService {
 
   private cache;
   private cacheKey;
+  private idCache = {};
 
   private openBy: {[place: string]: 'label'|'boolean'} = {
     '$.municipality': 'label',
@@ -30,6 +31,7 @@ export class NamedPlacesService {
 
   invalidateCache() {
     this.cacheKey = '';
+    this.idCache = {};
   }
 
   getAllNamePlaces(query: NamedPlaceQuery, openKeyValues?: string[]): Observable<NamedPlace[]>  {
@@ -50,8 +52,14 @@ export class NamedPlacesService {
     if (!id) {
       return ObservableOf(null);
     }
-    return this.namedPlaceApi
-      .findById(id, userToken, {includeUnits});
+    const key = [id, userToken, includeUnits].join(':');
+    if (!this.idCache[key]) {
+      this.idCache[key] = this.namedPlaceApi
+        .findById(id, userToken, {includeUnits}).pipe(
+          shareReplay(1)
+        );
+    }
+    return this.idCache[key];
   }
 
   createNamedPlace(data: NamedPlace, userToken: string) {
