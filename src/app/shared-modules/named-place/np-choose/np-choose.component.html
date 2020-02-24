@@ -1,35 +1,32 @@
 <div *ngIf="visible" id="container">
-  <div id="navbar">
-    <ul class="nav nav-tabs nav-justified">
-      <li role="presentation" [ngClass]="{active: active === 'list'}">
-        <a (click)="setActive('list')">{{ documentForm.namedPlaceOptions?.listLabel || 'np.list' | translate }}</a>
-      </li>
-      <li role="presentation" [ngClass]="{active: active === 'map'}" *ngIf="showMap()">
-        <a (click)="setActive('map')">{{ 'np.map' | translate }}</a>
-      </li>
-    </ul>
-  </div>
+  <lu-tabs [selectedIndex]="activeIndex" (select)="setActive($event)">
+    <lu-tab [heading]="documentForm.namedPlaceOptions?.listLabel || 'np.list' | translate">
+      <ng-container *ngIf="loadedTabs.isLoaded('list')">
+        <div id="list-container">
+          <laji-np-list [height]="height"
+                        [namedPlaces]="_namedPlaces"
+                        [documentForm]="documentForm"
+                        [activeNP]="_activeNP"
+                        (activePlaceChange)="onActivePlaceChange($event)"
+          ></laji-np-list>
+        </div>
+      </ng-container>
+    </lu-tab>
+    <lu-tab [heading]="'np.map' | translate">
+      <ng-container *ngIf="loadedTabs.isLoaded('map')">
+        <laji-np-map [namedPlaces]="_namedPlaces"
+                    [height]="height"
+                    [activeNP]="_activeNP"
+                    [userID]="userID"
+                    [visible]="activeIndex === 1 && visible"
+                    [reservable]="documentForm.features.indexOf(FEATURE_RESERVE) !== -1"
+                    [placeForm]="placeForm"
+                    [documentForm]="documentForm"
+                    (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
+      </ng-container>
+    </lu-tab>
+  </lu-tabs>
 
-  <div *ngIf="active === 'list'" id="list-container">
-    <laji-np-list [height]="height"
-                  [namedPlaces]="_namedPlaces"
-                  [documentForm]="documentForm"
-                  [activeNP]="_activeNP"
-                  (activePlaceChange)="onActivePlaceChange($event)"
-                  ></laji-np-list>
-  </div>
-
-  <div [ngClass]="{hidden: active !== 'map'}" *ngIf="mapIsActivated">
-    <laji-np-map [namedPlaces]="_namedPlaces"
-                 [height]="height"
-                 [activeNP]="_activeNP"
-                 [userID]="userID"
-                 [visible]="active === 'map' && visible"
-                 [reservable]="documentForm.features.indexOf(FEATURE_RESERVE) !== -1"
-                 [placeForm]="placeForm"
-                 [documentForm]="documentForm"
-                 (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
-  </div>
 
   <button *ngIf="allowCreate"
           class="btn btn-md btn-default"
