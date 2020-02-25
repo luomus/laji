@@ -9,7 +9,7 @@ export class InfoCardQueryService {
       sourceId: ['KE.3', 'KE.167'],
       typeSpecimen: typeSpecimen,
       includeNonValidTaxa: false,
-      recordQuality: ['COMMUNITY_VERIFIED', 'EXPERT_VERIFIED', 'NEUTRAL'],
+      recordQuality: ['COMMUNITY_VERIFIED', 'EXPERT_VERIFIED'],
       cache: true
     };
   }
