@@ -504,6 +504,16 @@
     [mapToWarehouse]="true"
     [placeholder]="'reliability' | translate"
     [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>
+  <ng-container *ngIf="advancedMode || query.collectionQuality">
+    <laji-metadata-select
+      name="collectionQuality"
+      [(ngModel)]="query.collectionQuality"
+      [multiple]="true"
+      [useFilter]="false"
+      [placeholder]="'MY.collectionQuality' | label"
+      [info]="'observation.info.collectionQuality' | translate"
+      [alt]="'MY.collectionQualityEnum'"></laji-metadata-select>
+  </ng-container>
   <ng-container *ngIf="advancedMode || query.annotated">
     <laji-select
       [selected]="[query.annotated]"
@@ -542,14 +552,6 @@
     [info]="'observation.info.dataset' | translate"
     [mapToWarehouse]="false"
     name="collectionID"></laji-metadata-select>
-  <laji-metadata-select
-    name="collectionQuality"
-    [(ngModel)]="query.collectionQuality"
-    [multiple]="true"
-    [useFilter]="false"
-    [placeholder]="'MY.collectionQuality' | label"
-    [info]="'observation.info.collectionQuality' | translate"
-    [alt]="'MY.collectionQualityEnum'"></laji-metadata-select>
   <laji-metadata-select
     [(ngModel)]="query.sourceId"
     [info]="'observation.info.system' | translate"

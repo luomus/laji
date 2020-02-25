@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnDestroy, OnChanges,
 ChangeDetectionStrategy} from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Global } from '../../../../environments/global';
 
@@ -7,6 +8,17 @@ import { Global } from '../../../../environments/global';
   selector: 'laji-annotation-list',
   templateUrl: './annotation-list.component.html',
   styleUrls: ['./annotation-list.component.css'],
+  animations: [
+    trigger('newAnnotation', [
+      state('last',
+      style({backgroundColor: '#F1F1F1'})),
+      transition('* => last', [
+        animate('1.5s ease-out', style({ backgroundColor: '#fdfeb2c4' })),
+        animate('0.5s ease-out', style({ backgroundColor: '#F1F1F1' })),
+      ]),
+    ])
+  ],
+
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnnotationListComponent implements OnDestroy, OnChanges {
@@ -14,6 +26,7 @@ export class AnnotationListComponent implements OnDestroy, OnChanges {
   @Input() annotations: Annotation[];
   @Input() personID: string;
   @Input() showLinks = true;
+  @Input() lastAnnotationAddedId: string;
   @Output() remove = new EventEmitter<Annotation>();
 
   annotationTagsObservation = Global.annotationTags;
@@ -27,6 +40,8 @@ export class AnnotationListComponent implements OnDestroy, OnChanges {
   constructor() { }
 
   ngOnChanges() {
+    console.log(this.annotations);
+    console.log(this.lastAnnotationAddedId);
     this.lastFalse = this.findLastIndex(this.annotations, 'valid', false);
     this.open = [...Array(this.annotations.length)].fill(false);
   }

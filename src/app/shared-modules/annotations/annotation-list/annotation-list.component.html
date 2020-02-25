@@ -1,6 +1,6 @@
 <div class="annotations">
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
-    <div class="annotation">
+    <div class="annotation" [@newAnnotation]="annotation.id === lastAnnotationAddedId ? 'last' : '' ">
       <div class="deleted" *ngIf="annotation.deleted">
         <span>{{ 'annotation.deleted' | translate }}</span>
       </div>
@@ -12,7 +12,7 @@
               class="btn btn-danger btn-xs"
               (click)="remove.emit(annotation)"
               *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted">
-              {{ 'annotation.delete' | translate }}
+              <i class="glyphicon glyphicon-trash"></i>
             </button>
           </span>
           <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
