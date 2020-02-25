@@ -48,6 +48,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   @Input() visible;
   @Input() unit: any;
   @Output() success = new EventEmitter<Annotation>();
+  @Output() loading = new EventEmitter<boolean>();
   @Output() cancel = new EventEmitter<any>();
 
   @ViewChild('taxon', {static: false}) taxonElement: ElementRef;
@@ -287,6 +288,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   saveAnnotation() {
+    this.loading.emit(true);
+
     if (this.sending) {
       return;
     }
@@ -305,6 +308,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         annotation => {
           this.annotation = annotation;
           this.success.emit(annotation);
+          this.loading.emit(false);
           this.sending = false;
           this.formAnnotation.control.markAsPristine();
         },
@@ -312,6 +316,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
           this.error = true;
           this.loggerService.error('Unable to save annotation', error);
           this.sending = false;
+          this.loading.emit(false);
         }
       );
   }

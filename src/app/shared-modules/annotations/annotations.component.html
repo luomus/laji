@@ -4,6 +4,7 @@
     *ngIf="!loading"
     [personID]="personID"
     [annotations]="annotations"
+    [lastAnnotationAddedId]="lastAnnotationAddedId"
     (remove)="onDelete($event)">
   </laji-annotation-list>
 </div>
@@ -56,6 +57,7 @@
     [unit]="unit"
     [visible]="formVisible"
     (success)="onSuccess($event)"
+    (loading)="onLoading($event)"
     (cancel)="closeAddForm()"
   ></laji-annotation-form-new>
 </div>

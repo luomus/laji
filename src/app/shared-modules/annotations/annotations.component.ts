@@ -36,6 +36,7 @@ export class AnnotationsComponent implements OnInit {
   annotation: Annotation = {};
   annotationRole = Annotation.AnnotationRoleEnum;
   loading = false;
+  lastAnnotationAddedId: string;
 
   constructor(
     private annotationService: AnnotationService,
@@ -84,8 +85,13 @@ export class AnnotationsComponent implements OnInit {
   }
 
   onSuccess(annotation: Annotation) {
+    this.lastAnnotationAddedId = annotation.id;
     this.annotations = [annotation, ...this.annotations];
     this.saveDone(annotation);
+  }
+
+  onLoading(status: boolean) {
+    this.loading = status;
   }
 
   closeAddForm() {
