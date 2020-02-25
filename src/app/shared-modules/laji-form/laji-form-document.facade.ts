@@ -161,10 +161,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
       )),
       mergeMap(form => this.getAnnotations(documentID).pipe(
         map((annotations) => (annotations || []).reduce<Form.IAnnotationMap>((cumulative, current) => {
-          if (!cumulative[current.targetID]) {
-            cumulative[current.targetID] = [];
+          if ((current.byRole || []).includes('MMAN.formAdmin')) {
+            cumulative[current.targetID] = [current];
           }
-          cumulative[current.targetID].push(current);
           return cumulative;
         }, {})),
         map((annotations) => ({...form, annotations}))
