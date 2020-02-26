@@ -66,7 +66,9 @@ export class UnitAnnotationListComponent implements OnInit {
   initAnnotationStatus(annotation?: Annotation) {
     const annotations = this.unit.annotations || [];
     if (annotation) {
-      annotations.push(annotation);
+      if (!annotation.deleted) {
+        annotations.push(annotation);
+      }
       this.unit.annotations = annotations;
       this.annotationPending.emit(true);
     }

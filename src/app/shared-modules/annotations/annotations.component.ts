@@ -45,6 +45,7 @@ export class AnnotationsComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+
     this.initEmptyAnnotation();
     if (this.identifying) {
       this.adding = true;
@@ -112,7 +113,7 @@ export class AnnotationsComponent implements OnInit {
           // this.annotations = this.annotations.filter(value => value.id !== annotation.id);
           const foundIndex = this.annotations.findIndex(x => IdService.getId(x.id) === IdService.getId(data.id));
           this.annotations[foundIndex] = data;
-          this.saveDone();
+          this.saveDone(data);
         },
         (e) => {
           this.loading = false;

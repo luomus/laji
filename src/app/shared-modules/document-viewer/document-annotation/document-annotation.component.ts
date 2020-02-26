@@ -26,6 +26,7 @@ import { Global } from '../../../../environments/global';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Person } from '../../../shared/model/Person';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
+import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -84,6 +85,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
   private metaFetch: Subscription;
+  annotationResolving: boolean;
+  subscriptParent: Subscription;
 
 
   constructor(
@@ -91,7 +94,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,
-    private childComunication: DocumentViewerChildComunicationService
+    private childComunication: DocumentViewerChildComunicationService,
+    private taxonTagEffective: TaxonTagEffectiveService
   ) { }
 
   ngOnInit() {
@@ -110,6 +114,14 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.childEvent = info;
       this.cd.markForCheck();
     });
+
+    this.subscriptParent = this.taxonTagEffective.childEventListner().subscribe(event => {
+      this.annotationResolving = event;
+      if (this.annotationResolving) {
+        this.refresh();
+      }
+    });
+
   }
 
   ngAfterViewInit() {
@@ -135,6 +147,17 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.metaFetch.unsubscribe();
       this.childComunicationsubscription.unsubscribe();
     }
+    if (this.subscriptParent) {
+      this.subscriptParent.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
+    }
+  }
+
+  refresh() {
+    setTimeout(() => {
+      this.updateDocument();
+      this.cd.detectChanges();
+    }, 2000);
   }
 
   updateDocument() {
