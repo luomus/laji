@@ -216,7 +216,7 @@ export const COLUMNS: IColumns = {
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
-  'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality'},
+  'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel'},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
   'gathering.conversions.dayOfYearEnd': {name: 'gathering.conversions.dayOfYearEnd'},

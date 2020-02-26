@@ -93,7 +93,7 @@
   "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
   "closed.title": "Suljettu",
   "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",
-  "delete.noId": "Havaintoerän tunnistetta ei löytynyt. Lataa sivu uudelleen ja koita hetken kuluttua uudelleen.",
+  "delete.noId": "Havaintoerän tunnistetta ei löytynyt. Lataa sivu uudelleen ja kokeile hetken kuluttua uudelleen.",
   "delete.success": "Poisto onnistui.",
   "document.locked": "Tämä havaintoerä on lukittu, eikä sitä voi muokata.",
   "email": "Sähköpostiosoite",
