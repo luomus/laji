@@ -40,8 +40,6 @@ export class AnnotationListComponent implements OnDestroy, OnChanges {
   constructor() { }
 
   ngOnChanges() {
-    console.log(this.annotations);
-    console.log(this.lastAnnotationAddedId);
     this.lastFalse = this.findLastIndex(this.annotations.reverse(), 'valid', false);
     this.open = [...Array(this.annotations.length)].fill(false);
   }
