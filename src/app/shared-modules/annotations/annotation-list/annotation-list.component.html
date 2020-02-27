@@ -29,11 +29,11 @@
                <div *ngIf="annotationTagsObservation[addedTag | toQName]; else noCategory">
                   <div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].type }}" >
                     <!--<span class="annotation-star {{ annotationTagsObservation[addedTag | toQName].quality }}"></span>-->
-                    <span>{{ addedTag | toQName | label }}</span>
+                    <span>{{ addedTag | label: 'warehouse' }}</span>
                   </div>
                </div>
                <ng-template #noCategory>
-                <span>{{ addedTag | toQName | label }}</span>
+                <span>{{ addedTag | label: 'warehouse' }}</span>
                </ng-template>
              </div>
            </div>
@@ -41,7 +41,7 @@
               <ul class="separated-list">
                 <b>{{ 'annotation.removedTags' | translate }}: </b>
                 <li *ngFor="let removedTag of annotation.removedTags">
-                      {{ removedTag | toQName | label }}
+                      {{ removedTag | label: 'warehouse' }}
                 </li>
               </ul>
             </div>

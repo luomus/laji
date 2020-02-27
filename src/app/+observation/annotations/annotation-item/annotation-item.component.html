@@ -15,7 +15,7 @@
     </div>
     <div class="addedTags" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 0">
         <div class="tags" *ngFor="let tag of item.unit.interpretations.effectiveTags">
-            {{ tag | label }}
+            {{ tag | label: 'warehouse' }}
         </div>
     </div>
     <div class="quality">

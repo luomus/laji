@@ -40,10 +40,10 @@
     <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
       In this type of annotation, you need to add at lest 1 check tag or a taxon
     </div>
-  <div class="row removed-tags" *ngIf="expert && personRoleAnnotation === 'MMAN.expert' && (annotationRemovableTags$ | async | activeTags: annotations)?.length > 0">
+  <div class="row removed-tags" *ngIf="expert && personRoleAnnotation === 'MMAN.expert' && (unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0)">
       <div class="col-sm-12">
         <label>{{ 'annotation.removeTags' | translate }}</label>
-        <div *ngFor="let item of annotationRemovableTags$ | async | activeTags: annotations" class="list-checkbox">
+        <div *ngFor="let item of annotationRemovableTags$ | async " class="list-checkbox">
           <main class="lu">
               <lu-checkbox (input)="addToRemoveTags(item.id)" [checked]="annotation.removedTags.indexOf(item.id) !== -1">
                 <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</div>

@@ -1,4 +1,4 @@
-import {map,  mergeMap } from 'rxjs/operators';
+import {map,  mergeMap, filter } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit,
 Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
@@ -16,11 +16,13 @@ import { Global } from '../../../../environments/global';
 import { format } from 'd3-format';
 import { IdService } from '../../../shared/service/id.service';
 import { LajiTaxonSearch } from '../../../shared/model/LajiTaxonSearch';
+import { LabelPipe } from '../../../shared/pipe/label.pipe';
 
 @Component({
   selector: 'laji-annotation-form-new',
   templateUrl: './annotation-form-new.component.html',
   styleUrls: ['./annotation-form-new.component.scss'],
+  providers: [LabelPipe],
   animations: [
     trigger('fadeInOut', [
       transition('void => *', [
@@ -91,7 +93,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     private taxonApi: TaxonomyApi,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
-    private el: ElementRef
+    private el: ElementRef,
+    private labelPipe: LabelPipe,
   ) { }
 
   ngOnInit() {
@@ -264,7 +267,12 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       })
     );
 
-    this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang);
+    this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang).pipe(
+      map(
+        data => data.filter(
+          tag => this.labelPipe.transform(this.unit.interpretations.effectiveTags, 'warehouse').indexOf(tag['name']) !== -1 )
+        )
+      );
   }
 
 
@@ -412,6 +420,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       ) {
       return true;
     }
+  }
+
+  protected makeLabel(value) {
+    return this.labelPipe.transform(value, 'warehouse');
   }
 
 
