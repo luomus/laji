@@ -1,3 +1,5 @@
+@import 'vars';
+
 .laji-form-help-glyph {
   margin-left: 5px;
   border-radius: 9px;
@@ -9,7 +11,13 @@
   font-weight: normal;
 }
 
-@media only screen and (max-width : 1024px) {
+.label-info {
+  color: $primary-1;
+  background-color: $primary-5;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2);
+}
+
+@media only screen and (max-width : 768px) {
   .laji-form-help-glyph {
     width: 28px;
     height: 28px;
@@ -25,6 +33,11 @@
   .laji-form-help-glyph strong {
     font-size: 18px;
     line-height: 28px;
+  }
+
+  .label-info {
+    color: $primary-6;
+    background-color: $neutral-2;
   }
 }
 

@@ -6,7 +6,7 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'laji-info',
   templateUrl: './info.component.html',
-  styleUrls: ['./info.component.css'],
+  styleUrls: ['./info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoComponent {
