@@ -16,7 +16,7 @@
 <laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">
   {{ taxon.occurrenceInFinland | label }}
 </laji-taxon-info-row>
-<laji-taxon-info-row *ngIf="taxon.invasiveSpecies">
+<laji-taxon-info-row *ngIf="taxon.invasiveSpecies" [keyTextContentGhost]="false">
   <ng-template #label>
     <img src="/static/images/vieraslaji.png" class="img-responsive"/>
   </ng-template>

@@ -1,3 +1,5 @@
+@import 'vars';
+
 .row {
   margin: 0;
   border-top: 1px solid #ddd;
@@ -19,4 +21,13 @@
 :host ::ng-deep ul {
   padding-left: 20px;
   margin-left: 0;
+}
+
+.lu-ghost-textcontent {
+  position: relative;
+  width: 100px;
+  height: 1em;
+  margin: 5px;
+  background-color: $neutral-2;
+  border-radius: 3px;
 }
