@@ -118,6 +118,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.subscriptParent = this.taxonTagEffective.childEventListner().subscribe(event => {
       this.annotationResolving = event;
       if (this.annotationResolving) {
+        this.cd.markForCheck();
         this.refresh();
       }
     });
@@ -156,7 +157,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   refresh() {
     setTimeout(() => {
       this.updateDocument();
-      this.cd.detectChanges();
     }, 2000);
   }
 

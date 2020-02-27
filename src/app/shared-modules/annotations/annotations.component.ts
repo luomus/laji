@@ -45,7 +45,6 @@ export class AnnotationsComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-
     this.initEmptyAnnotation();
     if (this.identifying) {
       this.adding = true;
