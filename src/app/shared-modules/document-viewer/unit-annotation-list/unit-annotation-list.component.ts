@@ -74,7 +74,7 @@ export class UnitAnnotationListComponent implements OnInit {
         annotations.push(annotation);
       }
       this.unit.annotations = annotations;
-      this.annotationPending.emit(true);
+      // this.annotationPending.emit(true);
     }
     this.annotationClass$ = this.annotationService
       .getAnnotationClassInEffect(annotations).pipe(
