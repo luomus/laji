@@ -66,6 +66,7 @@ import { FilterValuePipe } from './pipe/filter-value.pipe';
 import { NotificationsComponent } from './navbar/notifications/notifications.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
+import { WarehousePipe } from './pipe/warehouse.pipe';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
     UniquePipe,
     TruncatePipe,
     AfterIfDirective,
-    FilterValuePipe
+    FilterValuePipe,
+    WarehousePipe
   ],
   imports: [
     FormsModule,
@@ -127,7 +129,7 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe
   ]
 })
 export class SharedModule {
