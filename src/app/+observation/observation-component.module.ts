@@ -36,6 +36,7 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { DownloadModule } from '../shared-modules/download/download.module';
 import { ChartsModuleBarVerticalGroup } from '../shared-modules/bar-chart/ng2-charts.module';
 import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
+import { DateFormComponent } from './form/date-form/date-form.component';
 
 @NgModule({
   imports: [
@@ -77,7 +78,8 @@ import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.co
     ExistsPipe,
     ToSafeQueryPipe,
     FormSampleComponent,
-    HorizontalChartComponent
+    HorizontalChartComponent,
+    DateFormComponent
   ],
   exports: [
     ObservationViewComponent

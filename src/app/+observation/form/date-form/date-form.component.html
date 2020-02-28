@@ -1,0 +1,103 @@
+<div>
+  <div>
+    <label>{{ 'observation.form.time' | translate }}</label>
+    <laji-info>{{ 'observation.info.time' | translate }}</laji-info>
+  </div>
+  <laji-datepicker
+    [(ngModel)]="formQuery.timeStart"
+    [viewFormat]="'DD.MM.YYYY'"
+    [otherFormats]="['D.M.YYYY', 'YYYY']"
+    [format]="dateFormat"
+    (select)="onFormQueryChange()"
+    (change)="onFormQueryChange()"
+    name="timeStart"></laji-datepicker>
+  <laji-datepicker
+    [(ngModel)]="formQuery.timeEnd"
+    [viewFormat]="'DD.MM.YYYY'"
+    [otherFormats]="['D.M.YYYY', 'YYYY']"
+    [toLastOfYear]="true"
+    [format]="dateFormat"
+    (select)="onFormQueryChange()"
+    (change)="onFormQueryChange()"
+    name="timeEnd"></laji-datepicker>
+  <div class="btn-group">
+    <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">{{ 'observations.form.1d' | translate }}</button>
+    <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">{{ 'observations.form.7d' | translate }}</button>
+    <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
+      {{ 'observation.form.thisYear' | translate }}
+    </button>
+  </div>
+</div>
+
+<div *ngIf="advancedMode || query.season">
+  <div>
+    <label>{{ 'observation.form.season' | translate }}</label>
+    <laji-info>{{ 'observation.info.season' | translate }}</laji-info>
+  </div>
+  <laji-season [season]="query.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
+</div>
+<ng-container *ngIf="advancedMode || visibleAdvanced['time']">
+  <div>
+    <div>
+      <label>{{ 'observation.form.loaded' | translate }}</label>
+      <laji-info>{{ 'observation.info.loaded' | translate }}</laji-info>
+    </div>
+    <laji-datepicker
+      [(ngModel)]="query.loadedSameOrAfter"
+      [viewFormat]="'DD.MM.YYYY'"
+      [otherFormats]="['D.M.YYYY', 'YYYY']"
+      [format]="dateFormat"
+      (select)="onQueryChange()"
+      (change)="onQueryChange()"
+      name="timeStart"></laji-datepicker>
+    <laji-datepicker
+      [(ngModel)]="query.loadedSameOrBefore"
+      [viewFormat]="'DD.MM.YYYY'"
+      [otherFormats]="['D.M.YYYY', 'YYYY']"
+      [toLastOfYear]="true"
+      [format]="dateFormat"
+      (select)="onQueryChange()"
+      (change)="onQueryChange()"
+      name="timeEnd"></laji-datepicker>
+    <div class="btn-group">
+      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
+      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.7d' | translate }}</button>
+      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'loadedSameOrAfter', 'loadedSameOrBefore')">
+        {{ 'observation.form.thisYear' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <label>{{ 'observation.form.firstLoaded' | translate }}</label>
+      <laji-info>{{ 'observation.info.firstLoaded' | translate }}</laji-info>
+    </div>
+    <laji-datepicker
+      [(ngModel)]="query.firstLoadedSameOrAfter"
+      [viewFormat]="'DD.MM.YYYY'"
+      [otherFormats]="['D.M.YYYY', 'YYYY']"
+      [format]="dateFormat"
+      (select)="onQueryChange()"
+      (change)="onQueryChange()"
+      name="timeStart"></laji-datepicker>
+
+    <laji-datepicker
+      [(ngModel)]="query.firstLoadedSameOrBefore"
+      [viewFormat]="'DD.MM.YYYY'"
+      [otherFormats]="['D.M.YYYY', 'YYYY']"
+      [toLastOfYear]="true"
+      [format]="dateFormat"
+      (select)="onQueryChange()"
+      (change)="onQueryChange()"
+      name="timeEnd"></laji-datepicker>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
+      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.7d' | translate }}</button>
+      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">
+        {{ 'observation.form.thisYear' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-container>

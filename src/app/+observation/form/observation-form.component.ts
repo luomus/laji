@@ -171,26 +171,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     return this._query;
   }
 
-  updateTime(dates, startTarget?: 'time');
-  updateTime(dates, startTarget: keyof WarehouseQueryInterface, endTarget: keyof WarehouseQueryInterface );
-  updateTime(dates, startTarget: 'time' | keyof WarehouseQueryInterface = 'time', endTarget?: keyof WarehouseQueryInterface ) {
-    if (dates === 365) {
-      const today = new Date();
-      const oneJan = new Date(today.getFullYear(), 0, 1);
-      dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
-    }
-    const now = moment();
-    if (startTarget === 'time') {
-      this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.formQuery.timeEnd = '';
-      this.onFormQueryChange();
-    } else {
-      this.query[startTarget] = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.query[endTarget] = undefined;
-      this.onQueryChange();
-    }
-  }
-
   changeTypeaheadLoading(e: boolean): void {
     this.typeaheadLoading = e;
   }
