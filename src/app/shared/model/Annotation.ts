@@ -84,7 +84,9 @@ export namespace Annotation {
   export enum AnnotationRoleEnum {
     expert = 'MMAN.expert',
     basic = 'MMAN.basic',
-    owner = 'MMAN.owner'
+    owner = 'MMAN.owner',
+    ictAdmin = 'MMAN.ictAdmin',
+    formAdmin = 'MMAN.formAdmin',
   }
 
   export enum AnnotationClassEnum {

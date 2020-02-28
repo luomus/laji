@@ -45,9 +45,18 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
   ): Observable<AnnotationTag[]> {
     return this.userService.user$.pipe(
       take(1),
-      map(user => own ? Annotation.AnnotationRoleEnum.owner : ((user && user.roleAnnotation) || Annotation.AnnotationRoleEnum.basic)),
+      map(user => {
+        if (own) {
+          return [Annotation.AnnotationRoleEnum.owner];
+        }
+        const roles = [((user && user.roleAnnotation) || Annotation.AnnotationRoleEnum.basic)];
+        if (UserService.isAdmin(user)) {
+          roles.push(Annotation.AnnotationRoleEnum.ictAdmin);
+        }
+        return roles;
+      }),
       switchMap(annotatorsRole => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
-        map(tags => tags.filter(tag => tag[type] && tag[type].includes(annotatorsRole)))
+        map(tags => tags.filter(tag => tag[type] && tag[type].some(r => annotatorsRole.includes(r))))
       ))
     );
   }
