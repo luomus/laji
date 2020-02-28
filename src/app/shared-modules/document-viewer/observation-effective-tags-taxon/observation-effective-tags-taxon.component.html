@@ -10,7 +10,7 @@
                 <!--<div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].quality }}" >
                     <span>{{ addedTag | toQName | label }}</span>
                 </div>-->
-                <div class="annotation-marker">{{ addedTag | label: 'warehouse' }}</div>
+                <div class="annotation-marker">{{ addedTag | warehouse | label }}</div>
             </div>
         </ng-template>
     </laji-row>
