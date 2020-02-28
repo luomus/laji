@@ -47,7 +47,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   @Input() annotation: Annotation;
   @Input() identifying: boolean;
   @Input() expert: boolean;
-  @Input() visible;
+  @Input() visible: boolean;
+  @Input() hidden: boolean;
   @Input() unit: any;
   @Output() success = new EventEmitter<Annotation>();
   @Output() loading = new EventEmitter<boolean>();
