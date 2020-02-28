@@ -14,8 +14,10 @@
         <ng-template #noAnnotation>{{ 'annotation.none' | translate }}</ng-template>
     </div>
     <div class="addedTags" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 0">
-        <div class="tags" *ngFor="let tag of item.unit.interpretations.effectiveTags">
-            {{ tag | label: 'warehouse' }}
+        <div class="tags" *ngFor="let tag of item.unit.interpretations.effectiveTags" [ngSwitch]="tag | warehouse ">
+            <div *ngSwitchCase="annotationTagsObservation[tag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[tag | warehouse ].type }}" >
+                <span>{{ tag | warehouse | label }}</span>
+            </div>
         </div>
     </div>
     <div class="quality">

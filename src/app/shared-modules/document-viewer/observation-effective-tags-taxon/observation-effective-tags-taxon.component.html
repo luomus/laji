@@ -6,11 +6,10 @@
           <span>-</span>
         </div>
         <ng-template #tags>
-            <div class="tag" *ngFor="let addedTag of unit.interpretations.effectiveTags" [ngSwitch]="addedTag | toQName">
-                <!--<div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].quality }}" >
-                    <span>{{ addedTag | toQName | label }}</span>
-                </div>-->
-                <div class="annotation-marker">{{ addedTag | warehouse | label }}</div>
+            <div class="tag" *ngFor="let addedTag of unit.interpretations.effectiveTags" [ngSwitch]="addedTag | warehouse ">
+                <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[addedTag | warehouse ].type }}" >
+                    <span>{{ addedTag | warehouse | label }}</span>
+                </div>
             </div>
         </ng-template>
     </laji-row>
