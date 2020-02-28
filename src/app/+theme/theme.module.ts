@@ -76,6 +76,8 @@ import { ThemeImportComponent } from './common/theme-import/theme-import.compone
 import { SpreadsheetModule } from '../shared-modules/spreadsheet/spreadsheet.module';
 import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-spreadsheet/theme-generate-spreadsheet.component';
 import { GenericInstructionsComponent } from './common/instructions/generic-instructions/generic-instructions.component';
+import { KerttuComponent } from './kerttu/kerttu.component';
+import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
 
 /* tslint:enable:max-line-length */
 
@@ -154,6 +156,8 @@ import { GenericInstructionsComponent } from './common/instructions/generic-inst
     ThemeImportComponent,
     ThemeGenerateSpreadsheetComponent,
     GenericInstructionsComponent,
+    KerttuComponent,
+    KerttuInstructionsComponent,
   ],
   providers: [
     ResultService,

@@ -34,6 +34,8 @@ import { DatasetsComponent } from './datasets/datasets.component';
 import { ThemeImportComponent } from './common/theme-import/theme-import.component';
 import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-spreadsheet/theme-generate-spreadsheet.component';
 import { DatasetsGuard } from './datasets/datasets.guard';
+import { KerttuComponent } from './kerttu/kerttu.component';
+import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -698,6 +700,17 @@ const routes: Routes = [
         pathMatch: 'full',
         redirectTo: `places/${Global.collections.waterbird}/${Global.forms.waterbirdJuvenileForm}`
       }
+    ]
+  },
+  {
+    path: 'kerttu',
+    component: KerttuComponent,
+    data: {
+      title: 'Kerttu'
+    },
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent}
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
