@@ -316,7 +316,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         annotation => {
           this.annotation = annotation;
           this.success.emit(annotation);
-          this.loading.emit(false);
           this.sending = false;
           this.formAnnotation.control.markAsPristine();
         },
