@@ -26,7 +26,7 @@
         <ng-template #reportedInformalTaxonGroup>
             <span>{{ unit.reportedInformalTaxonGroup | toQName | label }}</span>
         </ng-template>
-        <span class="small-text">{{ 'annotation.effectiveTaxon.comment' | translate }}</span>
+        <span class="small-text" *ngIf="unit.annotations && unit.annotations.length > 0 && !hasAllDeletedAnnotations">{{ 'annotation.effectiveTaxon.comment' | translate }}</span>
     </laji-row>
 </div>
 
