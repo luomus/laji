@@ -25,9 +25,9 @@
                 </div>
             </div>
         </ng-container>
-        <span class="show-more" (click)="toggleLimit($event)" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 1">
-            <span *ngIf="limit === 1; else showLess">Show more</span>
-            <ng-template #showLess>Show less</ng-template>
+        <span class="show-more" (click)="toggleLimit($event)" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 2">
+            <span *ngIf="limit < 2; else showLess">{{ 'annotation.list.showMoreTags' | translate }}</span>
+            <ng-template #showLess>{{ 'annotation.list.showLessTags' | translate }}</ng-template>
         </span>
     </div>
 </div>

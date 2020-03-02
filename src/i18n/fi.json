@@ -68,6 +68,8 @@
   "annotation.titleListAnnotations": "Merkinnät",
   "annotation.occurrenceAtTime": "Tapahtuma merkinnän aikaan",
   "annotation.deleted": "Poistettu",
+  "annotation.list.showMoreTags": "show more tags",
+  "annotation.list.showLessTags": "show less tags",
   "asIs": "Arvo sellaisenaan",
   "checkAll": "Valitse kaikki",
   "checked": "valittu",
