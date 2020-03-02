@@ -155,6 +155,10 @@ laji-locale-sv > div,
   content: "";
 }
 
+.separated-list li.no-comma:after {
+  content: "";
+}
+
 .dark-bg {
   background-color: #ECF0F1;
 }

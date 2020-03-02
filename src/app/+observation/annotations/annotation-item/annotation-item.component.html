@@ -8,10 +8,14 @@
     <div class="unit-annotation"><laji-unit-annotation [showImage]="false" [unit]="item.unit"></laji-unit-annotation></div>
     <div class="gathering"><laji-gathering [visible]="true" [gathering]="item.gathering"></laji-gathering></div>
     <div class="information">
+        <i class="glyphicon glyphicon-comment"></i>
          <span *ngIf="item.unit.annotationCount; else noAnnotation">
             <span>{{ item.unit.annotationCount }} {{ 'quality.qualityLabel' | translate }}</span>
         </span>
         <ng-template #noAnnotation>{{ 'annotation.none' | translate }}</ng-template>
+    </div>
+    <div class="quality">
+        <i class="glyphicon glyphicon-thumbs-up"></i><span *ngIf="item.unit.interpretations && item.unit.interpretations.reliability">{{ item.unit.interpretations.reliability | label: 'warehouse' }} </span>
     </div>
     <div class="addedTags" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 0">
         <ng-container *ngFor="let tag of item.unit.interpretations.effectiveTags; let i = index">
@@ -25,9 +29,6 @@
             <span *ngIf="limit === 1; else showLess">Show more</span>
             <ng-template #showLess>Show less</ng-template>
         </span>
-    </div>
-    <div class="quality">
-        <span *ngIf="item.unit.interpretations && item.unit.interpretations.reliability"> {{ 'observation.form.qualityTitle' | translate }}:  {{ item.unit.interpretations.reliability | label: 'warehouse' }} </span>
     </div>
 </div>
 

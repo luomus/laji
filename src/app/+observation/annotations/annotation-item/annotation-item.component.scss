@@ -48,3 +48,9 @@ div {
         display: block;
       }
   }
+
+  i {
+    &.glyphicon {
+        margin-right: 5px;
+    }
+}

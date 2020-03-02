@@ -1,5 +1,6 @@
 <div class="position">
   <ul class="separated-list">
+      <li class="no-comma" *ngIf="gathering.country || gathering.biogeographicalProvince || gathering.municipality || gathering.locality"><i class="glyphicon glyphicon-map-marker"></i></li>
       <li *ngIf="gathering.country">{{ gathering.country }}</li>
       <li *ngIf="gathering.biogeographicalProvince">{{ gathering.biogeographicalProvince }}</li>
       <li *ngIf="gathering.municipality">{{ gathering.municipality }}</li>
@@ -8,7 +9,7 @@
 </div>
 
 <div class="date">
-      <span *ngIf="gathering.displayDateTime">{{ gathering.displayDateTime }}</span>
+      <span *ngIf="gathering.displayDateTime"><i class="glyphicon glyphicon-time"></i>{{ gathering.displayDateTime }}</span>
 </div>
 
 <div class="author" *ngIf="gathering.team">
@@ -16,6 +17,7 @@
             <span class="member">{{ member | truncate : 80 : true }}</span>
       </div>-->
       <ul class="separated-list">
+            <li class="no-comma" *ngIf="gathering.team.length > 0"><i class="glyphicon glyphicon-user"></i></li>
             <li *ngFor="let member of gathering.team"><span class="member">{{ member }}</span></li>
       </ul>
 </div>
