@@ -34,15 +34,24 @@
     </ng-container>
   </ng-template>
   <ng-template #noForm>
-      <span class="comment-title">
-        {{ 'annotation.addAnAnnotation' | translate }}
-      </span>
-      <span *lajiLoggedIn="true" class="comment-title">
-          <button class="btn btn-xs btn-success" (click)="showDocument()"><i class="glyphicon glyphicon-plus"></i></button>
-      </span>
-      <div *lajiLoggedIn="false" class="annotation-form">
-          {{ 'force.login' | translate }}
+    <div class="annotations-normal-document">
+      <div class="header">
+        <button type="button" class="close" (click)="close.emit()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4>
+          <span class="comment-title">
+            {{ 'annotation.title' | translate }}
+          </span>
+          <span *lajiLoggedIn="true" class="comment-title">
+            <button class="btn btn-xs btn-success" (click)="showDocument()"><i class="glyphicon glyphicon-plus"></i></button>
+          </span>
+        </h4>
       </div>
+      <div *lajiLoggedIn="false">
+        {{ 'force.login' | translate }}
+      </div>
+    </div>
   </ng-template>
     
     <laji-spinner [spinning]="loading"></laji-spinner>
