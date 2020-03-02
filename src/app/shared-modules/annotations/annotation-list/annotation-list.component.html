@@ -39,26 +39,18 @@
            </div>
            <div class="removed-tags" *ngIf="annotation.removedTags && annotation.removedTags.length > 0">
               <ul class="separated-list">
-                <b>{{ 'annotation.removedTags' | translate }}: </b>
-                <li *ngFor="let removedTag of annotation.removedTags">
+                <b style="display: block;">{{ 'annotation.removedTags' | translate }}: </b>
+                <!--<li *ngFor="let removedTag of annotation.removedTags">
                       {{ removedTag | label: 'warehouse' }}
-                </li>
+                </li>-->
               </ul>
+              <div class="tag" *ngFor="let removeTag of annotation.removedTags">
+                   <div class="annotation-marker" >
+                     <span>{{ removeTag | label: 'warehouse' }}</span>
+                   </div>
+              </div>
             </div>
           </div>
-          <!--<p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
-              <span><b>Taxon: </b></span>
-              <span *ngIf="annotation.identification && annotation.identification.taxon.originalTaxon; else taxonVerbatim">
-                  <laji-taxon-name [taxon]="annotation.identification.taxon.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
-              </span>
-              <ng-template #taxonVerbatim>
-                <span *ngIf="annotation.identification.taxon.taxonVerbatim; else reportedInformalTaxonGroup"></span>
-              </ng-template>
-              <ng-template #reportedInformalTaxonGroup>
-                <span>{{ annotation.identification.taxon }}</span>
-              </ng-template>
-              <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''">,{{ annotation.identification.taxonSpecifier }}</ng-container>
-          </p>-->
           <p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
             <span *ngIf="annotation.identification.taxonID;else reportedInformalTaxonGroup">
               {{ annotation.identification.taxon }} - {{ annotation.identification.taxon | label }}
@@ -100,7 +92,6 @@
           <small>
             <span class="annotation-title" *ngIf="annotation.annotationBySystem">
               {{ 'annotationBySystem' | translate }}
-              <!--{{annotation.annotationBySystem | toQName | source}}-->
             </span>
             <span class="annotation-title" *ngIf="(annotation.type | toQName) === types.TypeUnidentifiable">
               {{ 'MAN.typeUnidentifiable' | label }}
