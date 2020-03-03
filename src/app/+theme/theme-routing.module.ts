@@ -493,6 +493,15 @@ const routes: Routes = [
       formID: Global.forms.lolifeForm,
       noFormPermissionRedirect: '/theme/lolife',
       title: 'LOLIFE',
+      navLinks: {
+        form: {
+          label: 'theme.lolife.places'
+        },
+        ownSubmissions: {
+          label: 'theme.lolife.ownSubmissions',
+          adminLabel: 'theme.lolife.ownSubmissions.admin'
+        }
+      }
     }
   },
   {

@@ -1380,6 +1380,8 @@
   "navigation.lolife": "LOLIFE",
   "theme.lolife.intro": "Flygekorre-Life",
   "theme.lolife.places": "Spela in folkräkningsåtgärder",
+  "theme.lolife.ownSubmissions": "Mina folkräkningar",
+  "theme.lolife.ownSubmissions.admin": "Alla folkräkningar",
   "reset": "Återställ inställningar",
   "map.fullScreen": "Öppet stenografi läge",
   "map.exitFullScreen": "Avsluta helskärmsläge",
