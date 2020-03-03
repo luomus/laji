@@ -37,18 +37,18 @@
                </ng-template>
              </div>
            </div>
-           <div class="removed-tags" *ngIf="annotation.removedTags && annotation.removedTags.length > 0">
-              <ul class="separated-list">
-                <b style="display: block;">{{ 'annotation.removedTags' | translate }}: </b>
-                <!--<li *ngFor="let removedTag of annotation.removedTags">
-                      {{ removedTag | label: 'warehouse' }}
-                </li>-->
-              </ul>
-              <div class="tag" *ngFor="let removeTag of annotation.removedTags">
-                   <div class="annotation-marker" >
-                     <span>{{ removeTag | label: 'warehouse' }}</span>
-                   </div>
-              </div>
+          </div>
+          <div class="removed-tags" *ngIf="annotation.removedTags && annotation.removedTags.length > 0">
+            <ul class="separated-list">
+              <b style="display: block;">{{ 'annotation.removedTags' | translate }}: </b>
+              <!--<li *ngFor="let removedTag of annotation.removedTags">
+                    {{ removedTag | label: 'warehouse' }}
+              </li>-->
+            </ul>
+            <div class="tag" *ngFor="let removeTag of annotation.removedTags">
+                 <div class="annotation-marker" >
+                   <span>{{ removeTag | label: 'warehouse' }}</span>
+                 </div>
             </div>
           </div>
           <p class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
