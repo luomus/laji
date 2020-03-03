@@ -181,8 +181,14 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           data.forEach(r => {
             this.randomKeyAfter = r.aggregateBy['document.randomKey'];
           });
-        console.log(this.randomKeyAfter);
         this.cd.markForCheck();
+
+        if (this.randomKeyAfter === undefined) {
+          this.subscribeRefreshedAnnotations.unsubscribe();
+          this.taxonTagEffective.emitChildEvent(false);
+          this.loading = false;
+        }
+
         if (this.randomKeyAfter !== this.randomKeyBefore) {
           this.subscribeRefreshedAnnotations.unsubscribe();
           this.taxonTagEffective.emitChildEvent(true);
@@ -206,7 +212,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
               data.forEach(r => {
                 this.randomKeyBefore = r.aggregateBy['document.randomKey'];
               });
-            console.log(this.randomKeyBefore);
             this.cd.markForCheck();
           });
   }
