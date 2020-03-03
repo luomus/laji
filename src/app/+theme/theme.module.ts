@@ -78,6 +78,7 @@ import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-sprea
 import { GenericInstructionsComponent } from './common/instructions/generic-instructions/generic-instructions.component';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
+import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 
 /* tslint:enable:max-line-length */
 
@@ -158,6 +159,7 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
     GenericInstructionsComponent,
     KerttuComponent,
     KerttuInstructionsComponent,
+    LolifeInstructionsComponent,
   ],
   providers: [
     ResultService,

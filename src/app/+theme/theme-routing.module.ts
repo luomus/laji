@@ -36,6 +36,7 @@ import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-sprea
 import { DatasetsGuard } from './datasets/datasets.guard';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
+import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -454,8 +455,9 @@ const routes: Routes = [
     path: 'lolife',
     component: MonitoringThemeBaseComponent,
     children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {path: '', pathMatch: 'full', redirectTo: 'about'},
+      {path: 'about', pathMatch: 'full', component: InstructionsComponent},
+      {path: 'instructions', pathMatch: 'full', component: LolifeInstructionsComponent},
       {
         path: 'places',
         redirectTo: 'form',
@@ -496,6 +498,10 @@ const routes: Routes = [
       noFormPermissionRedirect: '/theme/lolife',
       title: 'LOLIFE',
       navLinks: {
+        about: {
+          routerLink: ['about'],
+          label: 'theme.lolife.about'
+        },
         form: {
           label: 'theme.lolife.places'
         },
@@ -503,7 +509,8 @@ const routes: Routes = [
           label: 'theme.lolife.ownSubmissions',
           adminLabel: 'theme.lolife.ownSubmissions.admin'
         }
-      }
+      },
+      navLinksOrder: ['about', 'instructions', 'form', 'ownSubmissions', 'formPermissions'],
     }
   },
   {
