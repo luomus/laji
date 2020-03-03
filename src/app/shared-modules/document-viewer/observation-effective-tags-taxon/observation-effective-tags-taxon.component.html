@@ -6,11 +6,10 @@
           <span>-</span>
         </div>
         <ng-template #tags>
-            <div class="tag" *ngFor="let addedTag of unit.interpretations.effectiveTags" [ngSwitch]="addedTag | toQName">
-                <!--<div *ngSwitchCase="annotationTagsObservation[addedTag | toQName].value" class="annotation-marker {{ annotationTagsObservation[addedTag | toQName].quality }}" >
-                    <span>{{ addedTag | toQName | label }}</span>
-                </div>-->
-                <div class="annotation-marker">{{ addedTag | label: 'warehouse' }}</div>
+            <div class="tag" *ngFor="let addedTag of unit.interpretations.effectiveTags" [ngSwitch]="addedTag | warehouse ">
+                <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[addedTag | warehouse ].type }}" >
+                    <span>{{ addedTag | warehouse | label }}</span>
+                </div>
             </div>
         </ng-template>
     </laji-row>
@@ -27,7 +26,7 @@
         <ng-template #reportedInformalTaxonGroup>
             <span>{{ unit.reportedInformalTaxonGroup | toQName | label }}</span>
         </ng-template>
-        <span class="small-text">{{ 'annotation.effectiveTaxon.comment' | translate }}</span>
+        <span class="small-text" *ngIf="unit.annotations && unit.annotations.length > 0 && !hasAllDeletedAnnotations">{{ 'annotation.effectiveTaxon.comment' | translate }}</span>
     </laji-row>
 </div>
 

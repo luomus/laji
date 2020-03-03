@@ -1,10 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild,
-ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { AnnotationService } from '../document-viewer/service/annotation.service';
 import { Annotation } from '../../shared/model/Annotation';
 import { IdService } from '../../shared/service/id.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { AnnotationFormNewComponent } from './annotation-form-new/annotation-form-new.component';
+import {map, switchMap } from 'rxjs/operators';
+import { Subscription, timer } from 'rxjs';
+import { PagedResult } from '../../shared/model/PagedResult';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { TaxonTagEffectiveService } from '../../shared-modules/document-viewer/taxon-tag-effective.service';
 
 @Component({
   selector: 'laji-annotations',
@@ -13,7 +19,7 @@ import { AnnotationFormNewComponent } from './annotation-form-new/annotation-for
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class AnnotationsComponent implements OnInit {
+export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input() rootID: string;
   @Input() targetID: string;
   @Input() documentID: string;
@@ -37,18 +43,38 @@ export class AnnotationsComponent implements OnInit {
   annotationRole = Annotation.AnnotationRoleEnum;
   loading = false;
   lastAnnotationAddedId: string;
+  result: PagedResult<any> = {
+    currentPage: 1,
+    lastPage: 1,
+    results: [],
+    total: 0,
+    pageSize: 0
+  };
+  randomKeyBefore: string;
+  randomKeyAfter: string;
+  page = 1;
+  subscribeRefreshedAnnotations: Subscription;
+  subscribeRefreshedAnnotations1: Subscription;
+  query: WarehouseQueryInterface = {};
 
   constructor(
     private annotationService: AnnotationService,
     private documentViewerFacade: DocumentViewerFacade,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private warehouseApi: WarehouseApi,
+    private taxonTagEffective: TaxonTagEffectiveService
     ) { }
 
   ngOnInit() {
     this.initEmptyAnnotation();
+    this.findRendomKey1();
     if (this.identifying) {
       this.adding = true;
     }
+  }
+
+  ngOnDestroy() {
+    this.subscribeRefreshedAnnotations1.unsubscribe();
   }
 
   initEmptyAnnotation() {
@@ -122,7 +148,7 @@ export class AnnotationsComponent implements OnInit {
   }
 
   private saveDone(annotation?: Annotation) {
-    this.loading = false;
+    this.findRendomKey();
     this.annotationChange.emit(annotation);
     this.closeAddForm();
     this.initEmptyAnnotation();
@@ -136,5 +162,59 @@ export class AnnotationsComponent implements OnInit {
       result: undefined
     });
   }
+
+  findRendomKey() {
+    this.subscribeRefreshedAnnotations = timer(0, 5000).pipe(
+      switchMap(() =>
+        this.warehouseApi.warehouseQueryAggregateGet(
+          {'documentId': [this.rootID]},
+          ['document.documentId', 'document.randomKey'],
+          ['document.randomKey'],
+          10,
+          this.page
+          )
+        )
+      ).pipe(
+        map(data => data.results)
+      ).subscribe(
+        data => {
+          data.forEach(r => {
+            this.randomKeyAfter = r.aggregateBy['document.randomKey'];
+          });
+        this.cd.markForCheck();
+
+        if (this.randomKeyAfter === undefined) {
+          this.subscribeRefreshedAnnotations.unsubscribe();
+          this.taxonTagEffective.emitChildEvent(false);
+          this.loading = false;
+        }
+
+        if (this.randomKeyAfter !== this.randomKeyBefore) {
+          this.subscribeRefreshedAnnotations.unsubscribe();
+          this.taxonTagEffective.emitChildEvent(true);
+          this.loading = false;
+        }
+
+      });
+  }
+
+  findRendomKey1() {
+    this.subscribeRefreshedAnnotations1 = this.warehouseApi.warehouseQueryAggregateGet(
+          {'documentId': [this.rootID]},
+          ['document.documentId', 'document.randomKey'],
+          ['document.randomKey'],
+          10,
+          this.page
+          ).pipe(
+            map(data => data.results)
+          ).subscribe(
+            data => {
+              data.forEach(r => {
+                this.randomKeyBefore = r.aggregateBy['document.randomKey'];
+              });
+            this.cd.markForCheck();
+          });
+  }
+
 
 }

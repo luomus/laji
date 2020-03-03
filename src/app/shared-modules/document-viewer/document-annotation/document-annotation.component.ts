@@ -119,7 +119,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.annotationResolving = event;
       if (this.annotationResolving) {
         this.cd.markForCheck();
-        this.refresh();
+        this.updateDocument();
       }
     });
 
@@ -154,11 +154,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     }
   }
 
-  refresh() {
-    setTimeout(() => {
-      this.updateDocument();
-    }, 2000);
-  }
 
   updateDocument() {
     if (!this.uri) {

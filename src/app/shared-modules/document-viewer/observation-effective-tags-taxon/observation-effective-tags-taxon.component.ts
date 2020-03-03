@@ -18,6 +18,8 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
   annotationResolving: boolean;
   subscriptParent: Subscription;
   annotationTagsObservation = Global.annotationTags;
+  countItems: number;
+  hasAllDeletedAnnotations = false;
 
   constructor(private taxonTagEffective: TaxonTagEffectiveService, private cd: ChangeDetectorRef) { }
 
@@ -27,6 +29,17 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
       this.annotationResolving = event;
       this.cd.markForCheck();
     });
+
+    if (this.unit.annotations) {
+      this.countItems = 0;
+      this.unit.annotations.forEach(e => {
+        if (e['deleted']) {
+          this.countItems++;
+        }
+      });
+
+      this.hasAllDeletedAnnotations = this.countItems === this.unit.annotations.length ? true : false;
+    }
   }
 
   ngOnDestroy() {

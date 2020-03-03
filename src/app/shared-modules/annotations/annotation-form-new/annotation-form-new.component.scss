@@ -198,6 +198,11 @@ label {
     color: white;
   }
 
+  :host ::ng-deep lu-checkbox label.checked .admin {
+    background: #000;
+    color: white;
+  }
+
   .agree {
     border: none;
     border-radius: 5px;

@@ -22,6 +22,7 @@ import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
+import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 
 
 @Component({
@@ -66,6 +67,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
   private metaFetch: Subscription;
+  subscriptParent: Subscription;
+  annotationResolving: boolean;
 
 
   constructor(
@@ -73,7 +76,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,
-    private childComunication: DocumentViewerChildComunicationService
+    private childComunication: DocumentViewerChildComunicationService,
+    private taxonTagEffective: TaxonTagEffectiveService
   ) { }
 
   ngOnInit() {
@@ -86,26 +90,43 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       this.childEvent = info;
       this.cd.markForCheck();
    });
+
+   this.subscriptParent = this.taxonTagEffective.childEventListner().subscribe(event => {
+      this.annotationResolving = event;
+      if (this.annotationResolving) {
+        this.cd.markForCheck();
+        this.updateDocument();
+
+      }
+    });
   }
 
   ngAfterViewInit() {
     this.isViewInited = true;
     this.updateDocument();
+    this.cd.detectChanges();
   }
 
   ngOnChanges() {
     this.hasDoc = undefined;
     if (this.isViewInited) {
       this.updateDocument();
+      this.cd.detectChanges();
     }
   }
 
   ngOnDestroy() {
     if (this.interval) {
       this.interval.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
     }
     if (this.metaFetch) {
       this.metaFetch.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
+    }
+    if (this.subscriptParent) {
+      this.subscriptParent.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
     }
   }
 
@@ -197,6 +218,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   }
 
   private parseDoc(doc, found) {
+    this.cd.detectChanges();
     this.hasDoc = found;
     this.unitCnt = 0;
     if (found) {

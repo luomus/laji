@@ -1,4 +1,4 @@
-<form [hidden]="!visible" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
+<form [hidden]="!visible || hidden" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
     <div class="tags-step-1" *ngIf="expert else checkTags">
       <label>{{ 'annotation.addTags' | translate }}</label>
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typePositiveQuality','MMAN.typeNegativeQuality']: 'include': 'id': ['MMAN.3'] | sort: 'position'; let i = index;" class="tag-value">
