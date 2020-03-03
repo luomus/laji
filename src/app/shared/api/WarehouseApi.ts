@@ -171,8 +171,17 @@ export class WarehouseApi {
    * @param onlyCount return only count in result items (default true).
    */
   public warehouseQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
+    return this.warehouseQueryGet('unit/aggregate', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+  }
+
+  /**
+   * Aggregates based on documents
+   *
+   */
+  public warehouseQueryDocumentAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     return this.warehouseQueryGet('document/aggregate', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
+
 
   /**
    * Aggregates based on annotations
