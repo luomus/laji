@@ -14,7 +14,7 @@
   <laji-row [title]="'MY.taxonCensus' | label">
     <ul class="separated-list">
       <li *ngFor="let census of value" [tooltip]="census.taxonCensusType | label" [isDisabled]="hideTooltips">
-        {{ census.censusTaxonID | taxon }}
+        {{ census.censusTaxonID ? (census.censusTaxonID | taxon) : (census.censusTaxonSetID | label) }}
       </li>
     </ul>
   </laji-row>

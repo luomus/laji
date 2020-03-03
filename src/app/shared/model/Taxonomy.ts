@@ -245,6 +245,8 @@ export interface Taxonomy {
   hasLatestRedListEvaluation?: boolean;
 
   nonHiddenParentsIncludeSelf?: string[];
+
+  observationCount?: number;
 }
 
 export interface RedListEvaluation {
