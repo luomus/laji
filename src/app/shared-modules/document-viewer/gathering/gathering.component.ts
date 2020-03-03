@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output,
+OnInit, OnDestroy} from '@angular/core';
+import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 
 @Component({
   selector: 'laji-gathering',
@@ -6,7 +8,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   styleUrls: ['./gathering.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GatheringComponent {
+export class GatheringComponent implements OnInit, OnDestroy {
 
   @Input() editors: string[];
   @Input() personID: string;
@@ -24,6 +26,12 @@ export class GatheringComponent {
   @Output() showAllUnits = new EventEmitter();
 
 
-  constructor() { }
+  constructor(private taxonTagEffective: TaxonTagEffectiveService) { }
+
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.taxonTagEffective.emitChildEvent(false);
+  }
 
 }
