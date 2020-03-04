@@ -10,8 +10,13 @@ a {
 }
 
 .annotation {
-  border-radius: 5px;
+  padding-bottom: 15px;
 }
+
+.border {
+  border-bottom: 1px solid #b2b2b2;
+}
+
 .close {
   font-size: 16px;
 }
