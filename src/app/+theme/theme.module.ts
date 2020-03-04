@@ -78,6 +78,8 @@ import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-sprea
 import { GenericInstructionsComponent } from './common/instructions/generic-instructions/generic-instructions.component';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
+import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 
 /* tslint:enable:max-line-length */
@@ -108,7 +110,8 @@ import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife
     ObservationComponentModule,
     DownloadModule,
     InfoModule,
-    SpreadsheetModule
+    SpreadsheetModule,
+    NgxDatatableModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -159,7 +162,8 @@ import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife
     GenericInstructionsComponent,
     KerttuComponent,
     KerttuInstructionsComponent,
-    LolifeInstructionsComponent,
+    ExpertiseFormComponent,
+    LolifeInstructionsComponent
   ],
   providers: [
     ResultService,

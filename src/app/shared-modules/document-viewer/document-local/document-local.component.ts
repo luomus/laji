@@ -123,7 +123,7 @@ export class DocumentLocalComponent implements OnChanges {
   private getForm(formId: string): Observable<any> {
     return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
       .pipe(tap(form => {
-        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications'], (form.namedPlaceOptions || {}).documentViewerForceFields);
+        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications'], (form.namedPlaceOptions || {}).documentViewerForcedFields);
       }));
   }
 
