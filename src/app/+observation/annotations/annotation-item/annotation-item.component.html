@@ -14,8 +14,8 @@
         </span>
         <ng-template #noAnnotation>{{ 'annotation.none' | translate }}</ng-template>
     </div>
-    <div class="quality">
-        <i class="glyphicon glyphicon-thumbs-up"></i><span *ngIf="item.unit.interpretations && item.unit.interpretations.reliability">{{ item.unit.interpretations.reliability | label: 'warehouse' }} </span>
+    <div class="quality" *ngIf="item.unit.interpretations && item.unit.interpretations.reliability">
+        <i class="glyphicon glyphicon-thumbs-up"></i><span>{{ item.unit.interpretations.reliability | label: 'warehouse' }} </span>
     </div>
     <div class="addedTags" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 0">
         <ng-container *ngFor="let tag of item.unit.interpretations.effectiveTags; let i = index">
