@@ -1,0 +1,47 @@
+<ngx-datatable
+  class="material striped"
+  [cssClasses]="{
+      sortAscending: 'glyphicon glyphicon-chevron-down',
+      sortDescending: 'glyphicon glyphicon-chevron-up',
+      pagerLeftArrow: 'glyphicon glyphicon-chevron-left',
+      pagerRightArrow: 'glyphicon glyphicon-chevron-right',
+      pagerPrevious: 'glyphicon glyphicon-step-backward',
+      pagerNext: 'glyphicon glyphicon-step-forward'
+    }"
+  [selectionType]="'checkbox'"
+  (select)='onSelect($event)'
+  [selectAllRowsOnPage]="false"
+  [columns]="columns"
+  [rows]="taxonList$ | async"
+  [externalSorting]="true"
+  [columnMode]="'flex'"
+  [headerHeight]="38"
+  [rowHeight]="'auto'"
+  [limit]="50"
+  [style.height]="'calc(70vh - 30px)'"
+  [footerHeight]="30"
+>
+  <ngx-datatable-column
+    [width]="30"
+    [sortable]="false"
+    [canAutoResize]="false"
+    [draggable]="false"
+    [resizeable]="false"
+    [headerCheckboxable]="false"
+    [checkboxable]="true">
+  </ngx-datatable-column>
+  <ngx-datatable-column [prop]="'vernacularName'"
+                        [resizeable]="false"
+                        [draggable]="false"
+                        [flexGrow]="1">
+    <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span class="datatable-header-cell-wrapper"
+              (click)="sort()"
+              title="{{column.name}}">
+          <span class="datatable-header-cell-label draggable">
+            {{ column.name }}
+          </span>
+        </span>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>

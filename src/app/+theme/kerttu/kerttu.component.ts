@@ -20,13 +20,21 @@ import { NavLink } from '../common/theme-form.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuComponent implements OnInit {
-  navLinks: NavLink[] = [{
-    routerLink: ['instructions'],
-    label: 'instructions'
-  }];
+  navLinks: NavLink[] = [
+    {
+      routerLink: ['instructions'],
+      label: 'instructions'
+    },
+    {
+      routerLink: ['expertise'],
+      label: 'expertise'
+    }
+  ];
 
   constructor(
+
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }
