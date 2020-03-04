@@ -1,7 +1,7 @@
 <div class="info">
     <b>{{ 'annotation.occurrenceAtTime' | translate }}</b>
     <ul>
-        <li *ngIf="occurrence.taxonId">
+        <li *ngIf="occurrence && occurrence.taxonId">
             <b>Taxon: </b>
             <span>
                 {{ occurrence.taxonId | toQName | label }} - <em>{{ occurrence.taxonVerbatim }}</em>
@@ -11,7 +11,7 @@
                 </a>
             </span>
         </li>
-        <li *ngIf="occurrence.dateBegin || occurrence.dateEnd">
+        <li *ngIf=" occurrence && (occurrence.dateBegin || occurrence.dateEnd)">
             <b>{{ 'observation.form.date' | translate }}: </b>
             <span *ngIf="occurrence.dateBegin !== occurrence.dateEnd; else oneDate">
                 {{ occurrence.dateBegin }} - {{ occurrence.dateEnd }}
@@ -20,7 +20,7 @@
                 {{ occurrence.dateEnd }}
             </ng-template>
         </li>
-        <li *ngIf="occurrence.countryVerbatim || occurrence.municipalityVerbatim || occurrence.locality">
+        <li *ngIf="occurrence && (occurrence.countryVerbatim || occurrence.municipalityVerbatim || occurrence.locality)">
             <b>{{ 'result.gathering.locality' | translate }}: </b>
             <span>
                 <ul class="separated-list">
@@ -34,7 +34,7 @@
                 </ul>
             </span>
         </li>
-        <li *ngIf="occurrence.wgs84centerPointLat && occurrence.wgs84centerPointLon">
+        <li *ngIf="occurrence && occurrence.wgs84centerPointLat && occurrence.wgs84centerPointLon">
             <b>{{ 'observation.active.coordinates' | translate }}: </b>
             <span>
                 {{ occurrence.wgs84centerPointLat }} , {{ occurrence.wgs84centerPointLon }}

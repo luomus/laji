@@ -96,6 +96,7 @@ export namespace Form {
       infoFields?: string[];
       documentListUseLocalDocumentViewer?: string;
       documentViewerGatheringGeometryJSONPath?: string;
+      documentViewerForceFields?: string[]
     };
     prepopulatedDocument?: Document;
     printType?: PrintType;

@@ -80,6 +80,7 @@ import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
 import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 
 /* tslint:enable:max-line-length */
 
@@ -162,6 +163,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     KerttuComponent,
     KerttuInstructionsComponent,
     ExpertiseFormComponent,
+    LolifeInstructionsComponent
   ],
   providers: [
     ResultService,
