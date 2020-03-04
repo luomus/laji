@@ -1,15 +1,13 @@
-<div class="annotation"  *ngIf="targetID">
+<div class="annotation" [ngClass]="{'border': listVisible, '': !listVisible}" *ngIf="targetID">
   <laji-spinner [spinning]="loading"></laji-spinner>
   <laji-annotation-list
-    *ngIf="!loading"
+    *ngIf="!loading && listVisible"
     [personID]="personID"
     [annotations]="annotations"
     [lastAnnotationAddedId]="lastAnnotationAddedId"
     (remove)="onDelete($event)">
   </laji-annotation-list>
 </div>
-
-<hr/>
 
 <div [ngClass]="{'annotation-form': formVisible, '': !formVisible}">
   <ng-container *ngIf="personRoleAnnotation === annotationRole.expert; else basicForm">
