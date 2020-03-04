@@ -79,8 +79,8 @@ import { GenericInstructionsComponent } from './common/instructions/generic-inst
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
 import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.component';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
+import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 
 /* tslint:enable:max-line-length */
 
@@ -110,8 +110,7 @@ import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife
     ObservationComponentModule,
     DownloadModule,
     InfoModule,
-    SpreadsheetModule,
-    NgxDatatableModule
+    SpreadsheetModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -163,7 +162,8 @@ import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife
     KerttuComponent,
     KerttuInstructionsComponent,
     ExpertiseFormComponent,
-    LolifeInstructionsComponent
+    LolifeInstructionsComponent,
+    KerttuMainViewComponent
   ],
   providers: [
     ResultService,

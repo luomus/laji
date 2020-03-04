@@ -26,8 +26,8 @@ export class KerttuComponent implements OnInit {
       label: 'instructions'
     },
     {
-      routerLink: ['expertise'],
-      label: 'expertise'
+      routerLink: ['annotate'],
+      label: 'theme.kerttu.annotate'
     }
   ];
 

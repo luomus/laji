@@ -1,8 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import {Component, Input, OnInit} from '@angular/core';
+import {map, switchMap} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
 import {Taxonomy} from '../../../shared/model/Taxonomy';
+import {DatatableColumn} from '../../../shared-modules/datatable/model/datatable-column';
+import {UserService} from '../../../shared/service/user.service';
+import {PersonApi} from '../../../shared/api/PersonApi';
+import {Profile} from '../../../shared/model/Profile';
 
 @Component({
   selector: 'laji-expertise-form',
@@ -10,22 +14,44 @@ import {Taxonomy} from '../../../shared/model/Taxonomy';
   styleUrls: ['./expertise-form.component.scss']
 })
 export class ExpertiseFormComponent implements OnInit {
-  private birdId = 'MX.37580';
+  @Input() taxonId = 'MX.37580';
+  @Input() countThreshold = 50;
+  @Input() introText = '';
 
-  columns = [{prop: 'vernacularName'}];
-
+  columns: DatatableColumn[] = [
+    {
+      width: 30,
+      sortable: false,
+      canAutoResize: false,
+      draggable: false,
+      resizeable: false,
+      headerCheckboxable: false,
+      checkboxable: true
+    },
+    {
+      name: 'vernacularName',
+      label: 'taxonomy.vernacular.name'
+    },
+    {
+      name: 'scientificName',
+      label: 'taxonomy.scientific.name',
+      cellTemplate: 'taxonScientificName'
+    }
+  ];
   taxonList$: Observable<Taxonomy[]>;
 
-  private countThreshold = 50;
+  private selectedTaxonIds: string[];
 
   constructor(
-    private taxonomyService: TaxonomyApi
+    private taxonomyService: TaxonomyApi,
+    private userService: UserService,
+    private personService: PersonApi
   ) { }
 
   ngOnInit() {
     this.taxonList$ = this.taxonomyService
       .taxonomyFindSpecies(
-        this.birdId,
+        this.taxonId,
         'fi',
         undefined,
         undefined,
@@ -34,7 +60,7 @@ export class ExpertiseFormComponent implements OnInit {
         undefined,
         '1',
         '1000',
-        undefined,
+        'taxonomic',
         {
           selectedFields: ['id', 'vernacularName', 'scientificName', 'cursive', 'observationCount'],
           onlyFinnish: true,
@@ -52,7 +78,18 @@ export class ExpertiseFormComponent implements OnInit {
   }
 
   onSelect(event) {
+    this.selectedTaxonIds = event.selected.map(taxon => taxon.id);
+  }
 
+  onSave() {
+    this.personService.personFindProfileByToken(this.userService.getToken()).pipe(
+      switchMap((profile: Profile) => {
+        // something here
+        return this.personService.personUpdateProfileByToken(profile, this.userService.getToken());
+      })
+    ).subscribe(() => {
+
+    });
   }
 
 }

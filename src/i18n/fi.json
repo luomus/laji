@@ -1469,6 +1469,8 @@
   "theme.lolife.ownSubmissions": "Omat seurannat",
   "theme.lolife.ownSubmissions.admin": "Kaikki seurannat",
   "theme.lolife.about": "Tietoa",
+  "theme.kerttu.annotate": "Kerro tunnistuksesi",
+  "theme.kerttu.expertise.intro": "Aloita valitsemalla kaikki ne lajit, jotka osaat tunnistaa äänen perusteella.",
   "reset": "Palauta oletusasetukset",
   "map.fullScreen": "Avaa kartta kokoruututilassa",
   "map.exitFullScreen": "Poistu kokoruututilasta",

@@ -1316,6 +1316,8 @@
   "theme.lolife.ownSubmissions": "Own censuses",
   "theme.lolife.ownSubmissions.admin": "All  censuses",
   "theme.lolife.about": "About",
+  "theme.kerttu.annotate": "Kerro tunnistuksesi",
+  "theme.kerttu.expertise.intro": "Aloita valitsemalla kaikki ne lajit, jotka osaat tunnistaa äänen perusteella.",
   "reset": "Reset settings",
   "map.fullScreen": "Open the map in fullscreen",
   "map.exitFullScreen": "Exit fullscreen mode",

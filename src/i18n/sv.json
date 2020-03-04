@@ -1383,6 +1383,8 @@
   "theme.lolife.ownSubmissions": "Mina folkräkningar",
   "theme.lolife.ownSubmissions.admin": "Alla folkräkningar",
   "theme.lolife.about": "Information",
+  "theme.kerttu.annotate": "Kerro tunnistuksesi",
+  "theme.kerttu.expertise.intro": "Aloita valitsemalla kaikki ne lajit, jotka osaat tunnistaa äänen perusteella.",
   "reset": "Återställ inställningar",
   "map.fullScreen": "Öppet stenografi läge",
   "map.exitFullScreen": "Avsluta helskärmsläge",

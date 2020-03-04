@@ -36,7 +36,7 @@ import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-sprea
 import { DatasetsGuard } from './datasets/datasets.guard';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
-import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.component';
+import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 /* tslint:enable:max-line-length */
 
@@ -728,7 +728,7 @@ const routes: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
-      {path: 'expertise', pathMatch: 'full', component: ExpertiseFormComponent}
+      {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent}
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
