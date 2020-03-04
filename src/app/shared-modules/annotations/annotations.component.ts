@@ -166,7 +166,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   findRendomKey() {
     this.subscribeRefreshedAnnotations = timer(0, 5000).pipe(
       switchMap(() =>
-        this.warehouseApi.warehouseQueryAggregateGet(
+        this.warehouseApi.warehouseQueryDocumentAggregateGet(
           {'documentId': [this.rootID]},
           ['document.documentId', 'document.randomKey'],
           ['document.randomKey'],
@@ -199,7 +199,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   }
 
   findRendomKey1() {
-    this.subscribeRefreshedAnnotations1 = this.warehouseApi.warehouseQueryAggregateGet(
+    this.subscribeRefreshedAnnotations1 = this.warehouseApi.warehouseQueryDocumentAggregateGet(
           {'documentId': [this.rootID]},
           ['document.documentId', 'document.randomKey'],
           ['document.randomKey'],

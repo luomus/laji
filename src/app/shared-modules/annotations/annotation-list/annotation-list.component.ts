@@ -60,6 +60,7 @@ export class AnnotationListComponent implements OnDestroy, OnChanges {
 
 
   findLastIndex(annotation, field, value) {
+    annotation.sort((a, b) => (a.created > b.created) ? 1 : -1);
     const index = annotation.slice().reverse().findIndex(x => x[field] === value);
     const count = annotation.length - 1;
     const finalIndex = index >= 0 ? count - index : index;
