@@ -4,7 +4,7 @@
     <laji-info>{{ 'observation.info.time' | translate }}</laji-info>
   </div>
   <laji-datepicker
-    [(ngModel)]="formQuery.timeStart"
+    [(ngModel)]="datepickerTimeStart"
     [viewFormat]="'DD.MM.YYYY'"
     [otherFormats]="['D.M.YYYY', 'YYYY']"
     [format]="dateFormat"
@@ -12,7 +12,7 @@
     (change)="onFormQueryChange()"
     name="timeStart"></laji-datepicker>
   <laji-datepicker
-    [(ngModel)]="formQuery.timeEnd"
+    [(ngModel)]="datepickerTimeEnd"
     [viewFormat]="'DD.MM.YYYY'"
     [otherFormats]="['D.M.YYYY', 'YYYY']"
     [toLastOfYear]="true"
@@ -26,6 +26,9 @@
     <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
       {{ 'observation.form.thisYear' | translate }}
     </button>
+  </div>
+  <div *ngIf="advancedMode" class="d-flex flex-row flex-wrap items-end my-3">
+    {{ 'observation.form.since.1' | translate }} <input type="number" [(ngModel)]="xDaysAgo" class="mx-2 form-control input-sm" style="max-width: 80px;"> {{ 'observation.form.since.2' | translate }}
   </div>
 </div>
 

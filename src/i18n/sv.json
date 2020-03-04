@@ -867,6 +867,8 @@
   "observation.form.target": "Artnamn / Taxon namn",
   "observation.form.team": "Observatörsnamn",
   "observation.form.thisYear": "Detta år",
+  "observation.form.since.1": null,
+  "observation.form.since.2": null,
   "observation.form.time": "Observationtid",
   "observation.form.title": "Sökparametrar",
   "observation.form.typeOfOccurrenceId": "Typ av förekomst i Finland",

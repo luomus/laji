@@ -7,6 +7,7 @@ import { Util } from '../../shared/service/util.service';
 import * as moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
 import { Area } from '../../shared/model/Area';
+import { isRelativeDate } from './date-form/date-form.component';
 
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
@@ -357,18 +358,27 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private getValidDate(date) {
-    if (!date || !moment(date, this.dateFormat, true).isValid()) {
-      return '';
+    if (date && (moment(date, this.dateFormat, true).isValid() || isRelativeDate(date))) {
+      return date;
     }
-    return date;
+    return '';
   }
 
   protected searchQueryToFormQuery(query: WarehouseQueryInterface): ObservationFormQuery {
-    const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
+    let timeStart, timeEnd;
+    if (query.time && query.time[0] && isRelativeDate(query.time[0])) {
+      const time = query.time[0];
+      timeStart = time;
+      timeEnd = false;
+    } else {
+      const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
+      timeStart = time[0];
+      timeEnd = time[1];
+    }
     return {
       taxon: '',
-      timeStart: this.getValidDate(time[0]),
-      timeEnd: this.getValidDate(time[1]),
+      timeStart: this.getValidDate(timeStart),
+      timeEnd: this.getValidDate(timeEnd),
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
         query.informalTaxonGroupId[0] : '',
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
@@ -389,10 +399,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   protected formQueryToSearchQuery(formQuery: ObservationFormQuery) {
-    const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
     const query = this.query;
+    if (isRelativeDate(formQuery.timeStart) && !formQuery.timeEnd) {
+      query.time = [formQuery.timeStart];
+    } else {
+      const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
+      query.time = time.length > 0 ? [time] : undefined;
+    }
 
-    query.time = time.length > 0 ? [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
     if (formQuery.allInvasiveSpecies) {

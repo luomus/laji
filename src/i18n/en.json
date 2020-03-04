@@ -783,6 +783,8 @@
   "observation.form.team": "Observer name",
   "observation.form.time": "Time of observation",
   "observation.form.thisYear": "This year",
+  "observation.form.since.1": "Starting",
+  "observation.form.since.2": "days ago",
   "observation.form.title": "Parameters",
   "observation.form.typeOfOccurrenceId": "Type of occurrence",
   "observation.form.typeSpecimen": "Only type specimens",

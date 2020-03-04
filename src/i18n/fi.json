@@ -924,6 +924,8 @@
   "observation.form.target": "Lajin nimi / Taksonin nimi",
   "observation.form.team": "Havainnoijan nimi",
   "observation.form.thisYear": "Tänä vuonna",
+  "observation.form.since.1": "Alkaen",
+  "observation.form.since.2": "päivää sitten",
   "observation.form.time": "Havaintoaika",
   "observation.form.title": "Hakuehdot",
   "observation.form.typeOfOccurrenceId": "Asema Suomessa",
