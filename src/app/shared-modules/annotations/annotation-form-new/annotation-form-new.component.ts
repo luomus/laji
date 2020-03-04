@@ -47,7 +47,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   @Input() annotation: Annotation;
   @Input() identifying: boolean;
   @Input() expert: boolean;
-  @Input() visible;
+  @Input() visible: boolean;
+  @Input() hidden: boolean;
   @Input() unit: any;
   @Output() success = new EventEmitter<Annotation>();
   @Output() loading = new EventEmitter<boolean>();
@@ -316,7 +317,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         annotation => {
           this.annotation = annotation;
           this.success.emit(annotation);
-          this.loading.emit(false);
           this.sending = false;
           this.formAnnotation.control.markAsPristine();
         },

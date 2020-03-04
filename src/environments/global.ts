@@ -170,6 +170,16 @@ export const Global = {
       quality: 'MMAN.typeInfo',
       type: 'self'
     },
+    'MMAN.19': {
+      value: 'MMAN.19',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.20': {
+      value: 'MMAN.20',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
     'MMAN.22': {
       value: 'MMAN.22',
       quality: 'MMAN.typeCheck',
@@ -192,6 +202,11 @@ export const Global = {
     },
     'MMAN.26': {
       value: 'MMAN.26',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
+    'MMAN.28': {
+      value: 'MMAN.28',
       quality: 'MMAN.typeCheck',
       type: 'check'
     },
@@ -219,6 +234,16 @@ export const Global = {
       value: 'MMAN.33',
       quality: 'MMAN.typeInfo',
       type: 'info'
+    },
+    'MMAN.50': {
+      value: 'MMAN.50',
+      quality: 'MMAN.typeAdmin',
+      type: 'admin'
+    },
+    'MMAN.51': {
+      value: 'MMAN.51',
+      quality: 'MMAN.typeAdmin',
+      type: 'admin'
     }
   },
   limit: {

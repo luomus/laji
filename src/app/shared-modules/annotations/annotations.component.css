@@ -2,9 +2,21 @@ a {
   cursor: pointer;
 }
 
-.annotation {
+.annotations-normal-document {
+  background-color: #efefef;
+  border: 1px solid #d6d6d6;
   border-radius: 5px;
+  padding: 5px;
 }
+
+.annotation {
+  padding-bottom: 15px;
+}
+
+.border {
+  border-bottom: 1px solid #b2b2b2;
+}
+
 .close {
   font-size: 16px;
 }

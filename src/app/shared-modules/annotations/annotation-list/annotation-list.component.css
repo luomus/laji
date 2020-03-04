@@ -95,3 +95,16 @@
   top:2px
 }
 
+.removed-tags .tag {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.removed-tags .tag span {
+  text-decoration: line-through;
+}
+
+.content {
+  margin-top: 8px;
+}
+

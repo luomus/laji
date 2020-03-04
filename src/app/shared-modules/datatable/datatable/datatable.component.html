@@ -29,6 +29,7 @@
     (sort)="sortChange.emit($event)"
     (reorder)="reorder.emit($event)"
     (resize)="onResize($event)"
+    (select)="select.emit($event)"
     [rowClass]="_getRowClass.bind(this)"
     (activate)="onRowSelect($event)"
     [selected]="selected"

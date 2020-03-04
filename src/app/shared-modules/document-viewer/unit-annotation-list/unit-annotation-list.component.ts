@@ -1,10 +1,13 @@
-import {map} from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {map, switchMap } from 'rxjs/operators';
+import { ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, timer, pipe } from 'rxjs';
 import { Annotation } from '../../../shared/model/Annotation';
+import { PagedResult } from '../../../shared/model/PagedResult';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 
 @Component({
   selector: 'laji-unit-annotation-list',
@@ -29,14 +32,15 @@ export class UnitAnnotationListComponent implements OnInit {
   annotationClass$: Observable<string>;
   annotationIcon: string;
   annotations: Annotation[] = [];
-
   unitID: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
   annotationClass = Annotation.AnnotationClassEnum;
 
   constructor(
     private toQname: ToQNamePipe,
-    private annotationService: AnnotationService
+    private annotationService: AnnotationService,
+    private warehouseApi: WarehouseApi,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -70,7 +74,7 @@ export class UnitAnnotationListComponent implements OnInit {
         annotations.push(annotation);
       }
       this.unit.annotations = annotations;
-      this.annotationPending.emit(true);
+      // this.annotationPending.emit(true);
     }
     this.annotationClass$ = this.annotationService
       .getAnnotationClassInEffect(annotations).pipe(
@@ -104,5 +108,7 @@ export class UnitAnnotationListComponent implements OnInit {
   hideAnnotations() {
     this.annotationVisible = false;
   }
+
+
 
 }

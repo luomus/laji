@@ -34,6 +34,10 @@ import { DatasetsComponent } from './datasets/datasets.component';
 import { ThemeImportComponent } from './common/theme-import/theme-import.component';
 import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-spreadsheet/theme-generate-spreadsheet.component';
 import { DatasetsGuard } from './datasets/datasets.guard';
+import { KerttuComponent } from './kerttu/kerttu.component';
+import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
+import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
+import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -452,8 +456,9 @@ const routes: Routes = [
     path: 'lolife',
     component: MonitoringThemeBaseComponent,
     children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {path: '', pathMatch: 'full', redirectTo: 'about'},
+      {path: 'about', pathMatch: 'full', component: InstructionsComponent},
+      {path: 'instructions', pathMatch: 'full', component: LolifeInstructionsComponent},
       {
         path: 'places',
         redirectTo: 'form',
@@ -493,6 +498,20 @@ const routes: Routes = [
       formID: Global.forms.lolifeForm,
       noFormPermissionRedirect: '/theme/lolife',
       title: 'LOLIFE',
+      navLinks: {
+        about: {
+          routerLink: ['about'],
+          label: 'theme.lolife.about'
+        },
+        form: {
+          label: 'theme.lolife.places'
+        },
+        ownSubmissions: {
+          label: 'theme.lolife.ownSubmissions',
+          adminLabel: 'theme.lolife.ownSubmissions.admin'
+        }
+      },
+      navLinksOrder: ['about', 'instructions', 'form', 'ownSubmissions', 'formPermissions'],
     }
   },
   {
@@ -698,6 +717,18 @@ const routes: Routes = [
         pathMatch: 'full',
         redirectTo: `places/${Global.collections.waterbird}/${Global.forms.waterbirdJuvenileForm}`
       }
+    ]
+  },
+  {
+    path: 'kerttu',
+    component: KerttuComponent,
+    data: {
+      title: 'Kerttu'
+    },
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
+      {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent}
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

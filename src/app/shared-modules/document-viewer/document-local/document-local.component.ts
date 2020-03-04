@@ -123,22 +123,22 @@ export class DocumentLocalComponent implements OnChanges {
   private getForm(formId: string): Observable<any> {
     return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
       .pipe(tap(form => {
-        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications']);
+        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications'], (form.namedPlaceOptions || {}).documentViewerForcedFields);
       }));
   }
 
-  private setAllFields(fields: any[], uiSchema: any, queue: string[]) {
-    const res = this.processFields(fields, uiSchema, queue.length > 1 ? queue[1] : undefined);
+  private setAllFields(fields: any[], uiSchema: any, queue: string[], forcedFields?: string[]) {
+    const res = this.processFields(fields, uiSchema, queue.length > 1 ? queue[1] : undefined, forcedFields);
     this.fields[queue[0]] = res.fields;
 
     const next = res.next;
 
     if (next) {
-      this.setAllFields(next.fields, uiSchema && uiSchema[next.name] ? uiSchema[next.name].items : undefined, queue.slice(1));
+      this.setAllFields(next.fields, uiSchema && uiSchema[next.name] ? uiSchema[next.name].items : undefined, queue.slice(1), forcedFields);
     }
   }
 
-  private processFields(fields: any[], uiSchema: any, nextName?: string) {
+  private processFields(fields: any[], uiSchema: any, nextName?: string, forcedFields: string[] = []) {
     let next;
 
     fields = fields.reduce((arr, field) => {
@@ -147,12 +147,18 @@ export class DocumentLocalComponent implements OnChanges {
         return arr;
       }
 
+      let add = true;
+
       if (field.name === 'geometry' || field.name === 'images') {
-        return arr;
+        add = false;
       }
 
       if (uiSchema && uiSchema[field.name] && (
         uiSchema[field.name]['ui:field'] === 'HiddenField' || uiSchema[field.name]['ui:widget'] === 'HiddenWidget')) {
+        add = false;
+      }
+
+      if (!add && forcedFields.indexOf(field.name) === -1) {
         return arr;
       }
 

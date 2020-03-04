@@ -76,6 +76,11 @@ import { ThemeImportComponent } from './common/theme-import/theme-import.compone
 import { SpreadsheetModule } from '../shared-modules/spreadsheet/spreadsheet.module';
 import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-spreadsheet/theme-generate-spreadsheet.component';
 import { GenericInstructionsComponent } from './common/instructions/generic-instructions/generic-instructions.component';
+import { KerttuComponent } from './kerttu/kerttu.component';
+import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
+import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.component';
+import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
+import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 
 /* tslint:enable:max-line-length */
 
@@ -154,6 +159,11 @@ import { GenericInstructionsComponent } from './common/instructions/generic-inst
     ThemeImportComponent,
     ThemeGenerateSpreadsheetComponent,
     GenericInstructionsComponent,
+    KerttuComponent,
+    KerttuInstructionsComponent,
+    ExpertiseFormComponent,
+    LolifeInstructionsComponent,
+    KerttuMainViewComponent
   ],
   providers: [
     ResultService,

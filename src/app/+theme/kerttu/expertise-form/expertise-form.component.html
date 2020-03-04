@@ -1,0 +1,14 @@
+<div [innerHTML]="introText"></div>
+<laji-datatable
+  [selectionType]="'checkbox'"
+  (select)='onSelect($event)'
+  [columns]="columns"
+  [rows]="taxonList$ | async"
+  [height]="'calc(70vh - 30px)'"
+>
+</laji-datatable>
+<div>
+  <button class="btn btn-success" (click)="onSave()">Tallenna</button>
+  <button class="btn btn-warning">Välitallenna</button>
+</div>
+
