@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
-import { IFormField, LEVEL_DOCUMENT, VALUE_IGNORE } from '../model/excel';
+import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 import { GeneratorService } from './generator.service';
@@ -90,28 +90,15 @@ export class SpreadsheetService {
     this.hiddenFields[formID] = fields;
   }
 
-  formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: IFormField} {
-    const result = {};
-    this.formToFlatFields(form, addIgnore)
-      .map(field => {
-        result[field.key] = field;
-      });
-    return result;
+  formToFlatFieldsLookUp(form: any, base: IFormField[] = []): {[key: string]: IFormField} {
+    return this.formToFlatFields(form, base).reduce((result, field) => {
+      result[field.key] = field;
+      return result;
+    }, {});
   }
 
-  formToFlatFields(form: any, addIgnore = false): IFormField[] {
-    const result: IFormField[] = [];
-    if (addIgnore) {
-      result.push({
-        parent: '',
-        required: false,
-        isArray: false,
-        type: 'string',
-        key: VALUE_IGNORE,
-        label: 'ignore',
-        fullLabel: 'ignore'
-      });
-    }
+  formToFlatFields(form: any, base: IFormField[] = []): IFormField[] {
+    const result: IFormField[] = [...base];
     if (form && form.schema && form.schema.properties) {
       this.parserFields(form.schema, {properties: form.validators}, result, '', LEVEL_DOCUMENT, this.findUnitSubGroups(form.uiSchema));
     }

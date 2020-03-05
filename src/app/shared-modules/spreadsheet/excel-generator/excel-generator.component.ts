@@ -5,6 +5,7 @@ import { IFormField } from '../model/excel';
 import { SpreadsheetService } from '../service/spreadsheet.service';
 import { GeneratorService } from '../service/generator.service';
 import { environment } from '../../../../environments/environment';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-excel-generator',
@@ -13,6 +14,8 @@ import { environment } from '../../../../environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExcelGeneratorComponent implements OnInit {
+
+  @Input() forms: string[] = environment.massForms || [];
 
   type: 'ods'|'xlsx' = 'xlsx';
   formID = '';
@@ -23,8 +26,7 @@ export class ExcelGeneratorComponent implements OnInit {
   useLabels = true;
   generating = false;
 
-  @Input() forms: string[] = environment.massForms || [];
-  @Input() addSecondaryFields = false;
+  private isSecondary = false;
 
   constructor(
     private formService: FormService,
@@ -47,9 +49,18 @@ export class ExcelGeneratorComponent implements OnInit {
     this.formID = event;
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe((form: any) => {
+        this.isSecondary = FormService.hasFeature(form, Form.Feature.SecondaryCopy);
         this.formTitle = form.title;
         this.parents = [];
-        this.fields = this.spreadSheetService.formToFlatFields(form);
+        this.fields = this.spreadSheetService.formToFlatFields(form, this.isSecondary ? [{
+          parent: 'document',
+          required: true,
+          isArray: false,
+          type: 'string',
+          key: 'id',
+          label: 'ID',
+          fullLabel: 'id'
+        }] : []);
         this.fields.map(field => {
           if (this.parents.indexOf(field.parent) === -1) {
             this.parents.push(field.parent);

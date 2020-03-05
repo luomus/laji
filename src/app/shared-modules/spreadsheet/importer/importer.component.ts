@@ -4,7 +4,7 @@ import { from as ObservableFrom, Observable, of, of as ObservableOf } from 'rxjs
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
-import { IFormField } from '../model/excel';
+import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
@@ -165,7 +165,15 @@ export class ImporterComponent implements OnInit {
           this.data = data;
         }
         this.excludedFromCopy = form.excludeFromCopy || [];
-        this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, true);
+        this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, [{
+          parent: '',
+          required: false,
+          isArray: false,
+          type: 'string',
+          key: VALUE_IGNORE,
+          label: 'ignore',
+          fullLabel: 'ignore'
+        }]);
         this.colMap = this.spreadSheetService.getColMapFromSheet(this.header, this.fields);
         this.origColMap = JSON.parse(JSON.stringify(this.colMap));
 
