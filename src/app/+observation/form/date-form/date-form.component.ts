@@ -28,6 +28,7 @@ export class DateFormComponent implements OnInit, OnDestroy {
   @Output() formQueryChange = new EventEmitter<void>();
   @Output() queryChange = new EventEmitter<void>();
   @Output() seachQueryChange = new EventEmitter<any>();
+  @Output() updateTime = new EventEmitter<any>();
 
   // Datepicker component emits a value change event every time it receives an update
   // with this hack we ignore value change events that were initiated by xDaysAgo
@@ -90,24 +91,8 @@ export class DateFormComponent implements OnInit, OnDestroy {
     this.seachQueryChange.next([field, value]);
   }
 
-  updateTime(dates, startTarget?: 'time');
-  updateTime(dates, startTarget: keyof WarehouseQueryInterface, endTarget: keyof WarehouseQueryInterface );
-  updateTime(dates, startTarget: 'time' | keyof WarehouseQueryInterface = 'time', endTarget?: keyof WarehouseQueryInterface ) {
-    if (dates === 365) {
-      const today = new Date();
-      const oneJan = new Date(today.getFullYear(), 0, 1);
-      dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
-    }
-    const now = moment();
-    if (startTarget === 'time') {
-      this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.formQuery.timeEnd = '';
-      this.onFormQueryChange();
-    } else {
-      this.query[startTarget] = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.query[endTarget] = undefined;
-      this.onQueryChange();
-    }
+  onUpdateTime(...args) {
+    this.updateTime.emit(args);
   }
 
   ngOnDestroy() {
