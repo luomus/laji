@@ -25,7 +25,7 @@
           </ng-template>
           <div class="tags" *ngIf="annotation.addedTags">
            <div class="added-tags" *ngIf="annotation.addedTags.length > 0">
-             <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | warehouse">
+             <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags.indexOf(addedTag) !== -1 }">
                <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
                   <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[addedTag | warehouse ].type }}" [ngClass]="{'': effectiveTags.indexOf(addedTag) !== -1 , 'notEffective': effectiveTags.indexOf(addedTag) === -1}" >
                     <!--<span class="annotation-star {{ annotationTagsObservation[addedTag | toQName].quality }}"></span>-->
