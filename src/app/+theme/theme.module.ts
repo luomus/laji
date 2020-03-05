@@ -81,6 +81,7 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
 import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
+import { KerttuApi } from './kerttu/kerttu-api';
 import { KerttuFacade } from './kerttu/kerttu.facade';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 
@@ -172,6 +173,7 @@ import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
     ResultService,
     QualityService,
     WbcResultService,
+    KerttuApi,
     KerttuFacade,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]

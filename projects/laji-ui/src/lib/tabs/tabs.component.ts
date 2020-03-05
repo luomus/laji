@@ -31,7 +31,14 @@ import { Subject } from 'rxjs';
 export class TabsComponent implements AfterContentInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
-  @ContentChildren(TabComponent) tabComponents !: QueryList<TabComponent>;
+  private _tabComponents: QueryList<TabComponent>;
+  @ContentChildren(TabComponent) set tabComponents(tabs: QueryList<TabComponent>) {
+    this._tabComponents = tabs;
+    this.reload();
+  }
+  get tabComponents(): QueryList<TabComponent> {
+    return this._tabComponents;
+  }
 
   @Output() select = new EventEmitter<number>();
 
@@ -40,15 +47,6 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterContentInit(): void {
-    const tabs = this.tabComponents.toArray();
-    if (tabs[this.selectedIndex]) {
-      tabs[this.selectedIndex].active = true;
-    }
-    tabs.forEach((tab) => {
-      tab.inputChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-        this.cdr.markForCheck();
-      });
-    });
   }
 
   @Input() set selectedIndex(idx) {
@@ -70,13 +68,30 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
   }
 
   updateActiveComponents = oldIdx => newIdx => {
-      this.tabComponents.toArray()[oldIdx].active = false;
-      this.tabComponents.toArray()[newIdx].active = true;
+    const oldTab = this.tabComponents.toArray()[oldIdx];
+    const newTab = this.tabComponents.toArray()[newIdx];
+    if (oldTab && newTab) {
+      oldTab.active = false;
+      newTab.active = true;
       this.cdr.markForCheck();
+    }
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  reload() {
+    this.unsubscribe$.next();
+    const tabs = this.tabComponents.toArray();
+    if (tabs[this.selectedIndex]) {
+      tabs[this.selectedIndex].active = true;
+    }
+    tabs.forEach((tab) => {
+      tab.inputChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+        this.cdr.markForCheck();
+      });
+    });
   }
 }

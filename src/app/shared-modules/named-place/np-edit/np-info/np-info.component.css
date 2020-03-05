@@ -1,5 +1,8 @@
+.np-info-container {
+  padding: 25px;
+}
+
 .np-info {
-  margin-bottom: 3px;
 }
 
 .np-info legend {
@@ -26,15 +29,6 @@ laji-np-info-map {
 .button-container {
   display: flex;
   margin: 0 0 6px -3px;
-}
-
-.use-button {
-  white-space: normal;
-  margin: 6px 9px 6px 0;
-}
-
-#info-box {
-  padding: 10px 0 7px 0;
 }
 
 #btn-container {
