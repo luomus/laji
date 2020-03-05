@@ -19,6 +19,7 @@ export class DatasetsComponent {
 
   readonly forms$: Observable<Form.List[]>;
   instructions: MultiLanguage;
+  features = Form.Feature;
 
   constructor(
     private formService: FormService,

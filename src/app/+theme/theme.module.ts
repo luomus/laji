@@ -82,6 +82,7 @@ import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.c
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 import { KerttuFacade } from './kerttu/kerttu.facade';
+import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 
 /* tslint:enable:max-line-length */
 
@@ -164,7 +165,8 @@ import { KerttuFacade } from './kerttu/kerttu.facade';
     KerttuInstructionsComponent,
     ExpertiseFormComponent,
     LolifeInstructionsComponent,
-    KerttuMainViewComponent
+    KerttuMainViewComponent,
+    FormHasFeaturePipe
   ],
   providers: [
     ResultService,
