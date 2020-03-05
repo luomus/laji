@@ -58,7 +58,7 @@ import { SpreadsheetFacade } from './spreadsheet.facade';
     CanSplitToPipe,
     UserMappingButtonComponent
   ],
-  exports: [ImporterComponent, ExcelGeneratorComponent],
+    exports: [ImporterComponent, ExcelGeneratorComponent, StepperComponent],
   imports: [
     CommonModule,
     SharedModule,
