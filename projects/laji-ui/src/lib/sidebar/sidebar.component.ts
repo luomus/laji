@@ -101,6 +101,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.checkScreenWidth();
     this.preCheckScreenWidth = false;
+    this.cdr.detectChanges();
     fromEvent(window, 'resize').pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),

@@ -35,7 +35,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   }
   set namedPlace(np: any) {
     this._namedPlace = np;
-    this.namedPlaceHeader = this.getNamedPlaceHeader(this._namedPlace);
+    this.namedPlaceHeader = this._namedPlace ? this.getNamedPlaceHeader(this._namedPlace) : [];
   }
 
   form: any;
@@ -98,7 +98,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     return moment(date).format('DD.MM.YYYY');
   }
 
-  getNamedPlaceHeader(namedPlace) {
+  getNamedPlaceHeader(namedPlace): Observable<string>[] {
     const fields: [string, ((value: string) => Observable<string>)?][] = [
       ['alternativeIDs'], ['name'], ['municipality', val => this.areaService.getName(val, this.translate.currentLang)]
     ];
