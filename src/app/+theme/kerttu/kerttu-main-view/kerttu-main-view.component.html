@@ -1,11 +1,26 @@
 <div class="container-fluid" *ngIf="vm$ | async as vm">
-  <h1>Kerttu - Kerro tunnistuksesi</h1>
-  <laji-stepper [state]="vm.step"
-                [mapping]="mapping"
-                [steps]="steps"
-                (activate)="activate($event)"
-  ></laji-stepper>
-  <laji-expertise-form
-    [introText]="'theme.kerttu.expertise.intro' | translate"
-  ></laji-expertise-form>
+  <ng-container *ngIf="vm.step != null">
+    <h1>Kerttu - Kerro tunnistuksesi</h1>
+    <laji-stepper [state]="vm.step"
+                  [mapping]="mapping"
+                  [steps]="steps"
+                  (activate)="activate($event)"
+    ></laji-stepper>
+    <laji-expertise-form
+      *ngIf="vm.step === step.fillExpertise"
+      [introText]="'theme.kerttu.expertise.intro' | translate"
+    ></laji-expertise-form>
+    <div *ngIf="vm.step === step.annotateRecordings">
+      TODO
+    </div>
+    <div *ngIf="vm.step === step.done">
+      Valmis!
+    </div>
+    <div class="pull-right">
+      <button class="btn btn-warning">Välitallenna</button>
+      <button class="btn btn-success" style="margin-left: 15px" (click)="saveAndGoToNext(vm.step)">
+        Tallenna ja siirry seuraavaan kohtaan
+      </button>
+    </div>
+  </ng-container>
 </div>

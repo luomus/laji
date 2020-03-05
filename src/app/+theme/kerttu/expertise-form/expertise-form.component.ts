@@ -1,12 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {map, switchMap} from 'rxjs/operators';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {map} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
 import {Taxonomy} from '../../../shared/model/Taxonomy';
 import {DatatableColumn} from '../../../shared-modules/datatable/model/datatable-column';
-import {UserService} from '../../../shared/service/user.service';
-import {PersonApi} from '../../../shared/api/PersonApi';
-import {Profile} from '../../../shared/model/Profile';
 
 @Component({
   selector: 'laji-expertise-form',
@@ -40,12 +37,10 @@ export class ExpertiseFormComponent implements OnInit {
   ];
   taxonList$: Observable<Taxonomy[]>;
 
-  private selectedTaxonIds: string[];
+  @Output() taxonIdSelect = new EventEmitter<string[]>();
 
   constructor(
-    private taxonomyService: TaxonomyApi,
-    private userService: UserService,
-    private personService: PersonApi
+    private taxonomyService: TaxonomyApi
   ) { }
 
   ngOnInit() {
@@ -78,18 +73,6 @@ export class ExpertiseFormComponent implements OnInit {
   }
 
   onSelect(event) {
-    this.selectedTaxonIds = event.selected.map(taxon => taxon.id);
+    this.taxonIdSelect.emit(event.selected.map(taxon => taxon.id));
   }
-
-  onSave() {
-    this.personService.personFindProfileByToken(this.userService.getToken()).pipe(
-      switchMap((profile: Profile) => {
-        // something here
-        return this.personService.personUpdateProfileByToken(profile, this.userService.getToken());
-      })
-    ).subscribe(() => {
-
-    });
-  }
-
 }
