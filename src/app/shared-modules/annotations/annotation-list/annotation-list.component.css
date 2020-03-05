@@ -66,6 +66,7 @@
 .tags .added-tags div {
   display: inline-block;
   margin-right: 10px;
+  position: relative;
 }
 
 .removed-tags {
@@ -106,5 +107,23 @@
 
 .content {
   margin-top: 8px;
+}
+
+.notEffective{
+  opacity: 0.5;
+}
+
+.not-effective-tag {
+  display: block;
+  position: absolute;
+  font-size: 10px;
+  left: 50%;
+  transform: translate(-6%);
+  bottom: -6px;
+  width: 100%;
+  text-align: center;
+  margin-right: 10px;
+  left: 0px;
+  color: red;
 }
 

@@ -57,6 +57,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   subscribeRefreshedAnnotations: Subscription;
   subscribeRefreshedAnnotations1: Subscription;
   query: WarehouseQueryInterface = {};
+  activeTags: Annotation[];
 
   constructor(
     private annotationService: AnnotationService,
@@ -71,6 +72,10 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     this.findRendomKey1();
     if (this.identifying) {
       this.adding = true;
+    }
+
+    if (this.unit && this.unit.interpretations && this.unit.interpretations.effectiveTags) {
+      this.activeTags = this.unit.interpretations.effectiveTags;
     }
   }
 
