@@ -17,6 +17,7 @@ export class AnnotationDataObservationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.unit)
   }
 
 }

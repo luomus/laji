@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnDestroy, OnChanges,
-ChangeDetectionStrategy} from '@angular/core';
+ChangeDetectionStrategy, OnInit, ChangeDetectorRef} from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Global } from '../../../../environments/global';
@@ -21,7 +21,7 @@ import { Global } from '../../../../environments/global';
 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AnnotationListComponent implements OnDestroy, OnChanges {
+export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() annotations: Annotation[];
   @Input() personID: string;
@@ -36,12 +36,23 @@ export class AnnotationListComponent implements OnDestroy, OnChanges {
   annotationClass = Annotation.AnnotationClassEnum;
   changingLocale = false;
   lastFalse: number;
+  hasNextTrue: boolean;
   open: boolean[] = undefined;
 
-  constructor() { }
+  constructor(
+    private cd: ChangeDetectorRef
+  ) { }
+
+  ngOnInit() {
+  }
 
   ngOnChanges() {
     this.lastFalse = this.findLastIndex(this.annotations.reverse(), 'valid', false);
+    if (this.annotations.reverse()[this.lastFalse + 1] && this.annotations.reverse()[this.lastFalse + 1].valid) {
+      this.hasNextTrue = true;
+    } else {
+      this.hasNextTrue = false;
+    }
     this.open = [...Array(this.annotations.length)].fill(false);
   }
 
@@ -62,7 +73,7 @@ export class AnnotationListComponent implements OnDestroy, OnChanges {
 
   findLastIndex(annotation, field, value) {
     annotation.sort((a, b) => (a.created > b.created) ? 1 : -1);
-    const index = annotation.slice().reverse().findIndex(x => x[field] === value);
+    const index = annotation.slice().reverse().findIndex(x => (x[field] === value && !x['deleted']));
     const count = annotation.length - 1;
     const finalIndex = index >= 0 ? count - index : index;
     return finalIndex;
