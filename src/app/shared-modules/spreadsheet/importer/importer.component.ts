@@ -22,6 +22,7 @@ import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facad
 import { FileService, instanceOfFileLoad } from '../service/file.service';
 import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
 import { environment } from '../../../../environments/environment';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-importer',
@@ -140,6 +141,16 @@ export class ImporterComponent implements OnInit {
     }
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe(form => {
+        const baseFields = [{
+          parent: '',
+          required: false,
+          isArray: false,
+          type: 'string',
+          key: VALUE_IGNORE,
+          label: 'ignore',
+          fullLabel: 'ignore'
+        }];
+
         this.form = form;
         this.combineOptions = this.excelToolService.getCombineOptions(form);
         const data = this.spreadSheetService.loadSheet(this.bstr);
@@ -164,16 +175,12 @@ export class ImporterComponent implements OnInit {
           this.header = data.shift();
           this.data = data;
         }
+        if (FormService.hasFeature(this.form, Form.Feature.SecondaryCopy)) {
+          baseFields.push(SpreadsheetService.IdField);
+        }
+
         this.excludedFromCopy = form.excludeFromCopy || [];
-        this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, [{
-          parent: '',
-          required: false,
-          isArray: false,
-          type: 'string',
-          key: VALUE_IGNORE,
-          label: 'ignore',
-          fullLabel: 'ignore'
-        }]);
+        this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, baseFields);
         this.colMap = this.spreadSheetService.getColMapFromSheet(this.header, this.fields);
         this.origColMap = JSON.parse(JSON.stringify(this.colMap));
 

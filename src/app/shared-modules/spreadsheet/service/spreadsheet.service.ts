@@ -21,6 +21,16 @@ interface IColCombine {
 @Injectable()
 export class SpreadsheetService {
 
+  public static readonly IdField = {
+    parent: 'document',
+    required: true,
+    isArray: false,
+    type: 'string',
+    key: 'id',
+    label: 'ID',
+    fullLabel: 'id'
+  };
+
   public static readonly nameSeparator = ' - ';
 
   private static groupId = 1;
