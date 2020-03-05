@@ -1,0 +1,22 @@
+select {
+  color: #000;
+}
+.field-item {
+  display: flex;
+  flex-direction: row;
+  .btn {
+    color: #333;
+  }
+  .move {
+    min-width: 80px;
+    text-align: right;
+    span {
+      padding: 0 0.3em;
+      color: #fff;
+    }
+  }
+}
+
+.move {
+  color: #222;
+}

@@ -1,0 +1,24 @@
+<div class="field-item">
+  <div class="fill-space">
+    {{ field.label || field.key }} <span class="required" *ngIf="field.required">*</span>
+  </div>
+  <ng-container *ngIf="field | canSplitTo:'date'">
+    <select [name]="field.key + '_split'" (click)="onSplitClick($event)" class="pull-right" (change)="onSplitChange(field, $event.target.value)">
+      <option value="">{{ 'excel.import.split.no' | translate }}</option>
+      <option value="date">{{ 'excel.import.split.yes' | translate }}</option>
+    </select>
+  </ng-container>
+  <ng-container *ngIf="field | canSplitTo:'coordinate'">
+    <select [name]="field.key + '_split'" (click)="onSplitClick($event)" class="pull-right" (change)="onSplitChange(field, $event.target.value)">
+      <option value="">{{ 'excel.import.split.no' | translate }}</option>
+      <option value="coordinate">{{ 'excel.import.split.yes' | translate }}</option>
+    </select>
+  </ng-container>
+  <div class="move">
+    <ng-container *ngIf="idx > -1">
+      <button (click)="moveFieldDown(field, $event)" [disabled]="idx == 0" class="btn btn-xs">&#x25C0;</button>
+      <span>{{ idx + 1 }}.</span>
+      <button (click)="moveFieldUp(field, $event)" [disabled]="idx == selected.length - 1" class="btn btn-xs">&#x25B6;</button>
+    </ng-container>
+  </div>
+</div>

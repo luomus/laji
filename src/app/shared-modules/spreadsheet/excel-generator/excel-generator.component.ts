@@ -43,6 +43,7 @@ export class ExcelGeneratorComponent implements OnInit {
   }
 
   formSelected(event) {
+    const selected: string[] = [];
     this.formID = event;
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe((form: any) => {
@@ -53,7 +54,11 @@ export class ExcelGeneratorComponent implements OnInit {
           if (this.parents.indexOf(field.parent) === -1) {
             this.parents.push(field.parent);
           }
+          if (field.required) {
+            selected.push(field.key);
+          }
         });
+        this.selected = selected;
         this.cdr.detectChanges();
       });
   }
@@ -89,7 +94,7 @@ export class ExcelGeneratorComponent implements OnInit {
     this.generatorService.generate(
       this.formID,
       'Vihko - ' + this.formTitle + ' (' + this.formID + ')',
-      this.fields.filter(field => this.selected.indexOf(field.key) > -1 || field.required),
+      this.selected.map(field => this.fields.find(f => f.key === field)),
       this.useLabels,
       this.type,
       () => {
