@@ -14,10 +14,16 @@ export class AnnotationDataObservationComponent implements OnInit {
   @Input() collectionId: string;
   @Input() hideTooltips = false;
 
+  occurrence: any;
+
   constructor() { }
 
   ngOnInit() {
-    console.log(this.unit)
+    this.occurrence = this.unit.annotations[0].occurrenceAtTimeOfAnnotation;
+  }
+
+  onTaxonLinkClick(event: MouseEvent) {
+    event.stopPropagation();
   }
 
 }
