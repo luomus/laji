@@ -1,4 +1,11 @@
-<h1>Kerttu - Kerro tunnistuksesi</h1>
-<laji-expertise-form
-  [introText]="'theme.kerttu.expertise.intro' | translate"
-></laji-expertise-form>
+<div class="container-fluid" *ngIf="vm$ | async as vm">
+  <h1>Kerttu - Kerro tunnistuksesi</h1>
+  <laji-stepper [state]="vm.step"
+                [mapping]="mapping"
+                [steps]="steps"
+                (activate)="activate($event)"
+  ></laji-stepper>
+  <laji-expertise-form
+    [introText]="'theme.kerttu.expertise.intro' | translate"
+  ></laji-expertise-form>
+</div>

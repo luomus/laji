@@ -81,6 +81,7 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
 import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
+import { KerttuFacade } from './kerttu/kerttu.facade';
 
 /* tslint:enable:max-line-length */
 
@@ -169,6 +170,7 @@ import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-v
     ResultService,
     QualityService,
     WbcResultService,
+    KerttuFacade,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })
