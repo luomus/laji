@@ -1,10 +1,12 @@
 import {
   Component, ContentChildren, AfterViewInit, QueryList, ChangeDetectorRef,
-  ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, AfterContentInit
+  ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, AfterContentInit, OnDestroy
 } from '@angular/core';
 import { TabComponent } from './tab/tab.component';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { color } from '../vars';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'lu-tabs',
@@ -26,7 +28,9 @@ import { color } from '../vars';
     ])
   ]
 })
-export class TabsComponent implements AfterContentInit {
+export class TabsComponent implements AfterContentInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
+
   @ContentChildren(TabComponent) tabComponents !: QueryList<TabComponent>;
 
   @Output() select = new EventEmitter<number>();
@@ -40,6 +44,11 @@ export class TabsComponent implements AfterContentInit {
     if (tabs[this.selectedIndex]) {
       tabs[this.selectedIndex].active = true;
     }
+    tabs.forEach((tab) => {
+      tab.inputChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+        this.cdr.markForCheck();
+      });
+    });
   }
 
   @Input() set selectedIndex(idx) {
@@ -64,5 +73,10 @@ export class TabsComponent implements AfterContentInit {
       this.tabComponents.toArray()[oldIdx].active = false;
       this.tabComponents.toArray()[newIdx].active = true;
       this.cdr.markForCheck();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
