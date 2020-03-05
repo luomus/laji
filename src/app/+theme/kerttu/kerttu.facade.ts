@@ -1,5 +1,5 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {
   distinctUntilChanged,
   map,
@@ -18,11 +18,11 @@ export interface IKerttuState {
 }
 
 let _state: IKerttuState = {
-  step: Step.fillExpertise
+  step: undefined
 };
 
 @Injectable()
-export class KerttuFacade implements OnDestroy {
+export class KerttuFacade {
 
   private readonly store  = new BehaviorSubject<IKerttuState>(_state);
   readonly state$ = this.store.asObservable();
@@ -33,18 +33,14 @@ export class KerttuFacade implements OnDestroy {
     step: this.step$
   });
 
-  constructor() {}
-
-  ngOnDestroy(): void {
-
-  }
+  constructor() { }
 
   goToStep(step: Step) {
     this.updateState({..._state, step});
   }
 
   clear() {
-    this.updateState({..._state, step: Step.fillExpertise});
+    this.updateState({..._state, step: undefined});
   }
 
   private updateState(state: IKerttuState) {

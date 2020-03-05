@@ -1,8 +1,6 @@
 <div class="annotations">
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="annotation" [@newAnnotation]="annotation.id === lastAnnotationAddedId ? 'last' : '' ">
-      {{ i }}
-      <div *ngIf="i === lastFalse">ciao</div>
       <div class="deleted" *ngIf="annotation.deleted">
         <span>{{ 'annotation.deleted' | translate }}</span>
       </div>
