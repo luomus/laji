@@ -1,10 +1,12 @@
 import {
   Component, ContentChildren, AfterViewInit, QueryList, ChangeDetectorRef,
-  ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, AfterContentInit
+  ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, AfterContentInit, OnDestroy
 } from '@angular/core';
 import { TabComponent } from './tab/tab.component';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { color } from '../vars';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'lu-tabs',
@@ -26,8 +28,17 @@ import { color } from '../vars';
     ])
   ]
 })
-export class TabsComponent implements AfterContentInit {
-  @ContentChildren(TabComponent) tabComponents !: QueryList<TabComponent>;
+export class TabsComponent implements AfterContentInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
+
+  private _tabComponents: QueryList<TabComponent>;
+  @ContentChildren(TabComponent) set tabComponents(tabs: QueryList<TabComponent>) {
+    this._tabComponents = tabs;
+    this.reload();
+  }
+  get tabComponents(): QueryList<TabComponent> {
+    return this._tabComponents;
+  }
 
   @Output() select = new EventEmitter<number>();
 
@@ -36,10 +47,6 @@ export class TabsComponent implements AfterContentInit {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterContentInit(): void {
-    const tabs = this.tabComponents.toArray();
-    if (tabs[this.selectedIndex]) {
-      tabs[this.selectedIndex].active = true;
-    }
   }
 
   @Input() set selectedIndex(idx) {
@@ -61,8 +68,30 @@ export class TabsComponent implements AfterContentInit {
   }
 
   updateActiveComponents = oldIdx => newIdx => {
-      this.tabComponents.toArray()[oldIdx].active = false;
-      this.tabComponents.toArray()[newIdx].active = true;
+    const oldTab = this.tabComponents.toArray()[oldIdx];
+    const newTab = this.tabComponents.toArray()[newIdx];
+    if (oldTab && newTab) {
+      oldTab.active = false;
+      newTab.active = true;
       this.cdr.markForCheck();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  reload() {
+    this.unsubscribe$.next();
+    const tabs = this.tabComponents.toArray();
+    if (tabs[this.selectedIndex]) {
+      tabs[this.selectedIndex].active = true;
+    }
+    tabs.forEach((tab) => {
+      tab.inputChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+        this.cdr.markForCheck();
+      });
+    });
   }
 }
