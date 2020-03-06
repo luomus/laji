@@ -2,8 +2,15 @@
   <div class="comment-title">{{ 'annotation.title' | translate }}</div>
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="annotation">
-      <div class="deleted" *ngIf="annotation.deleted">
+      <div class="deleted" *ngIf="(annotation.deleted && !showItem[i])">
         <span>{{ 'annotation.deleted' | translate }}</span>
+        <button
+              type="button"
+              class="btn alert-info btn-xs"
+              (click)="toggleAnnotation(i)"
+              >
+              <i class="glyphicon glyphicon-eye-open"></i>
+        </button>
       </div>
       <div class="row">
         <div class="col-xs-12 row-title">
@@ -19,8 +26,17 @@
               type="button"
               class="btn alert-info btn-xs"
               (click)="toggleAnnotation(i)"
+              *ngIf="!annotation.deleted"
               >
               <i class="glyphicon" [ngClass]="{'glyphicon-menu-up': showItem[i], 'glyphicon-menu-down': !showItem[i]}"></i>
+            </button>
+            <button
+              type="button"
+              class="btn alert-info btn-xs"
+              (click)="toggleAnnotation(i)"
+              *ngIf="(annotation.deleted && showItem[i])"
+            >
+            <i class="glyphicon glyphicon-eye-close"></i>
             </button>
           </span>
           <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
@@ -144,6 +160,7 @@
       <ng-template #dots>
         <i class="glyphicon glyphicon-option-horizontal"></i>
       </ng-template>
+      <span class="small-deleted" *ngIf="(annotation.deleted && showItem[i])">{{ 'annotation.deleted' | translate }}</span>
     </div>
     <div *ngIf="lastFalse!==-1 && i===lastFalse && hasNextTrue">
       <laji-occurrence-at-time-of-annotation [occurrence]="annotations[i+1].occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>

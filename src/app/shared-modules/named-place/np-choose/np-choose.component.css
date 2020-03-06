@@ -6,12 +6,6 @@
   flex: none;
 }
 
-#create-new-button {
-  flex: 0 0 auto;
-  margin-top: 5px;
-  width: 100%;
-}
-
 #list-container, laji-np-list {
   display: flex;
   flex-direction: column;

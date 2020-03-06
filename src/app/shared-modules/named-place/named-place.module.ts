@@ -23,6 +23,7 @@ import { FormPermissionModule } from 'app/+haseka/form-permission/form-permissio
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 import { ClipboardModule } from 'ngx-clipboard';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/public-api';
+import { InfoModule } from '../info/info.module';
 
 @NgModule({
   providers: [],
@@ -38,7 +39,8 @@ import { LajiUiModule } from '../../../../projects/laji-ui/src/public-api';
     FormPermissionModule,
     DocumentViewerModule,
     ClipboardModule,
-    LajiUiModule
+    LajiUiModule,
+    InfoModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,

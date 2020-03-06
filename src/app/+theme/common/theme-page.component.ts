@@ -7,7 +7,7 @@ import { Global } from '../../../environments/global';
     template: `
 <lu-sidebar [open]="showNav">
   <nav>
-    <h4 [innerHTML]="title | translate"></h4>
+    <h5 [innerHTML]="title | translate"></h5>
     <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink" routerLinkActive>
       {{ link.label | translate }}
       <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink">
@@ -24,21 +24,7 @@ import { Global } from '../../../environments/global';
   </main>
 </lu-sidebar>
     `,
-    styles: [`
-:host {
-  width: 100%;
-}
-
-h4 {
-  max-width: 200px;
-}
-
-@media only screen and (min-width : 768px) {
-  main {
-    padding: 20px 40px;
-  }
-}
-    `]
+    styleUrls: ['./theme-page.component.scss']
 })
 export class ThemePageComponent {
     @Input() title: string;
