@@ -25,14 +25,12 @@
       <div class="form-group col-xs-12">
         <div class="row">
           <div class="col-xs-12">
-            <label
-                  [tooltip]="birdAssociationAreaHelp"
-                  container="body"
-                  [adaptivePosition]="false"
-                  [placement]="'right'"
-                  [isDisabled]="!documentForm.namedPlaceOptions || !documentForm.namedPlaceOptions.birdAssociationAreaHelp">{{ 'MNP.birdAssociationArea' | label }}
-              <span *ngIf="documentForm.namedPlaceOptions && documentForm.namedPlaceOptions.birdAssociationAreaHelp" class="label-info laji-form-help-glyph"><strong>?</strong></span>
-            </label>
+            <label>{{ 'MNP.birdAssociationArea' | label }}</label>
+            <laji-info placement="right">
+              <strong>{{ 'MNP.birdAssociationArea' | label }}</strong>
+              <br>
+              {{ documentForm.namedPlaceOptions.birdAssociationAreaHelp }}
+            </laji-info>
           </div>
           <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
                             [disabled]="editMode"
@@ -55,9 +53,9 @@
     <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">
       <span>{{documentForm.namedPlaceOptions?.createNewLabels?.desc
             || 'np.chooseLabel' | translate}}</span>
-      <button class='btn btn-default raised-1' (click)='toEditMode(true)'>
+      <lu-button (click)='toEditMode(true)'>
         {{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}
-      </button>
+      </lu-button>
     </div>
     <laji-spinner [spinning]="loading" [overlay]="true">
       <div *ngIf="namedPlaces && documentForm && !errorMsg">
@@ -93,9 +91,3 @@
     </laji-spinner>
   </div>
 </div>
-
-<ng-template #birdAssociationAreaHelp>
-  <strong>{{ 'MNP.birdAssociationArea' | label }}</strong>
-  <br>
-  {{ documentForm.namedPlaceOptions.birdAssociationAreaHelp }}
-</ng-template>

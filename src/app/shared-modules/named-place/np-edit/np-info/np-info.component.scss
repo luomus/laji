@@ -1,13 +1,20 @@
+@import 'vars';
+
 .np-info-container {
-  padding: 25px;
+  margin-top: 18px;
+  padding-left: 25px;
 }
 
 .np-info {
 }
 
-.np-info legend {
-  margin-top: 5px;
-  margin-bottom: 12px;
+.np-info-header {
+  h3 {
+    margin: 0;
+    font-weight: 600;
+    color: $neutral-6;
+    letter-spacing: .5px;
+  }
 }
 
 .row-container {
