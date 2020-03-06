@@ -144,6 +144,17 @@ $displays: flex, block, inline, inline-block, none;
   }
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+@each $breakpoint, $px in $breakpoints {
+  @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:justify-between {
+      justify-content: space-between
+    }
+  }
+}
+
 .items-end {
   align-items: flex-end;
 }
@@ -182,6 +193,21 @@ $spacers: (
     @media only screen and (max-width: $px) {
       .#{$breakpoint}\:my-#{$spacer} {
         margin-top: $spacerPx;
+        margin-bottom: $spacerPx;
+      }
+    }
+  }
+}
+
+@each $spacer, $spacerPx in $spacers {
+  .mb-#{$spacer} {
+    margin-bottom: $spacerPx;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $spacer, $spacerPx in $spacers {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:mb-#{$spacer} {
         margin-bottom: $spacerPx;
       }
     }
