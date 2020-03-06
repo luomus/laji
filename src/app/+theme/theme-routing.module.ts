@@ -728,7 +728,7 @@ const routes: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
-      {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent}
+      {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent, canActivate: [OnlyLoggedIn]}
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

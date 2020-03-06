@@ -84,6 +84,8 @@ import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-v
 import { KerttuApi } from './kerttu/kerttu-api';
 import { KerttuFacade } from './kerttu/kerttu.facade';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
+import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
+import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
 
 /* tslint:enable:max-line-length */
 
@@ -167,7 +169,9 @@ import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
     ExpertiseFormComponent,
     LolifeInstructionsComponent,
     KerttuMainViewComponent,
-    FormHasFeaturePipe
+    FormHasFeaturePipe,
+    KerttuLetterAnnotationComponent,
+    AudioViewerComponent
   ],
   providers: [
     ResultService,

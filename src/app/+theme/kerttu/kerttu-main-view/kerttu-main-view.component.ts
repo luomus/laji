@@ -31,6 +31,8 @@ export class KerttuMainViewComponent implements OnInit {
 
   step = Step;
 
+  selectedTaxonIds: string[];
+
   constructor(
     private kerttuApi: KerttuApi,
     private kerttuFacade: KerttuFacade,
