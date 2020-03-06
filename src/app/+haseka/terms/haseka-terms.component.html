@@ -1,9 +1,9 @@
 <ng-container *lajiBrowserOnly>
-  <ng-container  *ngIf="vihkoSettings.showIntro">
+  <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro && !modal">
+    <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+  </div>
+  <ng-container *ngIf="vihkoSettings.showIntro">
     <ng-container *ngIf="!modal; else showModal">
-      <div class="pull-right toggle-intro">
-        <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-      </div>
       <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
         <div [innerHtml]="'haseka.intro2' | translate"></div>
       </alert>
