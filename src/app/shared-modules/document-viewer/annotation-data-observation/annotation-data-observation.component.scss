@@ -2,7 +2,7 @@
 
 div {
     &.info {
-        margin: 15px 0;
+        margin: 5px 0;
         @include font-size(1.4);
         div {
             &.title {
