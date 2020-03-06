@@ -1,10 +1,18 @@
 .annotation {
-  border-bottom: 1px solid #ededed;
+  border: 1px solid #bdbdbd;
   margin: 0 0 10px 0;
   padding: 5px;
   min-height: 50px;
   background-color: #F1F1F1;
   position: relative;
+  box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
+}
+
+.comment-title {
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .deleted {
@@ -29,6 +37,11 @@
   right: 5px;
 }
 
+.tag {
+  display: inline-block;
+  margin-right: 10px;
+}
+
 .annotations .title {
   font-weight: bold;
     margin-bottom: 10px;
@@ -38,6 +51,7 @@
 
 .tags {
   margin-top: 10px;
+  border-bottom: 1px solid #bdbdbd;
 }
 
 .odd {
@@ -71,6 +85,7 @@
 
 .removed-tags {
   margin-top: 8px;
+  border-bottom: 1px solid #bdbdbd;
 }
 
 .no-annotations {
@@ -107,7 +122,9 @@
 
 .content {
   margin-top: 8px;
+  border-bottom: 1px solid #bdbdbd;
 }
+
 
 .notEffective{
   opacity: 0.5;
@@ -125,5 +142,10 @@
   margin-right: 10px;
   left: 0px;
   color: red;
+}
+
+.resume-effective-tags {
+  margin: 15px 0;
+  font-size: 14px;
 }
 
