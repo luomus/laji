@@ -38,7 +38,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   lastFalse: number;
   hasNextTrue: boolean;
   open: boolean[] = undefined;
-  showItem: boolean[] = undefined;
+  showItem: boolean[];
 
   constructor(
     private cd: ChangeDetectorRef
@@ -55,7 +55,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
       this.hasNextTrue = false;
     }
     this.open = [...Array(this.annotations.length)].fill(false);
-    this.showItem = [...Array(this.annotations.length)].fill(true);
+    this.populateArrayShowItem(this.annotations);
   }
 
   toggleAnnotation(index) {
@@ -68,7 +68,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.open = [...Array(this.annotations.length)].fill(false);
-    this.showItem = [...Array(this.annotations.length)].fill(true);
+    this.populateArrayShowItem(this.annotations);
   }
 
 
@@ -77,6 +77,16 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
+  populateArrayShowItem(array) {
+    this.showItem = [];
+    array.forEach(element => {
+      if (element['deleted']) {
+        this.showItem.push(false);
+      } else {
+        this.showItem.push(true);
+      }
+    });
+  }
 
   findLastIndex(annotation, field, value) {
     annotation.sort((a, b) => (a.created > b.created) ? 1 : -1);
