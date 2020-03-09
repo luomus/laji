@@ -1,6 +1,13 @@
 <ol class="breadcrumb">
-  <li *ngFor="let crumb of breadcrumb"><a [routerLink]="crumb.link | localize">
-    {{ crumb.label | translate }}
-  </a></li>
+  <li *ngFor="let crumb of breadcrumb; let l=last" [class.active]="l && !active">
+    <ng-container *ngIf="l && !active; else last">
+      {{ crumb.label | translate }}
+    </ng-container>
+    <ng-template #last>
+      <a [routerLink]="crumb.link | localize">
+        {{ crumb.label | translate }}
+      </a>
+    </ng-template>
+  </li>
   <li *ngIf="active" class="active">{{ active.label | translate }}</li>
 </ol>

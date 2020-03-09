@@ -93,7 +93,19 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: DatasetsComponent
+        component: DatasetsComponent,
+        data: {
+          breadcrumbs: [
+            {
+              link: '/theme',
+              label: 'navigation.theme'
+            },
+            {
+              link: '../',
+              label: 'Datasets'
+            }
+          ]
+        }
       },
       {
         path: ':formID',

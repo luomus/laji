@@ -19,7 +19,7 @@ import { Global } from '../../../environments/global';
     </lu-sidebar-link>
     <laji-haseka-latest [forms]="[formID]"
                         [tmpOnly]="true"
-                        *ngIf="noLatestForForm !== formID && (userService.isLoggedIn$ | async)">
+                        *ngIf="!secondary && noLatestForForm !== formID && (userService.isLoggedIn$ | async)">
     </laji-haseka-latest>
   </nav>
   <main>
