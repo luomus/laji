@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   pure: false // required to update the value when the promise is resolved
 })
 export class LocalizePipe implements PipeTransform, OnDestroy {
-  private value: string | any[] = '';
+  private value: any = '';
   private lastKey: string | any[];
   private lastLanguage: string;
   private subLang: Subscription;
@@ -35,16 +35,14 @@ export class LocalizePipe implements PipeTransform, OnDestroy {
 
   /**
    * Transform current url to localized one
-   *
-   * @returns string | any[]
    */
-  transform(query: string | any[], lang?: string): string | any[] {
+  transform<T extends string|string[]>(query: T, lang?: string): T {
     if (!lang) {
       lang = this.translateService.currentLang;
     }
     if (!query || query.length === 0 || !lang) {
       if (Array.isArray(query)) {
-        query = this.localizeRouterService.getPathWithoutLocale(this.router.url).split('?')[0];
+        query = this.localizeRouterService.getPathWithoutLocale(this.router.url).split('?')[0] as any;
       } else {
         return query;
       }

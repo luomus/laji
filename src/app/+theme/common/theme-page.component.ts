@@ -11,9 +11,9 @@ import { Global } from '../../../environments/global';
       <span [innerHTML]="title | translate"></span>
       <small *ngIf="secondary"><br>sekundääridataa</small>
     </h5>
-    <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink" routerLinkActive>
+    <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink | localize" routerLinkActive>
       {{ link.label | translate }}
-      <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink">
+      <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink | localize">
         {{ child.label | translate }}
       </lu-sidebar-link>
     </lu-sidebar-link>
