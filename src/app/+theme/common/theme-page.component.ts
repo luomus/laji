@@ -7,10 +7,10 @@ import { Global } from '../../../environments/global';
     template: `
 <lu-sidebar [open]="showNav">
   <nav>
-    <h4>
+    <h5>
       <span [innerHTML]="title | translate"></span>
       <small *ngIf="secondary"><br>sekundääridataa</small>
-    </h4>
+    </h5>
     <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink" routerLinkActive>
       {{ link.label | translate }}
       <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink">
