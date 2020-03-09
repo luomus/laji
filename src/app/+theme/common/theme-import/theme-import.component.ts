@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Form } from '../../../shared/model/Form';
 import { ThemeFormService } from '../theme-form.service';
 import { ActivatedRoute } from '@angular/router';
-import { ImportService } from '../../../shared-modules/spreadsheet/service/import.service';
+import { CombineToDocument, ImportService } from '../../../shared-modules/spreadsheet/service/import.service';
 
 @Component({
   selector: 'laji-theme-import',
@@ -15,6 +15,8 @@ export class ThemeImportComponent {
 
   readonly form$: Observable<Form.SchemaForm>;
   readonly maxUnitsPerDocument = ImportService.maxPerDocument;
+  readonly combineOptions = CombineToDocument;
+  readonly feature = Form.Feature;
 
   constructor(
     route: ActivatedRoute,
