@@ -1,11 +1,11 @@
 <p>Tässä osiossa voit hallita kokoelman “{{ form.collectionID | label }}” havaintoja.</p>
 
 <p *ngIf="isSecondary; else primary">
-  Havainnot ovat sekundääridataa, joten muutokset tulee tehdä primääridataan ja sitten päivittää tänne tallennuspohjan avulla, esim. määrävälein.
+  Havainnot ovat <strong>sekundääridataa</strong>, joten muutokset tulee tehdä primääridataan ja sitten päivittää tänne tallennuspohjan avulla, esim. määrävälein.
 </p>
 <ng-template #primary>
   <p>
-    Havainnot ovat primääridataa, joten muutokset tulee tehdä täällä oleviin tietoihin.
+    Havainnot ovat <strong>primääridataa</strong>, joten muutokset tulee tehdä täällä oleviin tietoihin.
   </p>
 </ng-template>
 

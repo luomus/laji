@@ -742,6 +742,12 @@ body > .ui-select-bootstrap.open {
   background: white;
 }
 
+.sidebar-content-wrapper {
+  h4 {
+    max-width: 200px;
+  }
+}
+
 .dropdown-menu {
   z-index: 1032;
 }
