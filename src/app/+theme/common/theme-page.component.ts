@@ -7,7 +7,10 @@ import { Global } from '../../../environments/global';
     template: `
 <lu-sidebar [open]="showNav">
   <nav>
-    <h5 [innerHTML]="title | translate"></h5>
+    <h5>
+      <span [innerHTML]="title | translate"></span>
+      <small *ngIf="secondary"><br>sekundääridataa</small>
+    </h5>
     <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink" routerLinkActive>
       {{ link.label | translate }}
       <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink">
@@ -28,6 +31,7 @@ import { Global } from '../../../environments/global';
 })
 export class ThemePageComponent {
     @Input() title: string;
+    @Input() secondary: boolean;
     @Input() navLinks?:
         {
             routerLink: string[], label: string, visible: boolean, children: any

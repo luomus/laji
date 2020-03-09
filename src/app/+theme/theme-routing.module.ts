@@ -122,6 +122,16 @@ const routes: Routes = [
           {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
         ],
         data: {
+          breadcrumbs: [
+            {
+              link: '/theme',
+              label: 'navigation.theme'
+            },
+            {
+              link: '../',
+              label: 'Datasets'
+            }
+          ],
           titleFromCollectionName: true,
           title: '',
           navLinks: {

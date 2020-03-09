@@ -743,6 +743,20 @@ body > .ui-select-bootstrap.open {
   background: white;
 }
 
+.sidebar-content-wrapper {
+  nav {
+    min-width: 200px;
+  }
+
+  h4, h5 {
+    max-width: 200px;
+    font-weight: 600;
+    color: $neutral-6;
+    font-size: $fs-3;
+    letter-spacing: .5px;
+  }
+}
+
 .dropdown-menu {
   z-index: 1032;
 }

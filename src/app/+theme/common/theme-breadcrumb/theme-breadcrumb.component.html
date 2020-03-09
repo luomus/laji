@@ -1,0 +1,6 @@
+<ol class="breadcrumb">
+  <li *ngFor="let crumb of breadcrumb"><a [routerLink]="crumb.link | localize">
+    {{ crumb.label | translate }}
+  </a></li>
+  <li *ngIf="active" class="active">{{ active.label | translate }}</li>
+</ol>

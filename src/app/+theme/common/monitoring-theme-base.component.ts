@@ -10,6 +10,11 @@ import { NavLink, ThemeFormService } from './theme-form.service';
 import { Form } from '../../shared/model/Form';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 
+export interface Breadcrumb {
+  link: string;
+  label: string;
+}
+
 interface ViewModel {
   form: Form.SchemaForm;
   data: NavData;
@@ -19,16 +24,23 @@ interface NavData {
   title: string;
   navLinks: NavLink[];
   titleFromCollectionName: boolean;
+  breadcrumbs?: Breadcrumb[];
 }
 
 @Component({
   template: `
     <laji-theme-page *ngIf="vm$ | async as vm"
                      [title]="vm.data.titleFromCollectionName ? (vm.form.collectionID | label) : vm.data.title"
+                     [secondary]="vm.form | formHasFeature:formFeatures.SecondaryCopy"
                      [formID]="vm.form.id"
                      [showNav]="showNav$ | async"
                      [navLinks]="vm.data.navLinks">
-        <router-outlet></router-outlet>
+      <laji-theme-breadcrumb
+        *ngIf="vm.data.breadcrumbs"
+        [breadcrumb]="vm.data.breadcrumbs"
+        [navLinks]=vm.data.navLinks
+      ></laji-theme-breadcrumb>
+      <router-outlet></router-outlet>
     </laji-theme-page>
   `,
   styles: [`
@@ -44,6 +56,7 @@ export class MonitoringThemeBaseComponent implements OnInit {
 
   vm$: Observable<ViewModel>;
   showNav$: Observable<boolean>;
+  formFeatures = Form.Feature;
 
   constructor(
     protected formService: FormService,

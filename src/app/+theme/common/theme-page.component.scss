@@ -4,18 +4,6 @@
   width: 100%;
 }
 
-h5 {
-  max-width: 200px;
-  font-weight: 600;
-  color: $neutral-6;
-  font-size: $fs-3;
-  letter-spacing: .5px;
-}
-
-nav {
-  min-width: 200px;
-}
-
 @media only screen and (min-width : 768px) {
   main {
     padding: 20px 40px;
