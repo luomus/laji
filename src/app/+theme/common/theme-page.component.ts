@@ -27,17 +27,7 @@ import { Global } from '../../../environments/global';
   </main>
 </lu-sidebar>
     `,
-    styles: [`
-:host {
-  width: 100%;
-}
-
-@media only screen and (min-width : 768px) {
-  main {
-    padding: 20px 40px;
-  }
-}
-    `]
+    styleUrls: ['./theme-page.component.scss']
 })
 export class ThemePageComponent {
     @Input() title: string;

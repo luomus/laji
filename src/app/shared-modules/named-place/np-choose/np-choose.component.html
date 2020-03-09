@@ -28,8 +28,6 @@
   </lu-tabs>
 
 
-  <button *ngIf="allowCreate"
-          class="btn btn-md btn-default"
-          id="create-new-button"
-          (click)="createButtonClick.emit()">{{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</button>
+  <lu-button *ngIf="allowCreate"
+          (click)="createButtonClick.emit()">{{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</lu-button>
 </div>

@@ -9,16 +9,16 @@ import { Global } from '../../../../environments/global';
   templateUrl: './annotation-list.component.html',
   styleUrls: ['./annotation-list.component.css'],
   animations: [
-    trigger('newAnnotation', [
-      state('last',
-      style({backgroundColor: '#F1F1F1'})),
-      transition('* => last', [
-        animate('1.5s ease-out', style({ backgroundColor: '#fdfeb2c4' })),
-        animate('0.5s ease-out', style({ backgroundColor: '#F1F1F1' })),
+    trigger('flyInOut', [
+      transition('void => *', [
+        style({display: 'none'}),
+        animate(100)
       ]),
+      transition('* => void', [
+        animate(100, style({display: 'block'}))
+      ])
     ])
   ],
-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
@@ -38,6 +38,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   lastFalse: number;
   hasNextTrue: boolean;
   open: boolean[] = undefined;
+  showItem: boolean[];
 
   constructor(
     private cd: ChangeDetectorRef
@@ -54,6 +55,11 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
       this.hasNextTrue = false;
     }
     this.open = [...Array(this.annotations.length)].fill(false);
+    this.populateArrayShowItem(this.annotations);
+  }
+
+  toggleAnnotation(index) {
+    this.showItem[index] = !this.showItem[index];
   }
 
   readMore(index) {
@@ -62,6 +68,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.open = [...Array(this.annotations.length)].fill(false);
+    this.populateArrayShowItem(this.annotations);
   }
 
 
@@ -70,6 +77,16 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
+  populateArrayShowItem(array) {
+    this.showItem = [];
+    array.forEach(element => {
+      if (element['deleted']) {
+        this.showItem.push(false);
+      } else {
+        this.showItem.push(true);
+      }
+    });
+  }
 
   findLastIndex(annotation, field, value) {
     annotation.sort((a, b) => (a.created > b.created) ? 1 : -1);

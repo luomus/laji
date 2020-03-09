@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import {map} from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import {Step} from './kerttu.facade';
-import {map} from 'rxjs/operators';
+import { IRecordingWithCandidates } from './model/recording';
 
 @Injectable()
 export class KerttuApi {
@@ -15,9 +16,9 @@ export class KerttuApi {
   public getStatus(personToken: string): Observable<number> {
     const path = this.basePath + '/status/' + personToken;
 
-    return this.httpClient.get<{'status': number}>(path)
+    return this.httpClient.get(path)
       .pipe(
-        map((response: Response) => {
+        map((response: {status: number}) => {
           return response.status;
         })
       );
@@ -26,10 +27,21 @@ export class KerttuApi {
   public setStatus(personToken: string, status: Step): Observable<number> {
     const path = this.basePath + '/status/' + personToken;
 
-    return this.httpClient.put<{'status': number}>(path, {status})
+    return this.httpClient.put(path, {status})
       .pipe(
-        map((response: Response) => {
+        map((response: {status: number}) => {
           return response.status;
+        })
+      );
+  }
+
+  public getLetterCandidates(personToken: string): Observable<IRecordingWithCandidates> {
+    const path = this.basePath + '/letters/' + personToken;
+
+    return this.httpClient.get(path)
+      .pipe(
+        map((response: {letters: IRecordingWithCandidates}) => {
+          return response.letters;
         })
       );
   }

@@ -85,6 +85,8 @@ import { KerttuApi } from './kerttu/kerttu-api';
 import { KerttuFacade } from './kerttu/kerttu.facade';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
+import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
+import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
 
 /* tslint:enable:max-line-length */
 
@@ -169,6 +171,8 @@ import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadc
     LolifeInstructionsComponent,
     KerttuMainViewComponent,
     FormHasFeaturePipe,
+    KerttuLetterAnnotationComponent,
+    AudioViewerComponent,
     ThemeBreadcrumbComponent
   ],
   providers: [

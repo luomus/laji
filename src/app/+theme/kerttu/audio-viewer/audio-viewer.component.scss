@@ -1,0 +1,17 @@
+#spectrogramContainer {
+  max-width: 500px;
+  width: 100%;
+}
+
+#audioControls {
+  display: inline-block;
+
+  * {
+    display: inline-block;
+  }
+
+  #volumeSlider {
+    width: 50px;
+  }
+}
+
