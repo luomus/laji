@@ -10,7 +10,7 @@
 </ng-template>
 
 <p><strong>Tehdyt päivitykset</strong></p>
-<p>??????</p>
+<p><a [routerLink]="'/observation/list' | localize" [queryParams]="{collectionId: form.collectionID}">{{ 'home.observation-sub-intro' | translate }}</a></p>
 
 <p><strong>Ohjeita</strong></p>
 
