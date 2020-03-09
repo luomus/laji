@@ -40,7 +40,7 @@ export class DatasetsComponent {
         this.instructions = form.instructions;
         this.cdr.detectChanges();
       }),
-      switchMap(form => this.formService.getAllForms(this.translateService.currentLang, true).pipe(
+      switchMap(form => this.formService.getAllForms(this.translateService.currentLang).pipe(
         switchMap((forms) => from(form.options.forms).pipe(
           map(id => forms.find(f => f.id === id)),
           concatMap(f => this.userService.user$.pipe(
