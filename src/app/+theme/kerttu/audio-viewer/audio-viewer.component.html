@@ -1,0 +1,20 @@
+<div id="spectrogramContainer">
+  <img src="{{recording.spectrogram}}" alt="Spectrogram">
+</div>
+<div id="slider">
+
+</div>
+<div id="audioControls" class="dark-bg">
+  <button class="btn btn-primary" (click)="toggleAudio()">
+    <span
+      class="fa"
+      [ngClass]="{'fa-play': !isPlaying, 'fa-stop': isPlaying}"
+    >
+    </span>
+  </button>
+  <!--span class="fa fa-volume-up"></span>
+  <input id="volumeSlider" type="range" min="0" max="100" value="100" step="1" (input)="setVolume($event.target.value)" (change)="setVolume($event.target.value)"-->
+  <audio #audioPlayer class="hidden" controls="controls">
+    <source src="{{recording.audio}}">
+  </audio>
+</div>

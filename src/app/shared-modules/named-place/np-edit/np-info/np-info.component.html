@@ -20,26 +20,27 @@
 
   <ng-template #contentTemplate let-isModal="isModal">
     <div class="np-info">
+      <div class="d-flex flex-row justify-between items-end mb-4 np-info-header">
+        <h3 [tooltip]="'MNP.name' | label">{{ namedPlace?.name }}</h3>
+        <div *ngIf="(documentForm.printType && documentForm.printType.indexOf('MHL.printTypeLineTransect') > -1) || (allowEdit && editButtonVisible)">
+          <span [ngSwitch]="documentForm.printType">
+            <a *ngSwitchCase="'MHL.printTypeLineTransect'"
+                class="btn btn-sm btn-default"
+                target="_blank"
+                [routerLink]="['/vihko/places/', namedPlace.id, 'print', documentForm.printType] | localize">{{ documentForm.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>
+          </span>
+          <lu-button *ngIf="allowEdit && editButtonVisible" (click)="editClick()">
+            {{ 'np.edit' | translate }}</lu-button>
+        </div>
+      </div>
       <fieldset>
-        <legend *ngIf="(documentForm.printType && documentForm.printType.indexOf('MHL.printTypeLineTransect') > -1) || (allowEdit && editButtonVisible)">
-          <div id="btn-container">
-            <span [ngSwitch]="documentForm.printType">
-              <a *ngSwitchCase="'MHL.printTypeLineTransect'"
-                 class="btn btn-sm btn-default"
-                 target="_blank"
-                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', documentForm.printType] | localize">{{ documentForm.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>
-            </span>
-            <lu-button *ngIf="allowEdit && editButtonVisible" (click)="editClick()">
-              {{ 'np.edit' | translate }}</lu-button>
-          </div>
-        </legend>
         <laji-np-info-map [visible]="(isModal && modalIsVisible) || infoBox?.nativeElement?.offsetParent !== null"
                           [namedPlace]="namedPlace"></laji-np-info-map>
         <ng-container *ngFor="let i of listItems">
-          <laji-np-info-row [title]="i.title" [value]="i.value" [pipe]="i.pipe"></laji-np-info-row>
+          <laji-np-info-row class="d-block mb-3" [title]="i.title" [value]="i.value" [pipe]="i.pipe"></laji-np-info-row>
         </ng-container>
         <ng-container *ngIf="namedPlace?.prepopulatedDocument?.gatheringEvent?.dateBegin">
-          <laji-np-info-row [title]="documentForm.namedPlaceOptions?.lastCensusLabel || 'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
+          <laji-np-info-row class="d-block mb-3" [title]="documentForm.namedPlaceOptions?.lastCensusLabel || 'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
         </ng-container>
         <div *lajiLoggedIn="false" style="margin-top: 20px;">
           <strong>

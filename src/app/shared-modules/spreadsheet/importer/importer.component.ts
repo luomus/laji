@@ -45,6 +45,7 @@ export class ImporterComponent implements OnInit {
   @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
 
   @Input() forms: string[] = environment.massForms || [];
+  @Input() allowedCombineOptions: CombineToDocument[];
 
   data: {[key: string]: any}[];
   mappedData: {[key: string]: any}[];
@@ -152,10 +153,11 @@ export class ImporterComponent implements OnInit {
         }];
 
         this.form = form;
-        this.combineOptions = this.excelToolService.getCombineOptions(form);
+        const combineOptions = this.excelToolService.getCombineOptions(form);
         const data = this.spreadSheetService.loadSheet(this.bstr);
         this.bstr = undefined;
         this.hash = Hash.sha1(data);
+        this.combineOptions = this.allowedCombineOptions ? combineOptions.filter(option => this.allowedCombineOptions.includes(option)) : combineOptions;
 
         if (this.combineOptions && this.combineOptions.length > 0 && this.combineOptions.indexOf(this.combineBy) === -1) {
           this.combineBy = this.combineOptions[0];

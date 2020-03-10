@@ -77,7 +77,7 @@ export class ExcelGeneratorComponent implements OnInit {
     if (this.selected.indexOf(field.key) === -1) {
       this.selected = [...this.selected, field.key];
     } else {
-      this.selected = this.selected.filter(val => val !== field.key);
+      this.selected = this.selected.filter(val => val !== field.key || field.required);
     }
   }
 

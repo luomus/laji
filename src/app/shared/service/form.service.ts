@@ -89,7 +89,7 @@ export class FormService {
     return this.jsonFormCache[formId];
   }
 
-  getAllForms(lang: string, includeOutsideOfWhitelist = false): Observable<Form.List[]> {
+  getAllForms(lang: string, whitelistedOnly = false): Observable<Form.List[]> {
     this.setLang(lang);
     if (!this.allForms) {
       this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
@@ -97,12 +97,12 @@ export class FormService {
         shareReplay(1)
       );
     }
-    if (includeOutsideOfWhitelist) {
-      return this.allForms;
+    if (whitelistedOnly) {
+      return this.allForms.pipe(
+        map((forms) => forms.filter(form => this.isFormAllowed(form.id))),
+      );
     }
-    return this.allForms.pipe(
-      map((forms) => forms.filter(form => this.isFormAllowed(form.id))),
-    );
+    return this.allForms;
   }
 
   getAddUrlPath(formId) {

@@ -1,13 +1,10 @@
 .annotation {
-  border: 1px solid #bdbdbd;
+  border: 1px solid #717171;
   margin: 0 0 10px 0;
   padding: 5px;
   min-height: 50px;
-  background-color: #F1F1F1;
+  background-color: #e8e8e8;
   position: relative;
-  box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
 }
 
 .comment-title {
@@ -22,7 +19,7 @@
   top: 0;
   left: 0;
   padding: 5px;
-  opacity: 0.7;
+  opacity: 0.8;
   background-color: #bfbfbf;
   z-index: 1000;
   align-items: center;
@@ -34,8 +31,27 @@
   margin: 0;
   display: block;
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.deleted button {
+  font-weight: bold;
+  margin: 0;
+  display: block;
+  position: absolute;
   right: 5px;
 }
+
+.small-deleted {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: red;
+}
+
 
 .tag {
   display: inline-block;
@@ -145,7 +161,7 @@
 }
 
 .resume-effective-tags {
-  margin: 15px 0;
+  margin: 20px 0 0 0;
   font-size: 14px;
 }
 

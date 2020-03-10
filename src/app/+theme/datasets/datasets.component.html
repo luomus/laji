@@ -1,4 +1,5 @@
 <div class="container">
+  <laji-theme-breadcrumb [breadcrumb]="breadcrumb$ | async"></laji-theme-breadcrumb>
   <laji-info-page *ngIf="instructions" [rootPage]="instructions"></laji-info-page>
   <ng-container *lajiBrowserOnly>
     <div class="row" *lajiLoggedIn="false">

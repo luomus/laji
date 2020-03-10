@@ -8,6 +8,8 @@ import { MultiLanguage } from '../../../../projects/laji-api-client/src/lib/mode
 import { Form } from '../../shared/model/Form';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 import { UserService } from '../../shared/service/user.service';
+import { ActivatedRoute } from '@angular/router';
+import { Breadcrumb } from '../common/monitoring-theme-base.component';
 
 @Component({
   selector: 'laji-generic-collections',
@@ -17,6 +19,7 @@ import { UserService } from '../../shared/service/user.service';
 })
 export class DatasetsComponent {
 
+  readonly breadcrumb$: Observable<Breadcrumb[]>;
   readonly forms$: Observable<Form.List[]>;
   instructions: MultiLanguage;
   features = Form.Feature;
@@ -26,14 +29,18 @@ export class DatasetsComponent {
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef,
     private formPermissionService: FormPermissionService,
-    private userService: UserService
+    private userService: UserService,
+    private route: ActivatedRoute,
   ) {
+    this.breadcrumb$ = this.route.data.pipe(
+      map(data => data.breadcrumbs || [])
+    );
     this.forms$ = this.formService.getForm(Global.forms.datasets, this.translateService.currentLang).pipe(
       tap(form => {
         this.instructions = form.instructions;
         this.cdr.detectChanges();
       }),
-      switchMap(form => this.formService.getAllForms(this.translateService.currentLang, true).pipe(
+      switchMap(form => this.formService.getAllForms(this.translateService.currentLang).pipe(
         switchMap((forms) => from(form.options.forms).pipe(
           map(id => forms.find(f => f.id === id)),
           concatMap(f => this.userService.user$.pipe(

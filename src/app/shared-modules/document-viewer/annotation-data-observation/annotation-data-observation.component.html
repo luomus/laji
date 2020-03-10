@@ -6,7 +6,7 @@
               
         <div class="content">
             <ul>
-                <li *ngIf="(occurrence.taxonVerbatim)">
+                <li *ngIf="(occurrence && occurrence.taxonVerbatim)">
                     <b>Taxon: </b>
                     <span>{{ occurrence.taxonId | toQName | label }} </span>
                     <ng-container *ngIf="occurrence.taxonId">
@@ -16,7 +16,7 @@
                         </a>
                     </ng-container>
                 </li>
-                <li *ngIf="(occurrence.dateBegin || occurrence.dateEnd)">
+                <li *ngIf="occurrence && (occurrence.dateBegin || occurrence.dateEnd)">
                     <b>{{ 'observation.form.date' | translate }}: </b>
                     <span *ngIf="occurrence.dateBegin !== occurrence.dateEnd; else oneDate">
                         {{ occurrence.dateBegin }} - {{ occurrence.dateEnd }}
@@ -25,7 +25,7 @@
                         {{ occurrence.dateBegin }}
                     </ng-template>
                 </li>
-                <li *ngIf="(occurrence.municipalityVerbatim || occurrence.countryVerbatim || occurrence.locality)">
+                <li *ngIf="occurrence && (occurrence.municipalityVerbatim || occurrence.countryVerbatim || occurrence.locality)">
                     <b>{{ 'result.gathering.locality' | translate }}: </b>
                     <span>
                         <ul class="separated-list">

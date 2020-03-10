@@ -93,7 +93,19 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: DatasetsComponent
+        component: DatasetsComponent,
+        data: {
+          breadcrumbs: [
+            {
+              link: '/theme',
+              label: 'navigation.theme'
+            },
+            {
+              link: '../',
+              label: 'Datasets'
+            }
+          ]
+        }
       },
       {
         path: ':formID',
@@ -122,6 +134,16 @@ const routes: Routes = [
           {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
         ],
         data: {
+          breadcrumbs: [
+            {
+              link: '/theme',
+              label: 'navigation.theme'
+            },
+            {
+              link: '../',
+              label: 'Datasets'
+            }
+          ],
           titleFromCollectionName: true,
           title: '',
           navLinks: {
@@ -728,7 +750,7 @@ const routes: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
-      {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent}
+      {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent, canActivate: [OnlyLoggedIn]}
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
