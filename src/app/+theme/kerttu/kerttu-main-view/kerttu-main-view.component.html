@@ -9,6 +9,7 @@
     <laji-expertise-form
       *ngIf="vm.step === step.fillExpertise"
       [introText]="'theme.kerttu.expertise.intro' | translate"
+      [selectedTaxonIds]="selectedTaxonIds"
       (taxonIdSelect)="selectedTaxonIds = $event"
     ></laji-expertise-form>
     <div *ngIf="vm.step === step.annotateLetters">
@@ -21,7 +22,7 @@
       Valmis!
     </div>
     <div class="pull-right">
-      <button class="btn btn-warning">Välitallenna</button>
+      <button class="btn btn-warning" (click)="save(vm.step)">Välitallenna</button>
       <button class="btn btn-success" style="margin-left: 15px" (click)="saveAndGoToNext(vm.step)">
         Tallenna ja siirry seuraavaan kohtaan
       </button>

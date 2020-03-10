@@ -4,6 +4,7 @@ import { WarehouseApi } from '../../api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
 import { PagedResult } from '../../model/PagedResult';
 import { Image } from '../image-gallery/image.interface';
+import { IdService } from '../../service/id.service';
 
 
 @Injectable({providedIn: 'root'})
@@ -58,10 +59,10 @@ export class GalleryService {
         media['documentId'] = items['document']['documentId'];
         media['unitId'] = items['unit']['unitId'];
         if (imgField === 'media') {
-          media['taxonId'] = items.unit
+          media['taxonId'] = IdService.getId(items.unit
             && items.unit.linkings
             && items.unit.linkings.taxon
-            && items.unit.linkings.taxon.id || '';
+            && items.unit.linkings.taxon.id || '');
           media['vernacularName'] = items.unit
             && items.unit.linkings
             && items.unit.linkings.taxon
