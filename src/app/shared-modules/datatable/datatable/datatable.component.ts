@@ -80,7 +80,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   _count: number;
   _offset: number;
   _columns: DatatableColumn[] = []; // This needs to be initialized so that the data table would do initial sort!
-  selected: any[] = [];
+  @Input() selected: any[] = [];
 
   initialized = false;
   private filterChange$ = new Subject();

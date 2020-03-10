@@ -66,6 +66,16 @@ export interface Profile {
   friendRequests?: Array<string>;
 
   /**
+   * Expertise
+   */
+  taxonExpertise?: Array<string>;
+
+  /**
+   * Expertise notes
+   */
+  taxonExpertiseNotes?: string;
+
+  /**
    * Settings for the user
    */
   settings?: any;

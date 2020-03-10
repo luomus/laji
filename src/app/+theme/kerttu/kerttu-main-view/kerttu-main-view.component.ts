@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { IKerttuState, KerttuFacade, Step } from '../kerttu.facade';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {switchMap, take} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
@@ -47,7 +47,11 @@ export class KerttuMainViewComponent implements OnInit {
     this.kerttuFacade.clear();
 
     this.userService.isLoggedIn$.pipe(take(1)).subscribe(() => {
-      this.kerttuApi.getStatus(this.userService.getToken()).subscribe((status) => {
+      forkJoin([
+        this.kerttuApi.getStatus(this.userService.getToken()),
+        this.personService.personFindProfileByToken(this.userService.getToken())
+      ]).subscribe(([status, profile]) => {
+        this.selectedTaxonIds = profile.taxonExpertise;
         this.kerttuFacade.goToStep(status);
       });
     });
@@ -60,9 +64,23 @@ export class KerttuMainViewComponent implements OnInit {
     });
   }
 
+  save(currentStep: Step) {
+    if (currentStep === Step.fillExpertise) {
+      this.saveProfile().subscribe(() => {
+
+      });
+    } else if (currentStep === Step.annotateLetters) {
+
+    } else if (currentStep === Step.annotateRecordings) {
+
+    }
+  }
+
   saveAndGoToNext(currentStep: Step) {
     if (currentStep === Step.fillExpertise) {
-      this.activate(Step.annotateLetters);
+      this.saveProfile().subscribe(() => {
+        this.activate(Step.annotateLetters);
+      });
     } else if (currentStep === Step.annotateLetters) {
       this.activate(Step.annotateRecordings);
     } else if (currentStep === Step.annotateRecordings) {
@@ -71,13 +89,11 @@ export class KerttuMainViewComponent implements OnInit {
   }
 
   saveProfile() {
-    this.personService.personFindProfileByToken(this.userService.getToken()).pipe(
+    return this.personService.personFindProfileByToken(this.userService.getToken()).pipe(
       switchMap((profile: Profile) => {
-        // something here
+        profile.taxonExpertise = this.selectedTaxonIds;
         return this.personService.personUpdateProfileByToken(profile, this.userService.getToken());
       })
-    ).subscribe(() => {
-
-    });
+    );
   }
 }

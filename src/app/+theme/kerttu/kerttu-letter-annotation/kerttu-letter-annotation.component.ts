@@ -3,6 +3,8 @@ import {KerttuApi} from '../kerttu-api';
 import {UserService} from '../../../shared/service/user.service';
 import {Observable} from 'rxjs';
 import {IRecordingWithCandidates} from '../model/recording';
+import {switchMap, take} from 'rxjs/operators';
+import {PersonApi} from '../../../shared/api/PersonApi';
 
 @Component({
   selector: 'laji-kerttu-letter-annotation',
@@ -15,11 +17,18 @@ export class KerttuLetterAnnotationComponent implements OnInit {
   constructor(
     private kerttuApi: KerttuApi,
     private cdr: ChangeDetectorRef,
-    private userService: UserService
+    private userService: UserService,
+    private personService: PersonApi
   ) { }
 
   ngOnInit() {
-    this.letterCandidates$ = this.kerttuApi.getLetterCandidates(this.userService.getToken());
+    this.userService.isLoggedIn$.pipe(take(1)).subscribe(() => {
+      this.letterCandidates$ = this.personService.personFindProfileByToken(this.userService.getToken()).pipe(
+        switchMap(profile => {
+          return this.kerttuApi.getLetterCandidates(this.userService.getToken());
+        })
+      );
+    });
   }
 
 }
