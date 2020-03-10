@@ -1,20 +1,33 @@
-<div id="spectrogramContainer">
+<div id="spectrogramContainer" #spectrogram>
   <img src="{{recording.spectrogram}}" alt="Spectrogram">
+  <svg #graph class="graph" xmlns="http://www.w3.org/2000/svg">
+    <g class="grid">
+      <line
+        #scrollLine
+        x1="0" x2="0" y1="0" y2="100%"
+        (mousedown)="startDrag($event)"
+      ></line>
+    </g>
+  </svg>
 </div>
-<div id="slider">
 
-</div>
-<div id="audioControls" class="dark-bg">
-  <button class="btn btn-primary" (click)="toggleAudio()">
+<div id="audioControls">
+  <button class="btn btn-default" (mousedown)="startInterval($event, false)">
+    <span class="fa fa-backward"></span>
+  </button>
+  <button class="btn btn-default" (click)="toggleAudio()">
     <span
       class="fa"
       [ngClass]="{'fa-play': !isPlaying, 'fa-stop': isPlaying}"
     >
     </span>
   </button>
+  <button class="btn btn-default" (mousedown)="startInterval($event, true)">
+    <span class="fa fa-forward"></span>
+  </button>
   <!--span class="fa fa-volume-up"></span>
   <input id="volumeSlider" type="range" min="0" max="100" value="100" step="1" (input)="setVolume($event.target.value)" (change)="setVolume($event.target.value)"-->
-  <audio #audioPlayer class="hidden" controls="controls">
+  <audio #audioPlayer class="hidden" controls="controls" (ended)="onAudioEnded()" (timeupdate)="updateScrollLinePosition()">
     <source src="{{recording.audio}}">
   </audio>
 </div>

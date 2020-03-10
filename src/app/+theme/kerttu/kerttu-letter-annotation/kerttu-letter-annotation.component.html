@@ -1,3 +1,40 @@
-<div *ngIf="letterCandidates$ | async as letterCandidates">
-  <laji-audio-viewer [recording]="letterCandidates.template"></laji-audio-viewer>
+<div *ngIf="letterCandidates$ | async as letterCandidates" class="row well">
+  <div class="col-md-6">
+    <h4>Kirjaintemplaatti
+      <select #templateSelect>
+        <option [value]="0">
+          {{ 1 }}
+        </option>
+      </select>/1
+    </h4>
+    <laji-audio-viewer
+      [recording]="letterCandidates.template"
+    ></laji-audio-viewer>
+  </div>
+  <div class="col-md-6">
+    <h4>Kirjain
+      <select [value]="currentCandidate" (change)="onCandidateChange(letterSelect.value)" #letterSelect>
+        <option *ngFor="let item of letterCandidates.candidates; let i = index" [value]="i">
+          {{ i + 1 }}
+        </option>
+      </select>/{{ letterCandidates.candidates.length }}
+    </h4>
+    <laji-audio-viewer
+      [recording]="letterCandidates.candidates[currentCandidate]"
+    ></laji-audio-viewer>
+  </div>
+  <div class="col-md-12" style="text-align: center">
+    <h3 style="max-width: 100%">Onko kyseessä sama kirjain?</h3>
+    <laji-three-state-switch
+      (change)="onAnnotationChange()"
+      [onValue]="0"
+      [offValue]="1"
+      [undefinedValue]="2"
+      [onText]="'yes' | translate"
+      [offText]="'no' | translate"
+      [undefinedText]="'Ei tietoa'"
+      [showUndefined]="true"
+      [(value)]="currentAnnotation">
+      ></laji-three-state-switch>
+  </div>
 </div>

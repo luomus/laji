@@ -1,13 +1,22 @@
+:host {
+  display: inline-block;
+}
+
 #spectrogramContainer {
   max-width: 500px;
   width: 100%;
+  position: relative;
 }
 
 #audioControls {
   display: inline-block;
+  width: 100%;
+  background-color: #333;
+  text-align: center;
 
-  * {
+  button {
     display: inline-block;
+    margin: 0 2px;
   }
 
   #volumeSlider {
@@ -15,3 +24,18 @@
   }
 }
 
+.graph {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  .grid {
+    stroke: white;
+    stroke-dasharray: 0;
+    stroke-width: 2;
+    cursor: move;
+  }
+}

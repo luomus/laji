@@ -14,6 +14,9 @@ import {PersonApi} from '../../../shared/api/PersonApi';
 export class KerttuLetterAnnotationComponent implements OnInit {
   letterCandidates$: Observable<IRecordingWithCandidates>;
 
+  currentCandidate = 0;
+  currentAnnotation: number = undefined;
+
   constructor(
     private kerttuApi: KerttuApi,
     private cdr: ChangeDetectorRef,
@@ -31,4 +34,11 @@ export class KerttuLetterAnnotationComponent implements OnInit {
     });
   }
 
+  onAnnotationChange() {
+    this.currentCandidate++;
+  }
+
+  onCandidateChange(idx: string) {
+    this.currentCandidate = parseInt(idx, 10);
+  }
 }
