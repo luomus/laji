@@ -7,6 +7,9 @@
         <div class="image-holder">
           <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media"></laji-image-gallery>
         </div>
+        <div *ngIf="unit.audioCount > 0">
+          <laji-audio-player [audioFiles]="unit.media"></laji-audio-player>
+        </div>
       </div>
     </div>
     <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
