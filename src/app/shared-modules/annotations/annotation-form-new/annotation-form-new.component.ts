@@ -437,12 +437,12 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
           this.commentElement.nativeElement.focus();
       }
 
-      if (e.keyCode === 49 && e.altKey) { // alt + 1 --> add convincing
-          this.addToAddTags('MMAN.6');
+      if (this.expert && e.keyCode === 49 && e.altKey) { // alt + 1 --> add convincing
+          this.addToAddTags({id: 'MMAN.5', quality: 'MMAN.typePositiveQuality'});
       }
 
-      if (e.keyCode === 48 && e.altKey) { // alt + 0 --> add erroneus
-        this.addToAddTags('MMAN.9');
+      if (this.expert && e.keyCode === 48 && e.altKey) { // alt + 0 --> add erroneus
+        this.addToAddTags({id: 'MMAN.9', quality: 'MMAN.typeNegativeQuality'});
       }
 
       if (e.keyCode === 82 && e.altKey) { // alt + r --> delete all added tags
