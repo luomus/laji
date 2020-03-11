@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, O
 import { Global } from '../../../../environments/global';
 import { Subject, Subscription } from 'rxjs';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
+import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 
 
 @Component({
@@ -19,26 +20,28 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
   subscriptParent: Subscription;
   annotationTagsObservation = Global.annotationTags;
   countItems: number;
-  hasAllDeletedAnnotations = false;
+  haschangedTaxon = false;
 
-  constructor(private taxonTagEffective: TaxonTagEffectiveService, private cd: ChangeDetectorRef) { }
+  constructor(
+    private taxonTagEffective: TaxonTagEffectiveService,
+    private cd: ChangeDetectorRef,
+    private toQname: ToQNamePipe,
+    ) { }
 
   ngOnInit() {
+    console.log(this.unit);
      this.unit.addedTags = [];
      this.subscriptParent = this.taxonTagEffective.childEventListner().subscribe(event => {
       this.annotationResolving = event;
       this.cd.markForCheck();
     });
 
-    if (this.unit.annotations) {
-      this.countItems = 0;
-      this.unit.annotations.forEach(e => {
-        if (e['deleted']) {
-          this.countItems++;
-        }
-      });
 
-      this.hasAllDeletedAnnotations = this.countItems === this.unit.annotations.length ? true : false;
+
+    if (this.unit.linkings && this.unit.linkings.taxon && this.unit.linkings.originalTaxon) {
+      this.haschangedTaxon = (this.toQname.transform(this.unit.linkings.taxon.id) !== this.toQname.transform(this.unit.linkings.originalTaxon.id)) ? true : false;
+    } else {
+      this.haschangedTaxon = false;
     }
   }
 
