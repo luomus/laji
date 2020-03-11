@@ -22,13 +22,13 @@ export class AudioPlayerComponent implements OnInit {
   private volumeStatusBar: HTMLElement;
 
   @ViewChild('audio', {static: true}) audio: ElementRef;
-  private isPlaying = false;
-  private audioContainer: HTMLAudioElement;
-  private nowplayingAudioId: number;
+  public isPlaying = false;
+  public audioContainer: HTMLAudioElement;
+  public nowplayingAudioId: number;
   private currentVolume = 1;
 
 
-  private listAudio: Audio[];
+  public listAudio: Audio[];
   public playingAudio: Audio;
   public images: Image [] = [];
 
