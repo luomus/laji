@@ -1,16 +1,4 @@
 <div class="player-audio">
-    <div class="player-audio-child now">
-      <div class="info">
-        <div class="author">
-          Author: {{ playingAudio.author }}
-          License: {{ playingAudio.licenseId | label }}
-        </div>
-        <div class="spectogram">
-          <!--<img src="{{ playingAudio.thumbnailURL }}">-->
-          <laji-image-gallery [modalImages]="images"></laji-image-gallery>
-        </div>
-      </div>
-    </div> 
     <div class="player-audio-child controls">
         <div class="buttons">
           <button (click)="previousAudio()" class="play" *ngIf="nowplayingAudioId > 0 && listAudio.length > 1"><i class="glyphicon glyphicon-backward"></i></button>
@@ -25,6 +13,14 @@
           <div #volumeStatus class="volume-bar-active"></div>
         </div>
     </div>
+    <div class="player-audio-child now">
+      <div class="info">
+        <div class="spectogram">
+          <!--<img src="{{ playingAudio.thumbnailURL }}">-->
+          <laji-image-gallery [modalImages]="images"></laji-image-gallery>
+        </div>
+      </div>
+    </div> 
 </div>
   
   <audio #audio class="music-player__audio-container" [src]="playingAudio.mp3URL"></audio>

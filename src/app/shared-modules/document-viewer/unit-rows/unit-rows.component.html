@@ -50,3 +50,6 @@
   <laji-row [title]="'MY.sex' | label" [value]="unit.sex | label: 'warehouse'"></laji-row>
   <laji-row [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>
 </ng-container>
+<laji-row [title]="'audio.spectrum' | translate" *ngIf="unit.audioCount > 0">
+  <laji-audio-player [audioFiles]="unit.media"></laji-audio-player>
+</laji-row>

@@ -1,16 +1,13 @@
-
+@import '../../../styles/_styles.scss'; 
 
 div {
   &.player-audio {
     position: relative;
-    bottom: 50px;
-    width: 300px;
-    height: 200px;
+    width: 100%;
     background-color: white;
     display: flex;
     align-items: center;
     z-index: 1100;
-    right: 50px;
     flex-wrap: wrap;
     border-radius: 6px;
     -webkit-border-radius: 6px;
@@ -19,31 +16,51 @@ div {
       &.player-audio-child {
         color: #fff;
         padding: 5px;
-        &:nth-child(1) {
+        &:nth-child(3) {
           width: 100%;
         }
-        &:nth-child(2){
+        &:nth-child(1){
           border-top-left-radius: 6px;
           border-bottom-left-radius: 6px;
           -webkit-border-top-left-radius:6px;
           -webkit-border-bottom-left-radius: 6px;
           -webkit-border-top-left-radius:6px;
           -moz-border-bottom-left-radius: 6px;
+          @include media-query-tablet {
+            border-bottom-left-radius: 0;
+            -webkit-border-bottom-left-radius: 0;
+            -moz-border-bottom-left-radius: 0;
+            border-top-right-radius: 6px;
+            -webkit-border-top-right-radius: 6px;
+            -moz-border-top-right-radius: 6px;
+          }
         }
-        &:nth-child(3) {
+        &:nth-child(2) {
           border-top-right-radius: 6px;
           border-bottom-right-radius: 6px;
           -webkit-border-top-right-radius: 6px;
           -webkit-border-bottom-right-radius: 6px;
           -webkit-border-top-right-radius: 6px;
           -webkit-border-bottom-right-radius: 6px;
+          @include media-query-tablet {
+            border-top-right-radius: 0;
+            -webkit-border-top-right-radius: 0;
+            -moz-border-top-right-radius: 0;
+            border-bottom-left-radius: 6px;
+            -webkit-border-bottom-left-radius: 6px;
+            -moz-border-bottom-left-radius: 6px;
+          }
         }
-        &:not(:first-child) {
+        &:not(:last-child) {
           flex: 1;
           text-align: center;
           margin: 0px;
           height: 35px;
           background-color: #2283c3;
+          @include media-query-tablet {
+            flex: none;
+            width: 100%;
+          }
         }  
         div {
           &.buttons {
