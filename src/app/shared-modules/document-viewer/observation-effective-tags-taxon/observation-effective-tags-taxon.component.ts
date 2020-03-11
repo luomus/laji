@@ -29,7 +29,6 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
     ) { }
 
   ngOnInit() {
-    console.log(this.unit);
      this.unit.addedTags = [];
      this.subscriptParent = this.taxonTagEffective.childEventListner().subscribe(event => {
       this.annotationResolving = event;

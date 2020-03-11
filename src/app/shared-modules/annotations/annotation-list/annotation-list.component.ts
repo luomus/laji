@@ -80,7 +80,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   populateArrayShowItem(array) {
     this.showItem = [];
     array.forEach(element => {
-      if (element['deleted']) {
+      if (element['deleted'] || !element['valid']) {
         this.showItem.push(false);
       } else {
         this.showItem.push(true);

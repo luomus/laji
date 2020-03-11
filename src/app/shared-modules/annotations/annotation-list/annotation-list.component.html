@@ -2,8 +2,9 @@
   <div class="comment-title">{{ 'annotation.title' | translate }}</div>
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="annotation">
-      <div class="deleted" *ngIf="(annotation.deleted && !showItem[i])">
-        <span>{{ 'annotation.deleted' | translate }}</span>
+      <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem[i])">
+        <span *ngIf="annotation.deleted; else notValid">{{ 'annotation.deleted' | translate }}</span>
+        <ng-template #notValid><span>{{ 'annotation.notValid' | translate }}</span></ng-template>
         <button
               type="button"
               class="btn alert-info btn-xs"
@@ -149,6 +150,7 @@
         <i class="glyphicon glyphicon-option-horizontal"></i>
       </ng-template>
       <span class="small-deleted" *ngIf="(annotation.deleted && showItem[i])">{{ 'annotation.deleted' | translate }}</span>
+      <span class="small-deleted" *ngIf="(!annotation.valid && showItem[i]);">{{ 'annotation.notValid' | translate }}</span>
     </div>
     <div *ngIf="lastFalse!==-1 && i===lastFalse && hasNextTrue">
       <laji-occurrence-at-time-of-annotation [occurrence]="annotations[i+1].occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>
