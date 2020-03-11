@@ -442,11 +442,11 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       }
 
       if (this.expert && e.keyCode === 48 && e.altKey) { // alt + 0 --> add erroneus
-        this.addToAddTags({id: 'MMAN.9', quality: 'MMAN.typeNegativeQuality'});
+        this.addToAddTags({id: 'MMAN.8', quality: 'MMAN.typeNegativeQuality'});
       }
 
       if (e.keyCode === 82 && e.altKey) { // alt + r --> delete all added tags
-        this.annotation.addedTags = [];
+        this.cleanForm();
       }
 
       if (e.altKey && e.keyCode === 83) { // alt + s --> save
