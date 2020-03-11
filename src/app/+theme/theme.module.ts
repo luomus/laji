@@ -87,6 +87,7 @@ import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
 import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
 import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
+import { KerttuTaxonSelectComponent } from './kerttu/kerttu-taxon-select/kerttu-taxon-select.component';
 
 /* tslint:enable:max-line-length */
 
@@ -173,7 +174,8 @@ import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.compone
     FormHasFeaturePipe,
     KerttuLetterAnnotationComponent,
     AudioViewerComponent,
-    ThemeBreadcrumbComponent
+    ThemeBreadcrumbComponent,
+    KerttuTaxonSelectComponent
   ],
   providers: [
     ResultService,

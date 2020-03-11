@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import {Step} from './kerttu.facade';
 import { IRecordingWithCandidates } from './model/recording';
+import {ILetterAnnotations} from './model/annotation';
 
 @Injectable()
 export class KerttuApi {
@@ -27,7 +28,7 @@ export class KerttuApi {
   public setStatus(personToken: string, status: Step): Observable<number> {
     const path = this.basePath + '/status/' + personToken;
 
-    return this.httpClient.put(path, {status})
+    return this.httpClient.put(path, { status })
       .pipe(
         map((response: {status: number}) => {
           return response.status;
@@ -35,13 +36,41 @@ export class KerttuApi {
       );
   }
 
-  public getLetterCandidates(personToken: string): Observable<IRecordingWithCandidates> {
-    const path = this.basePath + '/letters/' + personToken;
+  public getLetterCandidateTaxonList(personToken: string): Observable<string[]> {
+    const path = this.basePath + '/letters/taxa';
 
-    return this.httpClient.get(path)
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get(path, { params })
       .pipe(
-        map((response: {letters: IRecordingWithCandidates}) => {
+        map((response: {taxa: string[]}) => {
+          return response.taxa;
+        })
+      );
+  }
+
+  public getLetterCandidates(taxonId: string, personToken: string): Observable<IRecordingWithCandidates[]> {
+    const path = this.basePath + '/letters/' + taxonId;
+
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get(path, { params })
+      .pipe(
+        map((response: {letters: IRecordingWithCandidates[]}) => {
           return response.letters;
+        })
+      );
+  }
+
+  public setLetterAnnotations(taxonId: string, annotations: ILetterAnnotations, personToken: string): Observable<boolean> {
+    const path = this.basePath + '/letters/annotations/' + taxonId;
+
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.post(path, annotations, { params })
+      .pipe(
+        map((response: {success: boolean}) => {
+          return response.success;
         })
       );
   }

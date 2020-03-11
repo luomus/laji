@@ -6,6 +6,7 @@ import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../kerttu-api';
+import {ILetterAnnotations} from '../model/annotation';
 
 @Component({
   selector: 'laji-kerttu-main-view',
@@ -32,6 +33,8 @@ export class KerttuMainViewComponent implements OnInit {
   step = Step;
 
   selectedTaxonIds: string[];
+  taxonId: string;
+  letterAnnotations: ILetterAnnotations;
 
   constructor(
     private kerttuApi: KerttuApi,
@@ -70,7 +73,7 @@ export class KerttuMainViewComponent implements OnInit {
 
       });
     } else if (currentStep === Step.annotateLetters) {
-
+      this.saveLetterAnnotations().subscribe();
     } else if (currentStep === Step.annotateRecordings) {
 
     }
@@ -82,7 +85,9 @@ export class KerttuMainViewComponent implements OnInit {
         this.activate(Step.annotateLetters);
       });
     } else if (currentStep === Step.annotateLetters) {
-      this.activate(Step.annotateRecordings);
+      this.saveLetterAnnotations().subscribe(() => {
+        this.activate(Step.annotateRecordings);
+      });
     } else if (currentStep === Step.annotateRecordings) {
       this.activate(Step.done);
     }
@@ -95,5 +100,17 @@ export class KerttuMainViewComponent implements OnInit {
         return this.personService.personUpdateProfileByToken(profile, this.userService.getToken());
       })
     );
+  }
+
+  saveLetterAnnotations() {
+    return this.kerttuApi.setLetterAnnotations(this.taxonId, this.letterAnnotations, this.userService.getToken());
+  }
+
+  onTaxonIdChange(id: string) {
+    this.taxonId = id;
+    if (this.letterAnnotations) {
+      this.saveLetterAnnotations().subscribe();
+      this.letterAnnotations = undefined;
+    }
   }
 }

@@ -13,7 +13,13 @@
       (taxonIdSelect)="selectedTaxonIds = $event"
     ></laji-expertise-form>
     <div *ngIf="vm.step === step.annotateLetters">
-      <laji-kerttu-letter-annotation></laji-kerttu-letter-annotation>
+      <laji-kerttu-taxon-select
+        (taxonChange)="onTaxonIdChange($event)"
+      ></laji-kerttu-taxon-select>
+      <laji-kerttu-letter-annotation
+        [taxonId]="taxonId"
+        (annotationsChange)="letterAnnotations = $event"
+      ></laji-kerttu-letter-annotation>
     </div>
     <div *ngIf="vm.step === step.annotateRecordings">
       TODO

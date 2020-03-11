@@ -1,5 +1,5 @@
 <div id="spectrogramContainer" #spectrogram>
-  <img src="{{recording.spectrogram}}" alt="Spectrogram">
+  <img src="{{recording?.spectrogram}}" alt="Spectrogram">
   <svg #graph class="graph" xmlns="http://www.w3.org/2000/svg">
     <g class="grid">
       <line
@@ -28,6 +28,6 @@
   <!--span class="fa fa-volume-up"></span>
   <input id="volumeSlider" type="range" min="0" max="100" value="100" step="1" (input)="setVolume($event.target.value)" (change)="setVolume($event.target.value)"-->
   <audio #audioPlayer class="hidden" controls="controls" (ended)="onAudioEnded()" (timeupdate)="updateScrollLinePosition()">
-    <source src="{{recording.audio}}">
+    <source src="{{recording?.audio}}">
   </audio>
 </div>

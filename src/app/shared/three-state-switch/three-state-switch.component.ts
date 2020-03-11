@@ -10,13 +10,13 @@ export class ThreeStateSwitchComponent {
 
   _switchState: 'true'|'false'|'undefined';
 
-  @Input() offValue = false;
+  @Input() offValue: any = false;
   @Input() offText = '';
   @Input() offColor = '';
-  @Input() onValue = true;
+  @Input() onValue: any = true;
   @Input() onText = '';
   @Input() showUndefined = false;
-  @Input() undefinedValue = undefined;
+  @Input() undefinedValue: any = undefined;
   @Input() undefinedText = '';
   @Input() size = 'small';
   @Input() onColor = 'primary';

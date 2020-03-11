@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, Inject, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {IRecording} from '../model/recording';
 import {DOCUMENT} from '@angular/common';
 
@@ -7,7 +7,7 @@ import {DOCUMENT} from '@angular/common';
   templateUrl: './audio-viewer.component.html',
   styleUrls: ['./audio-viewer.component.scss']
 })
-export class AudioViewerComponent implements AfterViewInit {
+export class AudioViewerComponent implements AfterViewInit, OnChanges {
   @ViewChild('spectrogram', {static: true}) spectrogramRef: ElementRef<HTMLAudioElement>;
   @ViewChild('scrollLine', {static: true}) scrollLineRef: ElementRef<HTMLAudioElement>;
   @ViewChild('graph', {static: true}) graphRef: ElementRef<HTMLAudioElement>;
@@ -29,10 +29,21 @@ export class AudioViewerComponent implements AfterViewInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
   ) { }
 
   ngAfterViewInit() {
+    this.updateScrollLinePosition();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.recording) {
+      this.playerRef.nativeElement.load();
+    }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
     this.updateScrollLinePosition();
   }
 
