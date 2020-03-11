@@ -2,8 +2,9 @@
   <div class="comment-title">{{ 'annotation.title' | translate }}</div>
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="annotation">
-      <div class="deleted" *ngIf="(annotation.deleted && !showItem[i])">
-        <span>{{ 'annotation.deleted' | translate }}</span>
+      <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem[i])">
+        <span *ngIf="annotation.deleted; else notValid">{{ 'annotation.deleted' | translate }}</span>
+        <ng-template #notValid><span>{{ 'annotation.notValid' | translate }}</span></ng-template>
         <button
               type="button"
               class="btn alert-info btn-xs"
@@ -64,11 +65,17 @@
            <div class="row no-padding">
              <div class="col-xs-4" style="font-weight: bold;">Added tags:</div>
              <div class="col-xs-8">
-               <ul class="separated-list">
-                 <li *ngFor="let addedTag of annotation.addedTags">
-                 <span style="text-transform: uppercase;">{{ addedTag | label: 'warehouse' }}</span>
-                 </li>
-               </ul>
+              <div class="tag" *ngFor="let addedTag of effectiveTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags.indexOf(addedTag) !== -1 }">
+                <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
+                   <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker neutral" [ngClass]="{'': effectiveTags.indexOf(addedTag) !== -1 , 'notEffective': effectiveTags.indexOf(addedTag) === -1}" >
+                     <span>{{ addedTag | label: 'warehouse' }}</span>
+                   </div>
+                   <span class="not-effective-tag" *ngIf="effectiveTags.indexOf(addedTag) === -1">{{ 'annotation.deleted' | translate }}</span>
+                </div>
+                <ng-template #noCategory>
+                 <span>{{ addedTag | label: 'warehouse' }}</span>
+                </ng-template>
+              </div>
              </div>
            </div>
          </div>
@@ -78,7 +85,7 @@
             <div class="col-xs-8">
               <ul class="separated-list">
                 <li *ngFor="let removeTag of annotation.removedTags">
-                  <span style="text-transform: uppercase;">{{ removeTag | label: 'warehouse' }}</span>
+                  <span>{{ removeTag | label: 'warehouse' }}</span>
                 </li>
               </ul>
             </div>
@@ -149,6 +156,7 @@
         <i class="glyphicon glyphicon-option-horizontal"></i>
       </ng-template>
       <span class="small-deleted" *ngIf="(annotation.deleted && showItem[i])">{{ 'annotation.deleted' | translate }}</span>
+      <span class="small-deleted" *ngIf="(!annotation.valid && showItem[i]);">{{ 'annotation.notValid' | translate }}</span>
     </div>
     <div *ngIf="lastFalse!==-1 && i===lastFalse && hasNextTrue">
       <laji-occurrence-at-time-of-annotation [occurrence]="annotations[i+1].occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>

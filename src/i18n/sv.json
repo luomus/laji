@@ -68,6 +68,7 @@
   "annotation.titleListAnnotations": "Kommentar",
   "annotation.occurrenceAtTime": "Händelse vid tidpunkten för annotering",
   "annotation.deleted": "Kommentaren raderad",
+  "annotation.notValid": "Kommentaren är inte giltig",
   "annotation.openComment": "Öppen kommentar",
   "annotation.closeComment": "Stäng kommentar",
   "annotation.showDeletedComment": "Visa raderad kommentar",
