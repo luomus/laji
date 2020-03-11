@@ -19,7 +19,7 @@ export class AnnotationDataObservationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.occurrence = this.unit.annotations[0].occurrenceAtTimeOfAnnotation;
+    this.occurrence = this.unit.annotations[this.unit.annotations.length - 1].occurrenceAtTimeOfAnnotation;
   }
 
   onTaxonLinkClick(event: MouseEvent) {

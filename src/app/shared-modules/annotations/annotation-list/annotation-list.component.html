@@ -61,19 +61,6 @@
       </div>
       <div class="content-show-hide" *ngIf="showItem[i]; else dots" [@flyInOut]>
         <div class="tags" *ngIf="annotation.addedTags">
-          <!--<div class="added-tags" *ngIf="annotation.addedTags.length > 0">
-            <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags.indexOf(addedTag) !== -1 }">
-              <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
-                 <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[addedTag | warehouse ].type }}" [ngClass]="{'': effectiveTags.indexOf(addedTag) !== -1 , 'notEffective': effectiveTags.indexOf(addedTag) === -1}" >
-                   <span>{{ addedTag | label: 'warehouse' }}</span>
-                 </div>
-                 <span class="not-effective-tag" *ngIf="effectiveTags.indexOf(addedTag) === -1">{{ 'annotation.deleted' | translate }}</span>
-              </div>
-              <ng-template #noCategory>
-               <span>{{ addedTag | label: 'warehouse' }}</span>
-              </ng-template>
-            </div>
-          </div>-->
            <div class="row no-padding">
              <div class="col-xs-4" style="font-weight: bold;">Added tags:</div>
              <div class="col-xs-8">
@@ -84,28 +71,19 @@
                </ul>
              </div>
            </div>
+         </div>
          <div class="removed-tags" *ngIf="annotation.removedTags && annotation.removedTags.length > 0">
-           <!--<ul class="separated-list">
-             <b style="display: block;">{{ 'annotation.removedTags' | translate }}: </b>
-           </ul>
-           <div class="tag" *ngFor="let removeTag of annotation.removedTags">
-                <div class="annotation-marker" >
-                  <span>{{ removeTag | label: 'warehouse' }}</span>
-                </div>
-           </div>-->
-  
-           <div class="row">
-             <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.removedTags' | translate }}:</div>
-             <div class="col-xs-8">
-               <ul class="separated-list">
-                 <li *ngFor="let removeTag of annotation.removedTags">
-                   <span style="text-transform: uppercase;">{{ removeTag | label: 'warehouse' }}</span>
-                 </li>
-               </ul>
-             </div>
-           </div>
-         </div>
-         </div>
+          <div class="row">
+            <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.removedTags' | translate }}:</div>
+            <div class="col-xs-8">
+              <ul class="separated-list">
+                <li *ngFor="let removeTag of annotation.removedTags">
+                  <span style="text-transform: uppercase;">{{ removeTag | label: 'warehouse' }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
          <div class="content new-identification" *ngIf="annotation.identification && annotation.identification.taxon && annotation.identification.taxon !== ''">
            <!--<span *ngIf="annotation.identification.taxonID;else reportedInformalTaxonGroup">
              {{ annotation.identification.taxon }} - {{ annotation.identification.taxon | label }}
