@@ -67,14 +67,15 @@
 
   .shortcuts {
     position: relative;
-    width: 24px;
-    height: 24px;
-    background: url('../../../../static/images/icons/keyboard_24px.svg') center no-repeat;
     float: right;
-    cursor: pointer;
   }
 
-  .shortcuts:after {
+  .shortcuts img {
+    float: right;
+    width: 24%;
+  }
+
+  /*.shortcuts:after {
     content: '';
     position: absolute;
     left: 50%;
@@ -91,7 +92,7 @@
   .shortcuts.up:after {
     border-bottom: 5px solid rgba(0, 0, 0, .54);
     border-top: 0;
-  }
+  }*/
 
   .shortcut-content {
     position: absolute;
