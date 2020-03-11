@@ -29,8 +29,8 @@ export class AudioPlayerComponent implements OnInit {
 
 
   private listAudio: Audio[];
-
   public playingAudio: Audio;
+  public images: Image [] = [];
 
   constructor() {}
 
@@ -38,6 +38,10 @@ export class AudioPlayerComponent implements OnInit {
 
 
     this.listAudio = this.audioFiles.filter(audio => audio['mediaType'] === 'AUDIO' );
+
+    this.listAudio.forEach((element, index) =>
+       this.images.push({ 'id': 'a' + index, 'fullURL': element.fullURL , 'thumbnailURL': element.thumbnailURL, 'intellectualRights': element.licenseId })
+    );
 
     this.volumeBar = this.volume.nativeElement;
     this.volumeStatusBar = this.volumeStatus.nativeElement;
@@ -61,6 +65,9 @@ export class AudioPlayerComponent implements OnInit {
   setInfoAudio(index: number = 0): void {
     this.nowplayingAudioId = index;
     this.playingAudio = this.listAudio[index];
+    this.images = [];
+    this.images.push({ 'id': 'a' + index , 'fullURL': this.listAudio[index].fullURL ,
+    'thumbnailURL': this.listAudio[index].thumbnailURL, 'intellectualRights': this.listAudio[index].licenseId });
   }
 
 

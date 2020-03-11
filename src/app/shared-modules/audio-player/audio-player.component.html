@@ -6,7 +6,8 @@
           License: {{ playingAudio.licenseId | label }}
         </div>
         <div class="spectogram">
-          <img src="{{ playingAudio.thumbnailURL }}">
+          <!--<img src="{{ playingAudio.thumbnailURL }}">-->
+          <laji-image-gallery [modalImages]="images"></laji-image-gallery>
         </div>
       </div>
     </div> 
