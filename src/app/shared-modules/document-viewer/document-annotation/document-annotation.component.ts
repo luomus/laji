@@ -194,6 +194,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       }
     });
     return hasHighlight;
+
   }
 
   setActive(i) {

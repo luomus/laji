@@ -201,6 +201,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
 
+
       });
   }
 

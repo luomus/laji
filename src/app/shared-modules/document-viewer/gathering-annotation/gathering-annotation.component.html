@@ -1,4 +1,4 @@
-<div [hidden]="!visible" class="gathering">
+<div class="gathering">
             <ng-container *ngFor="let unit of gathering?.units">
                 <ng-container *ngIf="!showAnnotation; else annotation">
                     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
