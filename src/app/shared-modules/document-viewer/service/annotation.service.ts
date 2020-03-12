@@ -50,7 +50,7 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
           return [Annotation.AnnotationRoleEnum.owner];
         }
         const roles = [((user && user.roleAnnotation) || Annotation.AnnotationRoleEnum.basic)];
-        if (UserService.isAdmin(user)) {
+        if (UserService.isIctAdmin(user)) {
           roles.push(Annotation.AnnotationRoleEnum.ictAdmin);
         }
         return roles;

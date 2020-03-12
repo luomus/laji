@@ -13,6 +13,7 @@ import { PlatformService } from '../../shared/service/platform.service';
 export interface Rights {
   edit: boolean;
   admin: boolean;
+  ictAdmin?: boolean;
 }
 
 @Injectable({providedIn: 'root'})

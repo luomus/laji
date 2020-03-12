@@ -83,7 +83,7 @@ export class UserService {
     + '&next=' + next).replace('%lang%', lang);
   }
 
-  static isAdmin(person: Person): boolean {
+  static isIctAdmin(person: Person): boolean {
     return person && person.role && person.role.includes('MA.admin');
   }
 

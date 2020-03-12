@@ -6,15 +6,20 @@
               
         <div class="content">
             <ul>
-                <li *ngIf="(occurrence && occurrence.taxonVerbatim)">
+                <li *ngIf="((occurrence.taxonId && occurrence.taxonId !== '') || (occurrence.linkings && occurrence.linkings.taxon))">
                     <b>Taxon: </b>
-                    <span>{{ occurrence.taxonId | toQName | label }} </span>
-                    <ng-container *ngIf="occurrence.taxonId">
-                        <a (click)="onTaxonLinkClick($event)" [routerLink]="['/taxon/' + ((occurrence.taxonId) | toQName)] | localize" target="_blank"
-                           [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
-                          <i class="glyphicon glyphicon-tag"></i>
-                        </a>
+                    <ng-container *ngIf="occurrence.linkings.taxon; else taxonNameSimple">
+                        <laji-taxon-name [taxon]="occurrence.linkings.taxon"></laji-taxon-name>
                     </ng-container>
+                    <ng-template #taxonNameSimple>
+                        <span>
+                            {{ occurrence.taxonVerbatim }}
+                            <a (click)="onTaxonLinkClick($event)" [routerLink]="['/taxon/' + (occurrence.taxonId | toQName)] | localize" target="_blank"
+                            [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
+                            <i class="glyphicon glyphicon-tag"></i>
+                            </a>
+                        </span>
+                    </ng-template>
                 </li>
                 <li *ngIf="occurrence && (occurrence.dateBegin || occurrence.dateEnd)">
                     <b>{{ 'observation.form.date' | translate }}: </b>

@@ -1,9 +1,23 @@
 select {
   color: #000;
+  height: 24px;
+  margin-bottom: 3px;
 }
+.item-wrap {
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.item-wrap::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 .field-item {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  align-content: space-between;
   .btn {
     color: #333;
   }
