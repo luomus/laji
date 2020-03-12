@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {IRecordingWithCandidates} from '../model/recording';
 import {Annotation, ILetterAnnotations} from '../model/annotation';
 import {tap} from 'rxjs/operators';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-kerttu-letter-annotation',
@@ -24,13 +25,15 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
   private annotations: ILetterAnnotations = {};
   private letters: IRecordingWithCandidates[];
   private letterQueue: {templateIdx: number, candidateIdx: number}[];
+  private alertShown = false;
 
   @Output() annotationsChange = new EventEmitter<ILetterAnnotations>();
 
   constructor(
     private kerttuApi: KerttuApi,
     private cdr: ChangeDetectorRef,
-    private userService: UserService
+    private userService: UserService,
+    private translateService: TranslateService
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -45,6 +48,7 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
                 this.letterQueue.push({templateIdx: i, candidateIdx: j});
               });
             });
+            this.alertShown = false;
           })
         );
       }
@@ -57,8 +61,9 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
     this.letterQueue = this.letterQueue.filter(q => !(q.templateIdx === this.currentTemplate && q.candidateIdx === this.currentCandidate));
 
     setTimeout(() => {
-      if (this.letterQueue.length === 0) {
-        alert('Kaikki valitun lajin kirjaimet käyty läpi! Vaihda lajia tai siirry seuraavaan vaiheeseen.');
+      if (this.letterQueue.length === 0 && !this.alertShown) {
+        alert(this.translateService.instant('theme.kerttu.letterQueueEmpty'));
+        this.alertShown = true;
       }
 
       const next = this.letterQueue[0];
