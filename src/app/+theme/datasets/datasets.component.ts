@@ -45,7 +45,7 @@ export class DatasetsComponent {
           map(id => forms.find(f => f.id === id)),
           concatMap(f => this.userService.user$.pipe(
             take(1),
-            concatMap(person => UserService.isAdmin(person) ? of(f) : this.formPermissionService.hasAccessToForm(f && f.id || null).pipe(
+            concatMap(person => UserService.isIctAdmin(person) ? of(f) : this.formPermissionService.hasAccessToForm(f && f.id || null).pipe(
               map((access) => access ? f : null)
             ))
           )),
