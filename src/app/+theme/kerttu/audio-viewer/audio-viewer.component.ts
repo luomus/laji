@@ -33,7 +33,9 @@ export class AudioViewerComponent implements AfterViewInit, OnChanges {
   ) { }
 
   ngAfterViewInit() {
-    this.updateScrollLinePosition();
+    setTimeout(() => {
+      this.updateScrollLinePosition();
+    }, 0);
   }
 
   ngOnChanges(changes: SimpleChanges) {

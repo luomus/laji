@@ -103,7 +103,7 @@ export class KerttuMainViewComponent implements OnInit {
   }
 
   saveLetterAnnotations() {
-    return this.kerttuApi.setLetterAnnotations(this.taxonId, this.letterAnnotations, this.userService.getToken());
+    return this.kerttuApi.updateLetterAnnotations(this.taxonId, this.letterAnnotations, this.userService.getToken());
   }
 
   onTaxonIdChange(id: string) {

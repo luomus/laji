@@ -1,6 +1,6 @@
 <div class="container-fluid" *ngIf="vm$ | async as vm">
   <laji-spinner [spinning]="vm.step == null" [hideContentWhileLoading]="true">
-    <h1>Kerttu - Kerro tunnistuksesi</h1>
+    <h1>{{ 'theme.kerttu.annotate.title' | translate }}</h1>
     <laji-stepper [state]="vm.step"
                   [mapping]="mapping"
                   [steps]="steps"
@@ -28,9 +28,9 @@
       Valmis!
     </div>
     <div class="pull-right">
-      <button class="btn btn-warning" (click)="save(vm.step)">Välitallenna</button>
+      <button class="btn btn-warning" (click)="save(vm.step)">{{ 'theme.kerttu.save' | translate }}</button>
       <button class="btn btn-success" style="margin-left: 15px" (click)="saveAndGoToNext(vm.step)">
-        Tallenna ja siirry seuraavaan kohtaan
+        {{ 'theme.kerttu.saveAndGoNext' | translate }}
       </button>
     </div>
   </laji-spinner>
