@@ -53,7 +53,7 @@ export class QualityService {
 
   getMostActiveUsers(maxLength = 50, informalTaxonGroup?, lastDate?): Observable<any> {
     const query: WarehouseQueryInterface = {cache: true};
-    query.annotationType = ['USER_EFFECTIVE', 'USER_CHECK'];
+    query.annotationType = ['USER_EFFECTIVE'];
     if (informalTaxonGroup) {
       query.informalTaxonGroupId = informalTaxonGroup;
     }

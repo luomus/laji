@@ -31,17 +31,10 @@ export class IdentifyComponent implements OnInit {
 
   ngOnInit() {
     this.formId = environment.whichSpeciesForm;
-    this.sourceService.getAllAsLookUp().pipe(
-      map(sources => Object.keys(sources).filter((source) => source !== Global.sources.kotka)))
-      .subscribe(sources => {
-        this.query = {
-          sourceId: sources,
+    this.query = {
           unidentified: true,
-          countryId: ['ML.206'],
           informalTaxonGroupIdIncludingReported: this.group ? [this.group] : []
-        };
-        this.cd.markForCheck();
-      });
+    };
   }
 
   onSelectGroup() {
