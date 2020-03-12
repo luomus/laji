@@ -179,6 +179,7 @@ export class ImporterComponent implements OnInit {
         }
         if (FormService.hasFeature(this.form, Form.Feature.SecondaryCopy)) {
           baseFields.push(SpreadsheetService.IdField);
+          baseFields.push(SpreadsheetService.deleteField);
         }
 
         this.excludedFromCopy = form.excludeFromCopy || [];

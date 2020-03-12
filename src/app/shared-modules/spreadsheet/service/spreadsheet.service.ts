@@ -30,7 +30,15 @@ export class SpreadsheetService {
     label: 'ID',
     fullLabel: 'id'
   };
-
+  public static readonly deleteField = {
+    parent: 'document',
+    required: false,
+    isArray: false,
+    type: 'boolean',
+    key: 'delete',
+    label: 'Delete',
+    fullLabel: 'Delete'
+  };
   public static readonly nameSeparator = ' - ';
 
   private static groupId = 1;
