@@ -10,12 +10,12 @@ import { Step } from '../../spreadsheet.facade';
 })
 export class StepperComponent implements OnInit {
 
-  _state: Step;
+  _state: number;
   active: number;
-  @Output() activate = new EventEmitter<Step>();
+  @Output() activate = new EventEmitter<number>();
   @Output() title = new EventEmitter<string>();
 
-  mapping = {
+  @Input() mapping = {
     [Step.empty]: 'file',
     [Step.fileAlreadyUploadedPartially]: 'file',
     [Step.fileAlreadyUploaded]: 'file',
@@ -32,7 +32,7 @@ export class StepperComponent implements OnInit {
     [Step.doneOk]: 'done'
   };
 
-  steps: {name: string, label: string, returnState: Step}[] = [
+  @Input() steps: {name: string, label: string, returnState: number}[] = [
     {name: 'file', label: 'excel.step1', returnState: Step.empty},
     {name: 'colMapping', label: 'excel.step2', returnState: Step.colMapping},
     {name: 'valueMapping', label: 'excel.step3', returnState: Step.dataMapping},

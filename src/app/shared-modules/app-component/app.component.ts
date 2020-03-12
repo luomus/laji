@@ -10,6 +10,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { HistoryService } from '../../shared/service/history.service';
 import { Global } from '../../../environments/global';
+import { setTheme } from 'ngx-bootstrap';
 
 
 declare const ga: Function;
@@ -47,6 +48,7 @@ export class AppComponent {
     metaService: Meta,
     historyService: HistoryService // Need to include this here so that history recording starts
   ) {
+    setTheme('bs3');
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;

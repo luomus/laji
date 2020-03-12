@@ -10,6 +10,9 @@ import { Subject } from 'rxjs';
 })
 export class SidebarLinkComponent implements OnInit, OnDestroy {
   @Input() link: Array<string>;
+  @Input() linkParams: {
+    [k: string]: any;
+  };
   @Output() clicked = new EventEmitter<any>();
   active = false;
   unsubscribe$ = new Subject<void>();

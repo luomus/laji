@@ -4,7 +4,7 @@ import { from as ObservableFrom, Observable, of, of as ObservableOf } from 'rxjs
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
-import { IFormField } from '../model/excel';
+import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
@@ -22,6 +22,7 @@ import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facad
 import { FileService, instanceOfFileLoad } from '../service/file.service';
 import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
 import { environment } from '../../../../environments/environment';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-importer',
@@ -44,6 +45,7 @@ export class ImporterComponent implements OnInit {
   @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
 
   @Input() forms: string[] = environment.massForms || [];
+  @Input() allowedCombineOptions: CombineToDocument[];
 
   data: {[key: string]: any}[];
   mappedData: {[key: string]: any}[];
@@ -140,11 +142,22 @@ export class ImporterComponent implements OnInit {
     }
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe(form => {
+        const baseFields = [{
+          parent: '',
+          required: false,
+          isArray: false,
+          type: 'string',
+          key: VALUE_IGNORE,
+          label: 'ignore',
+          fullLabel: 'ignore'
+        }];
+
         this.form = form;
-        this.combineOptions = this.excelToolService.getCombineOptions(form);
+        const combineOptions = this.excelToolService.getCombineOptions(form);
         const data = this.spreadSheetService.loadSheet(this.bstr);
         this.bstr = undefined;
         this.hash = Hash.sha1(data);
+        this.combineOptions = this.allowedCombineOptions ? combineOptions.filter(option => this.allowedCombineOptions.includes(option)) : combineOptions;
 
         if (this.combineOptions && this.combineOptions.length > 0 && this.combineOptions.indexOf(this.combineBy) === -1) {
           this.combineBy = this.combineOptions[0];
@@ -164,8 +177,13 @@ export class ImporterComponent implements OnInit {
           this.header = data.shift();
           this.data = data;
         }
+        if (FormService.hasFeature(this.form, Form.Feature.SecondaryCopy)) {
+          baseFields.push(SpreadsheetService.IdField);
+          baseFields.push(SpreadsheetService.deleteField);
+        }
+
         this.excludedFromCopy = form.excludeFromCopy || [];
-        this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, true);
+        this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, baseFields);
         this.colMap = this.spreadSheetService.getColMapFromSheet(this.header, this.fields);
         this.origColMap = JSON.parse(JSON.stringify(this.colMap));
 

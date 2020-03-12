@@ -26,14 +26,10 @@ export interface Annotation {
      * QName for MA.person
      */
     annotationByPerson?: string;
-    byPerson?: string;
-
     /**
      * QName for KE.informationSystem
      */
     annotationBySystem?: string;
-    bySystem?: string;
-
     byRole?: string;
 
     annotationClass?: Annotation.AnnotationClassEnum;

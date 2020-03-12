@@ -5,6 +5,7 @@ import { IFormField } from '../model/excel';
 import { SpreadsheetService } from '../service/spreadsheet.service';
 import { GeneratorService } from '../service/generator.service';
 import { environment } from '../../../../environments/environment';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-excel-generator',
@@ -13,6 +14,8 @@ import { environment } from '../../../../environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExcelGeneratorComponent implements OnInit {
+
+  @Input() forms: string[] = environment.massForms || [];
 
   type: 'ods'|'xlsx' = 'xlsx';
   formID = '';
@@ -23,8 +26,7 @@ export class ExcelGeneratorComponent implements OnInit {
   useLabels = true;
   generating = false;
 
-  @Input() forms: string[] = environment.massForms || [];
-  @Input() addSecondaryFields = false;
+  private isSecondary = false;
 
   constructor(
     private formService: FormService,
@@ -43,17 +45,26 @@ export class ExcelGeneratorComponent implements OnInit {
   }
 
   formSelected(event) {
+    const selected: string[] = [];
     this.formID = event;
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe((form: any) => {
+        this.isSecondary = FormService.hasFeature(form, Form.Feature.SecondaryCopy);
         this.formTitle = form.title;
         this.parents = [];
-        this.fields = this.spreadSheetService.formToFlatFields(form);
+        this.fields = this.spreadSheetService.formToFlatFields(form, this.isSecondary ? [
+          SpreadsheetService.IdField,
+          SpreadsheetService.deleteField
+        ] : []);
         this.fields.map(field => {
           if (this.parents.indexOf(field.parent) === -1) {
             this.parents.push(field.parent);
           }
+          if (field.required) {
+            selected.push(field.key);
+          }
         });
+        this.selected = selected;
         this.cdr.detectChanges();
       });
   }
@@ -69,7 +80,7 @@ export class ExcelGeneratorComponent implements OnInit {
     if (this.selected.indexOf(field.key) === -1) {
       this.selected = [...this.selected, field.key];
     } else {
-      this.selected = this.selected.filter(val => val !== field.key);
+      this.selected = this.selected.filter(val => val !== field.key || field.required);
     }
   }
 
@@ -89,7 +100,7 @@ export class ExcelGeneratorComponent implements OnInit {
     this.generatorService.generate(
       this.formID,
       'Vihko - ' + this.formTitle + ' (' + this.formID + ')',
-      this.fields.filter(field => this.selected.indexOf(field.key) > -1 || field.required),
+      this.selected.map(field => this.fields.find(f => f.key === field)),
       this.useLabels,
       this.type,
       () => {

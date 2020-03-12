@@ -1,0 +1,15 @@
+<ng-container *ngIf="taxonList$ | async as taxonList">
+  <ng-container *ngIf="taxonList.length === 0; else taxonSelect">
+    <p>{{ 'theme.kerttu.noLetters' | translate }}</p>
+  </ng-container>
+  <ng-template #taxonSelect>
+    <h4>
+      {{ 'theme.kerttu.species' | translate }}
+      <select class="form-control" [value]="currentTaxon" (change)="onTaxonChange(taxonSelect.value)" #taxonSelect>
+        <option *ngFor="let taxon of taxonList" [value]="taxon.id">
+          <laji-taxon-name [taxon]="taxon"></laji-taxon-name>
+        </option>
+      </select>
+    </h4>
+  </ng-template>
+</ng-container>

@@ -33,6 +33,7 @@ import { LajiMapModule } from '@laji-map/laji-map.module';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { UserMappingButtonComponent } from './importer/load-file/user-mapping-button.component';
 import { SpreadsheetFacade } from './spreadsheet.facade';
+import { FieldItemComponent } from './excel-generator/field-item/field-item.component';
 
 @NgModule({
   declarations: [
@@ -56,9 +57,10 @@ import { SpreadsheetFacade } from './spreadsheet.facade';
     StepperComponent,
     SpecialInformalTaxonGroupsComponent,
     CanSplitToPipe,
-    UserMappingButtonComponent
+    UserMappingButtonComponent,
+    FieldItemComponent
   ],
-  exports: [ImporterComponent, ExcelGeneratorComponent],
+    exports: [ImporterComponent, ExcelGeneratorComponent, StepperComponent],
   imports: [
     CommonModule,
     SharedModule,

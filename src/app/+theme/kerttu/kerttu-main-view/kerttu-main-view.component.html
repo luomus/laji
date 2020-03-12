@@ -1,4 +1,37 @@
-<h1>Kerttu - Kerro tunnistuksesi</h1>
-<laji-expertise-form
-  [introText]="'theme.kerttu.expertise.intro' | translate"
-></laji-expertise-form>
+<div class="container-fluid" *ngIf="vm$ | async as vm">
+  <laji-spinner [spinning]="vm.step == null" [hideContentWhileLoading]="true">
+    <h1>{{ 'theme.kerttu.annotate.title' | translate }}</h1>
+    <laji-stepper [state]="vm.step"
+                  [mapping]="mapping"
+                  [steps]="steps"
+                  (activate)="activate($event)"
+    ></laji-stepper>
+    <laji-expertise-form
+      *ngIf="vm.step === step.fillExpertise"
+      [introText]="'theme.kerttu.expertise.intro' | translate"
+      [selectedTaxonIds]="selectedTaxonIds"
+      (taxonIdSelect)="selectedTaxonIds = $event"
+    ></laji-expertise-form>
+    <div *ngIf="vm.step === step.annotateLetters">
+      <laji-kerttu-taxon-select
+        (taxonChange)="onTaxonIdChange($event)"
+      ></laji-kerttu-taxon-select>
+      <laji-kerttu-letter-annotation
+        [taxonId]="taxonId"
+        (annotationsChange)="letterAnnotations = $event"
+      ></laji-kerttu-letter-annotation>
+    </div>
+    <div *ngIf="vm.step === step.annotateRecordings">
+      TODO
+    </div>
+    <div *ngIf="vm.step === step.done">
+      Valmis!
+    </div>
+    <div class="pull-right">
+      <button class="btn btn-warning" (click)="save(vm.step)">{{ 'theme.kerttu.save' | translate }}</button>
+      <button class="btn btn-success" style="margin-left: 15px" (click)="saveAndGoToNext(vm.step)">
+        {{ 'theme.kerttu.saveAndGoNext' | translate }}
+      </button>
+    </div>
+  </laji-spinner>
+</div>

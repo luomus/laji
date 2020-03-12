@@ -13,6 +13,7 @@ import { PlatformService } from '../../shared/service/platform.service';
 export interface Rights {
   edit: boolean;
   admin: boolean;
+  ictAdmin?: boolean;
 }
 
 @Injectable({providedIn: 'root'})
@@ -40,7 +41,7 @@ export class FormPermissionService {
       switchMap(permission => of(permission.admins.includes(collectionID) || permission.editors.includes(collectionID)))
     );
 
-    return this.formService.getAllForms(this.translateService.currentLang, true).pipe(
+    return this.formService.getAllForms(this.translateService.currentLang).pipe(
       map(forms => forms.find(f => f.id === formID)),
       switchMap(form => !form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1 ?
         of(true) :

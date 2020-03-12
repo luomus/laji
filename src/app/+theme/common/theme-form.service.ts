@@ -39,7 +39,7 @@ export class ThemeFormService {
     ownSubmissions: {
       routerLink: ['ownSubmissions'],
       label: 'haseka.ownSubmissions.title',
-      adminLabel: 'theme.admin.submissions',
+      adminLabel: 'haseka.ownSubmissions.allTitle',
       accessLevel: 'editor'
     },
     formPermissions: {
@@ -96,7 +96,7 @@ export class ThemeFormService {
           switchMap(form => this.formPermissionService.getRights(form).pipe(
             switchMap(rights => this.userService.user$.pipe(
               take(1),
-              map((user) => UserService.isAdmin(user) ? {...rights, admin: true} : rights)
+              map((user) => UserService.isIctAdmin(user) ? {...rights, ictAdmin: true} : rights)
             )),
             map(rights => this.getNavLinks(
                 merge(this.defaultNavLinks, navLinks),
@@ -146,7 +146,7 @@ export class ThemeFormService {
         visible
         && (
           !accessLevel
-          || accessLevel === 'admin' && rights.admin
+          || accessLevel === 'admin' && (rights.admin || rights.ictAdmin)
           || accessLevel === 'editor' && rights.edit
         )
       ).map(getNav);

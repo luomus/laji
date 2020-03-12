@@ -1,10 +1,20 @@
-.np-info {
-  margin-bottom: 3px;
+@import 'vars';
+
+.np-info-container {
+  margin-top: 18px;
+  padding-left: 25px;
 }
 
-.np-info legend {
-  margin-top: 5px;
-  margin-bottom: 12px;
+.np-info {
+}
+
+.np-info-header {
+  h3 {
+    margin: 0;
+    font-weight: 600;
+    color: $neutral-6;
+    letter-spacing: .5px;
+  }
 }
 
 .row-container {
@@ -26,15 +36,6 @@ laji-np-info-map {
 .button-container {
   display: flex;
   margin: 0 0 6px -3px;
-}
-
-.use-button {
-  white-space: normal;
-  margin: 6px 9px 6px 0;
-}
-
-#info-box {
-  padding: 10px 0 7px 0;
 }
 
 #btn-container {

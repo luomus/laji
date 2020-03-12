@@ -81,6 +81,13 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
 import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
+import { KerttuApi } from './kerttu/kerttu-api';
+import { KerttuFacade } from './kerttu/kerttu.facade';
+import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
+import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
+import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
+import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
+import { KerttuTaxonSelectComponent } from './kerttu/kerttu-taxon-select/kerttu-taxon-select.component';
 
 /* tslint:enable:max-line-length */
 
@@ -163,12 +170,19 @@ import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-v
     KerttuInstructionsComponent,
     ExpertiseFormComponent,
     LolifeInstructionsComponent,
-    KerttuMainViewComponent
+    KerttuMainViewComponent,
+    FormHasFeaturePipe,
+    KerttuLetterAnnotationComponent,
+    AudioViewerComponent,
+    ThemeBreadcrumbComponent,
+    KerttuTaxonSelectComponent
   ],
   providers: [
     ResultService,
     QualityService,
     WbcResultService,
+    KerttuApi,
+    KerttuFacade,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })

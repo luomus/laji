@@ -9,5 +9,8 @@
       </p>
     </div>
   </div>
-  <laji-importer [forms]="[form.id]"></laji-importer>
+  <laji-importer *ngIf="form | formHasFeature:feature.SecondaryCopy; else allAllowed" [forms]="[form.id]" [allowedCombineOptions]="[combineOptions.none]"></laji-importer>
+  <ng-template #allAllowed>
+    <laji-importer [forms]="[form.id]"></laji-importer>
+  </ng-template>
 </ng-container>

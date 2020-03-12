@@ -1,12 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {map, switchMap} from 'rxjs/operators';
-import {Observable, of} from 'rxjs';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {map} from 'rxjs/operators';
 import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
 import {Taxonomy} from '../../../shared/model/Taxonomy';
 import {DatatableColumn} from '../../../shared-modules/datatable/model/datatable-column';
-import {UserService} from '../../../shared/service/user.service';
-import {PersonApi} from '../../../shared/api/PersonApi';
-import {Profile} from '../../../shared/model/Profile';
 
 @Component({
   selector: 'laji-expertise-form',
@@ -17,6 +13,12 @@ export class ExpertiseFormComponent implements OnInit {
   @Input() taxonId = 'MX.37580';
   @Input() countThreshold = 50;
   @Input() introText = '';
+  @Input() set selectedTaxonIds(selectedTaxonIds: string[]) {
+    this._seletedTaxonIds = selectedTaxonIds;
+    this.updateSelected();
+  }
+
+  selected: Taxonomy[] = [];
 
   columns: DatatableColumn[] = [
     {
@@ -38,18 +40,20 @@ export class ExpertiseFormComponent implements OnInit {
       cellTemplate: 'taxonScientificName'
     }
   ];
-  taxonList$: Observable<Taxonomy[]>;
+  taxonList: Taxonomy[];
 
-  private selectedTaxonIds: string[];
+  private _seletedTaxonIds: string[];
+  private otherTaxonIds: string[];
+
+  @Output() taxonIdSelect = new EventEmitter<string[]>();
 
   constructor(
     private taxonomyService: TaxonomyApi,
-    private userService: UserService,
-    private personService: PersonApi
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.taxonList$ = this.taxonomyService
+    this.taxonomyService
       .taxonomyFindSpecies(
         this.taxonId,
         'fi',
@@ -74,22 +78,22 @@ export class ExpertiseFormComponent implements OnInit {
           }
           return arr;
         }, []))
-      );
-  }
-
-  onSelect(event) {
-    this.selectedTaxonIds = event.selected.map(taxon => taxon.id);
-  }
-
-  onSave() {
-    this.personService.personFindProfileByToken(this.userService.getToken()).pipe(
-      switchMap((profile: Profile) => {
-        // something here
-        return this.personService.personUpdateProfileByToken(profile, this.userService.getToken());
-      })
-    ).subscribe(() => {
-
+      ).subscribe(taxonList => {
+        this.taxonList = taxonList;
+        this.updateSelected();
+        this.cdr.markForCheck();
     });
   }
 
+  onSelect(event) {
+    this.taxonIdSelect.emit(event.selected.map(taxon => taxon.id).concat(this.otherTaxonIds || []));
+  }
+
+  private updateSelected() {
+    if (this.taxonList && this._seletedTaxonIds) {
+      this.selected = this.taxonList.filter(taxon => this._seletedTaxonIds.indexOf(taxon.id) > -1);
+      const selectedIds = this.selected.map(taxon => taxon.id);
+      this.otherTaxonIds = this._seletedTaxonIds.filter(id => selectedIds.indexOf(id) === -1);
+    }
+  }
 }

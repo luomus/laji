@@ -31,5 +31,7 @@ export const environment = {
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
-  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self'
+  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
+  // kerttuApi: 'http://localhost:5000',
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
 };

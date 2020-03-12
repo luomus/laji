@@ -4,7 +4,7 @@ import { NavLink } from '../common/theme-form.service';
 @Component({
   template: `
     <laji-theme-page
-      [title]="'Kerttu'"
+      [title]="'theme.kerttu' | translate"
       [showNav]="true"
       [navLinks]="navLinks">
       <router-outlet></router-outlet>

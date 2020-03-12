@@ -27,5 +27,6 @@ export const environment = {
   valioForm: 'MHL.57',
   apiBase: 'https://dev-embedded.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
-  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self'
+  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
 };

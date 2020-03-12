@@ -29,7 +29,7 @@ import { take } from 'rxjs/operators';
 @Component({
   selector: 'laji-np-info',
   templateUrl: './np-info.component.html',
-  styleUrls: ['./np-info.component.css'],
+  styleUrls: ['./np-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
@@ -79,6 +79,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
         placeForm.uiSchema['ui:options'].fieldScopes.collectionID;
       displayed = (displayedById[collectionId] || displayedById['*'] || []).fields;
     }
+    displayed = displayed.filter((field) => field !== 'name');
 
     const listItems = [];
     for (const field of displayed) {
