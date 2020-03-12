@@ -5,7 +5,12 @@
   <ng-template #taxonSelect>
     <h4>
       {{ 'theme.kerttu.species' | translate }}
-      <select class="form-control" [value]="currentTaxon" (change)="onTaxonChange(taxonSelect.value)" #taxonSelect>
+      <select
+        class="form-control"
+        [value]="currentTaxon || '0'"
+        (change)="onTaxonChange(taxonSelect.value !== '0' ? taxonSelect.value : undefined)"
+        #taxonSelect>
+        <option [value]="0">{{ 'theme.kerttu.chooseSpecies' | translate }}</option>
         <option *ngFor="let taxon of taxonList" [value]="taxon.id">
           <laji-taxon-name [taxon]="taxon"></laji-taxon-name>
         </option>

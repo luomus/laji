@@ -1,10 +1,7 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {KerttuApi} from '../kerttu-api';
 import {UserService} from '../../../shared/service/user.service';
-import {Observable} from 'rxjs';
 import {IRecordingWithCandidates} from '../model/recording';
 import {Annotation, ILetterAnnotations} from '../model/annotation';
-import {tap} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -13,8 +10,8 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./kerttu-letter-annotation.component.scss']
 })
 export class KerttuLetterAnnotationComponent implements OnChanges {
-  @Input() taxonId: string;
-  letters$: Observable<IRecordingWithCandidates[]>;
+  @Input() annotations: ILetterAnnotations;
+  @Input() letters: IRecordingWithCandidates[];
 
   currentTemplate = 0;
   currentCandidate = 0;
@@ -22,36 +19,32 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
 
   annotation = Annotation;
 
-  private annotations: ILetterAnnotations = {};
-  private letters: IRecordingWithCandidates[];
   private letterQueue: {templateIdx: number, candidateIdx: number}[];
   private alertShown = false;
 
   @Output() annotationsChange = new EventEmitter<ILetterAnnotations>();
 
   constructor(
-    private kerttuApi: KerttuApi,
     private cdr: ChangeDetectorRef,
     private userService: UserService,
     private translateService: TranslateService
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.taxonId) {
-      if (this.taxonId) {
-        this.letters$ = this.kerttuApi.getLetterCandidates(this.taxonId, this.userService.getToken()).pipe(
-          tap((letters: IRecordingWithCandidates[])  => {
-            this.letters = letters;
-            this.letterQueue = [];
-            this.letters.forEach((letter, i) => {
-              letter.candidates.forEach((candidate, j) => {
-                this.letterQueue.push({templateIdx: i, candidateIdx: j});
-              });
-            });
-            this.alertShown = false;
-          })
-        );
-      }
+    if (changes.letters && this.letters) {
+      this.letterQueue = [];
+      this.letters.forEach((letter, i) => {
+        letter.candidates.forEach((candidate, j) => {
+          this.letterQueue.push({templateIdx: i, candidateIdx: j});
+        });
+      });
+
+      this.currentTemplate = 0;
+      this.currentCandidate = 0;
+      this.alertShown = false;
+    }
+    if (this.letters && this.annotations) {
+      this.currentAnnotation = this.getAnnotation();
     }
   }
 
@@ -61,15 +54,17 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
     this.letterQueue = this.letterQueue.filter(q => !(q.templateIdx === this.currentTemplate && q.candidateIdx === this.currentCandidate));
 
     setTimeout(() => {
-      if (this.letterQueue.length === 0 && !this.alertShown) {
-        alert(this.translateService.instant('theme.kerttu.letterQueueEmpty'));
-        this.alertShown = true;
+      if (this.letterQueue.length === 0) {
+        if (!this.alertShown) {
+          alert(this.translateService.instant('theme.kerttu.letterQueueEmpty'));
+          this.alertShown = true;
+        }
+      } else {
+        const next = this.letterQueue[0];
+        this.currentTemplate = next.templateIdx;
+        this.currentCandidate = next.candidateIdx;
+        this.currentAnnotation = this.getAnnotation();
       }
-
-      const next = this.letterQueue[0];
-      this.currentTemplate = next.templateIdx;
-      this.currentCandidate = next.candidateIdx;
-      this.currentAnnotation = this.getAnnotation();
       this.cdr.markForCheck();
     }, 0);
   }
@@ -81,6 +76,7 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
 
   onTemplateChange(idx: string) {
     this.currentTemplate = parseInt(idx, 10);
+    this.currentCandidate = 0;
     this.currentAnnotation = this.getAnnotation();
   }
 

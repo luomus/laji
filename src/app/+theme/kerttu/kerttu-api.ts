@@ -62,6 +62,19 @@ export class KerttuApi {
       );
   }
 
+  public getLetterAnnotations(taxonId: string, personToken: string): Observable<ILetterAnnotations> {
+    const path = this.basePath + '/letters/annotations/' + taxonId;
+
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get(path, { params })
+      .pipe(
+        map((response: {annotations: ILetterAnnotations}) => {
+          return response.annotations;
+        })
+      );
+  }
+
   public updateLetterAnnotations(taxonId: string, annotations: ILetterAnnotations, personToken: string): Observable<boolean> {
     const path = this.basePath + '/letters/annotations/' + taxonId;
 

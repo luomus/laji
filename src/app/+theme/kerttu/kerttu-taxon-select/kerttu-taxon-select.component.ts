@@ -1,5 +1,5 @@
-import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {map, switchMap, take, tap} from 'rxjs/operators';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {map, switchMap, take} from 'rxjs/operators';
 import {forkJoin, Observable, of} from 'rxjs';
 import {Taxonomy} from '../../../shared/model/Taxonomy';
 import {KerttuApi} from '../kerttu-api';
@@ -14,6 +14,7 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./kerttu-taxon-select.component.scss']
 })
 export class KerttuTaxonSelectComponent implements OnInit {
+  @Input() taxonExpertise: string[];
   taxonList$: Observable<Taxonomy[]>;
   currentTaxon: string;
 
@@ -30,25 +31,16 @@ export class KerttuTaxonSelectComponent implements OnInit {
 
   ngOnInit() {
     this.userService.isLoggedIn$.pipe(take(1)).subscribe(() => {
-      this.taxonList$ = forkJoin([
-        this.kerttuApi.getLetterCandidateTaxonList(this.userService.getToken()),
-        this.personService.personFindProfileByToken(this.userService.getToken())
-      ]).pipe(
-        map(([taxonList, profile]) => {
-          const taxonExpertise =  profile.taxonExpertise || [];
+      this.taxonList$ = this.kerttuApi.getLetterCandidateTaxonList(this.userService.getToken()).pipe(
+        map((taxonList: string[]) => {
+          const taxonExpertise =  this.taxonExpertise || [];
           return taxonList.filter(id => taxonExpertise.indexOf(id) > -1);
         }),
         switchMap((taxonList: string[]) => taxonList.length > 0 ? forkJoin(
           taxonList.map(
             id => this.taxonomyApi.taxonomyFindBySubject(id, this.translate.currentLang, {'selectedFields': 'id,scientificName,vernacularName,cursiveName'})
           )
-        ) : of([])),
-        tap((taxonList: Taxonomy[]) => {
-          if (taxonList.length > 0) {
-            this.onTaxonChange(taxonList[0].id);
-            this.cdr.markForCheck();
-          }
-        })
+        ) : of([]))
       );
     });
   }

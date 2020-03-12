@@ -14,10 +14,12 @@
     ></laji-expertise-form>
     <div *ngIf="vm.step === step.annotateLetters">
       <laji-kerttu-taxon-select
+        [taxonExpertise]="selectedTaxonIds"
         (taxonChange)="onTaxonIdChange($event)"
       ></laji-kerttu-taxon-select>
       <laji-kerttu-letter-annotation
-        [taxonId]="taxonId"
+        [letters]="letters$ | async"
+        [annotations]="letterAnnotations"
         (annotationsChange)="letterAnnotations = $event"
       ></laji-kerttu-letter-annotation>
     </div>

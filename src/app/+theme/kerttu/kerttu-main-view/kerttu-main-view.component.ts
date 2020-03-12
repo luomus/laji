@@ -1,19 +1,20 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, OnDestroy} from '@angular/core';
 import { IKerttuState, KerttuFacade, Step } from '../kerttu.facade';
-import {forkJoin, Observable} from 'rxjs';
-import {switchMap, take} from 'rxjs/operators';
+import {forkJoin, Observable, Subscription} from 'rxjs';
+import {map, switchMap, take} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../kerttu-api';
 import {ILetterAnnotations} from '../model/annotation';
+import {IRecordingWithCandidates} from '../model/recording';
 
 @Component({
   selector: 'laji-kerttu-main-view',
   templateUrl: './kerttu-main-view.component.html',
   styleUrls: ['./kerttu-main-view.component.scss']
 })
-export class KerttuMainViewComponent implements OnInit {
+export class KerttuMainViewComponent implements OnInit, OnDestroy {
   vm$: Observable<IKerttuState>;
 
   mapping = {
@@ -31,10 +32,13 @@ export class KerttuMainViewComponent implements OnInit {
   ];
 
   step = Step;
-
   selectedTaxonIds: string[];
   taxonId: string;
+
+  letters$: Observable<IRecordingWithCandidates[]>;
   letterAnnotations: ILetterAnnotations;
+
+  private letterAnnotationsSub: Subscription;
 
   constructor(
     private kerttuApi: KerttuApi,
@@ -58,6 +62,12 @@ export class KerttuMainViewComponent implements OnInit {
         this.kerttuFacade.goToStep(status);
       });
     });
+  }
+
+  ngOnDestroy() {
+    if (this.letterAnnotationsSub) {
+      this.letterAnnotationsSub.unsubscribe();
+    }
   }
 
   activate(step: Step) {
@@ -107,10 +117,22 @@ export class KerttuMainViewComponent implements OnInit {
   }
 
   onTaxonIdChange(id: string) {
-    this.taxonId = id;
+    if (this.letterAnnotationsSub) {
+      this.letterAnnotationsSub.unsubscribe();
+    }
     if (this.letterAnnotations) {
       this.saveLetterAnnotations().subscribe();
-      this.letterAnnotations = undefined;
+    }
+
+    this.taxonId = id;
+    this.letterAnnotations = undefined;
+    if (this.taxonId) {
+      this.letters$ = this.kerttuApi.getLetterCandidates(this.taxonId, this.userService.getToken());
+      this.kerttuApi.getLetterAnnotations(this.taxonId, this.userService.getToken())
+        .subscribe((annotations: ILetterAnnotations) => {
+          this.letterAnnotations = annotations;
+          this.cdr.markForCheck();
+        });
     }
   }
 }

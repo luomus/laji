@@ -1487,6 +1487,7 @@
   "theme.kerttu.saveAndGoNext": "Tallenna ja siirry seuraavaan kohtaan",
   "theme.kerttu.expertise.intro": "Aloita valitsemalla kaikki ne lajit, jotka osaat tunnistaa äänen perusteella.",
   "theme.kerttu.species": "Laji",
+  "theme.kerttu.chooseSpecies": "Valitse laji",
   "theme.kerttu.noLetters": "Kirjaimia ei löytynyt yhdeltäkään valitsemistasi lajeista.",
   "theme.kerttu.letterTemplate": "Kirjaintemplaatti",
   "theme.kerttu.letter": "Kirjain",

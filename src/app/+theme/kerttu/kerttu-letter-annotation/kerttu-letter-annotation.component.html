@@ -1,4 +1,4 @@
-<ng-container *ngIf="letters$ | async as letters" >
+<ng-container *ngIf="letters && annotations" >
   <div class="row well" id="annotationContainer">
     <div class="col-md-6">
       <h4>{{ 'theme.kerttu.letterTemplate' | translate }}
