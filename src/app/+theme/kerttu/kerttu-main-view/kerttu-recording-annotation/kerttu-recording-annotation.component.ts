@@ -14,24 +14,34 @@ export class KerttuRecordingAnnotationComponent implements OnChanges {
   currentRecording = 0;
   currentAnnotation = [];
 
+  private recordingQueue: number[];
+
   @Output() annotationsChange = new EventEmitter<IRecordingAnnotations>();
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.recordings && this.recordings) {
-      this.currentRecording = 0;
-    }
     if (this.recordings && this.annotations) {
+      this.recordingQueue = [];
+      this.recordings.forEach((recording, i) => {
+        if (!this.annotations[recording.id]) {
+          this.recordingQueue.push(i);
+        }
+      });
+
+      this.currentRecording = this.recordingQueue.length > 0 ? this.recordingQueue[0] : 0;
       this.currentAnnotation = this.annotations[this.recordings[this.currentRecording].id] || [];
     }
   }
 
   onTaxonSelect(taxon) {
     this.currentAnnotation.push(taxon.key);
-    this.currentAnnotation = [...this.currentAnnotation];
-    this.annotations[this.recordings[this.currentRecording].id] = this.currentAnnotation;
-    this.annotationsChange.emit(this.annotations);
+    this.updateCurrentAnnotation();
+  }
+
+  onTaxonListUpdate(taxonList: string[]) {
+    this.currentAnnotation = taxonList;
+    this.updateCurrentAnnotation();
   }
 
   onRecordingChange(idx: string) {
@@ -40,6 +50,19 @@ export class KerttuRecordingAnnotationComponent implements OnChanges {
   }
 
   toNextRecording() {
-    this.onRecordingChange(this.currentRecording + 1 + '');
+    if (this.currentAnnotation && this.currentAnnotation.length > 0) {
+      this.recordingQueue = this.recordingQueue.filter(q => !(q === this.currentRecording));
+    }
+    if (this.recordingQueue[0] === this.currentRecording) {
+      this.recordingQueue.shift();
+      this.recordingQueue.push(this.currentRecording);
+    }
+    this.onRecordingChange(this.recordingQueue[0] + '');
+  }
+
+  private updateCurrentAnnotation() {
+    this.currentAnnotation = [...this.currentAnnotation];
+    this.annotations[this.recordings[this.currentRecording].id] = this.currentAnnotation;
+    this.annotationsChange.emit(this.annotations);
   }
 }

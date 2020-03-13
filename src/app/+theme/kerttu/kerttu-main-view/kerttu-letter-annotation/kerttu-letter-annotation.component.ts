@@ -31,14 +31,7 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.letters && this.letters) {
-      this.currentTemplate = 0;
-      this.currentCandidate = 0;
-      this.alertShown = false;
-    }
     if (this.letters && this.annotations) {
-      this.currentAnnotation = this.getAnnotation();
-
       this.letterQueue = [];
       this.letters.forEach((letter, i) => {
         letter.candidates.forEach((candidate, j) => {
@@ -47,6 +40,17 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
           }
         });
       });
+
+      this.alertShown = this.letterQueue.length === 0;
+      this.currentTemplate = 0;
+      this.currentCandidate = 0;
+
+      if (this.letterQueue.length > 0) {
+        this.currentTemplate = this.letterQueue[0].templateIdx;
+        this.currentCandidate = this.currentCandidate = this.letterQueue[0].candidateIdx;
+      }
+
+      this.currentAnnotation = this.getAnnotation();
     }
   }
 

@@ -45,6 +45,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   private letterAnnotationsSub: Subscription;
   private recordingAnnotationSub: Subscription;
+  private vmSub: Subscription;
 
   constructor(
     private kerttuApi: KerttuApi,
@@ -64,18 +65,20 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
         this.kerttuApi.getStatus(this.userService.getToken()),
         this.personService.personFindProfileByToken(this.userService.getToken())
       ]).subscribe(([status, profile]) => {
-        this.selectedTaxonIds = profile.taxonExpertise;
+        this.selectedTaxonIds = profile.taxonExpertise || [];
         this.kerttuFacade.goToStep(status);
       });
     });
 
-    this.vm$.subscribe(vm => {
+    this.vmSub = this.vm$.subscribe(vm => {
       if (vm.step === Step.annotateRecordings) {
         this.recordings$ = this.kerttuApi.getRecordings(this.selectedTaxonIds, this.userService.getToken());
-        this.recordingAnnotationSub = this.kerttuApi.getRecordingAnnotations(this.userService.getToken()).subscribe((annotations: IRecordingAnnotations) => {
-          this.recordingAnnotations = annotations;
-          this.cdr.markForCheck();
-        });
+        if (!this.recordingAnnotationSub) {
+          this.recordingAnnotationSub = this.kerttuApi.getRecordingAnnotations(this.userService.getToken()).subscribe((annotations: IRecordingAnnotations) => {
+            this.recordingAnnotations = annotations;
+            this.cdr.markForCheck();
+          });
+        }
       }
     });
   }
@@ -83,6 +86,12 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.letterAnnotationsSub) {
       this.letterAnnotationsSub.unsubscribe();
+    }
+    if (this.recordingAnnotationSub) {
+      this.recordingAnnotationSub.unsubscribe();
+    }
+    if (this.vmSub) {
+      this.vmSub.unsubscribe();
     }
   }
 
