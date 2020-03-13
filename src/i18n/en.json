@@ -587,7 +587,7 @@
   "No errors": "No errors",
   "notification.annotation": "{{person}} has commented your observation.",
   "notification.annotationCommented": "{{person}} has commented on observation.",
-  "notification.delete": "Do you really want to delete this notification?",
+  "notification.delete.confirm": "Do you really want to delete this notification?",
   "notification.deleteAll": "Remove all",
   "notification.deleteAll.confirm": "Do you really want to remove all notifications?",
   "notification.markAll": "Mark as seen",

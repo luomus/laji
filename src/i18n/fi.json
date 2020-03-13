@@ -716,7 +716,7 @@
   "No errors": "Ei virheitä",
   "notification.annotation": "{{person}} on kommentoinut havaintoerääsi.",
   "notification.annotationCommented": "{{person}} on kommentoinut havaintoerää.",
-  "notification.delete": "Haluatko varmasti poistaa ilmoituksen",
+  "notification.delete.confirm": "Haluatko varmasti poistaa ilmoituksen",
   "notification.deleteAll": "Poista kaikki",
   "notification.deleteAll.confirm": "Haluatko varmasti poistaa kaikki ilmoitukset",
   "notification.markAll": "Merkitse nähdyiksi",
