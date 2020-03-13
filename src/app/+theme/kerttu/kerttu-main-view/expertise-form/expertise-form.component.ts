@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
-import {Taxonomy} from '../../../shared/model/Taxonomy';
-import {DatatableColumn} from '../../../shared-modules/datatable/model/datatable-column';
+import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
+import {Taxonomy} from '../../../../shared/model/Taxonomy';
+import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
   selector: 'laji-expertise-form',

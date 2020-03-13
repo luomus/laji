@@ -15,6 +15,7 @@
     <div *ngIf="vm.step === step.annotateLetters">
       <laji-kerttu-taxon-select
         [taxonExpertise]="selectedTaxonIds"
+        [taxon]="taxonId"
         (taxonChange)="onTaxonIdChange($event)"
       ></laji-kerttu-taxon-select>
       <laji-kerttu-letter-annotation
@@ -25,12 +26,16 @@
       ></laji-kerttu-letter-annotation>
     </div>
     <div *ngIf="vm.step === step.annotateRecordings">
-      TODO
+      <laji-kerttu-recording-annotation
+        [recordings]="recordings$ | async"
+        [annotations]="recordingAnnotations"
+        (annotationsChange)="recordingAnnotations = $event"
+      ></laji-kerttu-recording-annotation>
     </div>
     <div *ngIf="vm.step === step.done">
       Valmis!
     </div>
-    <div class="pull-right">
+    <div class="pull-right" *ngIf="vm.step !== step.done">
       <button class="btn btn-warning" (click)="save(vm.step)">{{ 'theme.kerttu.save' | translate }}</button>
       <button class="btn btn-success" style="margin-left: 15px" (click)="saveAndGoToNext(vm.step)">
         {{ 'theme.kerttu.saveAndGoNext' | translate }}

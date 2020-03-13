@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {UserService} from '../../../shared/service/user.service';
-import {IRecordingWithCandidates} from '../model/recording';
-import {Annotation, ILetterAnnotations} from '../model/annotation';
+import {UserService} from '../../../../shared/service/user.service';
+import {IRecordingWithCandidates} from '../../model/recording';
+import {Annotation, ILetterAnnotations} from '../../model/annotation';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -32,19 +32,21 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.letters && this.letters) {
-      this.letterQueue = [];
-      this.letters.forEach((letter, i) => {
-        letter.candidates.forEach((candidate, j) => {
-          this.letterQueue.push({templateIdx: i, candidateIdx: j});
-        });
-      });
-
       this.currentTemplate = 0;
       this.currentCandidate = 0;
       this.alertShown = false;
     }
     if (this.letters && this.annotations) {
       this.currentAnnotation = this.getAnnotation();
+
+      this.letterQueue = [];
+      this.letters.forEach((letter, i) => {
+        letter.candidates.forEach((candidate, j) => {
+          if (this.getAnnotation(i, j) == null) {
+            this.letterQueue.push({templateIdx: i, candidateIdx: j});
+          }
+        });
+      });
     }
   }
 

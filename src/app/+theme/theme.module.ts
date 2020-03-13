@@ -78,16 +78,19 @@ import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-sprea
 import { GenericInstructionsComponent } from './common/instructions/generic-instructions/generic-instructions.component';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
-import { ExpertiseFormComponent } from './kerttu/expertise-form/expertise-form.component';
+import { ExpertiseFormComponent } from './kerttu/kerttu-main-view/expertise-form/expertise-form.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 import { KerttuApi } from './kerttu/kerttu-api';
 import { KerttuFacade } from './kerttu/kerttu.facade';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
-import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
-import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
-import { KerttuTaxonSelectComponent } from './kerttu/kerttu-taxon-select/kerttu-taxon-select.component';
+import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-letter-annotation/kerttu-letter-annotation.component';
+import { AudioViewerComponent } from './kerttu/kerttu-main-view/audio-viewer/audio-viewer.component';
+import { KerttuTaxonSelectComponent } from './kerttu/kerttu-main-view/kerttu-taxon-select/kerttu-taxon-select.component';
+import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-recording-annotation/kerttu-recording-annotation.component';
+import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
+import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 
 /* tslint:enable:max-line-length */
 
@@ -117,7 +120,9 @@ import { KerttuTaxonSelectComponent } from './kerttu/kerttu-taxon-select/kerttu-
     ObservationComponentModule,
     DownloadModule,
     InfoModule,
-    SpreadsheetModule
+    SpreadsheetModule,
+    ThreeStateSwitchModule,
+    PillListModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -175,7 +180,8 @@ import { KerttuTaxonSelectComponent } from './kerttu/kerttu-taxon-select/kerttu-
     KerttuLetterAnnotationComponent,
     AudioViewerComponent,
     ThemeBreadcrumbComponent,
-    KerttuTaxonSelectComponent
+    KerttuTaxonSelectComponent,
+    KerttuRecordingAnnotationComponent
   ],
   providers: [
     ResultService,

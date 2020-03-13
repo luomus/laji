@@ -1,11 +1,11 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {map, switchMap, take} from 'rxjs/operators';
 import {forkJoin, Observable, of} from 'rxjs';
-import {Taxonomy} from '../../../shared/model/Taxonomy';
-import {KerttuApi} from '../kerttu-api';
-import {UserService} from '../../../shared/service/user.service';
-import {PersonApi} from '../../../shared/api/PersonApi';
-import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
+import {Taxonomy} from '../../../../shared/model/Taxonomy';
+import {KerttuApi} from '../../kerttu-api';
+import {UserService} from '../../../../shared/service/user.service';
+import {PersonApi} from '../../../../shared/api/PersonApi';
+import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -16,7 +16,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class KerttuTaxonSelectComponent implements OnInit {
   @Input() taxonExpertise: string[];
   taxonList$: Observable<Taxonomy[]>;
-  currentTaxon: string;
+  @Input() taxon: string;
 
   @Output() taxonChange = new EventEmitter<string>();
 
@@ -46,7 +46,6 @@ export class KerttuTaxonSelectComponent implements OnInit {
   }
 
   onTaxonChange(id: string) {
-    this.currentTaxon = id;
     this.taxonChange.emit(id);
   }
 }

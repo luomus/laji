@@ -1,13 +1,13 @@
-import {ChangeDetectorRef, Component, OnInit, OnDestroy} from '@angular/core';
-import { IKerttuState, KerttuFacade, Step } from '../kerttu.facade';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {IKerttuState, KerttuFacade, Step} from '../kerttu.facade';
 import {forkJoin, Observable, of, Subscription} from 'rxjs';
 import {switchMap, take} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../kerttu-api';
-import {ILetterAnnotations} from '../model/annotation';
-import {IRecordingWithCandidates} from '../model/recording';
+import {ILetterAnnotations, IRecordingAnnotations} from '../model/annotation';
+import {IRecording, IRecordingWithCandidates} from '../model/recording';
 
 @Component({
   selector: 'laji-kerttu-main-view',
@@ -38,9 +38,13 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   letters$: Observable<IRecordingWithCandidates[]>;
   letterAnnotations: ILetterAnnotations;
 
+  recordings$: Observable<IRecording[]>;
+  recordingAnnotations: IRecordingAnnotations;
+
   saving = false;
 
   private letterAnnotationsSub: Subscription;
+  private recordingAnnotationSub: Subscription;
 
   constructor(
     private kerttuApi: KerttuApi,
@@ -64,6 +68,16 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
         this.kerttuFacade.goToStep(status);
       });
     });
+
+    this.vm$.subscribe(vm => {
+      if (vm.step === Step.annotateRecordings) {
+        this.recordings$ = this.kerttuApi.getRecordings(this.selectedTaxonIds, this.userService.getToken());
+        this.recordingAnnotationSub = this.kerttuApi.getRecordingAnnotations(this.userService.getToken()).subscribe((annotations: IRecordingAnnotations) => {
+          this.recordingAnnotations = annotations;
+          this.cdr.markForCheck();
+        });
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -81,14 +95,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   }
 
   save(currentStep: Step) {
-    let observable: Observable<any>;
-    if (currentStep === Step.fillExpertise) {
-      observable = this.saveProfile();
-    } else if (currentStep === Step.annotateLetters) {
-      observable = this.saveLetterAnnotations();
-    } else if (currentStep === Step.annotateRecordings) {
-      observable = of({});
-    }
+    const observable = this.getSaveObservable(currentStep);
     this.saving = true;
     observable.subscribe(() => {
       this.saving = false;
@@ -98,17 +105,12 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   saveAndGoToNext(currentStep: Step) {
     this.saving = true;
-    if (currentStep === Step.fillExpertise) {
-      this.saveProfile().subscribe(() => {
-        this.activate(Step.annotateLetters);
-      });
-    } else if (currentStep === Step.annotateLetters) {
-      this.saveLetterAnnotations().subscribe(() => {
-        this.activate(Step.annotateRecordings);
-      });
-    } else if (currentStep === Step.annotateRecordings) {
-      this.activate(Step.done);
-    }
+    const observable = this.getSaveObservable(currentStep);
+    const nextStep = this.getNextStep(currentStep);
+
+    observable.subscribe(() => {
+      this.activate(nextStep);
+    });
   }
 
   saveProfile() {
@@ -123,6 +125,14 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   saveLetterAnnotations() {
     if (this.letterAnnotations && Object.keys(this.letterAnnotations).length > 0) {
       return this.kerttuApi.updateLetterAnnotations(this.taxonId, this.letterAnnotations, this.userService.getToken());
+    } else {
+      return of({});
+    }
+  }
+
+  saveRecordingAnnotations() {
+    if (this.recordingAnnotations && Object.keys(this.recordingAnnotations).length > 0) {
+      return this.kerttuApi.updateRecordingAnnotations(this.recordingAnnotations, this.userService.getToken());
     } else {
       return of({});
     }
@@ -143,6 +153,28 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       });
       this.letters$ = this.kerttuApi.getLetterCandidates(this.taxonId, this.userService.getToken());
+    }
+  }
+
+  private getSaveObservable(step: Step): Observable<any> {
+    let observable: Observable<any>;
+    if (step === Step.fillExpertise) {
+      observable = this.saveProfile();
+    } else if (step === Step.annotateLetters) {
+      observable = this.saveLetterAnnotations();
+    } else if (step === Step.annotateRecordings) {
+      observable = this.saveRecordingAnnotations();
+    }
+    return observable;
+  }
+
+  private getNextStep(step: Step): Step {
+    if (step === Step.fillExpertise) {
+      return Step.annotateLetters;
+    } else if (step === Step.annotateLetters) {
+      return Step.annotateRecordings;
+    } else if (step === Step.annotateRecordings) {
+      return Step.done;
     }
   }
 }

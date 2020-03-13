@@ -67,7 +67,6 @@ import { NotificationsComponent } from './navbar/notifications/notifications.com
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { WarehousePipe } from './pipe/warehouse.pipe';
-import { ThreeStateSwitchComponent } from './three-state-switch/three-state-switch.component';
 
 
 @NgModule({
@@ -100,8 +99,7 @@ import { ThreeStateSwitchComponent } from './three-state-switch/three-state-swit
     TruncatePipe,
     AfterIfDirective,
     FilterValuePipe,
-    WarehousePipe,
-    ThreeStateSwitchComponent
+    WarehousePipe
   ],
   imports: [
     FormsModule,
@@ -131,7 +129,7 @@ import { ThreeStateSwitchComponent } from './three-state-switch/three-state-swit
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, ThreeStateSwitchComponent
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe
   ]
 })
 export class SharedModule {

@@ -15,8 +15,8 @@ import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { MainResultComponent } from './main-result/main-result.component';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
+import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
 import { ObservationFiltersComponent } from './observation-filters/observation-filters.component';
-import { PillListComponent } from './pill-list/pill-list.component';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -37,6 +37,7 @@ import { DownloadModule } from '../shared-modules/download/download.module';
 import { ChartsModuleBarVerticalGroup } from '../shared-modules/bar-chart/ng2-charts.module';
 import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
 import { DateFormComponent } from './form/date-form/date-form.component';
+import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 
 @NgModule({
   imports: [
@@ -56,7 +57,9 @@ import { DateFormComponent } from './form/date-form/date-form.component';
     AnnotationModule,
     LajiUiModule,
     DownloadModule,
-    ChartsModuleBarVerticalGroup
+    ChartsModuleBarVerticalGroup,
+    ThreeStateSwitchModule,
+    PillListModule
   ],
   declarations: [
     ObservationComponent,
@@ -69,7 +72,6 @@ import { DateFormComponent } from './form/date-form/date-form.component';
     ObservationDownloadComponent,
     MainResultComponent,
     ObservationFiltersComponent,
-    PillListComponent,
     ObservationFormComponent,
     SeasonComponent,
     TeamComponent,
