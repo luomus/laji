@@ -1,4 +1,4 @@
-import {AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Inject, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component, ElementRef, HostListener, Inject, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {IRecording} from '../model/recording';
 import {DOCUMENT} from '@angular/common';
 
@@ -17,6 +17,7 @@ export class AudioViewerComponent implements AfterViewChecked, OnChanges {
 
   isPlaying = false;
 
+  private prevSpectrogramWidth: number;
   private imageWidth = 500;
   private minX = 30;
   private maxX = 455;
@@ -42,6 +43,11 @@ export class AudioViewerComponent implements AfterViewChecked, OnChanges {
     }
   }
 
+  @HostListener('window:resize')
+  onResize() {
+    this.updateScrollLinePosition();
+  }
+
   toggleAudio() {
     const player = this.playerRef.nativeElement;
 
@@ -64,10 +70,16 @@ export class AudioViewerComponent implements AfterViewChecked, OnChanges {
   }
 
   updateScrollLinePosition() {
+    const spectrogramWidth = this.spectrogramRef.nativeElement.offsetWidth;
+    if (spectrogramWidth === this.prevSpectrogramWidth) {
+      return;
+    }
+    this.prevSpectrogramWidth = spectrogramWidth;
+
     const currentTime = this.playerRef.nativeElement.currentTime;
     const duration = this.playerRef.nativeElement.duration;
 
-    const shrink = this.spectrogramRef.nativeElement.offsetWidth / this.imageWidth;
+    const shrink = spectrogramWidth / this.imageWidth;
     const minX = this.minX * shrink;
     const maxX = this.maxX * shrink;
 

@@ -18,6 +18,7 @@
         (taxonChange)="onTaxonIdChange($event)"
       ></laji-kerttu-taxon-select>
       <laji-kerttu-letter-annotation
+        *ngIf="taxonId"
         [letters]="letters$ | async"
         [annotations]="letterAnnotations"
         (annotationsChange)="letterAnnotations = $event"
@@ -37,3 +38,4 @@
     </div>
   </laji-spinner>
 </div>
+<div class="modal-backdrop fade in" *ngIf="saving"></div>
