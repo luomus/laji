@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, forkJoin, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, Subject, of } from 'rxjs';
 import { PagedResult } from 'app/shared/model/PagedResult';
-import { distinctUntilChanged, map, switchMap, tap, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap, take, mergeMap, concatMap } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from 'app/shared/service/laji-api.service';
 import { UserService } from 'app/shared/service/user.service';
 import { Notification } from 'app/shared/model/Notification';
@@ -204,10 +204,15 @@ export class NotificationsFacade {
 
   removeAll(): Observable<void> {
     return subscribeWithWrapper(this.notifications$.pipe(
-      switchMap((notifications) => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+      switchMap((notifications) =>  {
+        const count = Math.ceil(notifications.total / 100);
+        const arr = new Array(count).map((val, idx) => idx);
+        return of(...arr);
+      }),
+      concatMap((idx: number) => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
         personToken: this.userService.getToken(),
-        page: 0,
-        pageSize: notifications.total
+        page: idx,
+        pageSize: 100
       })),
       switchMap((notifications) => forkJoin(notifications.results.map((notification) => this.subscribeRemove(notification))))
     ));
