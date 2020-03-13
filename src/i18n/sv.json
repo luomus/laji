@@ -675,7 +675,7 @@
   "No errors": "Inga fel",
   "notification.annotation": "{{person}} har kommenterat din observation",
   "notification.annotationCommented": "{{person}} har kommenterat observation",
-  "notification.delete": "Vill du verkligen radera denna anmälan?",
+  "notification.delete.confirm": "Vill du verkligen radera denna anmälan?",
   "notification.deleteAll": "Ta bort alla",
   "notification.deleteAll.confirm": "Vill du verkligen ta bort alla notifikationer?",
   "notification.markAll": "Markera som sett",

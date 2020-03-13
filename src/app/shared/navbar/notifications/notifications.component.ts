@@ -56,7 +56,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   removeAll() {
-    this.translate.get('notification.delete').pipe(
+    this.translate.get('notification.deleteAll.confirm').pipe(
       takeUntil(this.unsubscribe$),
       switchMap(msg => this.dialogService.confirm(msg)),
       tap(() => this.notificationSource.removeAllNotificationsFromCache()),
@@ -74,7 +74,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   removeNotification(notification: Notification) {
-    this.translate.get('notification.delete').pipe(
+    this.translate.get('notification.delete.confirm').pipe(
       switchMap(msg => notification.seen ? of(true) : this.dialogService.confirm(msg)),
       filter(result => !!(result && notification.id)),
       tap(() => this.notificationSource.removeNotificationFromCache(notification.id)),

@@ -93,5 +93,6 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
         this.cdr.markForCheck();
       });
     });
+    this.cdr.markForCheck();
   }
 }
