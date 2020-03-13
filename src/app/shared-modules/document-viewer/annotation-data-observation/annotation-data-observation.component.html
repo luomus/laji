@@ -6,7 +6,7 @@
               
         <div class="content">
             <ul>
-                <li *ngIf="((occurrence.taxonId && occurrence.taxonId !== '') || (occurrence.linkings && occurrence.linkings.taxon))">
+                <li *ngIf="occurrence && ((occurrence.taxonId && occurrence.taxonId !== '') || (occurrence.linkings && occurrence.linkings.taxon))">
                     <b>Taxon: </b>
                     <ng-container *ngIf="occurrence.linkings.taxon; else taxonNameSimple">
                         <laji-taxon-name [taxon]="occurrence.linkings.taxon"></laji-taxon-name>

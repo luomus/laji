@@ -102,18 +102,19 @@ export class AnnotationsComponent implements OnInit, OnChanges {
         'unit.interpretations.invasiveControlled',
         'unit.interpretations.needsCheck',
         'unit.interpretations.needsIdentification',
+        'unit.interpretations.recordQuality',
         'unit.unitId'
       ],
       ['document.createdDate DESC', 'unit.unitId ASC'],
       18,
       this.page
     ).subscribe(data => {
+      this.cd.markForCheck();
       this.result = data;
       this.paginatorDisplay = this.result.total > this.result.pageSize;
       this.total = this.result.total;
       this.count = this.result.total;
       this.size = this.result.pageSize;
-      this.cd.markForCheck();
       this.loading = false;
     });
 
