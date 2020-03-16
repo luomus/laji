@@ -77,6 +77,7 @@
   "annotation.hideDeletedComment": "Hide deleted comment",
   "annotation.deleteComment": "Delete comment",
   "audio.spectrum": "Audio and spectrum",
+  "audio.openSpectrum": "Open spectrum",
   "asIs": "Value as is",
   "checkAll": "Check all",
   "checked": "checked",
