@@ -1,14 +1,20 @@
 import { Component, OnInit, ViewChild, ElementRef, Input,
-ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
+ChangeDetectorRef, ChangeDetectionStrategy, Renderer2, ViewContainerRef,
+ComponentRef} from '@angular/core';
 import { Audio } from 'app/shared/model/Audio';
 import { Image } from 'app/shared/model/Image';
 import * as saveAs from 'file-saver';
 import { ModalDirective } from 'ngx-bootstrap';
+import { AppendComponentService } from '../../shared/service/append-component.service';
+import { AudioPlayerPopupComponent } from './audio-player-popup.component';
+import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap';
+
 
 @Component({
   selector: 'laji-audio-player',
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss'],
+  providers: [AppendComponentService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -25,7 +31,7 @@ export class AudioPlayerComponent implements OnInit {
   private currentVolume = 1;
 
 
-  public listAudio: Audio[];
+  public listAudio: Audio[] = [];
   public playingAudio: Audio = {
     mp3URL: '',
     wavURL: '',
@@ -38,10 +44,22 @@ export class AudioPlayerComponent implements OnInit {
   };
   public images: Image [] = [];
   public PopupSpectrum = false;
+  public overlay: ComponentRef<AudioPlayerPopupComponent>;
+  private _overlay: ComponentLoader<AudioPlayerPopupComponent>;
+  public audioFile: Audio;
+  public loading = false;
 
   constructor(
-    private cd: ChangeDetectorRef
-  ) {}
+    private cd: ChangeDetectorRef,
+    private append: AppendComponentService,
+    _viewContainerRef: ViewContainerRef,
+    _renderer: Renderer2,
+    _elementRef: ElementRef,
+    cis: ComponentLoaderFactory
+  ) {
+    this._overlay = cis
+    .createLoader<AudioPlayerPopupComponent>(_elementRef, _viewContainerRef, _renderer);
+  }
 
   ngOnInit(): void {
     this.nowplayingAudioId = -1;
@@ -116,11 +134,22 @@ export class AudioPlayerComponent implements OnInit {
   }
 
   openSpectrumPopup(index, oldPlayer) {
+    // this.append.appendComponentToBody(AudioPlayerPopupComponent);
+    this._overlay
+      .attach(AudioPlayerPopupComponent)
+      .to('body')
+      .show({isAnimated: false});
+      this.PopupSpectrum = true;
+    this.overlay = this._overlay._componentRef;
+    this.overlay.instance.listAudio = this.listAudio;
+    this.overlay.instance.openAudioPopup(index);
+    this.overlay.instance.close = () => {
+      this.onHidePopupSpectrum();
+    };
     if (this.nowplayingAudioId !== -1 || this.nowplayingAudioId === undefined) {
       this.audioPause(this.nowplayingAudioId, oldPlayer);
     }
-    this.PopupSpectrum = true;
-    this.modal.show();
+    // this.modal.show();
     this.cd.detectChanges();
     this.startPopupPlayer(index);
   }
@@ -133,6 +162,7 @@ export class AudioPlayerComponent implements OnInit {
 
   onHidePopupSpectrum() {
     this.PopupSpectrum = false;
+    this._overlay.hide();
     this.cd.detectChanges();
     this.audioPause(this.nowplayingAudioId, this.audioContainerPopup);
   }

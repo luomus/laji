@@ -44,6 +44,7 @@ import { InfoModule } from '../info/info.module';
 import { AnnotationDataObservationComponent } from './annotation-data-observation/annotation-data-observation.component';
 import { ObservationEffectiveTagsTaxonComponent } from './observation-effective-tags-taxon/observation-effective-tags-taxon.component';
 import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-player.component';
+import { AudioPlayerPopupComponent } from '../../shared-modules/audio-player/audio-player-popup.component';
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-pl
     LicenseModule,
     InfoModule
   ],
+  entryComponents: [AudioPlayerPopupComponent],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe, SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent,
@@ -75,7 +77,8 @@ import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-pl
     SampleComponent,
     AnnotationDataObservationComponent,
     ObservationEffectiveTagsTaxonComponent,
-    AudioPlayerComponent
+    AudioPlayerComponent,
+    AudioPlayerPopupComponent
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent]
 })

@@ -1,0 +1,60 @@
+<!--<div class="ng-overlay" *ngIf="listAudio">
+    <div class="ng-gallery-content">
+        <a class="close-popup" (click)="closePopup()"><i class="glyphicon glyphicon-remove"></i></a>
+        <div class="modal-header">
+            <ul class="pager">
+              <li class="previous">
+                <a role="button" (click)="previousAudio(nowplayingAudioId - 1)" class="play" *ngIf="nowplayingAudioId > 0 && listAudio.length > 1">← {{ 'paginator.previous' | translate }}</a>
+              </li>
+              <li class="next">
+                <a role="button" (click)="nextAudio(nowplayingAudioId + 1)" class="play" *ngIf="(nowplayingAudioId < listAudio.length-1) && listAudio.length > 1">{{ 'paginator.next' | translate }} →</a>
+              </li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <img src="{{audio.fullURL}}" />
+            <div id="audioControls">
+              <audio #audioPopUp controls="controls" class="music-player__audio-container" style="width: 100%;" (ended)="onAudioEnded(nowplayingAudioId)" [src]="audio.mp3URL">
+                <source data-src="{{audio.mp3URL}}" type="audio/mpeg">
+              </audio>
+            </div>   
+        </div>
+    </div>
+</div>-->
+
+<div style="    position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 10000;
+/* text-align: center; */
+/* background: white; */
+margin: 0 auto;">
+  <div style="width: 1000px;
+  margin: 50px auto;
+  background: white;
+  text-align: center;">
+  <div class="ng-gallery-content">
+    <a class="close-popup" (click)="closePopup()"><i class="glyphicon glyphicon-remove"></i></a>
+    <div class="modal-header" *ngIf="listAudio">
+        <ul class="pager">
+          <li class="previous">
+            <a role="button" (click)="previousAudio(nowplayingAudioId - 1)" class="play" *ngIf="nowplayingAudioId > 0 && listAudio.length > 1">← {{ 'paginator.previous' | translate }}</a>
+          </li>
+          <li class="next">
+            <a role="button" (click)="nextAudio(nowplayingAudioId + 1)" class="play" *ngIf="(nowplayingAudioId < listAudio.length-1) && listAudio.length > 1">{{ 'paginator.next' | translate }} →</a>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-body" *ngIf="audioFile">
+        <img src="{{audioFile.fullURL}}" />
+        <div id="audioControls">
+          <audio #audioPopUp controls="controls" class="music-player__audio-container" style="width: 100%;" (ended)="onAudioEnded(nowplayingAudioId)" [src]="audioFile.mp3URL">
+            <source data-src="{{audioFile.mp3URL}}" type="audio/mpeg">
+          </audio>
+        </div>   
+    </div>
+</div>
+  </div>
+</div>
