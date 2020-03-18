@@ -3,7 +3,7 @@
         <img [src]="unit.media[0].thumbnailURL" />
         <div class="number-images" *ngIf="unit.media.length > 1"><span>{{ unit.media.length }}</span></div>
     </div>
-    <div class="image no-media" *ngIf="!unit.media"><span>No image</span></div>
+    <div class="image no-media" *ngIf="!unit.media"><span>{{ 'annotation.noImages' | translate }}</span></div>
     <div class="status-annotation" *ngIf="unit.status"><span class="need-id"></span></div>
     <div *ngIf="unit.linkings">
         <div *ngIf="unit.linkings.originalTaxon">
