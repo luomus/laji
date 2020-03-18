@@ -7,7 +7,9 @@
     </div>
 </div>
   
-<audio #audio class="music-player__audio-container" (ended)="onAudioEnded(nowplayingAudioId)" [src]="playingAudio.mp3URL"></audio>
+<audio #audio class="music-player__audio-container" (ended)="onAudioEnded(nowplayingAudioId)" [src]="playingAudio.mp3URL" preload="auto">
+  <source data-src="{{playingAudio.mp3URL}}" type="audio/mpeg">
+</audio>
 
 
 
@@ -28,7 +30,7 @@
       <div class="modal-body spectrum-popup">
         <img src="{{playingAudio.fullURL}}" />
         <div id="audioControls">
-          <audio #audioPopUp controls="controls" class="music-player__audio-containerr" style="width: 100%;" (ended)="onAudioEnded(nowplayingAudioId)" [src]="playingAudio.mp3URL">
+          <audio #audioPopUp controls="controls" class="music-player__audio-containerr" style="width: 100%;" (ended)="onAudioEnded(nowplayingAudioId)" [src]="playingAudio.mp3URL" preload="auto">
             <source data-src="{{playingAudio.mp3URL}}" type="audio/mpeg">
           </audio>
         </div>   

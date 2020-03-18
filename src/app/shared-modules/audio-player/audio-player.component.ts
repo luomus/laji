@@ -51,7 +51,7 @@ export class AudioPlayerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.nowplayingAudioId = -1;
+    this.nowplayingAudioId = 0;
     this.listAudio = this.audioFiles.filter(audio => audio['mediaType'] === 'AUDIO' );
 
     this.listAudio.forEach((element, index) =>
@@ -59,7 +59,9 @@ export class AudioPlayerComponent implements OnInit {
     );
 
     this.isPlaying = [...Array(this.listAudio.length)].fill(false);
+    this.playingAudio = this.listAudio[this.nowplayingAudioId];
     this.audioContainer = this.audio.nativeElement;
+    this.audioContainer.preload = 'auto';
   }
 
   audioPlay(index): void {
