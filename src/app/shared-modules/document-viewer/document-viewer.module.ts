@@ -44,7 +44,6 @@ import { InfoModule } from '../info/info.module';
 import { AnnotationDataObservationComponent } from './annotation-data-observation/annotation-data-observation.component';
 import { ObservationEffectiveTagsTaxonComponent } from './observation-effective-tags-taxon/observation-effective-tags-taxon.component';
 import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-player.component';
-import { AudioPlayerSettingsComponent } from '../../shared-modules/audio-player/audio-player-settings.component';
 
 @NgModule({
   imports: [
@@ -77,7 +76,6 @@ import { AudioPlayerSettingsComponent } from '../../shared-modules/audio-player/
     AnnotationDataObservationComponent,
     ObservationEffectiveTagsTaxonComponent,
     AudioPlayerComponent,
-    AudioPlayerSettingsComponent
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent]
 })

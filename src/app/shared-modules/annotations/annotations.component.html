@@ -1,4 +1,4 @@
-<div class="annotation" [ngClass]="{'border': listVisible, '': !listVisible}" *ngIf="targetID">
+<div class="annotation" [ngClass]="{'border': listVisible, 'no-border': !listVisible}" *ngIf="targetID">
   <laji-spinner [spinning]="loading"></laji-spinner>
   <laji-annotation-list
     *ngIf="!loading && listVisible"
