@@ -65,6 +65,8 @@
   "annotation.delete": "Radera",
   "annotation.needsId": "Behöver id",
   "annotation.needsCheck": "Vara oense",
+  "annotation.needsIdMeaning": "What it means ID?",
+  "annotation.needsCheckMeaning": "What it means Disagreed?",
   "annotation.annotationBeforeObservation": "Observation före kommentarer",
   "annotation.titleListAnnotations": "Kommentar",
   "annotation.occurrenceAtTime": "Händelse vid tidpunkten för annotering",

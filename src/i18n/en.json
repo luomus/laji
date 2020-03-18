@@ -65,6 +65,8 @@
   "annotation.delete": "Delete",
   "annotation.needsId": "Needs id",
   "annotation.needsCheck": "Disagreed",
+  "annotation.needsIdMeaning": "What it means ID?",
+  "annotation.needsCheckMeaning": "What it means Disagreed?",
   "annotation.annotationBeforeObservation": "Observation before annotations",
   "annotation.titleListAnnotations": "Annotations",
   "annotation.occurrenceAtTime": "Occurrence at time of annotation",
