@@ -27,7 +27,7 @@ export class QualityService {
 
   getAnnotationList(page = 1, pageSize = 50, orderBy?, informalTaxonGroup?, timeStart?, timeEnd?): Observable<any> {
     const query: WarehouseQueryInterface = {cache: true};
-    query.annotationType = ['USER_EFFECTIVE', 'USER_CHECK', 'COMMENT'];
+    query.annotationType = ['USER_EFFECTIVE', 'COMMENT'];
     if (informalTaxonGroup) {
       query.informalTaxonGroupId = informalTaxonGroup;
     }

@@ -14,7 +14,7 @@ export class KerttuRecordingAnnotationComponent implements OnChanges {
   currentRecording = 0;
   currentAnnotation = [];
 
-  private recordingQueue: number[];
+  recordingQueue: number[];
 
   @Output() annotationsChange = new EventEmitter<IRecordingAnnotations>();
 
