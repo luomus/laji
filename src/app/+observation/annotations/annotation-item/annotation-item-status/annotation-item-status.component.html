@@ -1,17 +1,17 @@
 <div *ngIf="text; else iconTemplate">
-    <span *ngIf="interpretation.needsCheck" class="text-interpreatation needsCheck">
+    <span *ngIf="interpretation.needsCheck" [tooltip]="'annotation.needsCheckMeaning' | translate" class="text-interpreatation needsCheck">
       {{ 'annotation.needsCheck' | translate }}
     </span>
-    <span *ngIf="interpretation.needsIdentification" class="text-interpreatation needsIdentification">
+    <span *ngIf="interpretation.needsIdentification" [tooltip]="'annotation.needsIdMeaning' | translate" class="text-interpreatation needsIdentification">
         {{ 'annotation.needsId' | translate }}
     </span>
 </div>
 <ng-template #iconTemplate>
     <div class="interpretation">
-        <div *ngIf="interpretation.needsCheck">
+        <div *ngIf="interpretation.needsCheck" [tooltip]="'annotation.needsCheckMeaning' | translate">
             <span class="needsCheck">!</span>
         </div>
-        <div *ngIf="interpretation.needsIdentification">
+        <div *ngIf="interpretation.needsIdentification" [tooltip]="'annotation.needsIdMeaning' | translate">
             <span class="needsIdentification">?</span>
         </div>
     </div>

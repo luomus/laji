@@ -75,7 +75,7 @@ import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-pl
     SampleComponent,
     AnnotationDataObservationComponent,
     ObservationEffectiveTagsTaxonComponent,
-    AudioPlayerComponent
+    AudioPlayerComponent,
   ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent]
 })

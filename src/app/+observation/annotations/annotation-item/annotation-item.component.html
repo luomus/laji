@@ -8,27 +8,38 @@
     <div class="unit-annotation"><laji-unit-annotation [showImage]="false" [unit]="item.unit"></laji-unit-annotation></div>
     <div class="gathering"><laji-gathering [visible]="true" [gathering]="item.gathering"></laji-gathering></div>
     <div class="information">
-        <i class="glyphicon glyphicon-comment"></i>
+        <i class="glyphicon glyphicon-comment" [tooltip]="'annotation.title' | translate "></i>
          <span *ngIf="item.unit.annotationCount; else noAnnotation">
-            <span>{{ item.unit.annotationCount }} {{ 'quality.qualityLabel' | translate }}</span>
+            <span *ngIf="item.unit.annotationCount > 1; else oneComment">{{ item.unit.annotationCount }} {{ 'annotation.title' | translate }}</span>
+            <ng-template #oneComment>
+               <span>{{ item.unit.annotationCount }} {{ 'annotation.titleSingle' | translate }}</span>
+            </ng-template>
         </span>
         <ng-template #noAnnotation>{{ 'annotation.none' | translate }}</ng-template>
     </div>
     <div class="quality" *ngIf="item.unit.interpretations && item.unit.interpretations.reliability">
-        <i class="glyphicon glyphicon-thumbs-up"></i><span>{{ item.unit.interpretations.reliability | label: 'warehouse' }} </span>
+        <div class="container-icon-text">
+            <div class="icon"><i class="glyphicon glyphicon-thumbs-up" [tooltip]="'observation.active.recordQuality' | translate" ></i></div>
+            <div class="text"><span>{{ item.unit.interpretations.reliability | label: 'warehouse' }} </span></div>
+        </div>
     </div>
     <div class="addedTags" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 0">
-        <ng-container *ngFor="let tag of item.unit.interpretations.effectiveTags; let i = index">
-            <div class="tags" [ngSwitch]="tag | warehouse" [ngClass]="{'hide':i > limit, '': i <= limit}">
-                <div *ngSwitchCase="annotationTagsObservation[tag | warehouse ]?.value" class="annotation-marker {{ annotationTagsObservation[tag | warehouse ]?.type }}">
-                    <span>{{ tag | warehouse | label }}</span>
-                </div>
+        <div class="container-icon-text">
+            <div class="icon"><i class="glyphicon glyphicon-bookmark" [tooltip]="'annotation.effectiveTags' | translate" ></i></div>
+            <div class="text">
+                <ng-container *ngFor="let tag of item.unit.interpretations.effectiveTags; let i = index">
+                    <div class="tags" [ngSwitch]="tag | warehouse" [ngClass]="{'hide':i > limit, '': i <= limit}">
+                        <div *ngSwitchCase="annotationTagsObservation[tag | warehouse ]?.value" class="annotation-marker {{ annotationTagsObservation[tag | warehouse ]?.type }}">
+                            <span>{{ tag | warehouse | label }}</span>
+                        </div>
+                    </div>
+                </ng-container>
+                <span class="show-more" (click)="toggleLimit($event)" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 2">
+                    <span *ngIf="limit < 2; else showLess">{{ 'annotation.list.showMoreTags' | translate }} ({{ moreTags }})</span>
+                    <ng-template #showLess>{{ 'annotation.list.showLessTags' | translate }}</ng-template>
+                </span>
             </div>
-        </ng-container>
-        <span class="show-more" (click)="toggleLimit($event)" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 2">
-            <span *ngIf="limit < 2; else showLess">{{ 'annotation.list.showMoreTags' | translate }}</span>
-            <ng-template #showLess>{{ 'annotation.list.showLessTags' | translate }}</ng-template>
-        </span>
+        </div>
     </div>
 </div>
 

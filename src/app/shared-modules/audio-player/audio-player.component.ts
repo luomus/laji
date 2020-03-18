@@ -1,62 +1,80 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input,
+ChangeDetectorRef, ChangeDetectionStrategy, TemplateRef, HostListener } from '@angular/core';
 import { Audio } from 'app/shared/model/Audio';
 import { Image } from 'app/shared/model/Image';
-import * as saveAs from 'file-saver';
+import { ModalDirective } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { DocumentViewerChildComunicationService } from '../document-viewer/document-viewer-child-comunication.service';
+
 
 @Component({
   selector: 'laji-audio-player',
   templateUrl: './audio-player.component.html',
-  styleUrls: ['./audio-player.component.scss']
+  styleUrls: ['./audio-player.component.scss'],
+  providers: [BsModalRef],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AudioPlayerComponent implements OnInit {
    @Input() audioFiles: any;
 
-
-  @ViewChild('progressBar', {static: true}) progress: ElementRef;
-  @ViewChild('progressBarStatus', {static: true}) progressStatus: ElementRef;
-
-  @ViewChild('volumeBar', {static: true}) volume: ElementRef;
-  @ViewChild('volumeStatus', {static: true}) volumeStatus: ElementRef;
-  private volumeBar: HTMLElement;
-  private volumeStatusBar: HTMLElement;
-
+  @ViewChild('modalSpectrum', { static: true }) modalSpectrum: TemplateRef<any>;
   @ViewChild('audio', {static: true}) audio: ElementRef;
-  public isPlaying = false;
+  @ViewChild('audioPopUp', {static: true}) audioPopUp: ElementRef;
+  public isPlaying: boolean[];
   public audioContainer: HTMLAudioElement;
-  public nowplayingAudioId: number;
-  private currentVolume = 1;
+  public audioContainerPopup: HTMLAudioElement;
+  public nowplayingAudioId = -1;
 
 
-  public listAudio: Audio[];
-  public playingAudio: Audio;
+  public listAudio: Audio[] = [];
+  public playingAudio: Audio = {
+    mp3URL: '',
+    wavURL: '',
+    thumbnailURL: '',
+    copyrightOwner: '',
+    author: '',
+    fullURL: '',
+    licenseId: '',
+    mediaType: '',
+  };
   public images: Image [] = [];
+  public PopupSpectrum = false;
+  public audioFile: Audio;
 
-  constructor() {}
+  constructor(
+    private cd: ChangeDetectorRef,
+    private modalService: BsModalService,
+    private modalRef: BsModalRef,
+    private childComunication: DocumentViewerChildComunicationService
+  ) {}
 
   ngOnInit(): void {
-
-
+    this.nowplayingAudioId = 0;
     this.listAudio = this.audioFiles.filter(audio => audio['mediaType'] === 'AUDIO' );
 
     this.listAudio.forEach((element, index) =>
        this.images.push({ 'id': 'a' + index, 'fullURL': element.fullURL , 'thumbnailURL': element.thumbnailURL, 'intellectualRights': element.licenseId })
     );
 
-    this.volumeBar = this.volume.nativeElement;
-    this.volumeStatusBar = this.volumeStatus.nativeElement;
-
+    this.isPlaying = [...Array(this.listAudio.length)].fill(false);
+    this.playingAudio = this.listAudio[this.nowplayingAudioId];
     this.audioContainer = this.audio.nativeElement;
-    this.setInfoAudio();
+    this.audioContainer.preload = 'auto';
   }
 
-  audioPlay(): void {
-    if (this.isPlaying) {
-      this.audioPause();
+  audioPlay(index): void {
+    this.playingAudio = this.listAudio[index];
+    this.nowplayingAudioId = index;
+
+    if (this.isPlaying[index]) {
+      this.audioPause(index);
       return;
     }
 
-    this.isPlaying = true;
+    this.isPlaying = [...Array(this.listAudio.length)].fill(false);
+    this.isPlaying[index] = true;
     setTimeout(() => {
       this.audioContainer.play();
     });
@@ -71,63 +89,82 @@ export class AudioPlayerComponent implements OnInit {
   }
 
 
-  audioPause(): void {
+  audioPause(index): void {
+    this.isPlaying[index] = false;
     this.audioContainer.pause();
-    this.isPlaying = false;
   }
 
-
-  audioMute(): void {
-    if (this.audioContainer.volume) {
-      this.setVolume(0);
-      this.changeVolumeBarStatus(0);
-    } else {
-      this.setVolume(this.currentVolume);
-      this.changeVolumeBarStatus(this.currentVolume * 100);
-    }
-  }
-
-  setVolume(volume: number): void {
-    this.audioContainer.volume = volume;
-  }
-
-  setCurrentVolume(volume: number): void {
-    this.currentVolume = volume;
-  }
-
-  changeVolumeBarStatus(persentage: number): void {
-    this.volumeStatusBar.style.width = `${persentage}%`;
-  }
-
-  changeAudioVolume(event: MouseEvent): void {
-    const volumeBarProperty = this.volumeBar.getBoundingClientRect();
-    const mousePosition = event.pageX - volumeBarProperty.left + pageXOffset;
-    const volumePersentage = mousePosition * 100 / volumeBarProperty.width;
-    this.changeVolumeBarStatus(volumePersentage);
-    this.setCurrentVolume(volumePersentage / 100);
-    this.setVolume(this.currentVolume);
-  }
-
-  nextAudio(): void {
-    this.audioPause();
+  nextAudio(index): void {
+    this.cd.markForCheck();
     if (this.nowplayingAudioId < this.listAudio.length) {
-      this.setInfoAudio(++this.nowplayingAudioId);
+      this.nowplayingAudioId = index;
+      this.playingAudio = this.listAudio[index];
     } else {
       this.setInfoAudio();
     }
   }
 
-  previousAudio(): void {
-    this.audioPlay();
+  previousAudio(index): void {
+    this.cd.markForCheck();
     if (this.nowplayingAudioId > 0) {
-      this.setInfoAudio(--this.nowplayingAudioId);
+      this.nowplayingAudioId = index;
+      this.playingAudio = this.listAudio[index];
     } else {
       this.setInfoAudio();
     }
   }
 
-  saveFile() {
-    saveAs(new Blob([this.playingAudio.mp3URL], { type: 'mp3' }), 'audio.mp3');
+  onAudioEnded(index) {
+    this.isPlaying[index] = false;
   }
+
+  openModal() {
+    this.modalRef = this.modalService.show(this.modalSpectrum, {class: 'modal-lg'});
+    this.cd.markForCheck();
+  }
+
+  closeModal() {
+    if (this.modalRef) {
+      this.childComunication.emitChildEvent(false);
+      this.modalRef.hide();
+    }
+  }
+
+
+  openSpectrumPopup(index) {
+    this.cd.detectChanges();
+    this.openModal();
+    if (this.nowplayingAudioId !== -1 || this.nowplayingAudioId === undefined) {
+      this.audioPause(this.nowplayingAudioId);
+      this.nowplayingAudioId = index;
+    } else {
+      this.nowplayingAudioId = index;
+    }
+    this.PopupSpectrum = true;
+    this.childComunication.emitChildEvent(true);
+    this.startPopupPlayer(index);
+  }
+
+  startPopupPlayer(index) {
+    this.playingAudio = this.listAudio[index];
+  }
+
+  onHidePopupSpectrum() {
+    this.PopupSpectrum = false;
+    this.childComunication.emitChildEvent(false);
+    this.cd.detectChanges();
+    this.audioPause(this.nowplayingAudioId);
+  }
+
+
+  @HostListener('window:keydown', ['$event'])
+  annotationKeyDown(e: KeyboardEvent) {
+    if (e.keyCode === 27) {
+      e.stopImmediatePropagation();
+       this.closeModal();
+      }
+
+  }
+
 
 }

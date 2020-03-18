@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
-import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Global } from '../../environments/global';
 import { HomeDataService, IHomeData } from './home-data.service';
+import { Image } from '../shared/gallery/image-gallery/image.interface';
 
 @Component({
   selector: 'laji-home',
@@ -17,7 +16,7 @@ import { HomeDataService, IHomeData } from './home-data.service';
 export class HomeComponent implements OnInit {
 
   mapStartDate;
-  imagesQuery$: Observable<WarehouseQueryInterface>;
+  images$: Observable<Image[]>;
   homeData$: Observable<IHomeData>;
   formId = environment.whichSpeciesForm;
 
@@ -31,14 +30,9 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.mapStartDate = HomeDataService.getRecentDate();
     this.homeData$ = this.homeDataService.getHomeData();
-    this.imagesQuery$ = this.sourceService.getAllAsLookUp().pipe(
-      map(sources => Object.keys(sources).filter((source) => source !== Global.sources.kotka)),
-      map(sources => ({
-        sourceId: sources,
-        unidentified: true,
-        countryId: ['ML.206'],
-        cache: true
-      }))
+    this.images$ = this.homeData$.pipe(
+      map(data => data.identify && data.identify.results || []),
+      map(data => data.map(item => item.unit.media[0]))
     );
   }
 }

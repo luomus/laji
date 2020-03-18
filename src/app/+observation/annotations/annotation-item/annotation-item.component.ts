@@ -13,6 +13,7 @@ export class AnnotationItemComponent implements OnInit {
 
   annotationTagsObservation = Global.annotationTags;
   limit = 1;
+  moreTags: number;
 
 
   constructor(
@@ -20,6 +21,9 @@ export class AnnotationItemComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.item.unit.interpretations && this.item.unit.interpretations.effectiveTags && this.item.unit.interpretations.effectiveTags.length > 0) {
+      this.moreTags = this.item.unit.interpretations.effectiveTags.length - 2;
+    }
   }
 
   toggleLimit(e) {

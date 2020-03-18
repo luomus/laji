@@ -1,76 +1,47 @@
 @import '../../../styles/_styles.scss'; 
 
 div {
+  &.spectrum-popup {
+    img {
+       max-width: 100%; 
+    }
+  }
   &.player-audio {
     position: relative;
     width: 100%;
-    background-color: white;
+    background-color: transparent;
     display: flex;
     align-items: center;
-    z-index: 1100;
     flex-wrap: wrap;
-    border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
     div {
       &.player-audio-child {
         color: #fff;
-        padding: 5px;
+        padding: 5px 0;
         &:nth-child(3) {
           width: 100%;
         }
         &:nth-child(1){
-          border-top-left-radius: 6px;
-          border-bottom-left-radius: 6px;
-          -webkit-border-top-left-radius:6px;
-          -webkit-border-bottom-left-radius: 6px;
-          -webkit-border-top-left-radius:6px;
-          -moz-border-bottom-left-radius: 6px;
-          @include media-query-tablet {
-            border-bottom-left-radius: 0;
-            -webkit-border-bottom-left-radius: 0;
-            -moz-border-bottom-left-radius: 0;
-            border-top-right-radius: 6px;
-            -webkit-border-top-right-radius: 6px;
-            -moz-border-top-right-radius: 6px;
-          }
+          width: 70%;
         }
         &:nth-child(2) {
-          border-top-right-radius: 6px;
-          border-bottom-right-radius: 6px;
-          -webkit-border-top-right-radius: 6px;
-          -webkit-border-bottom-right-radius: 6px;
-          -webkit-border-top-right-radius: 6px;
-          -webkit-border-bottom-right-radius: 6px;
-          @include media-query-tablet {
-            border-top-right-radius: 0;
-            -webkit-border-top-right-radius: 0;
-            -moz-border-top-right-radius: 0;
-            border-bottom-left-radius: 6px;
-            -webkit-border-bottom-left-radius: 6px;
-            -moz-border-bottom-left-radius: 6px;
-          }
-        }
-        &:not(:last-child) {
-          flex: 1;
-          text-align: center;
-          margin: 0px;
-          height: 35px;
-          background-color: #2283c3;
-          @include media-query-tablet {
-            flex: none;
-            width: 100%;
-          }
-        }  
+          width:30%;
+        } 
         div {
           &.buttons {
             position: relative;
+            span {
+              color: #204d74;
+              cursor: pointer;
+            }
           }
           &.volume-bar{
             position: relative;
             width: 75%;
             height: 4px;
-            background-color: #404040;
+            background-color: #fff;
             display: inline-block;
             cursor: pointer;
             div {
@@ -82,7 +53,7 @@ div {
                 border-radius: 2px;
                 max-width: 100%;
                 width: 100%;
-                background-color: #fff;
+                background-color: #000;
               }
             }
           }
@@ -97,15 +68,17 @@ div {
         }  
         button {
           background: transparent;
-          border: 0;
+          border: 1px solid #204d74;
+          color: #000;
           &.inline {
             display: inline-block;
             vertical-align: -webkit-baseline-middle;
             vertical-align: -moz-baseline-middle;
           }
           &.play {
-            border: 1px solid white;
-            margin-right: 5px;
+            margin-right: 10px;
+            padding: 4px 10px;
+            color:#204d74;
             &:last-child {
               margin-right: 0px;
             }
