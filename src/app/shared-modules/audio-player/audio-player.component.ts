@@ -1,34 +1,36 @@
 import { Component, OnInit, ViewChild, ElementRef, Input,
 ChangeDetectorRef, ChangeDetectionStrategy, Renderer2, ViewContainerRef,
-ComponentRef} from '@angular/core';
+ComponentRef, TemplateRef, HostListener, AfterViewInit} from '@angular/core';
 import { Audio } from 'app/shared/model/Audio';
 import { Image } from 'app/shared/model/Image';
 import * as saveAs from 'file-saver';
 import { ModalDirective } from 'ngx-bootstrap';
-import { AppendComponentService } from '../../shared/service/append-component.service';
-import { AudioPlayerPopupComponent } from './audio-player-popup.component';
-import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap';
+import {
+  AudioPlayerSettingsComponent
+} from './audio-player-settings.component';
+import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 
 @Component({
   selector: 'laji-audio-player',
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss'],
-  providers: [AppendComponentService],
+  providers: [BsModalRef],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AudioPlayerComponent implements OnInit {
+export class AudioPlayerComponent implements OnInit, AfterViewInit {
    @Input() audioFiles: any;
 
-  @ViewChild('popupSpectrumModal', { static: true }) modal: ModalDirective;
+  @ViewChild('modalSpectrum', { static: true }) modalSpectrum: TemplateRef<any>;
   @ViewChild('audio', {static: true}) audio: ElementRef;
-  @ViewChild('audioPopUp', {static: false}) audioPopUp: ElementRef;
+  @ViewChild('audioPopUp', {static: true}) audioPopUp: ElementRef;
+  @ViewChild(AudioPlayerSettingsComponent, { static: true }) public popupSpectrum: AudioPlayerSettingsComponent;
   public isPlaying: boolean[];
   public audioContainer: HTMLAudioElement;
   public audioContainerPopup: HTMLAudioElement;
   public nowplayingAudioId = -1;
-  private currentVolume = 1;
 
 
   public listAudio: Audio[] = [];
@@ -44,22 +46,13 @@ export class AudioPlayerComponent implements OnInit {
   };
   public images: Image [] = [];
   public PopupSpectrum = false;
-  public overlay: ComponentRef<AudioPlayerPopupComponent>;
-  private _overlay: ComponentLoader<AudioPlayerPopupComponent>;
   public audioFile: Audio;
-  public loading = false;
 
   constructor(
     private cd: ChangeDetectorRef,
-    private append: AppendComponentService,
-    _viewContainerRef: ViewContainerRef,
-    _renderer: Renderer2,
-    _elementRef: ElementRef,
-    cis: ComponentLoaderFactory
-  ) {
-    this._overlay = cis
-    .createLoader<AudioPlayerPopupComponent>(_elementRef, _viewContainerRef, _renderer);
-  }
+    private modalService: BsModalService,
+    private modalRef: BsModalRef
+  ) {}
 
   ngOnInit(): void {
     this.nowplayingAudioId = -1;
@@ -70,26 +63,27 @@ export class AudioPlayerComponent implements OnInit {
     );
 
     this.isPlaying = [...Array(this.listAudio.length)].fill(false);
-
     this.audioContainer = this.audio.nativeElement;
   }
 
-  audioPlay(index, player): void {
+  ngAfterViewInit() {
+    this.cd.markForCheck();
+  }
 
+  audioPlay(index): void {
     this.playingAudio = this.listAudio[index];
     this.nowplayingAudioId = index;
 
     if (this.isPlaying[index]) {
-      this.audioPause(index, player);
+      this.audioPause(index);
       return;
     }
 
     this.isPlaying = [...Array(this.listAudio.length)].fill(false);
     this.isPlaying[index] = true;
     setTimeout(() => {
-      player.play();
+      this.audioContainer.play();
     });
-    this.cd.detectChanges();
   }
 
   setInfoAudio(index: number = 0): void {
@@ -101,29 +95,26 @@ export class AudioPlayerComponent implements OnInit {
   }
 
 
-  audioPause(index, player): void {
+  audioPause(index): void {
     this.isPlaying[index] = false;
-    this.cd.detectChanges();
-    player.pause();
+    this.audioContainer.pause();
   }
 
   nextAudio(index): void {
-    this.audioPause(index - 1, this.audioContainerPopup);
+    this.cd.markForCheck();
     if (this.nowplayingAudioId < this.listAudio.length) {
       this.nowplayingAudioId = index;
       this.playingAudio = this.listAudio[index];
-      this.cd.detectChanges();
     } else {
       this.setInfoAudio();
     }
   }
 
   previousAudio(index): void {
-    this.audioPause(index + 1, this.audioContainerPopup);
+    this.cd.markForCheck();
     if (this.nowplayingAudioId > 0) {
       this.nowplayingAudioId = index;
       this.playingAudio = this.listAudio[index];
-      this.cd.detectChanges();
     } else {
       this.setInfoAudio();
     }
@@ -133,38 +124,49 @@ export class AudioPlayerComponent implements OnInit {
     this.isPlaying[index] = false;
   }
 
-  openSpectrumPopup(index, oldPlayer) {
-    // this.append.appendComponentToBody(AudioPlayerPopupComponent);
-    this._overlay
-      .attach(AudioPlayerPopupComponent)
-      .to('body')
-      .show({isAnimated: false});
-      this.PopupSpectrum = true;
-    this.overlay = this._overlay._componentRef;
-    this.overlay.instance.listAudio = this.listAudio;
-    this.overlay.instance.openAudioPopup(index);
-    this.overlay.instance.close = () => {
-      this.onHidePopupSpectrum();
-    };
-    if (this.nowplayingAudioId !== -1 || this.nowplayingAudioId === undefined) {
-      this.audioPause(this.nowplayingAudioId, oldPlayer);
+  openModal() {
+    this.modalRef = this.modalService.show(this.modalSpectrum, {class: 'modal-lg'});
+    this.cd.markForCheck();
+  }
+
+  closeModal() {
+    if (this.modalRef) {
+      this.modalRef.hide();
     }
-    // this.modal.show();
+  }
+
+
+  openSpectrumPopup(index) {
     this.cd.detectChanges();
+    this.openModal();
+    if (this.nowplayingAudioId !== -1 || this.nowplayingAudioId === undefined) {
+      this.audioPause(this.nowplayingAudioId);
+      this.nowplayingAudioId = index;
+    } else {
+      this.nowplayingAudioId = index;
+    }
+    this.PopupSpectrum = true;
     this.startPopupPlayer(index);
   }
 
   startPopupPlayer(index) {
     this.playingAudio = this.listAudio[index];
-    this.audioContainerPopup = this.audioPopUp.nativeElement;
-    this.audioPlay(index, this.audioContainerPopup);
   }
 
   onHidePopupSpectrum() {
     this.PopupSpectrum = false;
-    this._overlay.hide();
     this.cd.detectChanges();
-    this.audioPause(this.nowplayingAudioId, this.audioContainerPopup);
+    this.audioPause(this.nowplayingAudioId);
+  }
+
+
+  @HostListener('window:keydown', ['$event'])
+  annotationKeyDown(e: KeyboardEvent) {
+    e.stopImmediatePropagation();
+    if (e.keyCode === 27) {
+       this.closeModal();
+      }
+
   }
 
 

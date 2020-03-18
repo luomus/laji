@@ -1,6 +1,11 @@
 @import '../../../styles/_styles.scss'; 
 
 div {
+  &.spectrum-popup {
+    img {
+       max-width: 100%; 
+    }
+  }
   &.player-audio {
     position: relative;
     width: 100%;

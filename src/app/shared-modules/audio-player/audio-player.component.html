@@ -2,7 +2,7 @@
     <div class="player-audio-child controls">
         <div class="buttons">
           <button (click)="audioPlay(i, audioContainer)" class="play"><i class="glyphicon" [ngClass]="{'glyphicon-play': !isPlaying[i], 'glyphicon-pause': isPlaying[i]}"></i></button>
-          <a class="btn btn-primary btn-sm" (click)="openSpectrumPopup(i, audioContainer)">{{ 'audio.openSpectrum' | translate }}</a>
+          <a class="btn btn-primary btn-sm" (click)="openSpectrumPopup(i)">{{ 'audio.openSpectrum' | translate }}</a>
         </div>
     </div>
 </div>
@@ -10,14 +10,10 @@
 <audio #audio class="music-player__audio-container" (ended)="onAudioEnded(nowplayingAudioId)" [src]="playingAudio.mp3URL"></audio>
 
 
-<div class="modal fade" bsModal #popupSpectrumModal="bs-modal"
-     (onHidden)="onHidePopupSpectrum()"
-     tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+
+<ng-template #modalSpectrum>
       <div class="modal-header">
-        <!--<button (click)="saveFile()" class="save"><i class="glyphicon glyphicon glyphicon-save"></i></button>-->
-        <button type="button" class="close" (click)="popupSpectrumModal.hide()">
+        <button type="button" class="close" (click)="closeModal()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
         <ul class="pager">
@@ -29,42 +25,16 @@
           </li>
         </ul>
       </div>
-      <div class="modal-body" *ngIf="PopupSpectrum">
+      <div class="modal-body spectrum-popup">
         <img src="{{playingAudio.fullURL}}" />
         <div id="audioControls">
-          <audio #audioPopUp controls="controls" class="music-player__audio-container" style="width: 100%;" (ended)="onAudioEnded(nowplayingAudioId)" [src]="playingAudio.mp3URL">
+          <audio #audioPopUp controls="controls" class="music-player__audio-containerr" style="width: 100%;" (ended)="onAudioEnded(nowplayingAudioId)" [src]="playingAudio.mp3URL">
             <source data-src="{{playingAudio.mp3URL}}" type="audio/mpeg">
           </audio>
         </div>   
       </div>
-    </div>
-  </div>
-</div>
+</ng-template>
 
 
-<!--<div class="player-audio">
-  <div class="player-audio-child controls">
-      <div class="buttons">
-        <button (click)="previousAudio()" class="play" *ngIf="nowplayingAudioId > 0 && listAudio.length > 1"><i class="glyphicon glyphicon-backward"></i></button>
-        <button (click)="audioPlay()" class="play"><i class="glyphicon" [ngClass]="{'glyphicon-play': !isPlaying, 'glyphicon-pause': isPlaying}"></i></button>
-        <button (click)="saveFile()" class="save"><i class="glyphicon glyphicon glyphicon-save"></i></button>
-        <button (click)="nextAudio()" class="play" *ngIf="(nowplayingAudioId < listAudio.length-1) && listAudio.length > 1"><i class="glyphicon glyphicon-forward"></i></button>
-      </div>
-  </div>
-  <div class="player-audio-child volume-controls">
-      <button (click)="audioMute()" class="inline"><i class="glyphicon" [ngClass]="{'glyphicon-volume-off': audioContainer.volume === 0, 'glyphicon-volume-up': audioContainer.volume > 0}"></i></button>
-      <div #volumeBar (click)="changeAudioVolume($event)" class="volume-bar">
-        <div #volumeStatus class="volume-bar-active"></div>
-      </div>
-  </div>
-  <div class="player-audio-child now">
-    <div class="info">
-      <div class="spectogram">
-        <laji-image-gallery [modalImages]="images"></laji-image-gallery>
-      </div>
-    </div>
-  </div> 
-</div>
 
-<audio #audio class="music-player__audio-container" [src]="playingAudio.mp3URL"></audio>-->
 
