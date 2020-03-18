@@ -293,7 +293,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
        e.stopImmediatePropagation();
        this.closeDocument();
       }
-
   }
+
 
 }

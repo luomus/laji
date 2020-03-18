@@ -1,15 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, Input,
-ChangeDetectorRef, ChangeDetectionStrategy, Renderer2, ViewContainerRef,
-ComponentRef, TemplateRef, HostListener, AfterViewInit} from '@angular/core';
+ChangeDetectorRef, ChangeDetectionStrategy, TemplateRef, HostListener } from '@angular/core';
 import { Audio } from 'app/shared/model/Audio';
 import { Image } from 'app/shared/model/Image';
-import * as saveAs from 'file-saver';
 import { ModalDirective } from 'ngx-bootstrap';
-import {
-  AudioPlayerSettingsComponent
-} from './audio-player-settings.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { DocumentViewerChildComunicationService } from '../document-viewer/document-viewer-child-comunication.service';
 
 
 @Component({
@@ -20,13 +16,12 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AudioPlayerComponent implements OnInit, AfterViewInit {
+export class AudioPlayerComponent implements OnInit {
    @Input() audioFiles: any;
 
   @ViewChild('modalSpectrum', { static: true }) modalSpectrum: TemplateRef<any>;
   @ViewChild('audio', {static: true}) audio: ElementRef;
   @ViewChild('audioPopUp', {static: true}) audioPopUp: ElementRef;
-  @ViewChild(AudioPlayerSettingsComponent, { static: true }) public popupSpectrum: AudioPlayerSettingsComponent;
   public isPlaying: boolean[];
   public audioContainer: HTMLAudioElement;
   public audioContainerPopup: HTMLAudioElement;
@@ -51,7 +46,8 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
   constructor(
     private cd: ChangeDetectorRef,
     private modalService: BsModalService,
-    private modalRef: BsModalRef
+    private modalRef: BsModalRef,
+    private childComunication: DocumentViewerChildComunicationService
   ) {}
 
   ngOnInit(): void {
@@ -64,10 +60,6 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
     this.isPlaying = [...Array(this.listAudio.length)].fill(false);
     this.audioContainer = this.audio.nativeElement;
-  }
-
-  ngAfterViewInit() {
-    this.cd.markForCheck();
   }
 
   audioPlay(index): void {
@@ -146,6 +138,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
       this.nowplayingAudioId = index;
     }
     this.PopupSpectrum = true;
+    this.childComunication.emitChildEvent(true);
     this.startPopupPlayer(index);
   }
 
@@ -155,6 +148,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
   onHidePopupSpectrum() {
     this.PopupSpectrum = false;
+    this.childComunication.emitChildEvent(false);
     this.cd.detectChanges();
     this.audioPause(this.nowplayingAudioId);
   }
@@ -162,8 +156,8 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
-    e.stopImmediatePropagation();
     if (e.keyCode === 27) {
+      e.stopImmediatePropagation();
        this.closeModal();
       }
 
