@@ -519,7 +519,7 @@ const routes: Routes = [
     data: {
       formID: Global.forms.lolifeForm,
       noFormPermissionRedirect: '/theme/lolife',
-      title: 'LOLIFE',
+      title: 'Liito-orava - seuranta',
       navLinks: {
         about: {
           routerLink: ['about'],

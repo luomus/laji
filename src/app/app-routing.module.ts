@@ -64,7 +64,7 @@ const routesWithLang: Routes = [
     {path: 'vesilintulaskenta', redirectTo: '/en/theme/vesilintulaskenta/instructions', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/en/theme/vieraslajit/instructions', pathMatch: 'full'},
     {path: 'kunnat', redirectTo: '/en/theme/kunnat/instructions', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/en/theme/lolife/instructions', pathMatch: 'full'},
+    {path: 'lolife', redirectTo: '/en/theme/lolife/about', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/en/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'valio', redirectTo: '/en/theme/valio/instructions', pathMatch: 'full'},
     {path: 'syke-perhoset', redirectTo: '/en/theme/syke-perhoset/instructions', pathMatch: 'full'},
