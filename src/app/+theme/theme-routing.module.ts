@@ -703,7 +703,7 @@ const routes: Routes = [
           activeMatch: `/places/${Global.collections.waterbird}`
         }
       },
-      navLinksOrder: ['instructions', 'form', 'juvenileForm', 'ownSubmissions'],
+      navLinksOrder: ['instructions', 'form', 'juvenileForm', 'ownSubmissions', 'formPermissions'],
       hideNavFor: ['/form']
     },
     children: [
