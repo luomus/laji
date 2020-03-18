@@ -123,6 +123,7 @@ export class AudioPlayerComponent implements OnInit {
 
   closeModal() {
     if (this.modalRef) {
+      this.childComunication.emitChildEvent(false);
       this.modalRef.hide();
     }
   }
