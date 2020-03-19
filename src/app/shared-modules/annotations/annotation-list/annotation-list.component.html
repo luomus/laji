@@ -149,17 +149,22 @@
       <div class="row">
         <div class="col-xs-4"><b>{{ 'annotation.effectiveTags' | translate }}:</b></div>
         <div class="col-xs-8">
-          <div class="tag" *ngFor="let addedTag of effectiveTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags.indexOf(addedTag) !== -1 }">
-            <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
-               <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[addedTag | warehouse ].type }}" [ngClass]="{'': effectiveTags.indexOf(addedTag) !== -1 , 'notEffective': effectiveTags.indexOf(addedTag) === -1}" >
-                 <span>{{ addedTag | label: 'warehouse' }}</span>
-               </div>
-               <span class="not-effective-tag" *ngIf="effectiveTags.indexOf(addedTag) === -1">{{ 'annotation.deleted' | translate }}</span>
+          <div *ngIf="effectiveTags !== undefined; else noEffectiveTags">
+            <div class="tag" *ngFor="let addedTag of effectiveTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags.indexOf(addedTag) !== -1 }">
+              <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
+                 <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[addedTag | warehouse ].type }}" [ngClass]="{'': effectiveTags.indexOf(addedTag) !== -1 , 'notEffective': effectiveTags.indexOf(addedTag) === -1}" >
+                   <span>{{ addedTag | label: 'warehouse' }}</span>
+                 </div>
+                 <span class="not-effective-tag" *ngIf="effectiveTags.indexOf(addedTag) === -1">{{ 'annotation.deleted' | translate }}</span>
+              </div>
+              <ng-template #noCategory>
+               <span>{{ addedTag | label: 'warehouse' }}</span>
+              </ng-template>
             </div>
-            <ng-template #noCategory>
-             <span>{{ addedTag | label: 'warehouse' }}</span>
-            </ng-template>
           </div>
+          <ng-template #noEffectiveTags>
+            <span>-</span>
+          </ng-template>
         </div>
       </div>
     </div>
