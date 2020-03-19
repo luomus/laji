@@ -288,6 +288,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
           switchMap(() => ObservableInterval(this.recheckIterval))
     ).subscribe(() => this.updateDocument());
     }
+    this.taxonTagEffective.emitChildEvent(false);
     this.cd.markForCheck();
   }
 
