@@ -132,6 +132,11 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   }
 
   onSuccess(annotation: Annotation) {
+    this.statusAction = {
+      status: true,
+      action: this.deleting ? 'deleting' : 'adding'
+    };
+    this.loadingForm.emit(this.statusAction);
     this.lastAnnotationAddedId = annotation.id;
     this.annotations = [annotation, ...this.annotations];
     this.saveDone(annotation);
@@ -154,6 +159,11 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   onDelete(annotation: Annotation) {
     this.loading = true;
     this.deleting = true;
+    this.statusAction = {
+      status: true,
+      action: this.deleting ? 'deleting' : 'adding'
+    };
+    this.loadingForm.emit(this.statusAction);
     this.loadingElements.emitChildEvent(true);
     this.annotationService.delete(annotation)
       .subscribe(
@@ -220,11 +230,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           this.taxonTagEffective.emitChildEvent(true);
           this.loadingElements.emitChildEvent(true);
           this.loading = false;
-          this.statusAction = {
-            status: true,
-            action: this.deleting ? 'deleting' : 'adding'
-          };
-          this.loadingForm.emit(this.statusAction);
           }
 
 
