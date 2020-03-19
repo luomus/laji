@@ -16,6 +16,7 @@
           [formVisible]="true"
           [listVisible]="true"
           (close)="hideAnnotations()"
+          (loadingForm)="checkLoading($event)"
           (annotationChange)="initAnnotationStatus($event)"
         ></laji-annotations>
       </div>

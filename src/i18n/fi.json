@@ -80,6 +80,8 @@
   "annotation.list.showMoreTags": "näytä enemmän",
   "annotation.list.showLessTags": "näytä vähemmän",
   "annotation.noImages": "No imagest",
+  "annotation.addedSuccess": "Kommentti lisätty onnistuneesti",
+  "annotation.deletedSuccess": "Kommentti poistettu onnistuneesti",
   "audio.spectrum": "Äänite ja spektrogrammi",
   "audio.openSpectrum": "Avaa spektrogrammi",
   "asIs": "Arvo sellaisenaan",

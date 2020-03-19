@@ -79,6 +79,8 @@
   "annotation.deleteComment": "Radera kommentar",
   "annotation.list.showMoreTags": "show more tags",
   "annotation.list.showLessTags": "show less tags",
+  "annotation.addedSuccess": "Kommentaren har lagts till",
+  "annotation.deletedSuccess": "Kommentaren har raderats",
   "annotation.noImages": "No imagess",
   "audio.spectrum": "Ljud och skala",
   "audio.openSpectrum": "Öppna skala",

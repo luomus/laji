@@ -2,6 +2,7 @@
   <div class="comment-title">{{ 'annotation.title' | translate }}</div>
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="annotation">
+      <div *ngIf="annotation.id === lastAnnotationAddedId">porco</div>
       <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem[i])">
         <span *ngIf="annotation.deleted; else notValid">{{ 'annotation.deleted' | translate }}</span>
         <ng-template #notValid><span>{{ 'annotation.notValid' | translate }}</span></ng-template>

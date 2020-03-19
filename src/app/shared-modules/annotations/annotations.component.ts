@@ -35,6 +35,8 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input() listVisible: boolean;
   @Output() close = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
+  @Output() loadingForm = new EventEmitter<Object>();
+
 
   @ViewChild('formAnnotation', {static: false}) formAnnotation: AnnotationFormNewComponent;
   error = false;
@@ -59,6 +61,13 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   subscribeRefreshedAnnotations1: Subscription;
   query: WarehouseQueryInterface = {};
   activeTags: Annotation[];
+  deleting = false;
+  statusAction = {
+    status: false,
+    action: this.deleting ? 'deleting' : 'adding'
+  };
+
+
 
   constructor(
     private annotationService: AnnotationService,
@@ -79,6 +88,10 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     if (this.unit && this.unit.interpretations && this.unit.interpretations.effectiveTags) {
       this.activeTags = this.unit.interpretations.effectiveTags;
     }
+
+    setTimeout(() => {
+      this.loadingForm.emit(this.statusAction);
+    }, 4000);
   }
 
   ngOnDestroy() {
@@ -140,6 +153,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
 
   onDelete(annotation: Annotation) {
     this.loading = true;
+    this.deleting = true;
     this.loadingElements.emitChildEvent(true);
     this.annotationService.delete(annotation)
       .subscribe(
@@ -198,6 +212,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           this.taxonTagEffective.emitChildEvent(false);
           this.loadingElements.emitChildEvent(false);
           this.loading = false;
+          this.loadingForm.emit(false);
         }
 
         if (this.randomKeyAfter !== this.randomKeyBefore) {
@@ -205,7 +220,12 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           this.taxonTagEffective.emitChildEvent(true);
           this.loadingElements.emitChildEvent(true);
           this.loading = false;
-        }
+          this.statusAction = {
+            status: true,
+            action: this.deleting ? 'deleting' : 'adding'
+          };
+          this.loadingForm.emit(this.statusAction);
+          }
 
 
       });

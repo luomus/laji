@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter,
   Input, Output, OnInit, OnDestroy} from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Annotation } from '../../../shared/model/Annotation';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 
@@ -10,6 +11,14 @@ import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewe
   selector: 'laji-gathering-annotation',
   templateUrl: './gathering-annotation.component.html',
   styleUrls: ['./gathering-annotation.component.scss'],
+  animations: [
+      trigger('message', [
+        transition(':leave', [
+          style({transform: 'translateX(0)', opacity: 1}),
+          animate('500ms', style({transform: 'translateX(100%)', opacity: 0}))
+        ])
+    ])
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GatheringAnnotationComponent implements OnInit, OnDestroy {
@@ -33,7 +42,11 @@ export class GatheringAnnotationComponent implements OnInit, OnDestroy {
   @Input() showAnnotation: boolean;
   @Output() showAllUnits = new EventEmitter();
 
-  pendingAnnotation: boolean;
+  annotationAddedDeleted = {
+    status: false,
+    action: undefined
+  };
+  subscriptParent: Subscription;
   parentSubject: Subject<boolean> = new Subject();
 
   constructor(
@@ -45,9 +58,9 @@ export class GatheringAnnotationComponent implements OnInit, OnDestroy {
   }
 
 
-  checkPending(value: boolean) {
-   this.pendingAnnotation = value;
-   this.loadingElements.emitChildEvent(value);
+  checkPending(value: any) {
+   this.annotationAddedDeleted = value;
+   // this.loadingElements.emitChildEvent(value);
   }
 
   ngOnDestroy() {

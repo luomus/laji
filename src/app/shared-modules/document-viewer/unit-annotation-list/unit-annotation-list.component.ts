@@ -1,5 +1,5 @@
 import {map, switchMap } from 'rxjs/operators';
-import { ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
@@ -14,7 +14,7 @@ import { WarehouseApi } from '../../../shared/api/WarehouseApi';
   templateUrl: './unit-annotation-list.component.html',
   styleUrls: ['./unit-annotation-list.component.scss']
 })
-export class UnitAnnotationListComponent implements OnInit {
+export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Input() editors: string[];
   @Input() personID: string;
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
@@ -26,7 +26,7 @@ export class UnitAnnotationListComponent implements OnInit {
   @Input() openAnnotation: boolean;
   @Input() showFacts = false;
   @Input() showAnnotation: boolean;
-  @Output() annotationPending = new EventEmitter<boolean>();
+  @Output() annotationPending = new EventEmitter<Object>();
 
   annotationVisible = false;
   annotationClass$: Observable<string>;
@@ -35,6 +35,10 @@ export class UnitAnnotationListComponent implements OnInit {
   unitID: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
   annotationClass = Annotation.AnnotationClassEnum;
+  checkloading = {
+    status: false,
+    action: undefined
+  };
 
   constructor(
     private toQname: ToQNamePipe,
@@ -69,12 +73,12 @@ export class UnitAnnotationListComponent implements OnInit {
 
   initAnnotationStatus(annotation?: Annotation) {
     const annotations = this.unit.annotations || [];
+
     if (annotation) {
       if (!annotation.deleted) {
         annotations.push(annotation);
       }
       this.unit.annotations = annotations;
-      // this.annotationPending.emit(true);
     }
     this.annotationClass$ = this.annotationService
       .getAnnotationClassInEffect(annotations).pipe(
@@ -107,6 +111,17 @@ export class UnitAnnotationListComponent implements OnInit {
 
   hideAnnotations() {
     this.annotationVisible = false;
+  }
+
+  checkLoading(event: any) {
+    this.checkloading = event;
+    this.annotationPending.emit(this.checkloading);
+  }
+
+  ngOnDestroy() {
+    setTimeout(() => {
+      this.annotationPending.emit({status: false, action: this.checkloading.action });
+    }, 2000);
   }
 
 
