@@ -230,3 +230,33 @@ $spacers: (
     }
   }
 }
+
+@each $spacer, $spacerPx in $spacers {
+  .ml-#{$spacer} {
+    margin-left: $spacerPx;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $spacer, $spacerPx in $spacers {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:ml-#{$spacer} {
+        margin-left: $spacerPx;
+      }
+    }
+  }
+}
+
+@each $spacer, $spacerPx in $spacers {
+  .mr-#{$spacer} {
+    margin-right: $spacerPx;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $spacer, $spacerPx in $spacers {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:mr-#{$spacer} {
+        margin-right: $spacerPx;
+      }
+    }
+  }
+}

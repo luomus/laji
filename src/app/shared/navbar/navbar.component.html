@@ -42,6 +42,9 @@
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
               <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
+              <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
+            </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['vir']">
               <a [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
             </li>

@@ -571,6 +571,7 @@
   "navigation.map": "Map service",
   "navigation.notify": "Report observations",
   "navigation.observation": "Browse occurrences",
+  "navigation.saveObservations": "Save occurrences",
   "navigation.quality": "Quality control",
   "navigation.research": "Research Tools",
   "navigation.satelliitti": "Satellite tracking",

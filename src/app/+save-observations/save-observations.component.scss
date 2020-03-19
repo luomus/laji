@@ -1,0 +1,21 @@
+@import 'vars';
+
+:host {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.main-container {
+  max-width: 1000px;
+}
+
+.report-type-container {
+  padding: 20px;
+  background-color: $neutral-1;
+  box-shadow: 0 2px 6px 0 rgba(0,0,0,0.15);
+
+  h3 {
+    margin-top: 0;
+  }
+}
