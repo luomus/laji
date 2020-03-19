@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter,
   Input, Output, OnInit, OnDestroy} from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Subject } from 'rxjs';
+import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 
 
@@ -35,7 +36,10 @@ export class GatheringAnnotationComponent implements OnInit, OnDestroy {
   pendingAnnotation: boolean;
   parentSubject: Subject<boolean> = new Subject();
 
-  constructor(private taxonTagEffective: TaxonTagEffectiveService) { }
+  constructor(
+    private loadingElements: LoadingElementsService,
+    private taxonTagEffective: TaxonTagEffectiveService
+    ) { }
 
   ngOnInit() {
   }
@@ -43,11 +47,12 @@ export class GatheringAnnotationComponent implements OnInit, OnDestroy {
 
   checkPending(value: boolean) {
    this.pendingAnnotation = value;
-   this.taxonTagEffective.emitChildEvent(value);
+   this.loadingElements.emitChildEvent(value);
   }
 
   ngOnDestroy() {
     this.taxonTagEffective.emitChildEvent(false);
+    this.loadingElements.emitChildEvent(false);
   }
 
 }

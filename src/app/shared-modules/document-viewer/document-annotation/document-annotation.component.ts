@@ -27,6 +27,7 @@ import { Annotation } from '../../../shared/model/Annotation';
 import { Person } from '../../../shared/model/Person';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
+import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -95,7 +96,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,
     private childComunication: DocumentViewerChildComunicationService,
-    private taxonTagEffective: TaxonTagEffectiveService
+    private taxonTagEffective: TaxonTagEffectiveService,
+    private loadingElements: LoadingElementsService
   ) { }
 
   ngOnInit() {
@@ -289,6 +291,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     ).subscribe(() => this.updateDocument());
     }
     this.taxonTagEffective.emitChildEvent(false);
+    this.loadingElements.emitChildEvent(false);
     this.cd.markForCheck();
   }
 
