@@ -35,6 +35,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
   @Input() visible = true;
   @Input() allowCreate = true;
   @Input() userID: string;
+  @Input() showMap = true;
 
   @Output() activePlaceChange = new EventEmitter<number>();
   @Output() createButtonClick = new EventEmitter();
@@ -106,15 +107,6 @@ export class NpChooseComponent implements OnInit, OnChanges {
   onActivePlaceChange(idx: number) {
     this.activeNP = idx;
     this.activePlaceChange.emit(this._activeNP);
-  }
-
-  showMap() {
-    return !(
-      this.documentForm &&
-      this.documentForm.namedPlaceOptions &&
-      this.documentForm.namedPlaceOptions.hideMapTab &&
-      this.documentForm.namedPlaceOptions.hideMapTab === true
-    );
   }
 
   isSent(np: NamedPlace) {

@@ -67,10 +67,11 @@
                           [visible]="!editMode"
                           [allowCreate]="allowCreate"
                           [activeNP]="activeNP"
+                          [showMap]="showMap"
                           (activePlaceChange)="onActivePlaceChange($event)"
                           (createButtonClick)="toEditMode(true)"></laji-np-choose>
         </div>
-        <div [ngClass]="editMode ? 'col-xs-12 nav-margin' : 'col-lg-6 nav-margin'">
+        <div [ngClass]="{'col-xs-12': editMode, 'col-lg-6': !editMode, 'nav-margin': showMap}">
           <laji-np-edit [editMode]="editMode"
                         [formId]="formId"
                         [loading]="loading"
