@@ -36,16 +36,20 @@
   <section class="mb-8"> <!-- Kansalaistiede -->
     <h2>Kansalaistiede</h2>
     <p>lorem ipsum</p>
-    <div>
-
+    <div class="d-flex flex-row">
+      <ng-container *ngFor="let form of citizenScienceForms$ | async">
+        <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
+      </ng-container>
     </div>
   </section>
 
   <section class="mb-8"> <!-- Tutkimusprojektit ja viranomaistyökalut -->
     <h2>Tutkimusprojektit ja viranomaistyökalut</h2>
     <p>lorem ipsum</p>
-    <div>
-
+    <div class="d-flex flex-row">
+      <ng-container *ngFor="let form of researchProjectForms$ | async">
+        <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
+      </ng-container>
     </div>
   </section>
 </div>
