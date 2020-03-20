@@ -35,7 +35,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   }
   set namedPlace(np: any) {
     this._namedPlace = np;
-    this.namedPlaceHeader = this._namedPlace ? this.getNamedPlaceHeader(this._namedPlace) : [];
+    this.namedPlaceHeader = this.getNamedPlaceHeader();
   }
 
   form: any;
@@ -90,6 +90,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
           }
         }
         this.title.setTitle(form.title + ' | ' + this.title.getTitle());
+        this.namedPlaceHeader = this.getNamedPlaceHeader();
         this.cd.markForCheck();
       });
   }
@@ -98,18 +99,26 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     return moment(date).format('DD.MM.YYYY');
   }
 
-  getNamedPlaceHeader(namedPlace): Observable<string>[] {
-    const fields: [string, ((value: string) => Observable<string>)?][] = [
-      ['alternativeIDs'], ['name'], ['municipality', val => this.areaService.getName(val, this.translate.currentLang)]
-    ];
+  getNamedPlaceHeader(): Observable<string>[] {
+    if (!this.form || !this._namedPlace) {
+      return [];
+    }
+    const headerFields = this.form.namedPlaceOptions && this.form.namedPlaceOptions.headerFields ?
+      this.form.namedPlaceOptions.headerFields : ['alternativeIDs', 'name', 'municipality'];
+    const fields: [string, ((value: string) => Observable<string>)?][] = headerFields.map(field => {
+      if (field === 'municipality') {
+        return [field, val => this.areaService.getName(val, this.translate.currentLang)];
+      }
+      return [field];
+    });
     return fields.filter(f => {
-      const val = namedPlace[f[0]];
+      const val = this._namedPlace[f[0]];
       const hasValue = v => v || v === '0' || v === 0;
       if ((hasValue(val) && !Array.isArray(val)) || (Array.isArray(val) && val.filter(hasValue).length > 0)) {
         return true;
       }
     }).map(f => {
-      const val = namedPlace[f[0]];
+      const val = this._namedPlace[f[0]];
       if ((!f[1])) {
         return of(val);
       } else {

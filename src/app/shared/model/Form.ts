@@ -94,6 +94,7 @@ export namespace Form {
       reservationUntil?: string;
       showLegendList?: boolean;
       infoFields?: string[];
+      headerFields?: string[];
       documentListUseLocalDocumentViewer?: string;
       documentViewerGatheringGeometryJSONPath?: string | string[];
       documentViewerForcedFields?: string[]
