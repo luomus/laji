@@ -7,6 +7,21 @@
   position: relative;
 }
 
+.annotation-type {
+  display: inline-block;
+  padding: 0px;
+  font-size: 12px;
+  margin-bottom: 0px;
+  color:#31708f;
+}
+
+.annotation-date {
+  display: block;
+  font-size: 12px;
+  position: relative;
+  top: -3px;
+}
+
 .comment-title {
   font-weight: bold;
   font-size: 20px;

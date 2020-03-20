@@ -32,6 +32,7 @@ export class DocumentLocalComponent implements OnChanges {
   fields = {};
   formLogo: string;
   gatheringGeometryJSONPath: string | string[];
+  zoomToData: boolean;
 
   loading = false;
   private parseDocSub: Subscription;
@@ -130,6 +131,7 @@ export class DocumentLocalComponent implements OnChanges {
         this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications'], (form.namedPlaceOptions || {}).documentViewerForcedFields);
         if (form.namedPlaceOptions && form.namedPlaceOptions.documentViewerGatheringGeometryJSONPath) {
           this.gatheringGeometryJSONPath = form.namedPlaceOptions.documentViewerGatheringGeometryJSONPath;
+          this.zoomToData = form.namedPlaceOptions.documentViewerZoomToData;
         }
       }));
   }

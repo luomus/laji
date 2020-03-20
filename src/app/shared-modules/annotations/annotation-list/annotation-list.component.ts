@@ -39,6 +39,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   hasNextTrue: boolean;
   open: boolean[] = undefined;
   showItem: boolean[];
+  annotationRole = Annotation.AnnotationRoleEnum;
 
   constructor(
     private cd: ChangeDetectorRef

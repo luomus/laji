@@ -17,10 +17,10 @@
         </span>
         <ng-template #noAnnotation>{{ 'annotation.none' | translate }}</ng-template>
     </div>
-    <div class="quality" *ngIf="item.unit.interpretations && item.unit.interpretations.reliability">
+    <div class="quality" *ngIf="item.unit.interpretations && item.unit.interpretations.recordQuality">
         <div class="container-icon-text">
             <div class="icon"><i class="glyphicon glyphicon-thumbs-up" [tooltip]="'observation.active.recordQuality' | translate" ></i></div>
-            <div class="text"><span>{{ item.unit.interpretations.reliability | label: 'warehouse' }} </span></div>
+            <div class="text"><span>{{ item.unit.interpretations.recordQuality | label: 'warehouse' }} </span></div>
         </div>
     </div>
     <div class="addedTags" *ngIf="item.unit.interpretations && item.unit.interpretations.effectiveTags && item.unit.interpretations.effectiveTags.length > 0">

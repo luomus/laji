@@ -10,7 +10,7 @@
               type="button"
               class="btn alert-info btn-xs"
               (click)="toggleAnnotation(i)"
-              [tooltip]="'annotation.showDeletedComment' | translate"
+              [tooltip]="!annotation.valid ? (annotation.deleted ? ('annotation.showDeletedComment' | translate) : ('annotation.showInvalidComment' | translate)  ) : (annotation.deleted ? ('annotation.showDeletedComment' | translate) : '')"
               placement="right"
               >
               <i class="glyphicon glyphicon-eye-open"></i>
@@ -32,32 +32,28 @@
             <button
               type="button"
               class="btn alert-info btn-xs"
-              placement="left"
               (click)="toggleAnnotation(i)"
-              [tooltip]="showItem[i] ? ('annotation.closeComment' | translate) : ('annotation.openComment' | translate)"
+              [tooltip]="!annotation.valid ? (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : ('annotation.hideInvalidComment' | translate)  ) : (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : '')"
               placement="right"
-              *ngIf="!annotation.deleted"
-              >
-              <i class="glyphicon" [ngClass]="{'glyphicon-menu-up': showItem[i], 'glyphicon-menu-down': !showItem[i]}"></i>
-            </button>
-            <button
-              type="button"
-              class="btn alert-info btn-xs"
-              (click)="toggleAnnotation(i)"
-              [tooltip]="'annotation.hideDeletedComment' | translate"
-              placement="right"
-              *ngIf="(annotation.deleted && showItem[i])"
+              *ngIf="((annotation.deleted || !annotation.valid ) && showItem[i])"
             >
             <i class="glyphicon glyphicon-eye-close"></i>
             </button>
           </span>
           <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span>{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
+            <span class="annotation-type" *ngIf="annotation.byRole">
+              <span *ngIf="(annotation.byRole).indexOf(annotationRole.expert) !==-1; else basic">{{ 'annotation.expertComment' | translate }}</span>
+              <ng-template #basic>
+                <span>{{ 'annotation.basicComment' | translate }}</span>
+              </ng-template>
+            </span>
+            <span class="annotation-date">{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
           </div>
           <ng-template #annotationByPerson>
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span>{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
+            <span class="alert alert-info annotation-type">{{ annotation.byRole | toQName | label }}</span>
+            <span class="annotation-date">{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
           </ng-template>
         </div>
       </div>
