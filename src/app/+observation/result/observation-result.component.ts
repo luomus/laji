@@ -156,7 +156,6 @@ export class ObservationResultComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    console.log(event.target.innerWidth);
     this.metaFetch = this.browserService.lgScreen$.subscribe(data => {
       this.isLgScreen = data;
     });

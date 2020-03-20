@@ -14,8 +14,8 @@ import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewe
   animations: [
       trigger('message', [
         transition(':leave', [
-          style({transform: 'translateX(0)', opacity: 1}),
-          animate('500ms', style({transform: 'translateX(100%)', opacity: 0}))
+          style({opacity: 1}),
+          animate('500ms', style({ opacity: 0}))
         ])
     ])
   ],
