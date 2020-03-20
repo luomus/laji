@@ -71,7 +71,7 @@
   "annotation.titleListAnnotations": "Kommentit",
   "annotation.occurrenceAtTime": "Tapahtuma merkinnän aikaan (x)",
   "annotation.deleted": "Kommentti poistettu",
-  "annotation.notValid": "Kommentti ei kelpaa",
+  "annotation.notValid": "Kommentti ei voimassa",
   "annotation.openComment": "Avaa kommentti",
   "annotation.closeComment": "Sulje kommentti",
   "annotation.showDeletedComment": "Näytä poistettu kommentti",
