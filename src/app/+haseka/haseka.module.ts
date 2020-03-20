@@ -25,6 +25,7 @@ import { HasekaTermsComponent } from './terms/haseka-terms.component';
 import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
 import { AppComponentModule } from '../shared-modules/app-component/app-component.module';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
+import { SurveyBoxModule } from 'app/shared-modules/survey-box/survey-box.module';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
     FormPermissionModule,
     LatestDocumentsModule,
     AppComponentModule,
-    LajiUiModule
+    LajiUiModule,
+    SurveyBoxModule
   ],
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,
