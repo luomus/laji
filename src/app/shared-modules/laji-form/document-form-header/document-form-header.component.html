@@ -20,7 +20,6 @@
                           [showDownloadAll]="false"
                           [header]="form.options?.formOwnSubmissionsLabel || namedPlace ? 'np.formOwnSubmissions' : (isAdmin ? 'haseka.ownSubmissions.allTitle' : 'haseka.mobile.ownSubmissions')"
                           [forceLocalDocument]="useLocalDocumentViewer"
-                          [documentViewerGatheringGeometryJSONPath]="form?.namedPlaceOptions?.documentViewerGatheringGeometryJSONPath"
                           [admin]="isAdmin"></laji-own-submissions>
     <ng-container *ngIf="description">
       <div [innerHtml]="description | translate"></div>

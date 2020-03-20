@@ -95,7 +95,7 @@ export namespace Form {
       showLegendList?: boolean;
       infoFields?: string[];
       documentListUseLocalDocumentViewer?: string;
-      documentViewerGatheringGeometryJSONPath?: string;
+      documentViewerGatheringGeometryJSONPath?: string | string[];
       documentViewerForcedFields?: string[]
     };
     prepopulatedDocument?: Document;

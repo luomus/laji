@@ -22,7 +22,6 @@ export class DocumentLocalComponent implements OnChanges {
   @Input() document: Document;
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
-  @Input() gatheringGeometryJSONPath: string;
 
   @Output() close = new EventEmitter<boolean>();
 
@@ -32,6 +31,8 @@ export class DocumentLocalComponent implements OnChanges {
   imageData: {[key: string]: any} = {};
   fields = {};
   formLogo: string;
+  gatheringGeometryJSONPath: string | string[];
+  zoomToData: boolean;
 
   loading = false;
   private parseDocSub: Subscription;
@@ -77,10 +78,14 @@ export class DocumentLocalComponent implements OnChanges {
 
           doc.gatherings.forEach((gathering, i) => {
             try {
-              const geoData = JSONPath({json: gathering, path: this.gatheringGeometryJSONPath || '$.geometry'});
-              // TODO There could be more than one hit... But in our current domain there isn't, so we ignore the issue.
-              if (geoData && geoData[0]) {
-                this.mapData[i] = {geoJSON: geoData[0]};
+              const paths = this.gatheringGeometryJSONPath || '$.geometry';
+              const geoData = {type: 'GeometryCollection', geometries:
+                (Array.isArray(paths)  ? paths : [paths]).reduce((geometries, path) => {
+                  return [...geometries, ...JSONPath({json: gathering, path})];
+                }, []).filter(g => g)
+              };
+              if (geoData && geoData.geometries[0]) {
+                this.mapData[i] = {geoJSON: geoData};
               }
             } catch (e) { }
             if (gathering.images && gathering.images.length > 0) {
@@ -124,6 +129,10 @@ export class DocumentLocalComponent implements OnChanges {
     return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
       .pipe(tap(form => {
         this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications'], (form.namedPlaceOptions || {}).documentViewerForcedFields);
+        if (form.namedPlaceOptions && form.namedPlaceOptions.documentViewerGatheringGeometryJSONPath) {
+          this.gatheringGeometryJSONPath = form.namedPlaceOptions.documentViewerGatheringGeometryJSONPath;
+          this.zoomToData = form.namedPlaceOptions.documentViewerZoomToData;
+        }
       }));
   }
 

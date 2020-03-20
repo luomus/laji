@@ -1,16 +1,7 @@
 <div *ngIf="visible" id="container">
-  <lu-tabs [selectedIndex]="activeIndex" (select)="setActive($event)">
+  <lu-tabs *ngIf="showMap else listTemplate" [selectedIndex]="activeIndex" (select)="setActive($event)">
     <lu-tab [heading]="documentForm.namedPlaceOptions?.listLabel || 'np.list' | translate">
-      <ng-container *ngIf="loadedTabs.isLoaded('list')">
-        <div id="list-container">
-          <laji-np-list [height]="height"
-                        [namedPlaces]="_namedPlaces"
-                        [documentForm]="documentForm"
-                        [activeNP]="_activeNP"
-                        (activePlaceChange)="onActivePlaceChange($event)"
-          ></laji-np-list>
-        </div>
-      </ng-container>
+      <ng-container *ngTemplateOutlet="listTemplate"></ng-container>
     </lu-tab>
     <lu-tab [heading]="'np.map' | translate">
       <ng-container *ngIf="loadedTabs.isLoaded('map')">
@@ -26,6 +17,16 @@
       </ng-container>
     </lu-tab>
   </lu-tabs>
+  <ng-template #listTemplate>
+    <div id="list-container" *ngIf="loadedTabs.isLoaded('list')">
+      <laji-np-list [height]="height"
+                    [namedPlaces]="_namedPlaces"
+                    [documentForm]="documentForm"
+                    [activeNP]="_activeNP"
+                    (activePlaceChange)="onActivePlaceChange($event)"
+      ></laji-np-list>
+    </div>
+  </ng-template>
 
 
   <lu-button *ngIf="allowCreate"
