@@ -54,7 +54,6 @@ export class OwnSubmissionsComponent implements OnChanges {
   @Input() onlyTemplates = false;
   @Input() namedPlace: string;
   @Input() header: string;
-  @Input() documentViewerGatheringGeometryJSONPath: string;
   @Input() forceLocalDocument = false;
 
   publicity = Document.PublicityRestrictionsEnum;
