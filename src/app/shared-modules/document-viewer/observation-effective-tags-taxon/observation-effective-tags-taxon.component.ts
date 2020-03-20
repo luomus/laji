@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, O
 import { Global } from '../../../../environments/global';
 import { Subject, Subscription } from 'rxjs';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
+import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 
 
@@ -26,11 +27,12 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
     private taxonTagEffective: TaxonTagEffectiveService,
     private cd: ChangeDetectorRef,
     private toQname: ToQNamePipe,
+    private loadingElements: LoadingElementsService
     ) { }
 
   ngOnInit() {
      this.unit.addedTags = [];
-     this.subscriptParent = this.taxonTagEffective.childEventListner().subscribe(event => {
+     this.subscriptParent = this.loadingElements.childEventListner().subscribe(event => {
       this.annotationResolving = event;
       this.cd.markForCheck();
     });

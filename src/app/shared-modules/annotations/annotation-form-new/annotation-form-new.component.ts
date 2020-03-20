@@ -17,6 +17,7 @@ import { format } from 'd3-format';
 import { IdService } from '../../../shared/service/id.service';
 import { LajiTaxonSearch } from '../../../shared/model/LajiTaxonSearch';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
+import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 
 @Component({
   selector: 'laji-annotation-form-new',
@@ -96,6 +97,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     private cd: ChangeDetectorRef,
     private el: ElementRef,
     private labelPipe: LabelPipe,
+    private loadingElements: LoadingElementsService
   ) { }
 
   ngOnInit() {
@@ -298,7 +300,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   saveAnnotation() {
     this.loading.emit(true);
-
+    this.loadingElements.emitChildEvent(true);
     if (this.sending) {
       return;
     }
@@ -325,6 +327,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
           this.loggerService.error('Unable to save annotation', error);
           this.sending = false;
           this.loading.emit(false);
+          this.loadingElements.emitChildEvent(false);
         }
       );
   }

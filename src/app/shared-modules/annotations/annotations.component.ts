@@ -11,6 +11,7 @@ import { PagedResult } from '../../shared/model/PagedResult';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { TaxonTagEffectiveService } from '../../shared-modules/document-viewer/taxon-tag-effective.service';
+import { LoadingElementsService } from '../../shared-modules/document-viewer/loading-elements.service';
 
 @Component({
   selector: 'laji-annotations',
@@ -34,6 +35,8 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input() listVisible: boolean;
   @Output() close = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
+  @Output() loadingForm = new EventEmitter<Object>();
+
 
   @ViewChild('formAnnotation', {static: false}) formAnnotation: AnnotationFormNewComponent;
   error = false;
@@ -58,13 +61,21 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   subscribeRefreshedAnnotations1: Subscription;
   query: WarehouseQueryInterface = {};
   activeTags: Annotation[];
+  deleting = false;
+  statusAction = {
+    status: false,
+    action: this.deleting ? 'deleting' : 'adding'
+  };
+
+
 
   constructor(
     private annotationService: AnnotationService,
     private documentViewerFacade: DocumentViewerFacade,
     private cd: ChangeDetectorRef,
     private warehouseApi: WarehouseApi,
-    private taxonTagEffective: TaxonTagEffectiveService
+    private taxonTagEffective: TaxonTagEffectiveService,
+    private loadingElements: LoadingElementsService
     ) { }
 
   ngOnInit() {
@@ -77,6 +88,10 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     if (this.unit && this.unit.interpretations && this.unit.interpretations.effectiveTags) {
       this.activeTags = this.unit.interpretations.effectiveTags;
     }
+
+    setTimeout(() => {
+      this.loadingForm.emit(this.statusAction);
+    }, 4000);
   }
 
   ngOnDestroy() {
@@ -117,6 +132,11 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   }
 
   onSuccess(annotation: Annotation) {
+    this.statusAction = {
+      status: true,
+      action: this.deleting ? 'deleting' : 'adding'
+    };
+    this.loadingForm.emit(this.statusAction);
     this.lastAnnotationAddedId = annotation.id;
     this.annotations = [annotation, ...this.annotations];
     this.saveDone(annotation);
@@ -138,6 +158,13 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
 
   onDelete(annotation: Annotation) {
     this.loading = true;
+    this.deleting = true;
+    this.statusAction = {
+      status: true,
+      action: this.deleting ? 'deleting' : 'adding'
+    };
+    this.loadingForm.emit(this.statusAction);
+    this.loadingElements.emitChildEvent(true);
     this.annotationService.delete(annotation)
       .subscribe(
         (data: Annotation) => {
@@ -148,6 +175,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
         },
         (e) => {
           this.loading = false;
+          this.loadingElements.emitChildEvent(false);
           console.log(e);
         }
       );
@@ -192,14 +220,17 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
         if (this.randomKeyAfter === undefined) {
           this.subscribeRefreshedAnnotations.unsubscribe();
           this.taxonTagEffective.emitChildEvent(false);
+          this.loadingElements.emitChildEvent(false);
           this.loading = false;
+          this.loadingForm.emit(false);
         }
 
         if (this.randomKeyAfter !== this.randomKeyBefore) {
           this.subscribeRefreshedAnnotations.unsubscribe();
           this.taxonTagEffective.emitChildEvent(true);
+          this.loadingElements.emitChildEvent(true);
           this.loading = false;
-        }
+          }
 
 
       });

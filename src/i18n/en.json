@@ -80,6 +80,8 @@
   "annotation.hideDeletedComment": "Hide deleted comment",
   "annotation.deleteComment": "Delete comment",
   "annotation.noImages": "No images",
+  "annotation.addedSuccess": "Comment added successfully",
+  "annotation.deletedSuccess": "Comment deleted successfully",
   "audio.spectrum": "Audio and spectrum",
   "audio.openSpectrum": "Open spectrum",
   "asIs": "Value as is",

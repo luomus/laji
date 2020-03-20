@@ -174,6 +174,15 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = true;
   }
 
+  get showMap() {
+    return !(
+      this.documentForm &&
+      this.documentForm.namedPlaceOptions &&
+      this.documentForm.namedPlaceOptions.hideMapTab &&
+      this.documentForm.namedPlaceOptions.hideMapTab === true
+    );
+  }
+
   onBirdAssociationAreaChange(value) {
     this.birdAssociationArea = value;
     this.updateQueryParams();
