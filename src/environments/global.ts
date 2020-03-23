@@ -168,7 +168,7 @@ export const Global = {
     'MMAN.18': {
       value: 'MMAN.18',
       quality: 'MMAN.typeInfo',
-      type: 'self'
+      type: 'info'
     },
     'MMAN.19': {
       value: 'MMAN.19',

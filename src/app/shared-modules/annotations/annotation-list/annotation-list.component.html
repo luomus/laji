@@ -2,7 +2,6 @@
   <div class="comment-title">{{ 'annotation.title' | translate }}</div>
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="annotation">
-      <div *ngIf="annotation.id === lastAnnotationAddedId">porco</div>
       <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem[i])">
         <span *ngIf="annotation.deleted; else notValid">{{ 'annotation.deleted' | translate }}</span>
         <ng-template #notValid><span>{{ 'annotation.notValid' | translate }}</span></ng-template>
@@ -25,7 +24,7 @@
               (click)="remove.emit(annotation)"
               [tooltip]="'annotation.deleteComment' | translate"
               placement="right"
-              *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted"
+              *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted && showItem[i]"
               >
               <i class="glyphicon glyphicon-trash"></i>
             </button>
@@ -42,11 +41,11 @@
           </span>
           <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span class="annotation-type" *ngIf="annotation.byRole">
-              <span *ngIf="(annotation.byRole).indexOf(annotationRole.expert) !==-1; else basic">{{ 'annotation.expertComment' | translate }}</span>
-              <ng-template #basic>
+            <span class="annotation-type" *ngIf="annotation.byRole && (annotation.byRole).indexOf(annotationRole.expert) !==-1;">
+              <span *ngIf="(annotation.byRole).indexOf(annotationRole.expert) !==-1;">{{ 'annotation.expertComment' | translate }}</span>
+              <!--<ng-template #basic>
                 <span>{{ 'annotation.basicComment' | translate }}</span>
-              </ng-template>
+              </ng-template>-->
             </span>
             <span class="annotation-date">{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
           </div>

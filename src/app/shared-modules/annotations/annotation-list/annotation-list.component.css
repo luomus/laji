@@ -13,6 +13,14 @@
   font-size: 12px;
   margin-bottom: 0px;
   color:#31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  padding: 1px 3px;
+  border: 1px solid;
+  border: 1px solid;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
 }
 
 .annotation-date {

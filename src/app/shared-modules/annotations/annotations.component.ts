@@ -152,7 +152,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
 
   changeModeForm() {
    this.expert = !this.expert;
-   this.formAnnotation.cleanForm();
+   // this.formAnnotation.cleanForm();
    this.cd.markForCheck();
   }
 
