@@ -109,6 +109,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     );
   }
 
+  ngonChanges() {
+  }
+
   ngAfterContentChecked() {
     this.cd.detectChanges();
   }
@@ -298,6 +301,17 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.error = false;
   }
 
+  filterBasicForm() {
+    this.annotation.removedTags = [];
+    this.annotation.identification.taxonSpecifier = '';
+    this.annotation.addedTags = this.annotation.addedTags.filter(tag => {
+      if (this.annotationTagsObservation[tag].type !== 'positive' && this.annotationTagsObservation[tag].type !== 'negative'
+      && this.annotationTagsObservation[tag].type !== 'admin' && this.annotationTagsObservation[tag].type !== 'info') {
+        return tag;
+      }
+    } );
+  }
+
   saveAnnotation() {
     this.loading.emit(true);
     this.loadingElements.emitChildEvent(true);
@@ -310,7 +324,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     }
 
     if (!this.expert) {
-    this.annotation.removedTags = [];
+    this.filterBasicForm();
     }
 
     this.annotationService
