@@ -301,6 +301,7 @@
   </ng-container>
 </section>
 
+<!-- Observer -->
 <section class="laji-panel" laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">
   <div>
     <div>
@@ -315,6 +316,7 @@
   </div>
 </section>
 
+<!-- Individual -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['individual']" [title]="'observation.form.unit' | translate" [autoToggle]="true"  [open]="visible['individual']">
   <div>
     <laji-metadata-select
@@ -400,6 +402,7 @@
   </div>
 </section>
 
+<!-- Quality -->
 <section class="laji-panel" laji-panel [title]="'observation.form.qualityTitle' | translate" [autoToggle]="true" [open]="visible['quality']">
   <laji-metadata-select
     [(ngModel)]="query.recordQuality"
@@ -411,13 +414,26 @@
     [mapToWarehouse]="true"
     [placeholder]="'reliability' | translate"
     [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>
+  <laji-select
+    [selected]="[query.needsCheck]"
+    (selectedChange)="indirectQueryChange('needsCheck', $event[0])"
+    [multiple]="false"
+    [useFilter]="false"
+    [title]="'observation.form.identify' | translate"
+    [info]="'observation.info.identify' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.identify.true' | translate)},
+        {id: false, value: ('observation.form.identify.false' | translate)}
+      ]"></laji-select>
   <ng-container *ngIf="advancedMode || query.collectionQuality">
     <laji-metadata-select
       name="collectionQuality"
       [(ngModel)]="query.collectionQuality"
+      (ngModelChange)="onQueryChange()"
+      [mapToWarehouse]="true"
       [multiple]="true"
       [useFilter]="false"
-      [placeholder]="'MY.collectionQuality' | label"
+      [placeholder]="'observation.form.collectionQuality' | translate"
       [info]="'observation.info.collectionQuality' | translate"
       [alt]="'MY.collectionQualityEnum'"></laji-metadata-select>
   </ng-container>
@@ -428,10 +444,23 @@
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.annotated' | translate"
+      [info]="'observation.info.annotated' | translate"
       [options]="[
         {id: true, value: ('observation.form.annotatedTrue' | translate)},
         {id: false, value: ('observation.form.annotatedFalse' | translate)}
       ]"></laji-select>
+  </ng-container>
+  <ng-container *ngIf="advancedMode || query.effectiveTag">
+    <laji-metadata-select
+      name="effectiveTag"
+      [(ngModel)]="query.effectiveTag"
+      (ngModelChange)="onQueryChange()"
+      [mapToWarehouse]="true"
+      [multiple]="true"
+      [useFilter]="true"
+      [placeholder]="'observation.form.effectiveTag' | translate"
+      [info]="'observation.info.effectiveTag' | translate"
+      [field]="'MMAN.tag'"></laji-metadata-select>
   </ng-container>
   <ng-container *ngIf="advancedMode || query.qualityIssues">
     <laji-select
@@ -449,6 +478,7 @@
   </ng-container>
 </section>
 
+<!--Sources -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
   <laji-metadata-select
     [(ngModel)]="query.collectionId"
@@ -469,6 +499,7 @@
     [field]="'KE.informationSystem'"></laji-metadata-select>
 </section>
 
+<!-- Scientific collections -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['collection']" [title]="'observation.form.collectionTitle' | translate" [autoToggle]="true"  [open]="visible['collection']">
   <div>
     <label><laji-checkbox [(value)]="formQuery.onlyFromCollectionSystems" (valueChange)="onOnlyFromCollectionCheckBoxToggle()"></laji-checkbox>{{ 'observation.form.collection' | translate }}</label>
@@ -488,6 +519,7 @@
     name="collectionID"></laji-metadata-select>
 </section>
 
+<!-- IDs, keywords -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['keywords']" [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
   <div>
     <div>
@@ -515,6 +547,7 @@
   </div>
 </section>
 
+<!-- Fetures of spcies -->
 <section class="laji-panel" laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
   <ng-container *ngIf="advancedMode || query.administrativeStatusId">
     <p>
@@ -581,10 +614,14 @@
   </div>
 </section>
 
+<!-- Invasive species  -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode" [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true"  [open]="visible['invasive']">
   <div *lajiForTypes="['vir']">
     <laji-metadata-select
+      [(ngModel)]="query.invasive"
+      (ngModelChange)="onQueryChange()"
       [multiple]="true"
+      [mapToWarehouse]="true"
       name="invasiveControlEffectiveness"
       [placeholder]="'MY.invasiveControlEffectiveness' | label"
       [alt]="'MY.invasiveControlEffectivenessEnum'"></laji-metadata-select>
@@ -607,6 +644,7 @@
   </div>
 </section>
 
+<!-- Images -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['image']" [title]="'observation.form.images' | translate" [autoToggle]="true" [open]="visible['image']">
   <div>
     <p>{{ 'observation.intro.images' | translate }}</p>
@@ -627,6 +665,7 @@
   </div>
 </section>
 
+<!-- Concealment level -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secret']">
   <laji-metadata-select
     [info]="'observation.info.secureLevel' | translate"
@@ -641,7 +680,8 @@
     [alt]="'MX.secureLevels'"></laji-metadata-select>
 </section>
 
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['identify']" [title]="'observation.form.identify' | translate" [autoToggle]="true" [open]="visible['identify']">
+<!-- Help identify -->
+<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['identify']" [title]="'observation.form.unidentified.title' | translate" [autoToggle]="true" [open]="visible['identify']">
   <div>
     <label><laji-checkbox [value]="query.unidentified" (valueChange)="onCheckBoxToggle('unidentified', true)"></laji-checkbox>{{ 'observation.form.unidentified' | translate }}</label>
     <laji-info [html]="'observation.info.unidentified' | translate"></laji-info>

@@ -15,9 +15,10 @@ import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
 
-interface SelectOptions {
+export interface SelectOptions {
   id: string;
   value: string;
+  info?: string;
 }
 
 @Component({
@@ -40,6 +41,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Output() selectedChange = new EventEmitter<string[]|string>();
   @Input() multiple = true;
   @Input() info: string;
+  @Input() loading = false;
   @ViewChild('filter', { static: false }) filter: ElementRef;
 
   selectedOptions: SelectOptions[] = [];

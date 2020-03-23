@@ -1,9 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subscription, throwError } from 'rxjs';
+import { concat, delay, filter, map, retryWhen, switchMap, take } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import { GraphQLService, QueryRef } from './graph-ql.service';
 import { TranslateService } from '@ngx-translate/core';
+import { throwError as observableThrowError } from 'rxjs/internal/observable/throwError';
 
 export interface IBaseData {
   classes: {
@@ -107,11 +108,12 @@ export class BaseDataService implements OnDestroy {
 
   getBaseData(): Observable<IBaseData> {
     return this.ref.valueChanges.pipe(
-      switchMap((data) => this.langChangingObs.pipe(
+      switchMap(data => data.errors ? throwError('Errors could not fetch all base data') : of(data.data)),
+      retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
+      switchMap(data => this.langChangingObs.pipe(
         filter(loading => !loading),
         map(() => data)
-      )),
-      map(({data}) => data)
+      ))
     );
   }
 }

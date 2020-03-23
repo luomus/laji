@@ -8,6 +8,7 @@
         </label>
       </ng-container>
       <div *ngIf="open" class="lj-item-container">
+        <laji-spinner [spinning]="loading"></laji-spinner>
         <div [class.lj-active]="i === selectedIdx" *ngFor="let option of options; let i = index; trackBy: track">
           <label class="lj-item" (click)="labelClick($event)">
             <laji-checkbox [value]="selectedOptions.indexOf(option) !== -1" (valueChange)="toggleValue(option.id)"></laji-checkbox><ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
@@ -43,6 +44,7 @@
     <input #filter (keyup)="onFilterChange($event, filter.value)" class="form-control" type="search" placeholder="{{filterPlaceHolder}}">
   </div>
   <div *ngIf="open" class="lj-item-container">
+    <laji-spinner [spinning]="loading"></laji-spinner>
     <div [class.lj-active]="i === selectedIdx" *ngFor="let option of (options | filter:filterBy ); let i = index; trackBy: track">
       <label class="lj-item" (click)="labelClick($event)">
         <laji-checkbox [value]="selectedOptions.indexOf(option) !== -1" (valueChange)="toggleValue(option.id)"></laji-checkbox><ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
