@@ -7,6 +7,7 @@ import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.servic
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { AbstractCachedHttpService } from '../../../shared/service/abstract-cached-http.service';
 import { map, switchMap, take } from 'rxjs/operators';
+import { MultiLangService } from '../../lang/service/multi-lang.service';
 
 @Injectable({providedIn: 'root'})
 export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> {
@@ -27,11 +28,19 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
   }
 
   getTag(id: string, lang: string): Observable<AnnotationTag> {
-    return this.fetchById(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang, id);
+    return this.getAllTags(lang).pipe(
+      map(tags => tags.find(t => t.id === id))
+    );
   }
 
   getAllTags(lang: string): Observable<AnnotationTag[]> {
-    return this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang);
+    return this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: 'multi'}), 'multi').pipe(
+      map(tags => tags.map(t => ({
+        ...t,
+        name: MultiLangService.getValue(t.name as any, lang),
+        description: MultiLangService.getValue(t.description as any, lang)
+      })))
+    );
   }
 
   getAllAddableTags(lang: string, own = false): Observable<AnnotationTag[]> {
@@ -59,7 +68,7 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
         }
         return roles;
       }),
-      switchMap(annotatorsRole => this.fetchList(this.lajiApi.getList(LajiApi.Endpoints.annotationsTags, {lang: lang}), lang).pipe(
+      switchMap(annotatorsRole => this.getAllTags(lang).pipe(
         map(tags => tags.filter(tag => tag[type] && tag[type].some(r => annotatorsRole.includes(r))))
       ))
     );
