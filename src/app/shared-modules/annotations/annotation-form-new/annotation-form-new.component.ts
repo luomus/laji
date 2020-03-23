@@ -462,16 +462,21 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
     if (
     ((
-    (this.annotation.notes === '' || this.annotation.notes === undefined) &&
-    (this.annotation.addedTags.length === 0) &&
-    (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)
-    ) && this.annotation.removedTags.length === 0) || (
+      (this.annotation.notes === '' || this.annotation.notes === undefined) &&
+      (this.annotation.addedTags.length === 0) &&
+      (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)) && this.annotation.removedTags.length === 0)
+    ||
+    (
       (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
-      (this.annotation.addedTags.indexOf('MMAN.5') !== -1 || this.annotation.addedTags.indexOf('MMAN.8') !== -1 ||
-      this.annotation.addedTags.indexOf('MMAN.9') !== -1)
-      && this.personRoleAnnotation === this.annotationRole.expert && this.expert && !this.isEditor
-      )
-      ) {
+      (this.annotation.addedTags.indexOf('MMAN.5') !== -1 || this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1) &&
+      this.personRoleAnnotation === this.annotationRole.expert && this.expert && !this.isEditor)
+    ||
+    (((this.personRoleAnnotation === this.annotationRole.expert && !this.expert) || (this.personRoleAnnotation === this.annotationRole.basic && this.expert)) &&
+    ((this.annotation.addedTags.length === 0 || (this.annotation.addedTags.length === 1 && this.annotation.addedTags.indexOf('MMAN.5') !== -1 ||
+    this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1)) &&
+    (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
+    (this.annotation.notes === '' || this.annotation.notes === undefined)))
+    ) {
       return true;
     }
   }
