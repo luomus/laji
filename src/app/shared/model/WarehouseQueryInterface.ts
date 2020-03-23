@@ -194,6 +194,7 @@ export interface WarehouseQueryInterface {
   ykj10km?: string;
   ykj10kmCenter?: string;
   unidentified?: boolean;
+  needsCheck?: boolean;
   cache?: boolean;
   reliable?: boolean;
   observerPersonToken?: string;
@@ -221,5 +222,6 @@ export interface WarehouseQueryInterface {
   _coordinatesIntersection?: number;
   primaryHabitat?: Array<string>;
   anyHabitat?: Array<string>;
+  effectiveTag?: Array<string>;
   formId?: string;
 }

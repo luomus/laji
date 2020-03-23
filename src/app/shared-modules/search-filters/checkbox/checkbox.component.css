@@ -4,7 +4,7 @@
   display: inline-block;
   position: relative;
   height: 13px;
-  width: 13px;
+  width: 17px;
   font-size: 12px;
 }
 .lj-cb-wrap input {
@@ -15,13 +15,16 @@
 }
 .lj-cb-marker {
   position: absolute;
-  top: 0;
-  left: 0;
   height: 13px;
   width: 13px;
   background-color: #eee;
   border: 1px solid #ccc;
   font-weight: bold;
+}
+
+.lj-cb-wrap input, .lj-cb-marker {
+  top: 0;
+  left: 0;
 }
 
 .lj-cb-marker.checked:after {
