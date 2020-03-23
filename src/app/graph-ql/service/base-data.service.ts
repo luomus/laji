@@ -1,10 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subscription, throwError } from 'rxjs';
-import { concat, delay, filter, map, retryWhen, switchMap, take } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import { GraphQLService, QueryRef } from './graph-ql.service';
 import { TranslateService } from '@ngx-translate/core';
-import { throwError as observableThrowError } from 'rxjs/internal/observable/throwError';
 
 export interface IBaseData {
   classes: {
@@ -79,6 +78,8 @@ export class BaseDataService implements OnDestroy {
 
   ref: QueryRef<IBaseData>;
 
+  private retryFetch = false;
+  private retryCnt = 0;
   private readonly langSub: Subscription;
   private readonly langChangingSub = new BehaviorSubject(false);
   private readonly langChangingObs = this.langChangingSub.asObservable();
@@ -93,6 +94,7 @@ export class BaseDataService implements OnDestroy {
       fetchPolicy: 'cache-first'
     });
     this.langSub = this.translationService.onLangChange.subscribe(() => {
+      this.retryCnt = 0;
       this.langChangingSub.next(true);
       this.ref.refetch().then(() => {
         this.langChangingSub.next(false);
@@ -108,12 +110,24 @@ export class BaseDataService implements OnDestroy {
 
   getBaseData(): Observable<IBaseData> {
     return this.ref.valueChanges.pipe(
-      switchMap(data => data.errors ? throwError('Errors could not fetch all base data') : of(data.data)),
-      retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
+      tap(data => data.errors ? this.retry() : null),
       switchMap(data => this.langChangingObs.pipe(
         filter(loading => !loading),
         map(() => data)
-      ))
+      )),
+      map(({data}) => data)
     );
+  }
+
+  private retry() {
+    if (this.retryCnt > 2 || this.retryFetch) {
+      return;
+    }
+    this.retryFetch = true;
+    this.retryCnt++;
+    setTimeout(() => {
+      this.retryFetch = false;
+      this.ref.refetch();
+    }, 1000);
   }
 }
