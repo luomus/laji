@@ -878,7 +878,7 @@
   "observation.form.datasetTitle": "Aineistot",
   "observation.form.date": "Aika",
   "observation.form.documentId": "Näytteen tai havaintoerän tunniste",
-  "observation.form.effectiveTag": "Laji.fi quality control tags",
+  "observation.form.effectiveTag": "Laji.fi laadunvalvontatagit",
   "observation.form.empty": "Tyhjennä kaikki rajaukset",
   "observation.form.filter": "Rajaa",
   "observation.form.finnish": "Suomalaiset lajit",
