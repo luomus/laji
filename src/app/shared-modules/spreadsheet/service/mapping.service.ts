@@ -332,7 +332,7 @@ export class MappingService {
 
   mapDateOptionalTime(value) {
     if (typeof value === 'string') {
-      const parts = value.split(',');
+      const parts = value.split(/[\s,T]+/).filter(v => !!v);
       const dateParts = parts[0].split('.');
       if (dateParts.length === 3) {
         if (dateParts[0].length === 4) {
@@ -340,7 +340,12 @@ export class MappingService {
         } else if (dateParts[2].length === 4) {
           parts[0] = dateParts.reverse().join('-');
         }
-        return parts.join('T').replace(' ', '');
+      }
+      if (parts.length === 2) {
+      } else if (parts.length > 2) {
+        const first = parts.shift();
+
+        return `${first}T${parts.join('')}`;
       }
     }
     return value;
