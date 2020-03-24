@@ -10,11 +10,19 @@
 <laji-taxon-info-row *ngIf="taxon.vernacularName" [label]="'taxonomy.vernacular.name' | translate">
   {{ taxon.vernacularName | multiLang }}
 </laji-taxon-info-row>
-<laji-taxon-info-row [label]="'MX.taxonRank' | label">
+<laji-taxon-info-row [label]="'taxonomy.card.id' | translate">
+  {{ taxon.id | toFullUri }}
+</laji-taxon-info-row>
+<laji-taxon-info-row [label]="'taxonomy.rank' | translate">
   {{ taxon.taxonRank | label }}
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">
   {{ taxon.occurrenceInFinland | label }}
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.typeOfOccurrenceInFinland && taxon.typeOfOccurrenceInFinland.length > 0" [label]="'taxonomy.typeOfOccurrenceInFinland' | translate">
+  <ul class="separated-list">
+    <li *ngFor="let type of taxon.typeOfOccurrenceInFinland">{{ type | label }}</li>
+  </ul>
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.invasiveSpecies" [keyTextContentGhost]="false">
   <ng-template #label>

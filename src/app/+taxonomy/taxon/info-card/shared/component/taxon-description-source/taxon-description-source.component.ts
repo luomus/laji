@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { TaxonomyDescription } from '../../../../../../shared/model/Taxonomy';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-taxon-description-source',
@@ -7,12 +8,19 @@ import { TaxonomyDescription } from '../../../../../../shared/model/Taxonomy';
   styleUrls: ['./taxon-description-source.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonDescriptionSourceComponent implements OnInit {
+export class TaxonDescriptionSourceComponent implements OnChanges {
   @Input() taxonDescription: TaxonomyDescription;
 
-  constructor() { }
+  currentLang: string;
 
-  ngOnInit() {
+
+
+  constructor(private checklang: TranslateService) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.taxonDescription) {
+      this.currentLang = this.checklang.currentLang;
+    }
   }
 
 }

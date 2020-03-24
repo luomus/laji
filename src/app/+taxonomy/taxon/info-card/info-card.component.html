@@ -38,6 +38,7 @@
         *ngIf="loadedTabs.isLoaded('taxonomy')"
         [taxon]="taxon"
         [taxonDescription]="taxonDescription"
+        (taxonSelect)="updateRoute($event)"
       ></laji-taxon-taxonomy>
     </lu-tab>
     <lu-tab [heading]="'taxonomy.occurrence' | translate">
@@ -48,12 +49,12 @@
         [isFromMasterChecklist]="isFromMasterChecklist"
       ></laji-taxon-occurrence>
     </lu-tab>
-    <lu-tab [heading]="'taxonomy.observations' | translate" *ngIf="isFromMasterChecklist">
+    <!--<lu-tab [heading]="'taxonomy.observations' | translate" *ngIf="isFromMasterChecklist">
       <laji-taxon-observations
         *ngIf="loadedTabs.isLoaded('observations')"
         [taxon]="taxon"
       ></laji-taxon-observations>
-    </lu-tab>
+    </lu-tab>-->
     <lu-tab [heading]="'taxonomy.specimens' | translate" *ngIf="isFromMasterChecklist">
       <laji-taxon-specimens
         *ngIf="loadedTabs.isLoaded('specimens')"

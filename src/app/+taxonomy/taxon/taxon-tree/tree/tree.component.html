@@ -33,6 +33,7 @@
 
 <ng-template #treeNodeContent let-node="node">
   <li>
+    <!--<span style="display:block; line-height:0.5">{{ node.value.taxonRank | label }}</span>-->
     <i class="glyphicon link toggle-triangle"
        [ngClass]="{'glyphicon-triangle-right': !node.state.isExpanded, 'glyphicon-triangle-bottom': node.state.isExpanded}"
        [ngStyle]="{visibility: node.value.hasChildren ? 'visible' : 'hidden'}"

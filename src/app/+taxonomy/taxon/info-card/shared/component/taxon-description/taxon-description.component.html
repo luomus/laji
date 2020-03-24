@@ -12,5 +12,13 @@
       <span [innerHTML]="variable.content | multiLang"></span>
     </div>
   </div>
-  <laji-taxon-description-source [taxonDescription]="taxonDescription"></laji-taxon-description-source>
+  <div class="panel panel-default"
+         laji-panel
+         *ngIf="taxonDescription"
+         [title]="'taxonomy.author' | translate"
+         [open]="true"
+         [autoToggle]="true"
+  >
+    <laji-taxon-description-source [taxonDescription]="taxonDescription"></laji-taxon-description-source>
+  </div>  
 </ng-container>
