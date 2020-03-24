@@ -11,13 +11,15 @@ import { FindPersonModule } from '../../shared-modules/find-person/find-person.m
 import { RequestWrapperComponent } from './request/request-wrapper.component';
 import { ParticipantsComponent } from './admin/participants/participants.component';
 import { DownloadModule } from '../../shared-modules/download/download.module';
+import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     FindPersonModule,
-    DownloadModule
+    DownloadModule,
+    LajiUiModule
   ],
   declarations: [
     AdminComponent,

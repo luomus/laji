@@ -1,68 +1,170 @@
 <div class="annotations">
-  <laji-spinner [spinning]="!annotations"></laji-spinner>
-  <div class="annotation" *ngFor="let annotation of annotations let isOdd=odd"
-       [class.odd]="isOdd">
-    <div class="row">
-      <div class="col-xs-12 row-title">
-        <span class="person pull-right">
-          <button
-            type="button"
-            class="btn btn-danger btn-xs"
-            (click)="remove.emit(annotation)"
-            *ngIf="(annotation.annotationByPerson | toQName) === personID">
-            <i class="glyphicon glyphicon-remove"></i>
-          </button>
-        </span>
-        <ng-container *ngIf="annotation.annotationClass">
-          <span [ngSwitch]="annotation.annotationClass | toQName" [tooltip]="annotation.annotationClass | toQName | label"
-            class="annotation-class">
-            <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
-              <i class="fa fa-check-square-o"></i>
-            </span>
-            <span *ngSwitchCase="annotationClass.AnnotationClassReliable" class="annotation-positive">
-              <i class="fa fa-check-circle-o"></i>
-              <i class="fa fa-check-circle-o"></i>
-            </span>
-            <span *ngSwitchCase="annotationClass.AnnotationClassLikely"  class="annotation-positive">
-              <i class="fa fa-check-circle-o"></i>
-            </span>
-            <span *ngSwitchCase="annotationClass.AnnotationClassSuspicious"  class="annotation-negative">
-              <i class="fa fa-exclamation-circle"></i>
-            </span>
-            <span *ngSwitchCase="annotationClass.AnnotationClassUnreliable"  class="annotation-negative">
-              <i class="fa fa-exclamation-circle"></i>
-              <i class="fa fa-exclamation-circle"></i>
-            </span>
-            <span *ngSwitchDefault="">
-              <i class="fa fa-comment-o"></i>
-            </span>
+  <div class="comment-title">{{ 'annotation.title' | translate }}</div>
+  <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
+    <div class="annotation">
+      <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem[i])">
+        <span *ngIf="annotation.deleted; else notValid">{{ 'annotation.deleted' | translate }}</span>
+        <ng-template #notValid><span>{{ 'annotation.notValid' | translate }}</span></ng-template>
+        <button
+              type="button"
+              class="btn alert-info btn-xs"
+              (click)="toggleAnnotation(i)"
+              [tooltip]="!annotation.valid ? (annotation.deleted ? ('annotation.showDeletedComment' | translate) : ('annotation.showInvalidComment' | translate)  ) : (annotation.deleted ? ('annotation.showDeletedComment' | translate) : '')"
+              placement="right"
+              >
+              <i class="glyphicon glyphicon-eye-open"></i>
+        </button>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 row-title">
+          <span class="person pull-right">
+            <button
+              type="button"
+              class="btn btn-danger btn-xs"
+              (click)="remove.emit(annotation)"
+              [tooltip]="'annotation.deleteComment' | translate"
+              placement="right"
+              *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted && showItem[i]"
+              >
+              <i class="glyphicon glyphicon-trash"></i>
+            </button>
+            <button
+              type="button"
+              class="btn alert-info btn-xs"
+              (click)="toggleAnnotation(i)"
+              [tooltip]="!annotation.valid ? (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : ('annotation.hideInvalidComment' | translate)  ) : (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : '')"
+              placement="right"
+              *ngIf="((annotation.deleted || !annotation.valid ) && showItem[i])"
+            >
+            <i class="glyphicon glyphicon-eye-close"></i>
+            </button>
           </span>
-        </ng-container>
-        <small>
-          <span class="annotation-title" *ngIf="annotation.annotationBySystem">
-            {{ 'annotationBySystem' | translate }}
-            <!--{{annotation.annotationBySystem | toQName | source}}-->
-          </span>
-          <span class="annotation-title" *ngIf="(annotation.type | toQName) === types.TypeUnidentifiable">
-            {{ 'MAN.typeUnidentifiable' | label }}
-          </span>
-          <span class="annotation-title" *ngIf="annotation.annotationClass">{{ annotation.annotationClass | toQName | label }}</span>
-          <span class="annotation-title" *ngIf="annotation.annotationByPerson">{{ annotation.annotationByPerson | toQName | users }}</span>
-          <span *ngIf="!changingLocale">{{ annotation.created | amTimeAgo }}</span>
-        </small>
+          <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
+            <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
+            <span class="annotation-type" *ngIf="annotation.byRole && (annotation.byRole).indexOf(annotationRole.expert) !==-1;">
+              <span *ngIf="(annotation.byRole).indexOf(annotationRole.expert) !==-1;">{{ 'annotation.expertComment' | translate }}</span>
+              <!--<ng-template #basic>
+                <span>{{ 'annotation.basicComment' | translate }}</span>
+              </ng-template>-->
+            </span>
+            <span class="annotation-date">{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
+          </div>
+          <ng-template #annotationByPerson>
+            <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
+            <span class="alert alert-info annotation-type">{{ annotation.byRole | toQName | label }}</span>
+            <span class="annotation-date">{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
+          </ng-template>
+        </div>
+      </div>
+      <div class="content-show-hide" *ngIf="showItem[i]; else dots" [@flyInOut]>
+        <div class="tags" *ngIf="annotation.addedTags">
+           <div class="row no-padding">
+             <div class="col-xs-4" style="font-weight: bold;">Added tags:</div>
+             <div class="col-xs-8">
+               <div *ngIf="annotation.addedTags.length > 0">
+                <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags !== undefined && effectiveTags.indexOf(addedTag) !== -1 }">
+                  <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
+                     <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker neutral" [ngClass]="{'': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) !== -1 , 'notEffective': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) === -1}" >
+                       <span>{{ addedTag | label: 'warehouse' }}</span>
+                     </div>
+                  </div>
+                  <ng-template #noCategory>
+                   <span>{{ addedTag | label: 'warehouse' }}</span>
+                  </ng-template>
+                </div>
+               </div>
+             </div>
+           </div>
+         </div>
+         <div class="removed-tags" *ngIf="annotation.removedTags && annotation.removedTags.length > 0">
+          <div class="row">
+            <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.removedTags' | translate }}:</div>
+            <div class="col-xs-8">
+              <ul class="separated-list">
+                <li *ngFor="let removeTag of annotation.removedTags">
+                  <span>{{ removeTag | label: 'warehouse' }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+         <div class="content new-identification" *ngIf="annotation.identification && ((annotation.identification.taxon && annotation.identification.taxon !== '') || (annotation.identification.linkings && annotation.identification.linkings.taxon))">
+           <div class="row">
+             <div class="col-xs-4" style="font-weight: bold;">Taxon:</div>
+             <div class="col-xs-8">
+              <ng-container *ngIf="annotation.identification.linking && annotation.identification.linkings.taxon; else taxonNameSimple">
+               <laji-taxon-name [taxon]="annotation.identification.linkings.taxon"></laji-taxon-name>
+              </ng-container>
+              <ng-template #taxonNameSimple>
+                <span>
+                  {{ annotation.identification.taxon }}
+                  <a (click)="onTaxonLinkClick($event)" [routerLink]="['/taxon/' + (annotation.identification.taxonID | toQName)] | localize" target="_blank"
+                  [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
+                    <i class="glyphicon glyphicon-tag"></i>
+                  </a>
+                </span>
+              </ng-template>
+               <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''"> ,{{ annotation.identification.taxonSpecifier }}</ng-container>
+             </div>
+           </div>
+         </div>
+        <div class="row" *ngIf="annotation.opinion">
+          <div class="col-xs-4">
+            {{ 'MAN.opinion' | label }}:
+          </div>
+          <div class="col-xs-8">
+            {{ annotation.opinion }}
+          </div>
+        </div>
+        <div class="content" *ngIf="annotation.notes">
+          <div class="row">
+            <div class="col-xs-4">
+              <b>Comment:</b>
+            </div>
+            <div class="col-xs-8">
+              <div [ngClass]="{'': (annotation.notes.length <= 250 || open[i]), 'closed': (annotation.notes.length > 250 && !open[i]) }">
+                {{ annotation.notes }}
+              </div>
+              <span class="read-more" *ngIf="(annotation.notes.length > 250 && !open[i])" (click)="readMore(i)">Read more</span>
+              <span class="read-more" *ngIf="open[i]" (click)="readMore(i)">Hide</span>
+            </div>  
+          </div>     
+        </div>
+      </div>
+      <ng-template #dots>
+        <i class="glyphicon glyphicon-option-horizontal"></i>
+      </ng-template>
+      <span class="small-deleted" *ngIf="(annotation.deleted && showItem[i])">{{ 'annotation.deleted' | translate }}</span>
+      <span class="small-deleted" *ngIf="(!annotation.valid && showItem[i]);">{{ 'annotation.notValid' | translate }}</span>
+    </div>
+    <div *ngIf="lastFalse!==-1 && i===lastFalse && hasNextTrue">
+      <laji-occurrence-at-time-of-annotation [occurrence]="annotations[i+1].occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>
+    </div>
+    <div *ngIf="i === annotations.length-1" class="resume-effective-tags">
+      <div class="row">
+        <div class="col-xs-4"><b>{{ 'annotation.effectiveTags' | translate }}:</b></div>
+        <div class="col-xs-8">
+          <div *ngIf="effectiveTags !== undefined; else noEffectiveTags">
+            <div class="tag" *ngFor="let addedTag of effectiveTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags.indexOf(addedTag) !== -1 }">
+              <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
+                 <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[addedTag | warehouse ].type }}" [ngClass]="{'': effectiveTags.indexOf(addedTag) !== -1 , 'notEffective': effectiveTags.indexOf(addedTag) === -1}" >
+                   <span>{{ addedTag | label: 'warehouse' }}</span>
+                 </div>
+                 <span class="not-effective-tag" *ngIf="effectiveTags.indexOf(addedTag) === -1">{{ 'annotation.deleted' | translate }}</span>
+              </div>
+              <ng-template #noCategory>
+               <span>{{ addedTag | label: 'warehouse' }}</span>
+              </ng-template>
+            </div>
+          </div>
+          <ng-template #noEffectiveTags>
+            <span>-</span>
+          </ng-template>
+        </div>
       </div>
     </div>
-    <div class="row" *ngIf="annotation.opinion">
-      <div class="col-xs-12">
-        {{ 'MAN.opinion' | label }}:
-        {{ annotation.opinion }}
-      </div>
-    </div>
-    <p class="content" *ngIf="annotation.notes">
-      {{ annotation.notes }}
-    </p>
   </div>
-  <div *ngIf="annotations && annotations.length === 0">
+  <div class="no-annotations alert alert-warning" *ngIf="annotations && annotations.length === 0">
     {{ 'annotation.none' | translate }}
   </div>
 </div>

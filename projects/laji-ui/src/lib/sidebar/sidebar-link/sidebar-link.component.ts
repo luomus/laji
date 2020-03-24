@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map, startWith, tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -10,6 +10,10 @@ import { Subject } from 'rxjs';
 })
 export class SidebarLinkComponent implements OnInit, OnDestroy {
   @Input() link: Array<string>;
+  @Input() linkParams: {
+    [k: string]: any;
+  };
+  @Output() clicked = new EventEmitter<any>();
   active = false;
   unsubscribe$ = new Subject<void>();
   constructor(private router: Router) {}
@@ -23,6 +27,9 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
       const substrs = u.split('/');
       this.active = u.includes(this.link[this.link.length - 1]);
     });
+  }
+  onClick(event) {
+    this.clicked.next(event);
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

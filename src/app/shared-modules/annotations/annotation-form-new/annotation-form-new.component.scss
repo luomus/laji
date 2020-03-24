@@ -1,0 +1,255 @@
+label {
+    margin-right: 10px;
+  }
+  
+  .switch-mode {
+    color: #3498DB;
+    cursor: pointer;
+  }
+  
+  .actions {
+    margin-top: 10px;
+  }
+  .radio {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+  }
+  .annotation-form {
+    margin: 0 -5px;
+    padding: 5px 5px 10px 5px;
+    position: relative;
+  }
+  .annotation-unidentifiable label {
+    font-weight: normal;
+  }
+  
+  .tags, .taxon, .message {
+    margin-top: 10px;
+  }
+  
+  .tags label {
+    display: block;
+    width: 100%;
+  }
+  
+  .add-tags, .removed-tags {
+    margin-top: 10px;
+  }
+  
+  .add-tags input, .removed-tags input.form-control {
+    display: inline-block;
+    width: 100%;
+  }
+  
+  .add-tags label, .removed-tags label {
+    font-weight: normal;
+  }
+  
+  .add-tags .selected-tags, .removed-tags .selected-tags {
+    box-sizing: border-box;
+    padding: 0 20px;
+    margin-top: 5px;
+  }
+  
+  .container-annotation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+  }
+  
+  .container-annotation div:nth-child(2) {
+    display: inline-block;
+    text-align: right;
+    width: 24px;
+    height: 24px;
+    background: url('../../../../static/images/icons/remove.png') 0 0 no-repeat;
+  }
+  
+  .annotation-form label {
+    color: black;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0px;
+    line-height: 30px;
+  }
+
+  .annotation-form label.taxonomy {
+    display: block;
+    line-height: 16px;
+  }
+
+  .annotation-form label.check-delete {
+    display:block;
+    font-weight: normal;
+  }
+  
+  /*.info {
+    padding: 2px 5px;
+    font-size: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }*/
+  
+   ul.list-info {
+    margin-bottom: 0;
+    padding: 0;
+  }
+  
+  .info-button {
+    position: absolute;
+    top: -20px;
+    right: 10px;
+    font-size: 16px;
+    color: #31708f;
+  }
+  
+  .close-info {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    color: #555;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+    position: absolute;
+    right: 15px;
+    top: 6px;
+    cursor: pointer;
+  }
+  
+  .close-info:hover {
+    color: #000;
+  }
+
+  .tag-value {
+    display: inline-block;
+    position: relative;
+  }
+
+  .delete {
+    position: absolute;
+    left: 90%;
+    margin-left: -13px;
+    width: 15px;
+    height: 15px;
+    background: black;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    top: -8px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .list-checkbox {
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  .list-checkbox input[type=checkbox]{
+    position: relative;
+    top: 2px;
+  }
+
+  .list-checkbox:last-child {
+    margin-right: 0;
+  }
+
+  .tags-step-1 {
+    transition: ease-in-out 0.3s;
+    -webkit-transition: ease-in-out 0.3s;
+    -moz-transition: ease-in-out 0.3s;
+  }
+
+
+  :host ::ng-deep lu-checkbox label {
+    cursor: pointer;
+    margin-right: 15px;
+  }
+
+  :host ::ng-deep lu-checkbox label .pill {
+    color: #000;
+    background: #c4c4c4;
+    border: 1px solid black;
+  }
+
+  :host ::ng-deep lu-checkbox label.checked .pill {
+    color: #fff;
+    background: #000;
+  }
+
+  :host ::ng-deep lu-checkbox label.checked .danger {
+    background-color: #ff0000;
+    color: #FFF;
+  }
+
+  :host ::ng-deep lu-checkbox label.checked .success {
+    background: #008400;
+    color: white;
+  }
+
+  :host ::ng-deep lu-checkbox label.checked .warning {
+    background: #E16200;
+    color: white;
+  }
+
+  :host ::ng-deep lu-checkbox label.checked .info {
+    background: #403eff;
+    color: white;
+  }
+
+  :host ::ng-deep lu-checkbox label.checked .admin {
+    background: #000;
+    color: white;
+  }
+
+  .agree {
+    border: none;
+    border-radius: 5px;
+    padding: 0.4em 0.4em;
+    margin: 0 0;
+    background-color: #fcfdfd;
+    color: #5c6870;
+    box-shadow: 0 1px 3px rgba(65, 79, 88, 0.2);
+    font-size: 12px;
+    text-align: center;
+    line-height: 12px;
+  }
+
+  .agree:hover {
+    background-color: #e6f5ff;
+    color: #0f598a;
+    cursor: pointer;
+  }
+  
+  @media only screen and (min-width: 992px) and (max-width: 1600px) {
+    .taxon label {
+      height: 20px;
+      line-height: 15px;
+    }
+
+    .annotation-form label.taxonomy {
+      display: block;
+    }
+  
+    .switch-mode {
+      display: block;
+      position: absolute;
+      top: 15px;
+      font-size: 12px;
+    }
+  
+  }
+  
+  @media only screen and (min-width: 768px) and (max-width: 1200px)  {
+   .taxon div:nth-child(2) label, .taxon div:nth-child(3) label {
+     height: 20px;
+     margin-top: 10px;
+   }
+
+   .agree {
+     margin-top: 5px;
+   }
+  }
+  
+  

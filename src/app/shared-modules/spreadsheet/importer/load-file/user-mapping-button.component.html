@@ -1,0 +1,7 @@
+<div class="btn btn-default pull-right" *ngIf="hasUserMapping" (click)="clearUserMapping.emit()" [tooltip]="'excel.import.step1.removeUserMapping' | translate" placement="left">
+  <i class="glyphicon glyphicon-remove"></i>
+</div>
+<label class="btn btn-default pull-right" for="user-mapping"  [tooltip]="'excel.import.step1.addUserMapping' | translate" placement="left">
+  <i class="glyphicon glyphicon-open"></i>
+</label>
+<input class="inputfile" type="file" name="user-mapping" id="user-mapping" (change)="loadFile($event)">

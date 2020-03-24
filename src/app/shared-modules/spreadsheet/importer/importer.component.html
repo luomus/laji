@@ -1,0 +1,234 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <div class="row data-container">
+    <div class="col-sm-10">
+      <span *ngIf="vm.filename">{{ 'excel.import.workingOn' | translate }} <strong>{{ vm.filename }}</strong></span>&nbsp;
+    </div>
+  </div>
+
+  <div class="well">
+
+    <laji-stepper [state]="vm.step"
+                  (activate)="activate($event)"
+                  (title)="currentTitle = $event"
+    ></laji-stepper>
+
+    <h2>{{ currentTitle }}</h2>
+
+    <alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploadedPartially">
+      <div [innerHtml]="'excel.import.error.alreadyUploadedPartially' | translate"></div>
+    </alert>
+    <alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploaded">
+      <div [innerHtml]="'excel.import.error.alreadyUploaded' | translate"></div>
+    </alert>
+    <alert [type]="'danger'" *ngIf="vm.step === step.invalidFileType">
+      <div [innerHtml]="'excel.import.error.invalidFileType' | translate"></div>
+    </alert>
+    <alert [type]="'danger'" *ngIf="vm.step === step.ambiguousColumns">
+      <div [innerHtml]="'excel.import.error.ambiguousColumns' | translate: {ambiguousColumns: ambiguousColumns.join(', ')}"></div>
+    </alert>
+
+    <ng-container *ngIf="[step.empty, step.importingFile, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.ambiguousColumns].indexOf(vm.step) > -1">
+       <div class="row data-container spacer">
+        <div class="col-sm-9">
+          <div><p>{{ 'excel.import.step1.intro' | translate }}</p></div>
+          <ng-container *ngIf="vm.hasUserMapping">
+            <span [innerHtml]="'excel.import.step1.hasUserMapping' | translate"></span><br>
+          </ng-container>
+          <ng-container *ngIf="!vm.filename; else fileExists">
+            <input type="file" class="form-control" (change)="onFileChange($event)" />
+          </ng-container>
+          <ng-template #fileExists>
+            <strong>{{ vm.filename }}</strong>&nbsp;&nbsp;<i class="link glyphicon glyphicon-remove" (click)="clearFile()"></i>
+          </ng-template>
+          <span *ngIf="fileLoading">{{ 'loading' | translate }}</span>
+        </div>
+        <div class="col-sm-3 map-buttons">
+          <div class="row">
+            <div class="col-xs-12">
+              <laji-user-mapping-button
+                [hasUserMapping]="vm.hasUserMapping"
+                (loadError)="userMappingLoadingFailed()"
+                (userMapping)="useUserMapping($event)"
+                (clearUserMapping)="clearUserMapping()"
+              ></laji-user-mapping-button>
+            </div>
+          </div>
+          <div class="pull-right mapping-file-name">{{ vm.mappingFilename }}</div>
+        </div>
+      </div>
+      <div class="row data-container">
+        <div class="col-sm-5">
+          <ng-container *ngIf="!formID && !!bstr">
+            <laji-form-select [forms]="forms" [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
+          </ng-container>
+        </div>
+        <div class="col-sm-7">
+          <button class="btn btn-primary pull-right" [disabled]="!formID || !vm.filename || vm.step === step.fileAlreadyUploadedPartially || vm.step === step.fileAlreadyUploaded" (click)="activate(step.colMapping)">{{ 'paginator.next' | translate }}</button>
+        </div>
+      </div>
+    </ng-container>
+
+    <laji-col-mapper
+      *ngIf="[step.empty, step.importingFile, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.ambiguousColumns].indexOf(vm.step) === -1"
+      [hidden]="vm.step !== step.colMapping"
+      (mappingDone)="colMappingDone($event)"
+      [fields]="fields"
+      [headers]="header"
+      [colMapping]="colMap"
+      (fieldSelected)="mapCol($event)"></laji-col-mapper>
+
+
+    <laji-cell-value-mapping
+      *ngIf="vm.step === step.dataMapping"
+      (done)="rowMappingDone($event)"
+      [formID]="formID"
+      [valueMap]="valueMap"
+      [fields]="fields"
+      [data]="data"
+      [colMapping]="colMap"></laji-cell-value-mapping>
+
+
+    <ng-container *ngIf="vm.step === step.importReady || vm.step === step.invalidData || vm.step === step.validating">
+      <div class="row">
+        <div class="col-sm-12 spacer">
+          <ng-container *ngIf="vm.step === step.validating">
+            <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{ current }}/{{ total }}</progressbar>
+          </ng-container>
+          <ng-container *ngIf="vm.step === step.invalidData">
+            <p>{{ 'excel.import.step4.invalidData' | translate }}</p>
+            <div class="row">
+              <div class="col-sm-9">
+                <input type="file" class="form-control" (change)="onFileChange($event)" />
+                <span *ngIf="fileLoading">{{ 'loading' | translate }}</span>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="vm.step === step.importReady">
+            <div class="row">
+              <div class="col-sm-6">
+                <p class="action">{{ 'excel.import.step4.importReady' | translate }}</p>
+              </div>
+              <div class="col-sm-6">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <button type="button" (click)="save(publ)" class="btn btn-success pull-right action">
+                      {{ buttonLabel('save') | translate }}
+                    </button>
+                    <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action" *ngIf="hasButton('temp')">
+                      {{ buttonLabel('temp') | translate }}
+                    </button>
+                    <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+                      <i class="glyphicon glyphicon-open"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <span class="pull-right" [innerHTML]="'excel.import.observations' | translate:{cnt:docCnt}"></span><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div class="row" style="margin-top: 15px;" *ngIf="vm.step !== step.validating">
+            <div class="col-sm-4">
+              <select class="form-control" (change)="changeImportType($event.target.value)">
+                <option *ngFor="let item of combineOptions" [selected]="item === combineBy" [value]="item">{{ 'excel.combine.' + item | translate }}</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <select class="form-control" (change)="changeImportType($event.target.value)">
+                <option [selected]="true === onlyWithCount" [value]="true">{{ 'excel.import.onlyWithCount' | translate }}</option>
+                <option [selected]="false === onlyWithCount" [value]="false">{{ 'excel.import.alsoEmptyCount' | translate }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-container" *ngIf="vm.step !== step.validating">
+        <laji-datatable
+            #dataTable
+            class="import-table"
+            [showRowAsLink]="false"
+            [showFooter]="false"
+            [virtualScrolling]="true"
+            [clientSideSorting]="false"
+            [height]="'50vh'"
+            [rows]='mappedData'
+            [count]="mappedData.length"
+            [page]="1"
+            [pageSize]="mappedData.length"
+            [columns]="dataColumns">
+        </laji-datatable>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="vm.step === step.importing">
+      <h4>{{ 'sending' | translate }}</h4>
+      <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{ current }}/{{ total }}</progressbar>
+    </ng-container>
+
+    <ng-container *ngIf="vm.step === step.doneOk || vm.step === step.doneWithErrors">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+            <i class="glyphicon glyphicon-save"></i>
+          </div>
+          <p *ngIf="vm.step === step.doneOk">
+            {{ 'excel.import.done' | translate }}
+          </p>
+        </div>
+      </div>
+      <alert [type]="'danger'"  *ngIf="vm.step === step.doneWithErrors">
+        <div [innerHtml]="'excel.import.error.doneWithErrors' | translate"></div>
+      </alert>
+      <div class="data-container">
+        <laji-datatable
+          #dataTable
+          class="import-table"
+          [showRowAsLink]="false"
+          [showFooter]="false"
+          [virtualScrolling]="true"
+          [clientSideSorting]="false"
+          [height]="'50vh'"
+          [rows]='mappedData'
+          [count]="mappedData.length"
+          [page]="1"
+          [pageSize]="mappedData.length"
+          [columns]="dataColumns">
+        </laji-datatable>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
+
+<div class="modal fade" bsModal #currentUserMapModal="bs-modal" tabindex="-1" role="dialog"
+     aria-labelledby="column and value mapping" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-body mapping-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="currentUserMapModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div [innerHtml]="'excel.userMapping.get' | translate"></div>
+        <textarea rows="10" class="form-control">{{ userMappings | json }}</textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template let-rowIndex="rowIndex" #rowNumber>
+  {{ rowIndex + 2 }}
+</ng-template>
+
+<ng-template let-value="value" let-column="column" #valueCol>
+  <ng-container *ngIf="column.externalLabel; else valueAsIs">
+    {{ value | label:'withKey' | values:separator }}
+  </ng-container>
+  <ng-template #valueAsIs>{{ value | values:separator }}</ng-template>
+</ng-template>
+
+<ng-template let-value="value" #statusCol>
+  <laji-status-cell [value]="value" [fields]="fields"></laji-status-cell>
+</ng-template>

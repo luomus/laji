@@ -90,6 +90,13 @@ export class NpListComponent {
       },
       '$.prepopulatedDocument.deviceID': {
         label: 'np.list.col.deviceID',
+      },
+      '$.prepopulatedDocument.gatherings.length': {
+        label: 'theme.waterbird.gatheringLength',
+        width: 20
+      },
+      '$.prepopulatedDocument.gatherings[0].notes': {
+        label: 'result.document.notes'
       }
     };
   }

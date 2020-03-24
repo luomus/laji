@@ -6,10 +6,12 @@ import { Document } from '../../shared/model/Document';
 import { IdService } from '../../shared/service/id.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
+import { PagedResult } from 'app/shared/model/PagedResult';
 
 interface IParametersBase {
   highlight?: string;
   own?: boolean;
+  result?: Array<any>;
   openAnnotation?: boolean;
   useWorldMap?: boolean;
   identifying?: boolean;
@@ -27,6 +29,7 @@ export interface IDocumentParameters extends IParametersBase {
 export interface IViewerState {
   document?: Document;
   highlight?: string;
+  result?: Array<any>;
   own: boolean;
   openAnnotation: boolean;
   useWorldMap: boolean;
@@ -62,6 +65,7 @@ export class DocumentViewerFacade {
   document$       = this.state$.pipe(map((state) => state.document), distinctUntilChanged());
   highlight$      = this.state$.pipe(map((state) => state.highlight));
   own$            = this.state$.pipe(map((state) => state.own));
+  result$         = this.state$.pipe(map((state) => state.result));
   showModal$      = this.state$.pipe(map((state) => state.showModal), distinctUntilChanged());
   openAnnotation$ = this.state$.pipe(map((state) => state.openAnnotation));
   useWorldMap$    = this.state$.pipe(map((state) => state.useWorldMap));
@@ -72,6 +76,7 @@ export class DocumentViewerFacade {
     showModal: this.showModal$,
     document: this.document$,
     own: this.own$,
+    result: this.result$,
     highlight: this.highlight$,
     openAnnotation: this.openAnnotation$,
     useWorldMap: this.useWorldMap$,

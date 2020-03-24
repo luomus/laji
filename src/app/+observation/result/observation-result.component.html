@@ -93,6 +93,7 @@
       <laji-gallery
         [showPopover]="true"
         [showViewSwitch]="true"
+        [shortcut]="false"
         [query]="query">
       </laji-gallery>
     </div>
@@ -187,13 +188,11 @@
       </div>
     </ng-container>
   </lu-tab>
-  <ng-container *lajiForTypes="['dev']">
-    <lu-tab *ngIf="visible.annotations" [heading]="'search.result.annotation' | translate">
-      <laji-annotations [query]="query"
+  <lu-tab *ngIf="visible.annotations && isLgScreen" [heading]="'search.result.annotation' | translate">
+    <laji-annotations [query]="query"
         *ngIf="loadedTabs.isLoaded('annotations')"
-      ></laji-annotations>
-    </lu-tab>
-  </ng-container>
+    ></laji-annotations>
+  </lu-tab>
 </lu-tabs>
 
 <div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">

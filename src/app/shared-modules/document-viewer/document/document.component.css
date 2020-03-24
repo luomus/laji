@@ -12,3 +12,33 @@
   width: 430px;
   max-width: 430px;
 }
+
+.container-col {
+  display: flex
+}
+
+.column-modal {
+  flex: 1;
+}
+
+.refresh {
+  position: absolute;
+  z-index: 9000;
+  opacity: 0.8;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.refresh span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: #ffe455;
+  font-size: 20px;
+  font-weight: bold;
+}

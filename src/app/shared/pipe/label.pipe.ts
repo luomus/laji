@@ -1,15 +1,10 @@
-import { concat, delay, map, retryWhen, take, timeout } from 'rxjs/operators';
-import { Subscription, throwError as observableThrowError } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
 import { IdService } from '../service/id.service';
-import 'rxjs-compat/add/operator/timeout';
-import 'rxjs-compat/add/operator/retryWhen';
-import 'rxjs-compat/add/operator/delay';
-import 'rxjs-compat/add/operator/take';
-import 'rxjs-compat/add/operator/concat';
 
 type labelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
 
@@ -36,10 +31,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
 
   updateValue(key: string, type?: labelType): void {
     if (type === 'warehouse') {
-      this.warehouseService.getOriginalKey(key).pipe(
-        timeout(10000),
-        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), )), )
-        .subscribe(
+      this.warehouseService.getOriginalKey(key).subscribe(
           (res: string) => {
             if (res) {
               this._updateValue(res);

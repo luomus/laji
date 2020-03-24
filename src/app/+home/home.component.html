@@ -41,7 +41,7 @@
                 <div class="link blocking-overlay"></div>
                 <!--<laji-biogeographical-province height="438" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: ['ML.206'], cache: true}"></laji-biogeographical-province>-->
                 <laji-observation-map
-                  [unitCount]="(homeData$ | async)?.today.total"
+                  [unitCount]="(homeData$ | async)?.today?.total"
                   [settingsKey]="'frontMap'"
                   [height]="438"
                   [showControls]="false"
@@ -52,11 +52,11 @@
                 ></laji-observation-map>
                 <div class="numbers">
                   <span class="no-break">
-                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today.total"></laji-observation-count>
+                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today?.total"></laji-observation-count>
                     {{ 'viewer.unit' | translate }}
                     </span>
                   <span class="no-break">
-                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday.total" ></laji-observation-count>
+                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday?.total" ></laji-observation-count>
                     {{ 'observation.results.species' | translate }}
                   </span>
                 </div>
@@ -82,7 +82,7 @@
             </div>
             <div class="row">
               <div class="col-sm-12">
-                <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
+                <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/'}" class="thumbnail panel panel-default">
                   <div class="panel-heading">
                     <h2 class="panel-title caption">{{ 'home.identify-help-title' | translate }}</h2>
                   </div>
@@ -90,7 +90,16 @@
                     <p>{{ 'home.identify-help-intro' | translate }}</p>
                     <div class="identification-images">
                       <div class="link blocking-overlay"></div>
-                      <laji-gallery [showPaginator]="false" [limit]="12" [showPopover]="false" [view]="'compact'" [sort]="['document.firstLoadDate DESC']" [showViewSwitch]="false" [query]="imagesQuery$ | async" [pageSize]="20"></laji-gallery>
+                      <laji-image-gallery
+                        [showPopover]="false"
+                        [showViewSwitch]="false"
+                        [showOverlay]="false"
+                        [showExtraInfo]="false"
+                        [showLinkToSpeciesCard]="false"
+                        [view]="'compact'"
+                        [modalImages]="images$ | async"
+                        [shortcut]="false"
+                      ></laji-image-gallery>
                     </div>
                   </div>
                 </a>

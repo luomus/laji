@@ -3,7 +3,7 @@
     {{ _title }}<ng-container *ngIf="_title">:</ng-container>
     <ng-content select="[key-row]"></ng-content>
   </div>
-  <div class="value" [ngClass]="{'col-xs-8': !noTitleSpace, 'com-xs-12': noTitleSpace}">
+  <div class="value" [ngClass]="{'col-xs-8': !noTitleSpace, 'col-xs-12': noTitleSpace}">
     <ng-container *ngIf="!hideValue">{{ value| values }}</ng-container><ng-content></ng-content>
   </div>
 </div>

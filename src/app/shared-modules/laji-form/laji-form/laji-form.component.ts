@@ -171,7 +171,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           lang: this.translate.currentLang,
           renderSubmit: false,
           topOffset: 50,
-          bottomOffset: 50,
+          bottomOffset: 61,
           googleApiKey: Global.googleApiKey,
           notifier: {
             success: msg => this.toastsService.showSuccess(msg),

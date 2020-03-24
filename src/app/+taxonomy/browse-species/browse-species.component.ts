@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@
 import { ActivatedRoute } from '@angular/router';
 import { TaxonomySearchQuery } from '../species/service/taxonomy-search-query';
 import { Subscription } from 'rxjs';
+import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
   selector: 'laji-browse-species',
@@ -9,8 +10,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./browse-species.component.scss']
 })
 export class BrowseSpeciesComponent implements OnInit, OnDestroy {
-  active = 'images';
-  activated: any = {'images': true};
+  activeIndex = 0;
+  loadedTabs = new LoadedElementsStore(['images', 'list']);
 
   private subQueryUpdate: Subscription;
 
@@ -21,12 +22,7 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
-      () => {
-        this.activated = {[this.active]: true};
-        this.cd.markForCheck();
-      }
-    );
+    this.loadedTabs.load(this.activeIndex);
     this.searchQuery.setQueryFromParams({...this.route.snapshot.queryParams, onlyFinnish: 'true'});
   }
 
@@ -50,8 +46,8 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
     });
   }
 
-  setActive(tab: string) {
-    this.active = tab;
-    this.activated[tab] = true;
+  setActive(tabIdx: number) {
+    this.activeIndex = tabIdx;
+    this.loadedTabs.load(tabIdx);
   }
 }

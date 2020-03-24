@@ -21,8 +21,8 @@ export class InfoCardComponent implements OnChanges, OnInit {
   public missing: boolean;
 
   @Input() public year: string;
+  @Input() public checklistId: string;
   @Input() private taxonId: string;
-  @Input() private checklistId: string;
 
   years$: Observable<{label: string, value: string}[]>;
   species$: Observable<Taxonomy[]>;

@@ -18,6 +18,8 @@ export const environment = {
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
+  waterbirdPairForm: 'MHL.65',
+  waterbirdJuvenileForm: 'MHL.66',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'MHL.36',
   lolifeForm: 'MHL.45',
@@ -25,5 +27,6 @@ export const environment = {
   valioForm: 'MHL.57',
   apiBase: 'https://dev-embedded.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
-  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self'
+  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
 };

@@ -1,19 +1,16 @@
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
-import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
 
 import * as redis from 'redis';
 import * as Redlock from 'redlock';
 import * as express from 'express';
-import * as bodyParser from 'body-parser';
-import * as cors from 'cors';
 import * as compression from 'compression';
 import { join } from 'path';
 import { readFileSync } from 'fs';
 const domino = require('domino');
 
-const app = express();
-
+const CACHE_TIME = 60 * 30; // This is time in sec for how long will the content be stored in cache
+const CACHE_UPDATE = 60;    // This is time when the content will be updated even if there is already one in the cache
 const PORT = process.env.PORT || 3000;
 const DIST_FOLDER = join(process.cwd(), 'dist');
 const BROWSER_PATH = join(DIST_FOLDER, 'browser');
@@ -24,42 +21,25 @@ global['window'] = win;
 global['document'] = win.document;
 global['navigator'] = win.navigator;
 global['KeyboardEvent'] = domino.impl.Event;
+global['CSS'] = null;
+global['Prism'] = null;
+
 win.devicePixelRatio = 2; // this is used by the leaflet library
 Object.assign(global, domino.impl);
 
-const RedisClient = redis.createClient({
-  host: process.env.REDIS_HOST || 'localhost'
-});
+const RedisClient = redis.createClient({host: process.env.REDIS_HOST || 'localhost'});
 const Lock = new Redlock([RedisClient]);
+const app = express();
+const { AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap, REQUEST, RESPONSE } = require('./dist/server/main');
 
 app.use(compression());
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-const {AppServerModuleNgFactory, LAZY_MODULE_MAP, provideModuleMap, renderModuleFactory} = require('./dist/server/main');
-
-app.engine('html', (_, options, callback) => {
-  renderModuleFactory(AppServerModuleNgFactory, {
-    // Our index.html
-    document: template,
-    url: options.req.url,
-    // DI so that we can get lazy-loading to work differently (since we need it to just instantly render it)
-    extraProviders: [
-      provideModuleMap(LAZY_MODULE_MAP),
-      {
-        provide: REQUEST,
-        useValue: options.req,
-      },
-      {
-        provide: RESPONSE,
-        useValue: options.req.res,
-      }
-    ]
-  }).then(html => {
-    callback(null, html);
-  });
-});
+app.engine(
+  'html',
+  ngExpressEngine({
+    bootstrap: AppServerModuleNgFactory,
+    providers: [ provideModuleMap(LAZY_MODULE_MAP) ],
+  }),
+);
 
 app.set('view engine', 'html');
 app.set('views', BROWSER_PATH);
@@ -68,38 +48,32 @@ app.get('*.*', express.static(BROWSER_PATH, {
   maxAge: '1y'
 }));
 
-app.get('*', (req, res) => {
+const render = (req, res, cb: (err: any, html: string) => void) => {
+  res.render(
+    'index',
+    {req, res, providers: [{provide: REQUEST, useValue: req}, {provide: RESPONSE, useValue: res}]},
+    (err, html) => cb(err, html)
+  );
+};
 
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-  res.header('Expires', '-1');
-  res.header('Pragma', 'no-cache');
+const cache = () => {
+  return (req, res, next) => {
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
 
-  // Skip cache for these requests
-  const parts = req.originalUrl.split('?');
-  if (req.originalUrl.indexOf('/user') === 0 || parts.length > 1) {
-    res.render('index', {req, res}, (err, html) => {
-      if (html) {
-        res.send(html);
-      } else {
-        console.error(err);
-        return res.sendFile(join(BROWSER_PATH, 'index.html'));
-      }
-    });
-    return;
-  }
+    const parts = ('' + req.originalUrl)
+      .replace('showTree=true', '')
+      .replace('onlyFinnish=true', '')
+      .split('?')
+      .filter((v) => !!v);
 
-
-  const CACHE_TIME = 60 * 30; // This is time in sec for how long will the content be stored in cache
-  const CACHE_UPDATE = 60;    // This is time when the content will be updated even if there is already one in the cache
-
-  const redisKey = 'LajiPage:' + req.originalUrl;
-  RedisClient.get(redisKey, (errRedis: any, resultRedis: string) => {
-    let hit = false;
-    if (resultRedis) {
-      res.send(resultRedis);
-      hit = true;
+    // Skip cache for these requests
+    if (req.originalUrl.indexOf('/user') !== -1 || parts.length > 1) {
+      return next();
     }
 
+    const cacheKey = 'page:' + parts[0].replace(/\/$/, '');
     const updateLock = function(key, cb: () => void) {
       const lockKey = '_lock:' + key;
       Lock.lock(lockKey, CACHE_UPDATE * 1000, (err, lock) => {
@@ -108,36 +82,49 @@ app.get('*', (req, res) => {
         }
       });
     };
+    const cacheSet = function(html) {
+      if (res.statusCode === 200 || res.statusCode === 304) {
+        RedisClient.set(cacheKey, html, 'EX', CACHE_TIME);
+      }
+    };
 
-    if (hit) {
-      RedisClient.TTL(redisKey, (error, ttl) => {
-        if (CACHE_TIME - ttl > CACHE_UPDATE || ttl < 0 || error) {
-          updateLock(redisKey, () => {
-            res.render('index', {req, res}, (err, html) => {
-              if (err) {
-                console.error(err);
-                return;
-              }
-              if (res.statusCode === 200 || res.statusCode === 304) {
-                RedisClient.set(redisKey, html, 'EX', CACHE_TIME);
-              }
+    RedisClient.get(cacheKey, (errRedis: any, resultRedis: string) => {
+      if (resultRedis) {
+        res.header('x-cache', 'hit');
+        res.send(resultRedis);
+
+        RedisClient.TTL(cacheKey, (error, ttl) => {
+          if (CACHE_TIME - ttl > CACHE_UPDATE || ttl < 0 || error) {
+            updateLock(cacheKey, () => {
+              render(req, res, (err, html) => {
+                if (err) {
+                  return;
+                }
+                cacheSet(html);
+              });
             });
-          });
-        }
-      });
-    } else {
-      res.render('index', {req, res}, (err, html) => {
-        if (err) {
-          console.error(err);
-          return res.sendFile(join(BROWSER_PATH, 'index.html'));
-        }
-        res.send(html);
+          }
+        });
+        return;
+      } else {
+        res.header('x-cache', 'miss');
+        res.sendResponse = res.send;
+        res.send = (body) => {
+          cacheSet(body);
+          res.sendResponse(body);
+        };
+        next();
+      }
+    });
+  };
+};
 
-        if (res.statusCode === 200 || res.statusCode === 304) {
-          RedisClient.set(redisKey, html, 'EX', CACHE_TIME);
-        }
-      });
+app.get('*', cache(), (req, res) => {
+  render(req, res, (err, html) => {
+    if (!!err) {
+      throw err;
     }
+    res.send(html);
   });
 });
 
@@ -145,6 +132,5 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Node server listening on http://localhost:${PORT}`);
 });
-
 
 exports.app = app;

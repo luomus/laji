@@ -7,6 +7,7 @@ import { Util } from '../../shared/service/util.service';
 import * as moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
 import { Area } from '../../shared/model/Area';
+import { isRelativeDate } from './date-form/date-form.component';
 
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
@@ -17,7 +18,7 @@ interface ISections {
   sample?: Array<keyof WarehouseQueryInterface>;
   observer?: Array<keyof WarehouseQueryInterface>;
   individual: Array<keyof WarehouseQueryInterface>;
-  quality?: Array<keyof WarehouseQueryInterface>;
+  quality: Array<keyof WarehouseQueryInterface>;
   dataset: Array<keyof WarehouseQueryInterface>;
   collection: Array<keyof WarehouseQueryInterface>;
   keywords: Array<keyof WarehouseQueryInterface>;
@@ -96,8 +97,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
-    quality: ['taxonReliability', 'annotated', 'qualityIssues'],
-    dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
+    quality: ['recordQuality', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
+    dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     keywords: ['documentId', 'keyword'],
     features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'invasive', 'finnish'],
@@ -112,7 +113,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     time: ['firstLoadedSameOrAfter', 'firstLoadedSameOrBefore', 'loadedSameOrAfter', 'loadedSameOrBefore'],
     coordinate: ['coordinates' , 'coordinateAccuracyMax', 'sourceOfCoordinates'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
-    dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
+    quality: [],
+    dataset: ['collectionId', 'collectionQuality', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     keywords: ['documentId', 'keyword'],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
@@ -128,8 +130,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   constructor(
     private observationFacade: ObservationFacade
   ) {
-    this.dataSource = Observable.create((observer: any) => {
-      observer.next(this.formQuery.taxon);
+    this.dataSource = new Observable((subscriber: any) => {
+      subscriber.next(this.formQuery.taxon);
     });
     this.dataSource = this.dataSource.pipe(
       distinctUntilChanged(),
@@ -169,26 +171,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   get query() {
     return this._query;
-  }
-
-  updateTime(dates, startTarget?: 'time');
-  updateTime(dates, startTarget: keyof WarehouseQueryInterface, endTarget: keyof WarehouseQueryInterface );
-  updateTime(dates, startTarget: 'time' | keyof WarehouseQueryInterface = 'time', endTarget?: keyof WarehouseQueryInterface ) {
-    if (dates === 365) {
-      const today = new Date();
-      const oneJan = new Date(today.getFullYear(), 0, 1);
-      dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
-    }
-    const now = moment();
-    if (startTarget === 'time') {
-      this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.formQuery.timeEnd = '';
-      this.onFormQueryChange();
-    } else {
-      this.query[startTarget] = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.query[endTarget] = undefined;
-      this.onQueryChange();
-    }
   }
 
   changeTypeaheadLoading(e: boolean): void {
@@ -292,8 +274,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onTaxonSelect(event) {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
-      this.query['target'] = this.query['target'] ?
-        [...this.query['target'], this.formQuery.taxon] : [this.formQuery.taxon];
+      const target = event.item && event.item.key ? event.item.key : this.formQuery.taxon;
+      this.query['target'] = this.query['target'] ? [...this.query['target'], target] : [target];
       this.formQuery.taxon = '';
       this.onQueryChange();
     }
@@ -377,18 +359,27 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private getValidDate(date) {
-    if (!date || !moment(date, this.dateFormat, true).isValid()) {
-      return '';
+    if (date && (moment(date, this.dateFormat, true).isValid() || isRelativeDate(date))) {
+      return date;
     }
-    return date;
+    return '';
   }
 
   protected searchQueryToFormQuery(query: WarehouseQueryInterface): ObservationFormQuery {
-    const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
+    let timeStart, timeEnd;
+    if (query.time && query.time[0] && isRelativeDate(query.time[0])) {
+      const time = query.time[0];
+      timeStart = time;
+      timeEnd = false;
+    } else {
+      const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
+      timeStart = time[0];
+      timeEnd = time[1];
+    }
     return {
       taxon: '',
-      timeStart: this.getValidDate(time[0]),
-      timeEnd: this.getValidDate(time[1]),
+      timeStart: this.getValidDate(timeStart),
+      timeEnd: this.getValidDate(timeEnd),
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
         query.informalTaxonGroupId[0] : '',
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
@@ -409,10 +400,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   protected formQueryToSearchQuery(formQuery: ObservationFormQuery) {
-    const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
     const query = this.query;
+    if (isRelativeDate(formQuery.timeStart) && !formQuery.timeEnd) {
+      query.time = [formQuery.timeStart];
+    } else {
+      const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
+      query.time = time.length > 0 ? [time] : undefined;
+    }
 
-    query.time = time.length > 0 ? [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
     if (formQuery.allInvasiveSpecies) {
@@ -465,5 +460,25 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   setAdvancedMode(advanced: boolean) {
     this.advancedModeChange.emit(advanced);
+  }
+
+  updateTime(dates, startTarget?: 'time');
+  updateTime(dates, startTarget: keyof WarehouseQueryInterface, endTarget: keyof WarehouseQueryInterface );
+  updateTime(dates, startTarget: 'time' | keyof WarehouseQueryInterface = 'time', endTarget?: keyof WarehouseQueryInterface ) {
+    if (dates === 365) {
+      const today = new Date();
+      const oneJan = new Date(today.getFullYear(), 0, 1);
+      dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
+    }
+    const now = moment();
+    if (startTarget === 'time') {
+      this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.formQuery.timeEnd = '';
+      this.onFormQueryChange();
+    } else {
+      this.query[startTarget] = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.query[endTarget] = undefined;
+      this.onQueryChange();
+    }
   }
 }

@@ -7,6 +7,8 @@ import { map, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ThemeFormService } from '../theme-form.service';
 import { Observable } from 'rxjs';
+import { MultiLanguage } from '../../../../../projects/laji-api-client/src/lib/models';
+import { Form } from '../../../shared/model/Form';
 
 export enum Rights {
   Allowed,
@@ -17,9 +19,10 @@ interface InstructionsData {
   requireLogin?: boolean;
   loggedIn: boolean;
   rights: Rights;
-  instructions: string;
+  instructions: string | MultiLanguage;
   collectionID: string;
   disableRequestDescription: boolean;
+  form: Form.List;
 }
 
 @Component({
@@ -42,7 +45,7 @@ export class InstructionsComponent implements OnInit {
 
   ngOnInit() {
     this.instructionsData$ = this.userService.isLoggedIn$.pipe(
-        mergeMap(loggedIn => this.themeFormService.getForm(this.route).pipe(
+        mergeMap(loggedIn => this.themeFormService.getForm(this.route.snapshot).pipe(
           mergeMap(form => this.formPermissionService.getRights(form).pipe(
             mergeMap(rights => this.route.parent.data.pipe(
               map(({instructions, hasRightsInstructions, requireLogin}) => ({
@@ -50,10 +53,11 @@ export class InstructionsComponent implements OnInit {
                 loggedIn,
                 rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
                 collectionID: form.collectionID,
-                instructions: rights.edit && hasRightsInstructions
+                instructions: (rights.edit && hasRightsInstructions
                   ? hasRightsInstructions
-                  : instructions,
-                disableRequestDescription: form.options && form.options.disableRequestDescription
+                  : instructions) || form.instructions,
+                disableRequestDescription: form.options && form.options.disableRequestDescription,
+                form
               }))
           ))
       ))

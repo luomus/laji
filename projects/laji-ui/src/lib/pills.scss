@@ -27,5 +27,6 @@
   @include pill("info", $info-6, $info-1, $info-4);
   @include pill("warning", $warning-6, $warning-1, $warning-4);
   @include pill("danger", $danger-6, $danger-1, $danger-4);
+  @include pill("admin", $admin-3, $admin-1, $admin-2);
 }
 

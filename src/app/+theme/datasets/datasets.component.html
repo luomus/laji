@@ -1,0 +1,36 @@
+<div class="container">
+  <laji-theme-breadcrumb [breadcrumb]="breadcrumb$ | async"></laji-theme-breadcrumb>
+  <laji-info-page *ngIf="instructions" [rootPage]="instructions"></laji-info-page>
+  <ng-container *lajiBrowserOnly>
+    <div class="row" *lajiLoggedIn="false">
+      <div class="col-sm-8">
+        <alert [type]="'warning'">
+          {{ 'haseka.pleaseLogin' | translate }}
+        </alert>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="forms$ | async; let forms">
+    <h3>Kokoelmat, joihin sinulla on pääsy</h3>
+    <ul>
+      <li *ngIf="forms.length === 0">
+        Sinulla ei ole pääsyä mihinkään kokoelmaan.
+      </li>
+      <li *ngFor="let form of forms">
+        <a [routerLink]="[form.id]">
+          {{ form.collectionID | label }},
+          <ng-container *ngIf="form | formHasFeature: features.SecondaryCopy; else primary">
+            sekundääridata
+          </ng-container>
+        </a>
+      </li>
+      <ng-template #primary>
+        primääridata
+      </ng-template>
+    </ul>
+    <p>Voit pyytää pääsyä kokoelmiin oman organisaatiosi yhteyshenkilöltä.</p>
+    <h3>Perusta uusi kokoelma</h3>
+    <p>Tässä voit  pyytää organisaatiosi aineistolle uutta kokoelmaa, mikäli haluat viedä Laji.fi:hin uudenlaisia havaintotietoja. Pyyntö käsitellään Lajitietokeskuksessa mahdollisimman  pian, yleensä muutamassa päivässä.</p>
+    <lu-button>Perusta uusi kokoelma</lu-button>
+  </ng-container>
+</div>

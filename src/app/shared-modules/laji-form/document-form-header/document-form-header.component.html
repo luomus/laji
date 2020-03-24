@@ -18,9 +18,8 @@
                           [formID]="form.id"
                           [namedPlace]="namedPlace?.id"
                           [showDownloadAll]="false"
-                          [header]="form.options?.formOwnSubmissionsLabel || namedPlace ? 'np.formOwnSubmissions' : 'haseka.mobile.ownSubmissions'"
+                          [header]="form.options?.formOwnSubmissionsLabel || namedPlace ? 'np.formOwnSubmissions' : (isAdmin ? 'haseka.ownSubmissions.allTitle' : 'haseka.mobile.ownSubmissions')"
                           [forceLocalDocument]="useLocalDocumentViewer"
-                          [documentViewerGatheringGeometryJSONPath]="form?.namedPlaceOptions?.documentViewerGatheringGeometryJSONPath"
                           [admin]="isAdmin"></laji-own-submissions>
     <ng-container *ngIf="description">
       <div [innerHtml]="description | translate"></div>
@@ -40,6 +39,11 @@
     <div class="form-logo pull-right" *ngIf="form.logo">
       <img src="{{form.logo}}">
     </div>
+  </div>
+</div>
+<div class="row" *ngIf="namedPlace" style="margin-top: 10px">
+  <div class="col-sm-12">
+    <strong *ngFor="let field of namedPlaceHeader; let last = last">{{ field | async }}{{ !last ? ', ' : '' }}</strong>
   </div>
 </div>
 <ng-content></ng-content>

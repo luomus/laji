@@ -27,26 +27,31 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() visible = true;
   @Input() active = 0;
   @Input() useWorldMap = true;
+  @Input() settingsKey: any;
+  @Input() hideCoordinates: boolean;
+  @Input() zoomToData = false;
 
   _data: any;
-  mapOptions: LajiMapOptions = {
-    controls: {
-      coordinates: false,
-      draw: {
-        copy: true
-      }
-    },
-    draw: {
-      editable: false
-    },
-    zoom: 4
-  };
+  mapOptions: LajiMapOptions;
 
   constructor(
     public translate: TranslateService
   ) { }
 
   ngOnInit() {
+    this.mapOptions = {
+      controls: {
+        coordinates: false,
+        draw: {
+          copy: true
+        }
+      },
+      draw: {
+        editable: false
+      },
+      zoom: 4,
+      zoomToData: this.zoomToData
+    };
     this.initData();
   }
 
@@ -63,13 +68,21 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   setActiveIndex(idx: number) {
     this.active = idx;
+    if (!this.lajiMap.map) {
+      return;
+    }
+    if (this.data[0].geoJSON && this._data.featureCollection !== this.getFeatureCollection(this.data[0].geoJSON) ) {
+      this.initData();
+    }
     if (this._data && this._data[idx]) {
       this.lajiMap.map.setDraw({...(<any> this.mapOptions.draw), ...(this._data[idx] || {})});
-      this.lajiMap.map.zoomToData({maxZoom: this.lajiMap.map.getNormalizedZoom()});
+      const zoomToDataOptions = this.zoomToData ? {padding: [10, 10]} : {maxZoom: this.lajiMap.map.getNormalizedZoom()};
+      this.lajiMap.map.zoomToData(zoomToDataOptions);
     } else {
       this.lajiMap.map.setDraw(this.mapOptions.draw);
     }
   }
+
 
   private initData() {
     if (!this.data) {
@@ -108,4 +121,5 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
       };
     }
   }
+
 }

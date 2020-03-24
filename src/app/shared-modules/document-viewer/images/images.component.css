@@ -1,0 +1,25 @@
+.column-modal {
+    flex: 1;
+}
+
+.no-images {
+    top: 85%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    position: absolute;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+}
+
+.background-no-images {
+    background: url('../../../../static/images/icons/x-octagon.png') center;
+    background-repeat: no-repeat;
+    height: 190px;
+    width: 190px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    position: absolute;
+}

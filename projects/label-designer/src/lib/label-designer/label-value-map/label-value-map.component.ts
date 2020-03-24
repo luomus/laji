@@ -46,18 +46,18 @@ export class LabelValueMapComponent {
     this.initAddableFields();
   }
 
-  get valueMap()  {
+  get valueMap(): ILabelValueMap  {
     return this._map;
   }
 
-  updateFieldMap(field: string, map: {[value: string]: string}) {
+  updateFieldMap<K extends keyof ILabelValueMap, T extends ILabelValueMap[K]>(field: K, map: T): void {
     this.valueMapChange.emit({
       ...this._map,
       [field]: map
     });
   }
 
-  addNewField(field: ILabelField) {
+  addNewField(field: ILabelField): void {
     if (!field) {
       return;
     }
@@ -75,7 +75,7 @@ export class LabelValueMapComponent {
     this.updateFieldMap(field.field, fieldMap);
   }
 
-  removeFromMap(field: string) {
+  removeFromMap(field: keyof ILabelValueMap): void {
     if (!this._map[field] || !confirm(this.translateService.get('Are you sure that you want to remove this?'))) {
       return;
     }
@@ -83,13 +83,13 @@ export class LabelValueMapComponent {
     this.valueMapChange.emit(mapping);
   }
 
-  addMappingByField(field: string) {
+  addMappingByField(field: keyof ILabelValueMap): void {
     if (this.fieldLookup[field]) {
       this.updateFieldMap(field, this.addByData(this.fieldLookup[field], this._map[field] || {}));
     }
   }
 
-  addByData(field: ILabelField, map = {}) {
+  addByData(field: ILabelField, map = {}): { [value: string]: string } {
     const base = {...map};
     const values = new Set();
     this.data.forEach((row) => {
@@ -110,7 +110,7 @@ export class LabelValueMapComponent {
     return base;
   }
 
-  private initAddableFields() {
+  private initAddableFields(): void {
     if (!this._availableFields) {
       return;
     }

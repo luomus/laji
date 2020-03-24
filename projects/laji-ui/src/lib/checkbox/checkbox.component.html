@@ -1,1 +1,1 @@
-<label [ngClass]="{'checked': isChecked}"><input type="checkbox" (input)="onInput($event)" #checkbox><ng-content></ng-content></label>
+<label  [ngClass]="{'checked': isChecked, 'disabled': disabled}"><input [disabled]="disabled" type="checkbox" (input)="onInput($event)" #checkbox><ng-content></ng-content></label>

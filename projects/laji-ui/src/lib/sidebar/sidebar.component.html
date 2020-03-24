@@ -20,7 +20,7 @@
   <div class="sidebar"
        [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile, 'open': open}"
        [@sidebarOpen_wrapper]="{
-         value: dragging ? 'disabled' : (open ? 'open' : 'closed'),
+         value: (dragging || preCheckScreenWidth) ? 'disabled' : (open ? 'open' : 'closed'),
          params: {
            sidebarMinWidth: sidebarMinWidth
          }
@@ -34,7 +34,12 @@
          [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}"
          #navWrapper>
       <div class="close-wrapper">
-        <div tabindex="0" class="close-btn" (click)="onSwitchOpen()">X</div>
+        <div tabindex="0" class="close-btn" (click)="onSwitchOpen()">
+            <svg height="10" width="10">
+              <line x1="0" y1="0" x2="10" y2="10" style="stroke:#73828c;stroke-width:2" />
+              <line x1="0" y1="10" x2="10" y2="0" style="stroke:#73828c;stroke-width:2" />
+            </svg>
+        </div>
       </div>
       <ng-content select="nav"></ng-content>
     </div>

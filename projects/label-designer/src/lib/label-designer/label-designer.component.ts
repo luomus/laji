@@ -98,7 +98,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  version = '3.2.4';
+  version = '3.3.2';
   /**
    * @internal
    */
@@ -125,6 +125,10 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
    * Whether or not show the intro on startup.
    */
   @Input() showIntro = true;
+  /**
+   * Allow user to choose a number of how many times the label item is repeated in the print
+   */
+  @Input() allowLabelItemRepeat = false;
   /**
    * Since the loading of the pdf is done externally this will tell the editor to display loading indicator on the download the pdf link.
    */

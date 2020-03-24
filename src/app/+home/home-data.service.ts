@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import * as moment from 'moment';
 import { GraphQLService } from '../graph-ql/service/graph-ql.service';
 import { HistoryService } from '../shared/service/history.service';
+import { Image } from '../shared/gallery/image-gallery/image.interface';
 
 export interface IHomeData {
   observations: {
@@ -28,6 +29,13 @@ export interface IHomeData {
   preservedSpecimensWithImage: {
     total: number
   };
+  identify: {
+    results: {
+      unit: {
+        media: Image[]
+      }
+    }[];
+  };
   news: {
     prevPage: number,
     nextPage: number,
@@ -37,7 +45,7 @@ export interface IHomeData {
       posted: string,
       external: boolean,
       externalURL: string
-    }
+    }[]
   };
 }
 
@@ -63,6 +71,15 @@ const HOME_QUERY = gql`
     }
     preservedSpecimensWithImage: units(cache: true, superRecordBasis: "PRESERVED_SPECIMEN", hasMedia: true) {
       total
+    },
+    identify: units(cache: true, hasUnitMedia: true, unidentified: true, page: 1, pageSize: 12, orderBy: "document.firstLoadDate DESC") {
+      results {
+        unit {
+          media {
+            thumbnailURL
+          }
+        }
+      }
     },
     news(pageSize: $pageSize) {
       prevPage,
@@ -90,7 +107,7 @@ export class HomeDataService {
 
   public static getRecentDate(): string {
     const start = moment();
-    start.subtract(0, 'd');
+    start.subtract(1, 'd');
 
     return start.format('YYYY-MM-DD');
   }

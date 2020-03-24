@@ -1,0 +1,34 @@
+<div class="position">
+  <ul class="separated-list">
+       <div class="container-icon-text">
+            <div class="icon"><li class="no-comma" [tooltip]="'result.gathering.locality' | translate" *ngIf="gathering.country || gathering.biogeographicalProvince || gathering.municipality || gathering.locality"><i class="glyphicon glyphicon-map-marker"></i></li></div>
+            <div class="text">
+                  <li *ngIf="gathering.country">{{ gathering.country }}</li>
+                  <li *ngIf="gathering.biogeographicalProvince">{{ gathering.biogeographicalProvince }}</li>
+                  <li *ngIf="gathering.municipality">{{ gathering.municipality }}</li>
+                  <li *ngIf="gathering.locality">{{ gathering.locality | truncate : 80 : true }}</li>
+            </div>
+       </div> 
+   </ul>
+</div>
+
+<div class="date">
+      <span *ngIf="gathering.displayDateTime">
+            <div class="container-icon-text">
+                  <div class="icon"><i [tooltip]="'viewer.field.time' | translate" class="glyphicon glyphicon-time"></i></div>
+                  <div class="text">{{ gathering.displayDateTime }}</div>
+            </div>
+      </span>
+</div>
+
+<div class="author" *ngIf="gathering.team">
+      <!--<div *ngFor="let member of gathering.team">
+            <span class="member">{{ member | truncate : 80 : true }}</span>
+      </div>-->
+      <ul class="separated-list">
+            <div class="container-icon-text">
+                  <div class="icon"><li [tooltip]="'viewer.field.observer' | translate" class="no-comma" *ngIf="gathering.team.length > 0"><i class="glyphicon glyphicon-user"></i></li></div>
+                  <div class="text"><li *ngFor="let member of gathering.team"><span class="member">{{ member }}</span></li></div>
+            </div>
+      </ul>
+</div>

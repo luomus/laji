@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, Inject, PLATFORM_ID, EventEmitter, Output } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
 
@@ -9,7 +9,15 @@ import { WINDOW } from '@ng-toolkit/universal';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabComponent {
-  @Input() heading: string;
+  private _heading = '';
+  @Input() set heading(h) {
+    this._heading = h;
+    this.inputChange.emit();
+  }
+  get heading() { return this._heading; }
+
+  @Output() inputChange = new EventEmitter<null>();
+
   _active = false;
   set active(a) {
     this._active = a;

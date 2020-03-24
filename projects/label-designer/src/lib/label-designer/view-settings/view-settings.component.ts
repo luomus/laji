@@ -30,7 +30,7 @@ export class ViewSettingsComponent {
     2
   ];
 
-  change(field: string, value: any) {
+  change<K extends keyof IViewSettings, T extends IViewSettings[K]>(field: K, value: T): void {
     this.viewSettingsChange.emit({
       ...this.viewSettings,
       [field]: value

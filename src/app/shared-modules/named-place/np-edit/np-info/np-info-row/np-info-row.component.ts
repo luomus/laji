@@ -9,7 +9,7 @@ export interface NpInfoRow {
 @Component({
   selector: 'laji-np-info-row',
   templateUrl: './np-info-row.component.html',
-  styleUrls: ['./np-info-row.component.css']
+  styleUrls: ['./np-info-row.component.scss']
 })
 export class NpInfoRowComponent implements NpInfoRow {
   @Input() title: string;

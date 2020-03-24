@@ -4,7 +4,6 @@ import { UserLoginComponent } from './login/user-login.component';
 import { UserLogoutComponent } from './logout/user-logout.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ModuleWithProviders } from '@angular/core';
-import { UserLoginGuard } from './login/user-login.guard';
 
 export const userRoutes: Routes = [
   {
@@ -19,7 +18,6 @@ export const userRoutes: Routes = [
     path: 'login',
     pathMatch: 'full',
     component: UserLoginComponent,
-    canActivate: [UserLoginGuard],
     data: {
       loginLanding: '/'
     }

@@ -1,28 +1,26 @@
 <h3>{{ 'wbc.stats.routes' | translate }}</h3>
 
-<div id="navbar">
-  <ul class="nav nav-tabs nav-justified" style="margin-bottom: 0">
-    <li role="presentation" [ngClass]="{active: active === 'list'}">
-      <a (click)="setActive('list')">{{ 'np.list' | translate }}</a>
-    </li>
-    <li role="presentation" [ngClass]="{active: active === 'map'}">
-      <a (click)="setActive('map')">{{ 'np.map' | translate }}</a>
-    </li>
-  </ul>
-</div>
+<lu-tabs [selectedIndex]="activeIndex" (select)="setActive($event)">
+  <lu-tab [heading]="'np.list' | translate">
+    <ng-container *ngIf="loadedTabs.isLoaded('list')">
+      <laji-wbc-routes-list
+        [rows]="data"
+        [loading]="!data"
+        [selected]="selected"
+        [sorts]="sorts"
+        (rowSelect)="rowSelect($event)"
+      ></laji-wbc-routes-list>
+    </ng-container>
+  </lu-tab>
+  <lu-tab [heading]="'np.map' | translate">
+    <ng-container *ngIf="loadedTabs.isLoaded('map')">
+      <laji-wbc-routes-map
+        [data]="data"
+        [loading]="!data"
+        (rowSelect)="rowSelect($event)"
+      ></laji-wbc-routes-map>
+    </ng-container>
+  </lu-tab>
+</lu-tabs>
 
-<laji-wbc-routes-list
-  *ngIf="active === 'list'"
-  [rows]="data"
-  [loading]="!data"
-  [selected]="selected"
-  [sorts]="sorts"
-  (rowSelect)="rowSelect($event)"
-></laji-wbc-routes-list>
 
-<laji-wbc-routes-map
-  *ngIf="active === 'map'"
-  [data]="data"
-  [loading]="!data"
-  (rowSelect)="rowSelect($event)"
-></laji-wbc-routes-map>

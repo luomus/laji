@@ -43,4 +43,8 @@ export class ViewerModalComponent implements OnInit, OnDestroy {
   pnModalShow() {
 
   }
+
+  closeModal(event) {
+    this.viewerFacade.close();
+  }
 }

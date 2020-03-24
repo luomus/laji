@@ -1,0 +1,42 @@
+<laji-spinner [spinning]="!(recordings && annotations)">
+  <div class="well" *ngIf="recordings && annotations">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="kerttu-select">{{ 'theme.kerttu.recording' | translate }}
+          <select class="form-control" [value]="currentRecording" (change)="onRecordingChange(recordingSelect.value)" #recordingSelect>
+            <option *ngFor="let item of recordings; let i = index" [value]="i">
+              {{ i + 1 }}
+            </option>
+          </select>/{{ recordings.length }}
+        </h4>
+      </div>
+      <div class="col-md-6">
+        <laji-audio-viewer
+          [recording]="recordings[currentRecording]"
+        ></laji-audio-viewer>
+      </div>
+      <div class="col-md-6">
+        <h3>{{ 'theme.kerttu.listSpecies' | translate }}</h3>
+        <laji-taxon-autocomplete
+          [informalTaxonGroup]="'MVL.1'"
+          [onlyFinnish]="true"
+          [showResult]="false"
+          (taxonSelect)="onTaxonSelect($event)"
+        ></laji-taxon-autocomplete>
+        <laji-pill-list
+          [isLabel]="true"
+          [list]="currentAnnotation"
+          (updateList)="onTaxonListUpdate($event)"
+        ></laji-pill-list>
+        <div style="margin-top: 10px">
+          <button
+            class="btn btn-default"
+            [disabled]="!(recordingQueue.length > 1 || recordingQueue[0] !== currentRecording)"
+            (click)="toNextRecording()">
+            {{ 'theme.kerttu.nextRecording' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</laji-spinner>

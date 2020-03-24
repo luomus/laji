@@ -8,6 +8,8 @@ import { Observable, of } from 'rxjs';
 import { share } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
+import { environment } from '../../../../environments/environment';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-label-designer',
@@ -26,6 +28,7 @@ export class LabelDesignerComponent implements OnInit {
   data: any;
   labelTranslations: any;
   downloading = false;
+  showRepeat = environment.type === Global.type.dev;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,

@@ -15,8 +15,7 @@ export interface IColumns {
   'unit.linkings.species.scientificName': ObservationTableColumn;
   'unit.linkings.species.taxonomicOrder': ObservationTableColumn;
   'unit.reportedTaxonConfidence': ObservationTableColumn;
-  'unit.quality.taxon.reliability': ObservationTableColumn;
-  'unit.quality.taxon.source': ObservationTableColumn;
+  'unit.interpretations.recordQuality': ObservationTableColumn;
   'gathering.team': ObservationTableColumn;
   'gathering.interpretations.countryDisplayname': ObservationTableColumn;
   'gathering.interpretations.biogeographicalProvinceDisplayname': ObservationTableColumn;
@@ -36,7 +35,7 @@ export interface IColumns {
   'document.secureLevel': ObservationTableColumn;
   'document.secureReasons': ObservationTableColumn;
   'document.sourceId': ObservationTableColumn;
-  'document.quality.reliabilityOfCollection': ObservationTableColumn;
+  'document.linkings.collectionQuality': ObservationTableColumn;
   'unit.det': ObservationTableColumn;
   'gathering.conversions.dayOfYearBegin': ObservationTableColumn;
   'gathering.conversions.dayOfYearEnd': ObservationTableColumn;
@@ -161,15 +160,11 @@ export const COLUMNS: IColumns = {
     width: 70
   },
   'unit.reportedTaxonConfidence': {name: 'unit.reportedTaxonConfidence', cellTemplate: 'warehouseLabel'},
-  'unit.quality.taxon.reliability': {
-    name: 'unit.quality.taxon.reliability',
+  'unit.interpretations.recordQuality': {
+    name: 'unit.interpretations.recordQuality',
     cellTemplate: 'warehouseLabel',
-    label: 'result.unit.quality.taxon'
-  },
-  'unit.quality.taxon.source': {
-    name: 'unit.quality.taxon.source',
-    cellTemplate: 'warehouseLabel',
-    label: 'result.unit.quality.source'
+    label: 'result.unit.quality.taxon',
+    sortable: false
   },
   'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon'},
   'gathering.interpretations.countryDisplayname': {
@@ -222,7 +217,7 @@ export const COLUMNS: IColumns = {
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
-  'document.quality.reliabilityOfCollection': {name: 'document.quality.reliabilityOfCollection'},
+  'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel', sortable: false},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
   'gathering.conversions.dayOfYearEnd': {name: 'gathering.conversions.dayOfYearEnd'},
@@ -371,8 +366,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.linkings.species.scientificName'],
     COLUMNS['unit.linkings.species.taxonomicOrder'],
     COLUMNS['unit.reportedTaxonConfidence'],
-    COLUMNS['unit.quality.taxon.reliability'],
-    COLUMNS['unit.quality.taxon.source'],
+    COLUMNS['unit.interpretations.recordQuality'],
     COLUMNS['gathering.team'],
     COLUMNS['gathering.interpretations.countryDisplayname'],
     COLUMNS['gathering.interpretations.biogeographicalProvinceDisplayname'],
@@ -393,7 +387,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.secureLevel'],
     COLUMNS['document.secureReasons'],
     COLUMNS['document.sourceId'],
-    COLUMNS['document.quality.reliabilityOfCollection'],
+    COLUMNS['document.linkings.collectionQuality'],
     COLUMNS['unit.det'],
     COLUMNS['gathering.conversions.dayOfYearBegin'],
     COLUMNS['gathering.conversions.dayOfYearEnd'],
@@ -472,9 +466,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       {
         header: 'reliability', fields: [
           'unit.reportedTaxonConfidence',
-          'unit.quality.taxon.reliability',
-          'unit.quality.taxon.source',
-          'document.quality.reliabilityOfCollection',
+          'unit.interpretations.recordQuality',
+          'document.linkings.collectionQuality',
           'unit.recordBasis'
         ]
       },

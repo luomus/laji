@@ -1,0 +1,11 @@
+@import 'vars';
+
+.key {
+  color: $neutral-7;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+.value {
+  overflow: hidden;
+  -ms-overflow-style: none;
+}

@@ -9,16 +9,35 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 export class ImagesComponent implements OnChanges {
 
   @Input() document: any;
+  @Input() highlight: any;
+  @Input() eventOnImageClick = false;
+  @Input() showViewSwitch = false;
+  @Input() showPopover = false;
+  @Input() showOverlay = true;
+  @Input() showExtraInfo = true;
+  @Input() showLinkToSpeciesCard = false;
+  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
+  @Input() sort: string[];
+  @Input() shortcut = true;
+  @Input() view: 'compact'|'annotation'|'full'|'full2' = 'annotation';
+  @Input() views = ['compact', 'full'];
 
-  documentImages = [];
-  gatheringImages = [];
-  unitImages = [];
+  documentImages;
+  gatheringImages;
+  unitImages;
+  loading: boolean;
 
   ngOnChanges() {
     this.initImages();
   }
 
   private initImages() {
+
+  this.documentImages = [];
+  this.gatheringImages = [];
+  this.unitImages = [];
+  this.loading = true;
+
     if (!this.document) {
       return;
     }
@@ -31,14 +50,18 @@ export class ImagesComponent implements OnChanges {
           this.gatheringImages = this.gatheringImages.concat(gathering.media);
         }
         if (gathering.units) {
-          gathering.units.map(unit => {
-            if (unit.media) {
-              this.unitImages = this.unitImages.concat(unit.media);
-            }
-          });
+          gathering.units.filter(unit => unit.unitId === this.highlight).map(
+              item => {
+                if (item.media) {
+                  this.unitImages = this.unitImages.concat(item.media);
+                }
+              }
+          );
         }
       });
     }
+
+    this.loading = false;
   }
 
 }

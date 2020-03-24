@@ -1,0 +1,50 @@
+<!--<p>observation-effective-tags-taxon works!</p>-->
+
+<div class="effective-taxon-tags">
+    <laji-row *ngIf="unit.interpretations && unit.interpretations.recordQuality" [title]="'annotation.quality.grade' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+        <div *ngIf="annotationResolving; else recordNoResolving">
+            <laji-spinner></laji-spinner>
+        </div>
+        <ng-template #recordNoResolving>
+            {{ unit.interpretations.recordQuality | warehouse | label }}
+        </ng-template>
+    </laji-row>
+    <laji-row [title]="'annotation.effectiveTags' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+        <div *ngIf="annotationResolving; else tagsNoResolving">
+            <laji-spinner></laji-spinner>
+        </div>
+        <ng-template #tagsNoResolving>
+            <div *ngIf="!unit.interpretations || !unit.interpretations.effectiveTags || unit.interpretations.effectiveTags.length === 0; else tags">
+                <span>-</span>
+              </div>
+              <ng-template #tags>
+                  <div class="tag" *ngFor="let addedTag of unit.interpretations.effectiveTags" [ngSwitch]="addedTag | warehouse ">
+                      <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[addedTag | warehouse ].type }}" >
+                          <span>{{ addedTag | warehouse | label }}</span>
+                      </div>
+                  </div>
+              </ng-template>
+        </ng-template>
+    </laji-row>
+    <laji-row  [title]="'annotation.effectiveTaxon' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+        <div *ngIf="annotationResolving; else taxonNoResolving">
+            <laji-spinner></laji-spinner>
+        </div>
+        <ng-template #taxonNoResolving>
+            <div *ngIf="unit.linkings && unit.linkings.taxon || unit.taxonVerbatim || unit.reportedInformalTaxonGroup">
+                <span *ngIf="unit.linkings && unit.linkings.taxon; else taxonVerbatim">
+                    <laji-taxon-name [taxon]="unit.linkings.taxon"></laji-taxon-name>
+                </span>
+                <ng-template #taxonVerbatim>
+                   <span *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup">{{ unit.taxonVerbatim | toQName | label }}</span>
+                </ng-template>
+                <ng-template #reportedInformalTaxonGroup>
+                    <span>{{ unit.reportedInformalTaxonGroup | toQName | label }}</span>
+                </ng-template>
+                <span class="small-text" *ngIf="haschangedTaxon">{{ 'annotation.effectiveTaxon.comment' | translate }}</span>
+            </div>
+        </ng-template>
+    </laji-row>
+</div>
+
+

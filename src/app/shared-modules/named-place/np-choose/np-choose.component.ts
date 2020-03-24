@@ -15,6 +15,7 @@ import { WINDOW } from '@ng-toolkit/universal';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { ExtendedNamedPlace } from '../model/extended-named-place';
 import { isPlatformBrowser } from '@angular/common';
+import { LoadedElementsStore } from '../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
   selector: 'laji-np-choose',
@@ -23,9 +24,10 @@ import { isPlatformBrowser } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NpChooseComponent implements OnInit, OnChanges {
-  active = 'list';
+  activeIndex = 0;
+  loadedTabs = new LoadedElementsStore(['list', 'map']);
+
   height = '600px';
-  mapIsActivated = false;
   _namedPlaces: ExtendedNamedPlace[] = [];
 
   @Input() documentForm: any;
@@ -33,6 +35,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
   @Input() visible = true;
   @Input() allowCreate = true;
   @Input() userID: string;
+  @Input() showMap = true;
 
   @Output() activePlaceChange = new EventEmitter<number>();
   @Output() createButtonClick = new EventEmitter();
@@ -53,16 +56,18 @@ export class NpChooseComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
+    this.loadedTabs.load(this.activeIndex);
     this.updateHeight();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentForm']) {
       if (this.documentForm && this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.startWithMap) {
-        this.active = 'map';
-        this.mapIsActivated = true;
+        this.activeIndex = this.loadedTabs.getIdxFromName('map');
+        this.loadedTabs.load(this.activeIndex);
       } else {
-        this.active = 'list';
+        this.activeIndex = this.loadedTabs.getIdxFromName('list');
+        this.loadedTabs.load(this.activeIndex);
       }
     }
   }
@@ -89,12 +94,10 @@ export class NpChooseComponent implements OnInit, OnChanges {
     }
   }
 
-  setActive(newActive: string) {
-    this.active = newActive;
-    if (newActive === 'map') {
-      this.mapIsActivated = true;
-    }
-    this.tabChange.emit(newActive);
+  setActive(newActive: number) {
+    this.activeIndex = newActive;
+    this.loadedTabs.load(newActive);
+    this.tabChange.emit(this.loadedTabs.getNameFromIdx(newActive));
   }
 
   @Input() set activeNP(idx: number) {
@@ -104,15 +107,6 @@ export class NpChooseComponent implements OnInit, OnChanges {
   onActivePlaceChange(idx: number) {
     this.activeNP = idx;
     this.activePlaceChange.emit(this._activeNP);
-  }
-
-  showMap() {
-    return !(
-      this.documentForm &&
-      this.documentForm.namedPlaceOptions &&
-      this.documentForm.namedPlaceOptions.hideMapTab &&
-      this.documentForm.namedPlaceOptions.hideMapTab === true
-    );
   }
 
   isSent(np: NamedPlace) {

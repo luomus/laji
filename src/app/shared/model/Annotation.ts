@@ -1,3 +1,5 @@
+import { DecimalPipe } from '@angular/common';
+
 /**
  * API documentation
  * To use this api you need an access token.  To getList the token, send a post request with your email address to api-users
@@ -24,14 +26,10 @@ export interface Annotation {
      * QName for MA.person
      */
     annotationByPerson?: string;
-    byPerson?: string;
-
     /**
      * QName for KE.informationSystem
      */
     annotationBySystem?: string;
-    bySystem?: string;
-
     byRole?: string;
 
     annotationClass?: Annotation.AnnotationClassEnum;
@@ -57,18 +55,34 @@ export interface Annotation {
 
     opinion?: string;
 
+    identification?: Annotation.Identification;
+
     type?: Annotation.TypeEnum;
 
   addedTags?: string[];
   removedTags?: string[];
 
+  deleted?: boolean;
+
+  valid?: boolean;
+
+  occurrenceAtTimeOfAnnotation?: Annotation.Occurrence;
+
 }
 export namespace Annotation {
+
+  export interface Identification {
+    taxon: string;
+    taxonID: string;
+    taxonSpecifier: string;
+  }
 
   export enum AnnotationRoleEnum {
     expert = 'MMAN.expert',
     basic = 'MMAN.basic',
-    owner = 'MMAN.owner'
+    owner = 'MMAN.owner',
+    ictAdmin = 'MMAN.ictAdmin',
+    formAdmin = 'MMAN.formAdmin',
   }
 
   export enum AnnotationClassEnum {
@@ -93,4 +107,18 @@ export namespace Annotation {
       TypeAcknowledged = <any> 'MAN.typeAcknowledged',
       TypeUnidentifiable = <any> 'MAN.typeUnidentifiable'
   }
+
+  export interface Occurrence {
+    countryVerbatim: string;
+    dateBegin: string;
+    dateEnd: string;
+    locality: string;
+    municipalityVerbatim: string;
+    taxonId: string;
+    taxonVerbatim: string;
+    wgs84centerPointLat: number;
+    wgs84centerPointLon: number;
+  }
+
+
 }

@@ -162,7 +162,7 @@ export interface WarehouseQueryInterface {
   superRecordBasis?: Array<string>;
   recordBasis?: Array<string>;
   lifeStage?: Array<string>;
-  taxonReliability?: Array<string>;
+  recordQuality?: Array<string>;
   sex?: Array<string>;
   documentId?: Array<string>;
   gatheringId?: Array<string>;
@@ -194,6 +194,7 @@ export interface WarehouseQueryInterface {
   ykj10km?: string;
   ykj10kmCenter?: string;
   unidentified?: boolean;
+  needsCheck?: boolean;
   cache?: boolean;
   reliable?: boolean;
   observerPersonToken?: string;
@@ -208,7 +209,7 @@ export interface WarehouseQueryInterface {
   typeOfOccurrenceIdNot?: Array<string>;
   pairCounts?: boolean;
   birdAssociationAreaId?: Array<string>;
-  reliabilityOfCollection?: Array<string>;
+  collectionQuality?: Array<string>;
   secureLevel?: Array<string>;
   includeSubCollections?: boolean;
   nativeOccurrence?: boolean;
@@ -221,5 +222,6 @@ export interface WarehouseQueryInterface {
   _coordinatesIntersection?: number;
   primaryHabitat?: Array<string>;
   anyHabitat?: Array<string>;
+  effectiveTag?: Array<string>;
   formId?: string;
 }

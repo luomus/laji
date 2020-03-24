@@ -21,7 +21,7 @@ export class AvailableFieldsComponent {
 
   fieldType = FieldType;
 
-  doValueSelect(event: Event) {
+  doValueSelect(event: Event): void {
     const select = event.target as HTMLSelectElement;
     const value = select.value;
     select.value = '';

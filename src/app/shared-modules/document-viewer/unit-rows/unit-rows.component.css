@@ -1,0 +1,9 @@
+.name-taxon {
+    margin: 20px 0 10px 0;
+    display: block;
+}
+
+.tags {
+    display: inline-block;
+    margin-right: 5px;
+}

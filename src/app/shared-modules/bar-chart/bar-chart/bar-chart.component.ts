@@ -30,14 +30,11 @@ export class BarChartComponent implements OnInit {
 
   constructor(
     public elm: ElementRef<HTMLCanvasElement>
-    ) {
-    const top = elm.nativeElement.getBoundingClientRect().top;
-  }
+    ) {}
 
   initActiveClickAreas = false;
 
   ngOnInit() {
-    // console.log(this.baseChartComponent);
   }
 
   onClick(event) {

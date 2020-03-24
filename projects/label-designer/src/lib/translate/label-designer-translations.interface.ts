@@ -13,6 +13,8 @@ export interface LabelDesignerTranslationsInterface {
   'Labels'?: string;
   'Recent files'?: string;
   'Label fields'?: string;
+  'Repeat'?: string;
+  'Skip'?: string;
   'Settings'?: string;
   'Help'?: string;
   'Close menu'?: string;
@@ -91,6 +93,7 @@ export interface LabelDesignerTranslationsInterface {
   'Field cannot fit the label!'?: string;
   'Are you sure that you want to remove this?'?: string;
   'Could not find label information from the file!'?: string;
+  'Include separator only when following field has data'?: string;
   'Map values'?: string;
   'Map column'?: string;
   'Add unique values from data'?: string;

@@ -20,6 +20,15 @@ p, li, h1, h2, h3, h4, h5, h6, blockquote, caption {
   max-width: 800px;
 }
 
+em {
+  margin-right: 5px;
+}
+
+code {
+  color: #217dbb;
+  background-color: #d9edf7;
+}
+
 #lajiApp {
   height: 100%;
   display: flex;
@@ -134,6 +143,14 @@ laji-locale-sv > div,
   display: inline;
 }
 
+.container-icon-text {
+  display: flex
+}
+
+.container-icon-text .text {
+  line-height: 1.3;
+}
+
 .separated-list li:after {
   content: ", ";
 }
@@ -143,6 +160,10 @@ laji-locale-sv > div,
 }
 
 .separated-list li:last-of-type:after {
+  content: "";
+}
+
+.separated-list li.no-comma:after {
   content: "";
 }
 
@@ -206,6 +227,10 @@ laji-locale-sv > div,
   padding-right: 30px;
   background-size: 20px auto !important;
   background-position: center right !important;
+}
+
+option:disabled {
+  color: #bababa;
 }
 
 /** Viewer **/
@@ -345,6 +370,15 @@ treenode:last-child > .tree-node > .tree-children::after {
   min-width: 400px;
 }
 
+.popover-lg {
+  border: none;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1), 0 4px 16px 0 rgba(0,0,0,0.1);
+  .popover-arrow {
+    border-right-color: rgba(0,0,0,.1) !important;
+    border-left-color: rgba(0,0,0,.1) !important;
+  }
+}
+
 .small-flag {
   height: 11px;
   width: auto;
@@ -356,10 +390,10 @@ treenode:last-child > .tree-node > .tree-children::after {
   height: 100%;
 }
 .laji-map-dialog {
-  z-index: 1051;
+  z-index: 1071;
 }
 .laji-map-blocker {
-  z-index: 1050;
+  z-index: 1070;
 }
 /** Laji-Map **/
 
@@ -492,14 +526,6 @@ body > .select2-container.open {
 }
 
 /* Bootstrap theme */
-
-.raised-1 {
-  box-shadow: 1px 1px 2px -1px #000
-}
-
-.raised-1 :active {
-  box-shadow: none;
-}
 
 /* Helper class to show styles when focus */
 .btn-default-focus {
@@ -736,6 +762,20 @@ body > .ui-select-bootstrap.open {
   background: white;
 }
 
+.sidebar-content-wrapper {
+  nav {
+    min-width: 200px;
+  }
+
+  h4, h5 {
+    max-width: 200px;
+    font-weight: 600;
+    color: $neutral-6;
+    font-size: $fs-3;
+    letter-spacing: .5px;
+  }
+}
+
 .dropdown-menu {
   z-index: 1032;
 }
@@ -815,6 +855,20 @@ body > .ui-select-bootstrap.open {
   background-color: rgba(0,0,0,.05);
 }
 /** /scrollbar **/
+
+@media (min-width: 768px){
+  .modal-annotation {
+      width: 90%;
+  }
+}
+
+
+@media (min-width: 1660px){
+  .modal-annotation {
+      width: 1600px;
+  }
+}
+
 
 @media only screen and (min-width : 768px) {
   .modal-dialog {
@@ -1003,6 +1057,15 @@ body > .ui-select-bootstrap.open {
   margin-top:20px;
 }
 
+.block {
+  display: block;
+}
+
+.no-padding {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 
 /* CTA Buttons */
 
@@ -1018,11 +1081,6 @@ body > .ui-select-bootstrap.open {
 .cta:hover {
   background-color: $color-main-dark;
   color:white;
-}
-
-
-.label-info{
-  background-color: $color-main-dark;
 }
 
 .nav-pills>li>a{
@@ -1048,4 +1106,171 @@ body > .ui-select-bootstrap.open {
 
 a {
   color: $color-main-dark;
+}
+
+
+/* Annotation UI - tags */
+
+div.annotation-marker {
+  margin-bottom: 5px;
+  max-width: 200px;
+  border-radius: 50px;
+  padding: 2px 8px;
+}
+
+.annotation-marker-new {
+  margin-bottom: 5px;
+  max-width: 200px;
+  border-radius: 50px;
+  padding: 2px 8px;
+  background: white;
+  color: #000;
+}
+
+.annotation-marker-new:hover {
+  cursor: pointer;
+}
+
+.annotation-marker.positive {
+  color: #559933;
+  background-color: #f0f9ec;
+  border: 1px solid #a8d194;
+}
+
+.annotation-marker.neutral{
+  color: #000;
+  background: #c4c4c4;
+  border: 1px solid black;
+}
+
+.annotation-marker.check {
+  color: #998833;
+  background-color: #f9f7ec;
+  border: 1px solid #d1c794;
+}
+
+.annotation-marker.negative {
+  color: #993333;
+  background-color: #f9ecec;
+  border: 1px solid #d19494;
+}
+
+.annotation-marker.self {
+  color: #337799;
+  background-color: #ecf4f9;
+  border: 1px solid #94bdd1;
+}
+
+.annotation-marker.admin {
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #b4aeae;
+}
+
+
+.annotation-marker-new.positive {
+  color: #559933;
+  background-color: #f0f9ec;
+  border: 1px solid #a8d194;
+}
+
+.annotation-marker-new.neutral{
+  color: #000;
+  border: 1px solid #c0c0c0;
+}
+
+.annotation-marker-new.check {
+  /*color: #E16200;
+  border: 1px solid #E16200;*/
+  background: #FCF8E3;
+  border: 1px solid #DAC867;
+}
+
+.annotation-marker-new.negative {
+  /*color: #FF0000;
+  border: 1px solid #ff0000;*/
+  background: #ffc1b7;
+  border: 1px solid #ff5e46;
+}
+
+.annotation-marker-new.admin {
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #b4aeae;
+}
+
+.annotation-marker-new.positive:hover, .annotation-marker-new.positive.on {
+  background: #008400;
+  color:white;
+}
+
+.annotation-marker-new.neutral:hover {
+  border: 1px solid black;
+}
+
+.annotation-marker-new.neutral.on {
+  color: red;
+  text-decoration: line-through;
+}
+
+.annotation-marker-new.neutral.on span {
+  color: #000;
+}
+
+.annotation-marker-new.check:hover, .annotation-marker-new.check.on  {
+  background:#E16200;
+  color:white;
+}
+
+.annotation-marker-new.negative:hover , .annotation-marker-new.negative.on {
+  background:#ff0000;
+  color:white;
+}
+
+
+.annotation-marker-new.positive.off, .annotation-marker-new.neutral.off, .annotation-marker-new.check.off, .annotation-marker-new.negative.off {
+  background: #dedede;
+  color: #9e9e9e;
+  border: 1px solid #9e9e9e;
+  cursor: pointer;
+}
+
+.annotation-marker-new.admin:hover, .annotation-marker-new.admin.on {
+  color: #fff;
+  background-color: #000;
+}
+
+
+
+.annotation-star {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.annotation-star {
+  background: url('../static/images/icons/sprite-stars-annotations.png') 0 0 no-repeat;
+  background-repeat: no-repeat;
+}
+
+.annotation-star.positive {
+  background-position: -5px -3px;
+}
+
+.annotation-star.neutral {
+  background-position: -29px -3px;
+}
+
+.annotation-star.check {
+  background: none;
+  width: 0px
+}
+
+.annotation-star.negative {
+  background-position: -77px -3px;
+}
+
+.margin-bottom-5 {
+  margin-bottom: 5px;
 }

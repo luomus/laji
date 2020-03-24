@@ -1,0 +1,19 @@
+.spacer {
+  margin-bottom: 15px;
+}
+
+.action {
+  margin-left: 3px;
+}
+
+.mapping-body {
+  overflow: auto;
+}
+
+.map-buttons .btn {
+  margin-left: 5px;
+}
+
+.mapping-file-name {
+  font-weight: bold;
+}

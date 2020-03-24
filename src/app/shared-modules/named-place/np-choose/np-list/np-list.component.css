@@ -29,7 +29,5 @@
 }
 
 .filterBy {
-  padding: 15px;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  padding: 15px 0;
 }

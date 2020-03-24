@@ -17,7 +17,6 @@ export class ThemeOwnSubmissionsComponent implements OnInit {
   collectionID: string;
   rights$: Observable<Rights>;
   useLocalDocumentViewer = false;
-  gatheringGeometryJSONPath;
   columns = ['dateEdited', 'dateObserved', 'taxon', 'namedPlaceName', 'observer', 'id'];
   actions = ['edit', 'view', 'download', 'stats', 'delete'];
 
@@ -30,7 +29,7 @@ export class ThemeOwnSubmissionsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.themeFormService.getForm(this.route).subscribe(form => {
+    this.themeFormService.getForm(this.route.snapshot).subscribe(form => {
     this.collectionID = form.collectionID;
     const {options = {}, namedPlaceOptions = {}} = form;
     if (options.ownSubmissionsColumns) {
@@ -38,7 +37,6 @@ export class ThemeOwnSubmissionsComponent implements OnInit {
       this.actions = options.ownSubmissionsActions;
     }
     this.useLocalDocumentViewer = !!namedPlaceOptions.documentListUseLocalDocumentViewer;
-    this.gatheringGeometryJSONPath = namedPlaceOptions.documentViewerGatheringGeometryJSONPath;
 
     this.rights$ = this.formPermissionService.getRights(form).pipe(
       catchError(() => ObservableOf({edit: false, admin: false})));

@@ -31,6 +31,8 @@ export class FormService {
     [environment.lineTransectForm]: '/theme/linjalaskenta/form/MHL.1',
     [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/form/MHL.27',
     [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/form/MHL.28',
+    [environment.waterbirdPairForm]: '/theme/vesilintulaskenta/form/MHL.65',
+    [environment.waterbirdJuvenileForm]: '/theme/vesilintulaskenta/form/MHL.66',
     [environment.lolifeForm]: '/theme/lolife/form',
     [environment.batForm]: '/theme/lepakot/form',
     [environment.valioForm]: '/theme/valio/form',
@@ -87,12 +89,17 @@ export class FormService {
     return this.jsonFormCache[formId];
   }
 
-  getAllForms(lang: string): Observable<Form.List[]> {
+  getAllForms(lang: string, whitelistedOnly = false): Observable<Form.List[]> {
     this.setLang(lang);
     if (!this.allForms) {
       this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
-        map((forms) => forms.results.filter(form => this.isFormAllowed(form.id))),
+        map(data => data.results),
         shareReplay(1)
+      );
+    }
+    if (whitelistedOnly) {
+      return this.allForms.pipe(
+        map((forms) => forms.filter(form => this.isFormAllowed(form.id))),
       );
     }
     return this.allForms;

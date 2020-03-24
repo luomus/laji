@@ -66,6 +66,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
   @Output() reorder = new EventEmitter<any>();
+  @Output() select = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<{documentId: string, unitId: string}>();
 
   annotationTypes = Annotation.TypeEnum;
@@ -79,7 +80,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   _count: number;
   _offset: number;
   _columns: DatatableColumn[] = []; // This needs to be initialized so that the data table would do initial sort!
-  selected: any[] = [];
+  @Input() selected: any[] = [];
 
   initialized = false;
   private filterChange$ = new Subject();
@@ -277,6 +278,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this.cacheService.setItem(CACHE_COLUMN_SETTINGS, DatatableComponent.settings)
         .subscribe(() => {}, () => {});
     }
+  }
+
+  isFixedHeight() {
+    return this.height.substr(this.height.length - 2, 2).includes('px');
   }
 
   private updateFilteredRows() {

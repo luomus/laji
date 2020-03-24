@@ -1,29 +1,44 @@
 <div class="modal fade" bsModal #documentModal="bs-modal"
      (onHidden)="onModalHide()"
      (onShow)="pnModalShow()"
+     [config]="{ keyboard: false}" 
      tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" *ngIf="vm$ | async; let vm">
-      <div class="modal-body">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <ng-container *ngIf="vm.document">
-          <laji-document *ngIf="!vm.forceLocal && vm.document.publicityRestrictions === publicityRestrictionsPublic; else local"
-                         [highlight]="vm.highlight"
-                         [uri]="vm.document.id"
-                         [own]="vm.own"
-                         [openAnnotation]="vm.openAnnotation"
-                         [identifying]="vm.identifying"
-                         [useWorldMap]="vm.useWorldMap"
-          >
-          </laji-document>
-          <ng-template #local>
-            <laji-document-local [document]="vm.document">
-            </laji-document-local>
-          </ng-template>
-        </ng-container>
-      </div>
+    <div *ngIf="vm$ | async; let vm" class="modal-dialog" [ngClass]="{'modal-lg': !vm.openAnnotation, 'modal-annotation': vm.openAnnotation}">
+        <div class="modal-content">
+            <div class="modal-body">
+              <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <ng-container *ngIf="vm.document">
+                  <laji-document-annotation *ngIf="!vm.forceLocal && vm.openAnnotation; else normal"
+                    [highlight]="vm.highlight"
+                    [uri]="vm.document.id"
+                    [own]="vm.own"
+                    [result]="vm.result"
+                    [openAnnotation]="vm.openAnnotation"
+                    [identifying]="vm.identifying"
+                    [useWorldMap]="vm.useWorldMap"
+                    (close)="closeModal($event)"
+                >
+                </laji-document-annotation>
+                <ng-template #normal>
+                  <laji-document *ngIf="!vm.forceLocal && vm.document.publicityRestrictions === publicityRestrictionsPublic; else local"
+                                [highlight]="vm.highlight"
+                                [uri]="vm.document.id"
+                                [own]="vm.own"
+                                [openAnnotation]="vm.openAnnotation"
+                                [identifying]="vm.identifying"
+                                [useWorldMap]="vm.useWorldMap"
+                                (close)="closeModal($event)"
+                  >
+                  </laji-document>
+                </ng-template>
+                <ng-template #local>
+                  <laji-document-local [document]="vm.document" (close)="closeModal($event)">
+                  </laji-document-local>
+                </ng-template>
+              </ng-container>
+            </div>
+          </div>
     </div>
-  </div>
 </div>

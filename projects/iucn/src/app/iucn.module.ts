@@ -31,6 +31,7 @@ import { IucnRoutingModule } from './iucn-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponentModule } from '../../../../src/app/shared-modules/app-component/app-component.module';
 import { AppComponent } from '../../../../src/app/shared-modules/app-component/app.component';
+import { GraphQLModule } from '../../../../src/app/graph-ql/graph-ql.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -42,6 +43,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 
 @NgModule({
   imports: [
+    GraphQLModule,
     AppComponentModule,
     BrowserAnimationsModule,
     BrowserModule.withServerTransition({appId: 'laji-app'}),

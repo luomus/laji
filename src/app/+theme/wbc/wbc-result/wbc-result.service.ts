@@ -196,7 +196,7 @@ export class WbcResultService {
         query,
         ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
           'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon',
-          'document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin', 'gathering.team'],
+          'document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin'],
         ['document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin DESC'],
         10000,
         1,
@@ -216,7 +216,7 @@ export class WbcResultService {
     return this.getList(
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         query,
-        ['document.documentId', 'gathering.eventDate.begin', 'gathering.team'],
+        ['document.documentId', 'gathering.eventDate.begin'],
         ['gathering.eventDate.begin DESC'],
         10000,
         1,

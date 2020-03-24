@@ -6,7 +6,6 @@ import { ObservationActiveComponent } from './active/observation-active.componen
 import { SharedModule } from '../../shared/shared.module';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
-import { ThreeStateSwitchComponent } from './three-state-switch/three-state-switch.component';
 import { ThreeStateMultiSwitchComponent } from './three-state-multi-switch/three-state-multi-switch.component';
 import { SwitchRowComponent } from './three-state-multi-switch/switch-row/switch-row.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
@@ -28,7 +27,6 @@ import { HabitatSelectComponent } from './habitat-select/habitat-select.componen
   providers: [ AdminStatusInfoPipe ] ,
   declarations: [
     MetadataSelectComponent,
-    ThreeStateSwitchComponent,
     ThreeStateMultiSwitchComponent,
     SwitchRowComponent,
     ObservationActiveComponent,
@@ -41,7 +39,6 @@ import { HabitatSelectComponent } from './habitat-select/habitat-select.componen
   ],
   exports: [
     MetadataSelectComponent,
-    ThreeStateSwitchComponent,
     ThreeStateMultiSwitchComponent,
     SearchFiltersComponent,
     SelectComponent,

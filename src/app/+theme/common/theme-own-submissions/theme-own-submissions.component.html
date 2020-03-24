@@ -1,10 +1,10 @@
-<h3>{{ 'haseka.ownSubmissions.title' | translate }}</h3>
-<laji-own-submissions
-  [admin]="(rights$ | async)?.admin"
-  [columns]="columns"
-  [actions]="actions"
-  [collectionID]="collectionID"
-  [forceLocalDocument]="true"
-  [documentViewerGatheringGeometryJSONPath]="gatheringGeometryJSONPath"
-  [showDownloadAll]="false"></laji-own-submissions>
-
+<ng-container *ngIf="rights$ | async; let rights">
+  <h3>{{ (rights.admin ? 'haseka.ownSubmissions.allTitle' : 'haseka.ownSubmissions.title') | translate }}</h3>
+  <laji-own-submissions
+    [admin]="rights.admin"
+    [columns]="columns"
+    [actions]="actions"
+    [collectionID]="collectionID"
+    [forceLocalDocument]="true"
+    [showDownloadAll]="false"></laji-own-submissions>
+</ng-container>

@@ -153,11 +153,16 @@ export interface ILabelField {
    */
   separator?: string;
   /**
-   * If this is true then the separator is always displayed even when there no when.
+   * If this is true then the separator is always displayed even when there no value.
    *
    * if this is false then the separator is not displayed if there is no value.
    */
   separatorAlways?: boolean;
+
+  /**
+   * Include separator only if the following value has something.
+   */
+  separatorOnlyWhenNextNotEmpty?: boolean;
   /**
    * This tells if the field can hold array value or not
    */

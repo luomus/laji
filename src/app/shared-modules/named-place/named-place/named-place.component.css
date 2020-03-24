@@ -18,19 +18,11 @@
 }
 
 .nav-margin {
-  margin-top: 66px;
+  margin-top: 55px;
 }
 
 .no-flex {
   flex: 0 0 auto;
-}
-
-.laji-form-help-glyph {
-  margin-left: 5px;
-  border-radius: 9px;
-  color: white;
-  padding: 0px 6px;
-  font-size: 13px;
 }
 
 .choose-label {

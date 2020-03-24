@@ -11,6 +11,7 @@ import { Global } from '../../../../environments/global';
 export class FormCategorySurveyComponent {
 
   themes = Global.formsTheme;
+  waterbirdForm = Global.forms.waterbirdPairForm;
 
   @Input() title: string;
   @Input() formList: FormList[] = [];

@@ -1,0 +1,13 @@
+.all-units-btn {
+    margin-top: 15px;
+  }
+  
+  @media print
+  {
+    .gathering {
+      page-break-inside: avoid;
+      margin-bottom: 20px;
+    }
+  
+  }
+  

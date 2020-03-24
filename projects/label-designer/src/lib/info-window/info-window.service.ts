@@ -45,7 +45,7 @@ export class InfoWindowService {
   /**
    * Closes the dialog and sends the closing value to the observable that was returned when the dialog was opened.
    */
-  close(value?: any) {
+  close(value?: any): void {
     this.closeSubject.next(value);
     this.visibilitySource.next(false);
   }
@@ -53,14 +53,14 @@ export class InfoWindowService {
   /**
    * @internal
    */
-  visibilityAsObservable() {
+  visibilityAsObservable(): Observable<boolean> {
     return this.visibilitySource.asObservable();
   }
 
   /**
    * @internal
    */
-  dataAsObservable() {
+  dataAsObservable(): Observable<IInfoWindow> {
     return this.dataSource.asObservable();
   }
 }

@@ -127,109 +127,16 @@
 
 <!-- DATE -->
 <section class="laji-panel" laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']">
-  <div>
-    <div>
-      <label>{{ 'observation.form.time' | translate }}</label>
-      <laji-info>{{ 'observation.info.time' | translate }}</laji-info>
-    </div>
-    <laji-datepicker
-      [(ngModel)]="formQuery.timeStart"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
-      [format]="dateFormat"
-      (select)="onFormQueryChange()"
-      (change)="onFormQueryChange()"
-      name="timeStart"></laji-datepicker>
-    <laji-datepicker
-      [(ngModel)]="formQuery.timeEnd"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
-      [toLastOfYear]="true"
-      [format]="dateFormat"
-      (select)="onFormQueryChange()"
-      (change)="onFormQueryChange()"
-      name="timeEnd"></laji-datepicker>
-    <div class="btn-group">
-      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">{{ 'observations.form.1d' | translate }}</button>
-      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">{{ 'observations.form.7d' | translate }}</button>
-      <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
-        {{ 'observation.form.thisYear' | translate }}
-      </button>
-    </div>
-  </div>
-
-  <div *ngIf="advancedMode || query.season">
-    <div>
-      <label>{{ 'observation.form.season' | translate }}</label>
-      <laji-info>{{ 'observation.info.season' | translate }}</laji-info>
-    </div>
-    <laji-season [season]="query.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
-  </div>
-  <ng-container *ngIf="advancedMode || visibleAdvanced['time']">
-    <div>
-      <div>
-        <label>{{ 'observation.form.loaded' | translate }}</label>
-        <laji-info>{{ 'observation.info.loaded' | translate }}</laji-info>
-      </div>
-      <laji-datepicker
-        [(ngModel)]="query.loadedSameOrAfter"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
-        [format]="dateFormat"
-        (select)="onQueryChange()"
-        (change)="onQueryChange()"
-        name="timeStart"></laji-datepicker>
-      <laji-datepicker
-        [(ngModel)]="query.loadedSameOrBefore"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
-        [toLastOfYear]="true"
-        [format]="dateFormat"
-        (select)="onQueryChange()"
-        (change)="onQueryChange()"
-        name="timeEnd"></laji-datepicker>
-      <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
-        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.7d' | translate }}</button>
-        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'loadedSameOrAfter', 'loadedSameOrBefore')">
-          {{ 'observation.form.thisYear' | translate }}
-        </button>
-      </div>
-    </div>
-
-    <div>
-      <div>
-        <label>{{ 'observation.form.firstLoaded' | translate }}</label>
-        <laji-info>{{ 'observation.info.firstLoaded' | translate }}</laji-info>
-      </div>
-      <laji-datepicker
-        [(ngModel)]="query.firstLoadedSameOrAfter"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
-        [format]="dateFormat"
-        (select)="onQueryChange()"
-        (change)="onQueryChange()"
-        name="timeStart"></laji-datepicker>
-
-      <laji-datepicker
-        [(ngModel)]="query.firstLoadedSameOrBefore"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
-        [toLastOfYear]="true"
-        [format]="dateFormat"
-        (select)="onQueryChange()"
-        (change)="onQueryChange()"
-        name="timeEnd"></laji-datepicker>
-
-      <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
-        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.7d' | translate }}</button>
-        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">
-          {{ 'observation.form.thisYear' | translate }}
-        </button>
-      </div>
-    </div>
-  </ng-container>
+  <laji-date-form [query]="query"
+                  [formQuery]="formQuery"
+                  [dateFormat]="dateFormat"
+                  [advancedMode]="advancedMode"
+                  [visibleAdvanced]="visibleAdvanced"
+                  (formQueryChange)="onFormQueryChange()"
+                  (queryChange)="onQueryChange()"
+                  (searchQueryChange)="updateSearchQuery($event[0], $event[1])"
+                  (updateTime)="updateTime($event[0], $event[1], $event[2])"
+  ></laji-date-form>
 </section>
 
 <!-- PLACE -->
@@ -394,6 +301,7 @@
   </ng-container>
 </section>
 
+<!-- Observer -->
 <section class="laji-panel" laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">
   <div>
     <div>
@@ -408,6 +316,7 @@
   </div>
 </section>
 
+<!-- Individual -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['individual']" [title]="'observation.form.unit' | translate" [autoToggle]="true"  [open]="visible['individual']">
   <div>
     <laji-metadata-select
@@ -493,18 +402,41 @@
   </div>
 </section>
 
+<!-- Quality -->
 <section class="laji-panel" laji-panel [title]="'observation.form.qualityTitle' | translate" [autoToggle]="true" [open]="visible['quality']">
   <laji-metadata-select
-    [(ngModel)]="query.taxonReliability"
+    [(ngModel)]="query.recordQuality"
     [info]="'observation.info.reliability' | translate"
     (ngModelChange)="onQueryChange()"
     [multiple]="true"
     [useFilter]="false"
-    name="taxonReliability"
+    name="recordQuality"
     [mapToWarehouse]="true"
     [placeholder]="'reliability' | translate"
-    [skip]="['MAN.annotationClassAcknowledged']"
-    [alt]="'MAN.annotationClassEnum'"></laji-metadata-select>
+    [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>
+  <laji-select
+    [selected]="[query.needsCheck]"
+    (selectedChange)="indirectQueryChange('needsCheck', $event[0])"
+    [multiple]="false"
+    [useFilter]="false"
+    [title]="'observation.form.identify' | translate"
+    [info]="'observation.info.identify' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.identify.true' | translate)},
+        {id: false, value: ('observation.form.identify.false' | translate)}
+      ]"></laji-select>
+  <ng-container *ngIf="advancedMode || query.collectionQuality">
+    <laji-metadata-select
+      name="collectionQuality"
+      [(ngModel)]="query.collectionQuality"
+      (ngModelChange)="onQueryChange()"
+      [mapToWarehouse]="true"
+      [multiple]="true"
+      [useFilter]="false"
+      [placeholder]="'observation.form.collectionQuality' | translate"
+      [info]="'observation.info.collectionQuality' | translate"
+      [alt]="'MY.collectionQualityEnum'"></laji-metadata-select>
+  </ng-container>
   <ng-container *ngIf="advancedMode || query.annotated">
     <laji-select
       [selected]="[query.annotated]"
@@ -512,10 +444,23 @@
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.annotated' | translate"
+      [info]="'observation.info.annotated' | translate"
       [options]="[
         {id: true, value: ('observation.form.annotatedTrue' | translate)},
         {id: false, value: ('observation.form.annotatedFalse' | translate)}
       ]"></laji-select>
+  </ng-container>
+  <ng-container *ngIf="advancedMode || query.effectiveTag">
+    <laji-metadata-select
+      name="effectiveTag"
+      [(ngModel)]="query.effectiveTag"
+      (ngModelChange)="onQueryChange()"
+      [mapToWarehouse]="true"
+      [multiple]="true"
+      [useFilter]="true"
+      [placeholder]="'observation.form.effectiveTag' | translate"
+      [info]="'observation.info.effectiveTag' | translate"
+      [field]="'MMAN.tag'"></laji-metadata-select>
   </ng-container>
   <ng-container *ngIf="advancedMode || query.qualityIssues">
     <laji-select
@@ -533,6 +478,7 @@
   </ng-container>
 </section>
 
+<!--Sources -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
   <laji-metadata-select
     [(ngModel)]="query.collectionId"
@@ -543,20 +489,6 @@
     [info]="'observation.info.dataset' | translate"
     [mapToWarehouse]="false"
     name="collectionID"></laji-metadata-select>
-  <laji-select
-    [selected]="query.reliabilityOfCollection"
-    (selectedChange)="indirectQueryChange('reliabilityOfCollection', $event)"
-    [multiple]="true"
-    [useFilter]="false"
-    [title]="'observation.form.reliabilityOfCollection' | translate"
-    [info]="'observation.info.reliabilityOfCollection' | translate"
-    [options]="[
-      {id: '1', value: '★'},
-      {id: '2', value: '★★'},
-      {id: '3', value: '★★★'},
-      {id: '4', value: '★★★★'},
-      {id: '5', value: '★★★★★'}
-    ]"></laji-select>
   <laji-metadata-select
     [(ngModel)]="query.sourceId"
     [info]="'observation.info.system' | translate"
@@ -567,6 +499,7 @@
     [field]="'KE.informationSystem'"></laji-metadata-select>
 </section>
 
+<!-- Scientific collections -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['collection']" [title]="'observation.form.collectionTitle' | translate" [autoToggle]="true"  [open]="visible['collection']">
   <div>
     <label><laji-checkbox [(value)]="formQuery.onlyFromCollectionSystems" (valueChange)="onOnlyFromCollectionCheckBoxToggle()"></laji-checkbox>{{ 'observation.form.collection' | translate }}</label>
@@ -586,6 +519,7 @@
     name="collectionID"></laji-metadata-select>
 </section>
 
+<!-- IDs, keywords -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['keywords']" [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
   <div>
     <div>
@@ -613,6 +547,7 @@
   </div>
 </section>
 
+<!-- Fetures of spcies -->
 <section class="laji-panel" laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
   <ng-container *ngIf="advancedMode || query.administrativeStatusId">
     <p>
@@ -679,10 +614,14 @@
   </div>
 </section>
 
+<!-- Invasive species  -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode" [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true"  [open]="visible['invasive']">
   <div *lajiForTypes="['vir']">
     <laji-metadata-select
+      [(ngModel)]="query.invasive"
+      (ngModelChange)="onQueryChange()"
       [multiple]="true"
+      [mapToWarehouse]="true"
       name="invasiveControlEffectiveness"
       [placeholder]="'MY.invasiveControlEffectiveness' | label"
       [alt]="'MY.invasiveControlEffectivenessEnum'"></laji-metadata-select>
@@ -705,6 +644,7 @@
   </div>
 </section>
 
+<!-- Images -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['image']" [title]="'observation.form.images' | translate" [autoToggle]="true" [open]="visible['image']">
   <div>
     <p>{{ 'observation.intro.images' | translate }}</p>
@@ -725,6 +665,7 @@
   </div>
 </section>
 
+<!-- Concealment level -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secret']">
   <laji-metadata-select
     [info]="'observation.info.secureLevel' | translate"
@@ -739,7 +680,8 @@
     [alt]="'MX.secureLevels'"></laji-metadata-select>
 </section>
 
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['identify']" [title]="'observation.form.identify' | translate" [autoToggle]="true" [open]="visible['identify']">
+<!-- Help identify -->
+<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['identify']" [title]="'observation.form.unidentified.title' | translate" [autoToggle]="true" [open]="visible['identify']">
   <div>
     <label><laji-checkbox [value]="query.unidentified" (valueChange)="onCheckBoxToggle('unidentified', true)"></laji-checkbox>{{ 'observation.form.unidentified' | translate }}</label>
     <laji-info [html]="'observation.info.unidentified' | translate"></laji-info>

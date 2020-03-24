@@ -18,6 +18,7 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};
   @Input() useWorldMap = true;
+  @Input() zoomToData = false;
 
   publicity = Document.PublicityRestrictionsEnum;
 

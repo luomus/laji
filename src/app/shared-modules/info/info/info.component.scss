@@ -1,0 +1,53 @@
+@import 'vars';
+
+.laji-form-help-glyph {
+  margin-left: 5px;
+  border-radius: 9px;
+  padding: 0 4px;
+  font-size: 13px;
+}
+.modal {
+  font-weight: normal;
+}
+
+.label-info {
+  color: $primary-1;
+  background-color: $primary-5;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2);
+  &:hover {
+    background-color: $primary-4;
+  }
+}
+
+@media only screen and (max-width : 768px) {
+  .laji-form-help-glyph {
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    margin:3px 3px 3px 5px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    padding: 6px 4px;
+    font-size: 16px;
+  }
+
+  .laji-form-help-glyph strong {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .label-info {
+    color: $primary-6;
+    background-color: $neutral-2;
+    &:hover {
+      background-color: $neutral-1;
+    }
+  }
+}
+
+@media only screen and (max-width : 767px) {
+  .modal {
+    margin-top: 80px;
+  }
+}

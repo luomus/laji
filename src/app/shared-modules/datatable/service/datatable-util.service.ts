@@ -78,7 +78,7 @@ export class DatatableUtil {
         observable = ObservableOf(value.status.replace('MX.iucn', '') + ' (' + value.year + ')');
         break;
       case 'user':
-        observable = this.getUsers(value);
+        observable = this.userService.getPersonInfo(value);
         break;
       case 'species':
         observable = this.getTaxon(value, 'speciesScientificName');
@@ -113,18 +113,21 @@ export class DatatableUtil {
   }
 
   private getPublications(values): Observable<string> {
-    return this.getArray(values, (value) => {
-      return this.publicationService.getPublication(value, this.translate.currentLang).pipe(
-        map((res: Publication) => {
-          return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : value;
-        }));
-    }, '; ');
-  }
-
-  private getUsers(values): Observable<string> {
-    return this.getArray(values, (value) => {
-      return this.userService.getPersonInfo(value, 'fullNameWithGroup');
-    }, '; ');
+    if (!Array.isArray(values)) {
+      values = [values];
+    }
+    const labelObservables = [];
+    for (let i = 0; i < values.length; i++) {
+      labelObservables.push(
+        this.publicationService.getPublication(values[i], this.translate.currentLang).pipe(
+          map((res: Publication) => {
+            return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : values[i];
+          }))
+      );
+    }
+    return ObservableForkJoin(labelObservables).pipe(
+      map(labels => labels.join('; '))
+    );
   }
 
   private getHabitats(obj): Observable<string> {

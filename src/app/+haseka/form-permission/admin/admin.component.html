@@ -1,45 +1,43 @@
-<div class="container form-admin">
-  <div class="row" id="wrapper">
-    <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-2 col-lg-2">
-      <h3 class="menu-title">{{ collectionId | collectionName }}</h3>
-      <ul class="sidebar-nav">
-        <li><a [routerLink]="['./']">
-          Ohje
-        </a></li>
-        <li><a [routerLink]="['accept']">
-          Pääsypyynnöt
-          <span
-              *ngIf="formPermission && formPermission.permissionRequests && formPermission.permissionRequests.length > 0"
-              class="badge pull-right">
-            {{ formPermission.permissionRequests.length }}
-          </span>
-        </a></li>
-        <li><a [routerLink]="['manage/editors']">
-          Hyväksytyt
-          <span
-                  *ngIf="formPermission && formPermission.editors && formPermission.editors.length > 0"
-                  class="badge pull-right">
-            {{ formPermission.editors.length }}
-          </span>
-        </a></li>
-        <li><a [routerLink]="['manage/admins']">
-          Ylläpitäjät
-          <span
-            *ngIf="formPermission && formPermission.admins && formPermission.admins.length > 0"
-            class="badge pull-right">
-            {{ formPermission.admins.length }}
-          </span>
-        </a></li>
-        <li><a [routerLink]="['participants']">
-          Osallistujaraportti
-        </a></li>
-        <li *ngIf="backPath"><a [routerLink]="[backPath]" [queryParams]="backQuery">
-          Takaisin
-        </a></li>
-      </ul>
+<lu-sidebar>
+  <nav>
+    <h4 [innerHTML]="collectionId | collectionName"></h4>
+    <lu-sidebar-link [link]="['./']">
+      Ohje
+    </lu-sidebar-link>
+    <lu-sidebar-link [link]="['accept']">
+      Pääsypyynnöt
+      <span
+        *ngIf="formPermission && formPermission.permissionRequests && formPermission.permissionRequests.length > 0"
+        class="badge pull-right">
+          {{ formPermission.permissionRequests.length }}
+      </span>
+    </lu-sidebar-link>
+    <lu-sidebar-link [link]="['manage/editors']">
+      Hyväksytyt
+      <span
+        *ngIf="formPermission && formPermission.editors && formPermission.editors.length > 0"
+        class="badge pull-right">
+          {{ formPermission.editors.length }}
+      </span>
+    </lu-sidebar-link>
+    <lu-sidebar-link [link]="['manage/admins']">
+      Ylläpitäjät
+      <span
+        *ngIf="formPermission && formPermission.admins && formPermission.admins.length > 0"
+        class="badge pull-right">
+          {{ formPermission.admins.length }}
+      </span>
+    </lu-sidebar-link>
+    <lu-sidebar-link [link]="['participants']">
+      Osallistujaraportti
+    </lu-sidebar-link>
+    <lu-sidebar-link *ngIf="backPath" [link]="[backPath]" [linkParams]="backQuery">
+      Takaisin
+    </lu-sidebar-link>
+  </nav>
+  <main>
+    <div class="container-fluid">
+    <router-outlet></router-outlet>
     </div>
-    <div class="col-sm-9 col-md-10 col-lg-10 nafi-content">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div>
+  </main>
+</lu-sidebar>

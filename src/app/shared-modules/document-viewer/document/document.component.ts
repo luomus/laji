@@ -9,7 +9,10 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
+  HostListener,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { interval as ObservableInterval, Subscription, throwError as observableThrowError } from 'rxjs';
@@ -18,6 +21,8 @@ import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
+import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
+import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 
 
 @Component({
@@ -36,6 +41,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @Input() hideHeader = false;
   @Input() identifying = false;
 
+  @Output() close = new EventEmitter<boolean>();
+
   collectionContestFormId = Global.forms.collectionContest;
 
   externalViewUrl: string;
@@ -51,6 +58,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   unitCnt;
   isViewInited = false;
   showOnlyHighlighted = true;
+  childEvent = false;
+  childComunicationsubscription: Subscription;
   highlightParents: string[] = [];
   @SessionStorage() showFacts = false;
   private _uri: string;
@@ -58,12 +67,17 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
   private metaFetch: Subscription;
+  subscriptParent: Subscription;
+  annotationResolving: boolean;
+
 
   constructor(
     private warehouseApi: WarehouseApi,
     private userService: UserService,
     private cd: ChangeDetectorRef,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    private childComunication: DocumentViewerChildComunicationService,
+    private taxonTagEffective: TaxonTagEffectiveService
   ) { }
 
   ngOnInit() {
@@ -71,26 +85,48 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       this.personID = person.id;
       this.cd.markForCheck();
     });
+
+    this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
+      this.childEvent = info;
+      this.cd.markForCheck();
+   });
+
+   this.subscriptParent = this.taxonTagEffective.childEventListner().subscribe(event => {
+      this.annotationResolving = event;
+      if (this.annotationResolving) {
+        this.cd.markForCheck();
+        this.updateDocument();
+
+      }
+    });
   }
 
   ngAfterViewInit() {
     this.isViewInited = true;
     this.updateDocument();
+    this.cd.detectChanges();
   }
 
   ngOnChanges() {
     this.hasDoc = undefined;
     if (this.isViewInited) {
       this.updateDocument();
+      this.cd.detectChanges();
     }
   }
 
   ngOnDestroy() {
     if (this.interval) {
       this.interval.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
     }
     if (this.metaFetch) {
       this.metaFetch.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
+    }
+    if (this.subscriptParent) {
+      this.subscriptParent.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
     }
   }
 
@@ -182,6 +218,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   }
 
   private parseDoc(doc, found) {
+    this.cd.detectChanges();
     this.hasDoc = found;
     this.unitCnt = 0;
     if (found) {
@@ -244,5 +281,19 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     }
     this.cd.markForCheck();
   }
+
+  closeDocument() {
+    this.close.emit(true);
+  }
+
+
+  @HostListener('window:keydown', ['$event'])
+  annotationKeyDown(e: KeyboardEvent) {
+    if (e.keyCode === 27 && !this.childEvent) {
+       e.stopImmediatePropagation();
+       this.closeDocument();
+      }
+  }
+
 
 }

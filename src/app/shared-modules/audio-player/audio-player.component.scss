@@ -1,0 +1,95 @@
+@import '../../../styles/_styles.scss'; 
+
+div {
+  &.spectrum-popup {
+    img {
+       max-width: 100%; 
+    }
+  }
+  &.player-audio {
+    position: relative;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    div {
+      &.player-audio-child {
+        color: #fff;
+        padding: 5px 0;
+        &:nth-child(3) {
+          width: 100%;
+        }
+        &:nth-child(1){
+          width: 70%;
+        }
+        &:nth-child(2) {
+          width:30%;
+        } 
+        div {
+          &.buttons {
+            position: relative;
+            span {
+              color: #204d74;
+              cursor: pointer;
+            }
+          }
+          &.volume-bar{
+            position: relative;
+            width: 75%;
+            height: 4px;
+            background-color: #fff;
+            display: inline-block;
+            cursor: pointer;
+            div {
+              &.volume-bar-active {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 6px;
+                border-radius: 2px;
+                max-width: 100%;
+                width: 100%;
+                background-color: #000;
+              }
+            }
+          }
+          &.info {
+            text-align: center;
+            div {
+              &.spectogram {
+                display: inline-block
+              }
+            }
+          }
+        }  
+        button {
+          background: transparent;
+          border: 1px solid #204d74;
+          color: #000;
+          &.inline {
+            display: inline-block;
+            vertical-align: -webkit-baseline-middle;
+            vertical-align: -moz-baseline-middle;
+          }
+          &.play {
+            margin-right: 10px;
+            padding: 4px 10px;
+            color:#204d74;
+            &:last-child {
+              margin-right: 0px;
+            }
+          }
+          &.save {
+            position: absolute;
+            left: 0px;
+            padding: 5px;
+          }
+        }
+      }
+    }
+  }
+}
