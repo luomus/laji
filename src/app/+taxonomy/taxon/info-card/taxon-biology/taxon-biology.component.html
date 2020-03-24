@@ -40,8 +40,8 @@
                     <h4 *ngIf="variable.variable !== 'MX.ingressText' && !groupHasTranslation[activeDescription].groups[i].values[y]">
                       {{ variable.title | multiLang }}
                     </h4>
-                    <strong *ngIf="variable.variable === 'MX.ingressText' && !groupHasTranslation[activeDescription].groups[i].values[y]" [innerHTML]="variable.content | multiLang : true"></strong>
-                    <span *ngIf="variable.variable !== 'MX.ingressText' && !groupHasTranslation[activeDescription].groups[i].values[y]" [innerHTML]="variable.content | multiLang : true"></span>
+                    <strong *ngIf="variable.variable === 'MX.ingressText' && !groupHasTranslation[activeDescription].groups[i].values[y]" [innerHTML]="variable.content | multiLang"></strong>
+                    <span *ngIf="variable.variable !== 'MX.ingressText' && !groupHasTranslation[activeDescription].groups[i].values[y]" [innerHTML]="variable.content | multiLang"></span>
                     <div *ngIf="group.group === 'MX.SDVG5' && variable.variable === 'MX.habitat'">
                       <div class="col-lg-6 col-md-6 col-xs-10">
                         <span *ngIf="!variable.variable"><h4>{{ 'iucn.filter.habitat' | translate }}</h4></span>

@@ -19,18 +19,18 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
 
   }
 
-  transform(value: any, addError: boolean, useFallback = true, lang?: string): any {
+  transform(value: any, useFallback = true, lang?: string): any {
     if (typeof value === 'string' || typeof value !== 'object') {
       return value;
     }
     if (Array.isArray(value)) {
-      return value.map(v => this.transform(v, addError, useFallback, lang));
+      return value.map(v => this.transform(v, useFallback, lang));
     }
 
-    this.value = this.pickLang(value, addError, useFallback, lang);
+    this.value = this.pickLang(value, useFallback, lang);
     if (!this.onLangChange) {
       this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-        this.value = this.pickLang(value, addError, useFallback, lang);
+        this.value = this.pickLang(value, useFallback, lang);
         this._ref.markForCheck();
       });
     }
@@ -44,16 +44,13 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  private pickLang(value, error, useFallback, lang?: string) {
+  private pickLang(value, useFallback, lang?: string) {
     lang = lang || this.translate.currentLang;
     const hasLang = MultiLangService.hasValue(value, lang);
     if (!hasLang && !useFallback) {
       return '';
     }
-    if (error && !hasLang) {
-      return '<p class="error-content">' + this.translate.instant('translationsMissingNew') + '</p>' +
-      MultiLangService.getValue(value, lang, '(%lang%) %value%');
-    }
+
     return MultiLangService.getValue(value, lang, '%value% (%lang%)');
   }
 }

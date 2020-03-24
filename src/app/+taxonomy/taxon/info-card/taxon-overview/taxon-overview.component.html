@@ -16,7 +16,7 @@
           ></laji-image-gallery>
         </div>
         <h4 *ngIf="ingress && contentHasLanguage" [innerHTML]="ingress | multiLang"></h4>
-        <span *ngIf="description && contentHasLanguage" [innerHTML]="description | multiLang : true"></span>
+        <span *ngIf="description && contentHasLanguage" [innerHTML]="description | multiLang"></span>
         <div *ngIf="ylesta">
           <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
         </div>
