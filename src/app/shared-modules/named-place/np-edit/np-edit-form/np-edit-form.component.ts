@@ -138,7 +138,23 @@ export class NpEditFormComponent implements OnInit {
 
     data.geometry = formData.geometry;
 
+    if (this.namedPlaceOptions && this.namedPlaceOptions.prepopulatedDocumentFields) {
+      this.mergePrepopulatedDocument(data, formData);
+    }
+
     return Promise.resolve(data);
+  }
+
+  private mergePrepopulatedDocument(namedPlace, formData) {
+    namedPlace.prepopulatedDocument = this.namedPlace && this.namedPlace.prepopulatedDocument || {};
+    if (formData.prepopulatedDocument) {
+      namedPlace.prepopulatedDocument = merge(
+        namedPlace.prepopulatedDocument,
+        formData.prepopulatedDocument,
+        { arrayMerge: Util.arrayCombineMerge }
+      );
+    }
+    return namedPlace;
   }
 
   private parseErrorMessage(err) {
