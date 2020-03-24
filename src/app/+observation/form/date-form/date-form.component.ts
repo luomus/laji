@@ -27,7 +27,7 @@ export class DateFormComponent implements OnInit, OnDestroy {
 
   @Output() formQueryChange = new EventEmitter<void>();
   @Output() queryChange = new EventEmitter<void>();
-  @Output() seachQueryChange = new EventEmitter<any>();
+  @Output() searchQueryChange = new EventEmitter<any>();
   @Output() updateTime = new EventEmitter<any>();
 
   // Datepicker component emits a value change event every time it receives an update
@@ -88,7 +88,7 @@ export class DateFormComponent implements OnInit, OnDestroy {
   }
 
   updateSearchQuery(field, value) {
-    this.seachQueryChange.next([field, value]);
+    this.searchQueryChange.next([field, value]);
   }
 
   onUpdateTime(...args) {

@@ -13,6 +13,10 @@ label {
   color: $neutral-8;
 }
 
+.disabled {
+  opacity: 0.5;
+}
+
 input {
   position: relative;
   margin: unset;

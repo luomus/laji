@@ -13,6 +13,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { Area } from '../../../shared/model/Area';
 import { BaseDataService } from '../../../graph-ql/service/base-data.service';
+import { SelectOptions } from '../select/select.component';
+import { AnnotationService } from '../../document-viewer/service/annotation.service';
+import { MultiLangService } from '../../lang/service/multi-lang.service';
+import { Annotation } from '../../../shared/model/Annotation';
 
 
 export interface MetadataSelectPick {
@@ -50,7 +54,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() disabled = false;
 
   lang: string;
-  _options: {id: string, value: string, info: string}[] = [];
+  _options: SelectOptions[] = null;
   active = [];
   selectedTitle = '';
   shouldSort = false;
@@ -71,6 +75,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   }
 
   constructor(public warehouseMapper: WarehouseValueMappingService,
+              private annotationService: AnnotationService,
               private metadataService: MetadataService,
               private collectionService: CollectionService,
               private areaService: AreaService,
@@ -160,7 +165,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   }
 
   initActive(): any {
-    if (!this.value) {
+    if (!this.value || !this._options) {
       this.active = [];
       this.selectedTitle = '';
       this.cd.markForCheck();
@@ -219,6 +224,11 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     if (this.field) {
       this.shouldSort = true;
       switch (this.field) {
+        case 'MMAN.tag':
+          return this.annotationService.getAllTags('multi').pipe(
+            map(tags => tags.filter(t => !t.requiredRolesAdd || !t.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.formAdmin))),
+            map(tags => tags.map(t => ({id: t.id, value: MultiLangService.getValue(t.name as any, this.lang)})))
+          );
         case 'MY.collectionID':
           return this.collectionService.getAll(this.lang);
         case <any>Area.AreaType.Biogeographical:
@@ -239,7 +249,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     }
     this.shouldSort = false;
     return this.baseDataService.getBaseData().pipe(
-      map(data => data.alts),
+      map(data => data.alts || []),
       map(alts => alts.find(alt => alt.id === this.alt)),
       map(alt => (alt && alt.options || []).map(option => ({id: option.id, value: option.label, info: this.addOptionInfo(option)}))),
       map(options => this.whiteList ? options.filter(option => this.whiteList.includes(option.id)) : options),

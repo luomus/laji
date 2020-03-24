@@ -81,6 +81,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     Annotation.AnnotationClassEnum.AnnotationClassNeutral,
     Annotation.AnnotationClassEnum.AnnotationClassAcknowledged
   ];
+  tmpTags: Annotation[];
 
   emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
   annotationTagsObservation = Global.annotationTags;
@@ -327,6 +328,15 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.filterBasicForm();
     }
 
+    if (this.expert && (this.annotation.addedTags.indexOf('MMAN.3') !== -1 || this.annotation.addedTags.indexOf('MMAN.5') !== -1)) {
+      this.annotation.addedTags = this.annotation.addedTags.filter(tag => {
+        if (this.annotationTagsObservation[tag].type !== 'check') {
+         return tag;
+        }
+      });
+    }
+
+
     this.annotationService
       .save(this.annotation)
       .subscribe(
@@ -360,6 +370,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         this.annotation.addedTags.splice(index, 1);
       }
 
+
       if (index_same === -1 ) {
         this.annotation.addedTags.push(value.id);
         if (value === 'MMAN.3') {
@@ -368,7 +379,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       } else {
 
       }
-
+      this.checkInsideRemovableTags(value);
     } else {
       const index = this.annotation.addedTags.indexOf(value.id);
       if (index > -1) {
@@ -376,8 +387,76 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       } else {
         this.annotation.addedTags.push(value.id);
       }
+
+      this.checkInsideRemovableTags(value);
     }
+
+
     this.annotation.addedTags = [...this.annotation.addedTags];
+  }
+
+  checkInsideRemovableTags(value) {
+    this.annotationRemovableTags$.subscribe(data => {
+      this.tmpTags = data;
+      if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.8') === -1
+      && this.annotation.addedTags.indexOf('MMAN.9') === -1 && this.annotation.addedTags.indexOf('MMAN.3') === -1) {
+        if (this.annotation.removedTags.indexOf('MMAN.5') !== -1 || this.annotation.removedTags.indexOf('MMAN.8') !== -1
+        || this.annotation.removedTags.indexOf('MMAN.9') !== -1 || this.annotation.removedTags.indexOf('MMAN.3') !== -1) {
+          this.tmpTags.forEach(tag => {
+            if ((tag.id === 'MMAN.5' || tag.id === 'MMAN.8' || tag.id === 'MMAN.9' || tag.id === 'MMAN.3')) {
+              this.addToRemoveTags(tag.id);
+            }
+          });
+          if (this.annotation.removedTags.indexOf(value.id) !== -1) {
+            this.addToRemoveTags(value.id);
+          }
+        }
+        if (value.id === 'MMAN.3' || value.id === 'MMAN.5') {
+          this.tmpTags.forEach(tag => {
+            if (this.annotationTagsObservation[tag.id].type === 'check') {
+                this.addToRemoveTags(tag.id);
+            }
+          });
+        }
+
+      } else {
+        this.tmpTags.forEach(tag => {
+          if (tag.id !== value.id) {
+            if ((tag.id === 'MMAN.5' || tag.id === 'MMAN.8' || tag.id === 'MMAN.9' || tag.id === 'MMAN.3')
+            && this.annotation.removedTags.indexOf(tag.id) === -1 && this.annotation.addedTags.indexOf(tag.id) === -1) {
+              this.addToRemoveTags(tag.id);
+            }
+            if (this.annotationTagsObservation[tag.id].type === 'check'
+            && (value.id === 'MMAN.5' || value.id === 'MMAN.3') && this.annotation.removedTags.indexOf(tag.id) === -1) {
+              this.addToRemoveTags(tag.id);
+              // this.annotation.addedTags.push(tag.id);
+            }
+          }
+        });
+        if (this.annotation.addedTags.indexOf('MMAN.5') !== -1 || this.annotation.addedTags.indexOf('MMAN.3') !== -1) {
+          this.tmpTags.forEach(tag => {
+            if (this.annotationTagsObservation[tag.id].type === 'check' && this.annotation.removedTags.indexOf(tag.id) === -1) {
+              this.addToRemoveTags(tag.id);
+            }
+          });
+        } else {
+          this.tmpTags.forEach(tag => {
+            if (this.annotationTagsObservation[tag.id].type === 'check' && this.annotation.removedTags.indexOf(tag.id) !== -1) {
+              if (this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1) {
+                const index = this.annotation.removedTags.indexOf(tag.id);
+                this.annotation.removedTags.splice(index, 1);
+              }
+            }
+          });
+        }
+
+        if (this.annotation.removedTags.indexOf(value.id) !== -1 &&
+        (this.annotationTagsObservation[value.id].type === 'positive' || this.annotationTagsObservation[value.id].type === 'negative' )) {
+          this.addToRemoveTags(value.id);
+        }
+      }
+    });
+
   }
 
 
@@ -425,16 +504,21 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
     if (
     ((
-    (this.annotation.notes === '' || this.annotation.notes === undefined) &&
-    (this.annotation.addedTags.length === 0) &&
-    (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)
-    ) && this.annotation.removedTags.length === 0) || (
+      (this.annotation.notes === '' || this.annotation.notes === undefined) &&
+      (this.annotation.addedTags.length === 0) &&
+      (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)) && this.annotation.removedTags.length === 0)
+    ||
+    (
       (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
-      (this.annotation.addedTags.indexOf('MMAN.5') !== -1 || this.annotation.addedTags.indexOf('MMAN.8') !== -1 ||
-      this.annotation.addedTags.indexOf('MMAN.9') !== -1)
-      && this.personRoleAnnotation === this.annotationRole.expert && this.expert && !this.isEditor
-      )
-      ) {
+      (this.annotation.addedTags.indexOf('MMAN.5') !== -1 || this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1) &&
+      this.personRoleAnnotation === this.annotationRole.expert && this.expert && !this.isEditor)
+    ||
+    (((this.personRoleAnnotation === this.annotationRole.expert && !this.expert) || (this.personRoleAnnotation === this.annotationRole.basic && this.expert)) &&
+    ((this.annotation.addedTags.length === 0 || (this.annotation.addedTags.length === 1 && (this.annotation.addedTags.indexOf('MMAN.5') !== -1 ||
+    this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1 ))) &&
+    (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
+    (this.annotation.notes === '' || this.annotation.notes === undefined)))
+    ) {
       return true;
     }
   }

@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import { GraphQLService, QueryRef } from './graph-ql.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -78,6 +78,8 @@ export class BaseDataService implements OnDestroy {
 
   ref: QueryRef<IBaseData>;
 
+  private retryFetch = false;
+  private retryCnt = 0;
   private readonly langSub: Subscription;
   private readonly langChangingSub = new BehaviorSubject(false);
   private readonly langChangingObs = this.langChangingSub.asObservable();
@@ -92,6 +94,7 @@ export class BaseDataService implements OnDestroy {
       fetchPolicy: 'cache-first'
     });
     this.langSub = this.translationService.onLangChange.subscribe(() => {
+      this.retryCnt = 0;
       this.langChangingSub.next(true);
       this.ref.refetch().then(() => {
         this.langChangingSub.next(false);
@@ -107,11 +110,24 @@ export class BaseDataService implements OnDestroy {
 
   getBaseData(): Observable<IBaseData> {
     return this.ref.valueChanges.pipe(
-      switchMap((data) => this.langChangingObs.pipe(
+      tap(data => data.errors ? this.retry() : null),
+      switchMap(data => this.langChangingObs.pipe(
         filter(loading => !loading),
         map(() => data)
       )),
       map(({data}) => data)
     );
+  }
+
+  private retry() {
+    if (this.retryCnt > 2 || this.retryFetch) {
+      return;
+    }
+    this.retryFetch = true;
+    this.retryCnt++;
+    setTimeout(() => {
+      this.retryFetch = false;
+      this.ref.refetch();
+    }, 1000);
   }
 }

@@ -18,7 +18,7 @@ interface ISections {
   sample?: Array<keyof WarehouseQueryInterface>;
   observer?: Array<keyof WarehouseQueryInterface>;
   individual: Array<keyof WarehouseQueryInterface>;
-  quality?: Array<keyof WarehouseQueryInterface>;
+  quality: Array<keyof WarehouseQueryInterface>;
   dataset: Array<keyof WarehouseQueryInterface>;
   collection: Array<keyof WarehouseQueryInterface>;
   keywords: Array<keyof WarehouseQueryInterface>;
@@ -97,7 +97,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
-    quality: ['recordQuality', 'annotated', 'qualityIssues', 'collectionQuality'],
+    quality: ['recordQuality', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     keywords: ['documentId', 'keyword'],
@@ -113,6 +113,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     time: ['firstLoadedSameOrAfter', 'firstLoadedSameOrBefore', 'loadedSameOrAfter', 'loadedSameOrBefore'],
     coordinate: ['coordinates' , 'coordinateAccuracyMax', 'sourceOfCoordinates'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
+    quality: [],
     dataset: ['collectionId', 'collectionQuality', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     keywords: ['documentId', 'keyword'],
@@ -129,8 +130,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   constructor(
     private observationFacade: ObservationFacade
   ) {
-    this.dataSource = Observable.create((observer: any) => {
-      observer.next(this.formQuery.taxon);
+    this.dataSource = new Observable((subscriber: any) => {
+      subscriber.next(this.formQuery.taxon);
     });
     this.dataSource = this.dataSource.pipe(
       distinctUntilChanged(),
