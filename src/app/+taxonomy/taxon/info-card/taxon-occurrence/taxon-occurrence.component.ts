@@ -19,6 +19,10 @@ export class TaxonOccurrenceComponent implements OnChanges {
 
   hasMonthDayData: boolean;
   hasYearData: boolean;
+  filterByRecordBasisTotal: number;
+  filterByLifeStageTotal: number;
+  filterBySexTotal: number;
+  filterByCollectionIdTotal: number;
 
   constructor() { }
 
@@ -28,6 +32,12 @@ export class TaxonOccurrenceComponent implements OnChanges {
 
     this.hasMonthDayData = undefined;
     this.hasYearData = undefined;
+    this.hasMonthDayData = undefined;
+    this.hasYearData = undefined;
+    this.filterByRecordBasisTotal = undefined;
+    this.filterByLifeStageTotal = undefined;
+    this.filterBySexTotal = undefined;
+    this.filterByCollectionIdTotal = undefined;
   }
 
 }

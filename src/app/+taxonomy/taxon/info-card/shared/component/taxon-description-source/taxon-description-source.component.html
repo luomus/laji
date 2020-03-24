@@ -9,7 +9,7 @@
 <ng-container *ngIf="taxonDescription && taxonDescription?.title[currentLang]">
   <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title | multiLang }}
 </ng-container>
-<ng-container *ngIf="taxonDescription?.speciesCardAuthors && hasSpeciesCard">
+<ng-container *ngIf="taxonDescription?.speciesCardAuthors">
   <br>
   <strong>{{ taxonDescription?.speciesCardAuthors.title | multiLang }}:</strong>
   <span [innerHTML]="taxonDescription?.speciesCardAuthors.content | multiLang"></span>

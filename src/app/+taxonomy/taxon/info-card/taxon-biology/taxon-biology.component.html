@@ -25,7 +25,7 @@
           {{ description.title ? (description.title | multiLang) : description.id }}
         </option>
       </select>
-      <div *ngIf="(taxonDescription[activeDescription].title[currentLang] || taxonDescription[activeDescription].speciesCardAuthors) || taxonDescription[activeDescription].totalVisible; else Nocontent">
+      <div *ngIf="(taxonDescription[activeDescription].title[currentLang] || taxonDescription[activeDescription].speciesCardAuthors); else Nocontent">
         <div class="panel-group" role="tablist" aria-multiselectable="true">
           <div *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index">
             <div class="panel panel-default"
