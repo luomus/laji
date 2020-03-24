@@ -91,10 +91,6 @@ export class NpListComponent {
       '$.prepopulatedDocument.deviceID': {
         label: 'np.list.col.deviceID',
       },
-      '$.prepopulatedDocument.additionalIDs[0]': {
-        label: 'route.nro',
-        width: 20
-      },
       '$.prepopulatedDocument.gatherings.length': {
         label: 'theme.waterbird.gatheringLength',
         width: 20
