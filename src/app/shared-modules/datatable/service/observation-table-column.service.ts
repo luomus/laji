@@ -163,7 +163,8 @@ export const COLUMNS: IColumns = {
   'unit.interpretations.recordQuality': {
     name: 'unit.interpretations.recordQuality',
     cellTemplate: 'warehouseLabel',
-    label: 'result.unit.quality.taxon'
+    label: 'result.unit.quality.taxon',
+    sortable: false
   },
   'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon'},
   'gathering.interpretations.countryDisplayname': {
@@ -216,7 +217,7 @@ export const COLUMNS: IColumns = {
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
-  'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel'},
+  'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel', sortable: false},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
   'gathering.conversions.dayOfYearEnd': {name: 'gathering.conversions.dayOfYearEnd'},
