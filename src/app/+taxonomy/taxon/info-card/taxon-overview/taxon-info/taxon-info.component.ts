@@ -15,7 +15,6 @@ export class TaxonInfoComponent implements OnInit {
   constructor(public translate: TranslateService) {}
 
   ngOnInit() {
-    console.log(this.taxon);
   }
 
 }
