@@ -161,7 +161,6 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     });
     this.categories = categories;
     this.changeDetector.markForCheck();
-    console.log(this.categories);
   }
 
 }

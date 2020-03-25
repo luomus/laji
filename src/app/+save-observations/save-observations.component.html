@@ -1,23 +1,23 @@
 <div class="main-container"> <!-- main container -->
   <section class="mb-8"> <!-- Tallenna luontohavaintoja lajitietokeskukseen -->
-    <h1>Tallenna luontohavaintoja lajitietokeskukseen</h1>
-    <p>lorem ipsum</p>
+    <h1 translate>saveObservations.h1</h1>
+    <p translate>saveObservations.desc</p>
     <div class="d-flex flex-row my-6">
       <div class="report-type-container mr-3"> <!-- Helppo -->
-        <h3>Helppo</h3>
+        <h3 translate>saveObservations.easy</h3>
         <ul>
-          <li>Ilmoita yksittäinen havainto</li>
-          <li>Kirjautumista ei tarvita</li>
-          <li>Et voi päivittää havaintoa lähetyksen jälkeen</li>
+          <li translate>saveObservations.easy.1</li>
+          <li translate>saveObservations.easy.2</li>
+          <li translate>saveObservations.easy.3</li>
         </ul>
-        <lu-button role="primary">Ilmoita havainto</lu-button>
+        <lu-button role="primary">{{ 'saveObservations.easy.report' | translate }}</lu-button>
       </div>
       <div class="report-type-container mx-3"> <!-- Mobiili -->
-        <h3>Mobiili</h3>
+        <h3 translate>saveObservations.mobile</h3>
         <ul>
-          <li>Ota kuva mobiilisovelluksella</li>
-          <li>Saat tunnistusapua heti</li>
-          <li>Pidä kirjaa omista havainnoistasi</li>
+          <li translate>saveObservations.mobile.1</li>
+          <li translate>saveObservations.mobile.2</li>
+          <li translate>saveObservations.mobile.3</li>
         </ul>
         <div class="mb-4">
           <a class="inaturalist-link" href="https://inaturalist.laji.fi/" target="_blank">
@@ -34,20 +34,20 @@
         </div>
       </div>
       <div class="report-type-container ml-3"> <!-- Monipuolinen -->
-        <h3>Monipuolinen</h3>
+        <h3 translate>saveObservations.vihko</h3>
         <ul>
-          <li>Pidä kirjaa omista havainnoistasi</li>
-          <li>Aktiiviharrastajan työkalupakki</li>
-          <li>Tallenna tehokkaasti tuhansia tietoja</li>
+          <li translate>saveObservations.vihko.1</li>
+          <li translate>saveObservations.vihko.2</li>
+          <li translate>saveObservations.vihko.3</li>
         </ul>
-        <lu-button>Oma vihko</lu-button>
+        <lu-button [anchor]="['/vihko']">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
       </div>
     </div>
   </section>
 
   <section class="mb-8"> <!-- Kansalaistiede -->
-    <h2>Kansalaistiede</h2>
-    <p>lorem ipsum</p>
+    <h2 translate>saveObservations.citizenScience</h2>
+    <p translate>saveObservations.citizenScience.desc</p>
     <div class="d-flex flex-row">
       <ng-container *ngFor="let form of citizenScienceForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
@@ -56,8 +56,8 @@
   </section>
 
   <section class="mb-8"> <!-- Tutkimusprojektit ja viranomaistyökalut -->
-    <h2>Tutkimusprojektit ja viranomaistyökalut</h2>
-    <p>lorem ipsum</p>
+    <h2 translate>saveObservations.researchProjects</h2>
+    <p translate>saveObservations.researchProjects.desc</p>
     <div class="d-flex flex-row">
       <ng-container *ngFor="let form of researchProjectForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>

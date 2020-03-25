@@ -1521,5 +1521,26 @@
   "form.participants.export.lastDoc": "Viimeksi osallistunut",
   "form.participants.export.docCount":  "Dokumenttien määrä",
   "navigation.syke-butterfly": "SYKE päiväperhosseuranta",
-  "theme.syke-butterfly.intro": "SYKE päiväperhosseuranta"
+  "theme.syke-butterfly.intro": "SYKE päiväperhosseuranta",
+
+  "saveObservations.h1": "Tallenna luontohavaintoja Lajitietokeskukseen",
+  "saveObservations.desc": "Tallentamalla lajihavaintosi johonkin Lajitietokeskuksen palveluun, tuot sen tutkijoiden ja muiden tiedontarvitsijoiden käytettäväksi ja valintasi mukaan Laji-fi portaaliin julkisesti nähtäväksi. Voit ilmoittaa yksittäisiä havaintoja, pitää omaa havaintopäiväkirjaa tai osallistua kansalaistiedehankkeisiin.",
+  "saveObservations.easy": "Helppo",
+  "saveObservations.easy.1": "Ilmoita yksittäinen havainto",
+  "saveObservations.easy.2": "Kirjautumista ei tarvita",
+  "saveObservations.easy.3": "Et voi päivittää havaintoa lähetyksen jälkeen",
+  "saveObservations.easy.report": "Ilmoita havainto",
+  "saveObservations.mobile": "Mobiili",
+  "saveObservations.mobile.1": "Ota kuva mobiilisovelluksella",
+  "saveObservations.mobile.2": "Saat tunnistusapua heti",
+  "saveObservations.mobile.3": "Pidä kirjaa omista havainnoistasi",
+  "saveObservations.vihko": "Monipuolinen",
+  "saveObservations.vihko.1": "Pidä kirjaa omista havainnoistasi",
+  "saveObservations.vihko.2": "Aktiiviharrastajan työkalupakki",
+  "saveObservations.vihko.3": "Tallenna tehokkaasti tuhansia tietoja",
+  "saveObservations.vihko.report": "Oma vihko",
+  "saveObservations.citizenScience": "Kansalaistiede",
+  "saveObservations.citizenScience.desc": "Osallistumalla kansalaistiedehankkeeseen kartutat tietoa suomalaisesta luonnosta ja opit uutta luonnon havainnoinnista. Tässä voi osallistua eri tahojen järjestämiin seuranta- ja kartoitushankkeisiin. Kaikkien havainnot tallentuvat Laji.fi:hin Vihkoon omalle tilillesi. Tutustu ja valitse itsellesi sopiva!",
+  "saveObservations.researchProjects": "Tutkimusprojektit ja viranomaistyökalut",
+  "saveObservations.researchProjects.desc": "Tutkimushankkeisiin osallistuminen vaatii osaamista tutkimuksen kohteesta. Osa hankkeista on suunnattu vain rajatulle ryhmälle."
 }

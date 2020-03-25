@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  color: $neutral-8;
 }
 
 .main-container {
@@ -28,4 +29,19 @@
 .inaturalist-link img {
   width: 175px;
   height: 50px;
+}
+
+h1 {
+  font-size: $fs-7;
+  color: $neutral-9;
+}
+
+h2 {
+  font-size: $fs-6;
+  color: $neutral-9;
+}
+
+h3 {
+  font-size: $fs-5;
+  color: $neutral-8;
 }

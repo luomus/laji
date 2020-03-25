@@ -1367,5 +1367,26 @@
   "form.participants.export.lastDoc": "Last participated",
   "form.participants.export.docCount":  "Document count",
   "navigation.syke-butterfly": "SYKE butterfly census",
-  "theme.syke-butterfly.intro": "SYKE butterfly census"
+  "theme.syke-butterfly.intro": "SYKE butterfly census",
+
+  "saveObservations.h1": null,
+  "saveObservations.desc": null,
+  "saveObservations.easy": null,
+  "saveObservations.easy.1": null,
+  "saveObservations.easy.2": null,
+  "saveObservations.easy.3": null,
+  "saveObservations.easy.report": null,
+  "saveObservations.mobile": null,
+  "saveObservations.mobile.1": null,
+  "saveObservations.mobile.2": null,
+  "saveObservations.mobile.3": null,
+  "saveObservations.vihko": null,
+  "saveObservations.vihko.1": null,
+  "saveObservations.vihko.2": null,
+  "saveObservations.vihko.3": null,
+  "saveObservations.mobile.report": null,
+  "saveObservations.citizenScience": null,
+  "saveObservations.citizenScience.desc": null,
+  "saveObservations.researchProjects": null,
+  "saveObservations.researchProjects.desc": null
 }
