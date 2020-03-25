@@ -22,7 +22,7 @@ import { LocalizeRouterService } from 'app/locale/localize-router.service';
 import { Router } from '@angular/router';
 
 const tabOrder = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
-                   'observations', 'specimens', 'endangerment', 'invasive' ];
+                   'specimens', 'endangerment', 'invasive' ];
 const basePath = '/taxon';
 
 @Component({
@@ -70,6 +70,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit() {
+
     if (this.hasImageData === undefined) {
       this.hasImageData = this.activeTab === 'images';
     }
@@ -102,7 +103,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         return prev;
       }, []);
 
-      this.hasBiologyData = !!this.taxon.primaryHabitat || !!this.taxon.secondaryHabitats || this.taxonDescription.length > 0;
+      // this.hasBiologyData = !!this.taxon.primaryHabitat || !!this.taxon.secondaryHabitats || this.taxonDescription.length > 0;
+      this.hasBiologyData = this.taxonDescription.length > 0;
       this.isEndangered = this.getIsEndangered(this.taxon);
 
       if (
