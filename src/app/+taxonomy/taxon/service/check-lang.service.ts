@@ -23,7 +23,7 @@ export class CheckLangService {
       });
     });
 
-    this.checkYlestagroup(this.checktranslation);
+    this.checkGeneralGroup(this.checktranslation);
 
     return this.checktranslation;
   }
@@ -50,7 +50,7 @@ export class CheckLangService {
 
   }
 
-  checkYlestagroup(data: any): any {
+  checkGeneralGroup(data: any): any {
 
     data.forEach((item, i) => {
       this.ylesta_index = undefined;
