@@ -26,6 +26,7 @@ import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.compo
 import { AppComponentModule } from '../shared-modules/app-component/app-component.module';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { SurveyBoxModule } from 'app/shared-modules/survey-box/survey-box.module';
+import { VihkoHomeComponent } from './vihko-home/vihko-home.component';
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import { SurveyBoxModule } from 'app/shared-modules/survey-box/survey-box.module
     FormCategoryComponent,
     FormCategorySurveyComponent,
     HasekaTermsComponent,
-    HasekaFeedbackComponent
+    HasekaFeedbackComponent,
+    VihkoHomeComponent
   ]
 })
 export class HasekaModule {

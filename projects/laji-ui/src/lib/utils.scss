@@ -183,6 +183,21 @@ $spacers: (
 );
 
 @each $spacer, $spacerPx in $spacers {
+  .m-#{$spacer} {
+    margin: $spacerPx;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $spacer, $spacerPx in $spacers {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:m-#{$spacer} {
+        margin: $spacerPx;
+      }
+    }
+  }
+}
+
+@each $spacer, $spacerPx in $spacers {
   .my-#{$spacer} {
     margin-top: $spacerPx;
     margin-bottom: $spacerPx;

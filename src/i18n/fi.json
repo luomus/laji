@@ -271,6 +271,7 @@
   "haseka.form.unsaved": "Viimeksi tallennettu {{saveTime}}",
   "haseka.form.unsavedNever": "Muutoksia ei ole vielä tallennettu",
   "haseka.forms.title": "Lomakkeet",
+  "haseka.home.title": "Oma vihko",
   "haseka.form.readonly": "Sinulla ei ole muokkausoikeutta",
   "haseka.instructions": "Ohjeet",
   "haseka.intro": "<p>Vihkoon voit tallentaa luontohavaintojasi sekä osallistua seuranta- ja kansalaistiedehankkeisiin. Palvelusta valittavien lomakkeiden määrä kasvaa jatkuvasti. Voit valita näistä itsellesi sopivan tavan tallentaa havaintojasi. Havainnot tulevat valintasi mukaan yleiseen käyttöön mm. harrastuksen, tutkimuksen ja viranomaistyön avuksi.</p>",
