@@ -46,7 +46,6 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   ) { }
 
   ngOnInit() {
-    console.log(this.annotations);
   }
 
   ngOnChanges() {
