@@ -42,14 +42,20 @@
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
               <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
-              <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
-            </li>
+            <ng-container *lajiBrowserOnly>
+              <ng-container *lajiForTypes="['dev', 'prod', 'vir']">
+                <li [routerLinkActive]="['active']" dropdown #saveDropdown="bs-dropdown" (mouseover)="saveDropdown.show()" (mouseleave)="saveDropdown.hide()">
+                  <a [routerLink]="['/save-observations'] | localize" dropdownToggle>{{ 'navigation.saveObservations' | translate }}</a>
+                  <ul *dropdownMenu role="menu" class="dropdown-menu">
+                    <li role="menuitem">
+                      <a [routerLink]="['/vihko'] | localize" class="navbar-link link">Oma Vihko</a>
+                    </li>
+                  </ul>
+                </li>
+              </ng-container>
+            </ng-container>
             <li [routerLinkActive]="['active']" *lajiForTypes="['vir']">
               <a [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
-            </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
-              <a [routerLink]="['/vihko'] | localize">{{ 'navigation.haseka' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
               <a [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
