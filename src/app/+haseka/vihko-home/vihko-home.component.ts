@@ -6,9 +6,5 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   templateUrl: './vihko-home.component.html',
   styleUrls: ['./vihko-home.component.scss']
 })
-export class VihkoHomeComponent implements OnInit, OnDestroy {
-  ngOnInit() {
-  }
-  ngOnDestroy() {
-  }
+export class VihkoHomeComponent {
 }
