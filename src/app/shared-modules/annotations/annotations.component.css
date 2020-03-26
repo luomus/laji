@@ -10,12 +10,7 @@ a {
 }
 
 .annotation {
-  background: #f9f9f9;
-  padding: 5px 10px 0 10px;
-  border: 1px solid #b2b2b2;
-  box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
+  padding: 5px 0px 0 0px;
 }
 
 .border {
@@ -54,12 +49,9 @@ a {
 
 .annotation-form {
   margin-top: 30px;
-  background: #f9f9f9;
+  background: #f2f2f2;;
   padding: 10px;
   border: 1px solid #b2b2b2;
-  box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 9px 8px 3px -4px rgba(0, 0, 0, 0.2);
 }
 
 

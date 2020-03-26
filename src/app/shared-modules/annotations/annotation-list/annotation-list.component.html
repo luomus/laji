@@ -64,7 +64,7 @@
                <div *ngIf="annotation.addedTags.length > 0">
                 <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags !== undefined && effectiveTags.indexOf(addedTag) !== -1 }">
                   <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
-                     <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker neutral" [ngClass]="{'': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) !== -1 , 'notEffective': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) === -1}" >
+                     <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker" [ngClass]="{'positive': annotationTagsObservation[addedTag | warehouse ].type==='positive', 'check': annotationTagsObservation[addedTag | warehouse ].type==='check', 'negative': annotationTagsObservation[addedTag | warehouse ].type==='negative', 'self': annotationTagsObservation[addedTag | warehouse ].type ==='info' }" >
                        <span>{{ addedTag | label: 'warehouse' }}</span>
                      </div>
                   </div>
@@ -158,7 +158,9 @@
             </div>
           </div>
           <ng-template #noEffectiveTags>
-            <span>-</span>
+            <div class="alert alert-info alert-small">
+              {{ 'annotation.notEffectiveTags' | translate }}
+            </div>
           </ng-template>
         </div>
       </div>

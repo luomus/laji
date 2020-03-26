@@ -15,7 +15,9 @@
         </div>
         <ng-template #tagsNoResolving>
             <div *ngIf="!unit.interpretations || !unit.interpretations.effectiveTags || unit.interpretations.effectiveTags.length === 0; else tags">
-                <span>-</span>
+                <div class="alert alert-info alert-small">
+                    {{ 'annotation.notEffectiveTags' | translate }}
+                </div>
               </div>
               <ng-template #tags>
                   <div class="tag" *ngFor="let addedTag of unit.interpretations.effectiveTags" [ngSwitch]="addedTag | warehouse ">
