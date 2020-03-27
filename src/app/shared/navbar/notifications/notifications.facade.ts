@@ -20,6 +20,8 @@ interface IRefreshDataResult {
   };
 }
 
+const NOTIFICATION_MAX_PAGESIZE = 100;
+
 const REFRESH_QUERY = gql`
   query($pageSize: Int, $personToken: String = "") {
     notifications(personToken: $personToken, pageSize: $pageSize) {
@@ -184,10 +186,15 @@ export class NotificationsFacade {
   markAllAsSeen(): Observable<void> {
     return subscribeWithWrapper(this.notifications$.pipe(
       take(1),
-      switchMap((notifications) => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+      switchMap((notifications) =>  {
+        const count = Math.ceil(notifications.total / NOTIFICATION_MAX_PAGESIZE);
+        const arr = new Array(count).fill('').map((val, idx) => idx + 1);
+        return of(...arr);
+      }),
+      concatMap((idx: number) => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
         personToken: this.userService.getToken(),
-        page: 1,
-        pageSize: notifications.total
+        page: idx,
+        pageSize: NOTIFICATION_MAX_PAGESIZE
       })),
       tap((notifications) => this.notificationsReducer(
           {...notifications, results: notifications.results.map((notification) => ({...notification, seen: true}))}
@@ -205,14 +212,14 @@ export class NotificationsFacade {
   removeAll(): Observable<void> {
     return subscribeWithWrapper(this.notifications$.pipe(
       switchMap((notifications) =>  {
-        const count = Math.ceil(notifications.total / 100);
-        const arr = new Array(count).map((val, idx) => idx);
+        const count = Math.ceil(notifications.total / NOTIFICATION_MAX_PAGESIZE);
+        const arr = new Array(count).fill('').map((val, idx) => idx + 1);
         return of(...arr);
       }),
       concatMap((idx: number) => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
         personToken: this.userService.getToken(),
         page: idx,
-        pageSize: 100
+        pageSize: NOTIFICATION_MAX_PAGESIZE
       })),
       switchMap((notifications) => forkJoin(notifications.results.map((notification) => this.subscribeRemove(notification))))
     ));
