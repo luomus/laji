@@ -9,10 +9,10 @@
 
 .main-container {
   max-width: 1000px;
+  padding: 0 20px;
 }
 
 .report-type-container {
-  flex-basis: 33%;
   padding: 20px;
   background-color: $neutral-1;
   box-shadow: 0 2px 6px 0 rgba(0,0,0,0.15);
