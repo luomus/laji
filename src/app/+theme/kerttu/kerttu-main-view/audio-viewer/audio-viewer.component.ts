@@ -1,157 +1,133 @@
-import {AfterViewChecked, ChangeDetectorRef, Component, ElementRef, HostListener, Inject, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import {IRecording} from '../../model/recording';
-import {DOCUMENT} from '@angular/common';
+import {ChangeDetectorRef, Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import { IRecording } from '../../model/recording';
+import { AudioService } from '../../service/audio.service';
+import { DOCUMENT } from '@angular/common';
+import { WINDOW } from '@ng-toolkit/universal';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'laji-audio-viewer',
   templateUrl: './audio-viewer.component.html',
   styleUrls: ['./audio-viewer.component.scss']
 })
-export class AudioViewerComponent implements AfterViewChecked, OnChanges {
-  @ViewChild('spectrogram', {static: true}) spectrogramRef: ElementRef<HTMLAudioElement>;
-  @ViewChild('scrollLine', {static: true}) scrollLineRef: ElementRef<HTMLAudioElement>;
-  @ViewChild('graph', {static: true}) graphRef: ElementRef<HTMLAudioElement>;
-  @ViewChild('audioPlayer', {static: true}) playerRef: ElementRef<HTMLAudioElement>;
-
+export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() recording: IRecording;
+
+  buffer: AudioBuffer;
+  spectrogramColormap$: any;
+  currentTime = 0;
 
   isPlaying = false;
 
-  private prevSpectrogramWidth: number;
-  private imageWidth = 500;
-  private minX = 30;
-  private maxX = 455;
+  sampleRate = 22050;
 
-  private onMouseMove = this.drag.bind(this);
-  private onMouseUp  = this.endDrag.bind(this);
-  private onButtonMouseUp = this.endInterval.bind(this);
+  private context: AudioContext;
+  private source: AudioBufferSourceNode;
+  private startOffset = 0;
+  private startTime: number;
 
-  private interval;
+  private audioSub: Subscription;
+  private timeupdateInterval;
 
   constructor(
+    @Inject(WINDOW) private window: Window,
     private cdr: ChangeDetectorRef,
+    private audioService: AudioService,
     @Inject(DOCUMENT) private document: Document,
   ) { }
 
-  ngAfterViewChecked() {
-    this.onResize();
+  ngOnInit() {
+    this.spectrogramColormap$ = this.audioService.getColormap();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.recording) {
-      this.playerRef.nativeElement.load();
+    this.clear();
+
+    if (this.recording) {
+      this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
+      this.audioSub = this.audioService.getAudioBuffer(this.recording.audio, this.context).subscribe((buffer) => {
+        this.buffer = buffer;
+        this.cdr.markForCheck();
+      });
     }
   }
 
-  @HostListener('window:resize')
-  onResize() {
-    const spectrogramWidth = this.spectrogramRef.nativeElement.offsetWidth;
-    if (spectrogramWidth === this.prevSpectrogramWidth) {
-      return;
-    }
-    this.prevSpectrogramWidth = spectrogramWidth;
-    this.updateScrollLinePosition();
+  ngOnDestroy() {
+    this.clear();
   }
 
   toggleAudio() {
-    const player = this.playerRef.nativeElement;
+    if (!this.buffer) {
+      return;
+    }
 
-    if (player.paused) {
-      player.play();
+    if (!this.isPlaying) {
       this.isPlaying = true;
+
+      if (this.currentTime === this.buffer.duration) {
+        this.currentTime = 0;
+      }
+      this.startOffset = this.currentTime;
+
+      this.source = this.context.createBufferSource();
+      this.source.buffer = this.buffer;
+      this.source.connect(this.context.destination);
+      this.source.start(0, this.currentTime);
+      this.startTime = this.context.currentTime;
+
+      this.source.onended = () => {
+        this.clearTimeupdateInterval();
+        this.updateCurrentTime();
+        this.isPlaying = false;
+        this.cdr.detectChanges();
+      };
+      this.startTimeupdateInterval();
     } else {
-      player.pause();
-      this.isPlaying = false;
+      this.source.stop(0);
     }
   }
 
-  setVolume(val: number) {
-    const player = this.playerRef.nativeElement;
-    player.volume = val / 100;
+  private startTimeupdateInterval() {
+    this.timeupdateInterval = setInterval(() => {
+      this.updateCurrentTime();
+      this.cdr.markForCheck();
+    }, 10);
   }
 
-  onAudioEnded() {
+  private clearTimeupdateInterval() {
+    if (this.timeupdateInterval) {
+      clearInterval(this.timeupdateInterval);
+    }
+  }
+
+  private updateCurrentTime() {
+    if (this.isPlaying) {
+      this.currentTime = this.startOffset + this.getPlayedTime();
+    } else {
+      this.currentTime = this.startOffset;
+    }
+
+    this.currentTime = Math.min(this.currentTime, this.buffer.duration);
+  }
+
+  private getPlayedTime() {
+    return (this.context.currentTime - this.startTime) * this.source.playbackRate.value;
+  }
+
+  private clear() {
+    if (this.audioSub) {
+      this.audioSub.unsubscribe();
+    }
+
+    this.clearTimeupdateInterval();
+
+    if (this.source && this.isPlaying) {
+      this.source.stop(0);
+    }
+
+    this.buffer = undefined;
+    this.currentTime = 0;
     this.isPlaying = false;
-  }
-
-  updateScrollLinePosition() {
-    const currentTime = this.playerRef.nativeElement.currentTime;
-    const duration = this.playerRef.nativeElement.duration;
-
-    const shrink = this.prevSpectrogramWidth / this.imageWidth;
-    const minX = this.minX * shrink;
-    const maxX = this.maxX * shrink;
-
-    const position = (minX + (currentTime / (duration || 1)) * (maxX - minX)) + '';
-    this.scrollLineRef.nativeElement.setAttribute('x1', position);
-    this.scrollLineRef.nativeElement.setAttribute('x2', position);
-  }
-
-  startDrag(e) {
-    e.preventDefault();
-    this.playerRef.nativeElement.pause();
-    this.document.addEventListener(
-      'mousemove', this.onMouseMove
-    );
-    this.document.addEventListener(
-      'mouseup', this.onMouseUp
-    );
-  }
-
-  startInterval(e, forward = true) {
-    e.preventDefault();
-    this.playerRef.nativeElement.pause();
-
-    this.interval = setInterval(() => {
-      if (forward) {
-        this.playerRef.nativeElement.currentTime += 0.5;
-      } else {
-        this.playerRef.nativeElement.currentTime -= 0.5;
-      }
-
-    }, 100);
-
-    this.document.addEventListener(
-      'mouseup', this.onButtonMouseUp
-    );
-  }
-
-  private drag(e) {
-    e.preventDefault();
-    const duration = this.playerRef.nativeElement.duration;
-    const shrink = this.spectrogramRef.nativeElement.offsetWidth / this.imageWidth;
-    const minX = this.minX * shrink;
-    const maxX = this.maxX * shrink;
-
-    const xPos = this.getMousePosition(e, this.graphRef.nativeElement).x;
-    const position = Math.min(Math.max(xPos, minX), maxX);
-    const time = (position - minX) / (maxX - minX) * (duration || 1);
-    this.playerRef.nativeElement.currentTime = time;
-    this.cdr.detectChanges();
-  }
-
-  private endDrag() {
-    this.document.removeEventListener(
-      'mousemove', this.onMouseMove
-    );
-    this.document.removeEventListener(
-      'mouseup', this.onMouseUp
-    );
-  }
-
-  private getMousePosition(e, elem) {
-    const CTM = elem.getScreenCTM();
-    return {
-      x: (e.clientX - CTM.e) / CTM.a - 1,
-      y: (e.clientY - CTM.f) / CTM.d
-    };
-  }
-
-  private endInterval() {
-    clearInterval(this.interval);
-
-    this.document.removeEventListener(
-      'mouseup', this.onButtonMouseUp
-    );
+    this.source = undefined;
   }
 }

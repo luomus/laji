@@ -4,7 +4,7 @@ import {
   distinctUntilChanged,
   map,
 } from 'rxjs/operators';
-import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
+import { hotObjectObserver } from '../../../shared/observable/hot-object-observer';
 
 export enum Step {
   fillExpertise,
