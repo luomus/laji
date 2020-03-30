@@ -107,8 +107,8 @@ export const Global = {
   annotationTags: {
     'MMAN.3': {
       value: 'MMAN.3',
-      quality: 'MMAN.typeAdmin',
-      type: 'admin'
+      quality: 'MMAN.typeNegativeQuality',
+      type: 'negative'
     },
     'MMAN.5': {
       value: 'MMAN.5',

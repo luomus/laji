@@ -1161,10 +1161,16 @@ div.annotation-marker {
   border: 1px solid #94bdd1;
 }
 
+.annotation-marker.info {
+  color: #337799;
+  background-color: #ecf4f9;
+  border: 1px solid #94bdd1;
+}
+
 .annotation-marker.admin {
-  color: #000;
-  background-color: #fff;
-  border: 1px solid #b4aeae;
+  color: #876503;
+  background-color: #f7df9a;
+  border: 1px solid #cb9600;
 }
 
 
