@@ -18,6 +18,7 @@ import { IdService } from '../../../shared/service/id.service';
 import { LajiTaxonSearch } from '../../../shared/model/LajiTaxonSearch';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
+import { CheckFocusService } from '../../../shared-modules/document-viewer/check-focus.service';
 
 @Component({
   selector: 'laji-annotation-form-new',
@@ -82,6 +83,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     Annotation.AnnotationClassEnum.AnnotationClassAcknowledged
   ];
   tmpTags: Annotation[];
+  isFocusedTaxonComment: any;
 
 
   emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
@@ -99,7 +101,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     private cd: ChangeDetectorRef,
     private el: ElementRef,
     private labelPipe: LabelPipe,
-    private loadingElements: LoadingElementsService
+    private loadingElements: LoadingElementsService,
+    private focus: CheckFocusService
   ) { }
 
   ngOnInit() {
@@ -542,6 +545,16 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     });
 
     return count > 0 ? true : false;
+  }
+
+  onFocus(event) {
+    if (event) {
+       this.isFocusedTaxonComment = event.target;
+       this.focus.emitChildEvent(true);
+    } else {
+       this.isFocusedTaxonComment = null;
+       this.focus.emitChildEvent(false);
+    }
   }
 
   protected makeLabel(value) {

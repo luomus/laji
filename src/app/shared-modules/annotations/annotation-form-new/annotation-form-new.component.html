@@ -86,7 +86,9 @@
             autocorrect="off"
             (change)="saveTaxon($event)"
             (typeaheadOnSelect)="select($event)"
-          >
+            (focus)="onFocus($event)"
+            (blur)="onFocus()"
+            >
           <ng-template #taxonItem let-model="item">
             <h5 class="autosuggest-value {{model.groups}} informal-group-image">
               {{ model.value }}
@@ -111,6 +113,8 @@
               name="taxonSpecifier"
               [disabled]="annotation.identification.taxon===''"
               [(ngModel)]="annotation.identification.taxonSpecifier"
+              (focus)="onFocus($event)"
+              (blur)="onFocus()"
               >
             </div>
           </div>
@@ -128,7 +132,9 @@
                   name="notes"
                   class="form-control feedback-text input-sm"
                   [required]="(!expert || (personRoleAnnotation!==annotationRole.expert && personRoleAnnotation!==annotationRole.ictAdmin)) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
-                  [(ngModel)]="annotation.notes"></textarea>
+                  [(ngModel)]="annotation.notes"
+                  (focus)="onFocus($event)"
+                  (blur)="onFocus()"></textarea>
       </div>
     </div>
     <div class="actions">

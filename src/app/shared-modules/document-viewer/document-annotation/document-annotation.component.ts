@@ -28,6 +28,7 @@ import { Person } from '../../../shared/model/Person';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
+import { CheckFocusService } from '../../../shared-modules/document-viewer/check-focus.service';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -88,6 +89,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   private metaFetch: Subscription;
   annotationResolving: boolean;
   subscriptParent: Subscription;
+  subscriptFocus: Subscription;
+  isfocusedCommentTaxon = false;
 
 
   constructor(
@@ -97,7 +100,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private appRef: ApplicationRef,
     private childComunication: DocumentViewerChildComunicationService,
     private taxonTagEffective: TaxonTagEffectiveService,
-    private loadingElements: LoadingElementsService
+    private loadingElements: LoadingElementsService,
+    private focus: CheckFocusService
   ) { }
 
   ngOnInit() {
@@ -124,6 +128,11 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;
+      this.cd.markForCheck();
+    });
+
+    this.subscriptFocus = this.focus.childEventListner().subscribe(info => {
+      this.isfocusedCommentTaxon = info;
       this.cd.markForCheck();
     });
 
@@ -162,6 +171,11 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     }
     if (this.subscriptParent) {
       this.subscriptParent.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
+    }
+
+    if (this.subscriptFocus) {
+      this.subscriptFocus.unsubscribe();
       this.childComunicationsubscription.unsubscribe();
     }
   }
@@ -344,13 +358,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
 @HostListener('window:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
-      if (e.ctrlKey && e.keyCode === 37 && !this.childEvent) { // left
+      if (e.ctrlKey && e.keyCode === 37 && !this.childEvent && !this.isfocusedCommentTaxon) { // left
         if (this.result && this.indexPagination > 0) {
           this.previous();
         }
       }
 
-      if (e.ctrlKey && e.keyCode === 39 && !this.childEvent) { // right
+      if (e.ctrlKey && e.keyCode === 39 && !this.childEvent && !this.isfocusedCommentTaxon) { // right
         if (this.result && this.indexPagination < this.result.length - 1) {
           this.next();
         }
