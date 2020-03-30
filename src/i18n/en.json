@@ -62,7 +62,7 @@
   "annotation.notEffectiveTags": "No effective tag(s)",
   "annotation.effectiveTaxon": "Effective observation taxon",
   "annotation.effectiveTaxon.comment": "Changed based on comment(s)",
-  "annotation.isEditorTaxon": "You are editor, you cannot add a new taxonomy",
+  "annotation.isEditorTaxon": "You cannot add new identifactions here for your own observations, do it by editing the original observation.",
   "annotation.delete": "Delete",
   "annotation.needsId": "Needs id",
   "annotation.needsCheck": "Disagreed",
