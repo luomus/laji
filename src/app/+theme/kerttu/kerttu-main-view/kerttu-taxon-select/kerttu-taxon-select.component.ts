@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from 
 import {map, switchMap, take} from 'rxjs/operators';
 import {forkJoin, Observable, of} from 'rxjs';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
-import {KerttuApi} from '../../kerttu-api';
+import {KerttuApi} from '../../service/kerttu-api';
 import {UserService} from '../../../../shared/service/user.service';
 import {PersonApi} from '../../../../shared/api/PersonApi';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';

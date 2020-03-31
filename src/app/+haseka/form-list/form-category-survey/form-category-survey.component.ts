@@ -16,6 +16,7 @@ export class FormCategorySurveyComponent {
   @Input() title: string;
   @Input() formList: FormList[] = [];
   @Input() tmpDocument: { [formId: string]: string } = {};
+  @Input() category: string;
 
   trackForm(idx, form) {
     return form ? form.id : undefined;

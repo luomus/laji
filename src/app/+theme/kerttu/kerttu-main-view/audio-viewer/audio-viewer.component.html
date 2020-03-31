@@ -1,33 +1,18 @@
-<div id="spectrogramContainer" #spectrogram>
-  <img src="{{recording?.spectrogram}}" alt="Spectrogram">
-  <svg #graph class="graph" xmlns="http://www.w3.org/2000/svg">
-    <g class="grid">
-      <line
-        #scrollLine
-        x1="0" x2="0" y1="0" y2="100%"
-        (mousedown)="startDrag($event)"
-      ></line>
-    </g>
-  </svg>
+<div id="spectrogramContainer">
+  <laji-audio-spectrogram
+    *ngIf="recording.audio"
+    [buffer]="buffer"
+    [colormap]="spectrogramColormap$ | async"
+    [currentTime]="currentTime"
+  ></laji-audio-spectrogram>
 </div>
 
 <div id="audioControls">
-  <button class="btn btn-default" (mousedown)="startInterval($event, false)">
-    <span class="fa fa-backward"></span>
-  </button>
   <button class="btn btn-default" (click)="toggleAudio()">
     <span
       class="fa"
-      [ngClass]="{'fa-play': !isPlaying, 'fa-stop': isPlaying}"
+      [ngClass]="{'fa-play': !isPlaying, 'fa-pause': isPlaying}"
     >
     </span>
   </button>
-  <button class="btn btn-default" (mousedown)="startInterval($event, true)">
-    <span class="fa fa-forward"></span>
-  </button>
-  <!--span class="fa fa-volume-up"></span>
-  <input id="volumeSlider" type="range" min="0" max="100" value="100" step="1" (input)="setVolume($event.target.value)" (change)="setVolume($event.target.value)"-->
-  <audio #audioPlayer class="hidden" controls="controls" (ended)="onAudioEnded()" (timeupdate)="updateScrollLinePosition()">
-    <source src="{{recording?.audio}}">
-  </audio>
 </div>

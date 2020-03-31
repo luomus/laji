@@ -81,8 +81,9 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
 import { ExpertiseFormComponent } from './kerttu/kerttu-main-view/expertise-form/expertise-form.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
-import { KerttuApi } from './kerttu/kerttu-api';
-import { KerttuFacade } from './kerttu/kerttu.facade';
+import { KerttuApi } from './kerttu/service/kerttu-api';
+import { KerttuFacade } from './kerttu/service/kerttu.facade';
+import { AudioService } from './kerttu/service/audio.service';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
 import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-letter-annotation/kerttu-letter-annotation.component';
@@ -91,6 +92,7 @@ import { KerttuTaxonSelectComponent } from './kerttu/kerttu-main-view/kerttu-tax
 import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-recording-annotation/kerttu-recording-annotation.component';
 import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
+import { AudioSpectrogramComponent } from './kerttu/kerttu-main-view/audio-spectrogram/audio-spectrogram.component';
 
 /* tslint:enable:max-line-length */
 
@@ -181,7 +183,8 @@ import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
     AudioViewerComponent,
     ThemeBreadcrumbComponent,
     KerttuTaxonSelectComponent,
-    KerttuRecordingAnnotationComponent
+    KerttuRecordingAnnotationComponent,
+    AudioSpectrogramComponent
   ],
   providers: [
     ResultService,
@@ -189,6 +192,7 @@ import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
     WbcResultService,
     KerttuApi,
     KerttuFacade,
+    AudioService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })
