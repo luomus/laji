@@ -62,7 +62,7 @@
   "annotation.notEffectiveTags": "Ei voimassa olevat tagit",
   "annotation.effectiveTaxon": "Voimassa oleva määritys",
   "annotation.effectiveTaxon.comment": "Muutettu kommenttien perusteella",
-  "annotation.isEditorTaxon": "Et voi lisätä uutta määritystä omalle havainnoillesi tätä kautta.",
+  "annotation.isEditorTaxon": "Et voi lisätä uutta määritystä omalle havainnoillesi tätä kautta. Tee muutokset suoraan havaintoon (esim. Vihkossa, jos havainto on tallennettu Vihkon avulla.)",
   "annotation.delete": "Poista",
   "annotation.needsId": "Määritettävä",
   "annotation.needsCheck": "Tarkistettava",
