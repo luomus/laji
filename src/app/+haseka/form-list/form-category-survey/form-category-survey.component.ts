@@ -22,4 +22,7 @@ export class FormCategorySurveyComponent {
     return form ? form.id : undefined;
   }
 
+  get showWaterbirdComingSoonBox() {
+    return this.category === 'MHL.categoryBirdMonitoringSchemes' && (this.formList && this.formList.filter(form => form.id === this.waterbirdForm).length === 0);
+  }
 }
