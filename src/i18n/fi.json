@@ -70,7 +70,7 @@
   "annotation.needsCheckMeaning": "Määrittäjät ovat eri mieltä tämän havainnon määrityksestä",
   "annotation.annotationBeforeObservation": "Havainto siinä muodossa, jossa se oli ennen kommentointia.",
   "annotation.titleListAnnotations": "Kommentit",
-  "annotation.occurrenceAtTime": "Tapahtuma merkinnän aikaan (x)",
+  "annotation.occurrenceAtTime": "Havainto siinä muodossa, jossa se oli ennen näitä kommentteja.",
   "annotation.deleted": "Kommentti poistettu",
   "annotation.notValid": "Kommentti ei voimassa",
   "annotation.openComment": "Avaa kommentti",
