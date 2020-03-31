@@ -1050,6 +1050,7 @@
   "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi etsimällä hänen profiilinsa ylläolevalla haulla ja klikkaamalla hänen profiili sivullaan olevaa \"Lisää kaveriksi\" -painiketta. Sen jälkeen kun hän on vahvistanut pyyntösi omassa profiilissaan, olette kavereita ja voitte esim. Vihko-palvelussa tallentaa yhteisiä havaintoja.",
   "profile.image": "Kuva",
   "profile.imagePlaceholder": "Linkki kuvaan, esim http//example.com/kuva.jpg",
+  "profile.info.personalCollectionIdentifier": "Jos kirjaat oman näytekokoelmasi näytteiden tietoja Vihkoon, kirjaa tähän oman kokoelmasi tunnus (lyhenne tai vaikiintunut nimi). Ota ensin yhteyttä ylläpitoon helpdesk@laji.fi, niin varaamme tunnuksen sinun käyttöösi. Voit samalla esittää toivomuksen mikä tunnus olisi. Tunnus tulee sitten automaattisesti yksityiskokoelmalomakkeelle.",
   "profile.missing": "Käyttäjää ei löytynyt.",
   "profile.save": "Tallenna",
   "profile.search": "Hae käyttäjiä",
