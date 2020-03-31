@@ -18,7 +18,6 @@ export class FormCategorySurveyComponent {
   @Input() category: string;
 
   trackForm(idx, form) {
-    console.log(this.category);
     return form ? form.id : undefined;
   }
 
