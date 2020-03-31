@@ -907,6 +907,7 @@
   "profile.image": "Image",
   "profile.imagePlaceholder": "Link to picture e.g. http//example.com/image.jpg",
   "profile.missing": "User not found.",
+  "profile.info.personalCollectionIdentifier": "Jos kirjaat oman näytekokoelmasi näytteiden tietoja Vihkoon, kirjaa tähän oman kokoelmasi tunnus (lyhenne tai vaikiintunut nimi). Ota ensin yhteyttä ylläpitoon helpdesk@laji.fi, niin varaamme tunnuksen sinun käyttöösi. Voit samalla esittää toivomuksen mikä tunnus olisi. Tunnus tulee sitten automaattisesti yksityiskokoelmalomakkeelle.",
   "profile.save": "Save",
   "profile.search": "Search users",
   "quality.annotations.title": "User annotations",

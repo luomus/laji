@@ -16,6 +16,9 @@
         </div>
         <div *ngIf="!editing">
           <p>{{ profile.profileDescription }}</p>
+          <p *ngIf="profile.personalCollectionIdentifier">
+            {{ 'MA.personalCollectionIdentifier' | label }}:<br>{{ profile.personalCollectionIdentifier }}
+          </p>
         </div>
         <div *ngIf="editing" class="profile-edit">
           <div class="profile-edit-row">
@@ -25,6 +28,10 @@
           <div class="profile-edit-row">
             {{ 'profile.description' | translate }}
             <textarea class="form-control" [(ngModel)]="profile.profileDescription"></textarea>
+          </div>
+          <div class="profile-edit-row">
+            {{ 'MA.personalCollectionIdentifier' | label }}<laji-info>{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
+            <input class="form-control" [(ngModel)]="profile.personalCollectionIdentifier">
           </div>
           <div class="profile-edit-row">
             <div class="btn btn-default" (click)="saveProfile()">{{ 'profile.save' | translate }}</div>

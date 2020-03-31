@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   profile: Profile = {
     image: '',
     profileDescription: '',
+    personalCollectionIdentifier: '',
     friendRequests: [],
     friends: [],
     blocked: []
@@ -129,8 +130,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private getProfile(): Profile {
     return {
+      ...this.personsProfile,
       image: this.profile.image,
-      profileDescription: this.profile.profileDescription
+      profileDescription: this.profile.profileDescription,
+      personalCollectionIdentifier: this.profile.personalCollectionIdentifier
     };
   }
 }

@@ -76,6 +76,11 @@ export interface Profile {
   taxonExpertiseNotes?: string;
 
   /**
+   * Own collection identifier
+   */
+  personalCollectionIdentifier?: string;
+
+  /**
    * Settings for the user
    */
   settings?: any;
