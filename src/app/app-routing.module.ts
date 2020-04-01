@@ -103,6 +103,9 @@ const routesWithLang: Routes = [
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
+    {path: 'pinkka', redirectTo: '/theme/pinkka', pathMatch: 'full'},
+    {path: 'pinkka', redirectTo: '/sv/theme/pinkka', pathMatch: 'full'},
+    {path: 'pinkka', redirectTo: '/en/theme/pinkka', pathMatch: 'full'},
     ...routes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}

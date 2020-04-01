@@ -91,6 +91,7 @@ import { KerttuTaxonSelectComponent } from './kerttu/kerttu-main-view/kerttu-tax
 import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-recording-annotation/kerttu-recording-annotation.component';
 import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
+import { PinkkaComponent } from './pinkka/pinkka.component';
 
 /* tslint:enable:max-line-length */
 
@@ -127,6 +128,7 @@ import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
   declarations: [
     HerpetologyComponent,
     ChecklistComponent,
+    PinkkaComponent,
     ThemeResultComponent,
     NafiResultComponent,
     FixedTableDirective,

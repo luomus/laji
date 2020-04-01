@@ -257,4 +257,28 @@
     </div>
   </div>
 
+  <div class="panel panel-default" *lajiForTypes="['dev']">
+    <div class="panel-heading">
+      <strong>{{ 'theme.speciesIdentification.main' | translate }}</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>
+              <a [routerLink]="['/theme/pinkka'] | localize">
+                {{ 'navigation.pinkka' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.pinkka.intro' | translate }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
+
+

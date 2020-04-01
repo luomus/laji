@@ -38,6 +38,8 @@ import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
 import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
+import { PinkkaComponent } from './pinkka/pinkka.component';
+
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -758,7 +760,8 @@ const routes: Routes = [
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},
   {path: 'ykj',  pathMatch: 'full', component: YkjComponent, data: {title: 'navigation.ykj'}},
   {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}},
-  {path: 'checklist',  pathMatch: 'full', component: ChecklistComponent, data: {title: 'navigation.checklist'}}
+  {path: 'checklist',  pathMatch: 'full', component: ChecklistComponent, data: {title: 'navigation.checklist'}},
+  {path: 'pinkka',  pathMatch: 'full', component: PinkkaComponent, data: {title: 'navigation.pinkka'}},
 ];
 
 @NgModule({
