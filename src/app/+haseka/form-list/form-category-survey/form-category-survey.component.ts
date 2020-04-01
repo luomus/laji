@@ -9,10 +9,6 @@ import { Global } from '../../../../environments/global';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormCategorySurveyComponent {
-
-  themes = Global.formsTheme;
-  waterbirdForm = Global.forms.waterbirdPairForm;
-
   @Input() title: string;
   @Input() formList: FormList[] = [];
   @Input() tmpDocument: { [formId: string]: string } = {};

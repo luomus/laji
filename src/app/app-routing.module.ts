@@ -48,7 +48,8 @@ const routes: Routes = [
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
   {path: 'forum', component: ForumComponent},
-  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule)}
+  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule)},
+  {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule)}
 ];
 
 const routesWithLang: Routes = [
