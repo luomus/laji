@@ -67,6 +67,7 @@ import { NotificationsComponent } from './navbar/notifications/notifications.com
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { WarehousePipe } from './pipe/warehouse.pipe';
+import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
 
 
 @NgModule({
@@ -99,7 +100,8 @@ import { WarehousePipe } from './pipe/warehouse.pipe';
     TruncatePipe,
     AfterIfDirective,
     FilterValuePipe,
-    WarehousePipe
+    WarehousePipe,
+    DateCutoffFuturePipe
   ],
   imports: [
     FormsModule,
@@ -129,7 +131,7 @@ import { WarehousePipe } from './pipe/warehouse.pipe';
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe
   ]
 })
 export class SharedModule {

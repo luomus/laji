@@ -9,28 +9,34 @@
   display: inline-block;
 }
 
-.survey-box {
-  height: 200px;
-  width: 200px;
-  position: relative;
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-clip: content-box;
-  background-color: #ecf0f1;
-}
-
-.survey-title {
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 5px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  color: white;
-  font-weight: bold;
-}
-
 .description {
   color: black;
+}
+
+.ribbon-wrapper, .ribbon-wrapper a {
+  vertical-align: top;
+}
+.ribbon-wrapper .survey-box {
+  overflow: hidden;
+}
+.corner-ribbon{
+  width: 200px;
+  background: #3c9cdd;
+  position: absolute;
+  top: 25px;
+  left: -50px;
+  text-align: center;
+  line-height: 50px;
+  letter-spacing: 1px;
+  color: white;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  font-size: 15px;
+}
+.corner-ribbon.top-right{
+  top: 25px;
+  right: -50px;
+  left: auto;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }

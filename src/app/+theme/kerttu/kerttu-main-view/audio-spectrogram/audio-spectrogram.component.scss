@@ -1,0 +1,18 @@
+:host {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+}
+
+canvas {
+  max-width: 100%;
+}
+
+#scrollLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+}

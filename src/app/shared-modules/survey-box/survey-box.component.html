@@ -1,0 +1,7 @@
+<a [routerLink]="[themes[form.id]] | localize">
+  <div class="survey-box" [ngStyle]="{'background-image': 'url(' + form.logo + ')'}">
+    <div class="survey-title">
+      {{ form.id === waterbirdForm ? ('navigation.waterbird' | translate) : form.title }}
+    </div>
+  </div>
+</a>

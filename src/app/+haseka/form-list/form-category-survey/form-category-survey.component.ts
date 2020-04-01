@@ -9,16 +9,21 @@ import { Global } from '../../../../environments/global';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormCategorySurveyComponent {
-
-  themes = Global.formsTheme;
-  waterbirdForm = Global.forms.waterbirdPairForm;
-
   @Input() title: string;
   @Input() formList: FormList[] = [];
   @Input() tmpDocument: { [formId: string]: string } = {};
+  @Input() category: string;
 
   trackForm(idx, form) {
     return form ? form.id : undefined;
   }
 
+  get showWaterbirdComingSoonBox() {
+    return this.category === 'MHL.categoryBirdMonitoringSchemes'
+    && (
+      this.formList && this.formList.filter(
+        form => (form.id === Global.forms.waterbirdJuvenileForm || form.id === Global.forms.waterbirdPairForm)
+      ).length === 0
+    );
+  }
 }

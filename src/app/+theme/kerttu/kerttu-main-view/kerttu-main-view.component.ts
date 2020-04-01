@@ -1,11 +1,11 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {IKerttuState, KerttuFacade, Step} from '../kerttu.facade';
+import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
 import {forkJoin, Observable, of, Subscription} from 'rxjs';
 import {switchMap, take} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
-import {KerttuApi} from '../kerttu-api';
+import {KerttuApi} from '../service/kerttu-api';
 import {ILetterAnnotations, IRecordingAnnotations} from '../model/annotation';
 import {IRecording, IRecordingWithCandidates} from '../model/recording';
 

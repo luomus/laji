@@ -2,58 +2,6 @@
 
 @import '../lib/vars';
 
-// TODO: remove
-.lu {
-  .flex-row, &.flex-row {
-    display: flex;
-    flex-flow: row wrap;
-    flex: 1 0 auto;
-    * {
-      margin-right: 0.5em;
-    }
-  }
-
-  .fs-1, &.fs-1 {
-    font-size: $fs-1;
-  }
-  .fs-2, &.fs-2 {
-    font-size: $fs-2;
-  }
-  .fs-3, &.fs-3 {
-    font-size: $fs-3;
-  }
-  .fs-4, &.fs-4 {
-    font-size: $fs-4;
-  }
-  .fs-5, &.fs-5 {
-    font-size: $fs-5;
-  }
-  .fs-6, &.fs-6 {
-    font-size: $fs-6;
-  }
-  .fs-7, &.fs-7 {
-    font-size: $fs-7;
-  }
-  .fs-8, &.fs-8 {
-    font-size: $fs-8;
-  }
-  .fs-9, &.fs-9 {
-    font-size: $fs-9;
-  }
-}
-
-/**
-* BREAKPOINTS
-*/
-
-// TODO set breakpoints (set to same as bootstrap)
-$breakpoints: (
-  "xs": 768px,
-  "sm": 768px,
-  "md": 768px,
-  "lg": 768px
-);
-
 /**
 * DISPLAY
 */
@@ -61,14 +9,14 @@ $breakpoints: (
 $displays: flex, block, inline, inline-block, none;
 @each $display in $displays {
   .d-#{$display} {
-    display: $display;
+    display: $display !important;
   }
 }
 @each $breakpoint, $px in $breakpoints {
   @each $display in $displays {
     @media only screen and (max-width: $px) {
       .#{$breakpoint}\:d-#{$display} {
-        display: $display;
+        display: $display !important;
       }
     }
   }
@@ -79,89 +27,118 @@ $displays: flex, block, inline, inline-block, none;
 */
 
 .flex-row {
-  flex-direction: row;
+  flex-direction: row !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:flex-row {
-      flex-direction: row;
+      flex-direction: row !important;
     }
   }
 }
 
 .flex-row-reverse {
-  flex-direction: row-reverse;
+  flex-direction: row-reverse !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:flex-row-reverse {
-      flex-direction: row-reverse;
+      flex-direction: row-reverse !important;
     }
   }
 }
 
 .flex-col {
-  flex-direction: column;
+  flex-direction: column !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:flex-col {
-      flex-direction: column;
+      flex-direction: column !important;
     }
   }
 }
 
 .flex-col-reverse {
-  flex-direction: column-reverse;
+  flex-direction: column-reverse !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:flex-col-reverse {
-      flex-direction: column-reverse;
+      flex-direction: column-reverse !important;
     }
   }
 }
 
 .flex-wrap {
-  flex-wrap: wrap;
+  flex-wrap: wrap !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:flex-wrap {
-      flex-wrap: wrap;
+      flex-wrap: wrap !important;
     }
   }
 }
 
 .flex-nowrap {
-  flex-wrap: nowrap;
+  flex-wrap: nowrap !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:flex-nowrap {
-      flex-wrap: nowrap;
+      flex-wrap: nowrap !important;
     }
   }
 }
 
 .justify-between {
-  justify-content: space-between;
+  justify-content: space-between !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:justify-between {
-      justify-content: space-between
+      justify-content: space-between !important;
     }
   }
 }
 
 .items-end {
-  align-items: flex-end;
+  align-items: flex-end !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:items-end {
-      align-items: flex-end;
+      align-items: flex-end !important;
+    }
+  }
+}
+
+$basis: (
+  "0": 100%,
+  "1": 10%,
+  "2": 20%,
+  "3": 30%,
+  "4": 40%,
+  "5": 50%,
+  "6": 60%,
+  "7": 70%,
+  "8": 80%,
+  "9": 90%,
+  "auto": auto,
+);
+
+@each $bKey, $bVal in $basis {
+  .basis-#{$bKey} {
+    flex-basis: $bVal !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $bKey, $bVal in $basis {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:basis-#{$bKey} {
+        flex-basis: $bVal !important;
+      }
     }
   }
 }
@@ -183,17 +160,32 @@ $spacers: (
 );
 
 @each $spacer, $spacerPx in $spacers {
+  .m-#{$spacer} {
+    margin: $spacerPx !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $spacer, $spacerPx in $spacers {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:m-#{$spacer} {
+        margin: $spacerPx !important;
+      }
+    }
+  }
+}
+
+@each $spacer, $spacerPx in $spacers {
   .my-#{$spacer} {
-    margin-top: $spacerPx;
-    margin-bottom: $spacerPx;
+    margin-top: $spacerPx !important;
+    margin-bottom: $spacerPx !important;
   }
 }
 @each $breakpoint, $px in $breakpoints {
   @each $spacer, $spacerPx in $spacers {
     @media only screen and (max-width: $px) {
       .#{$breakpoint}\:my-#{$spacer} {
-        margin-top: $spacerPx;
-        margin-bottom: $spacerPx;
+        margin-top: $spacerPx !important;
+        margin-bottom: $spacerPx !important;
       }
     }
   }
@@ -201,14 +193,14 @@ $spacers: (
 
 @each $spacer, $spacerPx in $spacers {
   .mb-#{$spacer} {
-    margin-bottom: $spacerPx;
+    margin-bottom: $spacerPx !important;
   }
 }
 @each $breakpoint, $px in $breakpoints {
   @each $spacer, $spacerPx in $spacers {
     @media only screen and (max-width: $px) {
       .#{$breakpoint}\:mb-#{$spacer} {
-        margin-bottom: $spacerPx;
+        margin-bottom: $spacerPx !important;
       }
     }
   }
@@ -216,16 +208,46 @@ $spacers: (
 
 @each $spacer, $spacerPx in $spacers {
   .mx-#{$spacer} {
-    margin-left: $spacerPx;
-    margin-right: $spacerPx;
+    margin-left: $spacerPx !important;
+    margin-right: $spacerPx !important;
   }
 }
 @each $breakpoint, $px in $breakpoints {
   @each $spacer, $spacerPx in $spacers {
     @media only screen and (max-width: $px) {
       .#{$breakpoint}\:mx-#{$spacer} {
-        margin-left: $spacerPx;
-        margin-right: $spacerPx;
+        margin-left: $spacerPx !important;
+        margin-right: $spacerPx !important;
+      }
+    }
+  }
+}
+
+@each $spacer, $spacerPx in $spacers {
+  .ml-#{$spacer} {
+    margin-left: $spacerPx !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $spacer, $spacerPx in $spacers {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:ml-#{$spacer} {
+        margin-left: $spacerPx !important;
+      }
+    }
+  }
+}
+
+@each $spacer, $spacerPx in $spacers {
+  .mr-#{$spacer} {
+    margin-right: $spacerPx !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $spacer, $spacerPx in $spacers {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:mr-#{$spacer} {
+        margin-right: $spacerPx !important;
       }
     }
   }
