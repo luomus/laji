@@ -19,6 +19,11 @@ export class FormCategorySurveyComponent {
   }
 
   get showWaterbirdComingSoonBox() {
-    return this.category === 'MHL.categoryBirdMonitoringSchemes' && (this.formList && this.formList.filter(form => form.id === this.waterbirdForm).length === 0);
+    return this.category === 'MHL.categoryBirdMonitoringSchemes'
+    && (
+      this.formList && this.formList.filter(
+        form => (form.id === Global.forms.waterbirdJuvenileForm || form.id === Global.forms.waterbirdPairForm)
+      ).length === 0
+    );
   }
 }
