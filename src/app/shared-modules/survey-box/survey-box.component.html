@@ -1,4 +1,4 @@
-<a [routerLink]="[themes[form.id]] | localize">
+<a [routerLink]="isFormIdInThemes(form.id) ? [themes[form.id]] : ['/vihko', form.id] | localize">
   <div class="survey-box" [ngStyle]="{'background-image': 'url(' + form.logo + ')'}">
     <div class="survey-title">
       {{ form.id === waterbirdForm ? ('navigation.waterbird' | translate) : form.title }}
