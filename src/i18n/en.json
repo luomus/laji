@@ -624,6 +624,7 @@
   "np.loadError": "Failed to load the places. Please try again a little later.",
   "np.map": "Map",
   "np.municipality": "Municipality",
+  "np.locality": "Locality",
   "np.chooseLabel": "Choose from the list below or",
   "np.myEarlier": "Underneath you'll see only your own observations not everyone's",
   "np.print": "Print",

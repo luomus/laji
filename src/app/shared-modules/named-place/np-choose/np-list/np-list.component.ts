@@ -84,6 +84,9 @@ export class NpListComponent {
       '$.municipality': {
         label: 'np.municipality'
       },
+      '$.locality': {
+        label: 'np.locality'
+      },
       '$.prepopulatedDocument.gatherings[0].invasiveControlOpen': {
         label: 'np.invasiveControlOpen',
         cellTemplate: 'boolToStrTpl'
