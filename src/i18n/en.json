@@ -14,7 +14,7 @@
   "annotation.none": "No comments",
   "annotation.title": "Comments",
   "annotation.titleSingle": "Comment",
-  "annotation.list": "Quality control comments",
+  "annotation.list": "Quality control",
   "annotation.data.info": "Information about the observation",
   "annotation.addAnnotationExpert" : "Add expert annotation",
   "annotation.removedTags": "Removed tags",
