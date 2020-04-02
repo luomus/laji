@@ -22,5 +22,10 @@ div {
             padding: 0;
         }
     }
+    &.alert-info {
+        border-radius:0;
+        -webkit-border-radius:0;
+        -moz-border-radius: 0;
+    }
 
   }

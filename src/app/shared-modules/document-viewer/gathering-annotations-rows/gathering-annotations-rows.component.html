@@ -1,4 +1,10 @@
+<h4>{{ 'annotation.currentOccurrenceInformation' | translate }}</h4>
 <laji-issues [data]="gathering"></laji-issues>
+<ng-container *ngFor="let unit of gathering?.units">
+  <ng-container *ngIf="(unit.unitId === highlight) && unit.taxonVerbatim">
+    <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+  </ng-container>
+</ng-container>
 <laji-row *ngIf="gathering.interpretations" [title]="'result.gathering.conversions.wgs84CenterPoint' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
   <ul class="separated-list">
     <li *ngIf="gathering.higherGeography" [tooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">

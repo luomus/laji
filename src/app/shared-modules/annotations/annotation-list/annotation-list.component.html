@@ -1,5 +1,4 @@
 <div class="annotations">
-  <div class="comment-title">{{ 'annotation.title' | translate }}</div>
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="annotation">
       <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem[i])">
@@ -73,11 +72,11 @@
           <div class="row">
             <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.removedTags' | translate }}:</div>
             <div class="col-xs-8">
-              <ul class="separated-list">
-                <li *ngFor="let removeTag of annotation.removedTags">
+              <div *ngFor="let removeTag of annotation.removedTags" class="tag">
+                <div class="annotation-marker neutral">
                   <span>{{ removeTag | label: 'warehouse' }}</span>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -127,8 +126,7 @@
       <ng-template #dots>
         <i class="glyphicon glyphicon-option-horizontal"></i>
       </ng-template>
-      <span class="small-deleted" *ngIf="(annotation.deleted && showItem[i])">{{ 'annotation.deleted' | translate }}</span>
-      <span class="small-deleted" *ngIf="(!annotation.valid && showItem[i]);">{{ 'annotation.notValid' | translate }}</span>
+      <span class="small-deleted" *ngIf="((annotation.deleted || !annotation.valid) && showItem[i])">{{ 'annotation.deleted' | translate }}</span>
     </div>
     <div *ngIf="lastFalse!==-1 && i===lastFalse && hasNextTrue">
       <laji-occurrence-at-time-of-annotation [occurrence]="annotations[i+1].occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>

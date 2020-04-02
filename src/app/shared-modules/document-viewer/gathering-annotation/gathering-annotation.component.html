@@ -24,10 +24,10 @@
             <ng-container *ngIf="!showAnnotation">
                 <ng-container *ngFor="let unit of gathering?.units">
                     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
-                        <laji-observation-effective-tags-taxon [unit]="unit" [parentSubject]="parentSubject"></laji-observation-effective-tags-taxon>
+                        <laji-observation-effective-tags-taxon [unit]="unit" [showTitle]="true" [parentSubject]="parentSubject"></laji-observation-effective-tags-taxon>
                     </ng-container>
                 </ng-container>
-                <laji-gathering-annotations-rows [gathering]="gathering"></laji-gathering-annotations-rows>
+                <laji-gathering-annotations-rows [highlight]="highlight" [gathering]="gathering"></laji-gathering-annotations-rows>
                 <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
             </ng-container>
 
