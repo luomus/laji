@@ -72,11 +72,11 @@
           <div class="row">
             <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.removedTags' | translate }}:</div>
             <div class="col-xs-8">
-              <ul class="separated-list">
-                <li *ngFor="let removeTag of annotation.removedTags">
+              <div *ngFor="let removeTag of annotation.removedTags" class="tag">
+                <div class="annotation-marker neutral">
                   <span>{{ removeTag | label: 'warehouse' }}</span>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
