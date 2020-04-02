@@ -82,6 +82,7 @@
   "annotation.showInvalidComment": "Show invalid comment",
   "annotation.hideInvalidComment": "Hide invalid comment",
   "annotation.deleteComment": "Delete comment",
+  "annotation.button": "Show/make comment",
   "annotation.noImages": "No images",
   "annotation.addedSuccess": "Comment added successfully",
   "annotation.deletedSuccess": "Comment deleted successfully",

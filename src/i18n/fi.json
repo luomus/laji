@@ -82,6 +82,7 @@
   "annotation.deleteComment": "Poista kommentti",
   "annotation.list.showMoreTags": "näytä enemmän",
   "annotation.list.showLessTags": "näytä vähemmän",
+  "annotation.button": "Näytä/tee kommentti",
   "annotation.noImages": "No imagest",
   "annotation.addedSuccess": "Kommentti lisätty",
   "annotation.deletedSuccess": "Kommentti poistettu",

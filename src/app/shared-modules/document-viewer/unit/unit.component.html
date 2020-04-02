@@ -20,9 +20,9 @@
   <laji-row [title]="'annotation.title'|translate">
     <button type="button"
             placement="left"
-            class="btn btn-xs annotation-btn {{ annotationClass$ | async }}"
+            class="btn btn-sm annotation-btn {{ annotationClass$ | async }}"
             (click)="showAnnotations()">
-      <span *ngIf="annotations.length > 0">{{ annotations.length }}&nbsp;</span><i class="fa {{ annotationIcon }}"></i>
+      {{ 'annotation.button' | translate }}&nbsp;&ndash;<span *ngIf="annotations.length > 0">&nbsp;{{ annotations.length }}</span>&nbsp;<i class="fa {{ annotationIcon }}"></i>
     </button>
   </laji-row>
 

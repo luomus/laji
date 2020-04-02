@@ -84,6 +84,7 @@
   "annotation.list.showLessTags": "show less tags",
   "annotation.addedSuccess": "Kommentaren har lagts till",
   "annotation.deletedSuccess": "Kommentaren har raderats",
+  "annotation.button": "Visa kommentarer",
   "annotation.noImages": "No imagess",
   "annotation.expertComment": "expertkommentar",
   "annotation.basicComment": "Grundläggande kommentar",
