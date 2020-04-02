@@ -1,14 +1,4 @@
 <laji-issues [data]="gathering"></laji-issues>
-<laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="false">
-  {{ gathering.displayDateTime }}
-</laji-row>
-<laji-row *ngIf="gathering.team" [title]="'observation.form.observer' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-  <span>
-    <ul class="separated-list">
-      <li *ngFor="let user of gathering.team; let i=index">{{ user | toQName | label }}</li> 
-    </ul>
-  </span>
-</laji-row>
 <laji-row *ngIf="gathering.interpretations" [title]="'result.gathering.conversions.wgs84CenterPoint' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
   <ul class="separated-list">
     <li *ngIf="gathering.higherGeography" [tooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">

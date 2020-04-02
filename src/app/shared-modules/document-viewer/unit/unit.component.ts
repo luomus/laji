@@ -76,7 +76,6 @@ export class UnitComponent implements OnInit {
       }
       this.unit.annotations = annotations;
     }
-    console.log(annotations);
     this.annotationClass$ = this.annotationService
       .getAnnotationClassInEffect(annotations).pipe(
       map(annotationClass => {

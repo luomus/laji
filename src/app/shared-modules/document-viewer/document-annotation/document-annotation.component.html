@@ -125,6 +125,12 @@
               <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"
               [loadDate]="document.loadDate" [createdDate]="document.createdDate" [observerId]="document.editorUserIds" [collectionId]="document.collectionId"></laji-gathering-annotation>
             </ng-container>
+            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName">
+              {{ document.linkings.editors | values:', ':'fullName' }}
+            </laji-row>
+            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'YYYY-MM-DD'"></laji-row>
+            <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'YYYY-MM-DD'"></laji-row>
+            <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'YYYY-MM-DD'"></laji-row>
             <laji-viewer-map [settingsKey]="'viewer-map'" [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData" [hideCoordinates]="showCoordinates"></laji-viewer-map>
             <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
           </div>
