@@ -1,6 +1,7 @@
 <!--<p>observation-effective-tags-taxon works!</p>-->
 
 <div class="effective-taxon-tags">
+    <h4>{{ 'annotation.effectiveQualityMarkings' | translate }}</h4>
     <ng-container *ngIf="showRecordQuality">
       <laji-row *ngIf="unit.interpretations && unit.interpretations.recordQuality" [title]="'annotation.quality.grade' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
           <div *ngIf="annotationResolving; else recordNoResolving">
@@ -43,6 +44,7 @@
                 <ng-template #reportedInformalTaxonGroup>
                     <span>{{ unit.reportedInformalTaxonGroup | toQName | label }}</span>
                 </ng-template>
+                <span class="needsCheck" *ngIf="unit.interpretations && unit.interpretations.needsCheck">{{ 'annotation.needsCheck' | translate }}</span>
                 <span class="small-text" *ngIf="haschangedTaxon">{{ 'annotation.effectiveTaxon.comment' | translate }}</span>
             </div>
         </ng-template>

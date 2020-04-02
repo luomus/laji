@@ -7,7 +7,6 @@ div {
         div {
             &.title {
                 font-weight: bold;
-                margin-bottom:10px;
                 line-height: 16px;
             }
             &.content {
@@ -21,6 +20,11 @@ div {
             margin: 0;
             padding: 0;
         }
+    }
+    &.alert-info {
+        border-radius:0;
+        -webkit-border-radius:0;
+        -moz-border-radius: 0;
     }
 
   }

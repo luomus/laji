@@ -1,5 +1,4 @@
 <div class="annotations">
-  <div class="comment-title">{{ 'annotation.title' | translate }}</div>
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="annotation">
       <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem[i])">
