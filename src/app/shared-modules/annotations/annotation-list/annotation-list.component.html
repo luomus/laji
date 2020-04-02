@@ -41,12 +41,6 @@
           </span>
           <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span class="annotation-type" *ngIf="annotation.byRole && (annotation.byRole).indexOf(annotationRole.expert) !==-1;">
-              <span *ngIf="(annotation.byRole).indexOf(annotationRole.expert) !==-1;">{{ 'annotation.expertComment' | translate }}</span>
-              <!--<ng-template #basic>
-                <span>{{ 'annotation.basicComment' | translate }}</span>
-              </ng-template>-->
-            </span>
             <span class="annotation-date">{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
           </div>
           <ng-template #annotationByPerson>
