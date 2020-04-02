@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 })
 export class GatheringAnnotationsRowsComponent implements OnInit {
   @Input() gathering: any;
+  @Input() highlight: string;
   @Input() hideTooltips = false;
 
   constructor() { }

@@ -1,7 +1,9 @@
 <!--<p>observation-effective-tags-taxon works!</p>-->
 
 <div class="effective-taxon-tags">
-    <h4>{{ 'annotation.effectiveQualityMarkings' | translate }}</h4>
+    <ng-container *ngIf="showTitle">
+        <h4>{{ 'annotation.effectiveQualityMarkings' | translate }}</h4>
+    </ng-container>
     <ng-container *ngIf="showRecordQuality">
       <laji-row *ngIf="unit.interpretations && unit.interpretations.recordQuality" [title]="'annotation.quality.grade' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
           <div *ngIf="annotationResolving; else recordNoResolving">

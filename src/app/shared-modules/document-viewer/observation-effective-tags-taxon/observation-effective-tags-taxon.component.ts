@@ -16,7 +16,7 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
 
   @Input() unit: any;
   @Input() parentSubject: Subject<boolean>;
-
+  @Input() showTitle: boolean;
   @Input() showEffectiveTaxon = true;
   @Input() showEffectiveTag = true;
   @Input() showRecordQuality = true;
