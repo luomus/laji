@@ -45,7 +45,6 @@
           </div>
           <ng-template #annotationByPerson>
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span class="alert alert-info annotation-type">{{ annotation.byRole | toQName | label }}</span>
             <span class="annotation-date">{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
           </ng-template>
         </div>
