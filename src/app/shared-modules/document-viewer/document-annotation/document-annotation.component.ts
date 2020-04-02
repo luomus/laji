@@ -105,6 +105,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ) { }
 
   ngOnInit() {
+    console.log('ciao');
     this.metaFetch = this.userService.user$.subscribe((person: Person) => {
       this.personID = person.id;
       if (person.role) {

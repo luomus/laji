@@ -221,7 +221,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           this.subscribeRefreshedAnnotations.unsubscribe();
           this.taxonTagEffective.emitChildEvent(false);
           this.loadingElements.emitChildEvent(false);
-          this.loading = false;
           this.loadingForm.emit(false);
         }
 
@@ -229,7 +228,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           this.subscribeRefreshedAnnotations.unsubscribe();
           this.taxonTagEffective.emitChildEvent(true);
           this.loadingElements.emitChildEvent(true);
-          this.loading = false;
           }
 
 
