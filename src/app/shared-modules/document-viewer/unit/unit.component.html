@@ -11,35 +11,21 @@
     </div>
     <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
   </div>
-    <div class="annotation-btn">
+
+  <laji-observation-effective-tags-taxon
+    [unit]="unit"
+    [showRecordQuality]="false"
+  ></laji-observation-effective-tags-taxon>
+
+  <laji-row [title]="'annotation.title'|translate">
     <button type="button"
-            [tooltip]="'annotation.title' | translate"
             placement="left"
-            class="btn btn-xs {{annotationClass$ | async}}"
-            (click)="toggleAnnotations()">
-      <i class="fa {{annotationIcon}}"></i>
+            class="btn btn-xs annotation-btn {{ annotationClass$ | async }}"
+            (click)="showAnnotations()">
+      <span *ngIf="annotations.length > 0">{{ annotations.length }}&nbsp;</span><i class="fa {{ annotationIcon }}"></i>
     </button>
-  </div>
-  <ng-container *ngIf="annotationVisible">
-    <div class="row">
-      <div class="col-xs-12 col-md-10 col-md-offset-2 annotations">
-        <laji-annotations
-          [identifying]="identifying"
-          [editors]="editors"
-          [documentID]="documentID"
-          [personID]="personID"
-          [rootID]="documentID"
-          [targetID]="unitID"
-          [unit]="unit"
-          [annotations]="annotations"
-          [formVisible]="false"
-          [listVisible]="false"
-          (close)="hideAnnotations()"
-          (annotationChange)="initAnnotationStatus($event)"
-        ></laji-annotations>
-      </div>
-    </div>
-  </ng-container>
+  </laji-row>
+
   <div class="samples" *ngIf="unit && unit.samples && unit.samples.length > 0">
     <strong>{{ 'viewer.samples' | translate }}</strong>
     <ng-container *ngFor="let sample of unit.samples">

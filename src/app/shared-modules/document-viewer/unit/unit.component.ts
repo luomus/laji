@@ -6,6 +6,7 @@ import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
 import { Observable } from 'rxjs';
 import { Annotation } from '../../../shared/model/Annotation';
+import { DocumentViewerFacade } from '../document-viewer.facade';
 
 @Component({
   selector: 'laji-unit',
@@ -39,7 +40,8 @@ export class UnitComponent implements OnInit {
 
   constructor(
     private toQname: ToQNamePipe,
-    private annotationService: AnnotationService
+    private annotationService: AnnotationService,
+    private documentViewerFacade: DocumentViewerFacade
   ) { }
 
   ngOnInit() {
@@ -74,6 +76,7 @@ export class UnitComponent implements OnInit {
       }
       this.unit.annotations = annotations;
     }
+    console.log(annotations);
     this.annotationClass$ = this.annotationService
       .getAnnotationClassInEffect(annotations).pipe(
       map(annotationClass => {
@@ -99,8 +102,13 @@ export class UnitComponent implements OnInit {
       (Array.isArray(this.annotations) && this.annotations.length > 0);
   }
 
-  toggleAnnotations() {
-    this.annotationVisible = !this.annotationVisible;
+  showAnnotations() {
+    this.documentViewerFacade.showDocumentID({
+      highlight: this.unit.unitId,
+      document: this.documentID,
+      openAnnotation: true,
+      result: undefined
+    });
   }
 
   hideAnnotations() {

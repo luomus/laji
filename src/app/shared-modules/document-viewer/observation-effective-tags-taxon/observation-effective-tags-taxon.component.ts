@@ -17,6 +17,10 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
   @Input() unit: any;
   @Input() parentSubject: Subject<boolean>;
 
+  @Input() showEffectiveTaxon = true;
+  @Input() showEffectiveTag = true;
+  @Input() showRecordQuality = true;
+
   annotationResolving: boolean;
   subscriptParent: Subscription;
   annotationTagsObservation = Global.annotationTags;

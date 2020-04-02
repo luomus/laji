@@ -1,3 +1,7 @@
+::ng-deep .effective-taxon-tags {
+  margin-bottom: 0 !important;
+}
+
 hr {
   margin: 4px 0;
 }
@@ -9,9 +13,5 @@ hr {
   min-height: 30px;
 }
 .annotation-btn {
-  position: absolute;
-  margin-right: -28px;
-  right: 0;
-  top: 0;
-  z-index: 1;
+  margin-bottom: 5px;
 }
