@@ -414,9 +414,10 @@
     [mapToWarehouse]="true"
     [placeholder]="'reliability' | translate"
     [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>
+
   <laji-select
-    [selected]="[query.needsCheck]"
-    (selectedChange)="indirectQueryChange('needsCheck', $event[0])"
+    [selected]="[query.unidentified]"
+    (selectedChange)="indirectQueryChange('unidentified', $event[0])"
     [multiple]="false"
     [useFilter]="false"
     [title]="'observation.form.identify' | translate"
@@ -425,6 +426,19 @@
         {id: true, value: ('observation.form.identify.true' | translate)},
         {id: false, value: ('observation.form.identify.false' | translate)}
       ]"></laji-select>
+
+  <laji-select
+    [selected]="[query.needsCheck]"
+    (selectedChange)="indirectQueryChange('needsCheck', $event[0])"
+    [multiple]="false"
+    [useFilter]="false"
+    [title]="'observation.form.needsCheck' | translate"
+    [info]="'observation.info.needsCheck' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.needsCheck.true' | translate)},
+        {id: false, value: ('observation.form.needsCheck.false' | translate)}
+      ]"></laji-select>
+
   <ng-container *ngIf="advancedMode || query.collectionQuality">
     <laji-metadata-select
       name="collectionQuality"
@@ -678,12 +692,4 @@
     [placeholder]="'observation.form.secureLevel'"
     name="secureLevel"
     [alt]="'MX.secureLevels'"></laji-metadata-select>
-</section>
-
-<!-- Help identify -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['identify']" [title]="'observation.form.unidentified.title' | translate" [autoToggle]="true" [open]="visible['identify']">
-  <div>
-    <label><laji-checkbox [value]="query.unidentified" (valueChange)="onCheckBoxToggle('unidentified', true)"></laji-checkbox>{{ 'observation.form.unidentified' | translate }}</label>
-    <laji-info [html]="'observation.info.unidentified' | translate"></laji-info>
-  </div>
 </section>

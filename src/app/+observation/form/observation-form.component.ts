@@ -26,7 +26,6 @@ interface ISections {
   invasive?: Array<keyof WarehouseQueryInterface>;
   image: Array<keyof WarehouseQueryInterface>;
   secure: Array<keyof WarehouseQueryInterface>;
-  identify: Array<keyof WarehouseQueryInterface>;
 }
 
 
@@ -97,7 +96,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
-    quality: ['recordQuality', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
+    quality: ['recordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     keywords: ['documentId', 'keyword'],
@@ -105,7 +104,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     invasive: [],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
     secure: ['secured', 'secureLevel'],
-    identify: ['unidentified'],
   };
 
   advancedSections: ISections = {
@@ -119,7 +117,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     keywords: ['documentId', 'keyword'],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
     secure: ['secureLevel', 'secured'],
-    identify: ['unidentified'],
   };
 
   delayedSearch = new Subject();
