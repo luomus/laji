@@ -1,18 +1,19 @@
-@import '../../../../styles/_styles.scss'; 
+@import 'vars';
+@import '../../../../styles/_styles.scss';
 
 div {
     &.unit {
-        background-color: $main-gray;
+        background-color: $neutral-1;
         position: relative;
         padding-bottom: 7px;
-        border-bottom: 1px solid #919191;
+        border-bottom: 1px solid $neutral-4;
         margin-bottom: 7px;
         div {
             &.image {
                 /*min-height:200px;*/
                 margin-bottom: 10px;
                 position: relative;
-                background-color: $black;
+                background-color: $neutral-9;
                 height: 125px;
                 @include media-query-laptop {
                     min-height: auto;
@@ -34,10 +35,10 @@ div {
                     display: block;
                     margin-left: auto;
                     margin-right: auto;
-                    height: 100%; 
-                    width: auto;  
+                    height: 100%;
+                    width: auto;
                     max-height: 200px;
-        
+
                 }
             }
             &.taxon {
@@ -46,14 +47,14 @@ div {
                 line-height: 1.2;
             }
             &.no-media {
-                background-color: $black;
+                background-color: $neutral-4;
                 height: 125px;
                 span {
                     position: absolute;
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    color: white;
+                    color: $neutral-7;
                 }
             }
             &.status-annotation {
@@ -82,7 +83,7 @@ div {
                         &::after {
                             content: "!";
                         }
-                    }    
+                    }
                 }
             }
 

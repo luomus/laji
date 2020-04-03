@@ -7,7 +7,7 @@ import { Global } from '../../../../environments/global';
 @Component({
   selector: 'laji-annotation-list',
   templateUrl: './annotation-list.component.html',
-  styleUrls: ['./annotation-list.component.css'],
+  styleUrls: ['./annotation-list.component.scss'],
   animations: [
     trigger('flyInOut', [
       transition('void => *', [

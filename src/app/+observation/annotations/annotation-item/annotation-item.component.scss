@@ -1,7 +1,12 @@
-@import '../../../../styles/_styles.scss'; 
+@import '../../../../styles/_styles.scss';
+
+:host {
+  color: $neutral-8;
+}
 
 div {
     &.item-content{
+        position: relative;
         padding-bottom: 10px;
         min-height: 250px;
         div {
@@ -26,7 +31,7 @@ div {
             }
         }
     }
-    
+
   }
   span{
       &.green{
