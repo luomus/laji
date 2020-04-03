@@ -29,41 +29,26 @@ $displays: flex, block, inline, inline-block, none;
 .flex-row {
   flex-direction: row !important;
 }
-@each $breakpoint, $px in $breakpoints {
-  @media only screen and (max-width: $px) {
-    .#{$breakpoint}\:flex-row {
-      flex-direction: row !important;
-    }
-  }
-}
-
 .flex-row-reverse {
   flex-direction: row-reverse !important;
 }
-@each $breakpoint, $px in $breakpoints {
-  @media only screen and (max-width: $px) {
-    .#{$breakpoint}\:flex-row-reverse {
-      flex-direction: row-reverse !important;
-    }
-  }
-}
-
 .flex-col {
   flex-direction: column !important;
 }
-@each $breakpoint, $px in $breakpoints {
-  @media only screen and (max-width: $px) {
-    .#{$breakpoint}\:flex-col {
-      flex-direction: column !important;
-    }
-  }
-}
-
 .flex-col-reverse {
   flex-direction: column-reverse !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:flex-row {
+      flex-direction: row !important;
+    }
+    .#{$breakpoint}\:flex-row-reverse {
+      flex-direction: row-reverse !important;
+    }
+    .#{$breakpoint}\:flex-col {
+      flex-direction: column !important;
+    }
     .#{$breakpoint}\:flex-col-reverse {
       flex-direction: column-reverse !important;
     }
@@ -73,19 +58,14 @@ $displays: flex, block, inline, inline-block, none;
 .flex-wrap {
   flex-wrap: wrap !important;
 }
-@each $breakpoint, $px in $breakpoints {
-  @media only screen and (max-width: $px) {
-    .#{$breakpoint}\:flex-wrap {
-      flex-wrap: wrap !important;
-    }
-  }
-}
-
 .flex-nowrap {
   flex-wrap: nowrap !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:flex-wrap {
+      flex-wrap: wrap !important;
+    }
     .#{$breakpoint}\:flex-nowrap {
       flex-wrap: nowrap !important;
     }
@@ -163,82 +143,23 @@ $spacers: (
   .m-#{$spacer} {
     margin: $spacerPx !important;
   }
-}
-@each $breakpoint, $px in $breakpoints {
-  @each $spacer, $spacerPx in $spacers {
-    @media only screen and (max-width: $px) {
-      .#{$breakpoint}\:m-#{$spacer} {
-        margin: $spacerPx !important;
-      }
-    }
-  }
-}
-
-@each $spacer, $spacerPx in $spacers {
   .my-#{$spacer} {
     margin-top: $spacerPx !important;
     margin-bottom: $spacerPx !important;
   }
-}
-@each $breakpoint, $px in $breakpoints {
-  @each $spacer, $spacerPx in $spacers {
-    @media only screen and (max-width: $px) {
-      .#{$breakpoint}\:my-#{$spacer} {
-        margin-top: $spacerPx !important;
-        margin-bottom: $spacerPx !important;
-      }
-    }
+  .mt-#{$spacer} {
+    margin-top: $spacerPx !important;
   }
-}
-
-@each $spacer, $spacerPx in $spacers {
   .mb-#{$spacer} {
     margin-bottom: $spacerPx !important;
   }
-}
-@each $breakpoint, $px in $breakpoints {
-  @each $spacer, $spacerPx in $spacers {
-    @media only screen and (max-width: $px) {
-      .#{$breakpoint}\:mb-#{$spacer} {
-        margin-bottom: $spacerPx !important;
-      }
-    }
-  }
-}
-
-@each $spacer, $spacerPx in $spacers {
   .mx-#{$spacer} {
     margin-left: $spacerPx !important;
     margin-right: $spacerPx !important;
   }
-}
-@each $breakpoint, $px in $breakpoints {
-  @each $spacer, $spacerPx in $spacers {
-    @media only screen and (max-width: $px) {
-      .#{$breakpoint}\:mx-#{$spacer} {
-        margin-left: $spacerPx !important;
-        margin-right: $spacerPx !important;
-      }
-    }
-  }
-}
-
-@each $spacer, $spacerPx in $spacers {
   .ml-#{$spacer} {
     margin-left: $spacerPx !important;
   }
-}
-@each $breakpoint, $px in $breakpoints {
-  @each $spacer, $spacerPx in $spacers {
-    @media only screen and (max-width: $px) {
-      .#{$breakpoint}\:ml-#{$spacer} {
-        margin-left: $spacerPx !important;
-      }
-    }
-  }
-}
-
-@each $spacer, $spacerPx in $spacers {
   .mr-#{$spacer} {
     margin-right: $spacerPx !important;
   }
@@ -246,6 +167,26 @@ $spacers: (
 @each $breakpoint, $px in $breakpoints {
   @each $spacer, $spacerPx in $spacers {
     @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:m-#{$spacer} {
+        margin: $spacerPx !important;
+      }
+      .#{$breakpoint}\:my-#{$spacer} {
+        margin-top: $spacerPx !important;
+        margin-bottom: $spacerPx !important;
+      }
+      .#{$breakpoint}\:mt-#{$spacer} {
+        margin-top: $spacerPx !important;
+      }
+      .#{$breakpoint}\:mb-#{$spacer} {
+        margin-bottom: $spacerPx !important;
+      }
+      .#{$breakpoint}\:mx-#{$spacer} {
+        margin-left: $spacerPx !important;
+        margin-right: $spacerPx !important;
+      }
+      .#{$breakpoint}\:ml-#{$spacer} {
+        margin-left: $spacerPx !important;
+      }
       .#{$breakpoint}\:mr-#{$spacer} {
         margin-right: $spacerPx !important;
       }
