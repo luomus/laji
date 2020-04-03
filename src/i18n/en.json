@@ -91,6 +91,8 @@
   "annotation.basicComment": "Basic comment",
   "annotation.currentOccurrenceInformation": "Current occurrence information",
   "annotation.collectionEditor": "Collection and editor",
+  "annotation.noTaxonId": "No taxon ID for this entry",
+  "annotation.NoTaxonData": "No Data",
   "audio.spectrum": "Audio and spectrum",
   "audio.openSpectrum": "Open spectrum",
   "asIs": "Value as is",
