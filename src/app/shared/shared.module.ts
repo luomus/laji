@@ -68,6 +68,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { WarehousePipe } from './pipe/warehouse.pipe';
 import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
+import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
 
 
 @NgModule({
@@ -115,7 +116,8 @@ import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
     PaginatorModule,
     ScrollingModule,
     LajiUiModule,
-    TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule
+    TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule,
+    UtilitiesModule
   ],
   providers: [ ], // keep this empty!
   exports: [
@@ -131,7 +133,7 @@ import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule
   ]
 })
 export class SharedModule {

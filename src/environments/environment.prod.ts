@@ -3,6 +3,7 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.prod,
+  base: 'https://laji.fi',
   production: true,
   forceLogin: false,
   disableAnalytics: false,

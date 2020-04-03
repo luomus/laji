@@ -7,7 +7,7 @@ import { InformationItem } from '../../shared/model/InformationItem';
 @Component({
   selector: 'laji-info-page',
   template: `
-<div *ngIf="content$ | async; else loading; let content" [innerHtml]="content"></div>
+<div *ngIf="content$ | async; else loading; let content" [innerHtml]="content" lajiRouteTransformer></div>
 <ng-template #loading>
   <lu-ghost-paragraph [length]="10"></lu-ghost-paragraph>
   <lu-ghost-paragraph [length]="300"></lu-ghost-paragraph>

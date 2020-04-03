@@ -3,6 +3,7 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.iucn,
+  base: 'https://punainenkirja.laji.fi',
   systemID: 'KE.601',
   formWhitelist: [],
   massForms: ['JX.519'],
