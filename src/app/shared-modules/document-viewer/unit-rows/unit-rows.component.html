@@ -11,7 +11,7 @@
     </div>
   </ng-container>
 </laji-row>
-<laji-row [title]="'result.unit.quality.taxon'|translate">
+<laji-row *ngIf="unit.interpretations && unit.interpretations.recordQuality && unit.interpretations.recordQuality !== 'NEUTRAL'"  [title]="'result.unit.quality.taxon'|translate">
   {{ unit.interpretations.recordQuality | label: 'warehouse' }}
 </laji-row>
 <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="'result.unit.taxonVerbatim' | translate">

@@ -8,6 +8,8 @@
                 <ng-template #annotation>
                     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
                         <laji-annotation-data-observation *ngIf="unit.annotations && unit.annotations.length > 0" [gathering]="gathering" [unit]="unit" [editors]="editors" [collectionId]="collectionId" [createdDate]="createdDate"></laji-annotation-data-observation>
+                        <laji-unit-annotation-list [gathering]="gathering" [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID"
+                        [personRoleAnnotation]="personRoleAnnotation" [documentID]="documentID" [unit]="unit" [highlight]="highlight" (annotationPending)="checkPending($event)"></laji-unit-annotation-list>
                         <div style="height: 30px;">
                             <div class="alert alert-success" style="padding: 3px 15px;" *ngIf="annotationAddedDeleted.status" [@message]>
                                 <span *ngIf="annotationAddedDeleted.action === 'adding'; else deleting">{{ 'annotation.addedSuccess' | translate }}</span>
@@ -16,8 +18,6 @@
                                 </ng-template>
                             </div>
                         </div>
-                        <laji-unit-annotation-list [gathering]="gathering" [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID"
-                        [personRoleAnnotation]="personRoleAnnotation" [documentID]="documentID" [unit]="unit" [highlight]="highlight" (annotationPending)="checkPending($event)"></laji-unit-annotation-list>
                     </ng-container>
                 </ng-template>
             </ng-container>

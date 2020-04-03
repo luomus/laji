@@ -107,8 +107,13 @@
             <laji-row [title]="'annotation.collectionQuality' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
               <span>{{ document.linkings.collectionQuality | label:'warehouse' }}</span>
             </laji-row>
-            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName">
-              <a href="/user/{{document.linkings.editors | values:', ':'id' | toQName}}" target="_blank">{{ document.linkings.editors | values:', ':'fullName' }}</a>
+            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors.length > 0">
+              <ul class="separated-list">
+                <li *ngFor="let user of document.linkings.editors">
+                  <span *ngIf="user.fullName; else noName"><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ user.fullName }}</a></span>
+                  <ng-template #noName><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ 'annotation.noName' | translate }}</a></ng-template>
+                </li>
+              </ul>
             </laji-row>
             <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'YYYY-MM-DD'"></laji-row>
             <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'YYYY-MM-DD'"></laji-row>

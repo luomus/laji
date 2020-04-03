@@ -93,6 +93,7 @@
   "annotation.collectionEditor": "Collection and editor",
   "annotation.noTaxonId": "No taxon ID for this entry",
   "annotation.NoTaxonData": "No Data",
+  "annotation.noName": "No name",
   "audio.spectrum": "Audio and spectrum",
   "audio.openSpectrum": "Open spectrum",
   "asIs": "Value as is",
