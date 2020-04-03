@@ -8,6 +8,7 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.dev,
+  base: 'https://localhost:3000',
   production: false,
   forceLogin: false,
   disableAnalytics: true,
