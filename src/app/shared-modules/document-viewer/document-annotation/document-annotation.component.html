@@ -100,11 +100,9 @@
                 </div>
             <h5>{{ 'annotation.collectionEditor' | translate }}</h5>    
             <laji-issues [data]="document"></laji-issues>
-            <laji-row [title]="'MY.collectionID' | label" [noTitleSpace]="false" ngPreserveWhitespaces>
-                <span><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
-            </laji-row>
             <laji-row [title]="'observation.filterBy.collectionName' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-                <span>{{ document.collectionId | toQName | collectionName }}</span>
+              <span>{{ document.collectionId | toQName | collectionName }}</span>
+              <span><a href="{{document.collectionId}}" target="_blank">[metadata]</a></span>
             </laji-row>
             <laji-row [title]="'annotation.collectionQuality' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
               <span>{{ document.linkings.collectionQuality | label:'warehouse' }}</span>
