@@ -107,6 +107,9 @@ const routesWithLang: Routes = [
     {path: 'pinkka', redirectTo: '/theme/pinkka', pathMatch: 'full'},
     {path: 'pinkka', redirectTo: '/sv/theme/pinkka', pathMatch: 'full'},
     {path: 'pinkka', redirectTo: '/en/theme/pinkka', pathMatch: 'full'},
+    {path: 'hyonteisopas', redirectTo: '/theme/hyonteisopas', pathMatch: 'full'},
+    {path: 'hyonteisopas', redirectTo: '/sv/theme/hyonteisopas', pathMatch: 'full'},
+    {path: 'hyonteisopas', redirectTo: '/en/theme/hyonteisopas', pathMatch: 'full'},
     ...routes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}

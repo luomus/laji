@@ -93,6 +93,7 @@ import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-main-view/ke
 import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 import { PinkkaComponent } from './pinkka/pinkka.component';
+import { InsectGuideComponent } from './insect-guide/insect-guide.component';
 import { AudioSpectrogramComponent } from './kerttu/kerttu-main-view/audio-spectrogram/audio-spectrogram.component';
 
 /* tslint:enable:max-line-length */
@@ -131,6 +132,7 @@ import { AudioSpectrogramComponent } from './kerttu/kerttu-main-view/audio-spect
     HerpetologyComponent,
     ChecklistComponent,
     PinkkaComponent,
+    InsectGuideComponent,
     ThemeResultComponent,
     NafiResultComponent,
     FixedTableDirective,

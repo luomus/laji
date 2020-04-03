@@ -39,6 +39,7 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
 import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { PinkkaComponent } from './pinkka/pinkka.component';
+import { InsectGuideComponent } from './insect-guide/insect-guide.component';
 
 /* tslint:enable:max-line-length */
 
@@ -762,6 +763,7 @@ const routes: Routes = [
   {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}},
   {path: 'checklist',  pathMatch: 'full', component: ChecklistComponent, data: {title: 'navigation.checklist'}},
   {path: 'pinkka',  pathMatch: 'full', component: PinkkaComponent, data: {title: 'navigation.pinkka'}},
+  {path: 'hyonteisopas',  pathMatch: 'full', component: InsectGuideComponent, data: {title: 'navigation.hyonteisopas'}},
 ];
 
 @NgModule({
