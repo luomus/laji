@@ -59,6 +59,16 @@
     </div>
   </section>
 
+  <section class="mb-8"> <!-- Bird Monitoring -->
+    <h2 translate>saveObservations.birdMonitoring</h2>
+    <p translate>saveObservations.birdMonitoring.desc</p>
+    <div class="d-flex flex-row flex-wrap">
+      <ng-container *ngFor="let form of birdMonitoringForms$ | async">
+        <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
+      </ng-container>
+    </div>
+  </section>
+
   <section class="mb-8"> <!-- Tutkimusprojektit ja viranomaistyökalut -->
     <h2 translate>saveObservations.researchProjects</h2>
     <p translate>saveObservations.researchProjects.desc</p>

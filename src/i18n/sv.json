@@ -1517,6 +1517,8 @@
   "saveObservations.mobile.report": null,
   "saveObservations.citizenScience": null,
   "saveObservations.citizenScience.desc": null,
+  "saveObservations.birdMonitoring": null,
+  "saveObservations.birdMonitoring.desc": null,
   "saveObservations.researchProjects": null,
   "saveObservations.researchProjects.desc": null
 }

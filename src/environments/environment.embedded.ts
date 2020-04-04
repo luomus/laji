@@ -24,6 +24,11 @@ export const environment = {
   namedPlaceForm: 'MHL.36',
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
+  saveObservations: {
+    citizenScienceForms: ['MHL.3', 'JX.652', 'MHL.53'],
+    birdMonitoringForms: ['MHL.33', 'MHL.6'],
+    researchProjects: ['MHL.1', 'MHL.50', 'MHL.57']
+  },
   loginUrl: 'https://login.laji.fi/login',
   selfPage: 'https://login.laji.fi/self'
 };

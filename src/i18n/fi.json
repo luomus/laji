@@ -1604,6 +1604,8 @@
   "saveObservations.vihko.report": "Ota käyttöön",
   "saveObservations.citizenScience": "Kansalaistiede",
   "saveObservations.citizenScience.desc": "Osallistumalla kansalaistiedehankkeeseen kartutat tietoa suomalaisesta luonnosta ja opit uutta luonnon havainnoinnista. Tässä voi osallistua eri tahojen järjestämiin seuranta- ja kartoitushankkeisiin. Kaikkien havainnot tallentuvat Laji.fi:hin Vihkoon omalle tilillesi. Tutustu ja valitse itsellesi sopiva!",
+  "saveObservations.birdMonitoring": "Linnustonseuranta",
+  "saveObservations.birdMonitoring.desc": "plää plää",
   "saveObservations.researchProjects": "Tutkimusprojektit ja viranomaistyökalut",
   "saveObservations.researchProjects.desc": "Tutkimushankkeisiin osallistuminen vaatii osaamista tutkimuksen kohteesta. Osa hankkeista on suunnattu vain rajatulle ryhmälle."
 }
