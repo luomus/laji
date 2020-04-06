@@ -10,6 +10,7 @@
         <lu-button-round (click)="documentModal.hide()" class="pull-right" role="neutral">
           <lu-icon type="close"></lu-icon>
         </lu-button-round>
+        <div class="clear"></div>
         <laji-document-annotation *ngIf="!vm.forceLocal && vm.openAnnotation; else normal"
                                   [highlight]="vm.highlight"
                                   [uri]="vm.document.id"
