@@ -13,9 +13,10 @@ export class RouteTransformerDirective {
   constructor(private el: ElementRef, private router: Router) {}
 
   @HostListener('click', ['$event'])
-  public onClick(event) {
-    if (event.target.tagName === 'A') {
-      const href: string = event.target.getAttribute('href');
+  public onClick(event: MouseEvent) {
+    const href: string = this.getLinkHRef(event.target);
+
+    if (href) {
       let target;
 
       if (!href.startsWith('http')) {
@@ -33,6 +34,17 @@ export class RouteTransformerDirective {
     } else {
       return;
     }
+  }
+
+  private getLinkHRef(target: any): string {
+    if (target instanceof HTMLElement) {
+      if (target.tagName === 'A') {
+        return target.getAttribute('href');
+      } else if (target.parentElement) {
+        return this.getLinkHRef(target.parentElement);
+      }
+    }
+    return '';
   }
 
 }
