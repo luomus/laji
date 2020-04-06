@@ -52,6 +52,10 @@ code {
   flex-grow: 1;
 }
 
+.clear {
+  clear: both;
+}
+
 @media (min-width: 1650px) {
     .container {
       width: 1600px;

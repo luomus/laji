@@ -2,29 +2,15 @@
   <a *ngIf="showLinks; else nonlink" target="_blank" href="{{ unit.unitId }}">{{ unit.unitId }}</a>
   <ng-template #nonlink><small>({{ unit.unitId }})</small></ng-template>
 </laji-row>
-<laji-row [title]="'annotation.effectiveTags' | translate" *ngIf="showFacts && (unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0)">
-  <ng-container *ngFor="let tag of unit.interpretations.effectiveTags; let i = index">
-    <div class="tags" [ngSwitch]="tag | warehouse">
-        <div *ngSwitchCase="annotationTagsObservation[tag | warehouse ].value" class="annotation-marker {{ annotationTagsObservation[tag | warehouse ].type }}">
-            <span>{{ tag | warehouse | label }}</span>
-        </div>
-    </div>
-  </ng-container>
-</laji-row>
 <laji-row *ngIf="unit.interpretations && unit.interpretations.recordQuality && unit.interpretations.recordQuality !== 'NEUTRAL'"  [title]="'result.unit.quality.taxon'|translate">
   {{ unit.interpretations.recordQuality | label: 'warehouse' }}
 </laji-row>
-<laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="'result.unit.taxonVerbatim' | translate">
+<laji-row *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.id !== unit.linkings.originalTaxon.id) || !unit.linkings.originalTaxon)" [title]="'result.unit.taxonVerbatim' | translate">
   <laji-taxon-name [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
 </laji-row>
-<ng-template #taxonVerbatim>
-  <laji-row *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
-</ng-template>
-<ng-template #reportedInformalTaxonGroup>
-  <laji-row [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.reportedInformalTaxonGroup | toQName | label"></laji-row>
-</ng-template>
+<laji-row *ngIf="unit.linkings.taxon === undefined" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
 <laji-row
-  *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname) || !unit.linkings.originalTaxon)"
+  *ngIf="unit.linkings && unit.linkings.taxon && showFacts"
   [title]="'viewer.fixedName'|translate">
   <laji-taxon-name [taxon]="unit.linkings.taxon" [addLink]="showLinks"></laji-taxon-name>
 </laji-row>
