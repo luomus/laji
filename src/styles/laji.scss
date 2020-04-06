@@ -856,6 +856,10 @@ body > .ui-select-bootstrap.open {
 }
 /** /scrollbar **/
 
+.modal-content {
+  min-height: 100px;
+}
+
 @media (min-width: 768px){
   .modal-annotation {
       width: 90%;
