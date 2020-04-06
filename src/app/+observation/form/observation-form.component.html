@@ -27,7 +27,7 @@
   <div>
     <div>
       <label>{{ 'observation.form.target' | translate }}</label>
-      <laji-info><span [innerHtml]="'observation.info.target' | translate"></span></laji-info>
+      <laji-info><span [innerHtml]="'observation.info.target' | translate" lajiRouteTransformer></span></laji-info>
     </div>
     <input
       [ngClass]="{loading: typeaheadLoading}"
