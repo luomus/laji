@@ -28,7 +28,7 @@ export class RouteTransformerDirective {
       }
 
       if (target) {
-        this.router.navigate([target]);
+        this.router.navigateByUrl(target);
         event.preventDefault();
       }
     } else {
@@ -39,12 +39,16 @@ export class RouteTransformerDirective {
   private getLinkHRef(target: any): string {
     if (target instanceof HTMLElement) {
       if (target.tagName === 'A') {
-        return target.getAttribute('href');
+        return this.openInSameWindow(target) ?  target.getAttribute('href') : '';
       } else if (target.parentElement) {
         return this.getLinkHRef(target.parentElement);
       }
     }
     return '';
+  }
+
+  private openInSameWindow(element: HTMLElement) {
+    return !(element.hasAttribute('target') && element.getAttribute('target').toLocaleLowerCase() === '_blank');
   }
 
 }

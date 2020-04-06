@@ -5,7 +5,7 @@
   <ng-container *ngIf="vihkoSettings.showIntro">
     <ng-container *ngIf="!modal; else showModal">
       <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-        <div [innerHtml]="'haseka.intro2' | translate"></div>
+        <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
       </alert>
     </ng-container>
 
@@ -16,7 +16,7 @@
             <div class="modal-header">
             </div>
             <div class="modal-body">
-              <div [innerHtml]="'haseka.intro2' | translate"></div>
+              <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
               <button type="button"
                       class="btn btn-md btn-primary btn-block use-button"
                       (click)="toggleInfo()">
