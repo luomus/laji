@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild,
-OnInit, ChangeDetectorRef, HostListener} from '@angular/core';
+OnInit, ChangeDetectorRef} from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
@@ -79,7 +79,6 @@ export class ObservationResultComponent implements OnInit {
   hasMonthDayData: boolean;
   hasYearData: boolean;
   hasTaxonData: boolean;
-  isLgScreen: boolean;
   metaFetch: Subscription;
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
@@ -154,10 +153,4 @@ export class ObservationResultComponent implements OnInit {
     this.downloadModal.openModal();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.metaFetch = this.browserService.lgScreen$.subscribe(data => {
-      this.isLgScreen = data;
-    });
-  }
 }
