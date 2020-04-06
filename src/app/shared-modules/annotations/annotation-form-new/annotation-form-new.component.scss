@@ -6,6 +6,16 @@ label {
     color: #3498DB;
     cursor: pointer;
   }
+
+  .add-taxonId {
+    padding: 0 15px;
+    font-size: 12px;
+  }
+
+  .deleteId {
+    cursor: pointer;
+    margin-left: 20px;
+  }
   
   .actions {
     margin-top: 10px;

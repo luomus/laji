@@ -5,7 +5,7 @@
         <h4>{{ 'annotation.effectiveQualityMarkings' | translate }}</h4>
     </ng-container>
     <ng-container *ngIf="showRecordQuality">
-      <laji-row *ngIf="unit.interpretations && unit.interpretations.recordQuality" [title]="'annotation.quality.grade' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+      <laji-row *ngIf="unit.interpretations && unit.interpretations.recordQuality && unit.interpretations.recordQuality !== 'NEUTRAL'" [title]="'annotation.quality.grade' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
           <div *ngIf="annotationResolving; else recordNoResolving">
               <laji-spinner></laji-spinner>
           </div>
@@ -14,7 +14,7 @@
           </ng-template>
       </laji-row>
     </ng-container>
-    <laji-row *ngIf="showEffectiveTag" [title]="'annotation.effectiveTags' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+    <laji-row *ngIf="showEffectiveTag && unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0" [title]="'annotation.effectiveTags' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
         <div *ngIf="annotationResolving; else tagsNoResolving">
             <laji-spinner></laji-spinner>
         </div>

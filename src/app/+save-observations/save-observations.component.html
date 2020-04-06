@@ -2,6 +2,7 @@
   <section class="mb-8"> <!-- Tallenna luontohavaintoja lajitietokeskukseen -->
     <h1 translate>saveObservations.h1</h1>
     <p translate>saveObservations.desc</p>
+    <h2 translate>saveObservations.chooseSystem</h2>
     <div class="d-flex flex-row my-6 flex-wrap">
       <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2"> <!-- Helppo -->
         <div>
@@ -36,14 +37,14 @@
       </div>
       <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2"> <!-- Monipuolinen -->
         <div>
-          <h3 translate>saveObservations.vihko</h3>
+          <h3 class="vihko-logo" translate>saveObservations.vihko</h3>
           <ul>
             <li translate>saveObservations.vihko.1</li>
             <li translate>saveObservations.vihko.2</li>
             <li translate>saveObservations.vihko.3</li>
           </ul>
         </div>
-        <lu-button [role]="'primary'" [anchor]="['/vihko']">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
+        <lu-button [anchor]="['/vihko']">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
       </div>
     </div>
   </section>
@@ -53,6 +54,16 @@
     <p translate>saveObservations.citizenScience.desc</p>
     <div class="d-flex flex-row flex-wrap">
       <ng-container *ngFor="let form of citizenScienceForms$ | async">
+        <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
+      </ng-container>
+    </div>
+  </section>
+
+  <section class="mb-8"> <!-- Bird Monitoring -->
+    <h2 translate>saveObservations.birdMonitoring</h2>
+    <p translate>saveObservations.birdMonitoring.desc</p>
+    <div class="d-flex flex-row flex-wrap">
+      <ng-container *ngFor="let form of birdMonitoringForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
       </ng-container>
     </div>

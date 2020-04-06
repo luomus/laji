@@ -1111,6 +1111,10 @@ a {
 
 /* Annotation UI - tags */
 
+.annotation-marker {
+  font-size: $fs-1;
+}
+
 div.annotation-marker {
   margin-bottom: 5px;
   max-width: 200px;

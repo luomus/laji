@@ -84,6 +84,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   ];
   tmpTags: Annotation[];
   isFocusedTaxonComment: any;
+  inputType: any;
+  inputName: any;
 
 
   emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
@@ -190,6 +192,13 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.annotation.addedTags = [];
   }
 
+  cleanTaxon() {
+    this.annotation.identification.taxon = '';
+    this.annotation.identification.taxonID = '';
+    this.annotation.identification.taxonSpecifier = '';
+    this.cd.detectChanges();
+  }
+
   showOption(optionId: string): boolean {
      return this.annotation.addedTags.indexOf(optionId) === -1; // add tags without control if positive or negative
   }
@@ -235,6 +244,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
           this.cd.detectChanges();
           this.formAnnotation.control.markAsDirty();
       }
+      this.inputName = 'opinion';
+      this.inputType = 'blur';
     } else {
       return;
     }
@@ -549,12 +560,17 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   onFocus(event) {
     if (event) {
+       this.inputType = event.type;
+       this.inputName = event.target.name;
        this.isFocusedTaxonComment = event.target;
        this.focus.emitChildEvent(true);
     } else {
+       this.inputType = event.type;
+       this.inputName = event.target.name;
        this.isFocusedTaxonComment = null;
        this.focus.emitChildEvent(false);
     }
+    this.cd.detectChanges();
   }
 
   protected makeLabel(value) {

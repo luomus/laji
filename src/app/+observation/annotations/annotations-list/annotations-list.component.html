@@ -1,12 +1,11 @@
-<div class="annotations">
-    <div class="annotation col-xs-12 col-sm-12 col-md-4 col-lg-3" *ngFor="let annotation of result.results">
-        <div class="annotation-item">
-           <laji-annotation-item
-            [item]="annotation" 
-            (click)="showDocument(annotation)"
-           ></laji-annotation-item>
-        </div>
+<div class="mt-3 d-flex flex-row flex-wrap">
+    <div class="annotation-container" *ngFor="let annotation of result.results">
+      <div class="annotation">
+        <laji-annotation-item
+        [item]="annotation"
+        (click)="showDocument(annotation)"
+        ></laji-annotation-item>
+      </div>
     </div>
 </div>
 
- 

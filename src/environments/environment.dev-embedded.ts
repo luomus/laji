@@ -26,6 +26,11 @@ export const environment = {
   lolifeForm: 'MHL.45',
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
+  saveObservations: {
+    citizenScienceForms: ['MHL.3', 'JX.652', 'MHL.53'],
+    birdMonitoringForms: ['MHL.33', 'MHL.6'],
+    researchProjects: ['MHL.1', 'MHL.50', 'MHL.57']
+  },
   apiBase: 'https://dev-embedded.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',

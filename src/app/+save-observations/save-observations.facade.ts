@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 interface State {
   citizenScienceForms: FormList[];
+  birdMonitoringForms: FormList[];
   researchProjectForms: FormList[];
 }
 
@@ -14,10 +15,12 @@ interface State {
 export class SaveObservationsFacade {
   private store$ = new BehaviorSubject<State>({
     citizenScienceForms: [],
+    birdMonitoringForms: [],
     researchProjectForms: []
   });
 
   citizenScienceForms$ = this.store$.asObservable().pipe(map(state => state.citizenScienceForms), distinctUntilChanged());
+  birdMonitoringForms$ = this.store$.asObservable().pipe(map(state => state.birdMonitoringForms), distinctUntilChanged());
   researchProjectForms$ = this.store$.asObservable().pipe(map(state => state.researchProjectForms), distinctUntilChanged());
 
   constructor (private formService: FormService, private translate: TranslateService) {
@@ -27,24 +30,29 @@ export class SaveObservationsFacade {
   reducer(forms) {
     this.store$.next({
       citizenScienceForms: forms[0],
-      researchProjectForms: forms[1]
+      birdMonitoringForms: forms[1],
+      researchProjectForms: forms[2]
     });
   }
 
-  loadAll(citizenScienceFormIds: string[], researchProjectFormIds: string[]) {
+  loadAll(citizenScienceFormIds: string[], birdMonitoringFormIds: string[], researchProjectFormIds: string[]) {
     this.formService.getAllForms(this.translate.currentLang).pipe(
       map((forms) => {
         const c = [];
+        const b = [];
         const r = [];
         forms.forEach((form) => {
           if (citizenScienceFormIds.includes(form.id)) {
             c.push(form);
           }
+          if (birdMonitoringFormIds.includes(form.id)) {
+            b.push(form);
+          }
           if (researchProjectFormIds.includes(form.id)) {
             r.push(form);
           }
         });
-        return [c, r];
+        return [c, b, r];
       })
     ).subscribe(this.reducer.bind(this));
   }
