@@ -80,29 +80,10 @@ $mobileBreakpoint: 768px;
   padding: 10px 10px;
 }
 
-.menu-svg {
-  height: 18px;
-}
-
 .close-wrapper {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
-}
-
-.close-btn {
-  padding: 10px;
-  border-radius: 100%;
-  cursor: pointer;
-  background-color: rgba($neutral-2, .5);
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1);
-  &:hover {
-    background-color: $neutral-2;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
-  }
-  svg {
-    display: block;
-  }
 }
 
 // SIDEBAR NAV

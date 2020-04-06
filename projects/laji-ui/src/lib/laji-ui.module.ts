@@ -11,19 +11,21 @@ import { RouterModule } from '@angular/router';
 import { GhostParagraphComponent } from './ghosts/ghost-paragraph/ghost-paragraph.component';
 import { FillHeightDirective } from './directives/fill-height.directive';
 import { GhostTextContentDirective } from './directives/ghost-textcontent.directive';
+import { IconComponent } from './icon/icon.component';
+import { ButtonRoundComponent } from './button-round/button-round.component';
 
 @NgModule({
   declarations: [
     ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
-    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective
+    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, ButtonRoundComponent
   ],
   imports: [
     CommonModule,
     RouterModule
   ],
   exports: [
-    ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
-    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective
+    ButtonComponent, ButtonRoundComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
+    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent
   ]
 })
 export class LajiUiModule { }
