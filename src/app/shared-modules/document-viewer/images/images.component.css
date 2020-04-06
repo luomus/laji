@@ -23,3 +23,11 @@
     transform: translate(-50% , -50%);
     position: absolute;
 }
+
+@media (max-width: 1024px) {
+    .background-no-images {
+        position: relative;
+        top: 0;
+        transform: translate(-50%);
+    }
+}

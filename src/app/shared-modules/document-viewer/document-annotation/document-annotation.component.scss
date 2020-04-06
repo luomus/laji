@@ -42,7 +42,7 @@ h5 {
 
   .column-modal:nth-child(1), .column-modal:nth-child(3) {
     @include media-query-tablet {
-      width: 48%;
+      width: 100%;
       order: 1;
       display: inline-block;
     }
