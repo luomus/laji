@@ -45,6 +45,7 @@ export class UnitComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.unit);
     if (this.unit) {
       if (this.unit.linkings) {
         this.unit.linkings.taxonId = this.toQname.transform(this.unit.linkings.taxon.id);
