@@ -188,7 +188,7 @@
       </div>
     </ng-container>
   </lu-tab>
-  <lu-tab *ngIf="visible.annotations && isLgScreen" [heading]="'search.result.annotation' | translate">
+  <lu-tab *ngIf="visible.annotations" [heading]="'search.result.annotation' | translate">
     <laji-annotations [query]="query"
         *ngIf="loadedTabs.isLoaded('annotations')"
     ></laji-annotations>
