@@ -33,7 +33,7 @@
                 <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
               </lu-checkbox>
             </main>
-          </div>    
+          </div>
         </div>
     </div>
     <ng-template #checkTags>
@@ -43,7 +43,7 @@
                 <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
                   <div class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
                 </lu-checkbox>
-            </main>           
+            </main>
         </div>
     </ng-template>
     <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
@@ -57,14 +57,14 @@
               <lu-checkbox (input)="addToRemoveTags(item.id)" [disabled]="((annotation.addedTags.indexOf('MMAN.5') !== -1 || annotation.addedTags.indexOf('MMAN.3') !== -1))" [checked]="annotation.removedTags.indexOf(item.id) !== -1">
                 <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</div>
               </lu-checkbox>
-          </main>          
+          </main>
         </div>
       </div>
   </div>
     <div class="row taxon" *ngIf="!isEditor; else editorMessage">
       <div>
         <div class="col-lg-3 col-md-12 col-sm-12">
-            <label class="taxonomy">{{ 'annotation.addIdentification' | translate }}</label> 
+            <label class="taxonomy">{{ 'annotation.addIdentification' | translate }}</label>
         </div>
         <div class="col-md-12 col-sm-12" [ngClass]="{'col-lg-6': unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1,
         'col-lg-9': !unit.linkings || (!unit.linkings.originalTaxon || !unit.linkings.taxon) || annotation.addedTags.indexOf('MMAN.3' | toQName) !== -1}">
@@ -106,7 +106,7 @@
             <span *ngIf="((inputType !== 'focus' && inputName === 'opinion') || (inputType === 'focus' && inputName !== 'opinion') || (inputType === 'blur' && inputName !== 'opinion'))">
               <span *ngIf="annotation.identification.taxonID; else noTaxonID">
                 {{ annotation.identification.taxonID }}
-                <a (click)="onTaxonLinkClick($event)" [routerLink]="['/taxon/' + (annotation.identification.taxonID | toQName)] | localize" target="_blank"
+                <a [routerLink]="['/taxon/' + (annotation.identification.taxonID | toQName)] | localize" target="_blank"
                 [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
                   <i class="glyphicon glyphicon-tag"></i>
                 </a>
@@ -151,7 +151,7 @@
     <ng-template #editorMessage>
       <div class="alert alert-warning">{{ 'annotation.isEditorTaxon' | translate }}</div>
     </ng-template>
-    
+
     <div class="row message" (lajiAfterIf)="initElements()">
       <div class="col-sm-12">
         <label>{{ 'MAN.notes' | label }}</label>
@@ -172,5 +172,5 @@
   <div [hidden]="!visible" *lajiLoggedIn="false" class="annotation-form">
     {{ 'force.login' | translate }}
   </div>
-  
-  
+
+
