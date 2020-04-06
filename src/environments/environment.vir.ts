@@ -22,7 +22,7 @@ export const environment = {
   valioForm: 'MHL.57',
   saveObservations: {
     citizenScienceForms: ['MHL.3', 'JX.652', 'MHL.53'],
-    birdMonitoringForms: ['MHL.33', 'MHL.6'],
+    birdMonitoringForms: ['MHL.65', 'MHL.33', 'MHL.6'],
     researchProjects: ['MHL.1', 'MHL.50', 'MHL.57']
   },
   loginUrl: '/user/viranomaiset',
