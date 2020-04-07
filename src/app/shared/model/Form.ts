@@ -89,6 +89,7 @@ export namespace Form {
       includeUnits?: boolean;
       startWithMap?: boolean;
       listLabel?: string;
+      listColumnNameMapping?: {[key: string]: string};
       printLabel?: string;
       formNavLabel?: string;
       reservationUntil?: string;
