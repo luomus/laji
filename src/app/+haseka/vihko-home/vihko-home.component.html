@@ -11,9 +11,10 @@
     <h3><a [routerLink]="['/vihko', 'JX.519']" translate>vihko.home.form.trip</a></h3>
     <p translate>vihko.home.form.trip.desc</p>
     <ul>
-      <li><a [routerLink]="['/vihko', '2858']" translate>vihko.home.form.trip.1</a></li>
+      <li><a [routerLink]="['/about', '2858']" translate>vihko.home.form.trip.1</a></li>
     </ul>
   </div>
+  <!--
   <div class="form-card strong xs:basis-0 sm:basis-5 basis-3 m-3">
     <h3><a routerLink="" translate>vihko.home.form.matrix</a></h3>
     <p translate>vihko.home.form.matrix.desc</p>
@@ -21,7 +22,8 @@
       <li><a routerLink="" translate>vihko.home.form.matrix.1</a></li>
     </ul>
   </div>
-  <div *ngIf="isDevMode" class="form-card strong xs:basis-0 sm:basis-5 basis-3 m-3">
+  -->
+  <div *lajiForTypes="['dev']" class="form-card strong xs:basis-0 sm:basis-5 basis-3 m-3">
     <h3><a routerLink="" translate>vihko.home.form.collection</a></h3>
     <p translate>vihko.home.form.collection.desc</p>
     <ul>

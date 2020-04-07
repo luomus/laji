@@ -7,7 +7,7 @@
 import { Global } from './global';
 
 export const environment = {
-  type: Global.type.prod,
+  type: Global.type.dev,
   base: 'https://beta.laji.fi',
   production: true,
   forceLogin: false,
@@ -32,9 +32,9 @@ export const environment = {
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
   saveObservations: {
-    citizenScienceForms: ['MHL.3', 'JX.652', 'MHL.53'],
-    birdMonitoringForms: ['MHL.65', 'MHL.33', 'MHL.6'],
-    researchProjects: ['MHL.1', 'MHL.50', 'MHL.57']
+    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.51', 'MHL.25'],
+    birdMonitoringForms: ['MHL.1', 'MHL.65', 'MHL.3'],
+    researchProjects: ['MHL.33', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
   },
   apiBase: 'https://beta.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
