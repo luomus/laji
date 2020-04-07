@@ -13,20 +13,22 @@
     display: inline-block;
     border-radius: 50px;
     padding: 2px 8px;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     &.selected {
       color: $neutral-6;
       background-color: $neutral-2;
       border: 1px solid $neutral-4;
+      box-shadow: 0 0 0 0 rgba(0,0,0,.1);
     }
     &.disabled {
       color: $neutral-5;
     }
   }
-  @include pill("primary", $primary-6, $primary-1, $primary-4);
-  @include pill("success", $success-6, $success-1, $success-4);
-  @include pill("info", $info-6, $info-1, $info-4);
-  @include pill("warning", $warning-6, $warning-1, $warning-4);
-  @include pill("danger", $danger-6, $danger-1, $danger-4);
+  @include pill("primary", $primary-7, $primary-1, $primary-3);
+  @include pill("success", $success-7, $success-1, $success-3);
+  @include pill("info", $info-7, $info-1, $info-3);
+  @include pill("warning", $warning-7, $warning-1, $warning-3);
+  @include pill("danger", $danger-7, $danger-1, $danger-3);
   @include pill("admin", $admin-1, $admin-2, $admin-3);
 }
 
