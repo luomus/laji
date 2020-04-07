@@ -242,7 +242,7 @@
               {{ 'theme.grc.intro' | translate }}
             </td>
           </tr>
-          <tr>
+          <tr *lajiForTypes="['dev']">
             <th>
               <a [routerLink]="['/theme/kerttu'] | localize">
                 {{ 'theme.kerttu' | translate }}

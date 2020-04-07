@@ -22,6 +22,7 @@
       <laji-np-list [height]="height"
                     [namedPlaces]="_namedPlaces"
                     [documentForm]="documentForm"
+                    [listColumnNameMapping]="documentForm.namedPlaceOptions?.listColumnNameMapping"
                     [activeNP]="_activeNP"
                     (activePlaceChange)="onActivePlaceChange($event)"
       ></laji-np-list>

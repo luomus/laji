@@ -25,6 +25,10 @@ div {
         }
         &:nth-child(1){
           width: 70%;
+          @include media-query-tablet {
+            width: 100%;
+            margin: 0 auto;
+          }
         }
         &:nth-child(2) {
           width:30%;
@@ -81,6 +85,9 @@ div {
             color:#204d74;
             &:last-child {
               margin-right: 0px;
+            }
+            @include media-query-phone {
+              margin-bottom: 5px;
             }
           }
           &.save {
