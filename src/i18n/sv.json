@@ -1502,7 +1502,7 @@
   "saveObservations.h1": "Spara naturobservationer till FinBIF",
   "saveObservations.chooseSystem": "Välj ett verktyg som fungerar för dig",
   "saveObservations.desc": "Genom att spara dina observationer i några av FinBIFs tjänster kan de användas av forskare och andra människor. Observationerna publiceras också på Laji.fi om du väljer det. Du kan lämna in enstaka observationer, underhålla din egen observationsanteckningsbok eller delta i medborgarvetenskapliga projekt.",
-  "saveObservations.easy": "Lätt",
+  "saveObservations.easy": "Öppen observationsform",
   "saveObservations.easy.1": "Skicka en enda observatio",
   "saveObservations.easy.2": "Ingen inloggning behövs",
   "saveObservations.easy.3": "Du kan inte redigera observationen efteråt",
