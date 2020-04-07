@@ -1,6 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { environment } from 'environments/environment';
-import { Global } from 'environments/global';
+import { Component} from '@angular/core';
 
 /* tslint:disable:component-selector */
 @Component({
@@ -9,8 +7,5 @@ import { Global } from 'environments/global';
   styleUrls: ['./vihko-home.component.scss']
 })
 export class VihkoHomeComponent {
-  isDevMode;
-  constructor() {
-    this.isDevMode = environment.type === Global.type.dev;
-  }
+
 }
