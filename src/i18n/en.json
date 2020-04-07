@@ -1435,7 +1435,7 @@
   "saveObservations.h1": "Save nature observations to FinBIF",
   "saveObservations.chooseSystem": "Select a tool that works for you",
   "saveObservations.desc": "By saving your observations into some of the services by FinBIF, it can be used by researchers and other people. The observations are also published on Laji.fi if you choose so. You can submit single observations, maintain your own observation notebook, or take part in citizen science projects.",
-  "saveObservations.easy": "Easy",
+  "saveObservations.easy": "Open observation form",
   "saveObservations.easy.1": "Submit a single observation",
   "saveObservations.easy.2": "No login needed",
   "saveObservations.easy.3": "You cannot edit the observation afterwards",
