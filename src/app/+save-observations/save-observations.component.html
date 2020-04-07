@@ -15,7 +15,9 @@
         </div>
         <lu-button anchor="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" role="primary">{{ 'saveObservations.easy.report' | translate }}</lu-button>
       </div>
-      <div *ngIf="1 === 0" class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2"> <!-- Mobiili -->
+      <!-- Mobiili -->
+      <!--
+      <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2">
         <div>
           <a class="d-block mb-4 inaturalist-link" href="https://inaturalist.laji.fi/" target="_blank">
             <img src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
@@ -35,6 +37,7 @@
           </a>
         </div>
       </div>
+      -->
       <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2"> <!-- Monipuolinen -->
         <div>
           <a [routerLink]="['/vihko']" class="vihko-logo" translate>saveObservations.vihko</a>
