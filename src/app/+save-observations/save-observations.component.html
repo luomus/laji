@@ -37,7 +37,7 @@
       </div>
       <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2"> <!-- Monipuolinen -->
         <div>
-          <h3 class="vihko-logo" translate>saveObservations.vihko</h3>
+          <a [routerLink]="['/vihko']" class="vihko-logo" translate>saveObservations.vihko</a>
           <ul>
             <li translate>saveObservations.vihko.1</li>
             <li translate>saveObservations.vihko.2</li>
@@ -61,7 +61,7 @@
 
   <section class="mb-8"> <!-- Bird Monitoring -->
     <h2 translate>saveObservations.birdMonitoring</h2>
-    <p translate>saveObservations.birdMonitoring.desc</p>
+<!--     <p translate>saveObservations.birdMonitoring.desc</p> -->
     <div class="d-flex flex-row flex-wrap">
       <ng-container *ngFor="let form of birdMonitoringForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>

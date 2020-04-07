@@ -32,7 +32,7 @@ export const hasekaRoutes: Routes = [
         children: [
           {path: '', pathMatch: 'full', redirectTo: 'home'},
           {path: 'home', pathMatch: 'full', component: VihkoHomeComponent},
-          {path: 'forms', pathMatch: 'full', component: HaSeKaFormListComponent},
+          {path: 'forms', pathMatch: 'full', redirectTo: 'home'},
           {path: 'ownSubmissions', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: OwnSubmissionsComponent},
           {path: 'templates', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: TemplatesComponent},
           {path: 'statistics', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
