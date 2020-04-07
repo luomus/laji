@@ -1,19 +1,23 @@
-<laji-spinner [spinning]="!(letters && annotations)">
-  <div class="well" *ngIf="letters && annotations" id="annotationContainer">
+<laji-spinner [spinning]="!template">
+  <div class="well" *ngIf="template" id="annotationContainer">
     <div class="row">
       <div class="col-md-6">
-        <h4 class="kerttu-select">{{ 'theme.kerttu.letterTemplate' | translate }}
+        <!--h4 class="kerttu-select">{{ 'theme.kerttu.letterTemplate' | translate }}
           <select class="form-control" [value]="currentTemplate" (change)="onTemplateChange(templateSelect.value)" #templateSelect>
             <option *ngFor="let item of letters; let i = index" [value]="i">
               {{ i + 1 }}
             </option>
           </select>/{{ letters.length }}
-        </h4>
+        </h4-->
         <laji-audio-viewer
-          [recording]="letters[currentTemplate].template"
+          [recording]="template.recording"
+          [start]="template.xRange[0] - 5"
+          [stop]="template.xRange[1] + 5"
+          [xRange]="template.xRange"
+          [yRange]="template.yRange"
         ></laji-audio-viewer>
       </div>
-      <div class="col-md-6">
+      <!--div class="col-md-6">
         <h4 class="kerttu-select">{{ 'theme.kerttu.letter' | translate }}
           <select class="form-control" [value]="currentCandidate" (change)="onCandidateChange(letterSelect.value)" #letterSelect>
             <option *ngFor="let item of letters[currentTemplate].candidates; let i = index" [value]="i">
@@ -38,7 +42,7 @@
           [showUndefined]="true"
           [value]="currentAnnotation">
           ></laji-three-state-switch>
-      </div>
+      </div-->
     </div>
   </div>
 </laji-spinner>

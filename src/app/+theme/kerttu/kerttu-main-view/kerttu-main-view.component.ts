@@ -8,6 +8,7 @@ import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
 import {ILetterAnnotations, IRecordingAnnotations} from '../model/annotation';
 import {IRecording, IRecordingWithCandidates} from '../model/recording';
+import {ILetterTemplate} from '../model/letter';
 
 @Component({
   selector: 'laji-kerttu-main-view',
@@ -35,6 +36,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   selectedTaxonIds: string[];
   taxonId: string;
 
+  letterTemplate$: Observable<ILetterTemplate>;
   letters$: Observable<IRecordingWithCandidates[]>;
   letterAnnotations: ILetterAnnotations;
 
@@ -72,13 +74,15 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
     this.vmSub = this.vm$.subscribe(vm => {
       if (vm.step === Step.annotateRecordings) {
-        this.recordings$ = this.kerttuApi.getRecordings(this.selectedTaxonIds, this.userService.getToken());
+        /*this.recordings$ = this.kerttuApi.getRecordings(this.selectedTaxonIds, this.userService.getToken());
         if (!this.recordingAnnotationSub) {
           this.recordingAnnotationSub = this.kerttuApi.getRecordingAnnotations(this.userService.getToken()).subscribe((annotations: IRecordingAnnotations) => {
             this.recordingAnnotations = annotations;
             this.cdr.markForCheck();
           });
-        }
+        }*/
+      } else if (vm.step === Step.annotateLetters) {
+        this.letterTemplate$ = this.kerttuApi.getNextLetterTemplate(this.userService.getToken());
       }
     });
   }
@@ -132,22 +136,23 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   }
 
   saveLetterAnnotations() {
-    if (this.letterAnnotations && Object.keys(this.letterAnnotations).length > 0) {
+    /*if (this.letterAnnotations && Object.keys(this.letterAnnotations).length > 0) {
       return this.kerttuApi.updateLetterAnnotations(this.taxonId, this.letterAnnotations, this.userService.getToken());
-    } else {
-      return of({});
-    }
+    } else {*/
+    return of({});
+    // }
   }
 
   saveRecordingAnnotations() {
-    if (this.recordingAnnotations && Object.keys(this.recordingAnnotations).length > 0) {
+    /* if (this.recordingAnnotations && Object.keys(this.recordingAnnotations).length > 0) {
       return this.kerttuApi.updateRecordingAnnotations(this.recordingAnnotations, this.userService.getToken());
-    } else {
-      return of({});
-    }
+    } else { */
+    return of({});
+    // }
   }
 
   onTaxonIdChange(id: string) {
+    /*
     if (this.letterAnnotationsSub) {
       this.letterAnnotationsSub.unsubscribe();
     }
@@ -163,6 +168,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
       });
       this.letters$ = this.kerttuApi.getLetterCandidates(this.taxonId, this.userService.getToken());
     }
+    */
   }
 
   private getSaveObservable(step: Step): Observable<any> {

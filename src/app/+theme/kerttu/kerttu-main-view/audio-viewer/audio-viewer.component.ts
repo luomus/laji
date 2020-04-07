@@ -1,5 +1,4 @@
 import {ChangeDetectorRef, Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import { IRecording } from '../../model/recording';
 import { AudioService } from '../../service/audio.service';
 import { DOCUMENT } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -11,7 +10,12 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./audio-viewer.component.scss']
 })
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() recording: IRecording;
+  @Input() recording: string;
+  @Input() start: number;
+  @Input() stop: number;
+
+  _xRange: number[];
+  @Input() yRange: number[];
 
   buffer: AudioBuffer;
   spectrogramColormap$: any;
@@ -29,6 +33,11 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   private audioSub: Subscription;
   private timeupdateInterval;
 
+  @Input() set xRange(xRange) {
+    const start = this.start || 0;
+    this._xRange = [xRange[0] - start, xRange[1] - start];
+  }
+
   constructor(
     @Inject(WINDOW) private window: Window,
     private cdr: ChangeDetectorRef,
@@ -45,7 +54,10 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.recording) {
       this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
-      this.audioSub = this.audioService.getAudioBuffer(this.recording.audio, this.context).subscribe((buffer) => {
+      this.audioSub = this.audioService.getAudioBuffer(this.recording, this.context).subscribe((buffer) => {
+        if (this.start || this.stop) {
+          buffer = this.audioService.extractSegment(buffer, this.context, this.start, this.stop);
+        }
         this.buffer = buffer;
         this.cdr.markForCheck();
       });

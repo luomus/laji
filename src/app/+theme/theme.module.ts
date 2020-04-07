@@ -88,7 +88,6 @@ import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
 import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-letter-annotation/kerttu-letter-annotation.component';
 import { AudioViewerComponent } from './kerttu/kerttu-main-view/audio-viewer/audio-viewer.component';
-import { KerttuTaxonSelectComponent } from './kerttu/kerttu-main-view/kerttu-taxon-select/kerttu-taxon-select.component';
 import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-recording-annotation/kerttu-recording-annotation.component';
 import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
@@ -186,7 +185,6 @@ import { AudioSpectrogramComponent } from './kerttu/kerttu-main-view/audio-spect
     KerttuLetterAnnotationComponent,
     AudioViewerComponent,
     ThemeBreadcrumbComponent,
-    KerttuTaxonSelectComponent,
     KerttuRecordingAnnotationComponent,
     AudioSpectrogramComponent
   ],

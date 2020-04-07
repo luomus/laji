@@ -1,11 +1,9 @@
-:host {
-  display: inline-block;
+#container {
   position: relative;
-  max-width: 100%;
 }
 
-canvas {
-  max-width: 100%;
+#spectrogram {
+  position: absolute;
 }
 
 #scrollLine {

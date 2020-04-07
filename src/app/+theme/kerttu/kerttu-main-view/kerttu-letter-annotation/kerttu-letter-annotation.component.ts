@@ -3,6 +3,7 @@ import {UserService} from '../../../../shared/service/user.service';
 import {IRecordingWithCandidates} from '../../model/recording';
 import {Annotation, ILetterAnnotations} from '../../model/annotation';
 import {TranslateService} from '@ngx-translate/core';
+import {ILetterTemplate} from '../../model/letter';
 
 @Component({
   selector: 'laji-kerttu-letter-annotation',
@@ -10,8 +11,12 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./kerttu-letter-annotation.component.scss']
 })
 export class KerttuLetterAnnotationComponent implements OnChanges {
-  @Input() annotations: ILetterAnnotations;
-  @Input() letters: IRecordingWithCandidates[];
+  // @Input() annotations: ILetterAnnotations;
+  @Input() template: ILetterTemplate;
+  @Input() letter: any;
+
+  letters: any[];
+  annotations: ILetterAnnotations;
 
   currentTemplate = 0;
   currentCandidate = 0;
