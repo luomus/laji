@@ -8,7 +8,7 @@
 <laji-row *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.id !== unit.linkings.originalTaxon.id) || !unit.linkings.originalTaxon)" [title]="'result.unit.taxonVerbatim' | translate">
   <laji-taxon-name [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
 </laji-row>
-<laji-row *ngIf="unit.linkings.taxon === undefined" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+<laji-row *ngIf="unit.linkings === undefined || unit.linkings.taxon === undefined" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
 <laji-row
   *ngIf="unit.linkings && unit.linkings.taxon && showFacts"
   [title]="'viewer.fixedName'|translate">
