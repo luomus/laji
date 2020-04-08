@@ -28,6 +28,7 @@
   "annotation.copyCurrentTag": "Copy current",
   "annotation.coll": "Sensu lato:",
   "annotation.taxonSpecifier": "Taxon specificer:",
+  "annotation.taxonSpecifierInfo": "Text info SV",
   "annotation.sendAnnotation": "Skicka kommentar",
   "annotation.addBasicAnnotation": "Lägg till en grundläggande kommentar",
   "annotation.switchToBasic": "Byt till kommentar som inte är expert",

@@ -28,6 +28,7 @@
   "annotation.copyCurrentTag": "Kopioi nykyinen (x)",
   "annotation.coll": "Sensu lato:",
   "annotation.taxonSpecifier": "Taksonin tarkenne:",
+  "annotation.taxonSpecifierInfo": "Text info FI",
   "annotation.sendAnnotation": "Tallenna kommentti",
   "annotation.addBasicAnnotation": "Lisää kommentti",
   "annotation.switchToBasic": "Vaihda peruskommentointiin",

@@ -11,6 +11,7 @@ import { ConvertAnnotationsPipe } from './convert-annotations.pipe';
 import { SearchFiltersModule } from '../search-filters/search-filters.module';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/public-api';
 import { OccurrenceAtTimeOfAnnotationComponent } from './annotation-list/occurrence-at-time-of-annotation/occurrence-at-time-of-annotation.component';
+import { InfoModule } from '../info/info.module';
 
 @NgModule({
   imports: [
@@ -19,10 +20,11 @@ import { OccurrenceAtTimeOfAnnotationComponent } from './annotation-list/occurre
     LangModule,
     SharedModule,
     SearchFiltersModule,
-    LajiUiModule
+    LajiUiModule,
+    InfoModule
   ],
   declarations: [AnnotationsComponent, AnnotationListComponent, AnnotationFormComponent,
     AnnotationFormNewComponent, ConvertAnnotationsPipe, OccurrenceAtTimeOfAnnotationComponent ],
-  exports: [AnnotationsComponent, LajiUiModule]
+  exports: [AnnotationsComponent, LajiUiModule, InfoModule]
 })
 export class AnnotationsModule { }
