@@ -43,7 +43,7 @@
 </div>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
   <div class="col-sm-12">
-    <strong *ngFor="let field of namedPlaceHeader; let last = last">{{ field | async }}{{ !last ? ', ' : '' }}</strong>
+    <h4><span *ngFor="let field of namedPlaceHeader; let last = last">{{ field | async }}{{ !last ? ', ' : '' }}</span></h4>
   </div>
 </div>
 <ng-content></ng-content>
