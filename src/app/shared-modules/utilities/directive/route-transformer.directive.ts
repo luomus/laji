@@ -8,7 +8,7 @@ import { Global } from '../../../../environments/global';
 })
 export class RouteTransformerDirective {
 
-  private static readonly lajiTypes = [Global.type.dev, Global.type.embedded];
+  private static readonly lajiTypes = [Global.type.dev, Global.type.prod, Global.type.embedded];
 
   constructor(private el: ElementRef, private router: Router) {}
 
