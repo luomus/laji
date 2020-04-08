@@ -1378,6 +1378,7 @@
   "np.formOwnSubmissions": "Places previous documents",
   "np.tag": "Filter by route properties",
   "np.createPlace": "Create place",
+  "np.createWaterbirdPlace": "Create place",
   "np.editPlace": "Save changes",
   "haseka.form.rights.description": " <h1>Form permission management</h1> <p>You can manage form permissions here.</p>",
   "np.copyAddress": "Copy link",
@@ -1431,7 +1432,7 @@
   "form.participants.export.docCount":  "Document count",
   "navigation.syke-butterfly": "SYKE butterfly census",
   "theme.syke-butterfly.intro": "SYKE butterfly census",
-  
+
   "saveObservations.h1": "Save nature observations to FinBIF",
   "saveObservations.chooseSystem": "Select a tool that works for you",
   "saveObservations.desc": "By saving your observations into some of the services by FinBIF, it can be used by researchers and other people. The observations are also published on Laji.fi if you choose so. You can submit single observations, maintain your own observation notebook, or take part in citizen science projects.",
