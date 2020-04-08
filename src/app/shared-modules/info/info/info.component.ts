@@ -23,6 +23,7 @@ export class InfoComponent implements OnInit {
 
   isInsideModal: string;
   container: string;
+  position: any;
 
   constructor(
     @Inject(WINDOW) private window,
@@ -35,6 +36,19 @@ export class InfoComponent implements OnInit {
       this.show();
     }
   }
+
+  @HostListener('mousemove', ['$event'])
+    onMousemove(event: MouseEvent) {
+     if (this.modal.isShown) {
+
+     } else {
+      if (this.containerInfo !== 'body') {
+        this.position = (event.pageY - event.clientY + 300 ) + 'px';
+      } else {
+        this.position = 'auto';
+      }
+     }
+    }
 
   ngOnInit() {
    this.container = this.containerInfo;
