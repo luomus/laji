@@ -11,7 +11,7 @@
   triggers=""
   #pop="bs-popover"
   containerClass="popover-lg"
-  container="body"
+  container="{{ container }}"
   [class]="'no-propagation label label-' + labelType + (glyphicon ? '' : ' laji-form-help-glyph')"
 >
   <span [className]="'glyphicon glyphicon-' + glyphicon" *ngIf="glyphicon"></span>

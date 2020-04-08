@@ -125,7 +125,7 @@
           <div class="col-lg-4 col-sm-12 no-padding">
             <label>{{ 'annotation.taxonSpecifier' | translate }}</label>
           </div>
-          <div class="col-lg-8 col-sm-12 no-padding">
+          <div class="col-lg-7 col-sm-11 col-xs-11 no-padding">
             <input
             type="text"
             class="form-control input-sm"
@@ -135,6 +135,9 @@
             (focus)="onFocus($event)"
             (blur)="onFocus($event)"
             >
+          </div>
+          <div class="col-lg-1 col-sm-1 col-xs-1 no-padding">
+            <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info> 
           </div>
         </div>
       </div>

@@ -28,6 +28,7 @@
   "annotation.copyCurrentTag": "Copy current",
   "annotation.coll": "Sensu lato:",
   "annotation.taxonSpecifier": "Taxon specifier:",
+  "annotation.taxonSpecifierInfo": "Text info EN",
   "annotation.sendAnnotation": "Send annotation",
   "annotation.addBasicAnnotation": "Add basic annotation",
   "annotation.switchToBasic": "Switch to non-expert comment",
