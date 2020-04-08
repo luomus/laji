@@ -7,8 +7,6 @@ import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { Util } from '../../../../shared/service/util.service';
-import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
-import { AreaService } from '../../../../shared/service/area.service';
 import merge from 'deepmerge';
 
 @Component({
@@ -30,15 +28,13 @@ export class NpEditFormComponent implements OnInit {
   private hasChanges = false;
   private isPublic = false;
 
-  @ViewChild(LajiFormComponent, { static: true }) lajiForm: LajiFormComponent;
+  @ViewChild(LajiFormComponent, { static: false }) lajiForm: LajiFormComponent;
 
   constructor(@Inject(WINDOW) private window: Window,
     private userService: UserService,
     private namedPlaceService: NamedPlacesService,
     private translate: TranslateService,
-    private toastsService: ToastsService,
-    private taxonomyApi: TaxonomyApi,
-    private areaService: AreaService
+    private toastsService: ToastsService
   ) { }
 
   ngOnInit() {
