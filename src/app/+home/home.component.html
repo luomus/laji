@@ -118,11 +118,14 @@
 </div>
 <div class="container-fluid" *lajiForTypes="['vir']">
   <style>
+    .species-banner, .row {
+      max-width: 1000px;
+    }
     .species-banner {
       display: flex;
       flex-direction: row;
-      max-width: 1000px;
       min-width: 400px;
+      margin-top: 40px;
     }
     .img-1, .img-2, .img-3, .img-4 {
       width: 100%;
@@ -144,14 +147,20 @@
       background-image: url("https://image.laji.fi/MM.107795/Tea_vB_Aarnihelokka_129_thumb.jpg");
     }
   </style>
-  <h1>{{ 'home.authority.title' | translate }}</h1>
   <div class="species-banner">
     <div class="img-1"></div>
     <div class="img-2"></div>
     <div class="img-3"></div>
     <div class="img-4"></div>
   </div>
-  <div class="row">
-    <div class="col-sm-10 col-md-7 intro" [innerHtml]="'home.authority.text' | translate" lajiRouteTransformer></div>
+  <h1>{{ 'home.authority.title' | translate }}</h1>
+  <div class="intro">
+    <div class="row">
+      <div class="col-sm-10 col-md-7" [innerHtml]="'home.authority.text' | translate" lajiRouteTransformer></div>
+    </div>
+    <div class="row">
+      <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon" [intro]="'home.taxon-sub-intro' | translate" [info]="'home.taxon-intro' | translate"></laji-navigation-thumbnail>
+      <laji-navigation-thumbnail name="home.observation" icon="observations" path="observation" [intro]="'home.observation-sub-intro' | translate" [info]="'home.observation-intro' | translate"></laji-navigation-thumbnail>
+    </div>
   </div>
 </div>
