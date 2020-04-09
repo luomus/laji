@@ -93,7 +93,7 @@
   "annotation.currentOccurrenceInformation": "Havainnon nykyiset tiedot",
   "annotation.collectionEditor": "Aineisto ja tallentaja",
   "annotation.noTaxonId": "Ei taksonin tunnusta",
-  "annotation.NoTaxonData": "Ei dataa",
+  "annotation.NoTaxonData": "Ei valittua taksonia",
   "annotation.noName": "Ei nimeä",
   "annotation.title.taxon": "Määritys",
   "audio.spectrum": "Äänite ja spektrogrammi",
