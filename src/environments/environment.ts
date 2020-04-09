@@ -32,7 +32,7 @@ export const environment = {
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
   saveObservations: {
-    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.51', 'MHL.25'],
+    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
     birdMonitoringForms: ['MHL.1', 'MHL.65', 'MHL.3'],
     researchProjects: ['MHL.33', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
   },

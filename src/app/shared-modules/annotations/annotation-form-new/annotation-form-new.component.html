@@ -91,34 +91,6 @@
         <div class="agree" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.obsercation.agree' | translate }}</div>
       </div>
     </div>
-    <div class="add-taxonId">
-      <div class="col-lg-3 col-md-12 col-sm-12 no-padding"> Added Taxon Id:</div>
-      <div class="col-lg-9 col-md-12 col-sm-12">
-        <span *ngIf="(annotation.identification.taxon !== undefined && annotation.identification.taxon !== ''); else noData">
-          <span *ngIf="((inputType !== 'focus' && inputName === 'opinion') || (inputType === 'focus' && inputName !== 'opinion') || (inputType === 'blur' && inputName !== 'opinion'))">
-            <span *ngIf="annotation.identification.taxonID; else noTaxonID">
-              {{ annotation.identification.taxonID }}
-              <a [routerLink]="['/taxon/' + (annotation.identification.taxonID | toQName)] | localize" target="_blank"
-              [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
-                <i class="glyphicon glyphicon-tag"></i>
-              </a>
-            </span>
-            <ng-template #noTaxonID>
-              {{ 'annotation.noTaxonId' | translate }}
-            </ng-template>
-          </span>
-          <span *ngIf="(inputType === 'focus' && inputName === 'opinion')">
-            <laji-spinner></laji-spinner>
-          </span>
-        </span>
-        <ng-template #noData>
-            {{ 'annotation.NoTaxonData' | translate }}
-        </ng-template>
-        <span class="label label-danger deleteId"  [tooltip]="'annotation.delete' | translate" *ngIf="(annotation.identification.taxon !== undefined && annotation.identification.taxon !== '')">
-          <i class="glyphicon glyphicon-remove" (click)="cleanTaxon()"></i>
-        </span>
-      </div>
-    </div>
     <div *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
       <div class="col-sm-12 no-padding" style="margin-top: 10px;">
         <div class="col-sm-12">
