@@ -84,6 +84,9 @@ code {
   .navbar-collapse.collapse {
     display: none!important;
   }
+  .collapse.navbar-collapse.in {
+    overflow-y: auto !important;
+  }
   .navbar-nav {
     float: none!important;
     margin-top: 7.5px;

@@ -147,8 +147,23 @@
 }
 #navbar .dropdown-menu a {
   color: #333;
+  @media only screen and (max-width: 900px) {
+    color: $neutral-1;
+  }
 }
-@media only screen and (min-width : 768px) {
+
+@media only screen and (max-width: 900px) {
+  .navbar-nav > li{
+    & > .dropdown-menu {
+      position: static;
+      float: none;
+      width: auto;
+      margin-top: 0;
+      background-color: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+  }
 
   .navbar-inverse .dropdown-menu li[role="menuitem"]:hover {
     background-color: #dfdfdf;
@@ -156,6 +171,14 @@
 
   .navbar-inverse .dropdown-menu {
     background-color: #f5f5f5;
+  }
+
+  .link.user .name {
+    display: inline !important;
+  }
+
+  .divider {
+    background-color: $primary-4 !important;
   }
 }
 
