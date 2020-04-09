@@ -31,12 +31,16 @@
     </div>
   </div>
   <ng-template #checkTags>
+  <div class="lu tags-step-1">
       <label>{{ 'annotation.addTags' | translate }}</label>
-      <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
-        <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-          <div class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
-        </lu-checkbox>
+      <div class="d-flex flex-row flex-wrap">
+        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+          <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+            <div class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
+          </lu-checkbox>
+        </div>
       </div>
+  </div>
   </ng-template>
   <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
     In this type of annotation, you need to add at lest 1 check tag or a taxon
