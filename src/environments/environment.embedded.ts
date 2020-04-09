@@ -20,6 +20,8 @@ export const environment = {
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
+  waterbirdPairForm: 'MHL.65',
+  waterbirdJuvenileForm: 'MHL.66',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'MHL.36',
   batForm: 'MHL.50',
@@ -30,5 +32,6 @@ export const environment = {
     researchProjects: ['MHL.1', 'MHL.50', 'MHL.57']
   },
   loginUrl: 'https://login.laji.fi/login',
-  selfPage: 'https://login.laji.fi/self'
+  selfPage: 'https://login.laji.fi/self',
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
 };
