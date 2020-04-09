@@ -73,6 +73,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   annotationRemovableTags$: Observable<AnnotationTag[]>;
   annotationTaxonMatch$: Observable<LajiTaxonSearch>;
   annotationAddadableTags: Subscription;
+  annotationSub: Subscription;
   alertNotSpamVerified: boolean;
   typeaheadLoading = false;
   types = Annotation.TypeEnum;
@@ -152,18 +153,12 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   public getMatchTaxon(taxonomy: string) {
     this.annotationTaxonMatch$ = this.taxonApi.taxonomySearch(taxonomy, '5', undefined, {matchType: 'exact'} );
-    this.annotationTaxonMatch$.subscribe((result: any) => {
+    this.annotationSub = this.annotationTaxonMatch$.subscribe((result: any) => {
       result.forEach(taxon => {
         if (taxon.matchingName.toLowerCase() === taxonomy.toLowerCase()) {
           this.annotation.identification.taxonID = taxon.id;
-          this.taxonomy = {
-            id: taxon.id,
-            qname: null,
-            cursiveName: true,
-            vernacularName: taxon.vernacularName,
-            scientificName: taxon.scientificName,
-            scientificNameAuthorship: taxon.scientificNameAuthorship,
-          };
+          this.taxonomy = taxon;
+          this.cd.detectChanges();
           return;
         }
       });
@@ -177,17 +172,16 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   select(event) {
     this.annotation.identification.taxonID = event.item.key;
     this.annotation.identification.taxon = event.value;
+    if (this.annotationSub) {
+      this.annotationSub.unsubscribe();
+    }
     this.taxonomy = {
       id: event.item.key,
-      qname: null,
-      cursiveName: true,
-      scientificName: event.item.payload.scientificName,
-      vernacularName: event.value,
-      scientificNameAuthorship: event.item.payload.scientificNameAuthorship
+      ...event.item.payload
     };
   }
 
-  saveTaxon(event) {
+  saveTaxon() {
     this.annotation.identification.taxonID = '';
     this.taxonomy = {
       id: null,
