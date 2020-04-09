@@ -82,7 +82,7 @@
         </div>
          <div class="content new-identification" *ngIf="annotation.identification && ((annotation.identification.taxon && annotation.identification.taxon !== '') || (annotation.identification.linkings && annotation.identification.linkings.taxon))">
            <div class="row">
-             <div class="col-xs-4" style="font-weight: bold;">{{ annotation.title.taxon }}:</div>
+             <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.title.taxon' | translate }}:</div>
              <div class="col-xs-8">
               <ng-container *ngIf="annotation.identification.linking && annotation.identification.linkings.taxon; else taxonNameSimple">
                <laji-taxon-name [taxon]="annotation.identification.linkings.taxon"></laji-taxon-name>
