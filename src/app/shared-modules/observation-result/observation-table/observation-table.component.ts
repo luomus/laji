@@ -291,11 +291,11 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         this.loading = false;
         // This needs to be markForCheck and not detectChanges otherwise observation table on taxon section will not work
         this.changeDetectorRef.markForCheck();
-      }, (err) => {
+      }, () => {
         this.total.emit(0);
         this.loading = false;
         this.changeDetectorRef.markForCheck();
-        this.logger.error('Observation table data handling failed!', err);
+        this.logger.error('Observation table data handling failed!', this.query);
       });
   }
 
