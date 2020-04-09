@@ -415,6 +415,10 @@ treenode:last-child > .tree-node > .tree-children::after {
   min-width: 400px;
 }
 
+.modal-dialog .popover {
+  z-index: 1070;
+}
+
 .popover-lg {
   border: none;
   box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1), 0 4px 16px 0 rgba(0,0,0,0.1);

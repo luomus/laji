@@ -126,6 +126,16 @@
                 }
               ]
             },
+            "vir-dev": {
+              "extractCss": true,
+              "vendorChunk": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.vir-dev.ts"
+                }
+              ]
+            },
             "local": {
               "extractCss": true,
               "vendorChunk": false,
@@ -169,6 +179,9 @@
             },
             "vir": {
               "browserTarget": "laji:build:vir"
+            },
+            "vir-dev": {
+              "browserTarget": "laji:build:vir-dev"
             },
             "local": {
               "browserTarget": "laji:build:local"
@@ -276,6 +289,17 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.vir.ts"
+                }
+              ]
+            },
+            "vir-dev": {
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.vir-dev.ts"
                 }
               ]
             },

@@ -1,4 +1,4 @@
-<div class="laji-form">
+<div class="laji-form" *lajiLoggedIn="true">
   <laji-form
     [formData]="placeForm"
     (dataChange)="onChange($event)"
@@ -12,4 +12,11 @@
     (submitPrivate)="submitPrivate()"
     (cancel)="discard()"
     ></laji-document-form-footer>
+</div>
+<div class="row" *lajiLoggedIn="false">
+  <div class="col-sm-8">
+    <alert [type]="'warning'">
+      {{ 'haseka.pleaseLogin' | translate }}
+    </alert>
+  </div>
 </div>

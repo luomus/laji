@@ -5,7 +5,7 @@
     <laji-row *ngIf="unit.media" [title]="'species.images'|translate">
       <div class="image-holder">
         <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media"></laji-image-gallery>
-      </div>    
+      </div>
     </laji-row>
     <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
   </div>
@@ -14,6 +14,7 @@
     [unit]="unit"
     [showRecordQuality]="false"
     [showTitle]="false"
+    [showEffectiveTaxon]="false"
   ></laji-observation-effective-tags-taxon>
 
   <laji-row [title]="'annotation.title'|translate">

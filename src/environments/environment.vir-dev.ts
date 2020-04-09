@@ -2,10 +2,10 @@
 import { Global } from './global';
 
 export const environment = {
-  type: Global.type.iucn,
-  base: 'https://punainenkirja.laji.fi',
-  systemID: 'KE.601',
-  formWhitelist: [],
+  type: Global.type.vir,
+  base: 'https://viranomaiset.laji.fi',
+  systemID: 'KE.941',
+  formWhitelist: ['JX.519', 'JX.6485'],
   massForms: ['JX.519'],
   defaultForm: 'JX.519',
   nafiForm: 'MHL.6',
@@ -13,25 +13,25 @@ export const environment = {
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
-  waterbirdPairForm: 'MHL.65',
-  waterbirdJuvenileForm: 'MHL.66',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'MHL.36',
   invasiveControlForm: '',
   municipalityMonitoringForm: '',
+  lolifeForm: '',
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
-  lolifeForm: 'MHL.45',
   saveObservations: {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.51', 'MHL.25'],
     birdMonitoringForms: ['MHL.1', 'MHL.3'],
     researchProjects: ['MHL.33', 'MHL.50', 'MHL.57']
   },
-  loginUrl: 'https://login.laji.fi/login',
+  loginUrl: '/user/viranomaiset',
   selfPage: 'https://login.laji.fi/self',
   apiBase: '/api',
   production: true,
   forceLogin: true,
-  disableAnalytics: false,
+  disableAnalytics: true,
+  waterbirdPairForm: 'MHL.65',
+  waterbirdJuvenileForm: 'MHL.66',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi'
 };

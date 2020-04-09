@@ -707,7 +707,8 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['instructions', 'form', 'juvenileForm', 'ownSubmissions', 'formPermissions'],
-      hideNavFor: ['/form']
+      hideNavFor: ['/form'],
+      instructions: '3589'
     },
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
