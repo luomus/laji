@@ -11,6 +11,7 @@ export class SurveyBoxComponent {
   waterbirdForm = Global.forms.waterbirdPairForm;
 
   @Input() form: FormList;
+  @Input() comingSoonForm: {link: string, title: string, logo?: string};
 
   isFormIdInThemes(formId) {
     return Object.keys(Global.formsTheme).includes(formId);

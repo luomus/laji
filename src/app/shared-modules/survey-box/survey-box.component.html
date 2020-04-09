@@ -1,7 +1,17 @@
-<a [routerLink]="isFormIdInThemes(form.id) ? [themes[form.id]] : ['/vihko', form.id] | localize">
+<a *ngIf="form" [routerLink]="isFormIdInThemes(form.id) ? [themes[form.id]] : ['/vihko', form.id] | localize">
   <div class="survey-box" [ngStyle]="{'background-image': 'url(' + form.logo + ')'}">
     <div class="survey-title">
       {{ form.id === waterbirdForm ? ('navigation.waterbird' | translate) : form.title }}
+    </div>
+  </div>
+</a>
+<a *ngIf="comingSoonForm" [href]="comingSoonForm.link" class="ribbon-wrapper">
+  <div class="survey-box" [ngStyle]="{'background-image': 'url(' + comingSoonForm.logo + ')'}">
+    <div class="corner-ribbon top-right">
+      {{ 'haseka.forms.comingSoon' | translate }}
+    </div>
+    <div class="survey-title">
+      {{ comingSoonForm.title | translate }}
     </div>
   </div>
 </a>
