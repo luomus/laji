@@ -95,6 +95,7 @@
   "annotation.noTaxonId": "Ingen taxon-id",
   "annotation.NoTaxonData": "Inga data",
   "annotation.noName": "Inget namn",
+  "annotation.title.taxon": "Taxon",
   "audio.spectrum": "Ljud och skala",
   "audio.openSpectrum": "Öppna skala",
   "asIs": "Värde som det är",
