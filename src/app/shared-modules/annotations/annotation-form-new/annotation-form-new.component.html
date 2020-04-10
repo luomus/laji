@@ -31,12 +31,16 @@
     </div>
   </div>
   <ng-template #checkTags>
+  <div class="lu tags-step-1">
       <label>{{ 'annotation.addTags' | translate }}</label>
-      <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
-        <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-          <div class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
-        </lu-checkbox>
+      <div class="d-flex flex-row flex-wrap">
+        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+          <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+            <div class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
+          </lu-checkbox>
+        </div>
       </div>
+  </div>
   </ng-template>
   <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
     In this type of annotation, you need to add at lest 1 check tag or a taxon
@@ -60,6 +64,7 @@
       </div>
       <div class="col-md-12 col-sm-12" [ngClass]="{'col-lg-6': unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1,
       'col-lg-9': !unit.linkings || (!unit.linkings.originalTaxon || !unit.linkings.taxon) || annotation.addedTags.indexOf('MMAN.3' | toQName) !== -1}">
+        <div class="input-group">
           <input #taxon
           [ngClass]="{loading: typeaheadLoading}"
           type="text"
@@ -76,11 +81,15 @@
           [typeaheadItemTemplate]="taxonItem"
           autocomplete="off"
           autocorrect="off"
-          (change)="saveTaxon($event)"
+          (change)="saveTaxon()"
           (typeaheadOnSelect)="select($event)"
           (focus)="onFocus($event)"
           (blur)="onFocus($event)"
           >
+          <div class="deleteId input-group-addon"  [tooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()">
+            <i class="glyphicon glyphicon-remove"></i>
+          </div>
+        </div>
         <ng-template #taxonItem let-model="item">
           <h5 class="autosuggest-value {{model.groups}} informal-group-image">
             {{ model.value }}
@@ -89,6 +98,14 @@
       </div>
       <div class="col-lg-3 col-md-12 col-sm-12">
         <div class="agree" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.obsercation.agree' | translate }}</div>
+      </div>
+    </div>
+    <div class="add-taxonId">
+      <div class="col-lg-offset-3 col-md-offset-4 col-lg-8 col-md-7 col-sm-11">
+        <span *ngIf="annotation.identification.taxonID" [hidden]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''">
+          <laji-taxon-name [taxon]="taxonomy"></laji-taxon-name>
+        </span>
+        &nbsp;
       </div>
     </div>
     <div *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
@@ -109,7 +126,7 @@
             >
           </div>
           <div class="col-lg-1 col-sm-1 col-xs-1 no-padding">
-            <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info> 
+            <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info>
           </div>
         </div>
       </div>
