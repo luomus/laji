@@ -2,9 +2,13 @@
 <laji-issues [data]="gathering"></laji-issues>
 <ng-container *ngFor="let unit of gathering?.units">
   <ng-container *ngIf="(unit.unitId === highlight) && (unit.taxonVerbatim || unit.reportedTaxonId)">
-    <laji-row *ngIf="unit.taxonVerbatim; else reportedTaxonId" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+    <laji-row *ngIf="unit.taxonVerbatim; else reportedTaxonId" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim">
+      <span *ngIf="unit.reportedTaxonConfidence" class="taxonConfidence" [ngClass]="{'green': unit.reportedTaxonConfidence === 'SURE', 'red': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
+    </laji-row>
     <ng-template #reportedTaxonId>
-      <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.reportedTaxonId | toQName | label"></laji-row>
+      <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.reportedTaxonId | toQName | label">
+        <span *ngIf="unit.reportedTaxonConfidence" class="taxonConfidence" [ngClass]="{'green': unit.reportedTaxonConfidence === 'SURE', 'red': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
+      </laji-row>
     </ng-template>
   </ng-container>
 </ng-container>

@@ -9,3 +9,20 @@ h4 {
     margin-bottom: 5px;
     font-size: 16px;
 }
+
+.taxonConfidence {
+    display: block;
+    font-size: 12px;
+    position: relative;
+    top: -4px;
+    font-weight: bold;
+    text-transform: lowercase;
+}
+
+.green {
+    color: #559933;
+}
+
+.red {
+    color: #993333;
+}
