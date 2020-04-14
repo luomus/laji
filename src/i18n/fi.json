@@ -86,7 +86,7 @@
   "annotation.list.showLessTags": "näytä vähemmän",
   "annotation.button": "Näytä/tee kommentti",
   "annotation.noImages": "Ei kuvaa",
-  "annotation.addedSuccess": "Kommentti lisätty",
+  "annotation.addedSuccess": "Kommentti tallennettu. Se ilmestyy tälle sivulle pian, voit sillä välin jatkaa muiden havaintojen kommentointia.",
   "annotation.deletedSuccess": "Kommentti poistettu",
   "annotation.expertComment": "peruskommentti",
   "annotation.basicComment": "",
