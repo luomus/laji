@@ -1,8 +1,11 @@
 <h4>{{ 'annotation.currentOccurrenceInformation' | translate }}</h4>
 <laji-issues [data]="gathering"></laji-issues>
 <ng-container *ngFor="let unit of gathering?.units">
-  <ng-container *ngIf="(unit.unitId === highlight) && unit.taxonVerbatim">
-    <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+  <ng-container *ngIf="(unit.unitId === highlight) && (unit.taxonVerbatim || unit.reportedTaxonId)">
+    <laji-row *ngIf="unit.taxonVerbatim; else reportedTaxonId" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+    <ng-template #reportedTaxonId>
+      <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.reportedTaxonId | toQName | label"></laji-row>
+    </ng-template>
   </ng-container>
 </ng-container>
 <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="false">
