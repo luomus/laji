@@ -14,8 +14,8 @@ export class TaxonOccurrenceMapComponent implements OnChanges {
   fillData = {};
   statusList = [];
   colorByStatus = {
-    'MX.doesNotOccur': '#000000',
-    'MX.typeOfOccurrenceOccurs': '#90ee90',
+    'MX.doesNotOccur': '#ffffff',
+    'MX.typeOfOccurrenceOccurs': '#3498db',
     'MX.typeOfOccurrenceStablePopulation': '#006400',
     'MX.typeOfOccurrenceOccasional': '#008000',
     'MX.typeOfOccurrenceCommon': '#00ff00',
@@ -27,9 +27,9 @@ export class TaxonOccurrenceMapComponent implements OnChanges {
     'MX.typeOfOccurrenceImport': '#e9967a',
     'MX.typeOfOccurrenceAnthropogenic': '#ffc0cb',
     'MX.typeOfOccurrenceNotEstablished': '#b22222',
-    'MX.typeOfOccurrenceExtirpated': '#800000',
-    'MX.typeOfOccurrenceOldRecords': '#a52a2a',
-    'MX.typeOfOccurrenceUncertain': '#ffff00',
+    'MX.typeOfOccurrenceExtirpated': '#000000',
+    'MX.typeOfOccurrenceOldRecords': '#a8dbff',
+    'MX.typeOfOccurrenceUncertain': '#ffc300',
     'MX.typeOfOccurrenceSpontaneousOldResident': '#d9b3ff',
     'MX.typeOfOccurrenceSpontaneousNewResident': '#bf80ff',
     'MX.typeOfOccurrenceAlienOldResident': '#ecb3ff',

@@ -50,6 +50,7 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
     if (!hasLang && !useFallback) {
       return '';
     }
+
     return MultiLangService.getValue(value, lang, '%value% (%lang%)');
   }
 }

@@ -8,10 +8,12 @@ import { UserService } from '../../shared/service/user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
+import { PlatformService } from '../../shared/service/platform.service';
 
 export interface Rights {
   edit: boolean;
   admin: boolean;
+  ictAdmin?: boolean;
 }
 
 @Injectable({providedIn: 'root'})
@@ -25,18 +27,22 @@ export class FormPermissionService {
     private formPermissionApi: FormPermissionApi,
     private formService: FormService,
     private userService: UserService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private platformService: PlatformService
   ) {}
 
   hasAccessToForm(formID: string, personToken?: string): Observable<boolean> {
-    const permission$ = (collectionID) => this.getFormPermission(collectionID, personToken || this.userService.getToken()).pipe(
-      switchMap(permission => this.userService.user$.pipe(
-        take(1),
-        switchMap(person => of(this.isEditAllowed(permission, person)))
-      ))
+    const token = personToken || this.userService.getToken();
+    if (!formID || !token) {
+      return of(false);
+    }
+
+    const permission$ = (collectionID) => this.formPermissionApi.findPermissions(token).pipe(
+      switchMap(permission => of(permission.admins.includes(collectionID) || permission.editors.includes(collectionID)))
     );
 
-    return this.formService.getForm(formID, this.translateService.currentLang).pipe(
+    return this.formService.getAllForms(this.translateService.currentLang).pipe(
+      map(forms => forms.find(f => f.id === formID)),
       switchMap(form => !form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1 ?
         of(true) :
         permission$(form.collectionID)
@@ -95,22 +101,6 @@ export class FormPermissionService {
       tap(fp => this.changes$.emit(fp)));
   }
 
-  hasEditAccess(form: Form.List): Observable<boolean> {
-    return this.access(
-      form,
-      false,
-      true,
-      (formPermission: FormPermission, person: Person) => this.isEditAllowed(formPermission, person));
-  }
-
-  hasPendingAccess(form: Form.List): Observable<boolean> {
-    return this.access(
-      form,
-      false,
-      false,
-      (formPermission: FormPermission, person: Person) => this.isPending(formPermission, person));
-  }
-
   getRights(form: Form.List): Observable<Rights> {
     return this.access(
       form,
@@ -126,7 +116,7 @@ export class FormPermissionService {
     return this.userService.isLoggedIn$.pipe(
       take(1),
       switchMap(login => {
-        if (!login) {
+        if (!login || this.platformService.isServer) {
           return ObservableOf(notLoggedIn);
         } else if (!form.collectionID || !form.features || (
           form.features.indexOf(Form.Feature.Restricted) === -1 &&

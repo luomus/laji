@@ -1,10 +1,12 @@
 import { map } from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Output,
+EventEmitter} from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
 import { Observable } from 'rxjs';
 import { Annotation } from '../../../shared/model/Annotation';
+import { DocumentViewerFacade } from '../document-viewer.facade';
 
 @Component({
   selector: 'laji-unit',
@@ -23,7 +25,9 @@ export class UnitComponent implements OnInit {
   @Input() identifying: boolean;
   @Input() openAnnotation: boolean;
   @Input() showFacts = false;
+  @Input() showAnnotation: boolean;
   @Input() showOnlyHighlighted: boolean;
+  @Output() annotationPending = new EventEmitter<boolean>();
 
   annotationVisible = false;
   annotationClass$: Observable<string>;
@@ -36,7 +40,8 @@ export class UnitComponent implements OnInit {
 
   constructor(
     private toQname: ToQNamePipe,
-    private annotationService: AnnotationService
+    private annotationService: AnnotationService,
+    private documentViewerFacade: DocumentViewerFacade
   ) { }
 
   ngOnInit() {
@@ -66,7 +71,9 @@ export class UnitComponent implements OnInit {
   initAnnotationStatus(annotation?: Annotation) {
     const annotations = this.unit.annotations || [];
     if (annotation) {
-      annotations.push(annotation);
+      if (!annotation.deleted) {
+        annotations.push(annotation);
+      }
       this.unit.annotations = annotations;
     }
     this.annotationClass$ = this.annotationService
@@ -94,8 +101,13 @@ export class UnitComponent implements OnInit {
       (Array.isArray(this.annotations) && this.annotations.length > 0);
   }
 
-  toggleAnnotations() {
-    this.annotationVisible = !this.annotationVisible;
+  showAnnotations() {
+    this.documentViewerFacade.showDocumentID({
+      highlight: this.unit.unitId,
+      document: this.documentID,
+      openAnnotation: true,
+      result: undefined
+    });
   }
 
   hideAnnotations() {

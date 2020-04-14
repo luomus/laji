@@ -1,0 +1,18 @@
+<div id="spectrogramContainer">
+  <laji-audio-spectrogram
+    *ngIf="recording.audio"
+    [buffer]="buffer"
+    [colormap]="spectrogramColormap$ | async"
+    [currentTime]="currentTime"
+  ></laji-audio-spectrogram>
+</div>
+
+<div id="audioControls">
+  <button class="btn btn-default" (click)="toggleAudio()">
+    <span
+      class="fa"
+      [ngClass]="{'fa-play': !isPlaying, 'fa-pause': isPlaying}"
+    >
+    </span>
+  </button>
+</div>

@@ -1,7 +1,7 @@
 /* tslint:disable:max-line-length no-empty-interface */
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Area } from '../model/Area';
@@ -244,6 +244,9 @@ export class LajiApiService {
     const options = { params: {...this.removeUndefinedFromObject(query)} };
     if (endpoint === LajiApi.Endpoints.htmlToPdf) {
       options['responseType'] = 'blob';
+    }
+    if (endpoint === LajiApi.Endpoints.annotations) {
+      options['headers'] = 'x-beta';
     }
     return this.httpClient.post(
       url,

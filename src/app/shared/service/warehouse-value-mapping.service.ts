@@ -10,7 +10,7 @@ export class WarehouseValueMappingService {
 
   constructor(private warehouseService: WarehouseApi) {}
 
-  public getOriginalKey(value): Observable<string> {
+  public getOriginalKey(value: string): Observable<string> {
     return this.get(value, 'mapping');
   }
 

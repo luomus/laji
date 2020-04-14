@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit, Optional, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { isPlatformServer } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,7 +14,6 @@ export class NotFoundComponent implements OnInit {
   _redirecting = false;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
     @Optional() @Inject(RESPONSE) private response: any,
     private router: Router
   ) { }
@@ -26,8 +24,9 @@ export class NotFoundComponent implements OnInit {
       this._redirecting = true;
       this.router.navigateByUrl(url.substr(3));
     }
-    if (isPlatformServer(this.platformId)) {
-      this.response.status(404);
+    if (this.response) {
+      this.response.statusCode = 404;
+      this.response.statusMessage = 'Not Found';
     }
   }
 

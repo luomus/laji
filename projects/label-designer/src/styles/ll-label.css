@@ -11,6 +11,8 @@ so that this styling will be included in the generated pdf
 }
 .ll-page {
   box-sizing: border-box;
+  overflow: hidden;
+  border: 0;
 }
 .ll-print-content {
   display: grid;
@@ -18,8 +20,6 @@ so that this styling will be included in the generated pdf
   grid-auto-flow: column;
   align-items: start;
   justify-items: start;
-  page-break-inside: avoid;
-  page-break-after: always;
 }
 .ll-label-item {
   position: absolute;

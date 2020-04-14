@@ -139,6 +139,16 @@
               {{ 'theme.linetransect.intro' | translate }}
             </td>
           </tr>
+          <tr *lajiForTypes="['dev']">
+            <th>
+              <a [routerLink]="['/theme/vesilintulaskenta'] | localize">
+                {{ 'navigation.waterbird' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.waterbird.intro' | translate }}
+            </td>
+          </tr>
           <tr>
             <th>
               <a [routerLink]="['/theme/herpetology'] | localize">
@@ -190,6 +200,16 @@
               {{ 'theme.lolife.intro' | translate }}
             </td>
           </tr>
+          <tr *lajiForTypes="['dev']">
+            <th>
+              <a [routerLink]="['/theme/syke-perhoset'] | localize">
+                {{ 'navigation.syke-butterfly' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.syke-butterfly.intro' | translate }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -222,9 +242,53 @@
               {{ 'theme.grc.intro' | translate }}
             </td>
           </tr>
+          <tr *lajiForTypes="['dev']">
+            <th>
+              <a [routerLink]="['/theme/kerttu'] | localize">
+                {{ 'theme.kerttu' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.kerttu.intro' | translate }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel panel-default" *lajiForTypes="['dev']">
+    <div class="panel-heading">
+      <strong>{{ 'theme.speciesIdentification.main' | translate }}</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>
+              <a [routerLink]="['/theme/pinkka'] | localize">
+                {{ 'navigation.pinkka' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.pinkka.intro' | translate }}
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <a [routerLink]="['/theme/hyonteisopas'] | localize">
+                {{ 'navigation.hyonteisopas' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.hyonteisopas.intro' | translate }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
 
 </div>
+
+

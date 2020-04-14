@@ -41,7 +41,7 @@
                 <div class="link blocking-overlay"></div>
                 <!--<laji-biogeographical-province height="438" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: ['ML.206'], cache: true}"></laji-biogeographical-province>-->
                 <laji-observation-map
-                  [unitCount]="(homeData$ | async)?.today.total"
+                  [unitCount]="(homeData$ | async)?.today?.total"
                   [settingsKey]="'frontMap'"
                   [height]="438"
                   [showControls]="false"
@@ -52,11 +52,11 @@
                 ></laji-observation-map>
                 <div class="numbers">
                   <span class="no-break">
-                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today.total"></laji-observation-count>
+                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today?.total"></laji-observation-count>
                     {{ 'viewer.unit' | translate }}
                     </span>
                   <span class="no-break">
-                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday.total" ></laji-observation-count>
+                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday?.total" ></laji-observation-count>
                     {{ 'observation.results.species' | translate }}
                   </span>
                 </div>
@@ -82,7 +82,7 @@
             </div>
             <div class="row">
               <div class="col-sm-12">
-                <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
+                <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/'}" class="thumbnail panel panel-default">
                   <div class="panel-heading">
                     <h2 class="panel-title caption">{{ 'home.identify-help-title' | translate }}</h2>
                   </div>
@@ -90,7 +90,16 @@
                     <p>{{ 'home.identify-help-intro' | translate }}</p>
                     <div class="identification-images">
                       <div class="link blocking-overlay"></div>
-                      <laji-gallery [showPaginator]="false" [limit]="12" [showPopover]="false" [view]="'compact'" [sort]="['document.firstLoadDate DESC']" [showViewSwitch]="false" [query]="imagesQuery$ | async" [pageSize]="20"></laji-gallery>
+                      <laji-image-gallery
+                        [showPopover]="false"
+                        [showViewSwitch]="false"
+                        [showOverlay]="false"
+                        [showExtraInfo]="false"
+                        [showLinkToSpeciesCard]="false"
+                        [view]="'compact'"
+                        [modalImages]="images$ | async"
+                        [shortcut]="false"
+                      ></laji-image-gallery>
                     </div>
                   </div>
                 </a>
@@ -107,9 +116,51 @@
     </div>
   </div>
 </div>
-<div class="container-fluid" *lajiForTypes="['vir']">
+<div class="container-fluid iucn" *lajiForTypes="['vir']">
+  <style>
+    .species-banner, .iucn .row {
+      max-width: 1000px;
+    }
+    .species-banner {
+      display: flex;
+      flex-direction: row;
+      min-width: 400px;
+      margin-top: 40px;
+    }
+    .img-1, .img-2, .img-3, .img-4 {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      padding-top: 20%;
+    }
+    .img-1 {
+      background-image: url("https://image.laji.fi/MM.119372/JR24134_thumb.jpg");
+    }
+    .img-2 {
+      background-image: url("https://image.laji.fi/MM.281887/Catocala_promissa_02_thumb.jpg");
+    }
+    .img-3 {
+      background-image: url("https://image.laji.fi/MM.304397/Podiceps_auritus_thumb.jpg");
+    }
+    .img-4 {
+      background-image: url("https://image.laji.fi/MM.107795/Tea_vB_Aarnihelokka_129_thumb.jpg");
+    }
+  </style>
+  <div class="species-banner">
+    <div class="img-1"></div>
+    <div class="img-2"></div>
+    <div class="img-3"></div>
+    <div class="img-4"></div>
+  </div>
   <h1>{{ 'home.authority.title' | translate }}</h1>
-  <div class="row">
-    <div class="col-sm-10 col-md-7 intro" [innerHtml]="'home.authority.text' | translate"></div>
+  <div class="intro">
+    <div class="row">
+      <div class="col-sm-10 col-md-7" [innerHtml]="'home.authority.text' | translate" lajiRouteTransformer></div>
+    </div>
+    <div class="row">
+      <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon" [intro]="'home.taxon-sub-intro' | translate" [info]="'home.taxon-intro' | translate"></laji-navigation-thumbnail>
+      <laji-navigation-thumbnail name="home.observation" icon="observations" path="observation" [intro]="'home.observation-sub-intro' | translate" [info]="'home.observation-intro' | translate"></laji-navigation-thumbnail>
+    </div>
   </div>
 </div>

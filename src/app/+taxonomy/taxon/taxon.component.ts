@@ -51,7 +51,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
-
     this.subParam = combineLatest(this.route.params, this.route.queryParams).subscribe(data => {
       this.infoCardTab = data[0]['tab'] || 'overview';
       this.infoCardContext = data[1]['context'] || 'default';
@@ -117,7 +116,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     const params = {};
     const extra = {};
 
-    if (tab !== 'overview') {
+    if (tab !== 'overview' && tab !== 'taxonomy') {
       route.push(tab);
     }
     if (context !== 'default' && id === this.taxon.id) {

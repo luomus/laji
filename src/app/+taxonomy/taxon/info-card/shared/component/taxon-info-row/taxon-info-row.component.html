@@ -1,8 +1,9 @@
 <div class="row">
-  <div class="col-xs-5 key">
-    <ng-container *ngIf="label; else labelTpl">{{ label }}</ng-container>
+  <div class="col-xs-5 key" luGhostTextContent [disableTextContentGhost]="!keyTextContentGhost">
+    {{ label }}
+    <ng-container *ngTemplateOutlet="labelTpl"></ng-container>
   </div>
-  <div class="col-xs-7 value">
+  <div class="col-xs-7 value" luGhostTextContent [disableTextContentGhost]="!keyTextContentGhost">
     <ng-content></ng-content>
   </div>
 </div>

@@ -11,7 +11,7 @@
   triggers=""
   #pop="bs-popover"
   containerClass="popover-lg"
-  container="body"
+  container="{{ container }}"
   [class]="'no-propagation label label-' + labelType + (glyphicon ? '' : ' laji-form-help-glyph')"
 >
   <span [className]="'glyphicon glyphicon-' + glyphicon" *ngIf="glyphicon"></span>
@@ -19,7 +19,7 @@
 </strong></span>
 
 <div class="modal fade no-propagation" bsModal #modal="bs-modal" [config]="{backdrop: false}" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
-  <div class="modal-dialog modal-sm">
+<div class="modal-dialog modal-sm" [ngStyle]="{'top': position}">
     <div class="modal-content">
       <div class="modal-body">
         <ng-container *ngTemplateOutlet="content"></ng-container>
@@ -31,5 +31,5 @@
   <button class="close pull-right" type="button" (click)="hide()">
     <i class="glyphicon glyphicon-remove"></i>
   </button>
-  <span *ngIf="html" [innerHTML]="html"></span><ng-content></ng-content>
+  <span *ngIf="html" [innerHTML]="html" lajiRouteTransformer></span><ng-content></ng-content>
 </ng-template>

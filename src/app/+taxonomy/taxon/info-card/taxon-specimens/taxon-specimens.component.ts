@@ -42,7 +42,9 @@ export class TaxonSpecimensComponent implements OnChanges {
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
       this.documentViewerFacade.showDocumentID({
         highlight: row.unit.unitId,
-        document: row.document.documentId
+        document: row.document.documentId,
+        openAnnotation: false,
+        result: undefined
       });
     }
   }

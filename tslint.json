@@ -33,7 +33,7 @@
     "label-position": true,
     "max-line-length": [
       true,
-      140
+      170
     ],
     "member-access": false,
     "member-ordering": [

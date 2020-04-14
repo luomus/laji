@@ -8,6 +8,8 @@ import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/co
 export class TaxonInfoRowComponent implements OnInit {
   @ContentChild('label', {static: true}) labelTpl: TemplateRef<any>;
   @Input() label: string;
+  @Input() keyTextContentGhost = true;
+  @Input() valueTextContentGhost = true;
 
   constructor() { }
 

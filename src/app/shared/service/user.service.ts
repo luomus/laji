@@ -1,7 +1,7 @@
-import { catchError, distinctUntilChanged, filter, map, mergeMap, share, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, map, share, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
@@ -15,6 +15,7 @@ import { PlatformService } from './platform.service';
 import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
+import { HistoryService } from './history.service';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -33,26 +34,26 @@ export interface IUserSettings {
 }
 
 interface IPersistentState {
-  token: string;
+  isLoggedIn: boolean;
   returnUrl: string;
 }
 
 export interface IUserServiceState extends IPersistentState {
+  token: string;
   user: Person;
-  isLoggedIn: boolean;
   settings: IUserSettings;
   allUsers: {[id: string]: Person|Observable<Person>};
 }
 
 const _persistentState: IPersistentState = {
-  token: '',
+  isLoggedIn: false,
   returnUrl: ''
 };
 
 let _state: IUserServiceState = {
   ..._persistentState,
+  token: '',
   user: null,
-  isLoggedIn: false,
   settings: {},
   allUsers: {}
 };
@@ -67,7 +68,9 @@ export class UserService {
   @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
-  state$ = this.store.asObservable();
+  private state$ = this.store.asObservable();
+  private currentRouteData = new ReplaySubject<any>(1);
+  private currentRouteData$ = this.currentRouteData.asObservable();
 
   isLoggedIn$ = this.state$.pipe(map((state) => state.isLoggedIn), distinctUntilChanged());
   settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
@@ -80,13 +83,14 @@ export class UserService {
     + '&next=' + next).replace('%lang%', lang);
   }
 
-  static isAdmin(person: Person): boolean {
+  static isIctAdmin(person: Person): boolean {
     return person && person.role && person.role.includes('MA.admin');
   }
 
   constructor(
     private personApi: PersonApi,
     private router: Router,
+    private route: ActivatedRoute,
     private location: Location,
     private logger: Logger,
     private translate: TranslateService,
@@ -94,26 +98,39 @@ export class UserService {
     private platformService: PlatformService,
     private browserService: BrowserService,
     private storage: LocalStorageService,
+    private historyService: HistoryService,
     @Inject(WINDOW) private window: any
   ) {
-    this.browserService.visibility$.pipe(
+    this.router.events.pipe(
+      filter(event => event instanceof ActivationEnd && event.snapshot.children.length === 0)
+    ).subscribe((event: ActivationEnd) => this.currentRouteData.next(event.snapshot.data));
+
+    this.isLoggedIn$.pipe(
+      switchMap(() => this.currentRouteData$),
+      take(1),
+      switchMap(() => this.browserService.visibility$),
       filter(visible => visible),
-      mergeMap(() => this.checkLogin())
-    ).subscribe();
+    ).subscribe(() => {
+      this._checkLogin();
+    });
   }
 
-  login(userToken: string) {
-    if (this.persistentState.token === userToken || !this.platformService.isBrowser) {
+  checkLogin(): Observable<boolean> {
+    return this._checkLogin();
+  }
+
+  login(userToken: string): Observable<boolean> {
+    if (_state.token === userToken || !this.platformService.isBrowser) {
       return of(true);
     }
-    return this.checkLogin(userToken);
+    return this._checkLogin(userToken);
   }
 
-  logout() {
-    if (!this.persistentState.token || this.subLogout) {
+  logout(): void {
+    if (!_state.token || this.subLogout) {
       return;
     }
-    this.subLogout = this.personApi.removePersonToken(this.persistentState.token).pipe(
+    this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
       httpOkError(404, false),
       retryWithBackoff(300),
       catchError((err) => {
@@ -124,7 +141,7 @@ export class UserService {
   }
 
   getToken(): string {
-    return this.persistentState.token;
+    return _state.token;
   }
 
   getPersonInfo(id: string, info?: 'fullName' | 'fullNameWithGroup'): Observable<string>;
@@ -159,11 +176,17 @@ export class UserService {
     return pickValue(_state.allUsers[id] as Observable<Person>);
   }
 
-  redirectToLogin(returnUrl?: string): void {
+  redirectToLogin(returnUrl?: string, routeData?: any): void {
     if (this.platformService.isBrowser) {
-      returnUrl = returnUrl || this.location.path(true);
-      this.updatePersistentState({...this.persistentState, returnUrl});
-      this.window.location.href = UserService.getLoginUrl(returnUrl, this.translate.currentLang);
+      this.currentRouteData$.pipe(
+        startWith(of(routeData)),
+        filter(data => !!data),
+        take(1),
+      ).subscribe(data => {
+        returnUrl = data.loginLanding || returnUrl || this.location.path(true);
+        this.updatePersistentState({...this.persistentState, returnUrl});
+        this.window.location.href = UserService.getLoginUrl(returnUrl, this.translate.currentLang);
+      });
     }
   }
 
@@ -194,27 +217,36 @@ export class UserService {
     return `users-${personID }-settings`;
   }
 
-  private checkLogin(rawToken?: string): Observable<boolean> {
+  /**
+   * Checks that user status is correct and return true when status check is done
+   * It's considered to be done when no other actions are needed
+   */
+  private _checkLogin(rawToken?: string): Observable<boolean> {
     if (!this.platformService.isBrowser) {
       this.doLoginState({}, '');
       return of(true);
     }
-    const token = rawToken || this.persistentState.token;
-    if (token) {
+    const token = rawToken || _state.token;
+    if (_state.token && this.persistentState.isLoggedIn === false) {
+      this.doLogoutState();
+    } else if (token) {
       return this.personApi.personFindByToken(token).pipe(
+        tap(user => this.doLoginState(user, token)),
+        map(user => !!user),
         httpOkError(404, false),
         retryWithBackoff(300),
         catchError(() => of(false)),
-        tap(user => this.doLoginState(user, token)),
-        map(user => !!user),
+        tap(loggedIn => { if (!loggedIn) { this.doLogoutState(); } }),
+        map(() => true),
         share()
       );
+    } else if (this.persistentState.isLoggedIn) {
+      this.redirectToLogin();
+      return of(false);
     } else {
       this.doLogoutState();
     }
-    this.storage.clear('token'); // this is only used for the transition phase and can be removed after one release
-    this.storage.clear('returnUrl'); // this is only used for the transition phase and can be removed after one release
-    return of(false);
+    return of(true);
   }
 
   private doLoginState(user: Person, token) {
@@ -222,8 +254,9 @@ export class UserService {
       return;
     }
     this.init = true;
-    this.updatePersistentState({...this.persistentState, token: user ? token : ''});
-    this.updateState({..._state, ...this.persistentState, isLoggedIn: !!user, user: user || {}, settings: {}});
+    // Token can be removed from there afters a while
+    this.updatePersistentState({...this.persistentState, isLoggedIn: !!user, token: ''} as any);
+    this.updateState({..._state, ...this.persistentState, token: user ? token : '', user: user || {}, settings: {}});
     this.doUserSettingsState(user.id);
   }
 
@@ -232,8 +265,9 @@ export class UserService {
       return;
     }
     this.init = true;
-    this.updatePersistentState({...this.persistentState, token: ''});
-    this.updateState({..._state, ...this.persistentState, isLoggedIn: false, user: {}, settings: {}});
+    // Token can be removed from there afters a while
+    this.updatePersistentState({...this.persistentState, isLoggedIn: false, token: ''} as any);
+    this.updateState({..._state, ...this.persistentState, token: '', user: {}, settings: {}});
   }
 
   private doUserSettingsState(id: string) {

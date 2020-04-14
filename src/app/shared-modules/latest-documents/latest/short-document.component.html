@@ -1,111 +1,12 @@
-<!--<div class="link" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading" ngPreserveWhitespaces>
-  <small *ngIf="!changingLocale">{{ 'haseka.users.edited' | translate }}: <span *ngIf="document.dateEdited">{{ document.dateEdited | amTimeAgo }}</span></small>
-
-  <span class="nowrap">
-    <ng-container *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
-      <span class="label label-warning link inline-block"
-            [tooltip]="'result.showPrivateViewer' | translate"
-            [placement]="'left'"
-            container="body"
-            (click)="onShowViewer($event)">
-        <i class="glyphicon glyphicon-eye-close"></i>
-      </span>
-    </ng-container>
-
-    <ng-container *ngIf="hasChanges">
-      <span class="label label-danger inline-block" container="body" [tooltip]="'haseka.form.hasChanges' | translate" [placement]="'left'"
-            container="body"
-            [adaptivePosition]="false">
-        <i class="glyphicon glyphicon-warning-sign"></i>
-      </span>
-      <span class="label label-default link inline-block"
-            tabIndex=0
-            [tooltip]="'haseka.users.latest.discard' | translate"
-            [placement]="'left'"
-            container="body"
-            [adaptivePosition]="false"
-            (click)="removeDocument($event, document)">
-        <i class="glyphicon glyphicon-trash"></i>
-      </span>
-    </ng-container>
-
-    <ng-container *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPublic">
-      <span class="label label-success link inline-block"
-            [tooltip]="'result.showViewer' | translate"
-            [placement]="'left'"
-            container="body"
-            [adaptivePosition]="false"
-            (click)="onShowViewer($event)">
-        <i class="glyphicon glyphicon-eye-open"></i>
-      </span>
-    </ng-container>
-  </span>
-  <br>
-
-  <ng-container *ngIf="gatheringDates.start"> {{ gatheringDates.start | amDateFormat:'DD.MM.YYYY' }}</ng-container>
-  <ng-container *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</ng-container>
-
-  <ng-container *ngIf="locality">{{ locality }}</ng-container>
-  <ng-container *ngIf="!locality">
-    <ng-container *ngIf="document.namedPlaceID; else missingLocality">
-      {{ document.namedPlaceID | label }}
-    </ng-container>
-    <ng-template #missingLocality>
-      <ng-container *ngIf="complainLocality">
-        {{ 'haseka.users.latest.localityMissing' | translate }}
-      </ng-container>
-    </ng-template>
-  </ng-container>
-  <ng-container *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</ng-container>
-
-  <span class="nowrap" (click)="showUnitList($event)">
-    <small>
-      <ng-container>{{ unitList.length }}</ng-container>
-      <ng-container *ngIf="unitList.length === 1">{{ 'haseka.users.latest.gathered.singular' | translate }}</ng-container>
-      <ng-container *ngIf="unitList.length !== 1">{{ 'haseka.users.latest.gathered' | translate }}</ng-container>
-    </small>
-
-    <span *ngIf="unitList && unitList.length > 0"
-          class="link"
-          (click)="showUnitList($event)">
-          <i class="glyphicon"
-             style="font-size:0.8em"
-             [ngClass]="{ 'glyphicon-triangle-bottom': showList, 'glyphicon-triangle-right': !showList }"></i>
-    </span>
-
-    <br>
-    <small>
-      <ul *ngIf="showList" style="margin-bottom: 2px">
-        <li *ngFor="let taxon of unitList | slice:0:5;">
-          {{ taxon }}
-        </li>
-        <li *ngIf="unitList.length > 5">{{ unitList.length - 5 }} {{ 'haseka.users.latest.other' | translate }}</li>
-      </ul>
-    </small>
-  </span>
-
-  <span *ngIf="showFormName" class="label label-default">{{ document.formID | formName }}</span>
-</div>-->
-
 <div class="link latest-container" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading" ngPreserveWhitespaces>
     <div class="info">
-        <div class="observation-title" *ngIf="locality">{{ locality }}</div>
-        <div class="observation-title" *ngIf="!locality">
-          <ng-container *ngIf="namedPlaceID; else missingLocality">
-            {{ namedPlaceID | label }}
-          </ng-container>
-          <ng-template #missingLocality>
-            <ng-container>
-              {{ 'haseka.users.latest.localityMissing' | translate }}
-            </ng-container>
-          </ng-template>
-        </div>
+        <div class="observation-title">{{ getLocality$() | async }}</div>
         <div class="published" *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
             <span>
                 <span class="label label-warning link inline-block">{{ 'result.latestObservationsLabel' | translate }}</span>
             </span>
         </div>
-        <div class="observation-last-edit" *ngIf="!changingLocale"> <i class="glyphicon glyphicon-edit"></i> <span *ngIf="document.dateEdited">{{ document.dateEdited | amTimeAgo }} </span></div>
+        <div class="observation-last-edit" *ngIf="!changingLocale"> <i class="glyphicon glyphicon-edit"></i> <span *ngIf="document.dateEdited">{{ document.dateEdited | dateCutoffFuture | amTimeAgo }} </span></div>
         <div class="observation-start" *ngIf="gatheringDates.start"> <i class="glyphicon glyphicon-time"></i> {{ gatheringDates.start | amDateFormat:'DD.MM.YYYY' }} </div>
         <div class="observation-end" *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</div>
 

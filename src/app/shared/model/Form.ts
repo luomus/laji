@@ -3,6 +3,7 @@
  */
 import { Document } from './Document';
 import { Annotation } from './Annotation';
+import { MultiLanguage } from '../../../../projects/laji-api-client/src/lib/models';
 
 export namespace Form {
   export enum Feature {
@@ -20,7 +21,8 @@ export namespace Form {
     AdminLockable = <any> 'MHL.featureAdminLockable',
     Mobile = <any> 'MHL.featureMobile',
     EditingOldWarning = <any> 'MHL.featureEditingOldDocumentWarning',
-    AutoLock = <any> 'MHL.featureAutoLock'
+    AutoLock = <any> 'MHL.featureAutoLock',
+    SecondaryCopy = <any> 'MHL.featureSecondaryCopy'
   }
   export enum PrintType {
     lineTransect = 'MHL.printTypeLineTransect',
@@ -63,9 +65,11 @@ export namespace Form {
     schema: any;
     uiSchema: any;
     uiSchemaContext?: IUISchemaContext;
+    instructions?: MultiLanguage;
     excludeFromCopy?: string[];
     language?: string;
     options?: {
+      forms?: string;
       namedPlaceList?: string[],
       messages?: {
         success: string
@@ -74,7 +78,10 @@ export namespace Form {
         start: string;
         end: string;
       },
-      editingOldWarningDuration?: string
+      disableRequestDescription?: boolean
+      editingOldWarningDuration?: string,
+      ownSubmissionsColumns?: string[]
+      ownSubmissionsActions?: string[]
     };
     namedPlaceOptions?: {
       description?: string;
@@ -82,11 +89,16 @@ export namespace Form {
       includeUnits?: boolean;
       startWithMap?: boolean;
       listLabel?: string;
+      listColumnNameMapping?: {[key: string]: string};
       printLabel?: string;
       formNavLabel?: string;
       reservationUntil?: string;
       showLegendList?: boolean;
       infoFields?: string[];
+      headerFields?: string[];
+      documentListUseLocalDocumentViewer?: string;
+      documentViewerGatheringGeometryJSONPath?: string | string[];
+      documentViewerForcedFields?: string[]
     };
     prepopulatedDocument?: Document;
     printType?: PrintType;

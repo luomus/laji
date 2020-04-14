@@ -4,24 +4,31 @@ import { UserLoginComponent } from './login/user-login.component';
 import { UserLogoutComponent } from './logout/user-logout.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ModuleWithProviders } from '@angular/core';
-import { UserLoginGuard } from './login/user-login.guard';
 
 export const userRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: UserComponent
+    component: UserComponent,
+    data: {
+      title: 'navigation.user.profile'
+    }
   },
   {
     path: 'login',
     pathMatch: 'full',
     component: UserLoginComponent,
-    canActivate: [UserLoginGuard]
+    data: {
+      loginLanding: '/'
+    }
   },
   {
     path: 'logout',
     pathMatch: 'full',
-    component: UserLogoutComponent
+    component: UserLogoutComponent,
+    data: {
+      loginLanding: '/'
+    }
   },
   {
     path: ':userId',

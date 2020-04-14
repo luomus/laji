@@ -46,7 +46,6 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   lang: string;
   status = '';
   saveVisibility = 'hidden';
-  namedPlace;
   isAdmin = false;
 
   private subErrors: Subscription;

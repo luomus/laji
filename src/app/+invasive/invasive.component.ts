@@ -84,7 +84,9 @@ export class InvasiveComponent implements OnInit {
       .subscribe(result => {
         this.documentViewerFacade.showDocumentID({
           document: result.document && result.document.documentId || '',
-          highlight: result.unit && result.unit.unitId || ''
+          highlight: result.unit && result.unit.unitId || '',
+          openAnnotation: false,
+          result: undefined
         });
       });
   }

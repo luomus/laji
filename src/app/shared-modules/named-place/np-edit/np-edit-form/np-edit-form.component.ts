@@ -7,8 +7,6 @@ import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { Util } from '../../../../shared/service/util.service';
-import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
-import { AreaService } from '../../../../shared/service/area.service';
 import merge from 'deepmerge';
 
 @Component({
@@ -30,15 +28,13 @@ export class NpEditFormComponent implements OnInit {
   private hasChanges = false;
   private isPublic = false;
 
-  @ViewChild(LajiFormComponent, { static: true }) lajiForm: LajiFormComponent;
+  @ViewChild(LajiFormComponent, { static: false }) lajiForm: LajiFormComponent;
 
   constructor(@Inject(WINDOW) private window: Window,
     private userService: UserService,
     private namedPlaceService: NamedPlacesService,
     private translate: TranslateService,
-    private toastsService: ToastsService,
-    private taxonomyApi: TaxonomyApi,
-    private areaService: AreaService
+    private toastsService: ToastsService
   ) { }
 
   ngOnInit() {
@@ -139,13 +135,13 @@ export class NpEditFormComponent implements OnInit {
     data.geometry = formData.geometry;
 
     if (this.namedPlaceOptions && this.namedPlaceOptions.prepopulatedDocumentFields) {
-      return this.augmnentPrepopulatedDocument(data, formData, this.namedPlaceOptions.prepopulatedDocumentFields);
+      this.mergePrepopulatedDocument(data, formData);
     }
 
     return Promise.resolve(data);
   }
 
-  private getPrepopulatedDocument(namedPlace, formData) {
+  private mergePrepopulatedDocument(namedPlace, formData) {
     namedPlace.prepopulatedDocument = this.namedPlace && this.namedPlace.prepopulatedDocument || {};
     if (formData.prepopulatedDocument) {
       namedPlace.prepopulatedDocument = merge(
@@ -155,64 +151,6 @@ export class NpEditFormComponent implements OnInit {
       );
     }
     return namedPlace;
-  }
-
-  /**
-   * options (form namedPlaceOptions.prepopulatedDocumentFields) structure is as follows:
-   * {[JSON Pointer to field in document]: [JSON Pointer to field in namedPlace] | {
-   *   fn: <oneof> "join"', "taxon", "area"
-   *   <...additional params for fn, see the fns below>
-   * }
-   */
-  private augmnentPrepopulatedDocument(namedPlace, formData, options) {
-    const fns = {
-      join: ({from, delimiter = ', '}) => {
-        return Util.parseJSONPointer(formData, from).join(delimiter);
-      },
-      taxon: ({from, taxonProp = 'vernacularName'}) =>
-        new Promise(resolve => {
-            this.taxonomyApi.taxonomyFindBySubject(
-              Util.parseJSONPointer(formData, from),
-              this.lang
-            ).subscribe(taxon => {
-              resolve(taxon[taxonProp]);
-            });
-      }),
-      area: ({type, key = 'value', from, delimiter = ', '}) =>
-        new Promise(resolve => {
-          const areaValue = Util.parseJSONPointer(formData, from);
-          this.areaService.getAreaType(this.lang, type).subscribe(areas => {
-            const idToArea = areas.reduce((dict, area) => {
-              dict[area.id] = area;
-              return dict;
-            }, {});
-            if (areaValue instanceof Array) {
-              resolve(areaValue.map(id => idToArea[id][key]).join(delimiter));
-            } else {
-              resolve(idToArea[areaValue][key]);
-            }
-          });
-        })
-    };
-    const {prepopulatedDocument} = this.getPrepopulatedDocument(namedPlace, formData);
-    const fieldPointers = Object.keys(options);
-    return new Promise(resolve => Promise.all(fieldPointers.map(fieldPointer => {
-      let valueOrPromise;
-      if (typeof options[fieldPointer] === 'string') {
-        valueOrPromise = Util.parseJSONPointer(formData, options[fieldPointer]);
-      } else {
-        const {fn, ...params} = options[fieldPointer];
-        valueOrPromise = fns[fn](params);
-      }
-      return valueOrPromise && valueOrPromise.then
-        ? valueOrPromise
-        : Promise.resolve(valueOrPromise);
-    })).then(values => {
-      values.forEach((value, i) => {
-        Util.updateWithJSONPointer(prepopulatedDocument, fieldPointers[i], value);
-      });
-      resolve(namedPlace);
-    }));
   }
 
   private parseErrorMessage(err) {

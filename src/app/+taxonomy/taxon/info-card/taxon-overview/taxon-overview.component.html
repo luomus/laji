@@ -15,10 +15,13 @@
             [showLinkToSpeciesCard]="!taxon.species"
           ></laji-image-gallery>
         </div>
-        <strong *ngIf="ingress" [innerHTML]="ingress | multiLang"></strong>
-        <span *ngIf="description" [innerHTML]="description | multiLang"></span>
+        <h4 *ngIf="ingress && contentHasLanguage" [innerHTML]="ingress | multiLang"></h4>
+        <span *ngIf="description && contentHasLanguage" [innerHTML]="description | multiLang"></span>
+        <div *ngIf="ylesta">
+          <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
+        </div>
         <div *ngIf="ingress || description">
-          <laji-taxon-description-source [taxonDescription]="_taxonDescription"></laji-taxon-description-source>
+          <laji-taxon-description-source [taxonDescription]="_taxonDescription[0]"></laji-taxon-description-source>
         </div>
       </div>
     </div>
@@ -93,7 +96,7 @@
     >
       <div class="download-formats">
         <a href="http://tun.fi/{{ taxon.id }}?format=JSONLD&locale={{ translate.currentLang }}" rel="noopener" target="_blank">
-          <span class="label label--default">json</span>
+          <span class="label label-default">json</span>
         </a>
         <a href="http://tun.fi/{{ taxon.id }}?format=RDFXML" rel="noopener" target="_blank">
           <span class="label label-primary">rdf+xml</span>
@@ -106,7 +109,7 @@
   </div>
   <div class="col-xs-12" *ngIf="taxon.hasChildren">
     <ng-container *lajiHideForIe>
-      <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0 && taxon.taxonRank !== 'MX.genus' && taxon.taxonRank !== 'MX.subgenus'"
+      <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0 && taxon.taxonRank !== 'MX.subgenus'"
            class="panel panel-default"
            laji-panel
            [title]="'taxonomy.speciesPieChartTitle' | translate"

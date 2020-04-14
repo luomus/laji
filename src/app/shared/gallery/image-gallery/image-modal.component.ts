@@ -9,11 +9,13 @@ import {
   OnInit,
   Output,
   Renderer2,
-  ViewContainerRef
+  ViewContainerRef,
+  HostListener
 } from '@angular/core';
 import { IImageSelectEvent, Image } from './image.interface';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
+import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
@@ -65,7 +67,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   public loading = false;
   public showRepeat = false;
   @Input() eventOnClick = false;
-  @Input() view: 'compact'|'full'|'full2'|'full3' = 'compact';
+  @Input() view: 'compact'|'annotation'|'full'|'full2'|'full3' = 'compact';
   @Input() views = ['compact', 'full'];
   @Input() showExtraInfo = true;
   @Input() modalImages: Image[];
@@ -75,17 +77,23 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @Input() showPopover = false;
   @Input() showOverlay = true;
   @Input() showLinkToSpeciesCard = false;
+  @Input() shortcut: boolean;
   @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private _isShown = false;
+  mainURL: string;
+  index: number;
+  tmpImg: any;
+
 
   constructor(_viewContainerRef: ViewContainerRef,
               _renderer: Renderer2,
               _elementRef: ElementRef,
-              cis: ComponentLoaderFactory) {
+              cis: ComponentLoaderFactory,
+              private childComunication: DocumentViewerChildComunicationService) {
     this._overlay = cis
       .createLoader<ImageModalOverlayComponent>(_elementRef, _viewContainerRef, _renderer);
   }
@@ -98,10 +106,24 @@ export class ImageModalComponent implements OnInit, OnDestroy {
     } else {
       this.showRepeat = true;
     }
+
+    if (this.modalImages && this.modalImages.length > 0) {
+      this.tmpImg = {
+        mainURL: this.modalImages[0].fullURL,
+        index: 0
+      };
+    }
   }
 
   ngOnDestroy() {
     this._overlay.dispose();
+  }
+
+  openMainPic(url, index) {
+   this.tmpImg = {
+     mainURL: url,
+     index: index
+   };
   }
 
   openImage(index) {
@@ -142,4 +164,17 @@ export class ImageModalComponent implements OnInit, OnDestroy {
       this.view = viewType;
     }
   }
+
+
+
+  @HostListener('window:keydown', ['$event'])
+  keyEvent(e: KeyboardEvent) {
+      if (e.keyCode === 73 && e.altKey) { // openImage
+        if (this.shortcut) {
+          e.preventDefault();
+          this.openImage(this.tmpImg['index']);
+        }
+      }
+  }
+
 }

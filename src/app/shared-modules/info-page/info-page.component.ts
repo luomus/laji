@@ -7,7 +7,7 @@ import { InformationItem } from '../../shared/model/InformationItem';
 @Component({
   selector: 'laji-info-page',
   template: `
-<div *ngIf="content$ | async; else loading; let content" [innerHtml]="content"></div>
+<div *ngIf="content$ | async; else loading; let content" [innerHtml]="content" lajiRouteTransformer></div>
 <ng-template #loading>
   <lu-ghost-paragraph [length]="10"></lu-ghost-paragraph>
   <lu-ghost-paragraph [length]="300"></lu-ghost-paragraph>
@@ -53,7 +53,7 @@ export class InfoPageComponent implements OnChanges {
       return;
     }
     this.currentPage = page;
-    this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, page, {}).pipe(
+    this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(page), {}).pipe(
       tap(result => {
         let afterRoot = false;
         this.title.emit(result.title);
@@ -69,6 +69,12 @@ export class InfoPageComponent implements OnChanges {
       map(result => result.content),
       startWith('')
     );
+  }
+
+  private lastFromPath(url: string) {
+    const parts = (url || '').split('/');
+
+    return parts.pop();
   }
 
 }

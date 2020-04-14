@@ -5,7 +5,7 @@
     (taxonSelect)="updateRoute($event)"
   ></laji-info-card-header>
 
-  <lu-tabs [selectedIndex]="selectedTabIdx" (select)="onSelect($event)">
+  <lu-tabs [selectedIndex]="getVisibleTabIndexFromTabName(initiallySelectedTab)" (select)="onSelect($event)">
     <lu-tab [heading]="'taxonomy.overview' | translate">
       <laji-taxon-overview
         *ngIf="loadedTabs.isLoaded('overview')"
@@ -16,7 +16,7 @@
         (taxonSelect)="updateRoute($event)"
       ></laji-taxon-overview>
     </lu-tab>
-    <lu-tab [heading]="'species.images' | translate" *ngIf="hasImageData || 1 === 1">
+    <lu-tab [heading]="'species.images' | translate" *ngIf="hasImageData">
       <laji-taxon-images
         *ngIf="loadedTabs.isLoaded('images')"
         [taxon]="taxon"
@@ -24,7 +24,7 @@
         [isFromMasterChecklist]="isFromMasterChecklist"
       ></laji-taxon-images>
     </lu-tab>
-    <lu-tab [heading]="'taxonomy.biology' | translate" *ngIf="hasBiologyData || 1 === 1">
+    <lu-tab [heading]="'taxonomy.biology' | translate" *ngIf="hasBiologyData">
       <laji-taxon-biology
         *ngIf="loadedTabs.isLoaded('biology')"
         [taxon]="taxon"
@@ -38,6 +38,7 @@
         *ngIf="loadedTabs.isLoaded('taxonomy')"
         [taxon]="taxon"
         [taxonDescription]="taxonDescription"
+        (taxonSelect)="updateRoute($event)"
       ></laji-taxon-taxonomy>
     </lu-tab>
     <lu-tab [heading]="'taxonomy.occurrence' | translate">
@@ -48,13 +49,7 @@
         [isFromMasterChecklist]="isFromMasterChecklist"
       ></laji-taxon-occurrence>
     </lu-tab>
-    <lu-tab [heading]="'taxonomy.observations' | translate" *ngIf="isFromMasterChecklist || 1 === 1">
-      <laji-taxon-observations
-        *ngIf="loadedTabs.isLoaded('observations')"
-        [taxon]="taxon"
-      ></laji-taxon-observations>
-    </lu-tab>
-    <lu-tab [heading]="'taxonomy.specimens' | translate" *ngIf="isFromMasterChecklist || 1 === 1">
+    <lu-tab [heading]="'taxonomy.specimens' | translate" *ngIf="isFromMasterChecklist">
       <laji-taxon-specimens
         *ngIf="loadedTabs.isLoaded('specimens')"
         [taxon]="taxon"

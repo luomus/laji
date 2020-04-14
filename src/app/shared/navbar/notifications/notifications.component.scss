@@ -1,4 +1,4 @@
-@import '../../../../../projects/laji-ui/src/lib/vars';
+@import 'vars';
 
 header {
   display: flex;
@@ -28,3 +28,29 @@ header {
     flex-grow: 1;
   }
 }
+
+.fs-1 {
+  font-size: $fs-1;
+}
+
+cdk-virtual-scroll-viewport {
+  height: 400px;
+  width: 400px;
+  @media only screen and (max-width: 900px) {
+    height: 250px;
+    width: 100%;
+  }
+}
+
+:host ::ng-deep {
+  @media only screen and (max-width: 900px) {
+    .notifications-title {
+      color: $neutral-1 !important;
+    }
+    header > a {
+      color: $primary-2;
+      text-decoration: underline;
+    }
+  }
+}
+

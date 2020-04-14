@@ -42,6 +42,7 @@ export class NpListComponent {
 
   @Input() activeNP: number;
   @Input() height: string;
+  @Input() listColumnNameMapping: { [key: string]: string};
 
   constructor(private cd: ChangeDetectorRef,
               private areaNamePipe: AreaNamePipe
@@ -84,12 +85,22 @@ export class NpListComponent {
       '$.municipality': {
         label: 'np.municipality'
       },
+      '$.locality': {
+        label: 'np.locality'
+      },
       '$.prepopulatedDocument.gatherings[0].invasiveControlOpen': {
         label: 'np.invasiveControlOpen',
         cellTemplate: 'boolToStrTpl'
       },
       '$.prepopulatedDocument.deviceID': {
         label: 'np.list.col.deviceID',
+      },
+      '$.prepopulatedDocument.gatherings.length': {
+        label: 'theme.waterbird.gatheringLength',
+        width: 20
+      },
+      '$.prepopulatedDocument.gatherings[0].notes': {
+        label: 'result.document.notes'
       }
     };
   }
@@ -121,6 +132,9 @@ export class NpListComponent {
         label: path,
         ...columnMetadata
       };
+      if (this.listColumnNameMapping && this.listColumnNameMapping[path]) {
+        col.label = this.listColumnNameMapping[path];
+      }
       if (cellTemplate) {
         if (this[cellTemplate]) {
           col.cellTemplate = this[cellTemplate];

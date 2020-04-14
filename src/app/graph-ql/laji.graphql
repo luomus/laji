@@ -732,7 +732,6 @@ type DwUnitResult {
 }
 
 type DwDocumentQuality {
-  reliabilityOfCollection: Int
   issue: DwIssue
 }
 
@@ -930,6 +929,7 @@ type DwDocument {
 
 type DwDocumentLinkings {
   editors: [DwPerson!]
+  collectionQuality: String
 }
 
 type DwGathering {
@@ -2667,27 +2667,28 @@ type UnitGathering {
   substrate: String
 }
 
+
 type Query {
-  alts(id: ID): [Alt!]!
-  areas(type: AreaTypeEnum, page: Int, pageSize: Int): [Area!]!
-  checklists(id: ID): [Checklist!]!
-  checklistVersions(id: ID): [ChecklistVersion!]!
-  collection(id: ID, page: Int, pageSize: Int): [Collection!]!
-  classes(id: ID): [Metadata!]!
-  documents(personToken: String!, id: ID, page: Int, pageSize: Int, observationYear: String, templates: Boolean, namedPlace: String, collectionID: String, formID: String, selectedFields: String): DocumentResponse
-  forms(page: Int, pageSize: Int): [Forms]!
-  form(id: ID!): Form!
-  information(id: ID): Information!
-  informalTaxonGroups(id: ID): [InformalTaxonGroup!]!
-  news(id: ID, tag: String, page: Int, pageSize: Int): NewsResponse!
-  notifications(personToken: String!, page: Int, pageSize: Int, onlyUnSeen: Boolean): NotificationResponse!
-  units(pageSize: Int, page: Int, cache: Boolean, aggregateBy: String, taxonId: String, useIdentificationAnnotations: Boolean, includeSubTaxa: Boolean, target: String, includeNonValidTaxa: Boolean, informalTaxonGroupId: String, informalTaxonGroupIdIncludingReported: String, administrativeStatusId: String, redListStatusId: String, typeOfOccurrenceId: String, typeOfOccurrenceIdNot: String, primaryHabitat: String, anyHabitat: String, finnish: Boolean, invasive: Boolean, taxonRankId: String, countryId: String, finnishMunicipalityId: String, biogeographicalProvinceId: String, area: String, birdAssociationAreaId: String, namedPlaceId: String, formId: String, time: String, yearMonth: String, dayOfYear: String, season: String, keyword: String, collectionId: String, includeSubCollections: Boolean, collectionIdNot: String, reliabilityOfCollection: String, sourceId: String, recordBasis: [String!], superRecordBasis: [String!], lifeStage: [String!], sex: [String!], invasiveControl: [String!], invasiveControlled: Boolean, documentId: String, gatheringId: String, unitId: String, individualId: String, individualCountMin: Int, individualCountMax: Int, loadedSameOrAfter: String, loadedSameOrBefore: String, firstLoadedSameOrAfter: String, coordinates: String, coordinateAccuracyMax: Int, wgs84CenterPoint: String, ykj1km: String, ykj10km: String, ykj50km: String, ykj100km: String, ykj1kmCenter: String, ykj10kmCenter: String, ykj50kmCenter: String, ykj100kmCenter: String, sourceOfCoordinates: [String!], typeSpecimen: Boolean, wild: [String!], breedingSite: Boolean, hasDocumentMedia: Boolean, hasGatheringMedia: Boolean, hasUnitMedia: Boolean, hasMedia: Boolean, editorId: String, observerId: String, editorOrObserverId: String, teamMember: String, teamMemberId: String, secureReason: [String!], secureLevel: [String!], secured: Boolean, annotated: Boolean, qualityIssues: [String!], reliable: Boolean, taxonReliability: [String!], unidentified: Boolean, taxonCensus: String, hasSample: Boolean, unitFact: String, gatheringFact: String, documentFact: String, firstLoadedSameOrBefore: String, editorPersonToken: String, observerPersonToken: String, editorOrObserverPersonToken: String): UnitResponse!
-  publications(id: ID, page: Int, pageSize: Int): PublicationResponse!
-  person(personToken: String!): [Person!]!
-  properties(id: ID): [Property!]!
-  redListEvaluationGroup(id: ID): [RedListEvaluationGroup!]!
+  alts(id: ID): [Alt!]
+  areas(type: AreaTypeEnum, page: Int, pageSize: Int): [Area!]
+  checklists(id: ID): [Checklist!]
+  checklistVersions(id: ID): [ChecklistVersion!]
+  collection(id: ID, page: Int, pageSize: Int): [Collection!]
+  classes(id: ID): [Metadata!]
+  documents(personToken: String!, id: ID, page: Int, pageSize: Int, observationYear: String, templates: Boolean, namedPlace: String, collectionID: String, formID: String): DocumentResponse
+  forms(page: Int, pageSize: Int): [Forms]
+  form(id: ID!): Form
+  information(id: ID): Information
+  informalTaxonGroups(id: ID): [InformalTaxonGroup!]
+  news(id: ID, tag: String, page: Int, pageSize: Int): NewsResponse
+  notifications(personToken: String!, page: Int, pageSize: Int, onlyUnSeen: Boolean): NotificationResponse
+  units(pageSize: Int, page: Int, cache: Boolean, orderBy: String, aggregateBy: String, taxonId: [String!], useIdentificationAnnotations: Boolean, includeSubTaxa: Boolean, target: [String!], includeNonValidTaxa: Boolean, informalTaxonGroupId: [String!], informalTaxonGroupIdIncludingReported: [String!], administrativeStatusId: [String!], redListStatusId: [String!], typeOfOccurrenceId: [String!], typeOfOccurrenceIdNot: [String!], primaryHabitat: [String!], anyHabitat: [String!], finnish: Boolean, invasive: Boolean, taxonRankId: String, countryId: [String!], finnishMunicipalityId: [String!], biogeographicalProvinceId: [String!], area: [String!], birdAssociationAreaId: [String!], namedPlaceId: [String!], formId: [String!], time: [String!], yearMonth: String, dayOfYear: String, season: String, keyword: [String!], collectionId: [String!], includeSubCollections: Boolean, collectionIdNot: [String!], collectionQuality: [String!], sourceId: [String!], recordBasis: [String!], superRecordBasis: [String!], lifeStage: [String!], sex: [String!], invasiveControl: [String!], invasiveControlled: Boolean, documentId: [String!], gatheringId: [String!], unitId: [String!], individualId: [String!], individualCountMin: Int, individualCountMax: Int, loadedSameOrAfter: String, loadedSameOrBefore: String, firstLoadedSameOrAfter: String, coordinates: [String!], coordinateAccuracyMax: Int, wgs84CenterPoint: String, ykj1km: String, ykj10km: String, ykj50km: String, ykj100km: String, ykj1kmCenter: String, ykj10kmCenter: String, ykj50kmCenter: String, ykj100kmCenter: String, sourceOfCoordinates: [String!], typeSpecimen: Boolean, wild: [String!], breedingSite: Boolean, hasDocumentMedia: Boolean, hasGatheringMedia: Boolean, hasUnitMedia: Boolean, hasMedia: Boolean, editorId: String, observerId: String, editorOrObserverId: String, teamMember: [String!], teamMemberId: [String!], secureReason: [String!], secureLevel: [String!], secured: Boolean, annotated: Boolean, qualityIssues: [String!], reliable: Boolean, recordQuality: [String!], unidentified: Boolean, taxonCensus: [String!], hasSample: Boolean, unitFact: [String!], gatheringFact: [String!], documentFact: [String!], firstLoadedSameOrBefore: String, editorPersonToken: String, observerPersonToken: String, editorOrObserverPersonToken: String): UnitResponse
+  publications(id: ID, page: Int, pageSize: Int): PublicationResponse
+  person(personToken: String!): [Person!]
+  properties(id: ID): [Property!]
+  redListEvaluationGroup(id: ID): [RedListEvaluationGroup!]
   status: String!
-  taxa(species: Boolean, informalGroupFilters: String, redListEvaluationGroups: String, invasiveSpeciesMainGroups: String, adminStatusFilters: String, redListStatusFilters: String, typesOfOccurrenceFilters: String, typesOfOccurrenceNotFilters: String, primaryHabitat: String, anyHabitat: String, hasLatestRedListEvaluation: String, latestRedListEvaluation_redListStatus: String, latestRedListEvaluation_primaryHabitat: String, latestRedListEvaluation_anyHabitat: String, latestRedListEvaluation_primaryThreat: String, latestRedListEvaluation_threats: String, latestRedListEvaluation_primaryEndangermentReason: String, latestRedListEvaluation_endangermentReasons: String, taxonRanks: String, invasiveSpeciesFilter: Boolean, hasMediaFilter: Boolean, hasDescriptionFilter: Boolean, includeHidden: Boolean, includeMedia: Boolean, includeDescriptions: Boolean, includeRedListEvaluations: Boolean, selectedFields: String, onlyFinnish: Boolean, checklist: String, checklistVersion: String, page: Int, pageSize: Int): [Taxon!]!
+  taxa(species: Boolean, informalGroupFilters: String, redListEvaluationGroups: String, invasiveSpeciesMainGroups: String, adminStatusFilters: String, redListStatusFilters: String, typesOfOccurrenceFilters: String, typesOfOccurrenceNotFilters: String, primaryHabitat: String, anyHabitat: String, hasLatestRedListEvaluation: String, latestRedListEvaluation_redListStatus: String, latestRedListEvaluation_primaryHabitat: String, latestRedListEvaluation_anyHabitat: String, latestRedListEvaluation_primaryThreat: String, latestRedListEvaluation_threats: String, latestRedListEvaluation_primaryEndangermentReason: String, latestRedListEvaluation_endangermentReasons: String, taxonRanks: String, invasiveSpeciesFilter: Boolean, hasMediaFilter: Boolean, hasDescriptionFilter: Boolean, includeHidden: Boolean, includeMedia: Boolean, includeDescriptions: Boolean, includeRedListEvaluations: Boolean, onlyFinnish: Boolean, checklist: String, checklistVersion: String, page: Int, pageSize: Int): [Taxon!]
   taxon(id: ID!): Taxon
 }
 

@@ -6,32 +6,29 @@
                          [showAreaFilter]="false"
 ></laji-wbc-result-filters>
 
-<div id="navbar">
-  <ul class="nav nav-tabs nav-justified">
-    <li role="presentation" [ngClass]="{active: active === 'list'}">
-      <a (click)="setActive('list')">{{ 'np.list' | translate }}</a>
-    </li>
-    <li role="presentation" [ngClass]="{active: active === 'map'}">
-      <a (click)="setActive('map')">{{ 'np.map' | translate }}</a>
-    </li>
-  </ul>
-</div>
-
-<laji-wbc-routes-list
-  *ngIf="active === 'list'"
-  [rows]="rows"
-  [selected]="selected"
-  [sorts]="sorts"
-  [showNameAsLink]="false"
-  [loading]="loading"
-  [countLabel]="'wbc.stats.route.count'"
-  (rowSelect)="openViewer($event['document.documentId'])"
-></laji-wbc-routes-list>
-<laji-wbc-routes-map
-  *ngIf="active === 'map'"
-  [data]="rows"
-  [showNameAsLink]="false"
-  [loading]="loading"
-  [countLabel]="'wbc.stats.censusCount'"
-  (rowSelect)="openViewer($event['document.documentId'])"
-></laji-wbc-routes-map>
+<lu-tabs [selectedIndex]="activeIndex" (select)="setActive($event)">
+  <lu-tab [heading]="'np.list' | translate">
+    <ng-container *ngIf="loadedTabs.isLoaded('list')">
+      <laji-wbc-routes-list
+        [rows]="rows"
+        [selected]="selected"
+        [sorts]="sorts"
+        [showNameAsLink]="false"
+        [loading]="loading"
+        [countLabel]="'wbc.stats.route.count'"
+        (rowSelect)="openViewer($event['document.documentId'])"
+      ></laji-wbc-routes-list>
+    </ng-container>
+  </lu-tab>
+  <lu-tab [heading]="'np.map' | translate">
+    <ng-container *ngIf="loadedTabs.isLoaded('map')">
+      <laji-wbc-routes-map
+        [data]="rows"
+        [showNameAsLink]="false"
+        [loading]="loading"
+        [countLabel]="'wbc.stats.censusCount'"
+        (rowSelect)="openViewer($event['document.documentId'])"
+      ></laji-wbc-routes-map>
+    </ng-container>
+  </lu-tab>
+</lu-tabs>

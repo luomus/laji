@@ -1,0 +1,133 @@
+import {ChangeDetectorRef, Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import { IRecording } from '../../model/recording';
+import { AudioService } from '../../service/audio.service';
+import { DOCUMENT } from '@angular/common';
+import { WINDOW } from '@ng-toolkit/universal';
+import {Subscription} from 'rxjs';
+
+@Component({
+  selector: 'laji-audio-viewer',
+  templateUrl: './audio-viewer.component.html',
+  styleUrls: ['./audio-viewer.component.scss']
+})
+export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() recording: IRecording;
+
+  buffer: AudioBuffer;
+  spectrogramColormap$: any;
+  currentTime = 0;
+
+  isPlaying = false;
+
+  sampleRate = 22050;
+
+  private context: AudioContext;
+  private source: AudioBufferSourceNode;
+  private startOffset = 0;
+  private startTime: number;
+
+  private audioSub: Subscription;
+  private timeupdateInterval;
+
+  constructor(
+    @Inject(WINDOW) private window: Window,
+    private cdr: ChangeDetectorRef,
+    private audioService: AudioService,
+    @Inject(DOCUMENT) private document: Document,
+  ) { }
+
+  ngOnInit() {
+    this.spectrogramColormap$ = this.audioService.getColormap();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.clear();
+
+    if (this.recording) {
+      this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
+      this.audioSub = this.audioService.getAudioBuffer(this.recording.audio, this.context).subscribe((buffer) => {
+        this.buffer = buffer;
+        this.cdr.markForCheck();
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this.clear();
+  }
+
+  toggleAudio() {
+    if (!this.buffer) {
+      return;
+    }
+
+    if (!this.isPlaying) {
+      this.isPlaying = true;
+
+      if (this.currentTime === this.buffer.duration) {
+        this.currentTime = 0;
+      }
+      this.startOffset = this.currentTime;
+
+      this.source = this.context.createBufferSource();
+      this.source.buffer = this.buffer;
+      this.source.connect(this.context.destination);
+      this.source.start(0, this.currentTime);
+      this.startTime = this.context.currentTime;
+
+      this.source.onended = () => {
+        this.clearTimeupdateInterval();
+        this.updateCurrentTime();
+        this.isPlaying = false;
+        this.cdr.detectChanges();
+      };
+      this.startTimeupdateInterval();
+    } else {
+      this.source.stop(0);
+    }
+  }
+
+  private startTimeupdateInterval() {
+    this.timeupdateInterval = setInterval(() => {
+      this.updateCurrentTime();
+      this.cdr.markForCheck();
+    }, 10);
+  }
+
+  private clearTimeupdateInterval() {
+    if (this.timeupdateInterval) {
+      clearInterval(this.timeupdateInterval);
+    }
+  }
+
+  private updateCurrentTime() {
+    if (this.isPlaying) {
+      this.currentTime = this.startOffset + this.getPlayedTime();
+    } else {
+      this.currentTime = this.startOffset;
+    }
+
+    this.currentTime = Math.min(this.currentTime, this.buffer.duration);
+  }
+
+  private getPlayedTime() {
+    return (this.context.currentTime - this.startTime) * this.source.playbackRate.value;
+  }
+
+  private clear() {
+    if (this.audioSub) {
+      this.audioSub.unsubscribe();
+    }
+
+    this.clearTimeupdateInterval();
+
+    if (this.source && this.isPlaying) {
+      this.source.stop(0);
+    }
+
+    this.buffer = undefined;
+    this.currentTime = 0;
+    this.isPlaying = false;
+    this.source = undefined;
+  }
+}

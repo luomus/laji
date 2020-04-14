@@ -1,8 +1,19 @@
+/**
+* BREAKPOINTS
+*/
+
+$breakpoints: (
+  "lg": 1200px,
+  "md": 992px,
+  "sm": 768px,
+  "xs": 576px
+);
+
 /* COLOR */
 
-$primary-1: hsl(204, 80, 95);
-$primary-2: hsl(204, 80, 90);
-$primary-3: hsl(204, 80, 80);
+$primary-1: hsl(204, 80, 98);
+$primary-2: hsl(204, 80, 95);
+$primary-3: hsl(204, 80, 85);
 $primary-4: hsl(204, 70, 70);
 $primary-5: hsl(204, 70, 55);
 $primary-6: hsl(204, 70, 45);
@@ -12,17 +23,17 @@ $primary-9: hsl(204, 100, 10);
 
 $neutral-1: hsl(204, 20, 99);
 $neutral-2: hsl(204, 15, 97);
-$neutral-3: hsl(204, 10, 90);
-$neutral-4: hsl(204, 10, 80);
-$neutral-5: hsl(204, 10, 60);
+$neutral-3: hsl(204, 12, 95);
+$neutral-4: hsl(204, 10, 88);
+$neutral-5: hsl(204, 10, 70);
 $neutral-6: hsl(204, 10, 50);
 $neutral-7: hsl(204, 10, 40);
 $neutral-8: hsl(204, 15, 30);
 $neutral-9: hsl(204, 20, 10);
 
-$success-1: hsl(100, 50, 95);
-$success-2: hsl(100, 50, 90);
-$success-3: hsl(100, 50, 80);
+$success-1: hsl(100, 50, 98);
+$success-2: hsl(100, 50, 95);
+$success-3: hsl(100, 50, 85);
 $success-4: hsl(100, 40, 70);
 $success-5: hsl(100, 40, 50);
 $success-6: hsl(100, 50, 40);
@@ -30,9 +41,9 @@ $success-7: hsl(100, 80, 30);
 $success-8: hsl(100, 90, 20);
 $success-9: hsl(100, 100, 10);
 
-$info-1: hsl(200, 50, 95);
-$info-2: hsl(200, 50, 90);
-$info-3: hsl(200, 50, 80);
+$info-1: hsl(200, 50, 98);
+$info-2: hsl(200, 50, 95);
+$info-3: hsl(200, 50, 85);
 $info-4: hsl(200, 40, 70);
 $info-5: hsl(200, 40, 50);
 $info-6: hsl(200, 50, 40);
@@ -40,9 +51,9 @@ $info-7: hsl(200, 80, 30);
 $info-8: hsl(200, 90, 20);
 $info-9: hsl(200, 100, 10);
 
-$warning-1: hsl(50, 50, 95);
-$warning-2: hsl(50, 50, 90);
-$warning-3: hsl(50, 50, 80);
+$warning-1: hsl(50, 50, 98);
+$warning-2: hsl(50, 50, 95);
+$warning-3: hsl(50, 50, 85);
 $warning-4: hsl(50, 40, 70);
 $warning-5: hsl(50, 40, 50);
 $warning-6: hsl(50, 50, 40);
@@ -50,15 +61,19 @@ $warning-7: hsl(50, 80, 30);
 $warning-8: hsl(50, 90, 20);
 $warning-9: hsl(50, 100, 10);
 
-$danger-1: hsl(0, 50, 95);
-$danger-2: hsl(0, 50, 90);
-$danger-3: hsl(0, 50, 80);
+$danger-1: hsl(0, 50, 98);
+$danger-2: hsl(0, 50, 95);
+$danger-3: hsl(0, 50, 85);
 $danger-4: hsl(0, 40, 70);
 $danger-5: hsl(0, 40, 50);
 $danger-6: hsl(0, 50, 40);
 $danger-7: hsl(0, 80, 30);
 $danger-8: hsl(0, 90, 20);
 $danger-9: hsl(0, 100, 10);
+
+$admin-1: hsl(40, 60, 30);
+$admin-2: hsl(40, 60, 98);
+$admin-3: hsl(40, 60, 85);
 
 /* FONT */
 

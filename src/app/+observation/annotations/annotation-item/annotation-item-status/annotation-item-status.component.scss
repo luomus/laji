@@ -1,0 +1,37 @@
+
+@import '../../../../../styles/_styles.scss'; 
+
+div{
+    &.interpretation {
+        position: absolute;
+        right: 0px;
+        width: 40px;
+        z-index: 2;
+        font-size: 36px;
+        div {
+        position: relative;
+        height: 40px;
+        width: 40px;
+        background-color: #EBEBEB;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:nth-child(2) {
+            margin-top: 5px;
+         }
+        }
+    }
+}
+span {
+    font-weight: bold;
+    &.needsCheck {
+        color:$disagreed
+    }
+    &.needsIdentification {
+        color: $needId
+    }
+    &.text-interpreatation {
+        padding: 0 10px;
+        font-size: 12px;
+    }
+}

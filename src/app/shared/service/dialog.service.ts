@@ -11,13 +11,20 @@ export class DialogService {
     @Inject(PLATFORM_ID) private platformID: object
   ) { }
 
-  confirm(messsage: string, onServer = false): Observable<boolean> {
+  confirm(message: string, onServer = false): Observable<boolean> {
     if (!isPlatformBrowser(this.platformID)) {
       return ObservableOf(onServer);
     }
-    return Observable.create((observer: Observer<boolean>) => {
-      observer.next(this.window.confirm(messsage));
-      observer.complete();
+    return new Observable((subscriber) => {
+      subscriber.next(this.window.confirm(message));
+      subscriber.complete();
+    });
+  }
+
+  prompt(message: string, _default?: string): Observable<string> {
+    return new Observable((subscriber) => {
+      subscriber.next(this.window.prompt(message, _default));
+      subscriber.complete();
     });
   }
 

@@ -18,11 +18,9 @@ laji-observation-form {
   margin-right: 10px;
 }
 .toggle-intro {
-  position: absolute;
-  right: 0;
-  margin-top: -5px;
-  padding: 0 30px 0 0;
-  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 5px;
   font-size: 13px;
   color: $color-main-dark;
 }

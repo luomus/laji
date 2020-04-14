@@ -1,0 +1,12 @@
+:host ::ng-deep {
+  .kerttu-select {
+    max-width: 100%;
+
+    select.form-control {
+      display: inline-block;
+      width: auto;
+      height: inherit;
+      font-size: inherit;
+    }
+  }
+}

@@ -1,10 +1,11 @@
 import {
-  Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID
+  Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID, ContentChildren, QueryList
 } from '@angular/core';
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { SidebarLinkComponent } from './sidebar-link/sidebar-link.component';
 
 const mobileBreakpoint = 768;
 
@@ -59,6 +60,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   @Input() position: 'left' | 'right' = 'left';
   @Input() staticWidth: number;
+  @Input() menuTitle: string;
 
   sidebarMinWidth = 50;
 
@@ -77,9 +79,12 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   ogWidth = 0;
   widthBeforeDrag = 0;
 
+  preCheckScreenWidth = true;
+
   @ViewChild('sidebarRef', {static: false}) sidebarRef: ElementRef;
   @ViewChild('contentRef', {static: false}) contentRef: ElementRef;
   @ViewChild('navWrapper', {static: false}) navWrapperRef: ElementRef;
+  @ContentChildren(SidebarLinkComponent) sidebarLinks: QueryList<SidebarLinkComponent>;
 
   destroyResizeListener: Function;
   destroyDragMoveListener: Function;
@@ -95,13 +100,25 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.checkScreenWidth();
+    this.preCheckScreenWidth = false;
+    this.cdr.detectChanges();
     fromEvent(window, 'resize').pipe(
-      takeUntil(this.unsubscribe$),
       debounceTime(500),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      takeUntil(this.unsubscribe$)
     ).subscribe(this.checkScreenWidth.bind(this));
     this.ogWidth = this.sidebarRef.nativeElement.offsetWidth;
     this.checkCloseOnClickListener();
+
+    if (this.sidebarLinks) {
+      this.sidebarLinks.forEach((sidebarLink) => {
+        sidebarLink.clicked.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+          if (this.mobile) {
+            this.open = false;
+          }
+        });
+      });
+    }
   }
 
   checkScreenWidth(event?) {

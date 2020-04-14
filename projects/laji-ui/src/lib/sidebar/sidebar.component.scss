@@ -80,20 +80,10 @@ $mobileBreakpoint: 768px;
   padding: 10px 10px;
 }
 
-.menu-svg {
-  height: 18px;
-}
-
 .close-wrapper {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
-}
-
-.close-btn {
-  cursor: pointer;
-  font-weight: 900;
-  color: $neutral-6;
 }
 
 // SIDEBAR NAV

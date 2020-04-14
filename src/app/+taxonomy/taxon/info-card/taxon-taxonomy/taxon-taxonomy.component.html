@@ -58,6 +58,11 @@
         [taxon]="taxon"
       ></laji-taxon-concept-info>
     </div>
+      <laji-taxon-description
+      [taxonDescriptions]="taxonDescription"
+      [groupId]="'MX.SDVG14'"
+      [title]="'taxonomy.taxonomy' | translate"
+    ></laji-taxon-description>
     <div class="panel panel-default"
          laji-panel
          [title]="'taxonomy.bold' | translate"
@@ -72,11 +77,6 @@
       <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
       <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
     </div>
-    <laji-taxon-description
-      [taxonDescriptions]="taxonDescription"
-      [groupId]="'MX.SDVG14'"
-      [title]="'taxonomy.description' | translate"
-    ></laji-taxon-description>
     <div class="panel panel-default"
          *ngIf="taxon.taxonExpert"
          laji-panel
@@ -86,6 +86,48 @@
       <div *ngFor="let expert of taxon.taxonExpert">
         {{ expert | users }}
       </div>
+    </div>
+    <div *ngIf="taxon.hasChildren"
+         class="panel panel-default"
+         laji-panel
+         [title]="'taxonomy.belongs.to' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+      <laji-datatable
+        (rowSelect)="taxonSelect.emit($event.row.id)"
+        [showFooter]="false"
+        [virtualScrolling]="false"
+        [clientSideSorting]="true"
+        [rows]="taxonChildren"
+        [count]="taxonChildren.length"
+        [page]="1"
+        [pageSize]="taxonChildren.length"
+        [columns]="[
+          {
+            name: 'vernacularName',
+            label: 'taxonomy.vernacular.name',
+            sortable: true
+          },
+          {
+            name: 'scientificName',
+            label: 'taxonomy.scientific.name',
+            cellTemplate: 'taxonScientificName',
+            sortable: true
+          },
+          {
+            name: 'finnish',
+            label: 'taxonomy.finnish',
+            cellTemplate: 'boolean',
+            sortable: true
+          },
+          {
+            name: 'observationCountFinland',
+            label: 'taxonomy.finnishObservations',
+            sortable: true
+          }
+        ]">
+      </laji-datatable>
     </div>
   </div>
 </div>

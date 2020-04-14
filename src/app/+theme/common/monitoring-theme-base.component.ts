@@ -1,4 +1,4 @@
-import { filter, map, startWith, switchMap } from 'rxjs/operators';
+import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 /* tslint:disable:component-selector */
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
@@ -7,21 +7,40 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../shared/service/form.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NavLink, ThemeFormService } from './theme-form.service';
+import { Form } from '../../shared/model/Form';
+import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
+
+export interface Breadcrumb {
+  link: string;
+  label: string;
+}
+
+interface ViewModel {
+  form: Form.SchemaForm;
+  data: NavData;
+}
 
 interface NavData {
   title: string;
   navLinks: NavLink[];
-  formID: string;
+  titleFromCollectionName: boolean;
+  breadcrumbs?: Breadcrumb[];
 }
 
 @Component({
   template: `
-    <laji-theme-page *ngIf="navData$ | async as data"
-                     [title]="data.title"
-                     [formID]="data.formID"
+    <laji-theme-page *ngIf="vm$ | async as vm"
+                     [title]="vm.data.titleFromCollectionName ? (vm.form.collectionID | label) : vm.data.title"
+                     [secondary]="vm.form | formHasFeature:formFeatures.SecondaryCopy"
+                     [formID]="vm.form.id"
                      [showNav]="showNav$ | async"
-                     [navLinks]="data.navLinks">
-        <router-outlet></router-outlet>
+                     [navLinks]="vm.data.navLinks">
+      <laji-theme-breadcrumb
+        *ngIf="vm.data.breadcrumbs"
+        [breadcrumb]="vm.data.breadcrumbs"
+        [navLinks]=vm.data.navLinks
+      ></laji-theme-breadcrumb>
+      <router-outlet></router-outlet>
     </laji-theme-page>
   `,
   styles: [`
@@ -35,8 +54,9 @@ interface NavData {
 })
 export class MonitoringThemeBaseComponent implements OnInit {
 
-  navData$: Observable<NavData>;
+  vm$: Observable<ViewModel>;
   showNav$: Observable<boolean>;
+  formFeatures = Form.Feature;
 
   constructor(
     protected formService: FormService,
@@ -58,6 +78,14 @@ export class MonitoringThemeBaseComponent implements OnInit {
         map(({hideNavFor = []}) => hideNavFor.every(u => !url.match(u)))
       ))
     );
+
+    this.vm$ = hotObjectObserver<ViewModel>({
+      data: this.getRouteDate(urls$),
+      form: this.themeFormService.getForm(this.route.snapshot)
+    });
+  }
+
+  private getRouteDate(urls$: Observable<string>) {
     const markActiveByRouterLink = (navLink, url): NavLink => ({
       ...navLink,
       active: (navLink.routerLink[0] === 'form' && url.match('places'))
@@ -83,23 +111,17 @@ export class MonitoringThemeBaseComponent implements OnInit {
       }
       return _navLinks;
     };
-    this.navData$ = this.route.data.pipe(
-      switchMap(({title, formID}: {title: string, formID: string}) =>
-        this.themeFormService.getNavLinks$(this.route).pipe(
-        switchMap(navLinks => urls$.pipe(
-          map(url => ({
-            title,
-            navLinks: markActive(navLinks, url),
-            formID
-          }))
-        ))
-      )
-    ));
-  }
 
-  protected getRights(formId): Observable<Rights> {
-    return this.formService.getForm(formId, this.translateService.currentLang).pipe(
-      switchMap(form => this.formPermissionService.getRights(form))
-    );
+    return this.route.data.pipe(
+      switchMap((data) =>
+        this.themeFormService.getNavLinks$(this.route).pipe(
+          switchMap(navLinks => urls$.pipe(
+            map(url => ({
+              ...data,
+              navLinks: markActive(navLinks, url),
+            }))
+          ))
+        )
+      ));
   }
 }

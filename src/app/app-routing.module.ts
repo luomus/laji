@@ -10,6 +10,7 @@ import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { LocalizeInGuard } from './locale/localize-in.guard';
+import { CheckLoginGuard } from './shared/guards/check-login.guard';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -47,7 +48,8 @@ const routes: Routes = [
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
   {path: 'forum', component: ForumComponent},
-  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule)}
+  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule)},
+  {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule)}
 ];
 
 const routesWithLang: Routes = [
@@ -60,11 +62,13 @@ const routesWithLang: Routes = [
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
     {path: 'linjalaskenta', redirectTo: '/en/theme/linjalaskenta/instructions', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/en/theme/talvilintulaskenta/instructions', pathMatch: 'full'},
+    {path: 'vesilintulaskenta', redirectTo: '/en/theme/vesilintulaskenta/instructions', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/en/theme/vieraslajit/instructions', pathMatch: 'full'},
     {path: 'kunnat', redirectTo: '/en/theme/kunnat/instructions', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/en/theme/lolife/instructions', pathMatch: 'full'},
+    {path: 'lolife', redirectTo: '/en/theme/lolife/about', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/en/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'valio', redirectTo: '/en/theme/valio/instructions', pathMatch: 'full'},
+    {path: 'syke-perhoset', redirectTo: '/en/theme/syke-perhoset/instructions', pathMatch: 'full'},
     ...routes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
@@ -74,11 +78,13 @@ const routesWithLang: Routes = [
     {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
     {path: 'linjalaskenta', redirectTo: '/sv/theme/linjalaskenta/instructions', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/sv/theme/talvilintulaskenta/instructions', pathMatch: 'full'},
+    {path: 'vesilintulaskenta', redirectTo: '/sv/theme/vesilintulaskenta/instructions', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/sv/theme/vieraslajit/instructions', pathMatch: 'full'},
     {path: 'kunnat', redirectTo: '/sv/theme/kunnat/instructions', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/sv/theme/lolife/instructions', pathMatch: 'full'},
+    {path: 'lolife', redirectTo: '/sv/theme/lolife/about', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/sv/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'valio', redirectTo: '/sv/theme/valio/instructions', pathMatch: 'full'},
+    {path: 'syke-perhoset', redirectTo: '/sv/theme/syke-perhoset/instructions', pathMatch: 'full'},
     ...routes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
@@ -88,21 +94,33 @@ const routesWithLang: Routes = [
     {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
     {path: 'linjalaskenta', redirectTo: '/theme/linjalaskenta/instructions', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/theme/talvilintulaskenta/instructions', pathMatch: 'full'},
+    {path: 'vesilintulaskenta', redirectTo: '/theme/vesilintulaskenta/instructions', pathMatch: 'full'},
     {path: 'vieraslajit', redirectTo: '/theme/vieraslajit/instructions', pathMatch: 'full'},
     {path: 'kunnat', redirectTo: '/theme/kunnat/instructions', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/theme/lolife/instructions', pathMatch: 'full'},
+    {path: 'lolife', redirectTo: '/theme/lolife/about', pathMatch: 'full'},
     {path: 'lepakot', redirectTo: '/theme/lepakot/instructions', pathMatch: 'full'},
     {path: 'valio', redirectTo: '/theme/valio/instructions', pathMatch: 'full'},
+    {path: 'syke-perhoset', redirectTo: '/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
+    {path: 'pinkka', redirectTo: '/theme/pinkka', pathMatch: 'full'},
+    {path: 'pinkka', redirectTo: '/sv/theme/pinkka', pathMatch: 'full'},
+    {path: 'pinkka', redirectTo: '/en/theme/pinkka', pathMatch: 'full'},
+    {path: 'hyonteisopas', redirectTo: '/theme/hyonteisopas', pathMatch: 'full'},
+    {path: 'hyonteisopas', redirectTo: '/sv/theme/hyonteisopas', pathMatch: 'full'},
+    {path: 'hyonteisopas', redirectTo: '/en/theme/hyonteisopas', pathMatch: 'full'},
     ...routes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
 ];
 
+const allRoutes: Routes = [
+  {path: '', children: routesWithLang, canActivate: [CheckLoginGuard]}
+];
+
 @NgModule({
-  imports: [RouterModule.forRoot(routesWithLang, {
+  imports: [RouterModule.forRoot(allRoutes, {
     enableTracing: false,
     preloadingStrategy: PreloadSelectedModulesList,
     initialNavigation: 'enabled'

@@ -1,0 +1,9 @@
+@import 'vars';
+
+div{
+  &.gathering {
+    background-color: $neutral-1;
+    padding: 0 10px;
+    margin-top: 10px;
+  }
+}

@@ -18,8 +18,10 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-sm-12">
-        <p *lajiForTypes="['dev', 'prod', 'vir']">{{ 'feedback.intro' | translate }}</p>
-        <p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p>
+        <span *lajiLoggedIn><p *lajiForTypes="['dev', 'prod', 'vir']">{{ 'feedback.intro' | translate }}</p></span>
+        <span *lajiLoggedIn><p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p></span>
+        <span *lajiLoggedIn="false"><p *lajiForTypes="['dev', 'prod', 'vir']">{{ 'feedback.intro.notLogged' | translate }}</p></span>
+        <span *lajiLoggedIn="false"><p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p></span>
       </div>
     </div>
     <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">

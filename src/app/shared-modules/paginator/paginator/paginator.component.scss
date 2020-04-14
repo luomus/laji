@@ -1,3 +1,7 @@
+.ngx-datatable.material.laji-pager {
+  background: unset;
+}
+
 .datatable-pager {
   flex: 1 1 80%;
   text-align: right;
@@ -30,6 +34,7 @@
 
 .laji-pager {
   border: none;
+  background-color: #f6f8f8;
 
   .datatable-footer {
     border: none;

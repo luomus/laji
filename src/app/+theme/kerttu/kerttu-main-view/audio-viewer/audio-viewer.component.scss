@@ -1,0 +1,25 @@
+:host {
+  display: inline-block;
+  width: 100%;
+  text-align: left;
+}
+
+#spectrogramContainer {
+  width: 100%;
+  position: relative;
+}
+
+#audioControls {
+  display: inline-block;
+  width: 100%;
+  // text-align: center;
+
+  button {
+    display: inline-block;
+    margin: 0 2px;
+  }
+
+  #volumeSlider {
+    width: 50px;
+  }
+}

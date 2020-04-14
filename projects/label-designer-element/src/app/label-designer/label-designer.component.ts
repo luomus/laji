@@ -28,6 +28,9 @@ export class LabelDesignerComponent {
   showIntro: boolean;
 
   @Input()
+  allowLabelItemRepeat = false;
+
+  @Input()
   data: object[];
 
   @Input()

@@ -12,7 +12,9 @@ export interface TaxonCensus {
     /**
      * QName for MX.taxon
      */
-    censusTaxonID: string;
+    censusTaxonID?: string;
+
+    censusTaxonSetID?: string;
 
     taxonCensusType: TaxonCensus.TaxonCensusTypeEnum;
 

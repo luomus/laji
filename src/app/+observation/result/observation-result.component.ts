@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild,
+OnInit, ChangeDetectorRef} from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
@@ -9,6 +10,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { SearchQueryService } from '../search-query.service';
 import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 import { BrowserService } from '../../shared/service/browser.service';
+import { Subscription } from 'rxjs';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations'];
 @Component({
@@ -17,7 +19,7 @@ const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations
   styleUrls: ['./observation-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationResultComponent {
+export class ObservationResultComponent implements OnInit {
   private _visible: VisibleSections = {
     finnish: true,
     countTaxa: true,
@@ -76,6 +78,8 @@ export class ObservationResultComponent {
 
   hasMonthDayData: boolean;
   hasYearData: boolean;
+  hasTaxonData: boolean;
+  metaFetch: Subscription;
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
 
@@ -83,7 +87,8 @@ export class ObservationResultComponent {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private searchQueryService: SearchQueryService,
-    private browserService: BrowserService
+    private browserService: BrowserService,
+    private cd: ChangeDetectorRef
   ) {}
 
   @Input()
@@ -109,6 +114,13 @@ export class ObservationResultComponent {
         queryParams: this.searchQueryService.getQueryObject(this.query, ['selected', 'pageSize', 'page'])
       }
     );
+  }
+
+  ngOnInit() {
+  }
+
+  ngDestroy() {
+    this.metaFetch.unsubscribe();
   }
 
   reloadTabs() {
@@ -140,4 +152,5 @@ export class ObservationResultComponent {
   openDownloadModal() {
     this.downloadModal.openModal();
   }
+
 }

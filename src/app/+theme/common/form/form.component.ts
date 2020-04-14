@@ -51,11 +51,12 @@ export class FormComponent
   }
 
   ngOnInit() {
+    const parentRoute = this.route.parent;
     this.subParam = this.route.params.pipe(
-      mergeMap((params: Params) => this.route.parent.data.pipe(
+      mergeMap((params: Params) => parentRoute.data.pipe(
         switchMap(({formID}) => {
-          this.routeFormID = params['formID'];
-          return this.formService.getForm(this.routeFormID || formID, this.translateService.currentLang);
+          this.routeFormID = params['formID'] || parentRoute.snapshot.params['formID'] || formID;
+          return this.formService.getForm(this.routeFormID, this.translateService.currentLang);
         }),
         switchMap(form => this.themeFormService.getNavLinks$(this.route.parent).pipe(
           map(navLinks => ({form, params, navLinks}))

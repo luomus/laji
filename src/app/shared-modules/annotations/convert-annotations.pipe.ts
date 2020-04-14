@@ -51,14 +51,16 @@ export class ConvertAnnotationsPipe implements PipeTransform {
       annotationBySystem: IdService.getId(value.annotationBySystem),
       annotationByPerson: IdService.getId(value.annotationByPerson),
       annotationClass: IdService.getId(value.annotationClass),
+      addedTags: (value.addedTags || []).map(id => IdService.getUri(id)),
+      removedTags: (value.removedTags || []).map(id => IdService.getUri(id)),
       id: IdService.getId(value.id),
     } as Annotation).pipe(
       map(annotation => ({
         ...annotation,
         rootID: IdService.getUri(annotation.rootID),
         targetID: IdService.getUri(annotation.targetID),
-        byPerson: IdService.getUri(annotation.byPerson),
-        bySystem: IdService.getUri(annotation.bySystem),
+        annotationByPerson: IdService.getUri(annotation.annotationByPerson),
+        annotationBySystem: IdService.getUri(annotation.annotationBySystem),
         byRole: IdService.getUri(annotation.byRole),
         addedTags: (annotation.addedTags || []).map(id => IdService.getUri(id)),
         removedTags: (annotation.removedTags || []).map(id => IdService.getUri(id)),

@@ -36,17 +36,20 @@
                 <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
               </li>
             </ng-container>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
               <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
               <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['vir']">
-              <a [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
+              <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
-              <a [routerLink]="['/vihko'] | localize">{{ 'navigation.haseka' | translate }}</a>
+            <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']" *lajiForTypes="['vir']">
+              <a [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
               <a [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>

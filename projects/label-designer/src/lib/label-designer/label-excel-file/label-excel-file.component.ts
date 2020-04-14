@@ -3,6 +3,11 @@ import * as XLSX from 'xlsx';
 import { FieldType, IColumnMap, ILabelField } from '../../label-designer.interface';
 import { LabelService } from '../../label.service';
 
+export interface ILoadData {
+  data: any[];
+  availableFields?: ILabelField[];
+}
+
 /**
  * @internal
  */
@@ -46,11 +51,11 @@ export class LabelExcelFileComponent {
     this._columnMap = map;
   }
 
-  get columnMap() {
+  get columnMap(): IColumnMap {
     return this._columnMap;
   }
 
-  onExcelFileChange(evt) {
+  onExcelFileChange(evt): void {
     const target: DataTransfer = <DataTransfer>(evt.target);
     if (target.files.length !== 1) {
       return;
@@ -64,13 +69,13 @@ export class LabelExcelFileComponent {
     reader.readAsArrayBuffer(target.files[0]);
   }
 
-  loadFile(data: any) {
+  loadFile(data: any): void {
     this.wb = XLSX.read(data, {type: 'array'});
     this.sheets = this.wb.SheetNames;
     this.loadSheet(this.sheets[0]);
   }
 
-  loadSheet(name: string) {
+  loadSheet(name: string): void {
     const sheet: XLSX.WorkSheet = this.wb.Sheets[name];
     const rows: {[key: string]: string}[] = <any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {raw: false});
     if (Array.isArray(rows) && rows.length > 0) {
@@ -83,11 +88,11 @@ export class LabelExcelFileComponent {
     this.data = rows;
   }
 
-  changeIdCol(value: any) {
+  changeIdCol(value: any): void {
     this.uriCol = value;
   }
 
-  loadData() {
+  loadData(): ILoadData {
     const start = this.dataStarts > 1 ? this.dataStarts : 2;
     if (!this.data || this.data.length < start) {
       return {
@@ -117,7 +122,7 @@ export class LabelExcelFileComponent {
     };
   }
 
-  private loadColumnMappedData(start: number) {
+  private loadColumnMappedData(start: number): ILoadData {
     const cols = Object.keys(this.columnMap).filter(v => !!v);
     const fieldMap: {[key: string]: ILabelField} = this.availableFields.reduce((cumulative, current) => {
       cumulative[current.field] = current;
@@ -144,7 +149,7 @@ export class LabelExcelFileComponent {
     };
   }
 
-  private makeUri(val) {
+  private makeUri(val): string {
     if (typeof val === 'string' && val.indexOf('http') !== 0) {
       return ('' + this.defaultDomain) + val;
     }
@@ -204,7 +209,7 @@ export class LabelExcelFileComponent {
     ];
   }
 
-  onColumnMap(header: string, field: ILabelField) {
+  onColumnMap(header: string, field: ILabelField): void {
     this.columnMap = {...this.columnMap, [header]: field.field};
     this.columnMapChange.emit(this.columnMap);
   }

@@ -1,0 +1,33 @@
+<div class="gathering">
+            <ng-container *ngFor="let unit of gathering?.units">
+                <ng-container *ngIf="!showAnnotation; else annotation">
+                    <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
+                        <laji-unit-annotation [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit-annotation>
+                    </ng-container>
+                </ng-container>
+                <ng-template #annotation>
+                    <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
+                        <laji-annotation-data-observation *ngIf="unit.annotations && unit.annotations.length > 0" [gathering]="gathering" [unit]="unit" [editors]="editors" [collectionId]="collectionId" [createdDate]="createdDate"></laji-annotation-data-observation>
+                        <laji-unit-annotation-list [gathering]="gathering" [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID"
+                        [personRoleAnnotation]="personRoleAnnotation" [documentID]="documentID" [unit]="unit" [highlight]="highlight" (annotationPending)="checkPending($event)"></laji-unit-annotation-list>
+                        <div style="height: 30px;">
+                            <div class="alert alert-success" style="padding: 3px 15px;" *ngIf="annotationAddedDeleted.status" [@message]>
+                                <span *ngIf="annotationAddedDeleted.action === 'adding'; else deleting">{{ 'annotation.addedSuccess' | translate }}</span>
+                                <ng-template #deleting>
+                                    <span>{{ 'annotation.deletedSuccess' | translate }}</span>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-template>
+            </ng-container>
+            <ng-container *ngIf="!showAnnotation">
+                <ng-container *ngFor="let unit of gathering?.units">
+                    <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
+                        <laji-observation-effective-tags-taxon [unit]="unit" [showTitle]="true" [parentSubject]="parentSubject"></laji-observation-effective-tags-taxon>
+                    </ng-container>
+                </ng-container>
+                <laji-gathering-annotations-rows [highlight]="highlight" [gathering]="gathering"></laji-gathering-annotations-rows>
+                <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
+            </ng-container>
+

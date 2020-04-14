@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Inject, Input, PLATFORM_ID, ViewChild, OnInit } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import { ModalDirective, PopoverDirective } from 'ngx-bootstrap';
 import { isPlatformBrowser } from '@angular/common';
@@ -6,19 +6,24 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'laji-info',
   templateUrl: './info.component.html',
-  styleUrls: ['./info.component.css'],
+  styleUrls: ['./info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InfoComponent {
+export class InfoComponent implements OnInit {
 
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' | 'auto' = 'left';
   @Input() html: string;
   @Input() glyphicon: string;
   @Input() labelType = 'info';
   @Input() showOnHover = false;
+  @Input() containerInfo = 'body';
 
   @ViewChild('modal', { static: true }) public modal: ModalDirective;
   @ViewChild('pop', { static: true }) public popover: PopoverDirective;
+
+  isInsideModal: string;
+  container: string;
+  position: any;
 
   constructor(
     @Inject(WINDOW) private window,
@@ -30,6 +35,23 @@ export class InfoComponent {
     if (this.isVisible()) {
       this.show();
     }
+  }
+
+  @HostListener('mousemove', ['$event'])
+    onMousemove(event: MouseEvent) {
+     if (this.modal.isShown) {
+
+     } else {
+      if (this.containerInfo !== 'body') {
+        this.position = (event.pageY - event.clientY + 300 ) + 'px';
+      } else {
+        this.position = 'auto';
+      }
+     }
+    }
+
+  ngOnInit() {
+   this.container = this.containerInfo;
   }
 
   show() {

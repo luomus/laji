@@ -65,12 +65,36 @@ import { ThemePageComponent } from './common/theme-page.component';
 import { FormComponent } from './common/form/form.component';
 import { ThemeOwnSubmissionsComponent } from './common/theme-own-submissions/theme-own-submissions.component';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
-import { ObservationFacade } from '../+observation/observation.facade';
 import { ObservationComponentModule } from '../+observation/observation-component.module';
 import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
 import { DownloadModule } from '../shared-modules/download/download.module';
 import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
+import { DatasetsComponent } from './datasets/datasets.component';
+import { InfoModule } from '../shared-modules/info/info.module';
+import { ThemeImportComponent } from './common/theme-import/theme-import.component';
+import { SpreadsheetModule } from '../shared-modules/spreadsheet/spreadsheet.module';
+import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-spreadsheet/theme-generate-spreadsheet.component';
+import { GenericInstructionsComponent } from './common/instructions/generic-instructions/generic-instructions.component';
+import { KerttuComponent } from './kerttu/kerttu.component';
+import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
+import { ExpertiseFormComponent } from './kerttu/kerttu-main-view/expertise-form/expertise-form.component';
+import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
+import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
+import { KerttuApi } from './kerttu/service/kerttu-api';
+import { KerttuFacade } from './kerttu/service/kerttu.facade';
+import { AudioService } from './kerttu/service/audio.service';
+import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
+import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
+import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-letter-annotation/kerttu-letter-annotation.component';
+import { AudioViewerComponent } from './kerttu/kerttu-main-view/audio-viewer/audio-viewer.component';
+import { KerttuTaxonSelectComponent } from './kerttu/kerttu-main-view/kerttu-taxon-select/kerttu-taxon-select.component';
+import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-recording-annotation/kerttu-recording-annotation.component';
+import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
+import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
+import { PinkkaComponent } from './pinkka/pinkka.component';
+import { InsectGuideComponent } from './insect-guide/insect-guide.component';
+import { AudioSpectrogramComponent } from './kerttu/kerttu-main-view/audio-spectrogram/audio-spectrogram.component';
 
 /* tslint:enable:max-line-length */
 
@@ -98,11 +122,17 @@ import { ObservationTableColumnService } from '../shared-modules/datatable/servi
     InfoPageModule,
     LajiUiModule,
     ObservationComponentModule,
-    DownloadModule
+    DownloadModule,
+    InfoModule,
+    SpreadsheetModule,
+    ThreeStateSwitchModule,
+    PillListModule
   ],
   declarations: [
     HerpetologyComponent,
     ChecklistComponent,
+    PinkkaComponent,
+    InsectGuideComponent,
     ThemeResultComponent,
     NafiResultComponent,
     FixedTableDirective,
@@ -143,11 +173,30 @@ import { ObservationTableColumnService } from '../shared-modules/datatable/servi
     FormComponent,
     ThemeOwnSubmissionsComponent,
     GeneticResourceComponent,
+    DatasetsComponent,
+    ThemeImportComponent,
+    ThemeGenerateSpreadsheetComponent,
+    GenericInstructionsComponent,
+    KerttuComponent,
+    KerttuInstructionsComponent,
+    ExpertiseFormComponent,
+    LolifeInstructionsComponent,
+    KerttuMainViewComponent,
+    FormHasFeaturePipe,
+    KerttuLetterAnnotationComponent,
+    AudioViewerComponent,
+    ThemeBreadcrumbComponent,
+    KerttuTaxonSelectComponent,
+    KerttuRecordingAnnotationComponent,
+    AudioSpectrogramComponent
   ],
   providers: [
     ResultService,
     QualityService,
     WbcResultService,
+    KerttuApi,
+    KerttuFacade,
+    AudioService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })

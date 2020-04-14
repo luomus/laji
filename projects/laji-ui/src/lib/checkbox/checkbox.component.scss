@@ -7,10 +7,15 @@
 label {
   font-weight: unset;
   color: $neutral-6;
+  white-space: nowrap;
 }
 
 .checked {
   color: $neutral-8;
+}
+
+.disabled {
+  opacity: 0.65;
 }
 
 input {

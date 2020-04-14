@@ -95,7 +95,7 @@
       </div>
     </div>
     <div class="col-sm-5">
-      <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="mapData.length > 0" [data]="mapData"></laji-viewer-map>
+      <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="mapData.length > 0" [data]="mapData" [zoomToData]="zoomToData"></laji-viewer-map>
       <laji-image-gallery *ngIf="document.gatherings.length > active && imageData[document.gatherings[active].id]"
                           [modalImages]="imageData[document.gatherings[active].id]"></laji-image-gallery>
     </div>

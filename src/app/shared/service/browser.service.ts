@@ -27,7 +27,7 @@ export class BrowserService implements OnDestroy {
   private state$ = this.store.asObservable();
 
   lgScreen$ = this.state$.pipe(map((state) => state.lgScreen), distinctUntilChanged());
-  visibility$ = this.state$.pipe(map((state) => state.visibility));
+  visibility$ = this.state$.pipe(map((state) => state.visibility), distinctUntilChanged());
 
   private resizeSub: Subscription;
   private visibilityChangeEvent: string;

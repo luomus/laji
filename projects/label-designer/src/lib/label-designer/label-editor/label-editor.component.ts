@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
-import { ILabelItem, ILabelStyle, ISetup, TLabelLocation } from '../../label-designer.interface';
+import { ILabelItem, ILabelStyle, IPageStyle, ISetup, TLabelLocation } from '../../label-designer.interface';
 import { LabelService } from '../../label.service';
 import { TranslateService } from '../../translate/translate.service';
 import { LabelMakerFacade } from '../label-maker.facade';
@@ -50,7 +50,7 @@ export class LabelEditorComponent {
     this.recalculate();
   }
 
-  recalculate() {
+  recalculate(): void {
     if (!this._setup) {
       return;
     }
@@ -65,7 +65,7 @@ export class LabelEditorComponent {
     this._magnifiedStyle = resultStyle;
   }
 
-  onItemChange(originalItem: ILabelItem, newItem: ILabelItem) {
+  onItemChange(originalItem: ILabelItem, newItem: ILabelItem): void {
     const result = [];
     const items: TLabelLocation = this.backSide ? 'backSideLabelItems' : 'labelItems';
     this._setup[items].forEach(item => {
@@ -79,7 +79,10 @@ export class LabelEditorComponent {
     this.labelMakerFacade.hasChanges(true);
   }
 
-  updateDimensions(event: Event, target: string, sec: 'page'|'label') {
+  updateDimensions(
+    event: Event,
+    target: keyof Pick<IPageStyle|ILabelStyle, 'height.mm'|'width.mm'>, sec: keyof Pick<ISetup, 'page'|'label'>
+  ) {
     const element = event.target as HTMLInputElement;
     const value = Number(element.value);
     const {width, height} = this.labelService.countMinLabelSize(this._setup);
@@ -102,7 +105,7 @@ export class LabelEditorComponent {
     this.setupChange.emit(this._setup);
   }
 
-  setActiveItem(item: ILabelItem) {
+  setActiveItem(item: ILabelItem): void {
     this.activeChange.emit(item);
   }
 }

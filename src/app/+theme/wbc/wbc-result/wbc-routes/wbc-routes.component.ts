@@ -3,6 +3,7 @@ import { WbcResultService } from '../wbc-result.service';
 import { IdService } from '../../../../shared/service/id.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
+import { LoadedElementsStore } from '../../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
   selector: 'laji-wbc-routes',
@@ -10,7 +11,8 @@ import { LocalizeRouterService } from '../../../../locale/localize-router.servic
   styleUrls: ['./wbc-routes.component.css']
 })
 export class WbcRoutesComponent implements OnInit {
-  active: 'list'|'map' = 'list';
+  activeIndex = 0;
+  loadedTabs = new LoadedElementsStore(['list', 'map']);
   data: any;
   selected = [
     'document.namedPlace.name',
@@ -34,6 +36,7 @@ export class WbcRoutesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadedTabs.load(this.activeIndex);
     this.resultService.getRouteList()
       .subscribe(routes => {
         this.data = routes;
@@ -48,7 +51,8 @@ export class WbcRoutesComponent implements OnInit {
     );
   }
 
-  setActive(newActive: 'list'|'map') {
-    this.active = newActive;
+  setActive(newActive: number) {
+    this.activeIndex = newActive;
+    this.loadedTabs.load(newActive);
   }
 }

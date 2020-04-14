@@ -5,7 +5,7 @@ const EMPTY_VALUE = ' ';
 @Component({
   selector: 'laji-row',
   templateUrl: './row.component.html',
-  styleUrls: ['./row.component.css'],
+  styleUrls: ['./row.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RowComponent implements OnChanges {

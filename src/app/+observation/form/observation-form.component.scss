@@ -1,5 +1,5 @@
 @import '../../../styles/variables';
-@import '../../../../projects/laji-ui/src/lib/vars';
+@import 'vars';
 
 .mode-select {
   display: flex;
@@ -16,13 +16,38 @@
   }
 }
 
+.mode-switch-btn {
+  background: unset;
+  border: unset;
+  border-bottom: 3px solid rgba(0,0,0,0);
+  color: $neutral-7;
+  &:not(.active):hover {
+    color: $primary-5;
+  }
+  &.active {
+    border-bottom: 3px solid $primary-5;
+    cursor: default;
+  }
+}
+
+:host ::ng-deep laji-observation-active .open-select {
+  border-bottom: 3px solid rgba(0,0,0,0)
+}
+
 .top-section {
   padding: 15px;
+  > * {
+    margin-bottom: 10px;
+  }
 }
 
 .laji-panel {
   background-color: $neutral-2;
   box-shadow: 0 1px 3px 0 $neutral-4;
+  margin-bottom: 10px;
+}
+
+:host ::ng-deep .panel-body > * {
   margin-bottom: 10px;
 }
 
@@ -37,18 +62,7 @@ hr {
   border: none;
   box-shadow: none;
 }
-.result-list {
-  display: flex;
-  flex-direction: column;
-}
-.taxon-panel {
-  background-color: #ffffff;
-  margin: -15px;
-  padding: 15px;
-}
-.lj-input-wrap {
-  padding: 0 15px;
-}
+
 label {
   display: inline;
 }
@@ -56,44 +70,7 @@ label {
 :host ::ng-deep p {
   font-size: small;
 }
-.switch-label {
-  margin-left: 5px;
-}
 .small-label {
   font-weight: normal;
   font-size: smaller;
 }
-.badge {
-  background: none;
-  font-weight: normal;
-  color: #333;
-  margin-bottom: 3px;
-  margin-right: 5px;
-}
-
-.badge.active {
-  background: $color-main-dark;
-  font-weight: normal;
-  color: #fff;
-}
-
-@media only screen and (max-width: 1024px) {
-  .badge {
-    padding: 10px 8px;
-    width: 45%;
-    font-size: 12px;
-  }
-
-  .badge:first-child{
-    margin-right:7%;
-  }
-
-}
-
-@media only screen and (max-width: 767px) {
-  .badge {
-    font-size: 14px;
-  }
-
-}
-

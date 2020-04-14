@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef, Renderer2, ElementRef, AfterViewInit, EventEmitter
 } from '@angular/core';
 import { of, Subject } from 'rxjs';
-import { switchMap, takeUntil, filter, tap } from 'rxjs/operators';
+import { switchMap, takeUntil, filter, tap, map } from 'rxjs/operators';
 import { NotificationsFacade } from './notifications.facade';
 import { NotificationDataSource } from './notification-data-source';
 import { TranslateService } from '@ngx-translate/core';
@@ -56,15 +56,21 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   removeAll() {
-    this.translate.get('notification.delete').pipe(
+    this.translate.get('notification.deleteAll.confirm').pipe(
       takeUntil(this.unsubscribe$),
       switchMap(msg => this.dialogService.confirm(msg)),
+      map((res) => {
+        if (!res) {
+          throw new Error('cancelled');
+        }
+        return res;
+      }),
       tap(() => this.notificationSource.removeAllNotificationsFromCache()),
-      switchMap(res => res ? this.notificationsFacade.removeAll() : of(true))
+      switchMap(() => this.notificationsFacade.removeAll())
     ).subscribe(() => {
       this.notificationsFacade.loadNotifications(1);
       this.cdr.markForCheck();
-    });
+    }, () => {});
   }
 
   markAsSeen(notification: Notification) {
@@ -74,7 +80,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   removeNotification(notification: Notification) {
-    this.translate.get('notification.delete').pipe(
+    this.translate.get('notification.delete.confirm').pipe(
       switchMap(msg => notification.seen ? of(true) : this.dialogService.confirm(msg)),
       filter(result => !!(result && notification.id)),
       tap(() => this.notificationSource.removeNotificationFromCache(notification.id)),

@@ -1,0 +1,36 @@
+@import 'vars';
+
+:host ::ng-deep .datatable-body-row.active {
+  background-color: $primary-1 !important;
+  &:hover {
+    cursor: default;
+  }
+}
+
+:host ::ng-deep .ngx-datatable.material {
+  background: unset;
+  background-color: $neutral-1;
+
+  .datatable-header .datatable-header-cell {
+    background-color: $neutral-1;
+  }
+}
+
+:host ::ng-deep .ngx-datatable.striped .datatable-row-odd {
+  background: unset;
+  background-color: $neutral-2;
+}
+
+/* Workaround for ngx-datatable bug where a black bar appears on some rows
+   https://github.com/swimlane/ngx-datatable/issues/1616
+*/
+:host ::ng-deep .datatable-body-row {
+  transform: translateZ(0);
+}
+
+:host ::ng-deep .datatable-body-row.active .datatable-row-center {
+  background-color: $primary-1 !important;
+  &:hover {
+    cursor: default;
+  }
+}

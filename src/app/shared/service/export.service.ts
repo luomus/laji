@@ -3,12 +3,11 @@ import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { BookType, utils as XLSXUtils } from 'xlsx';
 import { DatatableColumn } from '../../shared-modules/datatable/model/datatable-column';
-import { forkJoin as ObservableForkJoin, Observable, of, of as ObservableOf, pipe } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of, of as ObservableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Util } from './util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableUtil } from '../../shared-modules/datatable/service/datatable-util.service';
-import { TriplestoreLabelService } from './triplestore-label.service';
 
 @Injectable({providedIn: 'root'})
 export class ExportService {
@@ -19,8 +18,7 @@ export class ExportService {
 
   constructor(
     private translateService: TranslateService,
-    private datatableUtil: DatatableUtil,
-    private triplestoreLabelService: TriplestoreLabelService
+    private datatableUtil: DatatableUtil
   ) { }
 
   exportFromData(data: any[], cols: DatatableColumn[], type: BookType, filename: string, firstRow?: string[]): Observable<void> {

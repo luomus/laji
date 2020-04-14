@@ -1,6 +1,8 @@
 <h3>{{ 'haseka.templates.title' | translate }}</h3>
-<div class="pull-right toggle-intro" *ngIf="!showTemplateIntro">
-  <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+<div class="row">
+  <div class="pull-right toggle-intro" *ngIf="!showTemplateIntro" (click)="toggleInfo()" >
+    <i class="link glyphicon glyphicon-info-sign"></i>
+  </div>
 </div>
 <alert *ngIf="showTemplateIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
   <p>{{ 'haseka.templates.intro' | translate }}</p>

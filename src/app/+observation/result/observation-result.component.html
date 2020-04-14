@@ -51,7 +51,7 @@
   </ng-container>
   <lu-button role="primary" *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</lu-button>
   <div class="fill-space"></div>
-  <div *ngIf="visible.finnish">
+  <div class="finnish-selector-buttons" *ngIf="visible.finnish">
     <lu-button [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
       {{ 'search.result.all' | translate }}</lu-button>
     <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode === 'finnish'">
@@ -78,7 +78,7 @@
       [unitCount]="unitCount"
       [showItemsWhenLessThan]="2000"
       [opacity]="0.5"
-      [height]="500"
+      [height]="-1"
       [query]="query"
       [draw]="{rectangle: true, marker: false, polygon: false, polyline: false, circle: false}"
       [legend]="true"
@@ -93,6 +93,7 @@
       <laji-gallery
         [showPopover]="true"
         [showViewSwitch]="true"
+        [shortcut]="false"
         [query]="query">
       </laji-gallery>
     </div>
@@ -127,6 +128,7 @@
             [title]="'observation.horizontalBar.title' | translate"
             [open]="true"
             [autoToggle]="true"
+            [hidden]="!hasTaxonData"
           >
           <!--<laji-observation-chart
             [lang]="lang"
@@ -143,6 +145,7 @@
               [height]="300"
               [showLegend]="true"
               [visible]="true"
+              (hasData)="hasTaxonData = $event"
             ></laji-horizontal-chart>
           </div>
         </div>
@@ -185,13 +188,11 @@
       </div>
     </ng-container>
   </lu-tab>
-  <ng-container *lajiForTypes="['dev']">
-    <lu-tab *ngIf="visible.annotations" [heading]="'search.result.annotation' | translate">
-      <laji-annotations [query]="query"
+  <lu-tab *ngIf="visible.annotations" [heading]="'search.result.annotation' | translate">
+    <laji-annotations [query]="query"
         *ngIf="loadedTabs.isLoaded('annotations')"
-      ></laji-annotations>
-    </lu-tab>
-  </ng-container>
+    ></laji-annotations>
+  </lu-tab>
 </lu-tabs>
 
 <div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">

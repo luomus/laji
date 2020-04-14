@@ -18,7 +18,8 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/static",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/robots.txt"
             ],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
@@ -50,6 +51,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/robots.txt",
+                  "with": "src/robots.allow.txt"
                 }
               ]
             },
@@ -121,6 +126,16 @@
                 }
               ]
             },
+            "vir-dev": {
+              "extractCss": true,
+              "vendorChunk": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.vir-dev.ts"
+                }
+              ]
+            },
             "local": {
               "extractCss": true,
               "vendorChunk": false,
@@ -165,6 +180,9 @@
             "vir": {
               "browserTarget": "laji:build:vir"
             },
+            "vir-dev": {
+              "browserTarget": "laji:build:vir-dev"
+            },
             "local": {
               "browserTarget": "laji:build:local"
             }
@@ -195,7 +213,8 @@
             ],
             "assets": [
               "src/static",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/robots.txt"
             ]
           }
         },
@@ -214,7 +233,10 @@
           "options": {
             "outputPath": "dist/server",
             "main": "src/main.server.ts",
-            "tsConfig": "src/tsconfig.server.json"
+            "tsConfig": "src/tsconfig.server.json",
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/laji-ui/src/lib"]
+            }
           },
           "configurations": {
             "production": {
@@ -225,6 +247,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/robots.txt",
+                  "with": "src/robots.allow.txt"
                 }
               ]
             },
@@ -263,6 +289,17 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.vir.ts"
+                }
+              ]
+            },
+            "vir-dev": {
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.vir-dev.ts"
                 }
               ]
             },
@@ -361,6 +398,7 @@
             "tsConfig": "projects/iucn/tsconfig.app.json",
             "assets": [
               "projects/iucn/src/favicon.ico",
+              "projects/iucn/src/robots.txt",
               {
                 "glob": "**/*",
                 "input": "src/static",
@@ -376,6 +414,9 @@
               "src/styles/laji.scss",
               "projects/iucn/src/styles.css"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/laji-ui/src/lib"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -397,6 +438,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "projects/iucn/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/iucn/src/robots.txt",
+                  "with": "src/robots.allow.txt"
                 }
               ]
             },
@@ -407,8 +452,14 @@
                   "with": "projects/iucn/src/environments/environment.ts"
                 }
               ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
               "extractCss": true,
-              "vendorChunk": false
+              "namedChunks": true,
+              "aot": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
             }
           }
         },

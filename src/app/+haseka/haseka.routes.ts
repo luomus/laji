@@ -18,6 +18,7 @@ import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wr
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
 import { ParticipantsComponent } from './form-permission/admin/participants/participants.component';
+import { VihkoHomeComponent } from './vihko-home/vihko-home.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -29,8 +30,9 @@ export const hasekaRoutes: Routes = [
         path: '',
         component: HasekaComponent,
         children: [
-          {path: '', pathMatch: 'full', redirectTo: 'forms', component: HaSeKaFormListComponent},
-          {path: 'forms', pathMatch: 'full', component: HaSeKaFormListComponent},
+          {path: '', pathMatch: 'full', redirectTo: 'home'},
+          {path: 'home', pathMatch: 'full', component: VihkoHomeComponent},
+          {path: 'forms', pathMatch: 'full', redirectTo: 'home'},
           {path: 'ownSubmissions', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: OwnSubmissionsComponent},
           {path: 'templates', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: TemplatesComponent},
           {path: 'statistics', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},

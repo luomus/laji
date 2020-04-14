@@ -1,0 +1,8 @@
+<div>
+    <div *ngFor="let field of info[0].text; let i = index">
+        <div *ngIf="!info[0].visible[i]">
+            <h4>{{ field.title | multiLang }}</h4>
+            <span [innerHTML]="field.content | multiLang"></span>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,7 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.embedded,
+  base: 'https://dev-embedded.laji.fi',
   production: false,
   forceLogin: false,
   disableAnalytics: true,
@@ -18,12 +19,20 @@ export const environment = {
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
+  waterbirdPairForm: 'MHL.65',
+  waterbirdJuvenileForm: 'MHL.66',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'MHL.36',
   lolifeForm: 'MHL.45',
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
+  saveObservations: {
+    citizenScienceForms: ['MHL.3', 'JX.652', 'MHL.53'],
+    birdMonitoringForms: ['MHL.65', 'MHL.33', 'MHL.6'],
+    researchProjects: ['MHL.1', 'MHL.50', 'MHL.57']
+  },
   apiBase: 'https://dev-embedded.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
-  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self'
+  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
 };

@@ -23,6 +23,8 @@ export class CheckboxComponent implements OnDestroy{
     this.checkbox.nativeElement.checked = checked;
   }
 
+  @Input() disabled = false;
+
   /**
    * Changes to state of checkbox that were triggered by user
    */

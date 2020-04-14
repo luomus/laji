@@ -1,7 +1,20 @@
+@import 'vars';
+
 /* Colors */
 
-$color-main: #3498DB;
-$color-main-dark: darken($color-main, 15%);
+$color-main: $primary-5;
+$color-main-dark: $primary-6;
+
+$main-gray: #F5F5F5;
+$main-gray-darker: darken($main-gray,20%);
+$gray-text: #333;
+$green: #5cb85c;
+$red: #FF0000;
+$white: #FFFFFF;
+$black: #000;
+$needId: #0000FF;
+$disagreed: #FF9900;
+
 
 /* Spacers */
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 
@@ -8,10 +8,13 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
   styleUrls: ['./taxon-info.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonInfoComponent {
+export class TaxonInfoComponent implements OnInit {
 
   @Input() taxon: Taxonomy;
 
   constructor(public translate: TranslateService) {}
+
+  ngOnInit() {
+  }
 
 }

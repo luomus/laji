@@ -1,38 +1,36 @@
 <div *ngIf="visible" id="container">
-  <div id="navbar">
-    <ul class="nav nav-tabs nav-justified">
-      <li role="presentation" [ngClass]="{active: active === 'list'}">
-        <a (click)="setActive('list')">{{ documentForm.namedPlaceOptions?.listLabel || 'np.list' | translate }}</a>
-      </li>
-      <li role="presentation" [ngClass]="{active: active === 'map'}" *ngIf="showMap()">
-        <a (click)="setActive('map')">{{ 'np.map' | translate }}</a>
-      </li>
-    </ul>
-  </div>
+  <lu-tabs *ngIf="showMap else listTemplate" [selectedIndex]="activeIndex" (select)="setActive($event)">
+    <lu-tab [heading]="documentForm.namedPlaceOptions?.listLabel || 'np.list' | translate">
+      <ng-container *ngTemplateOutlet="listTemplate"></ng-container>
+    </lu-tab>
+    <lu-tab [heading]="'np.map' | translate">
+      <ng-container *ngIf="loadedTabs.isLoaded('map')">
+        <laji-np-map [namedPlaces]="_namedPlaces"
+                    [height]="height"
+                    [activeNP]="_activeNP"
+                    [userID]="userID"
+                    [visible]="activeIndex === 1 && visible"
+                    [reservable]="documentForm.features.indexOf(FEATURE_RESERVE) !== -1"
+                    [placeForm]="placeForm"
+                    [documentForm]="documentForm"
+                    (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
+      </ng-container>
+    </lu-tab>
+  </lu-tabs>
+  <ng-template #listTemplate>
+    <div id="list-container" *ngIf="loadedTabs.isLoaded('list')">
+      <laji-np-list [height]="height"
+                    [namedPlaces]="_namedPlaces"
+                    [documentForm]="documentForm"
+                    [listColumnNameMapping]="documentForm.namedPlaceOptions?.listColumnNameMapping"
+                    [activeNP]="_activeNP"
+                    (activePlaceChange)="onActivePlaceChange($event)"
+      ></laji-np-list>
+    </div>
+  </ng-template>
 
-  <div *ngIf="active === 'list'" id="list-container">
-    <laji-np-list [height]="height"
-                  [namedPlaces]="_namedPlaces"
-                  [documentForm]="documentForm"
-                  [activeNP]="_activeNP"
-                  (activePlaceChange)="onActivePlaceChange($event)"
-                  ></laji-np-list>
-  </div>
-
-  <div [ngClass]="{hidden: active !== 'map'}" *ngIf="mapIsActivated">
-    <laji-np-map [namedPlaces]="_namedPlaces"
-                 [height]="height"
-                 [activeNP]="_activeNP"
-                 [userID]="userID"
-                 [visible]="active === 'map' && visible"
-                 [reservable]="documentForm.features.indexOf(FEATURE_RESERVE) !== -1"
-                 [placeForm]="placeForm"
-                 [documentForm]="documentForm"
-                 (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
-  </div>
-
-  <button *ngIf="allowCreate"
-          class="btn btn-md btn-default"
-          id="create-new-button"
-          (click)="createButtonClick.emit()">{{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</button>
+  <ng-container *lajiLoggedIn="true">
+    <lu-button *ngIf="allowCreate"
+               (click)="createButtonClick.emit()">{{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</lu-button>
+  </ng-container>
 </div>

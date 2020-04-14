@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges,
+Output, EventEmitter, HostListener } from '@angular/core';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
@@ -21,7 +22,8 @@ export class DocumentLocalComponent implements OnChanges {
   @Input() document: Document;
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
-  @Input() gatheringGeometryJSONPath: string;
+
+  @Output() close = new EventEmitter<boolean>();
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -29,6 +31,8 @@ export class DocumentLocalComponent implements OnChanges {
   imageData: {[key: string]: any} = {};
   fields = {};
   formLogo: string;
+  gatheringGeometryJSONPath: string | string[];
+  zoomToData: boolean;
 
   loading = false;
   private parseDocSub: Subscription;
@@ -74,10 +78,14 @@ export class DocumentLocalComponent implements OnChanges {
 
           doc.gatherings.forEach((gathering, i) => {
             try {
-              const geoData = JSONPath({json: gathering, path: this.gatheringGeometryJSONPath || '$.geometry'});
-              // TODO There could be more than one hit... But in our current domain there isn't, so we ignore the issue.
-              if (geoData && geoData[0]) {
-                this.mapData[i] = {geoJSON: geoData[0]};
+              const paths = this.gatheringGeometryJSONPath || '$.geometry';
+              const geoData = {type: 'GeometryCollection', geometries:
+                (Array.isArray(paths)  ? paths : [paths]).reduce((geometries, path) => {
+                  return [...geometries, ...JSONPath({json: gathering, path})];
+                }, []).filter(g => g)
+              };
+              if (geoData && geoData.geometries[0]) {
+                this.mapData[i] = {geoJSON: geoData};
               }
             } catch (e) { }
             if (gathering.images && gathering.images.length > 0) {
@@ -120,22 +128,26 @@ export class DocumentLocalComponent implements OnChanges {
   private getForm(formId: string): Observable<any> {
     return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
       .pipe(tap(form => {
-        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications']);
+        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications'], (form.namedPlaceOptions || {}).documentViewerForcedFields);
+        if (form.namedPlaceOptions && form.namedPlaceOptions.documentViewerGatheringGeometryJSONPath) {
+          this.gatheringGeometryJSONPath = form.namedPlaceOptions.documentViewerGatheringGeometryJSONPath;
+          this.zoomToData = form.namedPlaceOptions.documentViewerZoomToData;
+        }
       }));
   }
 
-  private setAllFields(fields: any[], uiSchema: any, queue: string[]) {
-    const res = this.processFields(fields, uiSchema, queue.length > 1 ? queue[1] : undefined);
+  private setAllFields(fields: any[], uiSchema: any, queue: string[], forcedFields?: string[]) {
+    const res = this.processFields(fields, uiSchema, queue.length > 1 ? queue[1] : undefined, forcedFields);
     this.fields[queue[0]] = res.fields;
 
     const next = res.next;
 
     if (next) {
-      this.setAllFields(next.fields, uiSchema && uiSchema[next.name] ? uiSchema[next.name].items : undefined, queue.slice(1));
+      this.setAllFields(next.fields, uiSchema && uiSchema[next.name] ? uiSchema[next.name].items : undefined, queue.slice(1), forcedFields);
     }
   }
 
-  private processFields(fields: any[], uiSchema: any, nextName?: string) {
+  private processFields(fields: any[], uiSchema: any, nextName?: string, forcedFields: string[] = []) {
     let next;
 
     fields = fields.reduce((arr, field) => {
@@ -144,12 +156,18 @@ export class DocumentLocalComponent implements OnChanges {
         return arr;
       }
 
+      let add = true;
+
       if (field.name === 'geometry' || field.name === 'images') {
-        return arr;
+        add = false;
       }
 
       if (uiSchema && uiSchema[field.name] && (
         uiSchema[field.name]['ui:field'] === 'HiddenField' || uiSchema[field.name]['ui:widget'] === 'HiddenWidget')) {
+        add = false;
+      }
+
+      if (!add && forcedFields.indexOf(field.name) === -1) {
         return arr;
       }
 
@@ -166,4 +184,21 @@ export class DocumentLocalComponent implements OnChanges {
       next: next
     };
   }
+
+  closeDocument() {
+    this.close.emit(true);
+  }
+
+
+  @HostListener('window:keydown', ['$event'])
+  annotationKeyDown(e: KeyboardEvent) {
+
+    if (e.keyCode === 27 ) {
+       e.stopImmediatePropagation();
+       this.closeDocument();
+      }
+
+  }
+
+
 }

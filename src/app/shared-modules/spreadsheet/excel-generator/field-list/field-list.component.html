@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+  <div class="panel-heading link" *ngIf="showTitle" (click)="onTitleClick()">
+    <strong>{{ title }}</strong>
+  </div>
+  <div class="panel-body">
+    <ng-container *ngFor="let visible of visibleFields">
+      <div class="sub-header link" *ngIf="visible.subGroup" (click)="onSubGroupClick(visible.subGroup)">
+        {{ visible.subGroup | label }}
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item"
+            [class.link]="!field.required"
+            *ngFor="let field of visible.fields; trackBy:trackFields"
+            (click)="onClick(field)"
+            [ngClass]="{active: selected.indexOf(field.key) > -1 || field.required}">
+          <laji-field-item [field]="field" [selected]="selected" (selectedChange)="selectedChange.emit($event)"></laji-field-item>
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+</div>

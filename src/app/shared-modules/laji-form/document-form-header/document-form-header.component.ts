@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { Form } from '../../../shared/model/Form';
 import { UserService } from '../../../shared/service/user.service';
 import { ILajiFormState } from '@laji-form/laji-form-document.facade';
 import * as moment from 'moment';
+import { AreaService } from '../../../shared/service/area.service';
 
 @Component({
   selector: 'laji-document-form-header',
@@ -17,7 +18,6 @@ import * as moment from 'moment';
 export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() formID: string;
-  @Input() namedPlace: any;
   @Input() isAdmin = false;
   @Input() printType: string;
   @Input() formData: any;
@@ -26,6 +26,17 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() description: string;
   @Input() displayTitle = true;
   @Input() edit: boolean;
+
+  namedPlaceHeader: Observable<string>[];
+  _namedPlace: any;
+  @Input('namedPlace')
+  get namedPlace(): any {
+    return this._namedPlace;
+  }
+  set namedPlace(np: any) {
+    this._namedPlace = np;
+    this.namedPlaceHeader = this.getNamedPlaceHeader();
+  }
 
   form: any;
   useLocalDocumentViewer = false;
@@ -40,7 +51,8 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     private formService: FormService,
     private userService: UserService,
     public translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private areaService: AreaService
   ) { }
 
   ngOnInit() {
@@ -78,6 +90,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
           }
         }
         this.title.setTitle(form.title + ' | ' + this.title.getTitle());
+        this.namedPlaceHeader = this.getNamedPlaceHeader();
         this.cd.markForCheck();
       });
   }
@@ -86,4 +99,31 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     return moment(date).format('DD.MM.YYYY');
   }
 
+  getNamedPlaceHeader(): Observable<string>[] {
+    if (!this.form || !this._namedPlace) {
+      return [];
+    }
+    const headerFields = this.form.namedPlaceOptions && this.form.namedPlaceOptions.headerFields ?
+      this.form.namedPlaceOptions.headerFields : ['alternativeIDs', 'name', 'municipality'];
+    const fields: [string, ((value: string) => Observable<string>)?][] = headerFields.map(field => {
+      if (field === 'municipality') {
+        return [field, val => this.areaService.getName(val, this.translate.currentLang)];
+      }
+      return [field];
+    });
+    return fields.filter(f => {
+      const val = this._namedPlace[f[0]];
+      const hasValue = v => v || v === '0' || v === 0;
+      if ((hasValue(val) && !Array.isArray(val)) || (Array.isArray(val) && val.filter(hasValue).length > 0)) {
+        return true;
+      }
+    }).map(f => {
+      const val = this._namedPlace[f[0]];
+      if ((!f[1])) {
+        return of(val);
+      } else {
+        return f[1](val);
+      }
+    });
+  }
 }

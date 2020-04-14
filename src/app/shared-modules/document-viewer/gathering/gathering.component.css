@@ -6,5 +6,7 @@
 {
   .gathering {
     page-break-inside: avoid;
+    margin-bottom: 20px;
   }
+
 }

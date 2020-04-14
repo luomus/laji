@@ -20,7 +20,7 @@ node {
     stage('Deploy staging') {
       milestone()
       sh 'scp -r dist node@192.168.10.26:/data/dev_laji_fi/'
-      sh 'ssh node@192.168.10.26 "pm2 restart dev"'
+      slackSend(color: 'good', message: "dev.laji.fi - #$BUILD_NUMBER Success")
     }
   }
 }

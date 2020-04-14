@@ -10,34 +10,29 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
-        <li role="presentation"  [ngClass]="{active: active === 'images'}">
-          <a (click)="setActive('images')">
-            {{ "species.images" | translate }}
-          </a>
-        </li>
-        <li role="presentation" [ngClass]="{active: active === 'list'}">
-          <a (click)="setActive('list')">
-            {{ "species.list" | translate }}
-          </a>
-        </li>
-      </ul>
-
-      <laji-species-images [hidden]="active !== 'images'"
-                           *ngIf="activated['images']"
-                           [searchQuery]="searchQuery"
-                           [showSpeciesTotalCount]="true"
-                           [countStartText]="'species.browse.images.count1' | translate"
-                           [countEndText]="'species.browse.images.count2' | translate"
-      ></laji-species-images>
-      <laji-species-list [hidden]="active !== 'list'"
-                         *ngIf="activated['list']"
-                         [visible]="active === 'list'"
-                         [searchQuery]="searchQuery"
-                         [showDownloadAndBrowse]="false"
-                         [countStartText]="'species.browse.list.count1' | translate"
-                         [countEndText]="'species.browse.list.count2' | translate"
-      ></laji-species-list>
+      <lu-tabs [selectedIndex]="activeIndex" (select)="setActive($event)" style="margin-top: 24px; display:block;">
+        <lu-tab [heading]="'species.images' | translate">
+          <ng-container *ngIf="loadedTabs.isLoaded('images')">
+            <laji-species-images [hidden]="activeIndex !== 0"
+                                [searchQuery]="searchQuery"
+                                [showSpeciesTotalCount]="true"
+                                [countStartText]="'species.browse.images.count1' | translate"
+                                [countEndText]="'species.browse.images.count2' | translate"
+            ></laji-species-images>
+          </ng-container>
+        </lu-tab>
+        <lu-tab [heading]="'species.list' | translate">
+          <ng-container *ngIf="loadedTabs.isLoaded('list')">
+            <laji-species-list [hidden]="activeIndex !== 1"
+                              [visible]="activeIndex === 1"
+                              [searchQuery]="searchQuery"
+                              [showDownloadAndBrowse]="false"
+                              [countStartText]="'species.browse.list.count1' | translate"
+                              [countEndText]="'species.browse.list.count2' | translate"
+            ></laji-species-list>
+          </ng-container>
+        </lu-tab>
+      </lu-tabs>
     </div>
   </div>
 </div>

@@ -27,7 +27,7 @@ export abstract class AbstractPermission {
       ))
       .subscribe((data) => {
         this.formPermission = data.permission;
-        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person) || UserService.isAdmin(data.person);
+        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person) || UserService.isIctAdmin(data.person);
         if (!this.isAllowed) {
           this.router.navigate(
             this.localizeRouterService.translateRoute(['/vihko'])

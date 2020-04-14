@@ -1,0 +1,42 @@
+<div class="player-audio" style="display: inline-block; margin-right: 15px;" *ngFor="let audio of listAudio, let i = index">
+    <div class="player-audio-child controls">
+        <div class="buttons">
+          <button (click)="audioPlay(i)" class="play"><i class="glyphicon" [ngClass]="{'glyphicon-play': !isPlaying[i], 'glyphicon-pause': isPlaying[i]}"></i></button>
+          <a class="btn btn-primary btn-sm" (click)="openSpectrumPopup(i)">{{ 'audio.openSpectrum' | translate }}</a>
+        </div>
+    </div>
+</div>
+  
+<audio #audio class="music-player__audio-container" (ended)="onAudioEnded(nowplayingAudioId)" [src]="playingAudio.mp3URL" preload="auto">
+  <source data-src="{{playingAudio.mp3URL}}" type="audio/mpeg">
+</audio>
+
+
+
+<ng-template #modalSpectrum>
+      <div class="modal-header">
+        <button type="button" class="close" (click)="closeModal()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <ul class="pager">
+          <li class="previous">
+            <a role="button" (click)="previousAudio(nowplayingAudioId - 1)" class="play" *ngIf="nowplayingAudioId > 0 && listAudio.length > 1">← {{ 'paginator.previous' | translate }}</a>
+          </li>
+          <li class="next">
+            <a role="button" (click)="nextAudio(nowplayingAudioId + 1)" class="play" *ngIf="(nowplayingAudioId < listAudio.length-1) && listAudio.length > 1">{{ 'paginator.next' | translate }} →</a>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-body spectrum-popup">
+        <img src="{{playingAudio.fullURL}}" />
+        <div id="audioControls">
+          <audio #audioPopUp controls="controls" class="music-player__audio-containerr" style="width: 100%;" (ended)="onAudioEnded(nowplayingAudioId)" [src]="playingAudio.mp3URL" preload="auto">
+            <source data-src="{{playingAudio.mp3URL}}" type="audio/mpeg">
+          </audio>
+        </div>   
+      </div>
+</ng-template>
+
+
+
+
