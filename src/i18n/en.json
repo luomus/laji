@@ -56,7 +56,7 @@
   "annotation.collectionQuality": "Collection quality",
   "annotation.observationDataFrom": "Observation data from",
   "annotation.observationDataEntered": "entered on",
-  "annotation.obsercation.agree": "Agree with current",
+  "annotation.obsercation.agree": "Select current taxon",
   "annotation.addIdentification": "Add an identification:",
   "annotation.comment.processing": "Your comment is being processed and will affect the tags and/or quality grade in few minutes",
   "annotation.effectiveTags": "Tags",
