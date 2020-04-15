@@ -57,7 +57,7 @@
   "annotation.observationDataFrom": "Observation data from (x)",
   "annotation.observationDataEntered": "Tallennettu",
   "annotation.obsercation.agree": "Valitse nykyinen",
-  "annotation.addIdentification": "Määritys:",
+  "annotation.addIdentification": "Taksoni, jota kommentti koskee:",
   "annotation.comment.processing": "Kommenttiasi käsitellään ja se vaikuttaa havaintoon muutaman minuutin kuluessa.",
   "annotation.effectiveTags": "Tagit",
   "annotation.notEffectiveTags": "Ei voimassa olevia tageja",
