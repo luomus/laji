@@ -84,7 +84,7 @@
           (change)="saveTaxon()"
           (typeaheadOnSelect)="select($event)"
           (focus)="onFocus($event)"
-          (blur)="onFocus($event)"
+          (blur)="onBlur($event)"
           >
           <div class="deleteId input-group-addon"  [tooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()">
             <i class="glyphicon glyphicon-remove"></i>
@@ -122,7 +122,7 @@
             [disabled]="annotation.identification.taxon===''"
             [(ngModel)]="annotation.identification.taxonSpecifier"
             (focus)="onFocus($event)"
-            (blur)="onFocus($event)"
+            (blur)="onBlur($event)"
             >
           </div>
           <div class="col-lg-1 col-sm-1 col-xs-1 no-padding">
@@ -145,7 +145,7 @@
                 [required]="(!expert || (personRoleAnnotation!==annotationRole.expert && personRoleAnnotation!==annotationRole.ictAdmin)) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
                 [(ngModel)]="annotation.notes"
                 (focus)="onFocus($event)"
-                (blur)="onFocus($event)"></textarea>
+                (blur)="onBlur($event)"></textarea>
     </div>
   </div>
   <div class="actions">

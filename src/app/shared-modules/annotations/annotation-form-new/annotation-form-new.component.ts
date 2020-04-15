@@ -622,13 +622,18 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
        this.inputName = event.target.name;
        this.isFocusedTaxonComment = event.target;
        this.focus.emitChildEvent(true);
-    } else {
-       this.inputType = event.type;
-       this.inputName = event.target.name;
-       this.isFocusedTaxonComment = null;
-       this.focus.emitChildEvent(false);
     }
     this.cd.detectChanges();
+  }
+
+  onBlur(event) {
+    if (event) {
+      this.inputType = event.type;
+      this.inputName = event.target.name;
+      this.isFocusedTaxonComment = null;
+      this.focus.emitChildEvent(false);
+   }
+   this.cd.detectChanges();
   }
 
   protected makeLabel(value) {
