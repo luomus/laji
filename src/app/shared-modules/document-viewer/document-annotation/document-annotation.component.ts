@@ -29,6 +29,7 @@ import { DocumentViewerChildComunicationService } from '../../../shared-modules/
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 import { CheckFocusService } from '../../../shared-modules/document-viewer/check-focus.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -91,6 +92,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   subscriptParent: Subscription;
   subscriptFocus: Subscription;
   isfocusedCommentTaxon = false;
+  currentLang: string;
 
 
   constructor(
@@ -101,10 +103,12 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private childComunication: DocumentViewerChildComunicationService,
     private taxonTagEffective: TaxonTagEffectiveService,
     private loadingElements: LoadingElementsService,
-    private focus: CheckFocusService
+    private focus: CheckFocusService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
+    this.currentLang = this.translate.currentLang;
     this.metaFetch = this.userService.user$.subscribe((person: Person) => {
       this.personID = person.id;
       if (person.role) {

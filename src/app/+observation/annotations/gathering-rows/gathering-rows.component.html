@@ -16,7 +16,7 @@
       <span *ngIf="gathering.displayDateTime">
             <div class="container-icon-text">
                   <div class="icon"><i [tooltip]="'viewer.field.time' | translate" class="glyphicon glyphicon-time"></i></div>
-                  <div class="text">{{ gathering.displayDateTime }}</div>
+                  <div class="text"> {{ date | localDate: 'L' }} {{ time }}</div>
             </div>
       </span>
 </div>

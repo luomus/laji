@@ -476,7 +476,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       && this.annotation.addedTags.indexOf('MMAN.32') === -1) {
         if (this.annotation.removedTags.indexOf('MMAN.5') !== -1 || this.annotation.removedTags.indexOf('MMAN.8') !== -1
         || this.annotation.removedTags.indexOf('MMAN.9') !== -1 || this.annotation.removedTags.indexOf('MMAN.3') !== -1
-        || this.annotation.addedTags.indexOf('MMAN.32') === -1) {
+        || this.annotation.addedTags.indexOf('MMAN.32') !== -1) {
           this.tmpTags.forEach(tag => {
             if ((tag.id === 'MMAN.5' || tag.id === 'MMAN.8' || tag.id === 'MMAN.9' || tag.id === 'MMAN.3')) {
               this.addToRemoveTags(tag.id);

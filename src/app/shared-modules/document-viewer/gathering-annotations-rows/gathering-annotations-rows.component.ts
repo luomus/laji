@@ -11,9 +11,22 @@ export class GatheringAnnotationsRowsComponent implements OnInit {
   @Input() highlight: string;
   @Input() hideTooltips = false;
 
+  date = '';
+  time = '';
+
   constructor() { }
 
   ngOnInit() {
+    if (this.gathering.displayDateTime) {
+      if (this.gathering.displayDateTime.indexOf(' ') !== -1) {
+        const split_date_time = this.gathering.displayDateTime.split(' ');
+        this.date = split_date_time[0];
+        this.time = split_date_time[1];
+      } else {
+        this.date = this.gathering.displayDateTime;
+        this.time = '';
+      }
+    }
   }
 
 }
