@@ -108,11 +108,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.metaFetch = this.userService.user$.subscribe((person: Person) => {
       this.personID = person.id;
       if (person.role) {
-        if (person.roleAnnotation) {
-          this.personRoleAnnotation = person.roleAnnotation;
-        } else {
-          this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
-        }
+        this.personRoleAnnotation = Annotation.AnnotationRoleEnum.expert;
       } else {
         if (person.roleAnnotation) {
           this.personRoleAnnotation = person.roleAnnotation;
