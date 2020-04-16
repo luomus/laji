@@ -111,12 +111,9 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.currentLang = this.translate.currentLang;
     this.metaFetch = this.userService.user$.subscribe((person: Person) => {
       this.personID = person.id;
-      if (person.role) {
-        if (UserService.isIctAdmin(person)) {
-          this.personRoleAnnotation = Annotation.AnnotationRoleEnum.expert;
-        } else {
-          this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
-        }
+
+      if (UserService.isIctAdmin(person)) {
+        this.personRoleAnnotation = Annotation.AnnotationRoleEnum.expert;
       } else {
         if (person.roleAnnotation) {
           this.personRoleAnnotation = person.roleAnnotation;
@@ -128,8 +125,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.cd.markForCheck();
     });
     // this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
-
-
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;
       this.cd.markForCheck();
