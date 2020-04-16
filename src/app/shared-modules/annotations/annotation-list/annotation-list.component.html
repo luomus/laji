@@ -48,7 +48,7 @@
           </ng-template>
         </div>
       </div>
-      <div class="content-show-hide" *ngIf="showItem[i]; else dots" [@flyInOut]>
+      <div class="content-show-hide" *ngIf="showItem[i]; else dots">
         <div class="tags" *ngIf="annotation.addedTags">
            <div class="row no-padding">
              <div class="col-xs-4" style="font-weight: bold;">{{ 'MAN.addedTags' | label }}:</div>
