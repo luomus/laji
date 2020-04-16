@@ -6,7 +6,7 @@ import { TeamMemberService } from './team-member.service';
 @Component({
   selector: 'laji-team',
   templateUrl: './team.component.html',
-  styleUrls: ['./team.component.css'],
+  styleUrls: ['./team.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TeamComponent implements OnInit {
