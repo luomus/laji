@@ -336,6 +336,7 @@
   "haseka.users.latest.localityMissing": "Location missing",
   "haseka.users.latest.other": "other",
   "haseka.users.unsaved": "Unsaved submissions",
+  "haseka.users.unsaved.doc": "Unsaved submission",
   "haseka.form.readonly": "You don't have permission to edit",
   "haseka.terms.mobileFormDismiss": "Accept and record observations",
   "haseka.mobile.newObservation": "New observation",

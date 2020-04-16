@@ -8,17 +8,6 @@ import { Global } from '../../../../environments/global';
   selector: 'laji-annotation-list',
   templateUrl: './annotation-list.component.html',
   styleUrls: ['./annotation-list.component.scss'],
-  animations: [
-    trigger('flyInOut', [
-      transition('void => *', [
-        style({display: 'none'}),
-        animate(100)
-      ]),
-      transition('* => void', [
-        animate(100, style({display: 'block'}))
-      ])
-    ])
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
