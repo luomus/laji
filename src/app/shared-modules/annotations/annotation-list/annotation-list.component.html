@@ -40,11 +40,11 @@
           </span>
           <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span class="annotation-date">{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
+            <span class="annotation-date">{{ annotation.created | amDateFormat:'L' }}</span>
           </div>
           <ng-template #annotationByPerson>
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span class="annotation-date">{{ annotation.created | date: 'yyyy-MM-dd' }}</span>
+            <span class="annotation-date">{{ annotation.created | amDateFormat:'L' }}</span>
           </ng-template>
         </div>
       </div>
@@ -84,7 +84,7 @@
            <div class="row">
              <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.title.taxon' | translate }}:</div>
              <div class="col-xs-8">
-              <ng-container *ngIf="annotation.identification.linking && annotation.identification.linkings.taxon; else taxonNameSimple">
+              <ng-container *ngIf="annotation.identification.linkings && annotation.identification.linkings.taxon; else taxonNameSimple">
                <laji-taxon-name [taxon]="annotation.identification.linkings.taxon"></laji-taxon-name>
               </ng-container>
               <ng-template #taxonNameSimple>
@@ -113,7 +113,7 @@
             <div class="col-xs-4">
               <b>Comment:</b>
             </div>
-            <div class="col-xs-8">
+            <div class="col-xs-8 long-text">
               <div [ngClass]="{'': (annotation.notes.length <= 250 || open[i]), 'closed': (annotation.notes.length > 250 && !open[i]) }">
                 {{ annotation.notes }}
               </div>

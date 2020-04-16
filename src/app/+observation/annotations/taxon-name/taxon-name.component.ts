@@ -24,6 +24,14 @@ export class TaxonNameComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.unit.linkings) {
+      if (this.unit.linkings.taxon) {
+        this.unit.linkings.taxon.cursiveName = true;
+      }
+      if (this.unit.linkings.originalTaxon) {
+        this.unit.linkings.originalTaxon.cursiveName = true;
+      }
+    }
   }
 
 }

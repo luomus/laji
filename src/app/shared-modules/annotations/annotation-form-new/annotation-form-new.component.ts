@@ -476,7 +476,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       && this.annotation.addedTags.indexOf('MMAN.32') === -1) {
         if (this.annotation.removedTags.indexOf('MMAN.5') !== -1 || this.annotation.removedTags.indexOf('MMAN.8') !== -1
         || this.annotation.removedTags.indexOf('MMAN.9') !== -1 || this.annotation.removedTags.indexOf('MMAN.3') !== -1
-        || this.annotation.addedTags.indexOf('MMAN.32') === -1) {
+        || this.annotation.addedTags.indexOf('MMAN.32') !== -1) {
           this.tmpTags.forEach(tag => {
             if ((tag.id === 'MMAN.5' || tag.id === 'MMAN.8' || tag.id === 'MMAN.9' || tag.id === 'MMAN.3')) {
               this.addToRemoveTags(tag.id);
@@ -622,13 +622,18 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
        this.inputName = event.target.name;
        this.isFocusedTaxonComment = event.target;
        this.focus.emitChildEvent(true);
-    } else {
-       this.inputType = event.type;
-       this.inputName = event.target.name;
-       this.isFocusedTaxonComment = null;
-       this.focus.emitChildEvent(false);
     }
     this.cd.detectChanges();
+  }
+
+  onBlur(event) {
+    if (event) {
+      this.inputType = event.type;
+      this.inputName = event.target.name;
+      this.isFocusedTaxonComment = null;
+      this.focus.emitChildEvent(false);
+   }
+   this.cd.detectChanges();
   }
 
   protected makeLabel(value) {
