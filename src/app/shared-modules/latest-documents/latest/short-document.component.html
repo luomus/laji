@@ -1,63 +1,65 @@
 <div class="link latest-container" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading" ngPreserveWhitespaces>
-    <div class="info">
-        <div class="observation-title">{{ getLocality$() | async }}</div>
-        <div class="published" *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
-            <span>
-                <span class="label label-warning link inline-block">{{ 'result.latestObservationsLabel' | translate }}</span>
-            </span>
-        </div>
-        <div class="observation-last-edit" *ngIf="!changingLocale"> <i class="glyphicon glyphicon-edit"></i> <span *ngIf="document.dateEdited">{{ document.dateEdited | dateCutoffFuture | amTimeAgo }} </span></div>
-        <div class="observation-start" *ngIf="gatheringDates.start"> <i class="glyphicon glyphicon-time"></i> {{ gatheringDates.start | amDateFormat:'DD.MM.YYYY' }} </div>
-        <div class="observation-end" *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</div>
-
-        <span *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</span>
-
-        <div class="nowrap padding-top-bottom-5 inline-block" (click)="showUnitList($event)">
-          <small>
-            <span>{{ unitList.length }} </span>
-            <span *ngIf="unitList.length === 1">{{ 'haseka.users.latest.gathered.singular' | translate }} </span>
-            <span *ngIf="unitList.length !== 1">{{ 'haseka.users.latest.gathered' | translate }} </span>
-          </small>
-
-          <span *ngIf="unitList && unitList.length > 0"
-                class="link"
-                (click)="showUnitList($event)">
-                <i class="glyphicon"
-                   style="font-size:0.8em"
-                   [ngClass]="{ 'glyphicon-triangle-bottom': showList, 'glyphicon-triangle-right': !showList }"></i>
-          </span>
-
-          <br>
-          <small>
-            <ul *ngIf="showList" style="margin-bottom: 2px">
-              <li *ngFor="let taxon of unitList | slice:0:5;">
-                {{ taxon }}
-              </li>
-              <li *ngIf="unitList.length > 5">{{ unitList.length - 5 }} {{ 'haseka.users.latest.other' | translate }}</li>
-            </ul>
-          </small>
-        </div>
-
-
-        <span *ngIf="showFormName" class="label label-default form-name">{{ document.formID | formName }}</span>
+  <div class="info">
+    <div class="observation-title">{{ getLocality$() | async }}</div>
+    <div class="published" *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
+      <span>
+        <span class="label label-warning link inline-block">{{ 'result.latestObservationsLabel' | translate }}</span>
+      </span>
     </div>
-    <div class="observation-tools">
-        <span class="nowrap">
-            <span>
-              <span class="label link label-default button-tools inline-block"
-                    [tooltip]="'result.showViewer' | translate"
-                    [placement]="'bottom'"
-                    (click)="onShowViewer($event)">
-                <i class="glyphicon glyphicon-eye-open"></i>
-              </span>
-            </span>
+    <div class="observation-last-edit" *ngIf="!changingLocale"> <i class="glyphicon glyphicon-edit"></i> <span *ngIf="document.dateEdited">{{ document.dateEdited | dateCutoffFuture | amTimeAgo }} </span></div>
+    <div class="observation-start" *ngIf="gatheringDates.start"> <i class="glyphicon glyphicon-time"></i> {{ gatheringDates.start | amDateFormat:'DD.MM.YYYY' }} </div>
+    <div class="observation-end" *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</div>
+
+    <span *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</span>
+
+    <div class="nowrap padding-top-bottom-5 inline-block" (click)="showUnitList($event)">
+      <small>
+        <span>{{ unitList.length }} </span>
+        <span *ngIf="unitList.length === 1">{{ 'haseka.users.latest.gathered.singular' | translate }} </span>
+        <span *ngIf="unitList.length !== 1">{{ 'haseka.users.latest.gathered' | translate }} </span>
+      </small>
+
+      <span *ngIf="unitList && unitList.length > 0"
+            class="link"
+            (click)="showUnitList($event)">
+            <i class="glyphicon"
+                style="font-size:0.8em"
+                [ngClass]="{ 'glyphicon-triangle-bottom': showList, 'glyphicon-triangle-right': !showList }"></i>
+      </span>
+
+      <br>
+      <small>
+        <ul *ngIf="showList" style="margin-bottom: 2px">
+          <li *ngFor="let taxon of unitList | slice:0:5;">
+            {{ taxon }}
+          </li>
+          <li *ngIf="unitList.length > 5">{{ unitList.length - 5 }} {{ 'haseka.users.latest.other' | translate }}</li>
+        </ul>
+      </small>
+    </div>
+
+
+    <span *ngIf="showFormName" class="label label-default form-name">{{ document.formID | formName }}</span>
+  </div>
+  <div class="observation-tools">
+    <span class="nowrap">
+      <span>
+        <span class="label link label-default button-tools inline-block"
+              [tooltip]="'result.showViewer' | translate"
+              [placement]="'bottom'"
+              (click)="onShowViewer($event)">
+          <i class="glyphicon glyphicon-eye-open"></i>
         </span>
-    </div>
-
-    <div class="delete_tmp" *ngIf="document._hasChanges">
-        <span class="alert-box">{{ 'haseka.form.hasChanges' | translate }}</span>
-        <span class="label label-default button-tools link inline-block"><i class="glyphicon glyphicon-trash" (click)="removeDocument($event)"></i></span>
-    </div>
-
+      </span>
+    </span>
   </div>
 
+  <div class="delete_tmp" *ngIf="document._hasChanges">
+    <span class="alert-box">{{ 'haseka.form.hasChanges' | translate }}</span>
+    <span class="label label-default button-tools link inline-block"><i class="glyphicon glyphicon-trash" (click)="removeDocument($event)"></i></span>
+  </div>
+</div>
+
+<div *ngIf="unsaved" class="unsaved" [tooltip]="'haseka.users.unsaved.doc' | translate" [placement]="'left'">
+  <div>!</div>
+</div>

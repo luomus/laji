@@ -329,6 +329,7 @@
   "haseka.users.latest.localityMissing": "Plats saknas",
   "haseka.users.latest.other": "andra",
   "haseka.users.unsaved": "Osparade observationer",
+  "haseka.users.unsaved.doc": "Osparad observation",
   "haseka.form.readonly": "Du har inte behörighet att redigera",
   "haseka.terms.mobileFormDismiss": "Acceptera och spara observationer",
   "haseka.mobile.newObservation": "Ny observation",
