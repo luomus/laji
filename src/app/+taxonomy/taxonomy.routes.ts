@@ -7,7 +7,7 @@ import { InformalGroupRedirectComponent } from './informal-group-redirect/inform
 import { BrowseSpeciesComponent } from './browse-species/browse-species.component';
 
 export function decideSpeciesTab(url: UrlSegment[]) {
-  if (url.length === 1 &&  (url[0].path === 'list' || url[0].path === 'images')) {
+  if (url.length === 1 && (url[0].path === 'list' || url[0].path === 'images')) {
     return { consumed: url, posParams: {tab: url[0]} };
   }
   return null;
