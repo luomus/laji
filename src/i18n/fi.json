@@ -342,6 +342,7 @@
   "haseka.users.latest.localityMissing": "Paikannimi puuttuu",
   "haseka.users.latest.other": "muuta",
   "haseka.users.unsaved": "Tallentamattomat havaintoeräni",
+  "haseka.users.unsaved.doc": "Tallentamaton havaintoerä",
   "haseka.terms.mobileFormDismiss": "Hyväksy ja kirjaa havaintoja",
   "haseka.mobile.newObservation": "Uusi havainto",
   "haseka.mobile.ownSubmissions": "Aiemmat havainnot",
