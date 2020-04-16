@@ -24,10 +24,10 @@
                 <li *ngIf="occurrence && (occurrence.dateBegin || occurrence.dateEnd)">
                     <b>{{ 'observation.form.date' | translate }}: </b>
                     <span *ngIf="occurrence.dateBegin !== occurrence.dateEnd; else oneDate">
-                        {{ occurrence.dateBegin | localDate: 'L' }} - {{ occurrence.dateEnd | localDate: 'L' }}
+                        {{ occurrence.dateBegin | amDateFormat:'L' }} - {{ occurrence.dateEnd | amDateFormat:'L' }}
                     </span>
                     <ng-template #oneDate>
-                        {{ occurrence.dateBegin | localDate: 'L' }}
+                        {{ occurrence.dateBegin | amDateFormat:'L' }}
                     </ng-template>
                 </li>
                 <li *ngIf="occurrence && (occurrence.municipalityVerbatim || occurrence.countryVerbatim || occurrence.locality)">

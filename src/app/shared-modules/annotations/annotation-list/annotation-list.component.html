@@ -40,11 +40,11 @@
           </span>
           <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span class="annotation-date">{{ annotation.created | localDate: 'L' }}</span>
+            <span class="annotation-date">{{ annotation.created | amDateFormat:'L' }}</span>
           </div>
           <ng-template #annotationByPerson>
             <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span class="annotation-date">{{ annotation.created | localDate: 'L' }}</span>
+            <span class="annotation-date">{{ annotation.created | amDateFormat:'L' }}</span>
           </ng-template>
         </div>
       </div>

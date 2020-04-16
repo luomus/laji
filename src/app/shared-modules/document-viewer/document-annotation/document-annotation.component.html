@@ -68,7 +68,7 @@
                 <div>
                   <div *ngIf="activeGathering">
                     <div *ngFor="let unit of activeGathering?.units">
-                       <ng-container *ngIf="!document.secured && unit.unitId === highlight && unit.annotations[0].occurrenceAtTimeOfAnnotation">
+                       <ng-container *ngIf="!document.secured && unit.unitId === highlight && unit.annotations && unit.annotations[0].occurrenceAtTimeOfAnnotation">
                          <alert type="info">
                            {{ 'viewer.secured.none' | translate }}
                          </alert>
@@ -150,9 +150,9 @@
                 </li>
               </ul>
             </laji-row>
-            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | localDate: 'L'"></laji-row>
-            <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | localDate: 'L'"></laji-row>
-            <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | localDate: 'L'"></laji-row>
+            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'L'"></laji-row>
+            <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'L'"></laji-row>
+            <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'L'"></laji-row>
             <laji-row [title]="'haseka.submissions.unitCount' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
               <a href="view?uri={{document.documentId}}" target="_blank">
                 <span>{{ unitCnt }}

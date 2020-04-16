@@ -69,7 +69,6 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { WarehousePipe } from './pipe/warehouse.pipe';
 import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
 import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
-import { DateLocalePipe } from './pipe/local-date.pipe';
 
 
 @NgModule({
@@ -103,8 +102,7 @@ import { DateLocalePipe } from './pipe/local-date.pipe';
     AfterIfDirective,
     FilterValuePipe,
     WarehousePipe,
-    DateCutoffFuturePipe,
-    DateLocalePipe
+    DateCutoffFuturePipe
   ],
   imports: [
     FormsModule,
@@ -135,8 +133,7 @@ import { DateLocalePipe } from './pipe/local-date.pipe';
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
-    DateLocalePipe
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule
   ]
 })
 export class SharedModule {
