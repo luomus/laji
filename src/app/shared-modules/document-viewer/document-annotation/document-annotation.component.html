@@ -146,7 +146,7 @@
               <ul class="separated-list">
                 <li *ngFor="let user of document.linkings.editors">
                   <span *ngIf="user.fullName; else noName"><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ user.fullName }}</a></span>
-                  <ng-template #noName><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ 'annotation.noName' | translate }}</a></ng-template>
+                  <ng-template #noName><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ user.userId | toQName | label }}</a></ng-template>
                 </li>
               </ul>
             </laji-row>
