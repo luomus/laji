@@ -51,7 +51,7 @@
       <div class="content-show-hide" *ngIf="showItem[i]; else dots" [@flyInOut]>
         <div class="tags" *ngIf="annotation.addedTags">
            <div class="row no-padding">
-             <div class="col-xs-4" style="font-weight: bold;">Added tags:</div>
+             <div class="col-xs-4" style="font-weight: bold;">{{ 'MAN.addedTags' | label }}:</div>
              <div class="col-xs-8">
                <div *ngIf="annotation.addedTags.length > 0">
                 <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags !== undefined && effectiveTags.indexOf(addedTag) !== -1 }">
