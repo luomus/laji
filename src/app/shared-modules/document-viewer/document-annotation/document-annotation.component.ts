@@ -125,7 +125,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.cd.markForCheck();
     });
     // this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
-
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;
       this.cd.markForCheck();
