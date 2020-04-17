@@ -20,10 +20,10 @@
         <div *ngIf="(ingress || description) && contentHasLanguage">
           <laji-taxon-description-source [taxonDescription]="_taxonDescription[0]"></laji-taxon-description-source>
         </div>
-        <div *ngIf="ylesta">
+        <div *ngIf="ylesta" [ngClass]="{ 'margin-top-25': contentHasLanguage, '': !contentHasLanguage }"> 
           <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
         </div>
-        <div *ngIf="ylestaTitle[currentLang]">
+        <div *ngIf="ylesta[0].visible.indexOf(false) !== -1">
           <strong>{{ 'taxonomy.source' | translate }}: </strong>{{ ylestaTitle | multiLang }}
           <span style="margin: 0 7px; display: inline-block" *ngIf="ylesta && (ylestaTitle || ylestaSpeciesCardAuthors )">
             <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
