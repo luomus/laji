@@ -17,11 +17,17 @@
         </div>
         <h4 *ngIf="ingress && contentHasLanguage" [innerHTML]="ingress | multiLang"></h4>
         <span *ngIf="description && contentHasLanguage" [innerHTML]="description | multiLang"></span>
+        <div *ngIf="(ingress || description) && contentHasLanguage">
+          <laji-taxon-description-source [taxonDescription]="_taxonDescription[0]"></laji-taxon-description-source>
+        </div>
         <div *ngIf="ylesta">
           <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
         </div>
-        <div *ngIf="ingress || description">
-          <laji-taxon-description-source [taxonDescription]="_taxonDescription[0]"></laji-taxon-description-source>
+        <div *ngIf="ylestaTitle[currentLang]">
+          <strong>{{ 'taxonomy.source' | translate }}: </strong>{{ ylestaTitle | multiLang }}
+          <span style="margin: 0 7px; display: inline-block" *ngIf="ylesta && (ylestaTitle || ylestaSpeciesCardAuthors )">
+            <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
+          </span>
         </div>
       </div>
     </div>
