@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,17 +16,17 @@ import { InformationStore } from './information.store';
   styleUrls: ['./information.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InformationComponent implements OnDestroy {
-
-  private static currentLang;
+export class InformationComponent implements OnInit, OnDestroy {
 
   information$: Observable<Information>;
+  private langSub: Subscription;
   private paramSub: Subscription;
   private langRoots = {
     'sv': 45,
     'fi': 41,
     'en': 43
   };
+  private id: number;
 
   constructor(private route: ActivatedRoute,
               private translate: TranslateService,
@@ -38,10 +38,6 @@ export class InformationComponent implements OnDestroy {
               private title: Title,
               private store: InformationStore
   ) {
-    if (InformationComponent.currentLang && this.translate.currentLang !== InformationComponent.currentLang) {
-      this.router.navigate(this.localizeRouterService.translateRoute(['/about', this.langRoots[this.translate.currentLang]]));
-    }
-    InformationComponent.currentLang = this.translate.currentLang;
 
     this.information$ = this.store.state$.pipe(
       map(state => state.info),
@@ -52,6 +48,7 @@ export class InformationComponent implements OnDestroy {
 
     this.paramSub = this.route.params.pipe(
       map(params => params['id']),
+      tap(id => this.id = +id),
       switchMap(id => this.getInformation(id))
     )
       .subscribe(information => {
@@ -63,8 +60,24 @@ export class InformationComponent implements OnDestroy {
         });
   }
 
+  ngOnInit() {
+    this.langSub = this.translate.onLangChange.subscribe(() => {
+      if (!Object.values(this.langRoots).includes(this.id)) {
+        this.router.navigate(
+          this.localizeRouterService.translateRoute(['/about', this.langRoots[this.translate.currentLang]]),
+          { replaceUrl: true }
+        );
+      }
+    });
+  }
+
   ngOnDestroy() {
-    this.paramSub.unsubscribe();
+    if (this.paramSub) {
+      this.paramSub.unsubscribe();
+    }
+    if (this.langSub) {
+      this.langSub.unsubscribe();
+    }
   }
 
   private getInformation(id): Observable<Information> {
