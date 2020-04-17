@@ -1111,6 +1111,10 @@ body > .ui-select-bootstrap.open {
   margin-top:20px;
 }
 
+.margin-top-25 {
+  margin-top:25px;
+}
+
 .block {
   display: block;
 }
@@ -1342,4 +1346,28 @@ div.annotation-marker {
 .alert-small {
   padding: 2px 10px;
   display: inline-block;
+}
+
+/**
+  NGX-BOOTSTRAP TYPEAHEAD
+*/
+typeahead-container h5.autosuggest-value {
+  font-size: $fs-2;
+  color: $neutral-7;
+  font-weight: 400;
+}
+
+typeahead-container .active h5.autosuggest-value {
+  color: $primary-1;
+}
+
+typeahead-container .dropdown-menu {
+  background-color: $neutral-1;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.2);
+  border: none;
+}
+
+typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
+  background-color: $primary-5;
+  color: $primary-1;
 }

@@ -40,16 +40,22 @@
       -->
       <div class="report-type-container d-flex flex-col justify-between m-2"> <!-- Monipuolinen -->
         <div>
-          <a [routerLink]="['/vihko']" class="vihko-logo" translate>saveObservations.vihko</a>
+          <a [routerLink]="['/vihko'] | localize" class="vihko-logo" translate>saveObservations.vihko</a>
           <ul>
             <li translate>saveObservations.vihko.1</li>
             <li translate>saveObservations.vihko.2</li>
             <li translate>saveObservations.vihko.3</li>
           </ul>
         </div>
-        <lu-button [anchor]="['/vihko']">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
+        <lu-button [anchor]="['/vihko'] | localize">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
       </div>
     </div>
+  </section>
+
+  <section class="mb-8" *lajiLoggedIn="false">
+    <div role="alert" class="alert alert-warning">
+      {{ 'vihko.home.notLogged' | translate }}
+    </div> 
   </section>
 
   <section class="mb-8"> <!-- Kansalaistiede -->

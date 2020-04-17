@@ -8,102 +8,6 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <strong>{{ 'theme.observation.title' | translate }}</strong>
-    </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/quality'] | localize">
-                {{ 'navigation.quality' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.quality.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/identify'] | localize">
-                {{ 'navigation.identify' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.identify.intro' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <strong>{{ 'theme.place.title' | translate }}</strong>
-    </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="['/map'] | localize">
-                {{ 'navigation.map' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.map.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/ykj'] | localize">
-                {{ 'navigation.ykj' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.ykj.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/emk'] | localize">
-                {{ 'navigation.emk' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.emk.intro' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <strong>{{ 'theme.names.title' | translate }}</strong>
-    </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="[({fi: '/lajiluettelo', sv: '/artlistan', en: '/checklist'} | multiLang)]">
-                {{ 'navigation.checklist' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.checklist.intro' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
       <strong>{{ 'theme.census.title' | translate }}</strong>
     </div>
     <div class="panel-body">
@@ -217,6 +121,134 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
+      <strong>{{ 'theme.observation.title' | translate }}</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>
+              <a [routerLink]="['/theme/quality'] | localize">
+                {{ 'navigation.quality' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.quality.intro' | translate }}
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <a [routerLink]="['/theme/identify'] | localize">
+                {{ 'navigation.identify' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.identify.intro' | translate }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <strong>{{ 'theme.speciesIdentification.main' | translate }}</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>
+              <a [routerLink]="['/theme/pinkka'] | localize">
+                {{ 'navigation.pinkka' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.pinkka.intro' | translate }}
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <a [routerLink]="['/theme/hyonteisopas'] | localize">
+                {{ 'navigation.hyonteisopas' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.hyonteisopas.intro' | translate }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <strong>{{ 'theme.names.title' | translate }}</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>
+              <a [routerLink]="[({fi: '/lajiluettelo', sv: '/artlistan', en: '/checklist'} | multiLang)]">
+                {{ 'navigation.checklist' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.checklist.intro' | translate }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <strong>{{ 'theme.place.title' | translate }}</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>
+              <a [routerLink]="['/map'] | localize">
+                {{ 'navigation.map' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.map.intro' | translate }}
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <a [routerLink]="['/ykj'] | localize">
+                {{ 'navigation.ykj' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.ykj.intro' | translate }}
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <a [routerLink]="['/emk'] | localize">
+                {{ 'navigation.emk' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.emk.intro' | translate }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
       <strong>{{ 'theme.research.main' | translate }}</strong>
     </div>
     <div class="panel-body">
@@ -257,37 +289,7 @@
     </div>
   </div>
 
-  <div class="panel panel-default" *lajiForTypes="['dev']">
-    <div class="panel-heading">
-      <strong>{{ 'theme.speciesIdentification.main' | translate }}</strong>
-    </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/pinkka'] | localize">
-                {{ 'navigation.pinkka' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.pinkka.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/hyonteisopas'] | localize">
-                {{ 'navigation.hyonteisopas' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.hyonteisopas.intro' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+
 
 </div>
 

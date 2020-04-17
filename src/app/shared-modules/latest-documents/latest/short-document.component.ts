@@ -16,7 +16,7 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 @Component({
   selector: 'laji-short-document',
   templateUrl: './short-document.component.html',
-  styleUrls: ['./short-document.component.css']
+  styleUrls: ['./short-document.component.scss']
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() hasChanges: boolean;
@@ -24,6 +24,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() form: any;
   @Input() showFormName = true;
   @Input() complainLocality = true;
+  @Input() unsaved = false;
   @Output() discardTempDocument = new EventEmitter();
   @Output() showViewer = new EventEmitter<Document>();
 

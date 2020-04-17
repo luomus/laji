@@ -64,6 +64,7 @@
       </div>
       <div class="col-md-12 col-sm-12" [ngClass]="{'col-lg-6': unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1,
       'col-lg-9': !unit.linkings || (!unit.linkings.originalTaxon || !unit.linkings.taxon) || annotation.addedTags.indexOf('MMAN.3' | toQName) !== -1}">
+        <div class="input-group">
           <input #taxon
           [ngClass]="{loading: typeaheadLoading}"
           type="text"
@@ -80,11 +81,15 @@
           [typeaheadItemTemplate]="taxonItem"
           autocomplete="off"
           autocorrect="off"
-          (change)="saveTaxon($event)"
+          (change)="saveTaxon()"
           (typeaheadOnSelect)="select($event)"
           (focus)="onFocus($event)"
-          (blur)="onFocus($event)"
+          (blur)="onBlur($event)"
           >
+          <div class="deleteId input-group-addon"  [tooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()">
+            <i class="glyphicon glyphicon-remove"></i>
+          </div>
+        </div>
         <ng-template #taxonItem let-model="item">
           <h5 class="autosuggest-value {{model.groups}} informal-group-image">
             {{ model.value }}
@@ -96,29 +101,11 @@
       </div>
     </div>
     <div class="add-taxonId">
-      <div class="col-lg-3 col-md-4 col-sm-12 no-padding"> Added Taxon Id:</div>
-      <div class="col-lg-8 col-md-7 col-sm-11 no-padding">
-        <span *ngIf="(annotation.identification.taxon !== undefined && annotation.identification.taxon !== ''); else noData">
-        <span *ngIf="((inputType !== 'focus' && inputName === 'opinion') || (inputType === 'focus' && inputName !== 'opinion') || (inputType === 'blur' && inputName !== 'opinion'))">
-        <span *ngIf="annotation.identification.taxonID; else noTaxonID">
+      <div class="col-lg-offset-3 col-md-offset-4 col-lg-8 col-md-7 col-sm-11">
+        <span *ngIf="annotation.identification.taxonID" [hidden]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''">
           <laji-taxon-name [taxon]="taxonomy"></laji-taxon-name>
         </span>
-        <ng-template #noTaxonID>
-          {{ annotation.identification.taxon }}
-        </ng-template>
-        </span>
-        <span *ngIf="(inputType === 'focus' && inputName === 'opinion')">
-        <laji-spinner></laji-spinner>
-        </span>
-        </span>
-        <ng-template #noData>
-        {{ 'annotation.NoTaxonData' | translate }}
-        </ng-template>
-      </div>
-      <div class="col-lg-1 col-md-1 col-sm-1 no-padding">
-        <span class="label label-danger deleteId"  [tooltip]="'annotation.delete' | translate" *ngIf="(annotation.identification.taxon !== undefined && annotation.identification.taxon !== '')">
-          <i class="glyphicon glyphicon-remove" (click)="cleanTaxon()"></i>
-          </span>
+        &nbsp;
       </div>
     </div>
     <div *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
@@ -135,11 +122,11 @@
             [disabled]="annotation.identification.taxon===''"
             [(ngModel)]="annotation.identification.taxonSpecifier"
             (focus)="onFocus($event)"
-            (blur)="onFocus($event)"
+            (blur)="onBlur($event)"
             >
           </div>
           <div class="col-lg-1 col-sm-1 col-xs-1 no-padding">
-            <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info> 
+            <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info>
           </div>
         </div>
       </div>
@@ -158,7 +145,7 @@
                 [required]="(!expert || (personRoleAnnotation!==annotationRole.expert && personRoleAnnotation!==annotationRole.ictAdmin)) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
                 [(ngModel)]="annotation.notes"
                 (focus)="onFocus($event)"
-                (blur)="onFocus($event)"></textarea>
+                (blur)="onBlur($event)"></textarea>
     </div>
   </div>
   <div class="actions">

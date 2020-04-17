@@ -1,4 +1,5 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 /* tslint:disable:component-selector */
 @Component({
@@ -6,6 +7,16 @@ import { Component} from '@angular/core';
   templateUrl: './vihko-home.component.html',
   styleUrls: ['./vihko-home.component.scss']
 })
-export class VihkoHomeComponent {
+export class VihkoHomeComponent implements OnInit {
+
+  currentLang: string;
+
+  constructor(
+    public translate: TranslateService
+  ) { }
+
+  ngOnInit() {
+    this.currentLang = this.translate.currentLang;
+  }
 
 }

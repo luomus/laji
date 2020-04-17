@@ -8,8 +8,8 @@
             </div>
              <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>Esc</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.closePopup' | translate }}</div></div>
              <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>i</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.openImage' | translate }}</div></div>
-             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>ctrl</code> + <code>←</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.previousImage' | translate }}</div></div>
-             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>ctrl</code> + <code>→</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.nextImage' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>←</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.previousImage' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>→</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.nextImage' | translate }}</div></div>
              <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>c</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.focusComment' | translate }}</div></div>
              <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>t</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.focusTaxon' | translate }}</div></div>
              <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>1</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.addConvincing' | translate }}</div></div>
@@ -66,7 +66,42 @@
           <div class="col-sm-4 column-modal">
             <div class="title">{{ 'annotation.data.info' | translate }}</div>
                 <div>
-                  <alert [type]="document.secured ?  'warning' : 'info'">
+                  <div *ngIf="activeGathering">
+                    <div *ngFor="let unit of activeGathering?.units">
+                       <ng-container *ngIf="!document.secured && unit.unitId === highlight && unit.annotations && unit.annotations[0].occurrenceAtTimeOfAnnotation">
+                         <alert type="info">
+                           {{ 'viewer.secured.none' | translate }}
+                         </alert>
+                       </ng-container>
+                    </div>
+                  </div>
+                  <alert *ngIf="document.secured" type="warning">
+                    <span *ngIf="document.public">
+                        <span *ngIf="document.secureLevel !== 'NONE' || (document.secureReasons && document.secureReasons.length > 0)">
+                          {{ 'viewer.secured.secured' | translate }}
+                        </span>
+                        <span *ngIf="document.partial">
+                          {{ 'viewer.secured.partial' | translate }}
+                        </span>
+                      </span>
+                      <span *ngIf="!document.public">
+                        {{ 'viewer.secured.own1' | translate }}
+                        (<a [routerLink]="['/view'] | localize" [queryParams]="{
+                          uri: document.documentId,
+                          highlight: highlight
+                         }" target="_blank">{{ 'viewer.secured.own2' | translate }}</a>).
+                      </span>
+                      <div *ngIf="document.secured">
+                        <laji-secure-info
+                          [secureLevel]="document.secureLevel"
+                          [secureReasons]="document.secureReasons"
+                        ></laji-secure-info>
+                        <ng-container *ngIf="document.secureReasons && document.secureReasons.indexOf('DEFAULT_TAXON_CONSERVATION') > -1">
+                          <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
+                        </ng-container>
+                      </div>
+                  </alert>
+                  <!--<alert [type]="document.secured ?  'warning' : 'info'">
                     <span *ngIf="!document.secured; else isSecured">
                       {{ 'viewer.secured.none' | translate }}
                     </span>
@@ -96,7 +131,7 @@
                         <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
                       </ng-container>
                     </div>
-                  </alert>
+                  </alert>-->
                 </div>
             <h5>{{ 'annotation.collectionEditor' | translate }}</h5>    
             <laji-issues [data]="document"></laji-issues>
@@ -111,18 +146,20 @@
               <ul class="separated-list">
                 <li *ngFor="let user of document.linkings.editors">
                   <span *ngIf="user.fullName; else noName"><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ user.fullName }}</a></span>
-                  <ng-template #noName><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ 'annotation.noName' | translate }}</a></ng-template>
+                  <ng-template #noName><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ user.userId | toQName | label }}</a></ng-template>
                 </li>
               </ul>
             </laji-row>
-            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'YYYY-MM-DD'"></laji-row>
-            <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'YYYY-MM-DD'"></laji-row>
-            <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'YYYY-MM-DD'"></laji-row>
+            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'L'"></laji-row>
+            <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'L'"></laji-row>
+            <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'L'"></laji-row>
             <laji-row [title]="'haseka.submissions.unitCount' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-                  <span>{{ unitCnt }}
-                    <span *ngIf="unitCnt > 1"> {{ 'annotation.observations.count' | translate }}</span>
-                    <span *ngIf="unitCnt === 1"> {{ 'annotation.observation.count' | translate }}</span>
-                  </span>
+              <a href="view?uri={{document.documentId}}" target="_blank">
+                <span>{{ unitCnt }}
+                  <span *ngIf="unitCnt > 1"> {{ 'annotation.observations.count' | translate }}</span>
+                  <span *ngIf="unitCnt === 1"> {{ 'annotation.observation.count' | translate }}</span>
+                </span>
+              </a>  
             </laji-row>
             <ng-container *ngIf="activeGathering">
               <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"
