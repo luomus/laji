@@ -277,7 +277,7 @@
   "haseka.form.unsavedNever": "Ändringarna har ännu inte sparats.",
   "haseka.forms.title": "Formulär",
   "haseka.forms.comingSoon": "Kommer snart",
-  "haseka.home.title": null,
+  "haseka.home.title": "Min Skrivbok",
   "haseka.instructions": "Bruksanvisningar",
   "haseka.intro": "<p>Du kan spara dina artobservationer till Skrivboken och delta i uppföljande forskningar eller medborgarvetenskapsprojekter. I tjänsten kommer att bli smidiga former och du kan välja det sättet att spara observationer som är lämplig för dig. Observationerna kommer att nytta hobby, forskning och myndigheter.</p>",
   "haseka.intro2": "To be translated",
@@ -357,6 +357,7 @@
   "vihko.home.form.pre": "Förfyllda formulär",
   "vihko.home.form.pre.desc": "Dina egna förfyllda formulär.",
   "vihko.home.form.pre.1": "Manual",
+  "vihko.home.notLogged": "Logga in för att delta i forskningsprojekt",
 
   "herpetology.amphibians": "Groddjur",
   "herpetology.background": "Bakgrunds info",
