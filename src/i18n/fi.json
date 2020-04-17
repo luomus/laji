@@ -871,7 +871,7 @@
   "observation.count": "Havaintojen määrä",
   "observation.download.description.left": "merkkiä jäljellä",
   "observation.download.error": "Pyynnön lähetys epäonnistui!",
-  "observation.download.limitExceededException": "Pyynnön epäonnistui! Voit tehdä vain 10 viittauskelpoista tiedoston per päivä",
+  "observation.download.limitExceededException": "Pyynnön lähetys epäonnistui! Voit tehdä maksimissaan kymmenen tiedostolatausta vuorokauden aikana!",
   "observation.download.label": "Vapaavalintainen kuvaus aineistopyynnölle",
   "observation.download.loadPrivate": "Tee aineistopyyntö",
   "observation.download.loadPublic": "Lataa aineisto",

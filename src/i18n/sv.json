@@ -816,7 +816,7 @@
   "observation.count": "Antal av observationer",
   "observation.download.description.left": "tecken kvar",
   "observation.download.error": "Begäran misslyckades!",
-  "observation.download.limitExceededException": "Begäran misslyckades! Du kan bara skapa 10 referensfiler per dag",
+  "observation.download.limitExceededException": "Begäran misslyckades! Du kan bara skapa 10 filhämtning per dag!",
   "observation.download.label": "Valfri beskrivning för en begäran om data",
   "observation.download.loadPrivate": "Begär data",
   "observation.download.loadPublic": "Hämta data",

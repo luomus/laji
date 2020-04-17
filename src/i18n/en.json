@@ -730,7 +730,7 @@
   "observation.count": "Number of observations",
   "observation.download.description.left": "characters left",
   "observation.download.error": "Could not make the request!",
-  "observation.download.limitExceededException": "Request failed! You can only make 10 referential files per day",
+  "observation.download.limitExceededException": "Request failed! You can only make ten request per day!",
   "observation.download.label": "Optional description for data request",
   "observation.download.loadPrivate": "Request data",
   "observation.download.loadPublic": "Download data",
