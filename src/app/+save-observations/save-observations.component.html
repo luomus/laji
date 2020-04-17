@@ -52,6 +52,12 @@
     </div>
   </section>
 
+  <section class="mb-8" *lajiLoggedIn="false">
+    <div role="alert" class="alert alert-warning">
+      {{ 'vihko.home.notLogged' | translate }}
+    </div> 
+  </section>
+
   <section class="mb-8"> <!-- Kansalaistiede -->
     <h2 translate>saveObservations.citizenScience</h2>
     <p translate>saveObservations.citizenScience.desc</p>
