@@ -17,7 +17,7 @@
         <laji-taxon-name [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
         <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
       </strong>
-      <span class="rank" >{{ value.taxonRank | label }}</span>
+      <span class="rank">{{ value.taxonRank | label }}</span>
     </ng-template>
   </laji-tree>
 </div>

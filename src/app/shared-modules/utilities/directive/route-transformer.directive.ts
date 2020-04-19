@@ -23,8 +23,13 @@ export class RouteTransformerDirective {
         target = href;
       } else if (href.startsWith(environment.base)) {
         target = href.replace(environment.base, '');
-      } else if (RouteTransformerDirective.lajiTypes.includes(environment.type) && href.startsWith('https://laji.fi')) {
-        target = href.replace('https://laji.fi', '');
+      } else if (RouteTransformerDirective.lajiTypes.includes(environment.type)) {
+        const normalizedHref = href
+          .replace('http://', 'https://')
+          .replace('www.laji.fi', 'laji.fi');
+        if (normalizedHref.startsWith('https://laji.fi')) {
+          target = href.replace('https://laji.fi', '');
+        }
       }
 
       if (target) {
