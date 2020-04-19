@@ -17,6 +17,7 @@ export const Global = {
     lineTransect: 'MHL.1',
     lineTransectEiVakio: 'MHL.27',
     lineTransectKartoitus: 'MHL.28',
+    fungi: 'JX.652',
     waterbirdPairForm: 'MHL.65',
     waterbirdJuvenileForm: 'MHL.66',
     whichSpecies: 'MHL.9',
@@ -90,6 +91,7 @@ export const Global = {
     'MHL.50': '/lepakot',
     'MHL.57': '/valio',
     'MHL.59': '/syke-perhoset',
+    'JX.652': '/sieniatlas',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {
