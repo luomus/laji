@@ -1376,6 +1376,7 @@
   "taxonomy.invasive.invasiveLink": "Tarkastele vieraslajiportaalissa",
   "taxonomy.occurrence.byArea": "Esiintyminen eliömaakunnittain asiantuntijan määrittelemänä",
   "taxonomy.ymparisto": "Elinympäristöt on pääasiassa määritetty Suomen lajien uhanalaisuusarvioinnin yhteydessä vuonna 2019 ja noudattavat kansallista elinympäristöluokitusta. Lue lisää:<a href=\"https://punainenkirja.laji.fi/about/r-49\">Punaisen kirjan verkkopalvelu – Elinympäristöluokitus</a>",
+  "taxonomy.chooseStats": "Valitse tilastotyyppi",
   "technical": "tekninen",
   "template.chooseType": "Talteen",
   "template.description": "Kuvaus",
