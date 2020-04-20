@@ -1612,5 +1612,7 @@
   "saveObservations.birdMonitoring": "Linnustonseuranta",
   "saveObservations.birdMonitoring.desc": "plää plää",
   "saveObservations.researchProjects": "Tutkimusprojektit ja viranomaistyökalut",
-  "saveObservations.researchProjects.desc": "Tutkimushankkeisiin osallistuminen vaatii osaamista tutkimuksen kohteesta. Osa hankkeista on suunnattu vain rajatulle ryhmälle."
+  "saveObservations.researchProjects.desc": "Tutkimushankkeisiin osallistuminen vaatii osaamista tutkimuksen kohteesta. Osa hankkeista on suunnattu vain rajatulle ryhmälle.",
+  "navigation.birdPointCount": "Pistelaskenta",
+  "theme.birdPointCount.intro": "Pesivien maalintujen pistelaskenta"
 }

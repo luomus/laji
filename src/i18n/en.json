@@ -1458,6 +1458,7 @@
   "saveObservations.birdMonitoring": "Bird monitoring",
   "saveObservations.birdMonitoring.desc": "",
   "saveObservations.researchProjects": "Research projects and tools for public authorities",
-  "saveObservations.researchProjects.desc": "Participating to research projects needs more experience than the citizen science projects. Some of the projects are only accessible for a smaller group of users."
-
+  "saveObservations.researchProjects.desc": "Participating to research projects needs more experience than the citizen science projects. Some of the projects are only accessible for a smaller group of users.",
+  "navigation.birdPointCount": "Point count",
+  "theme.birdPointCount.intro": "Point counts of breeding terrestrial birds"
 }
