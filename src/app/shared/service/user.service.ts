@@ -205,16 +205,13 @@ export class UserService {
 
   setUserSetting(key: keyof IUserSettings, value: any): void {
     const personID = _state.user && _state.user.id || '';
-    if (!personID) {
-      return;
-    }
     const settings = {..._state.settings, [key]: value};
     this.updateState({..._state, settings});
     this.storage.store(this.personsCacheKey(personID), settings);
   }
 
   private personsCacheKey(personID): string {
-    return `users-${personID }-settings`;
+    return `users-${ personID || 'global' }-settings`;
   }
 
   /**
