@@ -83,6 +83,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     this.localSt.observe('onlycount')
     .subscribe((value) => {
       this.onlyCount = value;
+      this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
       this.updateData();
       this.cd.markForCheck();
     });
@@ -220,7 +221,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       10000,
       1,
       undefined,
-      this.onlyCount === undefined ? true : this.onlyCount ? true : false
+      this.onlyCount === null ? true : this.onlyCount ? true : false
     ).pipe(
       map(res => res.results),
       switchMap(res => this.setData(res))
@@ -242,7 +243,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       const month = parseInt(r.aggregateBy['gathering.conversions.month'], 10);
       const day = parseInt(r.aggregateBy['gathering.conversions.day'], 10);
       const lifeStage = r.aggregateBy['unit.lifeStage'];
-      const count = this.onlyCount === undefined ? r.count : this.onlyCount ? r.count : r.individualCountSum;
+      const count = this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum;
 
       this.addDataToSeriesGiorgio(lifeStage, count, month, labelObservables);
 

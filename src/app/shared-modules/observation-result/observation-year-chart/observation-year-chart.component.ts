@@ -66,6 +66,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.localSt.observe('onlycount')
             .subscribe((value) => {
               this.onlyCount = value;
+              this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
               this.updateData();
               this.cd.markForCheck();
             });
@@ -130,7 +131,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       10000,
       1,
       undefined,
-      this.onlyCount === undefined ? true : this.onlyCount ? true : false
+      this.onlyCount === null ? true : this.onlyCount ? true : false
     ).pipe(
       map(res => res.results)
     ).subscribe(res => {
@@ -146,7 +147,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       let prevYear: number;
       res.map(r => {
         const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
-        const count = this.onlyCount === undefined ? r.count : this.onlyCount ? r.count : r.individualCountSum;
+        const count = this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum;
 
         if (prevYear) {
           for (let i = prevYear + 1; i < year; i++) {

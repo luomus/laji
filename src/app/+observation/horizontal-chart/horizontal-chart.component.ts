@@ -85,6 +85,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     this.localSt.observe('onlycount')
             .subscribe((value) => {
               this.onlyCount = value;
+              this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
               this.loading = true;
               this.updateClasses();
               this.cd.markForCheck();
@@ -120,11 +121,11 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
       this.dataClasses = this.warehouseService.warehouseQueryAggregateGet(
         this.query,
         ['unit.linkings.taxon.' + this.classificationValue ],
-        [this.onlyCount === undefined ? 'count DESC' : this.onlyCount ? 'count DESC' : 'individualCountSum DESC'],
+        [this.onlyCount === null ? 'count DESC' : this.onlyCount ? 'count DESC' : 'individualCountSum DESC'],
         30,
         undefined,
         undefined,
-        this.onlyCount === undefined ? true : this.onlyCount ? true : false
+        this.onlyCount === null ? true : this.onlyCount ? true : false
       ).pipe(
         map(res => res.results),
         switchMap(res => {
@@ -140,7 +141,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         }),
         map(res => {
           return res.map(r => {
-            this.subDataBarChart.push(this.onlyCount === undefined ? r.count : this.onlyCount ? r.count : r.individualCountSum);
+            this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
             this.subBackgroundColors.push('#3498db');
             this.subLabelBarChart.push(r.label.vernacularName ? r.label.vernacularName : r.label.scientificName);
           });
