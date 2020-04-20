@@ -15,6 +15,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartsModule } from 'ng2-charts';
 import { ChartsModuleBarVerticalGroup } from '../bar-chart/ng2-charts.module';
 import { ObservationTableSettingsComponent } from './observation-table/observation-table-settings.component';
+import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { ObservationTableSettingsComponent } from './observation-table/observati
     SharedModule,
     DatatableModule,
     ChartsModule,
-    ChartsModuleBarVerticalGroup
+    ChartsModuleBarVerticalGroup,
+    LajiUiModule
   ],
   declarations: [
     ObservationTableComponent,

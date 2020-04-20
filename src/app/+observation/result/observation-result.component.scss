@@ -1,4 +1,6 @@
 @import "../../../styles/variables";
+@import 'vars';
+@import '../../../styles/styles.scss';
 
 .results, .whole-data-list {
   padding-top: 20px;
@@ -51,4 +53,24 @@
 
 .finnish-selector-buttons > *:first-child {
   margin-right: 10px;
+}
+
+:host ::ng-deep lu-checkbox {
+  margin-left: 20px;
+  @include media-query-small-phone {
+    display: block;
+    margin-left: 0;
+  }
+}
+
+:host ::ng-deep lu-checkbox label.checked .info {
+  background-color: $blue_graph;
+  color: white;
+}
+
+.stats-buttons {
+  display: inline;
+  @include  media-query-tablet {
+    display: block;
+  }
 }

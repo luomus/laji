@@ -1,3 +1,6 @@
+@import 'vars';
+@import '../../../../styles/styles.scss';
+
 :host ::ng-deep .year-chart .ngx-charts .bar {
   cursor: initial !important;
 }
@@ -14,4 +17,5 @@
 :host ::ng-deep laji-bar-chart {
   height: 450px;
 }
+
 

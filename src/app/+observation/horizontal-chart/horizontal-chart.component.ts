@@ -11,6 +11,7 @@ import { Chart, ChartDataSets } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import {  HorizontalchartDataService } from './horizontal-chart-data.service';
+import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-horizontal-chart',
@@ -52,6 +53,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   ];
 
   classificationValue = 'classId';
+  @LocalStorage('onlycount') onlyCount;
 
   public barChartData: ChartDataSets[] = [
     { data: [], label: this.translate.instant('all') },
@@ -70,14 +72,23 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
               private cd: ChangeDetectorRef,
               private toQname: ToQNamePipe,
               private translate: TranslateService,
-              private horizontalDataService: HorizontalchartDataService
+              private horizontalDataService: HorizontalchartDataService,
+              private localSt: LocalStorageService
   ) {
   }
 
   ngOnInit() {
+    console.log ('ciao');
     Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
       return coordinates;
     };
+    this.localSt.observe('onlycount')
+            .subscribe((value) => {
+              this.onlyCount = value;
+              this.loading = true;
+              this.updateClasses();
+              this.cd.markForCheck();
+            });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -109,8 +120,11 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
       this.dataClasses = this.warehouseService.warehouseQueryAggregateGet(
         this.query,
         ['unit.linkings.taxon.' + this.classificationValue ],
+        [this.onlyCount === undefined ? 'count DESC' : this.onlyCount ? 'count DESC' : 'individualCountSum DESC'],
+        30,
         undefined,
-        30
+        undefined,
+        this.onlyCount === undefined ? true : this.onlyCount ? true : false
       ).pipe(
         map(res => res.results),
         switchMap(res => {
@@ -126,7 +140,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         }),
         map(res => {
           return res.map(r => {
-            this.subDataBarChart.push(r.count);
+            this.subDataBarChart.push(this.onlyCount === undefined ? r.count : this.onlyCount ? r.count : r.individualCountSum);
             this.subBackgroundColors.push('#3498db');
             this.subLabelBarChart.push(r.label.vernacularName ? r.label.vernacularName : r.label.scientificName);
           });
@@ -232,6 +246,11 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
       this.componentHeight = 500;
       break;
     }
+  }
+
+  toggleOnlyCount() {
+    this.onlyCount = !this.onlyCount;
+    this.changeClassification(event);
   }
 
 

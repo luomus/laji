@@ -119,6 +119,17 @@
     </div>
   </lu-tab>
   <lu-tab *ngIf="visible.statistics" [heading]="'search.result.stats' | translate">
+    <div class="lu">
+      <strong _ngcontent-laji-app-c27="" class="panel-title">{{ 'taxonomy.chooseStats' | translate }}</strong>
+      <div class="stats-buttons">
+        <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===true">
+          <div class="pill" class="pill info">{{ 'taxonomy.observationCount' | translate }}</div>
+        </lu-checkbox>
+        <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===false">
+          <div class="pill" class="pill info">{{ 'observation.form.count' | translate }}</div>
+        </lu-checkbox>
+      </div>
+    </div>
     <ng-container *ngIf="loadedTabs.isLoaded('statistics')">
       <div class="row">
         <div class="col-xs-12">

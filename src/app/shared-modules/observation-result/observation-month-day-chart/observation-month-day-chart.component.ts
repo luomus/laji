@@ -22,6 +22,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { Chart } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-chart.component';
+import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 
 @Component({
@@ -48,6 +49,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   public daybarChartData: any[][];
   public barChartOptions: any;
   private barChartPlugins: any;
+  @LocalStorage('onlycount') onlyCount;
 
 
   monthFormatting: (number) => string = this.getMonthLabel.bind(this);
@@ -70,13 +72,20 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     private triplestoreLabelService: TriplestoreLabelService,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
-    public elm: ElementRef<HTMLCanvasElement>
+    public elm: ElementRef<HTMLCanvasElement>,
+    private localSt: LocalStorageService
   ) { }
 
   ngOnInit() {
     Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
       return coordinates;
     };
+    this.localSt.observe('onlycount')
+    .subscribe((value) => {
+      this.onlyCount = value;
+      this.updateData();
+      this.cd.markForCheck();
+    });
   }
 
   ngOnChanges() {
@@ -211,7 +220,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       10000,
       1,
       undefined,
-      true
+      this.onlyCount === undefined ? true : this.onlyCount ? true : false
     ).pipe(
       map(res => res.results),
       switchMap(res => this.setData(res))
@@ -233,7 +242,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       const month = parseInt(r.aggregateBy['gathering.conversions.month'], 10);
       const day = parseInt(r.aggregateBy['gathering.conversions.day'], 10);
       const lifeStage = r.aggregateBy['unit.lifeStage'];
-      const count = r.count;
+      const count = this.onlyCount === undefined ? r.count : this.onlyCount ? r.count : r.individualCountSum;
 
       this.addDataToSeriesGiorgio(lifeStage, count, month, labelObservables);
 
@@ -362,6 +371,11 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       return max[0];
     }
 
+  }
+
+  toggleOnlyCount() {
+    this.onlyCount = !this.onlyCount;
+    this.updateData();
   }
 
 }

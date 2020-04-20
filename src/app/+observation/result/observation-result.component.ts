@@ -11,6 +11,7 @@ import { SearchQueryService } from '../search-query.service';
 import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 import { BrowserService } from '../../shared/service/browser.service';
 import { Subscription } from 'rxjs';
+import {LocalStorageService} from 'ngx-webstorage';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations'];
 @Component({
@@ -82,13 +83,15 @@ export class ObservationResultComponent implements OnInit {
   metaFetch: Subscription;
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
+  onlyCount = this.storage.retrieve('onlycount') === null ? true : this.storage.retrieve('onlycount');
 
   constructor(
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private searchQueryService: SearchQueryService,
     private browserService: BrowserService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private storage: LocalStorageService
   ) {}
 
   @Input()
@@ -151,6 +154,11 @@ export class ObservationResultComponent implements OnInit {
 
   openDownloadModal() {
     this.downloadModal.openModal();
+  }
+
+  toggleOnlyCount() {
+    this.onlyCount = !this.onlyCount;
+    this.storage.store('onlycount', this.onlyCount);
   }
 
 }
