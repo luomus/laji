@@ -1,7 +1,7 @@
 <div class="observation-chart-wrapper">
-    <div class="observation-chart" style="min-height: 100px">
+    <div class="lu observation-chart" style="min-height: 100px">
       <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
-      <div style="position: relative;">
+      <div style="position: relative;" *ngIf="!loading">
         <select [(ngModel)]="classificationValue" (ngModelChange)="changeClassification($event)">
           <option *ngFor="let option of classification" [value]="option.data" [selected]="option.data === 'classificationValue'" >{{ option.label }}</option>
         </select>
