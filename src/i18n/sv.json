@@ -1527,5 +1527,7 @@
   "saveObservations.birdMonitoring": "Fågelövervakning",
   "saveObservations.birdMonitoring.desc": "",
   "saveObservations.researchProjects": "Forskningsprojekt och verktyg för myndigheter",
-  "saveObservations.researchProjects.desc": "Att delta i forskningsprojekt behöver mer erfarenhet än medborgarvetenskapliga projekt. Vissa av projekten är endast tillgängliga för en mindre grupp användare."
+  "saveObservations.researchProjects.desc": "Att delta i forskningsprojekt behöver mer erfarenhet än medborgarvetenskapliga projekt. Vissa av projekten är endast tillgängliga för en mindre grupp användare.",
+  "navigation.birdPointCount": "Punkttaxering",
+  "theme.birdPointCount.intro": "Punkttaxeringen görs längs med en fritt utvald rutt, som inventeras en gång i början av sommaren. Rutten består av 20 punkter och i varje punkt observeras fåglar under exakt 5 minuter."
 }

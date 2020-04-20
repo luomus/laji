@@ -13,7 +13,7 @@ export const environment = {
   forceLogin: false,
   disableAnalytics: true,
   systemID: 'KE.542',
-  formWhitelist: ['JX.519', 'JX.5190', 'MHL.9', 'MHL.25', 'JX.652', 'MHL.1',  'MHL.3', 'MHL.23', 'MHL.33', 'MHL.6', 'MHL.35', 'MHL.41', 'MHL.43', 'MHL.45', 'MHL.51',  'MHL.53', 'MHL.50', 'MHL.57', 'MHL.59', 'MHL.65'],
+  formWhitelist: ['JX.519', 'JX.5190', 'MHL.9', 'MHL.25', 'JX.652', 'MHL.1',  'MHL.3', 'MHL.23', 'MHL.33', 'MHL.6', 'MHL.35', 'MHL.41', 'MHL.43', 'MHL.45', 'MHL.51',  'MHL.53', 'MHL.50', 'MHL.57', 'MHL.59', 'MHL.65', 'MHL.75'],
   massForms: ['JX.519', 'JX.652', 'MHL.41', 'MHL.33A'],
   defaultForm: 'JX.519',
   nafiForm: 'MHL.6',
@@ -31,10 +31,11 @@ export const environment = {
   namedPlaceForm: 'MHL.36',
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
+  birdPointCountForm: 'MHL.75',
   saveObservations: {
-    citizenScienceForms: ['MHL.3', 'JX.652', 'MHL.53'],
-    birdMonitoringForms: ['MHL.65', 'MHL.33', 'MHL.6'],
-    researchProjects: ['MHL.1', 'MHL.50', 'MHL.57']
+    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
+    birdMonitoringForms: ['MHL.1', 'MHL.65', 'MHL.3', 'MHL.75'],
+    researchProjects: ['MHL.33', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
   },
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',

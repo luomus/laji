@@ -36,6 +36,7 @@ export class FormService {
     [environment.lolifeForm]: '/theme/lolife/form',
     [environment.batForm]: '/theme/lepakot/form',
     [environment.valioForm]: '/theme/valio/form',
+    [environment.birdPointCountForm]: '/theme/valio/pistelaskenta',
     default: '/vihko'
   };
 
