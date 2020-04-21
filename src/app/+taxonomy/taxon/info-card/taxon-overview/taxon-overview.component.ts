@@ -53,7 +53,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
       this.groupHasTranslation = this.checklang.checkValue(this._taxonDescription);
       this._taxonDescription.forEach((item, idx) => {
         (item.groups || []).forEach(gruppo => {
-          if (gruppo.group === 'MX.SDVG1') {
+          if (gruppo.group === 'MX.SDVG1' && this.description === undefined && this.ingress === undefined) {
             (gruppo.variables || []).forEach(variable => {
               if (variable.variable === 'MX.descriptionText') {
                 this.description = variable.content;
@@ -62,7 +62,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
               }
             });
           }
-          if (gruppo.group === 'MX.SDVG8') {
+          if (gruppo.group === 'MX.SDVG8' && this.ylesta[0].text === undefined && this.ylesta[0].visible === undefined) {
             this.ylestaTitle = item.title;
             this.ylestaSpeciesCardAuthors = item.speciesCardAuthors ? item.speciesCardAuthors : null;
             this.ylesta[0].text = gruppo.variables;
