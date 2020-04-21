@@ -27,6 +27,7 @@ import { ObservationTableColumn } from '../model/observation-table-column';
 import { DatatableUtil } from '../../datatable/service/datatable-util.service';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
 import { UserService } from '../../../shared/service/user.service';
+import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 interface IInternalObservationTableColumn extends ObservationTableColumn {
   _paths: string[];
@@ -44,6 +45,7 @@ export class ObservationResultService {
   private aggregateData: Observable<PagedResult<any>>;
   private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCount'];
   private coordinatePipe = new CoordinatePipe();
+  @LocalStorage('onlycount') onlyCount;
 
   private static trueFieldPath(field: string) {
     const factPos = field.indexOf('.facts.');
@@ -57,8 +59,10 @@ export class ObservationResultService {
     private warehouseApi: WarehouseApi,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private datatableUtil: DatatableUtil,
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+    private localSt: LocalStorageService
+  ) {
+  }
 
   getAggregate(
     query: WarehouseQueryInterface,
@@ -76,6 +80,14 @@ export class ObservationResultService {
       this.aggregateData = undefined;
     }
 
+    this.localSt.observe('onlycount')
+    .subscribe((value) => {
+      this.onlyCount = value;
+      this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
+      this.aggregateKey = key;
+      this.aggregateData = undefined;
+    });
+
     if (!this.aggregateData) {
       const method = useStatistics
         ? this.warehouseApi.warehouseQueryStatisticsGet
@@ -88,7 +100,7 @@ export class ObservationResultService {
         pageSize,
         page,
         false,
-        false
+        this.onlyCount === null ? true : this.onlyCount ? true : false
       ).pipe(
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
         map(data => Util.clone(data)),
@@ -193,7 +205,7 @@ export class ObservationResultService {
   private convertAggregateResult(data) {
     data.results = data.results.map(result => {
       const aggregate = {
-        count: result.count,
+        count: this.onlyCount === null ? result.count : this.onlyCount ? result.count : result.individualCountSum,
         individualCountSum: result.individualCountSum,
         individualCountMax: result.individualCountMax,
         oldestRecord: result.oldestRecord,
