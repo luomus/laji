@@ -789,7 +789,7 @@
   "observation.active.keyword": "Nyckelord",
   "observation.active.lifeStage": "Livsfas",
   "observation.active.nativeOccurrence": "Vildvuxna förekomsten",
-  "observation.active.nativeOccurrenceWild": "vild",
+  "observation.active.nativeOccurrenceWild": "Vild",
   "observation.active.nativeOccurrence.notWild": "Inte vild i naturen",
   "observation.active.needsCheck": "Behöver kontroll",
   "observation.active.observerPersonToken": "Som observatör",
