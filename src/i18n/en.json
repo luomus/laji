@@ -702,6 +702,8 @@
   "observation.active.keyword": "Keywords",
   "observation.active.lifeStage": "Life stage",
   "observation.active.nativeOccurrence": "Native occurrence",
+  "observation.active.nativeOccurrenceWild": "Wild",
+  "observation.active.nativeOccurrence.notWild": "Not wild in nature",
   "observation.active.needsCheck": "Needs check",
   "observation.active.observerPersonToken": "As observer",
   "observation.active.qualityIssues": "Issues",

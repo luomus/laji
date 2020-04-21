@@ -838,6 +838,8 @@
   "observation.active.keyword": "Lisätunniste",
   "observation.active.lifeStage": "Elinvaihe",
   "observation.active.nativeOccurrence": "Luonnonvaraisuus",
+  "observation.active.nativeOccurrenceWild": "Luonnonvaraisuus",
+  "observation.active.nativeOccurrence.notWild": "Ei-luonnonvarainen",
   "observation.active.needsCheck": "Tarvitsee määrityksen",
   "observation.active.observerPersonToken": "Havainnoijana",
   "observation.active.qualityIssues": "Ongelmalliset",

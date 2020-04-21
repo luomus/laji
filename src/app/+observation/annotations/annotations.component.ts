@@ -98,6 +98,7 @@ export class AnnotationsComponent implements OnInit, OnChanges {
         'unit.linkings.taxon.vernacularName',
         'unit.reportedInformalTaxonGroup',
         'unit.linkings.originalTaxon.vernacularName',
+        'unit.wild',
         'document.linkings.collectionQuality',
         'unit.interpretations.reliability',
         'unit.interpretations.effectiveTags',
