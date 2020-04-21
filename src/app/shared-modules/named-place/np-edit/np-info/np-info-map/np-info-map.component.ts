@@ -96,38 +96,54 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private getGeometry() {
-    if (this.namedPlace.acceptedDocument && this.namedPlace.acceptedDocument.gatherings) {
-      const geometries = this.namedPlace.acceptedDocument.gatherings.reduce((prev, curr) => {
-        if (curr.geometry) {
-          prev.push(curr.geometry);
+    const getGeom = () => {
+      if (this.namedPlace.acceptedDocument && this.namedPlace.acceptedDocument.gatherings) {
+        const geometries = this.namedPlace.acceptedDocument.gatherings.reduce((prev, curr) => {
+          if (curr.geometry) {
+            prev.push(curr.geometry);
+          }
+          return prev;
+        }, []);
+        if (geometries.length === 1) {
+          return geometries[0];
+        } else if (geometries.length > 1) {
+          return {
+            type: 'GeometryCollection',
+            geometries: geometries
+          };
         }
-        return prev;
-      }, []);
-      if (geometries.length === 1) {
-        return geometries[0];
-      } else if (geometries.length > 1) {
-        return {
-          type: 'GeometryCollection',
-          geometries: geometries
-        };
       }
-    }
-    if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
-      const geometries = this.namedPlace.prepopulatedDocument.gatherings.reduce((prev, curr) => {
-        if (curr.geometry) {
-          prev.push(curr.geometry);
+      if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
+        const geometries = this.namedPlace.prepopulatedDocument.gatherings.reduce((prev, curr) => {
+          if (curr.geometry) {
+            prev.push(curr.geometry);
+          }
+          return prev;
+        }, []);
+        if (geometries.length === 1) {
+          return geometries[0];
+        } else if (geometries.length > 1) {
+          return {
+            type: 'GeometryCollection',
+            geometries: geometries
+          };
         }
-        return prev;
-      }, []);
-      if (geometries.length === 1) {
-        return geometries[0];
-      } else if (geometries.length > 1) {
-        return {
-          type: 'GeometryCollection',
-          geometries: geometries
-        };
       }
+      return this.namedPlace.geometry;
+    };
+
+    const geom = getGeom();
+    if (geom.type === 'GeometryCollection') {
+      const uniqueGeoms = [];
+      return {...geom, geometries: geom.geometries.reduce((geoms, g) => {
+        const key = JSON.stringify(g);
+        if (!uniqueGeoms[key]) {
+          uniqueGeoms[key] = true;
+          geoms.push(g);
+        }
+        return geoms;
+        }, [])};
     }
-    return this.namedPlace.geometry;
+    return geom;
   }
 }
