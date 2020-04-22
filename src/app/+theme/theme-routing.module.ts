@@ -666,8 +666,7 @@ const routes: Routes = [
       formID: Global.forms.fungi,
       noFormPermissionRedirect: '/theme/sieniatlas',
       title: 'Sieniatlas',
-      instructions: '2759',
-      hasRightsInstructions: '2761',
+      instructions: '3901',
     }
   },
   {
