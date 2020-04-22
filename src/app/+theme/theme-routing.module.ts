@@ -684,7 +684,7 @@ const routes: Routes = [
       }
     ],
     data: {
-      formID: Global.forms.sykeButterfly,
+      formID: Global.forms.birdPointCount,
       noFormPermissionRedirect: '/theme/syke-perhoset',
       title: 'SYKE Päiväperhoset',
     }
@@ -707,7 +707,8 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['instructions', 'form', 'juvenileForm', 'ownSubmissions', 'formPermissions'],
-      hideNavFor: ['/form']
+      hideNavFor: ['/form'],
+      instructions: '3589'
     },
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
@@ -745,6 +746,54 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'pistelaskenta',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'places',
+        pathMatch: 'full',
+        redirectTo: 'form',
+      },
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+      },
+      {
+        path: 'ownSubmissions',
+        pathMatch: 'full',
+        component: ThemeOwnSubmissionsComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+      }
+    ],
+    data: {
+      formID: Global.forms.birdPointCount,
+      noFormPermissionRedirect: '/theme/pistelaskenta',
+      title: 'Maalintujen pistelaskenta',
+    }
+  },
+  /*
     path: 'kerttu',
     component: KerttuComponent,
     data: {
@@ -755,7 +804,7 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
       {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent, canActivate: [OnlyLoggedIn]}
     ]
-  },
+  },*/
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},

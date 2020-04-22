@@ -73,6 +73,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   annotationRemovableTags$: Observable<AnnotationTag[]>;
   annotationTaxonMatch$: Observable<LajiTaxonSearch>;
   annotationAddadableTags: Subscription;
+  annotationSub: Subscription;
   alertNotSpamVerified: boolean;
   typeaheadLoading = false;
   types = Annotation.TypeEnum;
@@ -86,6 +87,14 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   isFocusedTaxonComment: any;
   inputType: any;
   inputName: any;
+  taxonomy = {
+    id: null,
+    qname: null,
+    cursiveName: true,
+    scientificName: null,
+    vernacularName: null,
+    scientificNameAuthorship: null
+  };
 
 
   emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
@@ -144,10 +153,12 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   public getMatchTaxon(taxonomy: string) {
     this.annotationTaxonMatch$ = this.taxonApi.taxonomySearch(taxonomy, '5', undefined, {matchType: 'exact'} );
-    this.annotationTaxonMatch$.subscribe((result: any) => {
+    this.annotationSub = this.annotationTaxonMatch$.subscribe((result: any) => {
       result.forEach(taxon => {
         if (taxon.matchingName.toLowerCase() === taxonomy.toLowerCase()) {
           this.annotation.identification.taxonID = taxon.id;
+          this.taxonomy = taxon;
+          this.cd.detectChanges();
           return;
         }
       });
@@ -161,13 +172,29 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   select(event) {
     this.annotation.identification.taxonID = event.item.key;
     this.annotation.identification.taxon = event.value;
+    if (this.annotationSub) {
+      this.annotationSub.unsubscribe();
+    }
+    this.taxonomy = {
+      id: event.item.key,
+      ...event.item.payload
+    };
   }
 
-  saveTaxon(event) {
+  saveTaxon() {
     this.annotation.identification.taxonID = '';
+    this.taxonomy = {
+      id: null,
+      qname: null,
+      cursiveName: true,
+      vernacularName: null,
+      scientificName: null,
+      scientificNameAuthorship: null,
+    };
     if (this.annotation.identification.taxon !== '') {
       this.getMatchTaxon(this.annotation.identification.taxon);
     }
+    this.cd.detectChanges();
   }
 
   deleteSelected(id) {
@@ -186,6 +213,14 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   cleanForm() {
     this.annotation.identification.taxon = '';
     this.annotation.identification.taxonID = '';
+    this.taxonomy = {
+      id: null,
+      qname: null,
+      cursiveName: true,
+      vernacularName: null,
+      scientificName: null,
+      scientificNameAuthorship: null,
+    };
     this.annotation.identification.taxonSpecifier = '';
     this.annotation.notes = '';
     this.annotation.removedTags = [];
@@ -194,7 +229,14 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   cleanTaxon() {
     this.annotation.identification.taxon = '';
-    this.annotation.identification.taxonID = '';
+    this.taxonomy = {
+      id: null,
+      qname: null,
+      cursiveName: true,
+      vernacularName: null,
+      scientificName: null,
+      scientificNameAuthorship: null,
+    };
     this.annotation.identification.taxonSpecifier = '';
     this.cd.detectChanges();
   }
@@ -234,6 +276,14 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
           this.unit.linkings.taxon.vernacularName, this.unit, this.translate.currentLang
           );
           this.annotation.identification.taxonID =  IdService.getId(this.unit.linkings.taxon.id);
+          this.taxonomy = {
+            id: this.annotation.identification.taxonID,
+            qname: null,
+            cursiveName: true,
+            vernacularName: this.unit.linkings.taxon.vernacularName,
+            scientificName: this.unit.linkings.taxon.scientificName,
+            scientificNameAuthorship: this.unit.linkings.taxon.scientificNameAuthorship,
+          };
           this.cd.detectChanges();
           this.formAnnotation.control.markAsDirty();
       } else {
@@ -241,6 +291,14 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
           this.unit.linkings.originalTaxon.vernacularName, this.unit, this.translate.currentLang
           );
           this.annotation.identification.taxonID =  IdService.getId(this.unit.linkings.originalTaxon.id);
+          this.taxonomy = {
+            id: this.annotation.identification.taxonID,
+            qname: null,
+            cursiveName: true,
+            vernacularName: this.unit.linkings.originalTaxon.vernacularName,
+            scientificName: this.unit.linkings.originalTaxon.scientificName,
+            scientificNameAuthorship: this.unit.linkings.originalTaxon.scientificNameAuthorship,
+          };
           this.cd.detectChanges();
           this.formAnnotation.control.markAsDirty();
       }
@@ -345,8 +403,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
     if (this.expert && (this.annotation.addedTags.indexOf('MMAN.3') !== -1 || this.annotation.addedTags.indexOf('MMAN.5') !== -1)) {
       this.annotation.addedTags = this.annotation.addedTags.filter(tag => {
-        if (this.annotationTagsObservation[tag].type !== 'check' && this.annotationTagsObservation[tag].type !== 'info'
-        && this.annotationTagsObservation[tag].type !== 'admin') {
+        if (this.annotationTagsObservation[tag].type !== 'check') {
          return tag;
         }
       });
@@ -418,7 +475,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       && this.annotation.addedTags.indexOf('MMAN.32') === -1) {
         if (this.annotation.removedTags.indexOf('MMAN.5') !== -1 || this.annotation.removedTags.indexOf('MMAN.8') !== -1
         || this.annotation.removedTags.indexOf('MMAN.9') !== -1 || this.annotation.removedTags.indexOf('MMAN.3') !== -1
-        || this.annotation.addedTags.indexOf('MMAN.32') === -1) {
+        || this.annotation.addedTags.indexOf('MMAN.32') !== -1) {
           this.tmpTags.forEach(tag => {
             if ((tag.id === 'MMAN.5' || tag.id === 'MMAN.8' || tag.id === 'MMAN.9' || tag.id === 'MMAN.3')) {
               this.addToRemoveTags(tag.id);
@@ -564,13 +621,18 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
        this.inputName = event.target.name;
        this.isFocusedTaxonComment = event.target;
        this.focus.emitChildEvent(true);
-    } else {
-       this.inputType = event.type;
-       this.inputName = event.target.name;
-       this.isFocusedTaxonComment = null;
-       this.focus.emitChildEvent(false);
     }
     this.cd.detectChanges();
+  }
+
+  onBlur(event) {
+    if (event) {
+      this.inputType = event.type;
+      this.inputName = event.target.name;
+      this.isFocusedTaxonComment = null;
+      this.focus.emitChildEvent(false);
+   }
+   this.cd.detectChanges();
   }
 
   protected makeLabel(value) {

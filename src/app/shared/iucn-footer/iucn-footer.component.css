@@ -1,7 +1,8 @@
 .info-footer {
   padding-bottom: 20px;
+  color: #fff;
 }
-.info-footer a {
+:host ::ng-deep .info-footer a {
   color: #fff;
 }
 

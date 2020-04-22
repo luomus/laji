@@ -6,13 +6,15 @@
   <a class="fs-1" (click)="markAllAsSeen()">{{ 'notification.markAll' | translate }}</a>
 </header>
 
-<cdk-virtual-scroll-viewport [itemSize]="50" style="height: 400px; width: 400px;">
-  <ul class="notification-list">
-    <li laji-notification
-        style="height: 50px"
-        *cdkVirtualFor="let notification of notificationSource; trackBy: trackNotification"
-        (notificationSeen)="markAsSeen($event); onClose()"
-        (removeNotification)="removeNotification($event)"
-        [notification]="notification"></li>
-  </ul>
-</cdk-virtual-scroll-viewport>
+<laji-spinner [spinning]="loading" [overlay]="true">
+  <cdk-virtual-scroll-viewport [itemSize]="50">
+    <ul class="notification-list">
+      <li laji-notification
+          style="height: 50px"
+          *cdkVirtualFor="let notification of notificationSource; trackBy: trackNotification"
+          (notificationSeen)="markAsSeen($event); onClose()"
+          (removeNotification)="removeNotification($event)"
+          [notification]="notification"></li>
+    </ul>
+  </cdk-virtual-scroll-viewport>
+</laji-spinner>

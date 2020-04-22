@@ -1,54 +1,50 @@
 <form [hidden]="!visible || hidden" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
-    <div class="tags-step-1" *ngIf="expert else checkTags">
-      <label>{{ 'annotation.addTags' | translate }}</label>
-        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typePositiveQuality','MMAN.typeNegativeQuality']: 'include': 'id': [] | sort: 'position'; let i = index;" class="tag-value">
-          <main class="lu">
-            <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-              <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': (item.quality==='MMAN.typeNegativeQuality' || item.quality==='MMAN.typeAdmin'), 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
-            </lu-checkbox>
-          </main>
+  <div class="lu tags-step-1" *ngIf="expert else checkTags">
+    <label>{{ 'annotation.addTags' | translate }}</label>
+    <div class="d-flex flex-row flex-wrap">
+      <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typePositiveQuality','MMAN.typeNegativeQuality']: 'include': 'id': [] | sort: 'position'; let i = index;" class="tag-value">
+        <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+          <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': (item.quality==='MMAN.typeNegativeQuality' || item.quality==='MMAN.typeAdmin'), 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+        </lu-checkbox>
+      </div>
+      <ng-container *ngIf="personRoleAnnotation === 'MMAN.expert'">
+        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeAdmin']: 'exclude': 'id': [] | sort: 'position'; let i = index;" class="tag-value">
+          <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+            <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'admin': item.quality==='MMAN.typeAdmin', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+          </lu-checkbox>
         </div>
-        <div *ngIf="personRoleAnnotation === 'MMAN.expert'">
-          <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeAdmin']: 'exclude': 'id': [] | sort: 'position'; let i = index;" class="tag-value">
-            <main class="lu">
-              <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-                <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'admin': item.quality==='MMAN.typeAdmin', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
-              </lu-checkbox>
-            </main>
-          </div>
+      </ng-container>
+      <ng-container *ngIf="personRoleAnnotation === 'MMAN.expert'">
+        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeInfo']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+          <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+            <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='MMAN.typeInfo' }">{{ item.id | toQName | label }}</div>
+          </lu-checkbox>
         </div>
-        <div *ngIf="personRoleAnnotation === 'MMAN.expert'" style="margin-top:10px; margin-bottom:10px">
-            <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeInfo']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
-                <main class="lu">
-                    <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-                      <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='MMAN.typeInfo' }">{{ item.id | toQName | label }}</div>
-                    </lu-checkbox>
-                </main>
-            </div>
-        </div>
-        <div style="margin-top:10px; margin-bottom:10px" *ngIf="annotation.addedTags.indexOf('MMAN.5') === -1 && annotation.addedTags.indexOf('MMAN.3') === -1">
-          <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
-            <main class="lu">
-              <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-                <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
-              </lu-checkbox>
-            </main>
-          </div>
-        </div>
-    </div>
-    <ng-template #checkTags>
-        <label>{{ 'annotation.addTags' | translate }}</label>
+      </ng-container>
+      <ng-container *ngIf="annotation.addedTags.indexOf('MMAN.5') === -1 && annotation.addedTags.indexOf('MMAN.3') === -1">
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
-            <main class="lu">
-                <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-                  <div class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
-                </lu-checkbox>
-            </main>
+          <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+            <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+          </lu-checkbox>
         </div>
-    </ng-template>
-    <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
-      In this type of annotation, you need to add at lest 1 check tag or a taxon
+      </ng-container>
     </div>
+  </div>
+  <ng-template #checkTags>
+  <div class="lu tags-step-1">
+      <label>{{ 'annotation.addTags' | translate }}</label>
+      <div class="d-flex flex-row flex-wrap">
+        <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+          <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
+            <div class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
+          </lu-checkbox>
+        </div>
+      </div>
+  </div>
+  </ng-template>
+  <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
+    In this type of annotation, you need to add at lest 1 check tag or a taxon
+  </div>
   <div class="row removed-tags" *ngIf="expert && (personRoleAnnotation === 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin' ) && (unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0)">
       <div class="col-sm-12">
         <label>{{ 'annotation.removeTags' | translate }}</label>
@@ -61,116 +57,102 @@
         </div>
       </div>
   </div>
-    <div class="row taxon" *ngIf="!isEditor; else editorMessage">
-      <div>
-        <div class="col-lg-3 col-md-12 col-sm-12">
-            <label class="taxonomy">{{ 'annotation.addIdentification' | translate }}</label>
+  <div class="row taxon" *ngIf="!isEditor; else editorMessage">
+    <div>
+      <div class="col-lg-3 col-md-12 col-sm-12">
+          <label class="taxonomy">{{ 'annotation.addIdentification' | translate }}</label>
+      </div>
+      <div class="col-md-12 col-sm-12" [ngClass]="{'col-lg-6': unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1,
+      'col-lg-9': !unit.linkings || (!unit.linkings.originalTaxon || !unit.linkings.taxon) || annotation.addedTags.indexOf('MMAN.3' | toQName) !== -1}">
+        <div class="input-group">
+          <input #taxon
+          [ngClass]="{loading: typeaheadLoading}"
+          type="text"
+          class="form-control input-sm"
+          name="opinion"
+          [disabled]="unIdentifyable"
+          [required]="expert && (personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin' ) && (annotation.addedTags.length > 0)"
+          [(ngModel)]="annotation.identification.taxon"
+          [typeahead]="taxonAutocomplete"
+          [typeaheadOptionsLimit]="20"
+          [typeaheadWaitMs]="200"
+          [typeaheadMinLength]="3"
+          [typeaheadOptionField]="'value'"
+          [typeaheadItemTemplate]="taxonItem"
+          autocomplete="off"
+          autocorrect="off"
+          (change)="saveTaxon()"
+          (typeaheadOnSelect)="select($event)"
+          (focus)="onFocus($event)"
+          (blur)="onBlur($event)"
+          >
+          <div class="deleteId input-group-addon"  [tooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()">
+            <i class="glyphicon glyphicon-remove"></i>
+          </div>
         </div>
-        <div class="col-md-12 col-sm-12" [ngClass]="{'col-lg-6': unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1,
-        'col-lg-9': !unit.linkings || (!unit.linkings.originalTaxon || !unit.linkings.taxon) || annotation.addedTags.indexOf('MMAN.3' | toQName) !== -1}">
-            <input #taxon
-            [ngClass]="{loading: typeaheadLoading}"
+        <ng-template #taxonItem let-model="item">
+          <h5 class="autosuggest-value {{model.groups}} informal-group-image">
+            {{ model.value }}
+          </h5>
+        </ng-template>
+      </div>
+      <div class="col-lg-3 col-md-12 col-sm-12">
+        <div class="agree" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.obsercation.agree' | translate }}</div>
+      </div>
+    </div>
+    <div class="add-taxonId">
+      <div class="col-lg-offset-3 col-md-offset-4 col-lg-8 col-md-7 col-sm-11">
+        <span *ngIf="annotation.identification.taxonID" [hidden]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''">
+          <laji-taxon-name [taxon]="taxonomy"></laji-taxon-name>
+        </span>
+        &nbsp;
+      </div>
+    </div>
+    <div *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
+      <div class="col-sm-12 no-padding" style="margin-top: 10px;">
+        <div class="col-sm-12">
+          <div class="col-lg-4 col-sm-12 no-padding">
+            <label>{{ 'annotation.taxonSpecifier' | translate }}</label>
+          </div>
+          <div class="col-lg-7 col-sm-11 col-xs-11 no-padding">
+            <input
             type="text"
             class="form-control input-sm"
-            name="opinion"
-            [disabled]="unIdentifyable"
-            [required]="expert && (personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin' ) && (annotation.addedTags.length > 0)"
-            [(ngModel)]="annotation.identification.taxon"
-            [typeahead]="taxonAutocomplete"
-            [typeaheadOptionsLimit]="20"
-            [typeaheadWaitMs]="200"
-            [typeaheadMinLength]="3"
-            [typeaheadOptionField]="'value'"
-            [typeaheadItemTemplate]="taxonItem"
-            autocomplete="off"
-            autocorrect="off"
-            (change)="saveTaxon($event)"
-            (typeaheadOnSelect)="select($event)"
+            name="taxonSpecifier"
+            [disabled]="annotation.identification.taxon===''"
+            [(ngModel)]="annotation.identification.taxonSpecifier"
             (focus)="onFocus($event)"
-            (blur)="onFocus($event)"
+            (blur)="onBlur($event)"
             >
-          <ng-template #taxonItem let-model="item">
-            <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-              {{ model.value }}
-            </h5>
-          </ng-template>
-        </div>
-        <div class="col-lg-3 col-md-12 col-sm-12">
-          <div class="agree" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()">{{ 'annotation.obsercation.agree' | translate }}</div>
-        </div>
-      </div>
-      <div class="add-taxonId">
-        <div class="col-lg-3 col-md-12 col-sm-12 no-padding"> Added Taxon Id:</div>
-        <div class="col-lg-9 col-md-12 col-sm-12">
-          <span *ngIf="(annotation.identification.taxon !== undefined && annotation.identification.taxon !== ''); else noData">
-            <span *ngIf="((inputType !== 'focus' && inputName === 'opinion') || (inputType === 'focus' && inputName !== 'opinion') || (inputType === 'blur' && inputName !== 'opinion'))">
-              <span *ngIf="annotation.identification.taxonID; else noTaxonID">
-                {{ annotation.identification.taxonID }}
-                <a [routerLink]="['/taxon/' + (annotation.identification.taxonID | toQName)] | localize" target="_blank"
-                [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
-                  <i class="glyphicon glyphicon-tag"></i>
-                </a>
-              </span>
-              <ng-template #noTaxonID>
-                {{ 'annotation.noTaxonId' | translate }}
-              </ng-template>
-            </span>
-            <span *ngIf="(inputType === 'focus' && inputName === 'opinion')">
-              <laji-spinner></laji-spinner>
-            </span>
-          </span>
-          <ng-template #noData>
-             {{ 'annotation.NoTaxonData' | translate }}
-          </ng-template>
-          <span class="label label-danger deleteId"  [tooltip]="'annotation.delete' | translate" *ngIf="(annotation.identification.taxon !== undefined && annotation.identification.taxon !== '')">
-            <i class="glyphicon glyphicon-remove" (click)="cleanTaxon()"></i>
-          </span>
-        </div>
-      </div>
-      <div *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
-        <div class="col-sm-12 no-padding" style="margin-top: 10px;">
-          <div class="col-sm-12">
-            <div class="col-lg-4 col-sm-12 no-padding">
-              <label>{{ 'annotation.taxonSpecifier' | translate }}</label>
-            </div>
-            <div class="col-lg-8 col-sm-12 no-padding">
-              <input
-              type="text"
-              class="form-control input-sm"
-              name="taxonSpecifier"
-              [disabled]="annotation.identification.taxon===''"
-              [(ngModel)]="annotation.identification.taxonSpecifier"
-              (focus)="onFocus($event)"
-              (blur)="onFocus($event)"
-              >
-            </div>
+          </div>
+          <div class="col-lg-1 col-sm-1 col-xs-1 no-padding">
+            <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info>
           </div>
         </div>
       </div>
     </div>
-    <ng-template #editorMessage>
-      <div class="alert alert-warning">{{ 'annotation.isEditorTaxon' | translate }}</div>
-    </ng-template>
-
-    <div class="row message" (lajiAfterIf)="initElements()">
-      <div class="col-sm-12">
-        <label>{{ 'MAN.notes' | label }}</label>
-        <textarea #comment
-                  name="notes"
-                  class="form-control feedback-text input-sm"
-                  [required]="(!expert || (personRoleAnnotation!==annotationRole.expert && personRoleAnnotation!==annotationRole.ictAdmin)) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
-                  [(ngModel)]="annotation.notes"
-                  (focus)="onFocus($event)"
-                  (blur)="onFocus($event)"></textarea>
-      </div>
-    </div>
-    <div class="actions">
-      <!--<button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button>-->
-      <button type="submit" [disabled]="disableSend()" class="btn btn-success btn-sm">{{ 'annotation.sendAnnotation' | translate }}</button>
-    </div>
-  </form>
-  <div [hidden]="!visible" *lajiLoggedIn="false" class="annotation-form">
-    {{ 'force.login' | translate }}
   </div>
+  <ng-template #editorMessage>
+    <div class="alert alert-warning">{{ 'annotation.isEditorTaxon' | translate }}</div>
+  </ng-template>
 
-
+  <div class="row message" (lajiAfterIf)="initElements()">
+    <div class="col-sm-12">
+      <label>{{ 'MAN.notes' | label }}</label>
+      <textarea #comment
+                name="notes"
+                class="form-control feedback-text input-sm"
+                [required]="(!expert || (personRoleAnnotation!==annotationRole.expert && personRoleAnnotation!==annotationRole.ictAdmin)) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
+                [(ngModel)]="annotation.notes"
+                (focus)="onFocus($event)"
+                (blur)="onBlur($event)"></textarea>
+    </div>
+  </div>
+  <div class="actions">
+    <!--<button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button>-->
+    <lu-button (click)="saveAnnotation()" [disabled]="disableSend()">{{ 'annotation.sendAnnotation' | translate }}</lu-button>
+  </div>
+</form>
+<div [hidden]="!visible" *lajiLoggedIn="false" class="annotation-form">
+  {{ 'force.login' | translate }}
+</div>

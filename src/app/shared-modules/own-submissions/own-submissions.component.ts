@@ -106,6 +106,9 @@ export class OwnSubmissionsComponent implements OnChanges {
     private latestFacade: LatestDocumentsFacade
   ) {
     this.selectedMap.taxon += ',' + Global.documentCountUnitProperties.map(prop => 'gatherings.units.' + prop).join(',');
+    if (!this.year) {
+      this.year = '' + new Date().getFullYear();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

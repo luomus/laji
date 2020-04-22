@@ -1,4 +1,8 @@
 /* Media queries */
+@mixin media-query-small-phone {
+    @media (max-width: 400px) { @content; }
+}
+
 @mixin media-query-phone {
     @media (max-width: 767px) { @content; }
 }

@@ -7,6 +7,16 @@
 
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 
+    <ng-container *lajiLoggedIn="true">
+      <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">
+      <span>{{documentForm.namedPlaceOptions?.createNewLabels?.desc
+      || 'np.chooseLabel' | translate}}</span>
+        <lu-button (click)='toEditMode(true)'>
+          {{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}
+        </lu-button>
+      </div>
+    </ng-container>
+
     <ng-container *ngIf="filterByMunicipality && !editMode">
       <div class="form-group col-xs-12">
         <div class="row">
@@ -50,13 +60,6 @@
         placeholder="np.tag"
         [open]="true"></laji-metadata-select>
     </ng-container>
-    <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">
-      <span>{{documentForm.namedPlaceOptions?.createNewLabels?.desc
-            || 'np.chooseLabel' | translate}}</span>
-      <lu-button (click)='toEditMode(true)'>
-        {{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}
-      </lu-button>
-    </div>
     <laji-spinner [spinning]="loading" [overlay]="true">
       <div *ngIf="namedPlaces && documentForm && !errorMsg">
         <div [ngClass]="{'col-sm-12 col-md-12 col-lg-6': !editMode}">

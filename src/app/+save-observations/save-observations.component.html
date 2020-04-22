@@ -3,8 +3,8 @@
     <h1 translate>saveObservations.h1</h1>
     <p translate>saveObservations.desc</p>
     <h2 translate>saveObservations.chooseSystem</h2>
-    <div class="d-flex flex-row my-6 flex-wrap">
-      <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2"> <!-- Helppo -->
+    <div class="d-flex flex-row my-6 flex-nowrap">
+      <div class="report-type-container d-flex flex-col justify-between m-2"> <!-- Helppo -->
         <div>
           <h3 translate>saveObservations.easy</h3>
           <ul>
@@ -38,18 +38,24 @@
         </div>
       </div>
       -->
-      <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2"> <!-- Monipuolinen -->
+      <div class="report-type-container d-flex flex-col justify-between m-2"> <!-- Monipuolinen -->
         <div>
-          <a [routerLink]="['/vihko']" class="vihko-logo" translate>saveObservations.vihko</a>
+          <a [routerLink]="['/vihko'] | localize" class="vihko-logo" translate>saveObservations.vihko</a>
           <ul>
             <li translate>saveObservations.vihko.1</li>
             <li translate>saveObservations.vihko.2</li>
             <li translate>saveObservations.vihko.3</li>
           </ul>
         </div>
-        <lu-button [anchor]="['/vihko']">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
+        <lu-button [anchor]="['/vihko'] | localize">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
       </div>
     </div>
+  </section>
+
+  <section class="mb-8" *lajiLoggedIn="false">
+    <div role="alert" class="alert alert-warning">
+      {{ 'vihko.home.notLogged' | translate }}
+    </div> 
   </section>
 
   <section class="mb-8"> <!-- Kansalaistiede -->
@@ -69,6 +75,12 @@
       <ng-container *ngFor="let form of birdMonitoringForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
       </ng-container>
+      <laji-survey-box class="d-block mr-3" [comingSoonForm]="{
+        'link': 'https://laji.fi/news/3617',
+        'title': 'navigation.waterbird',
+        'logo': 'https://cdn.laji.fi/images/logos/vesilintulaskenta_1.jpg'
+       }"
+      ></laji-survey-box>
     </div>
   </section>
 

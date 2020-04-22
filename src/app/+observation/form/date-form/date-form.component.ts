@@ -1,6 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { WarehouseQueryInterface } from 'app/shared/model/WarehouseQueryInterface';
-import * as moment from 'moment';
+import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ObservationFormQuery } from '../observation-form-query.interface';
 
@@ -16,7 +14,7 @@ export function isRelativeDate(date: string): boolean {
   selector: 'laji-date-form',
   templateUrl: './date-form.component.html'
 })
-export class DateFormComponent implements OnInit, OnDestroy {
+export class DateFormComponent implements OnDestroy {
   private unsubscribe$ = new Subject();
 
   @Input() query;
@@ -34,10 +32,6 @@ export class DateFormComponent implements OnInit, OnDestroy {
   // with this hack we ignore value change events that were initiated by xDaysAgo
   private ignoreStartDatepickerEvent = false;
   private ignoreEndDatepickerEvent = false;
-
-  constructor() {}
-
-  ngOnInit() {}
 
   get datepickerTimeStart() {
     return isRelativeDate(this.formQuery.timeStart) ? undefined : this.formQuery.timeStart;

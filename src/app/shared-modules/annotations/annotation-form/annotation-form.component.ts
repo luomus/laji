@@ -17,7 +17,7 @@ import { format } from 'd3-format';
 @Component({
   selector: 'laji-annotation-form',
   templateUrl: './annotation-form.component.html',
-  styleUrls: ['./annotation-form.component.css']
+  styleUrls: ['./annotation-form.component.scss']
 })
 export class AnnotationFormComponent implements OnInit, OnChanges {
   static readonly lang = ['en', 'fi', 'sv'];

@@ -7,25 +7,17 @@ import { InformalGroupRedirectComponent } from './informal-group-redirect/inform
 import { BrowseSpeciesComponent } from './browse-species/browse-species.component';
 
 export function decideSpeciesTab(url: UrlSegment[]) {
-  if (url.length === 1) {
-    if (url[0].path === 'list' || url[0].path === 'images') {
-      return { consumed: url, posParams: {tab: url[0]} };
-    }
+  if (url.length === 1 && (url[0].path === 'list' || url[0].path === 'images')) {
+    return { consumed: url, posParams: {tab: url[0]} };
   }
   return null;
 }
 
 export function decideTaxonTab(url: UrlSegment[]) {
-  if (url.length === 1) {
-    if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0) {
-      return { consumed: url, posParams: {id: url[0]} };
-    }
-  } else if (url.length === 2) {
-    if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0 &&
-      (url[1].path === 'images' || url[1].path === 'biology' || url[1].path === 'taxonomy' || url[1].path === 'occurrence' ||
-        url[1].path === 'observations' || url[1].path === 'specimens' || url[1].path === 'endangerment' || url[1].path === 'invasive')) {
-      return { consumed: url, posParams: {id: url[0], tab: url[1]} };
-    }
+  if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0) {
+    return url.length === 1 ?
+      { consumed: url, posParams: {id: url[0]} } :
+      { consumed: url, posParams: {id: url[0], tab: url[1]} };
   }
   return null;
 }

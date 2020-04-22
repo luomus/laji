@@ -29,7 +29,8 @@
     </div>
   </ng-template>
 
-
-  <lu-button *ngIf="allowCreate"
-          (click)="createButtonClick.emit()">{{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</lu-button>
+  <ng-container *lajiLoggedIn="true">
+    <lu-button *ngIf="allowCreate"
+               (click)="createButtonClick.emit()">{{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</lu-button>
+  </ng-container>
 </div>

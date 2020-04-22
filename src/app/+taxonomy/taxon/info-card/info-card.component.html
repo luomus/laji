@@ -5,7 +5,7 @@
     (taxonSelect)="updateRoute($event)"
   ></laji-info-card-header>
 
-  <lu-tabs [selectedIndex]="getVisibleTabIndexFromTabName(initiallySelectedTab)" (select)="onSelect($event)">
+  <lu-tabs [selectedIndex]="getVisibleTabIndexFromTabName(selectedTab)" (select)="onSelect($event)">
     <lu-tab [heading]="'taxonomy.overview' | translate">
       <laji-taxon-overview
         *ngIf="loadedTabs.isLoaded('overview')"

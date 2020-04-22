@@ -7,6 +7,7 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { CheckLangService } from '../../service/check-lang.service';
 
+
 @Component({
   selector: 'laji-taxon-overview',
   templateUrl: './taxon-overview.component.html',
@@ -25,11 +26,13 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   description: any;
   ylesta: any;
   ylestaTitle: any;
+  ylestaSpeciesCardAuthors: any;
   _taxonDescription: TaxonomyDescription[];
   groupHasTranslation: any[];
   ylestaHasTranslation: any[];
 
   contentHasLanguage: boolean;
+  currentLang: string;
 
   mapQuery: WarehouseQueryInterface;
 
@@ -41,6 +44,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.ylesta = undefined;
     this.ylesta = [{'text': undefined, 'visible': undefined}];
     this.ylestaTitle = undefined;
+    this.ylestaSpeciesCardAuthors = undefined;
     this.groupHasTranslation = [];
     this.ylestaHasTranslation = [];
     this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription : undefined;
@@ -49,7 +53,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
       this.groupHasTranslation = this.checklang.checkValue(this._taxonDescription);
       this._taxonDescription.forEach((item, idx) => {
         (item.groups || []).forEach(gruppo => {
-          if (gruppo.group === 'MX.SDVG1') {
+          if (gruppo.group === 'MX.SDVG1' && this.description === undefined && this.ingress === undefined) {
             (gruppo.variables || []).forEach(variable => {
               if (variable.variable === 'MX.descriptionText') {
                 this.description = variable.content;
@@ -58,8 +62,9 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
               }
             });
           }
-          if (gruppo.group === 'MX.SDVG8') {
-            this.ylestaTitle = gruppo.title;
+          if (gruppo.group === 'MX.SDVG8' && this.ylesta[0].text === undefined && this.ylesta[0].visible === undefined) {
+            this.ylestaTitle = item.title;
+            this.ylestaSpeciesCardAuthors = item.speciesCardAuthors ? item.speciesCardAuthors : null;
             this.ylesta[0].text = gruppo.variables;
 
             this.ylestaHasTranslation = this.groupHasTranslation[idx].groups.filter(el =>
@@ -81,6 +86,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   ) { }
 
   ngOnChanges() {
+    this.currentLang = this.translate.currentLang;
     this.getChildren();
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
   }

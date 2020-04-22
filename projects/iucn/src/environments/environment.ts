@@ -24,12 +24,21 @@ export const environment = {
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
+  waterbirdPairForm: 'MHL.65',
+  waterbirdJuvenileForm: 'MHL.66',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'MHL.36',
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
+  birdPointCountForm: 'MHL.75',
   lolifeForm: 'MHL.45',
+  saveObservations: {
+    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.51', 'MHL.25'],
+    birdMonitoringForms: ['MHL.1', 'MHL.3'],
+    researchProjects: ['MHL.33', 'MHL.50', 'MHL.57']
+  },
   apiBase: 'https://dev.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
-  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self'
+  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
 };

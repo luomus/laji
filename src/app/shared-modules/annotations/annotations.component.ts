@@ -16,7 +16,7 @@ import { LoadingElementsService } from '../../shared-modules/document-viewer/loa
 @Component({
   selector: 'laji-annotations',
   templateUrl: './annotations.component.html',
-  styleUrls: ['./annotations.component.css'],
+  styleUrls: ['./annotations.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })

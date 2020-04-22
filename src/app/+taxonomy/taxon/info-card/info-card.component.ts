@@ -38,15 +38,15 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
   @Input() set activeTab(tab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
-    this.initiallySelectedTab = tab;
+    this.selectedTab = tab;
     this.loadedTabs.load(tab);
   }
   get activeTab() {
     // @ts-ignore
-    return this.initiallySelectedTab;
+    return this.selectedTab;
   }
 
-  initiallySelectedTab = 'overview'; // stores which tab index was provided by @Input
+  selectedTab = 'overview'; // stores which tab index was provided by @Input
 
   taxonDescription: Array<TaxonomyDescription>;
   taxonImages: Array<Image>;
@@ -87,6 +87,13 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.activeTab) {
+      if (this.activeTab === 'observations') {
+        this.updateRoute(this.taxon.id, 'occurrence', this.context, true);
+      } else if (!tabOrder.includes(this.activeTab)) {
+        this.updateRoute(this.taxon.id, 'overview', this.context, true);
+      }
+    }
     if (changes.taxon) {
       this.taxonImages = (this.taxon.multimedia || []).map(img => {
         if (img['taxon']) {
@@ -109,7 +116,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
       if (
         (!this.hasBiologyData && this.activeTab === 'biology') ||
-        (!this.isFromMasterChecklist && (this.activeTab === 'observations' || this.activeTab === 'specimens')) ||
+        (!this.isFromMasterChecklist && this.activeTab === 'specimens') ||
         (!this.isEndangered && this.activeTab === 'endangerment') ||
         (!this.taxon.invasiveSpecies && this.activeTab === 'invasive')
       ) {
@@ -127,6 +134,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateRoute(id: string, tab = this.activeTab, context = this.context, replaceUrl = false) {
+    this.selectedTab = tab;
     this.routeUpdate.emit({id: id, tab: tab, context: context, replaceUrl: replaceUrl});
   }
 

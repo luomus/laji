@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { Chart, ChartDataSets } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { TranslateService } from '@ngx-translate/core';
+import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 
 @Component({
@@ -46,6 +47,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   private subBarChartLabels: number[];
   private allBarChartsLabel: number[];
   private barChartPlugins: any;
+  @LocalStorage('onlycount') onlyCount;
 
 
   @Output() hasData = new EventEmitter<boolean>();
@@ -54,12 +56,20 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
     private warehouseApi: WarehouseApi,
     private cd: ChangeDetectorRef,
     private translate: TranslateService,
+    private localSt: LocalStorageService
   ) { }
 
   ngOnInit() {
       Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
         return coordinates;
       };
+      this.localSt.observe('onlycount')
+            .subscribe((value) => {
+              this.onlyCount = value;
+              this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
+              this.updateData();
+              this.cd.markForCheck();
+            });
   }
 
   ngOnChanges() {
@@ -121,7 +131,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       10000,
       1,
       undefined,
-      true
+      this.onlyCount === null ? true : this.onlyCount ? true : false
     ).pipe(
       map(res => res.results)
     ).subscribe(res => {
@@ -137,7 +147,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       let prevYear: number;
       res.map(r => {
         const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
-        const count = r.count;
+        const count = this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum;
 
         if (prevYear) {
           for (let i = prevYear + 1; i < year; i++) {
@@ -231,5 +241,11 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.newData[0].backgroundColor = this.allDataNew[0].backgroundColor.slice(this.splitIdx, this.allDataNew[0].data.length);
       this.barChartLabels = this.allBarChartsLabel.slice(this.splitIdx, this.allBarChartsLabel.length);
     }
+  }
+
+
+  toggleOnlyCount() {
+    this.onlyCount = !this.onlyCount;
+    this.updateData();
   }
 }

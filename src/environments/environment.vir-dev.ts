@@ -4,7 +4,7 @@ import { Global } from './global';
 export const environment = {
   type: Global.type.vir,
   base: 'https://viranomaiset.laji.fi',
-  systemID: 'KE.601',
+  systemID: 'KE.941',
   formWhitelist: ['JX.519', 'JX.6485'],
   massForms: ['JX.519'],
   defaultForm: 'JX.519',
@@ -22,9 +22,9 @@ export const environment = {
   valioForm: 'MHL.57',
   birdPointCountForm: 'MHL.75',
   saveObservations: {
-    citizenScienceForms: ['MHL.3', 'JX.652', 'MHL.53'],
-    birdMonitoringForms: ['MHL.65', 'MHL.33', 'MHL.6'],
-    researchProjects: ['MHL.1', 'MHL.50', 'MHL.57']
+    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.51', 'MHL.25'],
+    birdMonitoringForms: ['MHL.1', 'MHL.3'],
+    researchProjects: ['MHL.33', 'MHL.50', 'MHL.57']
   },
   loginUrl: '/user/viranomaiset',
   selfPage: 'https://login.laji.fi/self',
