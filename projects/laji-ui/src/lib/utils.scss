@@ -78,6 +78,9 @@ $displays: flex, block, inline, inline-block, none;
 .justify-center {
   justify-content: center !important;
 }
+.justify-end {
+  justify-content: flex-end !important;
+}
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:justify-between {
@@ -85,6 +88,9 @@ $displays: flex, block, inline, inline-block, none;
     }
     .#{$breakpoint}\:justify-center {
       justify-content: center !important;
+    }
+    .#{$breakpoint}\:justify-end {
+      justify-content: flex-end !important;
     }
   }
 }

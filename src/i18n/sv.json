@@ -1103,6 +1103,7 @@
   "result.showViewer": "Visa observation",
   "result.showPrivateViewer": "Visa opublicerad observation",
   "result.latestObservationsLabel": "Opublicerad observation",
+  "result.editDocument": "Gå till redigering",
   "result.taxonomicOrder": "Taxonomic order",
   "result.unit.id": "Observation idr",
   "result.unit.abundanceString": "Mängd",
