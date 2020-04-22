@@ -713,7 +713,7 @@ const routes: Routes = [
       }
     ],
     data: {
-      formID: Global.forms.birdPointCount,
+      formID: Global.forms.sykeButterfly,
       noFormPermissionRedirect: '/theme/syke-perhoset',
       title: 'SYKE Päiväperhoset',
     }
