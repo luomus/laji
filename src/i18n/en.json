@@ -20,8 +20,8 @@
   "annotation.removedTags": "Removed tags",
   "annotation.newIdentification": "New identification",
   "annotationBySystem": "This observation has been automatically annotated for quality.",
-  "annotation.info.expert": "- Comment is obbligatory<br/>- If you add a tag, taxon is obbligatory",
-  "annotation.info.basic": "- Comment is obbligatory",
+  "annotation.info.expert": "- Comment is mandatory<br/>- If you add a tag, taxon is mandatory",
+  "annotation.info.basic": "- Comment is mandatory",
   "annotation.addTags": "Add tags:",
   "annotation.removeTags": "Remove current effective tags:",
   "annotation.chooseTag": "Please choose one",
@@ -702,6 +702,8 @@
   "observation.active.keyword": "Keywords",
   "observation.active.lifeStage": "Life stage",
   "observation.active.nativeOccurrence": "Native occurrence",
+  "observation.active.nativeOccurrenceWild": "Wild",
+  "observation.active.nativeOccurrence.notWild": "Not wild in nature",
   "observation.active.needsCheck": "Needs check",
   "observation.active.observerPersonToken": "As observer",
   "observation.active.qualityIssues": "Issues",
@@ -1044,7 +1046,7 @@
   "search-bar.input": "Search",
   "search.result.all": "All observations",
   "search.result.finnish": "Observations in Finland (beta)",
-  "search.result.images": "Images",
+  "search.result.images": "Media",
   "search.result.list": "List",
   "search.result.load": "Download as a file",
   "search.result.map": "Map",
@@ -1222,6 +1224,7 @@
   "taxonomy.invasive.invasiveLink": "See on Invasive Alien Species Portal",
   "taxonomy.occurrence.byArea": "Distribution by biogeographical provinces according to expert evaluation",
   "taxonomy.ymparisto": "The habitats have been mainly defined in the Finnish Species Threat Assessment 2019 and follow the national habitat classification. Read more:<a href=\"https://punainenkirja.laji.fi/en/about/r-109\">The Web Service of the Red List of Finnish Species – Habitat classification</a>",
+  "taxonomy.chooseStats": "Choose type of statistics",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Description",
@@ -1459,6 +1462,7 @@
   "saveObservations.birdMonitoring": "Bird monitoring",
   "saveObservations.birdMonitoring.desc": "",
   "saveObservations.researchProjects": "Research projects and tools for public authorities",
-  "saveObservations.researchProjects.desc": "Participating to research projects needs more experience than the citizen science projects. Some of the projects are only accessible for a smaller group of users."
-
+  "saveObservations.researchProjects.desc": "Participating to research projects needs more experience than the citizen science projects. Some of the projects are only accessible for a smaller group of users.",
+  "navigation.birdPointCount": "Point count",
+  "theme.birdPointCount.intro": "Point counts of breeding terrestrial birds"
 }

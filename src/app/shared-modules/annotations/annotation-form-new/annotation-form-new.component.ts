@@ -403,8 +403,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
     if (this.expert && (this.annotation.addedTags.indexOf('MMAN.3') !== -1 || this.annotation.addedTags.indexOf('MMAN.5') !== -1)) {
       this.annotation.addedTags = this.annotation.addedTags.filter(tag => {
-        if (this.annotationTagsObservation[tag].type !== 'check' && this.annotationTagsObservation[tag].type !== 'info'
-        && this.annotationTagsObservation[tag].type !== 'admin') {
+        if (this.annotationTagsObservation[tag].type !== 'check') {
          return tag;
         }
       });
