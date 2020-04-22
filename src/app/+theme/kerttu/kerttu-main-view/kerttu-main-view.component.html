@@ -15,7 +15,8 @@
     <div *ngIf="vm.step === step.annotateLetters">
       <laji-kerttu-letter-annotation
         [template]="letterTemplate$ | async"
-        (annotationsChange)="letterAnnotations = $event"
+        [candidate]="letterCandidate$ | async"
+        (annotationChange)="onLetterAnnotationChange($event)"
       ></laji-kerttu-letter-annotation>
     </div>
     <div *ngIf="vm.step === step.annotateRecordings">

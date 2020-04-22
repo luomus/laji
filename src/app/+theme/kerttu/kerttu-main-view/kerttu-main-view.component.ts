@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
 import {forkJoin, Observable, of, Subscription} from 'rxjs';
-import {switchMap, take} from 'rxjs/operators';
+import {switchMap, take, tap} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
-import {ILetterAnnotations, IRecordingAnnotations} from '../model/annotation';
+import {Annotation, ILetterAnnotations, IRecordingAnnotations} from '../model/annotation';
 import {IRecording, IRecordingWithCandidates} from '../model/recording';
-import {ILetterTemplate} from '../model/letter';
+import {ILetter, ILetterTemplate} from '../model/letter';
 
 @Component({
   selector: 'laji-kerttu-main-view',
@@ -37,7 +37,9 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   taxonId: string;
 
   letterTemplate$: Observable<ILetterTemplate>;
-  letters$: Observable<IRecordingWithCandidates[]>;
+  letterCandidate$: Observable<ILetter>;
+  currentTemplateId: number;
+
   letterAnnotations: ILetterAnnotations;
 
   recordings$: Observable<IRecording[]>;
@@ -82,7 +84,11 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
           });
         }*/
       } else if (vm.step === Step.annotateLetters) {
-        this.letterTemplate$ = this.kerttuApi.getNextLetterTemplate(this.userService.getToken());
+        this.letterTemplate$ = this.kerttuApi.getNextLetterTemplate(this.userService.getToken())
+          .pipe(tap(template => {
+            this.currentTemplateId = template.id;
+            this.letterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), this.currentTemplateId);
+          }));
       }
     });
   }
@@ -133,6 +139,10 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
         return this.personService.personUpdateProfileByToken(profile, this.userService.getToken());
       })
     );
+  }
+
+  onLetterAnnotationChange(annotation: Annotation) {
+    this.letterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), this.currentTemplateId);
   }
 
   saveLetterAnnotations() {

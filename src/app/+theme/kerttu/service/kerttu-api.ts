@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
 import {Step} from './kerttu.facade';
 import {IRecording, IRecordingWithCandidates} from '../model/recording';
 import {ILetterAnnotations, IRecordingAnnotations} from '../model/annotation';
-import {ILetterTemplate} from '../model/letter';
+import {ILetter, ILetterTemplate} from '../model/letter';
 
 @Injectable()
 export class KerttuApi {
@@ -45,6 +45,19 @@ export class KerttuApi {
     return this.httpClient.get(path, { params })
       .pipe(
         map((response: ILetterTemplate) => {
+          return response;
+        })
+      );
+  }
+
+  public getNextLetterCandidate(personToken: string, templateId: number): Observable<ILetter> {
+    const path = this.basePath + '/letter/' + templateId + '/nextCandidate';
+
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get(path, { params })
+      .pipe(
+        map((response: ILetter) => {
           return response;
         })
       );

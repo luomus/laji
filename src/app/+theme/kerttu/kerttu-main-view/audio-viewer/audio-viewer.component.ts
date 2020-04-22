@@ -11,19 +11,21 @@ import {Subscription} from 'rxjs';
 })
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() recording: string;
-  @Input() start: number;
-  @Input() stop: number;
+  @Input() xRangePadding: number;
 
-  _xRange: number[];
+  @Input() xRange: number[];
   @Input() yRange: number[];
+
+  start = 0;
+  stop: number;
 
   buffer: AudioBuffer;
   currentTime = 0;
 
   isPlaying = false;
 
-  // sampleRate = 22050;
-  sampleRate = 16000;
+  sampleRate = 22050;
+  // sampleRate = 16000;
 
   private context: AudioContext;
   private source: AudioBufferSourceNode;
@@ -32,11 +34,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   private audioSub: Subscription;
   private timeupdateInterval;
-
-  @Input() set xRange(xRange) {
-    const start = this.start || 0;
-    this._xRange = [xRange[0] - start, xRange[1] - start];
-  }
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -55,7 +52,18 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     if (this.recording) {
       this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
       this.audioSub = this.audioService.getAudioBuffer(this.recording, this.context).subscribe((buffer) => {
-        if (this.start || this.stop) {
+        if (this.xRangePadding != null) {
+          this.start = this.xRange[0] - this.xRangePadding;
+          this.stop = this.xRange[1] + this.xRangePadding;
+          if (this.start < 0) {
+            this.stop = Math.min(this.stop - this.start, buffer.duration);
+            this.start = 0;
+          }
+          if (this.stop > buffer.duration) {
+            this.start = Math.max(this.start + (this.stop - buffer.duration), 0);
+            this.stop = buffer.duration;
+          }
+
           buffer = this.audioService.extractSegment(buffer, this.context, this.start, this.stop);
         }
         this.buffer = buffer;

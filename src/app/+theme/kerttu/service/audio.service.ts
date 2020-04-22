@@ -22,8 +22,8 @@ export class AudioService {
   }
 
   public extractSegment(buffer: AudioBuffer, context: AudioContext, startTime: number, endTime: number): AudioBuffer {
-    const startIdx = Math.floor(startTime * buffer.sampleRate);
-    const endIdx = Math.ceil(endTime * buffer.sampleRate);
+    const startIdx = Math.max(Math.floor(startTime * buffer.sampleRate), 0);
+    const endIdx = Math.min(Math.ceil(endTime * buffer.sampleRate), buffer.getChannelData(0).length - 1);
 
     const emptySegment = context.createBuffer(
       buffer.numberOfChannels,
@@ -33,6 +33,7 @@ export class AudioService {
     for (let i = 0; i < buffer.numberOfChannels; i++) {
       const chanData = buffer.getChannelData(i);
       const segmentChanData = emptySegment.getChannelData(i);
+
       for (let j = startIdx; j < endIdx; j++) {
         segmentChanData[j - startIdx] = chanData[j];
       }

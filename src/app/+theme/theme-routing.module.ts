@@ -793,7 +793,7 @@ const routes: Routes = [
       title: 'Maalintujen pistelaskenta',
     }
   },
-  /*
+  {
     path: 'kerttu',
     component: KerttuComponent,
     data: {
@@ -804,7 +804,7 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
       {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent, canActivate: [OnlyLoggedIn]}
     ]
-  },*/
+  },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},

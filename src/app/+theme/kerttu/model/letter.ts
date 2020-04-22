@@ -1,7 +1,10 @@
-export interface ILetterTemplate {
+export interface ILetter {
   id: number;
-  taxonId: string;
   recording: string;
   xRange: number[];
+}
+
+export interface ILetterTemplate extends ILetter {
+  taxonId: string;
   yRange: number[];
 }

@@ -3,7 +3,7 @@ import {UserService} from '../../../../shared/service/user.service';
 import {IRecordingWithCandidates} from '../../model/recording';
 import {Annotation, ILetterAnnotations} from '../../model/annotation';
 import {TranslateService} from '@ngx-translate/core';
-import {ILetterTemplate} from '../../model/letter';
+import {ILetter, ILetterTemplate} from '../../model/letter';
 
 @Component({
   selector: 'laji-kerttu-letter-annotation',
@@ -13,21 +13,25 @@ import {ILetterTemplate} from '../../model/letter';
 export class KerttuLetterAnnotationComponent implements OnChanges {
   // @Input() annotations: ILetterAnnotations;
   @Input() template: ILetterTemplate;
-  @Input() letter: any;
+  @Input() candidate: ILetter;
 
   letters: any[];
   annotations: ILetterAnnotations;
 
+  currentAnnotation: Annotation;
+  /*
   currentTemplate = 0;
   currentCandidate = 0;
   currentAnnotation: Annotation = undefined;
+   */
 
   annotation = Annotation;
 
-  private letterQueue: {templateIdx: number, candidateIdx: number}[];
-  private alertShown = false;
+  // private letterQueue: {templateIdx: number, candidateIdx: number}[];
+  // private alertShown = false;
 
-  @Output() annotationsChange = new EventEmitter<ILetterAnnotations>();
+  // @Output() annotationsChange = new EventEmitter<ILetterAnnotations>();
+  @Output() annotationChange = new EventEmitter<Annotation>();
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -36,7 +40,8 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.letters && this.annotations) {
+    this.currentAnnotation = undefined;
+    /*if (this.letters && this.annotations) {
       this.letterQueue = [];
       this.letters.forEach((letter, i) => {
         letter.candidates.forEach((candidate, j) => {
@@ -56,11 +61,11 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
       }
 
       this.currentAnnotation = this.getAnnotation();
-    }
+    }*/
   }
 
   onAnnotationChange(annotation: Annotation) {
-    this.currentAnnotation = annotation;
+    /*this.currentAnnotation = annotation;
     this.setAnnotation();
     this.letterQueue = this.letterQueue.filter(q => !(q.templateIdx === this.currentTemplate && q.candidateIdx === this.currentCandidate));
 
@@ -77,10 +82,10 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
         this.currentAnnotation = this.getAnnotation();
       }
       this.cdr.markForCheck();
-    }, 0);
+    }, 0);*/
   }
 
-  onCandidateChange(idx: string) {
+  /*onCandidateChange(idx: string) {
     this.currentCandidate = parseInt(idx, 10);
     this.currentAnnotation = this.getAnnotation();
   }
@@ -98,9 +103,9 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
     if (this.annotations[templateId]) {
       return this.annotations[templateId][candidateId];
     }
-  }
+  }*/
 
-  private setAnnotation(templateIdx = this.currentTemplate, candidateIdx = this.currentCandidate, annotation = this.currentAnnotation) {
+  /*private setAnnotation(templateIdx = this.currentTemplate, candidateIdx = this.currentCandidate, annotation = this.currentAnnotation) {
     const templateId = this.letters[templateIdx].template.id;
     const candidateId = this.letters[templateIdx].candidates[candidateIdx].id;
 
@@ -110,6 +115,6 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
     this.annotations[templateId][candidateId] = annotation;
 
     this.annotationsChange.emit(this.annotations);
-  }
+  }*/
 }
 
