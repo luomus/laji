@@ -1,9 +1,8 @@
-import {Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild} from '@angular/core';
-import { FFT, resample } from './FFT';
+import {Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, HostListener} from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
-import {select} from 'd3-selection';
-import {scaleLinear} from 'd3-scale';
-import { format } from 'd3-format';
+import {Selection, select} from 'd3-selection';
+import {ScaleLinear, scaleLinear} from 'd3-scale';
+import {AudioService} from '../../service/audio.service';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -13,11 +12,9 @@ import { format } from 'd3-format';
 export class AudioSpectrogramComponent implements OnChanges {
   @ViewChild('container', {static: true}) containerRef: ElementRef<HTMLDivElement>;
   @ViewChild('spectrogram', {static: true}) spectrogramRef: ElementRef<HTMLCanvasElement>;
-  @ViewChild('axes', {static: true}) axesRef: ElementRef<SVGElement>;
-  @ViewChild('scrollLine', {static: true}) scrollLineRef: ElementRef<HTMLCanvasElement>;
+  @ViewChild('chart', {static: true}) chartRef: ElementRef<SVGElement>;
 
   @Input() buffer: AudioBuffer;
-  @Input() colormap: any;
   @Input() nperseg = 512;
   @Input() noverlap = 256;
   @Input() currentTime: number;
@@ -26,136 +23,104 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() yRange: number[];
 
   private margin: { top: number, bottom: number, left: number, right: number} = { top: 10, bottom: 20, left: 30, right: 10};
+  private maxFreq: number;
+  private maxTime: number;
+  private xScale: ScaleLinear<number, number>;
+  private yScale: ScaleLinear<number, number>;
+  private scrollLine: Selection<SVGLineElement, any, any, any>;
 
-  constructor() {
+  constructor(
+    private audioService: AudioService
+  ) {}
+
+  @HostListener('window:resize')
+  onResize() {
+    const canvas = this.spectrogramRef.nativeElement;
+    if (canvas.height > 0) {
+      const elementWidth = this.containerRef.nativeElement.offsetWidth - this.margin.left - 20;
+      const elementHeight = canvas.height;
+      canvas.style.width = elementWidth + 'px';
+      canvas.style.height = elementHeight + 'px';
+
+      this.updateChart(elementWidth, elementHeight, this.maxFreq, this.maxTime);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.buffer && this.colormap) {
-      if ((changes.buffer || changes.colormap)) {
-        const {spectrogram, maxFreq, maxTime} = this.computeSpectrogram(this.buffer, this.nperseg, this.noverlap);
-        this.displaySpectrogram(spectrogram, maxFreq, maxTime);
+    if (this.buffer) {
+      if (changes.buffer) {
+        this.audioService.drawSpectrogramToCanvas(this.buffer, this.nperseg, this.noverlap, this.spectrogramRef.nativeElement).subscribe((result) => {
+          this.maxFreq = result.maxFreq;
+          this.maxTime = result.maxTime;
+          this.onResize();
+        });
       }
 
       if (changes.currentTime) {
-        this.drawScrollLine();
+        this.updateScrollLinePosition();
       }
     }
   }
 
-  private computeSpectrogram(buffer: AudioBuffer, nperseg: number, noverlap: number): {spectrogram: Uint8Array[], maxFreq: number, maxTime: number} {
-    const fft = new FFT(nperseg, buffer.sampleRate, 'hann');
-    const chanData = buffer.getChannelData(0);
-
-    const spectrogram = [];
-    let offset = 0;
-
-    while (offset + nperseg < chanData.length) {
-      const segment = chanData.slice(
-        offset,
-        offset + nperseg
-      );
-      const spectrum = fft.calculateSpectrum(segment);
-      const spectrogramColumn = new Uint8Array(nperseg / 2);
-      for (let j = 0; j < nperseg / 2; j++) {
-        spectrogramColumn[j] = Math.max(-255, Math.log10(spectrum[j]) * 45);
-      }
-      spectrogram.push(spectrogramColumn);
-      offset += nperseg - noverlap;
-    }
-
-    const maxFreq = Math.floor(buffer.sampleRate / 2);
-    const maxTime = buffer.duration;
-
-    return {spectrogram, maxFreq, maxTime};
-  }
-
-  private displaySpectrogram(spectrogram: Uint8Array[], maxFreq: number, maxTime: number) {
-    // spectrogram = resample(spectrogram, spectrogram.length / 2);
-
-    const canvas = this.spectrogramRef.nativeElement;
-    const scrollLineCanvas = this.scrollLineRef.nativeElement;
-    const axes = this.axesRef.nativeElement;
-    const width = spectrogram.length;
-    const height = spectrogram[0].length;
-
-    for (const canv of [canvas, scrollLineCanvas]) {
-      canv.width = width;
-      canv.height = height;
-    }
-
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, width, height);
-
-    for (let i = 0; i < spectrogram.length; i++) {
-      for (let j = 0; j < spectrogram[i].length; j++) {
-        const colormap = this.colormap[spectrogram[i][j]];
-        ctx.fillStyle =
-          'rgba(' +
-          colormap[0] * 256 +
-          ', ' +
-          colormap[1] * 256 +
-          ', ' +
-          colormap[2] * 256 +
-          ',' +
-          colormap[3] +
-          ')';
-        ctx.fillRect(i, spectrogram[i].length - 1 - j, 1, 1);
-      }
-    }
-
-    this.drawAxis(width, height, maxFreq, maxTime);
-
-    // this.drawScrollLine();
-  }
-
-  private drawAxis(width, height, maxFreq, maxTime) {
-    /*
-    const element = this.containerRef.nativeElement;
-    const width = element.offsetWidth - (this.margin.left + this.margin.right);
-    const height = element.offsetHeight - (this.margin.top + this.margin.bottom);
-     */
-
-    const svg = select(this.axesRef.nativeElement)
+  private updateChart(width, height, maxFreq, maxTime) {
+    const svg = select(this.chartRef.nativeElement)
       .attr('width', width + (this.margin.left + this.margin.right))
       .attr('height', height + (this.margin.top + this.margin.bottom));
 
-    const xScale = scaleLinear().domain([0, maxTime]).range([0, width]);
-    const yScale = scaleLinear().domain([maxFreq / 1000, 0]).range([0, height]);
+    svg.selectAll('*').remove();
 
-    const xAxis = axisBottom(xScale);
-    const yAxis = axisLeft(yScale);
+    this.xScale = scaleLinear().domain([0, maxTime]).range([0, width]);
+    this.yScale = scaleLinear().domain([maxFreq / 1000, 0]).range([0, height]);
 
+    const xAxis = axisBottom(this.xScale);
+    const yAxis = axisLeft(this.yScale);
+
+    // draw axes
     svg.append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
       .call(yAxis);
     svg.append('g')
       .attr('transform', `translate(${this.margin.left},${(height + this.margin.top)})`)
       .call(xAxis);
+
+    // x-axis label
+    svg.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('x', this.margin.left + width / 2)
+      .attr('y', height + this.margin.top + 35)
+      .text('Time (s)');
+
+    // y-axis label
+    svg.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', -this.margin.left + 25)
+      .attr('x', -this.margin.top - height / 2)
+      .text('Frequency (kHz)');
+
+    // draw red rectangle
+    const rectangle = svg.append('rect')
+    .attr('x', this.margin.left + this.xScale(this.xRange[0]))
+    .attr('y', this.margin.top)
+    .attr('width', this.xScale(this.xRange[1] - this.xRange[0]))
+    .attr('height', height)
+    .attr('stroke-width', 2)
+    .attr('stroke', 'red')
+    .attr('fill', 'none');
+
+    // draw scroll line
+    this.scrollLine = svg.append('line')
+      .attr('y1', this.margin.top)
+      .attr('y2', this.margin.top + height)
+      .attr('stroke-width', 2)
+      .attr('stroke', 'black');
+
+    this.updateScrollLinePosition();
   }
 
-  private drawScrollLine() {
-    const canvas = this.scrollLineRef.nativeElement;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const position = (this.currentTime / this.buffer.duration) * canvas.width;
-
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(position, 0);
-    ctx.lineTo(position, canvas.height);
-    ctx.stroke();
-  }
-
-  private clearCanvases() {
-    for (const canvas of [this.spectrogramRef.nativeElement, this.scrollLineRef.nativeElement]) {
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-  }
-
-  private drawRange() {
-
+  private updateScrollLinePosition() {
+    const position = this.margin.left + this.xScale(this.currentTime);
+    this.scrollLine.attr('x1', position);
+    this.scrollLine.attr('x2', position);
   }
 }

@@ -18,12 +18,12 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() yRange: number[];
 
   buffer: AudioBuffer;
-  spectrogramColormap$: any;
   currentTime = 0;
 
   isPlaying = false;
 
-  sampleRate = 22050;
+  // sampleRate = 22050;
+  sampleRate = 16000;
 
   private context: AudioContext;
   private source: AudioBufferSourceNode;
@@ -46,7 +46,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.spectrogramColormap$ = this.audioService.getColormap();
+
   }
 
   ngOnChanges(changes: SimpleChanges) {

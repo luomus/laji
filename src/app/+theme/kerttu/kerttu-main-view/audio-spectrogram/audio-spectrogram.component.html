@@ -1,7 +1,6 @@
 <laji-spinner [spinning]="!buffer" [overlay]="true">
   <div #container id="container">
-    <svg #axes></svg>
     <canvas #spectrogram [style.top]="margin.top + 'px'" [style.left]="(margin.left + 1) + 'px'" id="spectrogram"></canvas>
-    <canvas #scrollLine id="scrollLine"></canvas>
+    <svg #chart id="chart"></svg>
   </div>
 </laji-spinner>

@@ -1,16 +1,14 @@
 #container {
   position: relative;
+  margin-bottom: 20px; // space for x-axis label
+  margin-left: 20px; // space for y-axis label
 }
 
 #spectrogram {
   position: absolute;
 }
 
-#scrollLine {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 2;
+#chart {
+  overflow: visible;
+  position: relative;
 }
