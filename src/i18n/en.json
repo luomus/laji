@@ -1031,6 +1031,7 @@
   "result.showViewer": "Show observation",
   "result.showPrivateViewer": "Show unpublished observation",
   "result.latestObservationsLabel": "Unpublished observation",
+  "result.editDocument": "Edit",
   "result.taxonomicOrder": "Taxonomic order",
   "result.unit.id": "Observation identifier",
   "result.unit.abundanceString": "Number",
