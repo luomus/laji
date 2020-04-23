@@ -40,7 +40,9 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.currentAnnotation = undefined;
+    setTimeout(() => {
+      this.currentAnnotation = undefined;
+    }, 0);
     /*if (this.letters && this.annotations) {
       this.letterQueue = [];
       this.letters.forEach((letter, i) => {

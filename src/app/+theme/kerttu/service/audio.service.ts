@@ -2,10 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
-import {FFT} from './FFT';
+import {FFT, resample} from './FFT';
 
 @Injectable()
 export class AudioService {
+  private buffer$ = {};
+
   private colormaps = {};
   private colormaps$ = {};
 
@@ -13,12 +15,17 @@ export class AudioService {
   }
 
   public getAudioBuffer(url: string, context: AudioContext): Observable<AudioBuffer> {
-    return this.httpClient.get(url, { responseType: 'arraybuffer'})
-      .pipe(
-        switchMap((response: ArrayBuffer) => {
-          return context.decodeAudioData(response);
-        })
-      );
+    if (!this.buffer$[url]) {
+      this.buffer$[url] = this.httpClient.get(url, { responseType: 'arraybuffer'})
+        .pipe(
+          switchMap((response: ArrayBuffer) => {
+            return context.decodeAudioData(response);
+          }),
+          share()
+        );
+    }
+
+    return this.buffer$[url];
   }
 
   public extractSegment(buffer: AudioBuffer, context: AudioContext, startTime: number, endTime: number): AudioBuffer {
@@ -46,7 +53,7 @@ export class AudioService {
     : Observable<{ canvas: HTMLCanvasElement, maxFreq: number, maxTime: number }> {
     return this.getColormap().pipe(map(colormap => {
       const {spectrogram, maxFreq, maxTime} = this.computeSpectrogram(buffer, nperseg, noverlap);
-      this.drawSpectrogram(spectrogram, maxFreq, maxTime, colormap, canvas);
+      this.drawSpectrogram(spectrogram.length > 1000 ? resample(spectrogram, 1000) : spectrogram, maxFreq, maxTime, colormap, canvas);
       return {canvas, maxFreq, maxTime};
     }));
   }
