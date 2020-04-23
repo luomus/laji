@@ -55,7 +55,7 @@
   <section class="mb-8" *lajiLoggedIn="false">
     <div role="alert" class="alert alert-warning">
       {{ 'vihko.home.notLogged' | translate }}
-    </div> 
+    </div>
   </section>
 
   <section class="mb-8"> <!-- Kansalaistiede -->
@@ -75,12 +75,12 @@
       <ng-container *ngFor="let form of birdMonitoringForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
       </ng-container>
-      <laji-survey-box class="d-block mr-3" [comingSoonForm]="{
+      <!--laji-survey-box class="d-block mr-3" [comingSoonForm]="{
         'link': 'https://laji.fi/news/3617',
         'title': 'navigation.waterbird',
         'logo': 'https://cdn.laji.fi/images/logos/vesilintulaskenta_1.jpg'
        }"
-      ></laji-survey-box>
+      ></laji-survey-box-->
     </div>
   </section>
 
