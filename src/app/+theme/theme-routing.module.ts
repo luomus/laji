@@ -788,7 +788,6 @@ const routes: Routes = [
         path: 'form',
         pathMatch: 'full',
         component: FormComponent,
-        canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
         data: { displayFeedback: false }
       },
@@ -805,8 +804,7 @@ const routes: Routes = [
         pathMatch: 'full',
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-        canActivate: [OnlyLoggedIn, HasFormPermission],
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {
         path: 'ownSubmissions',
@@ -819,6 +817,11 @@ const routes: Routes = [
       formID: Global.forms.birdPointCount,
       noFormPermissionRedirect: '/theme/pistelaskenta',
       title: 'Maalintujen pistelaskenta',
+      navLinks: {
+        form: {
+          accessLevel: undefined
+        }
+      }
     }
   },
   /*
