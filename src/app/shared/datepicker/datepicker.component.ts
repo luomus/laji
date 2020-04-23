@@ -1,5 +1,5 @@
 /* tslint:disable:no-use-before-declare */
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 /**
  * Originally from here: https://github.com/jkuri/ng2-datepicker
  *
@@ -42,7 +42,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import * as moment from 'moment';
 
 export interface CalendarDate {
@@ -87,7 +87,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   private el: Element;
   private currentValue;
 
-  private valueSource = new Subject();
+  private valueSource = new BehaviorSubject<string>('');
   private value$: Subscription;
 
   constructor(
@@ -145,6 +145,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   private sendNewValue(value) {
     this.onChangeCallback(value);
     this.select.emit(value);
+    this.valueSource.next(value || '');
     this.cd.markForCheck();
   }
 
@@ -162,8 +163,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
       }
     }, 10);
     this.value$ = this.valueSource.pipe(
-      debounceTime(500))
-      .subscribe((val) => this.value = val);
+      debounceTime(500),
+      distinctUntilChanged(),
+    ).subscribe((val) => this.value = val);
   }
 
   ngOnDestroy() {

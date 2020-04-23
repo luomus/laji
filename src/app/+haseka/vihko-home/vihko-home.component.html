@@ -4,14 +4,26 @@
     <h3><a [routerLink]="['/vihko', 'MHL.51'] | localize" translate>vihko.home.form.mobile</a></h3>
     <p translate>vihko.home.form.mobile.desc</p>
     <ul>
-      <li><a [routerLink]="['/about', '2903'] | localize" translate>vihko.home.form.mobile.1</a></li>
+      <li>
+        <div [ngSwitch]="currentLang">
+          <a *ngSwitchCase="'sv'" [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.mobile.1</a>
+          <a *ngSwitchCase="'en'" [routerLink]="['/about', '3825'] | localize" translate>vihko.home.form.mobile.1</a>
+          <a *ngSwitchCase="'fi'" [routerLink]="['/about', '2903'] | localize" translate>vihko.home.form.mobile.1</a>
+        </div>
+      </li>
     </ul>
   </div>
   <div class="form-card strong xs:basis-0 sm:basis-5 basis-3 m-3">
     <h3><a [routerLink]="['/vihko', 'JX.519'] | localize" translate>vihko.home.form.trip</a></h3>
     <p translate>vihko.home.form.trip.desc</p>
     <ul>
-      <li><a [routerLink]="['/about', '2858'] | localize" translate>vihko.home.form.trip.1</a></li>
+      <li>
+        <div [ngSwitch]="currentLang">
+          <a *ngSwitchCase="'sv'" [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.mobile.1</a>
+          <a *ngSwitchCase="'en'" [routerLink]="['/about', '3825'] | localize" translate>vihko.home.form.mobile.1</a>
+          <a *ngSwitchCase="'fi'" [routerLink]="['/about', '2858'] | localize" translate>vihko.home.form.mobile.1</a>
+        </div>
+      </li>
     </ul>
   </div>
   <!--
@@ -27,8 +39,20 @@
     <h3><a routerLink="" translate>vihko.home.form.collection</a></h3>
     <p translate>vihko.home.form.collection.desc</p>
     <ul>
-      <li><a [routerLink]="['/about', '3712'] | localize" translate>vihko.home.form.collection.1</a></li>
-      <li><a [routerLink]="['/about', '3328'] | localize" translate>vihko.home.form.collection.2</a></li>
+      <li>
+        <div [ngSwitch]="currentLang">
+          <a *ngSwitchCase="'sv'" [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.collection.1</a>
+          <a *ngSwitchCase="'en'" [routerLink]="['/about', '3825'] | localize" translate>vihko.home.form.collection.1</a>
+          <a *ngSwitchCase="'fi'" [routerLink]="['/about', '3712'] | localize" translate>vihko.home.form.collection.1</a>
+        </div>
+      </li>
+      <li>
+        <div [ngSwitch]="currentLang">
+          <a *ngSwitchCase="'sv'" [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.collection.2</a>
+          <a *ngSwitchCase="'en'" [routerLink]="['/about', '3825'] | localize" translate>vihko.home.form.collection.2</a>
+          <a *ngSwitchCase="'fi'" [routerLink]="['/about', '3328'] | localize" translate>vihko.home.form.collection.2</a>
+        </div>
+      </li>
     </ul>
   </div>
   <div class="form-card m-3 xs:basis-0 sm:basis-5 basis-3">
@@ -36,14 +60,26 @@
     <p translate>vihko.home.form.save.desc</p>
     <ul>
       <li><strong><a [routerLink]="['/vihko', 'tools', 'generate'] | localize" translate>vihko.home.form.save.1</a></strong></li>
-      <li><a [routerLink]="['/about', '3412'] | localize" translate>vihko.home.form.save.2</a></li>
+      <li>
+        <div [ngSwitch]="currentLang">
+          <a *ngSwitchCase="'sv'" [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.save.2</a>
+          <a *ngSwitchCase="'en'" [routerLink]="['/about', '3825'] | localize" translate>vihko.home.form.save.2</a>
+          <a *ngSwitchCase="'fi'" [routerLink]="['/about', '3412'] | localize" translate>vihko.home.form.save.2</a>
+        </div>
+      </li>
     </ul>
   </div>
   <div class="form-card m-3 xs:basis-0 sm:basis-5 basis-3">
     <h3><a [routerLink]="['/vihko', 'templates'] | localize" translate>vihko.home.form.pre</a></h3>
     <p translate>vihko.home.form.pre.desc</p>
     <ul>
-      <li><a [routerLink]="['/about', '3709'] | localize" translate>vihko.home.form.pre.1</a></li>
+      <li>
+        <div [ngSwitch]="currentLang">
+          <a *ngSwitchCase="'sv'" [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.pre.1</a>
+          <a *ngSwitchCase="'en'" [routerLink]="['/about', '3825'] | localize" translate>vihko.home.form.pre.1</a>
+          <a *ngSwitchCase="'fi'" [routerLink]="['/about', '3709'] | localize" translate>vihko.home.form.pre.1</a>
+        </div>
+      </li>
     </ul>
   </div>
 </div>

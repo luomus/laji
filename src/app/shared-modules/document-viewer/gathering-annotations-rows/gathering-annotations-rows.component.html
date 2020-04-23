@@ -11,6 +11,9 @@
       </laji-row>
     </ng-template>
   </ng-container>
+  <ng-container *ngIf="(unit.unitId === highlight) && !unit.wild">
+    <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="'observation.active.nativeOccurrence.notWild' | translate"></laji-row>
+  </ng-container>
 </ng-container>
 <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="false">
   {{ date | amDateFormat:'L' }} {{ time }}

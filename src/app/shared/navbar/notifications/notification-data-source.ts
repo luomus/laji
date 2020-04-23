@@ -3,40 +3,27 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { NotificationsFacade } from './notifications.facade';
 import { Notification } from '../../model/Notification';
 import { takeUntil } from 'rxjs/operators';
-
-const arrPushFront = <T>(amt: number, value: any, arr: Array<T>): T[] => new Array(amt).fill(value).concat(arr);
-const setFilter = <T>(set: Set<T>, callbackfn: (int) => boolean) => new Set([...set].filter(page => callbackfn(page)));
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 export class NotificationDataSource extends DataSource<Notification> {
   private unsubscribe$ = new Subject<void>();
 
-  private data$ = new BehaviorSubject<Notification[]>(undefined);
   private cachedData: Notification[] = [];
+  private data$ = new BehaviorSubject<(Notification | undefined)[]>(this.cachedData);
   private fetchedPages = new Set<number>();
-  private lastViewedRange: ListRange = {start: 0, end: 1};
 
-  constructor(private facade: NotificationsFacade) {
+  constructor(private facade: NotificationsFacade, private virtualScroll: CdkVirtualScrollViewport) {
     super();
-    facade.notifications$.pipe(takeUntil(this.unsubscribe$)).subscribe((notifications) => {
+    facade.notifications$.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((notifications) => {
       const newNotificationsExist = notifications.total > this.cachedData.length;
       const notificationsWereRemoved = notifications.total < this.cachedData.length;
-      if (newNotificationsExist) {
-        // notifications are assumed to be received in chronological order
-        const newNotificationAmount = notifications.total - this.cachedData.length;
-        this.cachedData = arrPushFront(newNotificationAmount, undefined, this.cachedData);
-
-        // shift fetched page numbers forward
-        const shiftAmt = this.getPageForIndex(newNotificationAmount - 1);
-        this.fetchedPages = new Set([...this.fetchedPages.values()].map((pageNumber) => pageNumber + shiftAmt));
-        this.fetchedPages = setFilter(this.fetchedPages, (page) => page <= this.getPageForIndex(notifications.total - 1));
-      } else if (notificationsWereRemoved) {
-        this.cachedData = new Array(notifications.total).fill(undefined);
-        this.lastViewedRange.end = Math.min(this.lastViewedRange.end, notifications.total - 1);
-        this.fetchedPages.clear();
-      }
-      this.fetchedPages.add(notifications.currentPage - 1);
       if (newNotificationsExist || notificationsWereRemoved) {
-        this.fetchRange(this.lastViewedRange);
+        this.fetchedPages.clear();
+        this.fetchedPages.add(notifications.currentPage);
+        this.cachedData = new Array(notifications.total).fill(undefined);
+        this.fetchRange(virtualScroll.getRenderedRange());
       }
       this.cachedData.splice(
         (notifications.currentPage - 1) * notifications.pageSize,
@@ -49,9 +36,7 @@ export class NotificationDataSource extends DataSource<Notification> {
 
   connect(collectionViewer: CollectionViewer): Observable<Notification[]> {
     collectionViewer.viewChange.pipe(takeUntil(this.unsubscribe$)).subscribe((range) => {
-      const indexRange: ListRange = {...range, end: range.end - 1};
-      this.lastViewedRange = indexRange;
-      this.fetchRange(indexRange);
+      this.fetchRange(range);
     });
     return this.data$.asObservable();
   }
@@ -62,37 +47,29 @@ export class NotificationDataSource extends DataSource<Notification> {
   }
 
   removeNotificationFromCache(id: string) {
-    this.cachedData[this.cachedData.findIndex((notification) => notification.id === id)] = undefined;
+    this.cachedData = this.cachedData.filter(notification => notification.id !== id);
     this.data$.next(this.cachedData);
   }
 
   removeAllNotificationsFromCache() {
-    this.cachedData = this.cachedData.map((notification) => undefined);
+    this.cachedData = [];
     this.data$.next(this.cachedData);
   }
 
-  private getFirstMissingIndexWithin = (range: ListRange) =>
-  [...this.cachedData].splice(range.start, range.end).findIndex((d) => !d)
-  private getLastMissingIndexWithin = (range: ListRange) =>
-  [...this.cachedData].splice(range.start, range.end).reverse().findIndex((d) => !d)
-
   private fetchRange(range: ListRange) {
-    const firstMissingIndex = this.getFirstMissingIndexWithin(range);
-    if (firstMissingIndex >= 0) {
-      const lastMissingIndex = this.getLastMissingIndexWithin(range);
-      const startPage = this.getPageForIndex(range.start + firstMissingIndex);
-      const endPage = this.getPageForIndex(range.end - lastMissingIndex);
-      this.fetchPages(startPage, endPage);
+    const pageStart = this.getPageForIndex(range.start);
+    const pageEnd = this.getPageForIndex(range.end);
+    for (let i = pageStart; i <= pageEnd; i++) {
+      this.fetchPages(i);
     }
   }
 
-  private fetchPages(start: number, end: number) {
-    for (let i = start; i <= end; i++) {
-      if (!this.fetchedPages.has(i)) {
-        this.facade.loadNotifications(i);
-        this.fetchedPages.add(i);
-      }
+  private fetchPages(page: number) {
+    if (this.fetchedPages.has(page)) {
+      return;
     }
+    this.fetchedPages.add(page);
+    this.facade.loadNotifications(page);
   }
 
   private getPageForIndex(index: number): number {

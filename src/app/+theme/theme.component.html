@@ -114,6 +114,16 @@
               {{ 'theme.syke-butterfly.intro' | translate }}
             </td>
           </tr>
+          <tr *lajiForTypes="['dev']">
+            <th>
+              <a [routerLink]="['/theme/pistelaskenta'] | localize">
+                {{ 'navigation.birdPointCount' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.birdPointCount.intro' | translate }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

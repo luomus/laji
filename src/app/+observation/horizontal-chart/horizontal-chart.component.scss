@@ -1,3 +1,6 @@
+@import 'vars';
+@import '../../../styles/styles.scss';
+
 div {
   &.loading-mask {
     position: absolute;
@@ -17,8 +20,8 @@ div {
   &.stat-info {
     position: absolute;
     z-index: 2;
-    right: 50px;
-    top: 25px;
+    right: 28px;
+    top: 20px;
   }
   &.noData {
     position: absolute;
@@ -47,3 +50,5 @@ select {
 span {
   font-size: 100%;
 }
+
+

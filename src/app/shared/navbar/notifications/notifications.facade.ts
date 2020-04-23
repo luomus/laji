@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, forkJoin, Subject, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of, from } from 'rxjs';
 import { PagedResult } from 'app/shared/model/PagedResult';
-import { distinctUntilChanged, map, switchMap, tap, take, mergeMap, concatMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from 'app/shared/service/laji-api.service';
 import { UserService } from 'app/shared/service/user.service';
 import { Notification } from 'app/shared/model/Notification';
@@ -85,7 +85,7 @@ export class NotificationsFacade {
     distinctUntilChanged()
   );
 
-  pageSize = 5;
+  readonly pageSize = 20;
 
   constructor(
     private userService: UserService,
@@ -162,6 +162,7 @@ export class NotificationsFacade {
   checkForNewNotifications() {
     this.graphQLService.query<IRefreshDataResult>({
       query: REFRESH_QUERY,
+      fetchPolicy: 'network-only',
       variables: {personToken: this.userService.getToken(), pageSize: this.pageSize}
     }).pipe(
       map(({data}) => data),
@@ -199,7 +200,10 @@ export class NotificationsFacade {
       tap((notifications) => this.notificationsReducer(
           {...notifications, results: notifications.results.map((notification) => ({...notification, seen: true}))}
       )),
-      switchMap((notifications) => forkJoin(notifications.results.map((notification) => this.subscribeMarkAsSeen(notification))))
+      switchMap((notifications) => from(notifications.results)),
+      filter(notification => !notification.seen),
+      concatMap(notification => this.subscribeMarkAsSeen(notification)),
+      toArray(),
     ));
   }
 
@@ -211,17 +215,24 @@ export class NotificationsFacade {
 
   removeAll(): Observable<void> {
     return subscribeWithWrapper(this.notifications$.pipe(
+      take(1),
       switchMap((notifications) =>  {
         const count = Math.ceil(notifications.total / NOTIFICATION_MAX_PAGESIZE);
         const arr = new Array(count).fill('').map((val, idx) => idx + 1);
-        return of(...arr);
+        return from(arr);
       }),
       concatMap((idx: number) => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
         personToken: this.userService.getToken(),
         page: idx,
         pageSize: NOTIFICATION_MAX_PAGESIZE
-      })),
-      switchMap((notifications) => forkJoin(notifications.results.map((notification) => this.subscribeRemove(notification))))
+      }).pipe(
+        catchError(() => of({results: []}))
+      )),
+      toArray(),
+      switchMap(data => from(data)),
+      concatMap((notifications) => from(notifications.results)),
+      concatMap(notification => this.subscribeRemove(notification)),
+      toArray()
     ));
   }
 }

@@ -642,6 +642,34 @@ const routes: Routes = [
     }
   },
   {
+    path: 'sieniatlas',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'ownSubmissions',
+        pathMatch: 'full',
+        component: ThemeOwnSubmissionsComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+      }
+    ],
+    data: {
+      formID: Global.forms.fungi,
+      noFormPermissionRedirect: '/theme/sieniatlas',
+      title: 'Sieniatlas',
+      instructions: '3901',
+    }
+  },
+  {
     path: 'syke-perhoset',
     component: MonitoringThemeBaseComponent,
     children: [
@@ -744,6 +772,54 @@ const routes: Routes = [
         redirectTo: `places/${Global.collections.waterbird}/${Global.forms.waterbirdJuvenileForm}`
       }
     ]
+  },
+  {
+    path: 'pistelaskenta',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'places',
+        pathMatch: 'full',
+        redirectTo: 'form',
+      },
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'places/:collectionId/:formId',
+        pathMatch: 'full',
+        component: NamedPlaceComponent,
+        resolve: { data: NamedPlaceResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+      },
+      {
+        path: 'ownSubmissions',
+        pathMatch: 'full',
+        component: ThemeOwnSubmissionsComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+      }
+    ],
+    data: {
+      formID: Global.forms.birdPointCount,
+      noFormPermissionRedirect: '/theme/pistelaskenta',
+      title: 'Maalintujen pistelaskenta',
+    }
   },
   /*
     path: 'kerttu',

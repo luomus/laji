@@ -30,6 +30,7 @@ import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
 import { ObservationTableSettingsComponent } from './observation-table-settings.component';
+import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-observation-table',
@@ -89,6 +90,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   columnSelector = new ColumnSelector;
   numberColumnSelector = new ColumnSelector;
+  @LocalStorage('onlycount') onlyCount;
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -125,7 +127,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     private logger: Logger,
     private translate: TranslateService,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private localSt: LocalStorageService
   ) {
     this.allColumns = tableColumnService.getAllColumns();
     this.columnGroups = tableColumnService.getColumnGroups();
@@ -155,6 +158,16 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.lang = this.translate.currentLang;
     this.initColumns();
     this.fetchPage(this.page);
+
+    this.localSt.observe('onlycount')
+    .subscribe((value) => {
+      this.onlyCount = value;
+      this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
+      this.changeDetectorRef.markForCheck();
+      this.refreshTable();
+      this.initColumns();
+      this.fetchPage(this.page);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
