@@ -11,7 +11,7 @@
       </laji-row>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf="(unit.unitId === highlight) && !unit.wild">
+  <ng-container *ngIf="(unit.unitId === highlight) && unit.wild !== undefined && unit.wild === false">
     <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="'observation.active.nativeOccurrence.notWild' | translate"></laji-row>
   </ng-container>
 </ng-container>
