@@ -6,7 +6,7 @@ import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
-import {Annotation} from '../model/annotation';
+import {LetterAnnotation} from '../model/letter';
 import {ILetter, ILetterTemplate} from '../model/letter';
 
 @Component({
@@ -36,12 +36,13 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   selectedTaxonIds: string[];
 
-  letterTemplate$: Observable<ILetterTemplate>;
-  letterCandidate$: Observable<ILetter>;
-  currentTemplateId: number;
+  letterTemplate: ILetterTemplate;
+  letterCandidate: ILetter;
 
   private vmSub: Subscription;
   private selectedTaxonIdsSub: Subscription;
+  private letterTemplateSub: Subscription;
+  private letterCandidateSub: Subscription;
 
   constructor(
     private kerttuApi: KerttuApi,
@@ -63,20 +64,23 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     });
 
     this.vmSub = this.vm$.subscribe(vm => {
-      this.letterTemplate$ = undefined;
-      this.letterCandidate$ = undefined;
-
-      if (vm.step === Step.fillExpertise) {
+      if (vm.step === Step.fillExpertise && !this.selectedTaxonIdsSub) {
         this.selectedTaxonIdsSub = this.personService.personFindProfileByToken(this.userService.getToken()).subscribe((profile) => {
           this.selectedTaxonIds = profile.taxonExpertise || [];
           this.cdr.markForCheck();
         });
-      } else if (vm.step === Step.annotateLetters) {
-        this.letterTemplate$ = this.kerttuApi.getNextLetterTemplate(this.userService.getToken())
+      } else if (vm.step === Step.annotateLetters && !this.letterTemplateSub) {
+        this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken())
           .pipe(tap(template => {
-            this.currentTemplateId = template.id;
-            this.letterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), this.currentTemplateId);
-          }));
+            this.letterCandidateSub = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), template.id).subscribe(candidate => {
+              this.letterCandidate = candidate;
+              this.cdr.markForCheck();
+            });
+          }))
+          .subscribe(template => {
+            this.letterTemplate = template;
+            this.cdr.markForCheck();
+          });
       } else if (vm.step === Step.annotateRecordings) {
 
       }
@@ -89,6 +93,12 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     }
     if (this.selectedTaxonIdsSub) {
       this.selectedTaxonIdsSub.unsubscribe();
+    }
+    if (this.letterTemplateSub) {
+      this.letterTemplateSub.unsubscribe();
+    }
+    if (this.letterCandidateSub) {
+      this.letterCandidateSub.unsubscribe();
     }
   }
 
@@ -119,8 +129,15 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  onLetterAnnotationChange(annotation: Annotation) {
-    this.letterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), this.currentTemplateId);
+  onLetterAnnotationChange(annotation: LetterAnnotation) {
+    this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, this.letterCandidate.id, annotation)
+      .pipe(
+        switchMap(() => this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), this.letterTemplate.id))
+      )
+      .subscribe(candidate => {
+        this.letterCandidate = candidate;
+        this.cdr.markForCheck();
+      });
   }
 
   private getSaveObservable(step: Step): Observable<any> {

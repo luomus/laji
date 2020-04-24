@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import {Step} from './kerttu.facade';
-import {IRecording, IRecordingWithCandidates} from '../model/recording';
-import {ILetterAnnotations, IRecordingAnnotations} from '../model/annotation';
-import {ILetter, ILetterTemplate} from '../model/letter';
+import {ILetter, ILetterTemplate, LetterAnnotation} from '../model/letter';
 
 @Injectable()
 export class KerttuApi {
@@ -39,7 +37,6 @@ export class KerttuApi {
 
   public getNextLetterTemplate(personToken: string): Observable<ILetterTemplate> {
     const path = this.basePath + '/letter/nextTemplate';
-
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
@@ -52,7 +49,6 @@ export class KerttuApi {
 
   public getNextLetterCandidate(personToken: string, templateId: number): Observable<ILetter> {
     const path = this.basePath + '/letter/' + templateId + '/nextCandidate';
-
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
@@ -62,6 +58,19 @@ export class KerttuApi {
         })
       );
   }
+
+  public setLetterAnnotation(personToken: string, templateId: number, candidateId: number, annotation: LetterAnnotation): Observable<LetterAnnotation> {
+    const path = this.basePath + '/letter/annotation/' + templateId + '/' + candidateId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.put(path, { annotation }, { params })
+      .pipe(
+        map((response: {annotation: LetterAnnotation}) => {
+          return response.annotation;
+        })
+      );
+  }
+
   /*
   public getLetterCandidateTaxonList(personToken: string): Observable<string[]> {
     const path = this.basePath + '/letters/taxa';

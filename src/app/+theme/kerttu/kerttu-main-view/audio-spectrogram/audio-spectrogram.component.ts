@@ -64,7 +64,7 @@ export class AudioSpectrogramComponent implements OnChanges {
           this.onResize();
           setTimeout(() => {
             this.spectrogramReady.emit(true);
-          });
+          }, 0);
           this.cdr.markForCheck();
         });
       }
@@ -100,7 +100,7 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('text-anchor', 'middle')
       .attr('x', this.margin.left + width / 2)
       .attr('y', height + this.margin.top + 35)
-      .text('Time (s)');
+      .text('Aika (s)');
 
     // y-axis label
     svg.append('text')
@@ -108,7 +108,7 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('transform', 'rotate(-90)')
       .attr('y', -this.margin.left + 25)
       .attr('x', -this.margin.top - height / 2)
-      .text('Frequency (kHz)');
+      .text('Taajuus (kHz)');
 
     // draw red rectangle
     const rectangle = svg.append('rect')

@@ -8,3 +8,9 @@ export interface ILetterTemplate extends ILetter {
   taxonId: string;
   yRange: number[];
 }
+
+export enum LetterAnnotation {
+  yes,
+  no,
+  unsure
+}

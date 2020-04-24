@@ -14,8 +14,8 @@
     ></laji-expertise-form>
     <div *ngIf="vm.step === step.annotateLetters">
       <laji-kerttu-letter-annotation
-        [template]="letterTemplate$ | async"
-        [candidate]="letterCandidate$ | async"
+        [template]="letterTemplate"
+        [candidate]="letterCandidate"
         (annotationChange)="onLetterAnnotationChange($event)"
       ></laji-kerttu-letter-annotation>
     </div>

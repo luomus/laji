@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {Annotation} from '../../model/annotation';
+import {LetterAnnotation} from '../../model/letter';
 import {ILetter, ILetterTemplate} from '../../model/letter';
 
 @Component({
@@ -11,14 +11,14 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
   @Input() template: ILetterTemplate;
   @Input() candidate: ILetter;
 
-  currentAnnotation: Annotation;
+  currentAnnotation: LetterAnnotation;
 
-  annotation = Annotation;
+  annotation = LetterAnnotation;
 
   loadingTemplate = false;
   loadingCandidate = false;
 
-  @Output() annotationChange = new EventEmitter<Annotation>();
+  @Output() annotationChange = new EventEmitter<LetterAnnotation>();
 
   constructor(
     private cdr: ChangeDetectorRef
