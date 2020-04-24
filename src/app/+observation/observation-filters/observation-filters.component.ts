@@ -10,6 +10,7 @@ export class ObservationFiltersComponent {
 
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
+  @Input() onlyCount = true;
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
 
   constructor() { }
