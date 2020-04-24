@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
-import {FFT, resample} from './FFT';
+import {FFT} from './FFT';
 
 @Injectable()
 export class AudioService {
@@ -53,37 +53,19 @@ export class AudioService {
     : Observable<{ canvas: HTMLCanvasElement, maxFreq: number, maxTime: number }> {
     return this.getColormap().pipe(map(colormap => {
       const {spectrogram, maxFreq, maxTime} = this.computeSpectrogram(buffer, nperseg, noverlap);
-      this.drawSpectrogram(spectrogram.length > 1000 ? resample(spectrogram, 1000) : spectrogram, maxFreq, maxTime, colormap, canvas);
+      const imageData = this.spectrogramToImageData(spectrogram, colormap);
+      this.drawImage(imageData, canvas);
       return {canvas, maxFreq, maxTime};
     }));
   }
 
-  private drawSpectrogram(spectrogram: Uint8Array[], maxFreq: number, maxTime: number, colormap: any, canvas: HTMLCanvasElement) {
-    const width = spectrogram.length;
-    const height = spectrogram[0].length;
-
-    canvas.width = width;
-    canvas.height = height;
+  private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
+    canvas.width = data.width;
+    canvas.height = data.height;
 
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, width, height);
-
-    for (let i = 0; i < spectrogram.length; i++) {
-      for (let j = 0; j < spectrogram[i].length; j++) {
-        const color = colormap[spectrogram[i][j]];
-        ctx.fillStyle =
-          'rgba(' +
-          color[0] * 256 +
-          ', ' +
-          color[1] * 256 +
-          ', ' +
-          color[2] * 256 +
-          ',' +
-          color[3] +
-          ')';
-        ctx.fillRect(i, spectrogram[i].length - 1 - j, 1, 1);
-      }
-    }
+    ctx.clearRect(0, 0, data.width, data.height);
+    ctx.putImageData(data, 0, 0);
   }
 
   private computeSpectrogram(buffer: AudioBuffer, nperseg: number, noverlap: number): {spectrogram: Uint8Array[], maxFreq: number, maxTime: number} {
@@ -111,6 +93,22 @@ export class AudioService {
     const maxTime = buffer.duration;
 
     return {spectrogram, maxFreq, maxTime};
+  }
+
+  private spectrogramToImageData(spect: Uint8Array[], colormap: any): ImageData {
+    const data = new Uint8ClampedArray(spect.length * spect[0].length * 4);
+
+    for (let i = 0; i < spect.length; i++) {
+      for (let j = 0; j < spect[0].length; j++) {
+        const color = colormap[spect[i][spect[0].length - 1 - j]];
+        data[4 * j * spect.length + 4 * i] = color[0] * 256;
+        data[4 * j * spect.length + 4 * i + 1] = color[1] * 256;
+        data[4 * j * spect.length + 4 * i + 2] = color[2] * 256;
+        data[4 * j * spect.length + 4 * i + 3] = color[3] * 256;
+      }
+    }
+
+    return new ImageData(data, spect.length, spect[0].length);
   }
 
   private getColormap(colormap: 'viridis' = 'viridis'): Observable<any> {
