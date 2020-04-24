@@ -142,7 +142,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
           return res.map(r => {
             this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
             this.subBackgroundColors.push('#3498db');
-            this.subLabelBarChart.push(r.label ? (r.label.vernacularName ? r.label.vernacularName : r.label.scientificName) : '');
+            this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
           });
         })
       )
