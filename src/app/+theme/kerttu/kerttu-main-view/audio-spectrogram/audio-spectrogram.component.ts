@@ -1,8 +1,9 @@
-import {Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, HostListener} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, HostListener, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
 import {Selection, select} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
 import {AudioService} from '../../service/audio.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -22,6 +23,10 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() xRange: number[];
   @Input() yRange: number[];
 
+  @Output() spectrogramReady = new EventEmitter<boolean>();
+
+  private drawSub: Subscription;
+
   private margin: { top: number, bottom: number, left: number, right: number} = { top: 10, bottom: 20, left: 30, right: 10};
   private maxFreq: number;
   private maxTime: number;
@@ -30,7 +35,8 @@ export class AudioSpectrogramComponent implements OnChanges {
   private scrollLine: Selection<SVGLineElement, any, any, any>;
 
   constructor(
-    private audioService: AudioService
+    private audioService: AudioService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   @HostListener('window:resize')
@@ -47,18 +53,24 @@ export class AudioSpectrogramComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.buffer) {
-      if (changes.buffer) {
-        this.audioService.drawSpectrogramToCanvas(this.buffer, this.nperseg, this.noverlap, this.spectrogramRef.nativeElement).subscribe((result) => {
+    if (changes.buffer) {
+      if (this.drawSub) {
+        this.drawSub.unsubscribe();
+      }
+      if (this.buffer) {
+        this.drawSub = this.audioService.drawSpectrogramToCanvas(this.buffer, this.nperseg, this.noverlap, this.spectrogramRef.nativeElement).subscribe((result) => {
           this.maxFreq = result.maxFreq;
           this.maxTime = result.maxTime;
           this.onResize();
+          setTimeout(() => {
+            this.spectrogramReady.emit(true);
+          });
+          this.cdr.markForCheck();
         });
       }
-
-      if (changes.currentTime) {
-        this.updateScrollLinePosition();
-      }
+    }
+    if (changes.currentTime && this.scrollLine) {
+      this.updateScrollLinePosition();
     }
   }
 

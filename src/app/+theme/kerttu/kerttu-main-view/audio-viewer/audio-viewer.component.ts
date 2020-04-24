@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import { AudioService } from '../../service/audio.service';
 import { DOCUMENT } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -27,6 +27,9 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   sampleRate = 22050;
   // sampleRate = 16000;
 
+  loading = false;
+  @Output() audioLoading = new EventEmitter<boolean>();
+
   private context: AudioContext;
   private source: AudioBufferSourceNode;
   private startOffset = 0;
@@ -48,8 +51,14 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     this.clear();
+    this.setAudioLoading(true);
 
     if (this.recording) {
+      if (this.audioSub) {
+        this.audioSub.unsubscribe();
+      }
+      this.buffer = undefined;
+
       this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
       this.audioSub = this.audioService.getAudioBuffer(this.recording, this.context).subscribe((buffer) => {
         if (this.xRangePadding != null) {
@@ -60,7 +69,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
             this.start = 0;
           }
           if (this.stop > buffer.duration) {
-            this.start = Math.max(this.start + (this.stop - buffer.duration), 0);
+            this.start = Math.max(this.start - (this.stop - buffer.duration), 0);
             this.stop = buffer.duration;
           }
 
@@ -149,5 +158,10 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.currentTime = 0;
     this.isPlaying = false;
     this.source = undefined;
+  }
+
+  private setAudioLoading(loading: boolean) {
+    this.loading = loading;
+    this.audioLoading.emit(loading);
   }
 }

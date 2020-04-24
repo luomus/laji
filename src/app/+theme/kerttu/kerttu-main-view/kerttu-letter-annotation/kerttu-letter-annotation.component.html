@@ -11,52 +11,34 @@
       [undefinedText]="'theme.kerttu.notSure' | translate"
       [showUndefined]="true"
       [value]="currentAnnotation"
+      [disabled]="!template || !candidate || loadingTemplate || loadingCandidate"
     >
       ></laji-three-state-switch>
   </div>
   <div class="col-md-6">
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
-    <laji-spinner [spinning]="!template">
-      <laji-audio-viewer
-        *ngIf="template"
-        [recording]="template.recording"
-        [xRangePadding]="2"
-        [xRange]="template.xRange"
-        [yRange]="template.yRange"
-      ></laji-audio-viewer>
-    </laji-spinner>
+    <laji-audio-viewer
+      [recording]="template?.recording"
+      [xRangePadding]="2"
+      [xRange]="template?.xRange"
+      [yRange]="template?.yRange"
+      (audioLoading)="loadingTemplate = $event"
+    ></laji-audio-viewer>
   </div>
   <div class="col-md-6">
-    <h4>Kirjainkandidaatti</h4>
-    <laji-spinner [spinning]="!candidate">
-      <laji-audio-viewer
-        *ngIf="candidate"
-        [recording]="candidate.recording"
-        [xRangePadding]="2"
-        [xRange]="candidate.xRange"
-      ></laji-audio-viewer>
-    </laji-spinner>
+    <h4>{{ 'theme.kerttu.letterCandidate' | translate }}</h4>
+    <laji-audio-viewer
+      [recording]="candidate?.recording"
+      [xRangePadding]="2"
+      [xRange]="candidate?.xRange"
+      (audioLoading)="loadingCandidate = $event"
+    ></laji-audio-viewer>
   </div>
   <div class="col-md-12">
-    <h4>Kirjainkandidaatti (pidempi pätkä)</h4>
-    <laji-spinner [spinning]="!candidate">
-      <laji-audio-viewer
-        *ngIf="candidate"
-        [recording]="candidate.recording"
-        [xRange]="candidate.xRange"
-      ></laji-audio-viewer>
-    </laji-spinner>
-  </div>
-  <!--div class="col-md-6">
-    <h4 class="kerttu-select">{{ 'theme.kerttu.letter' | translate }}
-      <select class="form-control" [value]="currentCandidate" (change)="onCandidateChange(letterSelect.value)" #letterSelect>
-        <option *ngFor="let item of letters[currentTemplate].candidates; let i = index" [value]="i">
-          {{ i + 1 }}
-        </option>
-      </select>/{{ letters[currentTemplate].candidates.length }}
-    </h4>
+    <h4>{{ 'theme.kerttu.letterCandidateLonger' | translate }}</h4>
     <laji-audio-viewer
-      [recording]="letters[currentTemplate].candidates[currentCandidate]"
+      [recording]="candidate?.recording"
+      [xRange]="candidate?.xRange"
     ></laji-audio-viewer>
-  </div!-->
+  </div>
 </div>
