@@ -130,7 +130,9 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   }
 
   onLetterAnnotationChange(annotation: LetterAnnotation) {
-    this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, this.letterCandidate.id, annotation)
+    const candidateId = this.letterCandidate.id;
+    this.letterCandidate = undefined;
+    this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
       .pipe(
         switchMap(() => this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), this.letterTemplate.id))
       )
