@@ -870,6 +870,7 @@
   "observation.active.useIdentificationAnnotations": "Ei laadunvalvonnan määrityksiä",
   "observation.active.primaryHabitat": "Elinympäristö",
   "observation.active.anyHabitat": "Elinympäristö",
+  "observation.active.wild": "Luonnonvaraisuus",
   "observation.changedNames": "Käytä laadunvalvonnassa annettuja määrityksiä",
   "observation.commonness": "Yleisyys",
   "observation.count": "Havaintojen määrä",
