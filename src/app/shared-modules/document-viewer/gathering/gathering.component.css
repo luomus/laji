@@ -1,5 +1,6 @@
 .all-units-btn {
   margin-top: 15px;
+  white-space: normal;
 }
 
 @media print

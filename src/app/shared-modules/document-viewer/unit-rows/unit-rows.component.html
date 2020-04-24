@@ -18,7 +18,7 @@
 </laji-row>
 <laji-row *ngIf="showFacts" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
 <laji-row *ngIf="showFacts" [title]="'MY.recordBasis' | label" [value]="unit.recordBasis | label: 'warehouse'"></laji-row>
-<ng-container *ngIf="!unit.wild">
+<ng-container *ngIf="unit.wild === false">
   <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="'observation.active.nativeOccurrence.notWild' | translate"></laji-row>
 </ng-container>
 <laji-row [title]="'MY.det' | label" [value]="unit.det"></laji-row>

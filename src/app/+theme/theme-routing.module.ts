@@ -642,6 +642,34 @@ const routes: Routes = [
     }
   },
   {
+    path: 'sieniatlas',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'ownSubmissions',
+        pathMatch: 'full',
+        component: ThemeOwnSubmissionsComponent,
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+      }
+    ],
+    data: {
+      formID: Global.forms.fungi,
+      noFormPermissionRedirect: '/theme/sieniatlas',
+      title: 'Sieniatlas',
+      instructions: '3901',
+    }
+  },
+  {
     path: 'syke-perhoset',
     component: MonitoringThemeBaseComponent,
     children: [
@@ -684,7 +712,7 @@ const routes: Routes = [
       }
     ],
     data: {
-      formID: Global.forms.birdPointCount,
+      formID: Global.forms.sykeButterfly,
       noFormPermissionRedirect: '/theme/syke-perhoset',
       title: 'SYKE Päiväperhoset',
     }

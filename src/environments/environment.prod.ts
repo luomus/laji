@@ -8,7 +8,7 @@ export const environment = {
   forceLogin: false,
   disableAnalytics: false,
   systemID: 'KE.389',
-  formWhitelist: ['MHL.51', 'JX.519', 'MHL.9', 'MHL.53', 'MHL.25', 'JX.652', 'MHL.1', 'MHL.3', 'MHL.6', 'MHL.33', 'MHL.50', 'MHL.57'],
+  formWhitelist: ['MHL.51', 'JX.519', 'MHL.9', 'MHL.53', 'MHL.25', 'JX.652', 'MHL.1', 'MHL.3', 'MHL.6', 'MHL.33', 'MHL.50', 'MHL.57', , 'MHL.65'],
   massForms: ['JX.519', 'JX.652', 'MHL.33A'],
   defaultForm: 'JX.519',
   nafiForm: 'MHL.6',
@@ -29,7 +29,7 @@ export const environment = {
   birdPointCountForm: 'MHL.75',
   saveObservations: {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
-    birdMonitoringForms: ['MHL.1', 'MHL.3'],
+    birdMonitoringForms: ['MHL.1', 'MHL.3', 'MHL.65'],
     researchProjects: ['MHL.33', 'MHL.50', 'MHL.57']
   },
   loginUrl: 'https://login.laji.fi/login',

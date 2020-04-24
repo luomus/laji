@@ -34,8 +34,8 @@ export const environment = {
   birdPointCountForm: 'MHL.75',
   saveObservations: {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
-    birdMonitoringForms: ['MHL.1', 'MHL.65', 'MHL.3', 'MHL.75'],
-    researchProjects: ['MHL.33', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
+    birdMonitoringForms: ['MHL.1', 'MHL.3', 'MHL.65', 'MHL.75'],
+    researchProjects: ['MHL.33', 'MHL.35', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
   },
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
