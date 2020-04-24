@@ -55,7 +55,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() virtualScrolling = true;
   @Input() defaultOrder: string;
   @Input() visible: boolean;
-  @Input() hideDefaultCountCol = false;
+  @Input() hideDefaultCountColumn = false;
   @Input() allAggregateFields = [
     'unit.species',
     'unit.linkings.taxon.vernacularName',
@@ -179,7 +179,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   initColumns() {
     const selected = this.isAggregate ?
-      (this.hideDefaultCountCol ?
+      (this.hideDefaultCountColumn ?
         [...this.columnSelector.columns, ...this.numberColumnSelector.columns] :
         [...this.columnSelector.columns, 'count', ...this.numberColumnSelector.columns]) :
       [...this.columnSelector.columns];
