@@ -12,7 +12,7 @@ import { AreaService } from '../../../shared/service/area.service';
 @Component({
   selector: 'laji-document-form-header',
   templateUrl: './document-form-header.component.html',
-  styleUrls: ['./document-form-header.component.css'],
+  styleUrls: ['./document-form-header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy {

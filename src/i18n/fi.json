@@ -72,7 +72,7 @@
   "annotation.needsCheckMeaning": "Tämä havainto on merkitty laadunvalvojien tarkistettavaksi",
   "annotation.annotationBeforeObservation": "Alkuperäiset havaintotiedot",
   "annotation.titleListAnnotations": "Kommentit",
-  "annotation.occurrenceAtTime": "Alkuperäiset havaintotiedot",
+  "annotation.occurrenceAtTime": "Muutetut havaintotiedot",
   "annotation.deleted": "Poistettu",
   "annotation.notValid": "Kommentti ei voimassa",
   "annotation.openComment": "Avaa kommentti",

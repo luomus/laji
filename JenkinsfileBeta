@@ -1,7 +1,7 @@
 node {
    nvm('v10.17.0') {
      stage('Prepare environment') {
-      git branch: 'development', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
+      git branch: 'beta', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
       sh 'npm ci'
     }
     stage('Build beta') {
