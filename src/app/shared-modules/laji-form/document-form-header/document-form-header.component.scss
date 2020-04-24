@@ -15,6 +15,10 @@
 .form-actions,
 .form-logo {
   margin-top: 25px;
+  img {
+    max-width: 300px;
+    height: auto;
+  }
 }
 
 .form-header {
