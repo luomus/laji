@@ -834,7 +834,7 @@ const routes: Routes = [
           label: 'Tulokset'
         }
       },
-      navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'stats'],
+      navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'stats', 'formPermissions'],
     }
   },
   /*
