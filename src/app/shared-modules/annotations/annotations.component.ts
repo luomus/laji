@@ -66,6 +66,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     status: false,
     action: this.deleting ? 'deleting' : 'adding'
   };
+  countCall = 0;
 
 
 
@@ -217,6 +218,13 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           });
         this.cd.markForCheck();
 
+        this.countCall++;
+
+        if (this.countCall > 4) {
+          this.subscribeRefreshedAnnotations.unsubscribe();
+          this.loadingElements.emitChildEvent(true);
+        }
+
         if (this.randomKeyAfter === undefined) {
           this.subscribeRefreshedAnnotations.unsubscribe();
           this.taxonTagEffective.emitChildEvent(false);
@@ -228,9 +236,8 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           this.subscribeRefreshedAnnotations.unsubscribe();
           this.taxonTagEffective.emitChildEvent(true);
           this.loadingElements.emitChildEvent(true);
-          }
-
-
+          this.countCall = 0;
+        }
       });
   }
 

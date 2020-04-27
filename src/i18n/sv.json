@@ -815,6 +815,7 @@
   "observation.active.useIdentificationAnnotations": "Använd inte identifiering av kvalitetskontroll",
   "observation.active.primaryHabitat": "Elinympäristö",
   "observation.active.anyHabitat": "Elinympäristö",
+  "observation.active.wild": "Vildvuxna",
   "observation.changedNames": "Använd identifiering av kvalitetskontroll",
   "observation.commonness": "Vanlighet",
   "observation.count": "Antal av observationer",

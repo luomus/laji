@@ -1,45 +1,36 @@
 <div class="row form-header" *ngIf="form">
-  <div [ngClass]="{
-    'col-sm-8': form.logo,
-    'col-sm-12': !(form.logo)
-  }">
-    <ng-container *ngIf="displayTitle">
-		  <h3>{{ form.title }}</h3>
-    </ng-container>
-    <laji-haseka-latest *ngIf="form && displayLatest"
-                        [forms]="[form.id]"
-                        [showFormNames]="false"
-    ></laji-haseka-latest>
-    <laji-own-submissions *ngIf="form && displayObservationList"
-                          [actions]="isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
-                          [columns]="['dateObserved', 'observer', 'dateEdited']"
-                          [columnNameMapping]="form.namedPlaceOptions?.columnNameMapping"
-                          [collectionID]="form.collectionID"
-                          [formID]="form.id"
-                          [namedPlace]="namedPlace?.id"
-                          [showDownloadAll]="false"
-                          [header]="form.options?.formOwnSubmissionsLabel || namedPlace ? 'np.formOwnSubmissions' : (isAdmin ? 'haseka.ownSubmissions.allTitle' : 'haseka.mobile.ownSubmissions')"
-                          [forceLocalDocument]="useLocalDocumentViewer"
-                          [admin]="isAdmin"></laji-own-submissions>
-    <ng-container *ngIf="description">
-      <div [innerHtml]="description | translate"></div>
-      <br>
-    </ng-container>
-    <ng-container *ngIf="!description && form.description">
-      <div [innerHtml]="form.description"></div><br>
-    </ng-container>
-    <span *ngIf="form.instructions && form.instructions[translate.currentLang]">
-      <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
-      |
-    </span>
-    <a *ngIf="!form.options || !form.options.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
-    <alert *ngIf="editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: formatDate(formData.dateCreated)} }}</alert>
+  <div class="form-logo pull-right" *ngIf="form.logo">
+    <img src="{{form.logo}}">
   </div>
-  <div class="col-sm-4" *ngIf="form.logo">
-    <div class="form-logo pull-right" *ngIf="form.logo">
-      <img src="{{form.logo}}">
-    </div>
-  </div>
+  <h3 *ngIf="displayTitle">{{ form.title }}</h3>
+  <laji-haseka-latest *ngIf="form && displayLatest"
+                      [forms]="[form.id]"
+                      [showFormNames]="false"
+  ></laji-haseka-latest>
+  <laji-own-submissions *ngIf="form && displayObservationList"
+                        [actions]="isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
+                        [columns]="['dateObserved', 'observer', 'dateEdited']"
+                        [columnNameMapping]="form.namedPlaceOptions?.columnNameMapping"
+                        [collectionID]="form.collectionID"
+                        [formID]="form.id"
+                        [namedPlace]="namedPlace?.id"
+                        [showDownloadAll]="false"
+                        [header]="form.options?.formOwnSubmissionsLabel || namedPlace ? 'np.formOwnSubmissions' : (isAdmin ? 'haseka.ownSubmissions.allTitle' : 'haseka.mobile.ownSubmissions')"
+                        [forceLocalDocument]="useLocalDocumentViewer"
+                        [admin]="isAdmin"></laji-own-submissions>
+  <ng-container *ngIf="description">
+    <div [innerHtml]="description | translate"></div>
+    <br>
+  </ng-container>
+  <ng-container *ngIf="!description && form.description">
+    <div [innerHtml]="form.description"></div><br>
+  </ng-container>
+  <span *ngIf="form.instructions && form.instructions[translate.currentLang]">
+    <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
+    |
+  </span>
+  <a *ngIf="!form.options || !form.options.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
+  <alert *ngIf="editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: formatDate(formData.dateCreated)} }}</alert>
 </div>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
   <div class="col-sm-12">

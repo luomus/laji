@@ -8,11 +8,6 @@
   padding-top: 20px;
 }
 
-:host >>> .popover {
-  width: 430px;
-  max-width: 430px;
-}
-
 .container-col {
   display: flex
 }
