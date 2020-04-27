@@ -819,6 +819,7 @@ const routes: Routes = [
         data: { noScrollToTop: true },
         component: BirdPointCountResultComponent
       },
+      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ],
     data: {
       formID: Global.forms.birdPointCount,
