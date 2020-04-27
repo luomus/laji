@@ -28,7 +28,6 @@ const routes: Routes = [
   {path: 'about', loadChildren: () => import('./+information/information.module').then(m => m.InformationModule)},
   {path: 'user', loadChildren: () => import('./+user/user.module').then(m => m.UserModule)},
   {path: 'view', loadChildren: () => import('./+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
-  {path: 'invasive', loadChildren: () => import('./+invasive/invasive.module').then(m => m.InvasiveModule)},
   {path: 'vihko', loadChildren: () => import('./+haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title'}},
   {path: 'observation', loadChildren: () => import('./+observation/observation.module').then(m => m.ObservationModule), data: {
     preload: true,
