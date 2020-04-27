@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DownloadComponent } from './download.component';
 import { SpinnerModule } from '../spinner/spinner.module';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';

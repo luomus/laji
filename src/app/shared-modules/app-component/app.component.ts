@@ -10,7 +10,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { HistoryService } from '../../shared/service/history.service';
 import { Global } from '../../../environments/global';
-import { setTheme } from 'ngx-bootstrap';
+import { setTheme } from 'ngx-bootstrap/utils';
 
 
 declare const ga: Function;

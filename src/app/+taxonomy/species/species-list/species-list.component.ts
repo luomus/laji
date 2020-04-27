@@ -35,7 +35,7 @@ import { DownloadComponent } from '../../../shared-modules/download/download.com
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('speciesDownload', { static: false }) speciesDownload: DownloadComponent;
+  @ViewChild('speciesDownload') speciesDownload: DownloadComponent;
   @ViewChild('settingsModal', { static: true }) settingsModal: SpeciesListOptionsModalComponent;
   @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
 

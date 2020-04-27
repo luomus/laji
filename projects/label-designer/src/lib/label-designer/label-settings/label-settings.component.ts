@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ILabelField, ILabelItem, ISetup, FieldType, TLabelLocation } from '../../label-designer.interface';
+import { FieldType, ILabelField, ILabelItem, ISetup, TLabelLocation } from '../../label-designer.interface';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslateService } from '../../translate/translate.service';
 import { Presets } from '../../presets';
@@ -45,19 +45,19 @@ export class LabelSettingsComponent {
     return this._selectedLabelItem;
   }
 
-  change<K extends keyof ISetup, T extends ISetup[K]>(field: K, value: T): void {
-    if (typeof value === 'object' && !Array.isArray(value)) {
+  change<K extends keyof Pick<ISetup, 'label' | 'page' | 'border' | 'twoSided'>, T extends ISetup[K]>(field: K, value: T): void {
+    if (['border', 'twoSided'].includes(field)) {
       this.setupChange.emit({
         ...this.setup,
-        [field]: {
-          ...this.setup[field],
-          ...value
-        }
+        [field]: value
       });
     } else {
       this.setupChange.emit({
         ...this.setup,
-        [field]: value
+        [field]: {
+          ...this.setup[field] as object,
+          ...value as object
+        } as any
       });
     }
     this.labelMakerFacade.hasChanges(true);

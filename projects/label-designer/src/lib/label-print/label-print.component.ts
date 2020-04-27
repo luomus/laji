@@ -9,8 +9,8 @@ import {
   Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ISetup, QRCodeErrorCorrectionLevel } from '../label-designer.interface';
-import { IPageLayout, LabelService } from '../label.service';
+import { IPageLayout, ISetup, QRCodeErrorCorrectionLevel } from '../label-designer.interface';
+import { LabelService } from '../label.service';
 
 /* tslint:disable:max-line-length */
 /**

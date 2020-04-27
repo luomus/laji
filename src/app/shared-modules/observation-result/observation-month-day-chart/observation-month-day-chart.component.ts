@@ -18,7 +18,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Chart } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-chart.component';
@@ -33,7 +33,7 @@ import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 })
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
-  @ViewChild('barChart', { static: false }) public barChart: BarChartComponent;
+  @ViewChild('barChart') public barChart: BarChartComponent;
   @Input() taxonId: string;
   @Input() query: any;
   monthChartData: any[];

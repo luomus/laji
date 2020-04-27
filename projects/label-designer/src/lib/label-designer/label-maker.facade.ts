@@ -1,5 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 
 /**
  * @ignore
@@ -20,6 +21,7 @@ let _state: IState = {
 /**
  * @internal
  */
+@Injectable()
 export class LabelMakerFacade {
 
   private store  = new BehaviorSubject<IState>(_state);

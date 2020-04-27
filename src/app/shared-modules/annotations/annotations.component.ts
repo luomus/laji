@@ -38,7 +38,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   @Output() loadingForm = new EventEmitter<Object>();
 
 
-  @ViewChild('formAnnotation', {static: false}) formAnnotation: AnnotationFormNewComponent;
+  @ViewChild('formAnnotation') formAnnotation: AnnotationFormNewComponent;
   error = false;
   adding = false;
   expert = true;

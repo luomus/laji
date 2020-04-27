@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FieldType, ILabelField, ILabelItem, ILabelStyle, ILabelValueMap, ISetup } from './label-designer.interface';
-
-export interface IPageLayout {
-  cols: number;
-  rows: number;
-}
+import { ILabelField, ILabelItem, ILabelStyle, ILabelValueMap, IPageLayout, ISetup } from './label-designer.interface';
 
 /**
  * @internal

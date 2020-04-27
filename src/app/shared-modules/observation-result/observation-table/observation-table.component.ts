@@ -14,7 +14,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
-import { BsModalService, ModalDirective } from 'ngx-bootstrap';
+import { BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Logger } from '../../../shared/logger/logger.service';

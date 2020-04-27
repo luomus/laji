@@ -23,7 +23,7 @@ import { Area } from '../../../shared/model/Area';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NamedPlaceComponent implements OnInit, OnDestroy {
-  @ViewChild(NpEditComponent, { static: false }) npEdit: NpEditComponent;
+  @ViewChild(NpEditComponent) npEdit: NpEditComponent;
 
   formId;
   collectionId;
@@ -68,8 +68,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   private subParam: Subscription;
   private routerEvents: Subscription;
 
-  @ViewChild(NpChooseComponent, { static: false }) chooseView: NpChooseComponent;
-  @ViewChild(NpEditComponent, { static: false }) editView: NpEditComponent;
+  @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
+  @ViewChild(NpEditComponent) editView: NpEditComponent;
 
   constructor(
     private route: ActivatedRoute,

@@ -27,7 +27,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
   @Input() field: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
   @Output() done = new EventEmitter();
-  @ViewChild(LajiMapComponent, { static: false }) lajiMapComponent: LajiMapComponent;
+  @ViewChild(LajiMapComponent) lajiMapComponent: LajiMapComponent;
 
   ignore = VALUE_IGNORE;
   lajiMapOptions: LajiMapOptions = {
@@ -38,7 +38,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
       circle: true,
       rectangle: true,
       activeIdx: 0
-    },
+    } as any,
     controls: {
       draw: {
         marker: true,
@@ -54,7 +54,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
         delete: true,
         reverse: false,
         coordinateInput: true
-      }
+      } as any
     },
     lang: LajiMapLang.fi
   };

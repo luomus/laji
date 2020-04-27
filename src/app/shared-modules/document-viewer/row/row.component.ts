@@ -10,7 +10,7 @@ const EMPTY_VALUE = ' ';
 })
 export class RowComponent implements OnChanges {
 
-  @ViewChild('valueRow', { static: false }) valueRow;
+  @ViewChild('valueRow') valueRow;
   @Input() title: string;
   @Input() field: string;
   @Input() value: string = EMPTY_VALUE;

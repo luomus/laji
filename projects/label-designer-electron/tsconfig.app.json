@@ -10,8 +10,11 @@
       ]
     }
   },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts"
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "projects/label-designer-electron/src/**/*.d.ts"
   ]
 }

@@ -32,7 +32,7 @@ import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewe
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
-  @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
+  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() own: boolean;
   @Input() showTitle = false;

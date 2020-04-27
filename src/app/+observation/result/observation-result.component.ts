@@ -65,7 +65,7 @@ export class ObservationResultComponent implements OnInit {
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() listSettingsChange = new EventEmitter<ISettingResultList>();
 
-  @ViewChild(ObservationMapComponent, { static: false }) observationMap: ObservationMapComponent;
+  @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
   @ViewChild(ObservationDownloadComponent, { static: true }) downloadModal: ObservationDownloadComponent;
 
   /**

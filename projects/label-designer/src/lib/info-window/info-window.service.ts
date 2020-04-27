@@ -1,12 +1,6 @@
 import { Injectable, TemplateRef } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-
-export interface IInfoWindow {
-  title?: string;
-  content: string | TemplateRef<any>;
-  actions?: TemplateRef<any>;
-  actionTypes?: 'ok'|'yesNo'|'close';
-}
+import { IInfoWindow } from '../label-designer.interface';
 
 /**
  * This service can be used to display a dialog window with the Label Designer component.

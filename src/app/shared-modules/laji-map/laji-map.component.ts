@@ -86,11 +86,11 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
       options = {...options, on: {
           tileLayerChange: (event) => {
             this.zone.run(() => {
-              this.tileLayerChange.emit((<any> event).tileLayerName);
+              this.tileLayerChange.emit((event as any).tileLayerName);
             });
 
             if (this._settingsKey) {
-              this.userSettings.tileLayerName = (<any> event).tileLayerName as LajiMap.TileLayerName;
+              this.userSettings.tileLayerName = (event as any).tileLayerName as LajiMap.TileLayerName;
               this.userService.setUserSetting(this._settingsKey, this.userSettings);
             }
           },
@@ -106,7 +106,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
               this.userService.setUserSetting(this._settingsKey, this.userSettings);
             }
           }
-        }};
+        } as object};
     }
     if (typeof options.draw === 'object' && !options.draw.onChange) {
       options = {

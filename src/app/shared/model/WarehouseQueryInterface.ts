@@ -225,3 +225,10 @@ export interface WarehouseQueryInterface {
   effectiveTag?: Array<string>;
   formId?: string;
 }
+
+
+export interface WarehouseTimeQueryInterface extends Pick<WarehouseQueryInterface,
+  'season' | 'loadedSameOrAfter' | 'loadedSameOrBefore' | 'firstLoadedSameOrAfter' | 'firstLoadedSameOrBefore'
+  > {
+
+}

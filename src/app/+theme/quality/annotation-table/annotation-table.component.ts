@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, 
 import { QualityService } from '../../service/quality.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { AnnotationTableColumn } from '../model/annotation-table-column';
 import { DocumentViewerFacade } from '../../../shared-modules/document-viewer/document-viewer.facade';
