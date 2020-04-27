@@ -18,6 +18,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   @Input() informalTaxonGroup: string;
   @Input() defaultTaxonId: string;
   @Input() collectionId: string;
+  @Input() showDefaultPeriodFilter = true;
 
   loading = false;
   areaTypes = Area.AreaType;
@@ -25,7 +26,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   currentArea;
   taxon: string;
   taxonId: string;
-  fromYear = 2006;
+  fromYear: number;
   result: PagedResult<any> = {
     currentPage: 1,
     lastPage: 1,
