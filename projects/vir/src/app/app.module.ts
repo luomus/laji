@@ -31,6 +31,7 @@ import { LoggerApi } from '../../../../src/app/shared/api/LoggerApi';
 import { DocumentViewerModule } from '../../../../src/app/shared-modules/document-viewer/document-viewer.module';
 import { VirAppComponent } from './vir-app.component';
 import { environment } from '../environments/environment';
+import { NavBarComponent } from './component/nav-bar/nav-bar.component';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -86,6 +87,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     }
   ],
   bootstrap: [VirAppComponent],
-  declarations: [VirAppComponent]
+  declarations: [VirAppComponent, NavBarComponent]
 })
 export class AppModule { }

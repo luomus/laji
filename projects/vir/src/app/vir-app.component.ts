@@ -4,7 +4,7 @@ import { AppComponent } from '../../../../src/app/shared-modules/app-component/a
 @Component({
   selector: 'vir-app',
   template: `
-    <laji-navbar></laji-navbar>
+    <vir-nav-bar></vir-nav-bar>
     <div class="router-content">
       <router-outlet></router-outlet>
     </div>
