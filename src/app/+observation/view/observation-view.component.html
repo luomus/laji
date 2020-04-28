@@ -1,5 +1,9 @@
 <lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm" [menuTitle]="'observation.form.menuTitle' | translate">
   <main>
+    <ng-container *lajiForTypes="['vir']">
+      <h1>{{ 'vir.observation.title' | translate }}</h1>
+      <p style="width: 100%" [innerHTML]="'vir.observation.intro' | translate"></p>
+    </ng-container>
     <ng-container *lajiBrowserOnly>
       <ng-container *ngIf="visible.info">
         <div class="toggle-intro" *ngIf="!vm.showIntro">
