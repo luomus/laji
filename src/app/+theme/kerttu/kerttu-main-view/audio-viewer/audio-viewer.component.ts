@@ -160,7 +160,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.source = undefined;
   }
 
-  private setAudioLoading(loading: boolean) {
+  setAudioLoading(loading: boolean) {
     this.loading = loading;
     this.audioLoading.emit(loading);
   }

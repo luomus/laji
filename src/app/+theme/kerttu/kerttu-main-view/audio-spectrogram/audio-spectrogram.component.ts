@@ -25,9 +25,10 @@ export class AudioSpectrogramComponent implements OnChanges {
 
   @Output() spectrogramReady = new EventEmitter<boolean>();
 
+  margin: { top: number, bottom: number, left: number, right: number} = { top: 10, bottom: 20, left: 30, right: 10};
+
   private drawSub: Subscription;
 
-  private margin: { top: number, bottom: number, left: number, right: number} = { top: 10, bottom: 20, left: 30, right: 10};
   private maxFreq: number;
   private maxTime: number;
   private xScale: ScaleLinear<number, number>;

@@ -18,6 +18,7 @@ export class ExpertiseFormComponent implements OnInit {
     this.updateSelected();
   }
 
+  _seletedTaxonIds: string[];
   selected: Taxonomy[] = [];
 
   columns: DatatableColumn[] = [
@@ -42,7 +43,6 @@ export class ExpertiseFormComponent implements OnInit {
   ];
   taxonList: Taxonomy[];
 
-  private _seletedTaxonIds: string[];
   private otherTaxonIds: string[];
 
   @Output() taxonIdSelect = new EventEmitter<string[]>();
