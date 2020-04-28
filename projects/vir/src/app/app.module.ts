@@ -21,7 +21,6 @@ import { VirRoutingModule } from './vir-routing.module';
 import { GraphQLModule } from '../../../../src/app/graph-ql/graph-ql.module';
 import { AppComponentModule } from '../../../../src/app/shared-modules/app-component/app-component.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateFileLoader } from '../../../../src/app/shared/translate/translate-file-loader';
 import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { DocumentService } from '../../../../src/app/shared-modules/own-submissions/service/document.service';
 import { LajiErrorHandler } from '../../../../src/app/shared/error/laji-error-handler';
@@ -32,6 +31,7 @@ import { DocumentViewerModule } from '../../../../src/app/shared-modules/documen
 import { VirAppComponent } from './vir-app.component';
 import { environment } from '../environments/environment';
 import { NavBarComponent } from './component/nav-bar/nav-bar.component';
+import { LazyTranslateLoader } from './service/lazy-translate-loader';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -52,7 +52,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: TranslateFileLoader
+        useClass: LazyTranslateLoader
       }
     }),
     CarouselModule.forRoot(),
