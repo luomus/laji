@@ -11,6 +11,7 @@
 </div>
 
 <div [ngClass]="{'annotation-form': formVisible, '': !formVisible}">
+  <a class="manual btn btn-sm btn-default">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
   <ng-container *ngIf="personRoleAnnotation === annotationRole.expert; else basicForm">
       <span class="comment-title"  *ngIf="expert; else expertAnnotation">
           {{ 'annotation.addAnnotationExpert' | translate }}

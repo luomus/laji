@@ -229,6 +229,16 @@ label {
     cursor: pointer;
   }
 
+  .subtitle {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+
+  .subtitle:nth-of-type(1) {
+    margin-top: 0px;
+  }
+
   @media only screen and (min-width: 992px) and (max-width: 1600px) {
     .taxon label {
       height: 20px;
