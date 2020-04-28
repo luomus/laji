@@ -42,10 +42,13 @@
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
               <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
               <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['vir']">
+              <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveVirObservations' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
             <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['vir']">

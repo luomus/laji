@@ -744,6 +744,7 @@
   "navigation.notify": "Vihko",
   "navigation.observation": "Selaa havaintoja",
   "navigation.saveObservations": "Tallenna havaintoja",
+  "navigation.saveVirObservations": "Tallenna seurantatietoja",
   "navigation.vihko": "Oma Vihko",
   "navigation.quality": "Laadunvalvonta",
   "navigation.research": "Tutkimuspalvelut",
