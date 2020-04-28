@@ -1,8 +1,7 @@
 <form [hidden]="!visible || hidden" *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
   <div class="lu tags-step-1" *ngIf="expert else checkTags">
     <label>{{ 'annotation.addTags' | translate }}</label>
-    <span class="subtitle">{{ 'annotation.qualityTag' | translate }}(<b>Max. 1</b>) <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></span>
-    <div class="d-flex flex-row flex-wrap">
+    <div class="d-flex flex-row flex-wrap margin-top-10">
       <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typePositiveQuality','MMAN.typeNegativeQuality']: 'include': 'id': [] | sort: 'position'; let i = index;" class="tag-value">
         <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
           <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': (item.quality==='MMAN.typeNegativeQuality' || item.quality==='MMAN.typeAdmin'), 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
@@ -16,8 +15,7 @@
         </div>
       </ng-container>
     </div>
-    <span class="subtitle">{{ 'annotation.infoTag' | translate }} <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></span>
-    <div class="d-flex flex-row flex-wrap">
+    <div class="d-flex flex-row flex-wrap margin-top-10">
       <ng-container *ngIf="personRoleAnnotation === 'MMAN.expert'">
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeInfo']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
           <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
@@ -26,8 +24,7 @@
         </div>
       </ng-container>
     </div>
-    <span class="subtitle">Check tag <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></span>
-    <div class="d-flex flex-row flex-wrap">
+    <div class="d-flex flex-row flex-wrap margin-top-10">
       <ng-container *ngIf="annotation.addedTags.indexOf('MMAN.5') === -1 && annotation.addedTags.indexOf('MMAN.3') === -1">
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
           <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
@@ -40,8 +37,7 @@
   <ng-template #checkTags>
   <div class="lu tags-step-1">
       <label>{{ 'annotation.addTags' | translate }}</label>
-      <span class="subtitle">{{ 'annotation.checkTag' | translate }} <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></span>
-      <div class="d-flex flex-row flex-wrap">
+      <div class="d-flex flex-row flex-wrap margin-top-10">
         <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
           <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
             <div class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>

@@ -354,6 +354,10 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.showShortcuts = !this.showShortcuts;
   }
 
+  onManualLinkClick(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
 
 @HostListener('window:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
