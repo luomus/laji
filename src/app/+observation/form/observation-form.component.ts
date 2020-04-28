@@ -1,7 +1,7 @@
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
-import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { WarehouseQueryInterface, WarehouseTimeQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
 import * as moment from 'moment';
@@ -166,7 +166,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.formQuery = this.searchQueryToFormQuery(query);
   }
 
-  get query() {
+  get query(): WarehouseQueryInterface {
     return this._query;
   }
 
@@ -460,8 +460,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   updateTime(dates, startTarget?: 'time');
-  updateTime(dates, startTarget: keyof WarehouseQueryInterface, endTarget: keyof WarehouseQueryInterface );
-  updateTime(dates, startTarget: 'time' | keyof WarehouseQueryInterface = 'time', endTarget?: keyof WarehouseQueryInterface ) {
+  updateTime(dates, startTarget: keyof WarehouseTimeQueryInterface, endTarget: keyof WarehouseTimeQueryInterface );
+  updateTime(dates, startTarget: 'time' | keyof WarehouseTimeQueryInterface = 'time', endTarget?: keyof WarehouseTimeQueryInterface ) {
     if (dates === 365) {
       const today = new Date();
       const oneJan = new Date(today.getFullYear(), 0, 1);

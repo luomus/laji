@@ -6,7 +6,7 @@ import { AnnotationListComponent } from './annotation-list/annotation-list.compo
 import { AnnotationFormComponent } from './annotation-form/annotation-form.component';
 import { AnnotationFormNewComponent } from './annotation-form-new/annotation-form-new.component';
 import { LangModule } from '../lang/lang.module';
-import { TypeaheadModule } from 'ngx-bootstrap';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ConvertAnnotationsPipe } from './convert-annotations.pipe';
 import { SearchFiltersModule } from '../search-filters/search-filters.module';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/public-api';

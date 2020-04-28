@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { IPageStyle, ISetup, QRCodeErrorCorrectionLevel } from '../../label-designer.interface';
-import { IPageLayout, LabelService } from '../../label.service';
+import { IPageLayout, IPageStyle, ISetup, QRCodeErrorCorrectionLevel } from '../../label-designer.interface';
+import { LabelService } from '../../label.service';
 
 /**
  * @internal

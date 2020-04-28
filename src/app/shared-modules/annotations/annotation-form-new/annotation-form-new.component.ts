@@ -56,9 +56,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   @Output() loading = new EventEmitter<boolean>();
   @Output() cancel = new EventEmitter<any>();
 
-  @ViewChild('taxon', {static: false}) taxonElement: ElementRef;
-  @ViewChild('comment', {static: false}) commentElement: ElementRef;
-  @ViewChild('annotationForm', {static: false}) formAnnotation: any;
+  @ViewChild('taxon') taxonElement: ElementRef;
+  @ViewChild('comment') commentElement: ElementRef;
+  @ViewChild('annotationForm') formAnnotation: any;
   taxonAutocomplete: Observable<any>;
   error: any;
   unIdentifyable = false;

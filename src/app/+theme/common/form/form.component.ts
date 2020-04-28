@@ -20,7 +20,7 @@ import { BrowserService } from '../../../shared/service/browser.service';
 })
 export class FormComponent
   implements OnInit, OnDestroy, ComponentCanDeactivate {
-  @ViewChild(DocumentFormComponent, { static: false }) documentForm: DocumentFormComponent;
+  @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   form: any;
   collectionId;

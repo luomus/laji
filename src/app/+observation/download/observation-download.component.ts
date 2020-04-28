@@ -17,7 +17,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { BookType } from 'xlsx';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
@@ -48,7 +48,7 @@ enum RequestStatus {
 export class ObservationDownloadComponent implements OnDestroy {
 
   @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal: ObservationTableSettingsComponent;
-  @ViewChild(DownloadComponent, { static: false }) downloadTypeSelectModal: DownloadComponent;
+  @ViewChild(DownloadComponent) downloadTypeSelectModal: DownloadComponent;
   @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
 
   @Input() unitCount: number;

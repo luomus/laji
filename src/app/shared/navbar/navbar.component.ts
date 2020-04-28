@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { timer, Subject, Observable } from 'rxjs';
-import { BsDropdownDirective } from 'ngx-bootstrap';
+import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { isPlatformBrowser } from '@angular/common';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
@@ -31,7 +31,7 @@ import { BrowserService } from '../service/browser.service';
 export class NavbarComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<null>();
 
-  @ViewChild('userMenu', { static: false }) public dropDown: BsDropdownDirective;
+  @ViewChild('userMenu') public dropDown: BsDropdownDirective;
 
   openMenu: Boolean = false;
   redTheme = false;

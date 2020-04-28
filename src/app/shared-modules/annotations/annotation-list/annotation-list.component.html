@@ -126,7 +126,8 @@
       <ng-template #dots>
         <i class="glyphicon glyphicon-option-horizontal"></i>
       </ng-template>
-      <span class="small-deleted" *ngIf="((annotation.deleted || !annotation.valid) && showItem[i])">{{ 'annotation.deleted' | translate }}</span>
+      <span class="small-deleted" *ngIf="(annotation.deleted && showItem[i])">{{ 'annotation.deleted' | translate }}</span>
+      <span class="small-deleted" *ngIf="(!annotation.deleted && !annotation.valid && showItem[i])">{{ 'annotation.notValid' | translate }}</span>
     </div>
     <div *ngIf="lastFalse!==-1 && i===lastFalse && hasNextTrue">
       <laji-occurrence-at-time-of-annotation [occurrence]="annotations[i+1].occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>

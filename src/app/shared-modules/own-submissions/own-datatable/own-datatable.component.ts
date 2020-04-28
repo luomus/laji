@@ -24,7 +24,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { Router } from '@angular/router';
 import { DocumentExportService } from '../service/document-export.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
@@ -161,7 +161,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   _goToStartAfterViewCheck = false;
   private lastSort: any;
 
-  @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
+  @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalDirective;
   @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
   @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;

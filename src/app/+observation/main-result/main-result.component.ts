@@ -33,7 +33,7 @@ export class MainResultComponent implements OnInit, OnChanges {
     'unit.species'
   ];
 
-  @ViewChild('aggregatedDataTable', { static: false }) public aggregatedDataTable: ObservationTableComponent;
+  @ViewChild('aggregatedDataTable') public aggregatedDataTable: ObservationTableComponent;
 
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;

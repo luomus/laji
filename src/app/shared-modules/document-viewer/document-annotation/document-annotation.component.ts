@@ -48,7 +48,7 @@ import { TranslateService } from '@ngx-translate/core';
   ]
 })
 export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
-  @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
+  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() highlight: string;
   @Input() own: boolean;

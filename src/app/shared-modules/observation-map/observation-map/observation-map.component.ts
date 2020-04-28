@@ -34,7 +34,7 @@ import { latLngBounds as LlatLngBounds } from 'leaflet';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationMapComponent implements OnChanges, OnDestroy {
-  @ViewChild(LajiMapComponent, { static: false }) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
 
   @Input() visible = false;
   @Input() query: any;

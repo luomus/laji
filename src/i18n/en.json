@@ -729,6 +729,7 @@
   "observation.active.useIdentificationAnnotations": "No annotated identifications",
   "observation.active.primaryHabitat": "Habitat",
   "observation.active.anyHabitat": "Habitat",
+  "observation.active.wild": "Native occurrence",
   "observation.changedNames": "Use quality control identifications",
   "observation.commonness": "Commonness",
   "observation.count": "Number of observations",

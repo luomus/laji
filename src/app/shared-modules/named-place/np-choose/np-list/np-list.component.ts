@@ -34,7 +34,7 @@ export class NpListComponent {
 
   @ViewChild('label', { static: true }) labelIDTpl: TemplateRef<any>;
   @ViewChild('status', { static: true }) statusTpl: TemplateRef<any>;
-  @ViewChild('area', { static: false }) areaTpl: TemplateRef<any>;
+  @ViewChild('area') areaTpl: TemplateRef<any>;
   @ViewChild('boolToStr', { static: true }) boolToStrTpl: TemplateRef<any>;
   @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
 

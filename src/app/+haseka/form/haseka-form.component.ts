@@ -21,7 +21,7 @@ import { Document } from 'app/shared/model/Document';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
-  @ViewChild(DocumentFormComponent, { static: false }) documentForm: DocumentFormComponent;
+  @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId: string;
   documentId: string;
   showMobileEntryPage$: Observable<boolean>;

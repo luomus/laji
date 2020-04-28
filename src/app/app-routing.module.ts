@@ -1,5 +1,5 @@
 /* tslint:disable:max-classes-per-file */
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
@@ -12,6 +12,7 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { LocalizeInGuard } from './locale/localize-in.guard';
 import { CheckLoginGuard } from './shared/guards/check-login.guard';
 
+@Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
     const delay = typeof process !== 'undefined' && process.release && process.release.name === 'node' ? 0 : 50;
@@ -27,7 +28,6 @@ const routes: Routes = [
   {path: 'about', loadChildren: () => import('./+information/information.module').then(m => m.InformationModule)},
   {path: 'user', loadChildren: () => import('./+user/user.module').then(m => m.UserModule)},
   {path: 'view', loadChildren: () => import('./+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
-  {path: 'invasive', loadChildren: () => import('./+invasive/invasive.module').then(m => m.InvasiveModule)},
   {path: 'vihko', loadChildren: () => import('./+haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title'}},
   {path: 'observation', loadChildren: () => import('./+observation/observation.module').then(m => m.ObservationModule), data: {
     preload: true,

@@ -38,7 +38,7 @@ import { DownloadComponent } from '../../../../../../../src/app/shared-modules/d
 export class ResultsComponent implements OnChanges {
 
 
-  @ViewChild(DownloadComponent, { static: false }) speciesDownload: DownloadComponent;
+  @ViewChild(DownloadComponent) speciesDownload: DownloadComponent;
 
   @Input() type: ListType;
   @Input() query: FilterQuery;
