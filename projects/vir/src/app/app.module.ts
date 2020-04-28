@@ -26,11 +26,18 @@ import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { DocumentService } from '../../../../src/app/shared-modules/own-submissions/service/document.service';
 import { LajiErrorHandler } from '../../../../src/app/shared/error/laji-error-handler';
 import { LocalizeRouterService } from '../../../../src/app/locale/localize-router.service';
-import { Logger } from '../../../../src/app/shared/logger';
+import { ConsoleLogger, HttpLogger, ILogger, Logger } from '../../../../src/app/shared/logger';
 import { LoggerApi } from '../../../../src/app/shared/api/LoggerApi';
 import { DocumentViewerModule } from '../../../../src/app/shared-modules/document-viewer/document-viewer.module';
-import { createLoggerLoader } from '../../../iucn/src/app/iucn.module';
 import { VirAppComponent } from './vir-app.component';
+import { environment } from '../environments/environment';
+
+export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
+  if (environment.production) {
+    return new HttpLogger(loggerApi);
+  }
+  return new ConsoleLogger();
+}
 
 @NgModule({
   imports: [
