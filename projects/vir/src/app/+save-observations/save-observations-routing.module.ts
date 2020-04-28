@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SaveObservationsComponent } from './save-observations/save-observations.component';
+import { SaveObservationsComponent } from './save-observations.component';
 
 
 const routes: Routes = [

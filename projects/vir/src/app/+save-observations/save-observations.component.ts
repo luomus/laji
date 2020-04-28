@@ -1,9 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'laji-save-observations',
-  templateUrl: './save-observations.component.html',
-  styleUrls: ['./save-observations.component.scss'],
+  selector: 'vir-save-observations',
+  template: `
+    <p>
+      save observations placeholder!
+    </p>
+  `,
+  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SaveObservationsComponent implements OnInit {
