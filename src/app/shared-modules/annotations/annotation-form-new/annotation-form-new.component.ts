@@ -249,7 +249,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   findFirstTagNegativePositive(tags): any {
     for (let i = 0; i < tags.length; i++) {
       if (Global.annotationTags[tags[i]].quality !== 'MMAN.typeCheck' && Global.annotationTags[tags[i]].quality !== 'MMAN.typeInfo'
-      && Global.annotationTags[tags[i]].quality !== 'MMAN.typeInvasive') {
+      && Global.annotationTags[tags[i]].quality !== 'MMAN.typeInvasive' && (Global.annotationTags[tags[i]].quality !== 'MMAN.typeAdmin' ||  tags[i] === 'MMAN.3')) {
         return tags[i];
       } else {
       }
@@ -409,6 +409,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       });
     }
 
+
     this.annotationService
       .save(this.annotation)
       .subscribe(
@@ -433,7 +434,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   addToAddTags(value) {
-    if ( value.quality === 'MMAN.typePositiveQuality' || value.quality === 'MMAN.typeNegativeQuality' || value.quality === 'MMAN.typeAdmin' || value.id === 'MMAN.3') {
+    if ( value.quality === 'MMAN.typePositiveQuality' || value.quality === 'MMAN.typeNegativeQuality' || value.id === 'MMAN.3') {
       const index = this.annotation.addedTags.indexOf(
         this.findFirstTagNegativePositive(this.annotation.addedTags)
       );
@@ -471,11 +472,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.annotationRemovableTags$.subscribe(data => {
       this.tmpTags = data;
       if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.8') === -1
-      && this.annotation.addedTags.indexOf('MMAN.9') === -1 && this.annotation.addedTags.indexOf('MMAN.3') === -1
-      && this.annotation.addedTags.indexOf('MMAN.32') === -1) {
+      && this.annotation.addedTags.indexOf('MMAN.9') === -1 && this.annotation.addedTags.indexOf('MMAN.3') === -1) {
         if (this.annotation.removedTags.indexOf('MMAN.5') !== -1 || this.annotation.removedTags.indexOf('MMAN.8') !== -1
-        || this.annotation.removedTags.indexOf('MMAN.9') !== -1 || this.annotation.removedTags.indexOf('MMAN.3') !== -1
-        || this.annotation.addedTags.indexOf('MMAN.32') !== -1) {
+        || this.annotation.removedTags.indexOf('MMAN.9') !== -1 || this.annotation.removedTags.indexOf('MMAN.3') !== -1) {
           this.tmpTags.forEach(tag => {
             if ((tag.id === 'MMAN.5' || tag.id === 'MMAN.8' || tag.id === 'MMAN.9' || tag.id === 'MMAN.3')) {
               this.addToRemoveTags(tag.id);
@@ -497,7 +496,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         this.tmpTags.forEach(tag => {
           if (tag.id !== value.id) {
             if ((tag.id === 'MMAN.5' || tag.id === 'MMAN.8' || tag.id === 'MMAN.9' || tag.id === 'MMAN.3'
-            || tag.id === 'MMAN.32' || tag.id === 'MMAN.50' || tag.id === 'MMAN.51')
+            || tag.id === 'MMAN.50' || tag.id === 'MMAN.51')
             && this.annotation.removedTags.indexOf(tag.id) === -1 && this.annotation.addedTags.indexOf(tag.id) === -1) {
               this.addToRemoveTags(tag.id);
             }
@@ -520,7 +519,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
             if ((this.annotationTagsObservation[tag.id].type === 'check' || this.annotationTagsObservation[tag.id].type === 'info')
             && this.annotation.removedTags.indexOf(tag.id) !== -1) {
               if (this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1 ||
-              this.annotation.addedTags.indexOf('MMAN.32') !== -1 || this.annotation.addedTags.indexOf('MMAN.50') !== -1 ||
+             this.annotation.addedTags.indexOf('MMAN.50') !== -1 ||
               this.annotation.addedTags.indexOf('MMAN.51') !== -1) {
                 const index = this.annotation.removedTags.indexOf(tag.id);
                 this.annotation.removedTags.splice(index, 1);
@@ -531,7 +530,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
         if (this.annotation.removedTags.indexOf(value.id) !== -1 &&
         (this.annotationTagsObservation[value.id].type === 'positive' || this.annotationTagsObservation[value.id].type === 'negative'
-        || this.annotationTagsObservation[value.id].type === 'admin' )) {
+        || this.annotationTagsObservation[value.id] === 'admin' )) {
           this.addToRemoveTags(value.id);
         }
       }
