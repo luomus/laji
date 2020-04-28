@@ -43,7 +43,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   @HostListener('window:resize')
   onResize() {
     const canvas = this.spectrogramRef.nativeElement;
-    if (canvas.height > 0) {
+    if (!isNaN(this.maxFreq) && !isNaN(this.maxTime)) {
       const elementWidth = this.containerRef.nativeElement.offsetWidth - this.margin.left - 20;
       const elementHeight = canvas.height;
       canvas.style.width = elementWidth + 'px';
