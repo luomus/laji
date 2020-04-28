@@ -236,8 +236,8 @@ export class ObservationDownloadComponent implements OnDestroy {
     ).subscribe(
       () => {
         this.downloadLoading = false;
-        this.modalService.hide(1);
-        this.modalService.hide(1);
+        // @ts-ignore:disable-next-line https://github.com/valor-software/ngx-bootstrap/issues/2618
+        this.modalService.loaders.forEach(loader => { loader.instance.hide(); });
         this.cd.markForCheck();
       },
       (err) => this.logger.error('Simple download failed', err)
