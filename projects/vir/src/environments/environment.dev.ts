@@ -4,8 +4,8 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.vir,
-  base: 'https://viranomaiset.laji.fi',
-  systemID: 'KE.941',
+  base: 'https://viranomaiset-dev.laji.fi',
+  systemID: 'KE.601',
   formWhitelist: ['JX.519', 'JX.6485'],
   massForms: ['JX.519'],
   defaultForm: 'JX.519',

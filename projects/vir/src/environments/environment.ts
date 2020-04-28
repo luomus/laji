@@ -8,12 +8,12 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.vir,
-  base: 'https://dev.laji.fi',
+  base: 'https://localhost:3000',
   production: false,
   forceLogin: false,
   disableAnalytics: true,
   sourceKotka: 'KE.3',
-  systemID: 'KE.389',
+  systemID: 'KE.542',
   formWhitelist: ['JX.519', 'JX.5190', 'MHL.9', 'MHL.25', 'JX.652', 'MHL.1',  'MHL.3', 'MHL.23', 'MHL.33', 'MHL.6', 'MHL.35', 'MHL.41', 'MHL.43', 'MHL.45', 'MHL.51', 'MHL.53', 'MHL.50', 'MHL.57',  'MHL.59', 'MHL.65', 'MHL.75'],
   massForms: ['JX.519', 'JX.652', 'MHL.41', 'MHL.33A'],
   defaultForm: 'JX.519',
