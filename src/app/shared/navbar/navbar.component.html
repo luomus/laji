@@ -54,9 +54,11 @@
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
             <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
             </li>
+            <!--
             <li [routerLinkActive]="['active']" *lajiForTypes="['vir']">
               <a [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
             </li>
+            -->
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
               <a [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
             </li>
