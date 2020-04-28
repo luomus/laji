@@ -19,8 +19,20 @@
         <p [innerHTML]="'result.load.introSimple' | translate"></p>
         <div class="action-group">
           <laji-download
+            *lajiForTypes="['prod', 'dev', 'embedded']"
             role="primary"
             [showBackdrop]="false"
+            (download)="simpleDownload($event)"
+            [downloadLoading]="downloadLoading">
+            <i class="glyphicon glyphicon-download-alt"></i>
+            {{ 'haseka.submissions.download' | translate }}
+          </laji-download>
+          <laji-download
+            *lajiForTypes="['vir']"
+            role="primary"
+            [showReason]="true"
+            [showBackdrop]="false"
+            [(reason)]="reason"
             (download)="simpleDownload($event)"
             [downloadLoading]="downloadLoading">
             <i class="glyphicon glyphicon-download-alt"></i>

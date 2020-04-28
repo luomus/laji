@@ -16,6 +16,10 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
       </div>
       <div class="modal-body">
         <div>
+          <ng-container *ngIf="showReason">
+            <label for="reason">{{ 'download.reason' | translate }}</label>
+            <textarea class="form-control" name="reason" [ngModel]="reason" (ngModelChange)="reasonChange.emit($event)"></textarea>
+          </ng-container>
           <div class="radio" *ngIf="_formats.indexOf('csv') > -1">
             <label>
               <input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">
@@ -40,7 +44,7 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
         <div class="row">
           <div class="col-sm-12">
             <laji-spinner [spinning]="downloadLoading" [overlay]="true">
-              <button type="button" class="btn btn-default pull-right" [disabled]="downloadLoading" (click)="onDownload()">
+              <button type="button" class="btn btn-default pull-right" [disabled]="downloadLoading || (showReason && !reason)" (click)="onDownload()">
                 <span>{{ "haseka.submissions.download" | translate }}</span>
               </button>
             </laji-spinner>
@@ -56,13 +60,16 @@ export class DownloadComponent {
   @Input() disabled = false;
   @Input() downloadLoading = false;
   @Input() showBackdrop = true;
+  @Input() showReason = false;
   @Input() role = 'secondary';
+  @Input() reason = '';
 
   _formats: FORMAT[] = ['tsv', 'ods', 'xlsx'];
 
   fileType = 'tsv';
   modalRef: BsModalRef;
 
+  @Output() reasonChange = new EventEmitter<string>();
   @Output() download = new EventEmitter<string>();
 
   @Input() set formats(formats: FORMAT[]) {
@@ -87,6 +94,9 @@ export class DownloadComponent {
   }
 
   onDownload() {
+    if (this.showReason && !this.reason) {
+      return;
+    }
     this.download.emit(this.fileType);
   }
 
