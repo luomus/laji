@@ -28,8 +28,9 @@ import { LajiErrorHandler } from '../../../../src/app/shared/error/laji-error-ha
 import { LocalizeRouterService } from '../../../../src/app/locale/localize-router.service';
 import { Logger } from '../../../../src/app/shared/logger';
 import { LoggerApi } from '../../../../src/app/shared/api/LoggerApi';
-import { AppComponent } from '../../../../src/app/shared-modules/app-component/app.component';
+import { DocumentViewerModule } from '../../../../src/app/shared-modules/document-viewer/document-viewer.module';
 import { createLoggerLoader } from '../../../iucn/src/app/iucn.module';
+import { VirAppComponent } from './vir-app.component';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { createLoggerLoader } from '../../../iucn/src/app/iucn.module';
     ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'vir-', separator: ''}),
     VirRoutingModule,
-    TransferHttpCacheModule
+    TransferHttpCacheModule,
+    DocumentViewerModule
   ],
   exports: [
     TranslateModule
@@ -76,6 +78,7 @@ import { createLoggerLoader } from '../../../iucn/src/app/iucn.module';
       useFactory: createLoggerLoader
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [VirAppComponent],
+  declarations: [VirAppComponent]
 })
 export class AppModule { }
