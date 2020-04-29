@@ -8,7 +8,7 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.vir,
-  base: 'https://localhost:3000',
+  base: 'http://localhost:3000',
   production: false,
   forceLogin: false,
   disableAnalytics: true,
