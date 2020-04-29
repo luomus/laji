@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import {Step} from './kerttu.facade';
-import {ILetter, ILetterTemplate, LetterAnnotation} from '../model/letter';
+import {ILetterCandidate, ILetterCandidateTemplate, LetterAnnotation} from '../model/letter';
 
 @Injectable()
 export class KerttuApi {
@@ -35,25 +35,25 @@ export class KerttuApi {
       );
   }
 
-  public getNextLetterTemplate(personToken: string): Observable<ILetterTemplate> {
+  public getNextLetterTemplate(personToken: string): Observable<ILetterCandidateTemplate> {
     const path = this.basePath + '/letter/nextTemplate';
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
       .pipe(
-        map((response: ILetterTemplate) => {
+        map((response: ILetterCandidateTemplate) => {
           return response;
         })
       );
   }
 
-  public getNextLetterCandidate(personToken: string, templateId: number): Observable<ILetter> {
+  public getNextLetterCandidate(personToken: string, templateId: number): Observable<ILetterCandidate> {
     const path = this.basePath + '/letter/' + templateId + '/nextCandidate';
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
       .pipe(
-        map((response: ILetter) => {
+        map((response: ILetterCandidate) => {
           return response;
         })
       );
@@ -98,20 +98,20 @@ export class KerttuApi {
       );
   }
 
-  public getLetterAnnotations(taxonId: string, personToken: string): Observable<ILetterAnnotations> {
+  public getLetterAnnotations(taxonId: string, personToken: string): Observable<ILetterCandidateAnnotations> {
     const path = this.basePath + '/letters/annotations/' + taxonId;
 
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
       .pipe(
-        map((response: {annotations: ILetterAnnotations}) => {
+        map((response: {annotations: ILetterCandidateAnnotations}) => {
           return response.annotations;
         })
       );
   }
 
-  public updateLetterAnnotations(taxonId: string, annotations: ILetterAnnotations, personToken: string): Observable<boolean> {
+  public updateLetterAnnotations(taxonId: string, annotations: ILetterCandidateAnnotations, personToken: string): Observable<boolean> {
     const path = this.basePath + '/letters/annotations/' + taxonId;
 
     const params = new HttpParams().set('personToken', personToken);
