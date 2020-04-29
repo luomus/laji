@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
+import { ObservationTableColumn } from '../../observation-result/model/observation-table-column';
 
 export interface IColumnGroup<T> {
   header: string;
@@ -35,7 +36,13 @@ export abstract class TableColumnService<T extends DatatableColumn = DatatableCo
   }
 
   getColumns(name: string[]): T[] {
-    return name.map(n => this.getColumn(n));
+    return name.reduce((all, colName) => {
+      const col = this.getColumn(colName);
+      if (col) {
+        all.push(col);
+      }
+      return all;
+    }, [] as T[]);
   }
 
   getAllColumns(): T[] {
@@ -43,9 +50,7 @@ export abstract class TableColumnService<T extends DatatableColumn = DatatableCo
   }
 
   getSelectFields(selected: string[], query?: any): string[] {
-    const columnLookup = this.getAllColumnLookup();
-
-    return selected.map(field => columnLookup[field].selectField || field);
+    return this.getColumns(selected).map(col => (col as ObservationTableColumn).selectField || col.name);
   }
 
   getAllColumnLookup() {
