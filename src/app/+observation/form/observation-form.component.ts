@@ -245,6 +245,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
             this.mediaStatutes = selectValue ? this.mediaStatutes : [] ;
           }
       } else {
+        if (this.mediaStatutes.length === 0) {
+          this.query.hasUnitAudio = undefined;
+          this.query.hasUnitImages = undefined;
+        }
         if (this.mediaStatutes.indexOf(field) === -1) {
           this.mediaStatutes.push(field);
         } else {
