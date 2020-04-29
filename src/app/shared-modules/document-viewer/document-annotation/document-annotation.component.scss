@@ -38,6 +38,16 @@ h5 {
     }
   }
 
+  .manual-shortcuts {
+    float: right;
+    position: relative;
+  }
+  
+  a.manual img {
+    width: 24%;
+    margin-left: 5px;
+  }
+
   .column-modal {
     flex: 1;
     @include media-query-tablet {
@@ -69,6 +79,8 @@ h5 {
   .page-header {
     padding-bottom: 5px;
     margin: 0 0 15px 0;
+    float: left;
+    width: 100%;
   }
 
   .page-header h3 {
@@ -79,7 +91,6 @@ h5 {
 
   .shortcuts {
     position: relative;
-    float: right;
   }
 
   .shortcuts img {
@@ -178,6 +189,14 @@ h5 {
     font-size: 20px;
     font-weight: bold;
   }
+
+  @media only screen and (max-width: 767px) {
+    .manual-shortcuts {
+      float: left;
+    }
+  }
+
+
 
 
 

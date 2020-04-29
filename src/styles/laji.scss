@@ -1,4 +1,4 @@
-@import '~@swimlane/ngx-datatable/themes/material.scss';
+@import '@swimlane/ngx-datatable/themes/material.scss';
 
 @import "styles";
 @import 'vars';
@@ -1111,6 +1111,10 @@ body > .ui-select-bootstrap.open {
 
 .margin-top-20 {
   margin-top:20px;
+}
+
+.margin-top-10 {
+ margin-top: 10px;
 }
 
 .margin-top-25 {

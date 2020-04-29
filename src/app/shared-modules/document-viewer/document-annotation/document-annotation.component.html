@@ -45,7 +45,14 @@
                 [documentID]="document.documentId"
                 [formID]="document.formId"
               ></laji-edit-link>
-              <a class="shortcuts btn btn-sm btn-default" (click)="toggleShortcuts()"><img src="../../../../static/images/icons/keyboard_24px.svg" />Shortcuts</a>
+              <div class="manual-shortcuts">
+                <span [ngSwitch]="currentLang">
+                  <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'sv'" [routerLink]="['/about', '3928'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+                  <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'en'" [routerLink]="['/about', '3926'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+                  <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'fi'" [routerLink]="['/about', '3806'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+                </span>
+                <a class="shortcuts btn btn-sm btn-default" (click)="toggleShortcuts()"><img src="../../../../static/images/icons/keyboard_24px.svg" />Shortcuts</a>
+              </div>
             </h3>
           </div>
         </div>
@@ -153,7 +160,7 @@
             <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'L'"></laji-row>
             <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'L'"></laji-row>
             <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'L'"></laji-row>
-            <laji-row [title]="'haseka.submissions.unitCount' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+            <laji-row [noTitleSpace]="false" ngPreserveWhitespaces>
               <a href="view?uri={{document.documentId}}" target="_blank">
                 <span>{{ unitCnt }}
                   <span *ngIf="unitCnt > 1"> {{ 'annotation.observations.count' | translate }}</span>
