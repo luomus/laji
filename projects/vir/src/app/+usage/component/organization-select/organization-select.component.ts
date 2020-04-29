@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { IColOrganization, VirOrganisationService } from '../../../service/vir-organisation.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'vir-organization-select',
@@ -6,11 +8,21 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./organization-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrganizationSelectComponent implements OnInit {
+export class OrganizationSelectComponent {
 
-  constructor() { }
+  private organisations: IColOrganization[];
 
-  ngOnInit() {
+  readonly organisations$ = this.virOrganisationService.organisations$.pipe(
+      tap(data => this.organisations = data)
+  );
+
+  @Output() select = new EventEmitter<undefined|IColOrganization>();
+
+  constructor(
+      private virOrganisationService: VirOrganisationService
+  ) {}
+
+  test(event) {
+    this.select.emit(this.organisations.find((org) => org.id === event));
   }
-
 }
