@@ -3,16 +3,19 @@
 <ng-container *ngFor="let unit of gathering?.units">
   <ng-container *ngIf="(unit.unitId === highlight) && (unit.taxonVerbatim || unit.reportedTaxonId)">
     <laji-row *ngIf="unit.taxonVerbatim; else reportedTaxonId" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim">
-      <span *ngIf="unit.reportedTaxonConfidence" class="taxonConfidence" [ngClass]="{'green-color': unit.reportedTaxonConfidence === 'SURE', 'red-color': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
+      <span *ngIf="unit.reportedTaxonConfidence && unit.reportedTaxonConfidence === 'UNSURE'" class="taxonConfidence" [ngClass]="{'green-color': unit.reportedTaxonConfidence === 'SURE', 'red-color': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
     </laji-row>
     <ng-template #reportedTaxonId>
       <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.reportedTaxonId | toQName | label">
-        <span *ngIf="unit.reportedTaxonConfidence" class="taxonConfidence" [ngClass]="{'green-color': unit.reportedTaxonConfidence === 'SURE', 'red-color': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
+        <span *ngIf="unit.reportedTaxonConfidence && unit.reportedTaxonConfidence === 'UNSURE'" class="taxonConfidence" [ngClass]="{'green-color': unit.reportedTaxonConfidence === 'SURE', 'red-color': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
       </laji-row>
     </ng-template>
+    <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon" [title]="'annotation.title.taxon' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+      <laji-taxon-name [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
+    </laji-row>
   </ng-container>
-  <ng-container *ngIf="(unit.unitId === highlight) && unit.wild === false">
-    <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="'observation.active.nativeOccurrence.notWild' | translate"></laji-row>
+  <ng-container *ngIf="(unit.unitId === highlight) && (unit.wild === true || unit.wild === false)">
+    <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="unit.wild === true ? ('yes' | translate) : ('No' | translate)"></laji-row>
   </ng-container>
 </ng-container>
 <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="false">
