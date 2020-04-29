@@ -935,7 +935,7 @@
   "observation.form.hasDocumentMedia": "Etikettikuvia (kokoelmanäytteet)",
   "observation.form.hasGatheringMedia": "Kuvia elinympäristöstä",
   "observation.form.hasMedia": "Kuvalliset",
-  "observation.form.hasNotMedia": "Ei ole kuvia havainnosta",
+  "observation.form.hasNotMedia": "Ei ole media havainnosta",
   "observation.form.hasUnitMedia": "Kuvia havainnosta",
   "observation.form.identify": "Tarvitseeko määrityksen?",
   "observation.form.identify.true": "Tarvitsee määrityksen",

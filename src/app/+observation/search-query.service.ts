@@ -92,6 +92,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'hasDocumentMedia',
     'hasGatheringMedia',
     'hasUnitMedia',
+    'hasUnitImages',
+    'hasUnitAudio',
     'hasMedia',
     'hasSample',
     'secured',

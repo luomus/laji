@@ -879,7 +879,7 @@
   "observation.form.hasDocumentMedia": "Etikettbilder (samlingsprov)",
   "observation.form.hasGatheringMedia": "Habitatbilder",
   "observation.form.hasMedia": "Med bild",
-  "observation.form.hasNotMedia": "Inte har observationsbilder",
+  "observation.form.hasNotMedia": "Inte har observationsmedia",
   "observation.form.hasUnitMedia": "Observationsbilder",
   "observation.form.identify": "Behöver identifiering?",
   "observation.form.identify.true": "Behöver identifiering",

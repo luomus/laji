@@ -793,7 +793,7 @@
   "observation.form.hasDocumentMedia": "Label images (collection specimen)",
   "observation.form.hasGatheringMedia": "Habitat images",
   "observation.form.hasMedia": "With images",
-  "observation.form.hasNotMedia": "Do not have observation images",
+  "observation.form.hasNotMedia": "Do not have observation media",
   "observation.form.hasUnitMedia": "Observation images",
   "observation.form.identify": "Needs identification?",
   "observation.form.identify.true": "Needs identification",

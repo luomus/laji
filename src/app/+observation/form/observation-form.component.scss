@@ -74,3 +74,12 @@ label {
   font-weight: normal;
   font-size: smaller;
 }
+
+fieldset {
+  padding: 0 0 0 5px;
+  border-left: 2px solid #3c9cdd;
+}
+
+.title {
+  text-transform: capitalize;
+}
