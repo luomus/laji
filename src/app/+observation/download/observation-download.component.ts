@@ -66,6 +66,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   downloadLoading = false;
   description = '';
   csvParams = '';
+  reason = '';
   columnSelector = new ColumnSelector;
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
@@ -228,14 +229,17 @@ export class ObservationDownloadComponent implements OnDestroy {
       this.tableColumnService.getSelectFields(selected, this.query),
       [],
       this.translate.currentLang,
-      true
+      true,
+      this.reason
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;
-        this.modalService.hide(1);
-        this.modalService.hide(1);
+        // see https://github.com/valor-software/ngx-bootstrap/issues/2618
+        for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+          this.modalService.hide(i);
+        }
         this.cd.markForCheck();
       },
       (err) => this.logger.error('Simple download failed', err)

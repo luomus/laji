@@ -1,21 +1,20 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" [ngClass]="{'red-theme': redTheme}">
+<nav class="navbar navbar-inverse navbar-fixed-top red-theme">
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-12">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-            aria-controls="navbar" (click)="toggleMenu()">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+                  aria-controls="navbar" (click)="toggleMenu()">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" [routerLink]="['/'] | localize">
             <div class="env" [ngClass]="{dev: !isProd}"></div>
-            <span *lajiForTypes="['dev', 'prod']">LAJI.FI</span>
-            <span *lajiForTypes="['iucn']">{{ 'iucn.title' | translate }}</span>
+            <span>LAJI.FI</span>
           </a>
-          <div class="visible-xs-inline-block pull-right search" *lajiForTypes="['dev', 'prod']">
+          <div class="visible-xs-inline-block pull-right search">
             <laji-omni-search
               [placeholder]="'species.search' | translate"
               (visibleTaxon)="updateView()"
@@ -25,38 +24,26 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
           <ul class="nav navbar-nav">
-            <ng-container *lajiForTypes="['iucn']">
-              <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
-              </li>
-              <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>
-              </li>
-              <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
-              </li>
-            </ng-container>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
+            <li [routerLinkActive]="['active']">
               <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
+            <li [routerLinkActive]="['active']">
               <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
+            <li [routerLinkActive]="['active']">
+              <a [routerLink]="['/usage'] | localize">{{ 'navigation.usage' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']">
               <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
-            <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
+            <!--
+            <li [routerLinkActive]="['active']">
+              <a [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
-              <a [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
-            </li>
-            <li [ngClass]="{'hidden-sm': showSearch}" *lajiForTypes="['dev', 'prod']">
-              <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{ 'Forum' | translate }}</a>
-            </li>
+            -->
           </ul>
           <ul class="nav navbar-nav pull-right">
-            <li class="hidden-xs search" *lajiForTypes="['dev', 'prod']">
+            <li class="hidden-xs search">
               <laji-omni-search
                 [placeholder]="'species.search' | translate"
                 (visibleTaxon)="updateView()"
@@ -64,7 +51,7 @@
                 [expand]="'right'"></laji-omni-search>
             </li>
             <ng-container *lajiBrowserOnly>
-              <ng-container *lajiForTypes="['dev', 'prod']">
+              <ng-container>
                 <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
                   <a dropdownToggle class="link user">
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
@@ -98,7 +85,7 @@
                 </li>
               </ng-container>
             </ng-container>
-            <li dropdown *lajiForTypes="['dev', 'prod', 'iucn']">
+            <li dropdown>
               <a dropdownToggle class="link language-toggle">
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">

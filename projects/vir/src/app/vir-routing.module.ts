@@ -11,10 +11,12 @@ import { CheckLoginGuard } from '../../../../src/app/shared/guards/check-login.g
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('../../../../src/app/+home/home.module').then(m => m.HomeModule), data: {preload: true}},
   {path: 'news', loadChildren: () => import('../../../../src/app/+news/news.module').then(m => m.NewsModule), data: {title: 'news.title'}},
-  {path: 'invasive', loadChildren: () => import('./+invasive/invasive.module').then(m => m.InvasiveModule)},
+//  {path: 'invasive', loadChildren: () => import('./+invasive/invasive.module').then(m => m.InvasiveModule)},
   {path: 'about', loadChildren: () => import('../../../../src/app/+information/information.module').then(m => m.InformationModule)},
   {path: 'user', loadChildren: () => import('../../../../src/app/+user/user.module').then(m => m.UserModule)},
   {path: 'view', loadChildren: () => import('../../../../src/app/+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
+  {path: 'usage', loadChildren: () => import('./+usage/usage.module').then(m => m.UsageModule), data: {title: 'navigation.usage'}},
+  {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule), data: {title: 'navigation.saveVirObservations'}},
   {path: 'observation', loadChildren: () => import('../../../../src/app/+observation/observation.module').then(m => m.ObservationModule), data: {
     preload: true,
     title: 'navigation.observation'

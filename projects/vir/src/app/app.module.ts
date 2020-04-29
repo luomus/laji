@@ -21,15 +21,24 @@ import { VirRoutingModule } from './vir-routing.module';
 import { GraphQLModule } from '../../../../src/app/graph-ql/graph-ql.module';
 import { AppComponentModule } from '../../../../src/app/shared-modules/app-component/app-component.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateFileLoader } from '../../../../src/app/shared/translate/translate-file-loader';
 import { SharedModule } from '../../../../src/app/shared/shared.module';
 import { DocumentService } from '../../../../src/app/shared-modules/own-submissions/service/document.service';
 import { LajiErrorHandler } from '../../../../src/app/shared/error/laji-error-handler';
 import { LocalizeRouterService } from '../../../../src/app/locale/localize-router.service';
-import { Logger } from '../../../../src/app/shared/logger';
+import { ConsoleLogger, HttpLogger, ILogger, Logger } from '../../../../src/app/shared/logger';
 import { LoggerApi } from '../../../../src/app/shared/api/LoggerApi';
-import { AppComponent } from '../../../../src/app/shared-modules/app-component/app.component';
-import { createLoggerLoader } from '../../../iucn/src/app/iucn.module';
+import { DocumentViewerModule } from '../../../../src/app/shared-modules/document-viewer/document-viewer.module';
+import { VirAppComponent } from './vir-app.component';
+import { environment } from '../environments/environment';
+import { NavBarComponent } from './component/nav-bar/nav-bar.component';
+import { LazyTranslateLoader } from './service/lazy-translate-loader';
+
+export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
+  if (environment.production) {
+    return new HttpLogger(loggerApi);
+  }
+  return new ConsoleLogger();
+}
 
 @NgModule({
   imports: [
@@ -43,7 +52,7 @@ import { createLoggerLoader } from '../../../iucn/src/app/iucn.module';
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: TranslateFileLoader
+        useClass: LazyTranslateLoader
       }
     }),
     CarouselModule.forRoot(),
@@ -59,7 +68,8 @@ import { createLoggerLoader } from '../../../iucn/src/app/iucn.module';
     ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'vir-', separator: ''}),
     VirRoutingModule,
-    TransferHttpCacheModule
+    TransferHttpCacheModule,
+    DocumentViewerModule
   ],
   exports: [
     TranslateModule
@@ -76,6 +86,7 @@ import { createLoggerLoader } from '../../../iucn/src/app/iucn.module';
       useFactory: createLoggerLoader
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [VirAppComponent],
+  declarations: [VirAppComponent, NavBarComponent]
 })
 export class AppModule { }

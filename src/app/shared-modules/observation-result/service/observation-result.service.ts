@@ -135,7 +135,8 @@ export class ObservationResultService {
     selected: string[],
     orderBy: string[],
     lang: string,
-    sendDownloadMark = false
+    sendDownloadMark = false,
+    reason = ''
   ): Observable<any[]> {
     if (sendDownloadMark) {
       this.warehouseApi.download(
@@ -144,7 +145,10 @@ export class ObservationResultService {
         '',
         query,
         lang,
-        'LIGHTWEIGHT'
+        'LIGHTWEIGHT',
+        {
+          'dataUsePurpose': reason
+        }
       ).pipe(catchError(() => of(null))).subscribe();
     }
     return this._getAll(
