@@ -8,7 +8,7 @@ export interface ILetterCandidate extends ILetter {
   crossCorrelation: number;
 }
 
-export interface ILetterCandidateTemplate extends ILetter {
+export interface ILetterTemplate extends ILetter {
   taxonId: string;
   yRange: number[];
 }

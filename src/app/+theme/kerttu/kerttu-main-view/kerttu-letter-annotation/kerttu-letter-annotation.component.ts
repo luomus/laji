@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {LetterAnnotation} from '../../model/letter';
-import {ILetterCandidate, ILetterCandidateTemplate} from '../../model/letter';
+import {ILetterCandidate, ILetterTemplate} from '../../model/letter';
 import {ResultService} from '../../../service/result.service';
 import {Observable} from 'rxjs';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
@@ -11,7 +11,7 @@ import {Taxonomy} from '../../../../shared/model/Taxonomy';
   styleUrls: ['./kerttu-letter-annotation.component.scss']
 })
 export class KerttuLetterAnnotationComponent implements OnChanges {
-  @Input() template: ILetterCandidateTemplate;
+  @Input() template: ILetterTemplate;
   @Input() candidate: ILetterCandidate;
 
   currentAnnotation: LetterAnnotation;

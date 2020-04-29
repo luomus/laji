@@ -7,7 +7,7 @@ import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
 import {LetterAnnotation} from '../model/letter';
-import {ILetterCandidate, ILetterCandidateTemplate} from '../model/letter';
+import {ILetterCandidate, ILetterTemplate} from '../model/letter';
 
 @Component({
   selector: 'laji-kerttu-main-view',
@@ -36,7 +36,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   selectedTaxonIds: string[];
 
-  letterTemplate: ILetterCandidateTemplate;
+  letterTemplate: ILetterTemplate;
   letterCandidate: ILetterCandidate;
 
   private vmSub: Subscription;
