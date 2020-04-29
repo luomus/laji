@@ -142,7 +142,7 @@
                 </div>
             <h5>{{ 'annotation.collectionEditor' | translate }}</h5>    
             <laji-issues [data]="document"></laji-issues>
-            <laji-row [title]="'observation.filterBy.collectionName' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+            <laji-row [title]="'result.document.collectionId' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
               <span>{{ document.collectionId | toQName | collectionName }}</span>
               <span><a href="{{document.collectionId}}" target="_blank">[metadata]</a></span>
             </laji-row>

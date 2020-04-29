@@ -13,9 +13,12 @@
     <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon" [title]="'annotation.title.taxon' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
       <laji-taxon-name [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
     </laji-row>
-  </ng-container>
-  <ng-container *ngIf="(unit.unitId === highlight) && (unit.wild === true || unit.wild === false)">
-    <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="unit.wild === true ? ('yes' | translate) : ('No' | translate)"></laji-row>
+  </ng-container> 
+  <!--<ng-container *ngIf="(unit.unitId === highlight)">
+    <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="unit.wild ? (unit.wild === true ?('yes' | translate) : ('No' | translate)) : ('yes' | translate)"></laji-row>
+  </ng-container>-->
+  <ng-container *ngIf="unit.unitId === highlight && unit.wild === false">
+    <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="'observation.active.nativeOccurrence.notWild' | translate "></laji-row>
   </ng-container>
 </ng-container>
 <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="false">

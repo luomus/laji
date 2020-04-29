@@ -4,7 +4,7 @@
   "main": "dist/electron",
   "description": "laji.fi frontend",
   "scripts": {
-    "ng-high-memory": "node --max_old_space_size=16384 ./node_modules/@angular/cli/bin/ng",
+    "ng-high-memory": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng",
     "ng": "ng",
     "start": "ng serve --configuration=local --host 0.0.0.0 --port 3000",
     "start:local:api": "ng serve --configuration=local --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",

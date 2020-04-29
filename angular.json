@@ -174,6 +174,8 @@
               ]
             },
             "local": {
+              "sourceMap": false,
+              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "anyComponentStyle",
