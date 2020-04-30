@@ -1,8 +1,8 @@
 {
   "navigation.taxonomy": "Lajiluettelot ja lajitieto",
-  "navigation.observation": "Selaa ja lataa havaintotietoa",
+  "navigation.observation": "Hae havaintotietoa",
   "navigation.saveObservations": "Tallenna seurantatietoja",
-  "navigation.usage": "Aineistojen käyttö ja käyttäjät",
+  "navigation.usage": " Aineiston käyttö",
   "usage.intro": "<ul><li>Tietolatauksen yhteydessä käyttäjältä kysytään kuvausta mihin aineistoa on tarkoitus käyttää</li><li>Tämä tieto tallennetaan tähän palveluun ja se on käytettävissä kaikille\npalvelun käyttäjille mm. raportointia varten.\n• Palvelussa ylläpidetään viranomaisportaalin käyttäjätietoja organisaatioittain. Tieto on kaikille käyttäjille avointa ja tämä perustuu sopimukseen.</li></ul>",
   "usage.users.intro": "Ota yhteyttä viranomaiset@laji.fi uusien henkilöiden lisäykseen ja oikeuksien poistoon liittyvissä asioissa",
   "usage.byPerson": "Palvelun käyttäjät organisaatioittain",
