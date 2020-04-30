@@ -17,6 +17,7 @@ const routes: Routes = [
   {path: 'view', loadChildren: () => import('../../../../src/app/+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
   {path: 'usage', loadChildren: () => import('./+usage/usage.module').then(m => m.UsageModule), data: {title: 'navigation.usage'}},
   {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule), data: {title: 'navigation.saveVirObservations'}},
+  {path: 'monitoring', loadChildren: () => import('./+monitoring/monitoring.module').then(m => m.MonitoringModule), data: {title: 'navigation.monitoring'}},
   {path: 'observation', loadChildren: () => import('../../../../src/app/+observation/observation.module').then(m => m.ObservationModule), data: {
     preload: true,
     title: 'navigation.observation'

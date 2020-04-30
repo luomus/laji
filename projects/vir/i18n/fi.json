@@ -1,8 +1,9 @@
 {
   "navigation.taxonomy": "Lajiluettelot ja lajitieto",
   "navigation.observation": "Selaa ja lataa havaintotietoa",
-  "navigation.saveObservations": "Tallenna seurantatietoja",
+  "navigation.saveVirObservations": "Tallenna havaintotietoa",
   "navigation.usage": "Aineistojen käyttö ja käyttäjät",
+  "navigation.monitoring": "Seuranta (työkalut)",
   "usage.intro": "<ul><li>Tietolatauksen yhteydessä käyttäjältä kysytään kuvausta mihin aineistoa on tarkoitus käyttää</li><li>Tämä tieto tallennetaan tähän palveluun ja se on käytettävissä kaikille\npalvelun käyttäjille mm. raportointia varten.\n• Palvelussa ylläpidetään viranomaisportaalin käyttäjätietoja organisaatioittain. Tieto on kaikille käyttäjille avointa ja tämä perustuu sopimukseen.</li></ul>",
   "usage.users.intro": "Ota yhteyttä viranomaiset@laji.fi uusien henkilöiden lisäykseen ja oikeuksien poistoon liittyvissä asioissa",
   "usage.byPerson": "Palvelun käyttäjät organisaatioittain",
@@ -13,5 +14,7 @@
   "usage.email": "Sähköposti",
   "select.organisation": "Valitse organisaation",
   "vir.observation.title": "Havaintotieto",
-  "vir.observation.intro": "<ul><li>Voit selata ja ladata kaikkea Lajitietokeskuksen tietovarastoon tallennettua lajitietoa käyttämällä avuksi monipuolista rajaustyökalua.</li><li>Kun lataat aineistoja käyttöösi, sinulta pyydetään kuvausta mihin tarkoitukseen aineistoa käytät. Tämä tieto tallentuu ”Aineistojen käyttö”-osioon aineistojen omistajien raportointia ja seurantaa varten.</li><li>Huomaa, että jos käytät aineistoa tarkoitukseen, joka voi vaatia viittausta tai myöhemmin aineistoon palaamista, tee aineistosta ”Viittauskelpoinen tiedosto”, jonka ”jäädytetty” versio tallennetaan Lajitietokeskuksen tietovarastoon alkuperäisessä muodossaan.</li><li>Vaikka käytössäsi on kaikki käyttörajoitettu aineisto, ”Lataa tiedostona” sisältää myös vaihtoehdon ”Tee aineistopyyntö” käyttörajoitetusta aineistosta. Tämä mahdollistaa toimestasi tehdyn aineistopyynnön, jossa voi pyytää omistajilta aineistoa johonkin muuhun tarkoitukseen kuin varsinaisessa viranomaistoimintaan.</li></ul>"
+  "vir.observation.intro": "<ul><li>Voit selata ja ladata kaikkea Lajitietokeskuksen tietovarastoon tallennettua lajitietoa käyttämällä avuksi monipuolista rajaustyökalua.</li><li>Kun lataat aineistoja käyttöösi, sinulta pyydetään kuvausta mihin tarkoitukseen aineistoa käytät. Tämä tieto tallentuu ”Aineistojen käyttö”-osioon aineistojen omistajien raportointia ja seurantaa varten.</li><li>Huomaa, että jos käytät aineistoa tarkoitukseen, joka voi vaatia viittausta tai myöhemmin aineistoon palaamista, tee aineistosta ”Viittauskelpoinen tiedosto”, jonka ”jäädytetty” versio tallennetaan Lajitietokeskuksen tietovarastoon alkuperäisessä muodossaan.</li><li>Vaikka käytössäsi on kaikki käyttörajoitettu aineisto, ”Lataa tiedostona” sisältää myös vaihtoehdon ”Tee aineistopyyntö” käyttörajoitetusta aineistosta. Tämä mahdollistaa toimestasi tehdyn aineistopyynnön, jossa voi pyytää omistajilta aineistoa johonkin muuhun tarkoitukseen kuin varsinaisessa viranomaistoimintaan.</li></ul>",
+  "vir.species.title": "Lajiluettelot",
+  "vir.species.intro": "<ul><li>Rajaa luettelon sisältöä taksonomian tai hallinnollisten ominaisuuksien perusteella rajausvalikosta.</li><li>Luettelon sisältämiä tietosarakkeita voi muokata ”Valitse sarakkeet” painikkeen avulla.</li><li>Luettelon haluttuine tietoineen voi ladata mm. Excel-taulukkomuotoisena omaan käyttöön valitsemalla ”Lataa taksonit”.</li><li>Luettelon mukaisiin havaintoihin pääset tutustumaan valitsemalla alalaidasta ”Selaa havaintoja” painikkeen.</li></ul>"
 }

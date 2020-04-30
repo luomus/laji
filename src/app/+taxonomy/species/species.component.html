@@ -1,6 +1,10 @@
 <lu-sidebar [position]="'right'" [staticWidth]="300">
   <main>
-    <div>
+    <div *lajiForTypes="['vir']">
+      <h1 translate>vir.species.title</h1>
+      <div [innerHTML]="'vir.species.intro' | translate"></div>
+    </div>
+    <div *lajiForTypes="{types: ['vir'], reverse: true}">
       <h1>{{ 'species.search' | translate }}</h1>
       <h2><small>{{ 'species.title.short' | translate }}</small></h2>
       <p>{{ 'species.title.long' | translate }}</p>
