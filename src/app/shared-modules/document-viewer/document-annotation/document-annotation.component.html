@@ -149,11 +149,14 @@
             <laji-row [title]="'annotation.collectionQuality' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
               <span>{{ document.linkings.collectionQuality | label:'warehouse' }}</span>
             </laji-row>
-            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors.length > 0">
+            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors.length > 0 && hasEditors">
               <ul class="separated-list">
                 <li *ngFor="let user of document.linkings.editors">
-                  <span *ngIf="user.fullName; else noName"><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ user.fullName }}</a></span>
-                  <ng-template #noName><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ user.userId | toQName | label }}</a></ng-template>
+                  <span *ngIf="user.id && user.fullName">
+                    <a target="_blank" href="user/{{user | values:'':'id' | toQName }}">
+                      {{ user.fullName }}
+                    </a>
+                  </span>
                 </li>
               </ul>
             </laji-row>
