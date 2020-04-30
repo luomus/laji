@@ -7,7 +7,7 @@ import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 export const MAX_TAXA_SIZE = 30;
 
 @Injectable()
-export class HorizontalchartDataService {
+export class HorizontalChartDataService {
   constructor(
     private graphQLService: GraphQLService
   ) { }
