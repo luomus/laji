@@ -1,6 +1,6 @@
 <div *ngIf="visible" id="container">
   <lu-tabs *ngIf="showMap else listTemplate" [selectedIndex]="activeIndex" (select)="setActive($event)">
-    <lu-tab [heading]="documentForm.namedPlaceOptions?.listLabel || 'np.list' | translate">
+    <lu-tab [heading]="_documentForm.namedPlaceOptions?.listLabel || 'np.list' | translate">
       <ng-container *ngTemplateOutlet="listTemplate"></ng-container>
     </lu-tab>
     <lu-tab [heading]="'np.map' | translate">
@@ -10,9 +10,9 @@
                     [activeNP]="_activeNP"
                     [userID]="userID"
                     [visible]="activeIndex === 1 && visible"
-                    [reservable]="documentForm.features.indexOf(FEATURE_RESERVE) !== -1"
+                    [reservable]="_documentForm.features.indexOf(FEATURE_RESERVE) !== -1"
                     [placeForm]="placeForm"
-                    [documentForm]="documentForm"
+                    [documentForm]="_documentForm"
                     (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
       </ng-container>
     </lu-tab>
@@ -21,8 +21,8 @@
     <div id="list-container" *ngIf="loadedTabs.isLoaded('list')">
       <laji-np-list [height]="height"
                     [namedPlaces]="_namedPlaces"
-                    [documentForm]="documentForm"
-                    [listColumnNameMapping]="documentForm.namedPlaceOptions?.listColumnNameMapping"
+                    [documentForm]="_documentForm"
+                    [listColumnNameMapping]="_documentForm.namedPlaceOptions?.listColumnNameMapping"
                     [activeNP]="_activeNP"
                     (activePlaceChange)="onActivePlaceChange($event)"
       ></laji-np-list>
@@ -31,6 +31,6 @@
 
   <ng-container *lajiLoggedIn="true">
     <lu-button *ngIf="allowCreate"
-               (click)="createButtonClick.emit()">{{ documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</lu-button>
+               (click)="createButtonClick.emit()">{{ _documentForm.namedPlaceOptions?.createNewLabels?.button || 'np.createNew' | translate }}</lu-button>
   </ng-container>
 </div>
