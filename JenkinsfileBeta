@@ -8,7 +8,7 @@ node {
     stage('Build beta') {
       milestone()
       sh 'rm -rf dist'
-      sh 'npm run --silent build:ssr:beta'
+      sh 'npm run --silent build:beta'
       sh 'pre-compress-web-assets dist/browser'
       sh 'tar -cvzf beta.tar.gz --strip-components=1 dist'
     }
