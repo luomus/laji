@@ -7,8 +7,6 @@ import { MultiLanguage } from '../../../../projects/laji-api-client/src/lib/mode
 
 export namespace Form {
   export enum Feature {
-    NoNewNamedPlaces = <any> 'MHL.featureAddingNamedPlacesNotAllowed',
-    NoEditingNamedPlaces = <any> 'MHL.featureEditingNamedPlacesNotAllowed',
     FilterNamedPlacesByMunicipality = <any> 'MHL.featureFilterNamedPlacesByMunicipality',
     FilterNamedPlacesByBirdAssociationArea = <any> 'MHL.featureFilterNamedPlacesByBirdAssociationArea',
     FilterNamedPlacesByTags = <any> 'MHL.featureFilterNamedPlacesByTags',

@@ -43,7 +43,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   editMode = false;
   loading = false;
   allowEdit = false;
-  allowCreate = false;
   formRights: Rights = {
     admin: false,
     edit: false
@@ -156,7 +155,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
       this.setFormData();
 
-      this.updateAllowCreate();
       this.cdr.markForCheck();
     });
 
@@ -253,12 +251,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.filterByBirdAssociationArea = FormService.hasFeature(formData, Form.Feature.FilterNamedPlacesByBirdAssociationArea);
       this.filterByMunicipality = FormService.hasFeature(formData, Form.Feature.FilterNamedPlacesByMunicipality);
       this.filterByTags = FormService.hasFeature(formData, Form.Feature.FilterNamedPlacesByTags);
-      this.allowEdit = !FormService.hasFeature(formData, Form.Feature.NoEditingNamedPlaces) || this.formRights.admin;
+      this.allowEdit = FormService.hasFeature(formData, Form.Feature.AddingPublicNamedPlacesAllowed) || this.formRights.admin;
     }
-  }
-
-  updateAllowCreate() {
-    this.allowCreate = this.formRights.admin || FormService.hasFeature(this.documentForm, Form.Feature.AddingPublicNamedPlacesAllowed);
   }
 
   updateQueryParams() {
@@ -295,7 +289,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   toEditMode(create: boolean) {
-    if (!this.allowCreate) {
+    if (!this.allowEdit) {
       return;
     }
     this.npEdit.setIsEdit(!create);
