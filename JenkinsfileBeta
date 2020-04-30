@@ -1,6 +1,7 @@
 node {
    nvm('v10.17.0') {
      stage('Prepare environment') {
+      cleanWs()
       git branch: 'development', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
       sh 'npm ci'
     }
