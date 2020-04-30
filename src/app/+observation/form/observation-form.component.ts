@@ -1,7 +1,7 @@
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
-import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { WarehouseQueryInterface, WarehouseTimeQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
 import * as moment from 'moment';
@@ -71,6 +71,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   showPlace = false;
   drawing = false;
   drawingShape: string;
+  mediaStatutes: string[] = [];
 
   areaType = Area.AreaType;
   dataSource: Observable<any>;
@@ -102,7 +103,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     keywords: ['documentId', 'keyword'],
     features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'invasive', 'finnish'],
     invasive: [],
-    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
+    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia', 'hasUnitImages', 'hasUnitAudio'],
     secure: ['secured', 'secureLevel'],
   };
 
@@ -166,7 +167,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.formQuery = this.searchQueryToFormQuery(query);
   }
 
-  get query() {
+  get query(): WarehouseQueryInterface {
     return this._query;
   }
 
@@ -229,6 +230,33 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       const value = this.query[field];
       this.query[field] = typeof value === 'undefined' ||  value !==  selectValue ? selectValue : undefined;
     }
+    this.onQueryChange();
+  }
+
+  onMediaCheckBoxToggle(field, selectValue: any = true) {
+      if (Array.isArray(field)) {
+          if (selectValue === true) {
+            this.query.hasUnitImages = this.mediaStatutes.length === 2 ? undefined : true;
+            this.query.hasUnitAudio = this.mediaStatutes.length === 2 ? undefined : true;
+            this.mediaStatutes = this.mediaStatutes.length === 2 ? [] : ['hasUnitImages', 'hasUnitAudio'];
+          } else {
+            this.query.hasUnitImages = this.query.hasUnitImages === undefined ? false : !this.query.hasUnitImages ? undefined : false;
+            this.query.hasUnitAudio = this.query.hasUnitAudio === undefined ? false : !this.query.hasUnitAudio ? undefined : false;
+            this.mediaStatutes = selectValue ? this.mediaStatutes : [] ;
+          }
+      } else {
+        if (this.mediaStatutes.length === 0) {
+          this.query.hasUnitAudio = undefined;
+          this.query.hasUnitImages = undefined;
+        }
+        if (this.mediaStatutes.indexOf(field) === -1) {
+          this.mediaStatutes.push(field);
+        } else {
+          const index = this.mediaStatutes.indexOf(field);
+          this.mediaStatutes.splice(index, 1);
+        }
+        this.query[field] = typeof this.query[field] === 'undefined' || this.query[field] !== selectValue ? selectValue : undefined;
+      }
     this.onQueryChange();
   }
 
@@ -460,8 +488,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   updateTime(dates, startTarget?: 'time');
-  updateTime(dates, startTarget: keyof WarehouseQueryInterface, endTarget: keyof WarehouseQueryInterface );
-  updateTime(dates, startTarget: 'time' | keyof WarehouseQueryInterface = 'time', endTarget?: keyof WarehouseQueryInterface ) {
+  updateTime(dates, startTarget: keyof WarehouseTimeQueryInterface, endTarget: keyof WarehouseTimeQueryInterface );
+  updateTime(dates, startTarget: 'time' | keyof WarehouseTimeQueryInterface = 'time', endTarget?: keyof WarehouseTimeQueryInterface ) {
     if (dates === 365) {
       const today = new Date();
       const oneJan = new Date(today.getFullYear(), 0, 1);

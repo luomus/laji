@@ -2,7 +2,12 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AlertModule, BsDropdownModule, ModalModule, PopoverModule, ProgressbarModule, TooltipModule } from 'ngx-bootstrap';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
 import { UsersPipe } from './pipe/users.pipe';
@@ -137,7 +142,7 @@ import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
   ]
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [

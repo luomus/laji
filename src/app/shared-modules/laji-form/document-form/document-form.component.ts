@@ -29,7 +29,7 @@ import { FormError, ILajiFormState, ISuccessEvent, LajiFormDocumentFacade } from
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCanDeactivate {
-  @ViewChild(LajiFormComponent, { static: false }) lajiForm: LajiFormComponent;
+  @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
   @Input() formId: string;
   @Input() documentId: string;
   @Input() showHeader = true;

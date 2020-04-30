@@ -17,7 +17,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { BookType } from 'xlsx';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
@@ -48,7 +48,7 @@ enum RequestStatus {
 export class ObservationDownloadComponent implements OnDestroy {
 
   @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal: ObservationTableSettingsComponent;
-  @ViewChild(DownloadComponent, { static: false }) downloadTypeSelectModal: DownloadComponent;
+  @ViewChild(DownloadComponent) downloadTypeSelectModal: DownloadComponent;
   @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
 
   @Input() unitCount: number;
@@ -66,6 +66,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   downloadLoading = false;
   description = '';
   csvParams = '';
+  reason = '';
   columnSelector = new ColumnSelector;
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
@@ -228,14 +229,17 @@ export class ObservationDownloadComponent implements OnDestroy {
       this.tableColumnService.getSelectFields(selected, this.query),
       [],
       this.translate.currentLang,
-      true
+      true,
+      this.reason
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;
-        this.modalService.hide(1);
-        this.modalService.hide(1);
+        // see https://github.com/valor-software/ngx-bootstrap/issues/2618
+        for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+          this.modalService.hide(i);
+        }
         this.cd.markForCheck();
       },
       (err) => this.logger.error('Simple download failed', err)

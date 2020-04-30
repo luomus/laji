@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
   exports: []
 })
 export class LajiApiClientModule {
-  public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {
+  public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<LajiApiClientModule> {
     return {
       ngModule: LajiApiClientModule,
       providers: [ { provide: Configuration, useFactory: configurationFactory } ]

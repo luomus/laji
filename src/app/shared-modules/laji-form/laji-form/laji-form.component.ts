@@ -18,7 +18,7 @@ import { IUserSettings, UserService } from '../../../shared/service/user.service
 import { Logger } from '../../../shared/logger/logger.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { concatMap, map, take } from 'rxjs/operators';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Global } from '../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 

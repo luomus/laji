@@ -186,6 +186,8 @@ export interface WarehouseQueryInterface {
   hasDocumentMedia?: boolean;
   hasGatheringMedia?: boolean;
   hasUnitMedia?: boolean;
+  hasUnitImages?: boolean;
+  hasUnitAudio?: boolean;
   hasMedia?: boolean;
   hasSample?: boolean;
   secureReason?: Array<string>;
@@ -224,4 +226,11 @@ export interface WarehouseQueryInterface {
   anyHabitat?: Array<string>;
   effectiveTag?: Array<string>;
   formId?: string;
+}
+
+
+export interface WarehouseTimeQueryInterface extends Pick<WarehouseQueryInterface,
+  'season' | 'loadedSameOrAfter' | 'loadedSameOrBefore' | 'firstLoadedSameOrAfter' | 'firstLoadedSameOrBefore'
+  > {
+
 }

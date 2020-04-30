@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CarouselModule } from 'ngx-bootstrap';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { SharedModule } from '../shared/shared.module';
 import { routing } from './home.routes';
 import { HomeComponent } from './home.components';

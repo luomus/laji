@@ -8,7 +8,7 @@ import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -34,7 +34,7 @@ export class ImporterComponent implements OnInit {
 
   @ViewChild('currentUserMapModal', { static: true }) currentUserMapModal: ModalDirective;
   @ViewChild('userMapModal', { static: true }) userMapModal: ModalDirective;
-  @ViewChild('dataTable', { static: false }) datatable: DatatableComponent;
+  @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber', { static: true }) rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol', { static: true }) statusColTpl: TemplateRef<any>;
   @ViewChild('valueCol', { static: true }) valueColTpl: TemplateRef<any>;
@@ -309,7 +309,7 @@ export class ImporterComponent implements OnInit {
     ];
     setTimeout(() => {
       this.cdr.detectChanges();
-    });
+    }, 1);
     this.validate();
   }
 

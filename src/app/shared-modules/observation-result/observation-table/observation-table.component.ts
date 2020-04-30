@@ -14,7 +14,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
-import { BsModalService, ModalDirective } from 'ngx-bootstrap';
+import { BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -55,7 +55,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() virtualScrolling = true;
   @Input() defaultOrder: string;
   @Input() visible: boolean;
-  @Input() hideDefaultCountCol = false;
+  @Input() hideDefaultCountColumn = false;
   @Input() allAggregateFields = [
     'unit.species',
     'unit.linkings.taxon.vernacularName',
@@ -179,7 +179,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   initColumns() {
     const selected = this.isAggregate ?
-      (this.hideDefaultCountCol ?
+      (this.hideDefaultCountColumn ?
         [...this.columnSelector.columns, ...this.numberColumnSelector.columns] :
         [...this.columnSelector.columns, 'count', ...this.numberColumnSelector.columns]) :
       [...this.columnSelector.columns];

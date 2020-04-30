@@ -42,7 +42,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() multiple = true;
   @Input() info: string;
   @Input() loading = false;
-  @ViewChild('filter', { static: false }) filter: ElementRef;
+  @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: SelectOptions[] = [];
   unselectedOptions: SelectOptions[] = [];

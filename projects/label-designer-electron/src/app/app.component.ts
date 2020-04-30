@@ -67,8 +67,8 @@ export class AppComponent implements OnInit {
   @LocalStorage('setup', NEW_SETUP) setup: ISetup;
   @SessionStorage('data', []) data: object[];
 
-  @ViewChild('notebookImport', { static: false }) notebookImport;
-  @ViewChild('notebookImportActions', { static: false }) notebookImportActions;
+  @ViewChild('notebookImport') notebookImport;
+  @ViewChild('notebookImportActions') notebookImportActions;
 
   availableFields: ILabelField[];
   defaultAvailableFields: ILabelField[];

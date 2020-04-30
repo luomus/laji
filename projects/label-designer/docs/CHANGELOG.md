@@ -1,3 +1,9 @@
+<a name="4.0.0"></a>
+# 4.0.0 (2020-04-26)
+
+### Features
+* **core:** update to angular 9 and update dependencies.
+
 <a name="3.3.2"></a>
 # 3.3.2 (2020-02-18)
 

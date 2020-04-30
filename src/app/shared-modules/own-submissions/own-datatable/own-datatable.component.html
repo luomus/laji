@@ -200,6 +200,15 @@
                 [routerLink]="'/theme/linjalaskenta/statistics/' + row.id | localize">
             <i class="glyphicon glyphicon-stats"></i>
           </a>
+          <a *ngIf="actions.indexOf('stats') > -1 && row.formViewerType === 'MHL.viewerTypeBirdPointCount'"
+             class="label label-warning link inline-block"
+             [tooltip]="'haseka.submissions.toStatistics' | translate"
+             [placement]="'left'"
+             [container]="'body'"
+             [adaptivePosition]="false"
+             [routerLink]="'/theme/pistelaskenta/statistics/' + row.id | localize">
+            <i class="glyphicon glyphicon-stats"></i>
+          </a>
           <span *ngIf="actions.indexOf('delete') > -1 && (admin || row.creator === usersId)" class="label label-danger link inline-block"
                 [tooltip]="'friend.remove' | translate"
                 [placement]="'left'"

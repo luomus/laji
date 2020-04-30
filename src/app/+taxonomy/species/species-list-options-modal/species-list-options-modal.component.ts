@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 import { TaxonomyColumns } from '../service/taxonomy-columns';

@@ -1,0 +1,34 @@
+<div class="container">
+  <h1>{{ 'usage.byPerson' | translate }}</h1>
+  <p [innerHTML]="'usage.users.intro' | translate"></p>
+  <vir-organization-select (select)="organizationSelect($event)"></vir-organization-select>
+  <ng-container *ngIf="!!organisation">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <th>{{ 'usage.organisation' | translate }}</th>
+            <th>{{ 'usage.name' | translate }}</th>
+            <th>{{ 'usage.email' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="users.length > 0; else noData">
+            <tr *ngFor="let user of users">
+              <td>{{ user.organisation }}</td>
+              <td>{{ user.fullName }}</td>
+              <td>{{ user.emailAddress }}</td>
+            </tr>
+          </ng-container>
+          <ng-template #noData>
+            <tr>
+              <td colspan="3">
+                {{ 'usage.noUserData' | translate }}
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>

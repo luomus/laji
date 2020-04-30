@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../shared/service/user.service';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Rights } from '../../../../+haseka/form-permission/form-permission.service';
 import { Form } from '../../../../shared/model/Form';
 import { NpInfoRow } from './np-info-row/np-info-row.component';
@@ -55,7 +55,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild('infoModal', { static: true }) public modal: ModalDirective;
   @ViewChild('infoBox', { static: true }) infoBox;
-  @ViewChild('documentModal', { static: false }) public documentModal: ModalDirective;
+  @ViewChild('documentModal') public documentModal: ModalDirective;
 
   publicity = Document.PublicityRestrictionsEnum;
 

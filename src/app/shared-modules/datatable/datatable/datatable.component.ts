@@ -38,7 +38,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private static settings: Settings;
 
-  @ViewChild('dataTable', { static: false }) public datatable: NgxDatatableComponent;
+  @ViewChild('dataTable') public datatable: NgxDatatableComponent;
   @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates: DatatableTemplatesComponent;
 
   @Input() loading = false;

@@ -80,9 +80,9 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   preCheckScreenWidth = true;
 
-  @ViewChild('sidebarRef', {static: false}) sidebarRef: ElementRef;
-  @ViewChild('contentRef', {static: false}) contentRef: ElementRef;
-  @ViewChild('navWrapper', {static: false}) navWrapperRef: ElementRef;
+  @ViewChild('sidebarRef') sidebarRef: ElementRef;
+  @ViewChild('contentRef') contentRef: ElementRef;
+  @ViewChild('navWrapper') navWrapperRef: ElementRef;
   @ContentChildren(SidebarLinkComponent) sidebarLinks: QueryList<SidebarLinkComponent>;
 
   destroyResizeListener: Function;
@@ -159,7 +159,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
       event['ignore-sidebar'] = true;
       window.dispatchEvent(event);
     } catch (e) {
-      const evt = window.document.createEvent('UIEvents');
+      const evt: any = window.document.createEvent('UIEvents');
       evt.initUIEvent('resize', true, false, window, 0);
       window.dispatchEvent(evt);
     }

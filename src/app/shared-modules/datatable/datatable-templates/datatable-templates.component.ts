@@ -17,7 +17,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('eventDate', { static: true }) eventDate: TemplateRef<any>;
   @ViewChild('multiLang', { static: true }) multiLang: TemplateRef<any>;
   @ViewChild('multiLangAll', { static: true }) multiLangAll: TemplateRef<any>;
-  @ViewChild('vernacularName', { static: false }) vernacularName: TemplateRef<any>;
+  @ViewChild('vernacularName') vernacularName: TemplateRef<any>;
   @ViewChild('scientificName', { static: true }) scientificName: TemplateRef<any>;
   @ViewChild('taxonScientificName', { static: true }) taxonScientificName: TemplateRef<any>;
   @ViewChild('taxonScientificNameLink', { static: true }) taxonScientificNameLink: TemplateRef<any>;

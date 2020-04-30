@@ -1,4 +1,4 @@
-import merge from 'deepmerge';
+import * as merge from 'deepmerge';
 import { Document } from '../model/Document';
 
 export class Util {

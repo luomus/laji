@@ -12,7 +12,7 @@ export class ForTypesDirective {
   ) { }
 
   @Input() set lajiForTypes(types: string[]) {
-    if (types.indexOf(environment.type) !== -1) {
+    if (types.includes(environment.type)) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainer.clear();

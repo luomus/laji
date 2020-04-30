@@ -1,6 +1,6 @@
 /* tslint:disable:no-use-before-declare */
 import { map, switchMap } from 'rxjs/operators';
-import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { ControlValueAccessor } from '@angular/forms';
 import { Observable, of as ObservableOf } from 'rxjs';
@@ -9,6 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Group } from '../model/Group';
 import { PagedResult } from '../model/PagedResult';
 
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
   @Input() position: 'right'|'left' = 'right';
   @Output() select = new EventEmitter();

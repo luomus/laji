@@ -4,6 +4,9 @@
       <div *ngSwitchCase="'MHL.viewerTypeLineTransect'">
         <laji-line-transect-stats [document]="document" [namedPlace]="ns" (namedPlaceChange)="updateNamedPlace($event)"></laji-line-transect-stats>
       </div>
+      <div *ngSwitchCase="'MHL.viewerTypeBirdPointCount'">
+       <laji-line-transect-stats [document]="document" [namedPlace]="ns" (namedPlaceChange)="updateNamedPlace($event)"></laji-line-transect-stats>
+      </div>
       <div *ngSwitchDefault="">
         <div *ngTemplateOutlet="wip"></div>
       </div>

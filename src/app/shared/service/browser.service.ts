@@ -69,7 +69,7 @@ export class BrowserService implements OnDestroy {
         this.window.dispatchEvent(new Event('resize'));
       } catch (e) {
         try {
-          const evt = this.window.document.createEvent('UIEvents');
+          const evt: any = this.window.document.createEvent('UIEvents');
           evt.initUIEvent('resize', true, false, this.window, 0);
           this.window.dispatchEvent(evt);
         } catch (e) {}
