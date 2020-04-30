@@ -22,7 +22,8 @@ export namespace Form {
     Mobile = <any> 'MHL.featureMobile',
     EditingOldWarning = <any> 'MHL.featureEditingOldDocumentWarning',
     AutoLock = <any> 'MHL.featureAutoLock',
-    SecondaryCopy = <any> 'MHL.featureSecondaryCopy'
+    SecondaryCopy = <any> 'MHL.featureSecondaryCopy',
+    AddingPublicNamedPlacesAllowed = <any> 'MHL.featureAddingPublicNamedPlacesAllowed'
   }
   export enum PrintType {
     lineTransect = 'MHL.printTypeLineTransect',

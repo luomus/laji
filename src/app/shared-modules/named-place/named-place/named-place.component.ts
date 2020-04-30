@@ -15,6 +15,7 @@ import { Util } from '../../../shared/service/util.service';
 import { NPResolverData } from '../named-place.resolver';
 import { TranslateService } from '@ngx-translate/core';
 import { Area } from '../../../shared/model/Area';
+import { FormService } from '../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-named-place',
@@ -257,8 +258,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   updateAllowCreate() {
-    this.allowCreate = this.formRights.admin ||
-      (this.documentForm && this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.requireAdmin === false);
+    this.allowCreate = this.formRights.admin || FormService.hasFeature(this.documentForm, Form.Feature.AddingPublicNamedPlacesAllowed);
   }
 
   updateQueryParams() {
