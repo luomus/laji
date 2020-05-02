@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 
 interface ILajiForTypesInput {
   types: string[];
-  reverse: boolean;
+  exclude: boolean;
 }
 
 @Directive({
@@ -19,7 +19,7 @@ export class ForTypesDirective {
     let rev = false;
     if (!(types instanceof Array)) {
       types = <ILajiForTypesInput>types;
-      rev = types.reverse;
+      rev = types.exclude;
       types = types.types;
     }
     if (
