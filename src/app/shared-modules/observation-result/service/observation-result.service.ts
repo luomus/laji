@@ -136,26 +136,41 @@ export class ObservationResultService {
     orderBy: string[],
     lang: string,
     sendDownloadMark = false,
+    blockOnDownloadMarkFail = false,
     reason = ''
   ): Observable<any[]> {
-    if (sendDownloadMark) {
-      this.warehouseApi.download(
-        this.userService.getToken(),
-        '',
-        '',
-        query,
-        lang,
-        'LIGHTWEIGHT',
-        {
-          'dataUsePurpose': reason
-        }
-      ).pipe(catchError(() => of(null))).subscribe();
-    }
-    return this._getAll(
+
+    const all$ = this._getAll(
       query,
       selected,
       orderBy,
       lang
+    );
+
+    if (sendDownloadMark) {
+      if (blockOnDownloadMarkFail) {
+        return this.sendDownloadMark(query, lang, reason).pipe(
+          switchMap(() => all$)
+        )
+      }
+      this.sendDownloadMark(query, lang, reason).pipe(
+        catchError(() => of(null))
+      ).subscribe();
+    }
+    return all$;
+  }
+
+  private sendDownloadMark(query: WarehouseQueryInterface, lang: string, reason: string): Observable<any> {
+    return this.warehouseApi.download(
+      this.userService.getToken(),
+      '',
+      '',
+      query,
+      lang,
+      'LIGHTWEIGHT',
+      {
+        'dataUsePurpose': reason
+      }
     );
   }
 
