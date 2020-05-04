@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-usage-by-collection',
@@ -6,11 +8,15 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./usage-by-collection.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsageByCollectionComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+export class UsageByCollectionComponent {
+  downloadRequests$: Observable<IDownloadRequest[]>
+  constructor(
+      private virDownloadRequestsService: VirDownloadRequestsService
+  ) {
+    this.downloadRequests$ = this.virDownloadRequestsService.findDownloadRequests();
   }
 
+  select(event: any) {
+    // TODO: open modal to...
+  }
 }
