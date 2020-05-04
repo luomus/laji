@@ -1,0 +1,29 @@
+@import 'vars';
+
+header {
+  background-color: $primary-2;
+  color: $primary-8;
+  border-bottom: 1px solid $primary-3;
+  padding-bottom: 20px;
+}
+
+h1 {
+  font-size: $fs-8;
+}
+
+h2 {
+  font-size: $fs-4;
+  color: $primary-7;
+}
+
+.taxon-select {
+  position: absolute;
+  bottom: 17px;
+  left: 30px;
+  width: calc(100% - 60px);
+}
+@media only screen and (min-width : 992px) {
+  .taxon-select {
+    bottom: 37px;
+  }
+}

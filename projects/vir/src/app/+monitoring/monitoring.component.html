@@ -1,0 +1,9 @@
+<main>
+  <h2 translate>Seurantatyökalut</h2>
+  <p translate>Voit osallistua viranomaisille suunnattuihin seurantoihin, joita ylläpidetään Lajitietokeskuksen Vihko-palvelussa.</p>
+  <div class="d-flex flex-row flex-wrap">
+    <ng-container *ngFor="let form of monitoringForms$ | async">
+      <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
+    </ng-container>
+  </div>
+</main>

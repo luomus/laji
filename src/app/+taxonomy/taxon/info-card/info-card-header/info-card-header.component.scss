@@ -1,3 +1,5 @@
+@import 'vars';
+
 .info-card-header-first-row {
   height: 60px;
 }
@@ -248,3 +250,16 @@
   margin-right: 2px;
 }
 
+.vir-taxonomy-info-box {
+  margin-top: 50px;
+  color: $primary-7;
+  background-color: $primary-2;
+  border-radius: 15px;
+  padding: 30px;
+  border: 1px solid $primary-4;
+  h1 {
+    margin-top: 0;
+    font-size: $fs-6;
+    color: $primary-8;
+  }
+}

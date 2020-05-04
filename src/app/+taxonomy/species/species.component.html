@@ -1,6 +1,11 @@
 <lu-sidebar [position]="'right'" [staticWidth]="300">
   <main>
-    <div>
+    <div class="mb-3" *lajiForTypes="['vir']">
+      <h1 translate>vir.species.title</h1>
+      <div [innerHTML]="'vir.species.intro' | translate"></div>
+      <lu-button [anchor]="['/observation']">{{'vir.species.browseLink' | translate}}</lu-button>
+    </div>
+    <div *lajiForTypes="{types: ['vir'], exclude: true}">
       <h1>{{ 'species.search' | translate }}</h1>
       <h2><small>{{ 'species.title.short' | translate }}</small></h2>
       <p>{{ 'species.title.long' | translate }}</p>
