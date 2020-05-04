@@ -7,6 +7,7 @@ import { SurveyBoxModule } from 'app/shared-modules/survey-box/survey-box.module
 import { TranslateModule } from '@ngx-translate/core';
 import { HasekaModule } from 'app/+haseka/haseka.module';
 import { MonitoringFacade } from './monitoring.facade';
+import { LajiUiModule } from '../../../../laji-ui/src/public-api';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { MonitoringFacade } from './monitoring.facade';
     CommonModule,
     SaveObservationsRoutingModule,
     TranslateModule,
-    SurveyBoxModule
+    SurveyBoxModule,
+    LajiUiModule
   ],
   providers: [
     MonitoringFacade

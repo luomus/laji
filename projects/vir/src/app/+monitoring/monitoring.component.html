@@ -1,9 +1,15 @@
 <main>
   <h2 translate>Seurantatyökalut</h2>
+  <header class="my-4">
+    Lajitietokeskus ylläpitää monia lajihavaintojen seurantaa tukevia palveluja kaikille avoimessa Laji.fi-portaalissa. Näihin osallistuminen vaatii sen, että kirjaudut uudelleen Laji.fi julkiseen palveluun käyttäen kuitenkin samoja tunnistustietoja (käyttäjänimi ja salasana).
+  </header>
   <p translate>Voit osallistua viranomaisille suunnattuihin seurantoihin, joita ylläpidetään Lajitietokeskuksen Vihko-palvelussa.</p>
   <div class="d-flex flex-row flex-wrap">
     <ng-container *ngFor="let form of monitoringForms$ | async">
-      <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
+      <laji-survey-box class="d-block mr-3" [form]="form" externalUrl="https://laji.fi"></laji-survey-box>
     </ng-container>
   </div>
+  <hr>
+  <p>Tallentamalla lajihavaintosi johonkin Lajitietokeskuksen palveluun, tuot sen tutkijoiden ja muiden tiedontarvitsijoiden käytettäväksi ja valintasi mukaan Laji-fi portaaliin julkisesti nähtäväksi. Voit ilmoittaa yksittäisiä havaintoja, pitää omaa havaintopäiväkirjaa tai osallistua kansalaistiedehankkeisiin.</p>
+  <lu-button anchor="https://laji.fi/save-observations" target="_blank"><i class="glyphicon glyphicon-new-window"></i> Tallenna luontohavaintoja Lajitietokeskukseen</lu-button>
 </main>
