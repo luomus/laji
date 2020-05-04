@@ -9,7 +9,7 @@ import { CheckLoginGuard } from '../../../../src/app/shared/guards/check-login.g
 
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => import('../../../../src/app/+home/home.module').then(m => m.HomeModule), data: {preload: true}},
+  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule), data: {preload: true}},
   {path: 'news', loadChildren: () => import('../../../../src/app/+news/news.module').then(m => m.NewsModule), data: {title: 'news.title'}},
 //  {path: 'invasive', loadChildren: () => import('./+invasive/invasive.module').then(m => m.InvasiveModule)},
   {path: 'about', loadChildren: () => import('../../../../src/app/+information/information.module').then(m => m.InformationModule)},
