@@ -664,7 +664,7 @@
   <label class="title">{{ 'haseka.users.latest.gathered.singular' | translate }}</label>
   <fieldset>
     <div>
-      <label><laji-checkbox [value]="mediaStatutes.length === 2" (valueChange)="onMediaCheckBoxToggle(mediaStatutes)"></laji-checkbox>{{ 'all' | translate }}</label>
+      <label><laji-checkbox [value]="query.hasUnitImages && query.hasUnitAudio" (valueChange)="onMediaCheckBoxToggle(mediaStatutes)"></laji-checkbox>{{ 'all' | translate }}</label>
     </div>
     <div>
       <label><laji-checkbox [value]="query.hasUnitImages" (valueChange)="onMediaCheckBoxToggle('hasUnitImages')"></laji-checkbox>{{ 'observation.active.hasMedia' | translate }}</label>
