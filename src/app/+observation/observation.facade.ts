@@ -148,7 +148,7 @@ export class ObservationFacade {
       this.hashCache['query'] = hash;
 
       this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
-    })
+    });
   }
 
   set emptyQuery(query: WarehouseQueryInterface) {
