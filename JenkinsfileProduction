@@ -19,13 +19,6 @@ node {
       sh 'pre-compress-web-assets dist/browser'
       sh 'tar -cvzf embedded.tar.gz --strip-components=1 dist/browser'
     }
-    stage('Build authority') {
-      milestone()
-      sh 'rm -rf dist'
-      sh 'npm run --silent build:vir'
-      sh 'pre-compress-web-assets dist/browser'
-      sh 'tar -cvzf vir.tar.gz --strip-components=1 dist/browser'
-    }
     stage('Archive') {
       milestone()
       archive 'prod.tar.gz'
