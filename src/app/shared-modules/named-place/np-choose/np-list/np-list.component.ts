@@ -101,6 +101,9 @@ export class NpListComponent {
       },
       '$.prepopulatedDocument.gatherings[0].notes': {
         label: 'result.document.notes'
+      },
+      '$.prepopulatedDocument.gatherings[0].dateBegin': {
+        label: 'lastCensus'
       }
     };
   }
