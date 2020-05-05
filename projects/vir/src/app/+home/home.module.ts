@@ -6,6 +6,7 @@ import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { NavigationThumbnailModule } from 'app/shared-modules/navigation-thumbnail/navigation-thumbnail.module';
+import { SharedModule } from '../../../../../src/app/shared/shared.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { NavigationThumbnailModule } from 'app/shared-modules/navigation-thumbna
     HomeRoutingModule,
     LajiUiModule,
     TranslateModule,
-    NavigationThumbnailModule
+    NavigationThumbnailModule,
+    SharedModule
   ]
 })
 export class HomeModule { }
