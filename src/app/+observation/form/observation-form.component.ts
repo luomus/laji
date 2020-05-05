@@ -71,6 +71,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   showPlace = false;
   drawing = false;
   drawingShape: string;
+  mediaStatutes: string[] = [];
 
   areaType = Area.AreaType;
   dataSource: Observable<any>;
@@ -102,7 +103,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     keywords: ['documentId', 'keyword'],
     features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'invasive', 'finnish'],
     invasive: [],
-    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
+    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia', 'hasUnitImages', 'hasUnitAudio'],
     secure: ['secured', 'secureLevel'],
   };
 
@@ -229,6 +230,36 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       const value = this.query[field];
       this.query[field] = typeof value === 'undefined' ||  value !==  selectValue ? selectValue : undefined;
     }
+    this.onQueryChange();
+  }
+
+  onMediaCheckBoxToggle(field, selectValue: any = true) {
+    if (this.query.hasUnitImages === undefined && this.query.hasUnitAudio === undefined) {
+      this.mediaStatutes = [];
+    }
+      if (Array.isArray(field)) {
+          if (selectValue === true) {
+            this.query.hasUnitImages = this.mediaStatutes.length === 2 ? undefined : true;
+            this.query.hasUnitAudio = this.mediaStatutes.length === 2 ? undefined : true;
+            this.mediaStatutes = this.mediaStatutes.length === 2 ? [] : ['hasUnitImages', 'hasUnitAudio'];
+          } else {
+            this.query.hasUnitImages = this.query.hasUnitImages === undefined ? false : !this.query.hasUnitImages ? undefined : false;
+            this.query.hasUnitAudio = this.query.hasUnitAudio === undefined ? false : !this.query.hasUnitAudio ? undefined : false;
+            this.mediaStatutes = selectValue ? this.mediaStatutes : [] ;
+          }
+      } else {
+        if (this.mediaStatutes.length === 0) {
+          this.query.hasUnitAudio = undefined;
+          this.query.hasUnitImages = undefined;
+        }
+        if (this.mediaStatutes.indexOf(field) === -1) {
+          this.mediaStatutes.push(field);
+        } else {
+          const index = this.mediaStatutes.indexOf(field);
+          this.mediaStatutes.splice(index, 1);
+        }
+        this.query[field] = typeof this.query[field] === 'undefined' || this.query[field] !== selectValue ? selectValue : undefined;
+      }
     this.onQueryChange();
   }
 
@@ -386,7 +417,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
       controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.controllingRisksOfInvasiveAlienSpecies'),
-      allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
+      allInvasiveSpecies: this.invasiveStatuses.length > 0 && this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,

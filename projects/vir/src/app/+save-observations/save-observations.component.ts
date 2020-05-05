@@ -2,12 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'vir-save-observations',
-  template: `
-    <p>
-      save observations placeholder!
-    </p>
-  `,
-  styles: [],
+  templateUrl: './save-observations.component.html',
+  styleUrls: ['./save-observations.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SaveObservationsComponent implements OnInit {

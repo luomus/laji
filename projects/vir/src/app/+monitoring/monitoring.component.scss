@@ -1,0 +1,25 @@
+@import 'vars';
+
+:host {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+hr {
+  margin: 30px 0;
+  border-top: 1px solid $neutral-4;
+}
+
+main {
+  max-width: 1000px;
+  padding: 0 20px;
+}
+
+header {
+  background-color: $primary-2;
+  color: $primary-8;
+  border: 1px solid $primary-3;
+  border-radius: 5px;
+  padding: 20px;
+}

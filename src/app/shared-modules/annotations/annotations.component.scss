@@ -13,6 +13,7 @@ a {
 
 .annotation {
   padding: 5px 0px 0 0px;
+  position: relative;
 }
 
 .border {
@@ -41,7 +42,9 @@ a {
 .comment-title {
   font-weight: bold;
   font-size:20px;
-  margin-bottom: 5px;
+  display: block;
+  line-height: 20px;
+  width: 90%;
 }
 
 .switch-mode {
@@ -54,8 +57,19 @@ a {
   background: $neutral-3;
   padding: 10px;
   border: 1px solid $neutral-4;
+  position: relative;
 }
 
+a.manual {
+  padding: 2px 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+a.manual img {
+  width: 20px;
+}
 
 hr {
   border-top: 2px solid #eee;

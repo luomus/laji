@@ -85,7 +85,12 @@ export class ExcelGeneratorComponent implements OnInit {
   }
 
   clearSelected() {
-    this.selected = [];
+    this.selected = this.fields.reduce((result, field) => {
+      if (field.required) {
+        result.push(field.key);
+      }
+      return result;
+    }, []);
   }
 
   selectAll() {

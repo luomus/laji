@@ -1,0 +1,8 @@
+<div class="container">
+  <h1>{{ 'usage.byCollection' | translate }}</h1>
+  <vir-organization-select></vir-organization-select>
+  <vir-data-table
+          [data]="downloadRequests$ | async"
+          (rowSelect)="select($event)"
+          type="downloads"></vir-data-table>
+</div>

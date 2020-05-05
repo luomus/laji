@@ -10,14 +10,14 @@ import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-ch
 import { Chart, ChartDataSets } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
-import {  HorizontalchartDataService } from './horizontal-chart-data.service';
+import { HorizontalChartDataService, MAX_TAXA_SIZE } from './horizontal-chart-data.service';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-horizontal-chart',
   templateUrl: './horizontal-chart.component.html',
   styleUrls: ['./horizontal-chart.component.scss'],
-  providers: [InformalTaxonGroupApi, HorizontalchartDataService],
+  providers: [InformalTaxonGroupApi, HorizontalChartDataService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HorizontalChartComponent implements OnInit, OnChanges {
@@ -72,7 +72,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
               private cd: ChangeDetectorRef,
               private toQname: ToQNamePipe,
               private translate: TranslateService,
-              private horizontalDataService: HorizontalchartDataService,
+              private horizontalDataService: HorizontalChartDataService,
               private localSt: LocalStorageService
   ) {
   }
@@ -121,7 +121,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         this.query,
         ['unit.linkings.taxon.' + this.classificationValue ],
         [this.onlyCount === null ? 'count DESC' : this.onlyCount ? 'count DESC' : 'individualCountSum DESC'],
-        30,
+        MAX_TAXA_SIZE,
         undefined,
         undefined,
         this.onlyCount === null ? true : this.onlyCount ? true : false

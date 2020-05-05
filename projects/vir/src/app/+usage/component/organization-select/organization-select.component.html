@@ -1,0 +1,6 @@
+<select class="form-control" (change)="test($event.target.value)">
+  <option value="">{{ 'select.organisation' | translate }}</option>
+  <option *ngFor="let organisation of organisations$ | async" [value]="organisation.id">
+    {{ organisation.collectionName | multiLang }}
+  </option>
+</select>

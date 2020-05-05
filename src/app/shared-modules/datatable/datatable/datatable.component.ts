@@ -67,7 +67,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Output() sortChange = new EventEmitter<any>();
   @Output() reorder = new EventEmitter<any>();
   @Output() select = new EventEmitter<any>();
-  @Output() rowSelect = new EventEmitter<{documentId: string, unitId: string}>();
+  @Output() rowSelect = new EventEmitter<any>();
 
   annotationTypes = Annotation.TypeEnum;
   annotationClass = Annotation.AnnotationClassEnum;

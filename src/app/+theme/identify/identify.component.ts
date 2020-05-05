@@ -1,10 +1,8 @@
-import { map } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SourceService } from '../../shared/service/source.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { environment } from '../../../environments/environment.vir';
+import { environment } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
-import { Global } from '../../../environments/global';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({

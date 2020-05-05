@@ -134,46 +134,9 @@
                 }
               ]
             },
-            "vir": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.vir.ts"
-                }
-              ]
-            },
-            "vir-dev": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "extractCss": true,
-              "vendorChunk": false,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.vir-dev.ts"
-                }
-              ]
-            },
             "local": {
+              "sourceMap": false,
+              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -225,12 +188,6 @@
             },
             "embedded": {
               "browserTarget": "laji:build:embedded"
-            },
-            "vir": {
-              "browserTarget": "laji:build:vir"
-            },
-            "vir-dev": {
-              "browserTarget": "laji:build:vir-dev"
             },
             "local": {
               "browserTarget": "laji:build:local"
@@ -331,30 +288,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.embedded.ts"
-                }
-              ]
-            },
-            "vir": {
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.vir.ts"
-                }
-              ]
-            },
-            "vir-dev": {
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.vir-dev.ts"
                 }
               ]
             },
@@ -910,7 +843,8 @@
               "node_modules/laji-form/dist/styles.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/styles/laji.scss",
-              "projects/vir/src/styles.scss"
+              "projects/vir/src/styles.scss",
+              "projects/laji-ui/src/lib/exports.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -923,7 +857,7 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/vir/src/environments/environment.ts",
+                  "replace": "src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.prod.ts"
                 }
               ],

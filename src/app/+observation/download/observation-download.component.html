@@ -19,8 +19,20 @@
         <p [innerHTML]="'result.load.introSimple' | translate"></p>
         <div class="action-group">
           <laji-download
+            *lajiForTypes="['prod', 'dev', 'embedded']"
             role="primary"
             [showBackdrop]="false"
+            (download)="simpleDownload($event)"
+            [downloadLoading]="downloadLoading">
+            <i class="glyphicon glyphicon-download-alt"></i>
+            {{ 'haseka.submissions.download' | translate }}
+          </laji-download>
+          <laji-download
+            *lajiForTypes="['vir']"
+            role="primary"
+            [showReason]="true"
+            [showBackdrop]="false"
+            [(reason)]="reason"
             (download)="simpleDownload($event)"
             [downloadLoading]="downloadLoading">
             <i class="glyphicon glyphicon-download-alt"></i>
@@ -52,11 +64,22 @@
           <alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
-          <lu-button
-            [disabled]="requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
-            (click)="makePublicRequest()">
-            {{ 'observation.download.loadPublic' | translate }}
-          </lu-button>
+          <ng-container *lajiForTypes="['vir']">
+            <label for="reason">{{ 'download.reason' | translate }}</label>
+            <textarea class="form-control" name="reason" [(ngModel)]="reason"></textarea>
+            <lu-button
+                [disabled]="!reason || requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
+                (click)="makePublicRequest(true)">
+              {{ 'observation.download.loadPublic' | translate }}
+            </lu-button>
+          </ng-container>
+          <ng-container *lajiForTypes="['vir']; exclude:true">
+            <lu-button
+                [disabled]="requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
+                (click)="makePublicRequest()">
+              {{ 'observation.download.loadPublic' | translate }}
+            </lu-button>
+          </ng-container>
         </div>
       </ng-container>
     </section>

@@ -32,6 +32,7 @@ import { ColumnSelector } from '../../shared/columnselector/ColumnSelector';
 import { ObservationTableColumn } from '../../shared-modules/observation-result/model/observation-table-column';
 import { IColumns } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { ObservationDataService } from '../observation-data.service';
+import { environment } from '../../../environments/environment';
 
 
 enum RequestStatus {
@@ -66,6 +67,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   downloadLoading = false;
   description = '';
   csvParams = '';
+  reason = '';
   columnSelector = new ColumnSelector;
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
@@ -182,7 +184,10 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.makeRequest('downloadApprovalRequest');
   }
 
-  makePublicRequest() {
+  makePublicRequest(requireReason = false) {
+    if (requireReason && !this.reason) {
+      return;
+    }
     this.makeRequest('download');
   }
 
@@ -197,7 +202,11 @@ export class ObservationDownloadComponent implements OnDestroy {
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
       this.query,
-      this.translate.currentLang
+      this.translate.currentLang,
+      undefined,
+      {
+        dataUsePurpose: this.reason
+      }
     ).subscribe(
       () => {
         this.toastsService.showSuccess(this.translate.instant(type === 'download' ?
@@ -228,17 +237,25 @@ export class ObservationDownloadComponent implements OnDestroy {
       this.tableColumnService.getSelectFields(selected, this.query),
       [],
       this.translate.currentLang,
-      true
+      true,
+      environment.type === Global.type.vir,
+      this.reason
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;
-        this.modalService.hide(1);
-        this.modalService.hide(1);
+        // see https://github.com/valor-software/ngx-bootstrap/issues/2618
+        for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+          this.modalService.hide(i);
+        }
         this.cd.markForCheck();
       },
-      (err) => this.logger.error('Simple download failed', err)
+      (err) => {
+        this.logger.error('Simple download failed', err);
+        this.toastsService.showError(this.translate.instant('observation.download.error'));
+        this.downloadLoading = false;
+      }
     );
   }
 
