@@ -878,6 +878,8 @@
   "observation.active.primaryHabitat": "Elinympäristö",
   "observation.active.anyHabitat": "Elinympäristö",
   "observation.active.wild": "Luonnonvaraisuus",
+  "observation.active.hasUnitAudio": "Havainnolla on äänite",
+  "observation.active.hasUnitImages": "Havainnolla on kuva",
   "observation.changedNames": "Käytä laadunvalvonnassa annettuja määrityksiä",
   "observation.commonness": "Yleisyys",
   "observation.count": "Havaintojen määrä",

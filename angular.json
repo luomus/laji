@@ -857,7 +857,7 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/vir/src/environments/environment.ts",
+                  "replace": "src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.prod.ts"
                 }
               ],

@@ -184,7 +184,10 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.makeRequest('downloadApprovalRequest');
   }
 
-  makePublicRequest() {
+  makePublicRequest(requireReason = false) {
+    if (requireReason && !this.reason) {
+      return;
+    }
     this.makeRequest('download');
   }
 
@@ -199,7 +202,11 @@ export class ObservationDownloadComponent implements OnDestroy {
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
       this.query,
-      this.translate.currentLang
+      this.translate.currentLang,
+      undefined,
+      {
+        dataUsePurpose: this.reason
+      }
     ).subscribe(
       () => {
         this.toastsService.showSuccess(this.translate.instant(type === 'download' ?
