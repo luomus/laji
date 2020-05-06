@@ -163,6 +163,32 @@ export class NamedPlaceApi {
     return this.http.put<NamedPlace>(path, data, {params: queryParameters});
   }
 
+  /**
+   * Delete existing named place
+   *
+   * @param id Id for the document
+   * @param userToken User authentication token
+   */
+  public delete(id: string, userToken: string, extraHttpRequestParams?: any): Observable<NamedPlace> {
+    const path = this.basePath + '/named-places/{id}'
+      .replace('{' + 'id' + '}', String(id));
+
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling delete.');
+    }
+    // verify required parameter 'personToken' is not null or undefined
+    if (userToken === null || userToken === undefined) {
+      throw new Error('Required parameter personToken was null or undefined when calling delete.');
+    }
+    if (userToken !== undefined) {
+      queryParameters['personToken'] = userToken;
+    }
+
+    return this.http.delete<NamedPlace>(path, {params: queryParameters});
+  }
+
   public reserve(id: string, personToken: string, extraHttpRequestParams?: {until?: string, personID?: string}): Observable<NamedPlace> {
     const path = this.basePath + '/named-places/{id}/reservation'
       .replace('{' + 'id' + '}', String(id));

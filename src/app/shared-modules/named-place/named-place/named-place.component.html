@@ -8,7 +8,7 @@
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 
     <ng-container *lajiLoggedIn="true">
-      <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">
+      <div *ngIf='allowEdit && !editMode && namedPlaces' class="choose-label">
       <span>{{documentForm.namedPlaceOptions?.createNewLabels?.desc
       || 'np.chooseLabel' | translate}}</span>
         <lu-button (click)='toEditMode(true)'>
@@ -68,7 +68,7 @@
                           [placeForm]="placeForm"
                           [userID]="userID"
                           [visible]="!editMode"
-                          [allowCreate]="allowCreate"
+                          [allowCreate]="allowEdit"
                           [activeNP]="activeNP"
                           [showMap]="showMap"
                           (activePlaceChange)="onActivePlaceChange($event)"
@@ -89,6 +89,7 @@
                         (reserve)="onReserve()"
                         (release)="onRelease()"
                         (editButtonClick)="toEditMode(false)"
+                        (deleteButtonClick)="confirmDelete()"
                         (editReady)="toNormalMode($event)"></laji-np-edit>
         </div>
       </div>

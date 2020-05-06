@@ -94,6 +94,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   isfocusedCommentTaxon = false;
   currentLang: string;
   hasEditors: boolean;
+  unitExist: boolean;
 
 
   constructor(
@@ -257,6 +258,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.cd.detectChanges();
     this.hasDoc = found;
     this.hasEditors = false;
+    this.unitExist = false;
     this.unitCnt = 0;
     if (found) {
       this.document = doc;
@@ -302,6 +304,17 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       if (this.document.linkings && this.document.linkings.editors &&
         this.document.linkings.editors.filter(e => e.id !== undefined).length > 0) {
         this.hasEditors = true;
+      }
+
+      if (this.document.gatherings) {
+        this.document.gatherings.forEach(gathering => {
+          gathering.units.forEach(unit => {
+            if (unit.unitId === this.highlight) {
+              this.unitExist = true;
+              return this.unitExist;
+            }
+          });
+        });
       }
 
       if (this.result) {
