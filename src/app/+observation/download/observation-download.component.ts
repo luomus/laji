@@ -32,6 +32,7 @@ import { ColumnSelector } from '../../shared/columnselector/ColumnSelector';
 import { ObservationTableColumn } from '../../shared-modules/observation-result/model/observation-table-column';
 import { IColumns } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { ObservationDataService } from '../observation-data.service';
+import { environment } from '../../../environments/environment';
 
 
 enum RequestStatus {
@@ -183,7 +184,10 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.makeRequest('downloadApprovalRequest');
   }
 
-  makePublicRequest() {
+  makePublicRequest(requireReason = false) {
+    if (requireReason && !this.reason) {
+      return;
+    }
     this.makeRequest('download');
   }
 
@@ -198,7 +202,11 @@ export class ObservationDownloadComponent implements OnDestroy {
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
       this.query,
-      this.translate.currentLang
+      this.translate.currentLang,
+      undefined,
+      {
+        dataUsePurpose: this.reason
+      }
     ).subscribe(
       () => {
         this.toastsService.showSuccess(this.translate.instant(type === 'download' ?
@@ -230,6 +238,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       [],
       this.translate.currentLang,
       true,
+      environment.type === Global.type.vir,
       this.reason
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
@@ -242,7 +251,11 @@ export class ObservationDownloadComponent implements OnDestroy {
         }
         this.cd.markForCheck();
       },
-      (err) => this.logger.error('Simple download failed', err)
+      (err) => {
+        this.logger.error('Simple download failed', err);
+        this.toastsService.showError(this.translate.instant('observation.download.error'));
+        this.downloadLoading = false;
+      }
     );
   }
 

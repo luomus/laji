@@ -5,7 +5,7 @@ import { LocalizeRouterService } from '../locale/localize-router.service';
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxonomy.component.html',
-  styleUrls: ['./taxonomy.component.css'],
+  styleUrls: ['./taxonomy.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonomyComponent {

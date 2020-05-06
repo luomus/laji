@@ -31,10 +31,13 @@
               <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
+              <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveVirObservations' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']">
               <a [routerLink]="['/usage'] | localize">{{ 'navigation.usage' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
+              <a [routerLink]="['/monitoring'] | localize">{{ 'navigation.monitoring' | translate }}</a>
             </li>
             <!--
             <li [routerLinkActive]="['active']">

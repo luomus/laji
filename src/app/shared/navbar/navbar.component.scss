@@ -116,8 +116,35 @@
   background: none !important;
 }
 
+.red-theme {
+  .navbar-text .navbar-link {
+    color: $neutral-8;
+  }
+  
+  .navbar-brand {
+    color: $neutral-8;
+  }
+  
+  #navbar .active a {
+    color: $neutral-7;
+    background-color: $neutral-3;
+  }
+  
+  #navbar a {
+    color: $neutral-8;
+  }
+  
+  .navbar-link, .navbar-profile .language-toggle {
+    color: $neutral-8;
+  }
+}
+
 .red-theme.navbar {
-  background-color: #d62022;
+  color: $neutral-8;
+  background-color: $neutral-1;
+  & > .container-fluid {
+    border-top: 4px solid #d62022;
+  }
 }
 .red-theme #navbar .active a,
 .red-theme.navbar-inverse .navbar-nav > li > a:hover,
@@ -128,7 +155,8 @@
 .red-theme.navbar-inverse .navbar-nav > .active > a,
 .red-theme.navbar-inverse .navbar-nav > .active > a:focus,
 .red-theme.navbar-inverse .navbar-nav > .active > a:hover {
-  background-color: #bf2022;
+  color: $neutral-7;
+  background-color: $neutral-3;
 }
 
 .red-theme.navbar,
@@ -140,10 +168,10 @@
 .red-theme.navbar-inverse .navbar-form,
 .red-theme.navbar-inverse .navbar-collapse,
 .red-theme.navbar-inverse .navbar-form {
-  border-color: #d62022;
+  border-color: $neutral-3;
 }
 .red-theme.navbar {
-  box-shadow: 0 2px 5px #000;
+  box-shadow: 0 2px 4px rgba(0,0,0,.15);
 }
 #navbar .dropdown-menu a {
   color: #333;

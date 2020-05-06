@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { DownloadComponent } from '../../download/download.component';
 
 @Component({
   selector: 'laji-datatable-header',
@@ -7,6 +8,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatatableHeaderComponent {
+
+  @ViewChild(DownloadComponent, {static: false}) downloadComponent: DownloadComponent;
 
   @Input() showSettingsMenu = false;
   @Input() showDownloadMenu = false;

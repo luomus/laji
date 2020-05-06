@@ -843,7 +843,8 @@
               "node_modules/laji-form/dist/styles.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/styles/laji.scss",
-              "projects/vir/src/styles.scss"
+              "projects/vir/src/styles.scss",
+              "projects/laji-ui/src/lib/exports.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -856,7 +857,7 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/vir/src/environments/environment.ts",
+                  "replace": "src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.prod.ts"
                 }
               ],

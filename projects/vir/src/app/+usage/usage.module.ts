@@ -10,10 +10,18 @@ import { UsageByPersonComponent } from './pages/usage-by-person/usage-by-person.
 import { UsageByCollectionComponent } from './pages/usage-by-collection/usage-by-collection.component';
 import { OrganizationSelectComponent } from './component/organization-select/organization-select.component';
 import { LangModule } from '../../../../../src/app/shared-modules/lang/lang.module';
+import { DataTableComponent } from './component/data-table/data-table.component';
+import { DatatableModule } from '../../../../../src/app/shared-modules/datatable/datatable.module';
 
 
 @NgModule({
-  declarations: [UsageComponent, UsageByPersonComponent, UsageByCollectionComponent, OrganizationSelectComponent],
+  declarations: [
+      UsageComponent,
+      UsageByPersonComponent,
+      UsageByCollectionComponent,
+      OrganizationSelectComponent,
+      DataTableComponent
+  ],
     imports: [
         FormsModule,
         CommonModule,
@@ -21,7 +29,8 @@ import { LangModule } from '../../../../../src/app/shared-modules/lang/lang.modu
         TranslateModule,
         NavigationThumbnailModule,
         LangModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DatatableModule
     ]
 })
 export class UsageModule { }

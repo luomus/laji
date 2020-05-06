@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, distinctUntilChanged, map, share, startWith, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { catchError, distinctUntilChanged, map, share, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
@@ -78,6 +78,8 @@ export class ObservationFacade {
   readonly filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
   readonly settingsMap$   = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
 
+  private updatingQuery: Subscription;
+
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
     query: this.query$,
@@ -126,20 +128,27 @@ export class ObservationFacade {
   }
 
   updateQuery(warehouseQuery: WarehouseQueryInterface) {
-    const query = {...this.emptyQuery, ...warehouseQuery};
-
-    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
-      if (query[key] === ObservationFacade.PERSON_TOKEN) {
-        query[key] = this.userService.getToken();
-      }
-    });
-    const hash = JSON.stringify(warehouseQuery);
-    if (this.hashCache['query'] === hash) {
-      return;
+    if (this.updatingQuery) {
+      this.updatingQuery.unsubscribe();
     }
-    this.hashCache['query'] = hash;
+    this.updatingQuery = this.userService.isLoggedIn$.pipe(
+      take(1)
+    ).subscribe((loggedIn) => {
+      const query = {...this.emptyQuery, ...warehouseQuery};
 
-    this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
+      ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
+        if (query[key] === ObservationFacade.PERSON_TOKEN) {
+          query[key] =  loggedIn ? this.userService.getToken() : undefined;
+        }
+      });
+      const hash = JSON.stringify(warehouseQuery);
+      if (this.hashCache['query'] === hash) {
+        return;
+      }
+      this.hashCache['query'] = hash;
+
+      this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
+    });
   }
 
   set emptyQuery(query: WarehouseQueryInterface) {

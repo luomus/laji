@@ -12,6 +12,7 @@ export class SurveyBoxComponent {
 
   @Input() form: FormList;
   @Input() comingSoonForm: {link: string, title: string, logo?: string};
+  @Input() externalUrl: string = undefined;
 
   isFormIdInThemes(formId) {
     return Object.keys(Global.formsTheme).includes(formId);

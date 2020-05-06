@@ -27,6 +27,7 @@ export class InformationComponent implements OnInit, OnDestroy {
     'en': 43
   };
   private id: number;
+  private informationLoaded = false;
 
   constructor(private route: ActivatedRoute,
               private translate: TranslateService,
@@ -52,6 +53,7 @@ export class InformationComponent implements OnInit, OnDestroy {
       switchMap(id => this.getInformation(id))
     )
       .subscribe(information => {
+          this.informationLoaded = true;
           this.store.setInformation(information);
         },
         err => {
@@ -62,6 +64,9 @@ export class InformationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.langSub = this.translate.onLangChange.subscribe(() => {
+      if (!this.informationLoaded) {
+        return;
+      }
       if (!Object.values(this.langRoots).includes(this.id)) {
         this.router.navigate(
           this.localizeRouterService.translateRoute(['/about', this.langRoots[this.translate.currentLang]]),
