@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
-import {forkJoin, Observable, of, Subscription} from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import {switchMap, take, tap} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
@@ -8,6 +8,7 @@ import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
 import {LetterAnnotation} from '../model/letter';
 import {ILetterCandidate, ILetterTemplate} from '../model/letter';
+import {WINDOW} from '@ng-toolkit/universal';
 
 @Component({
   selector: 'laji-kerttu-main-view',
@@ -38,6 +39,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   letterTemplate: ILetterTemplate;
   letterCandidate: ILetterCandidate;
+  allLettersAnnotated = false;
 
   private vmSub: Subscription;
   private selectedTaxonIdsSub: Subscription;
@@ -45,6 +47,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   private letterCandidateSub: Subscription;
 
   constructor(
+    @Inject(WINDOW) private window: Window,
     private kerttuApi: KerttuApi,
     private kerttuFacade: KerttuFacade,
     private cdr: ChangeDetectorRef,
@@ -70,17 +73,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         });
       } else if (vm.step === Step.annotateLetters && !this.letterTemplateSub) {
-        this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken())
-          .pipe(tap(template => {
-            this.letterCandidateSub = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), template.id).subscribe(candidate => {
-              this.letterCandidate = candidate;
-              this.cdr.markForCheck();
-            });
-          }))
-          .subscribe(template => {
-            this.letterTemplate = template;
-            this.cdr.markForCheck();
-          });
+        this.getNextLetterTemplate();
       } else if (vm.step === Step.annotateRecordings) {
 
       }
@@ -133,12 +126,8 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     const candidateId = this.letterCandidate.id;
     this.letterCandidate = undefined;
     this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
-      .pipe(
-        switchMap(() => this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), this.letterTemplate.id))
-      )
-      .subscribe(candidate => {
-        this.letterCandidate = candidate;
-        this.cdr.markForCheck();
+      .subscribe(() => {
+        this.getNextLetterCandidate(this.letterTemplate.id);
       });
   }
 
@@ -187,5 +176,38 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     } else { */
     return of({});
     // }
+  }
+
+  private getNextLetterTemplate() {
+    this.letterTemplate = undefined;
+
+    this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken())
+      .pipe(tap(template => {
+        if (!template) {
+          this.allLettersAnnotated = true;
+          return;
+        }
+
+        this.getNextLetterCandidate(template.id);
+      }))
+      .subscribe(template => {
+        this.letterTemplate = template;
+        this.cdr.markForCheck();
+      });
+  }
+
+  private getNextLetterCandidate(templateId: number) {
+    this.letterCandidate = undefined;
+
+    this.letterCandidateSub = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
+      if (!candidate) {
+        this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
+        this.getNextLetterTemplate();
+        return;
+      }
+
+      this.letterCandidate = candidate;
+      this.cdr.markForCheck();
+    });
   }
 }

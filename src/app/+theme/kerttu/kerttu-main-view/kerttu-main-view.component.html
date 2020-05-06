@@ -14,10 +14,14 @@
     ></laji-expertise-form>
     <div *ngIf="vm.step === step.annotateLetters">
       <laji-kerttu-letter-annotation
+        *ngIf="!allLettersAnnotated"
         [template]="letterTemplate"
         [candidate]="letterCandidate"
         (annotationChange)="onLetterAnnotationChange($event)"
       ></laji-kerttu-letter-annotation>
+      <ng-container *ngIf="allLettersAnnotated">
+        Kaikki kirjaimet käyty läpi!
+      </ng-container>
     </div>
     <div *ngIf="vm.step === step.annotateRecordings">
       <!--laji-kerttu-recording-annotation
