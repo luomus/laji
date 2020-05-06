@@ -833,7 +833,7 @@
   "observation.active.hasDocumentMedia": "Etikettikuvia",
   "observation.active.hasGatheringMedia": "Kuvia elinympäristöstä",
   "observation.active.hasMedia": "Kuvia",
-  "observation.active.hasUnitMedia": "Kuvia havainnosta",
+  "observation.active.hasUnitMedia": "Media havainnosta",
   "observation.active.includeNonValidTaxa": "Vain tunnetut nimet",
   "observation.active.includeSubTaxa": "Ei alempia taksoneita",
   "observation.active.individualCountMax": "Yksilömäärä, enintään",

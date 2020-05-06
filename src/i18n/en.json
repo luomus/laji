@@ -696,7 +696,7 @@
   "observation.active.hasDocumentMedia": "Label images",
   "observation.active.hasGatheringMedia": "Habitat images",
   "observation.active.hasMedia": "Images",
-  "observation.active.hasUnitMedia": "Observation images (x)",
+  "observation.active.hasUnitMedia": "Observation media (x)",
   "observation.active.includeNonValidTaxa": "Only known names",
   "observation.active.includeSubTaxa": "No subtaxa",
   "observation.active.individualCountMax": "Max individual count",
