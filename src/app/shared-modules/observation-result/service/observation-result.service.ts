@@ -151,7 +151,7 @@ export class ObservationResultService {
       if (blockOnDownloadMarkFail) {
         return this.sendDownloadMark(query, lang, reason).pipe(
           switchMap(() => all$)
-        )
+        );
       }
       this.sendDownloadMark(query, lang, reason).pipe(
         catchError(() => of(null))
