@@ -24,7 +24,10 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../../../../shared/service/util.service';
 import { LajiFormUtil } from '@laji-form/laji-form-util.service';
-import { take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { RowDocument } from '../../../own-submissions/own-datatable/own-datatable.component';
+import { DocumentApi } from '../../../../shared/api/DocumentApi';
 
 @Component({
   selector: 'laji-np-info',
@@ -49,6 +52,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   editButtonVisible: boolean;
 
   @Output() editButtonClick = new EventEmitter();
+  @Output() deleteButtonClick = new EventEmitter();
   @Output() useButtonClick = new EventEmitter();
   @Output() reserveButtonClick = new EventEmitter();
   @Output() releaseButtonClick = new EventEmitter();
@@ -67,7 +71,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
   formReservable = false;
   useLocalDocumentViewer = false;
-  documentModalVisible = false;
+  canDelete: boolean;
 
   public static getListItems(placeForm: any, np: NamedPlace, form: any): any[] {
     const {namedPlaceOptions = {}, collectionID: collectionId} = form;
@@ -159,6 +163,12 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
+  hide() {
+    if (this.modal.isShown) {
+      this.modal.hide();
+    }
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     if (this.infoBox.nativeElement.offsetParent !== null) {
@@ -178,6 +188,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   useClick() {
     this.useButtonClick.emit();
+  }
+
+  deleteClick() {
+    this.deleteButtonClick.emit();
   }
 
   copyLink() {
@@ -218,6 +232,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       this.useButton = btnStatus;
       this.cdRef.markForCheck();
     });
+  }
+
+  onDocumentsLoaded(documents: RowDocument[]) {
+    this.canDelete = !documents.length;
   }
 
   private updateFields() {
