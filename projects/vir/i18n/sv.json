@@ -1004,6 +1004,7 @@
   "observation.results.observation": "fynd av",
   "observation.results.species": "arter",
   "observation.results.title": "Sök observationer",
+  "observation.notFound": "Observation hittades inte",
   "observation.horizontalBar.title": "Observationer per taxon",
   "observation.results.yearChart": "Observationer per år",
   "observation.results.monthDayChart": "Förekomst av säsonger",

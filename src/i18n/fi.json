@@ -1070,6 +1070,7 @@
   "observation.results.observation": "osumaa",
   "observation.results.species": "lajista",
   "observation.results.title": "Havaintohaku",
+  "observation.notFound": "Havaintoa ei löytynyt",
   "observation.horizontalBar.title": "Havaintojen jakauma taksoneittain",
   "observation.results.yearChart": "Havainnot vuosittain",
   "observation.results.monthDayChart": "Esiintyminen vuodenaikoina",

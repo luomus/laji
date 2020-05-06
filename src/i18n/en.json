@@ -926,6 +926,7 @@
   "observation.results.observation": "hits of",
   "observation.results.species": "species",
   "observation.results.title": "Observation search",
+  "observation.notFound": "Observation not found",
   "observation.horizontalBar.title": "Observations per taxon",
   "observation.results.yearChart": "Observations per year",
   "observation.results.monthDayChart": "Occurrence by seasons",
