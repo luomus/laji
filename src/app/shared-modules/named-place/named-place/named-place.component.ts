@@ -1,4 +1,4 @@
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
@@ -16,6 +16,9 @@ import { NPResolverData } from '../named-place.resolver';
 import { TranslateService } from '@ngx-translate/core';
 import { Area } from '../../../shared/model/Area';
 import { FormService } from '../../../shared/service/form.service';
+import { DialogService } from '../../../shared/service/dialog.service';
+import { UserService } from '../../../shared/service/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'laji-named-place',
@@ -77,8 +80,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private namedPlaceService: NamedPlacesService,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
-    private translate: TranslateService
-  ) {}
+    private translate: TranslateService,
+    private dialogService: DialogService,
+    private userService: UserService,
+    private toastrService: ToastrService
+) {}
 
   ngOnInit() {
     this.routerEvents = this.router.events.subscribe((event: Event) => {
@@ -282,9 +288,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   setActiveNP(idx: number) {
+    const was = this.activeNP;
     this.activeNP = idx;
     if (this.activeNP >= 0 && this.editView) {
       this.editView.npClick();
+    } else if (was >= 0 && this.activeNP === -1) {
+      this.editView.npClose();
     }
   }
 
@@ -298,6 +307,23 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.setActiveNP(-1);
     }
     this.updateQueryParams();
+  }
+
+  confirmDelete() {
+    this.translate.get('np.delete.confirm').pipe(
+      switchMap(txt => this.dialogService.confirm(txt)))
+      .subscribe(result => {
+        if (result) {
+          this.namedPlaceService.deleteNamedPlace(this.namedPlace.id, this.userService.getToken()).subscribe(() => {
+              this.setActiveNP(-1);
+              this.translate.get('np.delete.success').subscribe(text => this.toastrService.success(text));
+            },
+            () => {
+              this.translate.get('np.delete.fail').subscribe(text => this.toastrService.error(text));
+            }
+          );
+        }
+      });
   }
 
   toNormalMode({np, isEdit}: {np?: NamedPlace, isEdit?: boolean} = {}) {

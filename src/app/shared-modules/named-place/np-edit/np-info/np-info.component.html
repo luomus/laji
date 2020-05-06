@@ -29,8 +29,10 @@
                 target="_blank"
                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', documentForm.printType] | localize">{{ documentForm.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>
           </span>
-          <lu-button *ngIf="allowEdit && editButtonVisible" (click)="editClick()">
-            {{ 'np.edit' | translate }}</lu-button>
+          <ng-container *ngIf="allowEdit && editButtonVisible">
+            <lu-button (click)="editClick()">{{ 'np.edit' | translate }}</lu-button>
+            <lu-button (click)="deleteClick()" [disabled]="!canDelete" id="np-delete">{{ 'np.delete' | translate }}<laji-info *ngIf="!canDelete" [tooltip]="'np.delete.disabled.hasDocs' | translate"></laji-info></lu-button>
+          </ng-container>
         </div>
       </div>
       <fieldset>
@@ -116,6 +118,7 @@
           [showDownloadAll]="false"
           [admin]="formRights.admin"
           [forceLocalDocument]="useLocalDocumentViewer"
+          (documentsLoaded)="onDocumentsLoaded($event)"
         ></laji-own-submissions>
       </div>
     </div>
