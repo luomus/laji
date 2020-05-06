@@ -79,6 +79,14 @@ export class NamedPlacesService {
       );
   }
 
+  deleteNamedPlace(id: string, userToken: string) {
+    return this.namedPlaceApi
+      .delete(
+        id,
+        userToken
+      );
+  }
+
   reserve(id: string, options?: {until?: string, personID?: string}): Observable<NamedPlace> {
     return this.namedPlaceApi
       .reserve(id, this.userService.getToken(), options);

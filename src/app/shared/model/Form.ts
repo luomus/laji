@@ -7,8 +7,6 @@ import { MultiLanguage } from '../../../../projects/laji-api-client/src/lib/mode
 
 export namespace Form {
   export enum Feature {
-    NoNewNamedPlaces = <any> 'MHL.featureAddingNamedPlacesNotAllowed',
-    NoEditingNamedPlaces = <any> 'MHL.featureEditingNamedPlacesNotAllowed',
     FilterNamedPlacesByMunicipality = <any> 'MHL.featureFilterNamedPlacesByMunicipality',
     FilterNamedPlacesByBirdAssociationArea = <any> 'MHL.featureFilterNamedPlacesByBirdAssociationArea',
     FilterNamedPlacesByTags = <any> 'MHL.featureFilterNamedPlacesByTags',
@@ -22,7 +20,8 @@ export namespace Form {
     Mobile = <any> 'MHL.featureMobile',
     EditingOldWarning = <any> 'MHL.featureEditingOldDocumentWarning',
     AutoLock = <any> 'MHL.featureAutoLock',
-    SecondaryCopy = <any> 'MHL.featureSecondaryCopy'
+    SecondaryCopy = <any> 'MHL.featureSecondaryCopy',
+    AddingPublicNamedPlacesAllowed = <any> 'MHL.featureAddingPublicNamedPlacesAllowed'
   }
   export enum PrintType {
     lineTransect = 'MHL.printTypeLineTransect',
