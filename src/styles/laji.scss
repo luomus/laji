@@ -1377,3 +1377,18 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
   background-color: $primary-5;
   color: $primary-1;
 }
+
+.alert-info {
+  background-color: $primary-2;
+  color: $primary-7;
+  border: 1px solid $primary-3;
+  border-radius: 5px;
+}
+
+.info-box {
+  background-color: $primary-2;
+  color: $primary-8;
+  border: 1px solid $primary-3;
+  border-radius: 5px;
+  padding: 20px;
+}
