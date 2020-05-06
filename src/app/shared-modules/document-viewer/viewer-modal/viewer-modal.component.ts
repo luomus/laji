@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DocumentViewerFacade, IViewerState } from '../document-viewer.facade';
 import { Observable, Subscription } from 'rxjs';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { tap } from 'rxjs/operators';
 import { Document } from '../../../shared/model/Document';
 

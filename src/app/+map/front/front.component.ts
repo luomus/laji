@@ -15,7 +15,7 @@ import { GeometryUtil as LGeometryUtil, latLng as LlatLng } from 'leaflet';
   styleUrls: ['./front.component.css']
 })
 export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild(LajiMapComponent, { static: false }) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   mapOptions: LajiMapOptions = {
     center: [64.209802, 24.912872],
     zoom: 3,
@@ -34,7 +34,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
         copy: true,
         upload: true,
         clear: true
-      },
+      } as any,
       coordinates: true
     },
   };

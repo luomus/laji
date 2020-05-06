@@ -40,6 +40,7 @@ import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-v
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { PinkkaComponent } from './pinkka/pinkka.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
+import { BirdPointCountResultComponent } from './bird-point-count/bird-point-count-result/bird-point-count-result.component';
 
 /* tslint:enable:max-line-length */
 
@@ -788,7 +789,6 @@ const routes: Routes = [
         path: 'form',
         pathMatch: 'full',
         component: FormComponent,
-        canActivate: [OnlyLoggedIn, HasFormPermission],
         canDeactivate: [DocumentDeActivateGuard],
         data: { displayFeedback: false }
       },
@@ -805,20 +805,36 @@ const routes: Routes = [
         pathMatch: 'full',
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-        canActivate: [OnlyLoggedIn, HasFormPermission],
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {
         path: 'ownSubmissions',
         pathMatch: 'full',
         component: ThemeOwnSubmissionsComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-      }
+      },
+      {
+        path: 'stats',
+        pathMatch: 'full',
+        data: { noScrollToTop: true },
+        component: BirdPointCountResultComponent
+      },
+      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ],
     data: {
       formID: Global.forms.birdPointCount,
       noFormPermissionRedirect: '/theme/pistelaskenta',
       title: 'Maalintujen pistelaskenta',
+      navLinks: {
+        form: {
+          accessLevel: undefined
+        },
+        stats: {
+          routerLink: ['stats'],
+          label: 'Tulokset'
+        }
+      },
+      navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'stats', 'formPermissions'],
     }
   },
   /*

@@ -11,7 +11,7 @@ import { UserService } from '../../../../shared/service/user.service';
   styleUrls: ['./document-local-viewer-view.component.css']
 })
 export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnChanges {
-  @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
+  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
 
   @Input() document: Document;
   @Input() fields: any;

@@ -29,8 +29,8 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   height = '600px';
   _namedPlaces: ExtendedNamedPlace[] = [];
+  _documentForm: any;
 
-  @Input() documentForm: any;
   @Input() placeForm: any;
   @Input() visible = true;
   @Input() allowCreate = true;
@@ -62,7 +62,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentForm']) {
-      if (this.documentForm && this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.startWithMap) {
+      if (this._documentForm?.namedPlaceOptions?.startWithMap) {
         this.activeIndex = this.loadedTabs.getIdxFromName('map');
         this.loadedTabs.load(this.activeIndex);
       } else {
@@ -73,14 +73,18 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   @Input() set namedPlaces(namedPlaces: NamedPlace[]) {
-    if (!this.seasonStart) {
-      this.initEarliestAndLatest();
-    }
     const extendedNamedPlaces: ExtendedNamedPlace[] = [];
     for (const namedPlace of namedPlaces) {
       extendedNamedPlaces.push({...namedPlace, _status: this.getNamedPlaceStatus(namedPlace)});
     }
     this._namedPlaces = extendedNamedPlaces;
+  }
+
+  @Input() set documentForm(documentForm: any) {
+    this._documentForm = documentForm;
+    if (!this.seasonStart) {
+      this.initEarliestAndLatest();
+    }
   }
 
   @HostListener('window:resize')
@@ -110,11 +114,9 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   isSent(np: NamedPlace) {
-    if (this.seasonStart && this.seasonEnd) {
-      if (np && np.prepopulatedDocument && np.prepopulatedDocument.gatheringEvent && np.prepopulatedDocument.gatheringEvent.dateBegin) {
-        const dateBegin = new Date(np.prepopulatedDocument.gatheringEvent.dateBegin);
-        return this.seasonStart <= dateBegin && dateBegin <= this.seasonEnd;
-      }
+    if (this.seasonStart && this.seasonEnd && np?.prepopulatedDocument?.gatheringEvent?.dateBegin) {
+      const dateBegin = new Date(np.prepopulatedDocument.gatheringEvent.dateBegin);
+      return this.seasonStart <= dateBegin && dateBegin <= this.seasonEnd;
     }
     return false;
   }
@@ -137,10 +139,10 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   private initEarliestAndLatest() {
-    const {options: {season = {}} = {}} = this.documentForm;
+    const season = this._documentForm.options?.season || {};
     if (season.start && season.end) {
-      this.seasonStart = new Date(this.analyseData(this.documentForm.options.season.start));
-      this.seasonEnd = new Date(this.analyseData(this.documentForm.options.season.end));
+      this.seasonStart = new Date(this.analyseData(season.start));
+      this.seasonEnd = new Date(this.analyseData(season.end));
     } else {
       this.seasonStart = undefined;
       this.seasonEnd = undefined;

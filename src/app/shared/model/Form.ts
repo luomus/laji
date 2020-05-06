@@ -29,6 +29,7 @@ export namespace Form {
   }
   export enum ViewerType {
     lineTransect = 'MHL.viewerTypeLineTransect',
+    birdPointCount = 'MHL.viewerTypeBirdPointCount',
   }
   export interface List {
     id: string;

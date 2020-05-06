@@ -52,7 +52,7 @@
   </div>
 </div>
 <ng-container *ngIf="showDownloadAndBrowse">
-  <laji-species-browse-observations [searchQuery]="searchQuery"></laji-species-browse-observations>
+  <laji-species-browse-observations *lajiForTypes="['vir']; exclude: true" [searchQuery]="searchQuery"></laji-species-browse-observations>
 </ng-container>
 
 <laji-species-list-options-modal #settingsModal

@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { LocalStorage } from 'ngx-webstorage';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'laji-haseka-terms',
@@ -15,7 +15,7 @@ export class HasekaTermsComponent implements OnInit, AfterViewInit {
   @Input() modal = false;
   @Input() dismissLabel = 'Ok';
 
-  @ViewChild('modal', { static: false }) public modalComponent: ModalDirective;
+  @ViewChild('modal') public modalComponent: ModalDirective;
 
   modalIsVisible = false;
 

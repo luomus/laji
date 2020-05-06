@@ -1,18 +1,24 @@
-import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Input, OnChanges, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
 @Directive({
   selector: '[lajiForTypes]'
 })
-export class ForTypesDirective {
+export class ForTypesDirective implements OnChanges {
+
+  @Input() lajiForTypesExclude = false;
+  @Input() lajiForTypes = [];
 
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef
   ) { }
 
-  @Input() set lajiForTypes(types: string[]) {
-    if (types.indexOf(environment.type) !== -1) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (
+        (!this.lajiForTypesExclude && this.lajiForTypes.includes(environment.type))
+        || (this.lajiForTypesExclude && !this.lajiForTypes.includes(environment.type))
+    ) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainer.clear();

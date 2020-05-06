@@ -8,17 +8,15 @@ import { ConsoleLogger, HttpLogger, Logger } from '../../../../src/app/shared/lo
 import { LoggerApi } from '../../../../src/app/shared/api/LoggerApi';
 import { ILogger } from '../../../../src/app/shared/logger/logger.interface';
 import { TranslateFileLoader } from '../../../../src/app/shared/translate/translate-file-loader';
-import {
-  AlertModule,
-  BsDropdownModule,
-  CarouselModule,
-  ModalModule,
-  PaginationModule,
-  PopoverModule,
-  ProgressbarModule,
-  TooltipModule,
-  TypeaheadModule
-} from 'ngx-bootstrap';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LocalizeRouterService } from '../../../../src/app/locale/localize-router.service';
 import { environment } from '../environments/environment';

@@ -28,7 +28,7 @@ export class NpEditFormComponent implements OnInit {
   private hasChanges = false;
   private isPublic = false;
 
-  @ViewChild(LajiFormComponent, { static: false }) lajiForm: LajiFormComponent;
+  @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
   constructor(@Inject(WINDOW) private window: Window,
     private userService: UserService,

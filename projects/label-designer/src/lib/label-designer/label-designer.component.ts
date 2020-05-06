@@ -21,13 +21,13 @@ import {
   ILabelField,
   ILabelItem,
   ILabelPdf,
-  ILabelValueMap,
+  ILabelValueMap, IPageLayout,
   ISetup,
   IViewSettings,
   PresetSetup,
   QRCodeErrorCorrectionLevel
 } from '../label-designer.interface';
-import { IPageLayout, LabelService } from '../label.service';
+import { LabelService } from '../label.service';
 import { InfoWindowService } from '../info-window/info-window.service';
 import { Observable, Subscription } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
@@ -98,7 +98,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  version = '3.3.2';
+  version = '4.0.0';
   /**
    * @internal
    */
@@ -191,7 +191,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  @ViewChild('editor', { static: false }) editor: ElementRef<HTMLDivElement>;
+  @ViewChild('editor') editor: ElementRef<HTMLDivElement>;
   /**
    * @internal
    */
@@ -203,7 +203,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  @ViewChild('excelFile', { static: false }) excelCmp: LabelExcelFileComponent;
+  @ViewChild('excelFile') excelCmp: LabelExcelFileComponent;
   /**
    * @internal
    */

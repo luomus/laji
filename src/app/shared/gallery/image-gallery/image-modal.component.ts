@@ -13,7 +13,7 @@ import {
   HostListener
 } from '@angular/core';
 import { IImageSelectEvent, Image } from './image.interface';
-import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap';
+import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 

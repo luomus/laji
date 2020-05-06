@@ -80,7 +80,7 @@ export class TriplestoreLabelService {
       return ObservableOf(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
     }
     const parts = key.replace(':', '.').split('.');
-    if (parts && typeof parts[1] === 'string' && (!isNaN(parts[1]) || this.guidRegEx.test(parts[1]))) {
+    if (parts && typeof parts[1] === 'string' && (/^\d+$/.test(parts[1]) || this.guidRegEx.test(parts[1]))) {
       switch (parts[0]) {
         case 'MNP':
           if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {

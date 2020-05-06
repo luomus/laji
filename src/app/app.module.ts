@@ -8,17 +8,6 @@ import { ConsoleLogger, HttpLogger, Logger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { ILogger } from './shared/logger/logger.interface';
 import { AppRoutingModule } from './app-routing.module';
-import {
-  AlertModule,
-  BsDropdownModule,
-  CarouselModule,
-  ModalModule,
-  PaginationModule,
-  PopoverModule,
-  ProgressbarModule,
-  TooltipModule,
-  TypeaheadModule
-} from 'ngx-bootstrap';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LocalizeRouterService } from './locale/localize-router.service';
 import { environment } from '../environments/environment';
@@ -31,6 +20,15 @@ import { ChartsModule } from 'ng2-charts';
 import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 import { LajiUiModule } from '../../projects/laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {

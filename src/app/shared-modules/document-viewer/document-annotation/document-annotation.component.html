@@ -45,7 +45,14 @@
                 [documentID]="document.documentId"
                 [formID]="document.formId"
               ></laji-edit-link>
-              <a class="shortcuts btn btn-sm btn-default" (click)="toggleShortcuts()"><img src="../../../../static/images/icons/keyboard_24px.svg" />Shortcuts</a>
+              <div class="manual-shortcuts">
+                <span [ngSwitch]="currentLang">
+                  <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'sv'" [routerLink]="['/about', '3928'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+                  <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'en'" [routerLink]="['/about', '3926'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+                  <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'fi'" [routerLink]="['/about', '3806'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+                </span>
+                <a class="shortcuts btn btn-sm btn-default" (click)="toggleShortcuts()"><img src="../../../../static/images/icons/keyboard_24px.svg" />Shortcuts</a>
+              </div>
             </h3>
           </div>
         </div>
@@ -135,25 +142,28 @@
                 </div>
             <h5>{{ 'annotation.collectionEditor' | translate }}</h5>    
             <laji-issues [data]="document"></laji-issues>
-            <laji-row [title]="'observation.filterBy.collectionName' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+            <laji-row [title]="'result.document.collectionId' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
               <span>{{ document.collectionId | toQName | collectionName }}</span>
               <span><a href="{{document.collectionId}}" target="_blank">[metadata]</a></span>
             </laji-row>
             <laji-row [title]="'annotation.collectionQuality' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
               <span>{{ document.linkings.collectionQuality | label:'warehouse' }}</span>
             </laji-row>
-            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors.length > 0">
+            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors.length > 0 && hasEditors">
               <ul class="separated-list">
                 <li *ngFor="let user of document.linkings.editors">
-                  <span *ngIf="user.fullName; else noName"><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ user.fullName }}</a></span>
-                  <ng-template #noName><a target="_blank" href="user/{{user | values:'':'userId' | toQName }}">{{ user.userId | toQName | label }}</a></ng-template>
+                  <span *ngIf="user.id && user.fullName">
+                    <a target="_blank" href="user/{{user | values:'':'id' | toQName }}">
+                      {{ user.fullName }}
+                    </a>
+                  </span>
                 </li>
               </ul>
             </laji-row>
             <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'L'"></laji-row>
             <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'L'"></laji-row>
             <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'L'"></laji-row>
-            <laji-row [title]="'haseka.submissions.unitCount' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+            <laji-row [noTitleSpace]="false" ngPreserveWhitespaces>
               <a href="view?uri={{document.documentId}}" target="_blank">
                 <span>{{ unitCnt }}
                   <span *ngIf="unitCnt > 1"> {{ 'annotation.observations.count' | translate }}</span>

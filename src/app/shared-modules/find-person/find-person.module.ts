@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FindPersonComponent } from './find-person.component';
-import { TypeaheadModule } from 'ngx-bootstrap';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { LangModule } from '../lang/lang.module';
 import { FormsModule } from '@angular/forms';
 

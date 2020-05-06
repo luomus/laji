@@ -1,3 +1,5 @@
+import { TemplateRef } from '@angular/core';
+
 /**
  * @internal
  */
@@ -281,4 +283,16 @@ export interface IColumnMap {
 
 export interface ILabelData {
   [key: string]: string|number|boolean|string[];
+}
+
+export interface IPageLayout {
+  cols: number;
+  rows: number;
+}
+
+export interface IInfoWindow {
+  title?: string;
+  content: string | TemplateRef<any>;
+  actions?: TemplateRef<any>;
+  actionTypes?: 'ok'|'yesNo'|'close';
 }

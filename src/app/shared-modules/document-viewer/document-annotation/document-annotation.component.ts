@@ -48,7 +48,7 @@ import { TranslateService } from '@ngx-translate/core';
   ]
 })
 export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
-  @ViewChild(ViewerMapComponent, { static: false }) map: ViewerMapComponent;
+  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() highlight: string;
   @Input() own: boolean;
@@ -93,6 +93,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   subscriptFocus: Subscription;
   isfocusedCommentTaxon = false;
   currentLang: string;
+  hasEditors: boolean;
 
 
   constructor(
@@ -142,7 +143,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
         this.updateDocument();
       }
     });
-
   }
 
   ngAfterViewInit() {
@@ -256,6 +256,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   private parseDoc(doc, found) {
     this.cd.detectChanges();
     this.hasDoc = found;
+    this.hasEditors = false;
     this.unitCnt = 0;
     if (found) {
       this.document = doc;
@@ -298,6 +299,10 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       }
       this.mapData = mapData;
       this.setActive(activeIdx);
+      if (this.document.linkings && this.document.linkings.editors &&
+        this.document.linkings.editors.filter(e => e.id !== undefined).length > 0) {
+        this.hasEditors = true;
+      }
 
       if (this.result) {
         this.indexPagination = this.setIndexPagination();
@@ -352,6 +357,10 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   toggleShortcuts() {
     this.showShortcuts = !this.showShortcuts;
+  }
+
+  onManualLinkClick(event: MouseEvent) {
+    event.stopPropagation();
   }
 
 

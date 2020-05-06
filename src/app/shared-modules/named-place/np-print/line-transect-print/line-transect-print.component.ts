@@ -14,7 +14,7 @@ import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interfa
 })
 export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
 
-  @ViewChild(LajiMapComponent, { static: false })
+  @ViewChild(LajiMapComponent)
   public lajiMap: LajiMapComponent;
   @Input()
   public namedPlace: NamedPlace;
@@ -166,7 +166,7 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
       this.total = pages.length;
       this.routeLength = total;
       this.cdr.markForCheck();
-    });
+    }, 1);
   }
 
   private initMapOptions() {

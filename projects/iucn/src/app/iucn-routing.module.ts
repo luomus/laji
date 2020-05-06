@@ -1,5 +1,5 @@
 /* tslint:disable:max-classes-per-file */
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../../src/app/locale/locale-en.component';
@@ -9,6 +9,7 @@ import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from '../../../../src/app/locale/localize.guard';
 import { NotFoundComponent } from '../../../../src/app/shared/not-found/not-found.component';
 
+@Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
     const loadRoute = () => ObservableTimer(50).pipe(flatMap(() => load()), catchError(() => ObservableOf(null)));

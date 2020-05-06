@@ -1,0 +1,31 @@
+<div class="container-fluid iucn">
+  <div class="row numbers">
+    <div class="col-sm-12">
+      <span class="total">
+        <laji-observation-count [lightLoader]="true" [query]="{cache: true}"
+        ></laji-observation-count>&nbsp;{{ 'home.carousel.observations' | translate }}
+      </span>
+      <span class="species">
+        <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
+                                [query]="{taxonRankId: 'MX.species', cache: true}">
+        </laji-observation-count>&nbsp;{{ 'home.carousel.species' | translate }}
+      </span>
+    </div>
+  </div>
+  <div class="species-banner">
+    <div class="img-1"></div>
+    <div class="img-2"></div>
+    <div class="img-3"></div>
+    <div class="img-4"></div>
+  </div>
+  <h1>{{ 'home.authority.title' | translate }}</h1>
+  <div class="intro">
+    <div class="row">
+      <div class="col-sm-10 col-md-7" [innerHtml]="'home.authority.text' | translate" lajiRouteTransformer></div>
+    </div>
+<!--     <div class="row">
+      <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon" [intro]="'home.taxon-sub-intro' | translate" [info]="'home.taxon-intro' | translate"></laji-navigation-thumbnail>
+      <laji-navigation-thumbnail name="home.observation" icon="observations" path="observation" [intro]="'home.observation-sub-intro' | translate" [info]="'home.observation-intro' | translate"></laji-navigation-thumbnail>
+    </div> -->
+  </div>
+</div>

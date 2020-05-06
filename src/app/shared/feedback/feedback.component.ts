@@ -1,7 +1,7 @@
 import { switchMap, take } from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Component, Inject, Input, ViewChild } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ngx-webstorage';
 import { ToastsService } from '../service/toasts.service';
