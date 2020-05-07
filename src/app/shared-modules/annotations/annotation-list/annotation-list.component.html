@@ -80,7 +80,7 @@
             </div>
           </div>
         </div>
-         <div class="content new-identification" *ngIf="annotation.identification && ((annotation.identification.taxon && annotation.identification.taxon !== '') || (annotation.identification.linkings && annotation.identification.linkings.taxon))">
+         <div class="content-taxon-comment new-identification" *ngIf="annotation.identification && ((annotation.identification.taxon && annotation.identification.taxon !== '') || (annotation.identification.linkings && annotation.identification.linkings.taxon))">
            <div class="row">
              <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.title.taxon' | translate }}:</div>
              <div class="col-xs-8">
@@ -108,7 +108,7 @@
             {{ annotation.opinion }}
           </div>
         </div>
-        <div class="content" *ngIf="annotation.notes">
+        <div class="content-taxon-comment" *ngIf="annotation.notes">
           <div class="row">
             <div class="col-xs-4">
               <b>Comment:</b>
