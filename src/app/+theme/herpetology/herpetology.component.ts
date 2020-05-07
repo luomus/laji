@@ -3,12 +3,12 @@ import { filter, map, merge, switchMap, tap } from 'rxjs/operators';
  * Created by mjtahtin on 18.4.2017.
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { forkJoin as ObservableForkJoin, Subscription } from 'rxjs';
+import { forkJoin as ObservableForkJoin, of, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger/logger.service';
-import { CacheService } from '../../shared/service/cache.service';
+import { LocalStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-herpetology',
@@ -32,10 +32,11 @@ export class HerpetologyComponent implements OnInit {
 
   public amphibianGalleries: Array<Array<TaxonomyImage>>;
 
+  @LocalStorage() herpetology;
+
   constructor(
     private translate: TranslateService,
     private taxonomyApi: TaxonomyApi,
-    private cacheService: CacheService,
     private cd: ChangeDetectorRef,
     private logger: Logger) {
     const now = new Date();
@@ -88,10 +89,9 @@ export class HerpetologyComponent implements OnInit {
         }))
     );
 
-    const cacheKey = 'herpetology';
-    this.cacheService.getItem(cacheKey).pipe(
-      merge(fetchData$.pipe(tap(data => this.cacheService.setItem(cacheKey, data).subscribe(() => {}, () => {})))),
-      filter(data => !!data), )
+    of(this.herpetology).pipe(
+      merge(fetchData$.pipe(tap(data => this.herpetology = data))),
+      filter(data => !!data))
       .subscribe(data => {
           this.amphibianTaxa = data[0];
           this.reptileTaxa = data[1];

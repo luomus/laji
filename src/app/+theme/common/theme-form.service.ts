@@ -4,7 +4,7 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import merge from 'deepmerge';
+import * as merge from 'deepmerge';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
 import { UserService } from '../../shared/service/user.service';
 import { Form } from '../../shared/model/Form';
