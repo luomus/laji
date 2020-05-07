@@ -17,7 +17,10 @@ export class DatatableHeaderComponent {
   @Input() maxDownload = false;
   @Input() count = false;
   @Input() downloadText = 'Download';
+  @Input() showBrowseObservationsButton = false;
+  @Input() browseObservationsText = 'Browse observations';
 
+  @Output() browseObservations = new EventEmitter<void>();
   @Output() openSettingsMenu = new EventEmitter<void>();
   @Output() download = new EventEmitter<string>();
 
