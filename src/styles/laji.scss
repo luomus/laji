@@ -1377,3 +1377,121 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
   background-color: $primary-5;
   color: $primary-1;
 }
+
+.alert-info {
+  background-color: $primary-2;
+  color: $primary-7;
+  border: 1px solid $primary-3;
+  border-radius: 5px;
+}
+
+.info-box {
+  background-color: $primary-2;
+  color: $primary-8;
+  border: 1px solid $primary-3;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.laji-information {
+  font-size: $fs-3;
+  color: $neutral-8;
+
+  h1, h2, h3 {
+    &:first-child {
+      margin-top: 20px;
+    }
+  }
+
+  h1 + h2 {
+    margin-top: 40px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+  }
+  h1 {
+  }
+  h2 {
+    font-weight: 600;
+    color: $neutral-9;
+    font-size: $fs-8;
+    margin-top: 80px;
+    margin-bottom: 20px;
+  }
+  h3 {
+    font-weight: 500;
+    color: $neutral-9;
+    font-size: $fs-7;
+    margin-top: 80px;
+    margin-bottom: 20px;
+  }
+  h4 {
+    border-left: 5px solid $primary-5;
+    padding-left: 10px;
+    font-size: $fs-6;
+    margin-top: 80px;
+    margin-bottom: 20px;
+  }
+  h5 {
+    font-size: $fs-5;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  h6 {
+    font-size: $fs-4;
+    margin: 0;
+  }
+
+  p, ul, ol {
+    margin-bottom: 20px;
+  }
+  p {
+
+  }
+  ul {
+
+  }
+  ol {
+
+  }
+  li {
+    margin-bottom: 5px;
+    > * {
+      margin-top: 3px;
+    }
+    * {
+      margin-bottom: 3px;
+    }
+  }
+  blockquote {
+    background-color: $neutral-3;
+    border-left: 5px solid $neutral-4;
+    color: $neutral-7;
+  }
+
+  a {
+
+  }
+  strong {
+    color: $neutral-8;
+  }
+  small {
+    font-size: $fs-1;
+    color: $neutral-7;
+  }
+
+  figure {
+    margin-bottom: 30px;
+    width: fit-content;
+    img {
+      border: 1px solid $neutral-4;
+    }
+  }
+  figcaption {
+    font-style: italic;
+    font-size: $fs-2;
+    color: $neutral-7;
+    padding-top: 10px;
+  }
+}

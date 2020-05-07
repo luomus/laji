@@ -11,7 +11,7 @@
         </ng-container>
         <li class="active">{{ information.title }}</li>
       </ol>
-      <div class="about" [innerHtml]="information.content" lajiRouteTransformer></div>
+      <div class="laji-information" [innerHtml]="information.content" lajiRouteTransformer></div>
     </div>
     <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 more-info" *ngIf="information.children">
       <div class="media">
