@@ -7,7 +7,7 @@ import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { Util } from '../../../../shared/service/util.service';
-import merge from 'deepmerge';
+import * as merge from 'deepmerge';
 
 @Component({
   selector: 'laji-np-edit-form',

@@ -4,18 +4,18 @@ import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'laji-bar-chart',
-  template: `<canvas #mycanvas="base-chart" id="myChart" baseChart
-  [datasets]="datasets"
-  [labels]="labels"
-  [colors]="colors"
-  [options]="options"
-  [plugins]="chartType"
-  [legend]="legend"
-  [chartType]="chartType"
-  (chartClick)="onClick($event)"
-  >
-  </canvas>`,
-  styles: [':host { display:block;}']
+  template: `
+    <canvas *lajiBrowserOnly #mycanvas="base-chart" baseChart
+      [datasets]="datasets"
+      [labels]="labels"
+      [colors]="colors"
+      [options]="options"
+      [plugins]="chartType"
+      [legend]="legend"
+      [chartType]="chartType"
+      (chartClick)="onClick($event)"
+    ></canvas>`,
+  styles: [':host { display: block;}']
 })
 export class BarChartComponent implements OnInit {
   @ViewChild('mycanvas', { static: true }) baseChartComponent: BaseChartDirective;
