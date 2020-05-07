@@ -404,6 +404,7 @@ const routes: Routes = [
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true }
       },
       {
         path: 'ownSubmissions',
@@ -458,6 +459,7 @@ const routes: Routes = [
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true }
       },
       {
         path: 'ownSubmissions',
@@ -512,6 +514,7 @@ const routes: Routes = [
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true }
       },
       {
         path: 'ownSubmissions',
@@ -573,6 +576,7 @@ const routes: Routes = [
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true }
       },
       {
         path: 'ownSubmissions',
@@ -626,6 +630,7 @@ const routes: Routes = [
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true }
       },
       {
         path: 'ownSubmissions',
@@ -704,6 +709,7 @@ const routes: Routes = [
         resolve: { data: NamedPlaceResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         canActivate: [OnlyLoggedIn, HasFormPermission],
+        data: { noScrollToTop: true }
       },
       {
         path: 'ownSubmissions',
@@ -805,7 +811,8 @@ const routes: Routes = [
         pathMatch: 'full',
         component: NamedPlaceComponent,
         resolve: { data: NamedPlaceResolver },
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        data: { noScrollToTop: true }
       },
       {
         path: 'ownSubmissions',
