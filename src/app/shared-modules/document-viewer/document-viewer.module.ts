@@ -36,7 +36,6 @@ import { DocumentAnnotationComponent } from './document-annotation/document-anno
 import { UnitAnnotationComponent } from './unit-annotation/unit-annotation.component';
 import { GatheringAnnotationsRowsComponent } from './gathering-annotations-rows/gathering-annotations-rows.component';
 import { GatheringAnnotationComponent } from './gathering-annotation/gathering-annotation.component';
-import { UnitAnnotationRowsComponent } from './unit-annotation-rows/unit-annotation-rows.component';
 import { UnitAnnotationListComponent } from './unit-annotation-list/unit-annotation-list.component';
 import { LicenseModule } from '../license/license.module';
 import { SampleComponent } from './sample/sample.component';
@@ -70,7 +69,6 @@ import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-pl
     UnitAnnotationComponent,
     GatheringAnnotationsRowsComponent,
     GatheringAnnotationComponent,
-    UnitAnnotationRowsComponent,
     UnitAnnotationListComponent,
     SampleComponent,
     AnnotationDataObservationComponent,

@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import { ScriptService } from '../../service/script.service';
+import { PlatformService } from '../../service/platform.service';
+
+let OpenSeadragon: any;
 
 @Component({
   selector: 'laji-image',
@@ -12,24 +14,24 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() showNavigator = true;
   @Output() loading = new EventEmitter<boolean>();
 
-  private viewer: any;
+  private osd: any;
   private current: string;
   private loaded = false;
 
   constructor(
     private el: ElementRef,
-    private scriptService: ScriptService
+    private platformService: PlatformService
   ) {}
 
   ngAfterViewInit() {
-    this.scriptService.load('openseadragon')
-      .then(
-        () => {
+    if (this.platformService.isBrowser) {
+      import('openseadragon')
+        .then((m: any) => {
+          OpenSeadragon = m.default;
           this.loaded = true;
           this.updateImage();
-        }
-      )
-      .catch((err) => console.log(err));
+        });
+    }
   }
 
   ngOnChanges() {
@@ -41,8 +43,8 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   private destroy() {
-    if (this.viewer) {
-      this.viewer.destroy();
+    if (this.osd) {
+      this.osd.destroy();
     }
   }
 
@@ -53,7 +55,7 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
     this.current = this.src;
     this.destroy();
     this.loading.emit(true);
-    this.viewer = OpenSeadragon({
+    this.osd = OpenSeadragon({
       element: this.el.nativeElement,
       animationTime: 0.7,
       prefixUrl: '/static/images/openseadragon-icons/',
@@ -70,7 +72,7 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
         url: this.src
       }]
     });
-    this.viewer.addHandler('tile-loaded', () => {
+    this.osd.addHandler('tile-loaded', () => {
       this.loading.emit(false);
     });
   }

@@ -1,4 +1,4 @@
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
@@ -15,6 +15,10 @@ import { Util } from '../../../shared/service/util.service';
 import { NPResolverData } from '../named-place.resolver';
 import { TranslateService } from '@ngx-translate/core';
 import { Area } from '../../../shared/model/Area';
+import { FormService } from '../../../shared/service/form.service';
+import { DialogService } from '../../../shared/service/dialog.service';
+import { UserService } from '../../../shared/service/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'laji-named-place',
@@ -42,7 +46,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   editMode = false;
   loading = false;
   allowEdit = false;
-  allowCreate = false;
   formRights: Rights = {
     admin: false,
     edit: false
@@ -77,8 +80,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private namedPlaceService: NamedPlacesService,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
-    private translate: TranslateService
-  ) {}
+    private translate: TranslateService,
+    private dialogService: DialogService,
+    private userService: UserService,
+    private toastrService: ToastrService
+) {}
 
   ngOnInit() {
     this.routerEvents = this.router.events.subscribe((event: Event) => {
@@ -155,7 +161,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
       this.setFormData();
 
-      this.updateAllowCreate();
       this.cdr.markForCheck();
     });
 
@@ -249,16 +254,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   private updateSettings(formData: any) {
     if (formData && formData.features && Array.isArray(formData.features)) {
-      this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
-      this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
-      this.filterByTags = formData.features.indexOf(Form.Feature.FilterNamedPlacesByTags) > -1;
-      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1 || this.formRights.admin;
+      this.filterByBirdAssociationArea = FormService.hasFeature(formData, Form.Feature.FilterNamedPlacesByBirdAssociationArea);
+      this.filterByMunicipality = FormService.hasFeature(formData, Form.Feature.FilterNamedPlacesByMunicipality);
+      this.filterByTags = FormService.hasFeature(formData, Form.Feature.FilterNamedPlacesByTags);
+      this.allowEdit = FormService.hasFeature(formData, Form.Feature.AddingPublicNamedPlacesAllowed) || this.formRights.admin;
     }
-  }
-
-  updateAllowCreate() {
-    this.allowCreate = this.formRights.admin ||
-      (this.documentForm && this.documentForm.namedPlaceOptions && this.documentForm.namedPlaceOptions.requireAdmin === false);
   }
 
   updateQueryParams() {
@@ -288,14 +288,17 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   setActiveNP(idx: number) {
+    const was = this.activeNP;
     this.activeNP = idx;
     if (this.activeNP >= 0 && this.editView) {
       this.editView.npClick();
+    } else if (was >= 0 && this.activeNP === -1) {
+      this.editView.npClose();
     }
   }
 
   toEditMode(create: boolean) {
-    if (!this.allowCreate) {
+    if (!this.allowEdit) {
       return;
     }
     this.npEdit.setIsEdit(!create);
@@ -304,6 +307,23 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.setActiveNP(-1);
     }
     this.updateQueryParams();
+  }
+
+  confirmDelete() {
+    this.translate.get('np.delete.confirm').pipe(
+      switchMap(txt => this.dialogService.confirm(txt)))
+      .subscribe(result => {
+        if (result) {
+          this.namedPlaceService.deleteNamedPlace(this.namedPlace.id, this.userService.getToken()).subscribe(() => {
+              this.setActiveNP(-1);
+              this.translate.get('np.delete.success').subscribe(text => this.toastrService.success(text));
+            },
+            () => {
+              this.translate.get('np.delete.fail').subscribe(text => this.toastrService.error(text));
+            }
+          );
+        }
+      });
   }
 
   toNormalMode({np, isEdit}: {np?: NamedPlace, isEdit?: boolean} = {}) {

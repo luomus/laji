@@ -1,4 +1,5 @@
-<ng-container *ngIf="hasDoc && document">
+
+<ng-container *ngIf="hasDoc && document && unitExist === true">
     <div class="shortcut-content" *ngIf="showShortcuts" [@shortcutsInOut]>
         <div class="row">
           <div class="col-sm-12">
@@ -179,14 +180,19 @@
             <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
           </div>
         </div>
-      </ng-container>
-      <ng-container *ngIf="hasDoc === false">
-        <div class="page-header">
-          <h2>{{ 'viewer.notFound' | translate }}</h2>
-        </div>
-      </ng-container>
-      <div>
-          <a *ngIf="result && indexPagination>0" class="arrow left" (click)="previous()"></a>
-          <a *ngIf="result && indexPagination < result.length-1" class="arrow right" (click)="next()"></a>
-      </div>
-      <!--<pre>{{document | json}}</pre>-->
+</ng-container>
+<ng-container *ngIf="hasDoc === false">
+  <div class="page-header">
+    <h2>{{ 'viewer.notFound' | translate }}</h2>
+  </div>
+</ng-container>
+<ng-container *ngIf="unitExist === false && hasDoc">
+  <div class="page-header">
+    <h2>{{ 'observation.notFound' | translate }}</h2>
+  </div>
+</ng-container>
+<div>
+  <a *ngIf="result && indexPagination>0" class="arrow left" (click)="previous()"></a>
+  <a *ngIf="result && indexPagination < result.length-1" class="arrow right" (click)="next()"></a>
+</div>
+<!--<pre>{{document | json}}</pre>-->
