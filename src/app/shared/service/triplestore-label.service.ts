@@ -1,7 +1,6 @@
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Logger } from '../logger/logger.service';
-import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { Taxonomy } from '../model/Taxonomy';
@@ -32,7 +31,6 @@ export class TriplestoreLabelService {
               private informalTaxonService: InformalTaxonGroupApi,
               private namedPlaceApi: NamedPlaceApi,
               private sourceService: SourceService,
-              private cacheService: CacheService,
               private lajiApi: LajiApiService,
               private userService: UserService,
               private areaService: AreaService,
