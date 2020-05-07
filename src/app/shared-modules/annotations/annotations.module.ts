@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { AnnotationsComponent } from './annotations.component';
 import { AnnotationListComponent } from './annotation-list/annotation-list.component';
-import { AnnotationFormComponent } from './annotation-form/annotation-form.component';
 import { AnnotationFormNewComponent } from './annotation-form-new/annotation-form-new.component';
 import { LangModule } from '../lang/lang.module';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
@@ -23,7 +22,7 @@ import { InfoModule } from '../info/info.module';
     LajiUiModule,
     InfoModule
   ],
-  declarations: [AnnotationsComponent, AnnotationListComponent, AnnotationFormComponent,
+  declarations: [AnnotationsComponent, AnnotationListComponent,
     AnnotationFormNewComponent, ConvertAnnotationsPipe, OccurrenceAtTimeOfAnnotationComponent ],
   exports: [AnnotationsComponent, LajiUiModule, InfoModule]
 })

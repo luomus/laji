@@ -8,7 +8,7 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.dev,
-  base: 'https://localhost:3000',
+  base: 'http://localhost:3000',
   production: false,
   forceLogin: false,
   disableAnalytics: true,
@@ -21,7 +21,7 @@ export const environment = {
   municipalityMonitoringForm: 'MHL.35',
   lolifeForm: 'MHL.45',
   wbcForm: 'MHL.3',
-  apiBase: 'https://dev.laji.fi/api',
+  apiBase: '/api',
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
