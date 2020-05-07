@@ -315,7 +315,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       .subscribe(result => {
         if (result) {
           this.namedPlaceService.deleteNamedPlace(this.namedPlace.id, this.userService.getToken()).subscribe(() => {
+              this.namedPlaces = this.namedPlaces.filter(np => np.id !== this.namedPlace.id);
               this.setActiveNP(-1);
+              this.namedPlace = undefined;
               this.translate.get('np.delete.success').subscribe(text => this.toastrService.success(text));
             },
             () => {
