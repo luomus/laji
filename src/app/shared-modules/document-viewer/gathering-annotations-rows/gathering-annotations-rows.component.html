@@ -14,9 +14,6 @@
       <laji-taxon-name [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
     </laji-row>
   </ng-container> 
-  <!--<ng-container *ngIf="(unit.unitId === highlight)">
-    <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="unit.wild ? (unit.wild === true ?('yes' | translate) : ('No' | translate)) : ('yes' | translate)"></laji-row>
-  </ng-container>-->
   <ng-container *ngIf="unit.unitId === highlight && unit.wild === false">
     <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="'observation.active.nativeOccurrence.notWild' | translate "></laji-row>
   </ng-container>
@@ -57,10 +54,3 @@
       {{ gathering.locality }}</li>
   </ul>
 </laji-row>
-<!--<laji-row [title]="'MY.coordinatesVerbatim' | label" [value]="gathering.coordinatesVerbatim" [noTitleSpace]="true"></laji-row>
-<laji-row [title]="'MY.notes' | label" [value]="gathering.notes" [noTitleSpace]="true"></laji-row>
-<laji-row [title]="'MY.taxonCensus' | label" *ngIf="gathering.taxonCensus" [noTitleSpace]="true">
-  <ul class="separated-list">
-    <li *ngFor="let census of gathering.taxonCensus" [tooltip]="census.type | toQName | label" [isDisabled]="hideTooltips">{{ census.taxonId | toQName | taxon }}</li>
-  </ul>
-</laji-row>-->

@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FooterService } from '../../shared/service/footer.service';
 
 
 @Component({
   selector: 'laji-user-login',
   templateUrl: './user-login.component.html'
 })
-export class UserLoginComponent implements OnInit {
-
+export class UserLoginComponent implements OnInit, OnDestroy {
   constructor(
-    private router: Router,
-    private location: Location
-  ) {}
-
-  ngOnInit(): void {
-    this.location.replaceState('/', '');
-    this.router.navigateByUrl('/');
+    private footerService: FooterService
+  ) {
   }
 
+  ngOnInit(): void {
+    this.footerService.footerVisible = false;
+  }
+
+  ngOnDestroy(): void {
+    this.footerService.footerVisible = true;
+  }
 }

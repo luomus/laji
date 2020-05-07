@@ -1,4 +1,4 @@
-import { debounceTime, map, share, tap } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -16,15 +16,12 @@ import {
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
-import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
-import { CacheService } from '../../../shared/service/cache.service';
-import { Annotation } from '../../../shared/model/Annotation';
+import { Subject, Subscription } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { isPlatformBrowser } from '@angular/common';
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
-
-const CACHE_COLUMN_SETTINGS = 'datatable-col-width';
+import { LocalStorage } from 'ngx-webstorage';
 
 interface Settings {[key: string]: DatatableColumn; }
 
@@ -35,8 +32,6 @@ interface Settings {[key: string]: DatatableColumn; }
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
-
-  private static settings: Settings;
 
   @ViewChild('dataTable') public datatable: NgxDatatableComponent;
   @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates: DatatableTemplatesComponent;
@@ -69,9 +64,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Output() select = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<any>();
 
-  annotationTypes = Annotation.TypeEnum;
-  annotationClass = Annotation.AnnotationClassEnum;
-
   filterByChange: Subscription;
 
   _originalRows: any[];
@@ -84,25 +76,15 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   initialized = false;
   private filterChange$ = new Subject();
-  private settings$: Observable<Settings>;
+  @LocalStorage('data-table-settings', {}) private dataTableSettings: Settings;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private cacheService: CacheService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private logger: Logger,
     private filterService: FilterService,
     private zone: NgZone
-  ) {
-    this.settings$ = DatatableComponent.settings ?
-      ObservableOf(DatatableComponent.settings).pipe(share()) :
-      this.cacheService.getItem(CACHE_COLUMN_SETTINGS)
-        .pipe(
-          map(value => value || {}),
-          tap(value => DatatableComponent.settings = value as Settings),
-          share()
-        );
-  }
+  ) {}
 
   @Input() set count(cnt: number) {
     this._count = typeof cnt === 'number' ? cnt  : 0;
@@ -135,29 +117,27 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   @Input() set columns(columns: DatatableColumn[]) {
-    this.settings$.subscribe(settings => {
-      this._columns = columns.map((column) => {
-        if (typeof column.headerTemplate === 'string') {
-          column.headerTemplate = this.datatableTemplates[column.headerTemplate];
-        }
-        if (!column.headerTemplate) {
-          column.headerTemplate = this.datatableTemplates.dafaultHeader;
-        }
-        if (typeof column.cellTemplate === 'string') {
-          column.cellTemplate = this.datatableTemplates[column.cellTemplate];
-        }
-        if (!column.prop) {
-          column.prop = column.name;
-        }
-        if (settings && settings[column.name] && settings[column.name].width) {
-          column.width = settings[column.name].width;
-        }
-        if (this.resizable === false) {
-          column.resizeable = false;
-        }
-        return column;
-      });
-      this.changeDetectorRef.markForCheck();
+    const settings = this.dataTableSettings;
+    this._columns = columns.map((column) => {
+      if (typeof column.headerTemplate === 'string') {
+        column.headerTemplate = this.datatableTemplates[column.headerTemplate];
+      }
+      if (!column.headerTemplate) {
+        column.headerTemplate = this.datatableTemplates.dafaultHeader;
+      }
+      if (typeof column.cellTemplate === 'string') {
+        column.cellTemplate = this.datatableTemplates[column.cellTemplate];
+      }
+      if (!column.prop) {
+        column.prop = column.name;
+      }
+      if (settings && settings[column.name] && settings[column.name].width) {
+        column.width = settings[column.name].width;
+      }
+      if (this.resizable === false) {
+        column.resizeable = false;
+      }
+      return column;
     });
   }
 
@@ -245,7 +225,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
         this._rows = [...this._rows];
         this.changeDetectorRef.markForCheck();
       }
-    });
+    }, 10);
   }
 
   _getRowClass(row) {
@@ -274,9 +254,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   onResize(event) {
     if (event && event.column && event.column.name && event.newValue) {
-      DatatableComponent.settings[event.column.name] = {width: event.newValue};
-      this.cacheService.setItem(CACHE_COLUMN_SETTINGS, DatatableComponent.settings)
-        .subscribe(() => {}, () => {});
+      this.dataTableSettings = {...this.dataTableSettings, [event.column.name]: {width: event.newValue}};
     }
   }
 
@@ -305,6 +283,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       } catch (e) {
         this.logger.info('selected row index failed', e);
       }
-    });
+    }, 10);
   }
 }

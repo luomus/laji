@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, of, of as ObservableOf, ReplaySubject, Subscription } from 'rxjs';
 import { auditTime, catchError, delay, distinctUntilChanged, map, mergeMap, switchMap, take, tap, } from 'rxjs/operators';
 import { LocalStorage } from 'ngx-webstorage';
-import merge from 'deepmerge';
+import * as merge from 'deepmerge';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { BrowserService } from '../../shared/service/browser.service';
