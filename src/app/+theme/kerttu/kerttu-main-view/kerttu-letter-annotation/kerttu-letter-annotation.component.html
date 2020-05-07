@@ -19,7 +19,7 @@
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }} (<laji-taxon-name [taxon]="taxon$ | async"></laji-taxon-name>)</h4>
     <laji-audio-viewer
       [recording]="template?.recording"
-      [xRangePadding]="2"
+      [xRangePadding]="1"
       [xRange]="template?.xRange"
       [yRange]="template?.yRange"
       (audioLoading)="loadingTemplate = $event"
@@ -29,7 +29,7 @@
     <h4>{{ 'theme.kerttu.letterCandidate' | translate }} ({{ candidate?.crossCorrelation }})</h4>
     <laji-audio-viewer
       [recording]="candidate?.recording"
-      [xRangePadding]="2"
+      [xRangePadding]="1"
       [xRange]="candidate?.xRange"
       (audioLoading)="loadingCandidate = $event"
     ></laji-audio-viewer>
