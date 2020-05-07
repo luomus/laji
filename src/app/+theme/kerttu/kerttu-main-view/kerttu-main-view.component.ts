@@ -63,6 +63,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.userService.isLoggedIn$.pipe(take(1)).subscribe(() => {
       this.kerttuApi.getStatus(this.userService.getToken()).subscribe(status => {
         this.kerttuFacade.goToStep(status);
+        this.cdr.markForCheck();
       });
     });
 
