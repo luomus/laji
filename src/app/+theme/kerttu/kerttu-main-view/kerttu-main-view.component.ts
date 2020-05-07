@@ -1,13 +1,14 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
-import {forkJoin, Observable, of, Subscription} from 'rxjs';
-import {switchMap, take} from 'rxjs/operators';
+import {Observable, of, Subscription} from 'rxjs';
+import {switchMap, take, tap} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
-import {ILetterAnnotations, IRecordingAnnotations} from '../model/annotation';
-import {IRecording, IRecordingWithCandidates} from '../model/recording';
+import {LetterAnnotation} from '../model/letter';
+import {ILetterCandidate, ILetterTemplate} from '../model/letter';
+import {WINDOW} from '@ng-toolkit/universal';
 
 @Component({
   selector: 'laji-kerttu-main-view',
@@ -32,22 +33,21 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   ];
 
   step = Step;
-  selectedTaxonIds: string[];
-  taxonId: string;
-
-  letters$: Observable<IRecordingWithCandidates[]>;
-  letterAnnotations: ILetterAnnotations;
-
-  recordings$: Observable<IRecording[]>;
-  recordingAnnotations: IRecordingAnnotations;
-
   saving = false;
 
-  private letterAnnotationsSub: Subscription;
-  private recordingAnnotationSub: Subscription;
+  selectedTaxonIds: string[];
+
+  letterTemplate: ILetterTemplate;
+  letterCandidate: ILetterCandidate;
+  allLettersAnnotated = false;
+
   private vmSub: Subscription;
+  private selectedTaxonIdsSub: Subscription;
+  private letterTemplateSub: Subscription;
+  private letterCandidateSub: Subscription;
 
   constructor(
+    @Inject(WINDOW) private window: Window,
     private kerttuApi: KerttuApi,
     private kerttuFacade: KerttuFacade,
     private cdr: ChangeDetectorRef,
@@ -61,37 +61,38 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.kerttuFacade.clear();
 
     this.userService.isLoggedIn$.pipe(take(1)).subscribe(() => {
-      forkJoin([
-        this.kerttuApi.getStatus(this.userService.getToken()),
-        this.personService.personFindProfileByToken(this.userService.getToken())
-      ]).subscribe(([status, profile]) => {
-        this.selectedTaxonIds = profile.taxonExpertise || [];
+      this.kerttuApi.getStatus(this.userService.getToken()).subscribe(status => {
         this.kerttuFacade.goToStep(status);
+        this.cdr.markForCheck();
       });
     });
 
     this.vmSub = this.vm$.subscribe(vm => {
-      if (vm.step === Step.annotateRecordings) {
-        this.recordings$ = this.kerttuApi.getRecordings(this.selectedTaxonIds, this.userService.getToken());
-        if (!this.recordingAnnotationSub) {
-          this.recordingAnnotationSub = this.kerttuApi.getRecordingAnnotations(this.userService.getToken()).subscribe((annotations: IRecordingAnnotations) => {
-            this.recordingAnnotations = annotations;
-            this.cdr.markForCheck();
-          });
-        }
+      if (vm.step === Step.fillExpertise && !this.selectedTaxonIdsSub) {
+        this.selectedTaxonIdsSub = this.personService.personFindProfileByToken(this.userService.getToken()).subscribe((profile) => {
+          this.selectedTaxonIds = profile.taxonExpertise || [];
+          this.cdr.markForCheck();
+        });
+      } else if (vm.step === Step.annotateLetters && !this.letterTemplateSub) {
+        this.getNextLetterTemplate();
+      } else if (vm.step === Step.annotateRecordings) {
+
       }
     });
   }
 
   ngOnDestroy() {
-    if (this.letterAnnotationsSub) {
-      this.letterAnnotationsSub.unsubscribe();
-    }
-    if (this.recordingAnnotationSub) {
-      this.recordingAnnotationSub.unsubscribe();
-    }
     if (this.vmSub) {
       this.vmSub.unsubscribe();
+    }
+    if (this.selectedTaxonIdsSub) {
+      this.selectedTaxonIdsSub.unsubscribe();
+    }
+    if (this.letterTemplateSub) {
+      this.letterTemplateSub.unsubscribe();
+    }
+    if (this.letterCandidateSub) {
+      this.letterCandidateSub.unsubscribe();
     }
   }
 
@@ -122,47 +123,13 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveProfile() {
-    return this.personService.personFindProfileByToken(this.userService.getToken()).pipe(
-      switchMap((profile: Profile) => {
-        profile.taxonExpertise = this.selectedTaxonIds;
-        return this.personService.personUpdateProfileByToken(profile, this.userService.getToken());
-      })
-    );
-  }
-
-  saveLetterAnnotations() {
-    if (this.letterAnnotations && Object.keys(this.letterAnnotations).length > 0) {
-      return this.kerttuApi.updateLetterAnnotations(this.taxonId, this.letterAnnotations, this.userService.getToken());
-    } else {
-      return of({});
-    }
-  }
-
-  saveRecordingAnnotations() {
-    if (this.recordingAnnotations && Object.keys(this.recordingAnnotations).length > 0) {
-      return this.kerttuApi.updateRecordingAnnotations(this.recordingAnnotations, this.userService.getToken());
-    } else {
-      return of({});
-    }
-  }
-
-  onTaxonIdChange(id: string) {
-    if (this.letterAnnotationsSub) {
-      this.letterAnnotationsSub.unsubscribe();
-    }
-
-    this.saveLetterAnnotations().subscribe();
-
-    this.taxonId = id;
-    this.letterAnnotations = undefined;
-    if (this.taxonId) {
-      this.letterAnnotationsSub = this.kerttuApi.getLetterAnnotations(id, this.userService.getToken()).subscribe((annotations: ILetterAnnotations) => {
-        this.letterAnnotations = annotations;
-        this.cdr.markForCheck();
+  onLetterAnnotationChange(annotation: LetterAnnotation) {
+    const candidateId = this.letterCandidate.id;
+    this.letterCandidate = undefined;
+    this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
+      .subscribe(() => {
+        this.getNextLetterCandidate(this.letterTemplate.id);
       });
-      this.letters$ = this.kerttuApi.getLetterCandidates(this.taxonId, this.userService.getToken());
-    }
   }
 
   private getSaveObservable(step: Step): Observable<any> {
@@ -185,5 +152,63 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     } else if (step === Step.annotateRecordings) {
       return Step.done;
     }
+  }
+
+  private saveProfile() {
+    return this.personService.personFindProfileByToken(this.userService.getToken()).pipe(
+      switchMap((profile: Profile) => {
+        profile.taxonExpertise = this.selectedTaxonIds;
+        return this.personService.personUpdateProfileByToken(profile, this.userService.getToken());
+      })
+    );
+  }
+
+  private saveLetterAnnotations() {
+    /*if (this.letterAnnotations && Object.keys(this.letterAnnotations).length > 0) {
+      return this.kerttuApi.updateLetterAnnotations(this.taxonId, this.letterAnnotations, this.userService.getToken());
+    } else {*/
+    return of({});
+    // }
+  }
+
+  private saveRecordingAnnotations() {
+    /* if (this.recordingAnnotations && Object.keys(this.recordingAnnotations).length > 0) {
+      return this.kerttuApi.updateRecordingAnnotations(this.recordingAnnotations, this.userService.getToken());
+    } else { */
+    return of({});
+    // }
+  }
+
+  private getNextLetterTemplate() {
+    this.letterTemplate = undefined;
+
+    this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken())
+      .pipe(tap(template => {
+        if (!template) {
+          this.allLettersAnnotated = true;
+          return;
+        }
+
+        this.getNextLetterCandidate(template.id);
+      }))
+      .subscribe(template => {
+        this.letterTemplate = template;
+        this.cdr.markForCheck();
+      });
+  }
+
+  private getNextLetterCandidate(templateId: number) {
+    this.letterCandidate = undefined;
+
+    this.letterCandidateSub = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
+      if (!candidate) {
+        this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
+        this.getNextLetterTemplate();
+        return;
+      }
+
+      this.letterCandidate = candidate;
+      this.cdr.markForCheck();
+    });
   }
 }
