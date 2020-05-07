@@ -308,12 +308,12 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
       if (this.document.gatherings) {
         this.document.gatherings.forEach(gathering => {
-          gathering.units.forEach(unit => {
-            if (unit.unitId === this.highlight) {
-              this.unitExist = true;
-              return this.unitExist;
+          if (gathering.units) {
+            const i = gathering.units.find(unit => unit.unitId === this.highlight);
+            if (i) {
+              return this.unitExist = true;
             }
-          });
+          }
         });
       }
 

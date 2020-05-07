@@ -58,9 +58,7 @@ const render = (req, res, cb: (err: any, html: string) => void) => {
 
 const cache = () => {
   return (req, res, next) => {
-    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-    res.header('Expires', '-1');
-    res.header('Pragma', 'no-cache');
+    res.header('Cache-Control', 'public, max-age=' + CACHE_UPDATE);
 
     const parts = ('' + req.originalUrl)
       .replace('showTree=true', '')
