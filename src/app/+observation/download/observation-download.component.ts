@@ -72,6 +72,8 @@ export class ObservationDownloadComponent implements OnDestroy {
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
 
+  linkTimeout: any;
+
   private _originalSelected: string[];
   private _settings: ISettingResultList;
   private modalRef: BsModalRef;
@@ -191,6 +193,9 @@ export class ObservationDownloadComponent implements OnDestroy {
     });
 
     this.csvParams = arrayParams.join('&');
+    this.linkTimeout = setTimeout(() => {
+      this.updateCsvLink();
+    }, 200);
   }
 
   makePrivateRequest() {
