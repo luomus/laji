@@ -141,7 +141,6 @@ export class ObservationDownloadComponent implements OnDestroy {
     ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
       if (warehouseQuery[key]) {
         hasPersonalData = true;
-        delete warehouseQuery[key];
       }
     });
     this._query = warehouseQuery;
@@ -178,6 +177,20 @@ export class ObservationDownloadComponent implements OnDestroy {
     queryParams['format'] = 'csv';
     const params = new HttpParams({fromObject: <any>queryParams});
     this.csvParams = params.toString();
+  }
+
+  updateQueryParamsDownloadTaxon(e) {
+    e.stopPropagation();
+    const arrayParams = this.csvParams.split('&');
+    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
+      arrayParams.forEach((element, index) => {
+        if (element.indexOf(key) !== -1) {
+          arrayParams[index] = key + '=' + this.userService.getToken();
+        }
+      });
+    });
+
+    this.csvParams = arrayParams.join('&');
   }
 
   makePrivateRequest() {
