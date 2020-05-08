@@ -11,7 +11,7 @@ interface IPersonTableData extends IOrganizationPerson {
 }
 
 @Component({
-  selector: 'laji-usage-by-person',
+  selector: 'vir-usage-by-person',
   templateUrl: './usage-by-person.component.html',
   styleUrls: ['./usage-by-person.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -42,10 +42,10 @@ export class UsageByPersonComponent {
           ...p,
           organisation: parent ? parent + ' / ' + name : name
         });
-      })
+      });
     }
     if (org.children) {
-      org.children.forEach(c => this.extractPersons(c, persons, name))
+      org.children.forEach(c => this.extractPersons(c, persons, name));
     }
   }
 }
