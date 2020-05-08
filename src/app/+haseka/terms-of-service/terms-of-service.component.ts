@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'laji-terms-of-service',
   templateUrl: './terms-of-service-of-service.component.html',
-  styleUrls: ['./terms-of-service-of-service.component.css'],
+  styleUrls: ['./terms-of-service-of-service.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HaSeKaTermsOfServiceComponent implements OnInit {

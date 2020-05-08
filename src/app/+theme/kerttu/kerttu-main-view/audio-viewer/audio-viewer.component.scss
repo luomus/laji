@@ -2,6 +2,7 @@
   display: inline-block;
   width: 100%;
   text-align: left;
+  background-color: #ECF0F1;
 }
 
 #spectrogramContainer {
@@ -12,7 +13,6 @@
 #audioControls {
   display: inline-block;
   width: 100%;
-  // text-align: center;
 
   button {
     display: inline-block;

@@ -1,3 +1,5 @@
+@import 'vars';
+
 :host {
   flex: 1 0 auto;
   display: flex;
@@ -35,4 +37,16 @@
 
 main {
   padding: 20px 40px;
+}
+
+.info-box {
+  h1 {
+    font-size: $fs-6;
+    margin-top: 0;
+  }
+  h2 {
+    margin-top: 0;
+    color: $primary-7;
+    font-size: $fs-4;
+  }
 }

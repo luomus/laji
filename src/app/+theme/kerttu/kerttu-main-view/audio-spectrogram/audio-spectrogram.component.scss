@@ -1,18 +1,14 @@
-:host {
-  display: inline-block;
+#container {
   position: relative;
-  max-width: 100%;
+  margin-bottom: 20px; // space for x-axis label
+  margin-left: 20px; // space for y-axis label
 }
 
-canvas {
-  max-width: 100%;
-}
-
-#scrollLine {
+#spectrogram {
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 2;
+}
+
+#chart {
+  overflow: visible;
+  position: relative;
 }

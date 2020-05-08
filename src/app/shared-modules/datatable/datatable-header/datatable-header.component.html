@@ -14,8 +14,12 @@
       </lu-button>
     </ng-template>
   </ng-container>
-  <lu-button (click)="openSettingsMenu.emit()" *ngIf="showSettingsMenu" style="margin-left: 5px;">
+  <lu-button class="ml-3" (click)="openSettingsMenu.emit()" *ngIf="showSettingsMenu">
     <i class="glyphicon glyphicon-cog"></i>
-    {{ 'iucn.results.selectColumns' | translate }}
+    {{ 'species.header.select' | translate }}
+  </lu-button>
+  <lu-button class="ml-3" *ngIf="showBrowseObservationsButton" (click)="browseObservations.emit()">
+    <i class="glyphicon glyphicon-eye-open"></i>
+    {{ browseObservationsText }}
   </lu-button>
 </div>
