@@ -147,7 +147,9 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     if (!this.selected.length) {
       return;
     }
-    this.showActiveRow();
+    if (this.initialized) {
+      this.showActiveRow();
+    }
   }
 
   showActiveRow() {
@@ -188,10 +190,14 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
-      this.initialized = true;
 
-      // Make sure that preselected row index setter is called after initialization
-      this.showActiveRow();
+      // All action after initialization should be done after timeout, so
+      // individual methods don't have to care about  synchronization problems.
+      setTimeout(() => {
+        this.initialized = true;
+        // Make sure that preselected row index setter is called after initialization
+        this.showActiveRow();
+      }, 10);
     }
   }
 
@@ -220,12 +226,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    setTimeout(() => {
-      if (this._rows) {
-        this._rows = [...this._rows];
-        this.changeDetectorRef.markForCheck();
-      }
-    }, 10);
+    if (this._rows) {
+      this._rows = [...this._rows];
+      this.changeDetectorRef.markForCheck();
+    }
   }
 
   _getRowClass(row) {
@@ -273,16 +277,14 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId) || !this._rows) {
       return;
     }
-    setTimeout(() => {
-      try {
-        if (this.datatable && this.datatable.bodyComponent && this.datatable.bodyComponent.scroller) {
-          this.datatable.bodyComponent.scroller.setOffset(offsetY);
-          this.datatable.bodyComponent.scroller.updateOffset();
-          this.datatable.bodyComponent.onBodyScroll({scrollYPos: offsetY, scrollXPos: this.datatable.bodyComponent.offsetX || 0});
-        }
-      } catch (e) {
-        this.logger.info('selected row index failed', e);
+    try {
+      if (this.datatable && this.datatable.bodyComponent && this.datatable.bodyComponent.scroller) {
+        this.datatable.bodyComponent.scroller.setOffset(offsetY);
+        this.datatable.bodyComponent.scroller.updateOffset();
+        this.datatable.bodyComponent.onBodyScroll({scrollYPos: offsetY, scrollXPos: this.datatable.bodyComponent.offsetX || 0});
       }
-    }, 10);
+    } catch (e) {
+      this.logger.info('selected row index failed', e);
+    }
   }
 }
