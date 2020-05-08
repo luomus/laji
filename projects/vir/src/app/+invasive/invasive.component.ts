@@ -18,7 +18,7 @@ interface IAggregated {
 }
 
 @Component({
-  selector: 'laji-invasive',
+  selector: 'vir-invasive',
   templateUrl: './invasive.component.html',
   styleUrls: ['./invasive.component.css']
 })

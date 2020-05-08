@@ -13,11 +13,12 @@ import { FillHeightDirective } from './directives/fill-height.directive';
 import { GhostTextContentDirective } from './directives/ghost-textcontent.directive';
 import { IconComponent } from './icon/icon.component';
 import { ButtonRoundComponent } from './button-round/button-round.component';
+import { MessageComponent } from './message/message.component';
 
 @NgModule({
   declarations: [
     ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
-    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, ButtonRoundComponent
+    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, ButtonRoundComponent, MessageComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +26,7 @@ import { ButtonRoundComponent } from './button-round/button-round.component';
   ],
   exports: [
     ButtonComponent, ButtonRoundComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
-    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent
+    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, MessageComponent
   ]
 })
 export class LajiUiModule { }

@@ -1,0 +1,34 @@
+@import '../vars';
+
+.message-box {
+  border-radius: 5px;
+  padding: 20px;
+  border: 1px solid $neutral-6;
+  background-color: $neutral-3;
+  color: $neutral-8;
+
+  h1 {
+    margin-top: 0;
+    font-size: $fs-7;
+    color: $neutral-8;
+  }
+
+  &.contentinfo {
+    border-color: $primary-3;
+    background-color: $primary-2;
+    color: $primary-8;
+
+    h1 {
+      color: $primary-8;
+    }
+  }
+  &.alert {
+    border-collapse: $warning-3;
+    background-color: $warning-2;
+    color: $warning-8;
+
+    h1 {
+      color: $warning-8;
+    }
+  }
+}
