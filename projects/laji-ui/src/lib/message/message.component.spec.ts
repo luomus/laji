@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KerttuTaxonSelectComponent } from './kerttu-taxon-select.component';
+import { MessageComponent } from './message.component';
 
-describe('KerttuTaxonSelectComponent', () => {
-  let component: KerttuTaxonSelectComponent;
-  let fixture: ComponentFixture<KerttuTaxonSelectComponent>;
+describe('MessageComponent', () => {
+  let component: MessageComponent;
+  let fixture: ComponentFixture<MessageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KerttuTaxonSelectComponent ]
+      declarations: [ MessageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KerttuTaxonSelectComponent);
+    fixture = TestBed.createComponent(MessageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

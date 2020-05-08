@@ -30,8 +30,11 @@
       (openSettingsMenu)="openModal()"
       [showDownloadMenu]="showDownloadAndBrowse"
       [downloadLoading]="downloadLoading"
-      [downloadText]="'species.download' | translate"
+      [downloadText]="'species.header.download' | translate"
       (download)="download($event)"
+      [showBrowseObservationsButton]="showDownloadAndBrowse"
+      [browseObservationsText]="'species.header.browse' | translate"
+      (browseObservations)="browseObservations()"
     ></laji-datatable-header>
     <laji-datatable
       #dataTable
@@ -51,9 +54,6 @@
     </laji-datatable>
   </div>
 </div>
-<ng-container *ngIf="showDownloadAndBrowse">
-  <laji-species-browse-observations *lajiForTypes="['vir']; exclude: true" [searchQuery]="searchQuery"></laji-species-browse-observations>
-</ng-container>
 
 <laji-species-list-options-modal #settingsModal
                                  (settingsChange)="onSettingsChange()"

@@ -1,5 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import { IRecording } from '../../model/recording';
+import {ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import { AudioService } from '../../service/audio.service';
 import { DOCUMENT } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -11,15 +10,25 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./audio-viewer.component.scss']
 })
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() recording: IRecording;
+  @Input() recording: string;
+  @Input() xRangePadding: number;
+
+  @Input() xRange: number[];
+  @Input() yRange: number[];
+
+  start = 0;
+  stop: number;
 
   buffer: AudioBuffer;
-  spectrogramColormap$: any;
   currentTime = 0;
 
   isPlaying = false;
 
   sampleRate = 22050;
+  // sampleRate = 16000;
+
+  loading = false;
+  @Output() audioLoading = new EventEmitter<boolean>();
 
   private context: AudioContext;
   private source: AudioBufferSourceNode;
@@ -37,15 +46,35 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.spectrogramColormap$ = this.audioService.getColormap();
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.clear();
+    this.setAudioLoading(true);
 
     if (this.recording) {
+      if (this.audioSub) {
+        this.audioSub.unsubscribe();
+      }
+      this.buffer = undefined;
+
       this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
-      this.audioSub = this.audioService.getAudioBuffer(this.recording.audio, this.context).subscribe((buffer) => {
+      this.audioSub = this.audioService.getAudioBuffer(this.recording, this.context).subscribe((buffer) => {
+        if (this.xRangePadding != null) {
+          this.start = this.xRange[0] - this.xRangePadding;
+          this.stop = this.xRange[1] + this.xRangePadding;
+          if (this.start < 0) {
+            this.stop = Math.min(this.stop - this.start, buffer.duration);
+            this.start = 0;
+          }
+          if (this.stop > buffer.duration) {
+            this.start = Math.max(this.start - (this.stop - buffer.duration), 0);
+            this.stop = buffer.duration;
+          }
+
+          buffer = this.audioService.extractSegment(buffer, this.context, this.start, this.stop);
+        }
         this.buffer = buffer;
         this.cdr.markForCheck();
       });
@@ -129,5 +158,10 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.currentTime = 0;
     this.isPlaying = false;
     this.source = undefined;
+  }
+
+  setAudioLoading(loading: boolean) {
+    this.loading = loading;
+    this.audioLoading.emit(loading);
   }
 }

@@ -1,6 +1,6 @@
 <div class="row info-card-header-first-row">
   <div class="col-xs-12 no-padding">
-    <div class="taxon-search-container"> 
+    <div class="taxon-search-container">
       <div class="row">
         <div class="col-xs-12 col-md-6">
             <laji-taxon-select
@@ -36,10 +36,9 @@
     </div>
   </div>
 </div>
-<div class="info-box mt-8" *lajiForTypes="['vir']">
-  <h1 translate>vir.taxonomy.title</h1>
+<lu-message class="mt-8" role="contentinfo" [title]="'vir.taxonomy.title' | translate">
   <div [innerHTML]="'vir.taxonomy.intro' | translate"></div>
-</div>
+</lu-message>
 <div class="row">
   <div class="col-xs-12">
     <h1 class="taxon-name-header">

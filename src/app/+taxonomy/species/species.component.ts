@@ -27,7 +27,7 @@ const tabIndexToName = {
 @Component({
   selector: 'laji-taxon-browse',
   templateUrl: './species.component.html',
-  styleUrls: ['./species.component.css'],
+  styleUrls: ['./species.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesComponent implements OnInit, OnDestroy {

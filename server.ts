@@ -117,6 +117,10 @@ const cache = () => {
   };
 };
 
+app.get('*.(map|txt|js|ico|png|jpg|svg|css)', (req, res) => {
+  res.status(404).send('Not found');
+});
+
 app.get('*', cache(), (req, res) => {
   render(req, res, (err, html) => {
     if (!!err) {

@@ -12,6 +12,7 @@ import { OrganizationSelectComponent } from './component/organization-select/org
 import { LangModule } from '../../../../../src/app/shared-modules/lang/lang.module';
 import { DataTableComponent } from './component/data-table/data-table.component';
 import { DatatableModule } from '../../../../../src/app/shared-modules/datatable/datatable.module';
+import { LajiUiModule } from '../../../../laji-ui/src/lib/laji-ui.module';
 
 
 @NgModule({
@@ -22,15 +23,16 @@ import { DatatableModule } from '../../../../../src/app/shared-modules/datatable
       OrganizationSelectComponent,
       DataTableComponent
   ],
-    imports: [
-        FormsModule,
-        CommonModule,
-        UsageRoutingModule,
-        TranslateModule,
-        NavigationThumbnailModule,
-        LangModule,
-        ReactiveFormsModule,
-        DatatableModule
-    ]
+  imports: [
+    FormsModule,
+    CommonModule,
+    UsageRoutingModule,
+    TranslateModule,
+    NavigationThumbnailModule,
+    LangModule,
+    ReactiveFormsModule,
+    DatatableModule,
+    LajiUiModule
+  ]
 })
 export class UsageModule { }

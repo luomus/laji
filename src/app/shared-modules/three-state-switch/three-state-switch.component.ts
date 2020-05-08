@@ -20,6 +20,7 @@ export class ThreeStateSwitchComponent {
   @Input() undefinedText = '';
   @Input() size = 'small';
   @Input() onColor = 'primary';
+  @Input() disabled = false;
 
   @Output() valueChange = new EventEmitter<any>();
   @Output() change = new EventEmitter<any>();
