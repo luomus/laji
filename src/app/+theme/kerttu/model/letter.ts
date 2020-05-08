@@ -9,7 +9,10 @@ export interface ILetterCandidate extends ILetter {
 }
 
 export interface ILetterTemplate extends ILetter {
+  name: string;
   taxonId: string;
+  userAnnotationCount: number;
+  annotationCountTarget: number;
   yRange: number[];
 }
 
