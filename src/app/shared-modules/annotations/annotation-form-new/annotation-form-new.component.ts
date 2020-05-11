@@ -241,10 +241,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.cd.detectChanges();
   }
 
-  showOption(optionId: string): boolean {
-     return this.annotation.addedTags.indexOf(optionId) === -1; // add tags without control if positive or negative
-  }
-
   // add tags and filter after add a positive or negative tag
   findFirstTagNegativePositive(tags): any {
     for (let i = 0; i < tags.length; i++) {
@@ -254,19 +250,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       } else {
       }
     }
-  }
-
-  showOnlyPositiveNegative(id) {
-   return Global.annotationTags[id].quality !== 'neutral' && (Global.annotationTags[id].quality !== 'check' ||
-   Global.annotationTags[id].value === 'MMAN.11') && Global.annotationTags[id].quality !== 'self';
-  }
-
-  showOnlyCheck(id) {
-    return Global.annotationTags[id].quality === 'check' && Global.annotationTags[id].value !== 'MMAN.11';
-   }
-
-  showOptionDeleted(optionId: string): boolean {
-    return this.annotation.removedTags.indexOf(optionId) === -1;
   }
 
   copyCurrentTaxon() {
@@ -308,11 +291,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       return;
     }
   }
-
-  initComment() {
-    this.annotation.notes = this.translate.instant('annotation.isSpam');
-  }
-
 
   getLangCurrentTaxon(value, unit, currentLang) {
     if (value) {
@@ -371,10 +349,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       ));
   }
 
-  closeError() {
-    this.error = false;
-  }
-
   filterBasicForm() {
     this.annotation.removedTags = [];
     this.annotation.identification.taxonSpecifier = '';
@@ -429,9 +403,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       );
   }
 
-  toggleInfo() {
-    this.infoModal = !this.infoModal;
-  }
 
   addToAddTags(value) {
     if ( value.quality === 'MMAN.typePositiveQuality' || value.quality === 'MMAN.typeNegativeQuality' || value.id === 'MMAN.3') {
@@ -503,7 +474,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
             if ((this.annotationTagsObservation[tag.id].type === 'check' || this.annotationTagsObservation[tag.id].type === 'info' )
             && (value.id === 'MMAN.5' || value.id === 'MMAN.3') && this.annotation.removedTags.indexOf(tag.id) === -1) {
               this.addToRemoveTags(tag.id);
-              // this.annotation.addedTags.push(tag.id);
             }
           }
         });
@@ -562,17 +532,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.annotation.removedTags = [...this.annotation.removedTags];
   }
 
-
-  initElements() {
-    /*if (this.annotation.addedTags.indexOf('MMAN.5') !== -1 ) {
-      this.copyCurrentTaxon();
-    }*/
-
-    if (this.annotation.addedTags.indexOf('MMAN.3') !== -1 ) {
-      this.initComment();
-    }
-
-  }
 
   checkAddTags(id) {
     return (this.expert && this.annotation.addedTags.length > 0) || (!this.expert && this.annotation.addedTags.indexOf(id) !== -1);

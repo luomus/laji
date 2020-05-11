@@ -1,7 +1,6 @@
 {
   "extends": [
     "tslint-angular",
-    "rxjs-tslint-rules",
     "@phenomnomnominal/angular-lazy-routes-fix"
   ],
   "rulesDirectory": [
