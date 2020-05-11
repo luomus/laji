@@ -11,16 +11,14 @@
       </div>
       <ng-container *ngIf="!loading">
         <div style="position: relative;">
-          <div> 
-            <laji-bar-chart [style.height.px]="componentHeight" 
-              #barChart
+          <div [style.height.px]="componentHeight">
+            <laji-chart
               [datasets]="barChartData"
               [labels]="barChartLabels"
               [options]="barChartOptions"
               [legend]="false"
-              [chartType]="'horizontalBar'"
-              >
-            </laji-bar-chart>
+              chartType="horizontalBar"
+            ></laji-chart>
           </div>
           <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="allDataBarChart.length > 10">
               {{ (barChartData[0].data.length < allDataBarChart.length ? 'taxonomy.observations.showMore' : 'taxonomy.observations.hideMore') | translate }}
