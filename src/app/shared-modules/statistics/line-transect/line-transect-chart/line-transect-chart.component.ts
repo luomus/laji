@@ -8,7 +8,6 @@ import {
   OnChanges,
   OnDestroy
 } from '@angular/core';
-import { ScriptService } from '../../../../shared/service/script.service';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { select } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
@@ -58,7 +57,6 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
 
   constructor(
     element: ElementRef,
-    private scriptService: ScriptService,
     private cd: ChangeDetectorRef
   ) {
     this.nativeElement = element.nativeElement;

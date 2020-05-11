@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { FooterService } from '../../shared/service/footer.service';
 import { DOCUMENT } from '@angular/common';
+import { CacheService } from '../../shared/service/cache.service';
 
 @Component({
   selector: 'laji-taxonomy',
@@ -46,6 +47,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private footerService: FooterService,
     private cd: ChangeDetectorRef,
+    private cacheService: CacheService,
     @Inject(DOCUMENT) private document: Document
   ) { }
 
@@ -159,13 +161,15 @@ export class TaxonComponent implements OnInit, OnDestroy {
   }
 
   private getTaxon(id) {
-    return this.taxonService
-      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true, includeRedListEvaluations: true}).pipe(
-        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), ))).pipe(
-        catchError(err => {
-          this.logger.warn('Failed to fetch taxon by id', err);
-          return of(false);
-        }));
+    const taxon$ = this.taxonService
+      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true, includeRedListEvaluations: true});
+    return this.cacheService.getCachedObservable(taxon$, `taxon-${id}`).pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
+      catchError(err => {
+        this.logger.warn('Failed to fetch taxon by id', err);
+        return of(false);
+      })
+    );
   }
 
   private getIsFromMasterChecklist() {

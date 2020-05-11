@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormService, Participant } from '../../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { flatMap, map, switchMap, take, tap } from 'rxjs/operators';
-import { of } from 'rxjs/internal/observable/of';
-import { Subscription } from 'rxjs';
+import { flatMap, map, switchMap } from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
 import { ExportService } from '../../../../shared/service/export.service';
 import * as moment from 'moment';
 import { BookType } from 'xlsx';
