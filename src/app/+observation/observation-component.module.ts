@@ -38,6 +38,7 @@ import { ChartsModuleBarVerticalGroup } from '../shared-modules/bar-chart/ng2-ch
 import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
 import { DateFormComponent } from './form/date-form/date-form.component';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
+import { TechnicalNewsModule } from 'app/shared-modules/technical-news/technical-news.module';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
     DownloadModule,
     ChartsModuleBarVerticalGroup,
     ThreeStateSwitchModule,
-    PillListModule
+    PillListModule,
+    TechnicalNewsModule
   ],
   declarations: [
     ObservationComponent,

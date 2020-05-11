@@ -1,5 +1,6 @@
 <lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm" [menuTitle]="'observation.form.menuTitle' | translate">
   <main>
+    <laji-technical-news></laji-technical-news>
     <header class="info-box mb-5" *lajiForTypes="['vir']">
       <h1 style="margin-top: 0">{{ 'vir.observation.title' | translate }}</h1>
       <p style="width: 100%" [innerHTML]="'vir.observation.intro' | translate"></p>
