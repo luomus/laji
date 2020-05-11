@@ -1,54 +1,39 @@
-/* tslint:disable:max-classes-per-file */
-import { NgModule, Injectable } from '@angular/core';
-import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';
-import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
-import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from './locale/localize.guard';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { LocalizeInGuard } from './locale/localize-in.guard';
 import { CheckLoginGuard } from './shared/guards/check-login.guard';
 
-@Injectable()
-export class PreloadSelectedModulesList implements PreloadingStrategy {
-  preload(route: Route, load: () => Observable<any>): Observable<any> {
-    const delay = typeof process !== 'undefined' && process.release && process.release.name === 'node' ? 0 : 50;
-    const loadRoute = () => ObservableTimer(delay).pipe(flatMap(() => load()), catchError(() => ObservableOf(null)));
 
-    return route.data && route.data.preload ? loadRoute() : ObservableOf(null);
-  }
-}
-
-const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule), data: {preload: true}},
-  {path: 'news', loadChildren: () => import('./+news/news.module').then(m => m.NewsModule), data: {title: 'news.title'}},
-  {path: 'about', loadChildren: () => import('./+information/information.module').then(m => m.InformationModule)},
-  {path: 'user', loadChildren: () => import('./+user/user.module').then(m => m.UserModule)},
-  {path: 'view', loadChildren: () => import('./+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
-  {path: 'vihko', loadChildren: () => import('./+haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title'}},
+const baseRoutes: Routes = [
+  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
+  {path: 'news', loadChildren: () => import('./+news/news.module').then(m => m.NewsModule), data: {title: 'news.title', preload: false}},
+  {path: 'about', loadChildren: () => import('./+information/information.module').then(m => m.InformationModule), data: {preload: false}},
+  {path: 'user', loadChildren: () => import('./+user/user.module').then(m => m.UserModule), data: {preload: false}},
+  {path: 'view', loadChildren: () => import('./+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document', preload: false}},
+  {path: 'vihko', loadChildren: () => import('./+haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title', preload: false}},
   {path: 'observation', loadChildren: () => import('./+observation/observation.module').then(m => m.ObservationModule), data: {
-    preload: true,
     title: 'navigation.observation'
   }},
   {path: 'taxon', loadChildren: () => import('./+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
-    preload: true,
     title: 'navigation.taxonomy'
   }},
-  {path: 'collection', loadChildren: () => import('./+collection/collection.module').then(m => m.CollectionModule)},
-  {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule)},
+  {path: 'collection', loadChildren: () => import('./+collection/collection.module').then(m => m.CollectionModule), data: {preload: false}},
+  {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {preload: false}},
   {
     path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
-    data: {title: 'navigation.map', displayFeedback: false }
+    data: {title: 'navigation.map', displayFeedback: false, preload: false }
   },
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
-  {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule)},
+  {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule), data: {preload: false}},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
   {path: 'forum', component: ForumComponent},
-  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule)},
+  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule), data: {preload: false}},
   {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule)}
 ];
 
@@ -71,7 +56,7 @@ const routesWithLang: Routes = [
     {path: 'valio', redirectTo: '/en/theme/valio/instructions', pathMatch: 'full'},
     {path: 'syke-perhoset', redirectTo: '/en/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'pistelaskenta', redirectTo: '/en/theme/pistelaskenta/instructions', pathMatch: 'full'},
-    ...routes,
+    ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
@@ -89,7 +74,7 @@ const routesWithLang: Routes = [
     {path: 'valio', redirectTo: '/sv/theme/valio/instructions', pathMatch: 'full'},
     {path: 'syke-perhoset', redirectTo: '/sv/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'pistelaskenta', redirectTo: '/sv/theme/pistelaskenta/instructions', pathMatch: 'full'},
-    ...routes,
+    ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
   {path: '', data: {lang: 'fi'}, children: [
@@ -116,22 +101,11 @@ const routesWithLang: Routes = [
     {path: 'hyonteisopas', redirectTo: '/theme/hyonteisopas', pathMatch: 'full'},
     {path: 'hyonteisopas', redirectTo: '/sv/theme/hyonteisopas', pathMatch: 'full'},
     {path: 'hyonteisopas', redirectTo: '/en/theme/hyonteisopas', pathMatch: 'full'},
-    ...routes,
+    ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
 ];
 
-const allRoutes: Routes = [
+export const routes: Routes = [
   {path: '', children: routesWithLang, canActivate: [CheckLoginGuard]}
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(allRoutes, {
-    enableTracing: false,
-    preloadingStrategy: PreloadSelectedModulesList,
-    initialNavigation: 'enabled'
-  })],
-  exports: [RouterModule],
-  providers: [PreloadSelectedModulesList]
-})
-export class AppRoutingModule { }

@@ -1,5 +1,17 @@
 @import '../vars';
 
+@mixin message-type($type, $border-color, $background-color, $text-color) {
+  &.#{$type} {
+    border-color: $border-color;
+    background-color: $background-color;
+    color: $text-color;
+
+    h1 {
+      color: $text-color;
+    }
+  }
+}
+
 .message-box {
   border-radius: 5px;
   padding: 20px;
@@ -13,22 +25,10 @@
     color: $neutral-8;
   }
 
-  &.contentinfo {
-    border-color: $primary-3;
-    background-color: $primary-2;
-    color: $primary-8;
+  @include message-type('info', $info-3, $info-2, $info-8);
+  @include message-type('danger', $danger-3, $danger-2, $danger-8);
+  @include message-type('warning', $warning-3, $warning-2, $warning-8);
+  @include message-type('primary', $primary-3, $primary-2, $primary-8);
+  @include message-type('success', $success-3, $success-2, $success-8);
 
-    h1 {
-      color: $primary-8;
-    }
-  }
-  &.alert {
-    border-collapse: $warning-3;
-    background-color: $warning-2;
-    color: $warning-8;
-
-    h1 {
-      color: $warning-8;
-    }
-  }
 }

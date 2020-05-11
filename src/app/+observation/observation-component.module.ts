@@ -20,7 +20,6 @@ import { ObservationFiltersComponent } from './observation-filters/observation-f
 import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ChartsModule } from 'ng2-charts';
 import { ObservationFormComponent } from './form/observation-form.component';
 import { SeasonComponent } from './form/season/season.component';
 import { ResetComponent } from './reset/reset.component';
@@ -34,10 +33,10 @@ import { FormSampleComponent } from './form-sample/form-sample.component';
 import { AnnotationModule } from './annotations/annotations.module';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { DownloadModule } from '../shared-modules/download/download.module';
-import { ChartsModuleBarVerticalGroup } from '../shared-modules/bar-chart/ng2-charts.module';
 import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
 import { DateFormComponent } from './form/date-form/date-form.component';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
+import { ChartModule } from '../shared-modules/chart/chart.module';
 
 @NgModule({
   imports: [
@@ -52,12 +51,11 @@ import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
     ObservationMapModule,
     InfoModule,
     NgxChartsModule,
-    ChartsModule,
     JwBootstrapSwitchNg2Module,
     AnnotationModule,
     LajiUiModule,
     DownloadModule,
-    ChartsModuleBarVerticalGroup,
+    ChartModule,
     ThreeStateSwitchModule,
     PillListModule
   ],

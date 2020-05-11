@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, HostBinding } from '@angular/core';
 
-type Role = 'contentinfo' | 'alert' | 'parenthetic';
+type Type = 'primary' | 'neutral' | 'success' | 'info' | 'warning' | 'danger';
 
 @Component({
   selector: 'lu-message',
@@ -8,15 +8,28 @@ type Role = 'contentinfo' | 'alert' | 'parenthetic';
   styleUrls: ['./message.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent {
 
-  @Input() role: Role = 'contentinfo';
+  @HostBinding('attr.role') _role = 'contentinfo';
+
   @Input() title = '';
   @Input() class = '';
 
-  constructor() { }
+  _type: Type = 'info';
 
-  ngOnInit() {
+  @Input() set type(type: Type) {
+    this._type = type;
+    switch (type) {
+      case 'danger':
+      case 'warning':
+        this._role = 'alert';
+        break;
+      case 'info':
+        this._role = 'contentinfo';
+        break;
+      default:
+        this._role = 'parenthetic';
+        break;
+    }
   }
-
 }
