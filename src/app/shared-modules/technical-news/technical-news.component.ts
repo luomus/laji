@@ -17,7 +17,7 @@ export class TechnicalNewsComponent implements OnInit {
   ngOnInit() {
     this.technicalNews$ = this.apiService.getList(LajiApi.Endpoints.news, { tag: 'technical', pageSize: 5 }).pipe(
       map((res) => res.results.filter((result) => {
-        const days = 100;
+        const days = 1;
         return Date.now() - parseInt(result.posted, 10) < (days * 86400000); // number of milliseconds in a day
       })),
       catchError(() => of([{}]))
