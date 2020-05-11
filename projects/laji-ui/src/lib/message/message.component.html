@@ -1,0 +1,4 @@
+<div class="message-box" [ngClass]="_type + ' ' + class">
+  <h1 *ngIf="title">{{ title }}</h1>
+  <ng-content></ng-content>
+</div>

@@ -57,10 +57,8 @@ export class GatheringAnnotationComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-
   checkPending(value: any) {
    this.annotationAddedDeleted = value;
-   // this.loadingElements.emitChildEvent(value);
   }
 
   ngOnDestroy() {

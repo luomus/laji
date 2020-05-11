@@ -842,6 +842,7 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'stats', 'formPermissions'],
+      instructions: '3941'
     }
   },
   {

@@ -7,9 +7,8 @@ import { ComponentCanDeactivate } from '../../shared/guards/document-de-activate
 import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { FormService } from '../../shared/service/form.service';
-import { map, switchMap } from 'rxjs/operators';
+import { map, take, switchMap } from 'rxjs/operators';
 import { Form } from '../../shared/model/Form';
-import { take } from 'rxjs/internal/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { DocumentViewerFacade } from 'app/shared-modules/document-viewer/document-viewer.facade';
 import { Document } from 'app/shared/model/Document';

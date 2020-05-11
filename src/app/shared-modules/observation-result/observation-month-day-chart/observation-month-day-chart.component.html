@@ -1,17 +1,15 @@
 <ng-container *ngIf="barChartData && barChartData.length > 0">
   <p>{{ 'taxonomy.observation.yearChart.filter' | translate }}</p>
-  <div class="info-card-chart"> 
+  <div class="info-card-chart">
             <div class="chart-container">
-              <laji-bar-chart
-                #barChart
-                [datasets]="barChartData"
-                [labels]="barChartLabels"
-                [options]="barChartOptions"
-                [legend]="true"
-                [chartType]="'bar'"
-                (chartClick)="chartClicked($event)"
-                >
-            </laji-bar-chart>
+              <laji-chart
+                      [datasets]="barChartData"
+                      [labels]="barChartLabels"
+                      [options]="barChartOptions"
+                      [legend]="true"
+                      chartType="bar"
+                      (barClick)="barClicked($event)"
+              ></laji-chart>
             </div>
   </div>
 </ng-container>
@@ -29,14 +27,13 @@
       </div>
       <div class="modal-body" *ngIf="dayChartModalVisible">
         <div class="info-card-chart day-chart">
-          <laji-bar-chart
-                [datasets]="daybarChartData[activeMonth]"
-                [labels]="barChartLabelsDay"
-                [options]="barChartOptions"
-                [legend]="true"
-                [chartType]="'bar'"
-                >
-            </laji-bar-chart>
+          <laji-chart
+                  [datasets]="daybarChartData[activeMonth]"
+                  [labels]="barChartLabelsDay"
+                  [options]="barChartOptions"
+                  [legend]="true"
+                  chartType="bar"
+          ></laji-chart>
         </div>
       </div>
     </div>

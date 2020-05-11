@@ -12,10 +12,9 @@ import { SelectedFieldItemComponent } from './selected-field-item/selected-field
 import { ObservationYearChartComponent } from './observation-year-chart/observation-year-chart.component';
 import { ObservationMonthDayChartComponent } from './observation-month-day-chart/observation-month-day-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ChartsModule } from 'ng2-charts';
-import { ChartsModuleBarVerticalGroup } from '../bar-chart/ng2-charts.module';
 import { ObservationTableSettingsComponent } from './observation-table/observation-table-settings.component';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
+import { ChartModule } from '../chart/chart.module';
 
 @NgModule({
   imports: [
@@ -25,9 +24,8 @@ import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.modul
     LangModule,
     SharedModule,
     DatatableModule,
-    ChartsModule,
-    ChartsModuleBarVerticalGroup,
-    LajiUiModule
+    LajiUiModule,
+    ChartModule
   ],
   declarations: [
     ObservationTableComponent,

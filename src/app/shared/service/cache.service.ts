@@ -1,8 +1,8 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { StateKey, TransferState } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
-import { map, startWith, take } from 'rxjs/operators';
+import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
+import { Observable, of } from 'rxjs';
+import { map, startWith, take, tap } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class CacheService {
@@ -17,24 +17,24 @@ export class CacheService {
    *
    * This should will only take one, so it's not usable for streams.
    */
-  getCachedObservable<T = any>($dataSource: Observable<T>, dataKey: StateKey<string>): Observable<T> {
+  getCachedObservable<T = any>($dataSource: Observable<T>, dataKey: string): Observable<T> {
+    const key = makeStateKey<any>(dataKey);
     if (!isPlatformBrowser(this.platformId)) {
       return $dataSource.pipe(
         map(data => {
-          this.state.set(dataKey, data);
+          this.state.set(key, data);
           return data;
         }),
+        tap(data => console.log('storing', dataKey)),
         take(1)
       );
     } else if (isPlatformBrowser(this.platformId)) {
-      const savedValue = this.state.get(dataKey, null);
-      this.state.remove(dataKey); // Fetch the stored data only once
+      const savedValue = this.state.get(key, null);
+      console.log('fetch', savedValue === null, savedValue);
+      this.state.remove(key); // Fetch the stored data only once
       return savedValue === null ?
         $dataSource :
-        $dataSource.pipe(
-          startWith(savedValue),
-          take(1)
-        );
+        of(savedValue);
     }
   }
 }

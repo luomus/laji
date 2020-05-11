@@ -109,37 +109,6 @@
                         </ng-container>
                       </div>
                   </alert>
-                  <!--<alert [type]="document.secured ?  'warning' : 'info'">
-                    <span *ngIf="!document.secured; else isSecured">
-                      {{ 'viewer.secured.none' | translate }}
-                    </span>
-                    <ng-template #isSecured>
-                      <span *ngIf="document.public">
-                        <span *ngIf="document.secureLevel !== 'NONE' || (document.secureReasons && document.secureReasons.length > 0)">
-                          {{ 'viewer.secured.secured' | translate }}
-                        </span>
-                        <span *ngIf="document.partial">
-                          {{ 'viewer.secured.partial' | translate }}
-                        </span>
-                      </span>
-                      <span *ngIf="!document.public">
-                        {{ 'viewer.secured.own1' | translate }}
-                        (<a [routerLink]="['/view'] | localize" [queryParams]="{
-                          uri: document.documentId,
-                          highlight: highlight
-                         }" target="_blank">{{ 'viewer.secured.own2' | translate }}</a>).
-                      </span>
-                    </ng-template>
-                    <div *ngIf="document.secured">
-                      <laji-secure-info
-                        [secureLevel]="document.secureLevel"
-                        [secureReasons]="document.secureReasons"
-                      ></laji-secure-info>
-                      <ng-container *ngIf="document.secureReasons && document.secureReasons.indexOf('DEFAULT_TAXON_CONSERVATION') > -1">
-                        <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
-                      </ng-container>
-                    </div>
-                  </alert>-->
                 </div>
             <h5>{{ 'annotation.collectionEditor' | translate }}</h5>    
             <laji-issues [data]="document"></laji-issues>
@@ -195,4 +164,3 @@
   <a *ngIf="result && indexPagination>0" class="arrow left" (click)="previous()"></a>
   <a *ngIf="result && indexPagination < result.length-1" class="arrow right" (click)="next()"></a>
 </div>
-<!--<pre>{{document | json}}</pre>-->
