@@ -9,6 +9,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
+import value from '*.json';
 
 
 @Component({
@@ -22,6 +23,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     image: '',
     profileDescription: '',
     personalCollectionIdentifier: '',
+    capturerVerbatim: '',
+    intellectualOwner: '',
+    intellectualRights: Profile.IntellectualRightsEnum.IntellectualRightsCCBY,
     friendRequests: [],
     friends: [],
     blocked: []
@@ -37,6 +41,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public personSelfUrl = '/';
 
   private subProfile: Subscription;
+  intellectualRightsArray: any[] = [];
+
+  intellectualRights = Profile.IntellectualRightsEnum;
+
 
   constructor(private userService: UserService,
               private personService: PersonApi,
@@ -89,6 +97,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
         },
         err => this.logger.warn('Failed to init profile', err)
       );
+
+      const values = Object.values(this.intellectualRights);
+      const keys = Object.keys(this.intellectualRights);
+      for (let i = 0; i < Object.values(this.intellectualRights).length; i++) {
+        this.intellectualRightsArray.push({'key': keys[i], 'value': values[i]});
+      }
   }
 
   ngOnDestroy() {

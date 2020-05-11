@@ -34,6 +34,20 @@
             <input class="form-control" [(ngModel)]="profile.personalCollectionIdentifier">
           </div>
           <div class="profile-edit-row">
+            {{ 'MM.capturerVerbatim' | label }}<laji-info>{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
+            <input class="form-control" [(ngModel)]="profile.capturerVerbatim">
+          </div>
+          <div class="profile-edit-row">
+            {{ 'MY.intellectualOwner' | label }}<laji-info>{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
+            <input class="form-control" [(ngModel)]="profile.intellectualOwner">
+          </div>
+          <div class="profile-edit-row">
+            {{ 'MY.intellectualRights' | label }}<laji-info>{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
+            <select class="form-control" [(ngModel)]="profile.intellectualRights">
+              <option *ngFor="let c of intellectualRightsArray" [ngValue]="c.key">{{ c.value | label }}</option>
+            </select>
+          </div>
+          <div class="profile-edit-row">
             <div class="btn btn-default" (click)="saveProfile()">{{ 'profile.save' | translate }}</div>
           </div>
         </div>
