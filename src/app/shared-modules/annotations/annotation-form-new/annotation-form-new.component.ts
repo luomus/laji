@@ -597,6 +597,17 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     return this.labelPipe.transform(value, 'warehouse');
   }
 
+  initElements() {
+    if (this.annotation.addedTags.indexOf('MMAN.3') !== -1 ) {
+    this.initComment();
+    }
+
+  }
+
+  initComment() {
+    this.annotation.notes = this.translate.instant('annotation.isSpam');
+  }
+
 
   @HostListener('window:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
