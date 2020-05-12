@@ -9,7 +9,6 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
-import value from '*.json';
 
 
 @Component({
@@ -25,7 +24,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     personalCollectionIdentifier: '',
     capturerVerbatim: '',
     intellectualOwner: '',
-    intellectualRights: Profile.IntellectualRightsEnum.IntellectualRightsCCBY,
+    intellectualRights: undefined,
     friendRequests: [],
     friends: [],
     blocked: []
@@ -147,7 +146,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
       ...this.personsProfile,
       image: this.profile.image,
       profileDescription: this.profile.profileDescription,
-      personalCollectionIdentifier: this.profile.personalCollectionIdentifier
+      personalCollectionIdentifier: this.profile.personalCollectionIdentifier,
+      capturerVerbatim: this.profile.capturerVerbatim,
+      intellectualOwner: this.profile.intellectualOwner,
+      intellectualRights: this.profile.intellectualRights,
     };
   }
 }
