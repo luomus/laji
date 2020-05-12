@@ -9,12 +9,14 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
+import { UsersPipe } from 'app/shared/pipe/users.pipe';
 
 
 @Component({
   selector: 'laji-user',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  providers: [ UsersPipe ]
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 
@@ -50,7 +52,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
               private localizeRouterService: LocalizeRouterService,
               private route: ActivatedRoute,
               private router: Router,
-              private logger: Logger
+              private logger: Logger,
+              private userPipe: UsersPipe
   ) {
     this.personSelfUrl = environment.selfPage;
   }
@@ -90,6 +93,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.userId = data.id;
           this.isCreate = !data.currentProfile;
           this.profile = data.profile || {};
+          this.profile.capturerVerbatim = this.profile.capturerVerbatim !== undefined ? this.profile.capturerVerbatim : this.userPipe.transform(this.profile.userID),
+          this.profile.intellectualOwner = this.profile.intellectualOwner !== undefined ? this.profile.intellectualOwner : this.userPipe.transform(this.profile.userID),
+          this.profile.intellectualRights = this.profile.intellectualRights !== undefined ?
+          this.profile.intellectualRights : Profile.IntellectualRightsEnum.IntellectualRightsCCBY,
           this.personsProfile = data.currentProfile || {};
           this.loading = false;
           this.editing = false;
@@ -149,7 +156,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       personalCollectionIdentifier: this.profile.personalCollectionIdentifier,
       capturerVerbatim: this.profile.capturerVerbatim,
       intellectualOwner: this.profile.intellectualOwner,
-      intellectualRights: this.profile.intellectualRights,
+      intellectualRights: this.profile.intellectualRights
     };
   }
 }

@@ -38,13 +38,13 @@
             <input class="form-control" [(ngModel)]="profile.capturerVerbatim">
           </div>
           <div class="profile-edit-row">
-            {{ 'MY.intellectualOwner' | label }}<laji-info>{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
+            {{ 'MY.intellectualOwner' | label }} {{profile.intellectualOwner}}<laji-info>{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
             <input class="form-control" [(ngModel)]="profile.intellectualOwner">
           </div>
           <div class="profile-edit-row">
             {{ 'MY.intellectualRights' | label }}<laji-info>{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
             <select class="form-control" [(ngModel)]="profile.intellectualRights">
-              <option *ngFor="let c of intellectualRightsArray" [ngValue]="c.key">{{ c.value | label }}</option>
+              <option *ngFor="let c of intellectualRightsArray" [ngValue]="c.value">{{ c.value | label }}</option>
             </select>
           </div>
           <div class="profile-edit-row">
