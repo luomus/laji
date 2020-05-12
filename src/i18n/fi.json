@@ -1614,5 +1614,7 @@
   "saveObservations.researchProjects": "Tutkimusprojektit ja viranomaistyökalut",
   "saveObservations.researchProjects.desc": "Tutkimushankkeisiin osallistuminen vaatii osaamista tutkimuksen kohteesta. Osa hankkeista on suunnattu vain rajatulle ryhmälle.",
   "navigation.birdPointCount": "Pistelaskenta",
-  "theme.birdPointCount.intro": "Pesivien maalintujen pistelaskenta"
+  "theme.birdPointCount.intro": "Pesivien maalintujen pistelaskenta",
+
+  "technicalNews.error": "Palvelut vikatilassa. Voit tarkistaa onko asiasta tiedotetta <a href='http://foorumi.laji.fi/' target='_blank'>Foorumeilla</a> tai <a href='https://twitter.com/lajitieto' target='_blank'>Twitterissä</a>."
 }

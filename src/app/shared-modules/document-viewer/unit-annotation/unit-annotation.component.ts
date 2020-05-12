@@ -92,12 +92,4 @@ export class UnitAnnotationComponent implements OnInit {
       (Array.isArray(this.annotations) && this.annotations.length > 0);
   }
 
-  toggleAnnotations() {
-    this.annotationVisible = !this.annotationVisible;
-  }
-
-  hideAnnotations() {
-    this.annotationVisible = false;
-  }
-
 }

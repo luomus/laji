@@ -1459,5 +1459,7 @@
   "saveObservations.researchProjects": "Research projects and tools for public authorities",
   "saveObservations.researchProjects.desc": "Participating to research projects needs more experience than the citizen science projects. Some of the projects are only accessible for a smaller group of users.",
   "navigation.birdPointCount": "Point count",
-  "theme.birdPointCount.intro": "Point counts of breeding terrestrial birds"
+  "theme.birdPointCount.intro": "Point counts of breeding terrestrial birds",
+
+  "technicalNews.error": "Service not responding. You can check if there's more information at <a href='http://foorumi.laji.fi/' target='_blank'>the forums</a> or <a href='https://twitter.com/lajitieto' target='_blank'>Twitter</a>."
 }
