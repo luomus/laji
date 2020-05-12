@@ -25,6 +25,7 @@ type TableType = 'downloads'|'people'
                   [showHeader]="true"
                   [showFooter]="false"
                   [virtualScrolling]="true"
+                  [clientSideSorting]="true"
                   [height]="'calc(90vh - 195px)'"
                   [rows]='data'
                   (rowSelect)="rowSelect.emit($event)"
