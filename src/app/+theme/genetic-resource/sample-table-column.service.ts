@@ -75,7 +75,7 @@ export class SampleTableColumnService extends TableColumnService<ObservationTabl
 
   allColumns: ObservationTableColumn[] = [
     COLUMNS['unit.taxonVerbatim'],
-    COLUMNS['gathering.team'],
+    {...COLUMNS['gathering.team'], required: false},
     COLUMNS['gathering.interpretations.country'],
     COLUMNS['gathering.team.memberName'],
     COLUMNS['sample.sampleId'],
@@ -83,7 +83,7 @@ export class SampleTableColumnService extends TableColumnService<ObservationTabl
     COLUMNS['sample.material'],
     COLUMNS['sample.quality'],
     COLUMNS['sample.status'],
-    COLUMNS['gathering.displayDateTime'],
+    {...COLUMNS['gathering.displayDateTime'], required: false},
     COLUMNS['unit.lifeStage'],
     COLUMNS['unit.sex'],
     COLUMNS['sample.notes'],
