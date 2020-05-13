@@ -13,6 +13,7 @@ import {Taxonomy} from '../../../../shared/model/Taxonomy';
 export class KerttuLetterAnnotationComponent implements OnChanges {
   @Input() template: ILetterTemplate;
   @Input() candidate: ILetterCandidate;
+  @Input() letterAnnotationCount: number;
 
   currentAnnotation: LetterAnnotation;
   annotation = LetterAnnotation;
@@ -20,9 +21,12 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
   loadingTemplate = false;
   loadingCandidate = false;
 
+  candidateYRange: number[];
+
   taxon$: Observable<Taxonomy>;
 
   @Output() annotationChange = new EventEmitter<LetterAnnotation>();
+  @Output() skipLetterClick = new EventEmitter();
 
   constructor(
     private resultService: ResultService,
@@ -36,6 +40,11 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
     }, 0);
     if (changes.template && this.template) {
       this.taxon$ = this.resultService.getTaxon(this.template.taxonId);
+    }
+    if (this.template && this.candidate) {
+      this.candidateYRange = [
+        this.template.yRange[0] + this.candidate.yDiff, this.template.yRange[1] + this.candidate.yDiff
+      ];
     }
   }
 }

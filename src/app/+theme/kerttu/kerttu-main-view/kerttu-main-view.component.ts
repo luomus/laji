@@ -6,8 +6,7 @@ import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
-import {LetterAnnotation} from '../model/letter';
-import {ILetterCandidate, ILetterTemplate} from '../model/letter';
+import {ILetterCandidate, ILetterTemplate, LetterAnnotation} from '../model/letter';
 import {WINDOW} from '@ng-toolkit/universal';
 
 @Component({
@@ -39,6 +38,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   letterTemplate: ILetterTemplate;
   letterCandidate: ILetterCandidate;
+  letterAnnotationCount: number;
   allLettersAnnotated = false;
 
   private vmSub: Subscription;
@@ -128,8 +128,16 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = undefined;
     this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
       .subscribe(() => {
+        if (annotation !== LetterAnnotation.unsure) {
+          this.letterAnnotationCount += 1;
+          this.cdr.markForCheck();
+        }
         this.getNextLetterCandidate(this.letterTemplate.id);
       });
+  }
+
+  skipLetter() {
+    this.getNextLetterTemplate(true);
   }
 
   private getSaveObservable(step: Step): Observable<any> {
@@ -179,10 +187,10 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     // }
   }
 
-  private getNextLetterTemplate() {
+  private getNextLetterTemplate(skipCurrent = false) {
     this.letterTemplate = undefined;
 
-    this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken())
+    this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken(), skipCurrent)
       .pipe(tap(template => {
         if (!template) {
           this.allLettersAnnotated = true;
@@ -193,6 +201,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
       }))
       .subscribe(template => {
         this.letterTemplate = template;
+        this.letterAnnotationCount = template.userAnnotationCount;
         this.cdr.markForCheck();
       });
   }
