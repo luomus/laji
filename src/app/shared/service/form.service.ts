@@ -8,7 +8,6 @@ import { Global } from '../../../environments/global';
 import { Form } from '../model/Form';
 import { UserService } from './user.service';
 import { HttpClient } from '@angular/common/http';
-import { CacheService } from './cache.service';
 
 export interface Participant {
   id?: string;
@@ -52,8 +51,7 @@ export class FormService {
   constructor(
     private lajiApi: LajiApiService,
     private http: HttpClient,
-    private userService: UserService,
-    private cacheService: CacheService
+    private userService: UserService
   ) {}
 
   static hasFeature(form: Form.List, feature: Form.Feature): boolean {
@@ -70,8 +68,7 @@ export class FormService {
     }
     this.setLang(lang);
     if (!this.formCache[formId]) {
-      const form$ = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang});
-      this.formCache[formId] = this.cacheService.getCachedObservable(form$, `form-${formId}-${lang}`).pipe(
+      this.formCache[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
         catchError(error => error.status === 404 ? ObservableOf(null) : observableThrowError(error)),
         retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
         shareReplay(1)
@@ -96,10 +93,8 @@ export class FormService {
   getAllForms(lang: string, whitelistedOnly = false): Observable<Form.List[]> {
     this.setLang(lang);
     if (!this.allForms) {
-      const allForms$ = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
-        map(data => data.results)
-      );
-      this.allForms = this.cacheService.getCachedObservable(allForms$, `forms-all-${this.currentLang}`).pipe(
+      this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
+        map(data => data.results),
         shareReplay(1)
       );
     }

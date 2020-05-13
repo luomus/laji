@@ -161,9 +161,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   }
 
   private getTaxon(id) {
-    const taxon$ = this.taxonService
-      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true, includeRedListEvaluations: true});
-    return this.cacheService.getCachedObservable(taxon$, `taxon-${id}`).pipe(
+    return this.taxonService.taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true, includeRedListEvaluations: true}).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
       catchError(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
