@@ -10,6 +10,10 @@
       *ngIf="!hasPersonalData"
       [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
     </p>
+    <ng-container *lajiForTypes="['vir']">
+      <label for="reason">{{ 'download.reason' | translate }}</label>
+      <textarea class="form-control" id="reason" [(ngModel)]="reason"></textarea>
+    </ng-container>
     <section>
       <h3>{{ 'result.load.titleSimple' | translate }}</h3>
       <alert *ngIf="maxSimpleDownload < unitCount || unitCount === 0; else simpleDownloadTpl">
@@ -19,7 +23,7 @@
         <p [innerHTML]="'result.load.introSimple' | translate"></p>
         <div class="action-group">
           <laji-download
-            *lajiForTypes="['prod', 'dev', 'embedded']"
+            *lajiForTypes="['vir']; exclude: true"
             role="primary"
             [showBackdrop]="false"
             (download)="simpleDownload($event)"
@@ -30,7 +34,7 @@
           <laji-download
             *lajiForTypes="['vir']"
             role="primary"
-            [showReason]="true"
+            [disabled]="!reason"
             [showBackdrop]="false"
             [(reason)]="reason"
             (download)="simpleDownload($event)"
@@ -65,8 +69,6 @@
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
           <ng-container *lajiForTypes="['vir']">
-            <label for="reason">{{ 'download.reason' | translate }}</label>
-            <textarea class="form-control" name="reason" [(ngModel)]="reason"></textarea>
             <lu-button
                 [disabled]="!reason || requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
                 (click)="makePublicRequest(true)">
@@ -83,7 +85,7 @@
         </div>
       </ng-container>
     </section>
-    <section>
+    <section *lajiForTypes="['vir']; exclude: true">
       <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
       <alert *lajiLoggedIn="false">
         {{ 'result.load.error.notLoggedIn' | translate }}

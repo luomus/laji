@@ -152,6 +152,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.numberColumnSelector.columns = selectedNumbers;
   }
 
+  @Input() set required(required: string[]) {
+    this.columnSelector.required = required;
+  }
+
   ngOnInit() {
     this.lang = this.translate.currentLang;
     this.initColumns();

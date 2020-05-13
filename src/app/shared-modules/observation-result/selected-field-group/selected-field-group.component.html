@@ -1,11 +1,14 @@
-<h5 *ngIf="header">{{ header | translate }}</h5>
+<h5 *ngIf="header">
+  {{ header | translate }}
+</h5>
 <ul class="list-group">
   <li class="list-group-item link"
       *ngFor="let field of fields"
       (click)="onToggle(field)"
-      [ngClass]="{active: selected.indexOf(field) > -1, disabled: disabled.indexOf(field) > -1}">
+      [ngClass]="{active: selected.indexOf(field) > -1, disabled: required.indexOf(field) > -1}">
     <laji-selected-field-item
       [field]="field"
+      [required]="required.indexOf(field) > -1"
       [label]="columnsLookup[field]?.label | translate"
       [idx]="selected.indexOf(field)"
       [len]="selected.length"

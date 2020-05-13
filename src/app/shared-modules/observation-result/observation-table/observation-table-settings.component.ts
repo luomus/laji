@@ -51,6 +51,7 @@ import { DatatableColumn } from '../../datatable/model/datatable-column';
                   [fields]="group.fields"
                   [columnsLookup]="columnLookup"
                   [columnSelector]="columnSelector"
+                  [required]="columnSelector.required"
                   [selected]="columnSelector.columns"
                 ></laji-selected-field-group>
               </ng-container>
