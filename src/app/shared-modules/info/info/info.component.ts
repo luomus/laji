@@ -18,6 +18,7 @@ export class InfoComponent implements OnInit {
   @Input() labelType = 'info';
   @Input() showOnHover = false;
   @Input() containerInfo = 'body';
+  @Input() noShow = false;
 
   @ViewChild('modal', { static: true }) public modal: ModalDirective;
   @ViewChild('pop', { static: true }) public popover: PopoverDirective;
@@ -55,13 +56,16 @@ export class InfoComponent implements OnInit {
    this.container = this.containerInfo;
   }
 
-  show(e: MouseEvent) {
-    e.stopPropagation();
+  show(e?: MouseEvent) {
+    e?.stopPropagation();
     if (!isPlatformBrowser(this.platformID)) {
       return;
     }
     const useModal = this.useModal();
     if (this.isVisible() && ((useModal && this.modal.isShown) || (!useModal && this.popover.isOpen))) {
+      return;
+    }
+    if (this.noShow) {
       return;
     }
     this.hide();
