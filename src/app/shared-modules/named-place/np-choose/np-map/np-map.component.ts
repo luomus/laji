@@ -27,7 +27,7 @@ import { NpInfoRow } from '../../np-edit/np-info/np-info-row/np-info-row.compone
   styleUrls: ['./np-map.component.css'],
   providers: [ LabelPipe, AreaNamePipe ]
 })
-export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
+export class NpMapComponent implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @ViewChild('popup', { static: true }) popupComponent;
   @Input() visible = false;
@@ -45,7 +45,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   listItems: NpInfoRow[] = [];
   tileLayerName;
   overlayNames;
-  private _data: any;
+  _data: any;
   private _popupCallback: (elemOrString: HTMLElement | string) => void;
   private _zoomOnNextTick = false;
   private _lastVisibleActiveNP: number;
