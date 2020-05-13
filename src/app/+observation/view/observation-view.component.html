@@ -1,9 +1,11 @@
 <lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm" [menuTitle]="'observation.form.menuTitle' | translate">
   <main>
-    <header class="info-box mb-5" *lajiForTypes="['vir']">
-      <h1 style="margin-top: 0">{{ 'vir.observation.title' | translate }}</h1>
-      <p style="width: 100%" [innerHTML]="'vir.observation.intro' | translate"></p>
-    </header>
+    <laji-technical-news></laji-technical-news>
+    <ng-container *lajiForTypes="['vir']">
+      <lu-message class="mb-5" [title]="'vir.observation.title' | translate">
+        <div [innerHTML]="'vir.observation.intro' | translate"></div>
+      </lu-message>
+    </ng-container>
     <ng-container *lajiBrowserOnly>
       <ng-container *ngIf="visible.info">
         <div class="toggle-intro" *ngIf="!vm.showIntro">

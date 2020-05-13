@@ -2,9 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -21,7 +19,6 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Chart } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-chart.component';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 
@@ -33,7 +30,6 @@ import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 })
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
-  @ViewChild('barChart') public barChart: BarChartComponent;
   @Input() taxonId: string;
   @Input() query: any;
   monthChartData: any[];
@@ -41,10 +37,9 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
   dayChartModalVisible = false;
   activeMonth: number;
-  windowVerticalOffset: number;
 
   public barChartLabels: string[];
-  public barChartLabelsDay: number[];
+  public barChartLabelsDay: string[];
   public barChartData: any[];
   public daybarChartData: any[][];
   public barChartOptions: any;
@@ -59,20 +54,12 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
   @Output() hasData = new EventEmitter<boolean>();
 
-  @HostListener('window:scroll', []) onWindowScroll() {
-
-     this.windowVerticalOffset = window.pageYOffset
-          || document.documentElement.scrollTop
-          || document.body.scrollTop || 0;
-  }
-
   constructor(
     private warehouseApi: WarehouseApi,
     private warehouseService: WarehouseValueMappingService,
     private triplestoreLabelService: TriplestoreLabelService,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
-    public elm: ElementRef<HTMLCanvasElement>,
     private localSt: LocalStorageService
   ) { }
 
@@ -113,49 +100,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       this.dayChartModalVisible = true;
       this.modal.show();
     }
-  }
-
-  chartClicked(event) {
-    const gio: Chart = this.barChart.baseChartComponent.chart;
-      const scale = (gio as any).scales['x-axis-0'];
-      const width = scale.width;
-      const legendHeight = (gio as any).legend.height;
-      const off = this.barChart.elm.nativeElement.getBoundingClientRect().top; // Offset top from chart to top screen
-
-      const offset = Math.abs(off + this.windowVerticalOffset); // total offset from chart to top page
-
-      if (event.event.pageY > offset + legendHeight ) {
-        // control if the point where i'm clicking is inside the chart but outside the legend block
-        const scales = (gio as any).scales;
-        const count = scales['x-axis-0'].ticks.length;
-        const padding_left = scales['x-axis-0'].paddingLeft;
-        const padding_right = scales['x-axis-0'].paddingRight;
-        const xwidth = ( width - padding_left - padding_right ) / count;
-
-        let bar_index = (event.event.offsetX - padding_left - scales['y-axis-0'].width) / xwidth; // Calculate index (current month)
-        bar_index = Math.floor(bar_index);
-        if (this.barChartData[0].data[bar_index] > 0) {
-          if (bar_index >= 0 && bar_index < count) { // control if the click is in yAxis, no event there
-            bar_index = Math.floor(bar_index);
-            this.barChartLabelsDay = [];
-            this.activeMonth = bar_index;
-            this.initLabelsDayChartData(this.activeMonth);
-            this.dayChartModalVisible = true;
-            this.modal.show();
-          }
-        }
-      }
-    /*if (event.active.length > 0) {
-      this.barChartLabelsDay = [];
-      const chart = event.active[0]._chart;
-      const elementActive = chart.getElementAtEvent(event.event);
-        if ( elementActive.length > 0) {
-          this.activeMonth = elementActive[0]._index;
-          this.initLabelsDayChartData(this.activeMonth);
-          this.dayChartModalVisible = true;
-          this.modal.show();
-        }
-    }*/
   }
 
   initializeGraph() {
@@ -248,7 +192,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       this.addDataToSeriesGiorgio(lifeStage, count, month, labelObservables);
 
       if (day) {
-        this.addDataDayToSeriesGiorgio (lifeStage, count, month, day, labelObservables);
+        this.addDataDayToSeries(lifeStage, count, month, day, labelObservables);
       }
 
       this.initializeGraph();
@@ -277,14 +221,11 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
           )
         );
       }
-
       this.barChartData[index].data[month - 1] += count;
-
     }
-    (window as any).bar = this.barChart;
   }
 
-  private addDataDayToSeriesGiorgio(lifeStage: string, count: number, month: number, day: number, labelObservables: any[]) {
+  private addDataDayToSeries(lifeStage: string, count: number, month: number, day: number, labelObservables: any[]) {
     if (this.daybarChartData[month - 1].length < 1) {
       const values = this.initDayBarChartData(month);
       this.daybarChartData[month - 1].push({
@@ -332,7 +273,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
   private initLabelsDayChartData(month: number): any[] {
     for (let i = 1; i < this.getNbrOfDaysInMonth(month + 1) + 1; i++) {
-      this.barChartLabelsDay.push(i);
+      this.barChartLabelsDay.push('' + i);
     }
     return this.barChartLabelsDay;
   }
@@ -379,4 +320,11 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     this.updateData();
   }
 
+  barClicked({ index }) {
+    this.barChartLabelsDay = [];
+    this.activeMonth = index;
+    this.initLabelsDayChartData(this.activeMonth);
+    this.dayChartModalVisible = true;
+    this.modal.show();
+  }
 }

@@ -25,11 +25,6 @@
   width: 100%;
 }
 
-canvas {
-  width: 500px;
-  height: 200px;
-}
-
-:host ::ng-deep laji-bar-chart {
+laji-chart {
   height: 450px;
 }

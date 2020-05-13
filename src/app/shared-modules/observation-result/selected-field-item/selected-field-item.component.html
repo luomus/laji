@@ -4,5 +4,5 @@
   <button (click)="moveFieldDown(field, $event)" class="btn btn-xs">&#x25B6;</button>
 </div>
 <ng-container>
-  {{ label }}
+  {{ label }} <span class="required" *ngIf="required">*</span>
 </ng-container>

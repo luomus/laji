@@ -26,6 +26,15 @@ export abstract class TableColumnService<T extends DatatableColumn = DatatableCo
     return [...this.defaultFields] as Array<string>;
   }
 
+  getRequiredFields(): Array<string> {
+    return this.allColumns.reduce((result, f) => {
+      if (f.required) {
+        result.push(f.name);
+      }
+      return result;
+    }, []);
+  }
+
   getColumnGroups(): IColumnGroup<G>[][] {
     return this.columnGroups;
   }

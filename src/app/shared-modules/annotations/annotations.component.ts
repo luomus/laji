@@ -128,10 +128,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     };
   }
 
-  toggleAddForm() {
-    this.adding = !this.adding;
-  }
-
   onSuccess(annotation: Annotation) {
     this.statusAction = {
       status: true,
@@ -153,7 +149,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
 
   changeModeForm() {
    this.expert = !this.expert;
-   // this.formAnnotation.cleanForm();
    this.cd.markForCheck();
   }
 
@@ -169,7 +164,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     this.annotationService.delete(annotation)
       .subscribe(
         (data: Annotation) => {
-          // this.annotations = this.annotations.filter(value => value.id !== annotation.id);
           const foundIndex = this.annotations.findIndex(x => IdService.getId(x.id) === IdService.getId(data.id));
           this.annotations[foundIndex] = data;
           this.saveDone(data);

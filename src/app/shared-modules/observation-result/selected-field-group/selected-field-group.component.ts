@@ -12,7 +12,7 @@ export class SelectedFieldGroupComponent {
   @Input() header: string;
   @Input() fields: string[] = [];
   @Input() selected: string[] = [];
-  @Input() disabled: string[] = [];
+  @Input() required: string[] = [];
   @Input() columnsLookup: any = {};
 
   @Input() columnSelector: ColumnSelector;
@@ -24,7 +24,7 @@ export class SelectedFieldGroupComponent {
   constructor() { }
 
   onToggle(field: string) {
-    if (this.disabled.indexOf(field) === -1) {
+    if (this.required.indexOf(field) === -1) {
       this.toggle.emit(field);
 
       if (this.columnSelector) {
