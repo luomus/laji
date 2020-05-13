@@ -1,12 +1,13 @@
 {
   "name": "Api.laji.fi GraphQL Schema",
-  "schemaPath": "./src/app/graph-ql",
+  "schemaPath": "./src/app/graph-ql/laji.graphql",
   "extensions": {
     "endpoints": {
-      "Default GraphQL Endpoint": {
-        "url": "https://dev.laji.fi/api/graphql",
+      "apitest.laji.fi": {
+        "url": "https://apitest.laji.fi/v0/graphql",
         "headers": {
-          "user-agent": "JS GraphQL"
+          "user-agent": "JS GraphQL",
+          "authorization": "SBL3mE8FhECAWMIuJCPDQsFhLPoz4uhr9drid11nGsOMXECaAe7m5s9ptGo0UWzo"
         },
         "introspect": false
       }

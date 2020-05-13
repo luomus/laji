@@ -58,7 +58,7 @@
           </div>
         </div>
     </div>
-        
+
         <div class="row container-col">
           <div class="col-sm-4 column-modal" *ngIf="document.gatherings && document.gatherings[0].units">
             <div class="title">{{ 'annotation.mediaFiles' | translate }}</div>
@@ -104,13 +104,13 @@
                           [secureLevel]="document.secureLevel"
                           [secureReasons]="document.secureReasons"
                         ></laji-secure-info>
-                        <ng-container *ngIf="document.secureReasons && document.secureReasons.indexOf('DEFAULT_TAXON_CONSERVATION') > -1">
+                        <ng-container *ngIf="document.secureReasons | includes:'DEFAULT_TAXON_CONSERVATION'">
                           <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
                         </ng-container>
                       </div>
                   </alert>
                 </div>
-            <h5>{{ 'annotation.collectionEditor' | translate }}</h5>    
+            <h5>{{ 'annotation.collectionEditor' | translate }}</h5>
             <laji-issues [data]="document"></laji-issues>
             <laji-row [title]="'result.document.collectionId' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
               <span>{{ document.collectionId | toQName | collectionName }}</span>
@@ -139,7 +139,7 @@
                   <span *ngIf="unitCnt > 1"> {{ 'annotation.observations.count' | translate }}</span>
                   <span *ngIf="unitCnt === 1"> {{ 'annotation.observation.count' | translate }}</span>
                 </span>
-              </a>  
+              </a>
             </laji-row>
             <ng-container *ngIf="activeGathering">
               <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"

@@ -12,7 +12,7 @@
             [class.link]="!field.required"
             *ngFor="let field of visible.fields; trackBy:trackFields"
             (click)="onClick(field)"
-            [ngClass]="{active: selected.indexOf(field.key) > -1 || field.required}">
+            [ngClass]="{active: (selected | includes:field.key) || field.required}">
           <laji-field-item [field]="field" [selected]="selected" (selectedChange)="selectedChange.emit($event)"></laji-field-item>
         </li>
       </ul>

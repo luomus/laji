@@ -41,6 +41,7 @@ export interface IHomeData {
     nextPage: number,
     results: {
       id: string,
+      tag: string,
       title: string,
       posted: string,
       external: boolean,

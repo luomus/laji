@@ -2,10 +2,10 @@
   <div class="form-group" *ngIf="showViewSwitch">
     <div class="col-sm-12">
       <div class="btn-group view-mode-selector" role="group" aria-label="view type">
-        <button *ngIf="views.indexOf('full') != -1" type="button" class="btn btn-default" (click)="setView('full')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
-        <button *ngIf="views.indexOf('full2') != -1" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
-        <button *ngIf="views.indexOf('full3') != -1" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
-        <button *ngIf="views.indexOf('compact') != -1" type="button" class="btn btn-default" (click)="setView('compact')" [class.active]="view === 'compact'"><i class="glyphicon glyphicon-th"></i></button>
+        <button *ngIf="views | includes:'full'" type="button" class="btn btn-default" (click)="setView('full')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
+        <button *ngIf="views | includes:'full2'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
+        <button *ngIf="views | includes:'full3'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
+        <button *ngIf="views | includes:'compact'" type="button" class="btn btn-default" (click)="setView('compact')" [class.active]="view === 'compact'"><i class="glyphicon glyphicon-th"></i></button>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
       <ng-template #onlyImage>
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
              class="ng-thumb compact"
-             alt="Image {{ index + 1 }}" />    
+             alt="Image {{ index + 1 }}" />
       </ng-template>
     </div>
   </ng-container>
@@ -54,7 +54,7 @@
         (click)="openMainPic(img.fullURL, index)"
         />
     </div>
-  </ng-container> 
+  </ng-container>
 </ng-template>
 
 <ng-template #fullView>
