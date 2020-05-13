@@ -116,7 +116,7 @@
     "localforage": "^1.7.3",
     "moment": "2.24.0",
     "ng2-charts": "^2.3.0",
-    "ngx-bootstrap": "^5.6.1",
+    "ngx-bootstrap": "5.4.0",
     "ngx-clipboard": "^13.0.0",
     "ngx-moment": "^3.5.0",
     "ngx-quicklink": "^0.2.1",
