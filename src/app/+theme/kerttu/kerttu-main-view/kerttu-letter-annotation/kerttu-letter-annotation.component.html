@@ -29,7 +29,7 @@
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
       [recording]="template?.recording"
-      [xRangePadding]="1"
+      [xRangePadding]="0.1"
       [xRange]="template?.xRange"
       [yRange]="template?.yRange"
       (audioLoading)="loadingTemplate = $event"
@@ -39,8 +39,11 @@
     <h4>{{ 'theme.kerttu.letterCandidate' | translate }} ({{ candidate?.crossCorrelation }})</h4>
     <laji-audio-viewer
       [recording]="candidate?.recording"
-      [xRangePadding]="1"
+      [xRangePadding]="0.1"
       [xRange]="candidate?.xRange"
+      [yRange]="template?.yRange && candidate?.yDiff ? [
+        template.yRange[0] + candidate.yDiff, template.yRange[1] + candidate.yDiff
+      ] : undefined"
       (audioLoading)="loadingCandidate = $event"
     ></laji-audio-viewer>
   </div>
@@ -49,6 +52,9 @@
     <laji-audio-viewer
       [recording]="candidate?.recording"
       [xRange]="candidate?.xRange"
+      [yRange]="template?.yRange && candidate?.yDiff ? [
+        template.yRange[0] + candidate.yDiff, template.yRange[1] + candidate.yDiff
+      ] : undefined"
     ></laji-audio-viewer>
   </div>
 </div>

@@ -6,6 +6,7 @@ interface ILetter {
 
 export interface ILetterCandidate extends ILetter {
   crossCorrelation: number;
+  yDiff: number;
 }
 
 export interface ILetterTemplate extends ILetter {

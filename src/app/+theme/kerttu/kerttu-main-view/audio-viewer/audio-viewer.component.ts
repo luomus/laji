@@ -16,6 +16,11 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() xRange: number[];
   @Input() yRange: number[];
 
+  @Input() sampleRate = 16000;
+  @Input() nperseg = 256;
+  @Input() noverlap = 256 - 160;
+  @Input() duration = 60;
+
   start = 0;
   stop: number;
 
@@ -23,9 +28,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   currentTime = 0;
 
   isPlaying = false;
-
-  sampleRate = 22050;
-  // sampleRate = 16000;
 
   loading = false;
   @Output() audioLoading = new EventEmitter<boolean>();
@@ -61,9 +63,13 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
       this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
       this.audioSub = this.audioService.getAudioBuffer(this.recording, this.context).subscribe((buffer) => {
-        if (this.xRangePadding != null) {
+        this.start = 0;
+        this.stop = buffer.duration;
+
+        if (this.xRange && this.xRangePadding) {
           this.start = this.xRange[0] - this.xRangePadding;
           this.stop = this.xRange[1] + this.xRangePadding;
+
           if (this.start < 0) {
             this.stop = Math.min(this.stop - this.start, buffer.duration);
             this.start = 0;
@@ -72,9 +78,10 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
             this.start = Math.max(this.start - (this.stop - buffer.duration), 0);
             this.stop = buffer.duration;
           }
-
-          buffer = this.audioService.extractSegment(buffer, this.context, this.start, this.stop);
         }
+
+        buffer = this.audioService.extractSegment(buffer, this.context, this.start, this.stop, this.duration);
+
         this.buffer = buffer;
         this.cdr.markForCheck();
       });

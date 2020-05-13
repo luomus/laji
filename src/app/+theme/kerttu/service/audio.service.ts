@@ -28,20 +28,22 @@ export class AudioService {
     return this.buffer$[url];
   }
 
-  public extractSegment(buffer: AudioBuffer, context: AudioContext, startTime: number, endTime: number): AudioBuffer {
-    const startIdx = Math.max(Math.floor(startTime * buffer.sampleRate), 0);
-    const endIdx = Math.min(Math.ceil(endTime * buffer.sampleRate), buffer.getChannelData(0).length - 1);
+  public extractSegment(buffer: AudioBuffer, context: AudioContext, startTime: number, endTime: number, actualDuration: number): AudioBuffer {
+    const emptySamplesAtStart = buffer.length - actualDuration * buffer.sampleRate;
+
+    const startIdx = Math.max(Math.floor(startTime * buffer.sampleRate) + emptySamplesAtStart, emptySamplesAtStart);
+    const endIdx = Math.min(Math.ceil(endTime * buffer.sampleRate) + emptySamplesAtStart, buffer.length - 1);
 
     const emptySegment = context.createBuffer(
       buffer.numberOfChannels,
-      endIdx - startIdx,
+      endIdx - startIdx + 1,
       buffer.sampleRate
     );
     for (let i = 0; i < buffer.numberOfChannels; i++) {
       const chanData = buffer.getChannelData(i);
       const segmentChanData = emptySegment.getChannelData(i);
 
-      for (let j = startIdx; j < endIdx; j++) {
+      for (let j = startIdx; j <= endIdx; j++) {
         segmentChanData[j - startIdx] = chanData[j];
       }
     }
@@ -90,7 +92,7 @@ export class AudioService {
     }
 
     const maxFreq = Math.floor(buffer.sampleRate / 2);
-    const maxTime = buffer.duration;
+    const maxTime = (spectrogram.length - 1) * ((nperseg - noverlap) / buffer.sampleRate) + nperseg / buffer.sampleRate;
 
     return {spectrogram, maxFreq, maxTime};
   }
@@ -111,7 +113,7 @@ export class AudioService {
     return new ImageData(data, spect.length, spect[0].length);
   }
 
-  private getColormap(colormap: 'viridis' = 'viridis'): Observable<any> {
+  private getColormap(colormap: 'inferno'|'viridis' = 'inferno'): Observable<any> {
     if (this.colormaps[colormap]) {
       return of(this.colormaps[colormap]);
     }
