@@ -40,7 +40,7 @@ export interface IHomeData {
   news: {
     prevPage: number,
     nextPage: number,
-    results: Pick<News, 'id'|'title'|'external'|'externalURL'|'tag'>[]
+    results: Pick<News, 'id'|'title'|'external'|'externalURL'|'tag'|'posted'>[]
   };
 }
 
@@ -85,7 +85,8 @@ const HOME_QUERY = gql`
         tag,
         posted,
         external,
-        externalURL
+        externalURL,
+        posted
       }
     }
   }

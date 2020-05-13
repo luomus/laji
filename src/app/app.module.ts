@@ -30,6 +30,7 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { RouterModule } from '@angular/router';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
+import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -77,6 +78,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true},
     {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},
