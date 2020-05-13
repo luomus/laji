@@ -55,7 +55,8 @@ export class InfoComponent implements OnInit {
    this.container = this.containerInfo;
   }
 
-  show() {
+  show(e: MouseEvent) {
+    e.stopPropagation();
     if (!isPlatformBrowser(this.platformID)) {
       return;
     }
