@@ -75,7 +75,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlaces']) {
       this.initMapData();
-      this.setMapData();
     }
     if (changes['visible'] && changes['visible'].currentValue === true && this._lastVisibleActiveNP !== this.activeNP) {
       this._zoomOnNextTick = true;
@@ -86,10 +85,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
       }
       this.setNewActivePlace(changes['activeNP'].currentValue);
     }
-  }
-
-  ngAfterViewInit() {
-    this.setMapData();
   }
 
   ngAfterViewChecked() {
@@ -108,12 +103,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
       } else if ((this.documentForm.namedPlaceOptions || {}).zoomToData) {
         this.lajiMap.map.zoomToData();
       }
-    }
-  }
-
-  setMapData() {
-    if (this._data && this.lajiMap.map) {
-      this.lajiMap.map.setData([this._data]);
     }
   }
 
