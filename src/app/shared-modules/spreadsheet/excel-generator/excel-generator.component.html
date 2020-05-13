@@ -30,20 +30,20 @@
 </div>
 <ng-container *ngIf="formID">
   <div class="row">
-    <div class="col-sm-4" *ngIf="parents.indexOf('document') > -1 || parents.indexOf('gatheringEvent') > -1 || parents.indexOf('taxonCensus') > -1">
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.document' | label" [fields]="fields" parent="document" *ngIf="parents.indexOf('document') > -1"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MZ.gatheringEvent' | label" [fields]="fields" parent="gatheringEvent" *ngIf="parents.indexOf('gatheringEvent') > -1"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.taxonCensusClass' | label" [fields]="fields" parent="taxonCensus" *ngIf="parents.indexOf('taxonCensus') > -1"></laji-field-list>
+    <div class="col-sm-4" *ngIf="parents | includes:['document', 'gatheringEvent', 'taxonCensus']">
+      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.document' | label" [fields]="fields" parent="document" *ngIf="parents | includes:'document'"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MZ.gatheringEvent' | label" [fields]="fields" parent="gatheringEvent" *ngIf="parents | includes:'gatheringEvent'"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.taxonCensusClass' | label" [fields]="fields" parent="taxonCensus" *ngIf="parents | includes:'taxonCensus'"></laji-field-list>
     </div>
-    <div class="col-sm-4" *ngIf="parents.indexOf('gatherings') > -1 || parents.indexOf('gatheringFact') > -1">
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.gathering' | label" [fields]="fields" parent="gatherings" *ngIf="parents.indexOf('gatherings') > -1"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.gatheringFactClass' | label" [fields]="fields" parent="gatheringFact" *ngIf="parents.indexOf('gatheringFact') > -1"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MZ.unitGathering' | label" [fields]="fields" parent="unitGathering" *ngIf="parents.indexOf('unitGathering') > -1"></laji-field-list>
+    <div class="col-sm-4" *ngIf="parents | includes:['gatherings', 'gatheringFact']">
+      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.gathering' | label" [fields]="fields" parent="gatherings" *ngIf="parents | includes:'gatherings'"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.gatheringFactClass' | label" [fields]="fields" parent="gatheringFact" *ngIf="parents | includes:'gatheringFact'"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MZ.unitGathering' | label" [fields]="fields" parent="unitGathering" *ngIf="parents | includes:'unitGathering'"></laji-field-list>
     </div>
-    <div class="col-sm-4" *ngIf="parents.indexOf('identifications') > -1 || parents.indexOf('units') > -1 || parents.indexOf('unitFact') > -1">
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.identification' | label" [fields]="fields" parent="identifications" *ngIf="parents.indexOf('identifications') > -1"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.unit' | label" [fields]="fields" parent="units" *ngIf="parents.indexOf('units') > -1"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.unitFactClass' | label" [fields]="fields" parent="unitFact" *ngIf="parents.indexOf('unitFact') > -1"></laji-field-list>
+    <div class="col-sm-4" *ngIf="parents | includes:['identifications', 'units', 'unitFact']">
+      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.identification' | label" [fields]="fields" parent="identifications" *ngIf="parents | includes:'identifications'"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.unit' | label" [fields]="fields" parent="units" *ngIf="parents | includes:'units'"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.unitFactClass' | label" [fields]="fields" parent="unitFact" *ngIf="parents | includes:'unitFact'"></laji-field-list>
     </div>
   </div>
   <p>

@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { GraphQLService } from '../graph-ql/service/graph-ql.service';
 import { HistoryService } from '../shared/service/history.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
+import { News } from '../shared/model/News';
 
 export interface IHomeData {
   observations: {
@@ -32,20 +33,14 @@ export interface IHomeData {
   identify: {
     results: {
       unit: {
-        media: Image[]
+        media: Pick<Image, 'thumbnailURL'>[]
       }
     }[];
   };
   news: {
     prevPage: number,
     nextPage: number,
-    results: {
-      id: string,
-      title: string,
-      posted: string,
-      external: boolean,
-      externalURL: string
-    }[]
+    results: Pick<News, 'id'|'title'|'external'|'externalURL'|'tag'>[]
   };
 }
 
