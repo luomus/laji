@@ -44,6 +44,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   public daybarChartData: any[][];
   public barChartOptions: any;
   private barChartPlugins: any;
+  resultList: any[] = [];
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -71,7 +72,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     .subscribe((value) => {
       this.onlyCount = value;
       this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
-      this.updateData();
+
+      this.initializeArrays(this.resultList);
       this.cd.markForCheck();
     });
   }
@@ -157,6 +159,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     this.barChartData = [];
     this.daybarChartData = [];
     this.barChartLabels = [];
+    this.resultList = [];
 
     this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
       this.query ? this.query : { taxonId: [this.taxonId], cache: true },
@@ -165,9 +168,12 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       10000,
       1,
       undefined,
-      this.onlyCount === null ? true : this.onlyCount ? true : false
+      false
     ).pipe(
-      map(res => res.results),
+      map(res => {
+        this.resultList = res.results;
+        return res.results;
+      }),
       switchMap(res => this.setData(res))
     ).subscribe(() => {
       this.hasData.emit(this.barChartData.length > 0);
@@ -314,6 +320,16 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     }
 
   }
+
+  initializeArrays(list) {
+    this.monthChartData = [];
+    this.dayChartDataByMonth = {};
+    this.barChartData = [];
+    this.daybarChartData = [];
+    this.barChartLabels = [];
+    this.setData(list);
+  }
+
 
   toggleOnlyCount() {
     this.onlyCount = !this.onlyCount;
