@@ -3,9 +3,9 @@
   <li class="list-group-item link"
       *ngFor="let parent of parents"
       (click)="onToggle(parent)"
-      [ngClass]="{active: selected.indexOf('parent.' + parent + '.scientificName') > -1}">
+      [ngClass]="{active: (selected | includes:'parent.' + parent + '.scientificName')}">
     <ng-container>
-      <div *ngIf="selected.indexOf('parent.' + parent + '.scientificName') > -1">
+      <div *ngIf="selected | includes: 'parent.' + parent + '.scientificName'">
         <button (click)="onMoveUp(parent, $event)" class="btn btn-xs">&#x25C0;</button>
         {{ selected.indexOf('parent.' + parent + '.scientificName') + 1 }}.,
         {{ selected.indexOf('parent.' + parent + '.scientificNameAuthorship') + 1 }}.
