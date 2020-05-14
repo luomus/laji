@@ -13,7 +13,7 @@ export interface ILetterTemplate extends ILetter {
   name: string;
   taxonId: string;
   userAnnotationCount: number;
-  annotationCountTarget: number;
+  targetAnnotationCount: number;
   yRange: number[];
 }
 

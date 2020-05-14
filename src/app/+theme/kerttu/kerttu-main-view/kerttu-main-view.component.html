@@ -17,7 +17,9 @@
         *ngIf="!allLettersAnnotated"
         [template]="letterTemplate"
         [candidate]="letterCandidate"
+        [letterAnnotationCount]="letterAnnotationCount"
         (annotationChange)="onLetterAnnotationChange($event)"
+        (skipLetterClick)="skipLetter()"
       ></laji-kerttu-letter-annotation>
       <ng-container *ngIf="allLettersAnnotated">
         Kaikki kirjaimet käyty läpi!
