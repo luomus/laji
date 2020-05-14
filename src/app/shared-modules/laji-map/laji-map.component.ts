@@ -48,6 +48,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
   @Output() select = new EventEmitter();
 
+  @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
   @Output() failure =  new EventEmitter();
@@ -189,10 +190,12 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
           this.map.map.on('moveend', _ => {
             this.moveEvent('moveend');
           });
-          this.map.map.on('movestart', _ => {
+          this.map.map.on('movestart', () => {
             this.moveEvent('movestart');
           });
           this.moveEvent('moveend');
+          this.updateCustomControls();
+          this.loaded.emit();
         } catch (e) {
           this.logger.error('Map initialization failed', e);
         }
@@ -270,6 +273,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private updateCustomControls() {
+    if (!this.map) {
+      return;
+    }
     if (this.customControlsSub) {
       this.customControlsSub.unsubscribe();
     }
