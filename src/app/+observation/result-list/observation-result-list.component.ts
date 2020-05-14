@@ -23,6 +23,7 @@ export class ObservationResultListComponent {
   @Output() settingsChange = new EventEmitter<ISettingResultList>();
 
   selectedFields: string[];
+  requiredFields: string[];
   pageSize: number;
   aggregateBy: string[] = [];
 
@@ -31,6 +32,7 @@ export class ObservationResultListComponent {
     private tableColumnService: TableColumnService
   ) {
     this.selectedFields = tableColumnService.getDefaultFields();
+    this.requiredFields = tableColumnService.getRequiredFields();
   }
 
   @Input()

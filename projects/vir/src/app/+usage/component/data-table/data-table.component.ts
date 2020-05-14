@@ -25,6 +25,7 @@ type TableType = 'downloads'|'people'
                   [showHeader]="true"
                   [showFooter]="false"
                   [virtualScrolling]="true"
+                  [clientSideSorting]="true"
                   [height]="'calc(90vh - 195px)'"
                   [rows]='data'
                   (rowSelect)="rowSelect.emit($event)"
@@ -48,6 +49,7 @@ export class DataTableComponent {
     {
       name: 'organisation',
       label: 'usage.organisation',
+      cellTemplate: 'toSemicolon',
       canAutoResize: true,
       sortable: false
     },

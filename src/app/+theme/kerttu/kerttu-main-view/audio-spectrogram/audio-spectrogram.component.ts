@@ -16,8 +16,8 @@ export class AudioSpectrogramComponent implements OnChanges {
   @ViewChild('chart', {static: true}) chartRef: ElementRef<SVGElement>;
 
   @Input() buffer: AudioBuffer;
-  @Input() nperseg = 512;
-  @Input() noverlap = 256;
+  @Input() nperseg: number;
+  @Input() noverlap: number;
   @Input() currentTime: number;
 
   @Input() xRange: number[];
@@ -111,15 +111,18 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('x', -this.margin.top - height / 2)
       .text('Taajuus (kHz)');
 
-    // draw red rectangle
-    const rectangle = svg.append('rect')
-    .attr('x', this.margin.left + this.xScale(this.xRange[0]))
-    .attr('y', this.margin.top)
-    .attr('width', this.xScale(this.xRange[1] - this.xRange[0]))
-    .attr('height', height)
-    .attr('stroke-width', 2)
-    .attr('stroke', 'red')
-    .attr('fill', 'none');
+    // draw white rectangle
+    const rectY = this.yRange ? this.margin.top + this.yScale(this.yRange[1] / 1000) : this.margin.top;
+    const rectHeight = this.yRange ? this.yScale((maxFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
+
+    svg.append('rect')
+      .attr('x', this.margin.left + this.xScale(this.xRange[0]))
+      .attr('y', rectY)
+      .attr('width', this.xScale(this.xRange[1] - this.xRange[0]))
+      .attr('height', rectHeight)
+      .attr('stroke-width', 2)
+      .attr('stroke', 'white')
+      .attr('fill', 'none');
 
     // draw scroll line
     this.scrollLine = svg.append('line')

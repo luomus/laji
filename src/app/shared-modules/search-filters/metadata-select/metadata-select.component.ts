@@ -230,7 +230,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
             map(tags => tags.map(t => ({id: t.id, value: MultiLangService.getValue(t.name as any, this.lang)})))
           );
         case 'MY.collectionID':
-          return this.collectionService.getAll(this.lang);
+          return this.collectionService.getAll(this.lang, true);
         case <any>Area.AreaType.Biogeographical:
           return this.areaService.getBiogeographicalProvinces(this.lang);
         case <any>Area.AreaType.Municipality:

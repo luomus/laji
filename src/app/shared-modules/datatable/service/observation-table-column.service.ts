@@ -86,7 +86,8 @@ export const COLUMNS: IColumns = {
       'unit.linkings.taxon.nameSwedish,' +
       'unit.linkings.taxon.scientificName' +
       'unit.linkings.taxon.cursiveName',
-    width: 300
+    width: 300,
+    required: true
   },
   'unit.taxonVerbatim': {
     name: 'unit.taxonVerbatim',
@@ -166,10 +167,11 @@ export const COLUMNS: IColumns = {
     label: 'result.unit.quality.taxon',
     sortable: false
   },
-  'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon'},
+  'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon', required: true},
   'gathering.interpretations.countryDisplayname': {
     name: 'gathering.interpretations.countryDisplayname',
-    label: 'result.gathering.country'
+    label: 'result.gathering.country',
+    required: true
   },
   'gathering.interpretations.biogeographicalProvinceDisplayname': {
     name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
@@ -179,7 +181,8 @@ export const COLUMNS: IColumns = {
   'gathering.interpretations.municipalityDisplayname': {
     name: 'gathering.interpretations.municipalityDisplayname',
     label: 'observation.form.municipality',
-    aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname'
+    aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname',
+    required: true
   },
   'gathering.team.memberName': {
     name: 'gathering.team.memberName',
@@ -187,7 +190,7 @@ export const COLUMNS: IColumns = {
     aggregateBy: 'gathering.team.memberId,gathering.team.memberName'
   },
   'gathering.locality': {name: 'gathering.locality'},
-  'gathering.displayDateTime': {name: 'gathering.displayDateTime'},
+  'gathering.displayDateTime': {name: 'gathering.displayDateTime', required: true},
   'gathering.interpretations.coordinateAccuracy': {
     name: 'gathering.interpretations.coordinateAccuracy',
     cellTemplate: 'numeric'
@@ -210,9 +213,9 @@ export const COLUMNS: IColumns = {
     cellTemplate: 'warehouseLabel',
     label: 'observation.filterBy.image'
   },
-  'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false},
+  'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false, required: true},
   'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.document.notes'},
-  'document.documentId': {name: 'document.documentId'},
+  'document.documentId': {name: 'document.documentId', required: true},
   'unit.unitId': {name: 'unit.unitId'},
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
@@ -276,7 +279,8 @@ export const COLUMNS: IColumns = {
   'gathering.conversions.euref': {
     name: 'gathering.conversions.euref',
     prop: 'gathering.conversions.euref.verbatim',
-    sortable: false
+    sortable: false,
+    required: true
   },
   'gathering.conversions.wgs84': {
     name: 'gathering.conversions.wgs84',
@@ -350,6 +354,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     'gathering.interpretations.municipalityDisplayname',
     'gathering.locality',
     'document.collectionId',
+    'document.documentId',
     'gathering.team',
   ];
 
@@ -487,10 +492,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
 
   getSelectFields(selected: string[], query?: any): string[] {
     const selects = super.getSelectFields(selected, query);
-    if (query) {
-      if (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken) {
-        selects.push('document.quality,gathering.quality,unit.quality');
-      }
+    if (query?.editorPersonToken || query?.observerPersonToken || query?.editorOrObserverPersonToken) {
+      selects.push('document.quality,gathering.quality,unit.quality');
     }
     return selects;
   }

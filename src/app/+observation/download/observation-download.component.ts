@@ -102,6 +102,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.columnGroups = tableColumnService.getColumnGroups();
     this.columnLookup = tableColumnService.getAllColumnLookup();
     this.columnSelector.columns = this.tableColumnService.getDefaultFields();
+    this.columnSelector.required = this.tableColumnService.getRequiredFields();
     this._originalSelected = this.tableColumnService.getDefaultFields();
   }
 

@@ -3,7 +3,7 @@
   <ng-container *ngIf="options$ | async; let options">
     <div [hidden]="open">
       <laji-switch-row
-        *ngFor="let option of options | includes:'id':falseValue:trueValue"
+        *ngFor="let option of options | filterOptions:'id':falseValue:trueValue"
         [option]="option"
         [falseValue]="falseValue"
         [trueValue]="trueValue"

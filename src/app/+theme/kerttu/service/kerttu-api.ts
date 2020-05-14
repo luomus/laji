@@ -35,9 +35,12 @@ export class KerttuApi {
       );
   }
 
-  public getNextLetterTemplate(personToken: string): Observable<ILetterTemplate> {
+  public getNextLetterTemplate(personToken: string, skipCurrent: boolean): Observable<ILetterTemplate> {
     const path = this.basePath + '/letter/nextTemplate';
-    const params = new HttpParams().set('personToken', personToken);
+    let params = new HttpParams().set('personToken', personToken);
+    if (skipCurrent) {
+      params = params.set('skipCurrent', skipCurrent.toString());
+    }
 
     return this.httpClient.get(path, { params })
       .pipe(

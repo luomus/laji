@@ -1,5 +1,17 @@
 <div class="row">
   <div class="col-md-12">
+    <h2>Kirjain {{ template?.name }}</h2>
+    <div>
+      <span>Laji: <laji-taxon-name [taxon]="taxon$ | async"></laji-taxon-name></span>
+      <br>
+      <span>Tunnistuksia tehty: {{ letterAnnotationCount }}/{{ template?.targetAnnotationCount }}</span>
+      <br>
+      <button class="btn btn-default" (click)="skipLetterClick.emit()">Jätä kirjain väliin</button>
+    </div>
+  </div>
+</div>
+<div id="letterAnnotationContainer" class="row">
+  <div class="col-md-12">
     <h3>{{ 'theme.kerttu.areLettersSame' | translate }}</h3>
     <laji-three-state-switch
       (valueChange)="this.currentAnnotation = $event; annotationChange.emit($event)"
@@ -16,10 +28,10 @@
       ></laji-three-state-switch>
   </div>
   <div class="col-md-6">
-    <h4>{{ 'theme.kerttu.letterTemplate' | translate }} (<laji-taxon-name [taxon]="taxon$ | async"></laji-taxon-name>)</h4>
+    <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
       [recording]="template?.recording"
-      [xRangePadding]="1"
+      [xRangePadding]="0.1"
       [xRange]="template?.xRange"
       [yRange]="template?.yRange"
       (audioLoading)="loadingTemplate = $event"
@@ -29,8 +41,9 @@
     <h4>{{ 'theme.kerttu.letterCandidate' | translate }} ({{ candidate?.crossCorrelation }})</h4>
     <laji-audio-viewer
       [recording]="candidate?.recording"
-      [xRangePadding]="1"
+      [xRangePadding]="0.1"
       [xRange]="candidate?.xRange"
+      [yRange]="candidateYRange"
       (audioLoading)="loadingCandidate = $event"
     ></laji-audio-viewer>
   </div>
@@ -39,6 +52,7 @@
     <laji-audio-viewer
       [recording]="candidate?.recording"
       [xRange]="candidate?.xRange"
+      [yRange]="candidateYRange"
     ></laji-audio-viewer>
   </div>
 </div>
