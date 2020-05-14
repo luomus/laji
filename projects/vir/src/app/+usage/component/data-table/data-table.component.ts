@@ -49,6 +49,7 @@ export class DataTableComponent {
     {
       name: 'organisation',
       label: 'usage.organisation',
+      cellTemplate: 'toSemicolon',
       canAutoResize: true,
       sortable: false
     },
