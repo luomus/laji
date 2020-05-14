@@ -14,11 +14,14 @@ import { GhostTextContentDirective } from './directives/ghost-textcontent.direct
 import { IconComponent } from './icon/icon.component';
 import { ButtonRoundComponent } from './button-round/button-round.component';
 import { MessageComponent } from './message/message.component';
+import { ComboCheckboxComponent } from './combo-checkbox/combo-checkbox.component';
+import { ComboCheckboxRowComponent } from './combo-checkbox/combo-checkbox-row.component';
 
 @NgModule({
   declarations: [
     ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
-    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, ButtonRoundComponent, MessageComponent
+    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, ButtonRoundComponent, MessageComponent,
+    ComboCheckboxComponent, ComboCheckboxRowComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +29,8 @@ import { MessageComponent } from './message/message.component';
   ],
   exports: [
     ButtonComponent, ButtonRoundComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
-    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, MessageComponent
+    SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, MessageComponent,
+    ComboCheckboxComponent, ComboCheckboxRowComponent
   ]
 })
 export class LajiUiModule { }
