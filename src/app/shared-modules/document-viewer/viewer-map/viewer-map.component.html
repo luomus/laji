@@ -1,6 +1,6 @@
 <ng-container>
   <div style="max-width: 500px; height: 300px; margin-top:20px;">
-    <laji-map [options]="mapOptions"></laji-map>
+    <laji-map [options]="mapOptions" (loaded)="onMapLoad()"></laji-map>
   </div>
   <ng-container *ngIf="data && !hideCoordinates">
     <laji-viewer-coordinates

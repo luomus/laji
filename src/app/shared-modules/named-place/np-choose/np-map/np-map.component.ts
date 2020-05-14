@@ -1,6 +1,4 @@
 import {
-  AfterViewChecked,
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -27,7 +25,7 @@ import { NpInfoRow } from '../../np-edit/np-info/np-info-row/np-info-row.compone
   styleUrls: ['./np-map.component.css'],
   providers: [ LabelPipe, AreaNamePipe ]
 })
-export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
+export class NpMapComponent implements OnInit, OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @ViewChild('popup', { static: true }) popupComponent;
   @Input() visible = false;
@@ -45,7 +43,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   listItems: NpInfoRow[] = [];
   tileLayerName;
   overlayNames;
-  private _data: any;
+  _data: any;
   private _popupCallback: (elemOrString: HTMLElement | string) => void;
   private _zoomOnNextTick = false;
   private _lastVisibleActiveNP: number;
@@ -75,7 +73,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlaces']) {
       this.initMapData();
-      this.setMapData();
     }
     if (changes['visible'] && changes['visible'].currentValue === true && this._lastVisibleActiveNP !== this.activeNP) {
       this._zoomOnNextTick = true;
@@ -88,11 +85,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
     }
   }
 
-  ngAfterViewInit() {
-    this.setMapData();
-  }
-
-  ngAfterViewChecked() {
+  onMapLoad() {
     const {nativeElement: popup} = this.popupComponent || {nativeElement: undefined};
     if (popup && this._popupCallback) {
       this._popupCallback(popup);
@@ -108,12 +101,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
       } else if ((this.documentForm.namedPlaceOptions || {}).zoomToData) {
         this.lajiMap.map.zoomToData();
       }
-    }
-  }
-
-  setMapData() {
-    if (this._data && this.lajiMap.map) {
-      this.lajiMap.map.setData([this._data]);
     }
   }
 

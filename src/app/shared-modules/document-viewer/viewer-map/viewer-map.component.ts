@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions } from '@laji-map/laji-map.interface';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./viewer-map.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
+export class ViewerMapComponent implements OnInit, OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @Input() data: {
     geoJSON: any;
@@ -61,7 +61,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
+  onMapLoad() {
     this.setActiveIndex(this.active);
     this.lajiMap.invalidateSize();
   }

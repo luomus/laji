@@ -160,7 +160,6 @@
     "@types/underscore": "1.8.9",
     "codelyzer": "^5.1.2",
     "globby": "^11.0.0",
-    "hiredis": "^0.5.0",
     "husky": "^4.2.5",
     "jasmine-core": "~3.5.0",
     "jasmine-reporters": "~2.3.2",
