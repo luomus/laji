@@ -23,6 +23,10 @@ export interface IBaseData {
       link: string;
     }[]
   }[];
+  warehouseLabels: {
+    enumeration: string;
+    property: string;
+  }[]
   information: {
     id: string;
     title: string;
@@ -40,30 +44,34 @@ export interface IBaseData {
 const BASE_QUERY = gql`
   query {
     classes {
-      id: class,
+      id: class
       label
     }
     properties {
-      id: property,
+      id: property
       label
     }
     alts {
       id: alt
       options {
         id
-        label: value,
-        description,
+        label: value
+        description
         link
       }
     }
+    warehouseLabels {
+      enumeration
+      property
+    }
     information {
-      id,
-      title,
+      id
+      title
       children {
-        id,
-        title,
+        id
+        title
         children {
-          id,
+          id
           title
         }
       }
