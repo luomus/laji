@@ -38,7 +38,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @Input() loading = false;
   @Input() pageSize: number;
-  @Input() height = '100%';
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() sortType = 'multi';
@@ -57,6 +56,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   // Initialize datatable row selection with some index
   _preselectedRowIndex = -1;
   _filterBy: FilterByType;
+  _height = '100%';
+  _isFixedHeight = false;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -85,6 +86,11 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     private filterService: FilterService,
     private zone: NgZone
   ) {}
+
+  @Input() set height(height: string) {
+    this._height = height;
+    this._isFixedHeight = height.substr(height.length - 2, 2).includes('px');
+  }
 
   @Input() set count(cnt: number) {
     this._count = typeof cnt === 'number' ? cnt  : 0;
@@ -260,10 +266,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     if (event && event.column && event.column.name && event.newValue) {
       this.dataTableSettings = {...this.dataTableSettings, [event.column.name]: {width: event.newValue}};
     }
-  }
-
-  isFixedHeight() {
-    return this.height.substr(this.height.length - 2, 2).includes('px');
   }
 
   private updateFilteredRows() {

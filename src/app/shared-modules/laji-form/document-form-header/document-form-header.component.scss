@@ -2,14 +2,6 @@
 
 :host {
   display: block;
-  margin-bottom: 24px;
-
-  padding: 5px 30px;
-
-  background-color: $primary-2;
-  border: 1px solid $primary-3;
-  border-left: 4px solid $primary-5;
-  color: $primary-8;
 }
 
 .form-actions,
@@ -23,5 +15,12 @@
 }
 
 .form-header {
-  margin-bottom: 1.5em;
+  margin-bottom: 24px;
+
+  padding: 5px 30px;
+
+  background-color: $primary-2;
+  border: 1px solid $primary-3;
+  border-left: 4px solid $primary-5;
+  color: $primary-8;
 }

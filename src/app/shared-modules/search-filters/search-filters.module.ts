@@ -11,7 +11,7 @@ import { SwitchRowComponent } from './three-state-multi-switch/switch-row/switch
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SelectComponent } from './select/select.component';
 import { InfoModule } from '../info/info.module';
-import { IncludesPipe } from './includes.pipe';
+import { FilterOptionsPipe } from './filter-options.pipe';
 import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 import { HabitatSelectComponent } from './habitat-select/habitat-select.component';
 
@@ -33,7 +33,7 @@ import { HabitatSelectComponent } from './habitat-select/habitat-select.componen
     SearchFiltersComponent,
     SelectComponent,
     CheckboxComponent,
-    IncludesPipe,
+    FilterOptionsPipe,
     AdminStatusInfoPipe,
     HabitatSelectComponent
   ],

@@ -1,16 +1,28 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
-import { map, startWith, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, take, timeout } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class CacheService {
 
+  private stable = false;
+
   constructor(
     private state: TransferState,
+    private appRef: ApplicationRef,
     @Inject(PLATFORM_ID) private platformId: object
-  ) {}
+  ) {
+    this.appRef.isStable.pipe(
+      filter(stable => stable),
+      take(1),
+      timeout(5000),
+      catchError(() => of(null))
+    ).subscribe(() => {
+      this.stable = true;
+    });
+  }
 
   /**
    * Transfer the state of observable from server to browser.
@@ -25,16 +37,14 @@ export class CacheService {
           this.state.set(key, data);
           return data;
         }),
-        tap(data => console.log('storing', dataKey)),
         take(1)
       );
-    } else if (isPlatformBrowser(this.platformId)) {
-      const savedValue = this.state.get(key, null);
-      console.log('fetch', savedValue === null, savedValue);
-      this.state.remove(key); // Fetch the stored data only once
-      return savedValue === null ?
-        $dataSource :
-        of(savedValue);
+    } else if (this.stable) {
+      return $dataSource;
     }
+    const savedValue = this.state.get(key, null);
+    return savedValue === null ?
+      $dataSource :
+      of(savedValue);
   }
 }

@@ -2,7 +2,7 @@
   <ngx-datatable
     #dataTable
     class='material striped laji-datatable'
-    [style.height]="height"
+    [style.height]="_height"
     [cssClasses]="{
           sortAscending: 'glyphicon glyphicon-chevron-down',
           sortDescending: 'glyphicon glyphicon-chevron-up',
@@ -22,10 +22,10 @@
     [columnMode]="columnMode"
     [scrollbarH]="true"
     [sorts]="sorts"
-    [scrollbarV]="virtualScrolling || isFixedHeight()"
+    [scrollbarV]="virtualScrolling || _isFixedHeight"
     [headerHeight]="showHeader ? 38 : 0"
     [footerHeight]="0"
-    [rowHeight]="(virtualScrolling || isFixedHeight()) ? rowHeight : 'auto'"
+    [rowHeight]="(virtualScrolling || _isFixedHeight) ? rowHeight : 'auto'"
     (sort)="sortChange.emit($event)"
     (reorder)="reorder.emit($event)"
     (resize)="onResize($event)"

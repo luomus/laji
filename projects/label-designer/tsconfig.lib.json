@@ -12,11 +12,6 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "types": [],
-    "paths": {
-      "jszip": [
-        "../node_modules/jszip/dist/jszip.js"
-      ]
-    },
     "lib": [
       "dom",
       "es2018"
