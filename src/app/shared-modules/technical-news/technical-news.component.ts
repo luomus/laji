@@ -24,7 +24,7 @@ export class TechnicalNewsComponent implements OnInit {
       switchMap(data => data?.news ? of(data.news) : news$),
       map(res => res.results),
       map((res) => res.filter((result) => {
-        const days = 30;
+        const days = 1;
         const isNew = Date.now() - parseInt(result.posted, 10) < (days * 86400000); // number of milliseconds in a day
         const isTechnical = result.tag === 'technical';
         return isTechnical && isNew;
