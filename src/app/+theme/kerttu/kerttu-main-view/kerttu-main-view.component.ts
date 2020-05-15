@@ -40,6 +40,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   letterCandidate: ILetterCandidate;
   letterAnnotationCount: number;
   allLettersAnnotated = false;
+  loadingLetters = false;
 
   private vmSub: Subscription;
   private selectedTaxonIdsSub: Subscription;
@@ -189,6 +190,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   private getNextLetterTemplate(skipCurrent = false) {
     this.letterTemplate = undefined;
+    this.loadingLetters = true;
 
     this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken(), skipCurrent)
       .pipe(tap(template => {
@@ -217,6 +219,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
       }
 
       this.letterCandidate = candidate;
+      this.loadingLetters = false;
       this.cdr.markForCheck();
     });
   }
