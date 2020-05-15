@@ -4,7 +4,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import { LabelPrintComponent } from '../../label-print/label-print.component';
 import { InfoWindowService } from '../../info-window/info-window.service';
 import { saveAs } from 'file-saver';
-import * as JSZip from 'jszip';
+import { default as JSZip, loadAsync } from 'jszip';
 import { TranslateService } from '../../translate/translate.service';
 import { LabelMakerFacade } from '../label-maker.facade';
 import { take } from 'rxjs/operators';
@@ -83,7 +83,7 @@ export class LabelFileComponent {
     };
 
     if (this.filename.endsWith('.label')) {
-      JSZip.loadAsync(target.files[0])
+      loadAsync(target.files[0])
         .then(content => content.files['data.json'].async('text'))
         .then(jsonString => {
           evt.target.value = '';
