@@ -280,7 +280,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       this.pageSize,
       [...this.orderBy, this.defaultOrder],
       this.lang,
-      this.useStatistics
+      this.useStatistics,
     );
     const list$ = this.resultService.getList(
       this.query,
