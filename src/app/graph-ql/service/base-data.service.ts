@@ -26,7 +26,7 @@ export interface IBaseData {
   warehouseLabels: {
     enumeration: string;
     property: string;
-  }[]
+  }[];
   information: {
     id: string;
     title: string;
