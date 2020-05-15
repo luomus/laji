@@ -1,5 +1,14 @@
 import { Observable } from 'rxjs';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { GalleryService } from '../service/gallery.service';
 import { TaxonomyImage } from '../../model/Taxonomy';
 import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
@@ -44,7 +53,8 @@ export class GalleryComponent implements OnChanges {
 
   constructor(
     private logger: Logger,
-    private galleryService: GalleryService
+    private galleryService: GalleryService,
+    private cdr: ChangeDetectorRef
   ) {
   }
 
@@ -85,6 +95,7 @@ export class GalleryComponent implements OnChanges {
       tap((images: TaxonomyImage[]) => {
         this.loading = false;
         this.hasData.emit(images.length > 0);
+        this.cdr.detectChanges();
       })
     );
   }

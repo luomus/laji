@@ -21,6 +21,7 @@ export class CheckLoginGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): UrlTree|boolean|Observable<boolean> {
     if (this.platformService.isServer) {
+      this.location.replaceState(this.location.path().split('?')[0], '');
       return true;
     }
     if (!this.isChecked && route.queryParams['token']) {
