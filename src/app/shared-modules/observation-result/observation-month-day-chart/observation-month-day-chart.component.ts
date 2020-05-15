@@ -20,12 +20,14 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Chart } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
+import {LabelPipe} from '../../../shared/pipe/label.pipe';
 
 
 @Component({
   selector: 'laji-observation-month-day-chart',
   templateUrl: './observation-month-day-chart.component.html',
   styleUrls: ['./observation-month-day-chart.component.scss'],
+  providers: [LabelPipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
@@ -45,6 +47,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   public barChartOptions: any;
   private barChartPlugins: any;
   resultList: any[] = [];
+  isNotLoading = false;
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -61,7 +64,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     private triplestoreLabelService: TriplestoreLabelService,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
-    private localSt: LocalStorageService
+    private localSt: LocalStorageService,
+    private labelPipe: LabelPipe
   ) { }
 
   ngOnInit() {
@@ -72,7 +76,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     .subscribe((value) => {
       this.onlyCount = value;
       this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
-
+      this.isNotLoading = true;
       this.initializeArrays(this.resultList);
       this.cd.markForCheck();
     });
@@ -177,6 +181,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       switchMap(res => this.setData(res))
     ).subscribe(() => {
       this.hasData.emit(this.barChartData.length > 0);
+      this.isNotLoading = false;
       this.cd.markForCheck();
     });
   }
@@ -215,17 +220,28 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     }
     this.barChartData[0].data[month - 1] += count;
     if (lifeStage) {
-      let index = this.barChartData.findIndex(s => s.label === lifeStage);
+      let index = this.barChartData.findIndex(s => (s.label === lifeStage ||
+        s.label === (this.labelPipe.transform(lifeStage, 'warehouse').charAt(0).toUpperCase() + this.labelPipe.transform(lifeStage, 'warehouse').slice(1))));
       if (index === -1) {
         index = this.barChartData.length;
         this.barChartData.push({label: lifeStage, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
-        labelObservables.push(
-          this.getLabel(lifeStage).pipe(
-            tap(label => {
-              this.barChartData[index].label = label;
-            })
-          )
-        );
+        if (this.isNotLoading) {
+          labelObservables.push(
+            this.getLabel(lifeStage).pipe(
+              map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
+            ).subscribe(label => {
+                this.barChartData[index].label = label;
+              })
+          );
+        } else {
+          labelObservables.push(
+            this.getLabel(lifeStage).pipe(
+              tap(label => {
+                this.barChartData[index].label = label;
+              })
+            )
+          );
+        }
       }
       this.barChartData[index].data[month - 1] += count;
     }
@@ -243,17 +259,28 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
     if (lifeStage) {
       const values = this.initDayBarChartData(month);
-      let index = this.daybarChartData[month - 1].findIndex(s => s.label === lifeStage);
+      let index = this.daybarChartData[month - 1].findIndex(s => (s.label === lifeStage ||
+        s.label === (this.labelPipe.transform(lifeStage, 'warehouse').charAt(0).toUpperCase() + this.labelPipe.transform(lifeStage, 'warehouse').slice(1))));
       if (index === -1) {
         index = this.daybarChartData[month - 1].length;
         this.daybarChartData[month - 1].push({label: lifeStage, data: values});
-        labelObservables.push(
-          this.getLabel(lifeStage).pipe(
-            tap(label => {
-              this.daybarChartData[month - 1][index].label = label;
-            })
-          )
-        );
+        if (this.isNotLoading) {
+          labelObservables.push(
+            this.getLabelChange(lifeStage).pipe(
+              map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
+            ).subscribe(label => {
+                this.daybarChartData[month - 1][index].label = label;
+              })
+          );
+        } else {
+          labelObservables.push(
+            this.getLabel(lifeStage).pipe(
+              tap(label => {
+                this.daybarChartData[month - 1][index].label = label;
+              })
+            )
+          );
+        }
       }
 
       this.daybarChartData[month - 1][index].data[day - 1] += count;
@@ -285,11 +312,21 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   }
 
   private getLabel(warehouseKey: string): Observable<string> {
-    return this.warehouseService.getOriginalKey(warehouseKey)
+    if (this.isNotLoading) {
+      return of(this.labelPipe.transform(warehouseKey, 'warehouse'));
+    } else {
+      return this.warehouseService.getOriginalKey(warehouseKey)
       .pipe(
         switchMap(key => this.triplestoreLabelService.get(key, this.translate.currentLang)),
         map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
       );
+    }
+
+
+  }
+
+  private getLabelChange(warehouseKey: string): Observable<string> {
+    return of(this.labelPipe.transform(warehouseKey, 'warehouse'));
   }
 
   yAxisTickFormatting(value: number): string {
