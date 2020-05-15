@@ -47,7 +47,10 @@ import { FieldKeyPipe } from '../pipe/field-key.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LabelDesignerComponent implements OnInit, OnDestroy {
-
+  /**
+   * @internal
+   */
+  version = '4.0.2';
   /**
    * @internal
    */
@@ -95,10 +98,6 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
    * @internal
    */
   filename$: Observable<string>;
-  /**
-   * @internal
-   */
-  version = '4.0.1';
   /**
    * @internal
    */

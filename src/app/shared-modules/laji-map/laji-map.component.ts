@@ -64,6 +64,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   private _settingsKey: keyof IUserSettings;
   private subSet: Subscription;
   private userSettings: Options = {};
+  private mapData: any;
 
   private customControlsSub: Subscription;
 
@@ -195,6 +196,10 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
           });
           this.moveEvent('moveend');
           this.updateCustomControls();
+          if (this.mapData) {
+            this.setData(this.mapData);
+            this.mapData = undefined;
+          }
           this.loaded.emit();
         } catch (e) {
           this.logger.error('Map initialization failed', e);
@@ -223,7 +228,11 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   setData(data) {
-    if (!this.map || !data) {
+    if (!this.map) {
+      this.mapData = data;
+      return;
+    }
+    if (!data) {
       return;
     }
     this.map.setData(data);

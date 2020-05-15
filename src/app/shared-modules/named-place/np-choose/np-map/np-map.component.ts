@@ -1,6 +1,4 @@
 import {
-  AfterViewChecked,
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -27,7 +25,7 @@ import { NpInfoRow } from '../../np-edit/np-info/np-info-row/np-info-row.compone
   styleUrls: ['./np-map.component.css'],
   providers: [ LabelPipe, AreaNamePipe ]
 })
-export class NpMapComponent implements OnInit, OnChanges, AfterViewChecked {
+export class NpMapComponent implements OnInit, OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @ViewChild('popup', { static: true }) popupComponent;
   @Input() visible = false;
@@ -87,7 +85,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewChecked {
     }
   }
 
-  ngAfterViewChecked() {
+  onMapLoad() {
     const {nativeElement: popup} = this.popupComponent || {nativeElement: undefined};
     if (popup && this._popupCallback) {
       this._popupCallback(popup);
