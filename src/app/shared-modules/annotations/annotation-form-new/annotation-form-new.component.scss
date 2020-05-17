@@ -269,3 +269,51 @@ label {
      margin-top: 5px;
    }
   }
+
+@mixin joined-btn {
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  background-color: $neutral-1;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+  cursor: pointer;
+  &:hover {
+    background-color: $primary-1;
+  }
+}
+
+$taxon-input-height: 30px;
+
+.taxon-input {
+  border-radius: 5px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  height: $taxon-input-height;
+  font-size: $fs-2;
+}
+
+.taxon-remove {
+  color: $neutral-6;
+  height: $taxon-input-height;
+  @include joined-btn();
+}
+
+.taxon-agree {
+  color: $neutral-7;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: $taxon-input-height;
+  font-size: 12px;
+  white-space: nowrap;
+  @include joined-btn();
+}
+
+.taxon-name {
+  margin-left: 10px;
+  color: $neutral-6;
+}
+
+.taxon-specifier-input {
+  height: 30px;
+  max-width: 200px;
+  border-radius: 5px;
+}

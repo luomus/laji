@@ -22,6 +22,11 @@ button, a {
   &.pressed {
     transition: 200ms;
   }
+
+  &.lu-small-btn {
+    font-size: $fs-1;
+    padding: 5px 10px;
+  }
 }
 
 .primary {
