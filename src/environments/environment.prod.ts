@@ -27,6 +27,7 @@ export const environment = {
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
   birdPointCountForm: 'MHL.75',
+  sykeButterflyForm: 'MHL.59',
   saveObservations: {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
     birdMonitoringForms: ['MHL.1', 'MHL.3', 'MHL.65', 'MHL.75'],

@@ -32,10 +32,11 @@ export const environment = {
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
   birdPointCountForm: 'MHL.75',
+  sykeButterflyForm: 'MHL.59',
   saveObservations: {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
-    birdMonitoringForms: ['MHL.1', 'MHL.3'],
-    researchProjects: ['MHL.33', 'MHL.35', 'MHL.50', 'MHL.57']
+    birdMonitoringForms: ['MHL.1', 'MHL.3', 'MHL.65', 'MHL.75'],
+    researchProjects: ['MHL.33', 'MHL.35', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
   },
   apiBase: 'https://beta.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
