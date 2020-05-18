@@ -11,6 +11,7 @@ type Role = 'primary' | 'secondary' | 'neutral';
 export class ButtonComponent {
   @Input() role: Role = 'secondary';
   @Input() disabled = false; // note: can't disable anchors
+  @Input() small = false;
   private _target = undefined;
   @Input() set target(t) {
     this._target = t;
@@ -46,5 +47,13 @@ export class ButtonComponent {
   onMouseUp(event: MouseEvent) {
     this.click.emit(event);
     this.pressed = false;
+  }
+
+  getNgClass() {
+    const classes = {
+      'lu-small-btn': this.small
+    };
+    classes[this.role] = true;
+    return classes;
   }
 }

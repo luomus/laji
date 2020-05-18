@@ -4,6 +4,7 @@ import {Selection, select} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
 import {AudioService} from '../../service/audio.service';
 import {Subscription} from 'rxjs';
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -59,15 +60,15 @@ export class AudioSpectrogramComponent implements OnChanges {
         this.drawSub.unsubscribe();
       }
       if (this.buffer) {
-        this.drawSub = this.audioService.drawSpectrogramToCanvas(this.buffer, this.nperseg, this.noverlap, this.spectrogramRef.nativeElement).subscribe((result) => {
-          this.maxFreq = result.maxFreq;
-          this.maxTime = result.maxTime;
-          this.onResize();
-          setTimeout(() => {
+        this.drawSub = this.audioService.drawSpectrogramToCanvas(this.buffer, this.nperseg, this.noverlap, this.spectrogramRef.nativeElement)
+          .pipe(delay(0))
+          .subscribe((result) => {
+            this.maxFreq = result.maxFreq;
+            this.maxTime = result.maxTime;
+            this.onResize();
             this.spectrogramReady.emit(true);
-          }, 0);
-          this.cdr.markForCheck();
-        });
+            this.cdr.markForCheck();
+          });
       }
     }
     if (changes.currentTime && this.scrollLine) {
