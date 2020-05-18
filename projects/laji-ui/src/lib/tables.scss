@@ -1,0 +1,31 @@
+@import 'vars';
+
+@mixin luTable {
+  color: $neutral-8;
+  border: 1px solid $neutral-4;
+
+  & > tr:first-child {
+    border-bottom: 1px solid $neutral-4;
+  }
+  & > tr:nth-child(odd) {
+    background-color: $neutral-2;
+  }
+  & > tr:nth-child(even) {
+    background-color: $neutral-3;
+  }
+  & > tr {
+    & > th, td {
+      padding: 6px 12px;
+    }
+    & > th {
+      font-weight: 600;
+      color: $neutral-7;
+    }
+    & > td {
+    }
+  }
+}
+
+table.lu-table {
+  @include luTable();
+}

@@ -9,28 +9,38 @@
     <h1>UI Components and styleguide</h1>
     <section>
       <h2>Work in progress</h2>
-      <ul class="checkbox-list">
-        <lu-combo-checkbox title="Combo Checkbox Demo">
-          <lu-combo-checkbox-row>Checkbox Option 1</lu-combo-checkbox-row>
-          <lu-combo-checkbox-row>Checkbox Option 2</lu-combo-checkbox-row>
-          <lu-combo-checkbox-row>Checkbox Option 3</lu-combo-checkbox-row>
-        </lu-combo-checkbox>
-        <li>
-          <lu-checkbox><div class="pill success">Success</div></lu-checkbox>
-        </li>
-        <li>
-          <lu-checkbox><div class="pill info">Info</div></lu-checkbox>
-        </li>
-        <li>
-          <lu-checkbox><div class="pill warning">Warning</div></lu-checkbox>
-        </li>
-        <li>
-          <lu-checkbox><div class="pill danger">Danger</div></lu-checkbox>
-        </li>
-        <li>
-          <lu-checkbox><div class="pill disabled">Disabled</div></lu-checkbox>
-        </li>
-      </ul>
+      <table class="lu-table">
+        <tr>
+          <th>Species</th>
+          <th>Scientific</th>
+          <th>Informal</th>
+          <th>Test...</th>
+        </tr>
+        <tr>
+          <td>Canada Goose</td>
+          <td>Branta canadensis</td>
+          <td>Bird</td>
+          <td>Bird</td>
+        </tr>
+        <tr>
+          <td>Wolf</td>
+          <td>Canis Lupus</td>
+          <td>Mammal</td>
+          <td>Mammal</td>
+        </tr>
+        <tr>
+          <td>Canada Goose</td>
+          <td>Branta canadensis</td>
+          <td>Bird</td>
+          <td>Bird</td>
+        </tr>
+        <tr>
+          <td>Wolf</td>
+          <td>Canis Lupus</td>
+          <td>Mammal</td>
+          <td>Mammal</td>
+        </tr>
+      </table>
     </section>
     <section>
       <h2>Colors</h2>
@@ -129,6 +139,14 @@
       </section>
     </section>
     <section>
+      <h2>Combo checkbox</h2>
+      <lu-combo-checkbox title="Combo Checkbox Demo">
+        <lu-combo-checkbox-row>Checkbox Option 1</lu-combo-checkbox-row>
+        <lu-combo-checkbox-row>Checkbox Option 2</lu-combo-checkbox-row>
+        <lu-combo-checkbox-row>Checkbox Option 3</lu-combo-checkbox-row>
+      </lu-combo-checkbox>
+    </section>
+    <section>
       <h2>Tabs</h2>
       <lu-tabs>
         <lu-tab [heading]="'Map'">Map content</lu-tab>
@@ -138,6 +156,26 @@
         <lu-tab [heading]="'Statistics'">Statistics content</lu-tab>
         <lu-tab [heading]="'Download as a file'">Download as a file content</lu-tab>
       </lu-tabs>
+    </section>
+    <section>
+      <h2>Pills</h2>
+      <ul class="checkbox-list">
+        <li>
+          <lu-checkbox><div class="pill success">Success</div></lu-checkbox>
+        </li>
+        <li>
+          <lu-checkbox><div class="pill info">Info</div></lu-checkbox>
+        </li>
+        <li>
+          <lu-checkbox><div class="pill warning">Warning</div></lu-checkbox>
+        </li>
+        <li>
+          <lu-checkbox><div class="pill danger">Danger</div></lu-checkbox>
+        </li>
+        <li>
+          <lu-checkbox><div class="pill disabled">Disabled</div></lu-checkbox>
+        </li>
+      </ul>
     </section>
     <br>
   </main>
