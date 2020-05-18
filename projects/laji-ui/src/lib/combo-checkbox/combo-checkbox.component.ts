@@ -1,5 +1,5 @@
 import {
-  Component, ChangeDetectionStrategy, ContentChildren, QueryList, ChangeDetectorRef, Input, AfterViewInit, Renderer2, ElementRef
+  Component, ChangeDetectionStrategy, ContentChildren, QueryList, TemplateRef, ContentChild, ChangeDetectorRef, Input
 } from '@angular/core';
 import { ComboCheckboxRowComponent } from './combo-checkbox-row.component';
 
@@ -11,21 +11,21 @@ import { ComboCheckboxRowComponent } from './combo-checkbox-row.component';
 })
 export class ComboCheckboxComponent {
   @Input() title = 'combo-checkbox';
-  @Input() small = false;
 
-  open = false;
+  rows: ComboCheckboxRowComponent[];
+  @ContentChildren(ComboCheckboxRowComponent) set _rows(r: QueryList<ComboCheckboxRowComponent>) {
+    // Atm this query is unused... TODO: count activated checkboxes and show in title
+    this.rows = r.toArray();
+  }
 
   constructor(private cdr: ChangeDetectorRef) {}
 
+  open = false;
+
   toggleDropdown() {
     this.open = !this.open;
-    console.log('btn', this.open);
+    console.log(this.open);
     this.cdr.markForCheck();
-  }
-
-  onClickOutside() {
-    this.open = false;
-    console.log('out', this.open);
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 }

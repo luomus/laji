@@ -16,13 +16,12 @@ import { ButtonRoundComponent } from './button-round/button-round.component';
 import { MessageComponent } from './message/message.component';
 import { ComboCheckboxComponent } from './combo-checkbox/combo-checkbox.component';
 import { ComboCheckboxRowComponent } from './combo-checkbox/combo-checkbox-row.component';
-import { ClickOutsideDirective } from './directives/click-outside.directive';
 
 @NgModule({
   declarations: [
     ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
     SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, ButtonRoundComponent, MessageComponent,
-    ComboCheckboxComponent, ComboCheckboxRowComponent, ClickOutsideDirective
+    ComboCheckboxComponent, ComboCheckboxRowComponent
   ],
   imports: [
     CommonModule,
