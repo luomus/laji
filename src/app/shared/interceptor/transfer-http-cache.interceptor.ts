@@ -23,6 +23,7 @@ import {
 } from '@angular/platform-browser';
 import { Observable, of, of as observableOf } from 'rxjs';
 import { catchError, filter, take, tap, timeout } from 'rxjs/operators';
+import { PlatformService } from '../service/platform.service';
 
 export interface TransferHttpResponse {
   body?: any | null;
@@ -54,18 +55,30 @@ export class TransferHttpCacheInterceptor implements HttpInterceptor {
     return makeStateKey<TransferHttpResponse>(key);
   }
 
-  constructor(appRef: ApplicationRef, private transferState: TransferState) {
+  constructor(
+    private appRef: ApplicationRef,
+    private transferState: TransferState,
+    private platformService: PlatformService
+  ) {
     // Stop using the cache if the application has stabilized, indicating initial rendering is
     // complete.
     // tslint:disable-next-line: no-floating-promises
-    appRef.isStable
-      .pipe(
-        filter((isStable: boolean) => isStable),
-        take(1),
+    this.getStableObservable().toPromise()
+      .then(() => { this.isCacheActive = false; });
+  }
+
+  private getStableObservable() {
+    const stable$ = this.appRef.isStable.pipe(
+      filter((isStable: boolean) => isStable),
+      take(1)
+    );
+    if (this.platformService.isBrowser) {
+      return stable$.pipe(
         timeout(5000),
         catchError(() => of(null))
-      ).toPromise()
-      .then(() => { this.isCacheActive = false; });
+      )
+    }
+    return stable$;
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
