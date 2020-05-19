@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService } from '../../+observation/search-query.service';
@@ -14,7 +14,7 @@ import { GeometryUtil as LGeometryUtil, latLng as LlatLng } from 'leaflet';
   templateUrl: './front.component.html',
   styleUrls: ['./front.component.css']
 })
-export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FrontComponent implements OnInit, OnDestroy {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   mapOptions: LajiMapOptions = {
     center: [64.209802, 24.912872],
@@ -129,7 +129,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     this.query = query;
   }
 
-  ngAfterViewInit() {
+  onMapLoad() {
     const params = this.route.snapshot.queryParams;
     if (params['coordinates']) {
       this.lajiMap.map.zoomToData();

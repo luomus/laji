@@ -15,6 +15,7 @@
   </div>
 
   <laji-map
+    (loaded)="onMapLoad()"
     [options]="mapOptions"
     [settingsKey]="''"
     (create)="onCreate($event)"></laji-map>

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
 import { Person } from '../../../../shared/model/Person';
@@ -12,7 +12,7 @@ import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interfa
   styleUrls: ['./line-transect-print.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
+export class LineTransectPrintComponent implements OnChanges {
 
   @ViewChild(LajiMapComponent)
   public lajiMap: LajiMapComponent;
@@ -84,7 +84,7 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
     this.initMapOptions();
   }
 
-  ngAfterViewInit() {
+  onMapLoad() {
     const geometries = this.getGeometry();
     if (!Array.isArray(geometries.coordinates)) {
       return;
