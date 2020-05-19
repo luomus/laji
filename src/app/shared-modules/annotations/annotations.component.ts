@@ -82,9 +82,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    if (this.platformService.isBrowser) {
-      return;
-    }
     this.initEmptyAnnotation();
     this.findRendomKey1();
     if (this.identifying) {
@@ -95,6 +92,9 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
       this.activeTags = this.unit.interpretations.effectiveTags;
     }
 
+    if (this.platformService.isServer) {
+      return;
+    }
     setTimeout(() => {
       this.loadingForm.emit(this.statusAction);
     }, 4000);
