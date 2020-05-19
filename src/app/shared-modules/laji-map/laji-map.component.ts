@@ -200,7 +200,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
             this.setData(this.mapData);
             this.mapData = undefined;
           }
-          this.loaded.emit();
+          this.zone.run(() => {
+            this.loaded.emit();
+          });
         } catch (e) {
           this.logger.error('Map initialization failed', e);
         }
