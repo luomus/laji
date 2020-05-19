@@ -101,6 +101,9 @@ export class UserService {
     private historyService: HistoryService,
     @Inject(WINDOW) private window: any
   ) {
+    if (!this.platformService.isBrowser) {
+      this.doServiceSideLoginState();
+    }
     this.router.events.pipe(
       filter(event => event instanceof ActivationEnd && event.snapshot.children.length === 0)
     ).subscribe((event: ActivationEnd) => this.currentRouteData.next(event.snapshot.data));
@@ -220,7 +223,7 @@ export class UserService {
    */
   private _checkLogin(rawToken?: string): Observable<boolean> {
     if (!this.platformService.isBrowser) {
-      this.doLoginState({}, '');
+      this.doServiceSideLoginState();
       return of(true);
     }
     const token = rawToken || _state.token;
@@ -246,13 +249,16 @@ export class UserService {
     return of(true);
   }
 
+  private doServiceSideLoginState() {
+    this.doLoginState({}, '');
+  }
+
   private doLoginState(user: Person, token) {
     if (user && user.id && _state.user && _state.user.id === user.id) {
       return;
     }
     this.init = true;
-    // Token can be removed from there afters a while
-    this.updatePersistentState({...this.persistentState, isLoggedIn: !!user, token: ''} as any);
+    this.updatePersistentState({...this.persistentState, isLoggedIn: !!user} as any);
     this.updateState({..._state, ...this.persistentState, token: user ? token : '', user: user || {}, settings: {}});
     this.doUserSettingsState(user.id);
   }

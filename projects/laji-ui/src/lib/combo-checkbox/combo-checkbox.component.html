@@ -1,0 +1,4 @@
+<lu-button (click)="toggleDropdown()">{{ title }}</lu-button>
+<div *ngIf="open" class="dropdown">
+  <ng-content></ng-content>
+</div>

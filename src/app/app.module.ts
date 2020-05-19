@@ -7,7 +7,7 @@ import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { ILogger } from './shared/logger/logger.interface';
-import { AppRoutingModule } from './app-routing.module';
+import { routes } from './app-routes';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LocalizeRouterService } from './locale/localize-router.service';
 import { environment } from '../environments/environment';
@@ -16,7 +16,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppComponentModule } from './shared-modules/app-component/app-component.module';
 import { TimeoutInterceptor } from './shared/interceptor/timeout.interceptor';
-import { ChartsModule } from 'ng2-charts';
 import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 import { LajiUiModule } from '../../projects/laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
@@ -29,6 +28,9 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { RouterModule } from '@angular/router';
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
+import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -51,6 +53,12 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
         useClass: LazyTranslateLoader
       }
     }),
+    QuicklinkModule,
+    RouterModule.forRoot(routes, {
+      enableTracing: false,
+      preloadingStrategy: QuicklinkStrategy,
+      initialNavigation: 'enabled'
+    }),
     CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
@@ -63,8 +71,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
-    AppRoutingModule,
-    ChartsModule,
     LajiUiModule
   ],
   exports: [
@@ -72,6 +78,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true},
     {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},

@@ -77,6 +77,7 @@ export class GraphQLModule {
       null,
     );
     this.cache.restore(state);
+    this.transferState.remove(GRAPH_QL_STATE_KEY);
   }
 
   private onServer() {

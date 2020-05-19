@@ -1,3 +1,9 @@
+<a name="4.0.1"></a>
+# 4.0.1 (2020-05-12)
+
+### Bug fix
+* **editor:** fix QR code not responding to size settings  
+
 <a name="4.0.0"></a>
 # 4.0.0 (2020-04-26)
 

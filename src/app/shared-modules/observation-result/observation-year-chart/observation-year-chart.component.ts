@@ -35,7 +35,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
   allSubData: number[];
   allDataNew: any[];
-  barChartLabels: number[];
+  barChartLabels: string[];
   barChartOptionsYear: any = {
     animation: {
       duration: 500
@@ -44,8 +44,8 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
   private allSubBackground: string[];
   private getDataSub: Subscription;
-  private subBarChartLabels: number[];
-  private allBarChartsLabel: number[];
+  private subBarChartLabels: string[];
+  private allBarChartsLabel: string[];
   private barChartPlugins: any;
   @LocalStorage('onlycount') onlyCount;
 
@@ -151,7 +151,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
         if (prevYear) {
           for (let i = prevYear + 1; i < year; i++) {
-            this.subBarChartLabels.push(i);
+            this.subBarChartLabels.push('' + i);
             this.allSubData.push(0);
             if (i < 1970) {
               this.splitIdx++;
@@ -161,7 +161,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
 
         this.allSubData.push(count);
-        this.subBarChartLabels.push(year);
+        this.subBarChartLabels.push('' + year);
         if (year < 1970) {
           this.splitIdx++;
         }

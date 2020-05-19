@@ -1,5 +1,14 @@
 import { catchError, concatMap, map, mergeMap, share, switchMap, tap, toArray } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
@@ -56,9 +65,12 @@ export class OwnSubmissionsComponent implements OnChanges {
   @Input() header: string;
   @Input() forceLocalDocument = false;
 
+  @Output() documentsLoaded = new EventEmitter<RowDocument[]>();
+
   publicity = Document.PublicityRestrictionsEnum;
 
   documents$: Observable<RowDocument[]>;
+  private documents: RowDocument[];
   loading = true;
 
   @LocalStorage('own-submissions-year', '') year: string;
@@ -168,9 +180,11 @@ export class OwnSubmissionsComponent implements OnChanges {
         selectedFields: this.getSelectedFields()
       }).pipe(
         switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
-        tap(() => {
+        tap((documents) => {
+          this.documents = documents;
           this.loading = false;
           this.cd.markForCheck();
+          this.documentsLoaded.emit(documents);
         })
       );
       return;
@@ -218,8 +232,10 @@ export class OwnSubmissionsComponent implements OnChanges {
     this.documents$ = (onlyDocuments ? ObservableOf([]) : this.yearInfo$).pipe(
       switchMap(() => this.getAllDocuments<Document>(documentQuery)),
       switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
-      tap(() => {
+      tap((documents) => {
         this.loading = false;
+        this.documents = documents;
+        this.documentsLoaded.emit(documents);
         this.cd.markForCheck();
       })
     );
@@ -248,6 +264,8 @@ export class OwnSubmissionsComponent implements OnChanges {
           this.translate.get('delete.success')
             .subscribe((value) => this.toastService.showSuccess(value));
           this.loading = false;
+          this.documents = this.documents.filter(doc => doc.id !== docId);
+          this.documentsLoaded.emit(this.documents);
           this.cd.markForCheck();
           this.latestFacade.update();
         },

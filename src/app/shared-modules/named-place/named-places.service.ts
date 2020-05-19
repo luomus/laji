@@ -15,6 +15,7 @@ export class NamedPlacesService {
   private cache;
   private cacheKey;
   private idCache = {};
+  private deletedIds = {};
 
   private openBy: {[place: string]: 'label'|'boolean'} = {
     '$.municipality': 'label',
@@ -40,6 +41,7 @@ export class NamedPlacesService {
       return ObservableOf(this.cache);
     }
     return this._getAllNamePlaces(query).pipe(
+      map(data => data.filter(np => !this.deletedIds[np.id])),
       tap(data => {
         this.cacheKey = key;
         this.cache = data;
@@ -77,6 +79,17 @@ export class NamedPlacesService {
         data,
         userToken
       );
+  }
+
+  deleteNamedPlace(id: string, userToken: string) {
+    return this.namedPlaceApi
+      .delete(
+        id,
+        userToken
+      ).pipe(tap(r => {
+        this.deletedIds[id] = true;
+        this.invalidateCache();
+      }));
   }
 
   reserve(id: string, options?: {until?: string, personID?: string}): Observable<NamedPlace> {

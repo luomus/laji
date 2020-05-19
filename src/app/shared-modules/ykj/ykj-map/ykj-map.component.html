@@ -1,5 +1,6 @@
 <div [style.height]="height" class="map-wrap">
   <laji-map
+    (loaded)="onMapLoad()"
     [loading]="loading"
     [maxBounds]="maxBounds"
     [options]="mapOptions"

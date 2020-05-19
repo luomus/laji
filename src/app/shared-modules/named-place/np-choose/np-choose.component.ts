@@ -30,11 +30,11 @@ export class NpChooseComponent implements OnInit, OnChanges {
   height = '600px';
   _namedPlaces: ExtendedNamedPlace[] = [];
   _documentForm: any;
+  _userID: string;
 
   @Input() placeForm: any;
   @Input() visible = true;
   @Input() allowCreate = true;
-  @Input() userID: string;
   @Input() showMap = true;
 
   @Output() activePlaceChange = new EventEmitter<number>();
@@ -70,6 +70,12 @@ export class NpChooseComponent implements OnInit, OnChanges {
         this.loadedTabs.load(this.activeIndex);
       }
     }
+  }
+
+  @Input() set userID(userID: string) {
+    this._userID = userID;
+    // Reset so uses user id correctly.
+    this.namedPlaces = this._namedPlaces;
   }
 
   @Input() set namedPlaces(namedPlaces: NamedPlace[]) {
@@ -132,7 +138,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
     const until = new Date(np.reserve.until);
     if (now > until) {
       return 'free';
-    } else if (np.reserve.reserver === this.userID) {
+    } else if (np.reserve.reserver === this._userID) {
       return 'mine';
     }
     return 'reserved';

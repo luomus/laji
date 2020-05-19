@@ -2,11 +2,9 @@ import { map, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges,
 OnInit, ChangeDetectorRef} from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { forkJoin as ObservableForkJoin, Observable, of, Subscription, timer, interval } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
-import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { BarChartComponent } from 'app/shared-modules/bar-chart/bar-chart/bar-chart.component';
 import { Chart, ChartDataSets } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';

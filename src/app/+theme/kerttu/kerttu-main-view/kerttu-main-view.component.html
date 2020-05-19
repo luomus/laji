@@ -13,32 +13,35 @@
       (taxonIdSelect)="selectedTaxonIds = $event"
     ></laji-expertise-form>
     <div *ngIf="vm.step === step.annotateLetters">
-      <laji-kerttu-taxon-select
-        [taxonExpertise]="selectedTaxonIds"
-        [taxon]="taxonId"
-        (taxonChange)="onTaxonIdChange($event)"
-      ></laji-kerttu-taxon-select>
-      <laji-kerttu-letter-annotation
-        *ngIf="taxonId"
-        [letters]="letters$ | async"
-        [annotations]="letterAnnotations"
-        (annotationsChange)="letterAnnotations = $event"
-      ></laji-kerttu-letter-annotation>
+      <laji-spinner [spinning]="!allLettersAnnotated && loadingLetters" [overlay]="true">
+        <laji-kerttu-letter-annotation
+          *ngIf="!allLettersAnnotated"
+          [ngClass]="{'visibility-hidden': loadingLetters}"
+          [template]="letterTemplate"
+          [candidate]="letterCandidate"
+          [letterAnnotationCount]="letterAnnotationCount"
+          (annotationChange)="onLetterAnnotationChange($event)"
+          (skipLetterClick)="skipLetter()"
+        ></laji-kerttu-letter-annotation>
+      </laji-spinner>
+      <ng-container *ngIf="allLettersAnnotated">
+        Kaikki kirjaimet käyty läpi!
+      </ng-container>
     </div>
     <div *ngIf="vm.step === step.annotateRecordings">
-      <laji-kerttu-recording-annotation
+      <!--laji-kerttu-recording-annotation
         [recordings]="recordings$ | async"
         [annotations]="recordingAnnotations"
         (annotationsChange)="recordingAnnotations = $event"
-      ></laji-kerttu-recording-annotation>
+      ></laji-kerttu-recording-annotation-->
     </div>
     <div *ngIf="vm.step === step.done">
       Valmis!
     </div>
     <div class="pull-right" *ngIf="vm.step !== step.done">
-      <button class="btn btn-warning" (click)="save(vm.step)">{{ 'theme.kerttu.save' | translate }}</button>
+      <button class="btn btn-warning" *ngIf="vm.step === step.fillExpertise" (click)="save(vm.step)">{{ 'theme.kerttu.save' | translate }}</button>
       <button class="btn btn-success" style="margin-left: 15px" (click)="saveAndGoToNext(vm.step)">
-        {{ 'theme.kerttu.saveAndGoNext' | translate }}
+        {{ (vm.step === step.fillExpertise ? 'theme.kerttu.saveAndGoNext' : 'theme.kerttu.goNext') | translate }}
       </button>
     </div>
   </laji-spinner>

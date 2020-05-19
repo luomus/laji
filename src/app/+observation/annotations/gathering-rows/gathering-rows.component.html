@@ -22,9 +22,6 @@
 </div>
 
 <div class="author" *ngIf="gathering.team">
-      <!--<div *ngFor="let member of gathering.team">
-            <span class="member">{{ member | truncate : 80 : true }}</span>
-      </div>-->
       <ul class="separated-list">
             <div class="container-icon-text">
                   <div class="icon"><li [tooltip]="'viewer.field.observer' | translate" class="no-comma" *ngIf="gathering.team.length > 0"><i class="glyphicon glyphicon-user"></i></li></div>

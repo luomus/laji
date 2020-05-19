@@ -27,6 +27,7 @@ import { Util } from '../../../shared/service/util.service';
 import { UserService } from '../../../shared/service/user.service';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { DownloadComponent } from '../../../shared-modules/download/download.component';
+import { WarehouseQueryInterface } from 'app/shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-species-list',
@@ -389,5 +390,28 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     this.userService.setUserSetting('taxonomyList', {
       selected: this.searchQuery.listOptions.selected
     });
+  }
+
+  browseObservations() {
+    const query = this.searchQuery.query;
+
+    const parameters: WarehouseQueryInterface = {
+      informalTaxonGroupId: query.informalGroupFilters ? [query.informalGroupFilters] : undefined,
+      target: query.target ? [query.target] : undefined,
+      finnish: query.onlyFinnish,
+      redListStatusId: query.redListStatusFilters,
+      administrativeStatusId: query.adminStatusFilters,
+      typeOfOccurrenceId: query.typesOfOccurrenceFilters,
+      typeOfOccurrenceIdNot: query.typesOfOccurrenceNotFilters,
+      invasive: query.invasiveSpeciesFilter,
+      primaryHabitat: query.primaryHabitat,
+      anyHabitat: query.anyHabitat
+    };
+
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(
+        ['/observation/map']
+      ), {queryParams: parameters}
+    );
   }
 }

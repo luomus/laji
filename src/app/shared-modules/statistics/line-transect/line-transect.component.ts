@@ -43,7 +43,7 @@ interface LineTransectCount {
   styleUrls: ['./line-transect.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineTransectComponent implements OnChanges, AfterViewInit {
+export class LineTransectComponent implements OnChanges {
   @ViewChild(LajiMapComponent, { static: true })
   lajiMap: LajiMapComponent;
 
@@ -125,7 +125,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       });
   }
 
-  ngAfterViewInit() {
+  onMapLoad() {
     this.updateMapZoom();
   }
 

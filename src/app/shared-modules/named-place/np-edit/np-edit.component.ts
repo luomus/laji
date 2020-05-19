@@ -35,6 +35,7 @@ export class NpEditComponent {
   @Output() reserve = new EventEmitter();
   @Output() release = new EventEmitter();
   @Output() editButtonClick = new EventEmitter();
+  @Output() deleteButtonClick = new EventEmitter();
   @Output() editReady = new EventEmitter();
   @Output() error = new EventEmitter();
 
@@ -55,8 +56,18 @@ export class NpEditComponent {
     }
   }
 
+  npClose() {
+    if (this.infoComponent) {
+      this.infoComponent.hide();
+    }
+  }
+
   editClick() {
     this.editButtonClick.emit();
+  }
+
+  deleteClick() {
+    this.deleteButtonClick.emit();
   }
 
   useClick() {

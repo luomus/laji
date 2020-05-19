@@ -66,10 +66,6 @@ export class AppComponent implements OnInit {
   @LocalStorage('columnMap', {}) colMap: IColumnMap;
   @LocalStorage('setup', NEW_SETUP) setup: ISetup;
   @SessionStorage('data', []) data: object[];
-
-  @ViewChild('notebookImport') notebookImport;
-  @ViewChild('notebookImportActions') notebookImportActions;
-
   availableFields: ILabelField[];
   defaultAvailableFields: ILabelField[];
 

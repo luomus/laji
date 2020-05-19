@@ -1,5 +1,6 @@
 <div [style.height]="height">
   <laji-map
+    (loaded)="onMapLoad()"
     [options]="mapOptions"
     [showFullScreenControl]="showFullScreenControl"
     [loading]="loading"

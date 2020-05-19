@@ -1,14 +1,17 @@
 import { Observable } from 'rxjs';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Injectable } from '@angular/core';
-import { delay, map, retryWhen, shareReplay, take, timeout } from 'rxjs/operators';
+import { map, shareReplay, take, timeout } from 'rxjs/operators';
+import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
 @Injectable({providedIn: 'root'})
 export class WarehouseValueMappingService {
 
   private request: Observable<any>;
 
-  constructor(private warehouseService: WarehouseApi) {}
+  constructor(
+    private baseDataService: BaseDataService
+  ) {}
 
   public getOriginalKey(value: string): Observable<string> {
     return this.get(value, 'mapping');
@@ -29,7 +32,7 @@ export class WarehouseValueMappingService {
       mapping: {},
       reverse: {}
     };
-    data.results.forEach(mapping => {
+    data.forEach(mapping => {
       const key = mapping.enumeration || '';
       const value = mapping.property || '';
       if (key && value) {
@@ -42,12 +45,10 @@ export class WarehouseValueMappingService {
 
   private fetchLabels() {
     if (!this.request) {
-      this.request = this.warehouseService.warehouseEnumerationLabels().pipe(
+      this.request = this.baseDataService.getBaseData().pipe(
+        take(1),
+        map(data => data.warehouseLabels),
         timeout(WarehouseApi.longTimeout),
-        retryWhen(errors => errors.pipe(
-          delay(1000),
-          take(3)
-        )),
         map(data => this.parseResult(data)),
         shareReplay(1)
       );

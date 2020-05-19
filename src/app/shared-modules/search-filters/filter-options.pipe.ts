@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'includes'
+  name: 'filterOptions'
 })
-export class IncludesPipe implements PipeTransform {
+export class FilterOptionsPipe implements PipeTransform {
 
   transform(value: any, key: string, ...args: string[][]): any {
     if (!Array.isArray(value) || !Array.isArray(args)) {

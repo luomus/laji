@@ -10,7 +10,7 @@ import { readFileSync } from 'fs';
 const domino = require('domino');
 
 const CACHE_TIME = 60 * 30; // This is time in sec for how long will the content be stored in cache
-const CACHE_UPDATE = 60;    // This is time when the content will be updated even if there is already one in the cache
+const CACHE_UPDATE = 30;    // This is time when the content will be updated even if there is already one in the cache
 const PORT = process.env.PORT || 3000;
 const DIST_FOLDER = join(process.cwd(), 'dist');
 const BROWSER_PATH = join(DIST_FOLDER, 'browser');
@@ -56,24 +56,31 @@ const render = (req, res, cb: (err: any, html: string) => void) => {
   );
 };
 
+const startsWith = (url: string, start: string): boolean => {
+  return url.startsWith(start) ||
+    url.startsWith('/en' + start) ||
+    url.startsWith('/sv' + start) ||
+    url.startsWith('/fi' + start);
+}
+
 const cache = () => {
   return (req, res, next) => {
-    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-    res.header('Expires', '-1');
-    res.header('Pragma', 'no-cache');
-
-    const parts = ('' + req.originalUrl)
-      .replace('showTree=true', '')
-      .replace('onlyFinnish=true', '')
+    res.header('Cache-Control', 'public, max-age=' + CACHE_UPDATE);
+    const url = ('' + req.originalUrl);
+    const parts = url
+      .replace(/\b(token|personToken)=[^&]*\b/, '')
       .split('?')
       .filter((v) => !!v);
 
     // Skip cache for these requests
     if (req.originalUrl.indexOf('/user') !== -1 || parts.length > 1) {
-      return next();
+      // If it start with any of there then cache it
+      if (!(startsWith(url, '/view') || startsWith(url, '/taxon') || startsWith(url, '/user/login'))) {
+        return next();
+      }
     }
 
-    const cacheKey = 'page:' + parts[0].replace(/\/$/, '');
+    const cacheKey = 'page:' + (parts[0].replace(/\/$/, '') || '/') + '?' + (parts[1] ?? '');
     const updateLock = function(key, cb: () => void) {
       const lockKey = '_lock:' + key;
       Lock.lock(lockKey, CACHE_UPDATE * 1000, (err, lock) => {
@@ -118,6 +125,10 @@ const cache = () => {
     });
   };
 };
+
+app.get('*.(map|txt|js|ico|png|jpg|svg|css)', (req, res) => {
+  res.status(404).send('Not found');
+});
 
 app.get('*', cache(), (req, res) => {
   render(req, res, (err, html) => {

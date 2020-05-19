@@ -1,6 +1,7 @@
 
 export class ColumnSelector {
   private selectedFields: string[] = [];
+  private requiredFields: string[] = [];
   private changedByEdit = false;
 
   constructor() { }
@@ -10,8 +11,27 @@ export class ColumnSelector {
   }
 
   set columns(columns: string[]) {
-    this.selectedFields = columns;
+    const selected = [...columns];
+    if (this.requiredFields.length) {
+      this.requiredFields.forEach(r => {
+        if (!selected.includes(r)) {
+          selected.push(r);
+        }
+      });
+    }
+    this.selectedFields = selected;
     this.changedByEdit = false;
+  }
+
+  get required() {
+    return this.requiredFields;
+  }
+
+  set required(required: string[]) {
+    this.requiredFields = [...required];
+    if (this.selectedFields?.length && required?.length) {
+      this.columns = this.selectedFields;
+    }
   }
 
   get hasChanges(): boolean {
@@ -25,7 +45,7 @@ export class ColumnSelector {
   }
 
   clear() {
-    this.selectedFields = [];
+    this.selectedFields = [...this.requiredFields];
     this.changedByEdit = true;
   }
 

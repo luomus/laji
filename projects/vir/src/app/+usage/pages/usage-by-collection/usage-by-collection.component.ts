@@ -3,13 +3,13 @@ import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/v
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-usage-by-collection',
+  selector: 'vir-usage-by-collection',
   templateUrl: './usage-by-collection.component.html',
   styleUrls: ['./usage-by-collection.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageByCollectionComponent {
-  downloadRequests$: Observable<IDownloadRequest[]>
+  downloadRequests$: Observable<IDownloadRequest[]>;
   constructor(
       private virDownloadRequestsService: VirDownloadRequestsService
   ) {

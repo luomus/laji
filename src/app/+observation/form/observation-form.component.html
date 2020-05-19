@@ -664,13 +664,13 @@
   <label class="title">{{ 'haseka.users.latest.gathered.singular' | translate }}</label>
   <fieldset>
     <div>
-      <label><laji-checkbox [value]="query.hasUnitImages && query.hasUnitAudio" (valueChange)="onMediaCheckBoxToggle(mediaStatutes)"></laji-checkbox>{{ 'all' | translate }}</label>
+      <label><laji-checkbox [value]="query.hasUnitMedia" (valueChange)="onMediaCheckBoxToggle(mediaStatutes)"></laji-checkbox>{{ 'all' | translate }}</label>
     </div>
     <div>
-      <label><laji-checkbox [value]="query.hasUnitImages" (valueChange)="onMediaCheckBoxToggle('hasUnitImages')"></laji-checkbox>{{ 'observation.active.hasMedia' | translate }}</label>
+      <label><laji-checkbox [value]="query.hasUnitImages || query.hasUnitMedia" (valueChange)="onMediaCheckBoxToggle('hasUnitImages')"></laji-checkbox>{{ 'observation.active.hasMedia' | translate }}</label>
     </div>
     <div>
-      <label><laji-checkbox [value]="query.hasUnitAudio" (valueChange)="onMediaCheckBoxToggle('hasUnitAudio')"></laji-checkbox>{{ 'audio.spectrum' | translate }}</label>
+      <label><laji-checkbox [value]="query.hasUnitAudio || query.hasUnitMedia" (valueChange)="onMediaCheckBoxToggle('hasUnitAudio')"></laji-checkbox>{{ 'audio.spectrum' | translate }}</label>
     </div>
   </fieldset>
   <div>
@@ -684,7 +684,7 @@
   <hr>
   <div>
     <p>{{ 'observation.intro.noImages' | translate }}</p>
-    <label><laji-checkbox [value]="query.hasUnitImages === false && query.hasUnitAudio === false" (valueChange)="onMediaCheckBoxToggle(mediaStatutes, false)"></laji-checkbox>{{ 'observation.form.hasNotMedia' | translate }}</label>
+    <label><laji-checkbox [value]="query.hasUnitMedia === false" (valueChange)="onMediaCheckBoxToggle(mediaStatutes, false)"></laji-checkbox>{{ 'observation.form.hasNotMedia' | translate }}</label>
   </div>
 </section>
 

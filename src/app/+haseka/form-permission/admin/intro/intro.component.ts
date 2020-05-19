@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormService } from '../../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { flatMap } from 'rxjs/operators';
-import { of } from 'rxjs/internal/observable/of';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'laji-intro',

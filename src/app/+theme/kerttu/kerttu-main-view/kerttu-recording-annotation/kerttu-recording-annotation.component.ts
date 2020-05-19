@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {IRecording} from '../../model/recording';
-import {IRecordingAnnotations} from '../../model/annotation';
 
 @Component({
   selector: 'laji-kerttu-recording-annotation',
@@ -8,7 +7,7 @@ import {IRecordingAnnotations} from '../../model/annotation';
   styleUrls: ['./kerttu-recording-annotation.component.scss']
 })
 export class KerttuRecordingAnnotationComponent implements OnChanges {
-  @Input() annotations: IRecordingAnnotations;
+  @Input() annotations: any;
   @Input() recordings: IRecording[];
 
   currentRecording = 0;
@@ -16,7 +15,7 @@ export class KerttuRecordingAnnotationComponent implements OnChanges {
 
   recordingQueue: number[];
 
-  @Output() annotationsChange = new EventEmitter<IRecordingAnnotations>();
+  @Output() annotationsChange = new EventEmitter<any>();
 
   constructor() { }
 

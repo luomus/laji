@@ -1,9 +1,8 @@
 
-import { startWith, tap, map, filter, switchMap, take, catchError, retryWhen, delay, concat } from 'rxjs/operators';
+import { tap, map, filter, switchMap, take, catchError } from 'rxjs/operators';
 import {
   AfterViewInit,
   ApplicationRef,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
@@ -94,6 +93,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   isfocusedCommentTaxon = false;
   currentLang: string;
   hasEditors: boolean;
+  unitExist: boolean;
 
 
   constructor(
@@ -125,7 +125,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
       this.cd.markForCheck();
     });
-    // this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
+
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;
       this.cd.markForCheck();
@@ -245,10 +245,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   }
 
-  toggleFacts() {
-    this.showFacts = !this.showFacts;
-  }
-
   toggleShowOnlyHighlighted() {
     this.showOnlyHighlighted = !this.showOnlyHighlighted;
   }
@@ -257,6 +253,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.cd.detectChanges();
     this.hasDoc = found;
     this.hasEditors = false;
+    this.unitExist = false;
     this.unitCnt = 0;
     if (found) {
       this.document = doc;
@@ -302,6 +299,17 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       if (this.document.linkings && this.document.linkings.editors &&
         this.document.linkings.editors.filter(e => e.id !== undefined).length > 0) {
         this.hasEditors = true;
+      }
+
+      if (this.document.gatherings) {
+        this.document.gatherings.forEach(gathering => {
+          if (gathering.units) {
+            const i = gathering.units.find(unit => unit.unitId === this.highlight);
+            if (i) {
+              return this.unitExist = true;
+            }
+          }
+        });
       }
 
       if (this.result) {

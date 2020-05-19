@@ -12,6 +12,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { TaxonTagEffectiveService } from '../../shared-modules/document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../../shared-modules/document-viewer/loading-elements.service';
+import { PlatformService } from '../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-annotations',
@@ -76,10 +77,14 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private warehouseApi: WarehouseApi,
     private taxonTagEffective: TaxonTagEffectiveService,
-    private loadingElements: LoadingElementsService
+    private loadingElements: LoadingElementsService,
+    private platformService: PlatformService
     ) { }
 
   ngOnInit() {
+    if (this.platformService.isBrowser) {
+      return;
+    }
     this.initEmptyAnnotation();
     this.findRendomKey1();
     if (this.identifying) {
@@ -128,10 +133,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     };
   }
 
-  toggleAddForm() {
-    this.adding = !this.adding;
-  }
-
   onSuccess(annotation: Annotation) {
     this.statusAction = {
       status: true,
@@ -153,7 +154,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
 
   changeModeForm() {
    this.expert = !this.expert;
-   // this.formAnnotation.cleanForm();
    this.cd.markForCheck();
   }
 
@@ -169,7 +169,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     this.annotationService.delete(annotation)
       .subscribe(
         (data: Annotation) => {
-          // this.annotations = this.annotations.filter(value => value.id !== annotation.id);
           const foundIndex = this.annotations.findIndex(x => IdService.getId(x.id) === IdService.getId(data.id));
           this.annotations[foundIndex] = data;
           this.saveDone(data);

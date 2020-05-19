@@ -34,7 +34,6 @@ import { NlToBrPipe } from './pipe/nl-to-br.pipe';
 import { LocalizePipe } from '../locale/localize.pipe';
 import { NotificationComponent } from './navbar/notification/notification.component';
 import { HideScrollDirective } from './directive/hide-scroll';
-import { LoggedInDirective } from './directive/logged-in.directive';
 import { FixedBelowDirective } from './directive/fixed-below.directive';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
@@ -50,9 +49,6 @@ import { DatePickerComponent } from './datepicker/datepicker.component';
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ServerOnlyDirective } from './directive/server-only.directive';
-import { BrowserOnlyDirective } from './directive/browser-only.directive';
-import { ForTypesDirective } from './directive/for-types.directive';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
@@ -74,6 +70,7 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { WarehousePipe } from './pipe/warehouse.pipe';
 import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
 import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
+import { IncludesPipe } from './pipe/includes.pipe';
 
 
 @NgModule({
@@ -86,13 +83,12 @@ import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
     ObservationCountComponent, GalleryComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, NlToBrPipe,
-    HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
+    HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
     ObservationGroupSelectComponent, IucnGroupSelectComponent,
-    SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
+    SourcePipe, RemoveEmptyPipe, DatePickerComponent,
     TaxonNameComponent, NotFoundComponent,
     ChecklistPipe,
     FactNotInPipe,
-    ForTypesDirective,
     CapitalizePipe,
     CoordinatePipe,
     FilterPipe,
@@ -107,7 +103,8 @@ import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
     AfterIfDirective,
     FilterValuePipe,
     WarehousePipe,
-    DateCutoffFuturePipe
+    DateCutoffFuturePipe,
+    IncludesPipe
   ],
   imports: [
     FormsModule,
@@ -132,12 +129,12 @@ import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
     ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,
     FormattedNumber, ObservationCountComponent, GalleryComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
-    AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, ServerOnlyDirective, BrowserOnlyDirective,
-    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, IucnGroupSelectComponent,
+    AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
+    IucnGroupSelectComponent,
     ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
-    FactNotInPipe, ForTypesDirective, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
+    FactNotInPipe, CapitalizePipe, CoordinatePipe,
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
     UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule
   ]
 })
