@@ -52,7 +52,7 @@ export class CacheService {
       return stable$.pipe(
         timeout(5000),
         catchError(() => of(null))
-      )
+      );
     }
     return stable$;
   }
