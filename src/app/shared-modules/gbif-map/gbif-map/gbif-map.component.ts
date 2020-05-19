@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -12,7 +12,7 @@ import { tileLayer as LtileLayer } from 'leaflet';
   templateUrl: './gbif-map.component.html',
   styleUrls: ['./gbif-map.component.scss']
 })
-export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
+export class GbifMapComponent implements OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
 
   @Input() taxon: Taxonomy;
@@ -65,7 +65,7 @@ export class GbifMapComponent implements OnChanges, AfterViewInit, OnDestroy {
     }
   }
 
-  ngAfterViewInit() {
+  onMapLoad() {
     if (this.layer) {
       this.addLayerToMap();
     }
