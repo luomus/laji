@@ -92,7 +92,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
       this.activeTags = this.unit.interpretations.effectiveTags;
     }
 
-    if (this.platformService.isBrowser) {
+    if (this.platformService.isServer) {
       return;
     }
     setTimeout(() => {
