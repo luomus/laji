@@ -32,7 +32,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
 import { PlatformService } from '../service/platform.service';
-import { throwError } from 'rxjs';
+import { EMPTY } from 'rxjs';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
@@ -112,7 +112,7 @@ export class WarehouseApi {
    */
   public warehouseTeamMemberGet(id: string, extraHttpRequestParams?: any): Observable<any> {
     if (this.platformService.isServer) {
-      return throwError('Not usable on ssr');
+      return EMPTY;
     }
     const path = this.basePath + `/warehouse/teamMember/${id}`;
 
@@ -132,7 +132,7 @@ export class WarehouseApi {
    */
   public warehouseTeamMemberFind(query: string, extraHttpRequestParams?: any): Observable<any> {
     if (this.platformService.isServer) {
-      return throwError('Not usable on ssr');
+      return EMPTY;
     }
     const path = this.basePath + `/warehouse/teamMember`;
 
@@ -148,7 +148,7 @@ export class WarehouseApi {
 
   private warehouseQueryGet(target: string, query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     if (this.platformService.isServer) {
-      return throwError('Not usable on ssr');
+      return EMPTY;
     }
     const path = this.basePath + `${this.subPath}${target}`;
 
@@ -297,7 +297,7 @@ export class WarehouseApi {
    */
   public warehouseQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<WarehouseCountResultInterface> {
     if (this.platformService.isServer) {
-      return throwError('Not usable on ssr');
+      return EMPTY;
     }
     const path = this.basePath + this.subPath + 'count';
 
@@ -323,7 +323,7 @@ export class WarehouseApi {
    */
   public warehouseQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
     if (this.platformService.isServer) {
-      return throwError('Not usable on ssr');
+      return EMPTY;
     }
     const path = this.basePath + this.subPath + 'list';
 
@@ -345,7 +345,7 @@ export class WarehouseApi {
    */
   public warehouseQuerySingleGet(documentId: string, extraHttpRequestParams?: any): Observable<any> {
     if (this.platformService.isServer) {
-      return throwError('Not usable on ssr');
+      return EMPTY;
     }
     const path = this.basePath + '/warehouse/query/single';
 
@@ -370,7 +370,7 @@ export class WarehouseApi {
    */
   public warehouseQueryAnnotationListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<any> {
     if (this.platformService.isServer) {
-      return throwError('Not usable on ssr');
+      return EMPTY;
     }
     const path = this.basePath + '/warehouse/query/annotation/list';
 
@@ -391,7 +391,7 @@ export class WarehouseApi {
    */
   public warehouseQueryUnitMediaListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
     if (this.platformService.isServer) {
-      return throwError('Not usable on ssr');
+      return EMPTY;
     }
     const path = this.basePath + '/warehouse/query/unitMedia/list';
 
@@ -408,7 +408,7 @@ export class WarehouseApi {
    */
   public warehouseEnumerationLabels(extraHttpRequestParams?: any): Observable<any> {
     if (this.platformService.isServer) {
-      return throwError('Not usable on ssr');
+      return EMPTY;
     }
     const path = this.basePath + '/warehouse/enumeration-labels';
 
