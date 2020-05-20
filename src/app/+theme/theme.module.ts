@@ -7,7 +7,6 @@ import { SharedModule } from '../shared/shared.module';
 import { ThemeResultComponent } from './theme-result/theme-result.component';
 import { NafiResultComponent } from './nafi/nafi-result/nafi-result.component';
 import { ResultService } from './service/result.service';
-import { FixedTableDirective } from './directive/fixed-table.directive';
 import { ThemeObservationListComponent } from './theme-observation-list/theme-observation-list.component';
 import { ThemeMyDocumentListComponent } from './theme-my-document-list/theme-my-document-list.component';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
@@ -135,7 +134,6 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     InsectGuideComponent,
     ThemeResultComponent,
     NafiResultComponent,
-    FixedTableDirective,
     ThemeObservationListComponent,
     ThemeMyDocumentListComponent,
     YkjComponent,
