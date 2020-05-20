@@ -820,12 +820,6 @@ const routes: Routes = [
         component: ThemeOwnSubmissionsComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
       },
-      {
-        path: 'stats',
-        pathMatch: 'full',
-        data: { noScrollToTop: true },
-        component: BirdPointCountResultComponent
-      },
       {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ],
     data: {
@@ -835,13 +829,9 @@ const routes: Routes = [
       navLinks: {
         form: {
           accessLevel: undefined
-        },
-        stats: {
-          routerLink: ['stats'],
-          label: 'Tulokset'
         }
       },
-      navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'stats', 'formPermissions'],
+      navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'formPermissions'],
       instructions: '3941'
     }
   },
