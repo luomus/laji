@@ -7,6 +7,10 @@ import { combineLatest, map, tap } from 'rxjs/operators';
 import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { Area } from '../../../../shared/model/Area';
+import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
+import { Color, BaseChartDirective, Label } from 'ng2-charts';
+import * as pluginAnnotations from 'chartjs-plugin-annotation';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'laji-line-transect-result-chart',
@@ -45,6 +49,56 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   private subQuery: Subscription;
   private fetchSub: Subscription;
 
+  public lineChartData: ChartDataSets[] = [{data: [], label: 'Parim./km', backgroundColor: 'rgba(255,255,255,0)'}];
+  public lineChartLabels: Label[] = [];
+  public lineChartOptions: ChartOptions = {
+    responsive: true,
+    elements: {
+      line: {
+          tension: 0,
+          borderWidth: 2,
+          backgroundColor: 'rgb(70,130,180)',
+          borderColor: 'rgb(70,130,180)'
+      },
+      point: {
+        radius: 0,
+        hitRadius: 3
+      }
+    },
+    tooltips: {
+      mode: 'index',
+      intersect: false,
+      callbacks: {
+        title: function(tooltipItem, data) {
+          return '';
+        },
+        label: function(tooltipItem, data) {
+            return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
+        }
+      }
+    },
+    hover: {
+      mode: 'index',
+      intersect: false
+    },
+    plugins: {
+      datalabels: {
+        display: false
+      },
+    }
+  };
+  public lineChartColors: Color[] = [
+    { // grey
+      backgroundColor: 'rgb(255,255,255,0)',
+      borderColor: 'rgb(70,130,180)',
+      pointBackgroundColor: 'rgb(70,130,180)',
+      pointBorderColor: 'rgb(70,130,180)',
+      pointHoverBackgroundColor: 'rgb(70,130,180)',
+      pointHoverBorderColor: 'rgb(70,130,180)'
+    }
+  ];
+  public lineChartPlugins = [pluginAnnotations, pluginDataLabels];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -55,6 +109,34 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+      return coordinates;
+    };
+
+    Chart.defaults.LineWithLine = Chart.defaults.line;
+    Chart.controllers.LineWithLine = Chart.controllers.line.extend({
+      draw: function(ease) {
+        Chart.controllers.line.prototype.draw.call(this, ease);
+
+        if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
+          const activePoint = this.chart.tooltip._active[0];
+              const ctx = this.chart.ctx;
+              const x = activePoint.tooltipPosition().x;
+              const topY = this.chart.legend.bottom;
+              const bottomY = this.chart.chartArea.bottom;
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(x, topY);
+          ctx.lineTo(x, bottomY);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = '#000';
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    });
+
     this.subQuery = this.route.queryParams.subscribe((params) => {
       const {taxonId, birdAssociationAreas, fromYear} = params;
       this.taxonId = taxonId;
@@ -135,6 +217,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.result = data;
         const yearsToPairCounts = {};
+        this.lineChartData[0].data = [];
+        this.lineChartLabels = [];
         data.results.forEach(result => {
           const {'gathering.conversions.year': year} = result.aggregateBy;
           if (!year) {
@@ -145,11 +229,12 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         this.afterBothFetched = () => {
           const resultsYears = Object.keys(yearsToPairCounts);
           const years = this.fromYearToYearMonth(resultsYears[0]);
-          this.line = [{name: 'Parim./km', series: years.map(year => {
+          years.forEach(year => {
             const value = yearsToPairCounts[year] && this.yearLineLengths[year] ?
-              (yearsToPairCounts[year] / this.yearLineLengths[year]) : 0;
-            return {name: year, value: value};
-          })}];
+            (yearsToPairCounts[year] / this.yearLineLengths[year]) : 0;
+            this.lineChartData[0].data.push(value);
+            this.lineChartLabels.push(year);
+          });
           this.loading = false;
           this.cdr.markForCheck();
         };

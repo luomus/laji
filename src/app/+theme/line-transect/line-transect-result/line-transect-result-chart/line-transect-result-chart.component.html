@@ -45,7 +45,7 @@
       <div class="col-sm-12">
         <laji-spinner [spinning]="loading" [overlay]="true">
           <div class="chart-container">
-            <ngx-charts-line-chart
+            <!--<ngx-charts-line-chart
               [view]="[500, 300]"
               [results]="line"
               [scheme]="colorScheme"
@@ -57,7 +57,16 @@
               [showYAxisLabel]="true"
               [xAxisLabel]="'Vuodet'"
               [yAxisLabel]="'Parim./km'">
-            </ngx-charts-line-chart>
+            </ngx-charts-line-chart>-->
+            <laji-chart
+              [datasets]="lineChartData"
+              [labels]="lineChartLabels"
+              [options]="lineChartOptions"
+              [legend]="false"
+              [plugins]="lineChartPlugins"
+              [colors]="lineChartColors"
+              chartType="LineWithLine"
+            ></laji-chart>
           </div>
         </laji-spinner>
       </div>
