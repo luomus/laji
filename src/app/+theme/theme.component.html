@@ -124,6 +124,16 @@
               {{ 'theme.birdPointCount.intro' | translate }}
             </td>
           </tr>
+          <tr *lajiForTypes="['dev']">
+            <th>
+              <a [routerLink]="['/theme/kiiltomadot'] | localize">
+                {{ 'navigation.glowWormForm' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.glowWormForm.intro' | translate }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

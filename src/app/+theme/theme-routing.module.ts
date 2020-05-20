@@ -846,6 +846,35 @@ const routes: Routes = [
     }
   },
   {
+    path: 'kiiltomadot',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]}
+    ],
+    data: {
+      formID: Global.forms.glowWormForm,
+      title: 'Kiiltomadot'
+    }
+  },
+  {
     path: 'kerttu',
     component: KerttuComponent,
     data: {
