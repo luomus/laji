@@ -44,6 +44,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import * as moment from 'moment';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface CalendarDate {
   day: number;
@@ -155,6 +156,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.format = this.format || 'YYYY-MM-DD';
     this.viewFormat = this.viewFormat || 'D MMMM YYYY';
     this.firstWeekdaySunday = this.firstWeekdaySunday || false;
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     setTimeout(() => {
       if (this.viewDate) {
         this.value = this.viewDate;
