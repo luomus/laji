@@ -8,3 +8,13 @@
 :host ::ng-deep lu-sidebar-link {
   margin-left: 20px;
 }
+
+a {
+  color: unset;
+  &:hover {
+    text-decoration: unset;
+  }
+  &:focus {
+    text-decoration: unset;
+  }
+}

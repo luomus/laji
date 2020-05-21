@@ -87,7 +87,7 @@ $mobileBreakpoint: 768px;
 }
 
 // SIDEBAR NAV
-:host .sidebar ::ng-deep lu-sidebar-link div {
+:host .sidebar ::ng-deep lu-sidebar-link a {
   position: relative;
   padding: 10px 20px;
   cursor: pointer;
@@ -100,14 +100,14 @@ $mobileBreakpoint: 768px;
     cursor: default;
   }
 }
-:host .sidebar.left ::ng-deep lu-sidebar-link div {
+:host .sidebar.left ::ng-deep lu-sidebar-link a {
   padding-right: 30px;
   margin-right: -20px;
   &.active {
     box-shadow: -4px 4px 5px -4px rgba(0,0,0,0.1), -4px -3px 5px -4px rgba(0,0,0,0.1);
   }
 }
-:host .sidebar.right ::ng-deep lu-sidebar-link div {
+:host .sidebar.right ::ng-deep lu-sidebar-link a {
   padding-left: 30px;
   margin-left: -20px;
   &.active {
