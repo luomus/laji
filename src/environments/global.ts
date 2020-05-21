@@ -29,6 +29,7 @@ export const Global = {
     valioForm: 'MHL.57',
     sykeButterfly: 'MHL.59',
     birdPointCount: 'MHL.75',
+    glowWormForm: 'MHL.79'
   },
   _forms: {
     'MHL.3': {
@@ -75,6 +76,7 @@ export const Global = {
     sykeButterfly: 'HR.3431',
     waterbird: 'HR.62',
     birdPointCount: 'HR.157',
+    glowFormForm: 'HR.3531',
   },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
@@ -95,6 +97,7 @@ export const Global = {
     'MHL.59': '/syke-perhoset',
     'JX.652': '/sieniatlas',
     'MHL.75': '/pistelaskenta',
+    'MHL.79': '/kiiltomadot',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {

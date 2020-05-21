@@ -56,6 +56,7 @@ const routesWithLang: Routes = [
     {path: 'valio', redirectTo: '/en/theme/valio/instructions', pathMatch: 'full'},
     {path: 'syke-perhoset', redirectTo: '/en/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'pistelaskenta', redirectTo: '/en/theme/pistelaskenta/instructions', pathMatch: 'full'},
+    {path: 'kiiltomadot', redirectTo: '/en/theme/kiiltomadot/instructions', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
@@ -74,6 +75,7 @@ const routesWithLang: Routes = [
     {path: 'valio', redirectTo: '/sv/theme/valio/instructions', pathMatch: 'full'},
     {path: 'syke-perhoset', redirectTo: '/sv/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'pistelaskenta', redirectTo: '/sv/theme/pistelaskenta/instructions', pathMatch: 'full'},
+    {path: 'kiiltomadot', redirectTo: '/sv/theme/kiiltomadot/instructions', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
@@ -92,6 +94,7 @@ const routesWithLang: Routes = [
     {path: 'valio', redirectTo: '/theme/valio/instructions', pathMatch: 'full'},
     {path: 'syke-perhoset', redirectTo: '/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'pistelaskenta', redirectTo: '/theme/pistelaskenta/instructions', pathMatch: 'full'},
+    {path: 'kiiltomadot', redirectTo: '/theme/kiiltomadot/instructions', pathMatch: 'full'},
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},

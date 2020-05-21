@@ -38,6 +38,7 @@ export class FormService {
     [environment.valioForm]: '/theme/valio/form',
     [environment.birdPointCountForm]: '/theme/pistelaskenta/form',
     [environment.sykeButterflyForm]: '/theme/syke-perhoset/form',
+    [environment.glowWormForm]: '/theme/ iiltomadot/form',
     default: '/vihko'
   };
 

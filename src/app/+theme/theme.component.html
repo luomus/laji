@@ -94,7 +94,7 @@
               {{ 'theme.municipalityMonitoring.intro' | translate }}
             </td>
           </tr>
-          <tr *lajiForTypes="['dev']">
+          <tr>
             <th>
               <a [routerLink]="['/theme/lolife'] | localize">
                 {{ 'navigation.lolife' | translate }}
@@ -114,7 +114,7 @@
               {{ 'theme.syke-butterfly.intro' | translate }}
             </td>
           </tr>
-          <tr *lajiForTypes="['dev']">
+          <tr>
             <th>
               <a [routerLink]="['/theme/pistelaskenta'] | localize">
                 {{ 'navigation.birdPointCount' | translate }}
@@ -122,6 +122,16 @@
             </th>
             <td>
               {{ 'theme.birdPointCount.intro' | translate }}
+            </td>
+          </tr>
+          <tr *lajiForTypes="['dev']">
+            <th>
+              <a [routerLink]="['/theme/kiiltomadot'] | localize">
+                {{ 'navigation.glowWormForm' | translate }}
+              </a>
+            </th>
+            <td>
+              {{ 'theme.glowWormForm.intro' | translate }}
             </td>
           </tr>
         </tbody>

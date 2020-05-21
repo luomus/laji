@@ -820,12 +820,6 @@ const routes: Routes = [
         component: ThemeOwnSubmissionsComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
       },
-      {
-        path: 'stats',
-        pathMatch: 'full',
-        data: { noScrollToTop: true },
-        component: BirdPointCountResultComponent
-      },
       {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ],
     data: {
@@ -835,14 +829,39 @@ const routes: Routes = [
       navLinks: {
         form: {
           accessLevel: undefined
-        },
-        stats: {
-          routerLink: ['stats'],
-          label: 'Tulokset'
         }
       },
-      navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'stats', 'formPermissions'],
+      navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'formPermissions'],
       instructions: '3941'
+    }
+  },
+  {
+    path: 'kiiltomadot',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]}
+    ],
+    data: {
+      formID: Global.forms.glowWormForm,
+      title: 'Kiiltomadot'
     }
   },
   {

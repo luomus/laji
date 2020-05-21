@@ -1,8 +1,6 @@
-import { catchError, combineLatest, map, take } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -14,17 +12,12 @@ import { Document } from '../../../shared/model/Document';
 import * as MapUtil from 'laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { Units } from '../../../shared/model/Units';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
-import { ToastsService } from '../../../shared/service/toasts.service';
-import { NamedPlacesService } from '../../named-place/named-places.service';
-import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
-import * as equals from 'deep-equal';
 import { FormService } from '../../../shared/service/form.service';
-import { LajiMapLineTransectGeometry, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { LajiMapLineTransectGeometry } from '@laji-map/laji-map.interface';
 
 interface LineTransectCount {
   psCouples: number;
@@ -44,16 +37,12 @@ interface LineTransectCount {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectComponent implements OnChanges {
-  @ViewChild(LajiMapComponent, { static: true })
-  lajiMap: LajiMapComponent;
-
   @Input() document: Document;
   @Input() namedPlace: NamedPlace;
 
   @Output() namedPlaceChange = new EventEmitter();
 
   counts: LineTransectCount;
-  lajiMapOptions: LajiMapOptions;
   perKmTerms: LineTransectChartTerms = {
     upper: {
       slope: -0.279,
@@ -86,10 +75,6 @@ export class LineTransectComponent implements OnChanges {
   warnings: {message: string; cnt: number}[] = [];
   stats$: Observable<string>;
 
-  placesDiff = false;
-  isAdmin = false;
-  activeMapLine = 'document';
-
   ykj10kmN = 0;
   ykj10kmE = 0;
   missingNS = false;
@@ -98,44 +83,16 @@ export class LineTransectComponent implements OnChanges {
   constructor(
     private lajiApiService: LajiApiService,
     private userSerivce: UserService,
-    private namedPlacesService: NamedPlacesService,
-    private formPermissionService: FormPermissionService,
-    private toastsService: ToastsService,
     private formService: FormService,
-    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnChanges() {
     this.initCounts();
     this.initWarnings();
-    this.initMapOptions();
     this.initYkj();
     this.initEditLink();
-    this.initIsAdmin()
-      .subscribe(data => {
-        if (data === null) {
-          this.missingNS = true;
-          return;
-        }
-        this.missingNS = false;
-        this.isAdmin = this.formPermissionService.isAdmin(data.formPermission, data.user);
-        this.initPlacesDiff();
-        this.updateMapZoom();
-        this.cdr.markForCheck();
-      });
-  }
 
-  onMapLoad() {
-    this.updateMapZoom();
-  }
-
-  updateMapZoom() {
-    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.map) {
-      return;
-    }
-    // Map is hidden during initialization since admin check is done async, so we have to initialize the view manually.
-    this.lajiMap.map.map.invalidateSize();
-    this.lajiMap.map._initializeView();
+    this.missingNS = !this.namedPlace || !this.namedPlace.collectionID;
   }
 
   private initEditLink() {
@@ -241,19 +198,6 @@ export class LineTransectComponent implements OnChanges {
     return messages;
   }
 
-  private initMapOptions() {
-    this.lajiMapOptions = {
-      tileLayerName: LajiMapTileLayerName.maastokartta,
-      lineTransect: {
-        feature: {type: 'Feature', properties: {}, geometry: this.getGeometry(this.activeMapLine)},
-        editable: false
-      },
-      tileLayerOpacity: 0.5,
-      zoomToData: {paddingInMeters: 100},
-      controls: true
-    };
-  }
-
   private initYkj() {
     if (this.namedPlace && this.namedPlace.name) {
       const match = this.namedPlace.name.match(/([0-9]{3}):([0-9]{3})/);
@@ -264,48 +208,14 @@ export class LineTransectComponent implements OnChanges {
     }
   }
 
-  private initPlacesDiff() {
-    const diff = !equals(this.getGeometry('document'), this.getGeometry(('acceptedDocument')));
-    this.placesDiff = diff;
-  }
-
   private getGeometry(documentName = 'document'): LajiMapLineTransectGeometry {
     const document = documentName === 'document'
         ? this.document
         : this.namedPlace.acceptedDocument;
 
-    if (document.gatherings) {
+   if (document.gatherings) {
       return {type: 'MultiLineString', coordinates: document.gatherings.map(item => item.geometry.coordinates)};
     }
     return {type: 'MultiLineString', coordinates: []};
-  }
-
-  initIsAdmin() {
-    if (!this.namedPlace || !this.namedPlace.collectionID) {
-      return ObservableOf(null);
-    }
-    return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken()).pipe(
-      combineLatest(
-        this.userSerivce.user$.pipe(take(1)),
-        (formPermission, user) => ({formPermission, user})
-      ));
-  }
-
-  setActiveMapLine(activeMapLine) {
-    this.activeMapLine = activeMapLine;
-    this.lajiMap.map.setLineTransect({...this.lajiMapOptions.lineTransect, feature: {geometry: this.getGeometry(this.activeMapLine)}});
-  }
-
-  acceptNamedPlaceChanges() {
-    this.namedPlacesService.updateNamedPlace(
-      this.namedPlace.id,
-      {...this.namedPlace, acceptedDocument: this.document},
-      this.userSerivce.getToken()
-    ).subscribe((np: NamedPlace) => {
-      this.namedPlaceChange.emit(np);
-      this.toastsService.showSuccess(
-        'Linjan päivitys onnistui. Tämän laskennan karttaa käytetään pohjana tämän linjan laskennoille jatkossa'
-      );
-    });
   }
 }
