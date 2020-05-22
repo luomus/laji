@@ -12,6 +12,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { TaxonTagEffectiveService } from '../../shared-modules/document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../../shared-modules/document-viewer/loading-elements.service';
+import { PlatformService } from '../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-annotations',
@@ -76,7 +77,8 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private warehouseApi: WarehouseApi,
     private taxonTagEffective: TaxonTagEffectiveService,
-    private loadingElements: LoadingElementsService
+    private loadingElements: LoadingElementsService,
+    private platformService: PlatformService
     ) { }
 
   ngOnInit() {
@@ -90,6 +92,9 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
       this.activeTags = this.unit.interpretations.effectiveTags;
     }
 
+    if (this.platformService.isServer) {
+      return;
+    }
     setTimeout(() => {
       this.loadingForm.emit(this.statusAction);
     }, 4000);

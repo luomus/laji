@@ -11,9 +11,9 @@ import { Global } from '../../../environments/global';
       <span [innerHTML]="title | translate"></span>
       <small *ngIf="secondary"><br>sekundääridataa</small>
     </h5>
-    <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink | localize" routerLinkActive>
+    <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink | localize" routerLinkActive [active]="link.active">
       {{ link.label | translate }}
-      <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink | localize">
+      <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink | localize" [active]="link.active">
         {{ child.label | translate }}
       </lu-sidebar-link>
     </lu-sidebar-link>
@@ -34,7 +34,7 @@ export class ThemePageComponent {
     @Input() secondary: boolean;
     @Input() navLinks?:
         {
-            routerLink: string[], label: string, visible: boolean, children: any
+            routerLink: string[], label: string, visible: boolean, children: any, active?: boolean
         }[];
     @Input() showNav ? = true;
     @Input() formID: string;

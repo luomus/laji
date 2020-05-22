@@ -856,7 +856,7 @@
   "observation.form.zeroObservations": "Include negative observations",
   "observation.info.adminStatus": "Filter observations to incude those species/taxa that have one of the selected administrative properties.",
   "observation.info.annotated": "",
-  "observation.info.area": "Filter based on the repored place name (foreign municipality, locality etc). Separate multiple search words with a comma. The seach is case-insensitive.",
+  "observation.info.area": "Filter based on the repored place name (foreign municipality, locality etc).The seach is case-insensitive. For a partial (wildcard) search, add asterisk to the name, e.g. Monte C*.",
   "observation.info.asEditor": "Filter to the observations you have recored (one of the user ids linked with your account is marked as an owner of the record). You will see the non-concealed versions of your own observations (publicly open data may have been concealed for conservation or other reasons). Note: Some extremely sensitive species are not stored with exact location information to FinBIF observation search database at all, so you won't be able to see these observations even when browsing your own observations.",
   "observation.info.asObserver": "Filter to observations where you are marked as an observer (one of the user ids linked with your account is marked as an observer in the record). You will see the non-concealed versions of your own observations (publicly open data may have been concealed for conservation or other reasons). Note: Some extremely sensitive species are not stored with exact location information to FinBIF observation search database at all, so you won't be able to see these observations even when browsing your own observations.",
   "observation.info.biogeographicalProvince": "Filter with one or several biogeographical provinces. <a target=\"_blank\" href=\"/theme/emk\">More information about provinces</a>.",
@@ -1435,7 +1435,8 @@
   "form.participants.export.docCount":  "Document count",
   "navigation.syke-butterfly": "SYKE butterfly census",
   "theme.syke-butterfly.intro": "SYKE butterfly census",
-
+  "navigation.glowWormForm": "Glow worm form",
+  "theme.glowWormForm.intro":  "Glow worm citizen science project",
   "saveObservations.h1": "Save nature observations to FinBIF",
   "saveObservations.chooseSystem": "Select a tool that works for you",
   "saveObservations.desc": "By saving your observations into some of the services by FinBIF, it can be used by researchers and other people. The observations are also published on Laji.fi if you choose so. You can submit single observations, maintain your own observation notebook, or take part in citizen science projects.",

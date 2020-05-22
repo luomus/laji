@@ -14,12 +14,7 @@ export class CacheService {
     private appRef: ApplicationRef,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
-    this.appRef.isStable.pipe(
-      filter(stable => stable),
-      take(1),
-      timeout(5000),
-      catchError(() => of(null))
-    ).subscribe(() => {
+    this.getStableObservable().subscribe(() => {
       this.stable = true;
     });
   }
@@ -46,5 +41,19 @@ export class CacheService {
     return savedValue === null ?
       $dataSource :
       of(savedValue);
+  }
+
+  private getStableObservable() {
+    const stable$ = this.appRef.isStable.pipe(
+      filter((isStable: boolean) => isStable),
+      take(1)
+    );
+    if (isPlatformBrowser(this.platformId)) {
+      return stable$.pipe(
+        timeout(5000),
+        catchError(() => of(null))
+      );
+    }
+    return stable$;
   }
 }

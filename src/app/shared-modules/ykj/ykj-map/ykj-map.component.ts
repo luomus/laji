@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -30,7 +29,7 @@ export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'indivi
   styleUrls: ['./ykj-map.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class YkjMapComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
+export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
 
@@ -68,6 +67,7 @@ export class YkjMapComponent implements AfterViewInit, OnInit, OnChanges, OnDest
 
   @Output() gridClick = new EventEmitter<WarehouseQueryInterface>();
   @Output() boundsChange = new EventEmitter<any>();
+  @Output() loaded = new EventEmitter<void>();
 
   count: {[k: string]: number} = {};
   legendList: {color: string, label: string}[] = [];
@@ -95,7 +95,7 @@ export class YkjMapComponent implements AfterViewInit, OnInit, OnChanges, OnDest
     this.timeBreak[0] = now.getFullYear() + '-01-01';
   }
 
-  ngAfterViewInit(): void {
+  onMapLoad(): void {
     this.initMapData();
   }
 

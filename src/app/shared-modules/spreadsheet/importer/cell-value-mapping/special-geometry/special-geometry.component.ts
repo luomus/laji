@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -20,7 +19,7 @@ import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
   styleUrls: ['./special-geometry.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class SpecialGeometryComponent implements AfterViewInit {
+export class SpecialGeometryComponent {
 
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
@@ -70,7 +69,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
     this.lajiMapOptions.lang = <LajiMapLang> this.translateService.currentLang;
   }
 
-  ngAfterViewInit() {
+  onMapLoad() {
     setTimeout(() => {
       this.lajiMapComponent.invalidateSize();
       this.lajiMapComponent.map.setData([{}]);

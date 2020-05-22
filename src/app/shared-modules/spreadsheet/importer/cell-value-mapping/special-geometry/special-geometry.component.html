@@ -26,7 +26,7 @@
       </td>
       <td class="map-cell">
         <div class="map-container">
-          <laji-map [options]="lajiMapOptions" #lajiMap></laji-map>
+          <laji-map [options]="lajiMapOptions" #lajiMap (loaded)="onMapLoad()"></laji-map>
         </div>
       </td>
       <td>

@@ -108,20 +108,5 @@
   </div>
 </div>
 <div class="row">
-  <div *ngIf="isAdmin && placesDiff" class="col-xs-12" style="padding-bottom: 5px;">
-    <div class="btn-group" role="group">
-      <button type="button"
-              (click)="setActiveMapLine('document')"
-              class="btn btn-sm btn-default {{activeMapLine === 'document' ? 'active' : ''}}">Näytä tämän laskennan reitti</button>
-      <button type="button"
-              (click)="setActiveMapLine('acceptedDocument')"
-              class="btn btn-sm btn-default {{activeMapLine !== 'document' ? 'active' : ''}}">Näytä viimeksi hyväksytty reitti</button>
-    </div>
-    <button type="button"
-            (click)="acceptNamedPlaceChanges()"
-            class="btn btn-sm btn-success">Hyväksy muutokset</button>
-  </div>
-  <div class="col-xs-12" [style.height.px]="1000" [style.display]="isAdmin && placesDiff ? 'block' : 'none'">
-    <laji-map [options]="lajiMapOptions"></laji-map>
-  </div>
+  <laji-accepted-document-approval [namedPlace]="namedPlace" [document]="document" [lineTransect]="true" (namedPlaceChange)="namedPlaceChange.emit($event)"></laji-accepted-document-approval>
 </div>

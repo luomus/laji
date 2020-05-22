@@ -4,7 +4,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';
 
-const SSR_TIMEOUT = 5000;
+const SSR_TIMEOUT = 500;
 const GLOBAL_TIMEOUT = 30000;
 
 @Injectable()
