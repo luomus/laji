@@ -6,7 +6,7 @@ import { WINDOW } from '@ng-toolkit/universal';
 @Component({
   selector: 'laji-chart',
   template: `
-    <canvas *lajiBrowserOnly baseChart
+    <canvas #myCanvas *lajiBrowserOnly baseChart
             [data]="data"
             [colors]="colors"
             [datasets]="datasets"

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of as ObservableOf, Subscription } from 'rxjs';
 import { ObservationResultService } from '../../../../shared-modules/observation-result/service/observation-result.service';
@@ -48,7 +48,9 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   private afterBothFetched: any;
   private subQuery: Subscription;
   private fetchSub: Subscription;
-
+  @ViewChild('myCanvas') canvas: ElementRef;
+  context: CanvasRenderingContext2D;
+  public gradient: any;
   public lineChartData: ChartDataSets[] = [{data: [], label: 'Parim./km', backgroundColor: 'rgba(255,255,255,0)'}];
   public lineChartLabels: Label[] = [];
   public lineChartOptions: ChartOptions = {
@@ -117,13 +119,12 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     Chart.controllers.LineWithLine = Chart.controllers.line.extend({
       draw: function(ease) {
         Chart.controllers.line.prototype.draw.call(this, ease);
-
         if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
           const activePoint = this.chart.tooltip._active[0];
-              const ctx = this.chart.ctx;
-              const x = activePoint.tooltipPosition().x;
-              const topY = this.chart.legend.bottom;
-              const bottomY = this.chart.chartArea.bottom;
+          const ctx = this.chart.ctx;
+          const x = activePoint.tooltipPosition().x;
+          const topY = this.chart.legend.bottom;
+          const bottomY = this.chart.chartArea.bottom;
 
           ctx.save();
           ctx.beginPath();
@@ -263,6 +264,33 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   toggleFromYear() {
     this.fromYear = this.fromYear === 2006 ? undefined : 2006;
     this.update();
+  }
+
+  onHoverChart(e) {
+    if (e.active.length > 0) {
+      const chart = e.active[0]._chart;
+      const activePoints = chart.getElementAtEvent(e.event);
+        if ( activePoints.length > 0) {
+          // get the internal index of slice in pie chart
+          const clickedElementIndex = activePoints[0]._index;
+          const label = chart.data.labels[clickedElementIndex];
+          // get value by index
+          const value = chart.data.datasets[0].data[clickedElementIndex];
+
+          // Create Gradient Color
+          const ctx = chart.ctx;
+          /*this.gradient = ctx.createLinearGradient(0, 0, 0, 450);
+          this.gradient.addColorStop(0, "rgba(70, 130, 180, 0.10)");
+          this.gradient.addColorStop(0.5, "#fff");*/
+          if (chart.tooltip._active && chart.tooltip._active.length) {
+            this.lineChartColors[0].backgroundColor = 'rgba(70, 130, 180, 0.10)';
+            chart.options.elements.point.hoverRadius = 6;
+          }
+        } else {
+          this.lineChartColors[0].backgroundColor = 'rgb(255,255,255,0)';
+          chart.options.elements.point.hoverRadius = 3;
+        }
+       }
   }
 
   private fromYearToYearMonth(year) {
