@@ -21,6 +21,7 @@ import { NamedPlacesService } from '../../../named-place/named-places.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import * as equals from 'deep-equal';
 import { LineTransectGeometry } from 'laji-map';
+import { Geometry, GeometryCollection } from 'geojson';
 
 @Component({
   selector: 'laji-accepted-document-approval',
@@ -128,7 +129,10 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       ? this.document
       : this.namedPlace.acceptedDocument;
 
-    const geometry = {type: 'GeometryCollection', geometries: document.gatherings?.filter(item => item.geometry.type).map(item => item.geometry)};
+    const geometry: GeometryCollection = {
+      type: 'GeometryCollection',
+      geometries: document.gatherings?.filter(item => item.geometry.type).map(item => item.geometry) as Geometry[]
+    };
     return {geoData: geometry, editable: false};
   }
 
