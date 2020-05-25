@@ -131,7 +131,9 @@ app.get('*.(map|txt|js|ico|png|jpg|svg|css)', (req, res) => {
 });
 
 app.get('*', cache(), (req, res) => {
+  console.time(`${req.method} ${req.url}`);
   render(req, res, (err, html) => {
+    console.timeEnd(`${req.method} ${req.url}`);
     if (!!err) {
       throw err;
     }
