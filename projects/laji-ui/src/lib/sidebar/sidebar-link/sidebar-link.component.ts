@@ -14,10 +14,13 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
     [k: string]: any;
   };
   @Output() clicked = new EventEmitter<any>();
-  active = false;
+  @Input() active = undefined;
   unsubscribe$ = new Subject<void>();
   constructor(private router: Router) {}
   ngOnInit() {
+    if (this.active !== undefined) {
+      return;
+    }
     const urls$ = this.router.events.pipe(
       filter(e => e instanceof NavigationEnd),
       map((e: NavigationEnd) => e.urlAfterRedirects || e.url),

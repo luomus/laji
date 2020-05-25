@@ -72,7 +72,7 @@ export class ObservationDataService {
       units: {total: null},
       species: {total: null},
       private: {total: null}
-    }
+    };
   }
 
   private getGraphQuery(query: WarehouseQueryInterface): DocumentNode {
