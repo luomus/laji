@@ -1,9 +1,7 @@
-import {map} from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
-import { Observable } from 'rxjs';
 import { Annotation } from '../../../shared/model/Annotation';
 
 @Component({
@@ -24,13 +22,11 @@ export class UnitAnnotationComponent implements OnInit {
   @Input() showAnnotation: boolean;
 
   annotationVisible = false;
-  annotationClass$: Observable<string>;
   annotationIcon: string;
   annotations: Annotation[] = [];
 
   unitID: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
-  annotationClass = Annotation.AnnotationClassEnum;
 
   constructor(
     private toQname: ToQNamePipe,
@@ -67,22 +63,7 @@ export class UnitAnnotationComponent implements OnInit {
       annotations.push(annotation);
       this.unit.annotations = annotations;
     }
-    this.annotationClass$ = this.annotationService
-      .getAnnotationClassInEffect(annotations).pipe(
-      map(annotationClass => {
-        this.annotationIcon = annotationClass ? 'fa-comments' : 'fa-comment-o';
-        switch (annotationClass) {
-          case Annotation.AnnotationClassEnum.AnnotationClassUnreliable:
-          case Annotation.AnnotationClassEnum.AnnotationClassSuspicious:
-          case Annotation.AnnotationClassEnum.AnnotationClassSpam:
-            return 'btn-danger';
-          case Annotation.AnnotationClassEnum.AnnotationClassLikely:
-          case Annotation.AnnotationClassEnum.AnnotationClassReliable:
-            return 'btn-success';
-          default:
-            return 'btn-default';
-        }
-      }));
+
     if (this.unit.annotations) {
       this.annotations = this.unit.annotations.reverse();
     }

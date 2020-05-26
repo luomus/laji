@@ -2,7 +2,7 @@ import {map,  mergeMap, filter } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit,
 Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
@@ -13,7 +13,6 @@ import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.servic
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { Global } from '../../../../environments/global';
-import { format } from 'd3-format';
 import { IdService } from '../../../shared/service/id.service';
 import { LajiTaxonSearch } from '../../../shared/model/LajiTaxonSearch';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
@@ -66,7 +65,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   sending = false;
   infoModal = true;
   needsAck: boolean;
-  annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, label: string}[]>;
   tagsAdd: Array<AnnotationTag>;
   tagsRemove: Array<AnnotationTag>;
   annotationAddadableTags$: Observable<AnnotationTag[]>;
@@ -79,10 +77,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   types = Annotation.TypeEnum;
   selectedOptions: string[] = [];
   deletedOptions: string[] = [];
-  ownerTypes = [
-    Annotation.AnnotationClassEnum.AnnotationClassNeutral,
-    Annotation.AnnotationClassEnum.AnnotationClassAcknowledged
-  ];
   tmpTags: Annotation[];
   isFocusedTaxonComment: any;
   inputType: any;
@@ -96,8 +90,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     scientificNameAuthorship: null
   };
 
-
-  emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
   annotationTagsObservation = Global.annotationTags;
   annotationRole = Annotation.AnnotationRoleEnum;
 
@@ -337,16 +329,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   initAnnotation() {
     this.isEditor = this.editors && this.personID && this.editors.indexOf(this.personID) > -1;
     this.needsAck = this.annotations && this.annotations[0] && this.annotations[0].type !== Annotation.TypeEnum.TypeAcknowledged;
-    this.annotationOptions$ = this.metadataService.getRange('MZ.recordQualityEnum').pipe(
-      map(annotationOptions => annotationOptions.filter(annotation => this.isEditor ?
-          this.ownerTypes.indexOf(annotation.id) > -1 :
-          ((
-            this.ownerTypes.indexOf(annotation.id) === -1 ||
-            annotation.id === Annotation.AnnotationClassEnum.AnnotationClassNeutral
-          ) &&
-           annotation.id !== Annotation.AnnotationClassEnum.AnnotationClassSpam)
-          )
-      ));
   }
 
   filterBasicForm() {
