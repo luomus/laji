@@ -18,8 +18,8 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { Image } from '../../../shared/gallery/image-gallery/image.interface';
 import { InfoCardQueryService } from './shared/service/info-card-query.service';
 import { LoadedElementsStore } from '../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
-import { LocalizeRouterService } from 'app/locale/localize-router.service';
 import { Router } from '@angular/router';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 const tabOrder = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];

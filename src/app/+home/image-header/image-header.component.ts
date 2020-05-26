@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderImage, HeaderImageService } from 'app/shared/service/header-image.service';
 import { HomeDataService, IHomeData } from '../home-data.service';
 import { Observable } from 'rxjs';
+import { HeaderImage, HeaderImageService } from '../../shared/service/header-image.service';
 
 @Component({
   selector: 'laji-image-header',

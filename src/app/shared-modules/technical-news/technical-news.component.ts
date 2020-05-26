@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LajiApiService, LajiApi } from 'app/shared/service/laji-api.service';
 import { map, catchError, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { News } from 'app/shared/model/News';
 import { HomeDataService } from '../../+home/home-data.service';
+import { News } from '../../shared/model/News';
+import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 
 
 @Component({

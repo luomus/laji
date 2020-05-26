@@ -6,8 +6,8 @@ import { DatatableColumn } from '../../../datatable/model/datatable-column';
 import { Util } from '../../../../shared/service/util.service';
 import { map, take } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
-import { BoolToStringPipe } from 'app/shared/pipe/bool-to-string.pipe';
 import { AreaNamePipe } from '../../../../shared/pipe/area-name.pipe';
+import { BoolToStringPipe } from '../../../../shared/pipe/bool-to-string.pipe';
 
 @Component({
   selector: 'laji-np-list',

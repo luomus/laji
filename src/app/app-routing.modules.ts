@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
@@ -7,6 +7,8 @@ import { LocalizeGuard } from './locale/localize.guard';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { LocalizeInGuard } from './locale/localize-in.guard';
 import { CheckLoginGuard } from './shared/guards/check-login.guard';
+import { NgModule } from '@angular/core';
+import { QuicklinkStrategy } from 'ngx-quicklink';
 
 
 const baseRoutes: Routes = [
@@ -112,3 +114,14 @@ const routesWithLang: Routes = [
 export const routes: Routes = [
   {path: '', children: routesWithLang, canActivate: [CheckLoginGuard]}
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, {
+    enableTracing: false,
+    preloadingStrategy: QuicklinkStrategy,
+    initialNavigation: 'enabled'
+  })],
+  exports: [RouterModule],
+  declarations: []
+})
+export class AppRoutingModule { }

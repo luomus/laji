@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { LocalizeRouterService } from 'app/locale/localize-router.service';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 @Component({
     template: `

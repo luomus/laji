@@ -6,7 +6,6 @@ import { Document } from '../../shared/model/Document';
 import { IdService } from '../../shared/service/id.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
-import { PagedResult } from 'app/shared/model/PagedResult';
 
 interface IParametersBase {
   highlight?: string;

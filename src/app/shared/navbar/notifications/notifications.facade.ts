@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, of, from } from 'rxjs';
-import { PagedResult } from 'app/shared/model/PagedResult';
 import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs/operators';
-import { LajiApi, LajiApiService } from 'app/shared/service/laji-api.service';
-import { UserService } from 'app/shared/service/user.service';
-import { Notification } from 'app/shared/model/Notification';
 import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
 import gql from 'graphql-tag';
+import { PagedResult } from '../../model/PagedResult';
+import { UserService } from '../../service/user.service';
+import { LajiApi, LajiApiService } from '../../service/laji-api.service';
+import { Notification } from '../../model/Notification';
 
 interface State {
   notifications: PagedResult<Notification>;

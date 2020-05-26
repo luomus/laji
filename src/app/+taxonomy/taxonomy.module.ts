@@ -71,7 +71,7 @@ import { LicenseModule } from '../shared-modules/license/license.module';
 import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
 import { TaxonYlestaFieldsComponent } from './taxon/info-card/shared/component/taxon-ylesta-fields/taxon-ylesta-fields.component';
-import { TechnicalNewsModule } from 'app/shared-modules/technical-news/technical-news.module';
+import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
