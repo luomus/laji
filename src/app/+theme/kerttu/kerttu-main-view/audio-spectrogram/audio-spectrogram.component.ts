@@ -1,7 +1,8 @@
 import {Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, HostListener, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
-import {Selection, select} from 'd3-selection';
+import {Selection, select, event} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
+import * as d3Drag from 'd3-drag';
 import {AudioService} from '../../service/audio.service';
 import {Subscription} from 'rxjs';
 import {delay} from 'rxjs/operators';
@@ -24,7 +25,9 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() xRange: number[];
   @Input() yRange: number[];
 
-  @Output() spectrogramReady = new EventEmitter<boolean>();
+  @Output() spectrogramReady = new EventEmitter();
+  @Output() startDrag = new EventEmitter();
+  @Output() endDrag = new EventEmitter<number>();
 
   margin: { top: number, bottom: number, left: number, right: number} = { top: 10, bottom: 20, left: 30, right: 10};
 
@@ -66,7 +69,7 @@ export class AudioSpectrogramComponent implements OnChanges {
             this.maxFreq = result.maxFreq;
             this.maxTime = result.maxTime;
             this.onResize();
-            this.spectrogramReady.emit(true);
+            this.spectrogramReady.emit();
             this.cdr.markForCheck();
           });
       }
@@ -126,11 +129,22 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('fill', 'none');
 
     // draw scroll line
+    const drag = d3Drag.drag()
+      .on('start', () => { this.startDrag.emit(); })
+      .on('drag', () => {
+        const time = this.xScale.invert(event.x - this.margin.left);
+        this.currentTime = Math.min(Math.max(time, 0), this.buffer.duration);
+        this.updateScrollLinePosition();
+      })
+      .on('end', () => { this.endDrag.emit(this.currentTime); });
+
     this.scrollLine = svg.append('line')
       .attr('y1', this.margin.top)
       .attr('y2', this.margin.top + height)
       .attr('stroke-width', 2)
-      .attr('stroke', 'black');
+      .attr('stroke', 'black')
+      .call(drag)
+      .style('cursor', 'pointer');
 
     this.updateScrollLinePosition();
   }
