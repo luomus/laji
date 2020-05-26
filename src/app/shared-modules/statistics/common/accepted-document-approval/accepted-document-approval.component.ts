@@ -20,8 +20,11 @@ import { Document } from '../../../../shared/model/Document';
 import { NamedPlacesService } from '../../../named-place/named-places.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import * as equals from 'deep-equal';
-import { LineTransectGeometry } from 'laji-map';
-import { Geometry, GeometryCollection } from 'geojson';
+import { diff, DiffNew } from 'deep-diff';
+import { FormService } from '../../../../shared/service/form.service';
+import { TranslateService } from '@ngx-translate/core';
+import { DocumentService } from '../../../own-submissions/service/document.service';
+import { GeometryCollection } from 'geojson';
 
 @Component({
   selector: 'laji-accepted-document-approval',
@@ -41,7 +44,9 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   lajiMap: LajiMapComponent;
   lajiMapOptions: LajiMapOptions;
   data: any;
-  placesDiff = false;
+  placesDiff: false | any = false;
+  geometriesDiff: false | any = false;
+  otherDiff: false | any = false;
   isAdmin = false;
   activeDocument: 'document' | 'acceptedDocument' = 'document';
 
@@ -50,6 +55,9 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     private formPermissionService: FormPermissionService,
     private namedPlacesService: NamedPlacesService,
     private toastsService: ToastsService,
+    private formService: FormService,
+    private translate: TranslateService,
+    private documentService: DocumentService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -59,7 +67,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     this.initIsAdmin()
       .subscribe(data => {
         this.isAdmin = this.formPermissionService.isAdmin(data.formPermission, data.user);
-        this.placesDiff = this.checkDiff();
+        this.initDocumentDiff();
         this.updateMapZoom();
         this.cdr.markForCheck();
       });
@@ -120,7 +128,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       ? this.document
       : this.namedPlace.acceptedDocument;
 
-    const geometry = {type: 'MultiLineString', coordinates: document.gatherings?.map(item => item.geometry.coordinates) || []} as LineTransectGeometry;
+    const geometry = {type: 'MultiLineString', coordinates: document.gatherings?.map(item => item.geometry.coordinates) || []} as LajiMapLineTransectGeometry;
     return {feature: {type: 'Feature', properties: {}, geometry}, editable: false};
   }
 
@@ -129,10 +137,10 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       ? this.document
       : this.namedPlace.acceptedDocument;
 
-    const geometry: GeometryCollection = {
+    const geometry = {
       type: 'GeometryCollection',
-      geometries: document.gatherings?.filter(item => item.geometry.type).map(item => item.geometry) as Geometry[]
-    };
+      geometries: document.gatherings?.filter(item => item?.geometry?.type).map(item => item.geometry)
+    } as GeometryCollection;
     return {geoData: geometry, editable: false};
   }
 
@@ -149,14 +157,69 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     });
   }
 
-  checkDiff() {
-    const getGeometry = (documentName: 'document' | 'acceptedDocument') => {
-      const document = documentName === 'document'
-        ? this.document
-        : this.namedPlace.acceptedDocument;
+  checkDiff(excludeFromCopy: string[]) {
+    const diffIgnoredFields = [
+      ...excludeFromCopy,
+      '$.collectionID',
+      '$.creator',
+      '$.editor',
+      '$.editors',
+      '$.formID',
+      '$.namedPlaceID',
+      '$.sourceID',
+      '$.gatheringEvent.leg',
+      '$.gatheringEvent.legPublic',
+      '$.gatheringEvent.legUserID',
+      '$.gatherings.*.geometry..type',
+      '$.gatherings.*.geometry..coordinates',
+      '$.gatherings.*.geometry..coordinateVerbatim',
+      '$.gatherings.*.gatheringFact.lineTransectSegmentMetersEnd'
+    ];
 
-      return {type: 'GeometryCollection', geometry: document.gatherings?.map(item => item.geometry) || []};
+    const getGeometry = (_document: any) => {
+      return this.documentService.removeMeta({type: 'GeometryCollection', geometry: JSON.parse(JSON.stringify(_document)).gatherings?.map(item => item.geometry) || []}, ['$.geometries.*.coordinateVerbatim']);
     };
-    return !equals(getGeometry('document'), getGeometry(('acceptedDocument')));
+
+    const getDiff = (_acceptedDocument: any, _document: any) => {
+      return (diff(_acceptedDocument, _document) || []).reduce((_diff, diffObj) => {
+        // Flatten object rhs (right-hand-side, or otherwise speaking the new value) to
+        // the path so that we can render the simple value instead of rendering an object as value.
+        const addRecursively = (rhs: any, path) => {
+          if (typeof rhs === 'object' && !Array.isArray(rhs) && rhs !== null) {
+            Object.keys(rhs).forEach(key => {
+              addRecursively(rhs[key], [...path, key]);
+            });
+          } else if (Array.isArray(rhs)) {
+            rhs.forEach((key, idx) => {
+              addRecursively(rhs[idx], [...path, idx]);
+            });
+          } else {
+            if (diffObj.kind === 'N') {
+              _diff.push({...diffObj, rhs, path});
+            } else {
+              _diff.push(diffObj);
+            }
+          }
+        };
+        addRecursively((diffObj as DiffNew<any>).rhs, diffObj.path);
+        return _diff;
+      }, []).sort((a, b) => b.path.join('.').localeCompare(a.path.join('')));
+    };
+
+    const document = this.documentService.removeMeta(JSON.parse(JSON.stringify(this.document)), diffIgnoredFields);
+    const acceptedDocument = this.documentService.removeMeta(JSON.parse(JSON.stringify(this.namedPlace.acceptedDocument)), diffIgnoredFields);
+    const geometryDiffers = !equals(getGeometry(this.document), getGeometry((this.namedPlace.acceptedDocument)));
+    const otherwiseDiffers = !equals(document, acceptedDocument);
+    const differs = otherwiseDiffers || geometryDiffers;
+    return [differs, geometryDiffers, otherwiseDiffers ? getDiff(acceptedDocument, document) : undefined];
+  }
+
+  initDocumentDiff() {
+    this.formService.getForm(this.document.formID, this.translate.currentLang).subscribe(form => {
+      const [differs, geometriesDiff, otherDiff] = this.checkDiff(form.excludeFromCopy);
+      this.placesDiff = differs;
+      this.geometriesDiff = geometriesDiff;
+      this.otherDiff = otherDiff;
+    });
   }
 }
