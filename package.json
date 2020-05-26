@@ -83,6 +83,7 @@
     "@ngx-translate/core": "^12.1.2",
     "@swimlane/ngx-charts": "^14.0.0",
     "@swimlane/ngx-datatable": "^17.0.0",
+    "@types/d3-drag": "^1.2.3",
     "angularx-qrcode": "^2.3.0",
     "apollo-angular": "^1.9.1",
     "apollo-angular-link-http": "^1.10.0",
