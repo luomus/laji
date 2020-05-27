@@ -3,7 +3,7 @@
     <div class="info-box mb-3">
       <ng-container *lajiForTypes="['vir']">
         <h1 translate>vir.species.title</h1>
-        <div [innerHTML]="'vir.species.intro' | translate"></div>
+        <laji-info-page rootPage="3995"></laji-info-page>
       </ng-container>
       <ng-container *lajiForTypes="['vir']; exclude: true">
         <h1>{{ 'species.search' | translate }}</h1>
