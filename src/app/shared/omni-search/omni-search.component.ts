@@ -94,7 +94,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         .map(group => group.name);
       this.subCnt =
         ObservableOf(this.taxon.key).pipe(combineLatest(
-          this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key}),
+          this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key, cache: true}),
           (id, cnt) => {
             return {id: id, cnt: cnt.total};
           }
