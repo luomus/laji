@@ -138,6 +138,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
         this.saveVisibility = 'shown';
         this.status = 'unsaved';
         this.toastsService.showError(this.getMessage('error', this.translate.instant('haseka.form.error')));
+        this.subSaving = undefined;
       }
       this.changeDetector.markForCheck();
     });
