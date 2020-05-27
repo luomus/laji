@@ -51,50 +51,48 @@ export class DataTableComponent {
       label: 'usage.organisation',
       cellTemplate: 'toSemicolon',
       canAutoResize: true,
-      sortable: false
+    },
+    {
+      name: 'section',
+      label: 'usage.section',
+      cellTemplate: 'toSemicolon',
+      canAutoResize: true
     },
     {
       name: 'fullName',
-      label: 'usage.name',
-      sortable: false
+      label: 'usage.name'
     },
     {
       name: 'emailAddress',
       label: 'usage.email',
-      canAutoResize: true,
-      sortable: false
+      canAutoResize: true
     },
     {
       name: 'requested',
       label: 'usage.requested',
-      canAutoResize: true,
-      sortable: false
+      canAutoResize: true
     },
     {
       name: 'person',
       label: 'usage.person',
       cellTemplate: 'label',
-      canAutoResize: true,
-      sortable: false
+      canAutoResize: true
     },
     {
       name: 'downloadType',
       label: 'usage.downloadType',
-      canAutoResize: true,
-      sortable: false
+      canAutoResize: true
     },
     {
       name: 'collectionId',
       label: 'usage.collectionId',
       cellTemplate: 'labelArray',
-      canAutoResize: true,
-      sortable: false
+      canAutoResize: true
     },
     {
       name: 'dataUsePurpose',
       label: 'usage.dataUsePurpose',
-      canAutoResize: true,
-      sortable: false
+      canAutoResize: true
     }
   ];
 
@@ -130,7 +128,7 @@ export class DataTableComponent {
   getColsFromType(type: TableType) {
     switch (type) {
       case 'people':
-        return this.getCols(['organisation', 'fullName', 'emailAddress']);
+        return this.getCols(['organisation', 'section', 'fullName', 'emailAddress']);
       case 'downloads':
         return this.getCols(['requested', 'person', 'collectionId', 'dataUsePurpose']);
     }

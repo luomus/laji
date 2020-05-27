@@ -5,7 +5,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   template: `
     <div class="container">
       <h1>{{'navigation.usage' | translate}}</h1>
-      <lu-message class="mb-8" role="contentinfo">
+      <lu-message class="mb-8">
         <div [innerHTML]="'usage.intro' | translate"></div>
       </lu-message>
       <laji-navigation-thumbnail name="usage.byCollection" icon="chart" path="usage/by-collection"></laji-navigation-thumbnail>
