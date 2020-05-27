@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
+import { FormService } from '../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-bird-point-count-stats',
@@ -25,9 +26,15 @@ export class BirdPointCountStatsComponent implements OnChanges {
   path = '';
 
   constructor(
+    private formService: FormService,
   ) {}
 
   ngOnChanges() {
     this.missingNS = !this.namedPlace || !this.namedPlace.collectionID;
+    this.initEditLink();
+  }
+
+  private initEditLink() {
+    this.path = this.formService.getEditUrlPath(this.document.formID, this.document.id);
   }
 }
