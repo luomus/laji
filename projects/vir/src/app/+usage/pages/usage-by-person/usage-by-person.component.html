@@ -1,7 +1,7 @@
 <div class="container">
   <h1>{{ 'usage.byPerson' | translate }}</h1>
   <lu-message class="mb-8">
-    <p [innerHTML]="'usage.users.intro' | translate"></p>
+    <laji-info-page rootPage="4003"></laji-info-page>
   </lu-message>
   <vir-organization-select (select)="organizationSelect($event)"></vir-organization-select>
   <vir-data-table type="people" [data]="users$ | async"></vir-data-table>

@@ -32,6 +32,7 @@ import { VirAppComponent } from './vir-app.component';
 import { environment } from '../environments/environment';
 import { NavBarComponent } from './component/nav-bar/nav-bar.component';
 import { LazyTranslateLoader } from './service/lazy-translate-loader';
+import { GlobalMessageComponent } from './component/global-message/global-message.component';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -87,6 +88,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     }
   ],
   bootstrap: [VirAppComponent],
-  declarations: [VirAppComponent, NavBarComponent]
+  declarations: [VirAppComponent, NavBarComponent, GlobalMessageComponent]
 })
 export class AppModule { }

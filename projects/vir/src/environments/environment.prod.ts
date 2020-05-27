@@ -36,5 +36,6 @@ export const environment = {
   disableAnalytics: true,
   waterbirdPairForm: 'MHL.65',
   waterbirdJuvenileForm: 'MHL.66',
-  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi',
+  globalMessageIds: {}
 };

@@ -1,0 +1,5 @@
+<div class="global-message" *ngIf="content.length > 0">
+  <ng-container *ngIf="!isCurrentPageClosed()">
+    <div class="global-message-inner" [innerHTML]="content"></div>
+  </ng-container>
+</div>

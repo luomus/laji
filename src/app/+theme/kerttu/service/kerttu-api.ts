@@ -51,7 +51,7 @@ export class KerttuApi {
   }
 
   public getNextLetterCandidate(personToken: string, templateId: number): Observable<ILetterCandidate> {
-    const path = this.basePath + '/letter/' + templateId + '/nextCandidate';
+    const path = this.basePath + '/letter/nextCandidate/' + templateId;
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })

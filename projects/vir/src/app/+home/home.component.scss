@@ -9,7 +9,7 @@
 .numbers {
   margin-top: 20px;
   font-size: $fs-5;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 10px;
 
   .total {
@@ -17,8 +17,13 @@
   }
 }
 
+h1 {
+  font-size: $fs-6;
+  font-weight: 600;
+}
+
 .species-banner, .iucn .row {
-  max-width: 1000px;
+  max-width: 600px;
 }
 .species-banner {
   display: flex;
