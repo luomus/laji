@@ -1,4 +1,4 @@
-<ng-container *ngIf="vm$ | async; let vm">
+<div *ngIf="vm$ | async; let vm" class="row">
   <laji-spinner [spinning]="vm.loading" [overlay]="true"></laji-spinner>
   <div style="margin-top: 20px;">
     <div [hidden]="!hasAlertContent">
@@ -49,4 +49,4 @@
         (submitPrivate)="submitPrivate()"
         (cancel)="onCancel()"></laji-document-form-footer>
     </div>
-</ng-container>
+</div>
