@@ -5,8 +5,8 @@ import { LajiUiModule } from '../../../../laji-ui/src/public-api';
 import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { NavigationThumbnailModule } from 'app/shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { SharedModule } from '../../../../../src/app/shared/shared.module';
+import { NavigationThumbnailModule } from '../../../../../src/app/shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 
 
 @NgModule({

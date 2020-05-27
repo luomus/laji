@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { FormList } from 'app/+haseka/form-list/haseka-form-list';
-import { FormService } from 'app/shared/service/form.service';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { FormList } from '../../../../../src/app/+haseka/form-list/haseka-form-list';
+import { FormService } from '../../../../../src/app/shared/service/form.service';
 
 interface State {
   monitoringForms: FormList[];
