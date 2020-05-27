@@ -42,5 +42,8 @@ export const environment = {
   apiBase: 'https://dev.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
-  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi',
+  globalMessageIds: {
+    '/': '2915'
+  }
 };
