@@ -110,7 +110,7 @@
     "jsonpath-plus": "^4.0.0",
     "jw-bootstrap-switch-ng2": "^2.0.5",
     "label-designer": "^4.0.2",
-    "laji-form": "^5.0.29",
+    "laji-form": "^5.1.1",
     "laji-map": "^3.0.14",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.7.3",
