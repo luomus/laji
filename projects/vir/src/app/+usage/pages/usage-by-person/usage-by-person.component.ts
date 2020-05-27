@@ -19,12 +19,14 @@ export class UsageByPersonComponent {
 
   constructor(
       private virOrganisationService: VirOrganisationService
-  ) {}
+  ) {
+    this.users$ = this.virOrganisationService.users$
+  }
 
   organizationSelect(org: string) {
     this.organisation = org;
     this.users$ = this.virOrganisationService.users$.pipe(
-      map(users => users.filter(u => u?.organisation.includes(org)))
+      map(users => org ? users.filter(u => u?.organisation.includes(org)) : users)
     );
   }
 }
