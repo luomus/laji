@@ -7,12 +7,12 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
-import { NamedPlacesService } from 'app/shared-modules/named-place/named-places.service';
 import { ThemeFormService } from '../theme-form.service';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { Form } from '../../../shared/model/Form';
 import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 import { BrowserService } from '../../../shared/service/browser.service';
+import { NamedPlacesService } from '../../../shared-modules/named-place/named-places.service';
 
 @Component({
   selector: 'laji-theme-form',

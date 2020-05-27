@@ -1,5 +1,5 @@
 import {
-  Component, ChangeDetectionStrategy, OnDestroy, OnInit, Input, Output,
+  Component, ChangeDetectionStrategy, OnDestroy, OnInit, Output,
   ChangeDetectorRef, Renderer2, ElementRef, AfterViewInit, EventEmitter, ViewChild
 } from '@angular/core';
 import { of, Subject } from 'rxjs';
@@ -8,8 +8,8 @@ import { NotificationsFacade } from './notifications.facade';
 import { NotificationDataSource } from './notification-data-source';
 import { TranslateService } from '@ngx-translate/core';
 import { Notification } from '../../model/Notification';
-import { DialogService } from 'app/shared/service/dialog.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { DialogService } from '../../service/dialog.service';
 
 @Component({
   selector: 'laji-notifications',

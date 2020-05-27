@@ -41,6 +41,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   };
   subscription: Subscription;
   timer: Observable<any>;
+  resultList: any[] = [];
 
  classification = [
    { data: 'phylumId', label: this.translate.instant('observation.label.phylum')},
@@ -84,7 +85,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
               this.onlyCount = value;
               this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
               this.loading = true;
-              this.updateClasses();
+              this.initializeArrays(this.resultList);
               this.cd.markForCheck();
             });
   }
@@ -94,8 +95,6 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
       this.updateClasses();
     }
   }
-
-
 
   private updateClasses() {
     if (this.dataClasses) {
@@ -110,9 +109,8 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     this.subLabelBarChart = [];
     this.subBackgroundColors = [];
     this.allBackgroundColors = [];
-
+    this.resultList = [];
     this.barChartData = [{ data: [], backgroundColor: [], label: this.translate.instant('all') }];
-
 
     this.loading = true;
       this.dataClasses = this.warehouseService.warehouseQueryAggregateGet(
@@ -122,7 +120,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         MAX_TAXA_SIZE,
         undefined,
         undefined,
-        this.onlyCount === null ? true : this.onlyCount ? true : false
+        false
       ).pipe(
         map(res => res.results),
         switchMap(res => {
@@ -138,6 +136,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         }),
         map(res => {
           return res.map(r => {
+            this.resultList.push(r);
             this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
             this.subBackgroundColors.push('#3498db');
             this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
@@ -145,21 +144,8 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         })
       )
       .subscribe(() => {
-        this.allDataBarChart = this.subDataBarChart;
-        this.allLabelBarChart = this.subLabelBarChart;
-        this.allBackgroundColors = this.subBackgroundColors;
-
-        this.subDataBarChart = this.subDataBarChart.slice(0, 10);
-        this.subLabelBarChart = this.subLabelBarChart.slice(0, 10);
-        this.subBackgroundColors = this.subBackgroundColors.slice(0, 10);
-
-        this.barChartData[0].data = this.subDataBarChart;
-        this.barChartData[0].backgroundColor = this.subBackgroundColors;
-        this.barChartLabels = this.subLabelBarChart;
-        this.initializeGraph();
-        this.cd.markForCheck();
+        this.createSubArrayChart();
         this.hasData.emit(this.allDataBarChart.length > 0);
-        this.loading = false;
       });
 
   }
@@ -245,6 +231,49 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
       break;
     }
   }
+
+  initializeArrays(list) {
+    this.barChartData = [];
+    this.barChartLabels = [];
+    this.allDataBarChart = [];
+    this.allLabelBarChart = [];
+    this.subDataBarChart = [];
+    this.subLabelBarChart = [];
+    this.subBackgroundColors = [];
+    this.allBackgroundColors = [];
+    this.barChartData = [{ data: [], backgroundColor: [], label: this.translate.instant('all') }];
+    this.fillDataGraph(list);
+  }
+
+  fillDataGraph(list) {
+    const field = this.onlyCount === null ? 'count' : this.onlyCount ? 'count' : 'individualCountSum';
+    list.sort((a, b) => (a[field] > b[field]) ? -1 : ((b[field] > a[field]) ? 1 : 0));
+    list.map(r =>  {
+      this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
+      this.subBackgroundColors.push('#3498db');
+      this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
+    });
+    this.createSubArrayChart();
+  }
+
+  createSubArrayChart() {
+    this.allDataBarChart = this.subDataBarChart;
+    this.allLabelBarChart = this.subLabelBarChart;
+    this.allBackgroundColors = this.subBackgroundColors;
+
+    this.subDataBarChart = this.subDataBarChart.slice(0, 10);
+    this.subLabelBarChart = this.subLabelBarChart.slice(0, 10);
+    this.subBackgroundColors = this.subBackgroundColors.slice(0, 10);
+
+    this.barChartData[0].data = this.subDataBarChart;
+    this.barChartData[0].backgroundColor = this.subBackgroundColors;
+    this.barChartLabels = this.subLabelBarChart;
+    this.initializeGraph();
+    this.cd.markForCheck();
+    this.loading = false;
+  }
+
+
 
   toggleOnlyCount() {
     this.onlyCount = !this.onlyCount;

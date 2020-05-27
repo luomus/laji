@@ -17,8 +17,6 @@ export class AnnotationListComponent implements OnInit {
   gathering: any[];
   hasTaxon: boolean;
 
-  annotationClass = Annotation.AnnotationClassEnum;
-
   constructor(
     private transation: TranslateService,
     private documentViewerFacade: DocumentViewerFacade

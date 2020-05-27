@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnDestroy, OnChanges,
 ChangeDetectionStrategy, OnInit, ChangeDetectorRef} from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Global } from '../../../../environments/global';
 
@@ -22,7 +21,6 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   annotationTagsObservation = Global.annotationTags;
 
   types = Annotation.TypeEnum;
-  annotationClass = Annotation.AnnotationClassEnum;
   changingLocale = false;
   lastFalse: number;
   hasNextTrue: boolean;

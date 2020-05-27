@@ -234,6 +234,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onMediaCheckBoxToggle(field, selectValue: any = true) {
+    this.mediaStatutes = this.query.hasUnitMedia ? ['hasUnitImages', 'hasUnitAudio'] :
+                        (this.query.hasUnitAudio ? ['hasUnitAudio'] : (this.query.hasUnitImages ? ['hasUnitImages'] : []));
       if (Array.isArray(field)) {
           if (selectValue === true) {
             this.query.hasUnitImages = undefined;

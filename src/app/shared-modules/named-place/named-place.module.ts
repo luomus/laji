@@ -19,11 +19,11 @@ import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module'
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { SearchFiltersModule } from '../search-filters/search-filters.module';
 import { TaxonAutocompleteModule } from '../taxon-autocomplete/taxon-autocomplete.module';
-import { FormPermissionModule } from 'app/+haseka/form-permission/form-permission.module';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 import { ClipboardModule } from 'ngx-clipboard';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/public-api';
 import { InfoModule } from '../info/info.module';
+import { FormPermissionModule } from '../../+haseka/form-permission/form-permission.module';
 
 @NgModule({
   providers: [],

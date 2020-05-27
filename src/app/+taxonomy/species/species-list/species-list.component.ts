@@ -27,7 +27,7 @@ import { Util } from '../../../shared/service/util.service';
 import { UserService } from '../../../shared/service/user.service';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { DownloadComponent } from '../../../shared-modules/download/download.component';
-import { WarehouseQueryInterface } from 'app/shared/model/WarehouseQueryInterface';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-species-list',

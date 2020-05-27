@@ -10,8 +10,8 @@ import { FormService } from '../../shared/service/form.service';
 import { map, take, switchMap } from 'rxjs/operators';
 import { Form } from '../../shared/model/Form';
 import { BrowserService } from '../../shared/service/browser.service';
-import { DocumentViewerFacade } from 'app/shared-modules/document-viewer/document-viewer.facade';
-import { Document } from 'app/shared/model/Document';
+import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
+import { Document } from '../../shared/model/Document';
 
 @Component({
   selector: 'laji-haseka-form',

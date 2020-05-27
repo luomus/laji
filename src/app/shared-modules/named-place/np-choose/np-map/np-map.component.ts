@@ -13,11 +13,11 @@ import {
 import { ExtendedNamedPlace } from '../../model/extended-named-place';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
-import { Logger } from 'app/shared/logger';
-import { LabelPipe } from 'app/shared/pipe';
-import { AreaNamePipe } from 'app/shared/pipe/area-name.pipe';
 import { NpInfoComponent } from '../../np-edit/np-info/np-info.component';
 import { NpInfoRow } from '../../np-edit/np-info/np-info-row/np-info-row.component';
+import { LabelPipe } from '../../../../shared/pipe';
+import { AreaNamePipe } from '../../../../shared/pipe/area-name.pipe';
+import { Logger } from '../../../../shared/logger';
 
 @Component({
   selector: 'laji-np-map',

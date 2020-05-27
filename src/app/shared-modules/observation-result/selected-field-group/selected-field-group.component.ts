@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ColumnSelector } from 'app/shared/columnselector/ColumnSelector';
+import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 
 @Component({
   selector: 'laji-selected-field-group',

@@ -1501,7 +1501,8 @@
   "form.participants.export.docCount":  "Dokumeträkning",
   "navigation.syke-butterfly": "SYKE riksomfattande dagfjärilsmonitoringen",
   "theme.syke-butterfly.intro": "SYKE riksomfattande dagfjärilsmonitoringen",
-
+  "navigation.glowWormForm": "Glödmaskform",
+  "theme.glowWormForm.intro":  "Glödmaskborgerprojekt",
   "saveObservations.h1": "Spara naturobservationer till FinBIF",
   "saveObservations.chooseSystem": "Välj det verktyget som passar dig bäst",
   "saveObservations.desc": "Genom att spara dina observationer i några av FinBIFs tjänster kan de användas av forskare och andra människor. Observationerna publiceras också på Laji.fi om du väljer det. Du kan lämna in enstaka observationer, underhålla din egen observationsskrivbok eller delta i medborgarvetenskapliga projekt.",

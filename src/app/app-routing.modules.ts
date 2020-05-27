@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
@@ -7,6 +7,8 @@ import { LocalizeGuard } from './locale/localize.guard';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { LocalizeInGuard } from './locale/localize-in.guard';
 import { CheckLoginGuard } from './shared/guards/check-login.guard';
+import { NgModule } from '@angular/core';
+import { QuicklinkStrategy } from 'ngx-quicklink';
 
 
 const baseRoutes: Routes = [
@@ -56,6 +58,7 @@ const routesWithLang: Routes = [
     {path: 'valio', redirectTo: '/en/theme/valio/instructions', pathMatch: 'full'},
     {path: 'syke-perhoset', redirectTo: '/en/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'pistelaskenta', redirectTo: '/en/theme/pistelaskenta/instructions', pathMatch: 'full'},
+    {path: 'kiiltomadot', redirectTo: '/en/theme/kiiltomadot/instructions', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
@@ -74,6 +77,7 @@ const routesWithLang: Routes = [
     {path: 'valio', redirectTo: '/sv/theme/valio/instructions', pathMatch: 'full'},
     {path: 'syke-perhoset', redirectTo: '/sv/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'pistelaskenta', redirectTo: '/sv/theme/pistelaskenta/instructions', pathMatch: 'full'},
+    {path: 'kiiltomadot', redirectTo: '/sv/theme/kiiltomadot/instructions', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
@@ -92,6 +96,7 @@ const routesWithLang: Routes = [
     {path: 'valio', redirectTo: '/theme/valio/instructions', pathMatch: 'full'},
     {path: 'syke-perhoset', redirectTo: '/theme/syke-perhoset/instructions', pathMatch: 'full'},
     {path: 'pistelaskenta', redirectTo: '/theme/pistelaskenta/instructions', pathMatch: 'full'},
+    {path: 'kiiltomadot', redirectTo: '/theme/kiiltomadot/instructions', pathMatch: 'full'},
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
@@ -109,3 +114,14 @@ const routesWithLang: Routes = [
 export const routes: Routes = [
   {path: '', children: routesWithLang, canActivate: [CheckLoginGuard]}
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, {
+    enableTracing: false,
+    preloadingStrategy: QuicklinkStrategy,
+    initialNavigation: 'enabled'
+  })],
+  exports: [RouterModule],
+  declarations: []
+})
+export class AppRoutingModule { }

@@ -29,12 +29,10 @@ export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Output() annotationPending = new EventEmitter<Object>();
 
   annotationVisible = false;
-  annotationClass$: Observable<string>;
   annotationIcon: string;
   annotations: Annotation[] = [];
   unitID: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
-  annotationClass = Annotation.AnnotationClassEnum;
   checkloading = {
     status: false,
     action: undefined
@@ -80,22 +78,7 @@ export class UnitAnnotationListComponent implements OnInit, OnDestroy {
       }
       this.unit.annotations = annotations;
     }
-    this.annotationClass$ = this.annotationService
-      .getAnnotationClassInEffect(annotations).pipe(
-      map(annotationClass => {
-        this.annotationIcon = annotationClass ? 'fa-comments' : 'fa-comment-o';
-        switch (annotationClass) {
-          case Annotation.AnnotationClassEnum.AnnotationClassUnreliable:
-          case Annotation.AnnotationClassEnum.AnnotationClassSuspicious:
-          case Annotation.AnnotationClassEnum.AnnotationClassSpam:
-            return 'btn-danger';
-          case Annotation.AnnotationClassEnum.AnnotationClassLikely:
-          case Annotation.AnnotationClassEnum.AnnotationClassReliable:
-            return 'btn-success';
-          default:
-            return 'btn-default';
-        }
-      }));
+
     if (this.unit.annotations) {
       this.annotations = this.unit.annotations.reverse();
     }

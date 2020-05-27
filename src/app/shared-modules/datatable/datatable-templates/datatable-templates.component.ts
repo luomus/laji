@@ -1,6 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { SYNONYM_KEYS } from '../../../+taxonomy/species/service/taxon-export.service';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-datatable-templates',
@@ -40,9 +41,9 @@ export class DatatableTemplatesComponent {
   @ViewChild('biogeographicalProvince', { static: true }) biogeographicalProvince: TemplateRef<any>;
   @ViewChild('taxonHabitats', { static: true }) taxonHabitats: TemplateRef<any>;
 
-  annotationClass = Annotation.AnnotationClassEnum;
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;
+  annotationTagsObservation = Global.annotationTags;
 
   constructor() { }
 

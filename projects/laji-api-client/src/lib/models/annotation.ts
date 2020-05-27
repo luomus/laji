@@ -35,7 +35,6 @@ export interface Annotation {
    * QName for KE.informationSystem
    */
   annotationBySystem?: string;
-  annotationClass?: Annotation.AnnotationClassEnum;
   byRole?: Annotation.RoleEnum;
   censusAnnotation?: Array<string>;
   /**
@@ -67,23 +66,6 @@ export interface Annotation {
 }
 
 export namespace Annotation {
-  export type AnnotationClassEnum =
-    'MAN.annotationClassReliable'
-    | 'MAN.annotationClassLikely'
-    | 'MAN.annotationClassNeutral'
-    | 'MAN.annotationClassSuspicious'
-    | 'MAN.annotationClassUnreliable'
-    | 'MAN.annotationClassAcknowledged'
-    | 'MAN.annotationClassSpam';
-  export const AnnotationClassEnum = {
-    AnnotationClassReliable: 'MAN.annotationClassReliable' as AnnotationClassEnum,
-    AnnotationClassLikely: 'MAN.annotationClassLikely' as AnnotationClassEnum,
-    AnnotationClassNeutral: 'MAN.annotationClassNeutral' as AnnotationClassEnum,
-    AnnotationClassSuspicious: 'MAN.annotationClassSuspicious' as AnnotationClassEnum,
-    AnnotationClassUnreliable: 'MAN.annotationClassUnreliable' as AnnotationClassEnum,
-    AnnotationClassAcknowledged: 'MAN.annotationClassAcknowledged' as AnnotationClassEnum,
-    AnnotationClassSpam: 'MAN.annotationClassSpam' as AnnotationClassEnum
-  };
   export type RoleEnum = 'MMAN.expert' | 'MMAN.basic' | 'MMAN.owner';
   export const RoleEnum = {
     Expert: 'MMAN.expert' as RoleEnum,

@@ -8,17 +8,17 @@
     "lib": [
       "es2016"
     ],
-    "outDir": "../out-tsc/spec",
+    "outDir": "./out-tsc/spec",
     "module": "esnext",
     "target": "es6",
-    "baseUrl": "",
+    "baseUrl": "tsconfig.spec",
     "types": [
       "jasmine",
       "node"
     ]
   },
   "files": [
-    "test.ts",
+    "src/test.ts",
     "polyfills.ts"
   ],
   "include": [

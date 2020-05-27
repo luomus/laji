@@ -1,0 +1,33 @@
+<div class="col-xs-12" *ngIf="isAdmin && placesDiff"><h3>Reitin muutokset</h3></div>
+<div class="col-xs-12" *ngIf="isAdmin && otherDiff">
+  Vihreällä värillä ovat uudet, punaisella poistuneet ja sinisellä muuttuneet arvot.
+  <table class="table table-sm">
+    <tbody *ngFor="let diff of otherDiff">
+      <tr [ngClass]="{'bg-success': diff.kind === 'N', 'bg-danger': diff.kind === 'D', 'bg-info': diff.kind === 'E' || diff.kind === 'A'}">
+        <th>
+          {{ diff.path.join('.') }} :
+        </th>
+        <td>
+          <ng-container *ngIf="diff.kind === 'N' || diff.kind === 'D'"> {{ (diff.rhs || diff.lhs) | label }}</ng-container>
+          <ng-container *ngIf="diff.kind === 'E'"> {{ diff.lhs | label }} ➞ {{ diff.rhs | label }}</ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div *ngIf="isAdmin && placesDiff" class="col-xs-12" style="padding-bottom: 5px;">
+  <div class="btn-group" role="group" *ngIf="isAdmin && geometriesDiff" >
+    <button type="button"
+            (click)="setActiveDocument('document')"
+            class="btn btn-sm btn-default {{activeDocument === 'document' ? 'active' : ''}}">Näytä tämän laskennan reitti</button>
+    <button type="button"
+            (click)="setActiveDocument('acceptedDocument')"
+            class="btn btn-sm btn-default {{activeDocument !== 'document' ? 'active' : ''}}">Näytä viimeksi hyväksytty reitti</button>
+  </div>
+  <button type="button"
+          (click)="acceptNamedPlaceChanges()"
+          class="btn btn-sm btn-success">Hyväksy muutokset</button>
+</div>
+<div class="col-xs-12" [style.height.px]="1000" [style.display]="isAdmin && geometriesDiff ? 'block' : 'none'">
+  <laji-map [options]="lajiMapOptions" [data]="data" (loaded)="onMapLoad()"></laji-map>
+</div>
