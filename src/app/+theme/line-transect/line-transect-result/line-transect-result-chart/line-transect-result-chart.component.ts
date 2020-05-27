@@ -11,6 +11,7 @@ import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { tooltip } from 'leaflet';
 
 @Component({
   selector: 'laji-line-transect-result-chart',
@@ -58,7 +59,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     elements: {
       line: {
           tension: 0,
-          borderWidth: 2,
+          borderWidth: 1.5,
           backgroundColor: 'rgb(70,130,180)',
           borderColor: 'rgb(70,130,180)'
       },
@@ -70,19 +71,57 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     tooltips: {
       mode: 'index',
       position: 'cursor',
-      intersect: false,
-      callbacks: {
-        title: function(tooltipItem, data) {
-          return '';
-        },
-        label: function(tooltipItem, data) {
-            return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
-        }
-      }
+      intersect: false
     },
     hover: {
       mode: 'index',
-      intersect: false
+      intersect: false,
+      onHover: function (e, element) {
+        if (element[0]) {
+          element[0]['_chart'].tooltip._options.callbacks.label = function (tooltipItem, data) {
+            const range = (start, end, step) => {
+              return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+            };
+            const activePoint = element[0]['_chart'].tooltip._active[0];
+            const x = Number((activePoint.tooltipPosition().x).toFixed(0));
+            const y = Number((activePoint.tooltipPosition().y).toFixed(0));
+
+          if ( range(x - 6, x + 6, 1).indexOf(e['layerX']) !== -1 && range(y - 6, y + 6, 1).indexOf(e['layerY']) !== -1) {
+            return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
+          } else {
+            return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
+            }
+          };
+          element[0]['_chart'].tooltip._options.callbacks.title = function (tooltipItem, data) {
+            const range = (start, end, step) => {
+              return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+            };
+            const activePoint = element[0]['_chart'].tooltip._active[0];
+            const x = Number((activePoint.tooltipPosition().x).toFixed(0));
+            const y = Number((activePoint.tooltipPosition().y).toFixed(0));
+
+          if ( range(x - 6, x + 6, 1).indexOf(e['layerX']) !== -1 && range(y - 6, y + 6, 1).indexOf(e['layerY']) !== -1) {
+            return '' + tooltipItem[0].xLabel + ' · ' + 'Parim./Km';
+          } else {
+            return '';
+          }
+          };
+        }
+      }
+    },
+    scales: {
+      yAxes: [{
+        scaleLabel: {
+          display : true,
+          labelString: 'Parim./km'
+        }
+      }],
+      xAxes: [{
+        scaleLabel: {
+          display : true,
+          labelString: 'Vuodet'
+        }
+      }]
     },
     plugins: {
       datalabels: {
