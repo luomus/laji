@@ -64,11 +64,12 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       },
       point: {
         radius: 0,
-        hitRadius: 3
+        hitRadius: 6
       }
     },
     tooltips: {
       mode: 'index',
+      position: 'cursor',
       intersect: false,
       callbacks: {
         title: function(tooltipItem, data) {
@@ -86,7 +87,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     plugins: {
       datalabels: {
         display: false
-      },
+      }
     }
   };
   public lineChartColors: Color[] = [
@@ -122,18 +123,38 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
           const activePoint = this.chart.tooltip._active[0];
           const ctx = this.chart.ctx;
-          const x = activePoint.tooltipPosition().x;
+          const x = Number((activePoint.tooltipPosition().x).toFixed(0));
+          const y = Number((activePoint.tooltipPosition().y).toFixed(0));
           const topY = this.chart.legend.bottom;
           const bottomY = this.chart.chartArea.bottom;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+          gradient.addColorStop(0, 'rgba(70,130,180,1)');
+          gradient.addColorStop(0.8, 'rgba(70,130,180,0.1)');
+          const range = (start, end, step) => {
+            return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+          };
+          const rangeX = range(x - 6, x + 6, 1);
 
-          ctx.save();
-          ctx.beginPath();
-          ctx.moveTo(x, topY);
-          ctx.lineTo(x, bottomY);
-          ctx.lineWidth = 0.5;
-          ctx.strokeStyle = '#000';
-          ctx.stroke();
-          ctx.restore();
+          if (range(x - 6, x + 6, 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
+          range(y - 6, y + 6, 1).indexOf(this.chart.tooltip._eventPosition.y) === -1) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x, topY);
+            ctx.lineTo(x, bottomY);
+            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = '#000';
+            ctx.stroke();
+            ctx.restore();
+          } else {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, bottomY);
+            ctx.lineWidth = 9;
+            ctx.strokeStyle = gradient;
+            ctx.stroke();
+            ctx.restore();
+          }
         }
       }
     });
@@ -279,18 +300,21 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
           // Create Gradient Color
           const ctx = chart.ctx;
-          /*this.gradient = ctx.createLinearGradient(0, 0, 0, 450);
-          this.gradient.addColorStop(0, "rgba(70, 130, 180, 0.10)");
-          this.gradient.addColorStop(0.5, "#fff");*/
-          if (chart.tooltip._active && chart.tooltip._active.length) {
+
+          if (
+            (this.between(e.event.layerX, (chart.tooltip._eventPosition.x + 10), (chart.tooltip._eventPosition.x - 10)) &&
+            this.between(e.event.layerY, (chart.tooltip._eventPosition.y + 10), (chart.tooltip._eventPosition.y - 10))) ) {
             this.lineChartColors[0].backgroundColor = 'rgba(70, 130, 180, 0.10)';
-            chart.options.elements.point.hoverRadius = 6;
           }
         } else {
           this.lineChartColors[0].backgroundColor = 'rgb(255,255,255,0)';
-          chart.options.elements.point.hoverRadius = 3;
         }
        }
+  }
+
+  between(value, first, last) {
+    const lower = Math.min(first, last) , upper = Math.max(first, last);
+    return value >= lower &&  value <= upper ;
   }
 
   private fromYearToYearMonth(year) {
