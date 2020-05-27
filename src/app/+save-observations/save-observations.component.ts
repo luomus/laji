@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SaveObservationsFacade } from './save-observations.facade';
 import { Observable } from 'rxjs';
-import { FormList } from '../+haseka/form-list/haseka-form-list';
 import { environment } from '../../environments/environment';
+import { FormList } from '../+haseka/form-list/haseka-form-list.interface';
 
 @Component({
   templateUrl: `./save-observations.component.html`,
