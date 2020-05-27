@@ -10,10 +10,6 @@
       *ngIf="!hasPersonalData"
       [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
     </p>
-    <ng-container *lajiForTypes="['vir']">
-      <label for="reason">{{ 'download.reason' | translate }}</label>
-      <textarea class="form-control" id="reason" [(ngModel)]="reason"></textarea>
-    </ng-container>
     <section>
       <h3>{{ 'result.load.titleSimple' | translate }}</h3>
       <alert *ngIf="maxSimpleDownload < unitCount || unitCount === 0; else simpleDownloadTpl">
@@ -23,7 +19,7 @@
         <p [innerHTML]="'result.load.introSimple' | translate"></p>
         <div class="action-group">
           <laji-download
-            *lajiForTypes="['vir']; exclude: true"
+            *lajiForTypes="['prod', 'dev', 'embedded']"
             role="primary"
             [showBackdrop]="false"
             (download)="simpleDownload($event)"
@@ -34,7 +30,7 @@
           <laji-download
             *lajiForTypes="['vir']"
             role="primary"
-            [disabled]="!reason"
+            [showReason]="true"
             [showBackdrop]="false"
             [(reason)]="reason"
             (download)="simpleDownload($event)"
@@ -70,15 +66,15 @@
           </alert>
           <ng-container *lajiForTypes="['vir']">
             <lu-button
-                [disabled]="!reason || requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
-                (click)="makePublicRequest(true)">
+              [disabled]="!reason || requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
+              (click)="makePublicRequest(true)">
               {{ 'observation.download.loadPublic' | translate }}
             </lu-button>
           </ng-container>
           <ng-container *lajiForTypes="['vir']; exclude:true">
             <lu-button
-                [disabled]="requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
-                (click)="makePublicRequest()">
+              [disabled]="requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
+              (click)="makePublicRequest()">
               {{ 'observation.download.loadPublic' | translate }}
             </lu-button>
           </ng-container>
