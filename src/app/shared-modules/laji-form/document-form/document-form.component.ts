@@ -47,6 +47,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   status = '';
   saveVisibility = 'hidden';
   isAdmin = false;
+  validationErrors: any;
 
   private subErrors: Subscription;
   private subSaving: Subscription;
@@ -152,6 +153,10 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   submitPrivate() {
     this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
     this.lajiForm.submit();
+  }
+
+  onValidationError(errors) {
+    this.validationErrors = errors;
   }
 
   private errorHandling(vm: ILajiFormState) {

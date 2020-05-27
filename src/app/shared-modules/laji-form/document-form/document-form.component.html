@@ -34,12 +34,16 @@
         [settingsKey]="formId"
         [showShortcutButton]="showShortcutButton"
         (dataChange)="onChange($event)"
-        (dataSubmit)="onSubmit($event)"></laji-form>
+        (dataSubmit)="onSubmit($event)"
+        (validationError)="onValidationError($event)"
+      ></laji-form>
       <laji-document-form-footer
         [form]="vm.form"
         [status]="status"
         [readonly]="vm.form.readonly"
         [edit]="documentId"
+        [errors]="validationErrors"
+        [lajiForm]="lajiForm"
         (lock)="lock($event)"
         (submitPublic)="submitPublic()"
         (submitPrivate)="submitPrivate()"
