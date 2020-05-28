@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { FormList } from '../../+haseka/form-list/haseka-form-list';
 import { Global } from '../../../environments/global';
+import { FormList } from '../../+haseka/form-list/haseka-form-list.interface';
 
 @Component({
   selector: 'laji-survey-box',

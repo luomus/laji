@@ -23,6 +23,7 @@ export const environment = {
   valioForm: 'MHL.57',
   birdPointCountForm: 'MHL.75',
   sykeButterflyForm: 'MHL.59',
+  glowWormForm: 'MHL.79',
   saveObservations: {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.51', 'MHL.25'],
     birdMonitoringForms: ['MHL.1', 'MHL.3'],
@@ -36,5 +37,8 @@ export const environment = {
   disableAnalytics: true,
   waterbirdPairForm: 'MHL.65',
   waterbirdJuvenileForm: 'MHL.66',
-  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi',
+  globalMessageIds: {
+    '/': '2915'
+  }
 };

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { FormList } from '../+haseka/form-list/haseka-form-list';
 import { FormService } from '../shared/service/form.service';
+import { FormList } from '../+haseka/form-list/haseka-form-list.interface';
 
 interface State {
   citizenScienceForms: FormList[];

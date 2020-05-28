@@ -1,0 +1,22 @@
+@import 'vars';
+
+:host {
+  display: block;
+
+  background-color: $primary-2;
+  border-bottom: 1px solid $primary-3;
+
+  color: $primary-8;
+}
+
+.global-message {
+  padding-top: 15px;
+  cursor: pointer;
+  &:hover {
+    background-color: lighten($primary-2, 1%);
+  }
+}
+
+.global-message-inner {
+  padding: 10px 40px;
+}

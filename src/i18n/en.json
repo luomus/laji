@@ -318,6 +318,7 @@
   "haseka.users.unsaved": "Unsaved submissions",
   "haseka.users.unsaved.doc": "Unsaved submission",
   "haseka.form.readonly": "You don't have permission to edit",
+  "haseka.form.hasOnlyWarnings": "Check the warnings",
   "haseka.terms.mobileFormDismiss": "Accept and record observations",
   "haseka.mobile.newObservation": "New observation",
   "haseka.mobile.ownSubmissions": "Previous observations",

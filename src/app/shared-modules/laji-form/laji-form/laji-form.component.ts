@@ -37,6 +37,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   @Output() dataSubmit = new EventEmitter();
   @Output() dataChange = new EventEmitter();
+  @Output() validationError = new EventEmitter();
 
   private lajiFormWrapper: any;
   private lajiFormWrapperProto: any;
@@ -113,6 +114,10 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
+  popErrorListIfNeeded() {
+    this.lajiFormWrapper.app.refs.lajiform.popErrorListIfNeeded();
+  }
+
   private mount() {
     if (!this.formData || !this.formData.formData) {
       return;
@@ -166,6 +171,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           onSubmit: this._onSubmit.bind(this),
           onChange: this._onChange.bind(this),
           onSettingsChange: this._onSettingsChange.bind(this),
+          onValidationError: this._onValidationError.bind(this),
           settings: this.settings,
           apiClient: this.apiClient,
           lang: this.translate.currentLang,
@@ -215,6 +221,12 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private _onError(error, info) {
     this.logger.error('LajiForm crashed', {error, reactInfo: info, userSettings: this.settings});
     this.errorModal.show();
+  }
+
+  private _onValidationError(errors) {
+    this.ngZone.run(() => {
+      this.validationError.emit(errors);
+    });
   }
 
   private unMount() {

@@ -1,4 +1,4 @@
-<div class="row form-header" *ngIf="form">
+<div class="form-header" *ngIf="form">
   <div class="form-logo pull-right" *ngIf="form.logo">
     <img src="{{form.logo}}">
   </div>
@@ -30,8 +30,8 @@
     |
   </span>
   <a *ngIf="!form.options || !form.options.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
-  <alert *ngIf="editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: formatDate(formData.dateCreated)} }}</alert>
 </div>
+<alert *ngIf="editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: formatDate(formData.dateCreated)} }}</alert>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
   <div class="col-sm-12">
     <h4><span *ngFor="let field of namedPlaceHeader; let last = last">{{ field | async }}{{ !last ? ', ' : '' }}</span></h4>

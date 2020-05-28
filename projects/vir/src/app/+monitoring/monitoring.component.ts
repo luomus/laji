@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MonitoringFacade } from './monitoring.facade';
 import { Observable } from 'rxjs';
-import { FormList } from 'app/+haseka/form-list/haseka-form-list';
 import { Global } from '../../environments/global';
+import { FormList } from '../../../../../src/app/+haseka/form-list/haseka-form-list.interface';
 
 @Component({
   selector: 'vir-monitoring',

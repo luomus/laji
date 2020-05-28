@@ -1,4 +1,4 @@
-<ng-container *ngIf="vm$ | async; let vm">
+<div *ngIf="vm$ | async; let vm" class="row">
   <laji-spinner [spinning]="vm.loading" [overlay]="true"></laji-spinner>
   <div style="margin-top: 20px;">
     <div [hidden]="!hasAlertContent">
@@ -34,15 +34,19 @@
         [settingsKey]="formId"
         [showShortcutButton]="showShortcutButton"
         (dataChange)="onChange($event)"
-        (dataSubmit)="onSubmit($event)"></laji-form>
+        (dataSubmit)="onSubmit($event)"
+        (validationError)="onValidationError($event)"
+      ></laji-form>
       <laji-document-form-footer
         [form]="vm.form"
         [status]="status"
         [readonly]="vm.form.readonly"
         [edit]="documentId"
+        [errors]="validationErrors"
+        [lajiForm]="lajiForm"
         (lock)="lock($event)"
         (submitPublic)="submitPublic()"
         (submitPrivate)="submitPrivate()"
         (cancel)="onCancel()"></laji-document-form-footer>
     </div>
-</ng-container>
+</div>

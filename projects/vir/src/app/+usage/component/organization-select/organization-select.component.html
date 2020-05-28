@@ -1,5 +1,5 @@
 <select class="form-control" (change)="select.emit($event.target.value)">
-  <option value="">{{ 'select.organisation' | translate }}</option>
+  <option value="">{{ 'all' | translate }}</option>
   <option *ngFor="let organisation of organisations$ | async" [value]="organisation">
     {{ organisation }}
   </option>

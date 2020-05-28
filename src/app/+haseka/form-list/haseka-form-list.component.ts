@@ -11,19 +11,10 @@ import { Person } from '../../shared/model/Person';
 import { environment } from '../../../environments/environment';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { LatestDocumentsFacade } from '../../shared-modules/latest-documents/latest-documents.facade';
+import { FormCategory, FormList } from './haseka-form-list.interface';
 
 
 const DEFAULT_CATEGORY = 'MHL.categoryGeneric';
-
-export interface FormList extends Form.List {
-  hasAdminRight: boolean;
-}
-
-interface FormCategory {
-  forms: FormList[];
-  category: string;
-  label: string;
-}
 
 @Component({
   selector: 'laji-haseka-form-list',

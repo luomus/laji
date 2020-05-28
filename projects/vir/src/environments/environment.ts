@@ -33,6 +33,7 @@ export const environment = {
   valioForm: 'MHL.57',
   birdPointCountForm: 'MHL.75',
   sykeButterflyForm: 'MHL.59',
+  glowWormForm: 'MHL.79',
   saveObservations: {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
     birdMonitoringForms: ['MHL.1', 'MHL.65', 'MHL.3', 'MHL.75'],
@@ -41,5 +42,8 @@ export const environment = {
   apiBase: 'https://dev.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
-  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi',
+  globalMessageIds: {
+    '/': '2915'
+  }
 };

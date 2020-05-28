@@ -16,7 +16,7 @@ import { FormCategoryComponent } from './form-list/form-category/form-category.c
 import { FormCategorySurveyComponent } from './form-list/form-category-survey/form-category-survey.component';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { HasekaComponent } from './haseka.component';
-import { HaSeKaFormListComponent } from './form-list/haseka-form-list';
+import { HaSeKaFormListComponent } from './form-list/haseka-form-list.component';
 import { routing } from './haseka.routes';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';

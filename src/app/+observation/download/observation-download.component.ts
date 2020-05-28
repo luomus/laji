@@ -68,6 +68,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   description = '';
   csvParams = '';
   reason = '';
+  reasonEnum = '';
   columnSelector = new ColumnSelector;
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
@@ -258,7 +259,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       this.translate.currentLang,
       true,
       environment.type === Global.type.vir,
-      this.reason
+      [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
     ).subscribe(

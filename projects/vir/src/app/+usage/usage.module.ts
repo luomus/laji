@@ -13,6 +13,7 @@ import { LangModule } from '../../../../../src/app/shared-modules/lang/lang.modu
 import { DataTableComponent } from './component/data-table/data-table.component';
 import { DatatableModule } from '../../../../../src/app/shared-modules/datatable/datatable.module';
 import { LajiUiModule } from '../../../../laji-ui/src/lib/laji-ui.module';
+import { InfoPageModule } from '../../../../../src/app/shared-modules/info-page/info-page.module';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { LajiUiModule } from '../../../../laji-ui/src/lib/laji-ui.module';
     LangModule,
     ReactiveFormsModule,
     DatatableModule,
-    LajiUiModule
+    LajiUiModule,
+    InfoPageModule
   ]
 })
 export class UsageModule { }
