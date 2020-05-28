@@ -44,6 +44,9 @@ export const environment = {
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
   globalMessageIds: {
-    '/': '2915'
+    '\/observation.*': '3999',
+    '\/taxon\/.*\/taxonomy': '4011',
+    '\/taxon\/.*': '3995',
+    '\/taxon.*': '3997',
   }
 };

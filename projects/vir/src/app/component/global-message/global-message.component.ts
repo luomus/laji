@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, HostBinding, HostListener } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, HostBinding, HostListener, Input, AfterViewInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, takeUntil, switchMap, map, tap } from 'rxjs/operators';
-import { Subject, of } from 'rxjs';
+import { Subject, of, Observable } from 'rxjs';
 import { LajiApiService, LajiApi } from 'src/app/shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
@@ -15,10 +15,11 @@ import { environment } from '../../../environments/environment';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GlobalMessageComponent implements OnInit, OnDestroy {
+export class GlobalMessageComponent implements OnDestroy, OnInit {
   private unsubscribe$ = new Subject();
 
   content: string;
+  currentMessageId: string;
 
   @LocalStorage('globalMessageClosed', {}) globalMessageClosed;
 
@@ -29,7 +30,11 @@ export class GlobalMessageComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       filter(event => event instanceof NavigationEnd),
       switchMap((event: NavigationEnd) => {
-        const id = environment.globalMessageIds[event.url];
+        const idx = Object.keys(environment.globalMessageIds).findIndex(
+          key => event.url.match(key)
+        );
+        const id = Object.values(environment.globalMessageIds)[idx];
+        this.currentMessageId = id;
         if (id) {
           return this.api.get(LajiApi.Endpoints.information, id, {lang: this.translate.currentLang}).pipe(
             map(res => res.content)
@@ -50,18 +55,18 @@ export class GlobalMessageComponent implements OnInit, OnDestroy {
   }
 
   isCurrentPageClosed() {
-    return this.globalMessageClosed[this.router.url];
+    return this.currentMessageId ? this.globalMessageClosed[this.currentMessageId] : false;
   }
 
   private close() {
     this.globalMessageClosed = {
-      ...this.globalMessageClosed, [this.router.url]: true
+      ...this.globalMessageClosed, [this.currentMessageId]: true
     };
   }
 
   private open() {
     this.globalMessageClosed = {
-      ...this.globalMessageClosed, [this.router.url]: false
+      ...this.globalMessageClosed, [this.currentMessageId]: false
     };
   }
 
