@@ -1,11 +1,5 @@
 @import 'vars';
 
-:host {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
 .numbers {
   margin-top: 20px;
   font-size: $fs-5;

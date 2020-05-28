@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'vir-usage',
   template: `
-    <div class="container">
+    <div class="container-fluid">
       <h1>{{'navigation.usage' | translate}}</h1>
       <lu-message class="mb-8">
         <laji-info-page rootPage="4001"></laji-info-page>
