@@ -29,6 +29,7 @@ export const environment = {
     birdMonitoringForms: ['MHL.1', 'MHL.3'],
     researchProjects: ['MHL.33', 'MHL.50', 'MHL.57']
   },
+  rootCollections: ['HR.128'],
   loginUrl: '/user/viranomaiset',
   selfPage: 'https://login.laji.fi/self',
   apiBase: '/api',

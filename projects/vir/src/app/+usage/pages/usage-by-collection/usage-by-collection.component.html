@@ -3,9 +3,9 @@
   <lu-message class="mb-8">
     <laji-info-page rootPage="4005"></laji-info-page>
   </lu-message>
-  <vir-organization-select></vir-organization-select>
+  <vir-collection-select (select)="collectionSelect($event)"></vir-collection-select>
   <vir-data-table
           [data]="downloadRequests$ | async"
-          (rowSelect)="select($event)"
+          (rowSelect)="onRowClick($event)"
           type="downloads"></vir-data-table>
 </div>
