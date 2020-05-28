@@ -32,6 +32,7 @@
             role="primary"
             [showReason]="true"
             [showBackdrop]="false"
+            [(reasonEnum)]="reasonEnum"
             [(reason)]="reason"
             (download)="simpleDownload($event)"
             [downloadLoading]="downloadLoading">
@@ -65,11 +66,16 @@
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
           <ng-container *lajiForTypes="['vir']">
+            <lu-message type="danger">
+              <strong>Huom:</strong> Tämä palvelu on vielä keskeneräinen ja julkaistaan valmistuttuaan!
+            </lu-message>
+            <!--
             <lu-button
               [disabled]="!reason || requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
               (click)="makePublicRequest(true)">
               {{ 'observation.download.loadPublic' | translate }}
             </lu-button>
+            -->
           </ng-container>
           <ng-container *lajiForTypes="['vir']; exclude:true">
             <lu-button
