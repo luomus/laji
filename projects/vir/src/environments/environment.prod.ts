@@ -38,5 +38,10 @@ export const environment = {
   waterbirdPairForm: 'MHL.65',
   waterbirdJuvenileForm: 'MHL.66',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
-  globalMessageIds: {}
+  globalMessageIds: {
+    '\/observation.*': '3999',
+    '\/taxon\/.*\/taxonomy': '4011',
+    '\/taxon\/.*': '3995',
+    '\/taxon.*': '3997',
+  }
 };
