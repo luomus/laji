@@ -11,7 +11,8 @@ export interface IDownloadRequest {
   source: string;
   person: string;
   dataUsePurpose: string;
-  collectionId: string;
+  collectionId: string[];
+  rootCollections: string[];
 }
 
 @Injectable({providedIn: 'root'})

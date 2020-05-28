@@ -1,6 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { Observable } from 'rxjs';
+import { PlatformService } from '../../../../../../../src/app/shared/service/platform.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'vir-usage-by-collection',
@@ -11,12 +13,22 @@ import { Observable } from 'rxjs';
 export class UsageByCollectionComponent {
   downloadRequests$: Observable<IDownloadRequest[]>;
   constructor(
-      private virDownloadRequestsService: VirDownloadRequestsService
+      private virDownloadRequestsService: VirDownloadRequestsService,
+      private platformService: PlatformService
   ) {
     this.downloadRequests$ = this.virDownloadRequestsService.findDownloadRequests();
   }
 
-  select(event: any) {
-    // TODO: open modal to...
+  collectionSelect(col: string) {
+    this.downloadRequests$ = this.virDownloadRequestsService.findDownloadRequests().pipe(
+      map(downloads => col ? downloads.filter(d => d?.rootCollections.includes(col)) : downloads)
+    );
+  }
+
+  onRowClick(event: any) {
+    if (this.platformService.isBrowser) {
+      console.log(event);
+      window.open('http://tun.fi/' + (event.row.id.replace('http://tun.fi/', '')), "_blank");
+    }
   }
 }

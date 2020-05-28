@@ -878,6 +878,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/vir/src/environments/environment.ts",
+                  "with": "projects/vir/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -910,6 +914,10 @@
                 }
               ],
               "fileReplacements": [
+                {
+                  "replace": "projects/vir/src/environments/environment.ts",
+                  "with": "projects/vir/src/environments/environment.dev.ts"
+                },
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.dev.ts"
