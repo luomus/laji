@@ -18,7 +18,7 @@ import { environment } from '../../../environments/environment';
 export class GlobalMessageComponent implements OnDestroy, OnInit {
   private unsubscribe$ = new Subject();
 
-  content: string;
+  message: any;
   currentMessageId: string;
 
   @LocalStorage('globalMessageClosed', {}) globalMessageClosed;
@@ -36,15 +36,13 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
         const id = Object.values(environment.globalMessageIds)[idx];
         this.currentMessageId = id;
         if (id) {
-          return this.api.get(LajiApi.Endpoints.information, id, {lang: this.translate.currentLang}).pipe(
-            map(res => res.content)
-          );
+          return this.api.get(LajiApi.Endpoints.information, id, {lang: this.translate.currentLang});
         } else {
-          return of('');
+          return of(undefined);
         }
       })
-    ).subscribe((str: string) => {
-      this.content = str;
+    ).subscribe((msg: any) => {
+      this.message = msg;
       this.cdr.markForCheck();
     });
   }
