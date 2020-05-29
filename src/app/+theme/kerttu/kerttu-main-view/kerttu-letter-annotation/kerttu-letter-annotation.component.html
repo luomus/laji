@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-md-12">
-    <h2>Kirjain {{ template?.name }}</h2>
+    <h2><laji-taxon-name [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name></h2>
     <div>
-      <span>Laji: <laji-taxon-name [taxon]="taxon$ | async"></laji-taxon-name></span>
+      <span>Kirjain: {{ template?.name }}</span>
       <br>
       <span>Tunnistuksia tehty: {{ letterAnnotationCount }}/{{ template?.targetAnnotationCount }}</span>
       <br>

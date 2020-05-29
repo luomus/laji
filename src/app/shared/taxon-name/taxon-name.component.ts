@@ -24,6 +24,7 @@ export class TaxonNameComponent {
   @Input() addAuthor = false;
   @Input() warningOnMissingTaxonID = false;
   @Input() showScientificNameFirst = false;
+  @Input() capitalizeName = false;
 
   constructor(private translate: TranslateService) {}
 
