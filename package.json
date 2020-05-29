@@ -158,6 +158,7 @@
     "@types/redlock": "^3.0.6",
     "@types/underscore": "1.8.9",
     "chart.js": "^2.9.3",
+    "chartjs-chart-treemap": "^0.2.3",
     "chartjs-plugin-annotation": "^0.5.7",
     "codelyzer": "^5.1.2",
     "globby": "^11.0.0",

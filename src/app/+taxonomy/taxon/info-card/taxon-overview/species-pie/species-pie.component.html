@@ -1,6 +1,6 @@
 <div *ngIf="data && data.length > 0" style="margin-top: 20px">
   <div class="info-card-chart">
-    <ngx-charts-tree-map
+    <!--<ngx-charts-tree-map
       [results]="data"
       [labelFormatting]="labelFormatting"
       [valueFormatting]="valueFormatting"
@@ -19,7 +19,15 @@
           <ng-container *ngIf="model.value !== 1"> {{ 'taxonomy.species' | translate }}</ng-container>
         </span>
       </ng-template>
-    </ngx-charts-tree-map>
+    </ngx-charts-tree-map>-->
+    <laji-chart #lineChart
+    [datasets]="lineChartData"
+    [labels]="lineChartLabels"
+    [options]="lineChartOptions"
+    [legend]="false"
+    [plugins]="lineChartPlugins"
+    chartType="treemap"
+  ></laji-chart>
   </div>
   <span>
     {{ 'taxonomy.total' | translate }} {{ total }}

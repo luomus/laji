@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewCh
 import { BaseChartDirective, Color, Label, PluginServiceGlobalRegistrationAndOptions, SingleOrMultiDataSet } from 'ng2-charts';
 import * as chartJs from 'chart.js';
 import { WINDOW } from '@ng-toolkit/universal';
+import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
 
 @Component({
   selector: 'laji-chart',

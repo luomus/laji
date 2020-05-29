@@ -72,13 +72,15 @@ import { TableColumnService } from '../shared-modules/datatable/service/table-co
 import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
 import { TaxonYlestaFieldsComponent } from './taxon/info-card/shared/component/taxon-ylesta-fields/taxon-ylesta-fields.component';
 import { TechnicalNewsModule } from 'app/shared-modules/technical-news/technical-news.module';
+import { ChartModule } from 'app/shared-modules/chart/chart.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
-    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule, TechnicalNewsModule
+    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule, TechnicalNewsModule,
+    ChartModule
   ],
   providers: [
     TaxonomyApi,
