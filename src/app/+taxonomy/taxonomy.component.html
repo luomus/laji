@@ -1,19 +1,12 @@
-<header class="mb-6">
+<header class="mb-5">
   <div class="container-fluid">
     <ng-container *lajiForTypes="['vir']; exclude: true">
       <h1 translate>species.search</h1>
       <h2 translate>species.title.short</h2>
       <p translate>species.title.long</p>
     </ng-container>
-    <ng-container *lajiForTypes="['vir']">
-      <h1 translate>vir.taxonomyHeader.title</h1>
-    </ng-container>
     <laji-technical-news></laji-technical-news>
-    <div class="row">
-      <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
-        <laji-omni-search [placeholder]="'species.search' | translate"></laji-omni-search>
-      </div>
-    </div>
+    <laji-omni-search [placeholder]="'species.search' | translate"></laji-omni-search>
   </div>
 </header>
 <div class="container-fluid">
