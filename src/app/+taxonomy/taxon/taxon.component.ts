@@ -15,7 +15,7 @@ import { CacheService } from '../../shared/service/cache.service';
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
-  styleUrls: ['./taxon.component.css'],
+  styleUrls: ['./taxon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonComponent implements OnInit, OnDestroy {

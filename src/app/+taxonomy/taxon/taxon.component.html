@@ -27,8 +27,6 @@
         [context]="infoCardContext"
         (routeUpdate)="updateRoute($event.id, $event.tab, $event.context, showTree, $event.replaceUrl)"
         [class.sidebar-hidden]="!showTree && canShowTree"
-        [style.width]="showTree && canShowTree ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'"
-        [style.margin-left]="showTree && canShowTree ? sidebarWidth + 'px' : '0'"
       ></laji-info-card>
     </div>
   </div>

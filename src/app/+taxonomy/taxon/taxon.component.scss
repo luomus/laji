@@ -19,12 +19,6 @@ laji-info-card {
     display: flex;
   }
 
-  .taxon-tree-container {
-    position: fixed;
-    top: 50px;
-    height: calc(100vh - 50px);
-  }
-
   :host ::ng-deep laji-info-card .info-card-header-first-row {
     margin-left: 10px;
   }
