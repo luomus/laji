@@ -7,7 +7,7 @@
         <p>{{ 'species.title.long' | translate }}</p>
       </ng-container>
     </div>
-    <lu-tabs [selectedIndex]="selectedIndex" (select)="onSelect($event)">
+    <lu-tabs [selectedIndex]="selectedIndex" (selectedChange)="onSelect($event)">
       <lu-tab [heading]="'species.list' | translate">
         <laji-species-list [searchQuery]="searchQuery"
                            [countStartText]="'species.list.count1' | translate"
