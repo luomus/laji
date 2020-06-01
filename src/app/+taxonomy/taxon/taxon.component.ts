@@ -156,12 +156,21 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private setTitle() {
     let title = this.taxon.vernacularName && this.taxon.vernacularName[this.translate.currentLang] || '';
-    title += title ? ' (' + this.taxon.scientificName + ')' : this.taxon.scientificName;
+    if (title) {
+      const alternativeNames: string[] = this.taxon.alternativeVernacularName[this.translate.currentLang];
+      title += ' (' + alternativeNames.reduce((prev, curr) => prev += (', ' + curr)) + ')';
+    }
+    title += title ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
     this.title.setTitle((title ? title + ' | '  : '') + this.title.getTitle());
   }
 
   private getTaxon(id) {
-    return this.taxonService.taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true, includeRedListEvaluations: true}).pipe(
+    return this.taxonService.taxonomyFindBySubject(id, 'multi', {
+      includeMedia: true,
+      includeDescriptions: true,
+      includeRedListEvaluations: true,
+    }).pipe(
+      tap(console.log),
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
       catchError(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
