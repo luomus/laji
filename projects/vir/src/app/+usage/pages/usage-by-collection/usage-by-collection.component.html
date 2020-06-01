@@ -1,8 +1,4 @@
-<div class="container">
-  <h1>{{ 'usage.byCollection' | translate }}</h1>
-  <lu-message class="mb-8">
-    <laji-info-page rootPage="4005"></laji-info-page>
-  </lu-message>
+<div class="container mt-6">
   <vir-collection-select (select)="collectionSelect($event)"></vir-collection-select>
   <vir-data-table
           [data]="downloadRequests$ | async"
