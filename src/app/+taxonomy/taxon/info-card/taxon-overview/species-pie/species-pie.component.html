@@ -1,4 +1,4 @@
-<div *ngIf="data && data.length > 0" style="margin-top: 20px">
+<div *ngIf="lineChartData && lineChartData.length > 0" style="margin-top: 20px">
   <div class="info-card-chart">
     <!--<ngx-charts-tree-map
       [results]="data"
@@ -21,7 +21,7 @@
       </ng-template>
     </ngx-charts-tree-map>-->
     <laji-chart #lineChart
-    [datasets]="lineChartData"
+    [datasets]="lineChartData[0]['data']['datasets']"
     [labels]="lineChartLabels"
     [options]="lineChartOptions"
     [legend]="false"

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
@@ -21,16 +21,54 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   valueFormatting = this.formatValue.bind(this);
   total = 0;
 
-  lineChartData: any[] = [{data: [], key: 'data'}];
+  lineChartData: any[] = [
+      {
+        data: [
+          {
+            type: 'treemap',
+            key: 'data',
+          data: [],
+          fontFamily: 'Verdana',
+        fontColor: '#000',
+        fontSize: 20,
+        fontWeight: 'bold',
+        backgroundColor: function(ctx) {
+          const item = ctx.dataset.data[ctx.dataIndex];
+          if (!item) {
+            return;
+          }
+          const a = item.v / (item.gs || item.s) / 2 + 0.5;
+          return 'rgba(255,192,203," + a +")';
+        },
+        spacing: 2,
+        borderWidth: 0.5,
+        borderColor: 'rgba(160,160,160,0.5)'
+        }
+      ]
+    }
+  ];
   lineChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio : false,
     legend: {
       display: false
     },
+    tooltips: {
+      callbacks: {
+        title: function(item, data) {
+          return data.datasets[item['datasetIndex']]['tree'][item['index']].label;
+        },
+        label: function(item, data) {
+          return data.datasets[item['datasetIndex']]['tree'][item['index']].data;
+        }
+      }
+    },
     plugins: {
-      datalabels: {
-        display: true
+      labels: {
+        display: true,
+        render: 'value',
+        align: 'end',
+        anchor: 'end'
       }
     }
   };
@@ -53,7 +91,8 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   @Output() taxonSelect = new EventEmitter<string>();
 
   constructor(
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -64,26 +103,50 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+
     this.dataById = {};
     this.total = 0;
-    this.data = (this.children || []).reduce((arr: any[], child) => {
+    this.lineChartData = [
+      {
+        data:
+        {
+          datasets: [
+          {key: 'data',
+          data: [],
+          groups: ['label'],
+          fontFamily: 'Verdana',
+        fontColor: '#000',
+        fontSize: 14,
+        backgroundColor: function(ctx) {
+          const item = ctx.dataset.data[ctx.dataIndex];
+          if (!item) {
+            return;
+          }
+          const a = item.v / (item.gs || item.s) / 2 + 0.5;
+          return 'rgba(255,192,203," + a + ")';
+        },
+        spacing: 2,
+        borderWidth: 0.5,
+        borderColor: 'rgba(160,160,160,0.5)'
+        }
+        ]}
+      }
+    ];
+    this.lineChartLabels = [];
+    (this.children || []).forEach(child => {
       const id = child.id;
       const count = child.countOfFinnishSpecies;
       this.total += count;
 
       if (count > 0) {
         this.dataById[id] = child;
-        arr.push({name: id, value: count});
-        this.lineChartData[0].data.push({data: count, label: id});
-        this.lineChartLabels.push(id);
+        this.lineChartData[0]['data']['datasets'][0].data.push({data: count, label: child.vernacularName || child.scientificName});
+        this.lineChartLabels.push(child.vernacularName || child.scientificName);
       }
-
-
-      console.log(this.lineChartData);
-      console.log(arr);
-
-      return arr;
-    }, []);
+      this.lineChartData[0]['data']['datasets'][0].data.sort((a , b) => (a.data > b.data) ? -1 : ((b.data > a.data) ? 1 : 0));
+    });
+    console.log(this.lineChartData);
+    this.cd.detectChanges();
   }
 
   private formatLabel(value: any) {
