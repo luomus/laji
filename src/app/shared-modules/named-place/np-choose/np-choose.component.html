@@ -24,6 +24,7 @@
                     [documentForm]="_documentForm"
                     [listColumnNameMapping]="_documentForm.namedPlaceOptions?.listColumnNameMapping"
                     [activeNP]="_activeNP"
+                    [visible]="activeIndex === 0 && visible"
                     (activePlaceChange)="onActivePlaceChange($event)"
       ></laji-np-list>
     </div>
