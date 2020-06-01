@@ -157,7 +157,13 @@ export class TaxonComponent implements OnInit, OnDestroy {
   private setTitle() {
     let title = this.taxon.vernacularName && this.taxon.vernacularName[this.translate.currentLang] || '';
     if (title) {
-      const alternativeNames: string[] = this.taxon.alternativeVernacularName[this.translate.currentLang];
+      const alternativeNames: string[] = [];
+      if (this.taxon.alternativeVernacularName) {
+        alternativeNames.push(...this.taxon.alternativeVernacularName[this.translate.currentLang]);
+      }
+      if (this.taxon.obsoleteVernacularName) {
+        alternativeNames.push(...this.taxon.obsoleteVernacularName[this.translate.currentLang]);
+      }
       title += ' (' + alternativeNames.reduce((prev, curr) => prev += (', ' + curr)) + ')';
     }
     title += title ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
@@ -170,7 +176,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
       includeDescriptions: true,
       includeRedListEvaluations: true,
     }).pipe(
-      tap(console.log),
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
       catchError(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
