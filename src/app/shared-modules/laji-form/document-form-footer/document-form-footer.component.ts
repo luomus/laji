@@ -69,12 +69,12 @@ export class DocumentFormFooterComponent {
     if (errors.__errors?.length && errors.__errors.every(e => e.indexOf('[warning]') === 0)) {
       return true;
     }
-    return Object.keys(errors).every(key => key !== '__errors' && this._hasOnlyWarnings(errors[key]));
+    return Object.keys(errors).length && Object.keys(errors).every(key => key !== '__errors' && this._hasOnlyWarnings(errors[key]));
   }
 
   @Input()
   set errors(errors: any) {
-    this.hasOnlyWarnings = this._hasOnlyWarnings(errors);
+    this.hasOnlyWarnings = document.querySelector('.warning-panel') && this._hasOnlyWarnings(errors);
   }
 
   buttonLabel(prop: 'save'|'temp'|'cancel') {
