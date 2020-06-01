@@ -49,5 +49,8 @@ export const environment = {
     '\/taxon\/.*\/taxonomy': '4011',
     '\/taxon\/.*': '3995',
     '\/taxon.*': '3997',
+    '\/usage\/by-person.*': '4003',
+    '\/usage\/by-collection.*': '4005',
+    '\/usage.*': '4001',
   }
 };
