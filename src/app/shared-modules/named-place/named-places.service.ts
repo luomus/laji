@@ -94,12 +94,20 @@ export class NamedPlacesService {
 
   reserve(id: string, options?: {until?: string, personID?: string}): Observable<NamedPlace> {
     return this.namedPlaceApi
-      .reserve(id, this.userService.getToken(), options);
+      .reserve(id, this.userService.getToken(), options).pipe(
+        tap(() => {
+          this.invalidateCache();
+        })
+      );
   }
 
   releaseReservation(id: string): Observable<NamedPlace> {
     return this.namedPlaceApi
-      .releaseReservation(id, this.userService.getToken());
+      .releaseReservation(id, this.userService.getToken()).pipe(
+        tap(() => {
+          this.invalidateCache();
+        })
+      );
   }
 
   private _getAllNamePlaces(query: NamedPlaceQuery, page = 1, namedPlaces = []): Observable<NamedPlace[]>  {
