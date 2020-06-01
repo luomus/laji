@@ -282,7 +282,7 @@
   "haseka.reload": "Jotain meni pieleen. Lataamme lomakkeen uudelleen (dataa ei menetetä).",
   "haseka.slogan": "Tallenna, hallinnoi ja jaa lajihavaintojasi",
   "haseka.statistics.title": "Tilasto",
-  "haseka.submissions.chooseFormat": "Valitse formaatti",
+  "haseka.submissions.chooseFormat": "Aineiston lataus",
   "haseka.submissions.dateEdited": "Tallennusaika",
   "haseka.submissions.dateEnd": "Loppupvm",
   "haseka.submissions.dateObserved": "Havaintopvm",
