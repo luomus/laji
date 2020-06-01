@@ -59,7 +59,8 @@
   </div>
 </div>
 
-<lu-tabs *ngIf="loadedModes.isLoaded('all')" [hidden]="mode !== 'all'" [selectedIndex]="selectedTabIdx" (select)="onSelect($event)">
+<lu-tabs *ngIf="loadedModes.isLoaded('all')" [hidden]="mode !== 'all'" [selectedIndex]="selectedTabIdx"
+         (selectedChange)="onSelect($event)">
   <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate">
     <laji-observation-result-list
       *ngIf="loadedTabs.isLoaded('list')"

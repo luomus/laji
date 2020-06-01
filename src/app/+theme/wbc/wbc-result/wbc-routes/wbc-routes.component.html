@@ -1,6 +1,6 @@
 <h3>{{ 'wbc.stats.routes' | translate }}</h3>
 
-<lu-tabs [selectedIndex]="activeIndex" (select)="setActive($event)">
+<lu-tabs [selectedIndex]="activeIndex" (selectedChange)="setActive($event)">
   <lu-tab [heading]="'np.list' | translate">
     <ng-container *ngIf="loadedTabs.isLoaded('list')">
       <laji-wbc-routes-list
