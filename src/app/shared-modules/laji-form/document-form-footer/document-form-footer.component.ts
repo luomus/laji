@@ -41,7 +41,9 @@ export class DocumentFormFooterComponent {
     }
     this._form = form;
     this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
-    this._locked = FormService.hasFeature(form, Form.Feature.AdminLockable) ? (form.formData && !!form.formData.locked) : undefined;
+    this._locked = (form.formData.id?.indexOf('T:') !== 0 && FormService.hasFeature(form, Form.Feature.AdminLockable))
+      ? (form.formData && !!form.formData.locked)
+      : undefined;
     ['save', 'temp', 'cancel'].forEach(prop => {
       let show: boolean;
 
