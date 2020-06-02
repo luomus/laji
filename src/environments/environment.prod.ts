@@ -8,7 +8,7 @@ export const environment = {
   forceLogin: false,
   disableAnalytics: false,
   systemID: 'KE.389',
-  formWhitelist: ['MHL.51', 'JX.519', 'MHL.9', 'MHL.53', 'MHL.25', 'JX.652', 'MHL.1', 'MHL.3', 'MHL.6', 'MHL.33', 'MHL.50', 'MHL.57', , 'MHL.65', 'MHL.45', 'MHL.75', 'MHL.59'],
+  formWhitelist: ['MHL.51', 'JX.519', 'MHL.9', 'MHL.53', 'MHL.25', 'JX.652', 'MHL.1', 'MHL.3', 'MHL.6', 'MHL.33', 'MHL.50', 'MHL.57', , 'MHL.65', 'MHL.45', 'MHL.75', 'MHL.59', 'MHL.79'],
   massForms: ['JX.519', 'JX.652', 'MHL.33A'],
   defaultForm: 'JX.519',
   nafiForm: 'MHL.6',
@@ -30,7 +30,7 @@ export const environment = {
   sykeButterflyForm: 'MHL.59',
   glowWormForm: 'MHL.79',
   saveObservations: {
-    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
+    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25', 'MHL.79'],
     birdMonitoringForms: ['MHL.1', 'MHL.3', 'MHL.65', 'MHL.75'],
     researchProjects: ['MHL.33', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
   },
