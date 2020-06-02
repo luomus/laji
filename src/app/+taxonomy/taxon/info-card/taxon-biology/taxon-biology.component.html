@@ -36,7 +36,7 @@
                [index]="i"
                laji-panel>
                 <div *ngFor="let variable of group.variables; let y = index">
-                  <div>
+                  <div style="float:left; width: 100%">
                     <h4 *ngIf="variable.variable !== 'MX.ingressText' && !groupHasTranslation[activeDescription].groups[i].values[y]">
                       {{ variable.title | multiLang }}
                     </h4>
