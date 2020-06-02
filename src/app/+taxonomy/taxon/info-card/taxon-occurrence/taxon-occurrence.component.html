@@ -8,6 +8,12 @@
         <laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">
           {{ taxon.occurrenceInFinland | label }}
         </laji-taxon-info-row>
+        <laji-taxon-info-row *ngIf="taxon.primaryHabitat" [label]="'iucn.results.habitat.primaryFull' | translate">
+          <laji-habitat [habitat]="taxon.primaryHabitat"></laji-habitat>
+        </laji-taxon-info-row>
+        <laji-taxon-info-row *ngIf="taxon.secondaryHabitats" [label]="'iucn.results.habitat.secondary' | translate">
+          <laji-habitat [habitat]="taxon.secondaryHabitats"></laji-habitat>
+        </laji-taxon-info-row>
         <laji-taxon-info-row *ngIf="taxon.typeOfOccurrenceInFinland" [label]="'taxonomy.typeOfOccurrenceInFinland' | translate">
           <ul>
             <li *ngFor="let type of taxon.typeOfOccurrenceInFinland">
