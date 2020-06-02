@@ -10,7 +10,7 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <lu-tabs [selectedIndex]="activeIndex" (select)="setActive($event)" style="margin-top: 24px; display:block;">
+      <lu-tabs [selectedIndex]="activeIndex" (selectedChange)="setActive($event)" style="margin-top: 24px; display:block;">
         <lu-tab [heading]="'species.images' | translate">
           <ng-container *ngIf="loadedTabs.isLoaded('images')">
             <laji-species-images [hidden]="activeIndex !== 0"

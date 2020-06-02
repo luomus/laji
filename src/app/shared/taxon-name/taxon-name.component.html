@@ -1,6 +1,6 @@
 <ng-container *ngIf="taxon">
   <ng-container [ngTemplateOutlet]="showScientificNameFirst ? scientificName : vernacularName"></ng-container>
-  <ng-container *ngIf="(taxon.vernacularName | multiLang) && taxon.scientificName">
+  <ng-container *ngIf="((taxon.vernacularName | multiLang) || taxon.alternativeVernacularName | multiLang | values) && taxon.scientificName">
     &ndash;
   </ng-container>
   <ng-container [ngTemplateOutlet]="showScientificNameFirst ? vernacularName : scientificName"></ng-container>
@@ -14,7 +14,10 @@
   <ng-container *ngIf="warningOnMissingTaxonID && !(taxon.id || taxonID)">
       <span class="glyphicon glyphicon-warning-sign"></span>
   </ng-container>
+  <div class="alternative-names mt-2" *ngIf="taxon?.obsoleteVernacularName | multiLang:false | values; let obsoleteVernacularName">
+    {{ obsoleteVernacularName }}
+  </div>
 </ng-container>
 
 <ng-template #scientificName><ng-container *ngIf="taxon.cursiveName; else noCursive"><em>{{ taxon.scientificName }}</em></ng-container><ng-template #noCursive>{{ taxon.scientificName }}</ng-template></ng-template>
-<ng-template #vernacularName> {{ taxon.vernacularName | multiLang }}</ng-template>
+<ng-template #vernacularName> {{ capitalizeName ? (taxon.vernacularName | multiLang | capitalize) : (taxon.vernacularName | multiLang) }}<ng-container *ngIf="taxon?.alternativeVernacularName | multiLang:false | values; let alternativeVernacularName"> ({{ alternativeVernacularName }})</ng-container></ng-template>

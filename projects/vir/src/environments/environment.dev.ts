@@ -22,11 +22,14 @@ export const environment = {
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
   birdPointCountForm: 'MHL.75',
+  sykeButterflyForm: 'MHL.59',
+  glowWormForm: 'MHL.79',
   saveObservations: {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.51', 'MHL.25'],
     birdMonitoringForms: ['MHL.1', 'MHL.3'],
     researchProjects: ['MHL.33', 'MHL.50', 'MHL.57']
   },
+  rootCollections: ['HR.128'],
   loginUrl: '/user/viranomaiset',
   selfPage: 'https://login.laji.fi/self',
   apiBase: '/api',
@@ -35,5 +38,14 @@ export const environment = {
   disableAnalytics: true,
   waterbirdPairForm: 'MHL.65',
   waterbirdJuvenileForm: 'MHL.66',
-  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi',
+  globalMessageIds: {
+    '\/observation.*': '3999',
+    '\/taxon\/.*\/taxonomy': '4011',
+    '\/taxon\/.*': '3995',
+    '\/taxon.*': '3997',
+    '\/usage\/by-person.*': '4003',
+    '\/usage\/by-collection.*': '4005',
+    '\/usage.*': '4001',
+  }
 };

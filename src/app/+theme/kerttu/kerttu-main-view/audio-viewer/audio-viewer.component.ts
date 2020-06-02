@@ -123,6 +123,26 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  onSpectrogramDragStart() {
+    if (this.isPlaying) {
+      this.toggleAudio();
+    }
+  }
+
+  onSpectrogramDragEnd(time: number) {
+    if (this.isPlaying) {
+      this.toggleAudio();
+      const onendedFunc = this.source.onended;
+      this.source.onended = (args) => {
+        onendedFunc.bind(this)(args);
+        this.currentTime = time;
+        this.cdr.detectChanges();
+      };
+    } else {
+      this.currentTime = time;
+    }
+  }
+
   private startTimeupdateInterval() {
     this.timeupdateInterval = setInterval(() => {
       this.updateCurrentTime();

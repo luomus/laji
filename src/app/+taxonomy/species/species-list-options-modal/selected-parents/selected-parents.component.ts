@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ColumnSelector } from 'app/shared/columnselector/ColumnSelector';
+import { ColumnSelector } from '../../../../shared/columnselector/ColumnSelector';
 
 @Component({
   selector: 'laji-selected-parents',

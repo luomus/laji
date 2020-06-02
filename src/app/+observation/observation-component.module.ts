@@ -36,8 +36,9 @@ import { DownloadModule } from '../shared-modules/download/download.module';
 import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
 import { DateFormComponent } from './form/date-form/date-form.component';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
-import { TechnicalNewsModule } from 'app/shared-modules/technical-news/technical-news.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
+import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
+import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { ChartModule } from '../shared-modules/chart/chart.module';
     ChartModule,
     ThreeStateSwitchModule,
     PillListModule,
-    TechnicalNewsModule
+    TechnicalNewsModule,
+    InfoPageModule
   ],
   declarations: [
     ObservationComponent,

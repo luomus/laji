@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Taxonomy } from 'app/shared/model/Taxonomy';
+import { Component, OnInit, Input } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 
 

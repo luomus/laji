@@ -6,6 +6,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
+import { SearchFiltersModule } from '../search-filters/search-filters.module';
 
 @NgModule({
   declarations: [DownloadComponent],
@@ -15,7 +16,8 @@ import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.modul
     TranslateModule,
     FormsModule,
     CommonModule,
-    LajiUiModule
+    LajiUiModule,
+    SearchFiltersModule
   ],
   exports: [DownloadComponent]
 })

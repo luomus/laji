@@ -40,7 +40,7 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
     return this._tabComponents;
   }
 
-  @Output() select = new EventEmitter<number>();
+  @Output() selectedChange = new EventEmitter<number>();
 
   private _selectedIndex = 0;
 
@@ -62,7 +62,7 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
   onSelect(tabIndex: number) {
     this._selectedIndex = tabIndex;
     this.updateActiveComponents(tabIndex);
-    this.select.next(tabIndex);
+    this.selectedChange.next(tabIndex);
   }
 
   updateActiveComponents(newIdx: number) {

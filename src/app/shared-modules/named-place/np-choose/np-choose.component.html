@@ -1,5 +1,5 @@
 <div *ngIf="visible" id="container">
-  <lu-tabs *ngIf="showMap else listTemplate" [selectedIndex]="activeIndex" (select)="setActive($event)">
+  <lu-tabs *ngIf="showMap else listTemplate" [selectedIndex]="activeIndex" (selectedChange)="setActive($event)">
     <lu-tab [heading]="_documentForm.namedPlaceOptions?.listLabel || 'np.list' | translate">
       <ng-container *ngTemplateOutlet="listTemplate"></ng-container>
     </lu-tab>
@@ -24,6 +24,7 @@
                     [documentForm]="_documentForm"
                     [listColumnNameMapping]="_documentForm.namedPlaceOptions?.listColumnNameMapping"
                     [activeNP]="_activeNP"
+                    [visible]="activeIndex === 0 && visible"
                     (activePlaceChange)="onActivePlaceChange($event)"
       ></laji-np-list>
     </div>

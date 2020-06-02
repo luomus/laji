@@ -318,6 +318,7 @@
   "haseka.users.unsaved": "Unsaved submissions",
   "haseka.users.unsaved.doc": "Unsaved submission",
   "haseka.form.readonly": "You don't have permission to edit",
+  "haseka.form.hasOnlyWarnings": "Check the warnings",
   "haseka.terms.mobileFormDismiss": "Accept and record observations",
   "haseka.mobile.newObservation": "New observation",
   "haseka.mobile.ownSubmissions": "Previous observations",
@@ -1435,7 +1436,8 @@
   "form.participants.export.docCount":  "Document count",
   "navigation.syke-butterfly": "SYKE butterfly census",
   "theme.syke-butterfly.intro": "SYKE butterfly census",
-
+  "navigation.glowWormForm": "Glow worm form",
+  "theme.glowWormForm.intro":  "Glow worm citizen science project",
   "saveObservations.h1": "Save nature observations to FinBIF",
   "saveObservations.chooseSystem": "Select a tool that works for you",
   "saveObservations.desc": "By saving your observations into some of the services by FinBIF, it can be used by researchers and other people. The observations are also published on Laji.fi if you choose so. You can submit single observations, maintain your own observation notebook, or take part in citizen science projects.",

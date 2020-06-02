@@ -13,6 +13,7 @@ export class LajiFormComponent {
 
   @Output() dataSubmit = new EventEmitter();
   @Output() dataChange = new EventEmitter();
+  @Output() validationError = new EventEmitter();
 
   lang: string;
   elem: ElementRef;

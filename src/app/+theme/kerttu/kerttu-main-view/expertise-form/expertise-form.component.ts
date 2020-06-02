@@ -28,7 +28,7 @@ export class ExpertiseFormComponent implements OnInit {
       canAutoResize: false,
       draggable: false,
       resizeable: false,
-      headerCheckboxable: false,
+      headerCheckboxable: true,
       checkboxable: true
     },
     {

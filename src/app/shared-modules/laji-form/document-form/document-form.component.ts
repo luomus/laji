@@ -47,6 +47,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   status = '';
   saveVisibility = 'hidden';
   isAdmin = false;
+  validationErrors: any;
 
   private subErrors: Subscription;
   private subSaving: Subscription;
@@ -138,6 +139,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
         this.saveVisibility = 'shown';
         this.status = 'unsaved';
         this.toastsService.showError(this.getMessage('error', this.translate.instant('haseka.form.error')));
+        this.subSaving = undefined;
       }
       this.changeDetector.markForCheck();
     });
@@ -151,6 +153,10 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   submitPrivate() {
     this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
     this.lajiForm.submit();
+  }
+
+  onValidationError(errors) {
+    this.validationErrors = errors;
   }
 
   private errorHandling(vm: ILajiFormState) {

@@ -1,8 +1,4 @@
-<div class="container">
-  <h1>{{ 'usage.byPerson' | translate }}</h1>
-  <p [innerHTML]="'usage.users.intro' | translate"></p>
+<div class="container mt-6">
   <vir-organization-select (select)="organizationSelect($event)"></vir-organization-select>
-  <ng-container *ngIf="!!organisation">
-    <vir-data-table type="people" [data]="users$ | async"></vir-data-table>
-  </ng-container>
+  <vir-data-table type="people" [data]="users$ | async"></vir-data-table>
 </div>

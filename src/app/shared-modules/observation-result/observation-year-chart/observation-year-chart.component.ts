@@ -47,6 +47,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   private subBarChartLabels: string[];
   private allBarChartsLabel: string[];
   private barChartPlugins: any;
+  resultList: any[] = [];
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -67,7 +68,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
             .subscribe((value) => {
               this.onlyCount = value;
               this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
-              this.updateData();
+              this.initializeArrays(this.resultList);
               this.cd.markForCheck();
             });
   }
@@ -131,7 +132,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       10000,
       1,
       undefined,
-      this.onlyCount === null ? true : this.onlyCount ? true : false
+      false
     ).pipe(
       map(res => res.results)
     ).subscribe(res => {
@@ -142,12 +143,14 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.barChartLabels = [];
       this.subBarChartLabels = [];
       this.allBarChartsLabel = [];
+      this.resultList = [];
 
       this.allDataNew = [{data: [], backgroundColor: [], label: this.translate.instant('all') }];
       let prevYear: number;
       res.map(r => {
         const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
-        const count = this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum;
+        const count = r.count;
+        const individual = r.individualCountSum;
 
         if (prevYear) {
           for (let i = prevYear + 1; i < year; i++) {
@@ -160,32 +163,16 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
         }
 
 
-        this.allSubData.push(count);
+        this.allSubData.push(this.onlyCount === null ? count : this.onlyCount ? count : individual);
         this.subBarChartLabels.push('' + year);
+        this.resultList.push({'count': count, 'individualCountSum': individual, 'year': year});
         if (year < 1970) {
           this.splitIdx++;
         }
 
         prevYear = year;
       });
-      this.initializeGraph();
-      this.allSubBackground = this.addColorsBackground(this.colors, this.allSubData.length);
-      this.allDataNew[0].data = this.allSubData;
-      this.allDataNew[0].backgroundColor = this.allSubBackground;
-      this.allBarChartsLabel = this.subBarChartLabels;
-
-      this.allSubData = this.allSubData.slice(this.splitIdx, this.allSubData.length);
-      this.allSubBackground = this.allSubBackground.slice(this.splitIdx, this.allSubBackground.length);
-      this.newData[0].data = this.allSubData;
-      this.newData[0].backgroundColor = this.allSubBackground;
-      this.subBarChartLabels = this.subBarChartLabels.slice(this.splitIdx, this.subBarChartLabels.length);
-      this.barChartLabels = this.subBarChartLabels;
-
-      if (this.splitIdx > 0 && this.allSubData.length === 0) {
-        this.newData = this.allDataNew;
-        this.barChartLabels = this.allBarChartsLabel;
-      }
-
+      this.createSubArrayChart();
       this.hasData.emit(this.allDataNew[0].data.length > 0);
       // check emit
       this.cd.markForCheck();
@@ -240,6 +227,48 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.newData[0].data = this.allDataNew[0].data.slice(this.splitIdx, this.allDataNew[0].data.length);
       this.newData[0].backgroundColor = this.allDataNew[0].backgroundColor.slice(this.splitIdx, this.allDataNew[0].data.length);
       this.barChartLabels = this.allBarChartsLabel.slice(this.splitIdx, this.allBarChartsLabel.length);
+    }
+  }
+
+  initializeArrays(list) {
+    this.allSubData = [];
+    this.allSubBackground = [];
+    this.barChartLabels = [];
+    this.subBarChartLabels = [];
+    this.allBarChartsLabel = [];
+    this.allDataNew = [{data: [], backgroundColor: [], label: this.translate.instant('all') }];
+    this.fillDataGraph(list);
+  }
+
+  fillDataGraph(list) {
+    this.splitIdx = 0;
+    list.map(r =>  {
+      this.allSubData.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
+      this.subBarChartLabels.push('' + r.year);
+      if (r.year < 1970) {
+        this.splitIdx++;
+      }
+    });
+    this.createSubArrayChart();
+  }
+
+  createSubArrayChart() {
+    this.initializeGraph();
+    this.allSubBackground = this.addColorsBackground(this.colors, this.allSubData.length);
+    this.allDataNew[0].data = this.allSubData;
+    this.allDataNew[0].backgroundColor = this.allSubBackground;
+    this.allBarChartsLabel = this.subBarChartLabels;
+
+    this.allSubData = this.allSubData.slice(this.splitIdx, this.allSubData.length);
+    this.allSubBackground = this.allSubBackground.slice(this.splitIdx, this.allSubBackground.length);
+    this.newData[0].data = this.allSubData;
+    this.newData[0].backgroundColor = this.allSubBackground;
+    this.subBarChartLabels = this.subBarChartLabels.slice(this.splitIdx, this.subBarChartLabels.length);
+    this.barChartLabels = this.subBarChartLabels;
+
+    if (this.splitIdx > 0 && this.allSubData.length === 0) {
+      this.newData = this.allDataNew;
+      this.barChartLabels = this.allBarChartsLabel;
     }
   }
 

@@ -15,7 +15,7 @@ import { CacheService } from '../../shared/service/cache.service';
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
-  styleUrls: ['./taxon.component.css'],
+  styleUrls: ['./taxon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonComponent implements OnInit, OnDestroy {
@@ -156,12 +156,23 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private setTitle() {
     let title = this.taxon.vernacularName && this.taxon.vernacularName[this.translate.currentLang] || '';
-    title += title ? ' (' + this.taxon.scientificName + ')' : this.taxon.scientificName;
+    if (title) {
+      const alternativeNames: string[] = [];
+      if (this.taxon?.alternativeVernacularName?.[this.translate.currentLang]) {
+        alternativeNames.push(...this.taxon.alternativeVernacularName[this.translate.currentLang]);
+      }
+      title += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
+    }
+    title += title ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
     this.title.setTitle((title ? title + ' | '  : '') + this.title.getTitle());
   }
 
   private getTaxon(id) {
-    return this.taxonService.taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true, includeRedListEvaluations: true}).pipe(
+    return this.taxonService.taxonomyFindBySubject(id, 'multi', {
+      includeMedia: true,
+      includeDescriptions: true,
+      includeRedListEvaluations: true,
+    }).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
       catchError(err => {
         this.logger.warn('Failed to fetch taxon by id', err);

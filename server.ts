@@ -1,6 +1,6 @@
 import 'zone.js/dist/zone-node';
-import 'reflect-metadata';
 
+import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as redis from 'redis';
 import * as Redlock from 'redlock';
 import * as express from 'express';
@@ -11,42 +11,28 @@ const domino = require('domino');
 
 const CACHE_TIME = 60 * 30; // This is time in sec for how long will the content be stored in cache
 const CACHE_UPDATE = 30;    // This is time when the content will be updated even if there is already one in the cache
-const PORT = process.env.PORT || 3000;
-const DIST_FOLDER = join(process.cwd(), 'dist');
-const BROWSER_PATH = join(DIST_FOLDER, 'browser');
-const template = readFileSync(join(BROWSER_PATH, 'index.html')).toString();
+const distFolder = join(process.cwd(), 'dist', 'browser');
+const template = readFileSync(join(distFolder, 'index.html')).toString();
 const win = domino.createWindow(template);
 
-global['window'] = win;
-global['document'] = win.document;
-global['navigator'] = win.navigator;
-global['KeyboardEvent'] = domino.impl.Event;
-global['CSS'] = null;
-global['Prism'] = null;
+win.process = process;
+(global as any).window = win;
+(global as any).document = win.document;
+(global as any).navigator = win.navigator;
+(global as any).KeyboardEvent = domino.impl.Event;
+(global as any).CSS = null;
+(global as any).Prism = null;
 
 win.devicePixelRatio = 2; // this is used by the leaflet library
 Object.assign(global, domino.impl);
 
+import { AppServerModule } from './src/main.server';
+import { APP_BASE_HREF } from '@angular/common';
+import { existsSync } from 'fs';
+import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
+
 const RedisClient = redis.createClient({host: process.env.REDIS_HOST || 'localhost'});
 const Lock = new Redlock([RedisClient]);
-const app = express();
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap, REQUEST, RESPONSE } = require('./dist/server/main');
-
-app.use(compression());
-app.engine(
-  'html',
-  ngExpressEngine({
-    bootstrap: AppServerModuleNgFactory,
-    providers: [ provideModuleMap(LAZY_MODULE_MAP) ],
-  }),
-);
-
-app.set('view engine', 'html');
-app.set('views', BROWSER_PATH);
-
-app.get('*.*', express.static(BROWSER_PATH, {
-  maxAge: '1y'
-}));
 
 const render = (req, res, cb: (err: any, html: string) => void) => {
   res.render(
@@ -65,7 +51,6 @@ const startsWith = (url: string, start: string): boolean => {
 
 const cache = () => {
   return (req, res, next) => {
-    res.header('Cache-Control', 'public, max-age=' + CACHE_UPDATE);
     const url = ('' + req.originalUrl);
     const parts = url
       .replace(/\b(token|personToken)=[^&]*\b/, '')
@@ -126,24 +111,64 @@ const cache = () => {
   };
 };
 
-app.get('*.(map|txt|js|ico|png|jpg|svg|css)', (req, res) => {
-  res.status(404).send('Not found');
-});
+// The Express app is exported so that it can be used by serverless Functions.
+export function app() {
+  const server = express();
+  const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
-app.get('*', cache(), (req, res) => {
-  console.time(`${req.method} ${req.url}`);
-  render(req, res, (err, html) => {
-    console.timeEnd(`${req.method} ${req.url}`);
-    if (!!err) {
-      throw err;
-    }
-    res.send(html);
+  server.use(compression());
+
+  // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
+  server.engine('html', ngExpressEngine({
+    bootstrap: AppServerModule,
+  }));
+
+  server.set('view engine', 'html');
+  server.set('views', distFolder);
+
+  // Example Express Rest API endpoints
+  // server.get('/api/**', (req, res) => { });
+  // Serve static files from /browser
+  server.get('*.*', express.static(distFolder, {
+    maxAge: '1y'
+  }));
+
+  server.get('*.(map|txt|js|ico|png|jpg|svg|css)', (req, res) => {
+    res.status(404).send('Not found');
   });
-});
 
-// Start up the Node server
-app.listen(PORT, () => {
-  console.log(`Node server listening on http://localhost:${PORT}`);
-});
+  // All regular routes use the Universal engine
+  server.get('*', cache(), (req, res) => {
+    res.header('Cache-Control', 'public, max-age=' + CACHE_UPDATE);
+    res.render(indexHtml, {req, providers: [
+      {provide: APP_BASE_HREF, useValue: req.baseUrl},
+      {provide: REQUEST, useValue: req},
+      {provide: RESPONSE, useValue: res}
+    ]});
+  });
+  server.disable('x-powered-by');
 
-exports.app = app;
+  return server;
+}
+
+function run() {
+  const port = process.env.PORT || 3000;
+
+  // Start up the Node server
+  const server = app();
+  server.listen(port, () => {
+    console.log(`Node Express server listening on http://localhost:${port}`);
+  });
+}
+
+// Webpack will replace 'require' with '__webpack_require__'
+// '__non_webpack_require__' is a proxy to Node 'require'
+// The below code is to ensure that the server is run only when not requiring the bundle.
+declare const __non_webpack_require__: NodeRequire;
+const mainModule = __non_webpack_require__.main;
+const moduleFilename = mainModule && mainModule.filename || '';
+if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
+  run();
+}
+
+export * from './src/main.server';

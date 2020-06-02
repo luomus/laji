@@ -20,7 +20,6 @@ import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/n
 import { ThemeComponent } from './theme.component';
 import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
-import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
 import { InstructionsComponent } from './common/instructions/instructions.component';
@@ -41,6 +40,7 @@ import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife
 import { PinkkaComponent } from './pinkka/pinkka.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
 import { BirdPointCountResultComponent } from './bird-point-count/bird-point-count-result/bird-point-count-result.component';
+import { NamedPlaceResolver } from '../shared-modules/named-place/named-place.resolver';
 
 /* tslint:enable:max-line-length */
 
@@ -733,13 +733,14 @@ const routes: Routes = [
       navLinks: {
         'form': {
           label: 'Parilaskenta',
-          accessLevel: undefined
+          accessLevel: undefined,
+          activeMatch: `/places/${Global.collections.waterbird}/${Global.forms.waterbirdPairForm}`
         },
         'juvenileForm': {
           routerLink: ['../vesilintulaskenta', 'poikuelaskenta'],
           label: 'Poikuelaskenta',
-          activeMatch: `/places/${Global.collections.waterbird}`
-        }
+          activeMatch: `/places/${Global.collections.waterbird}/${Global.forms.waterbirdJuvenileForm}`
+      }
       },
       navLinksOrder: ['instructions', 'form', 'juvenileForm', 'ownSubmissions', 'formPermissions'],
       hideNavFor: ['/form'],
@@ -833,6 +834,36 @@ const routes: Routes = [
       },
       navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'formPermissions'],
       instructions: '3941'
+    }
+  },
+  {
+    path: 'kiiltomadot',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]}
+    ],
+    data: {
+      formID: Global.forms.glowWormForm,
+      title: 'Kiiltomadot',
+      instructions: '3988'
     }
   },
   {

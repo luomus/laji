@@ -206,35 +206,32 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #annotation>
-  <span [ngSwitch]="value.annotationClass | toQName" [tooltip]="value.annotationClass | toQName | label"
-        [container]="'body'" class="inline">
-    <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
-      <i class="fa fa-check-square-o"></i>
-    </span>
-    <span *ngSwitchCase="annotationClass.AnnotationClassReliable" class="annotation-positive">
-      <i class="fa fa-check-circle-o"></i>
-      <i class="fa fa-check-circle-o"></i>
-    </span>
-    <span *ngSwitchCase="annotationClass.AnnotationClassLikely"  class="annotation-positive">
-      <i class="fa fa-check-circle-o"></i>
-    </span>
-    <span *ngSwitchCase="annotationClass.AnnotationClassSuspicious"  class="annotation-negative">
-      <i class="fa fa-exclamation-circle"></i>
-    </span>
-    <span *ngSwitchCase="annotationClass.AnnotationClassUnreliable"  class="annotation-negative">
-      <i class="fa fa-exclamation-circle"></i>
-      <i class="fa fa-exclamation-circle"></i>
-    </span>
-    <span *ngSwitchDefault="">
-      <i class="fa fa-comment-o"></i>
-    </span>
-  </span>
-  <small class="inline">
-    <span *ngIf="(value.type | toQName) === annotationTypes.TypeUnidentifiable">
-      {{ 'MAN.typeUnidentifiable' | label }}
-    </span>
-    <span *ngIf="value.annotationClass">{{ value.annotationClass | toQName | label }}</span>
-  </small>
+  <div *ngIf="value.addedTags && value.addedTags.length > 0">
+    <div class="title">{{ 'annotation.addTags' | translate }} </div>
+    <div class="tag" *ngFor="let addedTag of value.addedTags; let i = index" [ngSwitch]="addedTag | warehouse">
+      <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
+         <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker" [ngClass]="{'positive': annotationTagsObservation[addedTag | warehouse ].type==='positive', 'check': annotationTagsObservation[addedTag | warehouse ].type==='check', 'negative': annotationTagsObservation[addedTag | warehouse ].type==='negative', 'self': annotationTagsObservation[addedTag | warehouse ].type ==='info', 'admin': annotationTagsObservation[addedTag | warehouse ].type ==='admin' }" >
+           <span>{{ addedTag | label: 'warehouse' }}<span *ngIf="(i < value.addedTags.length - 1) && value.addedTags" style="display: inline;">,</span></span>
+         </div>
+      </div>
+      <ng-template #noCategory>
+       <span>{{ addedTag | label: 'warehouse' }}<span *ngIf="(i < value.addedTags.length - 1) && value.addedTags" style="display: inline;">,</span></span>
+      </ng-template>
+    </div>
+  </div> 
+  <div *ngIf="value.removedTags && value.removedTags.length > 0">
+    <div class="title">{{ 'annotation.removedTags' | translate }}: </div>
+    <div class="tag" *ngFor="let addedTag of value.removedTags; let i = index" [ngSwitch]="addedTag | warehouse">
+      <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
+         <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker" [ngClass]="{'positive': annotationTagsObservation[addedTag | warehouse ].type==='positive', 'check': annotationTagsObservation[addedTag | warehouse ].type==='check', 'negative': annotationTagsObservation[addedTag | warehouse ].type==='negative', 'self': annotationTagsObservation[addedTag | warehouse ].type ==='info', 'admin': annotationTagsObservation[addedTag | warehouse ].type ==='admin' }" >
+           <span>{{ addedTag | label: 'warehouse' }}<span *ngIf="(i < value.removedTags.length - 1) && value.removedTags" style="display: inline;">,</span></span>
+         </div>
+      </div>
+      <ng-template #noCategory>
+       <span>{{ addedTag | label: 'warehouse' }}<span *ngIf="(i < value.removedTags.length - 1) && value.removedTags" style="display: inline;">,</span></span>
+      </ng-template>
+    </div>
+  </div> 
   <span title="{{(value.opinion ? ('MAN.opinion' | label) + ': ' + value.opinion + '\n' : '')
                 + (value.notes ? value.notes : '')}}">
     <span *ngIf="value.opinion">

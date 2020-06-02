@@ -1,4 +1,11 @@
 <div class="container-fluid iucn">
+  <h1>{{ 'home.authority.title' | translate }}</h1>
+  <div class="species-banner">
+    <div class="img-1"></div>
+    <div class="img-2"></div>
+    <div class="img-3"></div>
+    <div class="img-4"></div>
+  </div>
   <div class="row numbers">
     <div class="col-sm-12">
       <span class="total">
@@ -8,17 +15,10 @@
       <span class="species">
         <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
                                 [query]="{taxonRankId: 'MX.species', cache: true}">
-        </laji-observation-count>&nbsp;{{ 'home.carousel.species' | translate }}
+        </laji-observation-count>&nbsp;{{ 'observation.results.species' | translate }}
       </span>
     </div>
   </div>
-  <div class="species-banner">
-    <div class="img-1"></div>
-    <div class="img-2"></div>
-    <div class="img-3"></div>
-    <div class="img-4"></div>
-  </div>
-  <h1>{{ 'home.authority.title' | translate }}</h1>
   <div class="intro">
     <div class="row">
       <div class="col-sm-10 col-md-7" [innerHtml]="'home.authority.text' | translate" lajiRouteTransformer></div>

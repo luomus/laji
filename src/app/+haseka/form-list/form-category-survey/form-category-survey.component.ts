@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FormList } from '../haseka-form-list';
 import { Global } from '../../../../environments/global';
+import { FormList } from '../haseka-form-list.interface';
 
 @Component({
   selector: 'laji-form-category-survey',

@@ -173,12 +173,38 @@
 .red-theme.navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,.15);
 }
+
+.red-theme.navbar .navbar-toggle {
+  border-color: $neutral-5;
+  .icon-bar {
+    background-color: $neutral-6;
+  }
+}
+
 #navbar .dropdown-menu a {
   color: #333;
   @media only screen and (max-width: 900px) {
     color: $neutral-1;
   }
 }
+
+@media only screen and (max-width: 900px) {
+  .red-theme.navbar #navbar {
+    .dropdown-menu a {
+      color: $neutral-6;
+    }
+    .divider {
+      background-color: $neutral-4 !important;
+    }
+  }
+}
+
+:host ::ng-deep .red-theme.navbar #navbar laji-notifications header > a {
+  @media only screen and (max-width: 900px) {
+    color: $neutral-6;
+  }
+}
+
 
 @media only screen and (max-width: 900px) {
   .navbar-nav > li{
