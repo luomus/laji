@@ -158,13 +158,10 @@ export class TaxonComponent implements OnInit, OnDestroy {
     let title = this.taxon.vernacularName && this.taxon.vernacularName[this.translate.currentLang] || '';
     if (title) {
       const alternativeNames: string[] = [];
-      if (this.taxon.alternativeVernacularName) {
+      if (this.taxon?.alternativeVernacularName?.[this.translate.currentLang]) {
         alternativeNames.push(...this.taxon.alternativeVernacularName[this.translate.currentLang]);
       }
-      if (this.taxon.obsoleteVernacularName) {
-        alternativeNames.push(...this.taxon.obsoleteVernacularName[this.translate.currentLang]);
-      }
-      title += ' (' + alternativeNames.reduce((prev, curr) => prev += (', ' + curr)) + ')';
+      title += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
     }
     title += title ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
     this.title.setTitle((title ? title + ' | '  : '') + this.title.getTitle());
