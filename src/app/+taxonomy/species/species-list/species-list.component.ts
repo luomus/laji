@@ -26,8 +26,8 @@ import { DatatableComponent } from '../../../shared-modules/datatable/datatable/
 import { Util } from '../../../shared/service/util.service';
 import { UserService } from '../../../shared/service/user.service';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
-import { DownloadComponent } from '../../../shared-modules/download/download.component';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { DatatableHeaderComponent } from '../../../shared-modules/datatable/datatable-header/datatable-header.component';
 
 @Component({
   selector: 'laji-species-list',
@@ -36,7 +36,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('speciesDownload') speciesDownload: DownloadComponent;
+  @ViewChild(DatatableHeaderComponent) speciesDownload: DatatableHeaderComponent;
   @ViewChild('settingsModal', { static: true }) settingsModal: SpeciesListOptionsModalComponent;
   @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
 
@@ -283,7 +283,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       switchMap(res => this.taxonExportService.downloadTaxons(res.columns, res.data, fileType))
     ).subscribe(() =>  {
           this.downloadLoading = false;
-          this.speciesDownload.closeModal();
+          this.speciesDownload?.downloadComponent?.closeModal();
           this.cd.markForCheck();
       });
   }
@@ -395,9 +395,9 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   browseObservations() {
     const query = this.searchQuery.query;
 
-    const parameters: WarehouseQueryInterface = {
-      informalTaxonGroupId: query.informalGroupFilters ? [query.informalGroupFilters] : undefined,
-      target: query.target ? [query.target] : undefined,
+    const parameters: WarehouseQueryInterface = Util.removeFromObject({
+      informalTaxonGroupId: query.informalGroupFilters as any,
+      target: query.target as any,
       finnish: query.onlyFinnish,
       redListStatusId: query.redListStatusFilters,
       administrativeStatusId: query.adminStatusFilters,
@@ -406,7 +406,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       invasive: query.invasiveSpeciesFilter,
       primaryHabitat: query.primaryHabitat,
       anyHabitat: query.anyHabitat
-    };
+    });
 
     this.router.navigate(
       this.localizeRouterService.translateRoute(
