@@ -14,10 +14,10 @@
   <ng-container *ngIf="warningOnMissingTaxonID && !(taxon.id || taxonID)">
       <span class="glyphicon glyphicon-warning-sign"></span>
   </ng-container>
-  <div class="alternative-names mt-2" *ngIf="taxon?.obsoleteVernacularName | multiLang | values; let obsoleteVernacularName">
+  <div class="alternative-names mt-2" *ngIf="taxon?.obsoleteVernacularName | multiLang:false | values; let obsoleteVernacularName">
     {{ obsoleteVernacularName }}
   </div>
 </ng-container>
 
 <ng-template #scientificName><ng-container *ngIf="taxon.cursiveName; else noCursive"><em>{{ taxon.scientificName }}</em></ng-container><ng-template #noCursive>{{ taxon.scientificName }}</ng-template></ng-template>
-<ng-template #vernacularName> {{ capitalizeName ? (taxon.vernacularName | multiLang | capitalize) : (taxon.vernacularName | multiLang) }}<ng-container *ngIf="taxon?.alternativeVernacularName | multiLang | values; let alternativeVernacularName"> ({{ alternativeVernacularName }})</ng-container></ng-template>
+<ng-template #vernacularName> {{ capitalizeName ? (taxon.vernacularName | multiLang | capitalize) : (taxon.vernacularName | multiLang) }}<ng-container *ngIf="taxon?.alternativeVernacularName | multiLang:false | values; let alternativeVernacularName"> ({{ alternativeVernacularName }})</ng-container></ng-template>
