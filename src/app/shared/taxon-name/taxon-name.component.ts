@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-taxon-name',
@@ -26,20 +25,8 @@ export class TaxonNameComponent {
   @Input() showScientificNameFirst = false;
   @Input() capitalizeName = false;
 
-  constructor(private translate: TranslateService) {}
-
   onTaxonLinkClick(event: MouseEvent) {
     event.stopPropagation();
   }
 
-  getAlternativeNames() {
-    const alternativeNames: string[] = [];
-    if (this.taxon.alternativeVernacularName) {
-      alternativeNames.push(...this.taxon.alternativeVernacularName[this.translate.currentLang]);
-    }
-    if (this.taxon.obsoleteVernacularName) {
-      alternativeNames.push(...this.taxon.obsoleteVernacularName[this.translate.currentLang]);
-    }
-    return alternativeNames.reduce((prev, curr) => prev += (', ' + curr));
-  }
 }
