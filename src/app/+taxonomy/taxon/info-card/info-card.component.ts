@@ -113,8 +113,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       // this.hasBiologyData = !!this.taxon.primaryHabitat || !!this.taxon.secondaryHabitats || this.taxonDescription.length > 0;
       this.hasBiologyData = this.taxonDescription.length > 0;
       this.isEndangered = this.getIsEndangered(this.taxon);
-      
-      console.log('ciao')
 
       if (
         (!this.hasBiologyData && this.activeTab === 'biology') ||
