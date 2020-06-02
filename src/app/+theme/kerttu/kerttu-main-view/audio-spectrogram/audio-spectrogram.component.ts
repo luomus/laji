@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, HostListener, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
-import {Selection, select, event} from 'd3-selection';
+import {Selection, select, event, clientPoint} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
 import * as d3Drag from 'd3-drag';
 import {AudioService} from '../../service/audio.service';
@@ -92,6 +92,14 @@ export class AudioSpectrogramComponent implements OnChanges {
     const xAxis = axisBottom(this.xScale);
     const yAxis = axisLeft(this.yScale);
 
+    // make spectrogram clickable
+    svg.on('click', () => {
+      const x = clientPoint(event.target, event)[0];
+      this.setTimeToPosition(x);
+      this.endDrag.emit(this.currentTime);
+    });
+    svg.style('cursor', 'pointer');
+
     // draw axes
     svg.append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
@@ -132,9 +140,7 @@ export class AudioSpectrogramComponent implements OnChanges {
     const drag = d3Drag.drag()
       .on('start', () => { this.startDrag.emit(); })
       .on('drag', () => {
-        const time = this.xScale.invert(event.x - this.margin.left);
-        this.currentTime = Math.min(Math.max(time, 0), this.buffer.duration);
-        this.updateScrollLinePosition();
+        this.setTimeToPosition(event.x);
       })
       .on('end', () => { this.endDrag.emit(this.currentTime); });
 
@@ -146,6 +152,12 @@ export class AudioSpectrogramComponent implements OnChanges {
       .call(drag)
       .style('cursor', 'pointer');
 
+    this.updateScrollLinePosition();
+  }
+
+  private setTimeToPosition(x: number) {
+    const time = this.xScale.invert(x - this.margin.left);
+    this.currentTime = Math.min(Math.max(time, 0), this.buffer.duration);
     this.updateScrollLinePosition();
   }
 

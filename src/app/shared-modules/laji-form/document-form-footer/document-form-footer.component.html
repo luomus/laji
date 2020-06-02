@@ -9,7 +9,6 @@
   </div>
   <button *ngIf="show.save" class="btn btn-success btn-sm" [disabled]="saving || this.hasOnlyWarnings" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
   <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving || this.hasOnlyWarnings" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
-  {{ status }}
   <div [ngSwitch]="status" class="fill-space status">
     <div *ngSwitchCase="'success'" class="success">
       {{ 'haseka.form.success' | translate }}

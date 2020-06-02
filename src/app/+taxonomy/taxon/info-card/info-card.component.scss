@@ -1,5 +1,10 @@
 @import '../../../../styles/styles';
 
+:host {
+  overflow: hidden;
+  width: 100%;
+}
+
 ::ng-deep {
   .browse-button {
     margin-bottom: 20px;

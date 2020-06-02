@@ -23,7 +23,7 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
             <label for="reason">{{ 'download.reason' | translate }}</label>
             <laji-metadata-select
               [selectStyle]="basicSelectStyle"
-              [placeholder]="'download.reason-list' | translate"
+              [placeholder]="undefined"
               [alt]="'HBF.dataUsePurposeEnum'"
               [labelAsValue]="true"
               [ngModel]="reasonEnum"

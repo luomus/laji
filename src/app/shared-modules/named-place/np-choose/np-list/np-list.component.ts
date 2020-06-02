@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input, OnDestroy,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
 import { DatatableComponent } from '../../../datatable/datatable/datatable.component';
@@ -8,6 +18,7 @@ import { map, take } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { AreaNamePipe } from '../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../shared/pipe/bool-to-string.pipe';
+import Timeout = NodeJS.Timeout;
 
 @Component({
   selector: 'laji-np-list',
@@ -16,7 +27,7 @@ import { BoolToStringPipe } from '../../../../shared/pipe/bool-to-string.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ BoolToStringPipe, AreaNamePipe ]
 })
-export class NpListComponent {
+export class NpListComponent implements OnDestroy {
   _namedPlaces: NamedPlace[];
   _fields: any[];
   data: any[] = [];
@@ -31,6 +42,8 @@ export class NpListComponent {
     {label: 'Ilmoitettu', color: '#00aa00'}
   ];
   columnsMetaData: {[columnName: string]: DatatableColumn};
+  private _visible;
+  private _visibleTimeout: Timeout;
 
   @ViewChild('label', { static: true }) labelIDTpl: TemplateRef<any>;
   @ViewChild('status', { static: true }) statusTpl: TemplateRef<any>;
@@ -155,6 +168,16 @@ export class NpListComponent {
     this.initData();
   }
 
+  @Input() set visible(visibility) {
+    if (this._visible === false && visibility === true) {
+      this._visibleTimeout = setTimeout(() => {
+        this.datatable.showActiveRow();
+        this._visibleTimeout = undefined;
+      }, 10);
+    }
+    this._visible = visibility;
+  }
+
   updateFilter(event) {
     this.filterBy = event.target.value;
   }
@@ -203,5 +226,9 @@ export class NpListComponent {
       this.data = results;
       this.cd.markForCheck();
     }
+  }
+
+  ngOnDestroy(): void {
+    this._visibleTimeout && clearTimeout(this._visibleTimeout);
   }
 }

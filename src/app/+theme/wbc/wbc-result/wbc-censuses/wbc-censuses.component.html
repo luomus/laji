@@ -6,7 +6,7 @@
                          [showAreaFilter]="false"
 ></laji-wbc-result-filters>
 
-<lu-tabs [selectedIndex]="activeIndex" (select)="setActive($event)">
+<lu-tabs [selectedIndex]="activeIndex" (selectedChange)="setActive($event)">
   <lu-tab [heading]="'np.list' | translate">
     <ng-container *ngIf="loadedTabs.isLoaded('list')">
       <laji-wbc-routes-list

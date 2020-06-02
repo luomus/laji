@@ -28,6 +28,7 @@ export const environment = {
     birdMonitoringForms: ['MHL.65', 'MHL.33', 'MHL.6'],
     researchProjects: ['MHL.1', 'MHL.50', 'MHL.57']
   },
+  rootCollections: ['HR.128'],
   loginUrl: '/user/viranomaiset',
   selfPage: 'https://login.laji.fi/self',
   apiBase: '/api',
@@ -37,5 +38,13 @@ export const environment = {
   waterbirdPairForm: 'MHL.65',
   waterbirdJuvenileForm: 'MHL.66',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
-  globalMessageIds: {}
+  globalMessageIds: {
+    '\/observation.*': '3999',
+    '\/taxon\/.*\/taxonomy': '4011',
+    '\/taxon\/.*': '3995',
+    '\/taxon.*': '3997',
+    '\/usage\/by-person.*': '4003',
+    '\/usage\/by-collection.*': '4005',
+    '\/usage.*': '4001',
+  }
 };

@@ -733,13 +733,14 @@ const routes: Routes = [
       navLinks: {
         'form': {
           label: 'Parilaskenta',
-          accessLevel: undefined
+          accessLevel: undefined,
+          activeMatch: `/places/${Global.collections.waterbird}/${Global.forms.waterbirdPairForm}`
         },
         'juvenileForm': {
           routerLink: ['../vesilintulaskenta', 'poikuelaskenta'],
           label: 'Poikuelaskenta',
-          activeMatch: `/places/${Global.collections.waterbird}`
-        }
+          activeMatch: `/places/${Global.collections.waterbird}/${Global.forms.waterbirdJuvenileForm}`
+      }
       },
       navLinksOrder: ['instructions', 'form', 'juvenileForm', 'ownSubmissions', 'formPermissions'],
       hideNavFor: ['/form'],

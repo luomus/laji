@@ -14,6 +14,8 @@ import { DataTableComponent } from './component/data-table/data-table.component'
 import { DatatableModule } from '../../../../../src/app/shared-modules/datatable/datatable.module';
 import { LajiUiModule } from '../../../../laji-ui/src/lib/laji-ui.module';
 import { InfoPageModule } from '../../../../../src/app/shared-modules/info-page/info-page.module';
+import { CollectionSelectComponent } from './component/collection-select/collection-select.component';
+import { SharedModule } from '../../../../../src/app/shared/shared.module';
 
 
 @NgModule({
@@ -22,6 +24,7 @@ import { InfoPageModule } from '../../../../../src/app/shared-modules/info-page/
       UsageByPersonComponent,
       UsageByCollectionComponent,
       OrganizationSelectComponent,
+      CollectionSelectComponent,
       DataTableComponent
   ],
   imports: [
@@ -34,7 +37,8 @@ import { InfoPageModule } from '../../../../../src/app/shared-modules/info-page/
     ReactiveFormsModule,
     DatatableModule,
     LajiUiModule,
-    InfoPageModule
+    InfoPageModule,
+    SharedModule
   ]
 })
 export class UsageModule { }
