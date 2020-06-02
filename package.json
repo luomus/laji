@@ -31,7 +31,7 @@
     "build:label-designer-electron": "rm -rf dist && ng build --base-href ./ label-designer-electron && tsc --p projects/label-designer-electron/electron && cp projects/label-designer-electron/package.json dist/",
     "build:laji-ui": "ng build laji-ui",
     "build:label-designer-element": "ng build --prod --output-hashing=none label-designer-element",
-    "build:ssr:prod": "npm run build:prod && ng run laji:server:prod",
+    "build:ssr:prod": "npm run build:prod && ng run laji:server:production",
     "build:ssr:beta": "npm run build:beta && ng run laji:server:beta",
     "build:ssr:dev": "npm run build:dev && ng run laji:server:dev",
     "build:ssr:local": "npm run build:local && ng run laji:server:local",
