@@ -597,6 +597,7 @@ const routes: Routes = [
           label: 'bats.navLinks.form'
         }
       },
+      hideNavFor: ['/form'],
       hasRightsInstructions: '2780',
     }
   },
