@@ -128,12 +128,11 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     const candidateId = this.letterCandidate.id;
     this.letterCandidate = undefined;
     this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
-      .subscribe(() => {
+      .subscribe((candidate) => {
         if (annotation !== LetterAnnotation.unsure) {
           this.letterAnnotationCount += 1;
-          this.cdr.markForCheck();
         }
-        this.getNextLetterCandidate(this.letterTemplate.id);
+        this.onCandidateLoaded(candidate);
       });
   }
 
@@ -212,15 +211,19 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = undefined;
 
     this.letterCandidateSub = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
-      if (!candidate) {
-        this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
-        this.getNextLetterTemplate();
-        return;
-      }
-
-      this.letterCandidate = candidate;
-      this.loadingLetters = false;
-      this.cdr.markForCheck();
+      this.onCandidateLoaded(candidate);
     });
+  }
+
+  private onCandidateLoaded(candidate) {
+    if (!candidate) {
+      this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
+      this.getNextLetterTemplate();
+      return;
+    }
+
+    this.letterCandidate = candidate;
+    this.loadingLetters = false;
+    this.cdr.markForCheck();
   }
 }

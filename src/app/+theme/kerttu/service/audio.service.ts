@@ -7,6 +7,7 @@ import {FFT} from './FFT';
 @Injectable()
 export class AudioService {
   private buffer$ = {};
+  private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
   private colormaps = {};
   private colormaps$ = {};
@@ -15,11 +16,23 @@ export class AudioService {
   }
 
   public getAudioBuffer(url: string, context: AudioContext): Observable<AudioBuffer> {
+    if (this.buffer[url]) {
+      this.buffer[url]['time'] = Date.now();
+      return of(this.buffer[url]['buffer']);
+    }
+
     if (!this.buffer$[url]) {
-      this.buffer$[url] = this.httpClient.get(url, { responseType: 'arraybuffer'})
+      this.buffer$[url] = this.httpClient.get(url, {responseType: 'arraybuffer'})
         .pipe(
           switchMap((response: ArrayBuffer) => {
             return context.decodeAudioData(response);
+          }),
+          tap((buffer) => {
+            this.buffer[url] = {
+              'buffer': buffer,
+              'time': Date.now()
+            };
+            this.removeOldBuffersFromCache();
           }),
           share()
         );
@@ -70,7 +83,7 @@ export class AudioService {
     ctx.putImageData(data, 0, 0);
   }
 
-  private computeSpectrogram(buffer: AudioBuffer, nperseg: number, noverlap: number): {spectrogram: Uint8Array[], maxFreq: number, maxTime: number} {
+  private computeSpectrogram(buffer: AudioBuffer, nperseg: number, noverlap: number): { spectrogram: Uint8Array[], maxFreq: number, maxTime: number } {
     const fft = new FFT(nperseg, buffer.sampleRate, 'hann');
     const chanData = buffer.getChannelData(0);
 
@@ -113,7 +126,7 @@ export class AudioService {
     return new ImageData(data, spect.length, spect[0].length);
   }
 
-  private getColormap(colormap: 'inferno'|'viridis' = 'inferno'): Observable<any> {
+  private getColormap(colormap: 'inferno' | 'viridis' = 'inferno'): Observable<any> {
     if (this.colormaps[colormap]) {
       return of(this.colormaps[colormap]);
     }
@@ -129,5 +142,20 @@ export class AudioService {
     }
 
     return this.colormaps$[colormap];
+  }
+
+  private removeOldBuffersFromCache() {
+    const keys = Object.keys(this.buffer);
+    while (keys.length > 2) {
+      const times = keys.map(key => this.buffer[key].time);
+      const removed = times.indexOf(Math.min(...times));
+      keys.splice(removed, 1);
+
+      const newBuffer = {};
+      for (const key of keys) {
+        newBuffer[key] = this.buffer[key];
+      }
+      this.buffer = newBuffer;
+    }
   }
 }

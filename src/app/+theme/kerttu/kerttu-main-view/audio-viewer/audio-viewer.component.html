@@ -1,5 +1,5 @@
 <laji-spinner [spinning]="!buffer" [overlay]="true">
-  <div id="spectrogramContainer">
+  <div id="spectrogramContainer" [ngClass]="{'visibility-hidden': !buffer}">
     <laji-audio-spectrogram
       [buffer]="buffer"
       [currentTime]="currentTime"
@@ -13,7 +13,7 @@
     ></laji-audio-spectrogram>
   </div>
 
-  <div id="audioControls">
+  <div id="audioControls" [ngClass]="{'visibility-hidden': !buffer}">
     <button class="btn btn-default" (click)="toggleAudio()" [disabled]="loading">
     <span
       class="fa"

@@ -49,7 +49,9 @@
   </div>
   <div class="col-md-12">
     <h4>{{ 'theme.kerttu.letterCandidateLonger' | translate }}</h4>
+    <button (click)="candidateLongerVisible = true" class="btn btn-default" *ngIf="!candidateLongerVisible">Näytä</button>
     <laji-audio-viewer
+      *ngIf="candidateLongerVisible"
       [recording]="candidate?.recording"
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
