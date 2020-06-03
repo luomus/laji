@@ -207,6 +207,7 @@ const routes: Routes = [
         },
       },
       navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'templates', 'formPermissions'],
+      hideNavFor: ['/form'],
       instructions: '2668',
     }
   },
@@ -418,6 +419,7 @@ const routes: Routes = [
       noFormPermissionRedirect: '/theme/vieraslajit',
       title: 'Vieras&shy;lajit',
       instructions: '2661',
+      hideNavFor: ['/form'],
       navLinks: {
         form: {
           label: 'invasiveSpecies.places'
@@ -541,6 +543,7 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['about', 'instructions', 'form', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form']
     }
   },
   {
@@ -672,6 +675,7 @@ const routes: Routes = [
       formID: Global.forms.fungi,
       noFormPermissionRedirect: '/theme/sieniatlas',
       title: 'Sieniatlas',
+      hideNavFor: ['/form'],
       instructions: '3901',
     }
   },
@@ -833,6 +837,7 @@ const routes: Routes = [
         }
       },
       navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form'],
       instructions: '3941'
     }
   },
@@ -863,6 +868,7 @@ const routes: Routes = [
     data: {
       formID: Global.forms.glowWormForm,
       title: 'Kiiltomadot',
+      hideNavFor: ['/form'],
       instructions: '3988'
     }
   },
