@@ -475,6 +475,7 @@ const routes: Routes = [
       noFormPermissionRedirect: '/theme/kunnat',
       title: 'Kuntalomake',
       instructions: '2666',
+      hideNavFor: ['/form'],
       navLinks: {
         form: {
           label: 'invasiveSpecies.places'
@@ -648,6 +649,7 @@ const routes: Routes = [
       noFormPermissionRedirect: '/theme/valio',
       title: 'VALIO',
       instructions: '2759',
+      hideNavFor: ['/form'],
       hasRightsInstructions: '2761',
     }
   },
@@ -727,6 +729,7 @@ const routes: Routes = [
       formID: Global.forms.sykeButterfly,
       noFormPermissionRedirect: '/theme/syke-perhoset',
       title: 'SYKE Päiväperhoset',
+      hideNavFor: ['/form']
     }
   },
   {
