@@ -5,7 +5,6 @@ import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
 
 
 @Component({
@@ -25,7 +24,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       {
         data: [
           {
-            type: 'treemap',
             key: 'data',
           data: [],
           fontFamily: 'Verdana',
@@ -56,7 +54,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
     tooltips: {
       callbacks: {
         title: function(item, data) {
-          return data.datasets[item['datasetIndex']]['tree'][item['index']].label;
+          return data.datasets[item[0].datasetIndex]['tree'][item[0].datasetIndex].label;
         },
         label: function(item, data) {
           return data.datasets[item['datasetIndex']]['tree'][item['index']].data;
@@ -98,8 +96,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.translate.get('taxonomy.species').subscribe(label => { this.speciesLabel = label; });
     this.translate.get('taxonomy.species.singular').subscribe(label => { this.speciesSingularLabel = label; });
-    console.log(Chart.controllers);
-    console.log(Chart.defaults.treemap);
   }
 
   ngOnChanges() {
@@ -111,25 +107,20 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         data:
         {
           datasets: [
-          {key: 'data',
+          {
+          key: 'data',
           data: [],
           groups: ['label'],
           fontFamily: 'Verdana',
-        fontColor: '#000',
-        fontSize: 14,
-        backgroundColor: function(ctx) {
-          const item = ctx.dataset.data[ctx.dataIndex];
-          if (!item) {
-            return;
+          fontColor: '#000',
+          fontSize: 14,
+          backgroundColor: '#FF0000',
+          spacing: 2,
+          borderWidth: 0.5,
+          borderColor: 'rgba(160,160,160,0.5)'
           }
-          const a = item.v / (item.gs || item.s) / 2 + 0.5;
-          return 'rgba(255,192,203," + a + ")';
-        },
-        spacing: 2,
-        borderWidth: 0.5,
-        borderColor: 'rgba(160,160,160,0.5)'
-        }
-        ]}
+        ]
+      }
       }
     ];
     this.lineChartLabels = [];
@@ -145,7 +136,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       }
       this.lineChartData[0]['data']['datasets'][0].data.sort((a , b) => (a.data > b.data) ? -1 : ((b.data > a.data) ? 1 : 0));
     });
-    console.log(this.lineChartData);
     this.cd.detectChanges();
   }
 
@@ -156,5 +146,9 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
 
   private formatValue(value: number) {
     return value + ' ' + (value === 1 ? this.speciesSingularLabel : this.speciesLabel);
+  }
+
+  chartHover(e) {
+
   }
 }

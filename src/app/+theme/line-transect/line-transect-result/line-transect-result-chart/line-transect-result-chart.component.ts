@@ -86,13 +86,18 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
 
-          if ( range(x - 6, x + 6, 1).indexOf(e['layerX']) !== -1 && range(y - 6, y + 6, 1).indexOf(e['layerY']) !== -1) {
+            const year = element[0]['_chart'].config.data.labels[0] === '2006' ? 15 : 6;
+            const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
+
+          if ( range(x - year, x + (year + offset), 1).indexOf(e['layerX']) !== -1 && range(y - (year + offset), y + (year - offset), 1).indexOf(e['layerY']) !== -1) {
             return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
           } else {
             return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
             }
           };
           element[0]['_chart'].tooltip._options.callbacks.title = function (tooltipItem, data) {
+            const year = element[0]['_chart'].config.data.labels[0] === '2006' ? 15 : 6;
+            const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
             const range = (start, end, step) => {
               return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
             };
@@ -100,7 +105,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
 
-          if ( range(x - 6, x + 6, 1).indexOf(e['layerX']) !== -1 && range(y - 6, y + 6, 1).indexOf(e['layerY']) !== -1) {
+          if ( range(x - year, x + (year + offset), 1).indexOf(e['layerX']) !== -1 && range(y - (year + offset), y + (year - offset), 1).indexOf(e['layerY']) !== -1) {
             return '' + tooltipItem[0].xLabel + ' · ' + 'Parim./Km';
           } else {
             return '';
@@ -160,6 +165,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       draw: function(ease) {
         Chart.controllers.line.prototype.draw.call(this, ease);
         if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
+          const year = this.chart.tooltip._data.labels[0] === '2006' ? 15 : 6;
+          const offset = this.chart.tooltip._data.labels[0] === '2006' ? 6 : 0;
           const activePoint = this.chart.tooltip._active[0];
           const ctx = this.chart.ctx;
           const x = Number((activePoint.tooltipPosition().x).toFixed(0));
@@ -174,8 +181,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
           };
           const rangeX = range(x - 6, x + 6, 1);
 
-          if (range(x - 6, x + 6, 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
-          range(y - 6, y + 6, 1).indexOf(this.chart.tooltip._eventPosition.y) === -1) {
+          if (range(x - year, x + (year + offset), 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
+          range(y - (year + offset), y + (year - offset), 1).indexOf(this.chart.tooltip._eventPosition.y) === -1) {
             ctx.save();
             ctx.beginPath();
             ctx.moveTo(x, topY);
@@ -339,7 +346,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
           // Create Gradient Color
           const ctx = chart.ctx;
-
           if (
             (this.between(e.event.layerX, (chart.tooltip._eventPosition.x + 10), (chart.tooltip._eventPosition.x - 10)) &&
             this.between(e.event.layerY, (chart.tooltip._eventPosition.y + 10), (chart.tooltip._eventPosition.y - 10))) ) {
