@@ -19,7 +19,7 @@
 <laji-row *ngIf="showFacts" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
 <laji-row *ngIf="showFacts" [title]="'MY.recordBasis' | label" [value]="unit.recordBasis | label: 'warehouse'"></laji-row>
 <laji-row *ngIf="showFacts && unit.keywords && unit.keywords.length > 0" [title]="'observation.active.keyword' | translate">
-  <ul class="separated-list cazzo">
+  <ul class="separated-list">
     <li *ngFor="let key of unit.keywords">
       {{ key }}
     </li>
