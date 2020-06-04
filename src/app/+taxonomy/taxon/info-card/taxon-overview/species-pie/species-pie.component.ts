@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
-import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
-import { Color, BaseChartDirective, Label } from 'ng2-charts';
-import * as pluginAnnotations from 'chartjs-plugin-annotation';
+import { ChartOptions } from 'chart.js';
+import { Color} from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import * as pluginPieChart from 'chartjs-plugin-piechart-outlabels';
 
 
 @Component({
@@ -20,68 +20,37 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   valueFormatting = this.formatValue.bind(this);
   total = 0;
 
-  lineChartData: any[] = [
-      {
-        data: [
-          {
-            key: 'data',
-          data: [],
-          fontFamily: 'Verdana',
-        fontColor: '#000',
-        fontSize: 20,
-        fontWeight: 'bold',
-        backgroundColor: function(ctx) {
-          const item = ctx.dataset.data[ctx.dataIndex];
-          if (!item) {
-            return;
-          }
-          const a = item.v / (item.gs || item.s) / 2 + 0.5;
-          return 'rgba(255,192,203," + a +")';
-        },
-        spacing: 2,
-        borderWidth: 0.5,
-        borderColor: 'rgba(160,160,160,0.5)'
-        }
-      ]
-    }
-  ];
+  lineChartData: any[];
   lineChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio : false,
+    cutoutPercentage: 50,
     legend: {
       display: false
     },
-    tooltips: {
-      callbacks: {
-        title: function(item, data) {
-          return data.datasets[item[0].datasetIndex]['tree'][item[0].datasetIndex].label;
-        },
-        label: function(item, data) {
-          return data.datasets[item['datasetIndex']]['tree'][item['index']].data;
-        }
-      }
-    },
     plugins: {
-      labels: {
-        display: true,
-        render: 'value',
-        align: 'end',
-        anchor: 'end'
-      }
+        datalabels: {
+          display: false
+        },
+        outlabels: {
+          display: true,
+          font: {
+            size: 30
+          },
+          stretch: 20,
+          text: '%l %v'
+        }
+    },
+    events: ['mousemove', 'click'],
+    onHover: (event, chartElement) => {
+        event.target['style'].cursor = chartElement[0] ? 'pointer' : 'default';
     }
   };
   lineChartLabels = [];
-  lineChartPlugins = [pluginDataLabels];
+  lineChartPlugins = [pluginDataLabels, pluginPieChart];
   lineChartColors: Color[] = [
-    { // grey
-      backgroundColor: 'rgb(70,130,180)',
-      borderColor: 'rgb(70,130,180)',
-      pointBackgroundColor: 'rgb(70,130,180)',
-      pointBorderColor: 'rgb(70,130,180)',
-      pointHoverBackgroundColor: 'rgb(70,130,180)',
-      pointHoverBorderColor: 'rgb(70,130,180)'
-    }
-  ];
+    {backgroundColor: ['#A8385D', '#7AA3E5', '#A27EA8', '#7ED3ED', '#50ABCC', '#AD6886', '#8796C0', '#ADCDED', '#ABD1F0', '#AAE3F5']}]
+;
   dataById: {[key: string]: Taxonomy} = {};
   private speciesLabel = '';
   private speciesSingularLabel = '';
@@ -102,27 +71,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
 
     this.dataById = {};
     this.total = 0;
-    this.lineChartData = [
-      {
-        data:
-        {
-          datasets: [
-          {
-          key: 'data',
-          data: [],
-          groups: ['label'],
-          fontFamily: 'Verdana',
-          fontColor: '#000',
-          fontSize: 14,
-          backgroundColor: '#FF0000',
-          spacing: 2,
-          borderWidth: 0.5,
-          borderColor: 'rgba(160,160,160,0.5)'
-          }
-        ]
-      }
-      }
-    ];
+    this.lineChartData = [{data: [], label: []}];
     this.lineChartLabels = [];
     (this.children || []).forEach(child => {
       const id = child.id;
@@ -131,11 +80,12 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
 
       if (count > 0) {
         this.dataById[id] = child;
-        this.lineChartData[0]['data']['datasets'][0].data.push({data: count, label: child.vernacularName || child.scientificName});
+        this.lineChartData[0].data.push(count);
+        this.lineChartData[0].label.push(id);
         this.lineChartLabels.push(child.vernacularName || child.scientificName);
       }
-      this.lineChartData[0]['data']['datasets'][0].data.sort((a , b) => (a.data > b.data) ? -1 : ((b.data > a.data) ? 1 : 0));
     });
+
     this.cd.detectChanges();
   }
 
@@ -148,7 +98,4 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
     return value + ' ' + (value === 1 ? this.speciesSingularLabel : this.speciesLabel);
   }
 
-  chartHover(e) {
-
-  }
 }

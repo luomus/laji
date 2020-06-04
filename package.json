@@ -89,6 +89,7 @@
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "chartjs-plugin-datalabels": "^0.7.0",
+    "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.6.11",
     "cors": "~2.8.5",

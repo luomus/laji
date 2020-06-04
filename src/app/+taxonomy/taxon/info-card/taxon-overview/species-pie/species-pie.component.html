@@ -21,13 +21,14 @@
       </ng-template>
     </ngx-charts-tree-map>-->
     <laji-chart #lineChart
-    [datasets]="lineChartData[0]['data']['datasets']"
+    [data]="lineChartData[0].data"
     [labels]="lineChartLabels"
     [options]="lineChartOptions"
     [legend]="false"
+    [colors]="lineChartColors"
     [plugins]="lineChartPlugins"
-    chartType="treemap"
-    (chartHover)="chartHover($event)"
+    chartType="outlabeledPie"
+    (chartClick)="taxonSelect.emit(lineChartData[0].label[$event['active'][0]['_index']])"
   ></laji-chart>
   </div>
   <span>
