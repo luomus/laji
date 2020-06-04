@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from 'chart.js';
 import { Color} from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import * as pluginPieChart from 'chartjs-plugin-piechart-outlabels';
+import * as OutLabel from 'chartjs-plugin-piechart-outlabels';
 
 
 @Component({
@@ -34,8 +34,10 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         },
         outlabels: {
           display: true,
+          color: '#000',
           font: {
-            size: 30
+            resizable: true,
+            size: '14'
           },
           stretch: 20,
           text: '%l %v'
@@ -47,7 +49,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
     }
   };
   lineChartLabels = [];
-  lineChartPlugins = [pluginDataLabels, pluginPieChart];
+  lineChartPlugins = [pluginDataLabels, OutLabel];
   lineChartColors: Color[] = [
     {backgroundColor: ['#A8385D', '#7AA3E5', '#A27EA8', '#7ED3ED', '#50ABCC', '#AD6886', '#8796C0', '#ADCDED', '#ABD1F0', '#AAE3F5']}]
 ;
