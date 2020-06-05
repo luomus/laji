@@ -31,7 +31,7 @@
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
       [recording]="template?.recording"
-      [xRangePadding]="0.1"
+      [xRangePadding]="0.5"
       [xRange]="template?.xRange"
       [yRange]="template?.yRange"
       (audioLoading)="loadingTemplate = $event"
@@ -41,7 +41,7 @@
     <h4>{{ 'theme.kerttu.letterCandidate' | translate }} ({{ candidate?.crossCorrelation }})</h4>
     <laji-audio-viewer
       [recording]="candidate?.recording"
-      [xRangePadding]="0.1"
+      [xRangePadding]="0.5"
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
       (audioLoading)="loadingCandidate = $event"
