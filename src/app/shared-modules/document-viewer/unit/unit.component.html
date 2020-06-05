@@ -17,15 +17,15 @@
     [showEffectiveTaxon]="false"
   ></laji-observation-effective-tags-taxon>
 
-  <laji-row [title]="'annotation.title'|translate" *ngIf="annotations.length > 0">
-    <a (click)="showAnnotations()" style="display: block; font-size: 13px; cursor: pointer;">
-      <span *ngIf="annotations.length > 0">
-        <!--{{ 'annotation.show' | translate }} -->
+  <laji-row [title]="'annotation.title'|translate">
+    <a (click)="showAnnotations()" style="display: block; cursor:pointer"  *ngIf="annotations.length > 0">
+      <span>
         <span>{{ annotations.length }} </span>
         <span *ngIf="annotations.length === 1; else multiple" style="text-transform: lowercase;">{{ 'annotation.titleSingle' | translate }}</span>
         <ng-template #multiple><span style="text-transform: lowercase;">{{ 'annotation.title' | translate }}</span></ng-template>
       </span>
     </a>
+    <a type="button" class="btn btn-sm btn-default" (click)="showAnnotations()">{{ 'annotation.button' | translate}}</a>
   </laji-row>
 
   <div class="samples" *ngIf="unit && unit.samples && unit.samples.length > 0">
