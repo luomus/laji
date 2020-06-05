@@ -20,6 +20,7 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
 
   loadingTemplate = false;
   loadingCandidate = false;
+  candidateLongerVisible = false;
 
   candidateYRange: number[];
 
@@ -36,6 +37,7 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     setTimeout(() => {
       this.currentAnnotation = undefined;
+      this.candidateLongerVisible = false;
       this.cdr.markForCheck();
     }, 0);
     if (changes.template && this.template) {

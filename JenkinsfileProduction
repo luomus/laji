@@ -5,19 +5,20 @@ node {
       git branch: 'master', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
       sh 'npm ci'
     }
-    stage('Build production') {
-      milestone()
-      sh 'rm -rf dist'
-      sh 'npm run --silent build:ssr:prod'
-      sh 'pre-compress-web-assets dist/browser'
-      sh 'tar -cvzf prod.tar.gz --strip-components=1 dist'
-    }
     stage('Build embedded') {
       milestone()
       sh 'rm -rf dist'
       sh 'npm run --silent build:embedded'
       sh 'pre-compress-web-assets dist/browser'
       sh 'tar -cvzf embedded.tar.gz --strip-components=1 dist/browser'
+    }
+    stage('Build production') {
+      milestone()
+      sh 'rm -rf dist'
+      sh 'npm run --silent build:ssr:prod'
+      sh 'pre-compress-web-assets dist/browser'
+      sh 'npm prune --silent --production'
+      sh 'tar -cvzf prod.tar.gz --strip-components=1 dist node_modules'
     }
     stage('Archive') {
       milestone()

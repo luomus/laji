@@ -1,25 +1,40 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {map, share, switchMap, tap} from 'rxjs/operators';
-import {FFT} from './FFT';
+import { Observable, of } from 'rxjs';
+import { map, share, switchMap, tap } from 'rxjs/operators';
+import { SpectrogramService } from './spectrogram.service';
 
 @Injectable()
 export class AudioService {
   private buffer$ = {};
+  private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
   private colormaps = {};
   private colormaps$ = {};
 
-  constructor(protected httpClient: HttpClient) {
-  }
+  constructor(
+    protected httpClient: HttpClient,
+    private spectrogramService: SpectrogramService
+  ) { }
 
   public getAudioBuffer(url: string, context: AudioContext): Observable<AudioBuffer> {
+    if (this.buffer[url]) {
+      this.buffer[url]['time'] = Date.now();
+      return of(this.buffer[url]['buffer']);
+    }
+
     if (!this.buffer$[url]) {
-      this.buffer$[url] = this.httpClient.get(url, { responseType: 'arraybuffer'})
+      this.buffer$[url] = this.httpClient.get(url, {responseType: 'arraybuffer'})
         .pipe(
           switchMap((response: ArrayBuffer) => {
             return context.decodeAudioData(response);
+          }),
+          tap((buffer) => {
+            this.buffer[url] = {
+              'buffer': buffer,
+              'time': Date.now()
+            };
+            this.removeOldBuffersFromCache();
           }),
           share()
         );
@@ -54,8 +69,8 @@ export class AudioService {
   public drawSpectrogramToCanvas(buffer: AudioBuffer, nperseg: number, noverlap: number, canvas: HTMLCanvasElement)
     : Observable<{ canvas: HTMLCanvasElement, maxFreq: number, maxTime: number }> {
     return this.getColormap().pipe(map(colormap => {
-      const {spectrogram, maxFreq, maxTime} = this.computeSpectrogram(buffer, nperseg, noverlap);
-      const imageData = this.spectrogramToImageData(spectrogram, colormap);
+      const {spectrogram, width, heigth, maxFreq, maxTime} = this.spectrogramService.computeSpectrogram(buffer, nperseg, noverlap);
+      const imageData = this.spectrogramToImageData(spectrogram, width, heigth, colormap);
       this.drawImage(imageData, canvas);
       return {canvas, maxFreq, maxTime};
     }));
@@ -70,50 +85,52 @@ export class AudioService {
     ctx.putImageData(data, 0, 0);
   }
 
-  private computeSpectrogram(buffer: AudioBuffer, nperseg: number, noverlap: number): {spectrogram: Uint8Array[], maxFreq: number, maxTime: number} {
-    const fft = new FFT(nperseg, buffer.sampleRate, 'hann');
-    const chanData = buffer.getChannelData(0);
+  private spectrogramToImageData(spect: Float32Array, width: number, height: number, colormap: any): ImageData {
+    const {minValue, maxValue} = this.findMinAndMaxValue(spect);
+    const data = new Uint8ClampedArray(spect.length * 4);
 
-    const spectrogram = [];
     let offset = 0;
-
-    while (offset + nperseg < chanData.length) {
-      const segment = chanData.slice(
-        offset,
-        offset + nperseg
-      );
-      const spectrum = fft.calculateSpectrum(segment);
-      const spectrogramColumn = new Uint8Array(nperseg / 2);
-      for (let j = 0; j < nperseg / 2; j++) {
-        spectrogramColumn[j] = Math.max(-255, Math.log10(spectrum[j]) * 45);
-      }
-      spectrogram.push(spectrogramColumn);
-      offset += nperseg - noverlap;
-    }
-
-    const maxFreq = Math.floor(buffer.sampleRate / 2);
-    const maxTime = (spectrogram.length - 1) * ((nperseg - noverlap) / buffer.sampleRate) + nperseg / buffer.sampleRate;
-
-    return {spectrogram, maxFreq, maxTime};
-  }
-
-  private spectrogramToImageData(spect: Uint8Array[], colormap: any): ImageData {
-    const data = new Uint8ClampedArray(spect.length * spect[0].length * 4);
-
     for (let i = 0; i < spect.length; i++) {
-      for (let j = 0; j < spect[0].length; j++) {
-        const color = colormap[spect[i][spect[0].length - 1 - j]];
-        data[4 * j * spect.length + 4 * i] = color[0] * 256;
-        data[4 * j * spect.length + 4 * i + 1] = color[1] * 256;
-        data[4 * j * spect.length + 4 * i + 2] = color[2] * 256;
-        data[4 * j * spect.length + 4 * i + 3] = color[3] * 256;
+      let value = spect[i];
+      value = this.convertRange(value, [minValue, maxValue], [0, colormap.length - 1]);
+
+      const color = colormap[Math.round(value)];
+
+      data[offset++] = color[0] * 256;
+      data[offset++] = color[1] * 256;
+      data[offset++] = color[2] * 256;
+      data[offset++] = 256;
+    }
+
+    return new ImageData(data, width, height);
+  }
+
+  private findMinAndMaxValue(data: Float32Array): {minValue: number, maxValue: number} {
+    let minValue, maxValue;
+    for (let i = 0; i < data.length; i++) {
+      const value = data[i];
+      if (minValue == null || value < minValue) {
+        minValue = value;
+      }
+      if (maxValue == null || value > maxValue) {
+        maxValue = value;
       }
     }
 
-    return new ImageData(data, spect.length, spect[0].length);
+    return {minValue, maxValue};
   }
 
-  private getColormap(colormap: 'inferno'|'viridis' = 'inferno'): Observable<any> {
+  private convertRange(inputY: number, yRange: number[], xRange: number[]): number {
+    const [xMin, xMax] = xRange;
+    const [yMin, yMax] = yRange;
+
+    const percent = (inputY - yMin) / (yMax - yMin);
+    const outputX = percent * (xMax - xMin) + xMin;
+
+    return outputX;
+  }
+
+  private getColormap(colormap: 'inferno' | 'viridis' = 'viridis'): Observable<any> {
     if (this.colormaps[colormap]) {
       return of(this.colormaps[colormap]);
     }
@@ -129,5 +146,20 @@ export class AudioService {
     }
 
     return this.colormaps$[colormap];
+  }
+
+  private removeOldBuffersFromCache() {
+    const keys = Object.keys(this.buffer);
+    while (keys.length > 2) {
+      const times = keys.map(key => this.buffer[key].time);
+      const removed = times.indexOf(Math.min(...times));
+      keys.splice(removed, 1);
+
+      const newBuffer = {};
+      for (const key of keys) {
+        newBuffer[key] = this.buffer[key];
+      }
+      this.buffer = newBuffer;
+    }
   }
 }

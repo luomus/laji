@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges,
 Output, EventEmitter, HostListener } from '@angular/core';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import {delay, map, switchMap, tap} from 'rxjs/operators';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Document } from '../../../shared/model/Document';
@@ -57,6 +57,7 @@ export class DocumentLocalComponent implements OnChanges {
       if (this.document) {
         this.loading = true;
         this.parseDocSub = this.parseDocument(this.document)
+          .pipe(delay(0))
           .subscribe(() => {
             this.loading = false;
             this.cd.markForCheck();
