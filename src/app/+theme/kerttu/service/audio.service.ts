@@ -66,23 +66,13 @@ export class AudioService {
     return emptySegment;
   }
 
-  public drawSpectrogramToCanvas(buffer: AudioBuffer, nperseg: number, noverlap: number, canvas: HTMLCanvasElement)
-    : Observable<{ canvas: HTMLCanvasElement, maxFreq: number, maxTime: number }> {
+  public getSpectrogramImageData(buffer: AudioBuffer, nperseg: number, noverlap: number)
+    : Observable<{ imageData: ImageData, maxFreq: number, maxTime: number }> {
     return this.getColormap().pipe(map(colormap => {
       const {spectrogram, width, heigth, maxFreq, maxTime} = this.spectrogramService.computeSpectrogram(buffer, nperseg, noverlap);
       const imageData = this.spectrogramToImageData(spectrogram, width, heigth, colormap);
-      this.drawImage(imageData, canvas);
-      return {canvas, maxFreq, maxTime};
+      return {imageData, maxFreq, maxTime};
     }));
-  }
-
-  private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
-    canvas.width = data.width;
-    canvas.height = data.height;
-
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, data.width, data.height);
-    ctx.putImageData(data, 0, 0);
   }
 
   private spectrogramToImageData(spect: Float32Array, width: number, height: number, colormap: any): ImageData {

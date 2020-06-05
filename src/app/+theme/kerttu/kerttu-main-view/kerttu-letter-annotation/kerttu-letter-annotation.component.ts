@@ -24,6 +24,8 @@ export class KerttuLetterAnnotationComponent implements OnChanges {
 
   candidateYRange: number[];
 
+  zoomed = false;
+
   taxon$: Observable<Taxonomy>;
 
   @Output() annotationChange = new EventEmitter<LetterAnnotation>();
