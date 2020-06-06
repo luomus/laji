@@ -341,12 +341,12 @@ export class MappingService {
           parts[0] = dateParts.reverse().join('-');
         }
       }
-      if (parts.length === 2) {
-      } else if (parts.length > 2) {
+      if (parts.length > 2) {
         const first = parts.shift();
 
         return `${first}T${parts.join('')}`;
       }
+      return parts.join('T');
     }
     return value;
   }

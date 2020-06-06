@@ -83,6 +83,7 @@ import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-v
 import { KerttuApi } from './kerttu/service/kerttu-api';
 import { KerttuFacade } from './kerttu/service/kerttu.facade';
 import { AudioService } from './kerttu/service/audio.service';
+import { SpectrogramService } from './kerttu/service/spectrogram.service';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
 import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-letter-annotation/kerttu-letter-annotation.component';
@@ -195,6 +196,7 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     KerttuApi,
     KerttuFacade,
     AudioService,
+    SpectrogramService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })

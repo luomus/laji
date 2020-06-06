@@ -25,6 +25,9 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() xRange: number[];
   @Input() yRange: number[];
 
+  @Input() zoomed = false;
+  @Input() frequencyPadding = 200;
+
   @Output() spectrogramReady = new EventEmitter();
   @Output() startDrag = new EventEmitter();
   @Output() endDrag = new EventEmitter<number>();
@@ -33,11 +36,15 @@ export class AudioSpectrogramComponent implements OnChanges {
 
   private drawSub: Subscription;
 
+  private imageData: ImageData;
   private maxFreq: number;
   private maxTime: number;
   private xScale: ScaleLinear<number, number>;
   private yScale: ScaleLinear<number, number>;
   private scrollLine: Selection<SVGLineElement, any, any, any>;
+
+  private startFreq: number;
+  private endFreq: number;
 
   constructor(
     private audioService: AudioService,
@@ -49,11 +56,17 @@ export class AudioSpectrogramComponent implements OnChanges {
     const canvas = this.spectrogramRef.nativeElement;
     if (!isNaN(this.maxFreq) && !isNaN(this.maxTime)) {
       const elementWidth = this.containerRef.nativeElement.offsetWidth - this.margin.left - 20;
-      const elementHeight = canvas.height;
+      if (elementWidth < 0) {
+        setTimeout(() => {
+          this.onResize();
+        }, 10);
+        return;
+      }
+      const elementHeight = this.imageData.height;
       canvas.style.width = elementWidth + 'px';
       canvas.style.height = elementHeight + 'px';
 
-      this.updateChart(elementWidth, elementHeight, this.maxFreq, this.maxTime);
+      this.updateChart(elementWidth, elementHeight);
     }
   }
 
@@ -63,12 +76,14 @@ export class AudioSpectrogramComponent implements OnChanges {
         this.drawSub.unsubscribe();
       }
       if (this.buffer) {
-        this.drawSub = this.audioService.drawSpectrogramToCanvas(this.buffer, this.nperseg, this.noverlap, this.spectrogramRef.nativeElement)
+        this.drawSub = this.audioService.getSpectrogramImageData(this.buffer, this.nperseg, this.noverlap)
           .pipe(delay(0))
           .subscribe((result) => {
+            this.imageData = result.imageData;
             this.maxFreq = result.maxFreq;
             this.maxTime = result.maxTime;
-            this.onResize();
+            this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
+
             this.spectrogramReady.emit();
             this.cdr.markForCheck();
           });
@@ -77,17 +92,20 @@ export class AudioSpectrogramComponent implements OnChanges {
     if (changes.currentTime && this.scrollLine) {
       this.updateScrollLinePosition();
     }
+    if (changes.zoomed) {
+      this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
+    }
   }
 
-  private updateChart(width, height, maxFreq, maxTime) {
+  private updateChart(width, height) {
     const svg = select(this.chartRef.nativeElement)
       .attr('width', width + (this.margin.left + this.margin.right))
       .attr('height', height + (this.margin.top + this.margin.bottom));
 
     svg.selectAll('*').remove();
 
-    this.xScale = scaleLinear().domain([0, maxTime]).range([0, width]);
-    this.yScale = scaleLinear().domain([maxFreq / 1000, 0]).range([0, height]);
+    this.xScale = scaleLinear().domain([0, this.maxTime]).range([0, width]);
+    this.yScale = scaleLinear().domain([this.endFreq / 1000, this.startFreq / 1000]).range([0, height]);
 
     const xAxis = axisBottom(this.xScale);
     const yAxis = axisLeft(this.yScale);
@@ -125,7 +143,7 @@ export class AudioSpectrogramComponent implements OnChanges {
 
     // draw white rectangle
     const rectY = this.yRange ? this.margin.top + this.yScale(this.yRange[1] / 1000) : this.margin.top;
-    const rectHeight = this.yRange ? this.yScale((maxFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
+    const rectHeight = this.yRange ? this.yScale((this.endFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
 
     svg.append('rect')
       .attr('x', this.margin.left + this.xScale(this.xRange[0]))
@@ -165,5 +183,23 @@ export class AudioSpectrogramComponent implements OnChanges {
     const position = this.margin.left + this.xScale(this.currentTime);
     this.scrollLine.attr('x1', position);
     this.scrollLine.attr('x2', position);
+  }
+
+  private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
+    this.startFreq = this.zoomed ? Math.max(this.yRange[0] - this.frequencyPadding, 0) : 0;
+    this.endFreq = this.zoomed ? Math.min(this.yRange[1] + this.frequencyPadding, this.maxFreq) : this.maxFreq;
+
+    const ratio1 = this.startFreq / this.maxFreq;
+    const ratio2 = this.endFreq / this.maxFreq;
+    const startY = data.height - (data.height * ratio2);
+
+    canvas.width = data.width;
+    canvas.height = data.height * (ratio1 + ratio2);
+
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, data.width, data.height);
+    ctx.putImageData(data, 0, -startY, 0, startY, canvas.width, canvas.height);
+
+    this.onResize();
   }
 }

@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
 import {Observable, of, Subscription} from 'rxjs';
-import {switchMap, take, tap} from 'rxjs/operators';
+import {switchMap, take} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
@@ -192,17 +192,14 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.loadingLetters = true;
 
     this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken(), skipCurrent)
-      .pipe(tap(template => {
+      .subscribe(template => {
         if (!template) {
           this.allLettersAnnotated = true;
-          return;
+        } else {
+          this.getNextLetterCandidate(template.id);
         }
-
-        this.getNextLetterCandidate(template.id);
-      }))
-      .subscribe(template => {
         this.letterTemplate = template;
-        this.letterAnnotationCount = template.userAnnotationCount;
+        this.letterAnnotationCount = template?.userAnnotationCount;
         this.cdr.markForCheck();
       });
   }
