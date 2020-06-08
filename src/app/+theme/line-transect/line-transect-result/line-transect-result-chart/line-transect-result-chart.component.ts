@@ -74,33 +74,51 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       intersect: false
     },
     hover: {
-      mode: 'nearest',
-      axis: 'x',
+      mode: 'index',
       intersect: false,
       onHover: function (this, e, element) {
+        let index_chart;
+        if (element[0]) {
+         index_chart = Number(element[0]['_index']);
+        } else {
+          index_chart = -1;
+        }
+
+
+        const dataset = this['tooltip']._data.datasets[0].data;
         if (element[0]) {
           element[0]['_chart'].tooltip._options.callbacks.label = function (tooltipItem, data) {
             const range = (start, end, step) => {
               return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
             };
             const activePoint = element[0]['_chart'].tooltip._active[0];
-            console.log(activePoint);
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-
-
-            const year = element[0]['_chart'].config.data.labels[0] === '2006' ? 15 : 6;
             const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
+            let empty = 0;
+            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -1) {
+              if ( !dataset[Number(index_chart) + 1]) {
+                const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
+                const diff = index - Number(index_chart);
+                if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
+                  empty = -3 * diff;
+                }
+              }
+              if ( !dataset[Number(index_chart) - 1]) {
+                if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
+                  const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
+                  const diff = Number(index_chart) - (Number(index_chart) - index);
+                    empty = 3 * diff;
+                }
+              }
+            }
+
+
             const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-            console.log(e['layerX']);
-            console.log(range(x - (col_width / 2), x + ((col_width / 2) + offset), 1));
-            console.log(e['layerY']);
-            console.log(range(y - (year + offset), y + (year - offset), 1));
-
-          if ( range(x - (col_width / 2), x + ((col_width / 2) + offset), 1).indexOf(e['layerX']) !== -1 &&
-          range(y - ((col_width / 2) + offset), y + ((col_width / 2) - offset), 1).indexOf(e['layerY']) !== -1) {
+          if ( range(x - (col_width / 2), x + ((col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
+          range(y - ((col_width / 2) - offset), y + ((col_width / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
           } else {
             return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
@@ -115,10 +133,34 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
+            const left_offset = 0, right_offset = 0;
+
+            let empty = 0;
+            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -1) {
+              if ( !dataset[Number(index_chart) + 1]) {
+                const count = 0;
+                const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
+                const diff = index - Number(index_chart);
+                if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
+                    empty = -3 * diff;
+                }
+              }
+              if (!dataset[Number(index_chart) - 1]) {
+                if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
+                  const count = 0;
+                  const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
+                  const diff = Number(index_chart) - (Number(index_chart) - index);
+                    empty = 3 * diff;
+                }
+              }
+            }
+
+
             const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-          if ( range(x - (col_width / 2), x + ((col_width / 2) + offset), 1).indexOf(e['layerX']) !== -1 && range(y - (year + offset), y + (year - offset), 1).indexOf(e['layerY']) !== -1) {
+          if ( range(x - ((col_width / 2)), x + ((col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
+          && range(y - (year + offset), y + (year - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return '' + tooltipItem[0].xLabel + ' · ' + 'Parim./Km';
           } else {
             return '';
