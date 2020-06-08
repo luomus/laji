@@ -27,13 +27,17 @@
     >
       ></laji-three-state-switch>
   </div>
+  <div class="col-md-12" id="letterAnnotationControls">
+    <button class="btn btn-default" (click)="zoomed = !zoomed">Zoomaa lähelle/kauas</button>
+  </div>
   <div class="col-md-6">
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
       [recording]="template?.recording"
-      [xRangePadding]="0.1"
+      [xRangePadding]="0.5"
       [xRange]="template?.xRange"
       [yRange]="template?.yRange"
+      [zoomed]="zoomed"
       (audioLoading)="loadingTemplate = $event"
     ></laji-audio-viewer>
   </div>
@@ -41,18 +45,22 @@
     <h4>{{ 'theme.kerttu.letterCandidate' | translate }} ({{ candidate?.crossCorrelation }})</h4>
     <laji-audio-viewer
       [recording]="candidate?.recording"
-      [xRangePadding]="0.1"
+      [xRangePadding]="0.5"
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
+      [zoomed]="zoomed"
       (audioLoading)="loadingCandidate = $event"
     ></laji-audio-viewer>
   </div>
   <div class="col-md-12">
     <h4>{{ 'theme.kerttu.letterCandidateLonger' | translate }}</h4>
+    <button (click)="candidateLongerVisible = true" class="btn btn-default" *ngIf="!candidateLongerVisible">Näytä</button>
     <laji-audio-viewer
+      *ngIf="candidateLongerVisible"
       [recording]="candidate?.recording"
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
+      [zoomed]="zoomed"
     ></laji-audio-viewer>
   </div>
 </div>

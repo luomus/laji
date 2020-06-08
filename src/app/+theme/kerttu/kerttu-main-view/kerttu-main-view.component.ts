@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
 import {Observable, of, Subscription} from 'rxjs';
-import {switchMap, take, tap} from 'rxjs/operators';
+import {switchMap, take} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
@@ -128,12 +128,11 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     const candidateId = this.letterCandidate.id;
     this.letterCandidate = undefined;
     this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
-      .subscribe(() => {
+      .subscribe((candidate) => {
         if (annotation !== LetterAnnotation.unsure) {
           this.letterAnnotationCount += 1;
-          this.cdr.markForCheck();
         }
-        this.getNextLetterCandidate(this.letterTemplate.id);
+        this.onCandidateLoaded(candidate);
       });
   }
 
@@ -193,17 +192,14 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.loadingLetters = true;
 
     this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken(), skipCurrent)
-      .pipe(tap(template => {
+      .subscribe(template => {
         if (!template) {
           this.allLettersAnnotated = true;
-          return;
+        } else {
+          this.getNextLetterCandidate(template.id);
         }
-
-        this.getNextLetterCandidate(template.id);
-      }))
-      .subscribe(template => {
         this.letterTemplate = template;
-        this.letterAnnotationCount = template.userAnnotationCount;
+        this.letterAnnotationCount = template?.userAnnotationCount;
         this.cdr.markForCheck();
       });
   }
@@ -212,15 +208,19 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = undefined;
 
     this.letterCandidateSub = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
-      if (!candidate) {
-        this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
-        this.getNextLetterTemplate();
-        return;
-      }
-
-      this.letterCandidate = candidate;
-      this.loadingLetters = false;
-      this.cdr.markForCheck();
+      this.onCandidateLoaded(candidate);
     });
+  }
+
+  private onCandidateLoaded(candidate) {
+    if (!candidate) {
+      this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
+      this.getNextLetterTemplate();
+      return;
+    }
+
+    this.letterCandidate = candidate;
+    this.loadingLetters = false;
+    this.cdr.markForCheck();
   }
 }

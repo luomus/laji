@@ -62,14 +62,14 @@ export class KerttuApi {
       );
   }
 
-  public setLetterAnnotation(personToken: string, templateId: number, candidateId: number, annotation: LetterAnnotation): Observable<LetterAnnotation> {
+  public setLetterAnnotation(personToken: string, templateId: number, candidateId: number, annotation: LetterAnnotation): Observable<ILetterCandidate> {
     const path = this.basePath + '/letter/annotation/' + templateId + '/' + candidateId;
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.put(path, { annotation }, { params })
       .pipe(
-        map((response: {annotation: LetterAnnotation}) => {
-          return response.annotation;
+        map((response: ILetterCandidate) => {
+          return response;
         })
       );
   }
