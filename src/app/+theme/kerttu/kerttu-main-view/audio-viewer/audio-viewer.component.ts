@@ -11,10 +11,12 @@ import {Subscription} from 'rxjs';
 })
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() recording: string;
-  @Input() xRangePadding: number;
 
+  @Input() xRangePadding: number;
   @Input() xRange: number[];
   @Input() yRange: number[];
+
+  @Input() zoomed = false;
 
   @Input() sampleRate = 16000;
   @Input() nperseg = 256;
@@ -52,39 +54,40 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.clear();
-    this.setAudioLoading(true);
+    if (changes.recording) {
+      this.clear();
+      this.setAudioLoading(true);
 
-    if (this.recording) {
-      if (this.audioSub) {
-        this.audioSub.unsubscribe();
+      if (this.recording) {
+        this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
+        this.audioSub = this.audioService.getAudioBuffer(this.recording, this.context).subscribe((buffer) => {
+          this.start = 0;
+          this.stop = buffer.duration;
+
+          if (this.xRange && this.xRangePadding) {
+            this.start = this.xRange[0] - this.xRangePadding;
+            this.stop = this.xRange[1] + this.xRangePadding;
+
+            if (this.start < 0) {
+              this.stop = Math.min(this.stop - this.start, buffer.duration);
+              this.start = 0;
+            }
+            if (this.stop > buffer.duration) {
+              this.start = Math.max(this.start - (this.stop - buffer.duration), 0);
+              this.stop = buffer.duration;
+            }
+          }
+
+          buffer = this.audioService.extractSegment(buffer, this.context, this.start, this.stop, this.duration);
+
+          this.buffer = buffer;
+          this.cdr.markForCheck();
+        });
       }
-      this.buffer = undefined;
-
-      this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
-      this.audioSub = this.audioService.getAudioBuffer(this.recording, this.context).subscribe((buffer) => {
-        this.start = 0;
-        this.stop = buffer.duration;
-
-        if (this.xRange && this.xRangePadding) {
-          this.start = this.xRange[0] - this.xRangePadding;
-          this.stop = this.xRange[1] + this.xRangePadding;
-
-          if (this.start < 0) {
-            this.stop = Math.min(this.stop - this.start, buffer.duration);
-            this.start = 0;
-          }
-          if (this.stop > buffer.duration) {
-            this.start = Math.max(this.start - (this.stop - buffer.duration), 0);
-            this.stop = buffer.duration;
-          }
-        }
-
-        buffer = this.audioService.extractSegment(buffer, this.context, this.start, this.stop, this.duration);
-
-        this.buffer = buffer;
-        this.cdr.markForCheck();
-      });
+    } else if (changes.zoomed) {
+      if (this.isPlaying) {
+        this.toggleAudio();
+      }
     }
   }
 
@@ -107,7 +110,16 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
       this.source = this.context.createBufferSource();
       this.source.buffer = this.buffer;
-      this.source.connect(this.context.destination);
+      if (this.zoomed) {
+        const highpassFilter = this.createFilter('highpass', this.yRange[0]);
+        const lowpassFilter = this.createFilter('lowpass', this.yRange[1]);
+        this.source.connect(highpassFilter);
+        highpassFilter.connect(lowpassFilter);
+        lowpassFilter.connect(this.context.destination);
+      } else {
+        this.source.connect(this.context.destination);
+      }
+
       this.source.start(0, this.currentTime);
       this.startTime = this.context.currentTime;
 
@@ -185,6 +197,13 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.currentTime = 0;
     this.isPlaying = false;
     this.source = undefined;
+  }
+
+  private createFilter(type: 'highpass'|'lowpass', frequency: number) {
+    const filter = this.context.createBiquadFilter();
+    filter.type = type;
+    filter.frequency.value = frequency;
+    return filter;
   }
 
   setAudioLoading(loading: boolean) {

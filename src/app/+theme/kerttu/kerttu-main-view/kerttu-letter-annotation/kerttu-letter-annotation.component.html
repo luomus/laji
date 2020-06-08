@@ -27,6 +27,9 @@
     >
       ></laji-three-state-switch>
   </div>
+  <div class="col-md-12" id="letterAnnotationControls">
+    <button class="btn btn-default" (click)="zoomed = !zoomed">Zoomaa lähelle/kauas</button>
+  </div>
   <div class="col-md-6">
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
@@ -34,6 +37,7 @@
       [xRangePadding]="0.5"
       [xRange]="template?.xRange"
       [yRange]="template?.yRange"
+      [zoomed]="zoomed"
       (audioLoading)="loadingTemplate = $event"
     ></laji-audio-viewer>
   </div>
@@ -44,6 +48,7 @@
       [xRangePadding]="0.5"
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
+      [zoomed]="zoomed"
       (audioLoading)="loadingCandidate = $event"
     ></laji-audio-viewer>
   </div>
@@ -55,6 +60,7 @@
       [recording]="candidate?.recording"
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
+      [zoomed]="zoomed"
     ></laji-audio-viewer>
   </div>
 </div>
