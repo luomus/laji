@@ -96,15 +96,15 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
             const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
             let empty = 0;
-            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -1) {
-              if ( !dataset[Number(index_chart) + 1]) {
+            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
+              if ( !dataset[Number(index_chart) + 1] || (index_chart === 0 && !dataset[Number(index_chart) + 1])) {
                 const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
                 const diff = index - Number(index_chart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
                   empty = -3 * diff;
                 }
               }
-              if ( !dataset[Number(index_chart) - 1]) {
+              if ( !dataset[Number(index_chart) - 1] || (index_chart === (dataset.length - 1) && !dataset[Number(index_chart) - 1])) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
                   const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
                   const diff = Number(index_chart) - (Number(index_chart) - index);
@@ -136,7 +136,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const left_offset = 0, right_offset = 0;
 
             let empty = 0;
-            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -1) {
+            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
               if ( !dataset[Number(index_chart) + 1]) {
                 const count = 0;
                 const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
