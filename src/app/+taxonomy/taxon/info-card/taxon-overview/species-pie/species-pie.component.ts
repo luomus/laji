@@ -79,16 +79,23 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         onComplete: function () {
             const chartInstance = this.chart,
             ctx = chartInstance.ctx;
-            ctx.font = Chart.helpers.fontString(16, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+            const chart_width = chartInstance['width'];
+            const font_size = Math.round(chart_width / 78) > 10 ? Math.round(chart_width / 78) : 10;
+            ctx.font = Chart.helpers.fontString(font_size, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
             ctx.textAlign = 'center';
             ctx.fillStyle = '#000';
             ctx.textBaseline = 'middle';
-            if (this.data.datasets[0].tree.length < 20) {
+            if (this.data.datasets[0].tree && this.data.datasets[0].tree.length < 20) {
               this.data.datasets.forEach(function (dataset, i) {
                 const meta = chartInstance.controller.getDatasetMeta(i);
                 meta.data.forEach(function (bar, index) {
+                    const label = dataset.tree[index].label;
                     const data = dataset.tree[index].value;
-                    ctx.fillText(data, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2) + 15);
+                    const width = Math.ceil(ctx.measureText(label).width);
+                    const final_label = width < Math.ceil(dataset['data'][index].w) ? label : '';
+                    const final_data = width < Math.ceil(dataset['data'][index].w) ? data : '';
+                    ctx.fillText(final_label, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2));
+                    ctx.fillText(final_data, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2) + 20);
                 });
             });
             }
@@ -115,11 +122,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       {
         data: null,
         key: 'value',
-        groups: ['label'],
-        fontFamily: 'Roboto',
-        fontColor: '#000',
-        fontSize: 14,
-        fontWeight: 'bold',
+        groups: [],
         spacing: 0,
         borderWidth: 0,
         borderColor: 'rgba(160,160,160,0.5)'
