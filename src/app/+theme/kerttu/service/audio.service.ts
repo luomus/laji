@@ -27,9 +27,18 @@ export class AudioService {
       this.buffer$[url] = this.httpClient.get(url, {responseType: 'arraybuffer'})
         .pipe(
           switchMap((response: ArrayBuffer) => {
-            return context.decodeAudioData(response);
+            if (context.decodeAudioData.length === 2) { // for Safari
+              return new Observable(observer => {
+                  context.decodeAudioData(response, (buffer) =>  {
+                    observer.next(buffer);
+                  });
+                }
+              );
+            } else {
+              return context.decodeAudioData(response);
+            }
           }),
-          tap((buffer) => {
+          tap((buffer: AudioBuffer) => {
             this.buffer[url] = {
               'buffer': buffer,
               'time': Date.now()
