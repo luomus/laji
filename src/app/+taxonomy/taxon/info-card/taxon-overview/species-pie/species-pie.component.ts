@@ -63,8 +63,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
             return data.datasets[0]['tree'][item[0]['index']].label;
           },
           label: function(item, data) {
-            console.log(item);
-            console.log(data);
             const species = (data.datasets[0]['tree'][item['index']].value < 2) ? laji :
             lajia;
             return data.datasets[0]['tree'][item['index']].value + ' ' + species;
@@ -76,10 +74,30 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
           display: false
         }
       },
+      animation: {
+        duration: 1,
+        onComplete: function () {
+            const chartInstance = this.chart,
+            ctx = chartInstance.ctx;
+            ctx.font = Chart.helpers.fontString(16, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#000';
+            ctx.textBaseline = 'middle';
+            if (this.data.datasets[0].tree.length < 20) {
+              this.data.datasets.forEach(function (dataset, i) {
+                const meta = chartInstance.controller.getDatasetMeta(i);
+                meta.data.forEach(function (bar, index) {
+                    const data = dataset.tree[index].value;
+                    ctx.fillText(data, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2) + 15);
+                });
+            });
+            }
+        }
+      },
       events: ['mousemove', 'mouseout', 'click'],
       hover: {
+        animationDuration: 0,
         onHover: (event, chartElement) => {
-          console.log(event);
           event['target']['style']['cursor'] = chartElement[0] ? 'pointer' : 'default';
         }
       }
@@ -102,8 +120,8 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         fontColor: '#000',
         fontSize: 14,
         fontWeight: 'bold',
-        spacing: 2,
-        borderWidth: 0.5,
+        spacing: 0,
+        borderWidth: 0,
         borderColor: 'rgba(160,160,160,0.5)'
        }
       ]
@@ -121,7 +139,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         this.dataById[id] = child;
         // this.lineChartData[0].data.push(count);
         // this.lineChartData[0].data.push({x: index, y: count});
-        tmp_array.push({value: count, label: child.vernacularName || child.scientificName, id: id});
+        tmp_array.push({value: count, label: (child.vernacularName || child.scientificName), id: id});
         this.lineChartLabels.push(child.vernacularName || child.scientificName);
         this.lineChartColors[0]['backgroundColor'].push(this.colorPalette[index % this.colorPalette.length]);
       }
@@ -130,17 +148,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
     tmp_array.sort((a, b) => (a.value > b.value) ? -1 : 1);
     this.lineChartData[0]['data'][0]['data'] = tmp_array;
 
-    // this.chartRadiusupdate();
-
-    console.log(this.lineChartData[0]);
-    console.log(this.lineChartOptions['elements']['point']['radius']);
   }
-
-  chartRadiusupdate() {
-    this.chart.chart.options.elements.point.radius = 20;
-    this.chart.chart.update();
-  }
-
 
   private formatLabel(value: any) {
     const data = this.dataById[value.label];
