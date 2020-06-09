@@ -27,9 +27,18 @@ export class AudioService {
       this.buffer$[url] = this.httpClient.get(url, {responseType: 'arraybuffer'})
         .pipe(
           switchMap((response: ArrayBuffer) => {
-            return context.decodeAudioData(response);
+            if (context.decodeAudioData.length === 2) { // for Safari
+              return new Observable(observer => {
+                  context.decodeAudioData(response, (buffer) =>  {
+                    observer.next(buffer);
+                  });
+                }
+              );
+            } else {
+              return context.decodeAudioData(response);
+            }
           }),
-          tap((buffer) => {
+          tap((buffer: AudioBuffer) => {
             this.buffer[url] = {
               'buffer': buffer,
               'time': Date.now()
@@ -66,10 +75,10 @@ export class AudioService {
     return emptySegment;
   }
 
-  public getSpectrogramImageData(buffer: AudioBuffer, nperseg: number, noverlap: number)
+  public getSpectrogramImageData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number)
     : Observable<{ imageData: ImageData, maxFreq: number, maxTime: number }> {
     return this.getColormap().pipe(map(colormap => {
-      const {spectrogram, width, heigth, maxFreq, maxTime} = this.spectrogramService.computeSpectrogram(buffer, nperseg, noverlap);
+      const {spectrogram, width, heigth, maxFreq, maxTime} = this.spectrogramService.computeSpectrogram(buffer, sampleRate, nperseg, noverlap);
       const imageData = this.spectrogramToImageData(spectrogram, width, heigth, colormap);
       return {imageData, maxFreq, maxTime};
     }));
