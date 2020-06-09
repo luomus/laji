@@ -222,7 +222,7 @@ index 0000000..c92c428
 +     * @return {?}
 +     */
 +    function getColors(chartType, index, count) {
-+        if (chartType === 'pie' || chartType === 'doughnut' || chartType === 'outlabeledPie') {
++        if (chartType === 'pie' || chartType === 'doughnut' || chartType === 'outlabeledPie' || chartType === 'treemap') {
 +            return formatPieColors(generateColors(count));
 +        }
 +        if (chartType === 'polarArea') {

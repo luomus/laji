@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter,
+Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
-import { ChartOptions } from 'chart.js';
-import { Color} from 'ng2-charts';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import * as OutLabel from 'chartjs-plugin-piechart-outlabels';
+import { ChartOptions, Chart } from 'chart.js';
+import { Color, BaseChartDirective} from 'ng2-charts';
+import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
 
 
 @Component({
@@ -15,45 +15,19 @@ import * as OutLabel from 'chartjs-plugin-piechart-outlabels';
 })
 export class SpeciesPieComponent implements OnInit, OnChanges {
   @Input() children: Taxonomy[];
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   data: any;
   labelFormatting = this.formatLabel.bind(this);
   valueFormatting = this.formatValue.bind(this);
   total = 0;
 
-  lineChartData: any[];
-  lineChartOptions: ChartOptions = {
-    responsive: true,
-    maintainAspectRatio : false,
-    cutoutPercentage: 50,
-    legend: {
-      display: false
-    },
-    plugins: {
-        datalabels: {
-          display: false
-        },
-        outlabels: {
-          display: true,
-          color: '#000',
-          font: {
-            resizable: true,
-            size: '14'
-          },
-          stretch: 20,
-          text: '%l %v'
-        }
-    },
-    events: ['mousemove', 'click'],
-    onHover: (event, chartElement) => {
-        event.target['style'].cursor = chartElement[0] ? 'pointer' : 'default';
-    }
-  };
+  lineChartData: any[] = [];
+  lineChartOptions: ChartOptions = {};
   lineChartLabels = [];
-  lineChartPlugins = [pluginDataLabels, OutLabel];
-  lineChartColors: Color[] = [
-    {backgroundColor: ['#A8385D', '#7AA3E5', '#A27EA8', '#7ED3ED', '#50ABCC', '#AD6886', '#8796C0', '#ADCDED', '#ABD1F0', '#AAE3F5']}]
-;
+  lineChartPlugins = [];
+  lineChartColors: any[] = [];
   dataById: {[key: string]: Taxonomy} = {};
+  colorPalette = ['#A8385D', '#7AA3E5', '#A27EA8', '#7ED3ED', '#50ABCC', '#AD6886', '#8796C0', '#ADCDED', '#ABD1F0', '#AAE3F5'];
   private speciesLabel = '';
   private speciesSingularLabel = '';
 
@@ -65,31 +39,108 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.translate.get('taxonomy.species').subscribe(label => { this.speciesLabel = label; });
-    this.translate.get('taxonomy.species.singular').subscribe(label => { this.speciesSingularLabel = label; });
+    const lajia = this.translate.instant('taxonomy.species');
+    const laji = this.translate.instant('taxonomy.species.singular');
+    this.lineChartOptions = {responsive: true,
+      maintainAspectRatio : false,
+      cutoutPercentage: 50,
+      elements: {
+        point: {
+          radius: 5,
+          hitRadius: 10
+        }
+      },
+      legend: {
+        display: false
+      },
+      tooltips: {
+        mode: 'nearest',
+        intersect: false,
+        bodyAlign: 'center',
+        displayColors: false,
+        callbacks: {
+          title: function(item, data) {
+            return data.datasets[0]['tree'][item[0]['index']].label;
+          },
+          label: function(item, data) {
+            console.log(item);
+            console.log(data);
+            const species = (data.datasets[0]['tree'][item['index']].value < 2) ? laji :
+            lajia;
+            return data.datasets[0]['tree'][item['index']].value + ' ' + species;
+          }
+        }
+      },
+      plugins: {
+        datalabels: {
+          display: false
+        }
+      },
+      events: ['mousemove', 'mouseout', 'click'],
+      hover: {
+        onHover: (event, chartElement) => {
+          console.log(event);
+          event['target']['style']['cursor'] = chartElement[0] ? 'pointer' : 'default';
+        }
+      }
+    };
   }
 
   ngOnChanges() {
 
     this.dataById = {};
     this.total = 0;
-    this.lineChartData = [{data: [], label: []}];
+    // this.lineChartData = [{data: [], label: []}];
+    this.lineChartColors = [{backgroundColor: []}];
+    this.lineChartData = [{
+      data: [
+      {
+        data: null,
+        key: 'value',
+        groups: ['label'],
+        fontFamily: 'Roboto',
+        fontColor: '#000',
+        fontSize: 14,
+        fontWeight: 'bold',
+        spacing: 2,
+        borderWidth: 0.5,
+        borderColor: 'rgba(160,160,160,0.5)'
+       }
+      ]
+    }
+    ];
     this.lineChartLabels = [];
-    (this.children || []).forEach(child => {
+    const tmp_array = [];
+    (this.children || []).forEach((child, index) => {
       const id = child.id;
       const count = child.countOfFinnishSpecies;
       this.total += count;
 
+
       if (count > 0) {
         this.dataById[id] = child;
-        this.lineChartData[0].data.push(count);
-        this.lineChartData[0].label.push(id);
+        // this.lineChartData[0].data.push(count);
+        // this.lineChartData[0].data.push({x: index, y: count});
+        tmp_array.push({value: count, label: child.vernacularName || child.scientificName, id: id});
         this.lineChartLabels.push(child.vernacularName || child.scientificName);
+        this.lineChartColors[0]['backgroundColor'].push(this.colorPalette[index % this.colorPalette.length]);
       }
     });
 
-    this.cd.detectChanges();
+    tmp_array.sort((a, b) => (a.value > b.value) ? -1 : 1);
+    this.lineChartData[0]['data'][0]['data'] = tmp_array;
+
+    // this.chartRadiusupdate();
+
+    console.log(this.lineChartData[0]);
+    console.log(this.lineChartOptions['elements']['point']['radius']);
   }
+
+  chartRadiusupdate() {
+    this.chart.chart.options.elements.point.radius = 20;
+    this.chart.chart.update();
+  }
+
 
   private formatLabel(value: any) {
     const data = this.dataById[value.label];
