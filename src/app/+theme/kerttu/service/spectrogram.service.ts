@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
+import { Resampler } from './assets/resample';
 
 @Injectable()
 export class SpectrogramService {
@@ -11,10 +12,10 @@ export class SpectrogramService {
 
   constructor() {}
 
-  public computeSpectrogram(buffer: AudioBuffer, nperseg: number, noverlap: number): {
+  public computeSpectrogram(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number): {
     spectrogram: Float32Array, width: number, heigth: number, maxFreq: number, maxTime: number
   } {
-    const {data, sumByColumn} = this.getData(buffer, nperseg, noverlap);
+    const {data, sumByColumn} = this.getData(buffer, sampleRate, nperseg, noverlap);
 
     const meanNoise = this.getMeanNoiseColumn(data, sumByColumn);
     const maxValue = this.filterNoiseAndFindMaxValue(data, meanNoise);
@@ -28,15 +29,19 @@ export class SpectrogramService {
     const blurredData = new Float32Array(flattenedData.length);
     gaussBlur_4(flattenedData, blurredData, width, heigth, 1);
 
-    const maxFreq = Math.floor(buffer.sampleRate / 2);
-    const maxTime = (data.length - 1) * ((nperseg - noverlap) / buffer.sampleRate) + nperseg / buffer.sampleRate;
+    const maxFreq = Math.floor(sampleRate / 2);
+    const maxTime = (data.length - 1) * ((nperseg - noverlap) / sampleRate) + nperseg / sampleRate;
 
     return {spectrogram: blurredData, width, heigth, maxFreq, maxTime};
   }
 
-  private getData(buffer: AudioBuffer, nperseg: number, noverlap: number): {data: Float32Array[], sumByColumn: number[]} {
-    const fft = new FFT(nperseg, buffer.sampleRate, 'hann');
-    const chanData = buffer.getChannelData(0);
+  private getData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number): {data: Float32Array[], sumByColumn: number[]} {
+    let chanData = buffer.getChannelData(0);
+    const resampler = new Resampler(buffer.sampleRate, sampleRate, 1, chanData);
+    resampler.resampler(chanData.length);
+    chanData = resampler.outputBuffer;
+
+    const fft = new FFT(nperseg, sampleRate, 'hann');
 
     const data = [];
     const sumByColumn = [];

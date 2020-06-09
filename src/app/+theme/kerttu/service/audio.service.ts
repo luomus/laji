@@ -75,10 +75,10 @@ export class AudioService {
     return emptySegment;
   }
 
-  public getSpectrogramImageData(buffer: AudioBuffer, nperseg: number, noverlap: number)
+  public getSpectrogramImageData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number)
     : Observable<{ imageData: ImageData, maxFreq: number, maxTime: number }> {
     return this.getColormap().pipe(map(colormap => {
-      const {spectrogram, width, heigth, maxFreq, maxTime} = this.spectrogramService.computeSpectrogram(buffer, nperseg, noverlap);
+      const {spectrogram, width, heigth, maxFreq, maxTime} = this.spectrogramService.computeSpectrogram(buffer, sampleRate, nperseg, noverlap);
       const imageData = this.spectrogramToImageData(spectrogram, width, heigth, colormap);
       return {imageData, maxFreq, maxTime};
     }));

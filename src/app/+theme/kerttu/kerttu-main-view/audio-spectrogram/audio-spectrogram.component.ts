@@ -18,6 +18,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   @ViewChild('chart', {static: true}) chartRef: ElementRef<SVGElement>;
 
   @Input() buffer: AudioBuffer;
+  @Input() sampleRate: number;
   @Input() nperseg: number;
   @Input() noverlap: number;
   @Input() currentTime: number;
@@ -76,7 +77,7 @@ export class AudioSpectrogramComponent implements OnChanges {
         this.drawSub.unsubscribe();
       }
       if (this.buffer) {
-        this.drawSub = this.audioService.getSpectrogramImageData(this.buffer, this.nperseg, this.noverlap)
+        this.drawSub = this.audioService.getSpectrogramImageData(this.buffer, this.sampleRate, this.nperseg, this.noverlap)
           .pipe(delay(0))
           .subscribe((result) => {
             this.imageData = result.imageData;
@@ -195,7 +196,7 @@ export class AudioSpectrogramComponent implements OnChanges {
     const startY = data.height - (data.height * ratio2);
 
     canvas.width = data.width;
-    canvas.height = data.height * (ratio1 + ratio2);
+    canvas.height = data.height * (ratio2 - ratio1);
 
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, data.width, data.height);
