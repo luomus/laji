@@ -13,6 +13,7 @@ export const Global = {
     invasiveControl: 'MHL.33',
     municipalityMonitoringForm: 'MHL.35',
     lolifeForm: 'MHL.45',
+    lolifeExcelForm: 'MHL.45A',
     wbc: 'MHL.3',
     lineTransect: 'MHL.1',
     lineTransectEiVakio: 'MHL.27',
