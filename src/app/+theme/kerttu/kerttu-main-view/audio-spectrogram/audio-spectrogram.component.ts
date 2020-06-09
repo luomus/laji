@@ -88,12 +88,13 @@ export class AudioSpectrogramComponent implements OnChanges {
             this.cdr.markForCheck();
           });
       }
-    }
-    if (changes.currentTime && this.scrollLine) {
-      this.updateScrollLinePosition();
-    }
-    if (changes.zoomed) {
-      this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
+    } else {
+      if (changes.currentTime && this.scrollLine) {
+        this.updateScrollLinePosition();
+      }
+      if (changes.zoomed && this.imageData) {
+        this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
+      }
     }
   }
 
