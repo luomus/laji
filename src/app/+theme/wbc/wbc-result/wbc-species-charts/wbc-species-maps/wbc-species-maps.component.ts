@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   Inject,
@@ -23,7 +22,7 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './wbc-species-maps.component.html',
   styleUrls: ['./wbc-species-maps.component.css']
 })
-export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
+export class WbcSpeciesMapsComponent implements OnChanges {
   @ViewChildren('maps') mapComponents: QueryList<YkjMapComponent>;
   @Input() taxonId: string;
   @Input() taxonCensus = undefined;
