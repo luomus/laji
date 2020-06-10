@@ -112,7 +112,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-
     this.dataById = {};
     this.total = 0;
     // this.lineChartData = [{data: [], label: []}];
