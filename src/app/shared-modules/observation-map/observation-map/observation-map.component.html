@@ -8,7 +8,7 @@
           [settingsKey]="settingsKey"
           (create)="onCreate($event)"
           (failure)="refreshMap()"
-          (tileLayerChange)="onTileLayerChange($event)"
+          (tileLayersChange)="onTileLayersChange($event)"
           (move)="onMove($event)">
     <div class="loading-map loading" *ngIf="loading"></div>
     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': topMargin }">

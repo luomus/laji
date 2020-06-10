@@ -204,9 +204,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
       lajiMap._handling[name] = false;
     };
     lajiMap.map.addEventListener({
-      tileLayerChange: sync((_map) => _map.setTileLayerByName(lajiMap.tileLayerName)),
-      tileLayerOpacityChange: sync((_map) => _map.setTileLayerOpacity(lajiMap.tileLayerOpacity)),
-      overlaysChange: sync((_map, e) => _map.setOverlaysByName(e.overlayNames))
+      tileLayersChange: sync((layerOptions) => _map.setTileLayers(layerOptions))
     });
   }
 
