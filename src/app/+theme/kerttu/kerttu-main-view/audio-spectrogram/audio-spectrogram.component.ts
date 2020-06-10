@@ -1,4 +1,16 @@
-import {Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, HostListener, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ElementRef,
+  ViewChild,
+  HostListener,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
 import {Selection, select, event, clientPoint} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
@@ -10,7 +22,8 @@ import {delay} from 'rxjs/operators';
 @Component({
   selector: 'laji-audio-spectrogram',
   templateUrl: './audio-spectrogram.component.html',
-  styleUrls: ['./audio-spectrogram.component.scss']
+  styleUrls: ['./audio-spectrogram.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioSpectrogramComponent implements OnChanges {
   @ViewChild('container', {static: true}) containerRef: ElementRef<HTMLDivElement>;

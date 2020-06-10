@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {LetterAnnotation} from '../../model/letter';
 import {ILetterCandidate, ILetterTemplate} from '../../model/letter';
 import {ResultService} from '../../../service/result.service';
@@ -8,7 +8,8 @@ import {Taxonomy} from '../../../../shared/model/Taxonomy';
 @Component({
   selector: 'laji-kerttu-letter-annotation',
   templateUrl: './kerttu-letter-annotation.component.html',
-  styleUrls: ['./kerttu-letter-annotation.component.scss']
+  styleUrls: ['./kerttu-letter-annotation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuLetterAnnotationComponent implements OnChanges {
   @Input() template: ILetterTemplate;
