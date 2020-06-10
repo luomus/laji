@@ -74,7 +74,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     private logger: Logger,
     private translate: TranslateService,
     private zone: NgZone
-  ) { }
+  ) {
+
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {

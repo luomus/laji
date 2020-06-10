@@ -97,6 +97,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
   onMapLoad(): void {
     this.initMapData();
+    this.loaded.emit();
   }
 
   ngOnInit() {

@@ -66,14 +66,16 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.maps = this.mapComponents.map(mapComponent => {
-        return mapComponent.mapComponent.map;
-      });
-      this.maps.forEach(m => this.initEventListeners(m));
+  mapLoaded() {
+    const maps = this.mapComponents.map(mapComponent => {
+      return mapComponent.mapComponent.map;
+    });
+    if (isPlatformBrowser(this.platformId) && maps.every(map => map)) {
+      this.maps = maps;
+      maps.forEach(m => this.initEventListeners(m));
     }
   }
+
 
   private updateMapData() {
     this.querys = [];
@@ -204,7 +206,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
       lajiMap._handling[name] = false;
     };
     lajiMap.map.addEventListener({
-      tileLayersChange: sync((layerOptions) => _map.setTileLayers(layerOptions))
+      tileLayersChange: sync((_map) => _map.setTileLayers(lajiMap.getTileLayers()))
     });
   }
 
