@@ -86,17 +86,13 @@ export class MonitoringThemeBaseComponent implements OnInit {
   }
 
   private getRouteDate(urls$: Observable<string>) {
-    const markActiveByRouterLink = (navLink, url): NavLink => {
-      const ret = {
+    const markActiveByRouterLink = (navLink, url): NavLink => ({
       ...navLink,
       active: (navLink.routerLink[0] === 'form' && url.match('places'))
         ? true
         : !!url.match(navLink.routerLink.join('/')),
       children: navLink.children ? navLink.children.map(child => markActiveByRouterLink(child, url)) : undefined
-    };
-      console.log(ret);
-    return ret;
-    };
+    });
 
     // navLink.activeMatch prop is greedier than navLink.routerLink matching.
     const markActive = (navLinks: NavLink[], url: string): NavLink[] => {
