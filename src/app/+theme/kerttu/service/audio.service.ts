@@ -31,6 +31,7 @@ export class AudioService {
               return new Observable(observer => {
                   context.decodeAudioData(response, (buffer) =>  {
                     observer.next(buffer);
+                    observer.complete();
                   });
                 }
               );
