@@ -1,13 +1,26 @@
-import {ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { AudioService } from '../../service/audio.service';
-import { DOCUMENT } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
 import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'laji-audio-viewer',
   templateUrl: './audio-viewer.component.html',
-  styleUrls: ['./audio-viewer.component.scss']
+  styleUrls: ['./audio-viewer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() recording: string;
@@ -34,7 +47,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   loading = false;
   @Output() audioLoading = new EventEmitter<boolean>();
 
-  private context: AudioContext;
   private source: AudioBufferSourceNode;
   private startOffset = 0;
   private startTime: number;
@@ -46,12 +58,10 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     @Inject(WINDOW) private window: Window,
     private cdr: ChangeDetectorRef,
     private audioService: AudioService,
-    @Inject(DOCUMENT) private document: Document,
+    private ngZone: NgZone
   ) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.recording) {
@@ -59,8 +69,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       this.setAudioLoading(true);
 
       if (this.recording) {
-        this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
-        this.audioSub = this.audioService.getAudioBuffer(this.recording, this.context).subscribe((buffer) => {
+        this.audioSub = this.audioService.getAudioBuffer(this.recording).subscribe((buffer) => {
           this.start = 0;
           this.stop = buffer.duration;
 
@@ -78,7 +87,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
             }
           }
 
-          buffer = this.audioService.extractSegment(buffer, this.context, this.start, this.stop, this.duration);
+          buffer = this.audioService.extractSegment(buffer, this.start, this.stop, this.duration);
 
           this.buffer = buffer;
           this.cdr.markForCheck();
@@ -108,26 +117,15 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.startOffset = this.currentTime;
 
-      this.source = this.context.createBufferSource();
-      this.source.buffer = this.buffer;
-      if (this.zoomed) {
-        const highpassFilter = this.createFilter('highpass', this.yRange[0]);
-        const lowpassFilter = this.createFilter('lowpass', this.yRange[1]);
-        this.source.connect(highpassFilter);
-        highpassFilter.connect(lowpassFilter);
-        lowpassFilter.connect(this.context.destination);
-      } else {
-        this.source.connect(this.context.destination);
-      }
-
+      this.source = this.audioService.createSource(this.buffer, this.zoomed ? this.yRange : undefined);
       this.source.start(0, this.currentTime);
-      this.startTime = this.context.currentTime;
+      this.startTime = this.audioService.getTime();
 
       this.source.onended = () => {
-        this.clearTimeupdateInterval();
-        this.updateCurrentTime();
-        this.isPlaying = false;
-        this.cdr.detectChanges();
+        this.sourceOnEnded();
+        this.ngZone.run(() => {
+          this.cdr.markForCheck();
+        });
       };
       this.startTimeupdateInterval();
     } else {
@@ -144,15 +142,22 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   onSpectrogramDragEnd(time: number) {
     if (this.isPlaying) {
       this.toggleAudio();
-      const onendedFunc = this.source.onended;
       this.source.onended = (args) => {
-        onendedFunc.bind(this)(args);
+        this.sourceOnEnded();
         this.currentTime = time;
-        this.cdr.detectChanges();
+        this.ngZone.run(() => {
+          this.cdr.markForCheck();
+        });
       };
     } else {
       this.currentTime = time;
     }
+  }
+
+  private sourceOnEnded() {
+    this.clearTimeupdateInterval();
+    this.updateCurrentTime();
+    this.isPlaying = false;
   }
 
   private startTimeupdateInterval() {
@@ -170,7 +175,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateCurrentTime() {
     if (this.isPlaying) {
-      this.currentTime = this.startOffset + this.getPlayedTime();
+      this.currentTime = this.startOffset + this.audioService.getPlayedTime(this.startTime, this.source.playbackRate.value);
     } else {
       this.currentTime = this.startOffset;
     }
@@ -178,9 +183,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.currentTime = Math.min(this.currentTime, this.buffer.duration);
   }
 
-  private getPlayedTime() {
-    return (this.context.currentTime - this.startTime) * this.source.playbackRate.value;
-  }
+
 
   private clear() {
     if (this.audioSub) {
@@ -197,13 +200,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.currentTime = 0;
     this.isPlaying = false;
     this.source = undefined;
-  }
-
-  private createFilter(type: 'highpass'|'lowpass', frequency: number) {
-    const filter = this.context.createBiquadFilter();
-    filter.type = type;
-    filter.frequency.value = frequency;
-    return filter;
   }
 
   setAudioLoading(loading: boolean) {

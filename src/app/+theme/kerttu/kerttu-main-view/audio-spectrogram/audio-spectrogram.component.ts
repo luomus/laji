@@ -1,16 +1,29 @@
-import {Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, HostListener, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ElementRef,
+  ViewChild,
+  HostListener,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
 import {Selection, select, event, clientPoint} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
 import * as d3Drag from 'd3-drag';
-import {AudioService} from '../../service/audio.service';
 import {Subscription} from 'rxjs';
 import {delay} from 'rxjs/operators';
+import {SpectrogramService} from '../../service/spectrogram.service';
 
 @Component({
   selector: 'laji-audio-spectrogram',
   templateUrl: './audio-spectrogram.component.html',
-  styleUrls: ['./audio-spectrogram.component.scss']
+  styleUrls: ['./audio-spectrogram.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioSpectrogramComponent implements OnChanges {
   @ViewChild('container', {static: true}) containerRef: ElementRef<HTMLDivElement>;
@@ -48,7 +61,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   private endFreq: number;
 
   constructor(
-    private audioService: AudioService,
+    private spectrogramService: SpectrogramService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -77,7 +90,7 @@ export class AudioSpectrogramComponent implements OnChanges {
         this.drawSub.unsubscribe();
       }
       if (this.buffer) {
-        this.drawSub = this.audioService.getSpectrogramImageData(this.buffer, this.sampleRate, this.nperseg, this.noverlap)
+        this.drawSub = this.spectrogramService.getSpectrogramImageData(this.buffer, this.sampleRate, this.nperseg, this.noverlap)
           .pipe(delay(0))
           .subscribe((result) => {
             this.imageData = result.imageData;

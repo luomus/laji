@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
 import {Observable, of, Subscription} from 'rxjs';
 import {switchMap, take} from 'rxjs/operators';
@@ -8,11 +8,13 @@ import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
 import {ILetterCandidate, ILetterTemplate, LetterAnnotation} from '../model/letter';
 import {WINDOW} from '@ng-toolkit/universal';
+import {AudioService} from '../service/audio.service';
 
 @Component({
   selector: 'laji-kerttu-main-view',
   templateUrl: './kerttu-main-view.component.html',
-  styleUrls: ['./kerttu-main-view.component.scss']
+  styleUrls: ['./kerttu-main-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuMainViewComponent implements OnInit, OnDestroy {
   vm$: Observable<IKerttuState>;
@@ -42,6 +44,8 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   allLettersAnnotated = false;
   loadingLetters = false;
 
+  errorMsg: string;
+
   private vmSub: Subscription;
   private selectedTaxonIdsSub: Subscription;
   private letterTemplateSub: Subscription;
@@ -53,12 +57,14 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     private kerttuFacade: KerttuFacade,
     private cdr: ChangeDetectorRef,
     private userService: UserService,
-    private personService: PersonApi
+    private personService: PersonApi,
+    private audioService: AudioService
   ) {
     this.vm$ = kerttuFacade.vm$;
   }
 
   ngOnInit() {
+    this.checkIfWebAudioApiIsSupported();
     this.kerttuFacade.clear();
 
     this.userService.isLoggedIn$.pipe(take(1)).subscribe(() => {
@@ -222,5 +228,11 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = candidate;
     this.loadingLetters = false;
     this.cdr.markForCheck();
+  }
+
+  private checkIfWebAudioApiIsSupported() {
+    if (!this.audioService.audioContext) {
+      this.errorMsg = 'theme.kerttu.notSupported';
+    }
   }
 }

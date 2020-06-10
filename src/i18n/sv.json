@@ -1486,6 +1486,7 @@
   "theme.kerttu.step2": "Tunnista kirjaimia",
   "theme.kerttu.step3": "Tunnista äänitteitä",
   "theme.kerttu.step4": "Valmis",
+  "theme.kerttu.notSupported": "Web Audio API ei ole tuettu tässä selaimessa!",
   "theme.nav.tools": "Verktyg",
   "theme.nav.tools.import": "Import Excel",
   "theme.nav.tools.generate": "Generera Excel",
