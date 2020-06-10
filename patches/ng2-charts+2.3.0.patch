@@ -228,7 +228,7 @@ index 0000000..c92c428
 +        if (chartType === 'polarArea') {
 +            return formatPolarAreaColors(generateColors(count));
 +        }
-+        if (chartType === 'line' || chartType === 'radar') {
++        if (chartType === 'line' || chartType === 'radar' || chartType === 'LineWithLine') {
 +            return formatLineColor(generateColor(index));
 +        }
 +        if (chartType === 'bar' || chartType === 'horizontalBar') {
@@ -4146,13 +4146,13 @@ index 0000000..b9a5ce1
 + * @return {?}
 + */
 +function getColors(chartType, index, count) {
-+    if (chartType === 'pie' || chartType === 'doughnut') {
++    if (chartType === 'pie' || chartType === 'doughnut' || chartType === 'outlabeledPie' || chartType === 'treemap') {
 +        return formatPieColors(generateColors(count));
 +    }
 +    if (chartType === 'polarArea') {
 +        return formatPolarAreaColors(generateColors(count));
 +    }
-+    if (chartType === 'line' || chartType === 'radar') {
++    if (chartType === 'line' || chartType === 'radar' || chartType === 'LineWithLine') {
 +        return formatLineColor(generateColor(index));
 +    }
 +    if (chartType === 'bar' || chartType === 'horizontalBar') {
@@ -5829,13 +5829,13 @@ index 0000000..470e049
 + * @return {?}
 + */
 +function getColors(chartType, index, count) {
-+    if (chartType === 'pie' || chartType === 'doughnut') {
++    if (chartType === 'pie' || chartType === 'doughnut' || chartType === 'outlabeledPie' || chartType === 'treemap') {
 +        return formatPieColors(generateColors(count));
 +    }
 +    if (chartType === 'polarArea') {
 +        return formatPolarAreaColors(generateColors(count));
 +    }
-+    if (chartType === 'line' || chartType === 'radar') {
++    if (chartType === 'line' || chartType === 'radar' || chartType === 'LineWithLine') {
 +        return formatLineColor(generateColor(index));
 +    }
 +    if (chartType === 'bar' || chartType === 'horizontalBar') {
