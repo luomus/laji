@@ -996,7 +996,7 @@
   "result.gathering.interpretations.coordinateAccuracy": "Location accuracy (m)",
   "result.gathering.locality": "Location",
   "result.gathering.municipality": "Municipality",
-  "result.gathering.team": "Gatherer",
+  "result.gathering.team": "Observer(s)/Collector(s)",
   "result.load.intro": "Your search consists of {{count}} observations of {{species}} species. {{public}} of observations are entirely public. Data from {{private}} observations has been aggregated due to restrictions on use.",
   "result.load.error.tooManySimple": "Too many results. Max size for this download is <strong>{{max}}</strong>, you’ll need to narrow the search.",
   "result.load.error.notLoggedIn": "Login to use this service.",
