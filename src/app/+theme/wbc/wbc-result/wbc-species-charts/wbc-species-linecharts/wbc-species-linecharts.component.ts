@@ -51,6 +51,10 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+    Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+      return coordinates;
+    };
+
     Chart.defaults.LineWithLine = Chart.defaults.line;
     Chart.defaults.line.spanGaps = false;
     Chart.controllers.LineWithLine = Chart.controllers.line.extend({
@@ -124,7 +128,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     hover: {
       mode: 'index',
       intersect: false,
-      /*onHover: function (this, e, element) {
+      onHover: function (this, e, element) {
         let index_chart;
         if (element[0]) {
          index_chart = Number(element[0]['_index']);
@@ -215,7 +219,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
           }
           };
         }
-      }*/
+      }
     },
     scales: {
       yAxes: [{
