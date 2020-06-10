@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { SpectrogramService } from './spectrogram.service';
@@ -14,7 +14,8 @@ export class AudioService {
 
   constructor(
     protected httpClient: HttpClient,
-    private spectrogramService: SpectrogramService
+    private spectrogramService: SpectrogramService,
+    private ngZone: NgZone
   ) { }
 
   public getAudioBuffer(url: string, context: AudioContext): Observable<AudioBuffer> {
@@ -30,8 +31,10 @@ export class AudioService {
             if (context.decodeAudioData.length === 2) { // for Safari
               return new Observable(observer => {
                   context.decodeAudioData(response, (buffer) =>  {
-                    observer.next(buffer);
-                    observer.complete();
+                    this.ngZone.run(() => {
+                      observer.next(buffer);
+                      observer.complete();
+                    });
                   });
                 }
               );
