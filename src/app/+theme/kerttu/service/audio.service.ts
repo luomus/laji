@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import {Inject, Injectable, NgZone} from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map, share, switchMap, tap } from 'rxjs/operators';
-import { SpectrogramService } from './spectrogram.service';
+import { share, switchMap, tap } from 'rxjs/operators';
 import {WINDOW} from '@ng-toolkit/universal';
 
 @Injectable()
@@ -12,13 +11,9 @@ export class AudioService {
   private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
   private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
-  private colormaps = {};
-  private colormaps$ = {};
-
   constructor(
     @Inject(WINDOW) private window: Window,
-    protected httpClient: HttpClient,
-    private spectrogramService: SpectrogramService,
+    private httpClient: HttpClient,
     private ngZone: NgZone
   ) {
     try {
@@ -118,78 +113,6 @@ export class AudioService {
     filter.type = type;
     filter.frequency.value = frequency;
     return filter;
-  }
-
-  public getSpectrogramImageData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number)
-    : Observable<{ imageData: ImageData, maxFreq: number, maxTime: number }> {
-    return this.getColormap().pipe(map(colormap => {
-      const {spectrogram, width, heigth, maxFreq, maxTime} = this.spectrogramService.computeSpectrogram(buffer, sampleRate, nperseg, noverlap);
-      const imageData = this.spectrogramToImageData(spectrogram, width, heigth, colormap);
-      return {imageData, maxFreq, maxTime};
-    }));
-  }
-
-  private spectrogramToImageData(spect: Float32Array, width: number, height: number, colormap: any): ImageData {
-    const {minValue, maxValue} = this.findMinAndMaxValue(spect);
-    const data = new Uint8ClampedArray(spect.length * 4);
-
-    let offset = 0;
-    for (let i = 0; i < spect.length; i++) {
-      let value = spect[i];
-      value = this.convertRange(value, [minValue, maxValue], [0, colormap.length - 1]);
-
-      const color = colormap[Math.round(value)];
-
-      data[offset++] = color[0] * 256;
-      data[offset++] = color[1] * 256;
-      data[offset++] = color[2] * 256;
-      data[offset++] = 256;
-    }
-
-    return new ImageData(data, width, height);
-  }
-
-  private findMinAndMaxValue(data: Float32Array): {minValue: number, maxValue: number} {
-    let minValue, maxValue;
-    for (let i = 0; i < data.length; i++) {
-      const value = data[i];
-      if (minValue == null || value < minValue) {
-        minValue = value;
-      }
-      if (maxValue == null || value > maxValue) {
-        maxValue = value;
-      }
-    }
-
-    return {minValue, maxValue};
-  }
-
-  private convertRange(inputY: number, yRange: number[], xRange: number[]): number {
-    const [xMin, xMax] = xRange;
-    const [yMin, yMax] = yRange;
-
-    const percent = (inputY - yMin) / (yMax - yMin);
-    const outputX = percent * (xMax - xMin) + xMin;
-
-    return outputX;
-  }
-
-  private getColormap(colormap: 'inferno' | 'viridis' = 'viridis'): Observable<any> {
-    if (this.colormaps[colormap]) {
-      return of(this.colormaps[colormap]);
-    }
-
-    if (!this.colormaps$[colormap]) {
-      this.colormaps$[colormap] = this.httpClient.get('/static/audio/' + colormap + '-colormap.json')
-        .pipe(
-          tap(result => {
-            this.colormaps[colormap] = result;
-          }),
-          share()
-        );
-    }
-
-    return this.colormaps$[colormap];
   }
 
   private removeOldBuffersFromCache() {
