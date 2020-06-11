@@ -17,7 +17,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   @Input() taxonCensus = undefined;
   @Input() birdAssociationArea: string;
 
-  lines: {[s: string]: {name: string, series: {name: number, value: number}[]}[]} = {};
+
   counts: any;
 
   xScaleMin: number;
@@ -279,7 +279,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   }
 
   private setLines(data: any, season: SEASON, label: string) {
-    this.lines[season] = [];
     this.lineChartData[season] = [];
     this.lineChartData[season][0] = {
         label: this.translate.instant('wbc.stats.abundanceGraphs.yAxis'),
@@ -319,7 +318,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       count.push(data[years[i]] ? data[years[i]].count : NaN);
       censusCount.push(data[years[i]] ? data[years[i]].censusCount : NaN);
       if (prevYear && year > prevYear + 1) {
-        this.lines[season].push({name: label, series: series});
         series1.push(value);
         series2.push(year.toString());
         series = [];
@@ -340,7 +338,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
 
       prevYear = year;
     }
-    this.lines[season].push({name: label, series: series});
     this.lineChartData[season][0]['data'][0]['data'] = series1;
     this.lineChartData[season][0]['data'][0]['count'] = count;
     this.lineChartData[season][0]['data'][0]['censusCount'] = censusCount;
