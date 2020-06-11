@@ -37,7 +37,6 @@ import { QualityFiltersComponent } from './quality/quality-filters/quality-filte
 import { TaxonAutocompleteModule } from '../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { WbcSpeciesComponent } from './wbc/wbc-result/wbc-species/wbc-species.component';
 import { WbcRoutesComponent } from './wbc/wbc-result/wbc-routes/wbc-routes.component';
 import { WbcCensusesComponent } from './wbc/wbc-result/wbc-censuses/wbc-censuses.component';
@@ -48,7 +47,6 @@ import { WbcResultFiltersComponent } from './wbc/wbc-result/wbc-result-filters/w
 import { WbcSpeciesChartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-charts.component';
 import { WbcSpeciesMapsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-maps/wbc-species-maps.component';
 import { WbcSpeciesLinechartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-linecharts/wbc-species-linecharts.component';
-import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-linecharts/line-chart-with-points/line-chart-with-points.component';
 import { WbcRouteComponent } from './wbc/wbc-result/wbc-route/wbc-route.component';
 import { WbcRouteTableComponent } from './wbc/wbc-result/wbc-route-table/wbc-route-table.component';
 import { FormPermissionModule } from '../+haseka/form-permission/form-permission.module';
@@ -115,7 +113,6 @@ import { ChartModule } from 'app/shared-modules/chart/chart.module';
     TaxonAutocompleteModule,
     LajiFormModule,
     ObservationMapModule,
-    NgxChartsModule,
     JwBootstrapSwitchNg2Module,
     FormPermissionModule,
     NavigationThumbnailModule,
@@ -163,7 +160,6 @@ import { ChartModule } from 'app/shared-modules/chart/chart.module';
     WbcSpeciesChartsComponent,
     WbcSpeciesMapsComponent,
     WbcSpeciesLinechartsComponent,
-    LineChartWithPointsComponent,
     WbcRouteComponent,
     WbcRouteTableComponent,
     WbcTableFilterComponent,
