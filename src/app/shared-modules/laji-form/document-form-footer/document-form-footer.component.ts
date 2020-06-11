@@ -86,7 +86,7 @@ export class DocumentFormFooterComponent {
     this._touchedCounter = counter;
   }
 
-  private disableIfOnlyWarnings() {
+  disableIfOnlyWarnings() {
     return this.hasOnlyWarnings && this._touchedCounterOnErrors === this._touchedCounter;
   }
 
