@@ -38,7 +38,7 @@
             </ng-template>
           </laji-line-chart-with-points>-->
           <laji-chart #lineChart
-              [datasets]="lineChartData[season]"
+              [datasets]="lineChartData[season][0]['data']"
               [labels]="lineChartLabels[season][0]"
               [options]="lineChartOptions"
               [legend]="false"
