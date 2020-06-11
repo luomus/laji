@@ -3,6 +3,7 @@ import { Form } from '../../../shared/model/Form';
 import { Readonly } from '@laji-form/laji-form-document.facade';
 import { FormService } from '../../../shared/service/form.service';
 import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
+import { LajiFormUtil } from '@laji-form/laji-form-util.service';
 
 @Component({
   selector: 'laji-document-form-footer',
@@ -31,6 +32,8 @@ export class DocumentFormFooterComponent {
   displayFeedback = true;
   readonlyStates = Readonly;
   hasOnlyWarnings = false;
+  _touchedCounter: number;
+  _touchedCounterOnErrors: number;
 
   constructor() { }
 
@@ -75,6 +78,16 @@ export class DocumentFormFooterComponent {
   @Input()
   set errors(errors: any) {
     this.hasOnlyWarnings = document.querySelector('.warning-panel') && this._hasOnlyWarnings(errors);
+    this._touchedCounterOnErrors = this._touchedCounter;
+  }
+
+  @Input()
+  set touchedCounter(counter: number) {
+    this._touchedCounter = counter;
+  }
+
+  private disableIfOnlyWarnings() {
+    return this.hasOnlyWarnings && this._touchedCounterOnErrors === this._touchedCounter;
   }
 
   buttonLabel(prop: 'save'|'temp'|'cancel') {
@@ -94,5 +107,6 @@ export class DocumentFormFooterComponent {
 
   highlightErrorContainer() {
     this.lajiForm.popErrorListIfNeeded();
+    LajiFormUtil.scrollIntoViewIfNeeded(document.querySelector('.laji-form-error-list'));
   }
 }
