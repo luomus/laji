@@ -2,6 +2,10 @@ interface ILetter {
   id: number;
   recording: string;
   xRange: number[];
+  info: {
+    userAnnotationCount: number;
+    targetAnnotationCount: number
+  };
 }
 
 export interface ILetterCandidate extends ILetter {
@@ -12,8 +16,6 @@ export interface ILetterCandidate extends ILetter {
 export interface ILetterTemplate extends ILetter {
   name: string;
   taxonId: string;
-  userAnnotationCount: number;
-  targetAnnotationCount: number;
   yRange: number[];
 }
 

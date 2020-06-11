@@ -40,7 +40,6 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   letterTemplate: ILetterTemplate;
   letterCandidate: ILetterCandidate;
-  letterAnnotationCount: number;
   allLettersAnnotated = false;
   loadingLetters = false;
 
@@ -135,9 +134,6 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = undefined;
     this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
       .subscribe((candidate) => {
-        if (annotation !== LetterAnnotation.unsure) {
-          this.letterAnnotationCount += 1;
-        }
         this.onCandidateLoaded(candidate);
       });
   }
@@ -205,7 +201,6 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
           this.getNextLetterCandidate(template.id);
         }
         this.letterTemplate = template;
-        this.letterAnnotationCount = template?.userAnnotationCount;
         this.cdr.markForCheck();
       });
   }
@@ -225,6 +220,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.letterTemplate.info = candidate.info;
     this.letterCandidate = candidate;
     this.loadingLetters = false;
     this.cdr.markForCheck();

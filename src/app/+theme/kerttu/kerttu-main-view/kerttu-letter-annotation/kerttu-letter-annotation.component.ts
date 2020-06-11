@@ -15,7 +15,6 @@ import {debounceTime} from 'rxjs/operators';
 export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() template: ILetterTemplate;
   @Input() candidate: ILetterCandidate;
-  @Input() letterAnnotationCount: number;
 
   currentAnnotation: LetterAnnotation;
   annotation = LetterAnnotation;
