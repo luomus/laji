@@ -18,6 +18,7 @@ import * as d3Drag from 'd3-drag';
 import {Subscription} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {SpectrogramService} from '../../service/spectrogram.service';
+import { KerttuUtils } from '../../service/kerttu-utils';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -40,7 +41,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() yRange: number[];
 
   @Input() zoomed = false;
-  @Input() frequencyPadding = 200;
+  @Input() frequencyPadding = 500;
 
   @Output() spectrogramReady = new EventEmitter();
   @Output() startDrag = new EventEmitter();
@@ -201,8 +202,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   }
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
-    this.startFreq = this.zoomed ? Math.max(this.yRange[0] - this.frequencyPadding, 0) : 0;
-    this.endFreq = this.zoomed ? Math.min(this.yRange[1] + this.frequencyPadding, this.maxFreq) : this.maxFreq;
+    [this.startFreq, this.endFreq] = KerttuUtils.getPaddedRange(this.yRange, this.zoomed ? this.frequencyPadding : undefined, 0, this.maxFreq);
 
     const ratio1 = this.startFreq / this.maxFreq;
     const ratio2 = this.endFreq / this.maxFreq;
