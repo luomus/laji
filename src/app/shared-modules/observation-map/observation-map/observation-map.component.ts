@@ -25,6 +25,7 @@ import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../shared/service/platform.service';
 import { latLngBounds as LlatLngBounds } from 'leaflet';
+import { TileLayersOptions } from 'laji-map';
 
 @Component({
   selector: 'laji-observation-map',
@@ -240,8 +241,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }, 200);
   }
 
-  onTileLayerChange(layer) {
-    const shouldLimit = ['googleSatellite', 'openStreetMap'].indexOf(layer) === -1;
+  onTileLayersChange(layerOptions: TileLayersOptions) {
+    const shouldLimit = layerOptions.active === 'finnish';
     if (this.limitResults !== shouldLimit) {
       this.limitResults = shouldLimit;
     }

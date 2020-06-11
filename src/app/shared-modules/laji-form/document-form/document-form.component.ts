@@ -48,6 +48,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   saveVisibility = 'hidden';
   isAdmin = false;
   validationErrors: any;
+  touchedCounter = 0;
 
   private subErrors: Subscription;
   private subSaving: Subscription;
@@ -113,6 +114,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     this.status = 'unsaved';
     this.saveVisibility = 'shown';
     this.lajiFormFacade.dataUpdate(formData);
+    this.touchedCounter++;
   }
 
   lock(lock) {
@@ -156,7 +158,9 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   onValidationError(errors) {
-    this.validationErrors = errors;
+    // Shallow clone so that change detection runs even if errors didn't change
+    // so that footer updates buttons disabled correctly.
+    this.validationErrors = errors && {...errors} || errors;
   }
 
   private errorHandling(vm: ILajiFormState) {

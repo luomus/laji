@@ -15,7 +15,7 @@ export const environment = {
   sourceKotka: 'KE.3',
   systemID: 'KE.841',
   formWhitelist: ['MHL.51', 'JX.519', 'MHL.9', 'MHL.53', 'MHL.25', 'JX.652', 'MHL.1', 'MHL.3', 'MHL.6', 'MHL.33', 'MHL.50', 'MHL.57', 'MHL.79'],
-  massForms: ['JX.519', 'JX.652', 'MHL.33A'],
+  massForms: ['JX.519', 'JX.652', 'MHL.33A', 'MHL.45A'],
   defaultForm: 'JX.519',
   nafiForm: 'MHL.6',
   invasiveControlForm: 'MHL.33',

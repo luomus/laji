@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
+import { Resampler } from './assets/resample';
+import {Observable, of} from 'rxjs';
+import {map, share, tap} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class SpectrogramService {
@@ -9,12 +13,46 @@ export class SpectrogramService {
   private nbrOfRowsRemovedFromStart = 2;
   private logRange = 3;
 
-  constructor() {}
+  private colormaps = {};
+  private colormaps$ = {};
 
-  public computeSpectrogram(buffer: AudioBuffer, nperseg: number, noverlap: number): {
+  constructor(
+    private httpClient: HttpClient,
+  ) {}
+
+  public getSpectrogramImageData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number)
+    : Observable<{ imageData: ImageData, maxFreq: number, maxTime: number }> {
+    return this.getColormap().pipe(map(colormap => {
+      const {spectrogram, width, heigth, maxFreq, maxTime} = this.computeSpectrogram(buffer, sampleRate, nperseg, noverlap);
+      const imageData = this.spectrogramToImageData(spectrogram, width, heigth, colormap);
+      return {imageData, maxFreq, maxTime};
+    }));
+  }
+
+  private spectrogramToImageData(spect: Float32Array, width: number, height: number, colormap: any): ImageData {
+    const {minValue, maxValue} = this.findMinAndMaxValue(spect);
+    const data = new Uint8ClampedArray(spect.length * 4);
+
+    let offset = 0;
+    for (let i = 0; i < spect.length; i++) {
+      let value = spect[i];
+      value = this.convertRange(value, [minValue, maxValue], [0, colormap.length - 1]);
+
+      const color = colormap[Math.round(value)];
+
+      data[offset++] = color[0] * 256;
+      data[offset++] = color[1] * 256;
+      data[offset++] = color[2] * 256;
+      data[offset++] = 256;
+    }
+
+    return new ImageData(data, width, height);
+  }
+
+  private computeSpectrogram(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number): {
     spectrogram: Float32Array, width: number, heigth: number, maxFreq: number, maxTime: number
   } {
-    const {data, sumByColumn} = this.getData(buffer, nperseg, noverlap);
+    const {data, sumByColumn} = this.getData(buffer, sampleRate, nperseg, noverlap);
 
     const meanNoise = this.getMeanNoiseColumn(data, sumByColumn);
     const maxValue = this.filterNoiseAndFindMaxValue(data, meanNoise);
@@ -28,15 +66,19 @@ export class SpectrogramService {
     const blurredData = new Float32Array(flattenedData.length);
     gaussBlur_4(flattenedData, blurredData, width, heigth, 1);
 
-    const maxFreq = Math.floor(buffer.sampleRate / 2);
-    const maxTime = (data.length - 1) * ((nperseg - noverlap) / buffer.sampleRate) + nperseg / buffer.sampleRate;
+    const maxFreq = Math.floor(sampleRate / 2);
+    const maxTime = (data.length - 1) * ((nperseg - noverlap) / sampleRate) + nperseg / sampleRate;
 
     return {spectrogram: blurredData, width, heigth, maxFreq, maxTime};
   }
 
-  private getData(buffer: AudioBuffer, nperseg: number, noverlap: number): {data: Float32Array[], sumByColumn: number[]} {
-    const fft = new FFT(nperseg, buffer.sampleRate, 'hann');
-    const chanData = buffer.getChannelData(0);
+  private getData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number): {data: Float32Array[], sumByColumn: number[]} {
+    let chanData = buffer.getChannelData(0);
+    const resampler = new Resampler(buffer.sampleRate, sampleRate, 1, chanData);
+    resampler.resampler(chanData.length);
+    chanData = resampler.outputBuffer;
+
+    const fft = new FFT(nperseg, sampleRate, 'hann');
 
     const data = [];
     const sumByColumn = [];
@@ -126,5 +168,48 @@ export class SpectrogramService {
     }
 
     return result;
+  }
+
+  private findMinAndMaxValue(data: Float32Array): {minValue: number, maxValue: number} {
+    let minValue, maxValue;
+    for (let i = 0; i < data.length; i++) {
+      const value = data[i];
+      if (minValue == null || value < minValue) {
+        minValue = value;
+      }
+      if (maxValue == null || value > maxValue) {
+        maxValue = value;
+      }
+    }
+
+    return {minValue, maxValue};
+  }
+
+  private convertRange(inputY: number, yRange: number[], xRange: number[]): number {
+    const [xMin, xMax] = xRange;
+    const [yMin, yMax] = yRange;
+
+    const percent = (inputY - yMin) / (yMax - yMin);
+    const outputX = percent * (xMax - xMin) + xMin;
+
+    return outputX;
+  }
+
+  private getColormap(colormap: 'inferno' | 'viridis' = 'viridis'): Observable<any> {
+    if (this.colormaps[colormap]) {
+      return of(this.colormaps[colormap]);
+    }
+
+    if (!this.colormaps$[colormap]) {
+      this.colormaps$[colormap] = this.httpClient.get('/static/audio/' + colormap + '-colormap.json')
+        .pipe(
+          tap(result => {
+            this.colormaps[colormap] = result;
+          }),
+          share()
+        );
+    }
+
+    return this.colormaps$[colormap];
   }
 }

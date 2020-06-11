@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
@@ -7,7 +7,8 @@ import {DatatableColumn} from '../../../../shared-modules/datatable/model/datata
 @Component({
   selector: 'laji-expertise-form',
   templateUrl: './expertise-form.component.html',
-  styleUrls: ['./expertise-form.component.scss']
+  styleUrls: ['./expertise-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExpertiseFormComponent implements OnInit {
   @Input() taxonId = 'MX.37580';

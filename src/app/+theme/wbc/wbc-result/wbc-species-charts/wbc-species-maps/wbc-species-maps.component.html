@@ -33,6 +33,7 @@
       }"
       [typeLabels]="(showSeasonComparison || idx != 2) ? {} : {'individualCountSum': 'wbc.stats.difference'}"
       (boundsChange)="boundsChange($event)"
+      (loaded)="mapLoaded()"
     ></laji-ykj-map>
   </div>
 </div>
