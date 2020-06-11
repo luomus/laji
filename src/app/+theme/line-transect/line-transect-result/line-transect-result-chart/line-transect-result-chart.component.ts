@@ -117,8 +117,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-          if ( range(x - (col_width / 2), x + ((col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
-          range(y - ((col_width / 2) - offset), y + ((col_width / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+          if ( range(x - Math.ceil(col_width / 2), x + (Math.ceil(col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
+          range(y - (Math.ceil(col_width / 2) - offset), y + (Math.ceil(col_width / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
           } else {
             return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
@@ -159,7 +159,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-          if ( range(x - ((col_width / 2)), x + ((col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
+          if ( range(x - (Math.ceil(col_width / 2)), x + (Math.ceil(col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
           && range(y - (year + offset), y + (year - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return '' + tooltipItem[0].xLabel + ' · ' + 'Parim./Km';
           } else {

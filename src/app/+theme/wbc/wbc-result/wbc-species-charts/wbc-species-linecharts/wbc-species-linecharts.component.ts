@@ -123,7 +123,10 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     tooltips: {
       mode: 'index',
       position: 'cursor',
-      intersect: false
+      intersect: false,
+      titleAlign: 'center',
+      bodyAlign: 'center',
+      displayColors: false
     },
     hover: {
       mode: 'index',
@@ -147,21 +150,22 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
             const year = data['datasets'][0]['count'].length < 15 ? 15 : 10;
-            const offset = data['datasets'][0]['count'].length < 15 ? 6 : 0;
+            const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
             let empty = 0;
+            const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
             if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
               if ( !dataset[Number(index_chart) + 1] || (index_chart === 0 && !dataset[Number(index_chart) + 1])) {
                 const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
                 const diff = index - Number(index_chart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
-                  empty = -5 * diff;
+                  empty = -coeff * diff;
                 }
               }
               if ( !dataset[Number(index_chart) - 1] || (index_chart === (dataset.length - 1) && !dataset[Number(index_chart) - 1])) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
                   const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
                   const diff = Number(index_chart) - (Number(index_chart) - index);
-                    empty = 5 * diff;
+                    empty = coeff * diff;
                 }
               }
             }
@@ -170,18 +174,16 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-          if ( range(x - (col_width / 2), x + ((col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
-          range(y - ((col_width / 2) - offset), y + ((col_width / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+          if ( range(x - Math.ceil(col_width / 2), x + (Math.ceil(col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
+          range(y - (Math.ceil(col_width / 2) - offset), y + (Math.ceil(col_width / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
           } else {
-            return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
+            return data['datasets'][0]['translations'][0] + ': ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
             }
           };
           element[0]['_chart'].tooltip._options.callbacks.title = function (tooltipItem, data) {
-            console.log(data);
-            console.log(tooltipItem);
             const year = data['datasets'][0]['count'].length < 15 ? 15 : 10;
-            const offset = data['datasets'][0]['count'].length < 15 ? 6 : 0;
+            const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
             const range = (start, end, step) => {
               return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
             };
@@ -191,13 +193,14 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             const left_offset = 0, right_offset = 0;
 
             let empty = 0;
+            const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
             if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
               if ( !dataset[Number(index_chart) + 1]) {
                 const count = 0;
                 const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
                 const diff = index - Number(index_chart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
-                    empty = -5 * diff;
+                    empty = -coeff * diff;
                 }
               }
               if (!dataset[Number(index_chart) - 1]) {
@@ -205,7 +208,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
                   const count = 0;
                   const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
                   const diff = Number(index_chart) - (Number(index_chart) - index);
-                    empty = 5 * diff;
+                    empty = coeff * diff;
                 }
               }
             }
@@ -213,13 +216,12 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
 
             const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
-            console.log(col_width);
             const title1 =  data['datasets'][0]['translations'][0] + ' · ' + tooltipItem[0].xLabel;
             const title2 = data['datasets'][0]['translations'][1] + ': ' + data['datasets'][0]['count'][tooltipItem[0].index];
             const title3 = data['datasets'][0]['translations'][2] + ': ' + data['datasets'][0]['censusCount'][tooltipItem[0].index];
 
-          if ( range(x - ((col_width / 2)), x + ((col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
-          && range(y - (year + offset), y + (year - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+          if ( range(x - (Math.ceil(col_width / 2)), x + (Math.ceil(col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
+          && range(y - (Math.ceil(col_width / 2) - offset), y + (Math.ceil(col_width / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return [title1, title2, title3];
           } else {
             return '';
@@ -232,7 +234,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       yAxes: [{
         scaleLabel: {
           display : true,
-          labelString: 'Parim./km',
+          labelString: this.translate.instant('wbc.stats.abundanceGraphs.yAxis')
         },
         ticks: {
             beginAtZero: true,
@@ -243,7 +245,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       xAxes: [{
         scaleLabel: {
           display : true,
-          labelString: 'Vuodet'
+          labelString: this.translate.instant('wbc.stats.abundanceGraphs.xAxis')
         }
       }]
     },
@@ -271,8 +273,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
           this.setLines(data['fall'], 'fall', 'wbc.season.fall');
           this.setLines(data['winter'], 'winter', 'wbc.season.winter');
           this.setLines(data['spring'], 'spring', 'wbc.season.spring');
-          console.log(this.lineChartData);
-          console.log(this.lineChartLabels);
           this.cd.markForCheck();
         });
     }
@@ -282,6 +282,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     this.lines[season] = [];
     this.lineChartData[season] = [];
     this.lineChartData[season][0] = {
+        label: this.translate.instant('wbc.stats.abundanceGraphs.yAxis'),
         data: [
         {
           data: null,
@@ -346,6 +347,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     this.lineChartLabels[season].push(series2);
 
   }
+
 
   tickFormatting(val: number): string {
     if (val % 1 !== 0) {
