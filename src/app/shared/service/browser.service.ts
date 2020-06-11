@@ -32,6 +32,7 @@ export class BrowserService implements OnDestroy {
   private resizeSub: Subscription;
   private visibilityChangeEvent: string;
   private handlerForVisibilityChange: Function;
+  private resizing;
 
   constructor(
     @Inject(DOCUMENT) private document: any,
@@ -61,10 +62,11 @@ export class BrowserService implements OnDestroy {
   }
 
   triggerResizeEvent(): void {
-    if (!this.platformService.isBrowser) {
+    if (!this.platformService.isBrowser || this.resizing) {
       return;
     }
-    setTimeout(() => {
+    this.resizing = setTimeout(() => {
+      this.resizing = undefined;
       try {
         this.window.dispatchEvent(new Event('resize'));
       } catch (e) {
