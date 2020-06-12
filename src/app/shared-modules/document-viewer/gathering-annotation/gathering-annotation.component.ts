@@ -5,6 +5,7 @@ import { Annotation } from '../../../shared/model/Annotation';
 import { Subject, Subscription } from 'rxjs';
 import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class GatheringAnnotationComponent implements OnInit, OnDestroy {
   @Input() openAnnotation: boolean;
   @Input() showOnlyHighlightedUnit: boolean;
   @Input() showAnnotation: boolean;
+  @Input() annotationTags: AnnotationTag[]; 
   @Output() showAllUnits = new EventEmitter();
 
   annotationAddedDeleted = {

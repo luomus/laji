@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output,
 OnInit, OnDestroy} from '@angular/core';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
   selector: 'laji-gathering',
@@ -23,6 +24,7 @@ export class GatheringComponent implements OnInit, OnDestroy {
   @Input() openAnnotation: boolean;
   @Input() showAnnotation: boolean;
   @Input() showOnlyHighlighted: boolean;
+  @Input() annotationTags: AnnotationTag[]; 
   @Output() showAllUnits = new EventEmitter();
 
 

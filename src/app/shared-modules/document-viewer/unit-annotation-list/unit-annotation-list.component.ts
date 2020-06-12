@@ -1,5 +1,6 @@
 import {map, switchMap } from 'rxjs/operators';
-import { ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter, OnDestroy,
+ChangeDetectionStrategy} from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
@@ -8,11 +9,13 @@ import { Annotation } from '../../../shared/model/Annotation';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
   selector: 'laji-unit-annotation-list',
   templateUrl: './unit-annotation-list.component.html',
-  styleUrls: ['./unit-annotation-list.component.scss']
+  styleUrls: ['./unit-annotation-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Input() editors: string[];
@@ -26,6 +29,7 @@ export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Input() openAnnotation: boolean;
   @Input() showFacts = false;
   @Input() showAnnotation: boolean;
+  @Input() annotationTags: AnnotationTag[]; 
   @Output() annotationPending = new EventEmitter<Object>();
 
   annotationVisible = false;

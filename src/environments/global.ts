@@ -257,7 +257,12 @@ export const Global = {
       value: 'MMAN.51',
       quality: 'MMAN.typeAdmin',
       type: 'admin'
-    }
+    },
+    /*'MMAN.52': {
+      value: 'MMAN.52',
+      quality: 'MMAN.typePositiveQuality',
+      type: 'admin'
+    }*/
   },
   limit: {
     simpleDownload: 10000

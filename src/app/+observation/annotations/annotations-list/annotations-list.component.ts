@@ -3,6 +3,7 @@ import { Annotation } from '../../../shared/model/Annotation';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import {TranslateService} from '@ngx-translate/core';
 import { DocumentViewerFacade } from '../../../shared-modules/document-viewer/document-viewer.facade';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { DocumentViewerFacade } from '../../../shared-modules/document-viewer/do
 export class AnnotationListComponent implements OnInit {
 
   @Input() result: PagedResult<any>;
+  @Input() annotationTags: AnnotationTag[]; 
   lang: string;
   gathering: any[];
   hasTaxon: boolean;

@@ -7,6 +7,8 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { map, switchMap } from 'rxjs/operators';
 import { Annotation } from '../../shared/model/Annotation';
 import { PagedResult } from '../../shared/model/PagedResult';
+import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
+import { AnnotationTag } from '../../shared/model/AnnotationTag';
 
 
 
@@ -41,17 +43,21 @@ export class AnnotationsComponent implements OnInit, OnChanges {
   count: number;
   size: number;
   paginatorDisplay: boolean;
+  annotationTags$: Observable<AnnotationTag[]>;
 
 
 
   constructor(
     private warehouseApi: WarehouseApi,
     private translations: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private annotationService: AnnotationService,
+    private translate: TranslateService 
   ) { }
 
   ngOnInit() {
     this.lang = this.translations.currentLang;
+    this.annotationTags$ = this.annotationService.getAllTags(this.lang);
   }
 
   ngOnChanges(changes: SimpleChanges) {

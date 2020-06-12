@@ -5,6 +5,7 @@ import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DocumentViewerFacade } from '../document-viewer.facade';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
   selector: 'laji-unit',
@@ -25,6 +26,7 @@ export class UnitComponent implements OnInit {
   @Input() showFacts = false;
   @Input() showAnnotation: boolean;
   @Input() showOnlyHighlighted: boolean;
+  @Input() annotationTags: AnnotationTag[]; 
   @Output() annotationPending = new EventEmitter<boolean>();
 
   annotationVisible = false;
