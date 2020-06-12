@@ -39,7 +39,6 @@ import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-v
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { PinkkaComponent } from './pinkka/pinkka.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
-import { BirdPointCountResultComponent } from './bird-point-count/bird-point-count-result/bird-point-count-result.component';
 import { NamedPlaceResolver } from '../shared-modules/named-place/named-place.resolver';
 
 /* tslint:enable:max-line-length */
@@ -524,10 +523,16 @@ const routes: Routes = [
         pathMatch: 'full',
         component: ThemeOwnSubmissionsComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
-      }
+      },
+      {
+        path: 'tools',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        loadChildren: () => import('../+haseka/tools/tools.module').then(m => m.ToolsModule)
+      },
     ],
     data: {
       formID: Global.forms.lolifeForm,
+      excelFormID: Global.forms.lolifeExcelForm,
       noFormPermissionRedirect: '/theme/lolife',
       title: 'Liito-orava - seuranta',
       navLinks: {
@@ -541,10 +546,28 @@ const routes: Routes = [
         ownSubmissions: {
           label: 'theme.lolife.ownSubmissions',
           adminLabel: 'theme.lolife.ownSubmissions.admin'
+        },
+        tools: {
+          routerLink: ['tools'],
+          label: 'theme.nav.tools',
+          children: [
+            {
+              routerLink: ['tools', 'import'],
+              label: 'theme.nav.tools.import'
+            },
+            {
+              routerLink: ['tools', 'generate'],
+              label: 'theme.nav.tools.generate'
+            }
+          ]
         }
       },
-      navLinksOrder: ['about', 'instructions', 'form', 'ownSubmissions', 'formPermissions'],
-      hideNavFor: ['/form']
+      navLinksOrder: ['about', 'instructions', 'form', 'tools', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form'],
+      tools: {
+        formID: 'MHL.45A',
+        showLabelDesigner: false
+      }
     }
   },
   {

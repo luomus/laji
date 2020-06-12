@@ -9,7 +9,6 @@ import { ObservationDownloadComponent } from '../download/observation-download.c
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { SearchQueryService } from '../search-query.service';
 import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
-import { BrowserService } from '../../shared/service/browser.service';
 import { Subscription } from 'rxjs';
 import {LocalStorageService} from 'ngx-webstorage';
 
@@ -89,7 +88,6 @@ export class ObservationResultComponent implements OnInit {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private searchQueryService: SearchQueryService,
-    private browserService: BrowserService,
     private cd: ChangeDetectorRef,
     private storage: LocalStorageService
   ) {}
@@ -106,7 +104,6 @@ export class ObservationResultComponent implements OnInit {
       this.loadedTabs.load(value);
       this.selectedTabIdx = this.loadedTabs.getIdxFromName(value);
     }
-    this.browserService.triggerResizeEvent();
   }
 
   onSelect(tabIndex: number) {

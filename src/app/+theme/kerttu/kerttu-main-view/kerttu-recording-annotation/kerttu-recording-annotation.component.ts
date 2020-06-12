@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {IRecording} from '../../model/recording';
 
 @Component({
   selector: 'laji-kerttu-recording-annotation',
   templateUrl: './kerttu-recording-annotation.component.html',
-  styleUrls: ['./kerttu-recording-annotation.component.scss']
+  styleUrls: ['./kerttu-recording-annotation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuRecordingAnnotationComponent implements OnChanges {
   @Input() annotations: any;

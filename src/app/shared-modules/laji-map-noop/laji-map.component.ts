@@ -21,7 +21,7 @@ export class LajiMapComponent {
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
   @Output() failure =  new EventEmitter();
-  @Output() tileLayerChange =  new EventEmitter();
+  @Output() tileLayersChange = new EventEmitter();
 
   map: any;
   lang: string;

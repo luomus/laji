@@ -1,49 +1,54 @@
-<div class="container-fluid" *ngIf="vm$ | async as vm">
-  <laji-spinner [spinning]="vm.step == null" [hideContentWhileLoading]="true">
-    <h1>{{ 'theme.kerttu.annotate.title' | translate }}</h1>
-    <laji-stepper [state]="vm.step"
-                  [mapping]="mapping"
-                  [steps]="steps"
-                  (activate)="activate($event)"
-    ></laji-stepper>
-    <laji-expertise-form
-      *ngIf="vm.step === step.fillExpertise"
-      [introText]="'theme.kerttu.expertise.intro' | translate"
-      [selectedTaxonIds]="selectedTaxonIds"
-      (taxonIdSelect)="selectedTaxonIds = $event"
-    ></laji-expertise-form>
-    <div *ngIf="vm.step === step.annotateLetters">
-      <laji-spinner [spinning]="!allLettersAnnotated && loadingLetters" [overlay]="true">
-        <laji-kerttu-letter-annotation
-          *ngIf="!allLettersAnnotated"
-          [ngClass]="{'visibility-hidden': loadingLetters}"
-          [template]="letterTemplate"
-          [candidate]="letterCandidate"
-          [letterAnnotationCount]="letterAnnotationCount"
-          (annotationChange)="onLetterAnnotationChange($event)"
-          (skipLetterClick)="skipLetter()"
-        ></laji-kerttu-letter-annotation>
-      </laji-spinner>
-      <ng-container *ngIf="allLettersAnnotated">
-        Kaikki kirjaimet käyty läpi!
-      </ng-container>
-    </div>
-    <div *ngIf="vm.step === step.annotateRecordings">
-      <!--laji-kerttu-recording-annotation
-        [recordings]="recordings$ | async"
-        [annotations]="recordingAnnotations"
-        (annotationsChange)="recordingAnnotations = $event"
-      ></laji-kerttu-recording-annotation-->
-    </div>
-    <div *ngIf="vm.step === step.done">
-      Valmis!
-    </div>
-    <div class="pull-right" *ngIf="vm.step !== step.done">
-      <button class="btn btn-warning" *ngIf="vm.step === step.fillExpertise" (click)="save(vm.step)">{{ 'theme.kerttu.save' | translate }}</button>
-      <button class="btn btn-success" style="margin-left: 15px" (click)="saveAndGoToNext(vm.step)">
-        {{ (vm.step === step.fillExpertise ? 'theme.kerttu.saveAndGoNext' : 'theme.kerttu.goNext') | translate }}
-      </button>
-    </div>
-  </laji-spinner>
+<ng-container *ngIf="!errorMsg">
+  <div class="container-fluid" *ngIf="vm$ | async as vm">
+    <laji-spinner [spinning]="vm.step == null" [hideContentWhileLoading]="true">
+      <h1>{{ 'theme.kerttu.annotate.title' | translate }}</h1>
+      <laji-stepper [state]="vm.step"
+                    [mapping]="mapping"
+                    [steps]="steps"
+                    (activate)="activate($event)"
+      ></laji-stepper>
+      <laji-expertise-form
+        *ngIf="vm.step === step.fillExpertise"
+        [introText]="'theme.kerttu.expertise.intro' | translate"
+        [selectedTaxonIds]="selectedTaxonIds"
+        (taxonIdSelect)="selectedTaxonIds = $event"
+      ></laji-expertise-form>
+      <div *ngIf="vm.step === step.annotateLetters">
+        <laji-spinner [spinning]="!allLettersAnnotated && loadingLetters" [overlay]="true">
+          <laji-kerttu-letter-annotation
+            *ngIf="!allLettersAnnotated"
+            [ngClass]="{'visibility-hidden': loadingLetters}"
+            [template]="letterTemplate"
+            [candidate]="letterCandidate"
+            (annotationChange)="onLetterAnnotationChange($event)"
+            (skipLetterClick)="skipLetter()"
+          ></laji-kerttu-letter-annotation>
+        </laji-spinner>
+        <ng-container *ngIf="allLettersAnnotated">
+          Kaikki kirjaimet käyty läpi!
+        </ng-container>
+      </div>
+      <div *ngIf="vm.step === step.annotateRecordings">
+        <!--laji-kerttu-recording-annotation
+          [recordings]="recordings$ | async"
+          [annotations]="recordingAnnotations"
+          (annotationsChange)="recordingAnnotations = $event"
+        ></laji-kerttu-recording-annotation-->
+      </div>
+      <div *ngIf="vm.step === step.done">
+        Valmis!
+      </div>
+      <div class="pull-right" *ngIf="vm.step !== step.done">
+        <button class="btn btn-warning" *ngIf="vm.step === step.fillExpertise" (click)="save(vm.step)">{{ 'theme.kerttu.save' | translate }}</button>
+        <button class="btn btn-success" style="margin-left: 15px" (click)="saveAndGoToNext(vm.step)">
+          {{ (vm.step === step.fillExpertise ? 'theme.kerttu.saveAndGoNext' : 'theme.kerttu.goNext') | translate }}
+        </button>
+      </div>
+    </laji-spinner>
+  </div>
+  <div class="modal-backdrop fade in" *ngIf="saving"></div>
+</ng-container>
+<div *ngIf="errorMsg">
+  {{ errorMsg | translate }}
 </div>
-<div class="modal-backdrop fade in" *ngIf="saving"></div>
+

@@ -13,7 +13,7 @@ import { Global } from '../../../environments/global';
     </h5>
     <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.routerLink | localize" routerLinkActive [active]="link.active">
       {{ link.label | translate }}
-      <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink | localize" [active]="link.active">
+      <lu-sidebar-link *ngFor="let child of link.children; trackBy: trackByLabel" [link]="child.routerLink | localize" [active]="child.active">
         {{ child.label | translate }}
       </lu-sidebar-link>
     </lu-sidebar-link>

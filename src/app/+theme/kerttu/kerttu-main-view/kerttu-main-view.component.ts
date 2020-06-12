@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
 import {Observable, of, Subscription} from 'rxjs';
 import {switchMap, take} from 'rxjs/operators';
@@ -8,11 +8,13 @@ import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
 import {ILetterCandidate, ILetterTemplate, LetterAnnotation} from '../model/letter';
 import {WINDOW} from '@ng-toolkit/universal';
+import {AudioService} from '../service/audio.service';
 
 @Component({
   selector: 'laji-kerttu-main-view',
   templateUrl: './kerttu-main-view.component.html',
-  styleUrls: ['./kerttu-main-view.component.scss']
+  styleUrls: ['./kerttu-main-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuMainViewComponent implements OnInit, OnDestroy {
   vm$: Observable<IKerttuState>;
@@ -38,9 +40,10 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   letterTemplate: ILetterTemplate;
   letterCandidate: ILetterCandidate;
-  letterAnnotationCount: number;
   allLettersAnnotated = false;
   loadingLetters = false;
+
+  errorMsg: string;
 
   private vmSub: Subscription;
   private selectedTaxonIdsSub: Subscription;
@@ -53,12 +56,14 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     private kerttuFacade: KerttuFacade,
     private cdr: ChangeDetectorRef,
     private userService: UserService,
-    private personService: PersonApi
+    private personService: PersonApi,
+    private audioService: AudioService
   ) {
     this.vm$ = kerttuFacade.vm$;
   }
 
   ngOnInit() {
+    this.checkIfWebAudioApiIsSupported();
     this.kerttuFacade.clear();
 
     this.userService.isLoggedIn$.pipe(take(1)).subscribe(() => {
@@ -129,9 +134,6 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = undefined;
     this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
       .subscribe((candidate) => {
-        if (annotation !== LetterAnnotation.unsure) {
-          this.letterAnnotationCount += 1;
-        }
         this.onCandidateLoaded(candidate);
       });
   }
@@ -199,7 +201,6 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
           this.getNextLetterCandidate(template.id);
         }
         this.letterTemplate = template;
-        this.letterAnnotationCount = template?.userAnnotationCount;
         this.cdr.markForCheck();
       });
   }
@@ -219,8 +220,15 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.letterTemplate.info = candidate.info;
     this.letterCandidate = candidate;
     this.loadingLetters = false;
     this.cdr.markForCheck();
+  }
+
+  private checkIfWebAudioApiIsSupported() {
+    if (!this.audioService.audioContext) {
+      this.errorMsg = 'theme.kerttu.notSupported';
+    }
   }
 }
