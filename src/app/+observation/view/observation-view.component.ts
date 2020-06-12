@@ -97,9 +97,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @Input()
   set activeTab(tab: string) {
     this._activeTab = tab;
-    if (tab === 'map') {
-      this.browserService.triggerResizeEvent();
-    }
   }
 
   get activeTab(): string {

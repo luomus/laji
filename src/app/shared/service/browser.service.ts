@@ -1,5 +1,5 @@
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
-import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
+import { BehaviorSubject, fromEvent, Subject, Subscription } from 'rxjs';
 import { PlatformService } from './platform.service';
 import { DOCUMENT, Location } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -29,10 +29,11 @@ export class BrowserService implements OnDestroy {
   lgScreen$ = this.state$.pipe(map((state) => state.lgScreen), distinctUntilChanged());
   visibility$ = this.state$.pipe(map((state) => state.visibility), distinctUntilChanged());
 
+  private resizingSub: Subscription;
   private resizeSub: Subscription;
   private visibilityChangeEvent: string;
   private handlerForVisibilityChange: Function;
-  private resizing;
+  private resize = new Subject();
 
   constructor(
     @Inject(DOCUMENT) private document: any,
@@ -45,6 +46,7 @@ export class BrowserService implements OnDestroy {
     if (!platformService.isBrowser) {
       return;
     }
+    this.initResizeListener();
     this.initVisibilityListener();
     this.initScreenSizeListener();
   }
@@ -52,6 +54,9 @@ export class BrowserService implements OnDestroy {
   ngOnDestroy(): void {
     if (!this.platformService.isBrowser) {
       return;
+    }
+    if (this.resizingSub) {
+      this.resizingSub.unsubscribe();
     }
     if (this.resizeSub) {
       this.resizeSub.unsubscribe();
@@ -62,21 +67,10 @@ export class BrowserService implements OnDestroy {
   }
 
   triggerResizeEvent(): void {
-    if (!this.platformService.isBrowser || this.resizing) {
+    if (!this.platformService.isBrowser) {
       return;
     }
-    this.resizing = setTimeout(() => {
-      this.resizing = undefined;
-      try {
-        this.window.dispatchEvent(new Event('resize'));
-      } catch (e) {
-        try {
-          const evt: any = this.window.document.createEvent('UIEvents');
-          evt.initUIEvent('resize', true, false, this.window, 0);
-          this.window.dispatchEvent(evt);
-        } catch (e) {}
-      }
-    }, 100);
+    this.resize.next();
   }
 
   goBack(onNoHistory?: () => void): void {
@@ -125,12 +119,26 @@ export class BrowserService implements OnDestroy {
   private initScreenSizeListener() {
     this.updateScreenSize();
     this.zone.runOutsideAngular(() => {
-      this.resizeSub = fromEvent(window, 'resize').pipe(
+      this.resizingSub = fromEvent(window, 'resize').pipe(
         debounceTime(1000),
         distinctUntilChanged()
       ).subscribe(() => {
         this.zone.run(() => this.updateScreenSize());
       });
+    });
+  }
+
+  private initResizeListener() {
+    this.resizeSub = this.resize.pipe(
+      debounceTime(100)
+    ).subscribe(() => {
+      try {
+        this.window.dispatchEvent(new Event('resize'));
+      } catch (e) {
+        const evt: any = this.window.document.createEvent('UIEvents');
+        evt.initUIEvent('resize', true, false, this.window, 0);
+        this.window.dispatchEvent(evt);
+      }
     });
   }
 
