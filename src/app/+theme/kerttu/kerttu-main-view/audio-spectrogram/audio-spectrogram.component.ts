@@ -1,16 +1,30 @@
-import {Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, HostListener, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ElementRef,
+  ViewChild,
+  HostListener,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
 import {Selection, select, event, clientPoint} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
 import * as d3Drag from 'd3-drag';
-import {AudioService} from '../../service/audio.service';
 import {Subscription} from 'rxjs';
 import {delay} from 'rxjs/operators';
+import {SpectrogramService} from '../../service/spectrogram.service';
+import { KerttuUtils } from '../../service/kerttu-utils';
 
 @Component({
   selector: 'laji-audio-spectrogram',
   templateUrl: './audio-spectrogram.component.html',
-  styleUrls: ['./audio-spectrogram.component.scss']
+  styleUrls: ['./audio-spectrogram.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioSpectrogramComponent implements OnChanges {
   @ViewChild('container', {static: true}) containerRef: ElementRef<HTMLDivElement>;
@@ -18,6 +32,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   @ViewChild('chart', {static: true}) chartRef: ElementRef<SVGElement>;
 
   @Input() buffer: AudioBuffer;
+  @Input() sampleRate: number;
   @Input() nperseg: number;
   @Input() noverlap: number;
   @Input() currentTime: number;
@@ -26,7 +41,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() yRange: number[];
 
   @Input() zoomed = false;
-  @Input() frequencyPadding = 200;
+  @Input() frequencyPadding = 500;
 
   @Output() spectrogramReady = new EventEmitter();
   @Output() startDrag = new EventEmitter();
@@ -47,7 +62,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   private endFreq: number;
 
   constructor(
-    private audioService: AudioService,
+    private spectrogramService: SpectrogramService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -76,7 +91,7 @@ export class AudioSpectrogramComponent implements OnChanges {
         this.drawSub.unsubscribe();
       }
       if (this.buffer) {
-        this.drawSub = this.audioService.getSpectrogramImageData(this.buffer, this.nperseg, this.noverlap)
+        this.drawSub = this.spectrogramService.getSpectrogramImageData(this.buffer, this.sampleRate, this.nperseg, this.noverlap)
           .pipe(delay(0))
           .subscribe((result) => {
             this.imageData = result.imageData;
@@ -88,12 +103,13 @@ export class AudioSpectrogramComponent implements OnChanges {
             this.cdr.markForCheck();
           });
       }
-    }
-    if (changes.currentTime && this.scrollLine) {
-      this.updateScrollLinePosition();
-    }
-    if (changes.zoomed) {
-      this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
+    } else {
+      if (changes.currentTime && this.scrollLine) {
+        this.updateScrollLinePosition();
+      }
+      if (changes.zoomed && this.imageData) {
+        this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
+      }
     }
   }
 
@@ -186,15 +202,14 @@ export class AudioSpectrogramComponent implements OnChanges {
   }
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
-    this.startFreq = this.zoomed ? Math.max(this.yRange[0] - this.frequencyPadding, 0) : 0;
-    this.endFreq = this.zoomed ? Math.min(this.yRange[1] + this.frequencyPadding, this.maxFreq) : this.maxFreq;
+    [this.startFreq, this.endFreq] = KerttuUtils.getPaddedRange(this.yRange, this.zoomed ? this.frequencyPadding : undefined, 0, this.maxFreq);
 
     const ratio1 = this.startFreq / this.maxFreq;
     const ratio2 = this.endFreq / this.maxFreq;
     const startY = data.height - (data.height * ratio2);
 
     canvas.width = data.width;
-    canvas.height = data.height * (ratio1 + ratio2);
+    canvas.height = data.height * (ratio2 - ratio1);
 
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, data.width, data.height);

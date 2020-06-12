@@ -7,8 +7,8 @@
       <button type="button" [disabled]="saving" class="btn btn-success btn-sm" (click)="lock.emit(true)"><i class="fa fa-unlock"></i></button>
     </ng-template>
   </div>
-  <button *ngIf="show.save" class="btn btn-success btn-sm" [disabled]="saving || this.hasOnlyWarnings" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
-  <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving || this.hasOnlyWarnings" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
+  <button *ngIf="show.save" class="btn btn-success btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
+  <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
   <div [ngSwitch]="status" class="fill-space status">
     <div *ngSwitchCase="'success'" class="success">
       {{ 'haseka.form.success' | translate }}
@@ -24,7 +24,7 @@
         {{ 'haseka.form.unsavedNever' | translate }}
       </ng-template>
     </div>
-    <button *ngIf="hasOnlyWarnings" type="button" class="btn btn-link" (click)="highlightErrorContainer()" style="color: white;">
+    <button *ngIf="hasOnlyWarnings" type="button" class="btn btn-link" (click)="highlightErrorContainer()" style="color: #3c9cdd;">
       {{ 'haseka.form.hasOnlyWarnings' | translate }}
     </button>
     <span *ngIf="readonly === readonlyStates.noEdit">
