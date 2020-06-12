@@ -19,13 +19,11 @@ export class ComboCheckboxComponent {
 
   toggleDropdown() {
     this.open = !this.open;
-    console.log('btn', this.open);
     this.cdr.markForCheck();
   }
 
   onClickOutside() {
     this.open = false;
-    console.log('out', this.open);
     this.cdr.markForCheck();
   }
 }

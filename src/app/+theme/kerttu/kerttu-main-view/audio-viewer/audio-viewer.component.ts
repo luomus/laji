@@ -15,6 +15,7 @@ import {
 import { AudioService } from '../../service/audio.service';
 import { WINDOW } from '@ng-toolkit/universal';
 import {Subscription} from 'rxjs';
+import { KerttuUtils } from '../../service/kerttu-utils';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -64,29 +65,13 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.recording) {
+    if (changes.recording || changes.xRangePadding) {
       this.clear();
       this.setAudioLoading(true);
 
       if (this.recording) {
         this.audioSub = this.audioService.getAudioBuffer(this.recording).subscribe((buffer) => {
-          this.start = 0;
-          this.stop = buffer.duration;
-
-          if (this.xRange && this.xRangePadding) {
-            this.start = this.xRange[0] - this.xRangePadding;
-            this.stop = this.xRange[1] + this.xRangePadding;
-
-            if (this.start < 0) {
-              this.stop = Math.min(this.stop - this.start, buffer.duration);
-              this.start = 0;
-            }
-            if (this.stop > buffer.duration) {
-              this.start = Math.max(this.start - (this.stop - buffer.duration), 0);
-              this.stop = buffer.duration;
-            }
-          }
-
+          [this.start, this.stop] = KerttuUtils.getPaddedRange(this.xRange, this.xRangePadding, 0, buffer.duration);
           buffer = this.audioService.extractSegment(buffer, this.start, this.stop, this.duration);
 
           this.buffer = buffer;

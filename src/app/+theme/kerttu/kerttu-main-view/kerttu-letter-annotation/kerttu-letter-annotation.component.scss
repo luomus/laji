@@ -3,6 +3,16 @@
 
   #letterAnnotationControls {
     text-align: left;
+
+    > div {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 8px;
+
+      bswitch {
+        display: block;
+      }
+    }
   }
 }
 

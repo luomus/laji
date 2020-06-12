@@ -25,7 +25,7 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
     this.destroyResizeListener = this.renderer.listen(window, 'resize', this.onResize.bind(this));
   }
 
-  private onResize() {
+  private onResize(event) {
     if (event && event['ignore-fill-height']) {
       return;
     }
