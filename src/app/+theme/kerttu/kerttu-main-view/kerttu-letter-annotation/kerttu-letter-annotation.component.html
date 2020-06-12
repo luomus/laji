@@ -4,7 +4,7 @@
     <div>
       <span>Kirjain: {{ template?.name }}</span>
       <br>
-      <span>Tunnistuksia tehty: {{ letterAnnotationCount }}/{{ template?.targetAnnotationCount }}</span>
+      <span>Tunnistuksia tehty: {{ template?.info.userAnnotationCount }}/{{ template?.info.targetAnnotationCount }}</span>
       <br>
       <button class="btn btn-default" (click)="skipLetterClick.emit()">Jätä kirjain väliin</button>
     </div>

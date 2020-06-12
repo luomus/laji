@@ -20,7 +20,6 @@
             [ngClass]="{'visibility-hidden': loadingLetters}"
             [template]="letterTemplate"
             [candidate]="letterCandidate"
-            [letterAnnotationCount]="letterAnnotationCount"
             (annotationChange)="onLetterAnnotationChange($event)"
             (skipLetterClick)="skipLetter()"
           ></laji-kerttu-letter-annotation>
