@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   Inject,
@@ -23,7 +22,7 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './wbc-species-maps.component.html',
   styleUrls: ['./wbc-species-maps.component.css']
 })
-export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
+export class WbcSpeciesMapsComponent implements OnChanges {
   @ViewChildren('maps') mapComponents: QueryList<YkjMapComponent>;
   @Input() taxonId: string;
   @Input() taxonCensus = undefined;
@@ -66,14 +65,16 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.maps = this.mapComponents.map(mapComponent => {
-        return mapComponent.mapComponent.map;
-      });
-      this.maps.forEach(m => this.initEventListeners(m));
+  mapLoaded() {
+    const maps = this.mapComponents.map(mapComponent => {
+      return mapComponent.mapComponent.map;
+    });
+    if (isPlatformBrowser(this.platformId) && maps.every(map => map)) {
+      this.maps = maps;
+      maps.forEach(m => this.initEventListeners(m));
     }
   }
+
 
   private updateMapData() {
     this.querys = [];
@@ -204,9 +205,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
       lajiMap._handling[name] = false;
     };
     lajiMap.map.addEventListener({
-      tileLayerChange: sync((_map) => _map.setTileLayerByName(lajiMap.tileLayerName)),
-      tileLayerOpacityChange: sync((_map) => _map.setTileLayerOpacity(lajiMap.tileLayerOpacity)),
-      overlaysChange: sync((_map, e) => _map.setOverlaysByName(e.overlayNames))
+      tileLayersChange: sync((_map) => _map.setTileLayers(lajiMap.getTileLayers()))
     });
   }
 

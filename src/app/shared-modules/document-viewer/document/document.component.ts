@@ -15,14 +15,17 @@ import {
   EventEmitter
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { interval as ObservableInterval, Subscription, throwError as observableThrowError } from 'rxjs';
+import { interval as ObservableInterval, Observable, Subscription, throwError as observableThrowError } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
+import { TranslateService } from '@ngx-translate/core';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
+import { AnnotationService } from '../../document-viewer/service/annotation.service';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 
 @Component({
@@ -69,6 +72,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   private metaFetch: Subscription;
   subscriptParent: Subscription;
   annotationResolving: boolean;
+  annotationTags$: Observable<AnnotationTag[]>;
 
 
   constructor(
@@ -77,10 +81,13 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,
     private childComunication: DocumentViewerChildComunicationService,
-    private taxonTagEffective: TaxonTagEffectiveService
+    private taxonTagEffective: TaxonTagEffectiveService,
+    private annotationService: AnnotationService,
+    private translate: TranslateService 
   ) { }
 
   ngOnInit() {
+    this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
     this.metaFetch = this.userService.user$.subscribe(person => {
       this.personID = person.id;
       this.cd.markForCheck();

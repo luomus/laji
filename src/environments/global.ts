@@ -13,6 +13,7 @@ export const Global = {
     invasiveControl: 'MHL.33',
     municipalityMonitoringForm: 'MHL.35',
     lolifeForm: 'MHL.45',
+    lolifeExcelForm: 'MHL.45A',
     wbc: 'MHL.3',
     lineTransect: 'MHL.1',
     lineTransectEiVakio: 'MHL.27',
@@ -257,7 +258,12 @@ export const Global = {
       value: 'MMAN.51',
       quality: 'MMAN.typeAdmin',
       type: 'admin'
-    }
+    },
+    /*'MMAN.52': {
+      value: 'MMAN.52',
+      quality: 'MMAN.typePositiveQuality',
+      type: 'admin'
+    }*/
   },
   limit: {
     simpleDownload: 10000

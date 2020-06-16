@@ -13,6 +13,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { TaxonTagEffectiveService } from '../../shared-modules/document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../../shared-modules/document-viewer/loading-elements.service';
 import { PlatformService } from '../../shared/service/platform.service';
+import { AnnotationTag } from '../../shared/model/AnnotationTag';
 
 @Component({
   selector: 'laji-annotations',
@@ -34,6 +35,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input() annotations: Annotation[] = [];
   @Input() formVisible: boolean;
   @Input() listVisible: boolean;
+  @Input() annotationTags: AnnotationTag[]; 
   @Output() close = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
   @Output() loadingForm = new EventEmitter<Object>();

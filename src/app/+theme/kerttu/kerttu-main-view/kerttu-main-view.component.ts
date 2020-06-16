@@ -1,18 +1,20 @@
-import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
 import {Observable, of, Subscription} from 'rxjs';
-import {switchMap, take, tap} from 'rxjs/operators';
+import {switchMap, take} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {KerttuApi} from '../service/kerttu-api';
 import {ILetterCandidate, ILetterTemplate, LetterAnnotation} from '../model/letter';
 import {WINDOW} from '@ng-toolkit/universal';
+import {AudioService} from '../service/audio.service';
 
 @Component({
   selector: 'laji-kerttu-main-view',
   templateUrl: './kerttu-main-view.component.html',
-  styleUrls: ['./kerttu-main-view.component.scss']
+  styleUrls: ['./kerttu-main-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuMainViewComponent implements OnInit, OnDestroy {
   vm$: Observable<IKerttuState>;
@@ -38,9 +40,10 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   letterTemplate: ILetterTemplate;
   letterCandidate: ILetterCandidate;
-  letterAnnotationCount: number;
   allLettersAnnotated = false;
   loadingLetters = false;
+
+  errorMsg: string;
 
   private vmSub: Subscription;
   private selectedTaxonIdsSub: Subscription;
@@ -53,12 +56,14 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     private kerttuFacade: KerttuFacade,
     private cdr: ChangeDetectorRef,
     private userService: UserService,
-    private personService: PersonApi
+    private personService: PersonApi,
+    private audioService: AudioService
   ) {
     this.vm$ = kerttuFacade.vm$;
   }
 
   ngOnInit() {
+    this.checkIfWebAudioApiIsSupported();
     this.kerttuFacade.clear();
 
     this.userService.isLoggedIn$.pipe(take(1)).subscribe(() => {
@@ -128,12 +133,8 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     const candidateId = this.letterCandidate.id;
     this.letterCandidate = undefined;
     this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
-      .subscribe(() => {
-        if (annotation !== LetterAnnotation.unsure) {
-          this.letterAnnotationCount += 1;
-          this.cdr.markForCheck();
-        }
-        this.getNextLetterCandidate(this.letterTemplate.id);
+      .subscribe((candidate) => {
+        this.onCandidateLoaded(candidate);
       });
   }
 
@@ -193,17 +194,13 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.loadingLetters = true;
 
     this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken(), skipCurrent)
-      .pipe(tap(template => {
+      .subscribe(template => {
         if (!template) {
           this.allLettersAnnotated = true;
-          return;
+        } else {
+          this.getNextLetterCandidate(template.id);
         }
-
-        this.getNextLetterCandidate(template.id);
-      }))
-      .subscribe(template => {
         this.letterTemplate = template;
-        this.letterAnnotationCount = template.userAnnotationCount;
         this.cdr.markForCheck();
       });
   }
@@ -212,15 +209,26 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = undefined;
 
     this.letterCandidateSub = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
-      if (!candidate) {
-        this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
-        this.getNextLetterTemplate();
-        return;
-      }
-
-      this.letterCandidate = candidate;
-      this.loadingLetters = false;
-      this.cdr.markForCheck();
+      this.onCandidateLoaded(candidate);
     });
+  }
+
+  private onCandidateLoaded(candidate) {
+    if (!candidate) {
+      this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
+      this.getNextLetterTemplate();
+      return;
+    }
+
+    this.letterTemplate.info = candidate.info;
+    this.letterCandidate = candidate;
+    this.loadingLetters = false;
+    this.cdr.markForCheck();
+  }
+
+  private checkIfWebAudioApiIsSupported() {
+    if (!this.audioService.audioContext) {
+      this.errorMsg = 'theme.kerttu.notSupported';
+    }
   }
 }

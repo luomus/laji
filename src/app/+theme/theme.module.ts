@@ -83,6 +83,7 @@ import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-v
 import { KerttuApi } from './kerttu/service/kerttu-api';
 import { KerttuFacade } from './kerttu/service/kerttu.facade';
 import { AudioService } from './kerttu/service/audio.service';
+import { SpectrogramService } from './kerttu/service/spectrogram.service';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
 import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-letter-annotation/kerttu-letter-annotation.component';
@@ -94,6 +95,7 @@ import { PinkkaComponent } from './pinkka/pinkka.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
 import { AudioSpectrogramComponent } from './kerttu/kerttu-main-view/audio-spectrogram/audio-spectrogram.component';
 import { BirdPointCountResultComponent } from './bird-point-count/bird-point-count-result/bird-point-count-result.component';
+import { ToolsModule } from '../+haseka/tools/tools.module';
 
 /* tslint:enable:max-line-length */
 
@@ -125,7 +127,8 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     InfoModule,
     SpreadsheetModule,
     ThreeStateSwitchModule,
-    PillListModule
+    PillListModule,
+    ToolsModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -186,7 +189,7 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     ThemeBreadcrumbComponent,
     KerttuRecordingAnnotationComponent,
     AudioSpectrogramComponent,
-    BirdPointCountResultComponent
+    BirdPointCountResultComponent,
   ],
   providers: [
     ResultService,
@@ -195,6 +198,7 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     KerttuApi,
     KerttuFacade,
     AudioService,
+    SpectrogramService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })

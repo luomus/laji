@@ -35,6 +35,7 @@
   position: relative;
   padding: 6px 20px;
   background: #2C3E50;
+  margin-top: 2px;
 }
 
  .taxonomy-search {
@@ -171,13 +172,16 @@
   .sibling-select-container {
     margin: 6px 10px 4px 10px;
   }
+
+  .taxon-search-container {
+    margin-top:0px
+  }
 }
 
 @media only screen and (max-width : 767px) {
   .taxon-search-container {
     position: absolute;
     width: 100%;
-    top: -28px;
   }
   .taxon-parent {
     margin-left: 10px;
@@ -220,7 +224,7 @@
 
   :host-context(.sidebar-hidden) .content-breadcrumbs {
     padding-left:10px;
-    margin-top:50px;
+    margin-top:75px;
   }
 
   .taxon-parent {
@@ -232,7 +236,7 @@
   }
 
   .content-breadcrumbs {
-    margin-top:10px
+    margin-top:45px
   }
 
 

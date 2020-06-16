@@ -1,20 +1,36 @@
-import {ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { AudioService } from '../../service/audio.service';
-import { DOCUMENT } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
 import {Subscription} from 'rxjs';
+import { KerttuUtils } from '../../service/kerttu-utils';
 
 @Component({
   selector: 'laji-audio-viewer',
   templateUrl: './audio-viewer.component.html',
-  styleUrls: ['./audio-viewer.component.scss']
+  styleUrls: ['./audio-viewer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() recording: string;
-  @Input() xRangePadding: number;
 
+  @Input() xRangePadding: number;
   @Input() xRange: number[];
   @Input() yRange: number[];
+
+  @Input() zoomed = false;
 
   @Input() sampleRate = 16000;
   @Input() nperseg = 256;
@@ -32,7 +48,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   loading = false;
   @Output() audioLoading = new EventEmitter<boolean>();
 
-  private context: AudioContext;
   private source: AudioBufferSourceNode;
   private startOffset = 0;
   private startTime: number;
@@ -44,47 +59,29 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     @Inject(WINDOW) private window: Window,
     private cdr: ChangeDetectorRef,
     private audioService: AudioService,
-    @Inject(DOCUMENT) private document: Document,
+    private ngZone: NgZone
   ) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    this.clear();
-    this.setAudioLoading(true);
+    if (changes.recording || changes.xRangePadding) {
+      this.clear();
+      this.setAudioLoading(true);
 
-    if (this.recording) {
-      if (this.audioSub) {
-        this.audioSub.unsubscribe();
+      if (this.recording) {
+        this.audioSub = this.audioService.getAudioBuffer(this.recording).subscribe((buffer) => {
+          [this.start, this.stop] = KerttuUtils.getPaddedRange(this.xRange, this.xRangePadding, 0, buffer.duration);
+          buffer = this.audioService.extractSegment(buffer, this.start, this.stop, this.duration);
+
+          this.buffer = buffer;
+          this.cdr.markForCheck();
+        });
       }
-      this.buffer = undefined;
-
-      this.context = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({sampleRate: this.sampleRate});
-      this.audioSub = this.audioService.getAudioBuffer(this.recording, this.context).subscribe((buffer) => {
-        this.start = 0;
-        this.stop = buffer.duration;
-
-        if (this.xRange && this.xRangePadding) {
-          this.start = this.xRange[0] - this.xRangePadding;
-          this.stop = this.xRange[1] + this.xRangePadding;
-
-          if (this.start < 0) {
-            this.stop = Math.min(this.stop - this.start, buffer.duration);
-            this.start = 0;
-          }
-          if (this.stop > buffer.duration) {
-            this.start = Math.max(this.start - (this.stop - buffer.duration), 0);
-            this.stop = buffer.duration;
-          }
-        }
-
-        buffer = this.audioService.extractSegment(buffer, this.context, this.start, this.stop, this.duration);
-
-        this.buffer = buffer;
-        this.cdr.markForCheck();
-      });
+    } else if (changes.zoomed) {
+      if (this.isPlaying) {
+        this.toggleAudio();
+      }
     }
   }
 
@@ -105,17 +102,15 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.startOffset = this.currentTime;
 
-      this.source = this.context.createBufferSource();
-      this.source.buffer = this.buffer;
-      this.source.connect(this.context.destination);
+      this.source = this.audioService.createSource(this.buffer, this.zoomed ? this.yRange : undefined);
       this.source.start(0, this.currentTime);
-      this.startTime = this.context.currentTime;
+      this.startTime = this.audioService.getTime();
 
       this.source.onended = () => {
-        this.clearTimeupdateInterval();
-        this.updateCurrentTime();
-        this.isPlaying = false;
-        this.cdr.detectChanges();
+        this.sourceOnEnded();
+        this.ngZone.run(() => {
+          this.cdr.markForCheck();
+        });
       };
       this.startTimeupdateInterval();
     } else {
@@ -132,15 +127,22 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   onSpectrogramDragEnd(time: number) {
     if (this.isPlaying) {
       this.toggleAudio();
-      const onendedFunc = this.source.onended;
       this.source.onended = (args) => {
-        onendedFunc.bind(this)(args);
+        this.sourceOnEnded();
         this.currentTime = time;
-        this.cdr.detectChanges();
+        this.ngZone.run(() => {
+          this.cdr.markForCheck();
+        });
       };
     } else {
       this.currentTime = time;
     }
+  }
+
+  private sourceOnEnded() {
+    this.clearTimeupdateInterval();
+    this.updateCurrentTime();
+    this.isPlaying = false;
   }
 
   private startTimeupdateInterval() {
@@ -158,7 +160,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateCurrentTime() {
     if (this.isPlaying) {
-      this.currentTime = this.startOffset + this.getPlayedTime();
+      this.currentTime = this.startOffset + this.audioService.getPlayedTime(this.startTime, this.source.playbackRate.value);
     } else {
       this.currentTime = this.startOffset;
     }
@@ -166,9 +168,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.currentTime = Math.min(this.currentTime, this.buffer.duration);
   }
 
-  private getPlayedTime() {
-    return (this.context.currentTime - this.startTime) * this.source.playbackRate.value;
-  }
+
 
   private clear() {
     if (this.audioSub) {

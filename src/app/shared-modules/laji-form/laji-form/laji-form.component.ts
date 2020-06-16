@@ -44,6 +44,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private _block = false;
   private settings: any;
 
+  static TOP_OFFSET = 50;
+  static BOTTOM_OFFSET = 61;
+
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
   @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
 
@@ -176,8 +179,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           apiClient: this.apiClient,
           lang: this.translate.currentLang,
           renderSubmit: false,
-          topOffset: 50,
-          bottomOffset: 61,
+          topOffset: LajiFormComponent.TOP_OFFSET,
+          bottomOffset: LajiFormComponent.BOTTOM_OFFSET,
           googleApiKey: Global.googleApiKey,
           notifier: {
             success: msg => this.toastsService.showSuccess(msg),

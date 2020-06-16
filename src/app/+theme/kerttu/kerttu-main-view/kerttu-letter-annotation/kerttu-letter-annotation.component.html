@@ -4,7 +4,7 @@
     <div>
       <span>Kirjain: {{ template?.name }}</span>
       <br>
-      <span>Tunnistuksia tehty: {{ letterAnnotationCount }}/{{ template?.targetAnnotationCount }}</span>
+      <span>Tunnistuksia tehty: {{ template?.info.userAnnotationCount }}/{{ template?.info.targetAnnotationCount }}</span>
       <br>
       <button class="btn btn-default" (click)="skipLetterClick.emit()">Jätä kirjain väliin</button>
     </div>
@@ -27,13 +27,34 @@
     >
       ></laji-three-state-switch>
   </div>
+  <div class="col-md-12" id="letterAnnotationControls">
+    <div>
+      <label>Aikapuskuri</label>
+      <div class="input-group" style="max-width: 110px">
+        <input class="form-control input-sm" type="number" min="0" max="60" step="0.1" [ngModel]="xRangePadding" (ngModelChange)="onXRangePaddingChange($event)">
+        <span class="input-group-addon">s</span>
+      </div>
+    </div>
+    <div>
+      <label>Kohdenna taajuus</label>
+      <bSwitch
+        [switch-on-text]="'yes' | translate"
+        [switch-off-text]="'no' | translate"
+        [switch-on-color]="'primary'"
+        [switch-size]="'small'"
+        [(ngModel)]="zoomed"
+        [switch-base-class]="'bootstrap-switch'">
+      </bSwitch>
+    </div>
+  </div>
   <div class="col-md-6">
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
       [recording]="template?.recording"
-      [xRangePadding]="0.1"
+      [xRangePadding]="xRangePadding"
       [xRange]="template?.xRange"
       [yRange]="template?.yRange"
+      [zoomed]="zoomed"
       (audioLoading)="loadingTemplate = $event"
     ></laji-audio-viewer>
   </div>
@@ -41,18 +62,22 @@
     <h4>{{ 'theme.kerttu.letterCandidate' | translate }} ({{ candidate?.crossCorrelation }})</h4>
     <laji-audio-viewer
       [recording]="candidate?.recording"
-      [xRangePadding]="0.1"
+      [xRangePadding]="xRangePadding"
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
+      [zoomed]="zoomed"
       (audioLoading)="loadingCandidate = $event"
     ></laji-audio-viewer>
   </div>
   <div class="col-md-12">
     <h4>{{ 'theme.kerttu.letterCandidateLonger' | translate }}</h4>
+    <button (click)="candidateLongerVisible = true" class="btn btn-default" *ngIf="!candidateLongerVisible">Näytä</button>
     <laji-audio-viewer
+      *ngIf="candidateLongerVisible"
       [recording]="candidate?.recording"
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
+      [zoomed]="zoomed"
     ></laji-audio-viewer>
   </div>
 </div>

@@ -112,18 +112,34 @@ export class NpMapComponent implements OnInit, OnChanges {
     } catch (e) {}
   }
 
+  private initLegend() {
+    if (!this.reservable) {
+      return;
+    }
+
+    type Counts = {[status in ExtendedNamedPlace['_status'] | 'all']: number};
+    // tslint:disable-next-line:no-shadowed-variable
+    const counts = this.namedPlaces?.reduce<Counts>((counts, np) => ({
+        ...counts,
+        [np._status]: counts[np._status] + 1,
+        all: counts.all + 1
+      }),
+      {all: 0, free: 0, reserved: 0, mine: 0, sent: 0}
+    );
+    this.legend = {
+      [this.placeColor]: `Vapaa ${counts.free} / ${counts.all}`,
+      [this.reservedColor]: `Varattu ${counts.reserved} / ${counts.all}`,
+      [this.mineColor]: `Itselle varattu ${counts.mine} / ${counts.all}`,
+      [this.sentColor]: `Ilmoitettu ${counts.sent} / ${counts.all}`
+    };
+  }
+
   private initMapData() {
     if (!this.namedPlaces) {
       return;
     }
-    if (this.reservable) {
-      this.legend = {
-        [this.placeColor]: 'Vapaa',
-        [this.reservedColor]: 'Varattu',
-        [this.mineColor]: 'Itselle varattu',
-        [this.sentColor]: 'Ilmoitettu'
-      };
-    }
+
+    this.initLegend();
 
     const {mapTileLayerName = 'maastokartta', mapOverlayNames} = this.documentForm.namedPlaceOptions || {mapOverlayNames: undefined};
     this.tileLayerName = mapTileLayerName;

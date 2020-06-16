@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, OnChanges, Output, SimpleChanges} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Step } from '../../spreadsheet.facade';
 
@@ -8,12 +8,13 @@ import { Step } from '../../spreadsheet.facade';
   styleUrls: ['./stepper.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StepperComponent implements OnInit {
+export class StepperComponent implements OnInit, OnChanges {
 
-  _state: number;
   active: number;
   @Output() activate = new EventEmitter<number>();
   @Output() title = new EventEmitter<string>();
+
+  @Input() state: Step;
 
   @Input() mapping = {
     [Step.empty]: 'file',
@@ -61,13 +62,14 @@ export class StepperComponent implements OnInit {
       });
   }
 
-  @Input() set state(step: Step) {
-    this._state = step;
-    const mappedState = this.mapping[step] || 'file';
-    this.active = this.steps.findIndex((item) => {
-      return item.name === mappedState;
-    });
-    this.sendActive();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.state) {
+      const mappedState = this.mapping[this.state] || 'file';
+      this.active = this.steps.findIndex((item) => {
+        return item.name === mappedState;
+      });
+      this.sendActive();
+    }
   }
 
   backTo(idx) {

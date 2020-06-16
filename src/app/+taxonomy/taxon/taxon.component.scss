@@ -14,6 +14,26 @@ laji-info-card {
   display: block;
 }
 
+.sidebar-toggle.open-toggle {
+  top: 44px;
+  padding: 15px;
+  border-top: none;
+  border-top-right-radius: 0;
+  text-align: center;
+}
+
+@media only screen and (min-width : 768px) and (max-width: 991px) {
+  .sidebar-toggle.open-toggle {
+    top: 48px;
+  }
+}
+
+@media only screen and (max-width : 767px) {
+  .sidebar-toggle.open-toggle {
+    top: 47px;
+  }
+}
+
 @media only screen and (min-width : 768px) {
   .row, .taxon-tree-container {
     display: flex;
@@ -52,13 +72,6 @@ laji-info-card {
   border-right: 1px solid #e1e1e1;
   border-bottom: 1px solid #e1e1e1;
 }
-.sidebar-toggle.open-toggle {
-  top: 42px;
-  padding: 15px;
-  border-top: none;
-  border-top-right-radius: 0;
-  text-align: center;
-}
 
 .hide-sidebar-toggle {
   right: 0;
@@ -77,8 +90,9 @@ laji-info-card {
 
   .sidebar-toggle.open-toggle{
     margin-right: 0px;
-    position: relative;
+    position: absolute;
     padding: 3px 15px;
+    width: 100%;
   }
 
   .hide-sidebar-toggle {

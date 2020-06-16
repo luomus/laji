@@ -1,25 +1,57 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {map, share, switchMap, tap} from 'rxjs/operators';
-import {FFT} from './FFT';
+import {Inject, Injectable, NgZone} from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { share, switchMap, tap } from 'rxjs/operators';
+import {WINDOW} from '@ng-toolkit/universal';
 
 @Injectable()
 export class AudioService {
-  private buffer$ = {};
+  audioContext: AudioContext;
 
-  private colormaps = {};
-  private colormaps$ = {};
+  private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
+  private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
-  constructor(protected httpClient: HttpClient) {
+  constructor(
+    @Inject(WINDOW) private window: Window,
+    private httpClient: HttpClient,
+    private ngZone: NgZone
+  ) {
+    try {
+      this.audioContext = new (this.window['AudioContext'] || this.window['webkitAudioContext'])();
+    } catch (e) {
+    }
   }
 
-  public getAudioBuffer(url: string, context: AudioContext): Observable<AudioBuffer> {
+  public getAudioBuffer(url: string): Observable<AudioBuffer> {
+    if (this.buffer[url]) {
+      this.buffer[url]['time'] = Date.now();
+      return of(this.buffer[url]['buffer']);
+    }
+
     if (!this.buffer$[url]) {
-      this.buffer$[url] = this.httpClient.get(url, { responseType: 'arraybuffer'})
+      this.buffer$[url] = this.httpClient.get(url, {responseType: 'arraybuffer'})
         .pipe(
           switchMap((response: ArrayBuffer) => {
-            return context.decodeAudioData(response);
+            if (this.audioContext.decodeAudioData.length === 2) { // for Safari
+              return new Observable(observer => {
+                  this.audioContext.decodeAudioData(response, (buffer) =>  {
+                    this.ngZone.run(() => {
+                      observer.next(buffer);
+                      observer.complete();
+                    });
+                  });
+                }
+              );
+            } else {
+              return this.audioContext.decodeAudioData(response);
+            }
+          }),
+          tap((buffer: AudioBuffer) => {
+            this.buffer[url] = {
+              'buffer': buffer,
+              'time': Date.now()
+            };
+            this.removeOldBuffersFromCache();
           }),
           share()
         );
@@ -28,13 +60,13 @@ export class AudioService {
     return this.buffer$[url];
   }
 
-  public extractSegment(buffer: AudioBuffer, context: AudioContext, startTime: number, endTime: number, actualDuration: number): AudioBuffer {
+  public extractSegment(buffer: AudioBuffer, startTime: number, endTime: number, actualDuration: number): AudioBuffer {
     const emptySamplesAtStart = buffer.length - actualDuration * buffer.sampleRate;
 
     const startIdx = Math.max(Math.floor(startTime * buffer.sampleRate) + emptySamplesAtStart, emptySamplesAtStart);
     const endIdx = Math.min(Math.ceil(endTime * buffer.sampleRate) + emptySamplesAtStart, buffer.length - 1);
 
-    const emptySegment = context.createBuffer(
+    const emptySegment = this.audioContext.createBuffer(
       buffer.numberOfChannels,
       endIdx - startIdx + 1,
       buffer.sampleRate
@@ -51,83 +83,51 @@ export class AudioService {
     return emptySegment;
   }
 
-  public drawSpectrogramToCanvas(buffer: AudioBuffer, nperseg: number, noverlap: number, canvas: HTMLCanvasElement)
-    : Observable<{ canvas: HTMLCanvasElement, maxFreq: number, maxTime: number }> {
-    return this.getColormap().pipe(map(colormap => {
-      const {spectrogram, maxFreq, maxTime} = this.computeSpectrogram(buffer, nperseg, noverlap);
-      const imageData = this.spectrogramToImageData(spectrogram, colormap);
-      this.drawImage(imageData, canvas);
-      return {canvas, maxFreq, maxTime};
-    }));
-  }
+  public createSource(buffer: AudioBuffer, frequencyRange?: number[]) {
+    const source = this.audioContext.createBufferSource();
+    source.buffer = buffer;
 
-  private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
-    canvas.width = data.width;
-    canvas.height = data.height;
-
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, data.width, data.height);
-    ctx.putImageData(data, 0, 0);
-  }
-
-  private computeSpectrogram(buffer: AudioBuffer, nperseg: number, noverlap: number): {spectrogram: Uint8Array[], maxFreq: number, maxTime: number} {
-    const fft = new FFT(nperseg, buffer.sampleRate, 'hann');
-    const chanData = buffer.getChannelData(0);
-
-    const spectrogram = [];
-    let offset = 0;
-
-    while (offset + nperseg < chanData.length) {
-      const segment = chanData.slice(
-        offset,
-        offset + nperseg
-      );
-      const spectrum = fft.calculateSpectrum(segment);
-      const spectrogramColumn = new Uint8Array(nperseg / 2);
-      for (let j = 0; j < nperseg / 2; j++) {
-        spectrogramColumn[j] = Math.max(-255, Math.log10(spectrum[j]) * 45);
-      }
-      spectrogram.push(spectrogramColumn);
-      offset += nperseg - noverlap;
+    if (frequencyRange) {
+      const highpassFilter = this.createFilter('highpass', frequencyRange[0]);
+      const lowpassFilter = this.createFilter('lowpass', frequencyRange[1]);
+      source.connect(highpassFilter);
+      highpassFilter.connect(lowpassFilter);
+      lowpassFilter.connect(this.audioContext.destination);
+    } else {
+      source.connect(this.audioContext.destination);
     }
 
-    const maxFreq = Math.floor(buffer.sampleRate / 2);
-    const maxTime = (spectrogram.length - 1) * ((nperseg - noverlap) / buffer.sampleRate) + nperseg / buffer.sampleRate;
-
-    return {spectrogram, maxFreq, maxTime};
+    return source;
   }
 
-  private spectrogramToImageData(spect: Uint8Array[], colormap: any): ImageData {
-    const data = new Uint8ClampedArray(spect.length * spect[0].length * 4);
-
-    for (let i = 0; i < spect.length; i++) {
-      for (let j = 0; j < spect[0].length; j++) {
-        const color = colormap[spect[i][spect[0].length - 1 - j]];
-        data[4 * j * spect.length + 4 * i] = color[0] * 256;
-        data[4 * j * spect.length + 4 * i + 1] = color[1] * 256;
-        data[4 * j * spect.length + 4 * i + 2] = color[2] * 256;
-        data[4 * j * spect.length + 4 * i + 3] = color[3] * 256;
-      }
-    }
-
-    return new ImageData(data, spect.length, spect[0].length);
+  public getTime() {
+    return this.audioContext.currentTime;
   }
 
-  private getColormap(colormap: 'inferno'|'viridis' = 'inferno'): Observable<any> {
-    if (this.colormaps[colormap]) {
-      return of(this.colormaps[colormap]);
+  public getPlayedTime(startTime: number, playbackRate: number) {
+    return (this.audioContext.currentTime - startTime) * playbackRate;
+  }
+
+  private createFilter(type: 'highpass'|'lowpass', frequency: number) {
+    const filter = this.audioContext.createBiquadFilter();
+    filter.type = type;
+    filter.frequency.value = frequency;
+    return filter;
+  }
+
+  private removeOldBuffersFromCache() {
+    const keys = Object.keys(this.buffer);
+    while (keys.length > 2) {
+      const times = keys.map(key => this.buffer[key].time);
+      const removed = times.indexOf(Math.min(...times));
+      keys.splice(removed, 1);
+      delete this.buffer$[removed];
     }
 
-    if (!this.colormaps$[colormap]) {
-      this.colormaps$[colormap] = this.httpClient.get('/static/audio/' + colormap + '-colormap.json')
-        .pipe(
-          tap(result => {
-            this.colormaps[colormap] = result;
-          }),
-          share()
-        );
+    const newBuffer = {};
+    for (const key of keys) {
+      newBuffer[key] = this.buffer[key];
     }
-
-    return this.colormaps$[colormap];
+    this.buffer = newBuffer;
   }
 }

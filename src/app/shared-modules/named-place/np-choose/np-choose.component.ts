@@ -16,6 +16,7 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { ExtendedNamedPlace } from '../model/extended-named-place';
 import { isPlatformBrowser } from '@angular/common';
 import { LoadedElementsStore } from '../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
+import { Rights } from '../../../+haseka/form-permission/form-permission.service';
 
 @Component({
   selector: 'laji-np-choose',
@@ -36,6 +37,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
   @Input() visible = true;
   @Input() allowCreate = true;
   @Input() showMap = true;
+  @Input() formRights: Rights;
 
   @Output() activePlaceChange = new EventEmitter<number>();
   @Output() createButtonClick = new EventEmitter();

@@ -6,7 +6,9 @@
         </laji-paginator>
         
         <laji-annotations-list *ngIf="!loading"
-        [result]="result">
+        [result]="result"
+        [annotationTags]="annotationTags$ | async"
+        >
         </laji-annotations-list>
 
         <laji-paginator *ngIf="showPaginator && paginatorDisplay && !loading"

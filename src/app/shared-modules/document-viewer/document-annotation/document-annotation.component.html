@@ -67,7 +67,7 @@
           <div class="col-sm-4 column-modal">
               <div class="title">{{ 'annotation.list' | translate }}</div>
             <ng-container *ngIf="activeGathering">
-              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="true"
+              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="true"
               [loadDate]="document.loadDate" [createdDate]="document.createdDate" [observerId]="document.editorUserIds" [collectionId]="document.collectionId"></laji-gathering-annotation>
             </ng-container>
           </div>
@@ -142,7 +142,7 @@
               </a>
             </laji-row>
             <ng-container *ngIf="activeGathering">
-              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"
+              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"
               [loadDate]="document.loadDate" [createdDate]="document.createdDate" [observerId]="document.editorUserIds" [collectionId]="document.collectionId"></laji-gathering-annotation>
             </ng-container>
             <laji-viewer-map [settingsKey]="'viewer-map'" [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData" [hideCoordinates]="showCoordinates"></laji-viewer-map>

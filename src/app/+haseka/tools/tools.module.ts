@@ -24,6 +24,8 @@ import { SheetImporterComponent } from './sheet-importer/sheet-importer.componen
     SheetGeneratorComponent,
     SheetImporterComponent
   ],
-  exports: []
+  exports: [
+    ToolsComponent
+  ]
 })
 export class ToolsModule { }
