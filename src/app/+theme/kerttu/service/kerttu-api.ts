@@ -35,12 +35,9 @@ export class KerttuApi {
       );
   }
 
-  public getNextLetterTemplate(personToken: string, skipCurrent: boolean): Observable<ILetterTemplate> {
+  public getNextLetterTemplate(personToken: string): Observable<ILetterTemplate> {
     const path = this.basePath + '/letter/nextTemplate';
-    let params = new HttpParams().set('personToken', personToken);
-    if (skipCurrent) {
-      params = params.set('skipCurrent', skipCurrent.toString());
-    }
+    const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
       .pipe(
@@ -69,6 +66,18 @@ export class KerttuApi {
     return this.httpClient.put(path, { annotation }, { params })
       .pipe(
         map((response: ILetterCandidate) => {
+          return response;
+        })
+      );
+  }
+
+  public skipLetterTemplate(personToken: string, templateId: number): Observable<ILetterTemplate> {
+    const path = this.basePath + '/letter/skipTemplate';
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.put(path, { templateId }, { params })
+      .pipe(
+        map((response: ILetterTemplate) => {
           return response;
         })
       );
