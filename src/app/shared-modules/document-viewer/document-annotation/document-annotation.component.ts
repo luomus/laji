@@ -29,6 +29,8 @@ import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewe
 import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 import { CheckFocusService } from '../../../shared-modules/document-viewer/check-focus.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AnnotationService } from '../../document-viewer/service/annotation.service';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -94,6 +96,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   currentLang: string;
   hasEditors: boolean;
   unitExist: boolean;
+  annotationTags$: Observable<AnnotationTag[]>;
 
 
   constructor(
@@ -105,10 +108,12 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private taxonTagEffective: TaxonTagEffectiveService,
     private loadingElements: LoadingElementsService,
     private focus: CheckFocusService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private annotationService: AnnotationService
   ) { }
 
   ngOnInit() {
+    this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
     this.currentLang = this.translate.currentLang;
     this.metaFetch = this.userService.user$.subscribe((person: Person) => {
       this.personID = person.id;

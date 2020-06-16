@@ -102,7 +102,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     controls: {
       draw: false
     },
-    zoom: 1,
+    zoom: 1.5,
     draw: false,
     tileLayerName: LajiMapTileLayerName.openStreetMap
   };

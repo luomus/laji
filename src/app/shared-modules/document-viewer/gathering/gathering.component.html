@@ -4,7 +4,7 @@
   <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
   <ng-container *ngFor="let unit of gathering?.units">
     <ng-container *ngIf="(showOnlyHighlighted && (highlightParents | includes:unit.unitId)) || !showOnlyHighlighted">
-      <laji-unit [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight" [highlightParents]="highlightParents" [showOnlyHighlighted]="showOnlyHighlighted"></laji-unit>
+      <laji-unit [identifying]="identifying" [annotationTags]="annotationTags" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight" [highlightParents]="highlightParents" [showOnlyHighlighted]="showOnlyHighlighted"></laji-unit>
     </ng-container>
   </ng-container>
   <laji-row [showWithoutValue]="true" *ngIf="unitCnt > 1 && showOnlyHighlighted">
