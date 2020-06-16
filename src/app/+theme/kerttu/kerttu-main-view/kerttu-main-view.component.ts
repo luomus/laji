@@ -135,6 +135,8 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
       .subscribe((candidate) => {
         this.onCandidateLoaded(candidate);
+      }, error => {
+        this.onCandidateLoadError(error);
       });
   }
 
@@ -190,10 +192,14 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   }
 
   private getNextLetterTemplate(skipCurrent = false) {
+    const personToken = this.userService.getToken();
+    const obs = skipCurrent ? this.kerttuApi.skipLetterTemplate(personToken, this.letterTemplate.id)
+      : this.kerttuApi.getNextLetterTemplate(personToken);
+
     this.letterTemplate = undefined;
     this.loadingLetters = true;
 
-    this.letterTemplateSub = this.kerttuApi.getNextLetterTemplate(this.userService.getToken(), skipCurrent)
+    this.letterTemplateSub = obs
       .subscribe(template => {
         if (!template) {
           this.allLettersAnnotated = true;
@@ -210,6 +216,8 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
     this.letterCandidateSub = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
       this.onCandidateLoaded(candidate);
+    }, error => {
+      this.onCandidateLoadError(error);
     });
   }
 
@@ -224,6 +232,12 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = candidate;
     this.loadingLetters = false;
     this.cdr.markForCheck();
+  }
+
+  private onCandidateLoadError(error) {
+    if (error.error?.message === 'InvalidTemplateIdError') {
+      this.getNextLetterTemplate();
+    }
   }
 
   private checkIfWebAudioApiIsSupported() {
