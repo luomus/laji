@@ -54,7 +54,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   @Input() unitCount: number;
   @Input() speciesCount: number;
-  @Input() taxaLimit = 1000;
+  @Input() taxaLimit = 10000;
   @Input() loadLimit = 2000000;
   @Input() maxSimpleDownload = Global.limit.simpleDownload;
 
