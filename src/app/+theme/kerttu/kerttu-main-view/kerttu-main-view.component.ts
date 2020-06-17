@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
 import {Observable, of, Subscription} from 'rxjs';
-import {switchMap, take} from 'rxjs/operators';
+import {map, share, switchMap, take} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
@@ -45,10 +45,14 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   errorMsg: string;
 
+  private nextLetterCandidate: ILetterCandidate;
+  private nextLetterCandidate$: Observable<ILetterCandidate>;
+
   private vmSub: Subscription;
   private selectedTaxonIdsSub: Subscription;
   private letterTemplateSub: Subscription;
   private letterCandidateSub: Subscription;
+  private nextLetterCandidateSub: Subscription;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -80,7 +84,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         });
       } else if (vm.step === Step.annotateLetters && !this.letterTemplateSub) {
-        this.getNextLetterTemplate();
+        this.getLetterTemplate();
       } else if (vm.step === Step.annotateRecordings) {
 
       }
@@ -99,6 +103,9 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     }
     if (this.letterCandidateSub) {
       this.letterCandidateSub.unsubscribe();
+    }
+    if (this.nextLetterCandidateSub) {
+      this.nextLetterCandidateSub.unsubscribe();
     }
   }
 
@@ -132,16 +139,28 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   onLetterAnnotationChange(annotation: LetterAnnotation) {
     const candidateId = this.letterCandidate.id;
     this.letterCandidate = undefined;
-    this.letterCandidateSub = this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
-      .subscribe((candidate) => {
-        this.onCandidateLoaded(candidate);
-      }, error => {
-        this.onCandidateLoadError(error);
+    this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
+      .subscribe((response) => {
+        this.letterTemplate.info = response.info;
+
+        const obs = this.nextLetterCandidate !== undefined ? of(this.nextLetterCandidate) : this.nextLetterCandidate$;
+        this.letterCandidateSub = obs.subscribe(candidate => {
+          if (!candidate) {
+            this.noNextCandidate();
+            return;
+          } else {
+            this.getNextLetterCandidate(this.letterTemplate.id);
+          }
+          this.letterCandidate = candidate;
+          this.cdr.markForCheck();
+        }, error => {
+          this.onCandidateLoadError(error);
+        });
       });
   }
 
   skipLetter() {
-    this.getNextLetterTemplate(true);
+    this.getLetterTemplate(true);
   }
 
   private getSaveObservable(step: Step): Observable<any> {
@@ -191,10 +210,10 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     // }
   }
 
-  private getNextLetterTemplate(skipCurrent = false) {
+  private getLetterTemplate(skipCurrent = false) {
     const personToken = this.userService.getToken();
     const obs = skipCurrent ? this.kerttuApi.skipLetterTemplate(personToken, this.letterTemplate.id)
-      : this.kerttuApi.getNextLetterTemplate(personToken);
+      : this.kerttuApi.getLetterTemplate(personToken);
 
     this.letterTemplate = undefined;
     this.loadingLetters = true;
@@ -204,39 +223,57 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
         if (!template) {
           this.allLettersAnnotated = true;
         } else {
-          this.getNextLetterCandidate(template.id);
+          this.getLetterCandidate(template.id);
         }
         this.letterTemplate = template;
         this.cdr.markForCheck();
       });
   }
 
-  private getNextLetterCandidate(templateId: number) {
+  private getLetterCandidate(templateId: number) {
     this.letterCandidate = undefined;
 
-    this.letterCandidateSub = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
-      this.onCandidateLoaded(candidate);
+    this.letterCandidateSub = this.kerttuApi.getLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
+      if (!candidate) {
+        this.noNextCandidate();
+        return;
+      } else {
+        this.getNextLetterCandidate(templateId);
+      }
+
+      this.letterCandidate = candidate;
+      this.loadingLetters = false;
+      this.cdr.markForCheck();
     }, error => {
       this.onCandidateLoadError(error);
     });
   }
 
-  private onCandidateLoaded(candidate) {
-    if (!candidate) {
-      this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
-      this.getNextLetterTemplate();
-      return;
-    }
+  private getNextLetterCandidate(templateId: number) {
+    this.nextLetterCandidate = undefined;
+    this.nextLetterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId)
+      .pipe(
+        switchMap((candidate) => {
+          this.nextLetterCandidate = candidate;
+          return this.audioService.getAudioBuffer(candidate.recording).pipe(map(() => candidate));
+        }),
+        share()
+      );
+    this.nextLetterCandidateSub = this.nextLetterCandidate$.subscribe((candidate) => {
+        this.nextLetterCandidate = candidate || null;
+      }, error => {
+        this.onCandidateLoadError(error);
+      });
+  }
 
-    this.letterTemplate.info = candidate.info;
-    this.letterCandidate = candidate;
-    this.loadingLetters = false;
-    this.cdr.markForCheck();
+  private noNextCandidate() {
+    this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
+    this.getLetterTemplate();
   }
 
   private onCandidateLoadError(error) {
     if (error.error?.message === 'InvalidTemplateIdError') {
-      this.getNextLetterTemplate();
+      this.getLetterTemplate();
     }
   }
 

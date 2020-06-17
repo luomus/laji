@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import {Step} from './kerttu.facade';
-import {ILetterCandidate, ILetterTemplate, LetterAnnotation} from '../model/letter';
+import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterInfo} from '../model/letter';
 
 @Injectable()
 export class KerttuApi {
@@ -35,13 +35,25 @@ export class KerttuApi {
       );
   }
 
-  public getNextLetterTemplate(personToken: string): Observable<ILetterTemplate> {
-    const path = this.basePath + '/letter/nextTemplate';
+  public getLetterTemplate(personToken: string): Observable<ILetterTemplate> {
+    const path = this.basePath + '/letter/template';
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
       .pipe(
         map((response: ILetterTemplate) => {
+          return response;
+        })
+      );
+  }
+
+  public getLetterCandidate(personToken: string, templateId: number): Observable<ILetterCandidate> {
+    const path = this.basePath + '/letter/candidate/' + templateId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get(path, { params })
+      .pipe(
+        map((response: ILetterCandidate) => {
           return response;
         })
       );
@@ -59,13 +71,14 @@ export class KerttuApi {
       );
   }
 
-  public setLetterAnnotation(personToken: string, templateId: number, candidateId: number, annotation: LetterAnnotation): Observable<ILetterCandidate> {
+  public setLetterAnnotation(personToken: string, templateId: number, candidateId: number, annotation: LetterAnnotation):
+    Observable<{annotation: LetterAnnotation, info: ILetterInfo}> {
     const path = this.basePath + '/letter/annotation/' + templateId + '/' + candidateId;
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.put(path, { annotation }, { params })
       .pipe(
-        map((response: ILetterCandidate) => {
+        map((response: {annotation: LetterAnnotation, info: ILetterInfo}) => {
           return response;
         })
       );
