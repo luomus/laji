@@ -141,21 +141,21 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = undefined;
     this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
       .subscribe((response) => {
-        this.letterTemplate.info = response.info;
+        const info = response.info;
+        this.letterTemplate.info = info;
+        if (info.userAnnotationCount === info.targetAnnotationCount) {
+          this.onCandidateLoad(undefined);
+          return;
+        }
 
         const obs = this.nextLetterCandidate !== undefined ? of(this.nextLetterCandidate) : this.nextLetterCandidate$;
         this.letterCandidateSub = obs.subscribe(candidate => {
-          if (!candidate) {
-            this.noNextCandidate();
-            return;
-          } else {
-            this.getNextLetterCandidate(this.letterTemplate.id);
-          }
-          this.letterCandidate = candidate;
-          this.cdr.markForCheck();
+          this.onCandidateLoad(candidate);
         }, error => {
-          this.onCandidateLoadError(error);
+          this.onLetterError(error);
         });
+      }, error => {
+        this.onLetterError(error);
       });
   }
 
@@ -234,24 +234,15 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.letterCandidate = undefined;
 
     this.letterCandidateSub = this.kerttuApi.getLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
-      if (!candidate) {
-        this.noNextCandidate();
-        return;
-      } else {
-        this.getNextLetterCandidate(templateId);
-      }
-
-      this.letterCandidate = candidate;
-      this.loadingLetters = false;
-      this.cdr.markForCheck();
+      this.onCandidateLoad(candidate);
     }, error => {
-      this.onCandidateLoadError(error);
+      this.onLetterError(error);
     });
   }
 
-  private getNextLetterCandidate(templateId: number) {
+  private getNextLetterCandidate(templateId: number, candidateId: number) {
     this.nextLetterCandidate = undefined;
-    this.nextLetterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId)
+    this.nextLetterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId, candidateId)
       .pipe(
         switchMap((candidate) => {
           this.nextLetterCandidate = candidate;
@@ -262,17 +253,27 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.nextLetterCandidateSub = this.nextLetterCandidate$.subscribe((candidate) => {
         this.nextLetterCandidate = candidate || null;
       }, error => {
-        this.onCandidateLoadError(error);
+        this.onLetterError(error);
       });
   }
 
-  private noNextCandidate() {
-    this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
-    this.getLetterTemplate();
+  private onCandidateLoad(candidate) {
+    if (!candidate) {
+      this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
+      this.getLetterTemplate();
+      return;
+    } else {
+      this.getNextLetterCandidate(this.letterTemplate.id, candidate.id);
+    }
+
+    this.letterCandidate = candidate;
+    this.loadingLetters = false;
+    this.cdr.markForCheck();
   }
 
-  private onCandidateLoadError(error) {
-    if (error.error?.message === 'InvalidTemplateIdError') {
+  private onLetterError(error) {
+    const msg = error.error?.message;
+    if (msg === 'InvalidTemplateIdError' || msg === 'InvalidCandidateIdError') {
       this.getLetterTemplate();
     }
   }
