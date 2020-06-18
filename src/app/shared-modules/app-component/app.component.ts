@@ -28,7 +28,6 @@ export class AppComponent {
   private currentRoute: string;
 
   constructor(
-    @Inject(WINDOW) private window: Window,
     platformService: PlatformService,
     router: Router,
     location: Location,
@@ -52,7 +51,7 @@ export class AppComponent {
         if (event.id !== 1 && platformService.isBrowser) {
           RouteDataService.getDeepest<boolean>(router.routerState.snapshot.root, 'noScrollToTop', false).subscribe(skip => {
               if (!skip) {
-                this.window.scroll(0, 0);
+                window.scroll(0, 0);
               }
             });
         }

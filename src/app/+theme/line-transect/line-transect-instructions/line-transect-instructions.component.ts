@@ -1,8 +1,7 @@
-import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
+import { PlatformService } from '../../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-line-transect-instructions',
@@ -12,14 +11,13 @@ import { isPlatformBrowser } from '@angular/common';
 export class LineTransectInstructionsComponent implements OnInit {
 
   constructor(
-    @Inject(WINDOW) private window: Window,
     public translate: TranslateService,
     private route: ActivatedRoute,
-    @Inject(PLATFORM_ID) private platformID: object
+    private platformService: PlatformService
   ) {}
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformID)) {
+    if (this.platformService.isBrowser) {
       this.route.fragment.subscribe((frag) => {
         if (frag) {
           window.location.hash = frag;
@@ -29,7 +27,7 @@ export class LineTransectInstructionsComponent implements OnInit {
   }
 
   toFragment(fragment) {
-    if (isPlatformBrowser(this.platformID)) {
+    if (this.platformService.isBrowser) {
       window.location.hash = fragment;
     }
   }

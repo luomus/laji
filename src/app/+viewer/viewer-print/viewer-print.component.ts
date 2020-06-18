@@ -1,13 +1,13 @@
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from '../../shared/service/footer.service';
 import { UserService } from '../../shared/service/user.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
+import { PlatformService } from '../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-viewer-print',
@@ -25,7 +25,7 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
   private subQuery: Subscription;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    private platformService: PlatformService,
     private footerService: FooterService,
     private route: ActivatedRoute,
     private documentService: DocumentApi,
@@ -61,14 +61,14 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
   }
 
   print() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       window.print();
     }
   }
 
   pdf(fileName) {
     this.loading = true;
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.stripHTML(document.getElementsByTagName('html')[0].innerHTML))
         .subscribe((response) => {
           FileSaver.saveAs(response, fileName + '.pdf');

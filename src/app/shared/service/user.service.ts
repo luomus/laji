@@ -10,12 +10,10 @@ import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
-import { WINDOW } from '@ng-toolkit/universal';
 import { PlatformService } from './platform.service';
 import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
-import { HistoryService } from './history.service';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -97,9 +95,7 @@ export class UserService {
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
     private browserService: BrowserService,
-    private storage: LocalStorageService,
-    private historyService: HistoryService,
-    @Inject(WINDOW) private window: any
+    private storage: LocalStorageService
   ) {
     if (!this.platformService.isBrowser) {
       this.doServiceSideLoginState();
@@ -188,7 +184,7 @@ export class UserService {
       ).subscribe(data => {
         returnUrl = data.loginLanding || returnUrl || this.location.path(true);
         this.updatePersistentState({...this.persistentState, returnUrl});
-        this.window.location.href = UserService.getLoginUrl(returnUrl, this.translate.currentLang);
+        window.location.href = UserService.getLoginUrl(returnUrl, this.translate.currentLang);
       });
     }
   }

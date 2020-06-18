@@ -1,10 +1,8 @@
 import {
   ChangeDetectorRef,
   Component,
-  Inject,
   Input,
   OnChanges,
-  PLATFORM_ID,
   QueryList,
   SimpleChanges,
   ViewChildren
@@ -15,7 +13,7 @@ import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.servic
 import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isPlatformBrowser } from '@angular/common';
+import { PlatformService } from '../../../../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-wbc-species-maps',
@@ -52,9 +50,9 @@ export class WbcSpeciesMapsComponent implements OnChanges {
     private resultService: WbcResultService,
     private ykjService: YkjService,
     private cd: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private platformService: PlatformService
   ) {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       require('leaflet.sync');
     }
   }
@@ -69,7 +67,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
     const maps = this.mapComponents.map(mapComponent => {
       return mapComponent.mapComponent.map;
     });
-    if (isPlatformBrowser(this.platformId) && maps.every(map => map)) {
+    if (this.platformService.isBrowser && maps.every(mapComponents => mapComponents)) {
       this.maps = maps;
       maps.forEach(m => this.initEventListeners(m));
     }
