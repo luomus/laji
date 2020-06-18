@@ -8,9 +8,7 @@ export const LAST_LANG_KEY = 'last-lang';
 export class LocalizeRouterService {
 
   currentLang: string;
-  defaultLang = 'fi';
   locales = ['fi', 'en', 'sv'];
-
 
   static translatePath(path: string, lang): string {
     if (path.match(/^\/(in|en|sv|fi)\b/)) {
@@ -21,30 +19,23 @@ export class LocalizeRouterService {
     return `/${lang}${path}`;
   }
 
-  constructor(private translateService: TranslateService, private location: Location) { }
+  constructor(
+    private translateService: TranslateService,
+    private location: Location
+  ) { }
 
   translateRoute<T>(query: T, lang?: string): T;
   translateRoute(query: string | any[], lang?: string): string | any[] {
     if (!lang) {
       lang = this.translateService.currentLang;
     }
-    if (lang === this.defaultLang) {
-      return query;
-    }
     if (typeof query === 'string') {
-      if (query.indexOf('/') === 0) {
-        return query.length > 1 ? `/${lang}${query}` : `/${lang}`;
-      }
-      return query;
+      return LocalizeRouterService.translatePath(query, lang);
     }
     const result: any[] = [];
     (query as Array<any>).forEach((segment: any, index: number) => {
-      if (typeof segment === 'string') {
-        if (!index && !segment.indexOf('/')) {
-          result.push(`/${lang}${segment}`);
-        } else {
-          result.push(segment);
-        }
+      if (index === 0 && typeof segment === 'string' && segment.startsWith('/')) {
+        result.push(LocalizeRouterService.translatePath(segment, lang));
       } else {
         result.push(segment);
       }
@@ -72,6 +63,6 @@ export class LocalizeRouterService {
     if (pathSlices.length && this.locales.indexOf(pathSlices[0]) !== -1) {
       return pathSlices[0];
     }
-    return this.defaultLang;
+    return this.locales[0];
   }
 }
