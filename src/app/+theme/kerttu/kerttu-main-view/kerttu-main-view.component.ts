@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
 import {Observable, of, Subscription} from 'rxjs';
-import {map, share, switchMap, take} from 'rxjs/operators';
+import {map, share, switchMap, take, tap} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
@@ -248,11 +248,14 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   }
 
   private getNextLetterCandidate(templateId: number, candidateId: number) {
+    if (this.nextLetterCandidateSub) {
+      this.nextLetterCandidateSub.unsubscribe();
+    }
+
     this.nextLetterCandidate = undefined;
     this.nextLetterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId, candidateId)
       .pipe(
         switchMap((candidate) => {
-          this.nextLetterCandidate = candidate;
           return this.audioService.getAudioBuffer(candidate.recording).pipe(map(() => candidate));
         }),
         share()
