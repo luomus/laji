@@ -211,6 +211,13 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   }
 
   private getLetterTemplate(skipCurrent = false) {
+    if (this.letterCandidateSub) {
+      this.letterCandidateSub.unsubscribe();
+    }
+    if (this.nextLetterCandidateSub) {
+      this.nextLetterCandidateSub.unsubscribe();
+    }
+
     const personToken = this.userService.getToken();
     const obs = skipCurrent ? this.kerttuApi.skipLetterTemplate(personToken, this.letterTemplate.id)
       : this.kerttuApi.getLetterTemplate(personToken);
