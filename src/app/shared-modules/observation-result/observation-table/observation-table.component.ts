@@ -56,7 +56,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() defaultOrder: string;
   @Input() visible: boolean;
   @Input() hideDefaultCountColumn = false;
-  @Input() hideIndividualCountColumn = true;
   @Input() allAggregateFields = [
     'unit.species',
     'unit.linkings.taxon.vernacularName',
@@ -173,9 +172,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         || (changes.pageSize && !changes.pageSize.isFirstChange())) {
       this.fetchPage(changes.page ? this.page : 1);
     }
-    if (changes.hideDefaultCountColumn || changes.hideIndividualCountColumn) {
-      this.initColumns();
-    }
     if (changes.visible && this.visible) {
       this.refreshTable();
     }
@@ -187,11 +183,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   initColumns() {
     const selected = this.isAggregate ?
-      (this.hideDefaultCountColumn && this.hideIndividualCountColumn ?
+      (this.hideDefaultCountColumn ?
         [...this.columnSelector.columns, ...this.numberColumnSelector.columns] :
-        (!this.hideDefaultCountColumn && this.hideIndividualCountColumn ?
-        [...this.columnSelector.columns, 'count', ...this.numberColumnSelector.columns] :
-        [...this.columnSelector.columns, 'individualCountSum', ...this.numberColumnSelector.columns])) :
+        [...this.columnSelector.columns, 'count', ...this.numberColumnSelector.columns]) :
       [...this.columnSelector.columns];
 
     this.columnLookup = this.allColumns
