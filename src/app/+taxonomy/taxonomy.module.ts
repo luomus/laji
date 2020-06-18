@@ -29,7 +29,6 @@ import { SpeciesImagesComponent } from './species/species-images/species-images.
 import { TaxonConceptInfoComponent } from './taxon/info-card/taxon-taxonomy/taxon-concept-info/taxon-concept-info.component';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { TreeComponent } from './taxon/taxon-tree/tree/tree.component';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SpeciesListOptionsModalComponent } from './species/species-list-options-modal/species-list-options-modal.component';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { BoldSynonymComponent } from './taxon/info-card/taxon-overview/taxon-info/bold-synonym/bold-synonym.component';
@@ -73,13 +72,15 @@ import { ObservationTableColumnService } from '../shared-modules/datatable/servi
 import { TaxonYlestaFieldsComponent } from './taxon/info-card/shared/component/taxon-ylesta-fields/taxon-ylesta-fields.component';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
+import { ChartModule } from '../shared-modules/chart/chart.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
-    NgxChartsModule, InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
-    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule, TechnicalNewsModule, InfoPageModule
+    InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
+    DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule, TechnicalNewsModule,
+    ChartModule, TechnicalNewsModule, InfoPageModule
   ],
   providers: [
     TaxonomyApi,
