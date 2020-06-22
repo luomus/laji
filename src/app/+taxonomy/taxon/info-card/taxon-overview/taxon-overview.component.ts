@@ -30,6 +30,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   _taxonDescription: TaxonomyDescription[];
   groupHasTranslation: any[];
   ylestaHasTranslation: any[];
+  isChildrenOnlySpecie = false;
 
   contentHasLanguage: boolean;
   currentLang: string;
@@ -105,6 +106,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
       .getChildren(this.taxon.id)
       .subscribe(data => {
         this.taxonChildren = data;
+        this.isChildrenOnlySpecie = this.taxonChildren.filter(e => e.taxonRank === 'MX.species').length > 0 ? true : false;
         this.cd.markForCheck();
       });
   }
