@@ -32,12 +32,12 @@ export class BrowserService implements OnDestroy {
   private resizingSub: Subscription;
   private resizeSub: Subscription;
   private visibilityChangeEvent: string;
-  private handlerForVisibilityChange: Function;
+  private handlerForVisibilityChange: (doc: Document) => any;
   private resize = new Subject();
 
   constructor(
-    @Inject(DOCUMENT) private document: any,
-    @Inject(WINDOW) private window: Window,
+    @Inject(DOCUMENT) public readonly document: Document,
+    @Inject(WINDOW) public readonly window: Window,
     private zone: NgZone,
     private platformService: PlatformService,
     private historyService: HistoryService,
@@ -62,7 +62,7 @@ export class BrowserService implements OnDestroy {
       this.resizeSub.unsubscribe();
     }
     if (this.handlerForVisibilityChange) {
-      this.document.removeEventListener(this.handlerForVisibilityChange);
+      this.document.removeEventListener(this.visibilityChangeEvent as any, this.handlerForVisibilityChange);
     }
   }
 
@@ -99,10 +99,10 @@ export class BrowserService implements OnDestroy {
     if (typeof this.document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
       hidden = 'hidden';
       visibilityChange = 'visibilitychange';
-    } else if (typeof this.document.msHidden !== 'undefined') {
+    } else if (typeof (this.document as any).msHidden !== 'undefined') {
       hidden = 'msHidden';
       visibilityChange = 'msvisibilitychange';
-    } else if (typeof this.document.webkitHidden !== 'undefined') {
+    } else if (typeof (this.document as any).webkitHidden !== 'undefined') {
       hidden = 'webkitHidden';
       visibilityChange = 'webkitvisibilitychange';
     }

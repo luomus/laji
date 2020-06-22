@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ILabelField, ILabelPdf, ISetup, IViewSettings, Presets } from 'label-designer';
-import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
 import { PdfLabelService } from '../../../shared/service/pdf-label.service';
@@ -10,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../../environments/environment';
 import { Global } from '../../../../environments/global';
+import { PlatformService } from '../../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-label-designer',
@@ -31,7 +31,7 @@ export class LabelDesignerComponent implements OnInit {
   showRepeat = environment.type === Global.type.dev;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    private platformService: PlatformService,
     private lajiApiService: LajiApiService,
     private pdfLabelService: PdfLabelService,
     private translateService: TranslateService,
@@ -83,7 +83,7 @@ export class LabelDesignerComponent implements OnInit {
 
 
   htmlToPdf(data: ILabelPdf) {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, data.html)
         .subscribe(
           (response) => {

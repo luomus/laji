@@ -1,8 +1,7 @@
-import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component } from '@angular/core';
 import { LocaleComponent } from './locale.component';
 import * as moment from 'moment';
+import { PlatformService } from '../shared/service/platform.service';
 
 @Component({
   selector: 'laji-locale-en',
@@ -11,11 +10,9 @@ import * as moment from 'moment';
 export class LocaleEnComponent extends LocaleComponent {
 
   constructor(
-    @Inject(PLATFORM_ID) protected platformId,
-    @Inject(WINDOW) protected window: Window,
-    protected translateService: TranslateService
+    platformService: PlatformService
   ) {
-    super();
+    super(platformService);
     moment.locale('en');
     this.setLocale('en');
   }

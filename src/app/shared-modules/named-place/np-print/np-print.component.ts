@@ -1,5 +1,5 @@
 import { catchError, map, startWith, switchMap, take } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as FileSaver from 'file-saver';
 import { combineLatest as ObservableCombineLatest, of as ObservableOf, Subscription } from 'rxjs';
@@ -9,8 +9,8 @@ import { NamedPlacesService } from '../named-places.service';
 import { UserService } from '../../../shared/service/user.service';
 import { FooterService } from '../../../shared/service/footer.service';
 import { Person } from '../../../shared/model/Person';
-import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { PlatformService } from '../../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-np-print',
@@ -28,7 +28,7 @@ export class NpPrintComponent implements OnInit, OnDestroy {
   private subData: Subscription;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    private platformService: PlatformService,
     private route: ActivatedRoute,
     private translate: TranslateService,
     private namedPlaceService: NamedPlacesService,
@@ -72,7 +72,7 @@ export class NpPrintComponent implements OnInit, OnDestroy {
 
   print(fileName) {
     this.loading = true;
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.prepareHtml(document.getElementsByTagName('html')[0].innerHTML))
         .subscribe((response) => {
           FileSaver.saveAs(response, fileName + '.pdf');
