@@ -261,8 +261,13 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #biogeographicalProvince>
-  <span *ngIf="value" title="{{value | area:'provinceCode'}} &ndash; {{value | area}}">
-    {{ value | area:'provinceCode' }} &ndash; {{ value | area }}
+  <span *ngIf="value" title="{{value | toQName | area:'provinceCode'}} &ndash; {{value | toQName | area}}">
+    {{ value | toQName | area:'provinceCode' }} &ndash; {{ value | toQName | area }}
+  </span>
+</ng-template>
+<ng-template let-value="value" #country>
+  <span *ngIf="value" title="{{value | toQName | area:'provinceCode'}} &ndash; {{value | toQName | area}}">
+    {{ value | toQName | area }}
   </span>
 </ng-template>
 <ng-template let-row="row" #taxonHabitats>
