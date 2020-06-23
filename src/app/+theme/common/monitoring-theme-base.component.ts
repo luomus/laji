@@ -1,8 +1,8 @@
-import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { filter, map, startWith, switchMap, tap, takeUntil } from 'rxjs/operators';
 /* tslint:disable:component-selector */
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../shared/service/form.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -29,7 +29,8 @@ interface NavData {
 
 @Component({
   template: `
-    <laji-theme-page *ngIf="vm$ | async as vm"
+  <laji-spinner [spinning]="!vm">
+    <laji-theme-page *ngIf="vm"
                      [title]="vm.data.titleFromCollectionName ? (vm.form.collectionID | label) : vm.data.title"
                      [secondary]="vm.form | formHasFeature:formFeatures.SecondaryCopy"
                      [formID]="vm.form.id"
@@ -42,6 +43,7 @@ interface NavData {
       ></laji-theme-breadcrumb>
       <router-outlet></router-outlet>
     </laji-theme-page>
+  </laji-spinner>
   `,
   styles: [`
     :host {
@@ -52,7 +54,9 @@ interface NavData {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MonitoringThemeBaseComponent implements OnInit {
+export class MonitoringThemeBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject();
+  vm: ViewModel;
 
   vm$: Observable<ViewModel>;
   showNav$: Observable<boolean>;
@@ -64,6 +68,7 @@ export class MonitoringThemeBaseComponent implements OnInit {
     protected translateService: TranslateService,
     private themeFormService: ThemeFormService,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
     private router: Router
   ) { }
 
@@ -83,6 +88,16 @@ export class MonitoringThemeBaseComponent implements OnInit {
       data: this.getRouteDate(urls$),
       form: this.themeFormService.getForm(this.route.snapshot)
     });
+
+    this.vm$.pipe(takeUntil(this.unsubscribe$)).subscribe(vm => {
+      this.vm = vm;
+      this.cdr.markForCheck();
+    });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   private getRouteDate(urls$: Observable<string>) {
