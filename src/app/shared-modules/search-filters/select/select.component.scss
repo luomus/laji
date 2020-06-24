@@ -9,6 +9,7 @@
   margin: 0 -20px;
   padding: 10px 20px;
   border-bottom: 1px solid $neutral-4;
+  position: relative;
 }
 .lj-item {
   display: block;
@@ -16,6 +17,7 @@
   font-size: 0.90em;
   margin-bottom: 0;
   font-weight: normal;
+  padding-right: 15px;
 }
 .lj-item laji-checkbox {
   position: relative;
@@ -62,9 +64,32 @@
   pointer-events: none;
   color: $neutral-5;
 }
+
+.lj-container {
+  position: relative;
+  display: block;
+}
+
+::ng-deep .lj-item-container div laji-info span.no-propagation, ::ng-deep .item laji-info span.no-propagation, ::ng-deep .lj-container laji-info span.no-propagation{
+  position: absolute;
+  right: -10px;
+  top: 0px;
+}
+
+@media only screen and (min-width : 768px) and (max-width: 1024px) {
+  .lj-item {
+    min-height: 35px;
+  }
+}
+
 @media only screen and (max-width : 767px) {
   .lj-item {
     font-size: 1em;
     min-height: 32px;
   }
+
+  .lj-item {
+    padding-right: 20px;
+  }
+
 }

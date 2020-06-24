@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToolsComponent, ViewModel } from '../tools.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'laji-sheet-generator',
@@ -9,6 +10,7 @@ import { ToolsComponent, ViewModel } from '../tools.component';
 })
 export class SheetGeneratorComponent implements OnInit {
   vm: ViewModel;
+  importableForms = environment.massForms;
 
   constructor(private route: ActivatedRoute) {
   }
