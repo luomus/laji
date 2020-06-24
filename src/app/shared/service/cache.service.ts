@@ -1,8 +1,8 @@
-import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, take, timeout } from 'rxjs/operators';
+import { PlatformService } from './platform.service';
 
 @Injectable({providedIn: 'root'})
 export class CacheService {
@@ -12,7 +12,7 @@ export class CacheService {
   constructor(
     private state: TransferState,
     private appRef: ApplicationRef,
-    @Inject(PLATFORM_ID) private platformId: object
+    private platformService: PlatformService
   ) {
     this.getStableObservable().subscribe(() => {
       this.stable = true;
@@ -26,7 +26,7 @@ export class CacheService {
    */
   getCachedObservable<T = any>($dataSource: Observable<T>, dataKey: string): Observable<T> {
     const key = makeStateKey<any>(dataKey);
-    if (!isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       return $dataSource.pipe(
         map(data => {
           this.state.set(key, data);
@@ -48,7 +48,7 @@ export class CacheService {
       filter((isStable: boolean) => isStable),
       take(1)
     );
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       return stable$.pipe(
         timeout(5000),
         catchError(() => of(null))

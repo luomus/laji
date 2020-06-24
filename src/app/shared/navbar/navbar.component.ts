@@ -3,10 +3,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   OnDestroy,
   OnInit,
-  PLATFORM_ID,
   ViewChild
 } from '@angular/core';
 import { UserService } from '../service/user.service';
@@ -16,10 +14,10 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { timer, Subject, Observable } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
-import { isPlatformBrowser } from '@angular/common';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
 import { BrowserService } from '../service/browser.service';
+import { PlatformService } from '../service/platform.service';
 
 @Component({
   selector: 'laji-navbar',
@@ -43,7 +41,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   notificationsTotal$: Observable<number>;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    private platformService: PlatformService,
     public userService: UserService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
@@ -57,7 +55,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isServer) {
       return;
     }
     this.router.events.pipe(takeUntil(this.unsubscribe$)).subscribe((event) => {

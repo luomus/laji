@@ -244,11 +244,6 @@ export const Global = {
       quality: 'MMAN.typeInfo',
       type: 'info'
     },
-    'MMAN.34': {
-      value: 'MMAN.34',
-      quality: 'MMAN.typeCheck',
-      type: 'check'
-    },
     'MMAN.50': {
       value: 'MMAN.50',
       quality: 'MMAN.typeAdmin',

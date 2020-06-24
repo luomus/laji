@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 
 export interface ViewModel {
   showLabelDesigner: boolean;
-  formID: boolean;
+  formID: string;
 }
 
 @Component({

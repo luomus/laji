@@ -1,4 +1,4 @@
-import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { Apollo, ApolloModule } from 'apollo-angular';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -7,11 +7,11 @@ import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { environment } from '../../environments/environment';
 import { AcceptLanguageInterceptor } from './accept-language.interceptor';
 import { TranslateService } from '@ngx-translate/core';
-import { concatMap, filter, tap } from 'rxjs/operators';
+import { concatMap, filter } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { GraphQLService } from './service/graph-ql.service';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { isPlatformBrowser } from '@angular/common';
+import { PlatformService } from '../shared/service/platform.service';
 
 const GRAPH_QL_STATE_KEY = makeStateKey<any>('graphql.state');
 
@@ -36,10 +36,8 @@ export class GraphQLModule {
     private httpLink: HttpLink,
     private translateService: TranslateService,
     private transferState: TransferState,
-    @Inject(PLATFORM_ID) readonly platformId: Object
+    private platformService: PlatformService
   ) {
-    const isBrowser = isPlatformBrowser(platformId);
-
     this.cache = new InMemoryCache({
       addTypename: false
     });
@@ -61,10 +59,10 @@ export class GraphQLModule {
         uri: `${environment.apiBase}/graphql`
       }),
       cache: this.cache,
-      ...(isBrowser ? { ssrForceFetchDelay: 5000 } : { ssrMode: true })
+      ...(this.platformService.isBrowser ? { ssrForceFetchDelay: 5000 } : { ssrMode: true })
     });
 
-    if (isBrowser) {
+    if (this.platformService.isBrowser) {
       this.onBrowser();
     } else {
       this.onServer();

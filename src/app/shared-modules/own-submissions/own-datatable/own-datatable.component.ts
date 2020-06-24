@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import { delay, map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
@@ -7,15 +7,12 @@ import {
   Component,
   EventEmitter,
   HostListener,
-  Inject,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  PLATFORM_ID,
   ViewChild
 } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
 import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
@@ -29,9 +26,9 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
-import { isPlatformBrowser } from '@angular/common';
 import { Global } from '../../../../environments/global';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { PlatformService } from '../../../shared/service/platform.service';
 
 export interface RowDocument {
   creator: string;
@@ -170,8 +167,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   private readonly labelSettingsKey = 'label-filters';
 
   constructor(
-    @Inject(WINDOW) private window: Window,
-    @Inject(PLATFORM_ID) private platformID: object,
+    private platformService: PlatformService,
     private translate: TranslateService,
     private router: Router,
     private userService: UserService,
@@ -413,10 +409,10 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   private updateDisplayMode() {
-    if (!isPlatformBrowser(this.platformID)) {
+    if (this.platformService.isServer) {
       return;
     }
-    const width = this.window.innerWidth;
+    const width = window.innerWidth;
 
     if (width > 1150) {
       if (this.table) {

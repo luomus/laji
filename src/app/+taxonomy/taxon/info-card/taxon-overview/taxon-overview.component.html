@@ -115,7 +115,7 @@
   </div>
   <div class="col-xs-12" *ngIf="taxon.hasChildren">
     <ng-container *lajiHideForIe>
-      <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0 && taxon.taxonRank !== 'MX.subgenus'"
+      <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0 && taxon.taxonRank !== 'MX.subgenus' && !isChildrenOnlySpecie"
            class="panel panel-default"
            laji-panel
            [title]="'taxonomy.speciesPieChartTitle' | translate"

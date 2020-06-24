@@ -12,8 +12,7 @@
       [showSettingsMenu]="false"
       [isAggregate]="true"
       [hideDefaultCountColumn]="!onlyCount"
-      [hideIndividualCountColumn] = "onlyCount"
-      [selected]="['unit.superRecordBasis']"
+      [selected]="onlyCount ? ['unit.superRecordBasis'] : ['unit.superRecordBasis', 'individualCountSum']"
     ></laji-observation-table>
   </div>
   <div class="col-sm-6">
@@ -29,8 +28,7 @@
       [showSettingsMenu]="false"
       [isAggregate]="true"
       [hideDefaultCountColumn]="!onlyCount"
-      [hideIndividualCountColumn] = "onlyCount"
-      [selected]="['unit.media.mediaType']"
+      [selected]="onlyCount ? ['unit.media.mediaType'] : ['unit.media.mediaType', 'individualCountSum']"
     ></laji-observation-table>
   </div>
 </div>
@@ -47,8 +45,7 @@
       [showHeader]="false"
       [isAggregate]="true"
       [hideDefaultCountColumn]="!onlyCount"
-      [hideIndividualCountColumn] = "onlyCount"
-      [selected]="['document.collectionId']"
+      [selected]="onlyCount ? ['document.collectionId'] : ['document.collectionId', 'individualCountSum']"
     ></laji-observation-table>
   </div>
 </div>

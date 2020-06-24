@@ -5,23 +5,21 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
   Output,
-  PLATFORM_ID,
   ViewChild
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 import { Subject, Subscription } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
-import { isPlatformBrowser } from '@angular/common';
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
+import { PlatformService } from '../../../shared/service/platform.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 
@@ -81,7 +79,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    private platformService: PlatformService,
     private logger: Logger,
     private filterService: FilterService,
     private zone: NgZone
@@ -195,7 +193,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
 
       // All action after initialization should be done after timeout, so
       // individual methods don't have to care about  synchronization problems.
@@ -229,7 +227,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   refreshTable() {
-    if (!isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isServer) {
       return;
     }
     if (this._rows) {
@@ -276,7 +274,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private scrollTo(offsetY: number = 0) {
-    if (!isPlatformBrowser(this.platformId) || !this._rows) {
+    if (this.platformService.isServer || !this._rows) {
       return;
     }
     try {

@@ -1,5 +1,4 @@
-import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';
@@ -8,6 +7,7 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { Util } from '../../../../shared/service/util.service';
 import * as merge from 'deepmerge';
+import { DialogService } from '../../../../shared/service/dialog.service';
 
 @Component({
   selector: 'laji-np-edit-form',
@@ -30,7 +30,8 @@ export class NpEditFormComponent implements OnInit {
 
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
-  constructor(@Inject(WINDOW) private window: Window,
+  constructor(
+    private dialogService: DialogService,
     private userService: UserService,
     private namedPlaceService: NamedPlacesService,
     private translate: TranslateService,
@@ -108,9 +109,9 @@ export class NpEditFormComponent implements OnInit {
   }
 
   discard() {
-    this.translate.get('haseka.form.discardConfirm').subscribe(
+    this.dialogService.confirm(this.translate.instant('haseka.form.discardConfirm')).subscribe(
       (confirm) => {
-        if (!this.hasChanges || this.window.confirm(confirm)) {
+        if (!this.hasChanges || confirm) {
           this.editReady.emit();
         }
       }

@@ -11,7 +11,6 @@ import { PageSizeSelectComponent } from './page-size-select/page-size-select.com
 import { SelectedFieldItemComponent } from './selected-field-item/selected-field-item.component';
 import { ObservationYearChartComponent } from './observation-year-chart/observation-year-chart.component';
 import { ObservationMonthDayChartComponent } from './observation-month-day-chart/observation-month-day-chart.component';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ObservationTableSettingsComponent } from './observation-table/observation-table-settings.component';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 import { ChartModule } from '../chart/chart.module';
@@ -20,7 +19,6 @@ import { ChartModule } from '../chart/chart.module';
   imports: [
     CommonModule,
     NgxDatatableModule,
-    NgxChartsModule,
     LangModule,
     SharedModule,
     DatatableModule,
