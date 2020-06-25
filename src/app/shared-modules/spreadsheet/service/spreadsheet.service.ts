@@ -262,10 +262,14 @@ export class SpreadsheetService {
       return values[GeneratorService.splitCoordinate.N] + ' ' + values[GeneratorService.splitCoordinate.E];
     }
     const suffix = typeof values[GeneratorService.splitCoordinate.N] === 'undefined' ||
-    values[GeneratorService.splitCoordinate.E] === 'undefined' ? ' ' + values[GeneratorService.splitCoordinate.system] : '';
+      typeof values[GeneratorService.splitCoordinate.E] === 'undefined' ?
+      ' ' + values[GeneratorService.splitCoordinate.system] : '';
 
     if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.ykj) {
       return values[GeneratorService.splitCoordinate.N] + ':' + values[GeneratorService.splitCoordinate.E] + suffix;
+    }
+    if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.etrs) {
+      return `+${values[GeneratorService.splitCoordinate.N]}+${values[GeneratorService.splitCoordinate.E]}/CRSEPSG:3067`;
     }
     return ('' + values[GeneratorService.splitCoordinate.N]).replace(',', '.') + ',' +
       ('' + values[GeneratorService.splitCoordinate.E]).replace(',', '.') + suffix;
