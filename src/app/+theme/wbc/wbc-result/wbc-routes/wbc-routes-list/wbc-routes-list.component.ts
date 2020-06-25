@@ -1,5 +1,8 @@
-import {Component, EventEmitter, Input, OnChanges, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, NgZone, OnChanges, Output, TemplateRef, ViewChild} from '@angular/core';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
+import {Router} from '@angular/router';
+import {LocalizeRouterService} from '../../../../../locale/localize-router.service';
+import { IdService } from '../../../../../shared/service/id.service';
 
 @Component({
   selector: 'laji-wbc-routes-list',
@@ -63,7 +66,11 @@ export class WbcRoutesListComponent implements OnChanges {
 
   @ViewChild('routeLink', { static: true }) routeLinkTpl: TemplateRef<any>;
 
-  constructor() { }
+  constructor(
+    private ngZone: NgZone,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService
+  ) { }
 
   ngOnChanges() {
     this.columns = this.allColumns.filter(val => {
@@ -77,6 +84,18 @@ export class WbcRoutesListComponent implements OnChanges {
         val.label = this.countLabel || 'wbc.stats.routes.count';
       }
       return this.selected.indexOf(val.name) !== -1;
+    });
+  }
+
+  onRouteLinkClick(e: Event, uri: string) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.ngZone.run(() => {
+      this.router.navigate(this.localizeRouterService.translateRoute([
+        '/theme/talvilintulaskenta/stats/routes',
+        IdService.getId(uri)
+      ]));
     });
   }
 
