@@ -12,7 +12,7 @@ import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/t
 import { Subscription } from 'rxjs';
 import {LocalStorageService} from 'ngx-webstorage';
 
-const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations'];
+const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
   selector: 'laji-observation-result',
   templateUrl: './observation-result.component.html',
@@ -31,6 +31,7 @@ export class ObservationResultComponent implements OnInit {
     statistics: true,
     download: true,
     annotations: true,
+    own: true
   };
   @Input() set visible(v: VisibleSections) {
     this._visible = v;
@@ -117,6 +118,7 @@ export class ObservationResultComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.query)
   }
 
   ngDestroy() {

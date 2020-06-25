@@ -216,6 +216,9 @@
         *ngIf="loadedTabs.isLoaded('annotations')"
     ></laji-annotations>
   </lu-tab>
+  <lu-tab *ngIf="visible.own && (query.editorPersonToken || query.observerPersonToken)" [heading]="'haseka.ownSubmissions.title' | translate">
+    <div *ngIf="loadedTabs.isLoaded('own')">ciao</div>
+  </lu-tab>
 </lu-tabs>
 
 <div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">
