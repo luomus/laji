@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, TemplateRef, ViewChild} from '@angular/core';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
@@ -6,7 +6,7 @@ import { DatatableColumn } from '../../../../../shared-modules/datatable/model/d
   templateUrl: './wbc-routes-list.component.html',
   styleUrls: ['./wbc-routes-list.component.scss']
 })
-export class WbcRoutesListComponent implements OnInit {
+export class WbcRoutesListComponent implements OnChanges {
   @Input() rows: any[] = [];
   @Input() height = 'calc(80vh - 100px)';
   @Input() columnMode = 'standard';
@@ -15,6 +15,7 @@ export class WbcRoutesListComponent implements OnInit {
   @Input() countLabel: string;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() loading = true;
+  @Input() selected: string[] = [];
 
   allColumns: DatatableColumn[] = [
     {
@@ -62,20 +63,21 @@ export class WbcRoutesListComponent implements OnInit {
 
   @ViewChild('routeLink', { static: true }) routeLinkTpl: TemplateRef<any>;
 
-  @Input() set selected(selected: string[]) {
-    this.columns = this.allColumns.filter(val => {
-      if (val.name === 'document.namedPlace.name' && this.showNameAsLink) {
-        val.cellTemplate = this.routeLinkTpl;
-      } else if (val.name === 'count' && this.countLabel) {
-        val.label = this.countLabel;
-      }
-      return selected.indexOf(val.name) !== -1;
-    });
-  }
-
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges() {
+    this.columns = this.allColumns.filter(val => {
+      if (val.name === 'document.namedPlace.name') {
+        if (this.showNameAsLink) {
+          val.cellTemplate = this.routeLinkTpl;
+        } else {
+          val.cellTemplate = undefined;
+        }
+      } else if (val.name === 'count') {
+        val.label = this.countLabel || 'wbc.stats.routes.count';
+      }
+      return this.selected.indexOf(val.name) !== -1;
+    });
   }
 
 }
