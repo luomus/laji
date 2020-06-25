@@ -129,3 +129,11 @@ lu-checkbox {
     font-size: $fs-9;
   }
 }
+
+:host ::ng-deep .tab-content {
+  padding: 20px;
+  padding-bottom: 40px;
+  border-left: 1px solid $neutral-4;
+  border-bottom: 1px solid $neutral-4;
+  background-color: $neutral-2;
+}
