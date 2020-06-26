@@ -119,7 +119,7 @@ export class NpEditFormComponent implements OnInit {
   }
 
   private getNamedPlaceData(event) {
-    const filteredKeys = ['geometry', 'locality', 'localityDescription', 'placeWrapper'];
+    const filteredKeys = ['placeWrapper'];
 
     const formData = event.data.formData;
     const data: any = {};
@@ -132,8 +132,6 @@ export class NpEditFormComponent implements OnInit {
         data[key] = formData[key];
       }
     }
-
-    data.geometry = formData.geometry;
 
     if (this.namedPlaceOptions && this.namedPlaceOptions.prepopulatedDocumentFields) {
       this.mergePrepopulatedDocument(data, formData);
