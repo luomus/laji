@@ -51,6 +51,9 @@ interface NavData {
         flex: 1 0 auto;
         width: 100%;
     }
+    :host ::ng-deep laji-spinner {
+      width: 100%;
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
