@@ -1,0 +1,47 @@
+<div class="observation-table-wrapper">
+    <laji-datatable-header
+      [downloadText]="'haseka.submissions.download' | translate"
+      [downloadLoading]="downloadLoading"
+      [showDownloadMenu]="showDownloadMenu"
+      [showSettingsMenu]="showSettingsMenu"
+      [count]="result.total"
+      [maxDownload]="maxDownload"
+      (openSettingsMenu)="openModal()"
+      (download)="download($event)"
+    ></laji-datatable-header>
+    <laji-datatable
+      #dataTableOwn
+      class="observation-table"
+      (rowSelect)="rowSelect.emit($event)"
+      [showRowAsLink]="showRowAsLink"
+      [showHeader]="showHeader"
+      [showFooter]="showFooter"
+      [virtualScrolling]="virtualScrolling"
+      [height]="height"
+      [rows]='result.results'
+      (pageChange)="setPage($event)"
+      (sortChange)="onSort($event)"
+      [loading]="loading"
+      [count]="result.total"
+      [page]="result.currentPage"
+      [pageSize]="result.pageSize"
+      [columnMode]="isAggregate ? 'force' : 'standard'"
+      (reorder)="onReorder($event)"
+      [totalMessage]="'haseka.submissions.total' | translate"
+      [columns]="columns">
+    </laji-datatable>
+  </div>
+  
+  <laji-own-observation-table-settings
+    [allAggregateFields]="allAggregateFields"
+    [columnSelector]="columnSelector"
+    [numberColumnSelector]="numberColumnSelector"
+    [columnGroups]="columnGroups"
+    [columnLookup]="columnLookup"
+    [isAggregate]="isAggregate"
+    [pageSize]="pageSize"
+    (pageSizeChange)="onPageSizeChange($event)"
+    (close)="onCloseSettingsModal($event)"
+    (resetColumns)="resetColumns.emit()"
+  ></laji-own-observation-table-settings>
+  

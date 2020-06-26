@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ObservationTableComponent } from './observation-table/observation-table.component';
+import { ObservationTableOwnDocumentsComponent } from './observation-table-own-documents/observation-table-own-documents.component';
 import { ObservationResultService } from './service/observation-result.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
@@ -32,7 +33,8 @@ import { ChartModule } from '../chart/chart.module';
     SelectedFieldItemComponent,
     ObservationYearChartComponent,
     ObservationMonthDayChartComponent,
-    ObservationTableSettingsComponent
+    ObservationTableSettingsComponent,
+    ObservationTableOwnDocumentsComponent
   ],
   providers: [ObservationResultService],
   exports: [
@@ -40,7 +42,8 @@ import { ChartModule } from '../chart/chart.module';
     ObservationTableSettingsComponent,
     SelectedFieldGroupComponent,
     ObservationYearChartComponent,
-    ObservationMonthDayChartComponent
+    ObservationMonthDayChartComponent,
+    ObservationTableOwnDocumentsComponent
   ]
 })
 export class ObservationResultModule { }
