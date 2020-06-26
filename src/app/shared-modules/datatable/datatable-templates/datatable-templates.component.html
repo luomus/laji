@@ -205,6 +205,11 @@
     {{ value.status.replace('MX.iucn', '') }} ({{ value.year }})
   </span>
 </ng-template>
+<ng-template let-value="value" #formName>
+  <span *ngIf="value" title="value | formName">
+    {{ value | toQName | formName }} 
+  </span>
+</ng-template>
 <ng-template let-value="value" #annotation>
   <div *ngIf="value.addedTags && value.addedTags.length > 0">
     <div class="title">{{ 'annotation.addTags' | translate }} </div>

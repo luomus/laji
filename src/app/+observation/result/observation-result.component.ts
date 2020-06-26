@@ -118,7 +118,6 @@ export class ObservationResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.query)
   }
 
   ngDestroy() {

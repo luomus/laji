@@ -30,6 +30,7 @@ import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
 import { OwnObservationTableSettingsComponent } from './own-observation-table-settings.component';
+import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 
 @Component({
   selector: 'laji-observation-table-own-documents',
@@ -57,19 +58,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   @Input() visible: boolean;
   @Input() hideDefaultCountColumn = false;
   @Input() allAggregateFields = [
-    'unit.species',
-    'unit.linkings.taxon.vernacularName',
-    'unit.linkings.taxon.scientificName',
-    'unit.taxonVerbatim',
-    'unit.linkings.taxon.taxonomicOrder',
-    'document.collectionId',
-    'document.sourceId',
-    'unit.superRecordBasis',
-    'unit.media.mediaType',
-    'gathering.interpretations.biogeographicalProvince',
-    'gathering.interpretations.municipalityDisplayname',
-    'gathering.team.memberName',
-    'pairCountSum'
+    'document.documentId','document.createdDate', 'document.modifiedDate', 'document.namedPlaceId'
   ];
   @Input() useStatistics: boolean;
 
@@ -126,7 +115,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     private logger: Logger,
     private translate: TranslateService,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private warehouseApi: WarehouseApi,
   ) {
     this.allColumns = tableColumnService.getAllColumns();
     this.columnGroups = tableColumnService.getColumnGroups();
@@ -273,27 +263,23 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     }
     this.loading = true;
     this.changeDetectorRef.markForCheck();
-    const aggregate$ = this.resultService.getAggregate(
-      this.query,
-      [...this.aggregateBy, this.defaultOrder],
-      page,
-      this.pageSize,
-      [...this.orderBy, this.defaultOrder],
-      this.lang,
-      this.useStatistics,
-    );
-    const list$ = this.resultService.getList(
+    const list$ = this.warehouseApi.warehouseQueryListGet(
       this.query,
       this.getSelectFields(this.columnSelector.columns, this.query),
-      page,
+      ['document.modifiedDate DESC'],
       this.pageSize,
-      [...this.orderBy, this.defaultOrder],
-      this.lang
+      page,
+      true
     );
 
-    this.fetchSub = (this.isAggregate ? aggregate$ : list$)
+    this.fetchSub = list$
       .subscribe(data => {
-        this.total.emit(data && data.total || 0);
+        data.results = Array.from(new Set(data.results.map(a => a['document']['documentId'])))
+        .map(id => {
+          return data.results.find(a => a['document']['documentId'] === id)
+        })
+        this.total.emit(data && data.results.length || 0);
+        data.total = data.results.length;
         this.result = data;
         this.loading = false;
         // This needs to be markForCheck and not detectChanges otherwise observation table on taxon section will not work

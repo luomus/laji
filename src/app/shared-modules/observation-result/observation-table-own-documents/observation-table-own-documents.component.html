@@ -22,7 +22,7 @@
       (pageChange)="setPage($event)"
       (sortChange)="onSort($event)"
       [loading]="loading"
-      [count]="result.total"
+      [count]="result.results.length"
       [page]="result.currentPage"
       [pageSize]="result.pageSize"
       [columnMode]="isAggregate ? 'force' : 'standard'"

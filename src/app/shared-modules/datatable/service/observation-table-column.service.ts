@@ -38,6 +38,10 @@ export interface IColumns {
   'document.secureReasons': ObservationTableColumn;
   'document.sourceId': ObservationTableColumn;
   'document.linkings.collectionQuality': ObservationTableColumn;
+  'document.firstLoadDate': ObservationTableColumn;
+  'document.modifiedDate': ObservationTableColumn;
+  'document.namedPlaceId': ObservationTableColumn;
+  'document.formId': ObservationTableColumn;
   'unit.det': ObservationTableColumn;
   'gathering.conversions.dayOfYearBegin': ObservationTableColumn;
   'gathering.conversions.dayOfYearEnd': ObservationTableColumn;
@@ -227,6 +231,10 @@ export const COLUMNS: IColumns = {
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
   'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel', sortable: false},
+  'document.firstLoadDate': {name: 'document.firstLoadDate', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
+  'document.modifiedDate': {name: 'document.modifiedDate', label: 'haseka.submissions.dateEdited', cellTemplate: 'date', sortable: false},
+  'document.namedPlaceId': {name: 'document.namedPlaceId', label: 'haseka.submissions.locality', cellTemplate: 'country', sortable: false},
+  'document.formId': {name: 'document.formId', label:'haseka.submissions.form', cellTemplate: 'formName', sortable: false},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
   'gathering.conversions.dayOfYearEnd': {name: 'gathering.conversions.dayOfYearEnd'},
@@ -400,6 +408,10 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.secureReasons'],
     COLUMNS['document.sourceId'],
     COLUMNS['document.linkings.collectionQuality'],
+    COLUMNS['document.firstLoadDate'],
+    COLUMNS['document.modifiedDate'],
+    COLUMNS['document.namedPlaceId'],
+    COLUMNS['document.formId'],
     COLUMNS['unit.det'],
     COLUMNS['gathering.conversions.dayOfYearBegin'],
     COLUMNS['gathering.conversions.dayOfYearEnd'],
