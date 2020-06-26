@@ -7,7 +7,7 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 
 import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
-import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { GeneratorService } from './generator.service';
 
 interface IColCombine {
@@ -71,10 +71,12 @@ export class SpreadsheetService {
     private labelService: TriplestoreLabelService,
     private translateService: TranslateService
   ) {
+    this.setCustomFieldLabels();
     this.translateService.onLangChange.pipe(
       map(() => this.translateService.currentLang),
       startWith(this.translateService.currentLang),
       distinctUntilChanged(),
+      tap(() => this.setCustomFieldLabels()),
       switchMap(lang =>
         ObservableForkJoin([
           this.labelService.get('MY.document', lang),
@@ -169,6 +171,11 @@ export class SpreadsheetService {
       }
     }
     return '';
+  }
+
+  private setCustomFieldLabels() {
+    SpreadsheetService.deleteField.label = this.translateService.instant('haseka.delete.title');
+    SpreadsheetService.deleteField.fullLabel = this.translateService.instant('haseka.delete.title');
   }
 
   private combineSplittedFields(data: {[col: string]: string}[]) {
