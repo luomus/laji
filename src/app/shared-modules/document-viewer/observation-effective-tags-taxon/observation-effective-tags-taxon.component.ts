@@ -43,10 +43,10 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
     ) { }
 
   ngOnInit() {
-    
-    this.unit.interpretations.effectiveTags = (this.unit.interpretations && this.unit.interpretations.effectiveTags) ? 
+
+    this.unit.interpretations.effectiveTags = (this.unit.interpretations && this.unit.interpretations.effectiveTags) ?
     this.unit.interpretations.effectiveTags.map(element => {return this.warehousePipe.transform(element);}) : [];
-      
+
      this.convertEffective = this.annotationTags.filter(item => this.unit.interpretations.effectiveTags.includes(item.id))
      this.unit.addedTags = [];
      this.subscriptParent = this.loadingElements.childEventListner().subscribe(event => {
@@ -64,7 +64,9 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
   }
 
   ngOnDestroy() {
-    this.subscriptParent.unsubscribe();
+    if (this.subscriptParent) {
+      this.subscriptParent.unsubscribe();
+    }
   }
 
 

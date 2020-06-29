@@ -29,9 +29,15 @@ export class GeneratorService {
   };
 
   public static splitCoordinateSystem = {
-    ykj: 'ykj'
+    ykj: 'ykj',
+    wgs84: 'wgs84',
+    etrs: 'ETRS-TM35FIN',
   };
-  public static splitCoordinateSystems = [GeneratorService.splitCoordinateSystem.ykj, 'wgs84'];
+  public static splitCoordinateSystems = [
+    GeneratorService.splitCoordinateSystem.ykj,
+    GeneratorService.splitCoordinateSystem.etrs,
+    GeneratorService.splitCoordinateSystem.wgs84
+  ];
 
   public static splittableFields: {[key: string]: splitType} = {
     'gatheringEvent.dateBegin': 'date',

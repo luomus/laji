@@ -7,7 +7,7 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 
 import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
-import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { GeneratorService } from './generator.service';
 
 interface IColCombine {
@@ -71,10 +71,12 @@ export class SpreadsheetService {
     private labelService: TriplestoreLabelService,
     private translateService: TranslateService
   ) {
+    this.setCustomFieldLabels();
     this.translateService.onLangChange.pipe(
       map(() => this.translateService.currentLang),
       startWith(this.translateService.currentLang),
       distinctUntilChanged(),
+      tap(() => this.setCustomFieldLabels()),
       switchMap(lang =>
         ObservableForkJoin([
           this.labelService.get('MY.document', lang),
@@ -171,6 +173,11 @@ export class SpreadsheetService {
     return '';
   }
 
+  private setCustomFieldLabels() {
+    SpreadsheetService.deleteField.label = this.translateService.instant('haseka.delete.title');
+    SpreadsheetService.deleteField.fullLabel = this.translateService.instant('haseka.delete.title');
+  }
+
   private combineSplittedFields(data: {[col: string]: string}[]) {
     if (!data || data.length < 2) {
       return data;
@@ -262,10 +269,14 @@ export class SpreadsheetService {
       return values[GeneratorService.splitCoordinate.N] + ' ' + values[GeneratorService.splitCoordinate.E];
     }
     const suffix = typeof values[GeneratorService.splitCoordinate.N] === 'undefined' ||
-    values[GeneratorService.splitCoordinate.E] === 'undefined' ? ' ' + values[GeneratorService.splitCoordinate.system] : '';
+      typeof values[GeneratorService.splitCoordinate.E] === 'undefined' ?
+      ' ' + values[GeneratorService.splitCoordinate.system] : '';
 
     if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.ykj) {
       return values[GeneratorService.splitCoordinate.N] + ':' + values[GeneratorService.splitCoordinate.E] + suffix;
+    }
+    if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.etrs) {
+      return `+${values[GeneratorService.splitCoordinate.N]}+${values[GeneratorService.splitCoordinate.E]}/CRSEPSG:3067`;
     }
     return ('' + values[GeneratorService.splitCoordinate.N]).replace(',', '.') + ',' +
       ('' + values[GeneratorService.splitCoordinate.E]).replace(',', '.') + suffix;

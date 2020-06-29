@@ -58,7 +58,7 @@ export class HeaderService implements OnDestroy {
           map(titles => Array.from(new Set<string>(titles))),
           switchMap(titles => this.translateService.get(titles))
         ).subscribe(pageTitle => {
-          this.title.setTitle(Object.keys(pageTitle).map(key => pageTitle[key]).join(' | '));
+          this.title.setTitle(Object.keys(pageTitle).map(key => decodeURI(pageTitle[key])).join(' | '));
         });
 
         // Set page meta tags
