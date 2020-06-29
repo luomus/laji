@@ -9,6 +9,7 @@ import {KerttuApi} from '../service/kerttu-api';
 import {ILetterCandidate, ILetterTemplate, LetterAnnotation} from '../model/letter';
 import {WINDOW} from '@ng-toolkit/universal';
 import {AudioService} from '../service/audio.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-kerttu-main-view',
@@ -61,7 +62,8 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private userService: UserService,
     private personService: PersonApi,
-    private audioService: AudioService
+    private audioService: AudioService,
+    private translate: TranslateService
   ) {
     this.vm$ = kerttuFacade.vm$;
   }
@@ -269,7 +271,7 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   private onCandidateLoad(candidate) {
     if (!candidate) {
-      this.window.alert('Kaikki kandidaatit käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.');
+      this.window.alert(this.translate.instant('theme.kerttu.allCandidatesAnnotated'));
       this.getLetterTemplate();
       return;
     } else {
