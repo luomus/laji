@@ -1,3 +1,20 @@
+#letterInfo {
+  dl {
+    margin-bottom: 5px;
+  }
+
+  dt {
+    float: left;
+    clear: left;
+    margin-right: 5px;
+    font-weight: bold;
+  }
+
+  dd {
+    margin-left: 0px;
+  }
+}
+
 #letterAnnotationContainer {
   text-align: center;
 
