@@ -25,7 +25,7 @@
           ></laji-kerttu-letter-annotation>
         </laji-spinner>
         <ng-container *ngIf="allLettersAnnotated">
-          Kaikki kirjaimet käyty läpi!
+          {{ 'theme.kerttu.allLettersAnnotated' | translate }}
         </ng-container>
       </div>
       <div *ngIf="vm.step === step.annotateRecordings">
