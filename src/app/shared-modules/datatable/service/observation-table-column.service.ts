@@ -171,7 +171,8 @@ export const COLUMNS: IColumns = {
   'gathering.interpretations.countryDisplayname': {
     name: 'gathering.interpretations.countryDisplayname',
     label: 'result.gathering.country',
-    required: true
+    required: true,
+    sortable: false
   },
   'gathering.interpretations.biogeographicalProvinceDisplayname': {
     name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
