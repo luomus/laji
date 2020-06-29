@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
-import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
+import { LocalStorage, LocalStorageService, SessionStorage } from 'ngx-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,7 +33,6 @@ export interface IUserSettings {
 
 interface IPersistentState {
   isLoggedIn: boolean;
-  returnUrl: string;
 }
 
 export interface IUserServiceState extends IPersistentState {
@@ -44,8 +43,7 @@ export interface IUserServiceState extends IPersistentState {
 }
 
 const _persistentState: IPersistentState = {
-  isLoggedIn: false,
-  returnUrl: ''
+  isLoggedIn: false
 };
 
 let _state: IUserServiceState = {
@@ -64,6 +62,7 @@ export class UserService {
 
   // Do not write to this variable in the server!
   @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
+  @SessionStorage() private returnUrl: string;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
   private state$ = this.store.asObservable();
@@ -182,15 +181,14 @@ export class UserService {
         filter(data => !!data),
         take(1),
       ).subscribe(data => {
-        returnUrl = data.loginLanding || returnUrl || this.location.path(true);
-        this.updatePersistentState({...this.persistentState, returnUrl});
-        window.location.href = UserService.getLoginUrl(returnUrl, this.translate.currentLang);
+        this.returnUrl = data.loginLanding || returnUrl || this.location.path(true);
+        window.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
       });
     }
   }
 
   getReturnUrl(): string {
-    const returnTo = this.persistentState.returnUrl || '/';
+    const returnTo = this.returnUrl || '/';
     const lang = this.localizeRouterService.getLocationLang(returnTo);
     this.translate.use(lang);
     return this.localizeRouterService.translateRoute(
