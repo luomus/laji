@@ -289,7 +289,7 @@ export const COLUMNS: IColumns = {
     sortable: false
   },
   'gathering.interpretations.country': {
-    transform: 'label',
+    cellTemplate: 'label',
     label: 'result.gathering.country'
   },
   'sample.sampleId': {name: 'sample.sampleId', width: 300, sortable: false},
