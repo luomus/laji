@@ -51,20 +51,20 @@ export class ThemeFormService {
 
   defaultNavLinksOrder = ['instructions', 'form', 'ownSubmissions', 'formPermissions'];
 
-  static getFormId(route: ActivatedRouteSnapshot): string {
+  static getFormId(route: ActivatedRouteSnapshot, key = 'formID'): string {
     let current = route;
     while (
       current && current.parent &&
-      !(current.data && current.data['formID']) &&
-      !(current.params && current.params['formID'])
+      !(current.data && current.data[key]) &&
+      !(current.params && current.params[key])
       ) {
       current = current.parent;
     }
     if (current) {
-      if (current.data && current.data['formID']) {
-        return current.data['formID'];
-      } else if (current.params && current.params['formID']) {
-        return current.params['formID'];
+      if (current.data && current.data[key]) {
+        return current.data[key];
+      } else if (current.params && current.params[key]) {
+        return current.params[key];
       }
     }
     return null;
@@ -78,7 +78,14 @@ export class ThemeFormService {
   ) { }
 
   getForm(route: ActivatedRouteSnapshot): Observable<Form.SchemaForm> {
-    const formID = ThemeFormService.getFormId(route);
+    return this._getForm(ThemeFormService.getFormId(route));
+  }
+
+  getExcelForm(route: ActivatedRouteSnapshot): Observable<Form.SchemaForm> {
+    return this._getForm(ThemeFormService.getFormId(route, 'excelFormID') || ThemeFormService.getFormId(route));
+  }
+
+  private _getForm(formID: string) {
     if (!formID) {
       throw new Error('No form ID found from the route.');
     }
