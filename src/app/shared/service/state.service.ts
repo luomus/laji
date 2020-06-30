@@ -1,6 +1,6 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { isPlatformServer } from '@angular/common';
+import { PlatformService } from './platform.service';
 
 const LAJI_STATE_KEY = makeStateKey('l');
 
@@ -12,7 +12,7 @@ export class StateService {
   private state = {};
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    private platformService: PlatformService,
     private transferState: TransferState
   ) {
     this.initState();
@@ -28,7 +28,7 @@ export class StateService {
 
   set(key: string, value: any) {
     this.state[key] = value;
-    if (isPlatformServer(this.platformId)) {
+    if (this.platformService.isServer) {
       this.transferState.set(LAJI_STATE_KEY, this.state);
     }
   }

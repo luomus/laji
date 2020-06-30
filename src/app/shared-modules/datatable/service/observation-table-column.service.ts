@@ -171,7 +171,8 @@ export const COLUMNS: IColumns = {
   'gathering.interpretations.countryDisplayname': {
     name: 'gathering.interpretations.countryDisplayname',
     label: 'result.gathering.country',
-    required: true
+    required: true,
+    sortable: false
   },
   'gathering.interpretations.biogeographicalProvinceDisplayname': {
     name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
@@ -288,8 +289,7 @@ export const COLUMNS: IColumns = {
     sortable: false
   },
   'gathering.interpretations.country': {
-    name: 'gathering.interpretations.country',
-    transform: 'label',
+    cellTemplate: 'label',
     label: 'result.gathering.country'
   },
   'sample.sampleId': {name: 'sample.sampleId', width: 300, sortable: false},
@@ -349,9 +349,9 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     'unit.taxon',
     'unit.abundanceString',
     'gathering.displayDateTime',
+    'gathering.interpretations.country',
     'gathering.interpretations.countryDisplayname',
     'gathering.interpretations.biogeographicalProvinceDisplayname',
-    'gathering.interpretations.municipalityDisplayname',
     'gathering.locality',
     'document.collectionId',
     'document.documentId',

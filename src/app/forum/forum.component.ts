@@ -1,6 +1,5 @@
-import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component } from '@angular/core';
+import { PlatformService } from '../shared/service/platform.service';
 
 @Component({
   selector: 'laji-foorum',
@@ -9,11 +8,10 @@ import { isPlatformBrowser } from '@angular/common';
 export class ForumComponent {
 
   constructor(
-    @Inject(WINDOW) private window: Window,
-    @Inject(PLATFORM_ID) private platformID: object
+    private platformService: PlatformService
   ) {
-    if (isPlatformBrowser(this.platformID)) {
-      this.window.location.href = 'http://foorumi.laji.fi/';
+    if (this.platformService.isBrowser) {
+      window.location.href = 'http://foorumi.laji.fi/';
     }
   }
 }

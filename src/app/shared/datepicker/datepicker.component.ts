@@ -33,18 +33,16 @@ import {
   Component,
   EventEmitter,
   forwardRef,
-  Inject,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  PLATFORM_ID,
   ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import * as moment from 'moment';
-import { isPlatformBrowser } from '@angular/common';
+import { PlatformService } from '../service/platform.service';
 
 export interface CalendarDate {
   day: number;
@@ -94,7 +92,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   constructor(
     private viewContainerRef: ViewContainerRef,
     private cd: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private platformService: PlatformService
   ) {
     this.el = viewContainerRef.element.nativeElement;
     this.date = moment();
@@ -156,7 +154,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.format = this.format || 'YYYY-MM-DD';
     this.viewFormat = this.viewFormat || 'D MMMM YYYY';
     this.firstWeekdaySunday = this.firstWeekdaySunday || false;
-    if (!isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isServer) {
       return;
     }
     setTimeout(() => {

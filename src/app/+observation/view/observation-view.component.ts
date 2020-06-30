@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Router } from '@angular/router';
-import { WINDOW } from '@ng-toolkit/universal';
 import { ObservationFormComponent } from '../form/observation-form.component';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -84,7 +83,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   settingsList$: Observable<ISettingResultList>;
 
   constructor(
-    @Inject(WINDOW) private window: Window,
     public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private observationFacade: ObservationFacade,
