@@ -18,38 +18,41 @@
         </lu-button>
       </div>
       <div class="lu-section">
-        <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
-          <laji-expertise-form
-            *ngIf="vm.step === step.fillExpertise"
-            [introText]="'theme.kerttu.expertise.intro' | translate"
-            [selectedTaxonIds]="selectedTaxonIds"
-            (taxonIdSelect)="selectedTaxonIds = $event"
-          ></laji-expertise-form>
-          <div *ngIf="vm.step === step.annotateLetters">
-            <laji-spinner [spinning]="!allLettersAnnotated && loadingLetters" [overlay]="true">
-              <laji-kerttu-letter-annotation
-                *ngIf="!allLettersAnnotated"
-                [ngClass]="{'visibility-hidden': loadingLetters}"
-                [template]="letterTemplate"
-                [candidate]="letterCandidate"
-                (annotationChange)="onLetterAnnotationChange($event)"
-                (skipLetterClick)="skipLetter()"
-              ></laji-kerttu-letter-annotation>
-            </laji-spinner>
-            <ng-container *ngIf="allLettersAnnotated">
-              {{ 'theme.kerttu.allLettersAnnotated' | translate }}
-            </ng-container>
-          </div>
-          <div *ngIf="vm.step === step.annotateRecordings">
-            <!--laji-kerttu-recording-annotation
-              [recordings]="recordings$ | async"
-              [annotations]="recordingAnnotations"
-              (annotationsChange)="recordingAnnotations = $event"
-            ></laji-kerttu-recording-annotation-->
-          </div>
-          <div *ngIf="vm.step === step.done">
-            Valmis!
-          </div>
+        <laji-spinner [spinning]="loading">
+          <ng-container *ngIf="!loading">
+            <laji-expertise-form
+              *ngIf="vm.step === step.fillExpertise"
+              [introText]="'theme.kerttu.expertise.intro' | translate"
+              [selectedTaxonIds]="selectedTaxonIds"
+              (taxonIdSelect)="selectedTaxonIds = $event"
+            ></laji-expertise-form>
+            <div *ngIf="vm.step === step.annotateLetters">
+              <laji-spinner [spinning]="!allLettersAnnotated && loadingLetters" [overlay]="true">
+                <laji-kerttu-letter-annotation
+                  *ngIf="!allLettersAnnotated"
+                  [ngClass]="{'visibility-hidden': loadingLetters}"
+                  [template]="letterTemplate"
+                  [candidate]="letterCandidate"
+                  (annotationChange)="onLetterAnnotationChange($event)"
+                  (skipLetterClick)="skipLetter()"
+                ></laji-kerttu-letter-annotation>
+              </laji-spinner>
+              <ng-container *ngIf="allLettersAnnotated">
+                {{ 'theme.kerttu.allLettersAnnotated' | translate }}
+              </ng-container>
+            </div>
+            <div *ngIf="vm.step === step.annotateRecordings">
+              TODO
+              <!--laji-kerttu-recording-annotation
+                [recordings]="recordings$ | async"
+                [annotations]="recordingAnnotations"
+                (annotationsChange)="recordingAnnotations = $event"
+              ></laji-kerttu-recording-annotation-->
+            </div>
+            <div *ngIf="vm.step === step.done">
+              Valmis!
+            </div>
+          </ng-container>
         </laji-spinner>
       </div>
     </laji-spinner>
