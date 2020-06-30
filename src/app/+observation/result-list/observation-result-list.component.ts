@@ -10,7 +10,7 @@ const DEFAULT_PAGE_SIZE = 100;
 @Component({
   selector: 'laji-observation-result-list',
   templateUrl: './observation-result-list.component.html',
-  styleUrls: ['./observation-result-list.component.css'],
+  styleUrls: ['./observation-result-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultListComponent {
