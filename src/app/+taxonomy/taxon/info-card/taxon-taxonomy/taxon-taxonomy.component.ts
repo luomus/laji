@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 Output, EventEmitter } from '@angular/core';
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
@@ -95,7 +96,16 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
       this.childrenSub.unsubscribe();
     }
     this.childrenSub = this.taxonomyService
-      .getChildren(this.taxon.id)
+      .getChildren(this.taxon.id).pipe(
+        map((obj) => {
+          obj.forEach(r => {
+            if (!r['observationCountFinland']) {
+              r['observationCountFinland'] = 0;
+            }
+          });
+          return obj;
+       })
+      )
       .subscribe(data => {
         this.taxonChildren = data;
         this.cd.markForCheck();

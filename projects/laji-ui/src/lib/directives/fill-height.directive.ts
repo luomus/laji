@@ -1,10 +1,15 @@
 import { Directive, ElementRef, Renderer2, OnDestroy, AfterViewInit, Input } from '@angular/core';
 
+export interface IFillHeightOptions {
+  disabled: boolean;
+  minHeight: number;
+}
+
 @Directive({
   selector: '[luFillHeight]'
 })
 export class FillHeightDirective implements OnDestroy, AfterViewInit {
-  @Input('luFillHeight') options: any;
+  @Input('luFillHeight') options: IFillHeightOptions;
 
   private destroyLoadListener: () => void;
   private destroyResizeListener: () => void;
@@ -34,7 +39,10 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
 
   private updateHeight() {
     const boundingRect = this.el.nativeElement.getBoundingClientRect();
-    const h = window.innerHeight - boundingRect.top;
+    let h = window.innerHeight - boundingRect.top;
+    if (this.options.minHeight && h < this.options.minHeight) {
+      h = this.options.minHeight;
+    }
     this.renderer.setStyle(this.el.nativeElement, 'height', h.toString() + 'px');
     try {
       const event = new Event('resize');
