@@ -24,7 +24,8 @@
               *ngIf="vm.step === step.fillExpertise"
               [introText]="'theme.kerttu.expertise.intro' | translate"
               [selectedTaxonIds]="selectedTaxonIds"
-              (taxonIdSelect)="selectedTaxonIds = $event"
+              [saving]="selectedTaxonIds !== savedSelectedTaxonIds"
+              (taxonIdSelect)="onSelectedTaxonIdsChange($event)"
             ></laji-expertise-form>
             <div *ngIf="vm.step === step.annotateLetters">
               <laji-spinner [spinning]="!allLettersAnnotated && loadingLetters" [overlay]="true">

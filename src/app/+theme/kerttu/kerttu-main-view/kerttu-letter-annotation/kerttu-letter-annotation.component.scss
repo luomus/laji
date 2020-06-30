@@ -36,3 +36,7 @@
 h3, h4 {
   max-width: 100%;
 }
+
+:host ::ng-deep .lu-button-without-transition button {
+  transition: none;
+}

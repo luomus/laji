@@ -8,7 +8,7 @@
         <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
         <dd>{{ template?.info.userAnnotationCount }}/{{ template?.info.targetAnnotationCount }}</dd>
       </dl>
-      <lu-button>
+      <lu-button class="lu-button-without-transition" (click)="skipLetterClick.emit($event)">
         {{ 'theme.kerttu.skipLetter' | translate }}
       </lu-button>
     </div>
@@ -75,7 +75,7 @@
   </div>
   <div class="col-md-12">
     <h4>{{ 'theme.kerttu.letterCandidateLonger' | translate }}</h4>
-    <lu-button (click)="candidateLongerVisible = true" *ngIf="!candidateLongerVisible">
+    <lu-button class="lu-button-without-transition" (click)="candidateLongerVisible = true" *ngIf="!candidateLongerVisible">
       Näytä
     </lu-button>
     <laji-audio-viewer
