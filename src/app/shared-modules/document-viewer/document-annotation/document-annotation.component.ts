@@ -383,7 +383,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
   closeDocument() {
-    console.log('pippo')
     if (this.documentToolsOpen) {
       this.close.emit(false);
     } else {

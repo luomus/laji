@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, ViewChild, Output,
-EventEmitter} from '@angular/core';
+EventEmitter, HostListener} from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
@@ -70,22 +70,27 @@ export class UserDocumentToolsComponent {
 
   makeTemplate() {
     // this.templateModal.show();
-    this.modalRef = this.modalService.show(this.templateModal, {class: 'modal-sm'});
+    this.modalRef = this.modalService.show(this.templateModal, {class: 'modal-sm', backdrop: true});
     this.documentToolsService.emitChildEvent(true);
   }
 
   makeDelete() {
     // this.deleteModal.show();
-    this.modalRef = this.modalService.show(this.deleteModal, {class: 'modal-sm'});
+    this.modalRef = this.modalService.show(this.deleteModal, {class: 'modal-sm', backdrop: true});
     this.documentToolsService.emitChildEvent(true);
   }
 
-  closeModal(modal){
-    console.log('ciao');
+  closeModal(event){
     if (this.modalRef) {
       this.modalRef.hide();
+      const body = document.body;
+      body.classList.add("modal-open-after");
       this.documentToolsService.emitChildEvent(false);
     }
+  }
+
+  onClickOutside() {
+    this.closeModal(event);
   }
   
 
@@ -111,4 +116,14 @@ export class UserDocumentToolsComponent {
     }
     this.linkLocation = this.formService.getEditUrlPath(this._formID, this._documentID);
   }
+
+  @HostListener('window:keydown', ['$event'])
+  documentToolsKeyDown(e: KeyboardEvent) {
+    if (e.keyCode === 27) {
+      e.stopImmediatePropagation();
+       this.closeModal(event);
+      }
+
+  }
+
 }
