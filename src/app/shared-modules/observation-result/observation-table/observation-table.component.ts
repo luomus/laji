@@ -66,7 +66,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     'document.sourceId',
     'unit.superRecordBasis',
     'unit.media.mediaType',
-    'gathering.interpretations.biogeographicalProvince',
+    'gathering.interpretations.biogeographicalProvinceDisplayname',
     'gathering.interpretations.municipalityDisplayname',
     'gathering.team.memberName',
     'pairCountSum'
