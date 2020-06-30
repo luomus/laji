@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {IKerttuState, KerttuFacade, Step} from '../service/kerttu.facade';
-import {Observable, of, Subscription} from 'rxjs';
-import {map, share, switchMap, take, tap} from 'rxjs/operators';
+import {Observable, of, Subject, Subscription} from 'rxjs';
+import {debounceTime, map, share, switchMap, take, tap} from 'rxjs/operators';
 import {Profile} from '../../../shared/model/Profile';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
@@ -35,9 +35,10 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
   ];
 
   step = Step;
-  saving = false;
+  loading = false;
 
   selectedTaxonIds: string[];
+  savedSelectedTaxonIds: string[];
 
   letterTemplate: ILetterTemplate;
   letterCandidate: ILetterCandidate;
@@ -46,14 +47,23 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
 
   errorMsg: string;
 
+  private profile: Profile;
+
   private nextLetterCandidate: ILetterCandidate;
   private nextLetterCandidate$: Observable<ILetterCandidate>;
 
   private vmSub: Subscription;
+  private goNextSub: Subscription;
+
   private selectedTaxonIdsSub: Subscription;
+  private selectedTaxonIdsChanged: Subject<string[]> = new Subject<string[]>();
+  private saveProfileSub: Subscription;
+
   private letterTemplateSub: Subscription;
   private letterCandidateSub: Subscription;
   private nextLetterCandidateSub: Subscription;
+
+  private debounceTime = 1000;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -80,12 +90,27 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     });
 
     this.vmSub = this.vm$.subscribe(vm => {
-      if (vm.step === Step.fillExpertise && !this.selectedTaxonIdsSub) {
+      this.clear();
+
+      if (vm.step === Step.fillExpertise) {
         this.selectedTaxonIdsSub = this.personService.personFindProfileByToken(this.userService.getToken()).subscribe((profile) => {
+          this.profile = profile;
           this.selectedTaxonIds = profile.taxonExpertise || [];
+          this.savedSelectedTaxonIds = this.selectedTaxonIds;
           this.cdr.markForCheck();
         });
-      } else if (vm.step === Step.annotateLetters && !this.letterTemplateSub) {
+
+        this.saveProfileSub = this.selectedTaxonIdsChanged
+          .pipe(
+            debounceTime(this.debounceTime),
+            switchMap(() => {
+              return this.updateTaxonExpertice(this.selectedTaxonIds);
+            })
+          ).subscribe(() => {
+              this.cdr.markForCheck();
+            }
+          );
+      } else if (vm.step === Step.annotateLetters) {
         this.getLetterTemplate();
       } else if (vm.step === Step.annotateRecordings) {
 
@@ -97,8 +122,18 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     if (this.vmSub) {
       this.vmSub.unsubscribe();
     }
+    if (this.goNextSub) {
+      this.goNextSub.unsubscribe();
+    }
+    this.clear();
+  }
+
+  clear() {
     if (this.selectedTaxonIdsSub) {
       this.selectedTaxonIdsSub.unsubscribe();
+    }
+    if (this.saveProfileSub) {
+      this.saveProfileSub.unsubscribe();
     }
     if (this.letterTemplateSub) {
       this.letterTemplateSub.unsubscribe();
@@ -109,33 +144,48 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     if (this.nextLetterCandidateSub) {
       this.nextLetterCandidateSub.unsubscribe();
     }
+    this.selectedTaxonIds = undefined;
+    this.savedSelectedTaxonIds = undefined;
+    this.letterTemplate = undefined;
+    this.letterCandidate = undefined;
+    this.allLettersAnnotated = false;
+    this.loadingLetters = false;
   }
 
   activate(step: Step) {
+    this.kerttuFacade.goToStep(step);
     this.kerttuApi.setStatus(this.userService.getToken(), step).subscribe(() => {
-      this.kerttuFacade.goToStep(step);
-      this.saving = false;
-      this.cdr.markForCheck();
-    });
-  }
-
-  save(currentStep: Step) {
-    const observable = this.getSaveObservable(currentStep);
-    this.saving = true;
-    observable.subscribe(() => {
-      this.saving = false;
+      this.loading = false;
       this.cdr.markForCheck();
     });
   }
 
   saveAndGoToNext(currentStep: Step) {
-    this.saving = true;
-    const observable = this.getSaveObservable(currentStep);
-    const nextStep = this.getNextStep(currentStep);
+    if (this.saveProfileSub) {
+      this.saveProfileSub.unsubscribe();
+    }
 
-    observable.subscribe(() => {
-      this.activate(nextStep);
+    const nextStep = currentStep + 1;
+    this.kerttuFacade.goToStep(nextStep);
+
+    const obs = currentStep === Step.fillExpertise ? this.updateTaxonExpertice(this.selectedTaxonIds) : of({});
+    this.loading = true;
+
+    this.goNextSub = obs.pipe(
+      switchMap(() => this.kerttuApi.setStatus(this.userService.getToken(), nextStep))
+    ).subscribe(() => {
+      this.loading = false;
+      this.cdr.markForCheck();
     });
+  }
+
+  goBack(currentStep: Step) {
+    this.activate(this.steps[currentStep].returnState - 1);
+  }
+
+  onSelectedTaxonIdsChange(selectedTaxonIds: string[]) {
+    this.selectedTaxonIds = selectedTaxonIds;
+    this.selectedTaxonIdsChanged.next(this.selectedTaxonIds);
   }
 
   onLetterAnnotationChange(annotation: LetterAnnotation) {
@@ -165,51 +215,17 @@ export class KerttuMainViewComponent implements OnInit, OnDestroy {
     this.getLetterTemplate(true);
   }
 
-  private getSaveObservable(step: Step): Observable<any> {
-    let observable: Observable<any>;
-    if (step === Step.fillExpertise) {
-      observable = this.saveProfile();
-    } else if (step === Step.annotateLetters) {
-      observable = this.saveLetterAnnotations();
-    } else if (step === Step.annotateRecordings) {
-      observable = this.saveRecordingAnnotations();
+  private updateTaxonExpertice(selectedTaxonIds): Observable<Profile> {
+    if (this.savedSelectedTaxonIds === selectedTaxonIds) {
+      return of (this.profile);
     }
-    return observable;
-  }
 
-  private getNextStep(step: Step): Step {
-    if (step === Step.fillExpertise) {
-      return Step.annotateLetters;
-    } else if (step === Step.annotateLetters) {
-      return Step.annotateRecordings;
-    } else if (step === Step.annotateRecordings) {
-      return Step.done;
-    }
-  }
-
-  private saveProfile() {
-    return this.personService.personFindProfileByToken(this.userService.getToken()).pipe(
-      switchMap((profile: Profile) => {
-        profile.taxonExpertise = this.selectedTaxonIds;
-        return this.personService.personUpdateProfileByToken(profile, this.userService.getToken());
+    this.profile.taxonExpertise = selectedTaxonIds;
+    return this.personService.personUpdateProfileByToken(this.profile, this.userService.getToken()).pipe(
+      tap(() => {
+        this.savedSelectedTaxonIds = selectedTaxonIds;
       })
     );
-  }
-
-  private saveLetterAnnotations() {
-    /*if (this.letterAnnotations && Object.keys(this.letterAnnotations).length > 0) {
-      return this.kerttuApi.updateLetterAnnotations(this.taxonId, this.letterAnnotations, this.userService.getToken());
-    } else {*/
-    return of({});
-    // }
-  }
-
-  private saveRecordingAnnotations() {
-    /* if (this.recordingAnnotations && Object.keys(this.recordingAnnotations).length > 0) {
-      return this.kerttuApi.updateRecordingAnnotations(this.recordingAnnotations, this.userService.getToken());
-    } else { */
-    return of({});
-    // }
   }
 
   private getLetterTemplate(skipCurrent = false) {
