@@ -33,6 +33,7 @@ import { ObservationTableColumn } from '../../shared-modules/observation-result/
 import { IColumns } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { ObservationDataService } from '../observation-data.service';
 import { environment } from '../../../environments/environment';
+import { DownloadService } from 'src/app/shared/service/download.service';
 
 
 enum RequestStatus {
@@ -73,6 +74,8 @@ export class ObservationDownloadComponent implements OnDestroy {
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
 
+  speciesCsvLoading = false;
+
   linkTimeout: any;
 
   private _originalSelected: string[];
@@ -98,7 +101,8 @@ export class ObservationDownloadComponent implements OnDestroy {
               private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
               private exportService: ExportService,
               private modalService: BsModalService,
-              private observationDataService: ObservationDataService
+              private observationDataService: ObservationDataService,
+              private downloadService: DownloadService
   ) {
     this.columnGroups = tableColumnService.getColumnGroups();
     this.columnLookup = tableColumnService.getAllColumnLookup();
@@ -198,6 +202,16 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.linkTimeout = setTimeout(() => {
       this.updateCsvLink();
     }, 200);
+  }
+
+  downloadSpecies(e) {
+    this.speciesCsvLoading = true;
+    this.cd.markForCheck();
+    this.updateQueryParamsDownloadTaxon(e);
+    this.downloadService.download('/api/warehouse/query/aggregate?' + this.csvParams, 'species.csv').subscribe(() => {
+      this.speciesCsvLoading = false;
+      this.cd.markForCheck();
+    });
   }
 
   makePrivateRequest() {

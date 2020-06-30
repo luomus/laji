@@ -10,6 +10,7 @@ type Role = 'primary' | 'secondary' | 'neutral';
 })
 export class ButtonComponent {
   @Input() role: Role = 'secondary';
+  @Input() loading: boolean;
   @Input() disabled = false; // note: can't disable anchors
   @Input() small = false;
   private _target = undefined;
@@ -53,6 +54,7 @@ export class ButtonComponent {
     const classes = {
       'lu-small-btn': this.small
     };
+    classes['lu-disabled'] = this.disabled;
     classes[this.role] = true;
     return classes;
   }

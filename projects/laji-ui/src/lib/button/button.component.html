@@ -3,7 +3,8 @@
   tabindex="-1"
   [ngClass]="getNgClass()"
   [class.pressed]="pressed"
-  [disabled]="disabled"
+  [class.lu-loading]="loading"
+  [disabled]="disabled || loading"
   (click)="onClick($event)"
   (mousedown)="onMouseDown($event)"
   (mouseup)="onMouseUp($event)">
