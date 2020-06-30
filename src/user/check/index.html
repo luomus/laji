@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang=en>
+<head>
+  <meta charset=utf-8>
+  <title>Laji.fi</title>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const logoutMsg = '__logout__'; // also in user.service.ts
+    const fallbackMsg = '__fallback__'; // also in user.service.ts
+    const loginUrl = params.get('loginUrl');
+    const hash = window.location.hash.substring(1);
+    const parts = hash.split(':');
+    const tabId = parts[0];
+    const mRand = parts[1];
+    const cRand = Math.random().toString(36).substr(2);
+    const bc1 = new BroadcastChannel('user-check');
+    const bc2 = new BroadcastChannel(`${mRand}${cRand}`);
+
+    window.location.hash = '';
+
+    function doLogout() {
+      bc1.postMessage(logoutMsg);
+      bc1.close();
+      bc2.close();
+    }
+
+    function getCurrentTabId() {
+      return window.top.tabId;
+    }
+
+    function isValidParent(window) {
+      if ([
+        'laji.fi',
+        'dev.laji.fi',
+        'beta.laji.fi',
+        'localhost'
+      ].indexOf(window.location.hostname) === -1) {
+        return false;
+      }
+      if (window.parent !== window.top) {
+        return isValidParent(window.parent);
+      }
+      return true;
+    }
+
+    if (params.get('token')) {
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1);
+      throw new Error('Done');
+    }
+
+    try {
+      setTimeout(() => {
+        doLogout();
+      }, 10000);
+
+      if (!(loginUrl.startsWith('https://fmnh-ws-test.it.helsinki.fi/laji-auth/') || loginUrl.startsWith('https://login.laji.fi/'))) {
+        doLogout();
+      }
+
+      if (getCurrentTabId() !== tabId || window.self === window.top || !isValidParent(window.parent)) {
+        doLogout();
+      }
+
+      bc1.onmessage = function(ev) {
+        if (getCurrentTabId() !== tabId) {
+          doLogout();
+        }
+        if (ev.data === logoutMsg) {
+          doLogout();
+        }
+      }
+
+      bc1.postMessage(`${tabId}:${cRand}`);
+
+      bc2.onmessage = function(ev) {
+        if (getCurrentTabId() !== tabId) {
+          doLogout();
+        }
+        const bc3 = new BroadcastChannel(`${mRand}${cRand}:${ev.data}`);
+        const iframe = document.createElement('iframe');
+        iframe.src = loginUrl;
+        iframe.style.display = 'none';
+        iframe.onload = function() {
+          const iframeParams = new URLSearchParams(this.contentWindow.location.search);
+          iframe.remove();
+          bc3.postMessage(iframeParams.get('token'));
+          bc3.close();
+        }
+        document.body.appendChild(iframe);
+      }
+    } catch (e) {
+      bc1.postMessage(`${tabId}:${fallbackMsg}`);
+    }
+  </script>
+</head>
+<body>
+</body>
+</html>
