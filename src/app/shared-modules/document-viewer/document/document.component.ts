@@ -24,8 +24,10 @@ import { Global } from '../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
+import { DocumentToolsService } from '../../../shared-modules/document-viewer/document-tools.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { TemplateForm } from '../../own-submissions/models/template-form';
 
 
 @Component({
@@ -62,6 +64,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   isViewInited = false;
   showOnlyHighlighted = true;
   childEvent = false;
+  documentToolsOpen = false;
   childComunicationsubscription: Subscription;
   highlightParents: string[] = [];
   @SessionStorage() showFacts = false;
@@ -71,8 +74,14 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   private interval: Subscription;
   private metaFetch: Subscription;
   subscriptParent: Subscription;
+  subscriptDocumentTools: Subscription;
   annotationResolving: boolean;
   annotationTags$: Observable<AnnotationTag[]>;
+  templateForm: TemplateForm = {
+    name: '',
+    description: '',
+    type: 'gathering'
+  };
 
 
   constructor(
@@ -83,6 +92,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private childComunication: DocumentViewerChildComunicationService,
     private taxonTagEffective: TaxonTagEffectiveService,
     private annotationService: AnnotationService,
+    private documentToolsService: DocumentToolsService,
     private translate: TranslateService 
   ) { }
 
@@ -96,6 +106,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;
       this.cd.markForCheck();
+   });
+
+   this.subscriptDocumentTools = this.documentToolsService.childEventListner().subscribe(toolsOpen =>{
+    this.documentToolsOpen = toolsOpen;
+    this.cd.markForCheck();
    });
 
    this.subscriptParent = this.taxonTagEffective.childEventListner().subscribe(event => {
@@ -129,6 +144,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     }
     if (this.metaFetch) {
       this.metaFetch.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
+    }
+    if(this.subscriptDocumentTools) {
+      this.subscriptDocumentTools.unsubscribe();
       this.childComunicationsubscription.unsubscribe();
     }
     if (this.subscriptParent) {
@@ -296,7 +315,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
 
   @HostListener('window:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
-    if (e.keyCode === 27 && !this.childEvent) {
+    if (e.keyCode === 27 && !this.childEvent && !this.documentToolsOpen) {
        e.stopImmediatePropagation();
        this.closeDocument();
       }

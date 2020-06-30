@@ -768,6 +768,7 @@
   "np.earlier": "Ilmoitukset",
   "np.edit": "Muokkaa",
   "np.delete": "Poista",
+  "np.template": "Luo esitäytetty lomake",
   "np.delete.confirm": "Haluatko varmasti poistaa?",
   "np.delete.success": "Poisto onnistui!",
   "np.delete.fail": "Poisto epäonnistui. Koita hetken päästä uudelleen",

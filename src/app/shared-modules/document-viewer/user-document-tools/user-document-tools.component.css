@@ -5,3 +5,7 @@
 ::ng-deep .btn:last-child {
     margin-right: 0px;
 }
+
+::ng-deep .btn.white {
+    background-color: #FFF;
+}

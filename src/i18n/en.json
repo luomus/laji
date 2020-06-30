@@ -637,6 +637,7 @@
   "np.earlier": "Observations",
   "np.edit": "Edit",
   "np.delete": "Delete",
+  "np.template": "Create prefilled form",
   "np.delete.confirm": "Are you sure you want to delete",
   "np.delete.success": "Deleted succesfully!",
   "np.delete.fail": "Deleting failed. Please try again later",

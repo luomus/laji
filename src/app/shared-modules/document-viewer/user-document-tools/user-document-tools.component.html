@@ -1,12 +1,59 @@
-<a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm" *ngIf="(actions | includes:'edit') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
-  {{ 'np.edit' | translate }}
-  <i class="glyphicon glyphicon-edit"></i>
-</a>
-<a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm" *ngIf="(actions | includes:'template') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
-  template
-  <i class="glyphicon glyphicon-edit"></i>
-</a>
-<a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm" *ngIf="(actions | includes:'delete') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
-  delete
-  <i class="glyphicon glyphicon-edit"></i>
-</a>
+<ng-container>
+  <a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm" *ngIf="(actions | includes:'edit') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
+    {{ 'np.edit' | translate }}
+    <i class="glyphicon glyphicon-edit"></i>
+  </a>
+  <a (click)="makeTemplate()" class="btn btn-default btn-sm" *ngIf="(actions | includes:'template') && hasEditRights && linkLocation" [tooltip]="'haseka.form.saveTemplate' | translate">
+    {{ 'np.template' | translate }}
+    <i class="glyphicon glyphicon-floppy-disk"></i>
+  </a>
+  <a (click)="makeDelete()" class="btn btn-default btn-sm" *ngIf="(actions | includes:'delete') && hasEditRights && linkLocation" [tooltip]="'haseka.delete.title' | translate">
+    {{ 'np.delete' | translate }}
+    <i class="glyphicon glyphicon-remove"></i>
+  </a>
+</ng-container>
+
+
+
+<ng-template #saveAsTemplate>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close pull-right" type="button" (click)="closeModal('templateModal')">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4 class="modal-title">{{ 'template.formTitle' | translate }}</h4>
+      </div>
+      <div class="modal-body">
+        <label for="templateName">{{ 'template.name' | translate }}: <span class="required">*</span></label>
+        <input id="templateName" class="form-control" type="text" [(ngModel)]="templateForm.name" name="name">
+        <label for="templateDescription">{{ 'template.description' | translate }}:</label>
+        <textarea id="templateDescription" class="form-control" [(ngModel)]="templateForm.description" name="description"></textarea>
+        <span class="required">*</span> = {{ 'required' | translate }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" [class.disabled]="templateForm.name.length === 0" >
+          <span>{{ "np.save" | translate }}</span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+</ng-template><!-- /.modal -->
+
+
+<ng-template #deleteModal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close pull-right" type="button" (click)="closeModal('deleteModal')">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4 class="modal-title" [innerHtml]="(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: '1', name: 'a'}"></h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success pull-left" (click)="closeModal('deleteModal')">
+          <span>{{ "haseka.delete.cancel" | translate }}</span>
+        </button>
+        <button type="button" class="btn btn-danger" (click)="deleteDocument()">
+          <span>{{ "haseka.delete.ok" | translate }}</span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+</ng-template><!-- /.modal -->
