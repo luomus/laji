@@ -153,6 +153,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
     this.subscriptDocumentTools = this.documentToolsService.childEventListner().subscribe(toolsOpen =>{
       this.documentToolsOpen = toolsOpen;
+      console.log(this.documentToolsOpen)
       this.cd.markForCheck();
      });
 

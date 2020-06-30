@@ -16,28 +16,31 @@
 
 
 <ng-template #saveAsTemplate>
-      <div class="modal-header">
-        <button class="close pull-right" type="button" (click)="closeModal($event)">
-          <i class="glyphicon glyphicon-remove"></i>
-        </button>
-        <h4 class="modal-title">{{ 'template.formTitle' | translate }}</h4>
-      </div>
-      <div class="modal-body">
-        <label for="templateName">{{ 'template.name' | translate }}: <span class="required">*</span></label>
-        <input id="templateName" class="form-control" type="text" [(ngModel)]="templateForm.name" name="name">
-        <label for="templateDescription">{{ 'template.description' | translate }}:</label>
-        <textarea id="templateDescription" class="form-control" [(ngModel)]="templateForm.description" name="description"></textarea>
-        <span class="required">*</span> = {{ 'required' | translate }}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" [class.disabled]="templateForm.name.length === 0" >
-          <span>{{ "np.save" | translate }}</span>
-        </button>
-      </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="close pull-right" type="button" (click)="closeModal($event)">
+        <i class="glyphicon glyphicon-remove"></i>
+      </button>
+      <h4 class="modal-title">{{ 'template.formTitle' | translate }}</h4>
+    </div>
+    <div class="modal-body">
+      <label for="templateName">{{ 'template.name' | translate }}: <span class="required">*</span></label>
+      <input id="templateName" class="form-control" type="text" [(ngModel)]="templateForm.name" name="name">
+      <label for="templateDescription">{{ 'template.description' | translate }}:</label>
+      <textarea id="templateDescription" class="form-control" [(ngModel)]="templateForm.description" name="description"></textarea>
+      <span class="required">*</span> = {{ 'required' | translate }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" [class.disabled]="templateForm.name.length === 0" >
+        <span>{{ "np.save" | translate }}</span>
+      </button>
+    </div>
+  </div>
 </ng-template><!-- /.modal -->
 
 
 <ng-template #deleteModal>
+    <div class="modal-content">
       <div class="modal-header">
         <button class="close pull-right" type="button" aria-label="Close" (click)="closeModal($event)">
           <i class="glyphicon glyphicon-remove"></i>
@@ -52,4 +55,5 @@
           <span>{{ "haseka.delete.ok" | translate }}</span>
         </button>
       </div>
+    </div><!-- /.modal-content -->
 </ng-template><!-- /.modal -->

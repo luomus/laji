@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, ViewChild, Output,
-EventEmitter, HostListener} from '@angular/core';
+EventEmitter, HostListener, ChangeDetectorRef, OnInit} from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentToolsService } from '../../../shared-modules/document-viewer/document-tools.service';
+import { take } from 'rxjs/operators'
 // import { EventEmitter } from 'redlock';
 
 @Component({
@@ -15,7 +16,7 @@ import { DocumentToolsService } from '../../../shared-modules/document-viewer/do
   providers: [BsModalRef],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserDocumentToolsComponent {
+export class UserDocumentToolsComponent implements OnInit {
 
   @Input() actions: string[]|false = ['edit','template','delete'];
   @Input() templateForm: TemplateForm = {
@@ -42,6 +43,7 @@ export class UserDocumentToolsComponent {
     private documentToolsService: DocumentToolsService,
     private modalService: BsModalService,
     private modalRef: BsModalRef,
+    private cd: ChangeDetectorRef
   ) { }
 
   @Input()
@@ -68,15 +70,24 @@ export class UserDocumentToolsComponent {
     this.updateLink();
   }
 
+  ngOnInit() {
+    this.modalService.onHide.subscribe((e) => {
+      const body = document.body;
+      body.classList.add("modal-open-after");
+      this.documentToolsService.emitChildEvent(false);
+      this.cd.detectChanges();
+    });
+  }
+
   makeTemplate() {
     // this.templateModal.show();
-    this.modalRef = this.modalService.show(this.templateModal, {class: 'modal-sm', backdrop: true});
+    this.modalRef = this.modalService.show(this.templateModal, {class: 'modal-sm tools', backdrop: true});
     this.documentToolsService.emitChildEvent(true);
   }
 
   makeDelete() {
     // this.deleteModal.show();
-    this.modalRef = this.modalService.show(this.deleteModal, {class: 'modal-sm', backdrop: true});
+    this.modalRef = this.modalService.show(this.deleteModal, {class: 'modal-sm tools', backdrop: true});
     this.documentToolsService.emitChildEvent(true);
   }
 
@@ -85,7 +96,6 @@ export class UserDocumentToolsComponent {
       this.modalRef.hide();
       const body = document.body;
       body.classList.add("modal-open-after");
-      this.documentToolsService.emitChildEvent(false);
     }
   }
 
