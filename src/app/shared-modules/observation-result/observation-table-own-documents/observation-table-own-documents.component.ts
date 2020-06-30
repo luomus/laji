@@ -31,6 +31,7 @@ import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
 import { OwnObservationTableSettingsComponent } from './own-observation-table-settings.component';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
+import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 
 @Component({
   selector: 'laji-observation-table-own-documents',
@@ -76,6 +77,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   columnLookup = {};
   _originalSelected: string[] = [];
   _originalSelectedNumbers: string[] = [];
+  showDownloadAll = true;
+  showPrintLabels = false;
 
   columnSelector = new ColumnSelector;
   numberColumnSelector = new ColumnSelector;
@@ -105,6 +108,11 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   private fetchSub: Subscription;
   private queryKey: string;
   private aggregateBy: string[] = [];
+  templateForm: TemplateForm = {
+    name: '',
+    description: '',
+    type: 'gathering'
+  };
 
   @Input() showRowAsLink = true;
 
@@ -322,4 +330,12 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       },
       (err) => this.logger.error('Simple download failed', err));
   }
+
+  onDocumentClick(event) {}
+
+  delete(event) {}
+
+  template(event) {}
+
+  label(event) {}
 }
