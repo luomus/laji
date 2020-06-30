@@ -19,12 +19,14 @@
             {{ 'print' | translate }}
             <img src="/static/images/icons/pdf_16x16.png">
           </a>
-          <laji-edit-link
+          <div>
+            <laji-user-document-tools
             [editors]="editors"
             [personID]="personID"
             [documentID]="document.documentId"
             [formID]="document.formId"
-          ></laji-edit-link>
+          ></laji-user-document-tools>
+          </div>
         </h3>
       </div>
       <laji-issues [data]="document"></laji-issues>

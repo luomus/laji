@@ -19,12 +19,14 @@
             {{ 'print' | translate }}
             <img src="/static/images/icons/pdf_16x16.png">
           </a>
-          <laji-edit-link
+          <div>
+            <laji-user-document-tools
             [editors]="document.editors"
             [personID]="personID"
             [documentID]="document.id"
             [formID]="document.formID"
-          ></laji-edit-link>
+          ></laji-user-document-tools>
+          </div>
         </h3>
       </div>
       <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName" ngPreserveWhitespaces>

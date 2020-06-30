@@ -1,0 +1,7 @@
+::ng-deep .btn {
+    margin-right: 10px;
+}
+
+::ng-deep .btn:last-child {
+    margin-right: 0px;
+}

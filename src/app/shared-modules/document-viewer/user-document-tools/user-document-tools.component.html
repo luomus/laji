@@ -1,0 +1,12 @@
+<a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm" *ngIf="(actions | includes:'edit') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
+  {{ 'np.edit' | translate }}
+  <i class="glyphicon glyphicon-edit"></i>
+</a>
+<a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm" *ngIf="(actions | includes:'template') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
+  template
+  <i class="glyphicon glyphicon-edit"></i>
+</a>
+<a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm" *ngIf="(actions | includes:'delete') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
+  delete
+  <i class="glyphicon glyphicon-edit"></i>
+</a>

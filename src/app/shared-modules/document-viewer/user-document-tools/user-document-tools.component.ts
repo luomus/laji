@@ -3,12 +3,14 @@ import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
 
 @Component({
-  selector: 'laji-edit-link',
-  templateUrl: './edit-link.component.html',
-  styleUrls: ['./edit-link.component.css'],
+  selector: 'laji-user-document-tools',
+  templateUrl: './user-document-tools.component.html',
+  styleUrls: ['./user-document-tools.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditLinkComponent {
+export class UserDocumentToolsComponent {
+
+  @Input() actions: string[]|false = ['edit','template','delete'];
 
   linkLocation = '';
   _editors: string[];

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditLinkComponent } from './edit-link.component';
+import { UserDocumentToolsComponent } from './user-document-tools.component';
 
-describe('EditLinkComponent', () => {
-  let component: EditLinkComponent;
-  let fixture: ComponentFixture<EditLinkComponent>;
+describe('UserDocumentToolsComponent', () => {
+  let component: UserDocumentToolsComponent;
+  let fixture: ComponentFixture<UserDocumentToolsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditLinkComponent ]
+      declarations: [ UserDocumentToolsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditLinkComponent);
+    fixture = TestBed.createComponent(UserDocumentToolsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
