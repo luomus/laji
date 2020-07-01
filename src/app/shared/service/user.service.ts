@@ -1,6 +1,17 @@
-import { catchError, distinctUntilChanged, filter, map, share, startWith, switchMap, take, tap } from 'rxjs/operators';
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  share,
+  startWith,
+  switchMap,
+  take,
+  tap,
+  timeout
+} from 'rxjs/operators';
 import { isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
@@ -54,6 +65,9 @@ let _state: IUserServiceState = {
   allUsers: {}
 };
 
+const logoutMsg = '__logout__'; // also in src/user/check/index.html
+const fallbackMsg = '__fallback__'; // also in src/user/check/index.html
+
 @Injectable({providedIn: 'root'})
 export class UserService {
 
@@ -63,6 +77,8 @@ export class UserService {
   // Do not write to this variable in the server!
   @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
   @SessionStorage() private returnUrl: string;
+  private tabId: string;
+  private mRandom: string;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
   private state$ = this.store.asObservable();
@@ -235,12 +251,75 @@ export class UserService {
         share()
       );
     } else if (this.persistentState.isLoggedIn) {
-      this.redirectToLogin();
-      return of(false);
+      return this.doBackgroundLogin().pipe(
+        switchMap(t => t ? this._checkLogin(t) : of(false)),
+        timeout(10000),
+        catchError(() => {
+          this.doLogoutState();
+          return of(true);
+        })
+      );
     } else {
       this.doLogoutState();
     }
     return of(true);
+  }
+
+  private doBackgroundLogin(): Observable<string> {
+    if (!('BroadcastChannel' in window)) {
+      this.redirectToLogin();
+      return of('');
+    }
+    this.tabId = Math.random().toString(36).substr(2);
+    this.mRandom = Math.random().toString(36).substr(2);
+    (window as any).tabId = this.tabId;
+
+    const loginUrl = encodeURIComponent(UserService.getLoginUrl('/user/check', this.translate.currentLang));
+    const channel1 = new BroadcastChannel('user-check');
+
+    const iframe = document.createElement('iframe');
+    iframe.src = `/user/check?loginUrl=${loginUrl}#${this.tabId}:${this.mRandom}`;
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    return new Observable((subscriber) => {
+      channel1.onmessage = (e) => {
+        const parts = e.data.split(':');
+
+        if (this.tabId !== (window as any).tabId) {
+          channel1.postMessage(logoutMsg);
+          e = {data: logoutMsg} as MessageEvent;
+        }
+        if (e.data === logoutMsg) {
+          iframe.remove();
+          this.logout();
+          return this.doLogoutState();
+        } else if (e.data.endsWith(fallbackMsg) && parts[0] === this.tabId) {
+          iframe.remove();
+          this.redirectToLogin();
+          return of('');
+        }
+
+        if (parts[0] !== this.tabId) {
+          return;
+        }
+
+        const mRandom2 = Math.random().toString(36).substr(2);
+        const channel2 = new BroadcastChannel(`${this.mRandom}${parts[1]}`);
+        const channel3 = new BroadcastChannel(`${this.mRandom}${parts[1]}:${mRandom2}`);
+
+        channel3.onmessage = (e3) => {
+          iframe.remove();
+          subscriber.next(e3.data);
+          subscriber.complete();
+          channel1.close();
+          channel3.close();
+        };
+
+        channel2.postMessage(mRandom2);
+        channel2.close();
+      };
+    });
   }
 
   private doServiceSideLoginState() {
