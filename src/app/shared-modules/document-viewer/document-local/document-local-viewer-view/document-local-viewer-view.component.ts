@@ -4,6 +4,8 @@ import { ViewerMapComponent } from '../../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../../shared/service/user.service';
+import { Router, RouterModule } from '@angular/router';
+import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-document-local-viewer-view',
@@ -30,7 +32,9 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
 
   constructor(
     private userService: UserService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService
   ) { }
 
   ngOnInit() {
@@ -54,6 +58,15 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
     this.active = i;
     if (this.map) {
       this.map.setActiveIndex(i);
+    }
+  }
+
+  onDocumentDeleted(e) {
+    console.log(e)
+    if (e) {
+      this.router.navigate(
+        this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])
+      );
     }
   }
 

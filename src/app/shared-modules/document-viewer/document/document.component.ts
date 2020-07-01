@@ -28,6 +28,8 @@ import { DocumentToolsService } from '../../../shared-modules/document-viewer/do
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { TemplateForm } from '../../own-submissions/models/template-form';
+import { Router, RouterModule } from '@angular/router';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 
 @Component({
@@ -93,7 +95,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private taxonTagEffective: TaxonTagEffectiveService,
     private annotationService: AnnotationService,
     private documentToolsService: DocumentToolsService,
-    private translate: TranslateService 
+    private translate: TranslateService,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService
   ) { }
 
   ngOnInit() {
@@ -312,6 +316,15 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     const body = document.body;
     body.classList.remove("modal-open-after");
     this.close.emit(true);
+  }
+
+  onDocumentDeleted(e) {
+    if (e) {
+      this.closeDocument();
+      this.router.navigate(
+        this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])
+      );
+    }
   }
 
 

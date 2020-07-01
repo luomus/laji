@@ -33,6 +33,8 @@ import { AnnotationService } from '../../document-viewer/service/annotation.serv
 import { DocumentToolsService } from '../../../shared-modules/document-viewer/document-tools.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { TemplateForm } from '../../own-submissions/models/template-form';
+import { Router, RouterModule } from '@angular/router';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -119,7 +121,9 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private focus: CheckFocusService,
     private translate: TranslateService,
     private documentToolsService: DocumentToolsService,
-    private annotationService: AnnotationService
+    private annotationService: AnnotationService,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService
   ) { }
 
   ngOnInit() {
@@ -392,6 +396,15 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   toggleShortcuts() {
     this.showShortcuts = !this.showShortcuts;
+  }
+
+  onDocumentDeleted(e) {
+    if (e) {
+      this.closeDocument();
+      this.router.navigate(
+        this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])
+      );
+    }
   }
 
   onManualLinkClick(event: MouseEvent) {

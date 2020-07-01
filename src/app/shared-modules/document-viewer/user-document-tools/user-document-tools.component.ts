@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, ViewChild,
-  HostListener, ChangeDetectorRef, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, ViewChild,
+  HostListener, EventEmitter, ChangeDetectorRef, OnInit} from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
@@ -12,7 +12,9 @@ import { UserService } from '../../../shared/service/user.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger';
+import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service'
 import { switchMap } from 'rxjs/operators';
+// import { EventEmitter } from 'protractor';
 // import { EventEmitter } from 'redlock';
 
 @Component({
@@ -31,6 +33,7 @@ export class UserDocumentToolsComponent implements OnInit {
     type: 'gathering'
   };
   @Input() onlyTemplates = false;
+  @Output() documentDeleted = new EventEmitter<string>();
 
 
   linkLocation = '';
@@ -56,7 +59,8 @@ export class UserDocumentToolsComponent implements OnInit {
     private userService: UserService,
     private documentService: DocumentService,
     private toastService: ToastsService,
-    private logger: Logger
+    private logger: Logger,
+    private reloadObservationView: ReloadObservationViewService
   ) { }
 
   @Input()
@@ -141,16 +145,40 @@ export class UserDocumentToolsComponent implements OnInit {
       });
   }
 
+  deleteDocument() {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+    this.documentService.deleteDocument(this._documentID)
+      .subscribe(
+        () => {
+          this.translate.get('delete.success')
+            .subscribe((value) => this.toastService.showSuccess(value));
+          this.loading = false;
+          // this.documents = this.documents.filter(doc => doc.id !== docId);
+          // this.documentsLoaded.emit(this.documents);
+          this.closeModal(event);
+          this.documentDeleted.emit(this._documentID);
+          this.reloadObservationView.emitChildEvent(false);
+          this.cd.markForCheck();
+          this.reloadObservationView.emitChildEvent(false);
+        },
+        (err) => {
+          this.translate.get('delete.error')
+            .subscribe((value) => this.toastService.showError(value));
+          // this.initDocuments(this.onlyTemplates);
+          this.logger.error('Deleting failed', err);
+          this.loading = false;
+          this.cd.markForCheck();
+        }
+      );
+  }
+
   onClickOutside() {
     this.closeModal(event);
   }
   
-
-  deleteDocument() {
-
-  }
-
-
   private checkEditRight() {
     if (!this._personID || !this._editors) {
       this.hasEditRights = false;

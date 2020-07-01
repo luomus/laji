@@ -45,6 +45,7 @@
                 [personID]="personID"
                 [documentID]="document.documentId"
                 [formID]="document.formId"
+                (documentDeleted)="onDocumentDeleted($event)"
               ></laji-user-document-tools>
               <div class="manual-shortcuts">
                 <span [ngSwitch]="currentLang">
