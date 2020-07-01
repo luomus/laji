@@ -18,6 +18,7 @@ export class ExpertiseFormComponent implements OnInit {
     this._seletedTaxonIds = selectedTaxonIds;
     this.updateSelected();
   }
+  @Input() saving = false;
 
   _seletedTaxonIds: string[];
   selected: Taxonomy[] = [];

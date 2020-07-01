@@ -1566,7 +1566,7 @@
   "theme.kerttu.letterTemplate": "Malli",
   "theme.kerttu.letterCandidate": "Ehdokas",
   "theme.kerttu.letterCandidateLonger": "Pidempi pätkä ehdokkaasta",
-  "theme.kerttu.areLettersSame": "Onko ehdotetussä äänessä sama lintuääni kuin mallissa?",
+  "theme.kerttu.areLettersSame": "Onko ehdotetussa äänessä sama lintuääni kuin mallissa?",
   "theme.kerttu.notSure": "Ei tietoa",
   "theme.kerttu.correlation": "vastaavuus",
   "theme.kerttu.timeBuffer": "Aikapuskuri",

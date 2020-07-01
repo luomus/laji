@@ -1,12 +1,16 @@
-<div class="row">
+<div class="row" id="letterInfo">
   <div class="col-md-12">
     <h2><laji-taxon-name [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name></h2>
     <div>
-      <span>{{ 'theme.kerttu.letter' | translate }}: {{ template?.name }}</span>
-      <br>
-      <span>{{ 'theme.kerttu.annotationsDone' | translate }}: {{ template?.info.userAnnotationCount }}/{{ template?.info.targetAnnotationCount }}</span>
-      <br>
-      <button class="btn btn-default" (click)="skipLetterClick.emit()">{{ 'theme.kerttu.skipLetter' | translate }}</button>
+      <dl>
+        <dt>{{ 'theme.kerttu.letter' | translate }}:</dt>
+        <dd>{{ template?.name }}</dd>
+        <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
+        <dd>{{ template?.info.userAnnotationCount }}/{{ template?.info.targetAnnotationCount }}</dd>
+      </dl>
+      <lu-button class="lu-button-without-transition" (click)="skipLetterClick.emit($event)">
+        {{ 'theme.kerttu.skipLetter' | translate }}
+      </lu-button>
     </div>
   </div>
 </div>
@@ -71,7 +75,9 @@
   </div>
   <div class="col-md-12">
     <h4>{{ 'theme.kerttu.letterCandidateLonger' | translate }}</h4>
-    <button (click)="candidateLongerVisible = true" class="btn btn-default" *ngIf="!candidateLongerVisible">Näytä</button>
+    <lu-button class="lu-button-without-transition" (click)="candidateLongerVisible = true" *ngIf="!candidateLongerVisible">
+      Näytä
+    </lu-button>
     <laji-audio-viewer
       *ngIf="candidateLongerVisible"
       [recording]="candidate?.recording"
