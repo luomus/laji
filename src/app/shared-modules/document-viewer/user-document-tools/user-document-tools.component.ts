@@ -1,12 +1,18 @@
-import { ChangeDetectionStrategy, Component, Input, ViewChild, Output,
-EventEmitter, HostListener, ChangeDetectorRef, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild,
+  HostListener, ChangeDetectorRef, OnInit} from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentToolsService } from '../../../shared-modules/document-viewer/document-tools.service';
-import { take } from 'rxjs/operators'
+import { TranslateService } from '@ngx-translate/core';
+import { DocumentApi } from '../../../shared/api/DocumentApi';
+import { UserService } from '../../../shared/service/user.service';
+import { DocumentService } from '../../own-submissions/service/document.service';
+import { ToastsService } from '../../../shared/service/toasts.service';
+import { Logger } from '../../../shared/logger';
+import { switchMap } from 'rxjs/operators';
 // import { EventEmitter } from 'redlock';
 
 @Component({
@@ -33,6 +39,7 @@ export class UserDocumentToolsComponent implements OnInit {
   _personID: string;
   _documentID: string;
   hasEditRights = false;
+  loading = false;
 
 
   @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
@@ -41,9 +48,15 @@ export class UserDocumentToolsComponent implements OnInit {
   constructor(
     private formService: FormService,
     private documentToolsService: DocumentToolsService,
+    private translate: TranslateService,
     private modalService: BsModalService,
     private modalRef: BsModalRef,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private documentApi: DocumentApi,
+    private userService: UserService,
+    private documentService: DocumentService,
+    private toastService: ToastsService,
+    private logger: Logger
   ) { }
 
   @Input()
@@ -97,6 +110,35 @@ export class UserDocumentToolsComponent implements OnInit {
       const body = document.body;
       body.classList.add("modal-open-after");
     }
+  }
+
+  saveTemplate() {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+    this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
+      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document: document}))
+    ).subscribe(
+      () => {
+        this.translate.get('template.success')
+          .subscribe((value) => this.toastService.showSuccess(value));
+        this.templateForm = {
+          name: '',
+          description: '',
+          type: 'gathering'
+        };
+        this.loading = false;
+        this.closeModal(event);
+        this.cd.markForCheck();
+      },
+      (err) => {
+        this.translate.get('template.error')
+          .subscribe((value) => this.toastService.showError(value));
+        this.logger.error('Template saving failed', err);
+        this.loading = false;
+        this.cd.markForCheck();
+      });
   }
 
   onClickOutside() {

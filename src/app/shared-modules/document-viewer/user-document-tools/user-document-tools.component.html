@@ -16,6 +16,7 @@
 
 
 <ng-template #saveAsTemplate>
+  <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
   <div class="modal-content">
     <div class="modal-header">
       <button class="close pull-right" type="button" (click)="closeModal($event)">
@@ -31,7 +32,7 @@
       <span class="required">*</span> = {{ 'required' | translate }}
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" [class.disabled]="templateForm.name.length === 0" >
+      <button type="button" class="btn btn-default" [class.disabled]="templateForm.name.length === 0" (click)="saveTemplate()">
         <span>{{ "np.save" | translate }}</span>
       </button>
     </div>
@@ -40,6 +41,7 @@
 
 
 <ng-template #deleteModal>
+  <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
     <div class="modal-content">
       <div class="modal-header">
         <button class="close pull-right" type="button" aria-label="Close" (click)="closeModal($event)">
