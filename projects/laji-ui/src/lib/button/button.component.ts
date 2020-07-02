@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
   HostListener,
-  OnChanges, SimpleChanges, ChangeDetectorRef, OnInit
+  OnChanges, SimpleChanges, OnInit
 } from '@angular/core';
 
 type Role = 'primary' | 'secondary' | 'neutral';
@@ -40,8 +40,6 @@ export class ButtonComponent implements OnChanges, OnInit {
     this.routerLink = url;
     this.useHref = url.includes('?');
   }
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   @HostListener('click', ['$event'])
   onHostClick(event) {
@@ -78,6 +76,5 @@ export class ButtonComponent implements OnChanges, OnInit {
     classes['lu-disabled'] = this.disabled;
     classes[this.role] = true;
     this.classes = classes;
-    this.cdr.markForCheck();
   }
 }
