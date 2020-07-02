@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
   HostListener,
-  OnChanges, SimpleChanges
+  OnChanges, SimpleChanges, ChangeDetectorRef, OnInit
 } from '@angular/core';
 
 type Role = 'primary' | 'secondary' | 'neutral';
@@ -16,7 +16,7 @@ type Role = 'primary' | 'secondary' | 'neutral';
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ButtonComponent implements OnChanges {
+export class ButtonComponent implements OnChanges, OnInit {
   @Input() role: Role = 'secondary';
   @Input() loading: boolean;
   @Input() disabled = false; // note: can't disable anchors
@@ -41,9 +41,15 @@ export class ButtonComponent implements OnChanges {
     this.useHref = url.includes('?');
   }
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   @HostListener('click', ['$event'])
   onHostClick(event) {
     event.stopImmediatePropagation();
+  }
+
+  ngOnInit() {
+    this.evalClasses();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -72,5 +78,6 @@ export class ButtonComponent implements OnChanges {
     classes['lu-disabled'] = this.disabled;
     classes[this.role] = true;
     this.classes = classes;
+    this.cdr.markForCheck();
   }
 }
