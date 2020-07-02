@@ -9,7 +9,7 @@
       (openSettingsMenu)="openModal()"
       (download)="download($event)"
     ></laji-datatable-header>
-    <laji-datatable
+    <laji-datatable-own-submissions
       #dataTableOwn
       class="observation-table"
       (rowSelect)="rowSelect.emit($event)"
@@ -29,7 +29,7 @@
       (reorder)="onReorder($event)"
       [totalMessage]="'haseka.submissions.total' | translate"
       [columns]="columns">
-    </laji-datatable>
+    </laji-datatable-own-submissions>
   </div>
   
   <laji-own-observation-table-settings

@@ -266,6 +266,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
           break;
         }
       }
+      console.log(cumulative)
       return cumulative;
     }, []);
 

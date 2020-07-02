@@ -11,6 +11,7 @@ import { InfoModule } from '../info/info.module';
 import { DatatableHeaderComponent } from './datatable-header/datatable-header.component';
 import { DownloadModule } from '../download/download.module';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
+import { DatatableOwnSubmissionsComponent } from './datatable-own-submissions/datatable-own-submissions.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,7 @@ import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.modul
     DownloadModule,
     LajiUiModule
   ],
-  declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent],
-  exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent]
+  declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent, DatatableOwnSubmissionsComponent],
+  exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent, DatatableOwnSubmissionsComponent]
 })
 export class DatatableModule { }

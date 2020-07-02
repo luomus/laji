@@ -16,7 +16,7 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
-import { DatatableComponent } from '../../datatable/datatable/datatable.component';
+import { DatatableOwnSubmissionsComponent } from '../../datatable/datatable-own-submissions/datatable-own-submissions.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
@@ -41,7 +41,7 @@ import { TemplateForm } from '../../../shared-modules/own-submissions/models/tem
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges {
-  @ViewChild('dataTableOwn', { static: true }) public datatable: DatatableComponent;
+  @ViewChild('dataTableOwn', { static: true }) public datatable: DatatableOwnSubmissionsComponent;
   @ViewChild(OwnObservationTableSettingsComponent, { static: true }) public settingsModalOwn: OwnObservationTableSettingsComponent;
 
   @Input() query: WarehouseQueryInterface;
@@ -202,6 +202,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       }
       return this.columnLookup[name];
     });
+
+    // this.columns.push({name: 'buttons', label: 'Buttons', sortable: false})
   }
 
   openModal() {
@@ -282,10 +284,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
 
     this.fetchSub = list$
       .subscribe(data => {
-        data.results = Array.from(new Set(data.results.map(a => a['document']['documentId'])))
-        .map(id => {
-          return data.results.find(a => a['document']['documentId'] === id)
-        })
         this.total.emit(data && data.results.length || 0);
         data.total = data.results.length;
         this.result = data;
