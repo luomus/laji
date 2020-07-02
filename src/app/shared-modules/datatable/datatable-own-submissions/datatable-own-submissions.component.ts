@@ -21,6 +21,7 @@ import { FilterByType, FilterService } from '../../../shared/service/filter.serv
 import { LocalStorage } from 'ngx-webstorage';
 import { PlatformService } from '../../../shared/service/platform.service';
 import { DocumentViewerFacade } from '../../document-viewer/document-viewer.facade';
+import { FormService } from '../../../shared/service/form.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 @Component({
@@ -84,7 +85,8 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     private logger: Logger,
     private filterService: FilterService,
     private zone: NgZone,
-    private documentViewerFacade: DocumentViewerFacade
+    private documentViewerFacade: DocumentViewerFacade,
+    public formService: FormService
   ) {}
 
   @Input() set height(height: string) {

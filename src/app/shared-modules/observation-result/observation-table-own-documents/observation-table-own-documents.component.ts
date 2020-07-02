@@ -32,12 +32,13 @@ import { IColumns } from '../../datatable/service/observation-table-column.servi
 import { OwnObservationTableSettingsComponent } from './own-observation-table-settings.component';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
+import { ToQNamePipe } from 'src/app/shared/pipe/to-qname.pipe';
 
 @Component({
   selector: 'laji-observation-table-own-documents',
   templateUrl: './observation-table-own-documents.component.html',
   styleUrls: ['./observation-table-own-documents.component.scss'],
-  providers: [ObservationResultService],
+  providers: [ObservationResultService, ToQNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges {
@@ -125,6 +126,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private exportService: ExportService,
     private warehouseApi: WarehouseApi,
+    private toQName: ToQNamePipe
   ) {
     this.allColumns = tableColumnService.getAllColumns();
     this.columnGroups = tableColumnService.getColumnGroups();
@@ -283,7 +285,16 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     );
 
     this.fetchSub = list$
-      .subscribe(data => {
+        .subscribe(data => {/*
+         data.results = Array.from(new Set(data.results.map(a => a['document']['documentId'])))
+         .map(id => {
+         return data.results.find(a => a['document']['documentId'] === id)
+        })*/
+        
+        const ids = data.results.map(obj => this.toQName.transform(obj['document']['documentId']) );
+        data.results.forEach((element, index) => {
+          element['document']['documentId'] = ids[index];
+        })
         this.total.emit(data && data.results.length || 0);
         data.total = data.results.length;
         this.result = data;
