@@ -36,22 +36,24 @@
       [selectionType]="selectionType"
     >
     <ngx-datatable-column *ngIf="actions.length > 0" name="Actions" sortable="false" prop="id" width="50">
-        <ng-template let-row="data" let-value="value" ngx-datatable-cell-template>
-            <span *ngIf="(actions | includes:'view')">
-                <span class="label label-warning link inline-block"
-                      [tooltip]="'result.showPrivateViewer' | translate"
+        <ng-template let-row="row" let-value="value"  ngx-datatable-cell-template>
+            <div *ngIf="(actions | includes:'view')">
+                <span class="label label-success link inline-block"
+                      [tooltip]="'result.showViewer' | translate"
                       [placement]="'right'"
                       container="body"
                       [adaptivePosition]="false"
+                      (click)="showDocument(row)"
                       >
-                  <i class="glyphicon glyphicon-eye-close"></i>
+                  <i class="glyphicon glyphicon-eye-open"></i>
                 </span>
-              </span>
+            </div>
               <a *ngIf="(actions | includes:'edit')" class="label label-primary link"
                     [tooltip]=" 'haseka.submissions.toEdit' | translate"
                     container="body"
                     [adaptivePosition]="false"
-                    [placement]="'right'">
+                    [placement]="'right'"
+                    >
                   <i class="glyphicon glyphicon-edit"></i>
               </a>
         </ng-template>

@@ -20,6 +20,7 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
 import { PlatformService } from '../../../shared/service/platform.service';
+import { DocumentViewerFacade } from '../../document-viewer/document-viewer.facade';
 
 interface Settings {[key: string]: DatatableColumn; }
 @Component({
@@ -82,7 +83,8 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     private platformService: PlatformService,
     private logger: Logger,
     private filterService: FilterService,
-    private zone: NgZone
+    private zone: NgZone,
+    private documentViewerFacade: DocumentViewerFacade
   ) {}
 
   @Input() set height(height: string) {
@@ -264,6 +266,12 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     if (event && event.column && event.column.name && event.newValue) {
       this.dataTableSettings = {...this.dataTableSettings, [event.column.name]: {width: event.newValue}};
     }
+  }
+
+  showDocument(doc: any) {
+    this.documentViewerFacade.showDocumentID({
+      document: doc['document']['documentId']
+    });
   }
 
   private updateFilteredRows() {
