@@ -16,7 +16,6 @@ import { ObservationTableSettingsComponent } from './observation-table/observati
 import { OwnObservationTableSettingsComponent } from './observation-table-own-documents/own-observation-table-settings.component';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 import { ChartModule } from '../chart/chart.module';
-import { ObservationTableOwnComponent } from './observation-table-own-documents/observation-table-own/observation-table-own.component';
 
 @NgModule({
   imports: [
@@ -37,8 +36,7 @@ import { ObservationTableOwnComponent } from './observation-table-own-documents/
     ObservationMonthDayChartComponent,
     ObservationTableSettingsComponent,
     OwnObservationTableSettingsComponent,
-    ObservationTableOwnDocumentsComponent,
-    ObservationTableOwnComponent
+    ObservationTableOwnDocumentsComponent
   ],
   providers: [ObservationResultService],
   exports: [
