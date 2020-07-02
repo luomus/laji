@@ -1,4 +1,12 @@
-import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, HostListener} from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter,
+  HostListener,
+  OnChanges, SimpleChanges
+} from '@angular/core';
 
 type Role = 'primary' | 'secondary' | 'neutral';
 
@@ -8,7 +16,7 @@ type Role = 'primary' | 'secondary' | 'neutral';
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ButtonComponent {
+export class ButtonComponent implements OnChanges {
   @Input() role: Role = 'secondary';
   @Input() loading: boolean;
   @Input() disabled = false; // note: can't disable anchors
@@ -26,6 +34,7 @@ export class ButtonComponent {
   routerLink;
   useHref = false;
   pressed = false;
+  classes = {};
 
   @Input() set anchor(url: string) {
     this.routerLink = url;
@@ -35,6 +44,12 @@ export class ButtonComponent {
   @HostListener('click', ['$event'])
   onHostClick(event) {
     event.stopImmediatePropagation();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.small || changes.disabled || changes.role) {
+      this.evalClasses();
+    }
   }
 
   onClick(event: MouseEvent) {
@@ -50,12 +65,12 @@ export class ButtonComponent {
     this.pressed = false;
   }
 
-  getNgClass() {
+  evalClasses() {
     const classes = {
       'lu-small-btn': this.small
     };
     classes['lu-disabled'] = this.disabled;
     classes[this.role] = true;
-    return classes;
+    this.classes = classes;
   }
 }
