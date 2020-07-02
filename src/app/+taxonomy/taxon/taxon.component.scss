@@ -1,44 +1,13 @@
-:host, laji-spinner {
-  /*display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;*/
-}
-
-.taxon-tree-container {
-  background-color: #ECF0F1;
-  position: relative;
-  z-index: 1;
+:host {
+  height: 100%;
 }
 
 laji-info-card {
   display: block;
 }
 
-.sidebar-toggle.open-toggle {
-  top: 44px;
-  padding: 15px;
-  border-top: none;
-  border-top-right-radius: 0;
-  text-align: center;
-}
-
-@media only screen and (min-width : 768px) and (max-width: 991px) {
-  .sidebar-toggle.open-toggle {
-    top: 48px;
-  }
-}
-
-@media only screen and (max-width : 767px) {
-  .sidebar-toggle.open-toggle {
-    top: 47px;
-  }
-}
 
 @media only screen and (min-width : 768px) {
-  .row, .taxon-tree-container {
-    display: flex;
-  }
-
   :host ::ng-deep laji-info-card .info-card-header-first-row {
     margin-left: 10px;
   }
@@ -47,64 +16,9 @@ laji-info-card {
   margin-left: -15px;
 }
 
-.dragbar {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 3px;
-  cursor: col-resize;
-  background-color: #e1e1e1;
-}
-
-.sidebar-toggle {
-  position: absolute;
-  top: 20px;
-  font-size: 16px;
-  color: #777;
-  margin-right: -24px;
-  background-color: #ECF0F1;
-  z-index: 1;
-  padding: 5px;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-  border-top: 1px solid #e1e1e1;
-  border-right: 1px solid #e1e1e1;
-  border-bottom: 1px solid #e1e1e1;
-}
-
-.hide-sidebar-toggle {
-  right: 0;
-}
-
 @media only screen and (max-width : 767px) {
-  .taxon-tree-container, laji-info-card {
-    width: 100% !important;
-  }
   laji-info-card {
     margin-left: 0 !important;
-  }
-  .dragbar{
-    display: none;
-  }
-
-  .sidebar-toggle.open-toggle{
-    margin-right: 0px;
-    position: absolute;
-    padding: 3px 15px;
-    width: 100%;
-  }
-
-  .hide-sidebar-toggle {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-top: 1px solid #e1e1e1;
-    border-right: 0px solid #e1e1e1;
-    border-left : 1px solid #e1e1e1;
-    border-bottom: 1px solid #e1e1e1;
-    right:21px;
   }
 }
 

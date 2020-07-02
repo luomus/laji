@@ -25,15 +25,11 @@ export class TaxonComponent implements OnInit, OnDestroy {
   infoCardContext: string;
   infoCardTab: string;
 
-  sidebarWidth = 225;
   showTree = true;
   canShowTree = true;
 
   loading = false;
   private initTaxonSub: Subscription;
-
-  private onMouseMove = this.updateSidebarWidth.bind(this);
-  private onMouseUp  = this.stopDragging.bind(this);
 
   private subParam: Subscription;
 
@@ -80,37 +76,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
     if (this.initTaxonSub) {
       this.initTaxonSub.unsubscribe();
     }
-  }
-
-
-  startDragging(e) {
-    e.preventDefault();
-    this.document.addEventListener(
-      'mousemove', this.onMouseMove
-    );
-    this.document.addEventListener(
-      'mouseup', this.onMouseUp
-    );
-  }
-
-  private updateSidebarWidth(e) {
-    e.preventDefault();
-    this.sidebarWidth = Math.min(Math.max(e.pageX + 2, 120), 450);
-    this.cd.detectChanges();
-  }
-
-  private stopDragging(e) {
-    this.document.removeEventListener(
-      'mousemove', this.onMouseMove
-    );
-    this.document.removeEventListener(
-      'mouseup', this.onMouseUp
-    );
-  }
-
-  toggleSidebar() {
-    this.showTree = !this.showTree;
-    this.updateRoute();
   }
 
   updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false) {
