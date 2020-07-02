@@ -71,7 +71,7 @@ export class ButtonComponent implements OnChanges, OnInit {
 
   evalClasses() {
     const classes = {
-      'lu-small-btn': this.small
+      'lu-btn-small': this.small
     };
     classes['lu-disabled'] = this.disabled;
     classes[this.role] = true;
