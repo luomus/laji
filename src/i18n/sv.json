@@ -1096,6 +1096,7 @@
   "result.showViewer": "Visa observation",
   "result.showPrivateViewer": "Visa opublicerad observation",
   "result.latestObservationsLabel": "Opublicerad observation",
+  "result.notOwnDocuments": "Inga egna observationer hittades med givna sökparametrar.",
   "result.editDocument": "Gå till redigering",
   "result.taxonomicOrder": "Taxonomic order",
   "result.unit.id": "Observation idr",

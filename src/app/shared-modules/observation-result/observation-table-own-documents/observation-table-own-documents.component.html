@@ -1,4 +1,4 @@
-<div class="observation-table-wrapper">
+<div class="observation-table-wrapper" *ngIf="result.results.length > 0">
     <laji-datatable-header
       [downloadText]="'haseka.submissions.download' | translate"
       [downloadLoading]="downloadLoading"
@@ -30,7 +30,10 @@
       [totalMessage]="'haseka.submissions.total' | translate"
       [columns]="columns">
     </laji-datatable-own-submissions>
-  </div>
+</div>
+<div *ngIf="result.results.length === 0">
+ {{ 'result.notOwnDocuments' | translate}}
+</div>
   
   <laji-own-observation-table-settings
     [allAggregateFields]="allAggregateFields"

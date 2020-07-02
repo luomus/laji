@@ -1179,6 +1179,7 @@
   "result.showViewer": "Näytä havaintoerä",
   "result.showPrivateViewer": "Näytä julkaisematon havaintoerä",
   "result.latestObservationsLabel": "Julkaisematon havaintoerä",
+  "result.notOwnDocuments": "Annetuilla hakuehdoilla ei löytynyt yhtään omaa havaintoerää.",
   "result.editDocument": "Muokkaa",
   "result.taxonomicOrder": "Taksonominen järjestys",
   "result.unit.id": "Havainnon tunniste",
