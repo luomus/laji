@@ -14,6 +14,7 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger';
 import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service'
 import { switchMap } from 'rxjs/operators';
+import { Person } from '../../../shared/model/Person';
 // import { EventEmitter } from 'protractor';
 // import { EventEmitter } from 'redlock';
 
@@ -43,6 +44,7 @@ export class UserDocumentToolsComponent implements OnInit {
   _documentID: string;
   hasEditRights = false;
   loading = false;
+  hasAdminRights = false;
 
 
   @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
@@ -94,6 +96,8 @@ export class UserDocumentToolsComponent implements OnInit {
       this.documentToolsService.emitChildEvent(false);
       this.cd.detectChanges();
     });
+
+    this.checkAdminRight();
   }
 
   makeTemplate() {
@@ -189,6 +193,16 @@ export class UserDocumentToolsComponent implements OnInit {
       this.updateLink();
     }
   }
+
+  private checkAdminRight() {
+    this.documentApi.findById(this._documentID, this.userService.getToken()).subscribe(document => {
+      const creator = document.creator;
+      this.hasAdminRights = this._personID === creator ? true : false;
+      this.cd.markForCheck();
+    });
+    
+  }
+  
 
   private updateLink() {
     if (!this.hasEditRights || !this._documentID || !this._formID) {

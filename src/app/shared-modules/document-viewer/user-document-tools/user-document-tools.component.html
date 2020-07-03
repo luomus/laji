@@ -7,7 +7,7 @@
     {{ 'np.template' | translate }}
     <i class="glyphicon glyphicon-floppy-disk"></i>
   </a>
-  <a (click)="makeDelete()" class="btn btn-default btn-sm" *ngIf="(actions | includes:'delete') && hasEditRights && linkLocation" [tooltip]="'haseka.delete.title' | translate">
+  <a (click)="makeDelete()" class="btn btn-default btn-sm" *ngIf="(actions | includes:'delete') && hasAdminRights" [tooltip]="'haseka.delete.title' | translate">
     {{ 'np.delete' | translate }}
     <i class="glyphicon glyphicon-remove"></i>
   </a>
