@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, HostListener} from '@angular/core';
 
-type Role = 'primary' | 'secondary' | 'neutral';
+type Role = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'danger' | 'other' ;
 
 @Component({
   selector: 'lu-button',

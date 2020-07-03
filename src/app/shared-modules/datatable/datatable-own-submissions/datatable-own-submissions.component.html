@@ -25,7 +25,7 @@
       [scrollbarV]="virtualScrolling || _isFixedHeight"
       [headerHeight]="showHeader ? 38 : 0"
       [footerHeight]="0"
-      [rowHeight]="50"
+      [rowHeight]="70"
       (sort)="sortChange.emit($event)"
       (reorder)="reorder.emit($event)"
       (resize)="onResize($event)"
@@ -38,7 +38,8 @@
     <ngx-datatable-column *ngIf="actions.length > 0" name="" sortable="false" prop="id" width="50">
         <ng-template let-row="row" let-value="value"  ngx-datatable-cell-template>
             <div *ngIf="(actions | includes:'view')">
-                <span class="label label-success link inline-block"
+                <lu-button 
+                      [role]="'success'"
                       [tooltip]="'result.showViewer' | translate"
                       [placement]="'right'"
                       container="body"
@@ -46,9 +47,10 @@
                       (click)="showDocument(row)"
                       >
                   <i class="glyphicon glyphicon-eye-open"></i>
-                </span>
+            </lu-button>
             </div>
-              <a *ngIf="(actions | includes:'edit')" class="label label-primary link"
+              <lu-button *ngIf="(actions | includes:'edit')"
+                    [role]="'edit'"
                     [tooltip]=" 'haseka.submissions.toEdit' | translate"
                     container="body"
                     [adaptivePosition]="false"
@@ -56,7 +58,7 @@
                     [routerLink]="formService.getEditUrlPath((row['document']['formId'] | toQName), (row['document']['documentId'] | toQName )) | localize"
                     >
                   <i class="glyphicon glyphicon-edit"></i>
-              </a>
+          </lu-button>
         </ng-template>
     </ngx-datatable-column> 
     <ngx-datatable-column *ngFor="let col of _columns; let i = index" [prop]="col.prop" [cellTemplate]="col.cellTemplate">

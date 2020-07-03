@@ -55,19 +55,78 @@ button, a {
   }
 }
 
-.neutral {
-  background-color: rgba($neutral-2, .5);
-  color: $neutral-7;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1);
-  &:hover {
-    background-color: $neutral-2;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+
+  .success {
+    padding: 0.1em 0.6em;
+    background-color: $success-5;
+    color: adjust-hue($color: $neutral-1, $degrees: -20%);
+    box-shadow: 0 1px 3px rgba($success-7, 0.3);
+    &:hover {
+      background-color: $success-7;
+    }
+    &.pressed {
+      background-color: darken($success-7, 3%);
+      box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+    }
   }
-  &.pressed {
-    background-color: darken($neutral-2, 3%);
-    box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+
+  .danger {
+    padding: 0.1em 0.6em;
+    background-color: $danger-5;
+    color: adjust-hue($color: $neutral-1, $degrees: -20%);
+    box-shadow: 0 1px 3px rgba($danger-7, 0.3);
+    &:hover {
+      background-color: $danger-7;
+    }
+    &.pressed {
+      background-color: darken($danger-7, 3%);
+      box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+    }
   }
-}
+
+  .warning {
+    padding: 0.1em 0.6em;
+    background-color: $warning-5;
+    color: adjust-hue($color: $neutral-1, $degrees: -20%);
+    box-shadow: 0 1px 3px rgba($warning-7, 0.3);
+    &:hover {
+      background-color: $warning-7;
+    }
+    &.pressed {
+      background-color: darken($warning-7, 3%);
+      box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+    }
+  }
+
+  .edit {
+    padding: 0.1em 0.6em;
+    background-color: $info-5;
+    color: adjust-hue($color: $neutral-1, $degrees: -20%);
+    box-shadow: 0 1px 3px rgba($info-7, 0.3);
+    &:hover {
+      background-color: $info-7;
+    }
+    &.pressed {
+      background-color: darken($info-7, 3%);
+      box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+    }
+  }
+
+  .other {
+    padding: 0.1em 0.6em;
+    background-color: $neutral-8;
+    color: adjust-hue($color: $neutral-1, $degrees: -20%);
+    box-shadow: 0 1px 3px rgba($neutral-9, 0.3);
+    &:hover {
+      background-color: $neutral-7;
+    }
+    &.pressed {
+      background-color: darken($neutral-9, 3%);
+      box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+    }
+  }
+
+
 
 
 *:disabled {

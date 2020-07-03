@@ -35,6 +35,12 @@
   }
 }
 
+ 
+  :host ::ng-deep .ngx-datatable{
+    overflow-y: visible;
+  }
+
+
 
 @media only screen and (min-width: 768px) {
   :host ::ng-deep .ngx-datatable.fixed-row .datatable-scroll .datatable-body-row .datatable-body-cell span {

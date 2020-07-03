@@ -40,6 +40,10 @@
   padding: 0 !important;
 }
 
+::ng-deep button, ::ng-deep a {
+    padding: 0.2em 0.6em;
+}
+
 @media only screen and (min-width : 768px) {
   #download-button-container, .print-actions {
     float: right;
