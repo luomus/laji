@@ -350,7 +350,7 @@ export class OwnSubmissionsComponent implements OnChanges {
           this.getLocality(gatheringInfo, document),
           this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
           this.getNamedPlaceName(document.namedPlaceID),
-          this.getTaxon(gatheringInfo.taxonID)
+          this.getTaxon(gatheringInfo.taxonID, gatheringInfo)
         ).pipe(
           map<any, RowDocument>(([locality, observers, npName, taxon]) => {
             const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
@@ -410,8 +410,9 @@ export class OwnSubmissionsComponent implements OnChanges {
     return this.labelService.get(npId, 'multi');
   }
 
-  private getTaxon(taxonId: string[]): Observable<string> {
-    if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1) { return ObservableOf(''); }
+  private getTaxon(taxonId: string[], gatheringInfo: any): Observable<string> {
+    if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1 ||
+    (gatheringInfo && gatheringInfo.unitList && gatheringInfo.unitList.length > 1)) { return ObservableOf(''); }
     return this.labelService.get(taxonId[0], 'multi').pipe(
       map(langResult => langResult[this.translate.currentLang])
     );

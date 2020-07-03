@@ -295,6 +295,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
         data.results.forEach((element, index) => {
           element['document']['documentId'] = ids[index];
         })
+        console.log(data.results)
         this.total.emit(data && data.results.length || 0);
         data.total = data.results.length;
         this.result = data;
