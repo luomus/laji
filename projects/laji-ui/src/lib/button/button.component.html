@@ -1,5 +1,6 @@
 <button
   *ngIf="!routerLink; else anchor"
+  class="lu-btn"
   tabindex="-1"
   [ngClass]="classes"
   [class.pressed]="pressed"
@@ -12,6 +13,7 @@
 </button>
 <ng-template #anchor>
   <a *ngIf="useHref"
+     class="lu-btn"
      tabindex="-1"
      rel="noopener nofollow"
      [href]="routerLink"
@@ -24,6 +26,7 @@
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </a>
   <a *ngIf="!useHref"
+     class="lu-btn"
      tabindex="-1"
      [routerLink]="routerLink"
      [target]="target"

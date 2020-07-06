@@ -192,13 +192,13 @@
         <label>{{ 'observation.form.map.intro'|translate }}</label>
     </div>
     <div>
-      <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Rectangle')">
+      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Rectangle')">
         <i class="lji-icon lji-crop"></i>
       </button>
       {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate }}
     </div>
     <div>
-      <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Coordinates')">
+      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Coordinates')">
         YKJ
       </button>
       {{ 'observation.form.map.coordinates'|translate }}
@@ -245,11 +245,11 @@
         </datalist>
       </div>
       <div>
-        <div class="btn-group">
-          <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
+        <div class="lu-btn-group">
+          <button type="button" class="lu-btn lu-btn-small" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
             {{ 'observation.form.intersect0' | translate }}
           </button>
-          <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
+          <button type="button" class="lu-btn lu-btn-small" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
             {{ 'observation.form.intersect100' | translate }}
           </button>
         </div>
@@ -397,8 +397,8 @@
                 [(ngModel)]="query.individualCountMax">
       </div>
     </div>
-      <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations()">{{ 'observation.form.onlyZeroObservations' | translate }}</button>
-      <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations(false)">{{ 'observation.form.zeroObservations' | translate }}</button>
+      <button type="button" class="lu-btn lu-btn-small" (click)="zeroObservations()">{{ 'observation.form.onlyZeroObservations' | translate }}</button>
+      <button type="button" class="lu-btn lu-btn-small" (click)="zeroObservations(false)">{{ 'observation.form.zeroObservations' | translate }}</button>
   </div>
 </section>
 
