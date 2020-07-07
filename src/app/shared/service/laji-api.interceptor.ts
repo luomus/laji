@@ -10,15 +10,18 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { filter, skip, switchMap, take } from 'rxjs/operators';
+import { PlatformService } from './platform.service';
+import { TranslateService } from '@ngx-translate/core';
 import {
+  CLEAR_TOKEN_MSG,
   isErrorResponse,
   LajiApiWorkerErrorResponse,
   LajiApiWorkerSuccessResponse,
-  LOGOUT_MSG, REQUEST_MSG
-} from './laji-api.worker';
-import { PlatformService } from './platform.service';
-import { TranslateService } from '@ngx-translate/core';
+  LOGOUT_MSG, PERSON_TOKEN,
+  REQUEST_MSG
+} from './laji-api-worker-common';
+import { BrowserService } from './browser.service';
 
 @Injectable()
 export class LajiApiInterceptor implements HttpInterceptor {
@@ -30,44 +33,44 @@ export class LajiApiInterceptor implements HttpInterceptor {
   constructor(
     private userService: UserService,
     private platformService: PlatformService,
+    private browserService: BrowserService,
     private ngZone: NgZone,
     private translate: TranslateService
   ) {
-    if (platformService.isServer) {
+    if (platformService.isServer || !platformService.canUseWebWorker) {
       return;
     }
-    if (window.Worker) {
-      this.rnd = Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
+    this.rnd = Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
+    this.worker = new Worker('./laji-api.worker', {type: 'module'});
 
-      this.worker = new Worker('./laji-api.worker', {
-        type: 'module'
-      });
-
-      this.worker.postMessage({key: this.rnd, loginUrl: UserService.getLoginUrl('/user/check', this.translate.currentLang)});
-
-      this.worker.onmessage = ({data}) => {
-        if (!data || typeof data !== 'object') {
-          return;
-        }
-        if (data.type === LOGOUT_MSG) {
+    this.worker.postMessage({key: this.rnd, loginUrl: UserService.getLoginUrl('/user/check', this.translate.currentLang)});
+    this.worker.onmessage = ({data}) => {
+      if (!data || typeof data !== 'object') {
+        return;
+      }
+      if (data.type === LOGOUT_MSG) {
+        this.ngZone.run(() => {
           this.userService.logout();
-        }
-        if (data.type === REQUEST_MSG) {
-          this.ngZone.run(() => {
-            this.responses.next(data);
-          })
-        }
+        });
+      }
+      if (data.type === REQUEST_MSG) {
+        this.ngZone.run(() => {
+          this.responses.next(data);
+        })
       }
     }
+
+    // Worker doesn't know when the personToken changes in another tap so it should check it when ever visibility changes
+    // Login reloads the window so no need to worry about that
+    this.browserService.visibility$.pipe(
+      skip(1),
+      filter(visible => visible)
+    ).subscribe(() => this.worker.postMessage({key: this.rnd, type: CLEAR_TOKEN_MSG}))
   }
 
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (
-      this.platformService.isServer ||
-      !this.worker ||
-      !request.urlWithParams.startsWith(environment.apiBase)
-    ) {
+    if (!this.shouldUseWorker(request)) {
       return next.handle(request);
     }
     this.id++;
@@ -89,6 +92,18 @@ export class LajiApiInterceptor implements HttpInterceptor {
         of(new HttpResponse<any>(res.response))
       )
     );
+  }
+
+  private shouldUseWorker(request: HttpRequest<any>): boolean {
+    if (
+      this.platformService.isServer ||
+      !this.platformService.canUseWebWorker ||
+      !request.urlWithParams.startsWith(environment.apiBase)
+    ) {
+      return false;
+    }
+    return request.urlWithParams.includes('/graphql') ||
+      request.urlWithParams.includes(PERSON_TOKEN);
   }
 
   private getRequestHeaders(request: HttpRequest<any>) {
