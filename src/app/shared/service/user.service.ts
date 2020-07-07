@@ -10,7 +10,7 @@ import {
   tap,
   timeout
 } from 'rxjs/operators';
-import { isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
+import { isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
@@ -25,6 +25,8 @@ import { PlatformService } from './platform.service';
 import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
+import { PERSON_TOKEN } from './laji-api-worker-common';
+import { HttpClient } from '@angular/common/http';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -110,7 +112,8 @@ export class UserService {
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
     private browserService: BrowserService,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private httpClient: HttpClient
   ) {
     if (!this.platformService.isBrowser) {
       this.doServiceSideLoginState();
@@ -124,9 +127,8 @@ export class UserService {
       take(1),
       switchMap(() => this.browserService.visibility$),
       filter(visible => visible),
-    ).subscribe(() => {
-      this._checkLogin();
-    });
+      switchMap(() => this._checkLogin())
+    ).subscribe();
   }
 
   checkLogin(): Observable<boolean> {
@@ -141,17 +143,24 @@ export class UserService {
   }
 
   logout(): void {
-    if (!_state.token || this.subLogout) {
+    if (this.subLogout) {
       return;
     }
-    this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
-      httpOkError(404, false),
-      retryWithBackoff(300),
-      catchError((err) => {
-        this.logger.warn('Failed to logout', err);
-        return of(false);
-      })
-    ).subscribe(() => this.doLogoutState());
+    if (_state.token) {
+      this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
+        httpOkError(404, false),
+        retryWithBackoff(300),
+        catchError((err) => {
+          this.logger.warn('Failed to logout', err);
+          return of(false);
+        })
+      ).subscribe(() => {
+        this.subLogout = undefined;
+        this.doLogoutState();
+      });
+    } else {
+      this.doLogoutState();
+    }
   }
 
   getToken(): string {
@@ -266,60 +275,15 @@ export class UserService {
   }
 
   private doBackgroundLogin(): Observable<string> {
-    if (!('BroadcastChannel' in window)) {
+    if (!this.platformService.canUseWebWorker) {
       this.redirectToLogin();
       return of('');
     }
-    this.tabId = Math.random().toString(36).substr(2);
-    this.mRandom = Math.random().toString(36).substr(2);
-    (window as any).tabId = this.tabId;
-
-    const loginUrl = encodeURIComponent(UserService.getLoginUrl('/user/check', this.translate.currentLang));
-    const channel1 = new BroadcastChannel('user-check');
-
-    const iframe = document.createElement('iframe');
-    iframe.src = `/user/check?loginUrl=${loginUrl}#${this.tabId}:${this.mRandom}`;
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-
-    return new Observable((subscriber) => {
-      channel1.onmessage = (e) => {
-        const parts = e.data.split(':');
-
-        if (this.tabId !== (window as any).tabId) {
-          channel1.postMessage(logoutMsg);
-          e = {data: logoutMsg} as MessageEvent;
-        }
-        if (e.data === logoutMsg) {
-          iframe.remove();
-          this.logout();
-          return this.doLogoutState();
-        } else if (e.data.endsWith(fallbackMsg) && parts[0] === this.tabId) {
-          iframe.remove();
-          this.redirectToLogin();
-          return of('');
-        }
-
-        if (parts[0] !== this.tabId) {
-          return;
-        }
-
-        const mRandom2 = Math.random().toString(36).substr(2);
-        const channel2 = new BroadcastChannel(`${this.mRandom}${parts[1]}`);
-        const channel3 = new BroadcastChannel(`${this.mRandom}${parts[1]}:${mRandom2}`);
-
-        channel3.onmessage = (e3) => {
-          iframe.remove();
-          subscriber.next(e3.data);
-          subscriber.complete();
-          channel1.close();
-          channel3.close();
-        };
-
-        channel2.postMessage(mRandom2);
-        channel2.close();
-      };
-    });
+    const checkUrl = UserService.getLoginUrl('', 'fi').replace('/login', '/loggedIn');
+    return this.httpClient.get<any>(checkUrl, {withCredentials: true}).pipe(
+      map(d => d && d.loggedIn ? PERSON_TOKEN : ''),
+      switchMap((t) => t ? of(t) : throwError('Logout'))
+    )
   }
 
   private doServiceSideLoginState() {

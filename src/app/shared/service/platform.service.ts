@@ -15,4 +15,8 @@ export class PlatformService {
   get isServer(): boolean {
     return !isPlatformBrowser(this.platformId);
   }
+
+  get canUseWebWorker(): boolean {
+    return typeof window !== 'undefined' && 'Worker' in window
+  }
 }
