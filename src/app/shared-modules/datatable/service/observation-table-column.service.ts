@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IColumnGroup, TableColumnService } from './table-column.service';
 import { ObservationTableColumn } from '../../observation-result/model/observation-table-column';
+import { environment } from '../../../../environments/environment';
+import { Global } from '../../../../environments/global';
 
 export interface IColumns {
   'document.documentId': ObservationTableColumn;
@@ -87,7 +89,7 @@ export const COLUMNS: IColumns = {
       'unit.linkings.taxon.scientificName' +
       'unit.linkings.taxon.cursiveName',
     width: 300,
-    required: true
+    required: environment.type === Global.type.vir
   },
   'unit.taxonVerbatim': {
     name: 'unit.taxonVerbatim',
@@ -167,7 +169,7 @@ export const COLUMNS: IColumns = {
     label: 'result.unit.quality.taxon',
     sortable: false
   },
-  'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon', required: true},
+  'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon', required: environment.type === Global.type.vir},
   'gathering.interpretations.countryDisplayname': {
     name: 'gathering.interpretations.countryDisplayname',
     label: 'result.gathering.country',
@@ -183,7 +185,7 @@ export const COLUMNS: IColumns = {
     name: 'gathering.interpretations.municipalityDisplayname',
     label: 'observation.form.municipality',
     aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname',
-    required: true
+    required: environment.type === Global.type.vir
   },
   'gathering.team.memberName': {
     name: 'gathering.team.memberName',
@@ -191,7 +193,7 @@ export const COLUMNS: IColumns = {
     aggregateBy: 'gathering.team.memberId,gathering.team.memberName'
   },
   'gathering.locality': {name: 'gathering.locality'},
-  'gathering.displayDateTime': {name: 'gathering.displayDateTime', required: true},
+  'gathering.displayDateTime': {name: 'gathering.displayDateTime', required: environment.type === Global.type.vir},
   'gathering.interpretations.coordinateAccuracy': {
     name: 'gathering.interpretations.coordinateAccuracy',
     cellTemplate: 'numeric'
@@ -216,7 +218,7 @@ export const COLUMNS: IColumns = {
   },
   'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false, required: true},
   'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.document.notes'},
-  'document.documentId': {name: 'document.documentId', required: true},
+  'document.documentId': {name: 'document.documentId', required: environment.type === Global.type.vir},
   'unit.unitId': {name: 'unit.unitId'},
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
@@ -281,7 +283,7 @@ export const COLUMNS: IColumns = {
     name: 'gathering.conversions.euref',
     prop: 'gathering.conversions.euref.verbatim',
     sortable: false,
-    required: true
+    required: environment.type === Global.type.vir
   },
   'gathering.conversions.wgs84': {
     name: 'gathering.conversions.wgs84',
