@@ -15,7 +15,7 @@ import { ObservationResultService } from '../service/observation-result.service'
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of, Subscription, forkJoin, forkJoin as ObservableForkJoin} from 'rxjs';
 import { DatatableOwnSubmissionsComponent } from '../../datatable/datatable-own-submissions/datatable-own-submissions.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -107,6 +107,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
 
   private modalSub: Subscription;
   private fetchSub: Subscription;
+  private fetchSubGiorgio: Subscription;
   private queryKey: string;
   private aggregateBy: string[] = [];
   templateForm: TemplateForm = {
@@ -159,7 +160,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   ngOnInit() {
     this.lang = this.translate.currentLang;
     this.initColumns();
-    this.fetchPage(this.page);
+    // this.fetchPage(this.page);
+    this.fetchPageGiorgio(this.page)
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -170,7 +172,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     if ((changes.query && !changes.query.isFirstChange())
         || (changes.page && !changes.page.isFirstChange())
         || (changes.pageSize && !changes.pageSize.isFirstChange())) {
-      this.fetchPage(changes.page ? this.page : 1);
+      this.fetchPageGiorgio(changes.page ? this.page : 1);
     }
     if (changes.visible && this.visible) {
       this.refreshTable();
@@ -242,7 +244,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   }
 
   setPage(pageInfo) {
-    this.fetchPage(pageInfo.offset + 1);
+    this.fetchPageGiorgio(pageInfo.offset + 1);
   }
 
   onSort(event) {
@@ -254,7 +256,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       const sortBy: string =  this.setLangParams(col.sortBy || '' + col.prop);
       return sortBy.split(',').map(val => val + ' ' + sort.dir.toUpperCase()).join(',');
     });
-    this.fetchPage(this.page);
+    this.fetchPageGiorgio(this.page);
   }
 
   onPageSizeChange(size: number) {
@@ -295,7 +297,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
         data.results.forEach((element, index) => {
           element['document']['documentId'] = ids[index];
         })
-        console.log(data.results)
         this.total.emit(data && data.results.length || 0);
         data.total = data.results.length;
         this.result = data;
@@ -308,6 +309,55 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
         this.changeDetectorRef.markForCheck();
         this.logger.error('Observation table data handling failed!', this.query);
       });
+  }
+
+  fetchPageGiorgio(page = 1) {
+    if (!this.pageSize) {
+      return;
+    }
+    const queryKey = JSON.stringify(this.query) + [this.pageSize, page].join(':');
+    if (this.loading && this.queryKey === queryKey) {
+      return;
+    }
+    this.queryKey = queryKey;
+    if (this.fetchSub) {
+      this.fetchSub.unsubscribe();
+    }
+    this.loading = true;
+    this.changeDetectorRef.markForCheck();
+
+    const listGiorgio$ = this.warehouseApi.warehouseQueryListGet(
+      this.query,
+      this.getSelectFields(this.columnSelector.columns, this.query),
+      ['document.modifiedDate DESC'],
+      this.pageSize,
+      page,
+      true
+    ).pipe(
+      map(res => res.results),
+         map(res => Array.from(new Set(res.map(a => a['document']['documentId'])))),
+          switchMap(documents => {
+            let data = documents.map(document => this.warehouseApi.warehouseQuerySingleGet(document));
+            return ObservableForkJoin(...data);
+          })
+    )
+    .subscribe(data => {
+      console.log(data)
+      this.total.emit(data && data.length || 0);
+      data.total = data.length;
+      this.result.results = data;
+      this.result.total = data.length;
+      this.result.pageSize = this.pageSize;
+      console.log(this.result)
+      this.loading = false;
+      this.changeDetectorRef.markForCheck();
+    }, () => {
+      this.total.emit(0);
+      this.loading = false;
+      this.changeDetectorRef.markForCheck();
+      this.logger.error('Observation table data handling failed!', this.query);
+    });
+
   }
 
   private getSelectFields(selected: string[], query: WarehouseQueryInterface) {

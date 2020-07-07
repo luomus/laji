@@ -126,6 +126,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
 
   @Input() set columns(columns: DatatableColumn[]) {
     const settings = this.dataTableSettings;
+    console.log('init')
     this._columns = columns.map((column) => {
       if (typeof column.headerTemplate === 'string') {
         column.headerTemplate = this.datatableTemplates[column.headerTemplate];
