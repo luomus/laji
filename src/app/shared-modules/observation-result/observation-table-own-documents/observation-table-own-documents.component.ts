@@ -1,3 +1,4 @@
+import { catchError, toArray, concatMap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,20 +11,24 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
+import * as moment from 'moment';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
-import { Observable, of, Subscription, forkJoin, forkJoin as ObservableForkJoin} from 'rxjs';
+import { Observable, of, Subscription, forkJoin, from as ObservableFrom, forkJoin as ObservableForkJoin, of as ObservableOf } from 'rxjs';
 import { DatatableOwnSubmissionsComponent } from '../../datatable/datatable-own-submissions/datatable-own-submissions.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
+import { UserService } from '../../../shared/service/user.service';
+import { DocumentApi } from '../../../shared/api/DocumentApi';
 import {
   IColumnGroup,
   TableColumnService
 } from '../../datatable/service/table-column.service';
+import { FormService } from '../../../shared/service/form.service';
 import { map, switchMap } from 'rxjs/operators';
 import { ExportService } from '../../../shared/service/export.service';
 import { BookType } from 'xlsx';
@@ -33,6 +38,10 @@ import { OwnObservationTableSettingsComponent } from './own-observation-table-se
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { ToQNamePipe } from 'src/app/shared/pipe/to-qname.pipe';
+import { RowDocument } from '../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
+import { DocumentInfoService } from '../../../shared/service/document-info.service';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+
 
 @Component({
   selector: 'laji-observation-table-own-documents',
@@ -116,6 +125,26 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     type: 'gathering'
   };
 
+  selectedMap = {
+    id: 'id',
+    templateName: 'templateName',
+    templateDescription: 'templateDescription',
+    dateEdited: 'dateEdited',
+    form: 'formID',
+    dateObserved: 'gatheringEvent.dateEnd,gatheringEvent.dateBegin,gatherings.dateBegin,gatherings.dateEnd',
+    locality: 'gatherings.locality,namedPlaceID,gatherings.namedPlaceID,gatherings.municipality',
+    unitCount: 'gatherings.units',
+    observer: 'gatheringEvent.leg',
+    namedPlaceName: 'namedPlaceID,gatherings.namedPlaceID',
+    taxon: 'gatherings.units.identifications.taxonID',
+  };
+
+  templateForm: TemplateForm = {
+    name: '',
+    description: '',
+    type: 'gathering'
+  };
+
   @Input() showRowAsLink = true;
 
   constructor(
@@ -127,7 +156,12 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private exportService: ExportService,
     private warehouseApi: WarehouseApi,
-    private toQName: ToQNamePipe
+    private toQName: ToQNamePipe,
+    private formService: FormService,
+    private documentInfoService: DocumentInfoService,
+    private labelService: TriplestoreLabelService,
+    private userService: UserService,
+    private documentApi: DocumentApi
   ) {
     this.allColumns = tableColumnService.getAllColumns();
     this.columnGroups = tableColumnService.getColumnGroups();
@@ -337,14 +371,16 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       map(res => res.results),
          map(res => Array.from(new Set(res.map(a => a['document']['documentId'])))),
           switchMap(documents => {
-            let data = documents.map(document => this.warehouseApi.warehouseQuerySingleGet(document));
-            return ObservableForkJoin(...data);
+            let data = documents.map(document => this.getSingleDocument(document));
+            return ObservableForkJoin(...data).pipe(
+              switchMap(documents => this.searchDocumentsToRowDocuments(documents))
+            );
           })
     )
     .subscribe(data => {
       console.log(data)
       this.total.emit(data && data.length || 0);
-      data.total = data.length;
+      // data.total = data.length;
       this.result.results = data;
       this.result.total = data.length;
       this.result.pageSize = this.pageSize;
@@ -358,6 +394,84 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       this.logger.error('Observation table data handling failed!', this.query);
     });
 
+  }
+
+  private getSingleDocument(documentId) {
+   //return this.warehouseApi.warehouseQuerySingleGet(documentId);
+   return this.documentApi.findById(this.toQName.transform(documentId), this.userService.getToken())
+  }
+
+  private searchDocumentsToRowDocuments(documents: Document[]): Observable<RowDocument[]> {
+    // documents.map(document => document['document']);
+    return Array.isArray(documents) && documents.length > 0 ?
+      forkJoin(documents.map((doc, i) => this.setRowData(doc, i))) :
+      ObservableOf([]);
+  }
+
+  private setRowData(document: Document, idx: number): any {
+    return this.getForm(document['formID']).pipe(
+      switchMap((form) => {
+        const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
+        return ObservableForkJoin(
+          this.getLocality(gatheringInfo, document),
+          this.getObservers(document['gatheringEvent'] && document['gatheringEvent']['leg']),
+          this.getNamedPlaceName(document['namedPlaceID']),
+        ).pipe(
+          map<any, RowDocument>(([locality, observers, npName]) => {
+            const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
+            let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
+            if (dateObservedEnd && dateObservedEnd !== dateObserved) {
+              dateObserved += ' - ' + dateObservedEnd;
+            }
+            return {
+              creator: document['creator'],
+              templateName: document['templateName'],
+              templateDescription: document['templateDescription'],
+              publicity: document['publicityRestrictions'] as any,
+              dateEdited: document['dateEdited'] ? moment(document['dateEdited']).format('DD.MM.YYYY HH:mm') : '',
+              dateObserved: dateObserved,
+              namedPlaceName: npName,
+              locality: locality,
+              unitCount: gatheringInfo.unitList.length,
+              observer: observers,
+              formID: document['formID'],
+              form: form.title || document['formID'],
+              id: document['id'],
+              locked: !!document['locked'],
+              index: idx,
+              formViewerType: form.viewerType,
+              _editUrl: this.formService.getEditUrlPath(document['formID'], document['id']),
+            } as RowDocument;
+          })
+        );
+      })
+    );
+  }
+
+  private getForm(formId: string): Observable<any> {
+    return this.formService.getForm(formId, this.translate.currentLang).pipe(
+      map(form => form || {id: formId}),
+      catchError((err) => {
+        this.logger.error('Failed to load form ' + formId, err);
+        return ObservableOf({id: formId});
+      }));
+  }
+
+  private getLocality(gatheringInfo: any, document): Observable<string> {
+    return getLocality$(this.translate, this.labelService, gatheringInfo, document);
+  }
+
+  private getObservers(userArray: string[] = []): Observable<string> {
+    return ObservableFrom(userArray).pipe(
+      concatMap(personId => this.userService.getPersonInfo(personId)),
+      toArray(),
+      map((array) => array.join(', '))
+    );
+  }
+
+  private getNamedPlaceName(npId: string): Observable<string> {
+    if (!npId || this.columns.indexOf('namedPlaceName') === -1) { return ObservableOf(''); }
+    return this.labelService.get(npId, 'multi');
   }
 
   private getSelectFields(selected: string[], query: WarehouseQueryInterface) {
@@ -391,11 +505,30 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       (err) => this.logger.error('Simple download failed', err));
   }
 
-  onDocumentClick(event) {}
+}
 
-  delete(event) {}
+export function getLocality$(translate: TranslateService,
+  labelService: TriplestoreLabelService,
+  gatheringInfo: any,
+  document: any): Observable<string> {
+let locality$ = ObservableOf(gatheringInfo);
+const npID = gatheringInfo.namedPlaceID || document.namedPlaceID;
 
-  template(event) {}
+if (!gatheringInfo.locality && npID) {
+locality$ = labelService.get(npID, 'multi').pipe(
+map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
+}
+const {gatherings = []} = document;
+if (!gatheringInfo.locality) {
+if (document.npID) {
+locality$ = labelService.get(npID, 'multi').pipe(
+map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
+} else if (gatherings[0] && gatherings[0].municipality) {
+locality$ = ObservableOf({...gatheringInfo, municipality: gatherings[0].municipality});
+}
+}
 
-  label(event) {}
+return locality$.pipe(
+switchMap((gathering) => translate.get('haseka.users.latest.localityMissing').pipe(
+map(missing => gathering.locality || gathering.municipality || missing))));
 }
