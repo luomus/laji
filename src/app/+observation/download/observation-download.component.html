@@ -19,7 +19,7 @@
         <p [innerHTML]="'result.load.introSimple' | translate"></p>
         <div class="action-group">
           <laji-download
-            *lajiForTypes="['prod', 'dev', 'embedded']"
+            *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
             role="primary"
             [showBackdrop]="false"
             (download)="simpleDownload($event)"
