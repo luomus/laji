@@ -28,7 +28,8 @@ function fetchPersonToken(): Observable<string> {
       withCredentials: true,
       responseType: 'text'
     }).pipe(
-      map(r => new URLSearchParams('?' + r.xhr.responseURL.replace(/^.*\?/, ''))),
+      map(r => '?' + r.response.match(new RegExp(/token=[A-Za-z0-9]+/))[0]),
+      map(r => new URLSearchParams(r)),
       map(d => d.get('token')),
       catchError(() => of('')),
       tap(t => personToken = '' +  t),
