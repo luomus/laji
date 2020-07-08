@@ -67,9 +67,6 @@ let _state: IUserServiceState = {
   allUsers: {}
 };
 
-const logoutMsg = '__logout__'; // also in src/user/check/index.html
-const fallbackMsg = '__fallback__'; // also in src/user/check/index.html
-
 @Injectable({providedIn: 'root'})
 export class UserService {
 
@@ -192,8 +189,8 @@ export class UserService {
       catchError(() => of({
         id,
         fullName: id
-      } as Person)),
-      tap(person => _state.allUsers[id] = person),
+      })),
+      tap(person => _state.allUsers[id] = person as Person),
       share()
     );
     return pickValue(_state.allUsers[id] as Observable<Person>);
