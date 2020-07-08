@@ -21,8 +21,7 @@
             "assets": [
               "src/static",
               "src/favicon.ico",
-              "src/robots.txt",
-              "src/user/check/index.html"
+              "src/robots.txt"
             ],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
