@@ -71,6 +71,7 @@ import { WarehousePipe } from './pipe/warehouse.pipe';
 import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
 import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
 import { IncludesPipe } from './pipe/includes.pipe';
+import { SsrDisableDirective } from './directive/ssr-disable.directive';
 
 
 @NgModule({
@@ -104,7 +105,8 @@ import { IncludesPipe } from './pipe/includes.pipe';
     FilterValuePipe,
     WarehousePipe,
     DateCutoffFuturePipe,
-    IncludesPipe
+    IncludesPipe,
+    SsrDisableDirective
   ],
   imports: [
     FormsModule,
@@ -135,7 +137,8 @@ import { IncludesPipe } from './pipe/includes.pipe';
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
-    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
+    SsrDisableDirective
   ]
 })
 export class SharedModule {
