@@ -43,7 +43,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
     this.rnd = Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
     this.worker = new Worker('./laji-api.worker', {type: 'module'});
 
-    this.worker.postMessage({key: this.rnd, loginUrl: UserService.getLoginUrl('/', this.translate.currentLang)});
+    this.worker.postMessage({key: this.rnd, loginUrl: UserService.getLoginUrl('/', this.translate.currentLang).replace('/login', '/loginInfo')});
     this.worker.onmessage = ({data}) => {
       if (!data || typeof data !== 'object') {
         return;
