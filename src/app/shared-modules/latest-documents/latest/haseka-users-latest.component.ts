@@ -16,6 +16,7 @@ export class UsersLatestComponent implements OnInit, OnChanges {
   @Input() forms: string[];
   @Input() showFormNames: boolean;
   @Input() complainLocality: boolean;
+  @Input() staticWidth: number = undefined;
 
   @Output() showViewer = new EventEmitter<Document>();
 
