@@ -1538,5 +1538,6 @@
   "navigation.birdPointCount": "Punkttaxering",
   "theme.birdPointCount.intro": "Punkttaxeringen görs längs med en fritt utvald rutt, som inventeras en gång i början av sommaren. Rutten består av 20 punkter och i varje punkt observeras fåglar under exakt 5 minuter.",
 
-  "technicalNews.error": null
+  "technicalNews.error": null,
+  "betapopup.desc": null
 }

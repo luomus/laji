@@ -1627,5 +1627,6 @@
   "navigation.birdPointCount": "Pistelaskenta",
   "theme.birdPointCount.intro": "Pesivien maalintujen pistelaskenta",
 
-  "technicalNews.error": "Palvelut vikatilassa. Voit tarkistaa onko asiasta tiedotetta <a href='http://foorumi.laji.fi/' target='_blank'>Foorumeilla</a> tai <a href='https://twitter.com/lajitieto' target='_blank'>Twitterissä</a>."
+  "technicalNews.error": "Palvelut vikatilassa. Voit tarkistaa onko asiasta tiedotetta <a href='http://foorumi.laji.fi/' target='_blank'>Foorumeilla</a> tai <a href='https://twitter.com/lajitieto' target='_blank'>Twitterissä</a>.",
+  "betapopup.desc": "Tämä on kehitysversio laji.fi palvelusta. Tätä kautta talletetut havainnot eivät näy laji.fi sivustolla."
 }
