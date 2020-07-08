@@ -21,8 +21,7 @@
             "assets": [
               "src/static",
               "src/favicon.ico",
-              "src/robots.txt",
-              "src/user/check/index.html"
+              "src/robots.txt"
             ],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
@@ -37,7 +36,8 @@
                 "projects/laji-ui/src/lib"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -229,7 +229,8 @@
           "options": {
             "tsConfig": [
               "tsconfig.app.json",
-              "tsconfig.spec.json"
+              "tsconfig.spec.json",
+              "tsconfig.worker.json"
             ],
             "exclude": []
           }

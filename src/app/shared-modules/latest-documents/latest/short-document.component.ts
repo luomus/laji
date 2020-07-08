@@ -23,6 +23,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
   @Input() form: any;
   @Input() showFormName = true;
+  @Input() staticWidth: number = undefined;
   @Input() complainLocality = true;
   @Input() unsaved = false;
   @Output() discardTempDocument = new EventEmitter();

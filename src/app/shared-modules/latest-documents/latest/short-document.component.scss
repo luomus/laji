@@ -1,10 +1,15 @@
 @import 'vars';
+@import '../../../../styles/styles';
 
 :host {
   display: block;
   position: relative;
   padding: 5px;
   color: $neutral-8;
+}
+
+.fixedDimension {
+  max-width: auto;
 }
 
 .unsaved {
@@ -46,6 +51,7 @@ header {
 h1 {
   font-size: $fs-3;
   margin: 0;
+  overflow-wrap: break-word;
 }
 
 .unit-list {
@@ -57,4 +63,10 @@ h1 {
   background-color: $neutral-1;
   border: 1px solid $neutral-4;
   border-radius: 2px;
+}
+
+@media screen and (max-width: 767px) {
+  .fixedDimension {
+    max-width: calc(80vw - 50px);
+  }
 }

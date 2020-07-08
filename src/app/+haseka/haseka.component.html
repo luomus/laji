@@ -23,6 +23,7 @@
     <lu-sidebar-link *lajiLoggedIn="true" [link]="['/observation', 'statistics'] | localize" [linkParams]="{qualityIssues: 'BOTH', editorOrObserverPersonToken: true}">{{ 'haseka.statistics.title' | translate }}</lu-sidebar-link>
     <lu-sidebar-link [link]="['/vihko', 'tools'] | localize">{{ 'haseka.tools' | translate }}</lu-sidebar-link>
     <laji-haseka-latest *ngIf="userService.isLoggedIn$ | async"
+                        [staticWidth]="300"
                         (showViewer)="showDocumentViewer($event)"></laji-haseka-latest>
   </nav>
 </lu-sidebar>
