@@ -145,7 +145,7 @@
               [placement]="'right'">
             <i class="glyphicon glyphicon-edit"></i>
         </lu-button>
-        <span *ngIf="showMakeTemplate(row)">
+        <!--<span *ngIf="showMakeTemplate(row)">
           <lu-button 
                 [role]="'warning'"
                 (click)="makeTemplate(row)"
@@ -155,7 +155,7 @@
                 [placement]="'right'">
             <i class="glyphicon glyphicon-floppy-disk"></i>
         </lu-button>
-        </span>
+        </span>-->
       </ng-template>
     </ngx-datatable-column>
 
@@ -207,7 +207,7 @@
              [routerLink]="'/theme/pistelaskenta/statistics/' + row.id | localize">
             <i class="glyphicon glyphicon-stats"></i>
         </lu-button>
-          <lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
+        <!--<lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
                 [role]="'danger'"
                 [tooltip]="'friend.remove' | translate"
                 [placement]="'left'"
@@ -215,7 +215,7 @@
                 [container]="'body'"
                 (click)="deleteDialog(row)">
             <i class="glyphicon glyphicon-remove"></i>
-        </lu-button>
+        </lu-button>-->
         </div>
       </ng-template>
     </ngx-datatable-column>

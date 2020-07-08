@@ -39,6 +39,7 @@ export interface RowDocument {
   dateObserved: string;
   namedPlaceName: string;
   locality: string;
+  gatheringsCount: number,
   unitCount: number;
   observer: string;
   formID: string;
@@ -131,9 +132,10 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     {prop: 'dateEdited', mode: 'medium'},
     {prop: 'dateObserved', mode: 'small'},
     {prop: 'namedPlaceName', mode: 'small'},
-    {prop: 'locality', mode: 'small'},
-    {prop: 'taxon', mode: 'small'},
-    {prop: 'unitCount', mode: 'medium'},
+    {prop: 'locality', mode: 'medium'},
+    {prop: 'taxon', mode: 'medium'},
+    {prop: 'gatheringsCount', mode: 'small'},
+    {prop: 'unitCount', mode: 'small'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
     {prop: 'id', mode: 'large'}
@@ -399,6 +401,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   private initColumns() {
     const useCols = [];
+    console.log('ciao')
     this._columns.map(col => {
       const column = this.allColumns.find((value) => value.prop === col);
       if (column) {

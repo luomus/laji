@@ -57,7 +57,7 @@ export class OwnSubmissionsComponent implements OnChanges {
   @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
-  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'observer', 'form', 'id'];
+  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id'];
   @Input() columnNameMapping: any;
   @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
   @Input() onlyTemplates = false;
@@ -367,6 +367,7 @@ export class OwnSubmissionsComponent implements OnChanges {
               dateObserved: dateObserved,
               namedPlaceName: npName,
               locality: locality,
+              gatheringsCount: document.gatherings.length,
               unitCount: gatheringInfo.unitList.length,
               observer: observers,
               taxon,
@@ -442,6 +443,10 @@ export function getLocality$(translate: TranslateService,
                              document: any): Observable<string> {
   let locality$ = ObservableOf(gatheringInfo);
   const npID = gatheringInfo.namedPlaceID || document.namedPlaceID;
+
+  if (gatheringInfo.locality && gatheringInfo.municipality) {
+    locality$ = ObservableOf({...gatheringInfo, locality: gatheringInfo.municipality + ', ' + gatheringInfo.locality});
+  }
 
   if (!gatheringInfo.locality && npID) {
     locality$ = labelService.get(npID, 'multi').pipe(

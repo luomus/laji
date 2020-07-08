@@ -1,4 +1,4 @@
-import { catchError, toArray, concatMap } from 'rxjs/operators';
+import { catchError, toArray, concatMap, share } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -139,11 +139,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     taxon: 'gatherings.units.identifications.taxonID',
   };
 
-  templateForm: TemplateForm = {
-    name: '',
-    description: '',
-    type: 'gathering'
-  };
 
   @Input() showRowAsLink = true;
 
@@ -238,7 +233,9 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
         this.aggregateBy.push((column.aggregateBy || column.name)
           + (this.columnLookup[name].sortBy ? ',' + this.setLangParams(this.columnLookup[name].sortBy) : ''));
       }
+      console.log(this.columnLookup[name])
       return this.columnLookup[name];
+
     });
 
     // this.columns.push({name: 'buttons', label: 'Buttons', sortable: false})
@@ -415,7 +412,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
         return ObservableForkJoin(
           this.getLocality(gatheringInfo, document),
           this.getObservers(document['gatheringEvent'] && document['gatheringEvent']['leg']),
-          this.getNamedPlaceName(document['namedPlaceID']),
+          /*this.getNamedPlaceName(document['namedPlaceID']),*/
         ).pipe(
           map<any, RowDocument>(([locality, observers, npName]) => {
             const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
@@ -432,6 +429,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
               dateObserved: dateObserved,
               namedPlaceName: npName,
               locality: locality,
+              gatheringsCount: document['gatherings'].length,
               unitCount: gatheringInfo.unitList.length,
               observer: observers,
               formID: document['formID'],
@@ -469,10 +467,11 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     );
   }
 
-  private getNamedPlaceName(npId: string): Observable<string> {
+  /*private getNamedPlaceName(npId: string): Observable<string> {
+    console.log(this.columns)
     if (!npId || this.columns.indexOf('namedPlaceName') === -1) { return ObservableOf(''); }
     return this.labelService.get(npId, 'multi');
-  }
+  }*/
 
   private getSelectFields(selected: string[], query: WarehouseQueryInterface) {
     const selects = selected.map(field => this.columnLookup[field].selectField || field);
@@ -514,19 +513,24 @@ export function getLocality$(translate: TranslateService,
 let locality$ = ObservableOf(gatheringInfo);
 const npID = gatheringInfo.namedPlaceID || document.namedPlaceID;
 
-if (!gatheringInfo.locality && npID) {
-locality$ = labelService.get(npID, 'multi').pipe(
-map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
-}
-const {gatherings = []} = document;
-if (!gatheringInfo.locality) {
-if (document.npID) {
-locality$ = labelService.get(npID, 'multi').pipe(
-map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
-} else if (gatherings[0] && gatherings[0].municipality) {
-locality$ = ObservableOf({...gatheringInfo, municipality: gatherings[0].municipality});
-}
-}
+    if (gatheringInfo.locality && gatheringInfo.municipality) {
+      locality$ = ObservableOf({...gatheringInfo, locality: gatheringInfo.municipality + ', ' + gatheringInfo.locality});
+    }
+
+    if (!gatheringInfo.locality && npID) {
+    locality$ = labelService.get(npID, 'multi').pipe(
+    map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
+    }
+
+    const {gatherings = []} = document;
+    if (!gatheringInfo.locality) {
+    if (document.npID) {
+    locality$ = labelService.get(npID, 'multi').pipe(
+      map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
+      } else if (gatherings[0] && gatherings[0].municipality) {
+      locality$ = ObservableOf({...gatheringInfo, municipality: gatherings[0].municipality});
+      }
+    }
 
 return locality$.pipe(
 switchMap((gathering) => translate.get('haseka.users.latest.localityMissing').pipe(

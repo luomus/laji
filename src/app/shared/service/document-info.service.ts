@@ -14,6 +14,7 @@ export class DocumentInfoService {
       dateEnd: null,
       unsavedUnitCount: 0,
       locality: null,
+      municipality: null,
       namedPlaceID: null,
       localityCount: 0,
       unitList: [],
@@ -25,6 +26,7 @@ export class DocumentInfoService {
         const gathering = document.gatherings[i];
         if (i === 0) {
           info.locality = gathering.locality;
+          info.municipality = gathering.municipality ? gathering.municipality : '',
           info.namedPlaceID = gathering.namedPlaceID;
           info.localityCount = document.gatherings.length - 1;
         }
