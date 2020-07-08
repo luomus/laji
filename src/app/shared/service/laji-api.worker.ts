@@ -24,13 +24,10 @@ function fetchPersonToken(): Observable<string> {
   if (!token$) {
     token$ = ajax({
       url: loginUrl,
-      crossDomain: true,
-      withCredentials: true,
-      responseType: 'text'
+      withCredentials: true
     }).pipe(
-      map(r => '?' + r.response.match(new RegExp(/token=[A-Za-z0-9]+/))[0]),
-      map(r => new URLSearchParams(r)),
-      map(d => d.get('token')),
+      map(r => r.response),
+      map(d => d['token'] || ''),
       catchError(() => of('')),
       tap(t => personToken = '' +  t),
       tap(t => { if (!t) { postMessage({type: LOGOUT_MSG}) } }),
