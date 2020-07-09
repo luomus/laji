@@ -1,10 +1,11 @@
+<laji-beta-popup *lajiForTypes="['beta']"></laji-beta-popup>
 <laji-navbar *ngIf="!isEmbedded"></laji-navbar>
 <div id="content" class="content" [ngClass]="{embedded: isEmbedded}">
   <div class="router-content">
     <router-outlet></router-outlet>
   </div>
 </div>
-<laji-footer class="footer" [onFrontPage]="onFrontPage" *lajiForTypes="['dev', 'prod']"></laji-footer>
+<laji-footer class="footer" [onFrontPage]="onFrontPage" *lajiForTypes="['dev', 'prod', 'beta']"></laji-footer>
 <laji-iucn-footer class="footer" *lajiForTypes="['iucn']"></laji-iucn-footer>
 <laji-feedback *ngIf="!isEmbedded && displayFeedback" [iconOnly]="true"></laji-feedback>
 <laji-viewer-modal></laji-viewer-modal>

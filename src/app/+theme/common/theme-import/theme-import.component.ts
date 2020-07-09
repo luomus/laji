@@ -22,7 +22,7 @@ export class ThemeImportComponent {
     route: ActivatedRoute,
     themeFormService: ThemeFormService
   ) {
-    this.form$ = themeFormService.getForm(route.snapshot);
+    this.form$ = themeFormService.getExcelForm(route.snapshot);
   }
 
 }

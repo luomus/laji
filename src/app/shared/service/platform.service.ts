@@ -6,6 +6,8 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class PlatformService {
 
+  private _canUseWebWorkerLogin = true;
+
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
   get isBrowser(): boolean {
@@ -14,5 +16,17 @@ export class PlatformService {
 
   get isServer(): boolean {
     return !isPlatformBrowser(this.platformId);
+  }
+
+  get canUseWebWorker(): boolean {
+    return typeof window !== 'undefined' && 'Worker' in window;
+  }
+
+  get canUseWebWorkerLogin(): boolean {
+    return this._canUseWebWorkerLogin && this.canUseWebWorker && this.isBrowser;
+  }
+
+  set canUseWebWorkerLogin(canUse: boolean) {
+    this._canUseWebWorkerLogin = canUse;
   }
 }

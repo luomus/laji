@@ -25,7 +25,7 @@ const baseRoutes: Routes = [
     title: 'navigation.taxonomy'
   }},
   {path: 'collection', loadChildren: () => import('./+collection/collection.module').then(m => m.CollectionModule), data: {preload: false}},
-  {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {preload: false}},
+  {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},
   {
     path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
     data: {title: 'navigation.map', displayFeedback: false, preload: false }

@@ -19,7 +19,7 @@
         <p [innerHTML]="'result.load.introSimple' | translate"></p>
         <div class="action-group">
           <laji-download
-            *lajiForTypes="['prod', 'dev', 'embedded']"
+            *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
             role="primary"
             [showBackdrop]="false"
             (download)="simpleDownload($event)"
@@ -81,6 +81,7 @@
             <lu-button
               [disabled]="requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
               (click)="makePublicRequest()">
+              <i class="glyphicon glyphicon-download-alt"></i>
               {{ 'observation.download.loadPublic' | translate }}
             </lu-button>
           </ng-container>
@@ -120,9 +121,10 @@
       <div *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
         <p [innerHtml]="'result.load.introSpecies' | translate"></p>
         <lu-button
-          (click)="updateQueryParamsDownloadTaxon($event)"
-          target="_self"
-          anchor="/api/warehouse/query/aggregate?{{csvParams}}">
+          [loading]="speciesCsvLoading"
+          (click)="downloadSpecies($event)"
+          target="_self">
+          <i class="glyphicon glyphicon-download-alt"></i>
           {{ 'observation.download.loadSpecies' | translate }}
         </lu-button>
       </div>

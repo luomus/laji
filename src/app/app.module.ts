@@ -32,6 +32,7 @@ import { RouterModule } from '@angular/router';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
+import { LajiApiInterceptor } from './shared/service/laji-api.interceptor';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -75,6 +76,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: LajiApiInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true},
     {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,

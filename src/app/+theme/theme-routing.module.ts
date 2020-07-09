@@ -525,10 +525,15 @@ const routes: Routes = [
         canActivate: [OnlyLoggedIn, HasFormPermission],
       },
       {
-        path: 'tools',
+        path: 'import',
         canActivate: [OnlyLoggedIn, HasFormPermission],
-        loadChildren: () => import('../+haseka/tools/tools.module').then(m => m.ToolsModule)
+        component: ThemeImportComponent
       },
+      {
+        path: 'generate',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        component: ThemeGenerateSpreadsheetComponent
+      }
     ],
     data: {
       formID: Global.forms.lolifeForm,
@@ -547,27 +552,17 @@ const routes: Routes = [
           label: 'theme.lolife.ownSubmissions',
           adminLabel: 'theme.lolife.ownSubmissions.admin'
         },
-        tools: {
-          routerLink: ['tools'],
-          label: 'theme.nav.tools',
-          children: [
-            {
-              routerLink: ['tools', 'import'],
-              label: 'theme.nav.tools.import'
-            },
-            {
-              routerLink: ['tools', 'generate'],
-              label: 'theme.nav.tools.generate'
-            }
-          ]
+        toolsImport: {
+          routerLink: ['import'],
+          label: 'theme.nav.tools.import'
+        },
+        toolsGenerate: {
+          routerLink: ['generate'],
+          label: 'theme.nav.tools.generate'
         }
       },
-      navLinksOrder: ['about', 'instructions', 'form', 'tools', 'ownSubmissions', 'formPermissions'],
-      hideNavFor: ['/form'],
-      tools: {
-        formID: 'MHL.45A',
-        showLabelDesigner: false
-      }
+      navLinksOrder: ['about', 'instructions', 'form', 'toolsImport', 'toolsGenerate', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form']
     }
   },
   {

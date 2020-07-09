@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IColumnGroup, TableColumnService } from './table-column.service';
 import { ObservationTableColumn } from '../../observation-result/model/observation-table-column';
+import { environment } from '../../../../environments/environment';
+import { Global } from '../../../../environments/global';
 
 export interface IColumns {
   'document.documentId': ObservationTableColumn;
@@ -18,9 +20,7 @@ export interface IColumns {
   'unit.interpretations.recordQuality': ObservationTableColumn;
   'gathering.team': ObservationTableColumn;
   'gathering.interpretations.countryDisplayname': ObservationTableColumn;
-  'gathering.interpretations.country': ObservationTableColumn;
   'gathering.interpretations.biogeographicalProvinceDisplayname': ObservationTableColumn;
-  'gathering.interpretations.biogeographicalProvince': ObservationTableColumn;
   'gathering.interpretations.municipalityDisplayname': ObservationTableColumn;
   'gathering.team.memberName': ObservationTableColumn;
   'gathering.locality': ObservationTableColumn;
@@ -62,6 +62,7 @@ export interface IColumns {
   'gathering.conversions.ykj1kmCenter': ObservationTableColumn;
   'gathering.conversions.euref': ObservationTableColumn;
   'gathering.conversions.wgs84': ObservationTableColumn;
+  'gathering.interpretations.country': ObservationTableColumn;
   'sample.sampleId': ObservationTableColumn;
   'sample.type': ObservationTableColumn;
   'sample.material': ObservationTableColumn;
@@ -95,7 +96,7 @@ export const COLUMNS: IColumns = {
       'unit.linkings.taxon.scientificName' +
       'unit.linkings.taxon.cursiveName',
     width: 300,
-    required: true
+    required: environment.type === Global.type.vir
   },
   'unit.taxonVerbatim': {
     name: 'unit.taxonVerbatim',
@@ -175,27 +176,23 @@ export const COLUMNS: IColumns = {
     label: 'result.unit.quality.taxon',
     sortable: false
   },
-  'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon', required: true},
+  'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon', required: environment.type === Global.type.vir},
   'gathering.interpretations.countryDisplayname': {
     name: 'gathering.interpretations.countryDisplayname',
-    label: 'result.gathering.country'
+    label: 'result.gathering.country',
+    required: true,
+    sortable: false
   },
   'gathering.interpretations.biogeographicalProvinceDisplayname': {
     name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
     label: 'result.gathering.biogeographicalProvince',
     aggregateBy: 'gathering.interpretations.biogeographicalProvince,gathering.interpretations.biogeographicalProvinceDisplayname'
   },
-  'gathering.interpretations.biogeographicalProvince': {
-    name: 'gathering.interpretations.biogeographicalProvince',
-    label: 'result.gathering.biogeographicalProvince',
-    cellTemplate: 'biogeographicalProvince',
-    aggregateBy: 'gathering.interpretations.biogeographicalProvince,gathering.interpretations.biogeographicalProvinceDisplayname'
-  },
   'gathering.interpretations.municipalityDisplayname': {
     name: 'gathering.interpretations.municipalityDisplayname',
     label: 'observation.form.municipality',
     aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname',
-    required: true
+    required: environment.type === Global.type.vir
   },
   'gathering.team.memberName': {
     name: 'gathering.team.memberName',
@@ -203,7 +200,7 @@ export const COLUMNS: IColumns = {
     aggregateBy: 'gathering.team.memberId,gathering.team.memberName'
   },
   'gathering.locality': {name: 'gathering.locality'},
-  'gathering.displayDateTime': {name: 'gathering.displayDateTime', required: true},
+  'gathering.displayDateTime': {name: 'gathering.displayDateTime', required: environment.type === Global.type.vir},
   'gathering.interpretations.coordinateAccuracy': {
     name: 'gathering.interpretations.coordinateAccuracy',
     cellTemplate: 'numeric'
@@ -228,7 +225,7 @@ export const COLUMNS: IColumns = {
   },
   'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false, required: true},
   'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.document.notes'},
-  'document.documentId': {name: 'document.documentId', required: true},
+  'document.documentId': {name: 'document.documentId', required: environment.type === Global.type.vir},
   'unit.unitId': {name: 'unit.unitId'},
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
@@ -300,7 +297,7 @@ export const COLUMNS: IColumns = {
     name: 'gathering.conversions.euref',
     prop: 'gathering.conversions.euref.verbatim',
     sortable: false,
-    required: true
+    required: environment.type === Global.type.vir
   },
   'gathering.conversions.wgs84': {
     name: 'gathering.conversions.wgs84',
@@ -308,10 +305,8 @@ export const COLUMNS: IColumns = {
     sortable: false
   },
   'gathering.interpretations.country': {
-    name: 'gathering.interpretations.country',
-    cellTemplate: 'country',
-    label: 'result.gathering.country',
-    required: true
+    cellTemplate: 'label',
+    label: 'result.gathering.country'
   },
   'sample.sampleId': {name: 'sample.sampleId', width: 300, sortable: false},
   'sample.type': {name: 'sample.type', transform: 'label', sortable: false},
@@ -371,8 +366,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     'unit.abundanceString',
     'gathering.displayDateTime',
     'gathering.interpretations.country',
-    'gathering.interpretations.biogeographicalProvince',
-    'gathering.interpretations.municipalityDisplayname',
+    'gathering.interpretations.countryDisplayname',
+    'gathering.interpretations.biogeographicalProvinceDisplayname',
     'gathering.locality',
     'document.collectionId',
     'document.documentId',
@@ -394,8 +389,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.reportedTaxonConfidence'],
     COLUMNS['unit.interpretations.recordQuality'],
     COLUMNS['gathering.team'],
-    COLUMNS['gathering.interpretations.country'],
-    COLUMNS['gathering.interpretations.biogeographicalProvince'],
+    COLUMNS['gathering.interpretations.countryDisplayname'],
+    COLUMNS['gathering.interpretations.biogeographicalProvinceDisplayname'],
     COLUMNS['gathering.interpretations.municipalityDisplayname'],
     COLUMNS['gathering.team.memberName'],
     COLUMNS['gathering.locality'],
@@ -478,8 +473,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
         header: 'observation.form.place', fields: [
           'gathering.locality',
           'gathering.interpretations.municipalityDisplayname',
-          'gathering.interpretations.biogeographicalProvince',
-          'gathering.interpretations.country'
+          'gathering.interpretations.biogeographicalProvinceDisplayname',
+          'gathering.interpretations.countryDisplayname'
         ]
       },
       {

@@ -1,9 +1,11 @@
 <button
   *ngIf="!routerLink; else anchor"
+  class="lu-btn"
   tabindex="-1"
-  [ngClass]="getNgClass()"
+  [ngClass]="classes"
   [class.pressed]="pressed"
-  [disabled]="disabled"
+  [class.lu-loading]="loading"
+  [disabled]="disabled || loading"
   (click)="onClick($event)"
   (mousedown)="onMouseDown($event)"
   (mouseup)="onMouseUp($event)">
@@ -11,12 +13,12 @@
 </button>
 <ng-template #anchor>
   <a *ngIf="useHref"
+     class="lu-btn"
      tabindex="-1"
      rel="noopener nofollow"
      [href]="routerLink"
      [target]="target"
-     [ngClass]="role"
-     [ngClass]="getNgClass()"
+     [ngClass]="classes"
      [class.pressed]="pressed"
      (click)="onClick($event)"
      (mousedown)="onMouseDown($event)"
@@ -24,10 +26,11 @@
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </a>
   <a *ngIf="!useHref"
+     class="lu-btn"
      tabindex="-1"
      [routerLink]="routerLink"
      [target]="target"
-     [ngClass]="getNgClass()"
+     [ngClass]="classes"
      [class.pressed]="pressed"
      (click)="onClick($event)"
      (mousedown)="onMouseDown($event)"

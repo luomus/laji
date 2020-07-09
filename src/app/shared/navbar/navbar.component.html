@@ -12,10 +12,10 @@
           </button>
           <a class="navbar-brand" [routerLink]="['/'] | localize">
             <div class="env" [ngClass]="{dev: !isProd}"></div>
-            <span *lajiForTypes="['dev', 'prod']">LAJI.FI</span>
+            <span *lajiForTypes="['dev', 'prod', 'beta']">LAJI.FI</span>
             <span *lajiForTypes="['iucn']">{{ 'iucn.title' | translate }}</span>
           </a>
-          <div class="visible-xs-inline-block pull-right search" *lajiForTypes="['dev', 'prod']">
+          <div class="visible-xs-inline-block pull-right search" *lajiForTypes="['dev', 'prod', 'beta']">
             <laji-omni-search
               [placeholder]="'species.search' | translate"
               (visibleTaxon)="updateView()"
@@ -36,27 +36,27 @@
                 <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
               </li>
             </ng-container>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
               <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
               <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
               <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
             <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
               <a [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
             </li>
-            <li [ngClass]="{'hidden-sm': showSearch}" *lajiForTypes="['dev', 'prod']">
+            <li [ngClass]="{'hidden-sm': showSearch}" *lajiForTypes="['dev', 'prod', 'beta']">
               <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{ 'Forum' | translate }}</a>
             </li>
           </ul>
           <ul class="nav navbar-nav pull-right">
-            <li class="hidden-xs search" *lajiForTypes="['dev', 'prod']">
+            <li class="hidden-xs search" *lajiForTypes="['dev', 'prod', 'beta']">
               <laji-omni-search
                 [placeholder]="'species.search' | translate"
                 (visibleTaxon)="updateView()"
@@ -64,7 +64,7 @@
                 [expand]="'right'"></laji-omni-search>
             </li>
             <ng-container *lajiBrowserOnly>
-              <ng-container *lajiForTypes="['dev', 'prod']">
+              <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
                 <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
                   <a dropdownToggle class="link user">
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
@@ -98,7 +98,7 @@
                 </li>
               </ng-container>
             </ng-container>
-            <li dropdown *lajiForTypes="['dev', 'prod', 'iucn']">
+            <li dropdown *lajiForTypes="['dev', 'prod', 'iucn', 'beta']">
               <a dropdownToggle class="link language-toggle">
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">

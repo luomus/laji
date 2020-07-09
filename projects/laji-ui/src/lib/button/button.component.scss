@@ -4,54 +4,15 @@
   display: inline-block;
 }
 
-button, a {
-  display: inline-block;
-  color: $neutral-8;
-  border: none;
-  border-radius: 5px;
-  padding: $sp-btn;
-  margin: 0.25em 0;
-
-  cursor: pointer;
-  text-decoration: none;
-
-  transition: 500ms;
-  &:focus {
-    outline: unset;
+@keyframes LoadingAnimation {
+  0%{
+    background-position: 0% 0%;
   }
-  &.pressed {
-    transition: 200ms;
+  50%{
+    background-position: 100% 0%;
   }
-
-  &.lu-small-btn {
-    font-size: $fs-1;
-    padding: 5px 10px;
-  }
-}
-
-.primary {
-  background-color: $primary-5;
-  color: adjust-hue($color: $neutral-1, $degrees: -20%);
-  box-shadow: 0 2px 6px rgba($neutral-8, 0.3);
-  &:hover {
-    background-color: darken($primary-5, 5%);
-  }
-  &.pressed {
-    background-color: $primary-6;
-    box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
-  }
-}
-
-.secondary {
-  background-color: $neutral-1;
-  color: $neutral-7;
-  box-shadow: 0 1px 3px rgba($neutral-8, 0.3);
-  &:hover {
-    background-color: $primary-1;
-  }
-  &.pressed {
-    background-color: darken($primary-1, 3%);
-    box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+  100%{
+    background-position: 0% 0%;
   }
 }
 
@@ -83,6 +44,7 @@ button, a {
       box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
     }
   }
+
 
   .warning {
     padding: 0.1em 0.6em;
@@ -128,16 +90,14 @@ button, a {
 
 
 
-
-*:disabled {
-  background-color: rgba(0,0,0,0);
-  color: $neutral-6;
-  border: 1px solid $neutral-4;
-  box-shadow: 0 0 0 rgba(0,0,0,0);
-
+.lu-loading {
   cursor: unset;
+  border: 1px solid $primary-3;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  color: rgba($primary-7, .8);
 
-  &:hover {
-    background-color: unset;
-  }
+  background: linear-gradient(90deg, $neutral-1, $primary-3, $neutral-1);
+  background-size: 200% 200%;
+  // background: linear-gradient(to right, $primary-5, $neutral-1);
+  animation: LoadingAnimation 2s linear infinite;
 }

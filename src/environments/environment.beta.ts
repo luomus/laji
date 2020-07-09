@@ -7,7 +7,7 @@
 import { Global } from './global';
 
 export const environment = {
-  type: Global.type.prod,
+  type: Global.type.beta,
   base: 'https://beta.laji.fi',
   production: true,
   forceLogin: false,
