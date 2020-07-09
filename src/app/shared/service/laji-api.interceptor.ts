@@ -14,11 +14,11 @@ import { filter, skip, switchMap, take } from 'rxjs/operators';
 import { PlatformService } from './platform.service';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  CLEAR_TOKEN_MSG,
+  CLEAR_TOKEN_MSG, hasPersonToken,
   isErrorResponse,
   LajiApiWorkerErrorResponse,
   LajiApiWorkerSuccessResponse,
-  LOGOUT_MSG, PERSON_TOKEN,
+  LOGOUT_MSG,
   REQUEST_MSG
 } from './laji-api-worker-common';
 import { BrowserService } from './browser.service';
@@ -37,7 +37,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
     private ngZone: NgZone,
     private translate: TranslateService
   ) {
-    if (platformService.isServer || !platformService.canUseWebWorker) {
+    if (platformService.isServer || !platformService.canUseWebWorkerLogin) {
       return;
     }
     this.rnd = Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
@@ -56,9 +56,9 @@ export class LajiApiInterceptor implements HttpInterceptor {
       if (data.type === REQUEST_MSG) {
         this.ngZone.run(() => {
           this.responses.next(data);
-        })
+        });
       }
-    }
+    };
 
     // Worker doesn't know when the personToken changes in another tap so it should check it when ever visibility changes
     // Login reloads the window so no need to worry about that
@@ -97,13 +97,12 @@ export class LajiApiInterceptor implements HttpInterceptor {
   private shouldUseWorker(request: HttpRequest<any>): boolean {
     if (
       this.platformService.isServer ||
-      !this.platformService.canUseWebWorker ||
+      !this.platformService.canUseWebWorkerLogin ||
       !request.urlWithParams.startsWith(environment.apiBase)
     ) {
       return false;
     }
-    return request.urlWithParams.includes('/graphql') ||
-      request.urlWithParams.includes(PERSON_TOKEN);
+    return hasPersonToken(request);
   }
 
   private getRequestHeaders(request: HttpRequest<any>) {

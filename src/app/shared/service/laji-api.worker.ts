@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import {
   CLEAR_TOKEN_MSG,
   ErrorResponse,
+  hasPersonToken,
   LOGOUT_MSG,
   PERSON_TOKEN,
   REQUEST_MSG,
@@ -15,7 +16,7 @@ let loginUrl = '';
 let localKey = '';
 let personToken = '';
 
-let token$: Observable<string>
+let token$: Observable<string>;
 
 function fetchPersonToken(): Observable<string> {
   if (personToken || !loginUrl) {
@@ -28,11 +29,10 @@ function fetchPersonToken(): Observable<string> {
     }).pipe(
       map(r => r.response),
       map(d => d['token'] || ''),
-      catchError(() => of('')),
       tap(t => personToken = '' +  t),
-      tap(t => { if (!t) { postMessage({type: LOGOUT_MSG}) } }),
+      tap(t => { if (!t) { postMessage({type: LOGOUT_MSG}); } }),
       share()
-    )
+    );
   }
   return token$;
 }
@@ -52,7 +52,7 @@ function replaceToken(token: string, request: any): any {
           result[key] = variables[key];
         }
         return result;
-      }, {})
+      }, {});
     }
     if (typeof request.body.query === 'string') {
       request.body.query = request.body.query.replace(personTokenReqExp, personToken);
@@ -83,7 +83,7 @@ addEventListener('message', ({ data }) => {
   }
 
   fetchPersonToken().pipe(
-    mergeMap(token => ajax(replaceToken(token, request))),
+    mergeMap(token => ajax(hasPersonToken(request) ? replaceToken(token, request) : request)),
     map(res => ({
       body: res.response,
       headers: {},

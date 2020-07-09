@@ -257,7 +257,7 @@ export class UserService {
         share()
       );
     } else if (this.persistentState.isLoggedIn) {
-      return this.doBackgroundLogin().pipe(
+      return this.doBackgroundCheck().pipe(
         switchMap(t => t ? this._checkLogin(t) : of(false)),
         timeout(10000),
         catchError(() => {
@@ -271,16 +271,22 @@ export class UserService {
     return of(true);
   }
 
-  private doBackgroundLogin(): Observable<string> {
-    if (!this.platformService.canUseWebWorker) {
+  private doBackgroundCheck(): Observable<string> {
+    if (!this.platformService.canUseWebWorkerLogin) {
       this.redirectToLogin();
       return of('');
     }
-    const checkUrl = UserService.getLoginUrl('', 'fi').replace('/login', '/loggedIn');
-    return this.httpClient.get<any>(checkUrl, {withCredentials: true}).pipe(
-      map(d => d && d.loggedIn ? PERSON_TOKEN : ''),
-      switchMap((t) => t ? of(t) : throwError('Logout'))
-    )
+    return this.personApi.personFindByToken(PERSON_TOKEN).pipe(
+      map(() => PERSON_TOKEN),
+      catchError((e) => {
+        if (e && e.status === 0) {
+          this.redirectToLogin();
+          this.platformService.canUseWebWorkerLogin = false;
+          return of('');
+        }
+        return throwError('Logout');
+      })
+    );
   }
 
   private doServiceSideLoginState() {

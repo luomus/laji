@@ -1,6 +1,7 @@
 export const Global = {
   type: {
     dev: 'dev',
+    beta: 'beta',
     prod: 'prod',
     vir: 'vir',
     embedded: 'embedded',
