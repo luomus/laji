@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 import { ajax } from 'rxjs/ajax';
-import { catchError, map, mergeMap, share, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { catchError, map, mergeMap, share, switchMap, tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
 import {
   CLEAR_TOKEN_MSG,
   ErrorResponse,
@@ -30,7 +30,11 @@ function fetchPersonToken(): Observable<string> {
       map(r => r.response),
       map(d => d['token'] || ''),
       tap(t => personToken = '' +  t),
-      tap(t => { if (!t) { postMessage({type: LOGOUT_MSG}); } }),
+      switchMap(t => t ? of(t) : throwError({
+        error: {},
+        url: loginUrl,
+        status: 0
+      })),
       share()
     );
   }
