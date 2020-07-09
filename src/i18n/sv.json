@@ -737,6 +737,7 @@
   "np.map": "Karta",
   "np.municipality": "Grevskap",
   "np.locality": "Lokalitet",
+  "np.localityNotSet": "Locality not set (sv)",
   "np.myEarlier": "Nedan ser du bara dina egna observationer, inte allas",
   "np.print": "Skriv ut",
   "np.requestAccess": "Begär tillgång",

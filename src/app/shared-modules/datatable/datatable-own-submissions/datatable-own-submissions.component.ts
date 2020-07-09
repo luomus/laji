@@ -22,6 +22,13 @@ import { LocalStorage } from 'ngx-webstorage';
 import { PlatformService } from '../../../shared/service/platform.service';
 import { DocumentViewerFacade } from '../../document-viewer/document-viewer.facade';
 import { FormService } from '../../../shared/service/form.service';
+import { RowDocument } from '../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
+import { ObservationTableColumn } from '../../observation-result/model/observation-table-column';
+import { IColumns } from '../../datatable/service/observation-table-column.service';
+import {
+  IColumnGroup,
+  TableColumnService
+} from '../../datatable/service/table-column.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 @Component({
@@ -68,15 +75,17 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
   filterByChange: Subscription;
 
   _originalRows: any[];
-  _rows: any[];
+  _rows: RowDocument[];
   _page: number;
   _count: number;
   _offset: number;
-  _columns: DatatableColumn[] = []; // This needs to be initialized so that the data table would do initial sort!
+  _columns: any[] = []; // This needs to be initialized so that the data table would do initial sort!
+  _columns_new = [];
   @Input() selected: any[] = [];
 
   initialized = false;
   private filterChange$ = new Subject();
+  allColumns: ObservationTableColumn[];
   @LocalStorage('data-table-settings', {}) private dataTableSettings: Settings;
 
   constructor(
@@ -86,8 +95,11 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     private filterService: FilterService,
     private zone: NgZone,
     private documentViewerFacade: DocumentViewerFacade,
-    public formService: FormService
-  ) {}
+    public formService: FormService,
+    private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>
+  ) {
+    this.allColumns = tableColumnService.getAllColumns();
+  }
 
   @Input() set height(height: string) {
     this._height = height;
@@ -98,36 +110,15 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     this._count = typeof cnt === 'number' ? cnt  : 0;
   }
 
-  @Input() set rows(rows: any[]) {
-    this._originalRows = rows || [];
-
-    // record the original indexes of each row element so that when the table is sorted
-    // we can find out how the indexes were mapped
-    this._originalRows.forEach((element, idx) => {
-      element.preSortIndex = idx;
-    });
-
-    if (this._filterBy) {
-      this.updateFilteredRows();
-    } else {
-      this._rows = this._originalRows;
-    }
-    if (this._preselectedRowIndex !== undefined && this._preselectedRowIndex !== -1) {
-      this.preselectedRowIndex = this._preselectedRowIndex;
-    } else {
-      this.scrollTo();
-    }
-  }
-
-  @Input() set page(page: number) {
-    this._page = page;
-    this._offset = page - 1;
-  }
-
-  @Input() set columns(columns: DatatableColumn[]) {
+  @Input() set columns(columns: any[]) {
     const settings = this.dataTableSettings;
-    console.log('init')
-    this._columns = columns.map((column) => {
+    /*this._columns = this.allColumns.filter(col => {
+        columns.map((column) => {
+          column.name === col.name
+        })
+    })*/
+   
+    /*this._columns = columns.map((column) => {
       if (typeof column.headerTemplate === 'string') {
         column.headerTemplate = this.datatableTemplates[column.headerTemplate];
       }
@@ -147,17 +138,52 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
         column.resizeable = false;
       }
       return column;
-    });
+    });*/
+
+    this._columns = columns;
+    
+
+    console.log(this._columns)
   }
 
+  @Input() set rows(rows: any[]) {
+    this._originalRows = rows || [];
+
+    // record the original indexes of each row element so that when the table is sorted
+    // we can find out how the indexes were mapped
+    this._originalRows.forEach((element, idx) => {
+      element.preSortIndex = idx;
+    });
+
+    if (this._filterBy) {
+      this.updateFilteredRows();
+    } else {
+      this._rows = this._originalRows;
+      console.log(this._rows)
+    }
+    if (this._preselectedRowIndex !== undefined && this._preselectedRowIndex !== -1) {
+      this.preselectedRowIndex = this._preselectedRowIndex;
+    } else {
+      // this.scrollTo();
+    }
+  }
+
+  @Input() set page(page: number) {
+    this._page = page;
+    this._offset = page - 1;
+  }
+
+ 
+
   @Input() set preselectedRowIndex(index: number) {
+    console.log('selected')
     this._preselectedRowIndex = index;
     this.selected = [this._rows[this._preselectedRowIndex]] || [];
     if (!this.selected.length) {
       return;
     }
     if (this.initialized) {
-      this.showActiveRow();
+      //this.showActiveRow();
     }
   }
 
@@ -174,7 +200,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     const maxScroll = rowHeight * this.datatable._internalRows.length - this.datatable.bodyHeight;
     const currentOffset = this.datatable.bodyComponent.offsetY;
     if (!isNaN(scrollTo) && (scrollTo < currentOffset || scrollTo > currentOffset + this.datatable.bodyHeight)) {
-      this.scrollTo(Math.min(scrollTo, maxScroll));
+      //this.scrollTo(Math.min(scrollTo, maxScroll));
     }
   }
 
@@ -189,12 +215,12 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filterByChange = this.filterChange$.pipe(
+    /*this.filterByChange = this.filterChange$.pipe(
       debounceTime(400)
     ).subscribe(() => {
       this.updateFilteredRows();
       this.changeDetectorRef.markForCheck();
-    });
+    });*/
   }
 
   ngAfterViewInit() {
@@ -205,7 +231,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
       setTimeout(() => {
         this.initialized = true;
         // Make sure that preselected row index setter is called after initialization
-        this.showActiveRow();
+        //this.showActiveRow();
       }, 10);
     }
   }
@@ -271,20 +297,21 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     }
   }
 
-  showDocument(doc: any) {
+  showDocument(id: string) {
     this.documentViewerFacade.showDocumentID({
-      document: doc['document']['documentId']
+      document: id
     });
   }
 
   private updateFilteredRows() {
     this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
+    console.log(this._rows)
     this._count = this._rows.length;
     this._page = 1;
-    this.scrollTo();
+    //this.scrollTo();
   }
 
-  private scrollTo(offsetY: number = 0) {
+  /*private scrollTo(offsetY: number = 0) {
     if (this.platformService.isServer || !this._rows) {
       return;
     }
@@ -297,5 +324,5 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     } catch (e) {
       this.logger.info('selected row index failed', e);
     }
-  }
+  }*/
 }

@@ -14,11 +14,10 @@
       [messages]="{ emptyMessage: loading ? '' : emptyMessage, totalMessage: '' }"
       [rows]='_rows'
       [externalPaging]="true"
-      [externalSorting]="!clientSideSorting"
       [sortType]="sortType"
       [count]="_rows.length"
       [offset]="_offset"
-      [columns]="_columns"
+      
       [columnMode]="columnMode"
       [scrollbarH]="true"
       [sorts]="sorts"
@@ -30,12 +29,9 @@
       (reorder)="reorder.emit($event)"
       (resize)="onResize($event)"
       (select)="select.emit($event)"
-      [rowClass]="_getRowClass.bind(this)"
       (activate)="onRowSelect($event)"
-      [selected]="selected"
-      [selectionType]="selectionType"
     >
-    <ngx-datatable-column *ngIf="actions.length > 0" name="" sortable="false" prop="id" width="50">
+    <ngx-datatable-column *ngIf="actions.length > 0" name="action" sortable="false" prop="action" width="50">
         <ng-template let-row="row" let-value="value"  ngx-datatable-cell-template>
             <div *ngIf="(actions | includes:'view')">
                 <lu-button 
@@ -44,7 +40,7 @@
                       [placement]="'right'"
                       container="body"
                       [adaptivePosition]="false"
-                      (click)="showDocument(row)"
+                      (click)="showDocument(row['id'])"
                       >
                   <i class="glyphicon glyphicon-eye-open"></i>
             </lu-button>
@@ -55,15 +51,15 @@
                     container="body"
                     [adaptivePosition]="false"
                     [placement]="'right'"
-                    [routerLink]="formService.getEditUrlPath((row['document']['formId'] | toQName), (row['document']['documentId'] | toQName )) | localize"
+                    [routerLink]="row['_editUrl'] | localize"
                     >
                   <i class="glyphicon glyphicon-edit"></i>
           </lu-button>
         </ng-template>
     </ngx-datatable-column> 
-    <ngx-datatable-column *ngFor="let col of _columns; let i = index" [prop]="col.prop" [cellTemplate]="col.cellTemplate">
+    <ngx-datatable-column *ngFor="let col of _columns; let i = index" [prop]="col.prop">
         <ng-template ngx-datatable-header-template>
-            {{ col.label | translate }}
+            {{ 'haseka.submissions.' + col.prop | translate }}
         </ng-template>
      </ngx-datatable-column>
     </ngx-datatable>

@@ -409,6 +409,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
       }
     });
     this.useColumns = useCols;
+    console.log(this.useColumns)
     this.defaultSort = this.getDefaultSort();
   }
 

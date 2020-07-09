@@ -649,6 +649,7 @@
   "np.map": "Map",
   "np.municipality": "Municipality",
   "np.locality": "Locality",
+  "np.localityNotSet": "Locality not set",
   "np.chooseLabel": "Choose from the list below or",
   "np.myEarlier": "Underneath you'll see only your own observations not everyone's",
   "np.print": "Print",

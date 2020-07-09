@@ -40,6 +40,8 @@ export interface IColumns {
   'document.linkings.collectionQuality': ObservationTableColumn;
   'document.createdDate': ObservationTableColumn;
   'document.modifiedDate': ObservationTableColumn;
+  'document.dateEdited': ObservationTableColumn;
+  'document.dateObserved': ObservationTableColumn;
   'document.namedPlaceId': ObservationTableColumn;
   'document.formId': ObservationTableColumn;
   'document.keywords': ObservationTableColumn;
@@ -234,6 +236,8 @@ export const COLUMNS: IColumns = {
   'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel', sortable: false},
   'document.createdDate': {name: 'document.createdDate', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
   'document.modifiedDate': {name: 'document.modifiedDate', label: 'haseka.submissions.dateEdited', cellTemplate: 'date', sortable: false},
+  'document.dateObserved': {name: 'document.dateObserved', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
+  'document.dateEdited': {name: 'document.dateEdited', label: 'haseka.submissions.dateEdited', cellTemplate: 'date', sortable: false},
   'document.namedPlaceId': {name: 'document.namedPlaceId', label: 'haseka.submissions.locality', cellTemplate: 'country', sortable: false},
   'document.formId': {name: 'document.formId', label:'haseka.submissions.form', cellTemplate: 'formName', sortable: false},
   'document.keywords': {name: 'document.keywords', label:'observation.active.keyword', cellTemplate: 'label', sortable: false},
@@ -412,6 +416,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.linkings.collectionQuality'],
     COLUMNS['document.createdDate'],
     COLUMNS['document.modifiedDate'],
+    COLUMNS['document.dateEdited'],
+    COLUMNS['document.dateObserved'],
     COLUMNS['document.namedPlaceId'],
     COLUMNS['document.formId'],
     COLUMNS['document.keywords'],

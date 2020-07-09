@@ -22,7 +22,7 @@
       [rows]='result.results'
       (pageChange)="setPage($event)"
       (sortChange)="onSort($event)"
-      [loading]="loading"
+      [loading]="false"
       [count]="result.results.length"
       [page]="result.currentPage"
       [pageSize]="result.pageSize"

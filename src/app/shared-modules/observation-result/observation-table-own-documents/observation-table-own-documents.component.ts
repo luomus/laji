@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import * as moment from 'moment';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { Document } from '../../../shared/model/Document';
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
@@ -69,7 +70,14 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   @Input() visible: boolean;
   @Input() hideDefaultCountColumn = false;
   @Input() allAggregateFields = [
-    'document.documentId','document.createdDate', 'document.modifiedDate', 'document.namedPlaceId'
+    'document.createdDate',
+      'document.documentId',
+      'document.formId',
+      'document.loadDate',
+      'document.namedPlace.id',
+      'gathering.locality',
+      'gathering.municipality',
+      'gathering.linkings.observers'
   ];
   @Input() useStatistics: boolean;
 
@@ -89,6 +97,21 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   _originalSelectedNumbers: string[] = [];
   showDownloadAll = true;
   showPrintLabels = false;
+  newColumns = ['dateEdited', 'dateObserved', 'locality', 'form', 'id'];
+  allColumnsNew = [
+    {prop: 'templateName', mode: 'small'},
+    {prop: 'templateDescription', mode: 'small'},
+    {prop: 'dateEdited', mode: 'medium'},
+    {prop: 'dateObserved', mode: 'small'},
+    {prop: 'namedPlaceName', mode: 'small'},
+    {prop: 'locality', mode: 'medium'},
+    {prop: 'taxon', mode: 'medium'},
+    {prop: 'gatheringsCount', mode: 'small'},
+    {prop: 'unitCount', mode: 'small'},
+    {prop: 'observer', mode: 'large'},
+    {prop: 'form', mode: 'large'},
+    {prop: 'id', mode: 'large'}
+  ];
 
   columnSelector = new ColumnSelector;
   numberColumnSelector = new ColumnSelector;
@@ -163,6 +186,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   }
 
   @Input() set selected(sel: string[]) {
+    console.log('eee')
     const selected = [];
     const selectedNumbers = [];
     sel.map(field => {
@@ -196,7 +220,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.selected && !changes.selected.isFirstChange()) {
       this.initColumns();
-      this.fetchPage(changes.page ? this.page : 1);
+      this.fetchPageGiorgio(changes.page ? this.page : 1);
     }
     if ((changes.query && !changes.query.isFirstChange())
         || (changes.page && !changes.page.isFirstChange())
@@ -227,7 +251,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
 
     this.aggregateBy = [];
 
-    this.columns = selected.map(name => {
+    /*this.columns = selected.map(name => {
       const column = this.columnLookup[name];
       if (column.aggregate !== false) {
         this.aggregateBy.push((column.aggregateBy || column.name)
@@ -236,9 +260,14 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       console.log(this.columnLookup[name])
       return this.columnLookup[name];
 
-    });
+    });*/
 
     // this.columns.push({name: 'buttons', label: 'Buttons', sortable: false})
+    this.allColumnsNew.map(col => {
+      if (this.newColumns.indexOf(col['prop']) > -1) {
+        this.columns.push(col);
+      }
+    })
   }
 
   openModal() {
@@ -357,22 +386,34 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     this.loading = true;
     this.changeDetectorRef.markForCheck();
 
-    const listGiorgio$ = this.warehouseApi.warehouseQueryListGet(
+    const listGiorgio$ = this.warehouseApi.warehouseQueryAggregateGet(
       this.query,
-      this.getSelectFields(this.columnSelector.columns, this.query),
-      ['document.modifiedDate DESC'],
-      this.pageSize,
+      [
+      'document.createdDate',
+      'document.documentId',
+      'document.formId',
+      'document.loadDate',
+      'document.namedPlace.id',
+      'gathering.locality',
+      'gathering.municipality',
+      'gathering.linkings.observers',
+
+      ],
+      ['document.loadDate DESC'],
+      100,
       page,
-      true
+      false,
+      false
     ).pipe(
       map(res => res.results),
-         map(res => Array.from(new Set(res.map(a => a['document']['documentId'])))),
+         /*map(res => Array.from(new Set(res.map(a => a['document']['documentId'])))),
           switchMap(documents => {
             let data = documents.map(document => this.getSingleDocument(document));
             return ObservableForkJoin(...data).pipe(
               switchMap(documents => this.searchDocumentsToRowDocuments(documents))
             );
-          })
+          })*/
+      switchMap((documents: Document[]) => this.searchDocumentsToRowDocuments(documents)) 
     )
     .subscribe(data => {
       console.log(data)
@@ -398,7 +439,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
    return this.documentApi.findById(this.toQName.transform(documentId), this.userService.getToken())
   }
 
-  private searchDocumentsToRowDocuments(documents: Document[]): Observable<RowDocument[]> {
+  private searchDocumentsToRowDocuments(documents: Document[]): Observable<any[]> {
     // documents.map(document => document['document']);
     return Array.isArray(documents) && documents.length > 0 ?
       forkJoin(documents.map((doc, i) => this.setRowData(doc, i))) :
@@ -406,44 +447,59 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   }
 
   private setRowData(document: Document, idx: number): any {
-    return this.getForm(document['formID']).pipe(
+    return this.getForm(this.toQName.transform(document['aggregateBy']['document.formId'])).pipe(
       switchMap((form) => {
         const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
+        console.log(gatheringInfo)
         return ObservableForkJoin(
           this.getLocality(gatheringInfo, document),
-          this.getObservers(document['gatheringEvent'] && document['gatheringEvent']['leg']),
+          //this.getObservers(document['gatheringEvent'] && document['gatheringEvent']['leg']),
           /*this.getNamedPlaceName(document['namedPlaceID']),*/
         ).pipe(
-          map<any, RowDocument>(([locality, observers, npName]) => {
+          map<any, RowDocument>(([locality, npName]) => {
             const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
             let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
             if (dateObservedEnd && dateObservedEnd !== dateObserved) {
               dateObserved += ' - ' + dateObservedEnd;
             }
             return {
-              creator: document['creator'],
-              templateName: document['templateName'],
-              templateDescription: document['templateDescription'],
-              publicity: document['publicityRestrictions'] as any,
-              dateEdited: document['dateEdited'] ? moment(document['dateEdited']).format('DD.MM.YYYY HH:mm') : '',
-              dateObserved: dateObserved,
-              namedPlaceName: npName,
-              locality: locality,
-              gatheringsCount: document['gatherings'].length,
-              unitCount: gatheringInfo.unitList.length,
-              observer: observers,
-              formID: document['formID'],
-              form: form.title || document['formID'],
-              id: document['id'],
-              locked: !!document['locked'],
+              creator: '',
+              templateName: {},
+              templateDescription: {},
+              publicity: {},
+              dateEdited: document['aggregateBy']['document.loadDate'] ? moment(document['aggregateBy']['document.loadDate']).format('DD.MM.YYYY HH:mm') : '',
+              dateObserved: document['aggregateBy']['document.createdDate'] ? moment(document['aggregateBy']['document.createdDate']).format('DD.MM.YYYY HH:mm') : '',
+              namedPlaceName: document['aggregateBy']['namedPlace.id'],
+              locality: this.createLocality(document['aggregateBy']['gathering.locality'], document['aggregateBy']['gathering.municipality']),
+              gatheringsCount: null,
+              unitCount: null,
+              observer: document['aggregateBy']['gathering.linkings.observers'],
+              formID: document['aggregateBy']['document.formId'],
+              form: form.title || document['aggregateBy']['document.formId'],
+              id: document['aggregateBy']['document.documentId'],
+              locked: true,
               index: idx,
               formViewerType: form.viewerType,
-              _editUrl: this.formService.getEditUrlPath(document['formID'], document['id']),
+              _editUrl: this.formService.getEditUrlPath(this.toQName.transform(document['aggregateBy']['document.formId']), this.toQName.transform(document['aggregateBy']['document.documentId'])),
             } as RowDocument;
           })
         );
       })
     );
+  }
+
+  private createLocality(locality, municipality) {
+    if(!locality && !municipality) {
+      return this.translate.instant('np.localityNotSet');
+    } else {
+      if (!locality) {
+        return municipality;
+      } else if (!municipality) {
+        return locality;
+      }
+
+      return municipality + ', ' + locality;
+    }
   }
 
   private getForm(formId: string): Observable<any> {

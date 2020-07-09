@@ -782,6 +782,7 @@
   "np.map": "Kartta",
   "np.municipality": "Kunta",
   "np.locality": "Sijainti",
+  "np.localityNotSet": "Locality not set (fi)",
   "np.invasiveControlOpen": "Jatkotoimet",
   "np.chooseLabel": "Valitse alla olevasta luettelosta tai ",
   "np.myEarlier": "Alla näkyvät vain sinun tunnuksellasi tallennetut laskennat, ei kaikkia reitin laskentoja",
