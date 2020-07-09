@@ -97,7 +97,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   _originalSelectedNumbers: string[] = [];
   showDownloadAll = true;
   showPrintLabels = false;
-  newColumns = ['dateEdited', 'dateObserved', 'locality', 'form', 'id'];
+  newColumns = ['dateEdited', 'dateObserved', 'locality', 'form', 'id', 'unitCount', 'observer'];
   allColumnsNew = [
     {prop: 'templateName', mode: 'small'},
     {prop: 'templateDescription', mode: 'small'},
@@ -213,7 +213,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   ngOnInit() {
     this.lang = this.translate.currentLang;
     this.initColumns();
-    // this.fetchPage(this.page);
     this.fetchPageGiorgio(this.page)
   }
 
@@ -396,7 +395,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       'document.namedPlace.id',
       'gathering.locality',
       'gathering.municipality',
-      'gathering.linkings.observers',
+      'gathering.team',
 
       ],
       ['document.loadDate DESC'],
@@ -417,6 +416,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     )
     .subscribe(data => {
       console.log(data)
+      data = Array.from(new Set(data));
       this.total.emit(data && data.length || 0);
       // data.total = data.length;
       this.result.results = data;
@@ -472,11 +472,11 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
               namedPlaceName: document['aggregateBy']['namedPlace.id'],
               locality: this.createLocality(document['aggregateBy']['gathering.locality'], document['aggregateBy']['gathering.municipality']),
               gatheringsCount: null,
-              unitCount: null,
-              observer: document['aggregateBy']['gathering.linkings.observers'],
+              unitCount: document['count'],
+              observer: this.toQName.transform(document['aggregateBy']['gathering.team']),
               formID: document['aggregateBy']['document.formId'],
               form: form.title || document['aggregateBy']['document.formId'],
-              id: document['aggregateBy']['document.documentId'],
+              id: this.toQName.transform(document['aggregateBy']['document.documentId']),
               locked: true,
               index: idx,
               formViewerType: form.viewerType,

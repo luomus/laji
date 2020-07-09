@@ -42,6 +42,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('taxonHabitats', { static: true }) taxonHabitats: TemplateRef<any>;
   @ViewChild('country', { static: true }) country: TemplateRef<any>;
   @ViewChild('formName', { static: true }) formName: TemplateRef<any>;
+  @ViewChild('userName', { static: true }) userName: TemplateRef<any>;
 
 
   annotationTypes = Annotation.TypeEnum;
