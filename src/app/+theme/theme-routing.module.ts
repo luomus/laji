@@ -105,7 +105,7 @@ const routes: Routes = [
             },
             {
               link: '../',
-              label: 'Datasets'
+              label: 'datasets.label'
             }
           ]
         }
@@ -144,7 +144,7 @@ const routes: Routes = [
             },
             {
               link: '../',
-              label: 'Datasets'
+              label: 'datasets.label'
             }
           ],
           titleFromCollectionName: true,
