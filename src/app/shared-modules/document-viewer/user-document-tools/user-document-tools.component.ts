@@ -97,7 +97,9 @@ export class UserDocumentToolsComponent implements OnInit {
       this.cd.detectChanges();
     });
 
-    this.checkAdminRight();
+    if (this._editors.indexOf(this._personID)!== -1){
+      this.checkAdminRight();
+    }
   }
 
   makeTemplate() {
@@ -184,6 +186,7 @@ export class UserDocumentToolsComponent implements OnInit {
   }
   
   private checkEditRight() {
+    console.log(this.editors)
     if (!this._personID || !this._editors) {
       this.hasEditRights = false;
       return;
