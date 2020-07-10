@@ -102,6 +102,26 @@
   },
   "closed.intro": "Vihko is now closed for maintenance. We'll notify you on the <a href=\"/en\">front page</a> when it's opened again.",
   "closed.title": "Closed",
+  "datasets": {
+    "label": "Dataset owners",
+    "intro": "Vie oma havaintoaineistosi Lajitietokeskukseen primääri tai sekundääridatana. (<a href=\"/about/1289\">Lue lisää: Näin liitätä aineistosi</a>)",
+    "accessTo": "Collections that you have access to",
+    "accessNone": "You do not have access to any collection.",
+    "new": {
+      "title": "Make a new collection",
+      "help": "You can ask...",
+      "intro": "Here you can ask for..."
+    },
+    "primary": "primary data",
+    "secondary": "secondary data",
+    "generic": {
+      "intro": "Tässä osiossa voit hallita kokoelman “{{collection}}” havaintoja.",
+      "primary": "Havainnot ovat <strong>primääridataa</strong>, joten muutokset tulee tehdä täällä oleviin tietoihin.",
+      "secondary": "Havainnot ovat <strong>sekundääridataa</strong>, joten muutokset tulee tehdä primääridataan ja sitten päivittää tänne tallennuspohjan avulla, esim. määrävälein.",
+      "updates": "Updates",
+      "instructions": "<p><strong>Ohjeita</strong></p>\n\n<ul>\n  <li>Havaintojen lisääminen</li>\n  <li>Havaintojen päivittäminen</li>\n  <li>Havaintojen poistaminen</li>\n</ul>\n<ul>\n  <li>Kaikki kokoelman havainnot (Laji.fi havaintohaku)</li>\n  <li>Kokoelman metatiedot</li>\n</ul>"
+    }
+  },
   "delete.error": "Failed to delete. Try again little later.",
   "delete.noId": "Could not find the id for observation. Try again little later.",
   "delete.success": "Observation removed successfully.",

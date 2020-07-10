@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   openMenu: Boolean = false;
   redTheme = false;
-  isProd = false;
+  devRibbon = false;
   showSearch = false;
   env = environment.type;
 
@@ -50,7 +50,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private notificationsFacade: NotificationsFacade,
     private browserService: BrowserService
   ) {
-    this.isProd = environment.production;
+    this.devRibbon = !environment.production || environment.type === Global.type.beta;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
   }
 

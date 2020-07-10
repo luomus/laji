@@ -5,7 +5,7 @@ import { TreeSkipParameter } from './tree/model/tree.interface';
 @Component({
   selector: 'laji-taxon-tree',
   templateUrl: './taxon-tree.component.html',
-  styleUrls: ['./taxon-tree.component.css'],
+  styleUrls: ['./taxon-tree.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonTreeComponent {

@@ -38,7 +38,7 @@ export class ButtonComponent implements OnChanges, OnInit {
 
   @Input() set anchor(url: string) {
     this.routerLink = url;
-    this.useHref = url.includes('?');
+    this.useHref = url.startsWith('http') || url.includes('?');
   }
 
   @HostListener('click', ['$event'])
