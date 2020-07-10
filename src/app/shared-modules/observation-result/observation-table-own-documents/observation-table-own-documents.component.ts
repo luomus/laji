@@ -99,12 +99,12 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   _originalSelectedNumbers: string[] = [];
   showDownloadAll = true;
   showPrintLabels = false;
-  newColumns = ['dateEdited', 'dateObserved', 'locality', 'form', 'id', 'unitCount', 'observer'];
+  newColumns = ['dateEdited', 'dateCreated', 'locality', 'form', 'id', 'observer'];
   allColumnsNew = [
     {prop: 'templateName', mode: 'small'},
     {prop: 'templateDescription', mode: 'small'},
     {prop: 'dateEdited', mode: 'small'},
-    {prop: 'dateObserved', mode: 'large'},
+    {prop: 'dateCreated', mode: 'large'},
     {prop: 'namedPlaceName', mode: 'large'},
     {prop: 'locality', mode: 'medium'},
     {prop: 'taxon', mode: 'medium'},
@@ -463,6 +463,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
               publicity: {},
               dateEdited: document['aggregateBy']['document.loadDate'] ? moment(document['aggregateBy']['document.loadDate']).format('DD.MM.YYYY') : '',
               dateObserved: document['aggregateBy']['document.createdDate'] ? moment(document['aggregateBy']['document.createdDate']).format('DD.MM.YYYY') : '',
+              dateCreated: document['aggregateBy']['document.createdDate'] ? moment(document['aggregateBy']['document.createdDate']).format('DD.MM.YYYY') : '',
               namedPlaceName: document['aggregateBy']['namedPlace.id'],
               locality: this.createLocality(document['aggregateBy']['gathering.locality'], document['aggregateBy']['gathering.municipality']),
               gatheringsCount: null,

@@ -186,7 +186,6 @@ export class UserDocumentToolsComponent implements OnInit {
   }
   
   private checkEditRight() {
-    console.log(this.editors)
     if (!this._personID || !this._editors) {
       this.hasEditRights = false;
       return;

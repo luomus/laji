@@ -37,6 +37,7 @@ export interface RowDocument {
   publicity: string;
   dateEdited: string;
   dateObserved: string;
+  dateCreated: string;
   namedPlaceName: string;
   locality: string;
   gatheringsCount: number,
@@ -135,7 +136,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     {prop: 'locality', mode: 'medium'},
     {prop: 'taxon', mode: 'medium'},
     {prop: 'gatheringsCount', mode: 'large'},
-    {prop: 'unitCount', mode: 'small'},
+    {prop: 'unitCount', mode: 'medium'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
     {prop: 'id', mode: 'large'}

@@ -326,6 +326,7 @@
   "haseka.submissions.edit": "Edit",
   "haseka.submissions.downloadFile": "Download",
   "haseka.submissions.statistics": "Statistics",
+  "haseka.submissions.dateCreated": "Created Date",
   "haseka.templates.intro": "You can create a template from \"Own submissions\" page. Choose an observation for the template and press \"Save as template\" -button.",
   "haseka.templates.title": "Templates",
   "haseka.terms": "Terms of use",

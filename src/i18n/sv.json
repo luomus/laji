@@ -319,6 +319,7 @@
   "haseka.submissions.edit": "Redigera",
   "haseka.submissions.downloadFile": "Ladda",
   "haseka.submissions.statistics": "Statistik",
+  "haseka.submissions.dateCreated": "Skapat Datum",
   "haseka.templates.intro": "Du kan skapa en mall från sidan \"Mina observationer\". Välj en observation för mallen och tryck på \"Spara som mall\" -knappen.",
   "haseka.templates.title": "Mallar",
   "haseka.terms": "Användarvillkor",
