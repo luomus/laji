@@ -104,6 +104,7 @@
   "closed.title": "Closed",
   "datasets": {
     "label": "Datasatsägare",
+    "intro": "Vie oma havaintoaineistosi Lajitietokeskukseen primääri tai sekundääridatana. (<a href=\"/about/1289\">Lue lisää: Näin liitätä aineistosi</a>)",
     "accessTo": "Samlingar som du har tillgång till",
     "accessNone": "Du har inte tillgång till någon samling.",
     "new": {

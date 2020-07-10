@@ -104,6 +104,7 @@
   "closed.title": "Suljettu",
   "datasets": {
     "label": "Havaintoaineistojen omistajat",
+    "intro": "Vie oma havaintoaineistosi Lajitietokeskukseen primääri tai sekundääridatana. (<a href=\"/about/1289\">Lue lisää: Näin liitätä aineistosi</a>)",
     "accessTo": "Kokoelmat, joihin sinulla on pääsy",
     "accessNone": "Sinulla ei ole pääsyä mihinkään kokoelmaan.",
     "new": {
