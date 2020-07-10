@@ -9,7 +9,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  OnDestroy
 } from '@angular/core';
 import * as moment from 'moment';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
@@ -42,6 +43,7 @@ import { ToQNamePipe } from 'src/app/shared/pipe/to-qname.pipe';
 import { RowDocument } from '../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service'
 
 
 @Component({
@@ -51,7 +53,7 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
   providers: [ObservationResultService, ToQNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges {
+export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTableOwn', { static: true }) public datatable: DatatableOwnSubmissionsComponent;
   @ViewChild(OwnObservationTableSettingsComponent, { static: true }) public settingsModalOwn: OwnObservationTableSettingsComponent;
 
@@ -115,6 +117,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
 
   columnSelector = new ColumnSelector;
   numberColumnSelector = new ColumnSelector;
+  subscriptionDeleteOwnDocument: Subscription;
+  childEvent: any;
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -179,7 +183,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     private documentInfoService: DocumentInfoService,
     private labelService: TriplestoreLabelService,
     private userService: UserService,
-    private documentApi: DocumentApi
+    private documentApi: DocumentApi,
+    private deleteOwnDocument: DeleteOwnDocumentService,
   ) {
     this.allColumns = tableColumnService.getAllColumns();
     this.columnGroups = tableColumnService.getColumnGroups();
@@ -212,7 +217,19 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   ngOnInit() {
     this.lang = this.translate.currentLang;
     this.initColumns();
-    this.fetchPageGiorgio(this.page)
+    this.fetchPageGiorgio(this.page);
+    
+    this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(info => {
+      this.childEvent = info;
+      if (this.childEvent !== null) {
+        setTimeout(()=>{    
+          this.initColumns();
+          this.fetchPageGiorgio(this.page);
+          this.subscriptionDeleteOwnDocument.unsubscribe();
+        }, 1300);
+      }
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -230,11 +247,16 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     }
   }
 
+  ngOnDestroy() {
+    this.subscriptionDeleteOwnDocument.unsubscribe();
+  }
+
   refreshTable() {
     this.datatable.refreshTable();
   }
 
   initColumns() {
+    this.columns = [];
     const selected = this.isAggregate ?
       (this.hideDefaultCountColumn ?
         [...this.columnSelector.columns, ...this.numberColumnSelector.columns] :

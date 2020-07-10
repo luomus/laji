@@ -35,6 +35,7 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { Router, RouterModule } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service'
 
 @Component({
   selector: 'laji-document-annotation',
@@ -65,6 +66,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   @Input() identifying = false;
 
   @Output() close = new EventEmitter<boolean>();
+  @Output() deleteDoc = new EventEmitter<string>()
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -123,7 +125,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private documentToolsService: DocumentToolsService,
     private annotationService: AnnotationService,
     private router: Router,
-    private localizeRouterService: LocalizeRouterService
+    private localizeRouterService: LocalizeRouterService,
+    private deleteDocumentService: DeleteOwnDocumentService
   ) { }
 
   ngOnInit() {
@@ -400,10 +403,14 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   onDocumentDeleted(e) {
     if (e) {
+      console.log(e);
+      this.deleteDocumentService.emitChildEvent(e)
       this.closeDocument();
-      this.router.navigate(
+      this.deleteDocumentService.emitChildEvent(null);
+
+      /*this.router.navigate(
         this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])
-      );
+      );*/
     }
   }
 
