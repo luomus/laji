@@ -86,6 +86,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
   initialized = false;
   private filterChange$ = new Subject();
   allColumns: ObservationTableColumn[];
+  private lastSort: any;
   @LocalStorage('data-table-settings', {}) private dataTableSettings: Settings;
 
   constructor(
@@ -240,6 +241,56 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     if (this.filterByChange) {
       this.filterByChange.unsubscribe();
     }
+  }
+
+  onSort(event) {
+    this.lastSort = event;
+    const rows = [...this._rows];
+    event.sorts.forEach((sort) => {
+      const comparator = this.comparator(sort.prop);
+      const dir = sort.dir === 'asc' ? 1 : -1;
+      rows.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]));
+    });
+    this._rows = rows;
+  }
+
+  /**
+   * When using comparator input these functions are called all the time! Preventing buttons and events from firing
+   *
+   * @returns any
+   */
+  comparator(prop) {
+    if (prop === 'dateObserved') {
+      return (a, b) => {
+        a = (a || '').split('-')[0].trim().split('.').reverse().join('');
+        b = (b || '').split('-')[0].trim().split('.').reverse().join('');
+        return b - a;
+      };
+    } else if (prop === 'dateEdited') {
+      return (a, b) => {
+        a = (a || '').split(' ');
+        b = (b || '').split(' ');
+        a = a.length > 1 ?
+          a[0].trim().split('.').reverse().join('') + a[1].replace(':', '') :
+          a[0].trim().split('.').reverse().join('');
+        b = b.length > 1 ?
+          b[0].trim().split('.').reverse().join('') + b[1].replace(':', '') :
+          b[0].trim().split('.').reverse().join('');
+        return b - a;
+      };
+    } else if (prop === 'unitCount') {
+      return (a, b) => b - a;
+    }
+    return (a, b) => {
+      return ('' + a).localeCompare('' + b);
+    };
+  }
+
+  getDefaultSort() {
+    if (this._columns && this._columns.length > 0) {
+      return [{prop: this._columns[0].prop, dir: 'asc'}];
+    }
+    return [{ prop: 'dateEdited', dir: 'asc' }];
   }
 
   onRowSelect(event) {

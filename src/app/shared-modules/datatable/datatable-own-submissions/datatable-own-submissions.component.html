@@ -25,13 +25,10 @@
       [headerHeight]="showHeader ? 38 : 0"
       [footerHeight]="0"
       [rowHeight]="70"
-      (sort)="sortChange.emit($event)"
-      (reorder)="reorder.emit($event)"
+      (sort)="onSort($event)"
       (resize)="onResize($event)"
-      (select)="select.emit($event)"
-      (activate)="onRowSelect($event)"
     >
-    <ngx-datatable-column *ngIf="actions.length > 0" name="action" sortable="false" prop="action" width="50">
+    <ngx-datatable-column *ngIf="actions.length > 0" name="" sortable="false" prop="action" width="50">
         <ng-template let-row="row" let-value="value"  ngx-datatable-cell-template>
             <div *ngIf="(actions | includes:'view')">
                 <lu-button 
@@ -58,9 +55,15 @@
         </ng-template>
     </ngx-datatable-column> 
     <ngx-datatable-column *ngFor="let col of _columns; let i = index" [prop]="col.prop">
-        <ng-template ngx-datatable-header-template>
+      <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span class="datatable-header-cell-wrapper"
+              (click)="sort()"
+              title="{{ 'haseka.submissions.' + col.prop | translate }}">
+          <span class="datatable-header-cell-label draggable">
             {{ 'haseka.submissions.' + col.prop | translate }}
-        </ng-template>
+          </span>
+        </span>
+      </ng-template>
      </ngx-datatable-column>
     </ngx-datatable>
     <laji-data-table-footer
