@@ -186,7 +186,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   }
 
   @Input() set selected(sel: string[]) {
-    console.log('eee')
     const selected = [];
     const selectedNumbers = [];
     sel.map(field => {
@@ -249,17 +248,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       }, {});
 
     this.aggregateBy = [];
-
-    /*this.columns = selected.map(name => {
-      const column = this.columnLookup[name];
-      if (column.aggregate !== false) {
-        this.aggregateBy.push((column.aggregateBy || column.name)
-          + (this.columnLookup[name].sortBy ? ',' + this.setLangParams(this.columnLookup[name].sortBy) : ''));
-      }
-      console.log(this.columnLookup[name])
-      return this.columnLookup[name];
-
-    });*/
 
     // this.columns.push({name: 'buttons', label: 'Buttons', sortable: false})
     this.allColumnsNew.map(col => {
@@ -346,11 +334,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     );
 
     this.fetchSub = list$
-        .subscribe(data => {/*
-         data.results = Array.from(new Set(data.results.map(a => a['document']['documentId'])))
-         .map(id => {
-         return data.results.find(a => a['document']['documentId'] === id)
-        })*/
+        .subscribe(data => {
         
         const ids = data.results.map(obj => this.toQName.transform(obj['document']['documentId']) );
         data.results.forEach((element, index) => {
@@ -405,24 +389,15 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       false
     ).pipe(
       map(res => res.results),
-         /*map(res => Array.from(new Set(res.map(a => a['document']['documentId'])))),
-          switchMap(documents => {
-            let data = documents.map(document => this.getSingleDocument(document));
-            return ObservableForkJoin(...data).pipe(
-              switchMap(documents => this.searchDocumentsToRowDocuments(documents))
-            );
-          })*/
       switchMap((documents: Document[]) => this.searchDocumentsToRowDocuments(documents)) 
     )
     .subscribe(data => {
-      console.log(data)
       data = Array.from(new Set(data));
       this.total.emit(data && data.length || 0);
       // data.total = data.length;
       this.result.results = data;
       this.result.total = data.length;
       this.result.pageSize = this.pageSize;
-      console.log(this.result)
       this.loading = false;
       this.changeDetectorRef.markForCheck();
     }, () => {
@@ -450,11 +425,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     return this.getForm(this.toQName.transform(document['aggregateBy']['document.formId'])).pipe(
       switchMap((form) => {
         const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
-        console.log(gatheringInfo)
         return ObservableForkJoin(
-          this.getLocality(gatheringInfo, document),
-          //this.getObservers(document['gatheringEvent'] && document['gatheringEvent']['leg']),
-          /*this.getNamedPlaceName(document['namedPlaceID']),*/
+          this.getLocality(gatheringInfo, document)
         ).pipe(
           map<any, RowDocument>(([locality, npName]) => {
             const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
@@ -522,12 +494,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
       map((array) => array.join(', '))
     );
   }
-
-  /*private getNamedPlaceName(npId: string): Observable<string> {
-    console.log(this.columns)
-    if (!npId || this.columns.indexOf('namedPlaceName') === -1) { return ObservableOf(''); }
-    return this.labelService.get(npId, 'multi');
-  }*/
 
   private getSelectFields(selected: string[], query: WarehouseQueryInterface) {
     const selects = selected.map(field => this.columnLookup[field].selectField || field);

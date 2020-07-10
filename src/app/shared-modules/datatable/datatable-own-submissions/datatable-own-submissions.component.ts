@@ -113,38 +113,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
 
   @Input() set columns(columns: any[]) {
     const settings = this.dataTableSettings;
-    /*this._columns = this.allColumns.filter(col => {
-        columns.map((column) => {
-          column.name === col.name
-        })
-    })*/
-   
-    /*this._columns = columns.map((column) => {
-      if (typeof column.headerTemplate === 'string') {
-        column.headerTemplate = this.datatableTemplates[column.headerTemplate];
-      }
-      if (!column.headerTemplate) {
-        column.headerTemplate = this.datatableTemplates.dafaultHeader;
-      }
-      if (typeof column.cellTemplate === 'string') {
-        column.cellTemplate = this.datatableTemplates[column.cellTemplate];
-      }
-      if (!column.prop) {
-        column.prop = column.name;
-      }
-      if (settings && settings[column.name] && settings[column.name].width) {
-        column.width = settings[column.name].width;
-      }
-      if (this.resizable === false) {
-        column.resizeable = false;
-      }
-      return column;
-    });*/
-
     this._columns = columns;
-    
-
-    console.log(this._columns)
   }
 
   @Input() set rows(rows: any[]) {
@@ -160,7 +129,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
       this.updateFilteredRows();
     } else {
       this._rows = this._originalRows;
-      console.log(this._rows)
     }
     if (this._preselectedRowIndex !== undefined && this._preselectedRowIndex !== -1) {
       this.preselectedRowIndex = this._preselectedRowIndex;
@@ -177,7 +145,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
  
 
   @Input() set preselectedRowIndex(index: number) {
-    console.log('selected')
     this._preselectedRowIndex = index;
     this.selected = [this._rows[this._preselectedRowIndex]] || [];
     if (!this.selected.length) {
@@ -216,12 +183,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    /*this.filterByChange = this.filterChange$.pipe(
-      debounceTime(400)
-    ).subscribe(() => {
-      this.updateFilteredRows();
-      this.changeDetectorRef.markForCheck();
-    });*/
   }
 
   ngAfterViewInit() {
@@ -356,24 +317,9 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
 
   private updateFilteredRows() {
     this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
-    console.log(this._rows)
     this._count = this._rows.length;
     this._page = 1;
     //this.scrollTo();
   }
 
-  /*private scrollTo(offsetY: number = 0) {
-    if (this.platformService.isServer || !this._rows) {
-      return;
-    }
-    try {
-      if (this.datatable && this.datatable.bodyComponent && this.datatable.bodyComponent.scroller) {
-        this.datatable.bodyComponent.scroller.setOffset(offsetY);
-        this.datatable.bodyComponent.scroller.updateOffset();
-        this.datatable.bodyComponent.onBodyScroll({scrollYPos: offsetY, scrollXPos: this.datatable.bodyComponent.offsetX || 0});
-      }
-    } catch (e) {
-      this.logger.info('selected row index failed', e);
-    }
-  }*/
 }

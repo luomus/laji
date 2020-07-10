@@ -268,7 +268,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
           break;
         }
       }
-      console.log(cumulative)
       return cumulative;
     }, []);
 
@@ -401,7 +400,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   private initColumns() {
     const useCols = [];
-    console.log('ciao')
     this._columns.map(col => {
       const column = this.allColumns.find((value) => value.prop === col);
       if (column) {
@@ -409,7 +407,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
       }
     });
     this.useColumns = useCols;
-    console.log(this.useColumns)
     this.defaultSort = this.getDefaultSort();
   }
 
