@@ -17,44 +17,56 @@
       [sortType]="sortType"
       [count]="_rows.length"
       [offset]="_offset"
-      
-      [columnMode]="columnMode"
-      [scrollbarH]="true"
+      [rowHeight]="'auto'"
+      [columnMode]="'flex'"
       [sorts]="sorts"
-      [scrollbarV]="virtualScrolling || _isFixedHeight"
       [headerHeight]="showHeader ? 38 : 0"
       [footerHeight]="0"
-      [rowHeight]="70"
       (sort)="onSort($event)"
-      (resize)="onResize($event)"
     >
-    <ngx-datatable-column *ngIf="actions.length > 0" name="" sortable="false" prop="action" width="50">
+
+    <ngx-datatable-row-detail [rowHeight]="'auto'">
+      <ng-template let-row="row" ngx-datatable-row-detail-template>
+        <div *ngFor="let col of _columns | filterColumns:this.displayMode:true" style="padding-left: 35px">
+          <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
+          <span>{{ row[col.prop] }}</span>
+        </div>
+      </ng-template>
+    </ngx-datatable-row-detail>
+
+    <ngx-datatable-column [flexGrow]="" [resizeable]="false"
+                          [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
+      <ng-template ngx-datatable-header-template><span></span></ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <span class="link">
+          <i class="glyphicon"
+            [ngClass]="{'glyphicon-chevron-right': !row.$$expanded, 'glyphicon-chevron-down': row.$$expanded}"
+            (click)="toggleExpandRow(row)"></i>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column *ngIf="actions.length > 0" [name]="" [sortable]="false"  [flexGrow]="1" >
         <ng-template let-row="row" let-value="value"  ngx-datatable-cell-template>
             <div *ngIf="(actions | includes:'view')">
                 <lu-button 
                       [role]="'success'"
-                      [tooltip]="'result.showViewer' | translate"
-                      [placement]="'right'"
-                      container="body"
-                      [adaptivePosition]="false"
                       (click)="showDocument(row['id'])"
                       >
                   <i class="glyphicon glyphicon-eye-open"></i>
+                  <span style="display: block;line-height: 12px;">{{ 'haseka.submissions.view' | translate }}</span>
             </lu-button>
             </div>
               <lu-button *ngIf="(actions | includes:'edit')"
                     [role]="'edit'"
-                    [tooltip]=" 'haseka.submissions.toEdit' | translate"
-                    container="body"
-                    [adaptivePosition]="false"
-                    [placement]="'right'"
                     [routerLink]="row['_editUrl'] | localize"
                     >
                   <i class="glyphicon glyphicon-edit"></i>
+                  <span style="display: block;line-height: 12px;">{{'haseka.submissions.edit' | translate }}</span>
           </lu-button>
         </ng-template>
     </ngx-datatable-column> 
-    <ngx-datatable-column *ngFor="let col of _columns; let i = index" [prop]="col.prop">
+    <ngx-datatable-column *ngFor="let col of _columns | filterColumns:this.displayMode; let i = index" [prop]="col.prop" [flexGrow]="1">
       <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
         <span class="datatable-header-cell-wrapper"
               (click)="sort()"

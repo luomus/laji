@@ -40,6 +40,10 @@
     overflow-y: visible;
   }
 
+  :host ::ng-deep .lu-btn, :host ::ng-deep button.lu-btn, :host ::ng-deep a.lu-btn {
+    min-width: 60px;
+  }
+
 
 
 @media only screen and (min-width: 768px) {
