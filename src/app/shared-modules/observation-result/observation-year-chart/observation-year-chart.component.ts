@@ -154,6 +154,17 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
         const count = r.count;
         const individual = r.individualCountSum;
 
+        if (prevYear) {
+          for (let i = prevYear + 1; i < year; i++) {
+            this.subBarChartLabels.push('' + i);
+            this.allSubData.push(0);
+            if (i < 1970) {
+              this.splitIdx++;
+            }
+          }
+        }
+
+
         this.allSubData.push(this.onlyCount === null ? count : this.onlyCount ? count : individual);
         this.subBarChartLabels.push('' + year);
         this.resultList.push({'count': count, 'individualCountSum': individual, 'year': year});
