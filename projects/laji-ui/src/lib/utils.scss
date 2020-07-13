@@ -95,11 +95,17 @@ $displays: flex, block, inline, inline-block, none;
   }
 }
 
+.items-center {
+  align-items: center !important;
+}
 .items-end {
   align-items: flex-end !important;
 }
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:items-center {
+      align-items: center !important;
+    }
     .#{$breakpoint}\:items-end {
       align-items: flex-end !important;
     }
