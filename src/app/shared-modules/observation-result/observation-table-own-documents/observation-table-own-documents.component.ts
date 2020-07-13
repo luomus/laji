@@ -9,7 +9,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  OnDestroy
 } from '@angular/core';
 import * as moment from 'moment';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
@@ -42,6 +43,7 @@ import { ToQNamePipe } from 'src/app/shared/pipe/to-qname.pipe';
 import { RowDocument } from '../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service'
 
 
 @Component({
@@ -51,7 +53,7 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
   providers: [ObservationResultService, ToQNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges {
+export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTableOwn', { static: true }) public datatable: DatatableOwnSubmissionsComponent;
   @ViewChild(OwnObservationTableSettingsComponent, { static: true }) public settingsModalOwn: OwnObservationTableSettingsComponent;
 
@@ -97,16 +99,16 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   _originalSelectedNumbers: string[] = [];
   showDownloadAll = true;
   showPrintLabels = false;
-  newColumns = ['dateEdited', 'dateObserved', 'locality', 'form', 'id', 'unitCount', 'observer'];
+  newColumns = ['dateEdited', 'dateCreated', 'locality', 'form', 'id', 'observer'];
   allColumnsNew = [
     {prop: 'templateName', mode: 'small'},
     {prop: 'templateDescription', mode: 'small'},
-    {prop: 'dateEdited', mode: 'medium'},
-    {prop: 'dateObserved', mode: 'small'},
-    {prop: 'namedPlaceName', mode: 'small'},
+    {prop: 'dateEdited', mode: 'small'},
+    {prop: 'dateCreated', mode: 'large'},
+    {prop: 'namedPlaceName', mode: 'large'},
     {prop: 'locality', mode: 'medium'},
     {prop: 'taxon', mode: 'medium'},
-    {prop: 'gatheringsCount', mode: 'small'},
+    {prop: 'gatheringsCount', mode: 'large'},
     {prop: 'unitCount', mode: 'small'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
@@ -115,6 +117,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
 
   columnSelector = new ColumnSelector;
   numberColumnSelector = new ColumnSelector;
+  subscriptionDeleteOwnDocument: Subscription;
+  childEvent: any;
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -179,7 +183,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     private documentInfoService: DocumentInfoService,
     private labelService: TriplestoreLabelService,
     private userService: UserService,
-    private documentApi: DocumentApi
+    private documentApi: DocumentApi,
+    private deleteOwnDocument: DeleteOwnDocumentService,
   ) {
     this.allColumns = tableColumnService.getAllColumns();
     this.columnGroups = tableColumnService.getColumnGroups();
@@ -212,7 +217,19 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
   ngOnInit() {
     this.lang = this.translate.currentLang;
     this.initColumns();
-    this.fetchPageGiorgio(this.page)
+    this.fetchPageGiorgio(this.page);
+    
+    this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(info => {
+      this.childEvent = info;
+      if (this.childEvent !== null) {
+        setTimeout(()=>{    
+          this.initColumns();
+          this.fetchPageGiorgio(this.page);
+          this.subscriptionDeleteOwnDocument.unsubscribe();
+        }, 1300);
+      }
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -230,11 +247,16 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
     }
   }
 
+  ngOnDestroy() {
+    this.subscriptionDeleteOwnDocument.unsubscribe();
+  }
+
   refreshTable() {
     this.datatable.refreshTable();
   }
 
   initColumns() {
+    this.columns = [];
     const selected = this.isAggregate ?
       (this.hideDefaultCountColumn ?
         [...this.columnSelector.columns, ...this.numberColumnSelector.columns] :
@@ -439,8 +461,9 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges 
               templateName: {},
               templateDescription: {},
               publicity: {},
-              dateEdited: document['aggregateBy']['document.loadDate'] ? moment(document['aggregateBy']['document.loadDate']).format('DD.MM.YYYY HH:mm') : '',
-              dateObserved: document['aggregateBy']['document.createdDate'] ? moment(document['aggregateBy']['document.createdDate']).format('DD.MM.YYYY HH:mm') : '',
+              dateEdited: document['aggregateBy']['document.loadDate'] ? moment(document['aggregateBy']['document.loadDate']).format('DD.MM.YYYY') : '',
+              dateObserved: document['aggregateBy']['document.createdDate'] ? moment(document['aggregateBy']['document.createdDate']).format('DD.MM.YYYY') : '',
+              dateCreated: document['aggregateBy']['document.createdDate'] ? moment(document['aggregateBy']['document.createdDate']).format('DD.MM.YYYY') : '',
               namedPlaceName: document['aggregateBy']['namedPlace.id'],
               locality: this.createLocality(document['aggregateBy']['gathering.locality'], document['aggregateBy']['gathering.municipality']),
               gatheringsCount: null,

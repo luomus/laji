@@ -97,7 +97,9 @@ export class UserDocumentToolsComponent implements OnInit {
       this.cd.detectChanges();
     });
 
-    this.checkAdminRight();
+    if (this._editors.indexOf(this._personID)!== -1){
+      this.checkAdminRight();
+    }
   }
 
   makeTemplate() {
@@ -189,6 +191,7 @@ export class UserDocumentToolsComponent implements OnInit {
       return;
     }
     this.hasEditRights = this._editors.indexOf(this._personID) !== -1;
+    console.log(this.hasEditRights)
     if (this.hasEditRights) {
       this.updateLink();
     }

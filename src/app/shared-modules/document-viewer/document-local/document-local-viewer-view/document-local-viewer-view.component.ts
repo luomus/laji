@@ -62,7 +62,6 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
   }
 
   onDocumentDeleted(e) {
-    console.log(e)
     if (e) {
       this.router.navigate(
         this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])

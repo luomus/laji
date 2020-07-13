@@ -30,6 +30,8 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { Router, RouterModule } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service'
+
 
 
 @Component({
@@ -97,7 +99,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private documentToolsService: DocumentToolsService,
     private translate: TranslateService,
     private router: Router,
-    private localizeRouterService: LocalizeRouterService
+    private localizeRouterService: LocalizeRouterService,
+    private deleteDocumentService: DeleteOwnDocumentService
   ) { }
 
   ngOnInit() {
@@ -315,15 +318,18 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   closeDocument() {
     const body = document.body;
     body.classList.remove("modal-open-after");
+     if (this.documentToolsOpen) {
+      this.close.emit(false);
+    } else {
     this.close.emit(true);
+    }
   }
 
   onDocumentDeleted(e) {
     if (e) {
+      this.deleteDocumentService.emitChildEvent(e);
       this.closeDocument();
-      this.router.navigate(
-        this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])
-      );
+      this.deleteDocumentService.emitChildEvent(null);
     }
   }
 

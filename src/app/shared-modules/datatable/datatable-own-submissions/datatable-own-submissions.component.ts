@@ -10,9 +10,11 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  HostListener
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
+import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 import { Subject, Subscription } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
@@ -84,6 +86,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
   @Input() selected: any[] = [];
 
   initialized = false;
+  displayMode: string;
   private filterChange$ = new Subject();
   allColumns: ObservationTableColumn[];
   private lastSort: any;
@@ -183,6 +186,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.updateDisplayMode();
   }
 
   ngAfterViewInit() {
@@ -303,11 +307,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     };
   }
 
-  onResize(event) {
-    if (event && event.column && event.column.name && event.newValue) {
-      this.dataTableSettings = {...this.dataTableSettings, [event.column.name]: {width: event.newValue}};
-    }
-  }
 
   showDocument(id: string) {
     this.documentViewerFacade.showDocumentID({
@@ -315,11 +314,38 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     });
   }
 
+  toggleExpandRow(row: RowDocument) {
+    this.datatable.rowDetail.toggleExpandRow(row);
+  }
+
   private updateFilteredRows() {
     this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
     this._count = this._rows.length;
     this._page = 1;
     //this.scrollTo();
+  }
+
+  private updateDisplayMode() {
+    if (this.platformService.isServer) {
+      return;
+    }
+    const width = window.innerWidth;
+
+    if (width > 1150) {
+      if (this.datatable) {
+        this.datatable.rowDetail.collapseAllRows();
+      }
+      this.displayMode = 'large';
+    } else if (width > 570) {
+      this.displayMode = 'medium';
+    } else {
+      this.displayMode = 'small';
+    }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.updateDisplayMode();
   }
 
 }

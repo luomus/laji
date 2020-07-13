@@ -365,6 +365,7 @@ export class OwnSubmissionsComponent implements OnChanges {
               publicity: document.publicityRestrictions as any,
               dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
               dateObserved: dateObserved,
+              dateCreated: dateObserved,
               namedPlaceName: npName,
               locality: locality,
               gatheringsCount: document.gatherings.length,

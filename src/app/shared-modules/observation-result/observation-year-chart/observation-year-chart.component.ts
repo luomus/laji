@@ -61,6 +61,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   ) { }
 
   ngOnInit() {
+    console.log('ciao')
       Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
         return coordinates;
       };
@@ -101,7 +102,8 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
         }],
         yAxes: [{
           ticks: {
-            beginAtZero: true
+            beginAtZero: true,
+            callback: function(value) {if (value % 1 === 0) {return value;}}
           },
           gridLines: {
             color: 'rgba(171,171,171,0.5)',
