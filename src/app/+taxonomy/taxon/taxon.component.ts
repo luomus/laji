@@ -25,7 +25,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   infoCardContext: string;
   infoCardTab: string;
 
-  showTree = true;
+  showTree = false;
   canShowTree = true;
 
   loading = false;

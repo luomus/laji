@@ -97,6 +97,8 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
       this.open = !(window.innerWidth < mobileBreakpoint);
+    } else {
+      this.open = false;
     }
   }
 
