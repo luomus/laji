@@ -191,6 +191,7 @@ export class UserDocumentToolsComponent implements OnInit {
       return;
     }
     this.hasEditRights = this._editors.indexOf(this._personID) !== -1;
+    console.log(this.hasEditRights)
     if (this.hasEditRights) {
       this.updateLink();
     }
