@@ -93,7 +93,6 @@ import { PinkkaComponent } from './pinkka/pinkka.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
 import { AudioSpectrogramComponent } from './kerttu/kerttu-main-view/audio-spectrogram/audio-spectrogram.component';
 import { BirdPointCountResultComponent } from './bird-point-count/bird-point-count-result/bird-point-count-result.component';
-import { ToolsModule } from '../+haseka/tools/tools.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
 
 /* tslint:enable:max-line-length */
@@ -126,7 +125,6 @@ import { ChartModule } from '../shared-modules/chart/chart.module';
     SpreadsheetModule,
     ThreeStateSwitchModule,
     PillListModule,
-    ToolsModule,
     ChartModule
   ],
   declarations: [

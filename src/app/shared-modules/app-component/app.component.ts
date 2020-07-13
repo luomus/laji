@@ -1,5 +1,4 @@
-import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, ViewContainerRef } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';

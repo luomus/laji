@@ -1,5 +1,5 @@
 import {
-  Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID, ContentChildren, QueryList
+  Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID, ContentChildren, QueryList, Output, EventEmitter
 } from '@angular/core';
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
@@ -67,10 +67,13 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() set open(b) {
     this._open = b;
     this.checkCloseOnClickListener();
+    this.toggled.emit(b);
   }
   get open() {
     return this._open;
   }
+
+  @Output() toggled = new EventEmitter<boolean>();
 
   dragging = false;
   mobile = false;

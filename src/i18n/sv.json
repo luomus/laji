@@ -965,7 +965,8 @@
   "observation.info.invasive": "Vieraslajit ovat lajeja, jotka ovat levinneet uudelle alueelle ihmisen mukana joko tahattomasti tai tarkoituksella. Voit rajata havainnot koskemaan ainoastaan vieraslajeja (Kyllä) tai ainoastaan lajeja jotka eivät ole vieraslajeja (Ei).",
   "observation.info.keepSsp": "Taksonin nimellä haettaessa mukaan tulevat myös nimeä vastaavan taksonin alataksoneilla ilmoitetut havainnot. Jos haluat esimerkiksi hakea vain tietyn lajin (ei alalajien) tai tiettyyn sukuun määritettyjä (ei lajien tai alalajien) havaintoja, ota ruksi pois tästä kentästä.",
   "observation.info.keyword": "Hae tietyssä havaintoerässä tai useissa havaintoerissä käytetyllä lisätunnisteella, mm. Vihkon avainsanalla tai Kotkan datasetin tunnisteella. Tämä rajaus löytää myös eräissä vanhoissa tietojärjestelmissä havainnoille/näytteille annetuilla vanhoilla tunnisteilla, diarionumeroilla yms. Jos haluat etsiä usealla lisätunnisteella, erottele ne pilkulla.",
-  "observation.info.loaded": "Voit rajata havaintoja sen mukaan milloin ne ovat ensimmäisen kerran ladattu Lajitietokeskukseen. Tämä ei ole vanhojen aineistojen osalta sama asia kuin varsinainen tallennusaika, mutta useimmista vanhoista lähteistä varsinainen tallennusaika ei ole tiedossa.",
+  "observation.info.loaded": "Voit rajata havaintoja sen mukaan milloin ne ovat viimeksi ladattu Lajitietokeskukseen, kun niitä on muokattu alkuperäislähteessä. Lähteestä riippuen muokatut havainnot ladataan joko heti tai vaihtelevalla viiveellä.",
+  "observation.info.firstLoaded": "Voit rajata havaintoja sen mukaan milloin ne ovat ensimmäisen kerran ladattu Lajitietokeskukseen. Tämä ei ole vanhojen aineistojen osalta sama asia kuin varsinainen tallennusaika, mutta useimmista vanhoista lähteistä varsinainen tallennusaika ei ole tiedossa.",
   "observation.info.municipality": "Rajaa havaintoja yhdellä tai useammalla Suomen kunnalla. Yksittäisen havainnon kunta/kunnat ovat yhdistelmä koordinaattien avulla selvitettyä kuntatietoa ja ilmoitettua kuntatietoa. Jos havainnon kunta on ilmoitettu ja koordinaatteja ei ole ilmoitettu, havainnon kunta on ilmoitettu kunta. Jos kuntaa ei ole ilmoitettu mutta koordinaatit on ilmoitettu, havainnon kunta sisällyttää kaikki ilmoitettua koordinaattialuetta koskettava kunnat. Jos kunta ja koordinaatit on ilmoitettu, käytetään ilmoitettua kuntaa, mikäli se täsmää koordinaattien kanssa.",
   "observation.info.nativeOccurrence": "Rajaa havainnon ilmoitetun luonnonvaraisuuden mukaan. Luonnonvarainen havainto on luonnostaan paikalla esiintyvä kasvi tai muu eliö. Ei-luonnonvarainen havainto on mm. ruukkukasvi, puutarhaan istutettu kasvi, maatalouseläin tai häkkilintu. Toistaiseksi Lajitietokeskukseen ei ole ilmoitettu havaintojen luonnonvaraisuutta kovinkaan kattavasti. (Tieto puuttuu valtaosasta havaintoja).",
   "observation.info.needsCheck": "",
@@ -1476,7 +1477,7 @@
   "theme.kerttu.letterTemplate": "Malli",
   "theme.kerttu.letterCandidate": "Ehdokas",
   "theme.kerttu.letterCandidateLonger": "Pidempi pätkä ehdokkaasta",
-  "theme.kerttu.areLettersSame": "Onko ehdotetussä äänessä sama lintuääni kuin mallissa?",
+  "theme.kerttu.areLettersSame": "Onko ehdotetussa äänessä sama lintuääni kuin mallissa?",
   "theme.kerttu.notSure": "Ei tietoa",
   "theme.kerttu.correlation": "vastaavuus",
   "theme.kerttu.timeBuffer": "Aikapuskuri",
@@ -1538,5 +1539,6 @@
   "navigation.birdPointCount": "Punkttaxering",
   "theme.birdPointCount.intro": "Punkttaxeringen görs längs med en fritt utvald rutt, som inventeras en gång i början av sommaren. Rutten består av 20 punkter och i varje punkt observeras fåglar under exakt 5 minuter.",
 
-  "technicalNews.error": null
+  "technicalNews.error": null,
+  "betapopup.desc": null
 }

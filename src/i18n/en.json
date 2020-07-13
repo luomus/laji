@@ -880,7 +880,8 @@
   "observation.info.invasive": "An invasive species is a species that is not native to a specific area and has been introduced by human activity. You can filter the observations to include only invasive species (Yes) or only non-invasive species (No).",
   "observation.info.keepSsp": "When searching using taxon name, the results include subtaxa of the given taxon. If you want to exclude the subtaxa, remove checkbox from this filter.",
   "observation.info.keyword": "Filter using a keyword, project name etc. used in one or several observations. You can provide multiple search terms by separating them with a comma.",
-  "observation.info.loaded": "You can filter observations based on when they have been first loaded to FinBIF observation search. This is not always the same thing than the actual entry date, but from many sources that information is not available.",
+  "observation.info.loaded": "You can filter observations based on when they have been loaded last time into FinBIF, after being edited in the source system. Depending on the source, there might be a delay between editing and loading into FinBIF.",
+  "observation.info.firstLoaded": "You can filter observations based on when they have been first loaded to FinBIF. This is not always the same thing than the actual entry date, but from many sources that information is not available.",
   "observation.info.municipality": "Filter observations based on one or more Finnish municipalities. The municipality or municipalities of an observation is either the reported municipality (no coordinates or the coordinates match with the reported municipality) or municipalities resolved using the coordinates (no reported municipality).",
   "observation.info.nativeOccurrence": "Filter observations based on the reported native status. A native observation is a plant or other organism that occurs in the location in wild. Non-native observation is for example a garden plant or domestic animal. For now nativity of observations is not widely reported. (Information is missing from most of the observations).",
   "observation.info.needsCheck": "",
@@ -1410,7 +1411,7 @@
   "theme.kerttu.letterTemplate": "Malli",
   "theme.kerttu.letterCandidate": "Ehdokas",
   "theme.kerttu.letterCandidateLonger": "Pidempi pätkä ehdokkaasta",
-  "theme.kerttu.areLettersSame": "Onko ehdotetussä äänessä sama lintuääni kuin mallissa?",
+  "theme.kerttu.areLettersSame": "Onko ehdotetussa äänessä sama lintuääni kuin mallissa?",
   "theme.kerttu.notSure": "Ei tietoa",
   "theme.kerttu.correlation": "vastaavuus",
   "theme.kerttu.timeBuffer": "Aikapuskuri",
@@ -1471,5 +1472,6 @@
   "navigation.birdPointCount": "Point count",
   "theme.birdPointCount.intro": "Point counts of breeding terrestrial birds",
 
-  "technicalNews.error": "Service not responding. You can check if there's more information at <a href='http://foorumi.laji.fi/' target='_blank'>the forums</a> or <a href='https://twitter.com/lajitieto' target='_blank'>Twitter</a>."
+  "technicalNews.error": "Service not responding. You can check if there's more information at <a href='http://foorumi.laji.fi/' target='_blank'>the forums</a> or <a href='https://twitter.com/lajitieto' target='_blank'>Twitter</a>.",
+  "betapopup.desc": "This is a development version of the laji.fi service. Observations entered through this service do not appear in laji.fi."
 }

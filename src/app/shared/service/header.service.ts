@@ -48,43 +48,54 @@ export class HeaderService implements OnDestroy {
 
   public startRouteListener(): void {
     this.routeSub = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      const newRoute = this.location.path() || '/';
-      if (this.currentRoute !== newRoute) {
-        // Set page title
-        this.getDeepestTitle(this.router.routerState.snapshot.root).pipe(
-          map(titles => [...titles, MAIN_TITLE]),
-          map(titles => Array.from(new Set<string>(titles))),
-          switchMap(titles => this.translateService.get(titles))
-        ).subscribe(pageTitle => {
-          this.title.setTitle(Object.keys(pageTitle).map(key => decodeURI(pageTitle[key])).join(' | '));
-        });
+      filter(event => event instanceof NavigationEnd),
+      map(() => this.location.path() || '/'),
+      filter(newRoute => this.currentRoute !== newRoute)
+    ).subscribe((newRoute) => {
+      this.currentRoute = newRoute;
 
-        // Set page meta tags
-        RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
-          map(meta => ({description: MAIN_DESCRIPTION, ...meta})),
-          switchMap(meta => this.translateService.get(Object.keys(meta).map(key => meta[key])).pipe(
-            map(translations => ({meta, translations}))
-          )))
-          .subscribe(data => {
-            ALL_META_KEYS.map((key) => {
-              const propertySelector = `property='${key}'`;
-              if (data.meta && data.meta[key] && data.translations && data.translations[data.meta[key]]) {
-                this.metaService.updateTag({property: key, content: data.translations[data.meta[key]]}, propertySelector);
-              } else {
-                this.metaService.removeTag(propertySelector);
-              }
-            });
-          });
-        this.currentRoute = newRoute;
-        this.updateAlternativeLinks(newRoute);
-      }
+      // Set page title
+      this.getDeepestTitle(this.router.routerState.snapshot.root).pipe(
+        map(titles => [...titles, MAIN_TITLE]),
+        map(titles => Array.from(new Set<string>(titles))),
+        switchMap(titles => this.translateService.get(titles))
+      ).subscribe(pageTitle => {
+        this.title.setTitle(Object.keys(pageTitle).map(key => decodeURI(pageTitle[key])).join(' | '));
+      });
+
+      // Set page meta tags
+      RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
+        map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
+      ).subscribe(meta => {
+        ALL_META_KEYS.map((key) => {
+          const propertySelector = `property='${key}'`;
+          if (meta?.[key]) {
+            this.metaService.updateTag({property: key, content: this.translateService.instant(meta[key])}, propertySelector);
+          } else {
+            this.metaService.removeTag(propertySelector);
+          }
+        });
+      });
+
+      // Set canonical link
+      RouteDataService.getDeepest<string>(this.router.routerState.snapshot.root, 'canonical', '').subscribe(canonical => {
+        this.updateCanonicalUrl(canonical ? this.localizeRouterService.translateRoute(canonical, this.translateService.currentLang) : newRoute);
+      });
+
+      this.updateAlternativeLinks(newRoute);
     });
   }
 
   ngOnDestroy() {
     this.routeSub.unsubscribe();
+  }
+
+  private updateCanonicalUrl(path: string) {
+    this.removeElements('link[rel="canonical"]');
+    this.addLink({
+      href: environment.base + path,
+      rel: 'canonical'
+    });
   }
 
   private updateAlternativeLinks(path: string) {
@@ -100,7 +111,7 @@ export class HeaderService implements OnDestroy {
 
   private removeElements(selector: string) {
     if (this.platformService.isBrowser) {
-      const alternatives = document.querySelectorAll(selector);
+      const alternatives = this.document.querySelectorAll(selector);
       if (alternatives.length) {
         alternatives.forEach(elem => this.renderer.removeChild(this.document.head, elem));
       }

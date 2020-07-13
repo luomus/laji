@@ -1,8 +1,10 @@
+@import 'vars';
+
 :host {
   display: inline-block;
   width: 100%;
   text-align: left;
-  background-color: #ECF0F1;
+  background-color: $neutral-4;
 }
 
 #spectrogramContainer {

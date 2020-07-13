@@ -1,6 +1,17 @@
-import { catchError, distinctUntilChanged, filter, map, share, startWith, switchMap, take, tap } from 'rxjs/operators';
-import { isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
-import { Inject, Injectable } from '@angular/core';
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  share,
+  startWith,
+  switchMap,
+  take,
+  tap,
+  timeout
+} from 'rxjs/operators';
+import { isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
@@ -14,6 +25,8 @@ import { PlatformService } from './platform.service';
 import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
+import { PERSON_TOKEN } from './laji-api-worker-common';
+import { HttpClient } from '@angular/common/http';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -63,6 +76,8 @@ export class UserService {
   // Do not write to this variable in the server!
   @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
   @SessionStorage() private returnUrl: string;
+  private tabId: string;
+  private mRandom: string;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
   private state$ = this.store.asObservable();
@@ -94,7 +109,8 @@ export class UserService {
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
     private browserService: BrowserService,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private httpClient: HttpClient
   ) {
     if (!this.platformService.isBrowser) {
       this.doServiceSideLoginState();
@@ -108,9 +124,8 @@ export class UserService {
       take(1),
       switchMap(() => this.browserService.visibility$),
       filter(visible => visible),
-    ).subscribe(() => {
-      this._checkLogin();
-    });
+      switchMap(() => this._checkLogin())
+    ).subscribe();
   }
 
   checkLogin(): Observable<boolean> {
@@ -125,17 +140,24 @@ export class UserService {
   }
 
   logout(): void {
-    if (!_state.token || this.subLogout) {
+    if (this.subLogout) {
       return;
     }
-    this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
-      httpOkError(404, false),
-      retryWithBackoff(300),
-      catchError((err) => {
-        this.logger.warn('Failed to logout', err);
-        return of(false);
-      })
-    ).subscribe(() => this.doLogoutState());
+    if (_state.token) {
+      this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
+        httpOkError(404, false),
+        retryWithBackoff(300),
+        catchError((err) => {
+          this.logger.warn('Failed to logout', err);
+          return of(false);
+        })
+      ).subscribe(() => {
+        this.subLogout = undefined;
+        this.doLogoutState();
+      });
+    } else {
+      this.doLogoutState();
+    }
   }
 
   getToken(): string {
@@ -167,8 +189,8 @@ export class UserService {
       catchError(() => of({
         id,
         fullName: id
-      } as Person)),
-      tap(person => _state.allUsers[id] = person),
+      })),
+      tap(person => _state.allUsers[id] = person as Person),
       share()
     );
     return pickValue(_state.allUsers[id] as Observable<Person>);
@@ -235,12 +257,36 @@ export class UserService {
         share()
       );
     } else if (this.persistentState.isLoggedIn) {
-      this.redirectToLogin();
-      return of(false);
+      return this.doBackgroundCheck().pipe(
+        switchMap(t => t ? this._checkLogin(t) : of(false)),
+        timeout(10000),
+        catchError(() => {
+          this.doLogoutState();
+          return of(true);
+        })
+      );
     } else {
       this.doLogoutState();
     }
     return of(true);
+  }
+
+  private doBackgroundCheck(): Observable<string> {
+    if (!this.platformService.canUseWebWorkerLogin) {
+      this.redirectToLogin();
+      return of('');
+    }
+    return this.personApi.personFindByToken(PERSON_TOKEN).pipe(
+      map(() => PERSON_TOKEN),
+      catchError((e) => {
+        if (e && e.status === 0) {
+          this.redirectToLogin();
+          this.platformService.canUseWebWorkerLogin = false;
+          return of('');
+        }
+        return throwError('Logout');
+      })
+    );
   }
 
   private doServiceSideLoginState() {
