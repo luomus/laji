@@ -61,6 +61,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   ) { }
 
   ngOnInit() {
+    console.log('ciao')
       Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
         return coordinates;
       };
@@ -101,7 +102,8 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
         }],
         yAxes: [{
           ticks: {
-            beginAtZero: true
+            beginAtZero: true,
+            callback: function(value) {if (value % 1 === 0) {return value;}}
           },
           gridLines: {
             color: 'rgba(171,171,171,0.5)',
@@ -151,17 +153,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
         const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
         const count = r.count;
         const individual = r.individualCountSum;
-
-        if (prevYear) {
-          for (let i = prevYear + 1; i < year; i++) {
-            this.subBarChartLabels.push('' + i);
-            this.allSubData.push(0);
-            if (i < 1970) {
-              this.splitIdx++;
-            }
-          }
-        }
-
 
         this.allSubData.push(this.onlyCount === null ? count : this.onlyCount ? count : individual);
         this.subBarChartLabels.push('' + year);

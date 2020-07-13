@@ -8,7 +8,7 @@ import {
   OnChanges, SimpleChanges, OnInit
 } from '@angular/core';
 
-type Role = 'primary' | 'secondary' | 'neutral';
+type Role = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'danger' | 'other' ;
 
 @Component({
   selector: 'lu-button',
@@ -38,7 +38,7 @@ export class ButtonComponent implements OnChanges, OnInit {
 
   @Input() set anchor(url: string) {
     this.routerLink = url;
-    this.useHref = url.includes('?');
+    this.useHref = url.startsWith('http') || url.includes('?');
   }
 
   @HostListener('click', ['$event'])

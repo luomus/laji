@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild,
-OnInit, ChangeDetectorRef} from '@angular/core';
+OnInit, ChangeDetectorRef, OnChanges, SimpleChanges, SimpleChange} from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
@@ -12,14 +12,14 @@ import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/t
 import { Subscription } from 'rxjs';
 import {LocalStorageService} from 'ngx-webstorage';
 
-const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations'];
+const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
   selector: 'laji-observation-result',
   templateUrl: './observation-result.component.html',
   styleUrls: ['./observation-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationResultComponent implements OnInit {
+export class ObservationResultComponent implements OnInit, OnChanges {
   private _visible: VisibleSections = {
     finnish: true,
     countTaxa: true,
@@ -31,6 +31,7 @@ export class ObservationResultComponent implements OnInit {
     statistics: true,
     download: true,
     annotations: true,
+    own: true
   };
   @Input() set visible(v: VisibleSections) {
     this._visible = v;
@@ -117,6 +118,15 @@ export class ObservationResultComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(query: SimpleChanges) {
+    if(query.query) {
+      if (query.query && (query.query.currentValue.observerPersonToken === undefined )
+      && (query.query.currentValue.editorPersonToken === undefined) && this.selectedTabIdx === 6) {
+        this.onSelect(0);
+      }
+    }
   }
 
   ngDestroy() {

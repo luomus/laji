@@ -1,0 +1,50 @@
+<laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
+<div class="observation-table-wrapper" *ngIf="result.results.length > 0 && !loading">
+    <laji-datatable-header
+      [downloadText]="'haseka.submissions.download' | translate"
+      [downloadLoading]="downloadLoading"
+      [showDownloadMenu]="showDownloadMenu"
+      [showSettingsMenu]="showSettingsMenu"
+      [count]="result.total"
+      [maxDownload]="maxDownload"
+      (openSettingsMenu)="openModal()"
+      (download)="download($event)"
+    ></laji-datatable-header>
+    <laji-datatable-own-submissions
+      #dataTableOwn
+      class="observation-table"
+      (rowSelect)="rowSelect.emit($event)"
+      [showRowAsLink]="showRowAsLink"
+      [showHeader]="showHeader"
+      [showFooter]="showFooter"
+      [virtualScrolling]="virtualScrolling"
+      [height]="height"
+      [rows]='result.results'
+      (pageChange)="setPage($event)"
+      [loading]="false"
+      [count]="result.results.length"
+      [page]="result.currentPage"
+      [pageSize]="result.pageSize"
+      [columnMode]="isAggregate ? 'force' : 'standard'"
+      (reorder)="onReorder($event)"
+      [totalMessage]="'haseka.submissions.total' | translate"
+      [columns]="columns">
+    </laji-datatable-own-submissions>
+</div>
+<div *ngIf="result.results.length === 0 && !loading">
+ {{ 'result.notOwnDocuments' | translate}}
+</div>
+  
+  <laji-own-observation-table-settings
+    [allAggregateFields]="allAggregateFields"
+    [columnSelector]="columnSelector"
+    [numberColumnSelector]="numberColumnSelector"
+    [columnGroups]="columnGroups"
+    [columnLookup]="columnLookup"
+    [isAggregate]="isAggregate"
+    [pageSize]="pageSize"
+    (pageSizeChange)="onPageSizeChange($event)"
+    (close)="onCloseSettingsModal($event)"
+    (resetColumns)="resetColumns.emit()"
+  ></laji-own-observation-table-settings>
+  

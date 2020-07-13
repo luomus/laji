@@ -96,7 +96,7 @@
       [checkboxable]="true">
     </ngx-datatable-column>
 
-    <ngx-datatable-column [flexGrow]="1" [resizeable]="false"
+    <ngx-datatable-column [flexGrow]="" [resizeable]="false"
                           [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
       <ng-template ngx-datatable-header-template><span></span></ng-template>
       <ng-template let-row="row" ngx-datatable-cell-template>
@@ -109,53 +109,49 @@
     </ngx-datatable-column>
 
     <ngx-datatable-column *ngIf="actions" [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate" [cellClass]="'center-text'"
-                          [flexGrow]="1" [resizeable]="false" [draggable]="false" [headerClass]="'empty-header'" ngPreserveWhitespaces>
+                          [flexGrow]="3" [resizeable]="true" [draggable]="false" [headerClass]="'empty-header'" ngPreserveWhitespaces>
       <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
         <span class="datatable-header-cell-wrapper link"><span></span></span>
       </ng-template>
       <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-        <span *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
-          <span class="label label-success link inline-block"
-                [tooltip]="'result.showViewer' | translate"
-                [placement]="'right'"
-                container="body"
-                [adaptivePosition]="false"
+        <div class="buttons" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
+          <lu-button 
+                [role]="'success'"
                 (click)="showViewer(row.id)">
             <i class="glyphicon glyphicon-eye-open"></i>
-          </span>
-        </span>
-        <span *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
-          <span class="label label-warning link inline-block"
-                [tooltip]="'result.showPrivateViewer' | translate"
-                [placement]="'right'"
-                container="body"
-                [adaptivePosition]="false"
+            <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
+        </lu-button>
+      </div>
+        <div class="buttons" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
+          <lu-button
+                [role]="'warning'"
                 (click)="showViewer(row.id)">
             <i class="glyphicon glyphicon-eye-close"></i>
-          </span>
-        </span>
-        <a *ngIf="(actions | includes:'edit')" class="label label-primary link inline-block"
-              [ngClass]="{
-                'label-primary': !row.locked,
-                'label-default': row.locked
-              }"
-              [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
-              container="body"
-              [adaptivePosition]="false"
-              [routerLink]="row._editUrl | localize"
-              [placement]="'right'">
+            <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
+        </lu-button>
+      </div>
+      <div class="buttons">
+        <lu-button *ngIf="(actions | includes:'edit')" 
+              class="tableOwnSubmissions"
+              [role]="'edit'"
+              [routerLink]="row._editUrl | localize">
             <i class="glyphicon glyphicon-edit"></i>
-        </a>
-        <span *ngIf="showMakeTemplate(row)">
-          <span class="label label-warning link inline-block"
+            <span class="text-button">{{ 'haseka.submissions.edit' | translate }}</span>
+
+        </lu-button>
+      </div>
+
+        <!--<span *ngIf="showMakeTemplate(row)">
+          <lu-button 
+                [role]="'warning'"
                 (click)="makeTemplate(row)"
                 [tooltip]="'haseka.form.saveTemplate' | translate"
                 container="body"
                 [adaptivePosition]="false"
                 [placement]="'right'">
             <i class="glyphicon glyphicon-floppy-disk"></i>
-          </span>
-        </span>
+        </lu-button>
+        </span>-->
       </ng-template>
     </ngx-datatable-column>
 
@@ -179,44 +175,43 @@
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column *ngIf="actions | includes:['download', 'stats', 'delete']" [flexGrow]="1" [draggable]="false" [resizeable]="false" [cellClass]="'center-text'">
+    <ngx-datatable-column *ngIf="actions | includes:['download', 'stats', 'delete']" [width]="100" [flexGrow]="4" [draggable]="false" [resizeable]="true" [cellClass]="'center-text'">
       <ng-template ngx-datatable-header-template><span></span></ng-template>
       <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
         <div ngPreserveWhitespaces>
-          <span *ngIf="(actions | includes:'download') && onlyTemplates === false" class="label label-default link inline-block"
-                [tooltip]="('haseka.submissions.download' | translate) + ' ' + ('haseka.submissions.submission' | translate)"
-                [placement]="'left'"
-                [container]="'body'"
-                [adaptivePosition]="false"
-                (click)="openChooseFileTypeModal(row.id)">
+          <div class="buttons">
+            <lu-button *ngIf="(actions | includes:'download') && onlyTemplates === false"
+            [role]="'other'"
+            (click)="openChooseFileTypeModal(row.id)">
             <i class="glyphicon glyphicon-download-alt"></i>
-          </span>
-          <a *ngIf="(actions | includes:'stats') && row.formViewerType === 'MHL.viewerTypeLineTransect'"
-                class="label label-warning link inline-block"
-                [tooltip]="'haseka.submissions.toStatistics' | translate"
-                [placement]="'left'"
-                [container]="'body'"
-                [adaptivePosition]="false"
-                [routerLink]="'/theme/linjalaskenta/statistics/' + row.id | localize">
-            <i class="glyphicon glyphicon-stats"></i>
-          </a>
-          <a *ngIf="(actions | includes:'stats') && row.formViewerType === 'MHL.viewerTypeBirdPointCount'"
-             class="label label-warning link inline-block"
-             [tooltip]="'haseka.submissions.toStatistics' | translate"
-             [placement]="'left'"
-             [container]="'body'"
-             [adaptivePosition]="false"
-             [routerLink]="'/theme/pistelaskenta/statistics/' + row.id | localize">
-            <i class="glyphicon glyphicon-stats"></i>
-          </a>
-          <span *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)" class="label label-danger link inline-block"
+            <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
+          </lu-button>
+          </div>
+          <div class="buttons">
+            <lu-button *ngIf="(actions | includes:'stats') && row.formViewerType === 'MHL.viewerTypeLineTransect'"
+              [role]="'other'"
+              [routerLink]="'/theme/linjalaskenta/statistics/' + row.id | localize">
+              <i class="glyphicon glyphicon-stats"></i>
+              <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
+          </lu-button>
+          </div>
+          <div class="buttons">
+            <lu-button *ngIf="(actions | includes:'stats') && row.formViewerType === 'MHL.viewerTypeBirdPointCount'"
+                [role]="'other'"
+                [routerLink]="'/theme/pistelaskenta/statistics/' + row.id | localize">
+              <i class="glyphicon glyphicon-stats"></i>
+              <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
+            </lu-button>
+          </div>
+        <!--<lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
+                [role]="'danger'"
                 [tooltip]="'friend.remove' | translate"
                 [placement]="'left'"
                 [adaptivePosition]="false"
                 [container]="'body'"
                 (click)="deleteDialog(row)">
             <i class="glyphicon glyphicon-remove"></i>
-          </span>
+        </lu-button>-->
         </div>
       </ng-template>
     </ngx-datatable-column>

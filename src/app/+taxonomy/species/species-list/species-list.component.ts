@@ -209,8 +209,11 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     sorts.forEach((sort) => {
       const dir = sort.dir === 'asc' ? 1 : -1;
       results.sort((a, b) => {
-        const aa = this.sortValues[a.id][sort.prop] != null ? this.sortValues[a.id][sort.prop] : '';
-        const bb = this.sortValues[b.id][sort.prop] != null ? this.sortValues[b.id][sort.prop] : '';
+        const aa = this.sortValues[a.id][sort.prop] != null ? this.sortValues[a.id][sort.prop] : (sort.prop === 'observationCount' || sort.prop ==='observationCountFinland' ) ? 0 : '';
+        const bb = this.sortValues[b.id][sort.prop] != null ? this.sortValues[b.id][sort.prop] : (sort.prop === 'observationCount' || sort.prop ==='observationCountFinland' ) ? 0 : '';
+        if (Number.isInteger(aa) && Number.isInteger(bb)){
+          return dir * (aa >= bb ? -1 : 1);
+        }
         return dir * ('' + aa).localeCompare('' + bb);
       });
     });

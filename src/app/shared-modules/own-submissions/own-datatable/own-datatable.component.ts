@@ -37,8 +37,10 @@ export interface RowDocument {
   publicity: string;
   dateEdited: string;
   dateObserved: string;
+  dateCreated: string;
   namedPlaceName: string;
   locality: string;
+  gatheringsCount: number,
   unitCount: number;
   observer: string;
   formID: string;
@@ -128,11 +130,12 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   allColumns = [
     {prop: 'templateName', mode: 'small'},
     {prop: 'templateDescription', mode: 'small'},
-    {prop: 'dateEdited', mode: 'medium'},
-    {prop: 'dateObserved', mode: 'small'},
-    {prop: 'namedPlaceName', mode: 'small'},
-    {prop: 'locality', mode: 'small'},
-    {prop: 'taxon', mode: 'small'},
+    {prop: 'dateEdited', mode: 'small'},
+    {prop: 'dateObserved', mode: 'large'},
+    {prop: 'namedPlaceName', mode: 'large'},
+    {prop: 'locality', mode: 'medium'},
+    {prop: 'taxon', mode: 'medium'},
+    {prop: 'gatheringsCount', mode: 'large'},
     {prop: 'unitCount', mode: 'medium'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
@@ -154,7 +157,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   downloadedDocumentId: string;
   fileType = 'csv';
 
-  _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'unitCount', 'observer', 'form', 'id'];
+  _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id'];
   _goToStartAfterViewCheck = false;
   private lastSort: any;
 

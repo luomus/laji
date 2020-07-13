@@ -38,6 +38,13 @@ export interface IColumns {
   'document.secureReasons': ObservationTableColumn;
   'document.sourceId': ObservationTableColumn;
   'document.linkings.collectionQuality': ObservationTableColumn;
+  'document.createdDate': ObservationTableColumn;
+  'document.modifiedDate': ObservationTableColumn;
+  'document.dateEdited': ObservationTableColumn;
+  'document.dateObserved': ObservationTableColumn;
+  'document.namedPlaceId': ObservationTableColumn;
+  'document.formId': ObservationTableColumn;
+  'document.keywords': ObservationTableColumn;
   'unit.det': ObservationTableColumn;
   'gathering.conversions.dayOfYearBegin': ObservationTableColumn;
   'gathering.conversions.dayOfYearEnd': ObservationTableColumn;
@@ -224,6 +231,13 @@ export const COLUMNS: IColumns = {
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
   'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel', sortable: false},
+  'document.createdDate': {name: 'document.createdDate', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
+  'document.modifiedDate': {name: 'document.modifiedDate', label: 'haseka.submissions.dateEdited', cellTemplate: 'date', sortable: false},
+  'document.dateObserved': {name: 'document.dateObserved', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
+  'document.dateEdited': {name: 'document.dateEdited', label: 'haseka.submissions.dateEdited', cellTemplate: 'date', sortable: false},
+  'document.namedPlaceId': {name: 'document.namedPlaceId', label: 'haseka.submissions.locality', cellTemplate: 'country', sortable: false},
+  'document.formId': {name: 'document.formId', label:'haseka.submissions.form', cellTemplate: 'formName', sortable: false},
+  'document.keywords': {name: 'document.keywords', label:'observation.active.keyword', cellTemplate: 'label', sortable: false},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
   'gathering.conversions.dayOfYearEnd': {name: 'gathering.conversions.dayOfYearEnd'},
@@ -395,6 +409,13 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.secureReasons'],
     COLUMNS['document.sourceId'],
     COLUMNS['document.linkings.collectionQuality'],
+    COLUMNS['document.createdDate'],
+    COLUMNS['document.modifiedDate'],
+    COLUMNS['document.dateEdited'],
+    COLUMNS['document.dateObserved'],
+    COLUMNS['document.namedPlaceId'],
+    COLUMNS['document.formId'],
+    COLUMNS['document.keywords'],
     COLUMNS['unit.det'],
     COLUMNS['gathering.conversions.dayOfYearBegin'],
     COLUMNS['gathering.conversions.dayOfYearEnd'],

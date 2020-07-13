@@ -30,7 +30,12 @@ import { LoadingElementsService } from '../../../shared-modules/document-viewer/
 import { CheckFocusService } from '../../../shared-modules/document-viewer/check-focus.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
+import { DocumentToolsService } from '../../../shared-modules/document-viewer/document-tools.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { TemplateForm } from '../../own-submissions/models/template-form';
+import { Router, RouterModule } from '@angular/router';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service'
 
 @Component({
   selector: 'laji-document-annotation',
@@ -61,6 +66,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   @Input() identifying = false;
 
   @Output() close = new EventEmitter<boolean>();
+  @Output() deleteDoc = new EventEmitter<string>()
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -83,6 +89,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   childEvent = false;
   childComunicationsubscription: Subscription;
   showShortcuts = false;
+  documentToolsOpen = false;
   showCoordinates = true;
   @SessionStorage() showFacts = false;
   private _uri: string;
@@ -96,7 +103,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   currentLang: string;
   hasEditors: boolean;
   unitExist: boolean;
+  subscriptDocumentTools: Subscription;
   annotationTags$: Observable<AnnotationTag[]>;
+  templateForm: TemplateForm = {
+    name: '',
+    description: '',
+    type: 'gathering'
+  };
 
 
   constructor(
@@ -109,7 +122,11 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private loadingElements: LoadingElementsService,
     private focus: CheckFocusService,
     private translate: TranslateService,
-    private annotationService: AnnotationService
+    private documentToolsService: DocumentToolsService,
+    private annotationService: AnnotationService,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService,
+    private deleteDocumentService: DeleteOwnDocumentService
   ) { }
 
   ngOnInit() {
@@ -140,6 +157,11 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.isfocusedCommentTaxon = info;
       this.cd.markForCheck();
     });
+
+    this.subscriptDocumentTools = this.documentToolsService.childEventListner().subscribe(toolsOpen =>{
+      this.documentToolsOpen = toolsOpen;
+      this.cd.markForCheck();
+     });
 
     this.subscriptParent = this.taxonTagEffective.childEventListner().subscribe(event => {
       this.annotationResolving = event;
@@ -177,7 +199,10 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.subscriptParent.unsubscribe();
       this.childComunicationsubscription.unsubscribe();
     }
-
+    if(this.subscriptDocumentTools) {
+      this.subscriptDocumentTools.unsubscribe();
+      this.childComunicationsubscription.unsubscribe();
+    }
     if (this.subscriptFocus) {
       this.subscriptFocus.unsubscribe();
       this.childComunicationsubscription.unsubscribe();
@@ -365,11 +390,28 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
   closeDocument() {
+    if (this.documentToolsOpen) {
+      this.close.emit(false);
+    } else {
     this.close.emit(true);
+    }
   }
 
   toggleShortcuts() {
     this.showShortcuts = !this.showShortcuts;
+  }
+
+  onDocumentDeleted(e) {
+    if (e) {
+      console.log(e);
+      this.deleteDocumentService.emitChildEvent(e)
+      this.closeDocument();
+      this.deleteDocumentService.emitChildEvent(null);
+
+      /*this.router.navigate(
+        this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])
+      );*/
+    }
   }
 
   onManualLinkClick(event: MouseEvent) {
@@ -379,13 +421,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
 @HostListener('window:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
-      if (e.keyCode === 37 && !this.childEvent && !this.isfocusedCommentTaxon) { // left
+      if (e.keyCode === 37 && !this.childEvent && !this.isfocusedCommentTaxon && !this.documentToolsOpen) { // left
         if (this.result && this.indexPagination > 0) {
           this.previous();
         }
       }
 
-      if (e.keyCode === 39 && !this.childEvent && !this.isfocusedCommentTaxon) { // right
+      if (e.keyCode === 39 && !this.childEvent && !this.isfocusedCommentTaxon && !this.documentToolsOpen) { // right
         if (this.result && this.indexPagination < this.result.length - 1) {
           this.next();
         }
@@ -395,7 +437,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
         this.toggleShortcuts();
       }
 
-    if (e.keyCode === 27 && !this.childEvent) {
+    if (e.keyCode === 27 && !this.childEvent && !this.documentToolsOpen) {
        e.stopImmediatePropagation();
        this.closeDocument();
       }

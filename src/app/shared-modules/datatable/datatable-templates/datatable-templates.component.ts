@@ -40,6 +40,10 @@ export class DatatableTemplatesComponent {
   @ViewChild('number', { static: true }) number: TemplateRef<any>;
   @ViewChild('biogeographicalProvince', { static: true }) biogeographicalProvince: TemplateRef<any>;
   @ViewChild('taxonHabitats', { static: true }) taxonHabitats: TemplateRef<any>;
+  @ViewChild('country', { static: true }) country: TemplateRef<any>;
+  @ViewChild('formName', { static: true }) formName: TemplateRef<any>;
+  @ViewChild('userName', { static: true }) userName: TemplateRef<any>;
+
 
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;

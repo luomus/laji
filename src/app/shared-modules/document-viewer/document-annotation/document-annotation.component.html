@@ -40,12 +40,13 @@
                 {{ 'print' | translate }}
                 <img src="/static/images/icons/pdf_16x16.png">
               </a>
-              <laji-edit-link
+                <laji-user-document-tools
                 [editors]="editors"
                 [personID]="personID"
                 [documentID]="document.documentId"
                 [formID]="document.formId"
-              ></laji-edit-link>
+                (documentDeleted)="onDocumentDeleted($event)"
+              ></laji-user-document-tools>
               <div class="manual-shortcuts">
                 <span [ngSwitch]="currentLang">
                   <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'sv'" [routerLink]="['/about', '3928'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>

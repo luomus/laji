@@ -10,8 +10,10 @@
 .laji-beta-popup {
   display: block;
 
-  border-top: 4px solid $primary-5;
+  font-size: $fs-3;
+  color: $danger-8;
+  border-top: 4px solid $danger-5;
   padding: 10px;
-  background-color: $neutral-1;
+  background-color: $danger-1;
   box-shadow: 0 0 10px 0 rgba(0,0,0,.4);
 }

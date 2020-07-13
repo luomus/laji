@@ -166,6 +166,14 @@
               {{ 'theme.identify.intro' | translate }}
             </td>
           </tr>
+          <tr *lajiForTypes="['dev']">
+            <th>
+              <a [routerLink]="['/theme/datasets'] | localize">
+                {{ 'datasets.label' | translate }}
+              </a>
+            </th>
+            <td [innerHTML]="'datasets.intro' | translate" lajiRouteTransformer></td>
+          </tr>
         </tbody>
       </table>
     </div>

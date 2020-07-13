@@ -40,6 +40,29 @@
   padding: 0 !important;
 }
 
+::ng-deep button, ::ng-deep a {
+    padding: 0.2em 0.6em;
+}
+
+:host ::ng-deep .lu-btn, :host ::ng-deep button.lu-btn, :host ::ng-deep a.lu-btn {
+  min-width: 60px;
+}
+
+.buttons {
+  display: inline;
+  margin-right: 10px;
+}
+
+.buttons:nth-child(even) {
+  margin-right: 0px;
+}
+
+.text-button {
+  display: inline;
+  line-height: 12px;
+  margin-left: 5px;
+}
+
 @media only screen and (min-width : 768px) {
   #download-button-container, .print-actions {
     float: right;

@@ -25,6 +25,7 @@ export interface VisibleSections {
   downloadList?: boolean;
   annotations?: boolean;
   info?: boolean;
+  own?: boolean;
 }
 
 @Component({
@@ -49,6 +50,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     statistics: true,
     download: true,
     annotations: true,
+    own: true
   };
   @Input() skipUrlParameters: string[] = [
     'selected',

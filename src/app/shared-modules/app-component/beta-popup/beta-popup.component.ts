@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Inject, PLATFORM_ID } from '@angular/core';
 import { LocalStorage } from 'ngx-webstorage';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-beta-popup',
@@ -20,11 +21,12 @@ export class BetaPopupComponent implements OnInit {
   @LocalStorage('betapopup', true) betaPopup;
   open = false;
 
-  constructor() {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
-    console.log(JSON.stringify(this.betaPopup));
-    if (this.betaPopup) {
+    if (isPlatformBrowser(this.platformId) && this.betaPopup) {
       this.open = true;
     }
   }
