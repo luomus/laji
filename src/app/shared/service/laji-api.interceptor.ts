@@ -91,7 +91,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
       filter(res => res.id === id),
       take(1),
       switchMap(res => isErrorResponse(res) ?
-        throwError(new HttpErrorResponse({... res.error, error: res.error})) :
+        throwError(new HttpErrorResponse({...res.error, error: res.error})) :
         of(new HttpResponse<any>(res.response))
       )
     );
@@ -112,6 +112,6 @@ export class LajiApiInterceptor implements HttpInterceptor {
     return request.headers.keys().reduce((response, key) => {
       response[key] = request.headers.getAll(key).join(',');
       return response;
-    }, {'Content-Type': request.detectContentTypeHeader()});
+    }, {'content-type': request.detectContentTypeHeader()});
   }
 }
