@@ -9,6 +9,7 @@ import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { GeneratorService } from './generator.service';
+import { Util } from '../../../shared/service/util.service';
 
 interface IColCombine {
   col: string;
@@ -65,14 +66,6 @@ export class SpreadsheetService {
       'gatherings[*].units[*].hostID',
     ]
   };
-
-  static addLeadingZero(val: string | number): string {
-    val = '' + val;
-    if (val.length === 1) {
-      return '0' + val;
-    }
-    return val;
-  }
 
   constructor(
     private mappingService: MappingService,
@@ -264,8 +257,8 @@ export class SpreadsheetService {
       return '';
     }
     return values[GeneratorService.splitDate.yyyy] + '-' +
-      SpreadsheetService.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
-      SpreadsheetService.addLeadingZero(values[GeneratorService.splitDate.dd]);
+      Util.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
+      Util.addLeadingZero(values[GeneratorService.splitDate.dd]);
   }
 
   private getCombinedCoordinateValue(values: {[key: string]: string}): string {
