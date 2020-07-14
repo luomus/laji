@@ -136,7 +136,7 @@
               [role]="'edit'"
               [routerLink]="row._editUrl | localize">
             <i class="glyphicon glyphicon-edit"></i>
-            <span class="text-button">{{ 'haseka.submissions.edit' | translate }}</span>
+            <span class="text-button">{{ 'haseka.submissions.use' | translate }}</span>
 
         </lu-button>
       </div>
@@ -203,7 +203,7 @@
               <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
             </lu-button>
           </div>
-        <!--<lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
+        <lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
                 [role]="'danger'"
                 [tooltip]="'friend.remove' | translate"
                 [placement]="'left'"
@@ -211,7 +211,8 @@
                 [container]="'body'"
                 (click)="deleteDialog(row)">
             <i class="glyphicon glyphicon-remove"></i>
-        </lu-button>-->
+            <span class="text-button">{{ 'np.delete' | translate }}</span>
+        </lu-button>
         </div>
       </ng-template>
     </ngx-datatable-column>

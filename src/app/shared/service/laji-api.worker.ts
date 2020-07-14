@@ -88,7 +88,8 @@ addEventListener('message', ({ data }) => {
   }
 
   fetchPersonToken().pipe(
-    mergeMap(token => ajax(hasPersonToken(request) ? replaceToken(token, request) : request)),
+    map((token) => hasPersonToken(request) ? replaceToken(token, request) : request),
+    mergeMap(req => ajax(req)),
     map(res => ({
       body: res.response,
       headers: {},
