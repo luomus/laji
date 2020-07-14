@@ -122,9 +122,9 @@
       "instructions": "<p><strong>Ohjeita</strong></p>\n\n<ul>\n  <li>Havaintojen lisääminen</li>\n  <li>Havaintojen päivittäminen</li>\n  <li>Havaintojen poistaminen</li>\n</ul>\n<ul>\n  <li>Kaikki kokoelman havainnot (Laji.fi havaintohaku)</li>\n  <li>Kokoelman metatiedot</li>\n</ul>"
     }
   },
-  "delete.error": "Failed to delete. Try again little later.",
+  "delete.error": "Failed to remove. Try again little later.",
   "delete.noId": "Could not find the id for observation. Try again little later.",
-  "delete.success": "Observation removed successfully.",
+  "delete.success": "Removed successfully.",
   "document.locked": "This observation is locked and cannot be modified.",
   "email": "Email",
   "error": "Error",
