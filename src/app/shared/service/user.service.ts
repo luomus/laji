@@ -88,8 +88,8 @@ export class UserService {
   settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
   user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
 
-  static getLoginUrl(next = '', lang = 'fi') {
-    return (environment.loginUrl
+  static getLoginUrl(next = '', lang = 'fi', base = '') {
+    return ((base || environment.loginUrl)
     + '?target=' + environment.systemID
     + '&redirectMethod=GET&locale=%lang%'
     + '&next=' + next).replace('%lang%', lang);
