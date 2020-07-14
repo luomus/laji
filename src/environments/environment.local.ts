@@ -39,6 +39,7 @@ export const environment = {
     birdMonitoringForms: ['MHL.1', 'MHL.3', 'MHL.65', 'MHL.75'],
     researchProjects: ['MHL.33', 'MHL.35', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
   },
+  loginCheck: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/loginInfo',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   // kerttuApi: 'http://localhost:5000',
