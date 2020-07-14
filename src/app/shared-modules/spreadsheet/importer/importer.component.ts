@@ -60,6 +60,7 @@ export class ImporterComponent implements OnInit {
   formID: string;
   form: any;
   bstr: string;
+  mimeType: string;
   errors: any;
   valid = false;
   priv = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
@@ -127,6 +128,7 @@ export class ImporterComponent implements OnInit {
     ).subscribe((content) => {
       if (instanceOfFileLoad(content)) {
         this.bstr = content.content;
+        this.mimeType = content.type;
         this.formID = this.spreadSheetService.findFormIdFromFilename(content.filename);
         this.spreadsheetFacade.setFilename(content.filename);
         this.initForm();
@@ -154,7 +156,11 @@ export class ImporterComponent implements OnInit {
 
         this.form = form;
         const combineOptions = this.excelToolService.getCombineOptions(form);
-        const data = this.spreadSheetService.loadSheet(this.bstr);
+        const isCsv = this.spreadSheetService.csvTypes().includes(this.mimeType);
+        const data = this.spreadSheetService.loadSheet(this.bstr, {
+          cellDates: !isCsv,
+          raw: isCsv
+        });
         this.bstr = undefined;
         this.hash = Hash.sha1(data);
         this.combineOptions = this.allowedCombineOptions ? combineOptions.filter(option => this.allowedCombineOptions.includes(option)) : combineOptions;

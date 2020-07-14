@@ -110,6 +110,10 @@ export class SpreadsheetService {
     return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes];
   }
 
+  csvTypes(): string[] {
+    return this.csvMimeTypes;
+  }
+
   setRequiredFields(formID: string, fields: object) {
     this.requiredFields[formID] = fields;
   }
@@ -133,8 +137,8 @@ export class SpreadsheetService {
     return result;
   }
 
-  loadSheet(data: any) {
-    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true});
+  loadSheet(data: any, options: XLSX.ParsingOptions = {}) {
+    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
 

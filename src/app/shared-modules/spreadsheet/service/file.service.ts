@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver';
 interface IFileLoad {
   filename: string;
   content: any;
+  type: string;
 }
 
 export function instanceOfFileLoad(object: any): object is IFileLoad {
@@ -48,7 +49,8 @@ export class FileService {
       reader.onload = (e: any) => {
         subscriber.next({
           filename,
-          content: e.target.result
+          content: e.target.result,
+          type: target.files[0].type
         });
         subscriber.complete();
       };
