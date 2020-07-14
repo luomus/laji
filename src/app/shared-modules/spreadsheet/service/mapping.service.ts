@@ -5,7 +5,7 @@ import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { SpreadsheetFacade } from '../spreadsheet.facade';
-import { SpreadsheetService } from './spreadsheet.service';
+import { Util } from '../../../shared/service/util.service';
 
 export enum SpecialTypes {
   geometry = 'geometry',
@@ -337,9 +337,9 @@ export class MappingService {
       const dateParts = parts[0].split(/[.\-]/);
       if (dateParts.length === 3) {
         if (dateParts[0].length === 4) {
-          parts[0] = dateParts.map(v => SpreadsheetService.addLeadingZero(v)).join('-');
+          parts[0] = dateParts.map(v => Util.addLeadingZero(v)).join('-');
         } else if (dateParts[2].length === 4) {
-          parts[0] = dateParts.reverse().map(v => SpreadsheetService.addLeadingZero(v)).join('-');
+          parts[0] = dateParts.reverse().map(v => Util.addLeadingZero(v)).join('-');
         }
       }
       if (parts.length > 2) {
