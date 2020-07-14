@@ -9,7 +9,6 @@ import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { Area } from '../../../../shared/model/Area';
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
-import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { tooltip } from 'leaflet';
 
@@ -199,7 +198,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       pointHoverBorderColor: 'rgb(70,130,180)'
     }
   ];
-  public lineChartPlugins = [pluginAnnotations, pluginDataLabels];
+  public lineChartPlugins = [pluginDataLabels];
 
   constructor(
     private route: ActivatedRoute,

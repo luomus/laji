@@ -216,6 +216,21 @@
         *ngIf="loadedTabs.isLoaded('annotations')"
     ></laji-annotations>
   </lu-tab>
+  <lu-tab *ngIf="visible.own && (query.editorPersonToken || query.observerPersonToken)" [heading]="'haseka.ownSubmissions.title' | translate">
+    <div *ngIf="loadedTabs.isLoaded('own')">
+      <laji-observation-table-own-documents
+      [visible]="true"
+      [pageSize]="100"
+      [height]="'calc(80vh - 40px)'"
+      [query]="query"
+      [showSettingsMenu]="false"
+      [showRowAsLink]="false"
+      [isAggregate]="true"
+      [hideDefaultCountColumn]="false"
+      [selected]="['document.createdDate','document.documentId','document.formId','document.loadDate','document.namedPlace.id','gathering.locality','gathering.municipality','gathering.team']"
+      ></laji-observation-table-own-documents>
+    </div>
+  </lu-tab>
 </lu-tabs>
 
 <div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">

@@ -57,7 +57,7 @@ export class OwnSubmissionsComponent implements OnChanges {
   @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
-  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'observer', 'form', 'id'];
+  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id'];
   @Input() columnNameMapping: any;
   @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
   @Input() onlyTemplates = false;
@@ -350,7 +350,7 @@ export class OwnSubmissionsComponent implements OnChanges {
           this.getLocality(gatheringInfo, document),
           this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
           this.getNamedPlaceName(document.namedPlaceID),
-          this.getTaxon(gatheringInfo.taxonID)
+          this.getTaxon(gatheringInfo.taxonID, gatheringInfo)
         ).pipe(
           map<any, RowDocument>(([locality, observers, npName, taxon]) => {
             const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
@@ -365,8 +365,10 @@ export class OwnSubmissionsComponent implements OnChanges {
               publicity: document.publicityRestrictions as any,
               dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
               dateObserved: dateObserved,
+              dateCreated: dateObserved,
               namedPlaceName: npName,
               locality: locality,
+              gatheringsCount: document.gatherings.length,
               unitCount: gatheringInfo.unitList.length,
               observer: observers,
               taxon,
@@ -410,8 +412,9 @@ export class OwnSubmissionsComponent implements OnChanges {
     return this.labelService.get(npId, 'multi');
   }
 
-  private getTaxon(taxonId: string[]): Observable<string> {
-    if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1) { return ObservableOf(''); }
+  private getTaxon(taxonId: string[], gatheringInfo: any): Observable<string> {
+    if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1 ||
+    (gatheringInfo && gatheringInfo.unitList && gatheringInfo.unitList.length > 1)) { return ObservableOf(''); }
     return this.labelService.get(taxonId[0], 'multi').pipe(
       map(langResult => langResult[this.translate.currentLang])
     );
@@ -441,6 +444,10 @@ export function getLocality$(translate: TranslateService,
                              document: any): Observable<string> {
   let locality$ = ObservableOf(gatheringInfo);
   const npID = gatheringInfo.namedPlaceID || document.namedPlaceID;
+
+  if (gatheringInfo.locality && gatheringInfo.municipality) {
+    locality$ = ObservableOf({...gatheringInfo, locality: gatheringInfo.municipality + ', ' + gatheringInfo.locality});
+  }
 
   if (!gatheringInfo.locality && npID) {
     locality$ = labelService.get(npID, 'multi').pipe(

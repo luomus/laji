@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ObservationTableComponent } from './observation-table/observation-table.component';
+import { ObservationTableOwnDocumentsComponent } from './observation-table-own-documents/observation-table-own-documents.component';
 import { ObservationResultService } from './service/observation-result.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
@@ -12,6 +13,7 @@ import { SelectedFieldItemComponent } from './selected-field-item/selected-field
 import { ObservationYearChartComponent } from './observation-year-chart/observation-year-chart.component';
 import { ObservationMonthDayChartComponent } from './observation-month-day-chart/observation-month-day-chart.component';
 import { ObservationTableSettingsComponent } from './observation-table/observation-table-settings.component';
+import { OwnObservationTableSettingsComponent } from './observation-table-own-documents/own-observation-table-settings.component';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 import { ChartModule } from '../chart/chart.module';
 
@@ -32,12 +34,16 @@ import { ChartModule } from '../chart/chart.module';
     SelectedFieldItemComponent,
     ObservationYearChartComponent,
     ObservationMonthDayChartComponent,
-    ObservationTableSettingsComponent
+    ObservationTableSettingsComponent,
+    OwnObservationTableSettingsComponent,
+    ObservationTableOwnDocumentsComponent
   ],
   providers: [ObservationResultService],
   exports: [
     ObservationTableComponent,
+    ObservationTableOwnDocumentsComponent,
     ObservationTableSettingsComponent,
+    OwnObservationTableSettingsComponent,
     SelectedFieldGroupComponent,
     ObservationYearChartComponent,
     ObservationMonthDayChartComponent

@@ -2,6 +2,7 @@
 import { ajax } from 'rxjs/ajax';
 import { catchError, map, mergeMap, share, switchMap, tap } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import {
   CLEAR_TOKEN_MSG,
   ErrorResponse,
@@ -74,7 +75,7 @@ addEventListener('message', ({ data }) => {
     return;
   } else if (!localKey) {
     localKey = key;
-    if (data.loginUrl.startsWith('https://fmnh-ws-test.it.helsinki.fi/laji-auth/') || data.loginUrl.startsWith('https://login.laji.fi/')) {
+    if (data.loginUrl.startsWith(environment.loginCheck)) {
       loginUrl = data.loginUrl;
     }
   }
@@ -82,12 +83,13 @@ addEventListener('message', ({ data }) => {
     postMessage({type: LOGOUT_MSG});
     return;
   }
-  if (!id) {
+  if (!id || !request || !request.url || !request.url.startsWith(environment.apiBase)) {
     return;
   }
 
   fetchPersonToken().pipe(
-    mergeMap(token => ajax(hasPersonToken(request) ? replaceToken(token, request) : request)),
+    map((token) => hasPersonToken(request) ? replaceToken(token, request) : request),
+    mergeMap(req => ajax(req)),
     map(res => ({
       body: res.response,
       headers: {},
@@ -96,7 +98,7 @@ addEventListener('message', ({ data }) => {
       url: request.url,
     } as SuccessResponse)),
     catchError(err => of({
-      error: err.error || err.body,
+      ...err.response,
       headers: {},
       status: err.status,
       statusText: '' + err.status,

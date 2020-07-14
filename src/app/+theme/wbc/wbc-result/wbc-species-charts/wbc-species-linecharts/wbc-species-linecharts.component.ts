@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
-import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
@@ -41,7 +40,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       pointHoverBorderColor: 'rgb(70,130,180)'
     }
   ];
-  public lineChartPlugins = [pluginAnnotations, pluginDataLabels];
+  public lineChartPlugins = [pluginDataLabels];
   season: string;
   textCount: string;
   textSeasonCount: string;

@@ -15,9 +15,14 @@
   margin: 6px 0;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
+
 .legend {
   font-size: 10px;
-  width: 105px;
+  width: 130px;
   margin: 0;
   padding: 10px;
   position: absolute;

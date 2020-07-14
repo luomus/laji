@@ -187,6 +187,11 @@
     {{ value | amDateFormat: 'DD.MM.YYYY HH:mm' }}
   </span>
 </ng-template>
+<ng-template let-value="value" #userName>
+  <span *ngIf="value" title="{{value | values:', ':'fullName'}}">
+  {{ value | values:', ':'fullName' }}
+</span>
+</ng-template>
 <ng-template let-value="value" #user>
     <span *ngIf="value" title="{{value | users}}">
     {{ value | users }}
@@ -203,6 +208,11 @@
 <ng-template let-value="value" #iucnStatus>
   <span *ngIf="value" title="{{value.status.replace('MX.iucn', '')}} ({{value.year}})">
     {{ value.status.replace('MX.iucn', '') }} ({{ value.year }})
+  </span>
+</ng-template>
+<ng-template let-value="value" #formName>
+  <span *ngIf="value" title="value | formName">
+    {{ value | toQName | formName }} 
   </span>
 </ng-template>
 <ng-template let-value="value" #annotation>

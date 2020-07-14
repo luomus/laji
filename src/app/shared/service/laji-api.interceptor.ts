@@ -43,7 +43,10 @@ export class LajiApiInterceptor implements HttpInterceptor {
     this.rnd = Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
     this.worker = new Worker('./laji-api.worker', {type: 'module'});
 
-    this.worker.postMessage({key: this.rnd, loginUrl: UserService.getLoginUrl('/', this.translate.currentLang).replace('/login', '/loginInfo')});
+    this.worker.postMessage({
+      key: this.rnd,
+      loginUrl: UserService.getLoginUrl('/', this.translate.currentLang, environment.loginCheck)
+    });
     this.worker.onmessage = ({data}) => {
       if (!data || typeof data !== 'object') {
         return;
@@ -88,7 +91,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
       filter(res => res.id === id),
       take(1),
       switchMap(res => isErrorResponse(res) ?
-        throwError(new HttpErrorResponse({... res.error, error: res.error})) :
+        throwError(new HttpErrorResponse({...res.error, error: res.error})) :
         of(new HttpResponse<any>(res.response))
       )
     );
@@ -109,6 +112,6 @@ export class LajiApiInterceptor implements HttpInterceptor {
     return request.headers.keys().reduce((response, key) => {
       response[key] = request.headers.getAll(key).join(',');
       return response;
-    }, {'Content-Type': request.detectContentTypeHeader()});
+    }, {'content-type': request.detectContentTypeHeader()});
   }
 }

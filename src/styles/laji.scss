@@ -907,6 +907,15 @@ body > .ui-select-bootstrap.open {
 }
 /** /scrollbar **/
 
+.modal-open-after {
+  overflow: hidden;
+}
+
+.modal-open-after .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .modal-content {
   min-height: 100px;
   background: $neutral-2;

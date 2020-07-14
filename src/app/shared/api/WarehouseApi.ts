@@ -359,6 +359,28 @@ export class WarehouseApi {
 
     return this.http.get(path, {params: queryParameters});
   }
+
+  /**
+   * Get single full document.
+   * Get single full document by document URI. Contains the document, gatherings and units, including facts, media etc
+   * @param documentId Full document ID (URI identifier)
+   */
+  public warehouseQueryDocumentGet(documentId: string, extraHttpRequestParams?: any): Observable<any> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
+    const path = this.basePath + '/warehouse/query/document';
+
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+    // verify required parameter 'documentId' is not null or undefined
+    if (documentId === null || documentId === undefined) {
+      throw new Error('Required parameter documentId was null or undefined when calling warehouseQueryDocumentGet.');
+    }
+
+    queryParameters['documentId'] = documentId;
+
+    return this.http.get(path, {params: queryParameters});
+  }
   /**
    * Get list of annotations using given filters
    * Get list of results as a 'flat row'. Application/json and application/xml responses respect the "selected" parameter, but application/dwc+xml (unfinished) does not support all fields.

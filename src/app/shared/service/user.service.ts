@@ -26,7 +26,6 @@ import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { PERSON_TOKEN } from './laji-api-worker-common';
-import { HttpClient } from '@angular/common/http';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -88,8 +87,8 @@ export class UserService {
   settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
   user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
 
-  static getLoginUrl(next = '', lang = 'fi') {
-    return (environment.loginUrl
+  static getLoginUrl(next = '', lang = 'fi', base = '') {
+    return ((base || environment.loginUrl)
     + '?target=' + environment.systemID
     + '&redirectMethod=GET&locale=%lang%'
     + '&next=' + next).replace('%lang%', lang);
@@ -109,8 +108,7 @@ export class UserService {
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
     private browserService: BrowserService,
-    private storage: LocalStorageService,
-    private httpClient: HttpClient
+    private storage: LocalStorageService
   ) {
     if (!this.platformService.isBrowser) {
       this.doServiceSideLoginState();

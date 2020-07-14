@@ -50,6 +50,17 @@ export class Util {
     }, {});
   }
 
+  /**
+   * Add leading zero so that the length of return string will be 2
+   */
+  static addLeadingZero(val: string | number): string {
+    val = '' + val;
+    if (val.length === 1) {
+      return '0' + val;
+    }
+    return val;
+  }
+
   public static JSONPathToJSONPointer(jsonPath: string): string {
     let pathAsJSONPointer = jsonPath[0] === '$' ? jsonPath.substring(1, jsonPath.length) : jsonPath; // Remove first '$'
     pathAsJSONPointer = pathAsJSONPointer

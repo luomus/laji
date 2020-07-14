@@ -26,7 +26,8 @@ import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.modul
     FilterColumnsPipe
   ],
   exports: [
-    OwnSubmissionsComponent
+    OwnSubmissionsComponent,
+    FilterColumnsPipe
   ]
 })
 export class OwnSubmissionsModule { }

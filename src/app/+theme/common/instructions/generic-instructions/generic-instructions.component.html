@@ -1,26 +1,15 @@
 <h3>{{ form.collectionID | label }}</h3>
-<p>Tässä osiossa voit hallita kokoelman “{{ form.collectionID | label }}” havaintoja.</p>
+<p>{{ 'datasets.generic.intro' | translate:{collection: (form.collectionID | label)} }}</p>
 
-<p *ngIf="isSecondary; else primary">
-  Havainnot ovat <strong>sekundääridataa</strong>, joten muutokset tulee tehdä primääridataan ja sitten päivittää tänne tallennuspohjan avulla, esim. määrävälein.
+<p *ngIf="isSecondary; else primary" [innerHTML]="'datasets.generic.secondary' | translate">
+
 </p>
 <ng-template #primary>
-  <p>
-    Havainnot ovat <strong>primääridataa</strong>, joten muutokset tulee tehdä täällä oleviin tietoihin.
-  </p>
+  <p [innerHTML]="'datasets.generic.primary' | translate"></p>
 </ng-template>
 
 <p><strong>Tehdyt päivitykset</strong></p>
 <p><a [routerLink]="'/observation/list' | localize" [queryParams]="{collectionId: form.collectionID}">{{ 'home.observation-sub-intro' | translate }}</a></p>
 
-<p><strong>Ohjeita</strong></p>
+<div [innerHTML]="'datasets.generic.instructions' | translate"></div>
 
-<ul>
-  <li>Havaintojen lisääminen</li>
-  <li>Havaintojen päivittäminen</li>
-  <li>Havaintojen poistaminen</li>
-</ul>
-<ul>
-  <li>Kaikki kokoelman havainnot (Laji.fi havaintohaku)</li>
-  <li>Kokoelman metatiedot</li>
-</ul>

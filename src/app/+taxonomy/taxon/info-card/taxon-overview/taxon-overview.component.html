@@ -45,6 +45,7 @@
     >
       <p class="disclaimer">
         {{ 'taxonomy.map.disclaimer' | translate }}
+        <!--<span style="display: block;">{{ 'taxonomy.map.totalObservations' | translate}} <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id, countryId: 'ML.206'}">{{ 'taxonomy.map.totalObservationsNumber' | translate: {totalObservations: totalObservations} }}</a></span>-->
       </p>
       <laji-ykj-map
         [query]="mapQuery"

@@ -22,4 +22,7 @@ laji-info-card {
   }
 }
 
+:host ::ng-deep lu-sidebar .sidebar-content-wrapper {
+  padding: 15px;
+}
 
