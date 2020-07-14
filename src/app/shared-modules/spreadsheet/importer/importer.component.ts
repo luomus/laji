@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { from as ObservableFrom, Observable, of, of as ObservableOf } from 'rxjs';
+import { from as ObservableFrom, Observable, of } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
@@ -335,8 +335,8 @@ export class ImporterComponent implements OnInit {
     ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
       concatMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
         concatMap(document => this.importService.validateData(document).pipe(
-          switchMap(result => ObservableOf({result: result, source: data})),
-          catchError(err => ObservableOf(typeof err.error !== 'undefined' ? err.error : err).pipe(
+          switchMap(result => of({result: result, source: data})),
+          catchError(err => of(typeof err.error !== 'undefined' ? err.error : err).pipe(
               map(body => body.error && body.error.details || body.error || body),
               map(error => ({result: {_error: error}, source: data}))
             ))
@@ -392,8 +392,8 @@ export class ImporterComponent implements OnInit {
           publicityRestrictions,
           [Document.DataOriginEnum.dataOriginSpreadsheetFile]
         ).pipe(
-          switchMap(result => ObservableOf({result: result, source: data})),
-          catchError(err => ObservableOf(typeof err.json === 'function' ? err.json() : err).pipe(
+          switchMap(result => of({result: result, source: data})),
+          catchError(err => of(typeof err.json === 'function' ? err.json() : err).pipe(
             map(error => error.error && error.error.details || error),
             map(error => ({result: {_error: (error || {status: 422})}, source: data}))
           ))
