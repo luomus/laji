@@ -61,7 +61,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   ) { }
 
   ngOnInit() {
-    console.log('ciao')
       Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
         return coordinates;
       };
