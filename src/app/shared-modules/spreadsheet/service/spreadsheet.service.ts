@@ -66,6 +66,14 @@ export class SpreadsheetService {
     ]
   };
 
+  static addLeadingZero(val: string | number): string {
+    val = '' + val;
+    if (val.length === 1) {
+      return '0' + val;
+    }
+    return val;
+  }
+
   constructor(
     private mappingService: MappingService,
     private labelService: TriplestoreLabelService,
@@ -252,16 +260,8 @@ export class SpreadsheetService {
       return '';
     }
     return values[GeneratorService.splitDate.yyyy] + '-' +
-      this.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
-      this.addLeadingZero(values[GeneratorService.splitDate.dd]);
-  }
-
-  private addLeadingZero(val: string | number) {
-    val = '' + val;
-    if (val.length === 1) {
-      return '0' + val;
-    }
-    return val;
+      SpreadsheetService.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
+      SpreadsheetService.addLeadingZero(values[GeneratorService.splitDate.dd]);
   }
 
   private getCombinedCoordinateValue(values: {[key: string]: string}): string {
