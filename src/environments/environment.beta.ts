@@ -11,7 +11,7 @@ export const environment = {
   base: 'https://beta.laji.fi',
   production: true,
   forceLogin: false,
-  disableAnalytics: true,
+  disableAnalytics: false,
   sourceKotka: 'KE.3',
   systemID: 'KE.841',
   formWhitelist: ['MHL.51', 'JX.519', 'MHL.9', 'MHL.53', 'MHL.25', 'JX.652', 'MHL.1', 'MHL.3', 'MHL.6', 'MHL.33', 'MHL.50', 'MHL.57', 'MHL.79'],
