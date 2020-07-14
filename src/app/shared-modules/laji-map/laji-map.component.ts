@@ -19,6 +19,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Options, TileLayerName, Lang, TileLayersOptions } from 'laji-map';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
+import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() move = new EventEmitter();
   @Output() failure =  new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
+  @Output() total = new EventEmitter<number>();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -60,6 +62,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   _options: Options = {};
   _legend: {color: string, label: string}[];
   fullScreen = false;
+  @LocalStorage('onlycount') onlyCount;
+  
 
   private _settingsKey: keyof IUserSettings;
   private subSet: Subscription;
@@ -220,6 +224,15 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   setData(data) {
+    const features = data['featureCollection']['features'];
+    let sum = features.reduce((total, obj) =>{ 
+      const value = this.onlyCount === null ? obj['properties']['count'] :
+      this.onlyCount ? obj['properties']['count'] : obj['properties']['individualCountSum'];
+      return (parseInt(total || 0) + parseInt(value));
+      
+    })
+    
+    this.total.emit(sum);
     if (!this.map) {
       this.mapData = data;
       return;

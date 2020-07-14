@@ -32,6 +32,8 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   groupHasTranslation: any[];
   ylestaHasTranslation: any[];
   isChildrenOnlySpecie = false;
+  totalObservations = 0;
+  linkObservations: string;
 
   contentHasLanguage: boolean;
   currentLang: string;
@@ -97,6 +99,10 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     if (this.childrenSub) {
       this.childrenSub.unsubscribe();
     }
+  }
+
+  checkTotalObservations(event){
+    this.totalObservations = event;
   }
 
   private getChildren() {
