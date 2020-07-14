@@ -96,7 +96,7 @@ addEventListener('message', ({ data }) => {
       url: request.url,
     } as SuccessResponse)),
     catchError(err => of({
-      error: err.error || err.body,
+      ...err.response,
       headers: {},
       status: err.status,
       statusText: '' + err.status,

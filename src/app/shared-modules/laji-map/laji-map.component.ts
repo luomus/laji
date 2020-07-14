@@ -193,6 +193,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
           if (this.mapData) {
             this.setData(this.mapData);
             this.mapData = undefined;
+          } else {
+            this.total.emit(0);
           }
           this.zone.run(() => {
             this.loaded.emit();
@@ -225,14 +227,22 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   setData(data) {
     const features = data['featureCollection']['features'];
-    let sum = features.reduce((total, obj) =>{ 
-      const value = this.onlyCount === null ? obj['properties']['count'] :
-      this.onlyCount ? obj['properties']['count'] : obj['properties']['individualCountSum'];
-      return (parseInt(total || 0) + parseInt(value));
-      
-    })
+    let sum = 0;
+    if (features.length > 0) {
+      if (features.length === 1) {
+        sum = this.onlyCount === null ? features[0]['properties']['count'] :
+        this.onlyCount ? features[0]['properties']['count'] : features[0]['properties']['individualCountSum'];
+      } else {
+        sum = features.reduce((total, obj) =>{ 
+          const value = this.onlyCount === null ? obj['properties']['count'] :
+          this.onlyCount ? obj['properties']['count'] : obj['properties']['individualCountSum'];
+          return (parseInt(total || 0) + parseInt(value));
+          
+        })
+      }
+    }
     
-    this.total.emit(sum);
+    this.total.emit(sum || 0);
     if (!this.map) {
       this.mapData = data;
       return;

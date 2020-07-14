@@ -66,6 +66,14 @@ export class SpreadsheetService {
     ]
   };
 
+  static addLeadingZero(val: string | number): string {
+    val = '' + val;
+    if (val.length === 1) {
+      return '0' + val;
+    }
+    return val;
+  }
+
   constructor(
     private mappingService: MappingService,
     private labelService: TriplestoreLabelService,
@@ -102,6 +110,10 @@ export class SpreadsheetService {
     return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes];
   }
 
+  csvTypes(): string[] {
+    return this.csvMimeTypes;
+  }
+
   setRequiredFields(formID: string, fields: object) {
     this.requiredFields[formID] = fields;
   }
@@ -125,8 +137,8 @@ export class SpreadsheetService {
     return result;
   }
 
-  loadSheet(data: any) {
-    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true});
+  loadSheet(data: any, options: XLSX.ParsingOptions = {}) {
+    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
 
@@ -252,16 +264,8 @@ export class SpreadsheetService {
       return '';
     }
     return values[GeneratorService.splitDate.yyyy] + '-' +
-      this.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
-      this.addLeadingZero(values[GeneratorService.splitDate.dd]);
-  }
-
-  private addLeadingZero(val: string | number) {
-    val = '' + val;
-    if (val.length === 1) {
-      return '0' + val;
-    }
-    return val;
+      SpreadsheetService.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
+      SpreadsheetService.addLeadingZero(values[GeneratorService.splitDate.dd]);
   }
 
   private getCombinedCoordinateValue(values: {[key: string]: string}): string {
