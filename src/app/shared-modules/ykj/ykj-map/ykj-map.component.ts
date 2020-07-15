@@ -110,7 +110,6 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
     this.initMapData(!!changes.data);
   }
 

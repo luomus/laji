@@ -118,11 +118,13 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+
   }
 
   ngOnChanges(query: SimpleChanges) {
     if(query.query) {
-      if (query.query && (query.query.currentValue.observerPersonToken === undefined )
+      if (query.query && (query.query.currentValue.editorOrObserverPersonToken === undefined) 
+      && (query.query.currentValue.observerPersonToken === undefined )
       && (query.query.currentValue.editorPersonToken === undefined) && this.selectedTabIdx === 6) {
         this.onSelect(0);
       }
