@@ -1,5 +1,10 @@
 @import 'vars';
 
+.taxon-select-bar {
+  background-color: $primary-6;
+  padding: $sp-3 $sp-5;
+}
+
 laji-taxon-select {
   display: block;
   max-width: 400px;
