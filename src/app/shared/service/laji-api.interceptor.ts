@@ -110,8 +110,14 @@ export class LajiApiInterceptor implements HttpInterceptor {
 
   private getRequestHeaders(request: HttpRequest<any>) {
     return request.headers.keys().reduce((response, key) => {
+      const lower = key.toLowerCase();
+      if (response[lower]) {
+        delete response[lower];
+      }
       response[key] = request.headers.getAll(key).join(',');
       return response;
-    }, {'content-type': request.detectContentTypeHeader()});
+    }, ['POST', 'PUT', 'PATCH'].includes(request.method) ?
+      {'content-type': request.detectContentTypeHeader()} :
+      {});
   }
 }

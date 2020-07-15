@@ -1,13 +1,13 @@
 <ng-container>
-  <a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm" *ngIf="(actions | includes:'edit') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
+  <a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm margin-right-10" *ngIf="(actions | includes:'edit') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
     {{ 'np.edit' | translate }}
     <i class="glyphicon glyphicon-edit"></i>
   </a>
-  <a (click)="makeTemplate()" class="btn btn-default btn-sm" *ngIf="(actions | includes:'template') && hasEditRights && linkLocation && showMakeTemplate(_formID)" [tooltip]="'haseka.form.saveTemplate' | translate">
+  <a (click)="makeTemplate()" class="btn btn-default btn-sm margin-right-10" *ngIf="(actions | includes:'template') && hasEditRights && linkLocation && showMakeTemplate(_formID)" [tooltip]="'haseka.form.saveTemplate' | translate">
     {{ 'np.template' | translate }}
     <i class="glyphicon glyphicon-floppy-disk"></i>
   </a>
-  <a (click)="makeDelete()" class="btn btn-default btn-sm" *ngIf="(actions | includes:'delete') && hasAdminRights" [tooltip]="'haseka.delete.title' | translate">
+  <a (click)="makeDelete()" class="btn btn-default btn-sm margin-right-10" *ngIf="(actions | includes:'delete') && hasAdminRights" [tooltip]="'haseka.delete.title' | translate">
     {{ 'np.delete' | translate }}
     <i class="glyphicon glyphicon-remove"></i>
   </a>
