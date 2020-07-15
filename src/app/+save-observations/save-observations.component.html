@@ -1,16 +1,16 @@
 <div class="main-container"> <!-- main container -->
   <section class="mb-8"> <!-- Tallenna luontohavaintoja lajitietokeskukseen -->
-    <h1 translate>saveObservations.h1</h1>
-    <p translate>saveObservations.desc</p>
-    <h2 translate>saveObservations.chooseSystem</h2>
+    <h1>{{ 'saveObservations.h1' | translate }}</h1>
+    <p>{{ 'saveObservations.desc' | translate }}</p>
+    <h2>{{ 'saveObservations.chooseSystem' | translate }}</h2>
     <div class="d-flex flex-row my-6 flex-nowrap sm:flex-wrap">
       <div class="report-type-container d-flex flex-col justify-between m-2"> <!-- Helppo -->
         <div>
-          <h3 translate>saveObservations.easy</h3>
+          <h3>{{ 'saveObservations.easy' | translate }}</h3>
           <ul>
-            <li translate>saveObservations.easy.1</li>
-            <li translate>saveObservations.easy.2</li>
-            <li translate>saveObservations.easy.3</li>
+            <li>{{ 'saveObservations.easy.1' | translate }}</li>
+            <li>{{ 'saveObservations.easy.2' | translate }}</li>
+            <li>{{ 'saveObservations.easy.3' | translate }}</li>
           </ul>
         </div>
         <lu-button anchor="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" role="primary">{{ 'saveObservations.easy.report' | translate }}</lu-button>
@@ -21,9 +21,9 @@
             <img src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
           </a>
           <ul>
-            <li translate>saveObservations.mobile.1</li>
-            <li translate>saveObservations.mobile.2</li>
-            <li translate>saveObservations.mobile.3</li>
+            <li>{{ 'saveObservations.mobile.1' | translate }}</li>
+            <li>{{ 'saveObservations.mobile.2' | translate }}</li>
+            <li>{{ 'saveObservations.mobile.3' | translate }}</li>
           </ul>
         </div>
         <div class="d-flex flex-row">
@@ -37,11 +37,11 @@
       </div>
       <div class="report-type-container d-flex flex-col justify-between m-2"> <!-- Monipuolinen -->
         <div>
-          <a [routerLink]="['/vihko'] | localize" class="vihko-logo" translate>saveObservations.vihko</a>
+          <a [routerLink]="['/vihko'] | localize" class="vihko-logo">{{ 'saveObservations.vihko' | translate }}</a>
           <ul>
-            <li translate>saveObservations.vihko.1</li>
-            <li translate>saveObservations.vihko.2</li>
-            <li translate>saveObservations.vihko.3</li>
+            <li>{{ 'saveObservations.vihko.1' | translate }}</li>
+            <li>{{ 'saveObservations.vihko.2' | translate }}</li>
+            <li>{{ 'saveObservations.vihko.3' | translate }}</li>
           </ul>
         </div>
         <lu-button [anchor]="['/vihko'] | localize">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
@@ -56,8 +56,8 @@
   </section>
 
   <section class="mb-8"> <!-- Kansalaistiede -->
-    <h2 translate>saveObservations.citizenScience</h2>
-    <p translate>saveObservations.citizenScience.desc</p>
+    <h2>{{ 'saveObservations.citizenScience' | translate }}</h2>
+    <p>{{ 'saveObservations.citizenScience.desc' | translate }}</p>
     <div class="d-flex flex-row flex-wrap">
       <ng-container *ngFor="let form of citizenScienceForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
@@ -66,8 +66,8 @@
   </section>
 
   <section class="mb-8"> <!-- Bird Monitoring -->
-    <h2 translate>saveObservations.birdMonitoring</h2>
-<!--     <p translate>saveObservations.birdMonitoring.desc</p> -->
+    <h2>{{ 'saveObservations.birdMonitoring' | translate }}</h2>
+<!--     <p>{ 'saveObservations.birdMonitoring.desc' | translate }}</p> -->
     <div class="d-flex flex-row flex-wrap">
       <ng-container *ngFor="let form of birdMonitoringForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
@@ -82,8 +82,8 @@
   </section>
 
   <section class="mb-8"> <!-- Tutkimusprojektit ja viranomaistyökalut -->
-    <h2 translate>saveObservations.researchProjects</h2>
-    <p translate>saveObservations.researchProjects.desc</p>
+    <h2>{{ 'saveObservations.researchProjects' | translate }}</h2>
+    <p>{{ 'saveObservations.researchProjects.desc' | translate }}</p>
     <div class="d-flex flex-row flex-wrap">
       <ng-container *ngFor="let form of researchProjectForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
