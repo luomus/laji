@@ -15,6 +15,7 @@ import { Logger } from '../../../shared/logger';
 import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service'
 import { switchMap } from 'rxjs/operators';
 import { Person } from '../../../shared/model/Person';
+import { Global } from '../../../../environments/global';
 // import { EventEmitter } from 'protractor';
 // import { EventEmitter } from 'redlock';
 
@@ -183,6 +184,12 @@ export class UserDocumentToolsComponent implements OnInit {
 
   onClickOutside() {
     this.closeModal(event);
+  }
+
+  showMakeTemplate(formID: string): boolean {
+    if (formID) {
+      return Global.canHaveTemplate.indexOf(formID) > -1;
+    }
   }
   
   private checkEditRight() {
