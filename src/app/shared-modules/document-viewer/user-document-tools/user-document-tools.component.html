@@ -3,7 +3,7 @@
     {{ 'np.edit' | translate }}
     <i class="glyphicon glyphicon-edit"></i>
   </a>
-  <a (click)="makeTemplate()" class="btn btn-default btn-sm" *ngIf="(actions | includes:'template') && hasEditRights && linkLocation" [tooltip]="'haseka.form.saveTemplate' | translate">
+  <a (click)="makeTemplate()" class="btn btn-default btn-sm" *ngIf="(actions | includes:'template') && hasEditRights && linkLocation && showMakeTemplate(_formID)" [tooltip]="'haseka.form.saveTemplate' | translate">
     {{ 'np.template' | translate }}
     <i class="glyphicon glyphicon-floppy-disk"></i>
   </a>

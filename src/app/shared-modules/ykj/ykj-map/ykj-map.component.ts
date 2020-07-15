@@ -310,9 +310,9 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     return newColor;
   }
 
-  /*countTotal(event) {
-    this.totalObservations.emit(event);
-  }*/
+  countTotal(event) {
+    //this.totalObservations.emit(event);
+  }
 
   private getDataLayer() {
     try {

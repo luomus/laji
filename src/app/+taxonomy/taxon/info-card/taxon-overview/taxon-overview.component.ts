@@ -93,7 +93,6 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.currentLang = this.translate.currentLang;
     this.getChildren();
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
-    console.log(this._taxonDescription)
   }
 
   ngOnDestroy() {
@@ -123,7 +122,6 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
       )
       .subscribe(data => {
         this.taxonChildren = data;
-        console.log(data)
         this.isChildrenOnlySpecie = this.taxonChildren.filter(e => e.taxonRank === 'MX.species').length > 0 ? true : false;
         this.cd.markForCheck();
       });

@@ -194,7 +194,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
             this.setData(this.mapData);
             this.mapData = undefined;
           } else {
-            // this.total.emit(0);
+            //this.total.emit(0);
           }
           this.zone.run(() => {
             this.loaded.emit();
@@ -297,7 +297,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
         return features.reduce((total, obj) => { 
           const value = this.onlyCount === null ? obj[key][key1] :
           this.onlyCount ? obj[key][key1] : obj[key][key1];
-          console.log(value)
           return (parseInt(total) + parseInt(value));
           
         }, 0)

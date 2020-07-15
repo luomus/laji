@@ -136,7 +136,10 @@
               [role]="'edit'"
               [routerLink]="row._editUrl | localize">
             <i class="glyphicon glyphicon-edit"></i>
-            <span class="text-button">{{ 'haseka.submissions.use' | translate }}</span>
+            <span class="text-button" *ngIf="onlyTemplates; else noTemplates">{{ 'haseka.submissions.use' | translate }}</span>
+            <ng-template #noTemplates>
+              <span class="text-button">{{ 'haseka.submissions.edit' | translate }}</span>
+            </ng-template>
 
         </lu-button>
       </div>

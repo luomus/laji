@@ -46,13 +46,17 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
         this.observationFacade.hideFooter();
         this.init();
       }
-      this.subscription.unsubscribe();
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+      }
      });
   }
 
   ngOnDestroy() {
     this.observationFacade.showFooter();
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     this.destroy();
   }
 }
