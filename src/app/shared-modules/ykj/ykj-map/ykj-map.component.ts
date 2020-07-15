@@ -68,7 +68,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   @Output() gridClick = new EventEmitter<WarehouseQueryInterface>();
   @Output() boundsChange = new EventEmitter<any>();
   @Output() loaded = new EventEmitter<void>();
-  @Output() totalObservations = new EventEmitter<number>();
+  // @Output() totalObservations = new EventEmitter<number>();
 
   count: {[k: string]: number} = {};
   legendList: {color: string, label: string}[] = [];
@@ -312,7 +312,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   countTotal(event) {
-    this.totalObservations.emit(event);
+    //this.totalObservations.emit(event);
   }
 
   private getDataLayer() {
