@@ -4,6 +4,10 @@
   position: relative;
 }
 
+.footer {
+  flex: none;
+}
+
 /** for embedded page */
 
 :host >>> .embedded laji-map-front .map-wrap {
