@@ -54,7 +54,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() move = new EventEmitter();
   @Output() failure =  new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
-  // @Output() total = new EventEmitter<number>();
+  @Output() total = new EventEmitter<number>();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -194,7 +194,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
             this.setData(this.mapData);
             this.mapData = undefined;
           } else {
-            // this.total.emit(0);
+            this.total.emit(0);
           }
           this.zone.run(() => {
             this.loaded.emit();
@@ -227,11 +227,11 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   setData(data) {
     
-    /*let sum = 0;
+    let sum = 0;
    
     sum = this.buildTotalObservations(data);
     console.log(sum)
-    this.total.emit(sum || 0);*/
+    this.total.emit(sum || 0);
     if (!this.map) {
       this.mapData = data;
       return;
