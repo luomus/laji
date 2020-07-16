@@ -19,7 +19,6 @@ export class ViewerComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    console.log('porco')
     this.subQuery = this.route.queryParams.pipe(
       mergeMap(params => this.route.fragment.pipe(
         map(fragment => ({
