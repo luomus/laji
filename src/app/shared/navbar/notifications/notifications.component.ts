@@ -37,7 +37,6 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   ngOnInit(): void {
     this.notificationSource = new NotificationDataSource(this.notificationsFacade, this.virtualScroll);
-    console.log(this.notificationSource)
   }
 
   ngAfterViewInit() {

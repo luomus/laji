@@ -403,7 +403,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   onDocumentDeleted(e) {
     if (e) {
-      console.log(e);
       this.deleteDocumentService.emitChildEvent(e)
       this.closeDocument();
       this.deleteDocumentService.emitChildEvent(null);
