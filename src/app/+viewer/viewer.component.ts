@@ -29,8 +29,8 @@ export class ViewerComponent implements OnInit, OnDestroy {
     ).subscribe(params => {
       this.uri = params['uri'];
       this.highlight = params['highlight'];
-      this.own = params['own'].toLocaleLowerCase() === 'true' ? true : false;
-      this.openAnnotation = params['openAnnotation'].toLocaleLowerCase() === 'true' ? true : false;;
+      this.own = params['own'].toLocaleLowerCase() === 'true';
+      this.openAnnotation = params['openAnnotation'].toLocaleLowerCase() === 'true';
     });
   }
 

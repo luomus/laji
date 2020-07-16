@@ -217,7 +217,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     const findDox$ = this.warehouseApi
       .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
         catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
-        map((doc) => {doc.document}),
+        map((doc) => doc.document),
         tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight))
       );
     findDox$
@@ -403,6 +403,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   onDocumentDeleted(e) {
     if (e) {
+      console.log(e);
       this.deleteDocumentService.emitChildEvent(e)
       this.closeDocument();
       this.deleteDocumentService.emitChildEvent(null);
