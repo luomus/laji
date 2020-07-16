@@ -1,4 +1,4 @@
-import { Observable, of, Subject, throwError } from 'rxjs';
+import { forkJoin, Observable, of, Subject, throwError } from 'rxjs';
 import { Injectable, NgZone } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { UserService } from './user.service';
@@ -22,6 +22,7 @@ import {
   REQUEST_MSG
 } from './laji-api-worker-common';
 import { BrowserService } from './browser.service';
+import { FileService } from '../../shared-modules/spreadsheet/service/file.service';
 
 @Injectable()
 export class LajiApiInterceptor implements HttpInterceptor {
@@ -35,7 +36,8 @@ export class LajiApiInterceptor implements HttpInterceptor {
     private platformService: PlatformService,
     private browserService: BrowserService,
     private ngZone: NgZone,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private fileService: FileService
   ) {
     if (platformService.isServer || !platformService.canUseWebWorkerLogin) {
       return;
@@ -68,7 +70,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
     this.browserService.visibility$.pipe(
       skip(1),
       filter(visible => visible)
-    ).subscribe(() => this.worker.postMessage({key: this.rnd, type: CLEAR_TOKEN_MSG}))
+    ).subscribe(() => this.worker.postMessage({key: this.rnd, type: CLEAR_TOKEN_MSG}));
   }
 
 
@@ -84,7 +86,16 @@ export class LajiApiInterceptor implements HttpInterceptor {
     const key = this.rnd;
 
     setTimeout(() => {
-      this.worker.postMessage({id, key, request: {...request, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
+      if (request.body instanceof FormData) {
+        const data = [];
+        request.body.forEach(e => data.push(this.fileService.loadFile(e as File, undefined, {type: 'dataUrl'})));
+
+        forkJoin(data).subscribe(d => {
+          this.worker.postMessage({id, key, request: {...request.clone({body: ''}), dataUrls: d, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
+        });
+      } else {
+        this.worker.postMessage({id, key, request: {...request, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
+      }
     }, 0);
 
     return this.responses.pipe(
