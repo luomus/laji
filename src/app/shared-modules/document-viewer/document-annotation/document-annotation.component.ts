@@ -214,7 +214,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     if (!this.uri) {
       return;
     }
-    console.log('ciao')
     const findDox$ = this.warehouseApi
       .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
         catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
@@ -404,7 +403,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   onDocumentDeleted(e) {
     if (e) {
-      console.log(e);
       this.deleteDocumentService.emitChildEvent(e)
       this.closeDocument();
       this.deleteDocumentService.emitChildEvent(null);
