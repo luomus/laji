@@ -98,10 +98,11 @@ addEventListener('message', ({ data }) => {
       url: request.url,
     } as SuccessResponse)),
     catchError(err => of({
-      ...err.response,
-      headers: {},
       status: err.status,
       statusText: '' + err.status,
+      ...err.response,
+      error: err.response,
+      headers: {},
       url: err.url,
     } as ErrorResponse))
   ).subscribe((res) => 'error' in res ?
