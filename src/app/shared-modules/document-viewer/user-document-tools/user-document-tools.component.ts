@@ -204,11 +204,18 @@ export class UserDocumentToolsComponent implements OnInit {
   }
 
   private checkAdminRight() {
-    this.documentApi.findById(this._documentID, this.userService.getToken()).subscribe(document => {
+    console.log('gio')
+    this.documentApi.findById(this._documentID, this.userService.getToken()).subscribe(
+      (document) => {
       const creator = document.creator;
       this.hasAdminRights = this._personID === creator ? true : false;
       this.cd.markForCheck();
-    });
+    },
+    (error) => {                             
+      this.hasAdminRights = false;
+      this.cd.markForCheck();
+    }
+  );
     
   }
   

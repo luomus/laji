@@ -214,10 +214,11 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     if (!this.uri) {
       return;
     }
+    console.log('ciao')
     const findDox$ = this.warehouseApi
       .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
         catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
-        map(doc => doc.document),
+        map((doc) => {doc.document}),
         tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight))
       );
     findDox$

@@ -19,6 +19,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+    console.log('porco')
     this.subQuery = this.route.queryParams.pipe(
       mergeMap(params => this.route.fragment.pipe(
         map(fragment => ({
@@ -29,8 +30,8 @@ export class ViewerComponent implements OnInit, OnDestroy {
     ).subscribe(params => {
       this.uri = params['uri'];
       this.highlight = params['highlight'];
-      this.own = params['own'] === 'true';
-      this.openAnnotation = params['openAnnotation'] === 'true';
+      this.own = params['own'].toLocaleLowerCase() === 'true' ? true : false;
+      this.openAnnotation = params['openAnnotation'].toLocaleLowerCase() === 'true' ? true : false;;
     });
   }
 
