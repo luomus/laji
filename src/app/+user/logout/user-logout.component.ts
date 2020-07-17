@@ -23,12 +23,13 @@ export class UserLogoutComponent implements OnInit {
       take(1)
     ).subscribe(login => {
       if (login) {
-        this.userService.logout();
-      }
-      if (environment.forceLogin) {
-        this.window.location.href = UserService.getLoginUrl();
-      } else {
-        this.router.navigate(this.localizeRouterService.translateRoute(['/']), {queryParams: {}});
+        this.userService.logout(() => {
+          if (environment.forceLogin) {
+            this.window.location.href = UserService.getLoginUrl();
+          } else {
+            this.router.navigate(this.localizeRouterService.translateRoute(['/']), {queryParams: {}});
+          }
+        });
       }
     });
   }
