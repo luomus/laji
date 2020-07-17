@@ -1340,7 +1340,7 @@
   "taxonomy.map.finland": "Havainnot Suomesta",
   "taxonomy.map.disclaimer": "Kartta esittää havaintoja tästä taksonista, mutta sitä ei voi käyttää levinneisyyskarttana.",
   "taxonomy.map.totalObservations": "Suomessa yhteensä",
-  "taxonomy.map.totalObservationsNumber": "{{totalObservations}} havaintoa" ,
+  "taxonomy.map.totalObservationsNumber": " havaintoa" ,
   "taxonomy.map.summary": "Yhteenvetokartta",
   "taxonomy.notFound": "Lajia ei löytynyt",
   "taxonomy.notes": "Huomautuksia taksonomiasta",

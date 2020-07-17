@@ -68,7 +68,6 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   @Output() gridClick = new EventEmitter<WarehouseQueryInterface>();
   @Output() boundsChange = new EventEmitter<any>();
   @Output() loaded = new EventEmitter<void>();
-  // @Output() totalObservations = new EventEmitter<number>();
 
   count: {[k: string]: number} = {};
   legendList: {color: string, label: string}[] = [];
@@ -107,6 +106,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       this.cd.markForCheck();
     });
     this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
+    console.log(this.query)
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -310,9 +310,6 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     return newColor;
   }
 
-  countTotal(event) {
-    //this.totalObservations.emit(event);
-  }
 
   private getDataLayer() {
     try {

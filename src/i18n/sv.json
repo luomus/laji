@@ -1257,7 +1257,7 @@
   "taxonomy.map.finland": "Observationer i Finland",
   "taxonomy.map.disclaimer": "Kartan visar observationer av denna taxonen, men den får inte användas som en utbredningskarta.",
   "taxonomy.map.totalObservations": "Totalt",
-  "taxonomy.map.totalObservationsNumber": "{{totalObservations}} observationer i Finland" ,
+  "taxonomy.map.totalObservationsNumber": " observationer i Finland" ,
   "taxonomy.map.summary": "Sammanfattande karta",
   "taxonomy.notFound": "Arter hittades inte",
   "taxonomy.notes": "Anmärkningar om taxonomi",

@@ -45,7 +45,8 @@
     >
       <p class="disclaimer">
         {{ 'taxonomy.map.disclaimer' | translate }}
-        <!--<span style="display: block;">{{ 'taxonomy.map.totalObservations' | translate}} <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id, countryId: 'ML.206'}">{{ 'taxonomy.map.totalObservationsNumber' | translate: {totalObservations: totalObservations} }}</a></span>-->
+        <span style="display: block;">{{ 'taxonomy.map.totalObservations' | translate}} <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id, countryId: 'ML.206'}">
+          <laji-observation-count [query]="queryCount"></laji-observation-count>{{ 'taxonomy.map.totalObservationsNumber' | translate }}</a></span>
       </p>
       <laji-ykj-map
         [query]="mapQuery"
@@ -57,7 +58,6 @@
           zoom: 2,
           viewLocked: true
         }"
-
       ></laji-ykj-map>
     </div>
   </div>

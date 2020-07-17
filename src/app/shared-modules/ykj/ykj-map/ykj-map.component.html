@@ -5,7 +5,6 @@
     [maxBounds]="maxBounds"
     [options]="mapOptions"
     [showFullScreenControl]="showFullScreenControl"
-    (total)="countTotal($event)"
   >
     <div *ngIf="taxon || title" class="title">
       <h5>
@@ -20,7 +19,7 @@
     </div>
     <div class="legend">
       <span class="cnt capitalize">
-        {{ 'theme.square' | translate }}
+        {{ 'theme.count' | translate }}
       </span>
       <div dropdown style="position: relative">
         <ng-container *ngIf="types.length > 1">

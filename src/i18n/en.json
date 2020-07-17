@@ -1185,7 +1185,7 @@
   "taxonomy.map.finland": "Observations in Finland",
   "taxonomy.map.disclaimer": "The map represents observations of this taxon, but it may not be used as a distribution map.",
   "taxonomy.map.totalObservations": "A total of",
-  "taxonomy.map.totalObservationsNumber": "{{totalObservations}} observations in Finland" ,
+  "taxonomy.map.totalObservationsNumber": " observations in Finland" ,
   "taxonomy.map.summary": "Summary map",
   "taxonomy.notFound": "Species not found",
   "taxonomy.notes": "Notes on taxonomy",
