@@ -11,6 +11,8 @@ import { tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { ISettingResultList, UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { environment } from '../../../environments/environment';
+import { Global } from '../../../environments/global';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -50,7 +52,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     statistics: true,
     download: true,
     annotations: true,
-    own: true
+    own: environment.type !== Global.type.vir
   };
   @Input() skipUrlParameters: string[] = [
     'selected',

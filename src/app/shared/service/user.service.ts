@@ -137,13 +137,16 @@ export class UserService {
     return this._checkLogin(userToken);
   }
 
-  logout(): void {
+  logout(cb?: () => void): void {
     if (this.subLogout) {
       return;
     }
+    if (!cb) {
+      cb = () => {};
+    }
     if (_state.token) {
       this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
-        httpOkError(404, false),
+        httpOkError([404, 400, 500], false),
         retryWithBackoff(300),
         catchError((err) => {
           this.logger.warn('Failed to logout', err);
@@ -152,9 +155,11 @@ export class UserService {
       ).subscribe(() => {
         this.subLogout = undefined;
         this.doLogoutState();
+        cb();
       });
     } else {
       this.doLogoutState();
+      cb();
     }
   }
 
