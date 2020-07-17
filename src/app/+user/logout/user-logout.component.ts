@@ -25,12 +25,12 @@ export class UserLogoutComponent implements OnInit {
       if (login) {
         this.userService.logout();
       }
+      if (environment.forceLogin) {
+        this.window.location.href = UserService.getLoginUrl();
+      } else {
+        this.router.navigate(this.localizeRouterService.translateRoute(['/']), {queryParams: {}});
+      }
     });
-    if (environment.forceLogin) {
-      this.window.location.href = UserService.getLoginUrl();
-    } else {
-      this.router.navigate(this.localizeRouterService.translateRoute(['/']), {queryParams: {}});
-    }
   }
 
 }
