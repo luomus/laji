@@ -1,8 +1,9 @@
 /// <reference lib="webworker" />
 import { ajax } from 'rxjs/ajax';
 import { catchError, map, mergeMap, share, switchMap, tap } from 'rxjs/operators';
-import { Observable, of, throwError } from 'rxjs';
+import { from, Observable, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+
 import {
   CLEAR_TOKEN_MSG,
   ErrorResponse,
@@ -32,7 +33,7 @@ function fetchPersonToken(): Observable<string> {
       map(d => d['token'] || ''),
       tap(t => personToken = '' +  t),
       switchMap(t => t ? of(t) : throwError({
-        error: {},
+        error: {message: 'Failed to verify user'},
         url: loginUrl,
         status: 0
       })),
@@ -66,6 +67,54 @@ function replaceToken(token: string, request: any): any {
   return request;
 }
 
+function dataUrlToBlob(dataURL: string): Blob {
+  const BASE64_MARKER = ';base64,';
+  if (dataURL.indexOf(BASE64_MARKER) === -1) {
+    const items = dataURL.split(',');
+    const type = items[0].split(':')[1];
+
+    return new Blob([decodeURIComponent(items[1])], {type: type});
+  }
+
+  const parts = dataURL.split(BASE64_MARKER);
+  const contentType = parts[0].split(':')[1];
+  const raw = atob(parts[1]);
+  const rawLength = raw.length;
+
+  const uInt8Array = new Uint8Array(rawLength);
+
+  for (let i = 0; i < rawLength; ++i) {
+    uInt8Array[i] = raw.charCodeAt(i);
+  }
+
+  return new Blob([uInt8Array], {type: contentType});
+}
+
+function isOkResponse(res: {status: number}) {
+  return res?.status >= 200 && res?.status < 300;
+}
+
+function makeRequest({url, ...request}: any): Observable<any> {
+  if (request.dataUrls) {
+    const formData = new FormData();
+    request.dataUrls.forEach((d, idx) => formData.append('data' + idx, dataUrlToBlob(d.content), d.filename));
+    request.body = formData;
+    delete request.dataUrls;
+    delete request.headers;
+  } else if (request.body && typeof request.body !== 'string') {
+    request.body = JSON.stringify(request.body);
+  }
+  return from(fetch(url, {
+    ...request
+  }).then(r => r.json().then(j => ({
+    response: j,
+    headers: {},
+    status: r.status,
+    statusText: '' + r.status,
+    url,
+  }))));
+}
+
 addEventListener('message', ({ data }) => {
   const {id, key, type, request} = data;
   if (!key) {
@@ -89,7 +138,7 @@ addEventListener('message', ({ data }) => {
 
   fetchPersonToken().pipe(
     map((token) => hasPersonToken(request) ? replaceToken(token, request) : request),
-    mergeMap(req => ajax(req)),
+    mergeMap(req => makeRequest(req)),
     map(res => ({
       body: res.response,
       headers: {},
@@ -97,16 +146,18 @@ addEventListener('message', ({ data }) => {
       statusText: '' + res.status,
       url: request.url,
     } as SuccessResponse)),
-    catchError(err => of({
-      status: err.status,
-      statusText: '' + err.status,
-      ...err.response,
-      error: err.response,
+    catchError((err) => typeof err.status !== 'undefined' ? of(err) : of({
+      status: 500,
+      statusText: '500',
       headers: {},
-      url: err.url,
-    } as ErrorResponse))
-  ).subscribe((res) => 'error' in res ?
-    postMessage({type: REQUEST_MSG, id, error: res}) :
-    postMessage({type: REQUEST_MSG, id, response: res})
-  );
+      error: err.message,
+      url: request.url,
+    } as ErrorResponse)),
+  ).subscribe((res) => {
+    if (isOkResponse(res)) {
+      postMessage({type: REQUEST_MSG, id, response: res});
+    } else {
+      postMessage({type: REQUEST_MSG, id, error: res});
+    }
+  });
 });

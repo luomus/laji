@@ -23,8 +23,7 @@ export class PlatformService {
   }
 
   get canUseWebWorkerLogin(): boolean {
-    return false;
-    // return this._canUseWebWorkerLogin && this.canUseWebWorker && this.isBrowser;
+    return this._canUseWebWorkerLogin && this.canUseWebWorker && this.isBrowser;
   }
 
   set canUseWebWorkerLogin(canUse: boolean) {
