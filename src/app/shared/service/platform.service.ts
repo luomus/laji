@@ -23,6 +23,8 @@ export class PlatformService {
   }
 
   get canUseWebWorkerLogin(): boolean {
+    // If you need to disable web-worker login uncomment the following line
+    // return false;
     return this._canUseWebWorkerLogin && this.canUseWebWorker && this.isBrowser;
   }
 

@@ -60,10 +60,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/robots.txt",
-                  "with": "src/robots.allow.txt"
                 }
               ]
             },
@@ -258,10 +254,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/robots.txt",
-                  "with": "src/robots.allow.txt"
                 }
               ]
             },
@@ -460,10 +452,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "projects/iucn/src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "projects/iucn/src/robots.txt",
-                  "with": "src/robots.allow.txt"
                 }
               ]
             },
