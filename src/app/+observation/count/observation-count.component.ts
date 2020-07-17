@@ -33,7 +33,6 @@ export class ObservationCountComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('porco')
     if (changes['query'] || changes['field'] || changes['pick'] || changes['overrideInQuery'] || changes['value']) {
       this.update();
     }

@@ -106,7 +106,6 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       this.cd.markForCheck();
     });
     this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
-    console.log(this.query)
   }
 
   ngOnChanges(changes: SimpleChanges) {
