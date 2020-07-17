@@ -25,22 +25,9 @@ const NOTIFICATION_MAX_PAGESIZE = 100;
 const REFRESH_QUERY = gql`
   query($pageSize: Int, $personToken: String = "") {
     notifications(personToken: $personToken, pageSize: $pageSize) {
-      currentPage
-      pageSize
       total
       results {
         id
-        created
-        friendRequest
-        friendRequestAccepted
-        seen
-        toPerson
-        annotation {
-          rootID
-          targetID
-          annotationByPerson
-          annotationBySystem
-        }
       }
     }
     unseenCount: notifications(personToken: $personToken, onlyUnSeen: true, pageSize: 0) {
@@ -163,12 +150,18 @@ export class NotificationsFacade {
     this.graphQLService.query<IRefreshDataResult>({
       query: REFRESH_QUERY,
       fetchPolicy: 'network-only',
-      variables: {personToken: this.userService.getToken(), pageSize: this.pageSize}
+      variables: {personToken: this.userService.getToken(), pageSize: 1}
     }).pipe(
       map(({data}) => data),
     ).subscribe((data) => {
       this.unseenCountReducer(data.unseenCount.total);
-      this.notificationsReducer(data.notifications);
+      if (
+        data.notifications &&
+        data.notifications.total > 0 &&
+        this.store$.getValue().notifications?.[0]?.id !== data.notifications.results[0].id
+      ) {
+        this.loadNotifications(1);
+      }
     });
   }
 

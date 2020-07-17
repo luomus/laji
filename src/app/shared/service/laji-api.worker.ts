@@ -33,7 +33,7 @@ function fetchPersonToken(): Observable<string> {
       map(d => d['token'] || ''),
       tap(t => personToken = '' +  t),
       switchMap(t => t ? of(t) : throwError({
-        error: {},
+        error: {message: 'Failed to verify user'},
         url: loginUrl,
         status: 0
       })),
@@ -90,6 +90,10 @@ function dataUrlToBlob(dataURL: string): Blob {
   return new Blob([uInt8Array], {type: contentType});
 }
 
+function isOkResponse(res: {status: number}) {
+  return res?.status >= 200 && res?.status < 300;
+}
+
 function makeRequest({url, ...request}: any): Observable<any> {
   if (request.dataUrls) {
     const formData = new FormData();
@@ -142,17 +146,15 @@ addEventListener('message', ({ data }) => {
       statusText: '' + res.status,
       url: request.url,
     } as SuccessResponse)),
-    catchError((err) => {
-      return of({
-        status: 500,
-        statusText: '500',
-        headers: {},
-        error: err.message,
-        url: request.url,
-      } as ErrorResponse);
-    }),
+    catchError((err) => typeof err.status !== 'undefined' ? of(err) : of({
+      status: 500,
+      statusText: '500',
+      headers: {},
+      error: err.message,
+      url: request.url,
+    } as ErrorResponse)),
   ).subscribe((res) => {
-    if (res.status >= 200 && res.status < 300) {
+    if (isOkResponse(res)) {
       postMessage({type: REQUEST_MSG, id, response: res});
     } else {
       postMessage({type: REQUEST_MSG, id, error: res});
