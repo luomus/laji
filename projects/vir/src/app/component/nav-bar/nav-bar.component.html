@@ -11,7 +11,7 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" [routerLink]="['/'] | localize">
-            <div class="env" [ngClass]="{dev: !isProd}"></div>
+            <div class="env" [ngClass]="{dev: devRibbon}"></div>
             <span>LAJI.FI</span>
           </a>
           <div class="visible-xs-inline-block pull-right search">
