@@ -106,13 +106,24 @@ function makeRequest({url, ...request}: any): Observable<any> {
   }
   return from(fetch(url, {
     ...request
-  }).then(r => r.json().then(j => ({
-    response: j,
-    headers: {},
-    status: r.status,
-    statusText: '' + r.status,
-    url,
-  }))));
+  }).then(r => {
+    if (r.status === 204) {
+      return {
+        response: '',
+        headers: {},
+        status: r.status,
+        statusText: r.statusText,
+        url,
+      };
+    }
+    return r.json().then(j => ({
+      response: j,
+      headers: {},
+      status: r.status,
+      statusText: r.statusText,
+      url,
+    }));
+  }));
 }
 
 addEventListener('message', ({ data }) => {
