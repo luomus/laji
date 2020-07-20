@@ -217,7 +217,7 @@
     ></laji-annotations>
   </lu-tab>
   <lu-tab *ngIf="visible.own && (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken)" [heading]="'haseka.ownSubmissions.title' | translate">
-    <div *ngIf="loadedTabs.isLoaded('own')">
+    <div>
       <laji-observation-table-own-documents
       [visible]="true"
       [pageSize]="100"
