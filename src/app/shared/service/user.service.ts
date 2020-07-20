@@ -146,7 +146,7 @@ export class UserService {
     }
     if (_state.token) {
       this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
-        httpOkError([404, 400, 500], false),
+        httpOkError([404, 400], false),
         retryWithBackoff(300),
         catchError((err) => {
           this.logger.warn('Failed to logout', err);
