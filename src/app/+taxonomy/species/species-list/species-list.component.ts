@@ -28,11 +28,13 @@ import { UserService } from '../../../shared/service/user.service';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { DatatableHeaderComponent } from '../../../shared-modules/datatable/datatable-header/datatable-header.component';
+import { ToFullUriPipe } from 'src/app/shared/pipe/to-full-uri';
 
 @Component({
   selector: 'laji-species-list',
   templateUrl: './species-list.component.html',
   styleUrls: ['./species-list.component.css'],
+  providers: [ToFullUriPipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
@@ -77,7 +79,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     private cd: ChangeDetectorRef,
     private taxonExportService: TaxonExportService,
     private dtUtil: DatatableUtil,
-    private columnService: TaxonomyColumns
+    private columnService: TaxonomyColumns,
+    private fullUri: ToFullUriPipe
   ) { }
 
   ngOnInit() {
@@ -266,6 +269,11 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
           }
 
           this.speciesPage = data;
+          this.speciesPage.results.map(r => {
+            if(r['id']) {
+              r['id'] = this.fullUri.transform(r['id']);
+            }
+          })
           this.loading = false;
           this.datatable.refreshTable();
           this.cd.markForCheck();

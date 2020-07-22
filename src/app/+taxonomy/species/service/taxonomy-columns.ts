@@ -13,7 +13,7 @@ export class TaxonomyColumns {
     {
       name: 'id',
       label: 'taxonomy.card.id',
-      width: 95
+      width: 120
     },
     {
       name: 'taxonRank',
