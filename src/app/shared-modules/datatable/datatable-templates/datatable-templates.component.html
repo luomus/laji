@@ -168,6 +168,15 @@
     </ng-container>
   </ul>
 </ng-template>
+<ng-template let-row="row" #misappliedNames>
+  <ul class="semicolon separated-list">
+      <ng-container *ngIf="row['misappliedNames']">
+        <ng-container *ngFor="let synonymTaxon of row[field]">
+          <li><laji-taxon-name [taxon]="synonymTaxon" [addAuthor]="true"></laji-taxon-name></li>
+        </ng-container>
+      </ng-container>
+  </ul>
+</ng-template>
 <ng-template let-value="value" #boolean>
   <span *ngIf="value === true" title="{{'yes' | translate}}">
     {{ 'yes' | translate }}

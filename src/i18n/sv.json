@@ -1274,6 +1274,7 @@
   "taxonomy.source": "Källa",
   "taxonomy.speciesList.found": "arter hittades",
   "taxonomy.synonyms": "Synonymer",
+  "taxonomy.misappliedNames": "Felanvända namn",
   "taxonomy.taxonConcept": "Taxonbegrepp",
   "taxonomy.taxonConcept.id": "id",
   "taxonomy.taxonConcept.otherLists": "Andra listor",

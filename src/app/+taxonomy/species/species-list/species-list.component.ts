@@ -274,6 +274,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
               r['id'] = this.fullUri.transform(r['id']);
             }
           })
+          const ciccio = this.speciesPage.results.filter(r => r.objectiveSynonyms)
+          console.log(ciccio)
           this.loading = false;
           this.datatable.refreshTable();
           this.cd.markForCheck();

@@ -1357,6 +1357,7 @@
   "taxonomy.source": "Lähde",
   "taxonomy.speciesList.found": "lajia löytyi",
   "taxonomy.synonyms": "Synonyymit",
+  "taxonomy.misappliedNames": "Väärinkäytetyt nimet",
   "taxonomy.taxonConcept": "Taksonikäsite",
   "taxonomy.taxonConcept.id": "tunniste",
   "taxonomy.taxonConcept.otherLists": "Muut luettelot",

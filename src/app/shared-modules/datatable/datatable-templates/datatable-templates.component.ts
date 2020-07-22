@@ -15,6 +15,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('originalTaxon', { static: true }) originalTaxon: TemplateRef<any>;
   @ViewChild('species', { static: true }) species: TemplateRef<any>;
   @ViewChild('synonyms', { static: true }) synonyms: TemplateRef<any>;
+  @ViewChild('misappliedNames', { static: true }) misappliedNames: TemplateRef<any>;
   @ViewChild('eventDate', { static: true }) eventDate: TemplateRef<any>;
   @ViewChild('multiLang', { static: true }) multiLang: TemplateRef<any>;
   @ViewChild('multiLangAll', { static: true }) multiLangAll: TemplateRef<any>;

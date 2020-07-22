@@ -16,6 +16,7 @@ export class TaxonOccurrenceComponent implements OnChanges {
 
   mapQuery: WarehouseQueryInterface;
   chartQuery: WarehouseQueryInterface;
+  observationQuery: WarehouseQueryInterface;
 
   hasMonthDayData: boolean;
   hasYearData: boolean;

@@ -1202,6 +1202,7 @@
   "taxonomy.source": "Source",
   "taxonomy.speciesList.found": "species found",
   "taxonomy.synonyms": "Synonyms",
+  "taxonomy.misappliedNames": "Misapplied Names",
   "taxonomy.taxonConcept": "Taxon concept",
   "taxonomy.taxonConcept.id": "id",
   "taxonomy.taxonConcept.otherLists": "Other lists",

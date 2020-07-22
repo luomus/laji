@@ -47,6 +47,12 @@ export class TaxonomyColumns {
       width: 200
     },
     {
+      name: 'misappliedNames',
+      label: 'taxonomy.misappliedNames',
+      cellTemplate: 'misappliedNames',
+      width: 200
+    },
+    {
       name: 'vernacularName.fi',
       label: 'taxonomy.vernacular.name.fi',
       selectField: 'vernacularName',
