@@ -1784,6 +1784,7 @@ type Taxon {
   stopOriginalPublicationInheritance: Boolean
   subjectiveSynonyms: [Taxon!]
   synonymNames: [String!]
+  misappliedListNames: [String!]
   synonyms: [Taxon!]
   targetName: [String!]
   taxonEditor: [String!]

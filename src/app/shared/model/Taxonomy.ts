@@ -149,6 +149,8 @@ export interface Taxonomy {
 
   synonymNames?: string;
 
+  misappliedListNames?: string;
+
   synonyms?: Array<Taxonomy>;
 
   basionyms?: Array<Taxonomy>;
@@ -231,6 +233,8 @@ export interface Taxonomy {
   alternativeVernacularName?: string[];
 
   misspelledNames?: string[];
+
+  misappliedNames?: string[];
 
   primaryHabitat?: Habitat;
 

@@ -47,8 +47,9 @@ export class TaxonomyColumns {
       width: 200
     },
     {
-      name: 'misappliedNames',
+      name: 'misappliedListNames',
       label: 'taxonomy.misappliedNames',
+      selectField: '*.scientificName,*.scientificNameAuthorship,*.cursiveName',
       cellTemplate: 'misappliedNames',
       width: 200
     },
