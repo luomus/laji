@@ -297,6 +297,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.fetchSub = (this.isAggregate ? aggregate$ : list$)
       .subscribe(data => {
         this.total.emit(data && data.total || 0);
+        console.log(data.total)
         this.result = data;
         this.loading = false;
         // This needs to be markForCheck and not detectChanges otherwise observation table on taxon section will not work

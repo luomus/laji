@@ -42,6 +42,7 @@ export class TaxonOccurrenceComponent implements OnChanges {
     this.filterByLifeStageTotal = undefined;
     this.filterBySexTotal = undefined;
     this.filterByCollectionIdTotal = undefined;
+    this.filterByHabitatTotal = undefined;
   }
 
 }
