@@ -1310,6 +1310,7 @@
   "taxonomy.observations.yearChart": "Observationer årligen i Finland",
   "taxonomy.observation.yearChart.filter": "Klicka på förklaringen för att filtrera resultat",
   "taxonomy.observations.yearChart.disclaimer": "Diagrammet visar temporär fördelning av observationerna, vilket inte är detsamma som befolkningens ökning / minskning.",
+  "taxonomy.observations.habitat.disclaimer": "Följande biotopdata har registrerats för observationer av denna art",
   "taxonomy.observations.yearChart.showHistory": "Visa fullständig historik",
   "taxonomy.observations.yearChart.hideHistory": "Dölj gamla data",
   "taxonomy.observations.yearChart.xAxis": "År",

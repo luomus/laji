@@ -56,8 +56,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() defaultOrder: string;
   @Input() visible: boolean;
   @Input() hideDefaultCountColumn = false;
+  @Input() factInfo: boolean;
   @Input() allAggregateFields = [
     'unit.species',
+    'unit.facts.value',
     'unit.linkings.taxon.vernacularName',
     'unit.linkings.taxon.scientificName',
     'unit.taxonVerbatim',
@@ -281,6 +283,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       [...this.orderBy, this.defaultOrder],
       this.lang,
       this.useStatistics,
+      this.factInfo ? this.factInfo : false
     );
     const list$ = this.resultService.getList(
       this.query,

@@ -17,6 +17,7 @@ export class TaxonOccurrenceComponent implements OnChanges {
   mapQuery: WarehouseQueryInterface;
   chartQuery: WarehouseQueryInterface;
   observationQuery: WarehouseQueryInterface;
+  habitatQuery: WarehouseQueryInterface;
 
   hasMonthDayData: boolean;
   hasYearData: boolean;
@@ -24,12 +25,14 @@ export class TaxonOccurrenceComponent implements OnChanges {
   filterByLifeStageTotal: number;
   filterBySexTotal: number;
   filterByCollectionIdTotal: number;
+  filterByHabitatTotal: number;
 
   constructor() { }
 
   ngOnChanges() {
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
     this.chartQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id);
+    this.habitatQuery = InfoCardQueryService.getFinnishObservationHabitatQuery(this.taxon.id)
 
     this.hasMonthDayData = undefined;
     this.hasYearData = undefined;
