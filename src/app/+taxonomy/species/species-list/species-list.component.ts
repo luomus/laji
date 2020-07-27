@@ -28,11 +28,14 @@ import { UserService } from '../../../shared/service/user.service';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { DatatableHeaderComponent } from '../../../shared-modules/datatable/datatable-header/datatable-header.component';
+import { ToFullUriPipe } from 'src/app/shared/pipe/to-full-uri';
+import { ToQNamePipe } from 'src/app/shared/pipe/to-qname.pipe';
 
 @Component({
   selector: 'laji-species-list',
   templateUrl: './species-list.component.html',
   styleUrls: ['./species-list.component.css'],
+  providers: [ToFullUriPipe, ToQNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
@@ -77,7 +80,9 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     private cd: ChangeDetectorRef,
     private taxonExportService: TaxonExportService,
     private dtUtil: DatatableUtil,
-    private columnService: TaxonomyColumns
+    private columnService: TaxonomyColumns,
+    private fullUri: ToFullUriPipe,
+    private toQname: ToQNamePipe
   ) { }
 
   ngOnInit() {
@@ -117,7 +122,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   onRowSelect(event) {
     if (event.row && event.row.id) {
       this.router.navigate(
-        this.localizeRouterService.translateRoute(['/taxon', event.row.id])
+        this.localizeRouterService.translateRoute(['/taxon', this.toQname.transform(event.row.id)])
       );
     }
   }
@@ -266,6 +271,13 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
           }
 
           this.speciesPage = data;
+          this.speciesPage.results.map(r => {
+            if(r['id']) {
+              r['id'] = this.fullUri.transform(r['id']);
+            }
+          })
+          /*const ciccio = this.speciesPage.results.filter(r => r.misappliedNames)
+          console.log(ciccio)*/
           this.loading = false;
           this.datatable.refreshTable();
           this.cd.markForCheck();

@@ -309,6 +309,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     return newColor;
   }
 
+
   private getDataLayer() {
     try {
       const layers = this.mapComponent.map.getData();

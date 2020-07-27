@@ -13,8 +13,10 @@ import { DocumentService } from '../../own-submissions/service/document.service'
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger';
 import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service'
-import { switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Person } from '../../../shared/model/Person';
+import { Global } from '../../../../environments/global';
+import { of } from 'rxjs';
 // import { EventEmitter } from 'protractor';
 // import { EventEmitter } from 'redlock';
 
@@ -184,28 +186,34 @@ export class UserDocumentToolsComponent implements OnInit {
   onClickOutside() {
     this.closeModal(event);
   }
-  
+
+  showMakeTemplate(formID: string): boolean {
+    if (formID) {
+      return Global.canHaveTemplate.indexOf(formID) > -1;
+    }
+  }
+
   private checkEditRight() {
     if (!this._personID || !this._editors) {
       this.hasEditRights = false;
       return;
     }
     this.hasEditRights = this._editors.indexOf(this._personID) !== -1;
-    console.log(this.hasEditRights)
     if (this.hasEditRights) {
       this.updateLink();
     }
   }
 
   private checkAdminRight() {
-    this.documentApi.findById(this._documentID, this.userService.getToken()).subscribe(document => {
-      const creator = document.creator;
-      this.hasAdminRights = this._personID === creator ? true : false;
+    this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
+      map(document => document.creator),
+      map(creator => this._personID === creator),
+      catchError(() => of(false))
+    ).subscribe(hasAdminRights => {
+      this.hasAdminRights = hasAdminRights;
       this.cd.markForCheck();
     });
-    
   }
-  
 
   private updateLink() {
     if (!this.hasEditRights || !this._documentID || !this._formID) {

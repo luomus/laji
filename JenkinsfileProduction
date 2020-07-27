@@ -16,6 +16,7 @@ node {
       milestone()
       sh 'rm -rf dist'
       sh 'npm run --silent build:ssr:prod'
+      sh 'cp -f src/robots.allow.txt dist/browser/robots.txt'
       sh 'pre-compress-web-assets dist/browser'
       sh 'npm prune --silent --production'
       sh 'tar -cvzf prod.tar.gz --strip-components=1 dist node_modules'

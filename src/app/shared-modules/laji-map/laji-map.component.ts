@@ -19,6 +19,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Options, TileLayerName, Lang, TileLayersOptions } from 'laji-map';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
+import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 
 @Component({
@@ -60,6 +61,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   _options: Options = {};
   _legend: {color: string, label: string}[];
   fullScreen = false;
+  @LocalStorage('onlycount') onlyCount;
+  
 
   private _settingsKey: keyof IUserSettings;
   private subSet: Subscription;
@@ -189,6 +192,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
           if (this.mapData) {
             this.setData(this.mapData);
             this.mapData = undefined;
+          } else {
           }
           this.zone.run(() => {
             this.loaded.emit();
@@ -263,6 +267,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
       return {shapeOptions: {color: '#00aa00', opacity: 1, fillOpacity: 0}};
     }
   }
+
 
   private toggleFullscreen() {
     this.fullScreen = !this.fullScreen;

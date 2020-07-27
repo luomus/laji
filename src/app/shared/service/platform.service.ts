@@ -1,5 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,9 @@ export class PlatformService {
   }
 
   get canUseWebWorkerLogin(): boolean {
-    return this._canUseWebWorkerLogin && this.canUseWebWorker && this.isBrowser;
+    // If you need to disable web-worker login uncomment the following line
+    // return false;
+    return (environment as any).loginCheck && this._canUseWebWorkerLogin && this.canUseWebWorker && this.isBrowser;
   }
 
   set canUseWebWorkerLogin(canUse: boolean) {

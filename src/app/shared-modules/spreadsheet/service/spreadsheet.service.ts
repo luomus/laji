@@ -9,6 +9,7 @@ import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { GeneratorService } from './generator.service';
+import { Util } from '../../../shared/service/util.service';
 
 interface IColCombine {
   col: string;
@@ -102,6 +103,10 @@ export class SpreadsheetService {
     return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes];
   }
 
+  csvTypes(): string[] {
+    return this.csvMimeTypes;
+  }
+
   setRequiredFields(formID: string, fields: object) {
     this.requiredFields[formID] = fields;
   }
@@ -125,8 +130,8 @@ export class SpreadsheetService {
     return result;
   }
 
-  loadSheet(data: any) {
-    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true});
+  loadSheet(data: any, options: XLSX.ParsingOptions = {}) {
+    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
 
@@ -252,16 +257,8 @@ export class SpreadsheetService {
       return '';
     }
     return values[GeneratorService.splitDate.yyyy] + '-' +
-      this.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
-      this.addLeadingZero(values[GeneratorService.splitDate.dd]);
-  }
-
-  private addLeadingZero(val: string | number) {
-    val = '' + val;
-    if (val.length === 1) {
-      return '0' + val;
-    }
-    return val;
+      Util.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
+      Util.addLeadingZero(values[GeneratorService.splitDate.dd]);
   }
 
   private getCombinedCoordinateValue(values: {[key: string]: string}): string {

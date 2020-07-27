@@ -26,7 +26,6 @@ import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { PERSON_TOKEN } from './laji-api-worker-common';
-import { HttpClient } from '@angular/common/http';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -88,8 +87,8 @@ export class UserService {
   settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
   user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
 
-  static getLoginUrl(next = '', lang = 'fi') {
-    return (environment.loginUrl
+  static getLoginUrl(next = '', lang = 'fi', base = '') {
+    return ((base || environment.loginUrl)
     + '?target=' + environment.systemID
     + '&redirectMethod=GET&locale=%lang%'
     + '&next=' + next).replace('%lang%', lang);
@@ -109,8 +108,7 @@ export class UserService {
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
     private browserService: BrowserService,
-    private storage: LocalStorageService,
-    private httpClient: HttpClient
+    private storage: LocalStorageService
   ) {
     if (!this.platformService.isBrowser) {
       this.doServiceSideLoginState();
@@ -139,13 +137,16 @@ export class UserService {
     return this._checkLogin(userToken);
   }
 
-  logout(): void {
+  logout(cb?: () => void): void {
     if (this.subLogout) {
       return;
     }
+    if (!cb) {
+      cb = () => {};
+    }
     if (_state.token) {
       this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
-        httpOkError(404, false),
+        httpOkError([404, 400], false),
         retryWithBackoff(300),
         catchError((err) => {
           this.logger.warn('Failed to logout', err);
@@ -154,9 +155,11 @@ export class UserService {
       ).subscribe(() => {
         this.subLogout = undefined;
         this.doLogoutState();
+        cb();
       });
     } else {
       this.doLogoutState();
+      cb();
     }
   }
 

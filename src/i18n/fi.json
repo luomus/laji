@@ -289,7 +289,7 @@
   "haseka.form.unsavedNever": "Muutoksia ei ole vielä tallennettu",
   "haseka.forms.title": "Lomakkeet",
   "haseka.forms.comingSoon": "Tulossa pian",
-  "haseka.home.title": "Oma vihko",
+  "haseka.home.title": "Tallenna havaintoja",
   "haseka.form.readonly": "Sinulla ei ole muokkausoikeutta",
   "haseka.form.hasOnlyWarnings": "Tarkista varoitukset",
   "haseka.instructions": "Ohjeet",
@@ -331,6 +331,7 @@
   "haseka.submissions.taxon": "Laji",
   "haseka.submissions.view": "Näytä",
   "haseka.submissions.edit": "Muokkaa",
+  "haseka.submissions.use": "Käytä",
   "haseka.submissions.downloadFile": "Lataa",
   "haseka.submissions.statistics": "Tilastot",
   "haseka.submissions.dateCreated": "Luontipäivämäärä",
@@ -1341,6 +1342,8 @@
   "taxonomy.map": "Havaintokartta",
   "taxonomy.map.finland": "Havainnot Suomesta",
   "taxonomy.map.disclaimer": "Kartta esittää havaintoja tästä taksonista, mutta sitä ei voi käyttää levinneisyyskarttana.",
+  "taxonomy.map.totalObservations": "Suomessa yhteensä",
+  "taxonomy.map.totalObservationsNumber": " havaintoa" ,
   "taxonomy.map.summary": "Yhteenvetokartta",
   "taxonomy.notFound": "Lajia ei löytynyt",
   "taxonomy.notes": "Huomautuksia taksonomiasta",
@@ -1357,6 +1360,7 @@
   "taxonomy.source": "Lähde",
   "taxonomy.speciesList.found": "lajia löytyi",
   "taxonomy.synonyms": "Synonyymit",
+  "taxonomy.misappliedNames": "Väärinkäytetyt nimet",
   "taxonomy.taxonConcept": "Taksonikäsite",
   "taxonomy.taxonConcept.id": "tunniste",
   "taxonomy.taxonConcept.otherLists": "Muut luettelot",
@@ -1422,6 +1426,7 @@
   "theme.census.title": "Seurantatutkimukset",
   "theme.checklist.intro": "Lajitietokeskuksen ylläpitämän kansallisen lajiluettelon vuosiversiot.",
   "theme.cnt": "kpl",
+  "theme.square": "ruutua",
   "theme.count": "Havaintojen lkm",
   "theme.countShort": "Havlkm",
   "theme.emk.intro": "Tutustu Suomen eliömaakuntiin.",
@@ -1660,5 +1665,5 @@
   "theme.birdPointCount.intro": "Pesivien maalintujen pistelaskenta",
 
   "technicalNews.error": "Palvelut vikatilassa. Voit tarkistaa onko asiasta tiedotetta <a href='http://foorumi.laji.fi/' target='_blank'>Foorumeilla</a> tai <a href='https://twitter.com/lajitieto' target='_blank'>Twitterissä</a>.",
-  "betapopup.desc": "Tämä on kehitysversio laji.fi palvelusta. Tätä kautta talletetut havainnot eivät näy laji.fi sivustolla."
+  "betapopup.desc": "Tämä on Laji.fi-portaalin kehitysversio, eikä sitä pidä käyttää muuhuin kuin sivuston testaamiseen. Talletetut havainnot eivät näy Laji.fi-portaalissa."
 }

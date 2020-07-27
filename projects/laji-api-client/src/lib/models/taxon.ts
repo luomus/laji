@@ -140,6 +140,7 @@ export interface Taxon {
   winteringSecureLevel?: Taxon.WinteringSecureLevelEnum;
   createdAtTimestamp?: number;
   synonymNames?: Array<string>;
+  misappliedListNames?: Array<string>;
   informalTaxonGroups?: Array<string>;
   occurrences?: Array<any>;
   multimedia?: Array<TaxaMedia>;
