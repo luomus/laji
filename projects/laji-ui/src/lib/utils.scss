@@ -92,6 +92,9 @@ $displays: flex, block, inline, inline-block, none;
 .justify-end {
   justify-content: flex-end !important;
 }
+.justify-start {
+  justify-content: flex-start !important;
+}
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:justify-between {
@@ -102,6 +105,9 @@ $displays: flex, block, inline, inline-block, none;
     }
     .#{$breakpoint}\:justify-end {
       justify-content: flex-end !important;
+    }
+    .#{$breakpoint}\:justify-start {
+      justify-content: flex-start !important;
     }
   }
 }
@@ -119,6 +125,23 @@ $displays: flex, block, inline, inline-block, none;
     }
     .#{$breakpoint}\:items-end {
       align-items: flex-end !important;
+    }
+  }
+}
+
+.self-center {
+  align-self: center !important;
+}
+.self-end {
+  align-self: flex-end !important;
+}
+@each $breakpoint, $px in $breakpoints {
+  @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:self-center {
+      align-self: center !important;
+    }
+    .#{$breakpoint}\:self-end {
+      align-self: flex-end !important;
     }
   }
 }
@@ -147,6 +170,21 @@ $basis: (
     @media only screen and (max-width: $px) {
       .#{$breakpoint}\:basis-#{$bKey} {
         flex-basis: $bVal !important;
+      }
+    }
+  }
+}
+
+@each $bKey, $bVal in $basis {
+  .width-#{$bKey} {
+    width: $bVal !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $bKey, $bVal in $basis {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:width-#{$bKey} {
+        width: $bVal !important;
       }
     }
   }

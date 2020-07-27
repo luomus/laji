@@ -745,19 +745,6 @@ body > .ui-select-bootstrap.open {
   .modal-dialog {
     margin: 60px auto 30px auto;
   }
-  .full-height {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-
-  .full-width {
-    display: flex;
-    flex-direction: row;
-    flex: 1 1 auto;
-    min-height: 0;
-  }
 }
 
 /** print management */

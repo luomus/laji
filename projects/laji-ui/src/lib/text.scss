@@ -19,23 +19,23 @@
 }
 @mixin heading2() {
   color: $neutral-8;
-  font-size: $fs-8;
+  font-size: $fs-7;
 }
 @mixin heading3() {
   color: $neutral-7;
-  font-size: $fs-7;
+  font-size: $fs-6;
 }
 @mixin heading4() {
   color: $neutral-6;
-  font-size: $fs-6;
+  font-size: $fs-5;
 }
 @mixin heading5() {
   color: $neutral-6;
-  font-size: $fs-5;
+  font-size: $fs-4;
 }
 @mixin heading6() {
   color: $neutral-6;
-  font-size: $fs-4;
+  font-size: $fs-3;
 }
 @mixin section() {
   padding: 20px;

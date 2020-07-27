@@ -1,0 +1,177 @@
+@import 'vars';
+
+:host {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  z-index: auto;
+}
+.vihko-box {
+  height: 170px;
+}
+.thumbnail {
+  text-decoration: none;
+  text-align: center;
+  padding: 0;
+  color: inherit;
+}
+.identifications {
+  text-align: left;
+}
+
+.identifications .btn {
+  margin-top: 5px !important;
+}
+
+.identification-images {
+  position: relative;
+}
+
+.identify-form {
+  z-index: 1000;
+}
+
+.forum, .forum:hover, .forum:visited, .forum:active {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.resent-map {
+  padding: 6px;
+  position: relative;
+}
+.blocking-overlay {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.searchBar {
+  height: 58px;
+  background-color: #2C3E50;
+  padding-top: 14px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.panel-body .btn {
+  margin-top: 30px;
+}
+
+.omnisearch-container {
+  width: 100%;
+}
+
+.omnisearch {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.some-links {
+  max-width: 350px;
+  width: 100%;
+  padding-top: 5px;
+}
+
+.some-links a {
+  padding-left: 5px;
+}
+.some-links a svg {
+  height: 20px;
+  width: 20px;
+}
+.no-break {
+  white-space: nowrap;
+}
+
+.intro {
+  padding-bottom: 150px;
+}
+
+.news-container {
+  padding: 20px;
+  background-color: $neutral-3;
+  max-width: 350px;
+  box-shadow: inset 8px 0 8px -8px rgba(#000,.2);
+}
+
+.nav-thumbnail-img {
+  background-size: cover;
+  width: 100px;
+  height: 100px;
+}
+
+.home-card {
+  background-color: $neutral-1;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(#000, .1);
+}
+
+.home-content-container {
+  padding: 20px;
+}
+
+.section-1 {}
+
+.section-2 {}
+
+.section-3 {}
+
+.section-4 {}
+
+.content-max-width {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.map-container {
+  padding: 20px;
+  width: 300px;
+}
+
+.map-desc-container {
+  padding: 20px;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.inat-img-container {
+  padding: 20px;
+  width: 300px;
+}
+
+.inat-img {
+  width: 100%;
+}
+
+.inat-desc-container {
+  padding: 20px;
+  max-width: 700px;
+  min-width: 300px;
+}
+
+hr {
+  width: 80%;
+  max-width: 1000px;
+  border-color: $neutral-4;
+}
+
+.fb-feed {
+  width: 250px;
+  height: 400px;
+  background-color: $neutral-4;
+  box-shadow: 0 2px 4px rgba(#000, .2);
+}
+
+.twitter-feed {
+  overflow-y: scroll;
+  width: 250px;
+  height: 400px;
+  background-color: $neutral-4;
+  box-shadow: 0 2px 4px rgba(#000, .2);
+}
