@@ -1,4 +1,4 @@
-<div class="container-fluid iucn">
+<div class="iucn">
   <h1>{{ 'home.authority.title' | translate }}</h1>
   <div class="species-banner">
     <div class="img-1"></div>
@@ -6,26 +6,48 @@
     <div class="img-3"></div>
     <div class="img-4"></div>
   </div>
-  <div class="row numbers">
-    <div class="col-sm-12">
-      <span class="total">
-        <laji-observation-count [lightLoader]="true" [query]="{cache: true}"
-        ></laji-observation-count>&nbsp;{{ 'home.carousel.observations' | translate }}
-      </span>
-      <span class="species">
-        <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
-                                [query]="{taxonRankId: 'MX.species', cache: true}">
-        </laji-observation-count>&nbsp;{{ 'observation.results.species' | translate }}
-      </span>
+  <div class="numbers d-flex">
+    <div class="total mr-5">
+      <laji-observation-count [lightLoader]="true" [query]="{cache: true}"
+      ></laji-observation-count>&nbsp;{{ 'home.carousel.observations' | translate }}
+    </div>
+    <div class="species">
+      <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
+                              [query]="{taxonRankId: 'MX.species', cache: true}">
+      </laji-observation-count>&nbsp;{{ 'observation.results.species' | translate }}
     </div>
   </div>
   <div class="intro">
-    <div class="row">
-      <div class="col-sm-10 col-md-7" [innerHtml]="'home.authority.text' | translate" lajiRouteTransformer></div>
-    </div>
+    <div [innerHtml]="'home.authority.text' | translate" lajiRouteTransformer></div>
 <!--     <div class="row">
       <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon" [intro]="'home.taxon-sub-intro' | translate" [info]="'home.taxon-intro' | translate"></laji-navigation-thumbnail>
       <laji-navigation-thumbnail name="home.observation" icon="observations" path="observation" [intro]="'home.observation-sub-intro' | translate" [info]="'home.observation-intro' | translate"></laji-navigation-thumbnail>
     </div> -->
+  </div>
+  <div class="instructions d-flex my-6">
+    <div class="flex-grow instructions-content">
+      <p translate>vir.home.virInstructions</p>
+      <lu-button role="primary"><i class="glyphicon glyphicon-file"></i> {{ "vir.home.virInstructions.btn" | translate }}</lu-button>
+      <p class="mt-5" translate>vir.home.loginInstructions</p>
+      <lu-button><i class="glyphicon glyphicon-file"></i> {{ "vir.home.loginInstructions.btn" | translate }}</lu-button>
+      <p class="mt-5" translate>vir.home.agreement</p>
+      <lu-button><i class="glyphicon glyphicon-file"></i> {{ "vir.home.agreement.btn" | translate }}</lu-button>
+    </div>
+    <div class="d-flex flex-col justify-center items-center instructions-info">
+      <i class="glyphicon glyphicon-info-sign"></i>
+    </div>
+  </div>
+  <div class="mb-6">
+    <h3 translate>vir.home.links</h3>
+    <div class="d-flex ext-links">
+      <a class="redbook mr-6" href="https://punainenkirja.laji.fi/" target="_blank">
+        <h1>PUNAINEN KIRJA</h1>
+        <p>Punaisen kirjan verkkopalvelun etusivu</p>
+      </a>
+      <a class="lajifi" href="https://laji.fi/about/709" target="_blank">
+        <h1>LAJI.FI</h1>
+        <p>Sensitiivisen lajitiedon käsittely Suomen lajitietokeskuksessa</p>
+      </a>
+    </div>
   </div>
 </div>

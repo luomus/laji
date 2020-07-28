@@ -1,14 +1,18 @@
 @import 'vars';
 
+:host {
+  margin: 8px 16px;
+}
+
+.iucn {
+  max-width: 800px;
+}
+
 .numbers {
   margin-top: 20px;
   font-size: $fs-5;
   font-weight: 600;
   margin-bottom: 10px;
-
-  .total {
-    margin-right: 20px;
-  }
 }
 
 h1 {
@@ -41,4 +45,67 @@ h1 {
 
 :host ::ng-deep .intro p {
   max-width: 35em;
+}
+
+.instructions {
+  border-radius: 5px;
+  background-color: $neutral-1;
+  box-shadow: 0 2px 8px 0 rgba($primary-7, .2);
+}
+
+.instructions-content {
+  padding: 20px;
+}
+
+.instructions-info {
+  font-size: 24px;
+  color: $primary-4;
+  background-color: $primary-1;
+  border-left: 1px solid $primary-3;
+  padding: 32px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.ext-links > a {
+  border-radius: 5px;
+  width: 300px;
+  text-decoration: none;
+  color: $neutral-7;
+  > h1 {
+    margin-top: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: $fs-4;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+  }
+  > p {
+    padding: 4px 12px;
+  }
+}
+
+.redbook {
+  box-shadow: 0 2px 6px 0 rgba(#881618, .2);
+  > h1 {
+    background-color: #d62022;
+    color: #fff;
+  }
+  &:hover {
+    box-shadow: 0 4px 12px 0 rgba(#881618, .25);
+    transition: box-shadow .2s;
+  }
+}
+
+.lajifi {
+  box-shadow: 0 2px 6px 0 rgba($primary-7, .2);
+  > h1 {
+    background-color: $primary-5;
+    color: #fff;
+  }
+  &:hover {
+    box-shadow: 0 4px 12px 0 rgba($primary-7, .25);
+    transition: box-shadow .2s;
+  }
 }

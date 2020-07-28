@@ -35,5 +35,12 @@
   "vir.taxonomyHeader.li.1.1": "Käyttämällä lajiluettelon rajaustyökalua, voit koostaa käyttöösi lajiluetteloita eri tarkoituksiin. Luettelot kattavat kaikki ",
   "vir.taxonomyHeader.li.1.2": "Suomen kansallisen lajiluettelon ",
   "vir.taxonomyHeader.li.1.3": "lajit ja niihin liitetyt hallinnolliset ominaisuudet.",
-  "vir.taxonomyHeader.li.2": "Taksonomiaselailupalvelun avulla saat tietoosi voimassa olevat tieteellisen luokittelun mukaan järjestetyt lajitiedot."
+  "vir.taxonomyHeader.li.2": "Taksonomiaselailupalvelun avulla saat tietoosi voimassa olevat tieteellisen luokittelun mukaan järjestetyt lajitiedot.",
+  "vir.home.virInstructions": "Tutustu huolella palvelun käyttöohjeisiin, koska aineistoissa on paljon käyttörajoitettua sensitiivistä tietoa.",
+  "vir.home.virInstructions.btn": "Käyttöohjeet",
+  "vir.home.loginInstructions": "Kirjautuminen palveluun on luvan varaista. Kirjautumisohjeet voi jakaa kaikille uusille käyttäjille, joille on myönnetty käyttöoikeus.",
+  "vir.home.loginInstructions.btn": "Kirjautumisohjeet",
+  "vir.home.agreement": "Palvelun käyttö perustuu organisaatiotason (kunta, valtiohallinnon tutkimuslaitos, ELY-keskus jne.)  käyttöoikeussopimukseen Luomuksen/Lajitietokeskuksen kanssa. Voit tutustua sopimuksen sisältöön mallisopimuksen avulla.",
+  "vir.home.agreement.btn": "Mallisopimus",
+  "vir.home.links": "Linkkejä"
 }
