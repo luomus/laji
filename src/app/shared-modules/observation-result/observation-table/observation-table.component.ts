@@ -296,8 +296,11 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
     this.fetchSub = (this.isAggregate ? aggregate$ : list$)
       .subscribe(data => {
+        if (this.factInfo) {
+          this.setHabitatColumn(data, 'unit.facts.fact');
+        }
+
         this.total.emit(data && data.total || 0);
-        console.log(data.total)
         this.result = data;
         this.loading = false;
         // This needs to be markForCheck and not detectChanges otherwise observation table on taxon section will not work
@@ -322,6 +325,20 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     return (value || '')
       .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
   }
+
+  private setHabitatColumn(data: PagedResult<any>, value: string): PagedResult<any> {
+    const filter = data.results.filter(item => {
+      if (item.unit.facts.fact === 'http://tun.fi/MY.habitatIUCN') {
+        delete item.unit.facts.fact;
+        return item;
+      }      
+    })
+    data.results = filter;
+    data.total = filter.length;
+    this.columns = this.columns.filter(r => {if (r.name !== value) return r});
+    return data;
+  }
+
 
   download(type: string) {
     this.downloadLoading = true;
