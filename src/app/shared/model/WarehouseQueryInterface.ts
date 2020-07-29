@@ -170,6 +170,7 @@ export interface WarehouseQueryInterface {
   individualId?: Array<string>;
   individualCountMin?: number;
   individualCountMax?: number;
+  /*countMaxFinland?: number;*/ /* task #173499442 */
   wgs84CenterPoint?: string;
   ykj100kmCenter?: string;
   ykj100km?: string;

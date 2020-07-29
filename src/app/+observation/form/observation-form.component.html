@@ -89,6 +89,25 @@
   </laji-select>
 </section>
 
+<!--LIMIT OBSERVATION FINLAND-->
+<!--<section class="laji-panel" laji-panel [title]="'observation.form.max.finland' | translate" [autoToggle]="true" >
+  <div>
+    <div>
+      <label>{{ 'theme.count' | translate }}</label>
+      <laji-info>{{ 'observation.info.count' | translate }}</laji-info>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <input type="number" name="countMaxFinland"
+                class="form-control input-sm"
+                placeholder="{{'observation.form.countMax' | translate}}"
+                (ngModelChange)="onCountChange()"
+                [(ngModel)]="query.countMaxFinland">
+      </div>
+    </div>
+  </div>
+</section>-->
+
 <!-- OWN OBSERVATIONS -->
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
   <div>

@@ -991,6 +991,7 @@
   "observation.form.onlyZeroObservations": "Vain nollahavainnot",
   "observation.form.other": "Muut hakuehdot",
   "observation.form.own": "Omat havainnot",
+  "observation.form.max.finland": "Taksonin max havaintomäärä Suomesta",
   "observation.form.place": "Paikka",
   "observation.form.placeName": "Nimi",
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",

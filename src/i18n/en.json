@@ -849,6 +849,7 @@
   "observation.form.onlyZeroObservations": "Only negative observations",
   "observation.form.other": "Other filters",
   "observation.form.own": "Own observations",
+  "observation.form.max.finland": "Taxon max observations from Finland",
   "observation.form.place": "Place",
   "observation.form.placeName": "Name",
   "observation.form.preservedSpecimens": "Preserved specimens",

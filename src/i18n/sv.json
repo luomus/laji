@@ -935,6 +935,7 @@
   "observation.form.onlyZeroObservations": "Endast negativa observationer",
   "observation.form.other": "Andra sökparametrar",
   "observation.form.own": "Egna observationer",
+  "observation.form.max.finland": "Max detektionsgrad för taxon från Finland",
   "observation.form.place": "Plats",
   "observation.form.placeName": "Namn",
   "observation.form.preservedSpecimens": "Prover",
