@@ -1,0 +1,122 @@
+<footer *ngIf="footerService.footerVisible">
+  <div class="container-fluid info-footer">
+    <div class="row">
+      <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
+        <h3>{{ item.title }}</h3>
+        <p class="intro" *ngIf="i === 0"><strong>{{ 'footer.intro1' | translate }}</strong></p>
+        <ul *ngIf="item.children">
+          <li *ngFor="let child of item.children">
+            <a [routerLink]="'/about/' + child.id | localize">{{ child.title }}</a>
+          </li>
+          <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="partners-footer">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-offset-1 col-sm-11 partners front">
+          <span class="title">{{ 'footer.partners' | translate }}</span>
+          <ul>
+            <li>
+              <a href="https://luomus.fi" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/luomus_fi_blue_smaller.gif" alt="LUOMUS - Luonnontieteellinen keskusmuseo">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.syke.fi" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/syke_logo_2019.png" alt="SYKE">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.luke.fi/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/logo_luke.png" alt="LUKE">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.mmm.fi" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/mmm_logo.png" alt="MMM">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.ely-keskus.fi" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/ely.jpg" alt="ELY">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.metsa.fi" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/MH-suomi-ruotsi-VARI.png" alt="Metsähallitus">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.ym.fi" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/ymparistoministerio.png" alt="Ympäristöministeriö">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.helsinki.fi/fi" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/HY_en.jpg" alt="Helsingin yliopisto">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.utu.fi" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/turun_yliopisto_logo_rgb.png" alt="UTU">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.oulu.fi/yliopisto/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/oulun_yo_rgb_pysty_fin.png" alt="Oulun yliopisto">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.jyu.fi/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/jyu.png" alt="Jyväskylän yliopisto">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.uef.fi" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/UEF_musta_logo-engl.jpg" alt="UEF">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.aka.fi/fi/A/Ohjelmat-ja-yhteistyo/Tutkimusinfrastruktuuri/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/AKA_FIR1.png" alt="FIRI">
+              </a>
+            </li>
+            <li>
+              <a href="https://ec.europa.eu/regional_policy/en/funding/erdf/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/eu.png" alt="European Regional Development Fund">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.centralbaltic.eu/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/interreg.png" alt="Central Baltic Interreg Programme">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.dissco.eu//" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/dissco-logo-high-res.png" alt="Distributed System of Scientific Collections">
+              </a>
+            </li>
+            <li>
+              <a href="https://earthcape.com/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/earthcape_logo.png" alt="Earthcape">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.gbif.org/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/GBIF-2015.png" alt="Global Biodiversity Information Facility">
+              </a>
+            </li>
+            <li>
+              <a href="https://inaturalist.laji.fi/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/iNaturalist.png" alt="iNaturalist" height="40px">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
