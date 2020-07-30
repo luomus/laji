@@ -1,18 +1,38 @@
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FooterService } from 'src/app/shared/service/footer.service';
 import { BaseDataService } from 'src/app/graph-ql/service/base-data.service';
 import { map, tap } from 'rxjs/operators';
 
+const informationWhitelist = [
+  // FinBIF
+  '2954', '2915', // mission (EN, FI)
+  '2982', '3033', // documents
+  '848', '713', // privacy policy / tietosuojaseloste
+  '1153', '1133', // contact
+  // Data management
+  '875', '709', // sensitive data
+  '2584', '2569', // checklist
+  '772', // laadunvalvonta
+  // Services and instructions
+  '803', // tietovarasto
+  '806c1', '806', // API / technical
+  // Muuta
+  '2814' // punaisen kirjan verkkopalvelu
+];
+
 @Component({
   selector: 'vir-footer',
   templateUrl: './footer.component.html',
   styleUrls: [
-    '../../../../../../src/app/shared/footer/footer.component.scss'
+    '../../../../../../src/app/shared/footer/footer.component.scss',
+    './footer.component.scss'
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent implements OnInit {
+  @Input() onFrontPage = false;
+
   public tree$: Observable<any>;
   public columns = [
     'col-sm-offset-1 col-sm-6 col-md-3',
@@ -33,7 +53,16 @@ export class FooterComponent implements OnInit {
     });
     this.tree$ = this.baseDataService.getBaseData().pipe(
       map(data => data.information && data.information.children || []),
-      tap(console.log)
+      map(data => {
+        return data.map(information => {
+          return {
+            ...information,
+            children: information.children.filter(
+              child => informationWhitelist.some(w => w === child.id)
+            )
+          };
+        });
+      })
     );
   }
 }

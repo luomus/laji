@@ -1,9 +1,9 @@
 <footer *ngIf="footerService.footerVisible">
-  <div class="container-fluid info-footer">
-    <div class="row">
-      <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
+  <div class="info-footer d-flex justify-center">
+    <div class="d-flex flex-wrap">
+      <div *ngFor="let item of tree$ | async; let i=index">
         <h3>{{ item.title }}</h3>
-        <p class="intro" *ngIf="i === 0"><strong>{{ 'footer.intro1' | translate }}</strong></p>
+        <p class="intro" *ngIf="i === 0">{{ 'footer.intro1' | translate }}</p>
         <ul *ngIf="item.children">
           <li *ngFor="let child of item.children">
             <a [routerLink]="'/about/' + child.id | localize">{{ child.title }}</a>
@@ -16,7 +16,7 @@
   <div class="partners-footer">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-offset-1 col-sm-11 partners front">
+        <div class="col-sm-offset-1 col-sm-11 partners front" [ngClass]="{hidden: !onFrontPage}">
           <span class="title">{{ 'footer.partners' | translate }}</span>
           <ul>
             <li>

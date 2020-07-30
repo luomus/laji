@@ -9,13 +9,14 @@ import { AppComponent } from '../../../../src/app/shared-modules/app-component/a
     <div class="router-content">
       <router-outlet></router-outlet>
     </div>
-    <vir-footer></vir-footer>
+    <vir-footer [onFrontPage]="onFrontPage"></vir-footer>
     <laji-feedback [iconOnly]="true"></laji-feedback>
     <laji-viewer-modal></laji-viewer-modal>
   `,
-  styleUrls: ['../../../../src/app/shared-modules/app-component/app.component.css'],
+  styleUrls: [
+    '../../../../src/app/shared-modules/app-component/app.component.css',
+    './vir-app.component.scss'
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VirAppComponent extends AppComponent {
-
-}
+export class VirAppComponent extends AppComponent {}
