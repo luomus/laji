@@ -24,8 +24,16 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
           <ul class="nav navbar-nav">
-            <li [routerLinkActive]="['active']">
+            <li class="d-none xs:d-block" [routerLinkActive]="['active']">
               <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
+            </li>
+            <li class="d-block xs:d-none" dropdown #taxonMenu="bs-dropdown">
+              <a dropdownToggle class="link user">
+                {{ 'navigation.taxonomy' | translate }}
+              </a>
+              <div *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
+                <vir-taxon-dropdown (close)="onCloseTaxonDropdown()"></vir-taxon-dropdown>
+              </div>
             </li>
             <li [routerLinkActive]="['active']">
               <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>

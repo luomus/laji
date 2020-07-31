@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public userService: UserService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private changeDetector: ChangeDetectorRef,
+    protected changeDetector: ChangeDetectorRef,
     public translate: TranslateService,
     private notificationsFacade: NotificationsFacade,
     private browserService: BrowserService
