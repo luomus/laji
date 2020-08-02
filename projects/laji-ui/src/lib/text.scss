@@ -14,19 +14,20 @@
 }
 
 @mixin heading1() {
-  color: $neutral-9;
+  color: $neutral-8;
   font-size: $fs-8;
+  font-weight: 600;
 }
 @mixin heading2() {
   color: $neutral-8;
   font-size: $fs-7;
 }
 @mixin heading3() {
-  color: $neutral-7;
+  color: $neutral-8;
   font-size: $fs-6;
 }
 @mixin heading4() {
-  color: $neutral-6;
+  color: $neutral-7;
   font-size: $fs-5;
 }
 @mixin heading5() {
