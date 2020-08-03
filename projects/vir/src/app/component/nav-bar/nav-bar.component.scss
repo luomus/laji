@@ -3,3 +3,8 @@
 .dropdown-menu {
   border: unset;
 }
+
+.link.user > .glyphicon-triangle-bottom {
+  color: $neutral-5;
+  font-size: $fs-1;
+}
