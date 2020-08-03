@@ -14,7 +14,7 @@ import { AppComponent } from '../../../../src/app/shared-modules/app-component/a
     <laji-viewer-modal></laji-viewer-modal>
   `,
   styleUrls: [
-    '../../../../src/app/shared-modules/app-component/app.component.css',
+    '../../../../src/app/shared-modules/app-component/app.component.scss',
     './vir-app.component.scss'
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
