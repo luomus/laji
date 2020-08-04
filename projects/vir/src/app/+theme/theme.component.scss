@@ -1,8 +1,11 @@
 @import 'vars';
 
 .navbox {
+  flex-basis: 30%;
+  font-size: $fs-2;
   color: $neutral-8;
-  margin-right: $sp-4;
+  margin-right: $sp-3;
+  margin-bottom: $sp-3;
   max-width: 400px;
   background: linear-gradient(to bottom, $neutral-1, saturate($neutral-2, 20%));
   padding: 10px 20px;
@@ -16,15 +19,19 @@
     transition: box-shadow .1s, border-color .1s;
     text-decoration: none;
   }
-  h4 {
+  h5 {
+    font-size: $fs-3;
     color: $primary-6;
-    margin-top: $sp-4;
-    margin-bottom: $sp-3;
+    margin-top: $sp-2;
+    margin-bottom: $sp-2;
     padding-bottom: $sp-1;
+  }
+  p {
+    margin-bottom: 0;
   }
 }
 
-h3 > span.glyphicon {
-  font-size: $fs-4;
+h4 > span.glyphicon {
+  font-size: $fs-3;
   color: $neutral-7;
 }
