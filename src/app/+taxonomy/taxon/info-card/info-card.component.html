@@ -16,6 +16,12 @@
         (taxonSelect)="updateRoute($event)"
       ></laji-taxon-overview>
     </lu-tab>
+    <lu-tab [heading]="'Identification'">
+      <laji-taxon-identification
+        *ngIf="loadedTabs.isLoaded('identification')"
+        [taxon]="taxon"
+      ></laji-taxon-identification>
+    </lu-tab>
     <lu-tab [heading]="'species.images' | translate" *ngIf="hasImageData">
       <laji-taxon-images
         *ngIf="loadedTabs.isLoaded('images')"

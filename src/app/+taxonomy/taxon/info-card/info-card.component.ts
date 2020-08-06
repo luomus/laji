@@ -21,7 +21,7 @@ import { LoadedElementsStore } from '../../../../../projects/laji-ui/src/lib/tab
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
-const tabOrder = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
+const tabOrder = [ 'overview', 'identification', 'images', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
 const basePath = '/taxon';
 
@@ -37,7 +37,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() set activeTab(tab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
+  @Input() set activeTab(tab: 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
     this.selectedTab = tab;
     this.loadedTabs.load(tab);
   }
