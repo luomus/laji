@@ -1,23 +1,23 @@
 <footer *ngIf="footerService.footerVisible">
-  <div class="container-fluid info-footer">
-    <div class="row">
-      <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
-        <h3>{{ item.title }}</h3>
-        <p class="intro" *ngIf="i === 0"><strong>{{ 'footer.intro1' | translate }}</strong></p>
-        <ul *ngIf="item.children">
-          <li *ngFor="let child of item.children">
-            <a [routerLink]="'/about/' + child.id | localize">{{ child.title }}</a>
-          </li>
-          <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
-        </ul>
+  <div class="info-footer">
+    <div class="info-footer-content d-flex justify-center">
+      <div class="d-flex flex-wrap">
+        <div *ngFor="let item of tree$ | async; let i=index">
+          <h3>{{ item.title }}</h3>
+          <p class="intro" *ngIf="i === 0">{{ 'footer.intro1' | translate }}</p>
+          <ul *ngIf="item.children">
+            <li *ngFor="let child of item.children">
+              <a [routerLink]="'/about/' + child.id | localize">{{ child.title }}</a>
+            </li>
+            <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="row" *ngIf="onFrontPage">
-      <div class="col-sm-12">
-        <div class="pull-right info">
-          {{ 'footer.image.attribution' | translate }}:
-          <a [href]="headerImage.attributionUrl">{{ headerImage.attribution }}</a>, <a [href]="headerImage.licenseUrl">{{ headerImage.license }}</a>
-        </div>
+    <div *ngIf="onFrontPage" class="d-flex justify-end">
+      <div class="header-image-info">
+        {{ 'footer.image.attribution' | translate }}:
+        <a [href]="headerImage.attributionUrl">{{ headerImage.attribution }}</a>, <a [href]="headerImage.licenseUrl">{{ headerImage.license }}</a>
       </div>
     </div>
   </div>
