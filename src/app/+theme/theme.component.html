@@ -1,324 +1,131 @@
-<div class="container-fluid">
-  <h1>
+<div class="container lu-text-content">
+  <h1 class="mt-6">
     {{ 'theme.title' | translate }}
   </h1>
   <p>
     {{ 'theme.intro' | translate }}
   </p>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <strong>{{ 'theme.census.title' | translate }}</strong>
+  <h4><span class="glyphicon glyphicon-leaf"></span> {{ 'theme.census.title' | translate }}</h4>
+  <div class="d-flex flex-wrap">
+    <div [routerLink]="['/theme/nafi'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'nafi.stats.title' | translate }}</h5>
+      <p>{{ 'theme.nafi.intro' | translate }}</p>
     </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/nafi'] | localize">
-                {{ 'nafi.stats.title' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.nafi.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/talvilintulaskenta'] | localize">
-                {{ 'wbc.title' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.wbc.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/linjalaskenta'] | localize">
-                {{ 'navigation.linetransect' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.linetransect.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/vesilintulaskenta'] | localize">
-                {{ 'navigation.waterbird' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.waterbird.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/herpetology'] | localize">
-                {{ 'navigation.herpetology' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.herpetology.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a href="https://satelliitti.laji.fi" target="_blank" rel="noopener">
-                {{ 'navigation.satelliitti' | translate }}
-              </a>
-              <i class="glyphicon glyphicon-new-window small"></i>
-            </th>
-            <td>
-              {{ 'theme.satellite.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/vieraslajit'] | localize">
-                {{ 'navigation.invasiveSpecies' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.invasiveSpecies.intro' | translate }}
-            </td>
-          </tr>
-          <tr *lajiForTypes="['dev']">
-            <th>
-              <a [routerLink]="['/theme/kunnat'] | localize">
-                {{ 'navigation.municipalityMonitoring' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.municipalityMonitoring.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/lolife'] | localize">
-                {{ 'navigation.lolife' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.lolife.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/syke-perhoset'] | localize">
-                {{ 'navigation.syke-butterfly' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.syke-butterfly.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/pistelaskenta'] | localize">
-                {{ 'navigation.birdPointCount' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.birdPointCount.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/kiiltomadot'] | localize">
-                {{ 'navigation.glowWormForm' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.glowWormForm.intro' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div [routerLink]="['/theme/talvilintulaskenta'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'wbc.title' | translate }}</h5>
+      <p>{{ 'theme.wbc.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/linjalaskenta'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.linetransect' | translate }}</h5>
+      <p>{{ 'theme.linetransect.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/vesilintulaskenta'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.waterbird' | translate }}</h5>
+      <p>{{ 'theme.waterbird.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/herpetology'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.herpetology' | translate }}</h5>
+      <p>{{ 'theme.herpetology.intro' | translate }}</p>
+    </div>
+    <div href="https://satelliitti.laji.fi" target="_blank" rel="noopener" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.satelliitti' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
+      <p>{{ 'theme.satellite.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/vieraslajit'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.invasiveSpecies' | translate }}</h5>
+      <p>{{ 'theme.invasiveSpecies.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/kunnat'] | localize" tabindex="-1" *lajiForTypes="['dev']" class="navbox">
+      <h5>{{ 'navigation.municipalityMonitoring' | translate }}</h5>
+      <p>{{ 'theme.municipalityMonitoring.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/lolife'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.lolife' | translate }}</h5>
+      <p>{{ 'theme.lolife.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/syke-perhoset'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.syke-butterfly' | translate }}</h5>
+      <p>{{ 'theme.syke-butterfly.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/pistelaskenta'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.birdPointCount' | translate }}</h5>
+      <p>{{ 'theme.birdPointCount.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/kiiltomadot'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.glowWormForm' | translate }}</h5>
+      <p>{{ 'theme.glowWormForm.intro' | translate }}</p>
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <strong>{{ 'theme.observation.title' | translate }}</strong>
+  <h4><span class="glyphicon glyphicon-eye-open"></span> {{ 'theme.observation.title' | translate }}</h4>
+  <div class="d-flex">
+    <div [routerLink]="['/theme/quality'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.quality' | translate }}</h5>
+      <p>{{ 'theme.quality.intro' | translate }}</p>
     </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/quality'] | localize">
-                {{ 'navigation.quality' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.quality.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/identify'] | localize">
-                {{ 'navigation.identify' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.identify.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/datasets'] | localize">
-                {{ 'datasets.label' | translate }}
-              </a>
-            </th>
-            <td [innerHTML]="'datasets.intro' | translate" lajiRouteTransformer></td>
-          </tr>
-        </tbody>
-      </table>
+    <div [routerLink]="['/theme/identify'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.identify' | translate }}</h5>
+      <p>{{ 'theme.identify.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/datasets'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'datasets.label' | translate }}</h5>
+      <p [innerHTML]="'datasets.intro' | translate" lajiRouteTransformer></p>
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <strong>{{ 'theme.speciesIdentification.main' | translate }}</strong>
+  <h4><span class="glyphicon glyphicon-picture"></span> {{ 'theme.speciesIdentification.main' | translate }}</h4>
+  <div class="d-flex">
+    <div [routerLink]="['/theme/pinkka'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.pinkka' | translate }}</h5>
+      <p>{{ 'theme.pinkka.intro' | translate }}</p>
     </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/pinkka'] | localize">
-                {{ 'navigation.pinkka' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.pinkka.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/hyonteisopas'] | localize">
-                {{ 'navigation.hyonteisopas' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.hyonteisopas.intro' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div [routerLink]="['/theme/hyonteisopas'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.hyonteisopas' | translate }}</h5>
+      <p>{{ 'theme.hyonteisopas.intro' | translate }}</p>
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <strong>{{ 'theme.names.title' | translate }}</strong>
-    </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="[({fi: '/lajiluettelo', sv: '/artlistan', en: '/checklist'} | multiLang)]">
-                {{ 'navigation.checklist' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.checklist.intro' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <h4><span class="glyphicon glyphicon-list"></span> {{ 'theme.names.title' | translate }}</h4>
+  <div class="d-flex">
+    <div [routerLink]="[({fi: '/lajiluettelo', sv: '/artlistan', en: '/checklist'} | multiLang)]" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.checklist' | translate }}</h5>
+      <p>{{ 'theme.checklist.intro' | translate }}</p>
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <strong>{{ 'theme.place.title' | translate }}</strong>
+  <h4><span class="glyphicon glyphicon-map-marker"></span> {{ 'theme.place.title' | translate }}</h4>
+  <div class="d-flex">
+    <div [routerLink]="['/map'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.map' | translate }}</h5>
+      <p>{{ 'theme.map.intro' | translate }}</p>
     </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="['/map'] | localize">
-                {{ 'navigation.map' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.map.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/ykj'] | localize">
-                {{ 'navigation.ykj' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.ykj.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/emk'] | localize">
-                {{ 'navigation.emk' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.emk.intro' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div [routerLink]="['/ykj'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.ykj' | translate }}</h5>
+      <p>{{ 'theme.ykj.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/emk'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.emk' | translate }}</h5>
+      <p>{{ 'theme.emk.intro' | translate }}</p>
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <strong>{{ 'theme.research.main' | translate }}</strong>
+  <h4><span class="glyphicon glyphicon-search"></span> {{ 'theme.research.main' | translate }}</h4>
+  <div class="d-flex">
+    <div [routerLink]="['/about/2272'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.research' | translate }}</h5>
+      <p>{{ 'theme.research.intro' | translate }}</p>
     </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <th>
-              <a [routerLink]="['/about/2272'] | localize">
-                {{ 'navigation.research' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.research.intro' | translate }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <a [routerLink]="['/theme/luomusgrc'] | localize">
-                {{ 'theme.grc.title' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.grc.intro' | translate }}
-            </td>
-          </tr>
-          <tr *lajiForTypes="['dev']">
-            <th>
-              <a [routerLink]="['/theme/kerttu'] | localize">
-                {{ 'theme.kerttu' | translate }}
-              </a>
-            </th>
-            <td>
-              {{ 'theme.kerttu.intro' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div [routerLink]="['/theme/luomusgrc'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'theme.grc.title' | translate }}</h5>
+      <p>{{ 'theme.grc.intro' | translate }}</p>
+    </div>
+    <div [routerLink]="['/theme/kerttu'] | localize" *lajiForTypes="['dev']" tabindex="-1" class="navbox">
+      <h5>{{ 'theme.kerttu' | translate }}</h5>
+      <p>{{ 'theme.kerttu.intro' | translate }}</p>
     </div>
   </div>
 
-
-
+  <div class="my-8"></div>
 </div>
-
 
