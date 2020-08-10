@@ -14,9 +14,4 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
   providers: [NotificationsFacade]
 })
 export class NavBarComponent extends LajiNavBarComponent {
-  @ViewChild('taxonMenu') private taxonDropdown: BsDropdownDirective;
-  onCloseTaxonDropdown() {
-    this.taxonDropdown.hide();
-    this.changeDetector.markForCheck();
-  }
 }

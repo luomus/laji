@@ -1,11 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input, Renderer2, ElementRef, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
-import { FooterService } from 'src/app/shared/service/footer.service';
-import { BaseDataService } from 'src/app/graph-ql/service/base-data.service';
-import { map, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'vir-taxon-dropdown',
+  selector: 'laji-taxon-dropdown',
   templateUrl: './taxon-dropdown.component.html',
   styleUrls: [
     './taxon-dropdown.component.scss'

@@ -34,7 +34,6 @@ import { NavBarComponent } from './component/nav-bar/nav-bar.component';
 import { LazyTranslateLoader } from './service/lazy-translate-loader';
 import { GlobalMessageComponent } from './component/global-message/global-message.component';
 import { FooterComponent } from './component/footer/footer.component';
-import { TaxonDropdownComponent } from './component/nav-bar/taxon-dropdown/taxon-dropdown.component';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -90,6 +89,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     }
   ],
   bootstrap: [VirAppComponent],
-  declarations: [VirAppComponent, NavBarComponent, GlobalMessageComponent, FooterComponent, TaxonDropdownComponent]
+  declarations: [VirAppComponent, NavBarComponent, GlobalMessageComponent, FooterComponent]
 })
 export class AppModule { }

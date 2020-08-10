@@ -30,6 +30,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<null>();
 
   @ViewChild('userMenu') public dropDown: BsDropdownDirective;
+  @ViewChild('taxonMenu') private taxonDropdown: BsDropdownDirective;
 
   openMenu: Boolean = false;
   redTheme = false;
@@ -82,6 +83,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   onClose() {
     this.dropDown.hide();
+  }
+
+  onCloseTaxonDropdown() {
+    this.taxonDropdown.hide();
+    this.changeDetector.markForCheck();
   }
 
   ngOnDestroy() {
