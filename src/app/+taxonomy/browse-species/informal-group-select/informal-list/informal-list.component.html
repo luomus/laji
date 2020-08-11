@@ -1,4 +1,4 @@
-<div class="row row-eq-height poks">
+<div class="d-flex flex-wrap">
   <!--div *ngIf="showAll" class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
     <a (click)="informalGroupSelect.emit('')" class="niks thumbnail panel panel-default link">
       <div class="panel-heading">
@@ -8,12 +8,8 @@
       </div>
     </a>
   </div-->
-  <div *ngFor="let group of tree.results" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 small-padding">
-    <a (click)="informalGroupSelect.emit(group.id)" class="niks thumbnail panel panel-default link">
-      <div class="panel-heading" style="padding: 10px 10px; overflow: hidden">
-        <img style="float: left" class="group-image" alt="" [src]="'static/images/informalGroups/' + group.id + '.svg'">
-        <div style="overflow: hidden; padding: 0; font-size: 14px; font-weight: 500" class="panel-title caption">{{ group.name }}</div>
-      </div>
-    </a>
-  </div>
+  <a *ngFor="let group of tree.results" (click)="informalGroupSelect.emit(group.id)" class="group d-flex flex-nowrap mr-3 mb-3">
+    <img class="group-image" [src]="'static/images/informalGroups/' + group.id + '.svg'" alt="">
+    <div class="group-name">{{ group.name }}</div>
+  </a>
 </div>

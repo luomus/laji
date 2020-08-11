@@ -1,8 +1,14 @@
+@import 'vars';
+
 .breadcrumb {
-  background-color: white;
   padding: 0;
   margin-bottom: 10px;
 }
+
 .breadcrumb .active {
-  color: black;
+  color: $neutral-7;
+}
+
+a {
+  cursor: pointer;
 }
