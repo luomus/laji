@@ -1,7 +1,7 @@
 <footer *ngIf="footerService.footerVisible">
   <div class="info-footer">
-    <div class="info-footer-content d-flex justify-center">
-      <div class="d-flex flex-wrap">
+    <div class="d-flex justify-center">
+      <div class="d-flex flex-wrap info-footer-content">
         <div *ngFor="let item of tree$ | async; let i=index">
           <h3>{{ item.title }}</h3>
           <p class="intro" *ngIf="i === 0">{{ 'footer.intro1' | translate }}</p>
