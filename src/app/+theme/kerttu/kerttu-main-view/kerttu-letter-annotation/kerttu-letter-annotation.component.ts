@@ -5,6 +5,7 @@ import {ResultService} from '../../../service/result.service';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 import {debounceTime} from 'rxjs/operators';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-kerttu-letter-annotation',
@@ -39,7 +40,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy, OnCha
 
   constructor(
     private resultService: ResultService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -75,5 +77,11 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy, OnCha
 
   onXRangePaddingChange(value: number) {
     this.xRangePaddingChanged.next(value);
+  }
+
+  onSkipLetter() {
+    if (confirm(this.translate.instant('theme.kerttu.confirmSkipLetter'))) {
+      this.skipLetterClick.emit();
+    }
   }
 }
