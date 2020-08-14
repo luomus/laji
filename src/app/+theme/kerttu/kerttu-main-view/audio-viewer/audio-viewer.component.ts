@@ -31,6 +31,8 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() yRange: number[];
 
   @Input() zoomed = false;
+  @Input() autoplay = false;
+  @Input() autoplayRepeat = 1;
 
   @Input() sampleRate = 16000;
   @Input() nperseg = 256;
@@ -51,6 +53,8 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   private source: AudioBufferSourceNode;
   private startOffset = 0;
   private startTime: number;
+
+  private autoplayCounter = 0;
 
   private audioSub: Subscription;
   private timeupdateInterval;
@@ -73,8 +77,13 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
         this.audioSub = this.audioService.getAudioBuffer(this.recording).subscribe((buffer) => {
           [this.start, this.stop] = KerttuUtils.getPaddedRange(this.xRange, this.xRangePadding, 0, buffer.duration);
           buffer = this.audioService.extractSegment(buffer, this.start, this.stop, this.duration);
-
           this.buffer = buffer;
+
+          if (this.autoplay) {
+            this.autoplayCounter = 0;
+            this.toggleAudio();
+          }
+
           this.cdr.markForCheck();
         });
       }
@@ -107,13 +116,17 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       this.startTime = this.audioService.getTime();
 
       this.source.onended = () => {
-        this.sourceOnEnded();
         this.ngZone.run(() => {
+          this.sourceOnEnded();
           this.cdr.markForCheck();
         });
       };
       this.startTimeupdateInterval();
     } else {
+      if (this.autoplay) {
+        this.autoplayCounter = this.autoplayRepeat;
+      }
+
       this.source.stop(0);
     }
   }
@@ -128,14 +141,16 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     if (this.isPlaying) {
       this.toggleAudio();
       this.source.onended = (args) => {
-        this.sourceOnEnded();
-        this.currentTime = time;
         this.ngZone.run(() => {
+          this.sourceOnEnded();
+          this.currentTime = time;
+          this.toggleAudio();
           this.cdr.markForCheck();
         });
       };
     } else {
       this.currentTime = time;
+      this.toggleAudio();
     }
   }
 
@@ -143,6 +158,11 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.clearTimeupdateInterval();
     this.updateCurrentTime();
     this.isPlaying = false;
+
+    if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
+      this.autoplayCounter += 1;
+      this.toggleAudio();
+    }
   }
 
   private startTimeupdateInterval() {
