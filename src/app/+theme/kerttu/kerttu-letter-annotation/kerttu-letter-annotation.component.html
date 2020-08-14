@@ -1,0 +1,22 @@
+<h1>{{ 'theme.kerttu.letterAnnotation' | translate }}</h1>
+
+<div *ngIf="errorMsg">
+  {{ errorMsg | translate }}
+</div>
+
+<div class="lu-section">
+  <laji-spinner [spinning]="!allLettersAnnotated && loadingLetters" [overlay]="true">
+    <laji-letter-annotation
+      *ngIf="!allLettersAnnotated"
+      [ngClass]="{'visibility-hidden': loadingLetters}"
+      [template]="letterTemplate"
+      [candidate]="letterCandidate"
+      (annotationChange)="onLetterAnnotationChange($event)"
+      (skipLetterClick)="skipLetter()"
+    ></laji-letter-annotation>
+  </laji-spinner>
+  <ng-container *ngIf="allLettersAnnotated">
+    {{ 'theme.kerttu.allLettersAnnotated' | translate }}
+  </ng-container>
+</div>
+

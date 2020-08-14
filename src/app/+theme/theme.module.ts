@@ -75,25 +75,27 @@ import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-sprea
 import { GenericInstructionsComponent } from './common/instructions/generic-instructions/generic-instructions.component';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
-import { ExpertiseFormComponent } from './kerttu/kerttu-main-view/expertise-form/expertise-form.component';
+import { ExpertiseFormComponent } from './kerttu/kerttu-expertise-form/expertise-form/expertise-form.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
-import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 import { KerttuApi } from './kerttu/service/kerttu-api';
 import { KerttuFacade } from './kerttu/service/kerttu.facade';
 import { AudioService } from './kerttu/service/audio.service';
 import { SpectrogramService } from './kerttu/service/spectrogram.service';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
-import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-letter-annotation/kerttu-letter-annotation.component';
-import { AudioViewerComponent } from './kerttu/kerttu-main-view/audio-viewer/audio-viewer.component';
-import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-recording-annotation/kerttu-recording-annotation.component';
+import { LetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/letter-annotation/letter-annotation.component';
+import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
+import { RecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/recording-annotation/recording-annotation.component';
 import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 import { PinkkaComponent } from './pinkka/pinkka.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
-import { AudioSpectrogramComponent } from './kerttu/kerttu-main-view/audio-spectrogram/audio-spectrogram.component';
+import { AudioSpectrogramComponent } from './kerttu/audio-viewer/audio-spectrogram/audio-spectrogram.component';
 import { BirdPointCountResultComponent } from './bird-point-count/bird-point-count-result/bird-point-count-result.component';
 import { ChartModule } from '../shared-modules/chart/chart.module';
+import { KerttuExpertiseFormComponent } from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
+import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
+import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
 
 /* tslint:enable:max-line-length */
 
@@ -178,14 +180,16 @@ import { ChartModule } from '../shared-modules/chart/chart.module';
     KerttuInstructionsComponent,
     ExpertiseFormComponent,
     LolifeInstructionsComponent,
-    KerttuMainViewComponent,
     FormHasFeaturePipe,
-    KerttuLetterAnnotationComponent,
+    LetterAnnotationComponent,
     AudioViewerComponent,
     ThemeBreadcrumbComponent,
-    KerttuRecordingAnnotationComponent,
+    RecordingAnnotationComponent,
     AudioSpectrogramComponent,
     BirdPointCountResultComponent,
+    KerttuExpertiseFormComponent,
+    KerttuLetterAnnotationComponent,
+    KerttuRecordingAnnotationComponent,
   ],
   providers: [
     ResultService,

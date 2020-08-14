@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KerttuMainViewComponent } from './kerttu-main-view.component';
+import { LetterAnnotationComponent } from './letter-annotation.component';
 
-describe('KerttuMainViewComponent', () => {
-  let component: KerttuMainViewComponent;
-  let fixture: ComponentFixture<KerttuMainViewComponent>;
+describe('KerttuLetterAnnotationComponent', () => {
+  let component: LetterAnnotationComponent;
+  let fixture: ComponentFixture<LetterAnnotationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KerttuMainViewComponent ]
+      declarations: [ LetterAnnotationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KerttuMainViewComponent);
+    fixture = TestBed.createComponent(LetterAnnotationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
