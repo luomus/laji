@@ -1618,6 +1618,7 @@
   "theme.kerttu.step3": "Tunnista äänitteitä",
   "theme.kerttu.step4": "Valmis",
   "theme.kerttu.notSupported": "Web Audio API ei ole tuettu tässä selaimessa!",
+  "theme.kerttu.confirmSkipLetter": "Oletko varma, että haluat jättää kirjaimen väliin? Kesken jääneiden kirjainten tunnistuksia ei tulla ottamaan huomioon tutkimuksessa.",
   "theme.nav.tools": "Työkalut",
   "theme.nav.tools.import": "Tuo Exceliltä",
   "theme.nav.tools.generate": "Luo Excel",

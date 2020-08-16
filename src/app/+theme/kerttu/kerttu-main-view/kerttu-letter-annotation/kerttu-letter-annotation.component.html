@@ -8,7 +8,7 @@
         <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
         <dd>{{ template?.info.userAnnotationCount }}/{{ template?.info.targetAnnotationCount }}</dd>
       </dl>
-      <lu-button (click)="skipLetterClick.emit($event)">
+      <lu-button (click)="onSkipLetter()">
         {{ 'theme.kerttu.skipLetter' | translate }}
       </lu-button>
     </div>
@@ -70,6 +70,8 @@
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
       [zoomed]="zoomed"
+      [autoplay]="true"
+      [autoplayRepeat]="3"
       (audioLoading)="loadingCandidate = $event"
     ></laji-audio-viewer>
   </div>
