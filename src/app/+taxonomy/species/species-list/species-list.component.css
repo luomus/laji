@@ -7,6 +7,11 @@
   vertical-align: center;
 }
 
+.counts {
+  padding: 10px 0 0 20px;
+  color: #777;
+}
+
 .species-table-wrapper {
   position: relative;
 }

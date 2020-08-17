@@ -16,6 +16,13 @@
         </option>
       </select>
     </div>
+    <div *ngIf="countStartText" class="counts">
+      <strong>
+        {{ countStartText }}
+        <laji-species-count [searchQuery]="searchQuery"></laji-species-count>
+        {{ countEndText }}
+      </strong>
+    </div>
   </div>
   <div class="species-table-wrapper">
     <laji-datatable-header
