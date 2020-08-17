@@ -46,8 +46,6 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() visible: boolean;
   @Input() showDownloadAndBrowse = true;
-  @Input() countStartText = '';
-  @Input() countEndText = '';
 
   loading = false;
   downloadLoading = false;
