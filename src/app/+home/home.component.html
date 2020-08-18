@@ -104,7 +104,7 @@
 <ng-template #some>
   <div class="content-max-width">
     <h2 class="width-0" translate>home.some.title</h2>
-    <div class="d-flex">
+    <div class="d-flex flex-wrap">
       <div class="fb-feed m-4"><iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Flajitietokeskus%2F&tabs=timeline&width=250&height=400&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="250" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></div>
       <div class="twitter-feed m-4"><a class="twitter-timeline" href="https://twitter.com/lajitieto">Tweets by lajitieto</a></div>
     </div>
@@ -112,18 +112,18 @@
 </ng-template>
 
 <ng-template #navigationThumbnails>
-  <div class="d-flex mt-7">
-    <div class="home-card mr-3">
+  <div class="d-flex flex-wrap mt-7">
+    <div class="home-card mr-3 mb-3">
       <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/species.svg)'"></div>
       <a routerLink="taxon" translate>home.taxon-sub-intro</a>
       <laji-info placement="right">{{ 'home.taxon-intro' | translate }}</laji-info>
     </div>
-    <div class="home-card mr-3">
+    <div class="home-card mr-3 mb-3">
       <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/observations.svg)'"></div>
       <a routerLink="observation" translate>home.observation-sub-intro</a>
       <laji-info placement="right">{{ 'home.observation-intro' | translate }}</laji-info>
     </div>
-    <div class="home-card mr-3">
+    <div class="home-card mr-3 mb-3">
       <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/vihko.svg)'"></div>
       <a routerLink="save-observations" translate>home.notebook-sub-intro</a>
       <laji-info placement="right">{{ 'home.notebook-intro' | translate }}</laji-info>

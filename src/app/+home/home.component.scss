@@ -97,6 +97,13 @@
   background-color: $neutral-3;
   max-width: 350px;
   box-shadow: inset 8px 0 8px -8px rgba(#000,.2);
+
+  @media only screen and (max-width: map-get($map: $breakpoints, $key: "xs")) {
+    max-width: 100%;
+    width: 100%;
+    box-shadow: unset;
+    border-top: 1px solid $neutral-4;
+  }
 }
 
 .nav-thumbnail-img {
