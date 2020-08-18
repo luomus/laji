@@ -23,8 +23,6 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   allLettersAnnotated = false;
   loadingLetters = false;
 
-  errorMsg: string;
-
   private nextLetterCandidate: ILetterCandidate;
   private nextLetterCandidate$: Observable<ILetterCandidate>;
 
@@ -42,7 +40,6 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.checkIfWebAudioApiIsSupported();
     this.getLetterTemplate();
   }
 
@@ -160,12 +157,6 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
     const msg = error.error?.message;
     if (msg === 'InvalidTemplateIdError' || msg === 'InvalidCandidateIdError') {
       this.getLetterTemplate();
-    }
-  }
-
-  private checkIfWebAudioApiIsSupported() {
-    if (!this.audioService.audioContext) {
-      this.errorMsg = 'theme.kerttu.notSupported';
     }
   }
 }

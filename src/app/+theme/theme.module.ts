@@ -96,6 +96,8 @@ import { ChartModule } from '../shared-modules/chart/chart.module';
 import { KerttuExpertiseFormComponent } from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
 import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
 import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
+import { RequiresAudioSupportDirective } from './kerttu/directive/requires-audio-support.directive';
+import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-supported-error.component';
 
 /* tslint:enable:max-line-length */
 
@@ -190,6 +192,8 @@ import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-recording-an
     KerttuExpertiseFormComponent,
     KerttuLetterAnnotationComponent,
     KerttuRecordingAnnotationComponent,
+    RequiresAudioSupportDirective,
+    AudioNotSupportedErrorComponent
   ],
   providers: [
     ResultService,

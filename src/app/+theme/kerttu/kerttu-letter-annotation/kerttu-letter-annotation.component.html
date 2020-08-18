@@ -1,10 +1,6 @@
 <h1>{{ 'theme.kerttu.letterAnnotation' | translate }}</h1>
 
-<div *ngIf="errorMsg">
-  {{ errorMsg | translate }}
-</div>
-
-<div class="lu-section">
+<div class="lu-section" *lajiRequiresAudioSupport>
   <laji-spinner [spinning]="!allLettersAnnotated && loadingLetters" [overlay]="true">
     <laji-letter-annotation
       *ngIf="!allLettersAnnotated"
