@@ -8,12 +8,12 @@ import {debounceTime} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-kerttu-letter-annotation',
-  templateUrl: './kerttu-letter-annotation.component.html',
-  styleUrls: ['./kerttu-letter-annotation.component.scss'],
+  selector: 'laji-letter-annotation',
+  templateUrl: './letter-annotation.component.html',
+  styleUrls: ['./letter-annotation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
+export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() template: ILetterTemplate;
   @Input() candidate: ILetterCandidate;
 

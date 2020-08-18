@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KerttuRecordingAnnotationComponent } from './kerttu-recording-annotation.component';
+import { RecordingAnnotationComponent } from './recording-annotation.component';
 
 describe('KerttuRecordingAnnotationComponent', () => {
-  let component: KerttuRecordingAnnotationComponent;
-  let fixture: ComponentFixture<KerttuRecordingAnnotationComponent>;
+  let component: RecordingAnnotationComponent;
+  let fixture: ComponentFixture<RecordingAnnotationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KerttuRecordingAnnotationComponent ]
+      declarations: [ RecordingAnnotationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KerttuRecordingAnnotationComponent);
+    fixture = TestBed.createComponent(RecordingAnnotationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

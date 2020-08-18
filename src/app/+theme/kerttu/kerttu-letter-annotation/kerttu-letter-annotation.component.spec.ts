@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KerttuLetterAnnotationComponent } from './kerttu-letter-annotation.component';
 
-describe('KerttuLetterAnnotationComponent', () => {
+describe('KerttuLetterAnnotationViewComponent', () => {
   let component: KerttuLetterAnnotationComponent;
   let fixture: ComponentFixture<KerttuLetterAnnotationComponent>;
 

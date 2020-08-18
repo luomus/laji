@@ -12,10 +12,10 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { AudioService } from '../../service/audio.service';
+import { AudioService } from '../service/audio.service';
 import { WINDOW } from '@ng-toolkit/universal';
 import {Subscription} from 'rxjs';
-import { KerttuUtils } from '../../service/kerttu-utils';
+import { KerttuUtils } from '../service/kerttu-utils';
 
 @Component({
   selector: 'laji-audio-viewer',

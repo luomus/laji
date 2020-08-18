@@ -2,12 +2,12 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Outp
 import {IRecording} from '../../model/recording';
 
 @Component({
-  selector: 'laji-kerttu-recording-annotation',
-  templateUrl: './kerttu-recording-annotation.component.html',
-  styleUrls: ['./kerttu-recording-annotation.component.scss'],
+  selector: 'laji-recording-annotation',
+  templateUrl: './recording-annotation.component.html',
+  styleUrls: ['./recording-annotation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KerttuRecordingAnnotationComponent implements OnChanges {
+export class RecordingAnnotationComponent implements OnChanges {
   @Input() annotations: any;
   @Input() recordings: IRecording[];
 
