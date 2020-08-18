@@ -16,7 +16,7 @@
         (taxonSelect)="updateRoute($event)"
       ></laji-taxon-overview>
     </lu-tab>
-    <lu-tab [heading]="'Identification'">
+    <lu-tab [heading]="'Identification'" *lajiForTypes="['dev']">
       <laji-taxon-identification
         *ngIf="loadedTabs.isLoaded('identification')"
         [taxon]="taxon"
