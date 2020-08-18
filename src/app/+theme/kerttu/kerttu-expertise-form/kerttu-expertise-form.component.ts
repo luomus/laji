@@ -1,9 +1,10 @@
 import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {Observable, of, Subject, Subscription} from 'rxjs';
-import {debounceTime, switchMap, tap} from 'rxjs/operators';
+import {debounceTime, map, switchMap, tap} from 'rxjs/operators';
 import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {Profile} from '../../../shared/model/Profile';
+import {ComponentCanDeactivate} from '../../../shared/guards/document-de-activate.guard';
 
 @Component({
   selector: 'laji-kerttu-expertise-form',
@@ -11,7 +12,7 @@ import {Profile} from '../../../shared/model/Profile';
   styleUrls: ['./kerttu-expertise-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KerttuExpertiseFormComponent implements OnInit, OnDestroy {
+export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   selectedTaxonIds: string[];
   savedSelectedTaxonIds: string[];
 
@@ -63,17 +64,13 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy {
     this.selectedTaxonIdsChanged.next(this.selectedTaxonIds);
   }
 
-  /*saveAndGoToNext(currentStep: Step) {
+  canDeactivate() {
     if (this.saveProfileSub) {
       this.saveProfileSub.unsubscribe();
     }
-
-    this.loading = true;
-    this.goNextSub = this.updateTaxonExpertice(this.selectedTaxonIds).subscribe(() => {
-      this.loading = false;
-      this.cdr.markForCheck();
-    });
-  }*/
+    return this.updateTaxonExpertice(this.selectedTaxonIds)
+      .pipe(map(() => true));
+  }
 
   private updateTaxonExpertice(selectedTaxonIds): Observable<Profile> {
     if (this.savedSelectedTaxonIds === selectedTaxonIds) {

@@ -905,7 +905,7 @@ const routes: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
-      {path: 'expertise', pathMatch: 'full', component: KerttuExpertiseFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'expertise', pathMatch: 'full', component: KerttuExpertiseFormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
       {path: 'letters', pathMatch: 'full', component: KerttuLetterAnnotationComponent, canActivate: [OnlyLoggedIn]},
       {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn]}
     ]
