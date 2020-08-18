@@ -15,13 +15,13 @@ import {TranslateService} from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
-  selectedTaxonIds: string[];
-  savedSelectedTaxonIds: string[];
-
   letterTemplate: ILetterTemplate;
   letterCandidate: ILetterCandidate;
+
+  taxonExpertiseMissing = false;
   allLettersAnnotated = false;
   loadingLetters = false;
+  firstTemplateLoaded = false;
 
   private nextLetterCandidate: ILetterCandidate;
   private nextLetterCandidate$: Observable<ILetterCandidate>;
@@ -102,9 +102,15 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
         if (!template) {
           this.allLettersAnnotated = true;
         } else {
+          this.firstTemplateLoaded = true;
           this.getLetterCandidate(template.id);
         }
         this.letterTemplate = template;
+        this.cdr.markForCheck();
+      }, error => {
+        if (this.getErrorMessage(error) === 'TaxonExpertiseMissingError') {
+          this.taxonExpertiseMissing = true;
+        }
         this.cdr.markForCheck();
       });
   }
@@ -154,9 +160,13 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   }
 
   private onLetterError(error) {
-    const msg = error.error?.message;
+    const msg = this.getErrorMessage(error);
     if (msg === 'InvalidTemplateIdError' || msg === 'InvalidCandidateIdError') {
       this.getLetterTemplate();
     }
+  }
+
+  private getErrorMessage(error) {
+    return error.error?.message;
   }
 }

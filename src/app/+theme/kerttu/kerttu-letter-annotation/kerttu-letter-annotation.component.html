@@ -1,9 +1,9 @@
 <h1>{{ 'theme.kerttu.letterAnnotation' | translate }}</h1>
 
 <div class="lu-section" *lajiRequiresAudioSupport>
-  <laji-spinner [spinning]="!allLettersAnnotated && loadingLetters" [overlay]="true">
+  <laji-spinner [spinning]="!(allLettersAnnotated || taxonExpertiseMissing) && loadingLetters" [overlay]="true">
     <laji-letter-annotation
-      *ngIf="!allLettersAnnotated"
+      *ngIf="!(allLettersAnnotated || taxonExpertiseMissing) && firstTemplateLoaded"
       [ngClass]="{'visibility-hidden': loadingLetters}"
       [template]="letterTemplate"
       [candidate]="letterCandidate"
@@ -11,6 +11,9 @@
       (skipLetterClick)="skipLetter()"
     ></laji-letter-annotation>
   </laji-spinner>
+  <ng-container *ngIf="taxonExpertiseMissing">
+    {{ 'theme.kerttu.taxonExpertiseMissing' | translate }}
+  </ng-container>
   <ng-container *ngIf="allLettersAnnotated">
     {{ 'theme.kerttu.allLettersAnnotated' | translate }}
   </ng-container>
