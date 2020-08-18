@@ -78,7 +78,6 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
 import { ExpertiseFormComponent } from './kerttu/kerttu-expertise-form/expertise-form/expertise-form.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { KerttuApi } from './kerttu/service/kerttu-api';
-import { KerttuFacade } from './kerttu/service/kerttu.facade';
 import { AudioService } from './kerttu/service/audio.service';
 import { SpectrogramService } from './kerttu/service/spectrogram.service';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
@@ -200,7 +199,6 @@ import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-su
     QualityService,
     WbcResultService,
     KerttuApi,
-    KerttuFacade,
     AudioService,
     SpectrogramService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
