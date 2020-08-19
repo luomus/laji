@@ -73,6 +73,7 @@ import { TaxonYlestaFieldsComponent } from './taxon/info-card/shared/component/t
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
+import { TaxonIdentificationComponent } from './taxon/info-card/taxon-identification/taxon-identification.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -114,7 +115,8 @@ import { ChartModule } from '../shared-modules/chart/chart.module';
     TaxonInfoRowComponent,
     TaxonOccurrenceMapComponent,
     AdministrativeStatusComponent,
-    TaxonYlestaFieldsComponent
+    TaxonYlestaFieldsComponent,
+    TaxonIdentificationComponent
   ],
 })
 export class TaxonomyModule {

@@ -143,7 +143,7 @@ addEventListener('message', ({ data }) => {
     postMessage({type: LOGOUT_MSG});
     return;
   }
-  if (!id || !request || !request.url || !request.url.startsWith(environment.apiBase)) {
+  if (!id || !request || !request.url || !(request.url.startsWith(environment.apiBase) || request.url.startsWith(environment.kerttuApi))) {
     return;
   }
 

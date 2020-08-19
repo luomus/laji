@@ -10,7 +10,7 @@
          [formControl]="searchControl"
          placeholder="{{placeholder}}" autoComplete="off"/>
     <!--<span class="input-group-btn">
-      <button class="btn btn-default" type="button" (click)="close()">
+      <button class="btn btn-default" type="button" (click)="onClose()">
         <span
                 [ngClass]="{
             'glyphicon-search': search.length == 0,
@@ -22,7 +22,7 @@
     </span>-->
   <div style="clear: both"></div>
   <div class="col-sm-12" *ngIf="taxa.length > 0 && search.length > 0">
-    <div class="omni-search-results" [class.right]="expand === 'right'" (lajiClickOutSide)="close()">
+    <div class="omni-search-results" [class.right]="expand === 'right'" (lajiClickOutSide)="onClose()">
       <div class="row" *ngIf="taxon">
         <div class="col-md-3 matches">
           <h5
@@ -40,18 +40,18 @@
           <div class="row">
             <div class="col-md-6 first-col">
               <div style="margin-bottom: 10px">
-                <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()">
+                <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="onClose()">
                   {{ 'omniSearch.taxonCard' | translate }}
                   <i class="glyphicon glyphicon-tag"></i>
                 </a>
                 <br>
-                <a [routerLink]="['/taxon/' + taxon.key + '/taxonomy'] | localize" [queryParams]="{ showTree: true }" (click)="close()">
+                <a [routerLink]="['/taxon/' + taxon.key + '/taxonomy'] | localize" [queryParams]="{ showTree: true }" (click)="onClose()">
                   {{ 'omniSearch.taxonList' | translate }}
                 </a>
               </div>
 
               <div style="margin-bottom: 10px">
-                <a [routerLink]="['/observation/map'] | localize" [queryParams]="{target: taxon.key }" (click)="close()">
+                <a [routerLink]="['/observation/map'] | localize" [queryParams]="{target: taxon.key }" (click)="onClose()">
                   {{ 'navigation.observation' | translate }}
                 </a>
                 <br>

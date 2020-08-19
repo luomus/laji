@@ -39,15 +39,29 @@ $border-radius: 5px;
 }
 
 .lu-btn.primary {
-  background-color: $primary-5;
+  position: relative;
+  background: linear-gradient(to bottom right, adjust-hue($primary-5, -10deg), $primary-5);
   color: adjust-hue($color: $neutral-1, $degrees: -20%);
-  box-shadow: 0 2px 6px rgba($neutral-8, 0.3);
-  &:hover {
-    background-color: darken($primary-5, 5%);
+  box-shadow: 0 2px 6px rgba($primary-6, 0.3);
+  &::before {
+    display: inline-block;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-color: $primary-7;
+  }
+  &:hover::before {
+    opacity: .1;
+    transition: opacity .2s ease-in-out;
   }
   &.pressed {
-    background-color: $primary-6;
-    box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+    color: $primary-2;
+    transition: color .15s;
+    box-shadow: 0 0px 1px rgba($primary-6, 0.2);
   }
 }
 

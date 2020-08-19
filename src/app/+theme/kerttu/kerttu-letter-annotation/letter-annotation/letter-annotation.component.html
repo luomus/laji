@@ -1,0 +1,91 @@
+<div class="row" id="letterInfo">
+  <div class="col-md-12">
+    <h2><laji-taxon-name [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name></h2>
+    <div>
+      <dl>
+        <dt>{{ 'theme.kerttu.letter' | translate }}:</dt>
+        <dd>{{ template?.name }}</dd>
+        <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
+        <dd>{{ template?.info.userAnnotationCount }}/{{ template?.info.targetAnnotationCount }}</dd>
+      </dl>
+      <lu-button (click)="onSkipLetter()">
+        {{ 'theme.kerttu.skipLetter' | translate }}
+      </lu-button>
+    </div>
+  </div>
+</div>
+<div id="letterAnnotationContainer" class="row">
+  <div class="col-md-12">
+    <h3>{{ 'theme.kerttu.areLettersSame' | translate }}</h3>
+    <laji-three-state-switch
+      (valueChange)="this.currentAnnotation = $event; annotationChange.emit($event)"
+      [onValue]="annotation.yes"
+      [offValue]="annotation.no"
+      [undefinedValue]="annotation.unsure"
+      [onText]="'yes' | translate"
+      [offText]="'no' | translate"
+      [undefinedText]="'theme.kerttu.notSure' | translate"
+      [showUndefined]="true"
+      [value]="currentAnnotation"
+      [disabled]="!template || !candidate || loadingTemplate || loadingCandidate"
+    >
+      ></laji-three-state-switch>
+  </div>
+  <div class="col-md-12" id="letterAnnotationControls">
+    <div>
+      <label>{{ 'theme.kerttu.timeBuffer' | translate }}</label>
+      <div class="input-group" style="max-width: 110px">
+        <input class="form-control input-sm" type="number" min="0" max="60" step="0.1" [ngModel]="xRangePadding" (ngModelChange)="onXRangePaddingChange($event)">
+        <span class="input-group-addon">s</span>
+      </div>
+    </div>
+    <div>
+      <label>{{ 'theme.kerttu.targetFrequency' | translate }}</label>
+      <bSwitch
+        [switch-on-text]="'yes' | translate"
+        [switch-off-text]="'no' | translate"
+        [switch-on-color]="'primary'"
+        [switch-size]="'small'"
+        [(ngModel)]="zoomed"
+        [switch-base-class]="'bootstrap-switch'">
+      </bSwitch>
+    </div>
+  </div>
+  <div class="col-md-6 col-md-push-6">
+    <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
+    <laji-audio-viewer
+      [recording]="template?.recording"
+      [xRangePadding]="xRangePadding"
+      [xRange]="template?.xRange"
+      [yRange]="template?.yRange"
+      [zoomed]="zoomed"
+      (audioLoading)="loadingTemplate = $event"
+    ></laji-audio-viewer>
+  </div>
+  <div class="col-md-6 col-md-pull-6">
+    <h4>{{ 'theme.kerttu.letterCandidate' | translate }} ({{ 'theme.kerttu.correlation' | translate }} {{ candidate?.crossCorrelation | number : '1.0-2' }})</h4>
+    <laji-audio-viewer
+      [recording]="candidate?.recording"
+      [xRangePadding]="xRangePadding"
+      [xRange]="candidate?.xRange"
+      [yRange]="candidateYRange"
+      [zoomed]="zoomed"
+      [autoplay]="true"
+      [autoplayRepeat]="3"
+      (audioLoading)="loadingCandidate = $event"
+    ></laji-audio-viewer>
+  </div>
+  <div class="col-md-12">
+    <h4>{{ 'theme.kerttu.letterCandidateLonger' | translate }}</h4>
+    <lu-button (click)="candidateLongerVisible = true" *ngIf="!candidateLongerVisible">
+      Näytä
+    </lu-button>
+    <laji-audio-viewer
+      *ngIf="candidateLongerVisible"
+      [recording]="candidate?.recording"
+      [xRange]="candidate?.xRange"
+      [yRange]="candidateYRange"
+      [zoomed]="zoomed"
+    ></laji-audio-viewer>
+  </div>
+</div>

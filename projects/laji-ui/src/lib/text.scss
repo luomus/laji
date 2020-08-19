@@ -14,28 +14,29 @@
 }
 
 @mixin heading1() {
-  color: $neutral-9;
+  color: $neutral-8;
   font-size: $fs-8;
+  font-weight: 600;
 }
 @mixin heading2() {
   color: $neutral-8;
-  font-size: $fs-8;
-}
-@mixin heading3() {
-  color: $neutral-7;
   font-size: $fs-7;
 }
-@mixin heading4() {
-  color: $neutral-6;
+@mixin heading3() {
+  color: $neutral-8;
   font-size: $fs-6;
+}
+@mixin heading4() {
+  color: $neutral-7;
+  font-size: $fs-5;
 }
 @mixin heading5() {
   color: $neutral-6;
-  font-size: $fs-5;
+  font-size: $fs-4;
 }
 @mixin heading6() {
   color: $neutral-6;
-  font-size: $fs-4;
+  font-size: $fs-3;
 }
 @mixin section() {
   padding: 20px;
@@ -59,7 +60,6 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
-    width: max-content;
   }
   h1 {
     @include heading1();

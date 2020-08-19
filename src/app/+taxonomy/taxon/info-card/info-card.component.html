@@ -1,11 +1,11 @@
-<div class="container-fluid" *ngIf="taxon">
+<ng-container *ngIf="taxon">
   <laji-info-card-header
     [taxon]="taxon"
     [activeTab]="activeTab"
     (taxonSelect)="updateRoute($event)"
   ></laji-info-card-header>
 
-  <lu-tabs [selectedIndex]="getVisibleTabIndexFromTabName(selectedTab)" (selectedChange)="onSelect($event)">
+  <lu-tabs class="d-block mx-5" [selectedIndex]="getVisibleTabIndexFromTabName(selectedTab)" (selectedChange)="onSelect($event)">
     <lu-tab [heading]="'taxonomy.overview' | translate">
       <laji-taxon-overview
         *ngIf="loadedTabs.isLoaded('overview')"
@@ -15,6 +15,12 @@
         [images]="images"
         (taxonSelect)="updateRoute($event)"
       ></laji-taxon-overview>
+    </lu-tab>
+    <lu-tab [heading]="'Identification'" *lajiForTypes="['dev']">
+      <laji-taxon-identification
+        *ngIf="loadedTabs.isLoaded('identification')"
+        [taxon]="taxon"
+      ></laji-taxon-identification>
     </lu-tab>
     <lu-tab [heading]="'species.images' | translate" *ngIf="hasImageData">
       <laji-taxon-images
@@ -69,5 +75,5 @@
       ></laji-taxon-invasive>
     </lu-tab>
   </lu-tabs>
-</div>
+</ng-container>
 

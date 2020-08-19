@@ -39,7 +39,9 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   currentLang: string;
 
   mapQuery: WarehouseQueryInterface;
+  queryCount: WarehouseQueryInterface;
 
+  queryKeysDeleted = ['coordinateAccuracyMax', 'recordQuality', 'includeNonValidTaxa', 'cache']
   private childrenSub: Subscription;
 
   @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
@@ -93,16 +95,18 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.currentLang = this.translate.currentLang;
     this.getChildren();
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
+    this.queryCount = Object.keys(this.mapQuery).reduce((object, key) => {
+      if (this.queryKeysDeleted.indexOf(key) === -1) {
+        object[key] = this.mapQuery[key]
+      }
+      return object
+    }, {})
   }
 
   ngOnDestroy() {
     if (this.childrenSub) {
       this.childrenSub.unsubscribe();
     }
-  }
-
-  checkTotalObservations(event){
-    this.totalObservations = event;
   }
 
   private getChildren() {

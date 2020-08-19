@@ -72,12 +72,13 @@ import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
 import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
 import { IncludesPipe } from './pipe/includes.pipe';
 import { SsrDisableDirective } from './directive/ssr-disable.directive';
+import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
 
 
 @NgModule({
   entryComponents: [ImageModalOverlayComponent],
   declarations: [
-    NewsListComponent, LocalizePipe, NotificationComponent, NotificationsComponent,
+    NewsListComponent, LocalizePipe, NotificationComponent, NotificationsComponent, TaxonDropdownComponent,
     ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
     AreaNamePipe, TaxonNamePipe, CollectionNamePipe, FormNamePipe,
@@ -126,7 +127,7 @@ import { SsrDisableDirective } from './directive/ssr-disable.directive';
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent, NotificationsComponent,
-    AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
+    TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
     ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,
     FormattedNumber, ObservationCountComponent, GalleryComponent,

@@ -16,6 +16,7 @@ export const SYNONYM_KEYS = [
   'alternativeNames',
   'synonyms',
   'misspelledNames',
+  'misappliedNames',
   'orthographicVariants',
   'uncertainSynonyms'
 ];
@@ -47,7 +48,8 @@ export class TaxonExportService {
   private analyzeTaxon(data: Taxonomy): Observable<Taxonomy> {
     return of({
       ...data,
-      synonymNames: this.pickSynonyms(data)
+      synonymNames: this.pickSynonyms(data),
+      misappliedListNames: this.pickMisappliedNames(data)
     });
   }
 
@@ -61,5 +63,13 @@ export class TaxonExportService {
       }
     });
     return synonyms.join('; ');
+  }
+
+  private pickMisappliedNames(data: Taxonomy): string {
+    const misappliedNames: string[] = [];
+      if (data['misappliedNames'] && Array.isArray(data['misappliedNames'])) {
+          misappliedNames.push(data.scientificName + (data.scientificNameAuthorship ? ' ' + data.scientificNameAuthorship : ''));
+      }
+    return misappliedNames.join('; ');
   }
 }

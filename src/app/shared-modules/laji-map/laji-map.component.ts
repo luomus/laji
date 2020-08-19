@@ -54,7 +54,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() move = new EventEmitter();
   @Output() failure =  new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
-  // @Output() total = new EventEmitter<number>();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -194,7 +193,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
             this.setData(this.mapData);
             this.mapData = undefined;
           } else {
-            //this.total.emit(0);
           }
           this.zone.run(() => {
             this.loaded.emit();
@@ -226,12 +224,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   setData(data) {
-    
-    /*let sum = 0;
-   
-    sum = this.buildTotalObservations(data);
-    console.log(sum)
-    this.total.emit(sum || 0);*/
     if (!this.map) {
       this.mapData = data;
       return;
@@ -276,35 +268,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  private buildTotalObservations(data) {
-    let features;
-    let key = 'properties';
-    let key1;
-    
-    if (Array.isArray(data)) {
-      features = data[0]['featureCollection']['features'];
-      key1 = 'count';
-    } else {
-      features = data['featureCollection']['features'];
-      key1 = this.onlyCount === null ? 'count' :
-      this.onlyCount ? 'count' : 'individualCountSum';
-    }
-    if (data && features && features.length > 0) {
-      if (features.length === 1) {
-        return this.onlyCount === null ? features[0][key][key1] :
-        this.onlyCount ? features[0][key][key1] : features[0][key][key1];
-      } else {
-        return features.reduce((total, obj) => { 
-          const value = this.onlyCount === null ? obj[key][key1] :
-          this.onlyCount ? obj[key][key1] : obj[key][key1];
-          return (parseInt(total) + parseInt(value));
-          
-        }, 0)
-      }
-    } else {
-      return 0;
-    }
-  }
 
   private toggleFullscreen() {
     this.fullScreen = !this.fullScreen;

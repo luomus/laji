@@ -1,6 +1,6 @@
 <div class="item-wrap">
   <div class="field-item">
-    <div class="fill-space">
+    <div class="flex-grow">
       {{ field.label || field.key }} <span class="required" *ngIf="field.required">*</span>
     </div>
     <ng-container *ngIf="field | canSplitTo:'date'">

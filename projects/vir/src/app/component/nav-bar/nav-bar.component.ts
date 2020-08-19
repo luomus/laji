@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { NavbarComponent as LajiNavBarComponent } from '../../../../../../src/app/shared/navbar';
 import { NotificationsFacade } from '../../../../../../src/app/shared/navbar/notifications/notifications.facade';
+import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 
 @Component({
   selector: 'vir-nav-bar',
@@ -12,4 +13,5 @@ import { NotificationsFacade } from '../../../../../../src/app/shared/navbar/not
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NotificationsFacade]
 })
-export class NavBarComponent extends LajiNavBarComponent {}
+export class NavBarComponent extends LajiNavBarComponent {
+}

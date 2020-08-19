@@ -13,7 +13,7 @@ export class TaxonomyColumns {
     {
       name: 'id',
       label: 'taxonomy.card.id',
-      width: 95
+      width: 120
     },
     {
       name: 'taxonRank',
@@ -44,6 +44,13 @@ export class TaxonomyColumns {
       label: 'taxonomy.synonyms',
       selectField: '*.scientificName,*.scientificNameAuthorship,*.cursiveName',
       cellTemplate: 'synonyms',
+      width: 200
+    },
+    {
+      name: 'misappliedListNames',
+      label: 'taxonomy.misappliedNames',
+      selectField: '*.scientificName,*.scientificNameAuthorship,*.cursiveName',
+      cellTemplate: 'misappliedNames',
       width: 200
     },
     {

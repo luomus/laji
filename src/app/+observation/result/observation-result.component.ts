@@ -11,6 +11,7 @@ import { SearchQueryService } from '../search-query.service';
 import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 import { Subscription } from 'rxjs';
 import {LocalStorageService} from 'ngx-webstorage';
+import { ActivatedRoute } from "@angular/router";
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -90,7 +91,8 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     private localizeRouterService: LocalizeRouterService,
     private searchQueryService: SearchQueryService,
     private cd: ChangeDetectorRef,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private route: ActivatedRoute
   ) {}
 
   @Input()
@@ -118,16 +120,15 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
   }
 
-  ngOnChanges(query: SimpleChanges) {
-    if(query.query) {
-      if (query.query && (query.query.currentValue.editorOrObserverPersonToken === undefined) 
-      && (query.query.currentValue.observerPersonToken === undefined )
-      && (query.query.currentValue.editorPersonToken === undefined) && this.selectedTabIdx === 6) {
-        this.onSelect(0);
-      }
+  ngOnChanges() {
+    if (this.route.snapshot.queryParams["editorOrObserverPersonToken"] === undefined &&
+        this.route.snapshot.queryParams["observerPersonToken"] === undefined &&
+        this.route.snapshot.queryParams["editorPersonToken"] === undefined &&
+        this.selectedTabIdx === 6
+    ) {
+      this.onSelect(0);
     }
   }
 
