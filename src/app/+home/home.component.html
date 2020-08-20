@@ -17,32 +17,54 @@
   </div>
 </div>
 <div class="d-flex justify-between xs:flex-wrap">
-  <div class="width-0 lu-text-content">
-    <div class="d-flex justify-center home-content-container section-1 my-6">
-      <div class="content-max-width">
-        <h1>{{ 'home.main-page.title' | translate }}</h1>
-        <laji-technical-news></laji-technical-news>
-        <p>{{ 'home.main-page.text' | translate }}</p>
-        <ng-container *ngTemplateOutlet="navigationThumbnails"></ng-container>
+  <div class="sections-container width-0 lu-text-content">
+    <div class="d-flex justify-center home-content-container section-1">
+      <div class="d-flex content-max-width">
+        <div class="flex-grow home-main">
+          <h1>{{ 'home.main-page.title' | translate }}</h1>
+          <laji-technical-news></laji-technical-news>
+          <p>{{ 'home.main-page.text' | translate }}</p>
+          <ng-container *ngTemplateOutlet="navigationThumbnails"></ng-container>
+        </div>
+        <laji-news-list class="d-block mb-3"></laji-news-list>
       </div>
     </div>
-    <div class="d-flex justify-center home-content-container section-2 my-8">
+    <div class="d-flex flex-col items-center home-content-container section-2">
       <ng-container *ngTemplateOutlet="map"></ng-container>
     </div>
-    <div class="d-flex justify-center home-content-container section-3 my-8">
+    <div class="d-flex justify-center home-content-container section-3">
       <ng-container *ngTemplateOutlet="iNaturalist"></ng-container>
     </div>
-    <div class="d-flex justify-center home-content-container section-3 my-8">
+    <div class="d-flex justify-center home-content-container section-4">
       <ng-container *ngTemplateOutlet="some"></ng-container>
     </div>
-  </div>
-  <div class="news-container">
-    <laji-news-list class="d-block mb-3"></laji-news-list>
   </div>
 </div>
 
 <ng-template #map>
-  <div class="d-flex flex-wrap width-0 content-max-width">
+  <div class="d-flex flex-wrap content-max-width">
+    <div class="map-desc-container flex-grow">
+<!--           {{ 'home.main-page.recent' | translate }} -->
+      <h2 class="mt-0" translate>
+          home.identify
+      </h2>
+      <div class="identification-images">
+        <laji-image-gallery
+          [showPopover]="false"
+          [showViewSwitch]="false"
+          [showOverlay]="false"
+          [showExtraInfo]="false"
+          [showLinkToSpeciesCard]="false"
+          [view]="'compact'"
+          [modalImages]="images$ | async"
+          [shortcut]="false"
+        ></laji-image-gallery>
+      </div>
+      <p translate>home.identify-help-intro</p>
+      <lu-button role="primary" [anchor]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/'}">
+        {{ 'home.identify-help-title' | translate }}
+      </lu-button>
+    </div>
     <div class="map-container">
       <laji-observation-map
         [unitCount]="(homeData$ | async)?.today?.total"
@@ -65,39 +87,17 @@
         </a>
       </div>
     </div>
-    <div class="map-desc-container">
-      <h2 class="mt-0" translate>
-<!--           {{ 'home.main-page.recent' | translate }} -->
-          home.identify
-      </h2>
-      <p translate>home.identify-help-intro</p>
-      <div class="identification-images">
-        <laji-image-gallery
-          [showPopover]="false"
-          [showViewSwitch]="false"
-          [showOverlay]="false"
-          [showExtraInfo]="false"
-          [showLinkToSpeciesCard]="false"
-          [view]="'compact'"
-          [modalImages]="images$ | async"
-          [shortcut]="false"
-        ></laji-image-gallery>
-      </div>
-      <lu-button [anchor]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/'}">
-        {{ 'home.identify-help-title' | translate }}
-      </lu-button>
-    </div>
   </div>
 </ng-template>
 
 <ng-template #iNaturalist>
-  <div class="d-flex content-max-width width-0 xs:flex-wrap">
+  <div class="d-flex content-max-width xs:flex-wrap">
     <div class="inat-img-container">
       <img class="inat-img" src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
     </div>
     <div class="inat-desc-container">
       <p translate>home.inat.desc</p>
-      <lu-button anchor="https://inaturalist.laji.fi/" target="_blank">{{ 'home.inat.btn' | translate }}</lu-button>
+      <lu-button role="primary" anchor="https://inaturalist.laji.fi/" target="_blank">{{ 'home.inat.btn' | translate }}</lu-button>
     </div>
   </div>
 </ng-template>

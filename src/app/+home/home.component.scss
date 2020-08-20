@@ -25,6 +25,7 @@
 
 .identification-images {
   position: relative;
+  max-width: 546px;
 }
 
 .identify-form {
@@ -135,17 +136,43 @@
   padding: 20px;
 }
 
-.section-1 {}
+.sections-container {
+  background-color: $neutral-3;
+}
 
-.section-2 {}
+.section-1 {
+  padding: 50px $sp-4;
+}
 
-.section-3 {}
+.section-2 {
+  padding: 100px $sp-4;
+  background-color: $neutral-2;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
 
-.section-4 {}
+.section-3 {
+  padding: 100px $sp-4;
+}
+
+.section-4 {
+  padding: 100px $sp-4;
+  background-color: $neutral-2;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+.home-main {
+  padding-right: $sp-6;
+}
+
+laji-news-list {
+  max-width: 400px;
+  padding-left: $sp-6;
+  border-left: 1px solid $neutral-4;
+}
 
 .content-max-width {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
 }
 
 .map-container {
@@ -155,8 +182,6 @@
 
 .map-desc-container {
   padding: 20px;
-  min-width: 300px;
-  max-width: 700px;
 }
 
 .inat-img-container {
