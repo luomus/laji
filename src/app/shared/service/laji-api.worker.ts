@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 import { ajax } from 'rxjs/ajax';
-import { catchError, map, mergeMap, share, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, share, switchMap } from 'rxjs/operators';
 import { from, Observable, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -30,13 +30,15 @@ function fetchPersonToken(): Observable<string> {
       withCredentials: true
     }).pipe(
       map(r => r.response),
-      map(d => d['token'] || ''),
-      tap(t => personToken = '' +  t),
-      switchMap(t => t ? of(t) : throwError({
-        error: {message: 'Failed to verify user'},
-        url: loginUrl,
-        status: 0
-      })),
+      switchMap(d => {
+        personToken = d['token'];
+
+        return personToken ? of(personToken) : throwError({
+          error: {message: 'Failed to verify user'},
+          url: loginUrl,
+          status: d['error'] && d['error'] === 404 ? 404 : 0
+        });
+      }),
       share()
     );
   }
