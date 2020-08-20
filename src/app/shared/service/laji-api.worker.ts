@@ -45,17 +45,24 @@ function fetchPersonToken(): Observable<string> {
   return token$;
 }
 
+function convertToken(data: string, replace: string, to: string) {
+  if (typeof data === 'string') {
+    const rep = new RegExp(replace, 'gm');
+    return data.replace(rep, to);
+  }
+  return data;
+}
+
 function replaceToken(token: string, request: any): any {
   if (typeof request.url === 'string') {
-    request.url = request.url.replace(PERSON_TOKEN, personToken);
+    request.url = convertToken(request.url, PERSON_TOKEN, personToken);
   }
   if (request.body && typeof request.body === 'object' && typeof request.url === 'string' && request.url.includes('graphql')) {
-    const personTokenReqExp = new RegExp(PERSON_TOKEN, 'gm');
     if (request.body.variables) {
       const variables = request.body.variables;
       request.body.variables = Object.keys(variables).reduce((result, key) => {
         if (typeof variables[key] === 'string') {
-          result[key] = variables[key].replace(personTokenReqExp, personToken);
+          result[key] = convertToken(variables[key], PERSON_TOKEN, personToken);
         } else {
           result[key] = variables[key];
         }
@@ -63,7 +70,7 @@ function replaceToken(token: string, request: any): any {
       }, {});
     }
     if (typeof request.body.query === 'string') {
-      request.body.query = request.body.query.replace(personTokenReqExp, personToken);
+      request.body.query = convertToken(request.body.query, PERSON_TOKEN, personToken);
     }
   }
   return request;
@@ -96,6 +103,18 @@ function isOkResponse(res: {status: number}) {
   return res?.status >= 200 && res?.status < 300;
 }
 
+function prepareResponse(t: string): any {
+  if (typeof t === 'string') {
+    if (personToken) {
+      t = convertToken(t, personToken, PERSON_TOKEN);
+    }
+    try {
+      return JSON.parse(t);
+    } catch (e) {}
+  }
+  return t;
+}
+
 function makeRequest({url, ...request}: any): Observable<any> {
   if (request.dataUrls) {
     const formData = new FormData();
@@ -118,8 +137,8 @@ function makeRequest({url, ...request}: any): Observable<any> {
         url,
       };
     }
-    return r.json().then(j => ({
-      response: j,
+    return r.text().then(j => ({
+      response: prepareResponse(j),
       headers: {},
       status: r.status,
       statusText: r.statusText,
@@ -157,14 +176,14 @@ addEventListener('message', ({ data }) => {
       headers: {},
       status: res.status,
       statusText: '' + res.status,
-      url: request.url,
+      url: convertToken(request.url, personToken, PERSON_TOKEN),
     } as SuccessResponse)),
     catchError((err) => typeof err.status !== 'undefined' ? of(err) : of({
       status: 500,
       statusText: '500',
       headers: {},
       error: err.message,
-      url: request.url,
+      url: convertToken(request.url, personToken, PERSON_TOKEN),
     } as ErrorResponse)),
   ).subscribe((res) => {
     if (isOkResponse(res)) {
