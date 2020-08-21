@@ -217,7 +217,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
 
   ngOnInit() {
     this.lang = this.translate.currentLang;
-    console.log('ciao')
     this.initColumns();
     this.fetchPageGiorgio(this.page);
     
