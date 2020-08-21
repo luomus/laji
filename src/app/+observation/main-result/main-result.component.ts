@@ -144,7 +144,6 @@ export class MainResultComponent implements OnInit, OnChanges {
     }
     this.mapQuery = {...this.aggrQuery};
     this.listQuery = {...this.aggrQuery};
-    console.log(this.aggrQuery)
   }
 
   closeMap() {
