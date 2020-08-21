@@ -31,6 +31,7 @@ import { DocumentViewerModule } from '../../../../src/app/shared-modules/documen
 import { VirAppComponent } from './vir-app.component';
 import { environment } from '../environments/environment';
 import { NavBarComponent } from './component/nav-bar/nav-bar.component';
+import { UsageDropdownComponent } from './component/nav-bar/usage-dropdown/usage-dropdown.component';
 import { LazyTranslateLoader } from './service/lazy-translate-loader';
 import { GlobalMessageComponent } from './component/global-message/global-message.component';
 import { FooterComponent } from './component/footer/footer.component';
@@ -89,6 +90,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     }
   ],
   bootstrap: [VirAppComponent],
-  declarations: [VirAppComponent, NavBarComponent, GlobalMessageComponent, FooterComponent]
+  declarations: [VirAppComponent, NavBarComponent, GlobalMessageComponent, FooterComponent, UsageDropdownComponent]
 })
 export class AppModule { }
