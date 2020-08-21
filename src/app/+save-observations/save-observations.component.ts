@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SaveObservationsFacade } from './save-observations.facade';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -13,7 +13,10 @@ export class SaveObservationsComponent implements OnInit {
   birdMonitoringForms$: Observable<FormList[]>;
   researchProjectForms$: Observable<FormList[]>;
 
-  constructor (private facade: SaveObservationsFacade) {}
+  constructor (
+    private facade: SaveObservationsFacade,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.citizenScienceForms$ = this.facade.citizenScienceForms$;
@@ -22,6 +25,8 @@ export class SaveObservationsComponent implements OnInit {
     if (!environment.saveObservations) {
       return;
     }
+    // Fixes https://www.pivotaltracker.com/story/show/174379048
+    setTimeout(() => this.cdr.markForCheck());
     this.facade.loadAll(environment.saveObservations.citizenScienceForms,
                         environment.saveObservations.birdMonitoringForms,
                         environment.saveObservations.researchProjects);
