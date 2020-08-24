@@ -120,7 +120,7 @@ export interface Taxonomy {
 
   nameAccordingTo?: string;
 
-  habitatOccurrenceCounts: Array<any>;
+  habitatOccurrenceCounts?: Array<any>;
 
   /**
    *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
