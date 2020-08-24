@@ -65,6 +65,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() set showControls(show: boolean) {
     this._mapOptions = {...this._mapOptions, controls: show ? { draw: false } : false};
   }
+  @Input() set clickBeforeZoomAndPan(clickBeforeZoomAndPan: boolean) {
+    this._mapOptions = {...this._mapOptions, clickBeforeZoomAndPan};
+  }
   @Input() ready = true;
   @Input() unitCount: number;
   /**

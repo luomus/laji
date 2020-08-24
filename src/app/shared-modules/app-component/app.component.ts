@@ -15,7 +15,7 @@ declare const ga: Function;
 @Component({
   selector: 'laji-app',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 

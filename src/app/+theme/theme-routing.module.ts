@@ -35,11 +35,13 @@ import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-sprea
 import { DatasetsGuard } from './datasets/datasets.guard';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
-import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { PinkkaComponent } from './pinkka/pinkka.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
 import { NamedPlaceResolver } from '../shared-modules/named-place/named-place.resolver';
+import {KerttuExpertiseFormComponent} from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
+import {KerttuLetterAnnotationComponent} from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
+import {KerttuRecordingAnnotationComponent} from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
 
 /* tslint:enable:max-line-length */
 
@@ -903,7 +905,9 @@ const routes: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
-      {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent, canActivate: [OnlyLoggedIn]}
+      {path: 'expertise', pathMatch: 'full', component: KerttuExpertiseFormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
+      {path: 'letters', pathMatch: 'full', component: KerttuLetterAnnotationComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn]}
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

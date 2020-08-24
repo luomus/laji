@@ -1,4 +1,11 @@
-<div class="d-flex items-end flex-wrap my-3">
+<div class="taxon-select-bar">
+  <laji-taxon-select
+    [placeholder]="'taxonomy.card.search' | translate"
+    (taxonIdChange)="taxonSelect.emit($event)"
+  ></laji-taxon-select>
+</div>
+
+<div class="d-flex items-end flex-wrap my-3 mx-5">
   <laji-spinner class="parents-spinner" [spinning]="loadingParent" *ngFor="let parents of parent">
     <div *ngIf="parents.taxonRank==='MX.kingdom' || parents.taxonRank==='MX.phylum' || parents.taxonRank==='MX.order' || parents.taxonRank==='MX.class' || parents.taxonRank==='MX.family' || parents.taxonRank==='MX.genus'">
       <a *ngIf="!loadingParent && parents && taxon.hasParent" [routerLink]="'/taxon/' + parents.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
@@ -20,11 +27,6 @@
   </div>
 </div>
 
-<laji-taxon-select
-  [placeholder]="'taxonomy.card.search' | translate"
-  (taxonIdChange)="taxonSelect.emit($event)"
-></laji-taxon-select>
-
-<h1 class="d-block">
+<h1 class="d-block mx-5">
   <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
 </h1>

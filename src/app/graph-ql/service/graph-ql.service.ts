@@ -24,4 +24,10 @@ export class GraphQLService {
   watchQuery<T, V = R>(options: WatchQueryOptions<V>): QueryRef<T, V> {
     return this.apollo.watchQuery<T, V>(options);
   }
+
+  flushCache() {
+    try {
+      this.apollo.getClient().cache.reset().then();
+    } catch (e) {}
+  }
 }

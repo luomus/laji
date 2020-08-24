@@ -1,119 +1,139 @@
-<div class="laji-news full-height" *lajiForTypes="['dev', 'prod', 'beta', 'embedded']">
-  <laji-image-header></laji-image-header>
-  <div class="searchBar">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
-          <laji-omni-search
-            [placeholder]="'species.search' | translate"
-          ></laji-omni-search>
-        </div>
-        <div class="col-sm-5 col-md-4 col-lg-3">
-          <span class="pull-right some-links hidden-xs" aria-hidden="true">
-            <a href="https://facebook.com/Lajitietokeskus">
-              <svg viewBox="0 0 24 24"><path fill="#f1f1f1" d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
-            </a>
-            <a href="https://twitter.com/lajitieto">
-              <svg viewBox="0 0 24 24"><path fill="#f1f1f1" d="M17.71,9.33C17.64,13.95 14.69,17.11 10.28,17.31C8.46,17.39 7.15,16.81 6,16.08C7.34,16.29 9,15.76 9.9,15C8.58,14.86 7.81,14.19 7.44,13.12C7.82,13.18 8.22,13.16 8.58,13.09C7.39,12.69 6.54,11.95 6.5,10.41C6.83,10.57 7.18,10.71 7.64,10.74C6.75,10.23 6.1,8.38 6.85,7.16C8.17,8.61 9.76,9.79 12.37,9.95C11.71,7.15 15.42,5.63 16.97,7.5C17.63,7.38 18.16,7.14 18.68,6.86C18.47,7.5 18.06,7.97 17.56,8.33C18.1,8.26 18.59,8.13 19,7.92C18.75,8.45 18.19,8.93 17.71,9.33M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
-            </a>
-          </span>
-        </div>
-      </div>
+<laji-image-header></laji-image-header>
+<div class="searchBar d-flex justify-between">
+  <div class="omnisearch-container d-flex justify-center">
+    <div class="omnisearch">
+      <laji-omni-search
+        [placeholder]="'species.search' | translate"
+      ></laji-omni-search>
     </div>
   </div>
-  <div class="container-fluid home-page">
-    <div id="wrapper" class="row">
-      <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
-        <h1 id="main-title">{{ 'home.main-page.title' | translate }}</h1>
-        <laji-technical-news></laji-technical-news>
-        <p>{{ 'home.main-page.text' | translate }}</p>
-        <div class="row">
-          <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon" [intro]="'home.taxon-sub-intro' | translate" [info]="'home.taxon-intro' | translate"></laji-navigation-thumbnail>
-          <laji-navigation-thumbnail name="home.observation" icon="observations" path="observation" [intro]="'home.observation-sub-intro' | translate" [info]="'home.observation-intro' | translate"></laji-navigation-thumbnail>
-          <laji-navigation-thumbnail name="navigation.saveObservations" icon="vihko" path="save-observations" [intro]="'home.notebook-sub-intro' | translate" [info]="'home.notebook-intro' | translate"></laji-navigation-thumbnail>
+  <div class="some-links d-flex justify-end">
+    <a href="https://facebook.com/Lajitietokeskus">
+      <svg viewBox="0 0 24 24"><path fill="#f1f1f1" d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+    </a>
+    <a href="https://twitter.com/lajitieto">
+      <svg viewBox="0 0 24 24"><path fill="#f1f1f1" d="M17.71,9.33C17.64,13.95 14.69,17.11 10.28,17.31C8.46,17.39 7.15,16.81 6,16.08C7.34,16.29 9,15.76 9.9,15C8.58,14.86 7.81,14.19 7.44,13.12C7.82,13.18 8.22,13.16 8.58,13.09C7.39,12.69 6.54,11.95 6.5,10.41C6.83,10.57 7.18,10.71 7.64,10.74C6.75,10.23 6.1,8.38 6.85,7.16C8.17,8.61 9.76,9.79 12.37,9.95C11.71,7.15 15.42,5.63 16.97,7.5C17.63,7.38 18.16,7.14 18.68,6.86C18.47,7.5 18.06,7.97 17.56,8.33C18.1,8.26 18.59,8.13 19,7.92C18.75,8.45 18.19,8.93 17.71,9.33M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+    </a>
+  </div>
+</div>
+<div class="d-flex justify-between xs:flex-wrap">
+  <div class="sections-container width-0 lu-text-content">
+    <div class="d-flex justify-center home-content-container section-1">
+      <div class="d-flex content-max-width">
+        <div class="flex-grow home-main">
+          <h1>{{ 'home.main-page.title' | translate }}</h1>
+          <laji-technical-news></laji-technical-news>
+          <p>{{ 'home.main-page.text' | translate }}</p>
+          <ng-container *ngTemplateOutlet="navigationThumbnails"></ng-container>
         </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-5">
-            <a [routerLink]="['/observation/map'] | localize" [queryParams]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206'}" class="thumbnail panel panel-default">
-              <div class="panel-heading">
-                <h2 class="panel-title caption">{{ 'home.main-page.recent' | translate }}</h2>
-              </div>
-              <div class="panel-body resent-map">
-                <div class="link blocking-overlay"></div>
-                <!--<laji-biogeographical-province height="438" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: ['ML.206'], cache: true}"></laji-biogeographical-province>-->
-                <laji-observation-map
-                  [unitCount]="(homeData$ | async)?.today?.total"
-                  [settingsKey]="'frontMap'"
-                  [height]="438"
-                  [showControls]="false"
-                  [initWithWorldMap]="false"
-                  [showItemsWhenLessThan]="2000"
-                  [draw]="false"
-                  [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"
-                ></laji-observation-map>
-                <div class="numbers">
-                  <span class="no-break">
-                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today?.total"></laji-observation-count>
-                    {{ 'viewer.unit' | translate }}
-                    </span>
-                  <span class="no-break">
-                    <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday?.total" ></laji-observation-count>
-                    {{ 'observation.results.species' | translate }}
-                  </span>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-8 col-md-7">
-            <div class="row">
-              <div class="col-sm-12">
-                <a [routerLink]="['/vihko/' + formId | localize]" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
-                  <div class="panel-heading">
-                    <h2 class="panel-title caption">{{ 'home.identify-title' | translate }}</h2>
-                  </div>
-                  <div class="panel-body identifications">
-                    <p>
-                      {{ 'identify.reportIntro' | translate }}<br>
-                      <a class="link btn btn-primary identify-form" [routerLink]="['/vihko/' + formId | localize]">{{ 'identify.report' | translate }}</a>
-                      <span *lajiLoggedIn="false">({{ 'identify.requiresAuthentication' | translate }})</span>
-                    </p>
-                  </div>
-                </a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">
-                <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/'}" class="thumbnail panel panel-default">
-                  <div class="panel-heading">
-                    <h2 class="panel-title caption">{{ 'home.identify-help-title' | translate }}</h2>
-                  </div>
-                  <div class="panel-body identifications">
-                    <p>{{ 'home.identify-help-intro' | translate }}</p>
-                    <div class="identification-images">
-                      <div class="link blocking-overlay"></div>
-                      <laji-image-gallery
-                        [showPopover]="false"
-                        [showViewSwitch]="false"
-                        [showOverlay]="false"
-                        [showExtraInfo]="false"
-                        [showLinkToSpeciesCard]="false"
-                        [view]="'compact'"
-                        [modalImages]="images$ | async"
-                        [shortcut]="false"
-                      ></laji-image-gallery>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <laji-news-list class="d-block mb-3"></laji-news-list>
       </div>
-      <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 dark-bg">
-        <div class="news-panel">
-          <laji-news-list></laji-news-list>
-        </div>
-      </div>
+    </div>
+    <div class="d-flex flex-col items-center home-content-container section-2">
+      <ng-container *ngTemplateOutlet="map"></ng-container>
+    </div>
+    <div class="d-flex justify-center home-content-container section-3">
+      <ng-container *ngTemplateOutlet="iNaturalist"></ng-container>
+    </div>
+    <div class="d-flex justify-center home-content-container section-4">
+      <ng-container *ngTemplateOutlet="some"></ng-container>
     </div>
   </div>
 </div>
+
+<ng-template #map>
+  <div class="d-flex flex-wrap content-max-width">
+    <div class="map-desc-container flex-grow">
+<!--           {{ 'home.main-page.recent' | translate }} -->
+      <h2 class="mt-0" translate>
+          home.identify
+      </h2>
+      <div class="identification-images">
+        <laji-image-gallery
+          [showPopover]="false"
+          [showViewSwitch]="false"
+          [showOverlay]="false"
+          [showExtraInfo]="false"
+          [showLinkToSpeciesCard]="false"
+          [view]="'compact'"
+          [modalImages]="images$ | async"
+          [shortcut]="false"
+        ></laji-image-gallery>
+      </div>
+      <p translate>home.identify-help-intro</p>
+      <lu-button role="primary" [anchor]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/'}">
+        {{ 'home.identify-help-title' | translate }}
+      </lu-button>
+    </div>
+    <div class="map-container">
+      <laji-observation-map
+        [unitCount]="(homeData$ | async)?.today?.total"
+        [settingsKey]="'frontMap'"
+        [height]="438"
+        [showControls]="false"
+        [initWithWorldMap]="false"
+        [showItemsWhenLessThan]="2000"
+        [clickBeforeZoomAndPan]="true"
+        [draw]="false"
+        [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"
+      ></laji-observation-map>
+      <div>
+        <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today?.total"></laji-observation-count>
+        {{ 'viewer.unit' | translate }}
+        <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday?.total" ></laji-observation-count>
+        {{ 'observation.results.species' | translate }}
+        <a [routerLink]="['/observation/map'] | localize" [queryParams]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206'}">
+          viimeisen päivän ajalta
+        </a>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #iNaturalist>
+  <div class="d-flex content-max-width xs:flex-wrap">
+    <div class="inat-img-container">
+      <img class="inat-img" src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
+    </div>
+    <div class="inat-desc-container">
+      <p translate>home.inat.desc</p>
+      <lu-button role="primary" anchor="https://inaturalist.laji.fi/" target="_blank">{{ 'home.inat.btn' | translate }}</lu-button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #some>
+  <div class="content-max-width">
+    <h2 class="width-0" translate>home.some.title</h2>
+    <div class="d-flex flex-wrap">
+      <div class="fb-feed m-4"><iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Flajitietokeskus%2F&tabs=timeline&width=250&height=400&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="250" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></div>
+      <div class="twitter-feed m-4"><a class="twitter-timeline" href="https://twitter.com/lajitieto">Tweets by lajitieto</a></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #navigationThumbnails>
+  <div class="d-flex flex-wrap mt-7">
+    <div routerLink="taxon" class="home-card d-flex flex-col items-center mr-3 mb-3">
+      <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/species.svg)'"></div>
+      <div>
+        <span translate>home.taxon-sub-intro</span>
+        <laji-info placement="right">{{ 'home.taxon-intro' | translate }}</laji-info>
+      </div>
+    </div>
+    <div routerLink="taxon" class="home-card d-flex flex-col items-center mr-3 mb-3">
+      <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/observations.svg)'"></div>
+      <div>
+        <span translate>home.observation-sub-intro</span>
+        <laji-info placement="right">{{ 'home.observation-intro' | translate }}</laji-info>
+      </div>
+    </div>
+    <div routerLink="taxon" class="home-card d-flex flex-col items-center mr-3 mb-3">
+      <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/vihko.svg)'"></div>
+      <div>
+        <span translate>home.notebook-sub-intro</span>
+        <laji-info placement="right">{{ 'home.notebook-intro' | translate }}</laji-info>
+      </div>
+    </div>
+  </div>
+</ng-template>

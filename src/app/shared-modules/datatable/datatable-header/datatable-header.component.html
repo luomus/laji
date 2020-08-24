@@ -1,5 +1,5 @@
 <div class="menu-row" *ngIf="showSettingsMenu || showDownloadMenu">
-  <div class="fill-space"></div>
+  <div class="flex-grow"></div>
   <ng-container *ngIf="showDownloadMenu">
     <laji-download
       *ngIf="maxDownload >= count else tooMany"

@@ -30,6 +30,7 @@ export class ButtonComponent implements OnChanges, OnInit {
     return this._target;
   }
   @Output() click = new EventEmitter<MouseEvent>();
+  @Input() queryParams;
 
   routerLink;
   useHref = false;

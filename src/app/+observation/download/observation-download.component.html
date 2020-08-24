@@ -79,7 +79,8 @@
           </ng-container>
           <ng-container *lajiForTypes="['vir']; exclude:true">
             <lu-button
-              [disabled]="requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
+              [loading]="requests['download'] === requestStatus.loading"
+              [disabled]="requests['download'] === requestStatus.done || hasPersonalData"
               (click)="makePublicRequest()">
               <i class="glyphicon glyphicon-download-alt"></i>
               {{ 'observation.download.loadPublic' | translate }}
@@ -103,7 +104,8 @@
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
           <lu-button
-            [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading || hasPersonalData"
+            [loading]="requests['downloadApprovalRequest'] === requestStatus.loading"
+            [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || hasPersonalData"
             (click)="makePrivateRequest()">
             {{ 'observation.download.loadPrivate' | translate }}
           </lu-button>

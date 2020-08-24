@@ -4,6 +4,7 @@ h2 {
   color: #727272;
 }
 .header {
+  background-color: #d62022;
   height: 250px;
   position: relative;
   background-image: url("/static/images/redlist/laji_bg.png");

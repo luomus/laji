@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, HostBinding, HostListener, Input, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, HostBinding, HostListener, Input, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, takeUntil, switchMap, map, tap } from 'rxjs/operators';
 import { Subject, of, Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { LajiApiService, LajiApi } from 'src/app/shared/service/laji-api.service
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'vir-global-message',
@@ -23,7 +24,12 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
 
   @LocalStorage('globalMessageClosed', {}) globalMessageClosed;
 
-  constructor(private api: LajiApiService, private router: Router, private cdr: ChangeDetectorRef, private translate: TranslateService) {}
+  constructor(
+    private api: LajiApiService,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService,
+    @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit() {
     this.router.events.pipe(
@@ -71,5 +77,17 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   @HostListener('click')
   private toggle() {
     this.isCurrentPageClosed() ? this.open() : this.close();
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        try {
+          window.dispatchEvent(new Event('resize'));
+        } catch (e) {
+          const evt = window.document.createEvent('UIEvents');
+          // @ts-ignore
+          evt.initUIEvent('resize', true, false, window, 0);
+          window.dispatchEvent(evt);
+        }
+      });
+    }
   }
 }

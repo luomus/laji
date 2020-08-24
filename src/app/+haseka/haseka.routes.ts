@@ -71,6 +71,31 @@ export const hasekaRoutes: Routes = [
         component: RequestWrapperComponent
       },
       {
+        path: 'template',
+        children: [
+          {
+            path: ':formId',
+            pathMatch: 'full',
+            canActivate: [OnlyLoggedIn],
+            component: HaSeKaFormComponent,
+            canDeactivate: [DocumentDeActivateGuard],
+            data: {
+              displayFeedback: false
+            }
+          },
+          {
+            path: ':formId/:documentId',
+            pathMatch: 'full',
+            canActivate: [OnlyLoggedIn],
+            component: HaSeKaFormComponent,
+            canDeactivate: [DocumentDeActivateGuard],
+            data: {
+              displayFeedback: false
+            }
+          }
+        ]
+      },
+      {
         path: ':formId',
         pathMatch: 'full',
         canActivate: [OnlyLoggedIn],

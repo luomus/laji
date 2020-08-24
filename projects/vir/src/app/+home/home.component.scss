@@ -1,19 +1,16 @@
 @import 'vars';
 
-.numbers {
-  margin-top: 20px;
-  font-size: $fs-5;
-  font-weight: 600;
-  margin-bottom: 10px;
-
-  .total {
-    margin-right: 20px;
-  }
+:host {
+  margin: 8px 16px;
 }
 
-h1 {
-  font-size: $fs-6;
+.numbers {
+  font-size: $fs-4;
+}
+
+:host ::ng-deep laji-observation-count span {
   font-weight: 600;
+  color: $neutral-7;
 }
 
 .species-banner {
@@ -39,6 +36,105 @@ h1 {
   background-image: url("https://image.laji.fi/MM.107795/Tea_vB_Aarnihelokka_129_thumb.jpg");
 }
 
-:host ::ng-deep .intro p {
-  max-width: 35em;
+.instructions {
+  max-width: 1000px;
+  border-radius: 5px;
+  background-color: $neutral-1;
+  box-shadow: 0 2px 8px 0 rgba($primary-7, .2);
+  border: 1px solid $primary-3;
+}
+
+.instructions-content {
+  padding: 20px;
+}
+
+.instructions-info {
+  font-size: 24px;
+  color: $primary-4;
+  background-color: $primary-1;
+  border-left: 1px solid $primary-3;
+  padding: 32px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.ext-links > a {
+  border-radius: 5px;
+  width: 300px;
+  text-decoration: none;
+  color: $neutral-7;
+  display: flex;
+  flex-flow: column nowrap;
+  > h1 {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: $fs-4;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+  }
+  > p {
+    font-size: $fs-2;
+    flex-grow: 1;
+    padding: 8px 12px;
+    margin-bottom: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+}
+
+.ext-links .quality {
+  box-shadow: 0 2px 6px 0 rgba($neutral-7, .3);
+  > h1 {
+    background: linear-gradient(to bottom right, $neutral-6, $neutral-7);
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: unset;
+  }
+  > p {
+    border: 1px solid $neutral-7;
+  }
+  &:hover {
+    box-shadow: 0 4px 12px 0 rgba($neutral-7, .25);
+    transition: box-shadow .2s;
+  }
+}
+
+.redbook {
+  box-shadow: 0 2px 6px 0 rgba(#a71a1d, .3);
+  > h1 {
+    background: linear-gradient(to bottom right, adjust-hue(#d62022, 15deg), #d62022);
+    color: #fff;
+  }
+  > p {
+    border: 1px solid #d62022;
+  }
+  &:hover {
+    box-shadow: 0 4px 12px 0 rgba(#a71a1d, .25);
+    transition: box-shadow .2s;
+  }
+}
+
+.lajifi {
+  box-shadow: 0 2px 6px 0 rgba($primary-6, .3);
+  > h1 {
+    background: linear-gradient(to bottom right, adjust-hue($primary-5, -10deg), $primary-5);
+    color: #fff;
+  }
+  > p {
+    border: 1px solid $primary-5;
+  }
+  &:hover {
+    box-shadow: 0 4px 12px 0 rgba($primary-6, .3);
+    transition: box-shadow .2s;
+  }
+}
+
+.glyphicon-new-window {
+  float: right;
+  font-size: $fs-2;
+  font-weight: 400;
 }
