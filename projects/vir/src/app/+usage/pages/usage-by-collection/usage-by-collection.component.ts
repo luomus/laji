@@ -27,8 +27,7 @@ export class UsageByCollectionComponent {
 
   onRowClick(event: any) {
     if (this.platformService.isBrowser) {
-      console.log(event);
-      window.open('http://tun.fi/' + (event.row.id.replace('http://tun.fi/', '')), "_blank");
+      window.open('http://tun.fi/' + (event.row.id.replace('http://tun.fi/', '')), '_blank');
     }
   }
 }

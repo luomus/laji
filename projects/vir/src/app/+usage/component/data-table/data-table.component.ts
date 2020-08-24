@@ -1,10 +1,18 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { DatatableColumn } from '../../../../../../../src/app/shared-modules/datatable/model/datatable-column';
 import { DatatableHeaderComponent } from '../../../../../../../src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../../src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
 
-type TableType = 'downloads'|'people'
+type TableType = 'downloads'|'people'|'user';
 
 @Component({
   selector: 'vir-data-table',
@@ -37,11 +45,15 @@ type TableType = 'downloads'|'people'
                   [columns]="cols">
           </laji-datatable>
       </div>
+      <ng-template let-value="value" let-sort="sortFn" #downloadFileTpl>
+        <a [href]="'/api/file-download?id=' + value">{{'usage.dataDownloadLink' | translate}}</a>
+      </ng-template>
   `
 })
-export class DataTableComponent {
+export class DataTableComponent implements AfterViewInit {
 
   @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
+  @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
   downloadLoading: boolean;
 
   cols:  DatatableColumn[] = [];
@@ -93,6 +105,13 @@ export class DataTableComponent {
       name: 'dataUsePurpose',
       label: 'usage.dataUsePurpose',
       canAutoResize: true
+    },
+    {
+      prop: 'id',
+      name: 'download',
+      label: 'usage.dataDownload',
+      cellTemplate: this.downloadFileTpl,
+      canAutoResize: true
     }
   ];
 
@@ -108,6 +127,10 @@ export class DataTableComponent {
   ) {
   }
 
+  ngAfterViewInit() {
+    this.cols = this.getColsFromType(this._type);
+  }
+
   download(type: string) {
     this.downloadLoading = true;
     this.exportService.exportFromData(this.data, this.getColsFromType(this._type), type as BookType, this.exportFileName)
@@ -116,13 +139,15 @@ export class DataTableComponent {
         this.header.downloadComponent.closeModal();
       }, () => {
         this.downloadLoading = false;
-      })
+      });
   }
 
   @Input()
   set type(type: TableType) {
     this._type = type;
-    this.cols = this.getColsFromType(type);
+    if (this.downloadFileTpl) {
+      this.cols = this.getColsFromType(type);
+    }
   }
 
   getColsFromType(type: TableType) {
@@ -131,12 +156,19 @@ export class DataTableComponent {
         return this.getCols(['organisation', 'section', 'fullName', 'emailAddress']);
       case 'downloads':
         return this.getCols(['requested', 'person', 'collectionId', 'dataUsePurpose']);
+      case 'user':
+        return this.getCols(['requested', 'collectionId', 'dataUsePurpose', 'download']);
     }
   }
 
-  private getCols(cols: string[]) {
-    return cols.map(c => ({
-      ...this.allCols.find(col => c === col.name)
-    }))
+  private getCols(cols: string[]): DatatableColumn[] {
+    return cols.map(c => {
+      const column = this.allCols.find(col => c === col.name);
+      if (column.name === 'download') {
+        column.cellTemplate = this.downloadFileTpl;
+      }
+
+      return column;
+    });
   }
 }
