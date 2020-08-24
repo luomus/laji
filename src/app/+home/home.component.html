@@ -19,7 +19,7 @@
 <div class="d-flex justify-between xs:flex-wrap">
   <div class="sections-container width-0 lu-text-content">
     <div class="d-flex justify-center home-content-container section-1">
-      <div class="d-flex content-max-width">
+      <div class="d-flex xs:flex-wrap content-max-width">
         <div class="flex-grow home-main">
           <h1>{{ 'home.main-page.title' | translate }}</h1>
           <laji-technical-news></laji-technical-news>
@@ -113,7 +113,7 @@
 </ng-template>
 
 <ng-template #navigationThumbnails>
-  <div class="d-flex flex-wrap mt-7">
+  <div class="d-flex flex-wrap my-7">
     <div routerLink="taxon" class="home-card d-flex flex-col items-center mr-3 mb-3">
       <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/species.svg)'"></div>
       <div>
