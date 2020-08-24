@@ -58,6 +58,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   @ViewChild(OwnObservationTableSettingsComponent, { static: true }) public settingsModalOwn: OwnObservationTableSettingsComponent;
 
   @Input() query: WarehouseQueryInterface;
+  @Input() overrideInQuery: WarehouseQueryInterface;
   @Input() pageSize;
   @Input() page = 1;
   @Input() isAggregate = true;
@@ -377,6 +378,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   }
 
   fetchPageGiorgio(page = 1) {
+    this.query = {...this.query, ...this.overrideInQuery};
+
     if (!this.pageSize) {
       return;
     }
