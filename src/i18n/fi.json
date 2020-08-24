@@ -434,6 +434,7 @@
   "home.inat.desc": "iNaturalist Suomi on osa kansainvälistä iNaturalist-verkostoa. Palvelun avulla tuotetut havainnot tallentuvat lopulta Suomen Lajitietokeskukseen ja ovat sen kautta tutkijoiden, viranomaisten ja harrastajien käytettävissä. Sinun tarvitsee vain havainnoida!",
   "home.inat.btn": "Kirjaa luontohavaintosi iNaturalist palvelussa",
   "home.some.title": "Lajitietokeskus sosiaalisessa mediassa",
+  "home.map.latest": "viimeisen päivän ajalta.",
   "identification": "Määritys",
   "identify.intro": "Tällä sivulla voit selailla kuvia havainnoista joille ei ole lajitason määritystä. Klikkaamalla kuvaa näet enemmän tietoa havainnosta ja avautuvassa tietoikkunassa voit tarkastella kuvaa suurempana. Tietosivulla voit myös ehdottaa kuvalle lajimääritystä. Jos mielestäsi kuvan perusteella ei ole mahdollista päästä lajitason määritykseen, voit rastittaa \"Ei voida määrittää\". Jos riittävän moni käyttäjä rastittaa \"Ei voida määrittää\", kuvaa ei enää tarjota jatkossa tunnistuspalvelussa.",
   "identify.mostActiveTitle": "Aktiivisimmat määrittäjät",

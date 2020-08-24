@@ -78,12 +78,14 @@
         [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"
       ></laji-observation-map>
       <div>
-        <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today?.total"></laji-observation-count>
-        {{ 'viewer.unit' | translate }}
-        <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday?.total" ></laji-observation-count>
-        {{ 'observation.results.species' | translate }}
+        <div>
+          <strong><laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today?.total"></laji-observation-count></strong>
+          {{ 'viewer.unit' | translate }}
+          <strong><laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday?.total" ></laji-observation-count></strong>
+          {{ 'observation.results.species' | translate }}
+        </div>
         <a [routerLink]="['/observation/map'] | localize" [queryParams]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206'}">
-          viimeisen päivän ajalta
+          {{ 'home.map.latest' | translate }}
         </a>
       </div>
     </div>
