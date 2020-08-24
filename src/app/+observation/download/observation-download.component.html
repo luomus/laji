@@ -8,7 +8,7 @@
   <div class="modal-body">
     <p
       *ngIf="!hasPersonalData"
-      [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
+      [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
     </p>
     <section>
       <h3>{{ 'result.load.titleSimple' | translate }}</h3>
@@ -60,32 +60,18 @@
       <ng-container *lajiLoggedIn="true">
         <div *ngIf="loadLimit >= unitCount && unitCount > 0" style="margin-bottom: 15px;">
           <p
-            [innerHtml]="'result.load.introPublic' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')} ">
+            [innerHtml]="'result.load.introPublic' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')} ">
           </p>
           <alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
-          <ng-container *lajiForTypes="['vir']">
-            <lu-message type="danger">
-              <strong>Huom:</strong> Tämä palvelu on vielä keskeneräinen ja julkaistaan valmistuttuaan!
-            </lu-message>
-            <!--
-            <lu-button
-              [disabled]="!reason || requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading || hasPersonalData"
-              (click)="makePublicRequest(true)">
-              {{ 'observation.download.loadPublic' | translate }}
-            </lu-button>
-            -->
-          </ng-container>
-          <ng-container *lajiForTypes="['vir']; exclude:true">
-            <lu-button
-              [loading]="requests['download'] === requestStatus.loading"
-              [disabled]="requests['download'] === requestStatus.done || hasPersonalData"
-              (click)="makePublicRequest()">
-              <i class="glyphicon glyphicon-download-alt"></i>
-              {{ 'observation.download.loadPublic' | translate }}
-            </lu-button>
-          </ng-container>
+          <lu-button
+            [loading]="requests['download'] === requestStatus.loading"
+            [disabled]="requests['download'] === requestStatus.done || hasPersonalData"
+            (click)="makePublicRequest()">
+            <i class="glyphicon glyphicon-download-alt"></i>
+            {{ 'observation.download.loadPublic' | translate }}
+          </lu-button>
         </div>
       </ng-container>
     </section>
@@ -99,7 +85,7 @@
       </alert>
       <ng-container *lajiLoggedIn="true">
         <div *ngIf="loadLimit >= unitCount">
-          <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
+          <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
           <alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
@@ -121,7 +107,7 @@
         {{ 'observation.export.tooLittle' | translate }}
       </div>
       <div *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
-        <p [innerHtml]="'result.load.introSpecies' | translate"></p>
+        <p [innerHtml]="'result.load.introSpecies' | translate"></p>
         <lu-button
           [loading]="speciesCsvLoading"
           (click)="downloadSpecies($event)"

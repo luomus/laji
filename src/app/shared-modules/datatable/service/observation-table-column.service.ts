@@ -34,6 +34,8 @@ export interface IColumns {
   'unit.media.mediaType': ObservationTableColumn;
   'document.collectionId': ObservationTableColumn;
   'unit.notes': ObservationTableColumn;
+  'unit.facts.fact': ObservationTableColumn;
+  'unit.facts.value': ObservationTableColumn;
   'document.secureLevel': ObservationTableColumn;
   'document.secureReasons': ObservationTableColumn;
   'document.sourceId': ObservationTableColumn;
@@ -246,6 +248,15 @@ export const COLUMNS: IColumns = {
     cellTemplate: 'warehouseLabel',
     label: 'observation.active.superRecordBasis'
   },
+  'unit.facts.fact': {
+    name: 'unit.facts.fact',
+    prop: 'unit.facts.fact',
+    cellTemplate: 'label'
+  },
+  'unit.facts.value': {
+    name: 'unit.facts.value',
+    prop: 'unit.facts.value'
+  },
   'oldestRecord': {name: 'oldestRecord', width: 85},
   'newestRecord': {name: 'newestRecord', width: 85},
   'count': {name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric'},
@@ -417,6 +428,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.formId'],
     COLUMNS['document.keywords'],
     COLUMNS['unit.det'],
+    COLUMNS['unit.facts.fact'],
+    COLUMNS['unit.facts.value'],
     COLUMNS['gathering.conversions.dayOfYearBegin'],
     COLUMNS['gathering.conversions.dayOfYearEnd'],
     COLUMNS['unit.superRecordBasis'],

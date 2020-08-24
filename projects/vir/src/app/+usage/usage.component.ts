@@ -5,7 +5,8 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   template: `
     <div class="container-fluid mt-6">
       <laji-navigation-thumbnail name="usage.byCollection" icon="chart" path="usage/by-collection"></laji-navigation-thumbnail>
-      <laji-navigation-thumbnail name="usage.byPerson" icon="person" path="usage/by-person"></laji-navigation-thumbnail>
+      <laji-navigation-thumbnail name="usage.byUser" icon="person" path="usage/by-user"></laji-navigation-thumbnail>
+      <laji-navigation-thumbnail name="usage.byOrganization" icon="person" path="usage/by-organization"></laji-navigation-thumbnail>
     </div>
   `,
   styles: [],

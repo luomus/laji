@@ -67,9 +67,10 @@ export class ObservationResultService {
     pageSize: number,
     orderBy: string[] = [],
     lang: string,
-    useStatistics: boolean = false
+    useStatistics: boolean = false,
+    showFacts: boolean = false
   ): Observable<PagedResult<any>> {
-    const _aggregateBy = this.prepareFields(aggregateBy).filter(val => this.removeAggregateFields.indexOf(val) === -1);
+    const _aggregateBy = this.prepareFields(aggregateBy, showFacts ? false : true).filter(val => this.removeAggregateFields.indexOf(val) === -1);
     const key = JSON.stringify(query) + [_aggregateBy.join(','), orderBy.join(','), lang, page, pageSize, useStatistics].join(':');
     if (this.aggregateKey !== key && this.aggregateData) {
       this.aggregateKey = key;

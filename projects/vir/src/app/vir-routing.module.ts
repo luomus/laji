@@ -58,7 +58,9 @@ const allRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(allRoutes)],
+  imports: [RouterModule.forRoot(allRoutes, {
+    initialNavigation: 'enabled'
+  })],
   exports: [RouterModule]
 })
 export class VirRoutingModule { }
