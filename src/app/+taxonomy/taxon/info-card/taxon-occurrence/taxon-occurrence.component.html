@@ -174,8 +174,7 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <!-- Habitat table -->
-    <!--<div [hidden]="!filterByHabitatTotal"
+    <div [hidden]="taxon.habitatOccurrenceCounts.length === 0"
          class="panel panel-default"
          laji-panel
          [title]="'observation.active.anyHabitat' | translate"
@@ -185,20 +184,32 @@
     <p class="disclaimer">
       {{ 'taxonomy.observations.habitat.disclaimer' | translate }}
     </p>
-      <laji-observation-table
-        [showHeader]="false"
-        [showFooter]="false"
-        [virtualScrolling]="false"
-        [pageSize]="100"
-        [showSettingsMenu]="false"
-        [isAggregate]="true"
-        [selected]="['unit.facts.fact', 'unit.facts.value']"
-        [query]="habitatQuery"
-        [showRowAsLink]="false"
-        [factInfo]="true"
-        (total)="filterByHabitatTotal = $event"
-      ></laji-observation-table>
-    </div>-->
+      <laji-datatable
+      class="habitat-datatable"
+      [height]="'200px'"
+      [rows]="filterHabitats"
+      [columns]="[
+        {
+          name: 'habitat',
+          label: 'MO.habitat' | label,
+          cellTemplate: 'multiLang'
+        },
+        {
+          name: 'occurrenceCount',
+          label: 'MO.count' | label,
+          cellTemplate: 'label',
+          width: 30
+        }
+      ]"
+      [showHeader]="false"
+      [showFooter]="false"
+      [virtualScrolling]="false"
+      [clientSideSorting]="true"
+      [count]="taxon.habitatOccurrenceCounts.length"
+      [page]="1"
+      [pageSize]="taxon.habitatOccurrenceCounts.length"
+    ></laji-datatable>
+    </div>
     
     <div [hidden]="!filterByRecordBasisTotal"
          class="panel panel-default"
