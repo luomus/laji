@@ -38,7 +38,7 @@ export const environment = {
     researchProjects: ['MHL.33', 'MHL.50', 'MHL.57']
   },
   apiBase: 'https://dev.laji.fi/api',
-  loginUrl: 'https://login-dev.laji.fi/login',
-  selfPage: 'https://login-dev.laji.fi/self',
+  loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
+  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi'
 };
