@@ -41,8 +41,8 @@ export const environment = {
   },
   rootCollections: ['HR.128'],
   apiBase: 'https://dev.laji.fi/api',
-  loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
-  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
+  loginUrl: 'https://login-dev.laji.fi/login',
+  selfPage: 'https://login-dev.laji.fi/self',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
   globalMessageIds: {
     '\/observation.*': '3999',
