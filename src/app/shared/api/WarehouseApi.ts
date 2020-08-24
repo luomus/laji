@@ -282,6 +282,8 @@ export class WarehouseApi {
 
     if (downloadType !== undefined) {
       queryParameters['downloadType'] = downloadType;
+    } else {
+      queryParameters['downloadType'] = 'CITABLE';
     }
 
 
