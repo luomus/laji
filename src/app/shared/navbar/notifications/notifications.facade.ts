@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, of, from } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of, from, EMPTY } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs/operators';
 import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
 import gql from 'graphql-tag';
@@ -105,7 +105,9 @@ export class NotificationsFacade {
       personToken: this.userService.getToken(),
       page: page,
       pageSize: this.pageSize
-    }).subscribe(this.notificationsReducer.bind(this));
+    }).pipe(
+      catchError(() => EMPTY)
+    ).subscribe(this.notificationsReducer.bind(this));
   }
 
   private subscribeUnseenCount() {
@@ -115,7 +117,8 @@ export class NotificationsFacade {
       pageSize: 1,
       onlyUnSeen: true
     }).pipe(
-      map(unseen => unseen.total || 0)
+      map(unseen => unseen.total || 0),
+      catchError(() => of(0))
     ).subscribe(this.unseenCountReducer.bind(this));
   }
 
@@ -153,6 +156,7 @@ export class NotificationsFacade {
       variables: {personToken: this.userService.getToken(), pageSize: 1}
     }).pipe(
       map(({data}) => data),
+      catchError(e => of({unseenCount: {total: 0}, notifications: {total: 0, results: []}}))
     ).subscribe((data) => {
       this.unseenCountReducer(data.unseenCount.total);
       if (
