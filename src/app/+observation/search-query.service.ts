@@ -115,7 +115,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'dayOfYearEnd',
     'individualCountMin',
     'individualCountMax',
-    /*'countMaxFinland',*/
+    'occurrenceCountFinlandMax',
     'coordinateAccuracyMax',
     'page',
     'pageSize'
