@@ -14,4 +14,10 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
   providers: [NotificationsFacade]
 })
 export class NavBarComponent extends LajiNavBarComponent {
+  @ViewChild('usageMenu') private usageDropdown: BsDropdownDirective;
+
+  onCloseUsageDropdown() {
+    this.usageDropdown.hide();
+    this.changeDetector.markForCheck();
+  }
 }

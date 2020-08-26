@@ -26,7 +26,6 @@ export class TaxonOccurrenceComponent implements OnChanges {
   filterBySexTotal: number;
   filterByCollectionIdTotal: number;
   filterByHabitatTotal: number;
-
   filterHabitats: Array<any> = [];
 
   constructor() { }
@@ -34,7 +33,6 @@ export class TaxonOccurrenceComponent implements OnChanges {
   ngOnChanges() {
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
     this.chartQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id);
-
     this.hasMonthDayData = undefined;
     this.hasYearData = undefined;
     this.hasMonthDayData = undefined;

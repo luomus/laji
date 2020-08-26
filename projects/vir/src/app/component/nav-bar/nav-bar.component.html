@@ -44,8 +44,17 @@
               <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveVirObservations' | translate }}</a>
             </li>
             -->
-            <li [routerLinkActive]="['active']">
+            <li class="d-none xs:d-block" [routerLinkActive]="['active']">
               <a [routerLink]="['/usage'] | localize">{{ 'navigation.usage' | translate }}</a>
+            </li>
+            <li class="d-block xs:d-none" dropdown #usageMenu="bs-dropdown">
+              <a dropdownToggle class="link user">
+                {{ 'navigation.usage' | translate }}
+                <span class="glyphicon glyphicon-triangle-bottom"></span>
+              </a>
+              <div *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
+                <vir-usage-dropdown (close)="onCloseUsageDropdown()"></vir-usage-dropdown>
+              </div>
             </li>
             <!--
             <li [routerLinkActive]="['active']">
@@ -75,7 +84,7 @@
                   <a dropdownToggle class="link user">
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
                     <i class="glyphicon glyphicon-user"></i>
-                    <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span>
+<!--                     <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span> -->
                   </a>
                   <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
                     <li role="menuitem">
@@ -84,12 +93,12 @@
                     <li role="menuitem">
                       <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
                     </li>
-                    <ng-container *ngIf="(notificationsTotal$ | async) > 0">
+<!--                     <ng-container *ngIf="(notificationsTotal$ | async) > 0">
                       <li role="separator" class="divider"></li>
                       <li>
                         <laji-notifications (close)="onClose()"></laji-notifications>
                       </li>
-                    </ng-container>
+                    </ng-container> -->
                   </ul>
                 </li>
                 <li *ngIf="!(userService.isLoggedIn$ | async)">

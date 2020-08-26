@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'vir-usage-by-person',
-  templateUrl: './usage-by-person.component.html',
-  styleUrls: ['./usage-by-person.component.scss'],
+  selector: 'vir-usage-by-organization',
+  templateUrl: './usage-by-organization.component.html',
+  styleUrls: ['./usage-by-organization.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsageByPersonComponent {
+export class UsageByOrganizationComponent {
 
   organisation: string;
   users$: Observable<IVirUser[]>;

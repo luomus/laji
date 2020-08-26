@@ -419,6 +419,7 @@
   "home.inat.desc": null,
   "home.inat.btn": null,
   "home.some.title": null,
+  "home.map.latest": null,
   "identification": "Identifiering",
   "identify.intro": "Här kan du bläddra i observationer utan identifiering av artnivå. Klicka på en bild för att se mer information om observationen och en större bild. På informationssidan kan du också föreslå en identifiering. Om du känner det bilden är oidentifierbar på artnivå, kan du kryssrutan \"Oidentifierbar\". När många användare säger att en bild är oidentifierbar, bilden visas inte på den här sidan.",
   "identify.mostActiveTitle": "De mest aktiva determinanterna",
