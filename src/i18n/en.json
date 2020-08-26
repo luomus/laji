@@ -1278,7 +1278,7 @@
   "theme.checklist.intro": "The annual versions of the national checklist of Finnish species.",
   "theme.cnt": "count",
   "theme.square": "squares",
-  "theme.count": "Count",
+  "theme.count": "Observations",
   "theme.countShort": "Count",
   "theme.emk.intro": "Information about the Finnish biogeographical provinces.",
   "theme.filterAll": "Whole material {{from}} - {{to}}",
