@@ -1208,6 +1208,7 @@
   "taxonomy.speciesPage.intro": "Filtera, bläddra och ladda ner artlistor",
   "taxonomy.taxonPage": "Bläddra taxonomin",
   "taxonomy.taxonPage.search": "Skriv taxons namn",
+  "taxonomy.taxonPage.intro": null,
   "taxonomy.active.adminStatusFilters": "Administrativ status",
   "taxonomy.active.informalGroupFilters": "Organismgrupp",
   "taxonomy.active.invasiveSpeciesFilter": "Främmande art",
