@@ -17,8 +17,10 @@ export class DocumentFormFooterComponent {
   @Input() readonly: Readonly = Readonly.false;
   @Input() edit = false;
   @Input() lajiForm: LajiFormComponent;
+  @Input() template = false;
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
+  @Output() submitTemplate = new EventEmitter();
   @Output() cancel = new EventEmitter();
   @Output() lock = new EventEmitter<boolean>();
   _form: any;
@@ -39,6 +41,7 @@ export class DocumentFormFooterComponent {
 
   @Input()
   set form(form: any) {
+    console.log(this.template)
     if (!form) {
       return;
     }

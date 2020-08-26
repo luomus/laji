@@ -34,6 +34,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   @Input() documentId: string;
   @Input() showHeader = true;
   @Input() showShortcutButton = true;
+  @Input() template = false;
   @Output() success = new EventEmitter<ISuccessEvent>();
   @Output() error = new EventEmitter();
   @Output() cancel = new EventEmitter();
@@ -49,6 +50,10 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   isAdmin = false;
   validationErrors: any;
   touchedCounter = 0;
+  templateForm =  {
+    name: '',
+    description: ''
+  };
 
   private subErrors: Subscription;
   private subSaving: Subscription;
@@ -68,6 +73,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(this.template)
     if (changes['formId'] || changes['documentId']) {
       this.lajiFormFacade.loadForm(this.formId, this.documentId);
       this.subErrors = this.lajiFormFacade.error$.pipe(
@@ -155,6 +161,11 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   submitPrivate() {
     this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
     this.lajiForm.submit();
+  }
+
+  submitTemplate() {
+    this.lajiForm.submit();
+    alert('ok')
   }
 
   onValidationError(errors) {
