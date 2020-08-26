@@ -1,4 +1,6 @@
 {
+  "download.AUTHORITIES_LIGHTWEIGHT": "Valintasi mukainen havaintotiedosto",
+  "download.AUTHORITIES_FULL": "Kattava havaintotiedosto",
   "navigation.taxonomy": "Lajitieto",
   "navigation.observation": "Havaintotieto",
   "navigation.saveVirObservations": "Tallenna havaintoja",
