@@ -1,21 +1,21 @@
-<div class="d-flex flex-nowrap mb-4" *lajiForTypes="['dev', 'prod', 'beta', 'embedded']">
+<div routerLink="taxon/browse" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link" *lajiForTypes="['dev', 'prod', 'beta', 'embedded']">
   <div class="img-container">
     <img src="/static/images/icons/kotilo_1_sha.png">
   </div>
-  <a routerLink="taxon/browse" (click)="onClose()" class="nav-container">
+  <div class="nav-container">
     <div class="nav-title">
       {{ 'taxonomy.browseSpeciesPage' | translate }}
     </div>
     <div class="nav-description">
       {{ 'taxonomy.browseSpeciesPage.intro' | translate}}
     </div>
-  </a>
+  </div>
 </div>
-<div class="d-flex flex-nowrap mb-4">
+<div routerLink="taxon/list" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
   <div class="img-container">
     <img src="/static/images/icons/table.png">
   </div>
-  <a routerLink="taxon/list" (click)="onClose()" class="nav-container">
+  <a class="nav-container">
     <div class="nav-title">
       {{ 'taxonomy.speciesPage' | translate }}
     </div>
@@ -24,11 +24,11 @@
     </div>
   </a>
 </div>
-<div class="d-flex flex-nowrap mb-4">
+<div routerLink="taxon/MX.37600/taxonomy" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
   <div class="img-container">
     <img src="/static/images/icons/tree.png">
   </div>
-  <a routerLink="taxon/MX.37600/taxonomy" (click)="onClose()" class="nav-container">
+  <a class="nav-container">
     <div class="nav-title">
       {{ 'taxonomy.taxonPage' | translate }}
     </div>
