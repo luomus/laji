@@ -92,6 +92,7 @@ export class UserDocumentToolsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('porcoddio')
     this.modalService.onHide.subscribe((e) => {
       const body = document.body;
       body.classList.add("modal-open-after");
@@ -221,7 +222,7 @@ export class UserDocumentToolsComponent implements OnInit {
     )
 
     const documentEditor$ = this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
-      map(document => document.editors),
+      map(document => document.editor),
       map(editors => editors.indexOf(this._personID) !== -1),
       catchError(() => of(false))
     )
