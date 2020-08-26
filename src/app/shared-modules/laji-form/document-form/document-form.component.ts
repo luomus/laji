@@ -12,6 +12,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { FooterService } from '../../../shared/service/footer.service';
@@ -21,6 +22,9 @@ import { Document } from '../../../shared/model/Document';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
 import { FormError, ILajiFormState, ISuccessEvent, LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
+import { DocumentApi } from '../../../shared/api/DocumentApi';
+import { TemplateForm } from '../../own-submissions/models/template-form';
+import { DocumentService } from '../../own-submissions/service/document.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -50,9 +54,10 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   isAdmin = false;
   validationErrors: any;
   touchedCounter = 0;
-  templateForm =  {
+  templateForm: TemplateForm = {
     name: '',
-    description: ''
+    description: '',
+    type: 'gathering'
   };
 
   private subErrors: Subscription;
@@ -67,13 +72,15 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
               public translate: TranslateService,
               private toastsService: ToastsService,
               private dialogService: DialogService,
-              private changeDetector: ChangeDetectorRef) {
+              private changeDetector: ChangeDetectorRef,
+              private documentApi: DocumentApi,
+              private documentService: DocumentService,
+              private router: Router) {
     this.vm$ = this.lajiFormFacade.vm$;
     this.footerService.footerVisible = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.template)
     if (changes['formId'] || changes['documentId']) {
       this.lajiFormFacade.loadForm(this.formId, this.documentId);
       this.subErrors = this.lajiFormFacade.error$.pipe(
@@ -128,29 +135,56 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   onSubmit(event) {
+    console.log(this.templateForm);
+    return;
     if (this.subSaving) {
       return;
     }
     const document = event.data.formData;
-    this.lajiForm.block();
-    this.subSaving = this.lajiFormFacade.save(document, this.publicityRestrictions).subscribe((res) => {
-      this.lajiForm.unBlock();
-      if (res.success) {
-        this.toastsService.showSuccess(
-          this.getMessage(
-            this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
-            this.translate.instant('haseka.form.success')
-          )
-        );
-        this.success.emit(res);
-      } else {
-        this.saveVisibility = 'shown';
-        this.status = 'unsaved';
-        this.toastsService.showError(this.getMessage('error', this.translate.instant('haseka.form.error')));
-        this.subSaving = undefined;
-      }
-      this.changeDetector.markForCheck();
-    });
+    if (!this.template) {
+      this.lajiForm.block();
+      this.subSaving = this.lajiFormFacade.save(document, this.publicityRestrictions).subscribe((res) => {
+        this.lajiForm.unBlock();
+        if (res.success) {
+          this.toastsService.showSuccess(
+            this.getMessage(
+              this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+              this.translate.instant('haseka.form.success')
+            )
+          );
+          this.success.emit(res);
+        } else {
+          this.saveVisibility = 'shown';
+          this.status = 'unsaved';
+          this.toastsService.showError(this.getMessage('error', this.translate.instant('haseka.form.error')));
+          this.subSaving = undefined;
+        }
+        this.changeDetector.markForCheck();
+      });
+    } else {
+      this.documentService.saveTemplate({...this.templateForm, document: document})
+      .subscribe(
+        () => {
+          this.translate.get('template.success')
+            .subscribe((value) => this.toastsService.showSuccess(value));
+          this.templateForm = {
+            name: '',
+            description: '',
+            type: 'gathering'
+          };
+          //this.success.emit(res);
+          this.changeDetector.markForCheck();
+        },
+        (err) => {
+          this.translate.get('template.error')
+            .subscribe((value) => this.toastsService.showError(value));
+          this.changeDetector.markForCheck();
+        });
+        this.router.navigate(['/vihko/templates']);
+    }
+  }
+
+  onSaveTemplate(event) {
   }
 
   submitPublic() {

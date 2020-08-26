@@ -41,7 +41,6 @@ export class DocumentFormFooterComponent {
 
   @Input()
   set form(form: any) {
-    console.log(this.template)
     if (!form) {
       return;
     }
