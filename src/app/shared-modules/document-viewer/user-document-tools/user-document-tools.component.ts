@@ -221,7 +221,7 @@ export class UserDocumentToolsComponent implements OnInit {
       catchError(() => of(false))
     )
 
-    const documentEditor$ = this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
+    const documentEditor$ = this.hasEditRights ? of(true) : this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
       map(document => document.editor),
       map(editors => editors.indexOf(this._personID) !== -1),
       catchError(() => of(false))
