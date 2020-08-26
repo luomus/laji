@@ -64,7 +64,7 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
             <laji-spinner [spinning]="downloadLoading" [overlay]="true">
               <button type="button"
                       class="btn btn-default pull-right"
-                      [disabled]="downloadLoading || (showReason && !reason && !reasonEnum)"
+                      [disabled]="downloadLoading || (showReason && (!reason || !reasonEnum))"
                       (click)="onDownload()">
                 <span>{{ "haseka.submissions.download" | translate }}</span>
               </button>
