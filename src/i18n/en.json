@@ -426,7 +426,7 @@
   "home.inat.desc": "iNaturalist Finland is part of the international iNaturalist network. Observations recorded with iNaturalist will be copied to FinBIF and are available for Finnish researchers, authorities and anyone interested. All you need to do is to make some observations!",
   "home.inat.btn": "Record observations with iNaturalist",
   "home.some.title": "FinBIF in social media",
-  "home.map.latest": "from the last day.",
+  "home.map.latest": "from the latest day.",
   "identification": "Identification",
   "identify.intro": "Here you can browse observations without a species level identification. Click an image to see more information about the observation and a larger image. On the information page you can also suggest an identification. If you feel that based on the image it is not possible to come to a species level identification, you can check the \"Unidentifiable\" checkbox. When many users say an image is not identifiable, the image will no longer be shown on this page.",
   "identify.mostActiveTitle": "Most active identification providers",
