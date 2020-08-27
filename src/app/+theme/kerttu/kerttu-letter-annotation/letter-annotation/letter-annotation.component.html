@@ -18,7 +18,7 @@
   <div class="col-md-12">
     <h3>{{ 'theme.kerttu.areLettersSame' | translate }}</h3>
     <laji-three-state-switch
-      (valueChange)="this.currentAnnotation = $event; annotationChange.emit($event)"
+      (valueChange)="onAnnotationChange($event)"
       [onValue]="annotation.yes"
       [offValue]="annotation.no"
       [undefinedValue]="annotation.unsure"
@@ -70,7 +70,7 @@
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
       [zoomed]="zoomed"
-      [autoplay]="true"
+      [autoplay]="autoplayCandidate"
       [autoplayRepeat]="3"
       (audioLoading)="loadingCandidate = $event"
     ></laji-audio-viewer>

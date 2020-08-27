@@ -23,6 +23,7 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   loadingTemplate = false;
   loadingCandidate = false;
   candidateLongerVisible = false;
+  autoplayCandidate = false;
 
   candidateYRange: number[];
 
@@ -66,6 +67,7 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
       this.cdr.markForCheck();
     }, 0);
     if (changes.template && this.template) {
+      this.autoplayCandidate = false;
       this.taxon$ = this.resultService.getTaxon(this.template.taxonId);
     }
     if (this.template && this.candidate) {
@@ -83,5 +85,11 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
     if (confirm(this.translate.instant('theme.kerttu.confirmSkipLetter'))) {
       this.skipLetterClick.emit();
     }
+  }
+
+  onAnnotationChange(annotation: LetterAnnotation) {
+    this.autoplayCandidate = true;
+    this.currentAnnotation = annotation;
+    this.annotationChange.emit(annotation);
   }
 }
