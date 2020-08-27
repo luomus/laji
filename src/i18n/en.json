@@ -1138,7 +1138,7 @@
   "taxonomy.speciesPage.intro": "Filter, browse and download lists of species",
   "taxonomy.taxonPage": "Browse taxonomy",
   "taxonomy.taxonPage.search": "Write taxon’s name",
-  "taxonomy.taxonPage.intro": null,
+  "taxonomy.taxonPage.intro": "Browse the tree of life according to scientific classification.",
   "taxonomy.active.adminStatusFilters": "Administrative status",
   "taxonomy.active.informalGroupFilters": "Informal group",
   "taxonomy.active.invasiveSpeciesFilter": "Invasive species",
