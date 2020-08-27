@@ -344,6 +344,7 @@
   "haseka.mobile.newObservation": "Ny observation",
   "haseka.mobile.ownSubmissions": "Tidigare observationer",
   "haseka.editingOldDocumentWarning": "Obs! Du ändrar dokument skapat den {{ date }}. Du kan fortsätta om du verkligen vill redigera gamla observationer. Men om du vill lägga till nya observationer, gå tillbaka till projektets framsida.",
+  "haseka.createPrefilledForm": "Skapa ett förfylld formulär",
 
   "vihko.home.title": "Spara observationer",
   "vihko.home.form.mobile": "Mobil",

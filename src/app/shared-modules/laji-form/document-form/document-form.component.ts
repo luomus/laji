@@ -130,13 +130,15 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     this.touchedCounter++;
   }
 
+  somethingChanged(input, event) {
+    this.templateForm[input] = event.target.value
+  }
+
   lock(lock) {
     this.lajiFormFacade.lock(lock);
   }
 
   onSubmit(event) {
-    console.log(this.templateForm);
-    return;
     if (this.subSaving) {
       return;
     }
@@ -166,7 +168,12 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
       .subscribe(
         () => {
           this.translate.get('template.success')
-            .subscribe((value) => this.toastsService.showSuccess(value));
+            .subscribe((value) => {
+            this.toastsService.showSuccess(value);
+            setTimeout(() => {
+              this.router.navigate(['/vihko/templates']);
+            }, 200); 
+            });
           this.templateForm = {
             name: '',
             description: '',
@@ -180,7 +187,6 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
             .subscribe((value) => this.toastsService.showError(value));
           this.changeDetector.markForCheck();
         });
-        this.router.navigate(['/vihko/templates']);
     }
   }
 
@@ -198,8 +204,8 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   submitTemplate() {
+    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
     this.lajiForm.submit();
-    alert('ok')
   }
 
   onValidationError(errors) {

@@ -357,6 +357,7 @@
   "haseka.mobile.newObservation": "Uusi havainto",
   "haseka.mobile.ownSubmissions": "Aiemmat havainnot",
   "haseka.editingOldDocumentWarning": "Huom: Olet muokkaamassa {{ date }} luotua havaintoerää. Voit jatkaa muokkausta jos todella haluat muokata tai täydentää vanhoja havaintoja. Jos sen sijaan haluat tallentaa uusia havaintoja, palaa projektin etusivulle.",
+  "haseka.createPrefilledForm": "Luo esitäytetty lomake",
 
   "vihko.home.title": "Tallenna havaintoja",
   "vihko.home.form.mobile": "Mobiili",

@@ -351,6 +351,7 @@
   "haseka.mobile.newObservation": "New observation",
   "haseka.mobile.ownSubmissions": "Previous observations",
   "haseka.editingOldDocumentWarning": "Note: You are modifying document created on {{ date }}. You can continue if you really want to edit old observations. But if you want to add new observations, please go back to the project front page.",
+  "haseka.createPrefilledForm": "Create a prefilled form",
 
   "vihko.home.title": "Save observations",
   "vihko.home.form.mobile": "Mobile",
