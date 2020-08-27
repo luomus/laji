@@ -420,7 +420,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       data = this.dedupeByKey(data, 'id');
       this.total.emit(data && data.length || 0);
       // data.total = data.length;
-      console.log(this.result.results)
       this.result.results = data;
       this.result.total = data.length;
       this.result.pageSize = this.pageSize;
