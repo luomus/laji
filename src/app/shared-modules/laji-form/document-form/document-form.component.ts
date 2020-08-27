@@ -25,6 +25,7 @@ import { FormError, ILajiFormState, ISuccessEvent, LajiFormDocumentFacade } from
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentService } from '../../own-submissions/service/document.service';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'laji-document-form',
@@ -34,6 +35,7 @@ import { DocumentService } from '../../own-submissions/service/document.service'
 })
 export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCanDeactivate {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
+  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
   @Input() formId: string;
   @Input() documentId: string;
   @Input() showHeader = true;
@@ -44,6 +46,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   @Output() cancel = new EventEmitter();
   @Output() accessDenied = new EventEmitter();
   @Output() missingNamedplace = new EventEmitter();
+  event: EventEmitter<any> = new EventEmitter();
 
   errors = FormError;
   hasAlertContent = false;
@@ -59,6 +62,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     description: '',
     type: 'gathering'
   };
+  tmpDocument: any = {};
 
   private subErrors: Subscription;
   private subSaving: Subscription;
@@ -164,29 +168,8 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
         this.changeDetector.markForCheck();
       });
     } else {
-      this.documentService.saveTemplate({...this.templateForm, document: document})
-      .subscribe(
-        () => {
-          this.translate.get('template.success')
-            .subscribe((value) => {
-            this.toastsService.showSuccess(value);
-            setTimeout(() => {
-              this.router.navigate(['/vihko/templates']);
-            }, 200); 
-            });
-          this.templateForm = {
-            name: '',
-            description: '',
-            type: 'gathering'
-          };
-          //this.success.emit(res);
-          this.changeDetector.markForCheck();
-        },
-        (err) => {
-          this.translate.get('template.error')
-            .subscribe((value) => this.toastsService.showError(value));
-          this.changeDetector.markForCheck();
-        });
+        this.tmpDocument = document;
+        this.templateModal.show();
     }
   }
 
@@ -206,6 +189,35 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   submitTemplate() {
     this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
     this.lajiForm.submit();
+  }
+
+  saveTemplate() {
+    this.documentService.saveTemplate({...this.templateForm, document: this.tmpDocument})
+    .subscribe(
+      () => {
+        this.translate.get('template.success')
+          .subscribe((value) => {
+          this.toastsService.showSuccess(value);
+          setTimeout(() => {
+            this.templateModal.hide();
+            this.router.navigate(['/vihko/templates']);
+          }, 200); 
+          });
+        this.templateForm = {
+          name: '',
+          description: '',
+          type: 'gathering'
+        };
+
+        this.tmpDocument = {};
+        //this.success.emit(res);
+        this.changeDetector.markForCheck();
+      },
+      (err) => {
+        this.translate.get('template.error')
+          .subscribe((value) => this.toastsService.showError(value));
+        this.changeDetector.markForCheck();
+      });
   }
 
   onValidationError(errors) {
