@@ -1469,7 +1469,7 @@
   "theme.speciesIdentification.main": "Lajintuntemus",
   "theme.pinkka.intro": "Pinkka - Lajintuntemuksen oppimisympäristö",
   "theme.hyonteisopas.intro": "Tunnista hyönteiset lahkotasolle",
-  "theme.satellite.intro": "Satelliittilähettimien ja muiden paikannuslaitteiden avulla saadaan selville yksityiskohtaista tietoa lintuyksilöiden muuttomatkoista, talvehtimisalueista, saalistusalueista ja reviirien laajuuksista. Seuraa lintujen kulkua kartalla!",
+  "theme.satellite.intro": "Seuraa lintujen kulkua kartalla! Satelliittilähettimien ym. paikannuslaitteiden avulla saadaan selville tarkkaa tietoa lintuyksilöiden muuttomatkoista, talvehtimis- ja saalistusalueista sekä reviireistä.",
   "theme.searching": "Tietoja haetaan...",
   "theme.title": "Teemasivut",
   "theme.total": "Yhteensä",
