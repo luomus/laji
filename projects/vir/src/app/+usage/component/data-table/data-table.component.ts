@@ -45,8 +45,8 @@ type TableType = 'downloads'|'people'|'user';
                   [columns]="cols">
           </laji-datatable>
       </div>
-      <ng-template let-value="value" let-sort="sortFn" #downloadFileTpl>
-        <a [href]="'/api/file-download?id=' + value">{{'usage.dataDownloadLink' | translate}}</a>
+      <ng-template let-value="value" let-row="row" let-sort="sortFn" #downloadFileTpl>
+        <a [href]="'/api/file-download?id=' + value">{{ ('download.' + row.downloadType) | translate }}</a>
       </ng-template>
   `
 })
@@ -88,11 +88,6 @@ export class DataTableComponent implements AfterViewInit {
       name: 'person',
       label: 'usage.person',
       cellTemplate: 'label',
-      canAutoResize: true
-    },
-    {
-      name: 'downloadType',
-      label: 'usage.downloadType',
       canAutoResize: true
     },
     {

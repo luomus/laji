@@ -87,26 +87,22 @@
           {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
     ]">
   </laji-select>
-</section>
-
-<!--LIMIT OBSERVATION FINLAND-->
-<!--<section class="laji-panel" laji-panel [title]="'observation.form.max.finland' | translate" [autoToggle]="true" >
-  <div>
+  <div style="margin-top:20px">
     <div>
-      <label>{{ 'theme.count' | translate }}</label>
-      <laji-info>{{ 'observation.info.count' | translate }}</laji-info>
-    </div>
+      <label>{{ 'observation.maxOccurrenceFinland' | translate }}</label>
+      <laji-info>{{ 'observation.info.maxOccurrenceFinland' | translate }}</laji-info>  </div>
     <div class="row">
       <div class="col-sm-12">
-        <input type="number" name="countMaxFinland"
-                class="form-control input-sm"
-                placeholder="{{'observation.form.countMax' | translate}}"
-                (ngModelChange)="onCountChange()"
-                [(ngModel)]="query.countMaxFinland">
+        <input type="number" name="occurrenceCountFinlandMax"
+                  class="form-control input-sm"
+                  placeholder="{{'observation.form.countMax' | translate}}"
+                  (ngModelChange)="onCountChange()"
+                  [(ngModel)]="query.occurrenceCountFinlandMax">
       </div>
     </div>
   </div>
-</section>-->
+</section>
+
 
 <!-- OWN OBSERVATIONS -->
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
