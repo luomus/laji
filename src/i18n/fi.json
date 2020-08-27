@@ -1403,7 +1403,7 @@
   "taxonomy.observations.yearChart": "Havainnot vuosittain Suomessa",
   "taxonomy.observation.yearChart.filter": "Klikkaa selitetekstejä suodattaaksesi tuloksia.",
   "taxonomy.observations.yearChart.disclaimer": "Kuvaaja esittää havaintojen ajallista jakaumaa, joka ei ole sama asia kuin lajin runsastuminen/väheneminen.",
-  "taxonomy.observations.habitat.disclaimer": "Tästä lajista tehtyihin havaintoihin on kirjattu seuraavia biotooppitietoja",
+  "taxonomy.observations.habitat.disclaimer": "Tästä taksonista tehtyihin havaintoihin on kirjattu seuraavia biotooppitietoja",
   "taxonomy.observations.yearChart.showHistory": "Näytä koko historia",
   "taxonomy.observations.yearChart.hideHistory": "Piilota vanhimmat vuodet",
   "taxonomy.observations.yearChart.xAxis": "Vuodet",
