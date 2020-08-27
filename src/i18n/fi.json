@@ -1591,7 +1591,7 @@
   "noYear": "vuosi puuttuu",
   "TimeoutError": "Palvelin ei vastannut ajoissa. Tarkista onko tallennus kuitenkin onnistunut!",
   "navigation.lolife": "Liito-oravien seuranta",
-  "theme.lolife.intro": "Tämän seurantalomakepalvelun avulla voit perustaa liito-oravahavainnoille seurantapaikan, lisätä siihen tarpeellisia aluerajauksia, liittää alueelle havaintoja liito-oravasta, pesistä, jäljistä ja papanoista.",
+  "theme.lolife.intro": "Perusta liito-oravien seurantapaikka, lisätä siihen aluerajauksia, liitä havaintoja liito-oravasta, pesistä, jäljistä ja papanoista.",
   "theme.lolife.places": "Perusta seuranta - kirjaa havaintoja",
   "theme.lolife.ownSubmissions": "Omat seurannat",
   "theme.lolife.ownSubmissions.admin": "Kaikki seurannat",
