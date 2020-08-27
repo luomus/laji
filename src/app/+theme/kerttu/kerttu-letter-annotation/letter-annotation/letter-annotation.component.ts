@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
-import {LetterAnnotation} from '../../model/letter';
+import {ILetterStatusInfo, LetterAnnotation} from '../../model/letter';
 import {ILetterCandidate, ILetterTemplate} from '../../model/letter';
 import {ResultService} from '../../../service/result.service';
 import {Observable, Subject, Subscription} from 'rxjs';
@@ -16,6 +16,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() template: ILetterTemplate;
   @Input() candidate: ILetterCandidate;
+  @Input() statusInfo: ILetterStatusInfo;
 
   currentAnnotation: LetterAnnotation;
   annotation = LetterAnnotation;
@@ -34,6 +35,7 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() annotationChange = new EventEmitter<LetterAnnotation>();
   @Output() skipLetterClick = new EventEmitter();
+  @Output() backToPreviousCandidateClick = new EventEmitter();
 
   private xRangePaddingChanged: Subject<number> = new Subject<number>();
   private xRangePaddingChangeSub: Subscription;
