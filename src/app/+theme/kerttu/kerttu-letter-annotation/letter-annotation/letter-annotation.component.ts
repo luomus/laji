@@ -27,8 +27,8 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
 
   candidateYRange: number[];
 
-  zoomed = false;
-  xRangePadding = 0.5;
+  zoomed = true;
+  xRangePadding = 1;
 
   taxon$: Observable<Taxonomy>;
 
@@ -77,8 +77,9 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onXRangePaddingChange(value: number) {
-    this.xRangePaddingChanged.next(value);
+  onXRangePaddingChange(value: string) {
+    this.xRangePadding = parseFloat(value);
+    this.xRangePaddingChanged.next(this.xRangePadding);
   }
 
   onSkipLetter() {

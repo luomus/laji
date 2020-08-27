@@ -35,7 +35,13 @@
     <div>
       <label>{{ 'theme.kerttu.timeBuffer' | translate }}</label>
       <div class="input-group" style="max-width: 110px">
-        <input class="form-control input-sm" type="number" min="0" max="60" step="0.1" [ngModel]="xRangePadding" (ngModelChange)="onXRangePaddingChange($event)">
+        <select
+          class="form-control"
+          [ngModel]="xRangePadding"
+          (ngModelChange)="onXRangePaddingChange($event)"
+        >
+          <option *ngFor="let value of [0.5, 1, 5, 10, 30]" value="{{ value }}">{{ value }}</option>
+        </select>
         <span class="input-group-addon">s</span>
       </div>
     </div>
@@ -45,7 +51,7 @@
         [switch-on-text]="'yes' | translate"
         [switch-off-text]="'no' | translate"
         [switch-on-color]="'primary'"
-        [switch-size]="'small'"
+        [switch-size]="'medium'"
         [(ngModel)]="zoomed"
         [switch-base-class]="'bootstrap-switch'">
       </bSwitch>
