@@ -1439,7 +1439,7 @@
   "theme.emk.intro": "Tutustu Suomen eliömaakuntiin.",
   "theme.filterAll": "Koko aineisto {{from}} - {{to}}",
   "theme.grid": "Ruudun {{grid}} havainnot",
-  "theme.herpetology.intro": "Luonnontieteellinen keskusmuseo Luomus tutkii sammakkoeläinten ja matelijoiden levinneisyyttä ja siinä tapahtuneita muutoksia Suomessa keräämällä havaintoja koko maasta. Tutustu lajeihin ja tuloksiin. Voit myös osallistua kirjaamalla havaintosi.",
+  "theme.herpetology.intro": "Luomus tutkii sammakkoeläinten ja matelijoiden levinneisyyttä ja muutoksia keräämällä havaintoja koko Suomesta. Tutustu lajeihin ja tuloksiin ja osallistu kirjaamalla havaintosi!",
   "theme.identify.intro": "Auta tunnistamaan havaintoja! Selaa Lajitietokeskukseen tallennettuja kuvia havainnoista, joita ei ole kyetty tunnistamaan varmasti.",
   "theme.individualCount": "Yksilösumma",
   "theme.individualCountSum": "Yksilömäärä",
