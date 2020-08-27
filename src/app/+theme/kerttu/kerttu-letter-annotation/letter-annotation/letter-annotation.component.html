@@ -17,26 +17,20 @@
 <div id="letterAnnotationContainer" class="row">
   <div class="col-md-12">
     <h3>{{ 'theme.kerttu.areLettersSame' | translate }}</h3>
-    <laji-three-state-switch
-      (valueChange)="onAnnotationChange($event)"
-      [onValue]="annotation.yes"
-      [offValue]="annotation.no"
-      [undefinedValue]="annotation.unsure"
-      [onText]="'yes' | translate"
-      [offText]="'no' | translate"
-      [undefinedText]="'theme.kerttu.notSure' | translate"
-      [showUndefined]="true"
-      [value]="currentAnnotation"
-      [disabled]="!template || !candidate || loadingTemplate || loadingCandidate"
-    >
-      ></laji-three-state-switch>
+    <div id="letterAnnotationButtons">
+      <ng-container *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]">
+        <lu-button [disabled]="!template || !candidate || loadingTemplate || loadingCandidate" (click)="onAnnotationChange(a)">
+          {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
+        </lu-button>
+      </ng-container>
+    </div>
   </div>
   <div class="col-md-12" id="letterAnnotationControls">
     <div>
       <label>{{ 'theme.kerttu.timeBuffer' | translate }}</label>
       <div class="input-group" style="max-width: 110px">
         <select
-          class="form-control"
+          class="form-control input-sm"
           [ngModel]="xRangePadding"
           (ngModelChange)="onXRangePaddingChange($event)"
         >
@@ -51,7 +45,7 @@
         [switch-on-text]="'yes' | translate"
         [switch-off-text]="'no' | translate"
         [switch-on-color]="'primary'"
-        [switch-size]="'medium'"
+        [switch-size]="'small'"
         [(ngModel)]="zoomed"
         [switch-base-class]="'bootstrap-switch'">
       </bSwitch>
