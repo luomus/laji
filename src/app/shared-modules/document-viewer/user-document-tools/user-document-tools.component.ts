@@ -92,7 +92,6 @@ export class UserDocumentToolsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('porcoddio')
     this.modalService.onHide.subscribe((e) => {
       const body = document.body;
       body.classList.add("modal-open-after");
