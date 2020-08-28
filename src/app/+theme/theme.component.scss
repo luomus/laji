@@ -1,6 +1,7 @@
 @import 'vars';
 
 .navbox {
+  min-width: 250px;
   flex-basis: 30%;
   font-size: $fs-2;
   color: $neutral-8;
