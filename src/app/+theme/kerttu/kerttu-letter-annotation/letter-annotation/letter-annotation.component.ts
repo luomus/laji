@@ -95,4 +95,9 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
     this.currentAnnotation = annotation;
     this.annotationChange.emit(annotation);
   }
+
+  setDefaultSettings() {
+    this.zoomed = true;
+    this.xRangePadding = 1;
+  }
 }

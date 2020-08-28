@@ -7,10 +7,16 @@
       <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
       <dd>{{ statusInfo?.userAnnotationCount }}/{{ statusInfo?.targetAnnotationCount }}</dd>
     </dl>
-    <lu-button [disabled]="!candidate || !statusInfo?.hasPreviousCandidate" (click)="backToPreviousCandidateClick.emit()">Palaa edelliseen ehdokkaaseen</lu-button>
-    <lu-button [disabled]="!template" (click)="onSkipLetter()">
-      {{ 'theme.kerttu.skipLetter' | translate }}
-    </lu-button>
+    <div>
+      <lu-button [disabled]="!candidate || !statusInfo?.hasPreviousCandidate" (click)="backToPreviousCandidateClick.emit()">
+        Palaa edelliseen ehdokkaaseen
+      </lu-button>
+    </div>
+    <div>
+      <lu-button [disabled]="!template" (click)="onSkipLetter()">
+        {{ 'theme.kerttu.skipLetter' | translate }}
+      </lu-button>
+    </div>
   </div>
 </div>
 <div id="letterAnnotationContainer" class="row">
@@ -48,6 +54,9 @@
         [(ngModel)]="zoomed"
         [switch-base-class]="'bootstrap-switch'">
       </bSwitch>
+    </div>
+    <div style="vertical-align: bottom">
+      <lu-button [small]="true" (click)="setDefaultSettings()">Palauta oletusasetukset</lu-button>
     </div>
   </div>
   <div class="col-md-6 col-md-push-6">
