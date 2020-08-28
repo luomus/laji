@@ -32,11 +32,12 @@ export class KerttuComponent implements OnInit {
     {
       routerLink: ['letters'],
       label: 'theme.kerttu.letterAnnotation'
-    },
+    }
+    /*,
     {
       routerLink: ['recordings'],
       label: 'theme.kerttu.recordingAnnotation'
-    }
+    }*/
   ];
 
   constructor(
