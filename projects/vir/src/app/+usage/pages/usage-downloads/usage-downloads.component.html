@@ -1,0 +1,7 @@
+<div class="container mt-6">
+  <vir-collection-select (select)="collectionSelect($event)"></vir-collection-select>
+  <vir-data-table
+          [data]="downloadRequests$ | async"
+          (rowSelect)="onRowClick($event)"
+          type="downloads"></vir-data-table>
+</div>
