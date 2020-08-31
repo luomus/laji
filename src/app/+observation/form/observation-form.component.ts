@@ -325,6 +325,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         this.formQuery.asEditor = undefined;
         this.formQuery.asObserver = undefined;
         this.formQuery.asNotEditorOrObserver = this.formQuery.asNotEditorOrObserver ? undefined : true;
+        this.query.qualityIssues = undefined;
         this.ownStatutes = selectValue ? this.ownStatutes : [] ;
       }
     } else {
@@ -343,10 +344,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.formQuery[element] = true;
     });
 
-    /*if (this.ownStatutes.length === 2 || this.ownStatutes.length === 0) {
-      this.formQuery.asEditor = undefined;
-      this.formQuery.asObserver = undefined;
-    }*/
+    if (this.ownStatutes.length === 2) {
+      this.query.qualityIssues = 'BOTH';
+    }
   }
     this.onFormQueryChange();
   }

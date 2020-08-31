@@ -106,7 +106,6 @@
 
 <!-- OWN OBSERVATIONS -->
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
-  <p>{{ 'observation.intro.images' | translate }}</p>
   <fieldset>
     <div>
       <label>
@@ -130,8 +129,8 @@
 
   <hr>
   <div>
-    <p>{{ 'observation.intro.noImages' | translate }}</p>
-    <label><laji-checkbox [value]="formQuery.asNotEditorOrObserver" (valueChange)="ownItemSelected(ownStatutes, false)"></laji-checkbox>{{ 'observation.form.hasNotMedia' | translate }}</label>
+    <p>{{ 'observation.intro.noOwnObservations' | translate }}</p>
+    <label><laji-checkbox [value]="formQuery.asNotEditorOrObserver" (valueChange)="ownItemSelected(ownStatutes, false)"></laji-checkbox>{{ 'observation.form.excludeOwn' | translate }}</label>
   </div>
 
   <ng-container *ngIf="formQuery.asEditor || formQuery.asObserver || query.qualityIssues">
