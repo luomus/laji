@@ -150,7 +150,8 @@ export class ObservationFacade {
     ).subscribe((loggedIn) => {
       const query = {...this.emptyQuery, ...warehouseQuery};
 
-      ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
+      ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
+        console.log(query)
         if (query[key] === ObservationFacade.PERSON_TOKEN) {
           query[key] =  loggedIn ? this.userService.getToken() : undefined;
         }

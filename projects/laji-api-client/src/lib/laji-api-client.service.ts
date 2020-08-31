@@ -3348,6 +3348,11 @@ export namespace LajiApiClient {
     editorOrObserverPersonToken?: string;
 
     /**
+     * Your saved records or own observations search (OR search). These come from the private warehouse!
+     */
+    editorOrObserverIsNotPersonToken?: string;
+
+    /**
      * Filter based on "owners" or observers of records. Only available in private-query-API. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
     editorOrObserverId?: string;
@@ -3832,6 +3837,11 @@ export namespace LajiApiClient {
      * Your saved records or own observations search (OR search). These come from the private warehouse!
      */
     editorOrObserverPersonToken?: string;
+
+     /**
+     * Your saved records or own observations search (OR search). These come from the private warehouse!
+     */
+    editorOrObserverIsNotPersonToken?: string;
 
     /**
      * Filter based on "owners" or observers of records. Only available in private-query-API. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
@@ -4339,6 +4349,11 @@ export namespace LajiApiClient {
      */
     editorOrObserverPersonToken?: string;
 
+     /**
+     * Your saved records or own observations search (OR search). These come from the private warehouse!
+     */
+    editorOrObserverIsNotPersonToken?: string;
+
     /**
      * Filter based on "owners" or observers of records. Only available in private-query-API. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
@@ -4469,6 +4484,11 @@ export namespace LajiApiClient {
      * Your saved records or own observations search (OR search). These come from the private warehouse!
      */
     editorOrObserverPersonToken?: string;
+
+     /**
+     * Your saved records or own observations search (OR search). These come from the private warehouse!
+     */
+    editorOrObserverIsNotPersonToken?: string;
 
     /**
      * Content type of the response. If unknown, returns default format: JSON
@@ -5022,6 +5042,11 @@ export namespace LajiApiClient {
      */
     editorOrObserverPersonToken?: string;
 
+     /**
+     * Your saved records or own observations search (OR search). These come from the private warehouse!
+     */
+    editorOrObserverIsNotPersonToken?: string;
+
     /**
      * Filter based on "owners" or observers of records. Only available in private-query-API. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
@@ -5522,6 +5547,11 @@ export namespace LajiApiClient {
      * Your saved records or own observations search (OR search). These come from the private warehouse!
      */
     editorOrObserverPersonToken?: string;
+
+     /**
+     * Your saved records or own observations search (OR search). These come from the private warehouse!
+     */
+    editorOrObserverIsNotPersonToken?: string;
 
     /**
      * Filter based on "owners" or observers of records. Only available in private-query-API. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
@@ -6049,6 +6079,11 @@ export namespace LajiApiClient {
      */
     editorOrObserverPersonToken?: string;
 
+     /**
+     * Your saved records or own observations search (OR search). These come from the private warehouse!
+     */
+    editorOrObserverIsNotPersonToken?: string;
+
     /**
      * Filter based on "owners" or observers of records. Only available in private-query-API. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
@@ -6555,6 +6590,11 @@ export namespace LajiApiClient {
      */
     editorOrObserverPersonToken?: string;
 
+     /**
+     * Your saved records or own observations search (OR search). These come from the private warehouse!
+     */
+    editorOrObserverIsNotPersonToken?: string;
+
     /**
      * Filter based on "owners" or observers of records. Only available in private-query-API. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
@@ -6915,6 +6955,11 @@ export namespace LajiApiClient {
      * Your saved records or own observations search (OR search). These come from the private warehouse!
      */
     editorOrObserverPersonToken?: string;
+
+     /**
+     * Your saved records or own observations search (OR search). These come from the private warehouse!
+     */
+    editorOrObserverIsNotPersonToken?: string;
 
     /**
      * Filter based on "owners" or observers of records. Only available in private-query-API. Multiple values are seperated by ','. When multiple values are given, this is an OR search.

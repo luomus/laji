@@ -106,24 +106,34 @@
 
 <!-- OWN OBSERVATIONS -->
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
+  <p>{{ 'observation.intro.images' | translate }}</p>
+  <fieldset>
+    <div>
+      <label>
+        <laji-checkbox [(value)]="formQuery.asObserver" (valueChange)="ownItemSelected('asObserver')"></laji-checkbox>
+        {{ 'observation.form.asObserver' | translate }}
+      </label>
+      <laji-info>
+        {{ 'observation.info.asObserver' | translate }}
+      </laji-info>
+    </div>
+    <div>
+      <label>
+        <laji-checkbox [(value)]="formQuery.asEditor" (valueChange)="ownItemSelected('asEditor')"></laji-checkbox>
+        {{ 'observation.form.asEditor' | translate }}
+      </label>
+      <laji-info>
+        {{ 'observation.info.asEditor' | translate }}
+      </laji-info>
+    </div>
+  </fieldset>
+
+  <hr>
   <div>
-    <label>
-      <laji-checkbox [(value)]="formQuery.asObserver" (valueChange)="ownItemSelected()"></laji-checkbox>
-      {{ 'observation.form.asObserver' | translate }}
-    </label>
-    <laji-info>
-      {{ 'observation.info.asObserver' | translate }}
-    </laji-info>
+    <p>{{ 'observation.intro.noImages' | translate }}</p>
+    <label><laji-checkbox [value]="formQuery.asNotEditorOrObserver" (valueChange)="ownItemSelected(ownStatutes, false)"></laji-checkbox>{{ 'observation.form.hasNotMedia' | translate }}</label>
   </div>
-  <div>
-    <label>
-      <laji-checkbox [(value)]="formQuery.asEditor" (valueChange)="ownItemSelected()"></laji-checkbox>
-      {{ 'observation.form.asEditor' | translate }}
-    </label>
-    <laji-info>
-      {{ 'observation.info.asEditor' | translate }}
-    </laji-info>
-  </div>
+
   <ng-container *ngIf="formQuery.asEditor || formQuery.asObserver || query.qualityIssues">
     <laji-select
       [selected]="[query.qualityIssues]"
