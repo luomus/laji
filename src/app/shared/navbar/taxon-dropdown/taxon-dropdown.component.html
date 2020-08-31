@@ -11,7 +11,7 @@
     </div>
   </div>
 </div>
-<div routerLink="taxon/list" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
+<div routerLink="taxon/list" [queryParams]="{ onlyFinnish: true }" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
   <div class="img-container">
     <img src="/static/images/icons/table.png">
   </div>
@@ -24,7 +24,7 @@
     </div>
   </a>
 </div>
-<div routerLink="taxon/MX.37600/taxonomy" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
+<div routerLink="taxon/MX.37600/taxonomy" [queryParams]="{ showTree: true }" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
   <div class="img-container">
     <img src="/static/images/icons/tree.png">
   </div>
