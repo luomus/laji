@@ -21,7 +21,7 @@ type TableType = 'downloads'|'people'|'user';
           <laji-datatable-header
                   [downloadText]="'haseka.submissions.download' | translate"
                   [downloadLoading]="downloadLoading"
-                  [showDownloadMenu]="true"
+                  [showDownloadMenu]="showDownloadMenu"
                   [showSettingsMenu]="false"
                   [count]="0"
                   [maxDownload]="10000"
@@ -54,6 +54,9 @@ export class DataTableComponent implements AfterViewInit {
 
   @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
   @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
+
+  @Input() showDownloadMenu = true;
+
   downloadLoading: boolean;
 
   cols:  DatatableColumn[] = [];
