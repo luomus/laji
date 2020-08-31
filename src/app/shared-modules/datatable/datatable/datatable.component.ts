@@ -266,7 +266,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     if (event && event.column && event.column.name && event.newValue) {
       this.dataTableSettings = {...this.dataTableSettings, [event.column.name]: {width: event.newValue}};
     }
-    this.browserService.triggerResizeEvent();
   }
 
   private updateFilteredRows() {
