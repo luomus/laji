@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
-import {LetterAnnotation} from '../../model/letter';
+import {ILetterStatusInfo, LetterAnnotation} from '../../model/letter';
 import {ILetterCandidate, ILetterTemplate} from '../../model/letter';
 import {ResultService} from '../../../service/result.service';
 import {Observable, Subject, Subscription} from 'rxjs';
@@ -16,6 +16,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() template: ILetterTemplate;
   @Input() candidate: ILetterCandidate;
+  @Input() statusInfo: ILetterStatusInfo;
 
   currentAnnotation: LetterAnnotation;
   annotation = LetterAnnotation;
@@ -23,16 +24,18 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   loadingTemplate = false;
   loadingCandidate = false;
   candidateLongerVisible = false;
+  autoplayCandidate = false;
 
   candidateYRange: number[];
 
-  zoomed = false;
-  xRangePadding = 0.5;
+  zoomed = true;
+  xRangePadding = 1;
 
   taxon$: Observable<Taxonomy>;
 
   @Output() annotationChange = new EventEmitter<LetterAnnotation>();
   @Output() skipLetterClick = new EventEmitter();
+  @Output() backToPreviousCandidateClick = new EventEmitter();
 
   private xRangePaddingChanged: Subject<number> = new Subject<number>();
   private xRangePaddingChangeSub: Subscription;
@@ -66,6 +69,7 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
       this.cdr.markForCheck();
     }, 0);
     if (changes.template && this.template) {
+      this.autoplayCandidate = false;
       this.taxon$ = this.resultService.getTaxon(this.template.taxonId);
     }
     if (this.template && this.candidate) {
@@ -75,13 +79,25 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onXRangePaddingChange(value: number) {
-    this.xRangePaddingChanged.next(value);
+  onXRangePaddingChange(value: string) {
+    this.xRangePadding = parseFloat(value);
+    this.xRangePaddingChanged.next(this.xRangePadding);
   }
 
   onSkipLetter() {
     if (confirm(this.translate.instant('theme.kerttu.confirmSkipLetter'))) {
       this.skipLetterClick.emit();
     }
+  }
+
+  onAnnotationChange(annotation: LetterAnnotation) {
+    this.autoplayCandidate = true;
+    this.currentAnnotation = annotation;
+    this.annotationChange.emit(annotation);
+  }
+
+  setDefaultSettings() {
+    this.zoomed = true;
+    this.xRangePadding = 1;
   }
 }

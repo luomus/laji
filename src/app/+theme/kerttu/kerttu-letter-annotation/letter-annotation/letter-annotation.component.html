@@ -1,14 +1,19 @@
 <div class="row" id="letterInfo">
   <div class="col-md-12">
     <h2><laji-taxon-name [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name></h2>
+    <dl>
+      <dt>{{ 'theme.kerttu.letter' | translate }}:</dt>
+      <dd>{{ template?.name }}</dd>
+      <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
+      <dd>{{ statusInfo?.userAnnotationCount }}/{{ statusInfo?.targetAnnotationCount }}</dd>
+    </dl>
     <div>
-      <dl>
-        <dt>{{ 'theme.kerttu.letter' | translate }}:</dt>
-        <dd>{{ template?.name }}</dd>
-        <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
-        <dd>{{ template?.info.userAnnotationCount }}/{{ template?.info.targetAnnotationCount }}</dd>
-      </dl>
-      <lu-button (click)="onSkipLetter()">
+      <lu-button [disabled]="!candidate || !statusInfo?.hasPreviousCandidate" (click)="backToPreviousCandidateClick.emit()">
+        Palaa edelliseen ehdokkaaseen
+      </lu-button>
+    </div>
+    <div>
+      <lu-button [disabled]="!template" (click)="onSkipLetter()">
         {{ 'theme.kerttu.skipLetter' | translate }}
       </lu-button>
     </div>
@@ -17,25 +22,25 @@
 <div id="letterAnnotationContainer" class="row">
   <div class="col-md-12">
     <h3>{{ 'theme.kerttu.areLettersSame' | translate }}</h3>
-    <laji-three-state-switch
-      (valueChange)="this.currentAnnotation = $event; annotationChange.emit($event)"
-      [onValue]="annotation.yes"
-      [offValue]="annotation.no"
-      [undefinedValue]="annotation.unsure"
-      [onText]="'yes' | translate"
-      [offText]="'no' | translate"
-      [undefinedText]="'theme.kerttu.notSure' | translate"
-      [showUndefined]="true"
-      [value]="currentAnnotation"
-      [disabled]="!template || !candidate || loadingTemplate || loadingCandidate"
-    >
-      ></laji-three-state-switch>
+    <div id="letterAnnotationButtons">
+      <ng-container *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]">
+        <lu-button [disabled]="!template || !candidate || loadingTemplate || loadingCandidate" (click)="onAnnotationChange(a)">
+          {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
+        </lu-button>
+      </ng-container>
+    </div>
   </div>
   <div class="col-md-12" id="letterAnnotationControls">
     <div>
       <label>{{ 'theme.kerttu.timeBuffer' | translate }}</label>
       <div class="input-group" style="max-width: 110px">
-        <input class="form-control input-sm" type="number" min="0" max="60" step="0.1" [ngModel]="xRangePadding" (ngModelChange)="onXRangePaddingChange($event)">
+        <select
+          class="form-control input-sm"
+          [ngModel]="xRangePadding"
+          (ngModelChange)="onXRangePaddingChange($event)"
+        >
+          <option *ngFor="let value of [0.5, 1, 5, 10, 30]" value="{{ value }}">{{ value }}</option>
+        </select>
         <span class="input-group-addon">s</span>
       </div>
     </div>
@@ -49,6 +54,9 @@
         [(ngModel)]="zoomed"
         [switch-base-class]="'bootstrap-switch'">
       </bSwitch>
+    </div>
+    <div style="vertical-align: bottom">
+      <lu-button [small]="true" (click)="setDefaultSettings()">Palauta oletusasetukset</lu-button>
     </div>
   </div>
   <div class="col-md-6 col-md-push-6">
@@ -70,7 +78,7 @@
       [xRange]="candidate?.xRange"
       [yRange]="candidateYRange"
       [zoomed]="zoomed"
-      [autoplay]="true"
+      [autoplay]="autoplayCandidate"
       [autoplayRepeat]="3"
       (audioLoading)="loadingCandidate = $event"
     ></laji-audio-viewer>

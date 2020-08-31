@@ -1,6 +1,6 @@
 import {Component, OnInit, ChangeDetectionStrategy, Inject, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {map, share, switchMap} from 'rxjs/operators';
-import {ILetterCandidate, ILetterTemplate, LetterAnnotation} from '../model/letter';
+import {ILetterCandidate, ILetterStatusInfo, ILetterTemplate, LetterAnnotation} from '../model/letter';
 import {Observable, of, Subscription} from 'rxjs';
 import {WINDOW} from '@ng-toolkit/universal';
 import {KerttuApi} from '../service/kerttu-api';
@@ -17,6 +17,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   letterTemplate: ILetterTemplate;
   letterCandidate: ILetterCandidate;
+  statusInfo: ILetterStatusInfo;
 
   taxonExpertiseMissing = false;
   allLettersAnnotated = false;
@@ -59,14 +60,37 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
     this.getLetterTemplate(true);
   }
 
+  goBackToPreviousCandidate() {
+    if (this.nextLetterCandidateSub) {
+      this.nextLetterCandidateSub.unsubscribe();
+    }
+
+    const currentCandidate = this.letterCandidate;
+    this.letterCandidate = undefined;
+    this.loadingLetters = true;
+
+    this.letterCandidateSub = this.kerttuApi.getPreviousLetterCandidate(this.userService.getToken(), this.letterTemplate.id, currentCandidate.id).subscribe(result => {
+      if (!result.candidate) {
+        this.getLetterTemplate();
+        return;
+      }
+      this.letterCandidate = result.candidate;
+      this.statusInfo = result.statusInfo;
+      this.nextLetterCandidate = currentCandidate;
+      this.loadingLetters = false;
+      this.cdr.markForCheck();
+    }, error => {
+      this.onLetterError(error);
+    });
+  }
+
   onLetterAnnotationChange(annotation: LetterAnnotation) {
     const candidateId = this.letterCandidate.id;
     this.letterCandidate = undefined;
     this.kerttuApi.setLetterAnnotation(this.userService.getToken(), this.letterTemplate.id, candidateId, annotation)
       .subscribe((response) => {
-        const info = response.info;
-        this.letterTemplate.info = info;
-        if (info.userAnnotationCount === info.targetAnnotationCount) {
+        this.statusInfo = response.statusInfo;
+        if (this.statusInfo.userAnnotationCount === this.statusInfo.targetAnnotationCount) {
           this.onCandidateLoad(undefined);
           return;
         }
@@ -98,7 +122,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
     this.loadingLetters = true;
 
     this.letterTemplateSub = obs
-      .subscribe(template => {
+      .subscribe(result => {
+        const template = result.template;
         if (!template) {
           this.allLettersAnnotated = true;
         } else {
@@ -106,6 +131,7 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
           this.getLetterCandidate(template.id);
         }
         this.letterTemplate = template;
+        this.statusInfo = result.statusInfo;
         this.cdr.markForCheck();
       }, error => {
         if (this.getErrorMessage(error) === 'TaxonExpertiseMissingError') {
@@ -118,8 +144,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   private getLetterCandidate(templateId: number) {
     this.letterCandidate = undefined;
 
-    this.letterCandidateSub = this.kerttuApi.getLetterCandidate(this.userService.getToken(), templateId).subscribe(candidate => {
-      this.onCandidateLoad(candidate);
+    this.letterCandidateSub = this.kerttuApi.getLetterCandidate(this.userService.getToken(), templateId).subscribe(result => {
+      this.onCandidateLoad(result.candidate);
     }, error => {
       this.onLetterError(error);
     });
@@ -133,7 +159,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
     this.nextLetterCandidate = undefined;
     this.nextLetterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId, candidateId)
       .pipe(
-        switchMap((candidate) => {
+        switchMap((result) => {
+          const candidate = result.candidate;
           return this.audioService.getAudioBuffer(candidate.recording).pipe(map(() => candidate));
         }),
         share()

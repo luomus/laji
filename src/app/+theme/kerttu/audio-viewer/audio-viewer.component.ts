@@ -79,7 +79,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
           buffer = this.audioService.extractSegment(buffer, this.start, this.stop, this.duration);
           this.buffer = buffer;
 
-          if (this.autoplay) {
+          if (this.autoplay && changes.recording) {
             this.autoplayCounter = 0;
             this.toggleAudio();
           }
@@ -111,8 +111,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.startOffset = this.currentTime;
 
-      this.source = this.audioService.createSource(this.buffer, this.zoomed ? this.yRange : undefined);
-      this.source.start(0, this.currentTime);
+      this.source = this.audioService.playAudio(this.buffer, this.zoomed ? this.yRange : undefined, this.currentTime);
       this.startTime = this.audioService.getTime();
 
       this.source.onended = () => {
@@ -123,10 +122,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       };
       this.startTimeupdateInterval();
     } else {
-      if (this.autoplay) {
-        this.autoplayCounter = this.autoplayRepeat;
-      }
-
+      this.autoplayCounter = this.autoplayRepeat;
       this.source.stop(0);
     }
   }
@@ -188,8 +184,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.currentTime = Math.min(this.currentTime, this.buffer.duration);
   }
 
-
-
   private clear() {
     if (this.audioSub) {
       this.audioSub.unsubscribe();
@@ -199,12 +193,14 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.source && this.isPlaying) {
       this.source.stop(0);
+      this.source.onended = () => {};
     }
 
     this.buffer = undefined;
     this.currentTime = 0;
     this.isPlaying = false;
     this.source = undefined;
+    this.autoplayCounter = this.autoplayRepeat;
   }
 
   setAudioLoading(loading: boolean) {

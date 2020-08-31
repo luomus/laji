@@ -4,9 +4,10 @@ interface ILetter {
   xRange: number[];
 }
 
-export interface ILetterInfo {
+export interface ILetterStatusInfo {
   userAnnotationCount: number;
   targetAnnotationCount: number;
+  hasPreviousCandidate: boolean;
 }
 
 export interface ILetterCandidate extends ILetter {
@@ -18,7 +19,6 @@ export interface ILetterTemplate extends ILetter {
   name: string;
   taxonId: string;
   yRange: number[];
-  info: ILetterInfo;
 }
 
 export enum LetterAnnotation {
