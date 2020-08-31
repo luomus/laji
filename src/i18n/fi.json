@@ -1000,6 +1000,7 @@
   "observation.form.max.finland": "Taksonin max havaintomäärä Suomesta",
   "observation.form.place": "Paikka",
   "observation.form.placeName": "Nimi",
+  "observation.form.placeNotFound": "Paikkaa ei löytynyt. Yritä uudelleen.",
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
   "observation.form.qualityIssues": "Ongelmalliset",
   "observation.form.qualityIssuesBOTH": "Näytetään",

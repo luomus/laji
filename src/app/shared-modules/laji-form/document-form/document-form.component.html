@@ -82,7 +82,7 @@
         <span class="required">*</span> = {{ 'required' | translate }}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" [class.disabled]="templateForm.name.length === 0" (click)="saveTemplate($event)">
+        <button type="button" class="btn btn-default" [class.disabled]="templateForm.name.length === 0" (click)="saveTemplate()">
           <span>{{ "np.save" | translate }}</span>
         </button>
       </div>
