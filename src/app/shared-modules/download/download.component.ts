@@ -38,24 +38,26 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
               (ngModelChange)="reasonChange.emit($event)"
             ></textarea>
           </ng-container>
-          <div class="radio" *ngIf="_formats.indexOf('csv') > -1">
-            <label>
-              <input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">
-              {{ 'species.download.textFile' | translate }} (.csv)
-            </label>
-          </div>
-          <div class="radio" *ngIf="_formats.indexOf('tsv') > -1">
-            <label>
-              <input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">
-              {{ 'species.download.textFile' | translate }} (.tsv)
-            </label>
-          </div>
-          <div class="radio" *ngIf="_formats.indexOf('ods') > -1">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">OpenDocument Spreadsheet (.ods)</label>
-          </div>
-          <div class="radio" *ngIf="_formats.indexOf('xlsx') > -1">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">Excel (.xlsx)</label>
-          </div>
+          <ng-container *ngIf="showFileTypes">
+            <div class="radio" *ngIf="_formats.indexOf('csv') > -1">
+              <label>
+                <input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">
+                {{ 'species.download.textFile' | translate }} (.csv)
+              </label>
+            </div>
+            <div class="radio" *ngIf="_formats.indexOf('tsv') > -1">
+              <label>
+                <input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">
+                {{ 'species.download.textFile' | translate }} (.tsv)
+              </label>
+            </div>
+            <div class="radio" *ngIf="_formats.indexOf('ods') > -1">
+              <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">OpenDocument Spreadsheet (.ods)</label>
+            </div>
+            <div class="radio" *ngIf="_formats.indexOf('xlsx') > -1">
+              <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">Excel (.xlsx)</label>
+            </div>
+          </ng-container>
         </div>
       </div>
       <div class="modal-footer">
@@ -80,6 +82,7 @@ export class DownloadComponent {
 
   @Input() disabled = false;
   @Input() downloadLoading = false;
+  @Input() showFileTypes = true;
   @Input() showBackdrop = true;
   @Input() showReason = false;
   @Input() role = 'secondary';

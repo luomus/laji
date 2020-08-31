@@ -65,7 +65,20 @@
           <alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
+          <laji-download
+            *lajiForTypes="['vir']"
+            [showReason]="true"
+            [showBackdrop]="false"
+            [showFileTypes]="false"
+            [(reasonEnum)]="reasonEnum"
+            [(reason)]="reason"
+            (download)="makePublicRequest()"
+            [downloadLoading]="downloadLoading">
+            <i class="glyphicon glyphicon-download-alt"></i>
+            {{ 'observation.download.loadPublic' | translate }}
+          </laji-download>
           <lu-button
+            *lajiForTypes="['vir']; exclude: true"
             [loading]="requests['download'] === requestStatus.loading"
             [disabled]="requests['download'] === requestStatus.done || hasPersonalData"
             (click)="makePublicRequest()">

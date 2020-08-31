@@ -24,6 +24,7 @@
   "usage.person": "Lataaja",
   "usage.downloadType": "Tyyppi",
   "result.load.intro": "Rajauksesi kattaa {{count}} havaintoa {{species}} lajista.",
+  "result.load.thanksPublic": "Kiitos, tiedosto on hetken päästä ladattavissa \"Omat havaintotietolataukseni\"-osiossa.",
   "result.load.titleSimple": "Valintasi mukainen havaintotietolataus",
   "result.load.introSimple": "Tuottaa selkeän taulukon valitsemillasi tiedoilla (TSV, Excel tai OpenOffice).<br><strong>Edut:</strong> Nopea, yksinkertainen ja selkeä.<br><strong>Haitat:</strong> Ei kata kaikkea tietoa, ei tallenneta pysyvästi Lajitietokeskukseen, rajoitettu koko.",
   "observation.download.publicTitle": "Kattava havaintotietolataus",

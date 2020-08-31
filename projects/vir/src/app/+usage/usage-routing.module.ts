@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UsageComponent } from './usage.component';
-import { UsageByCollectionComponent } from './pages/usage-by-collection/usage-by-collection.component';
+import { UsageDownloadsComponent } from './pages/usage-downloads/usage-downloads.component';
 import { UsageByOrganizationComponent } from './pages/usage-by-organization/usage-by-organization.component';
-import { UsageByUserComponent } from './pages/usage-by-user/usage-by-user.component';
+import { UsageMyDownloadsComponent } from './pages/usage-my-downloads/usage-my-downloads.component';
 
 
 const routes: Routes = [
@@ -18,14 +18,14 @@ const routes: Routes = [
     component: UsageByOrganizationComponent
   },
   {
-    path: 'by-user',
+    path: 'my-downloads',
     pathMatch: 'full',
-    component: UsageByUserComponent
+    component: UsageMyDownloadsComponent
   },
   {
-    path: 'by-collection',
+    path: 'downloads',
     pathMatch: 'full',
-    component: UsageByCollectionComponent
+    component: UsageDownloadsComponent
   }
 ];
 

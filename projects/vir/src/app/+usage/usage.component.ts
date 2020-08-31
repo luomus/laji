@@ -4,8 +4,8 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   selector: 'vir-usage',
   template: `
     <div class="container-fluid mt-6">
-      <laji-navigation-thumbnail name="usage.byCollection" icon="chart" path="usage/by-collection"></laji-navigation-thumbnail>
-      <laji-navigation-thumbnail name="usage.byUser" icon="person" path="usage/by-user"></laji-navigation-thumbnail>
+      <laji-navigation-thumbnail name="usage.byCollection" icon="chart" path="usage/downloads"></laji-navigation-thumbnail>
+      <laji-navigation-thumbnail name="usage.byUser" icon="person" path="usage/my-downloads"></laji-navigation-thumbnail>
       <laji-navigation-thumbnail name="usage.byOrganization" icon="person" path="usage/by-organization"></laji-navigation-thumbnail>
     </div>
   `,
