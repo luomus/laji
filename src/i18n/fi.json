@@ -1688,5 +1688,6 @@
 
   "technicalNews.error": "Palvelut vikatilassa. Voit tarkistaa onko asiasta tiedotetta <a href='http://foorumi.laji.fi/' target='_blank'>Foorumeilla</a> tai <a href='https://twitter.com/lajitieto' target='_blank'>Twitterissä</a>.",
   "betapopup.desc": "Tämä on Laji.fi-portaalin kehitysversio, eikä sitä pidä käyttää muuhuin kuin sivuston testaamiseen. Talletetut havainnot eivät näy Laji.fi-portaalissa.",
-  "observation.active.occurrenceCountFinlandMax": "Taksonin max havaintomäärä"
+  "observation.active.occurrenceCountFinlandMax": "Taksonin max havaintomäärä",
+  "observation.active.editorOrObserverIsNotPersonToken": "Sulje pois omat havainnot"
 }
