@@ -1,6 +1,7 @@
 export const Global = {
   type: {
     dev: 'dev',
+    beta: 'beta',
     prod: 'prod',
     vir: 'vir',
     embedded: 'embedded',
@@ -13,6 +14,7 @@ export const Global = {
     invasiveControl: 'MHL.33',
     municipalityMonitoringForm: 'MHL.35',
     lolifeForm: 'MHL.45',
+    lolifeExcelForm: 'MHL.45A',
     wbc: 'MHL.3',
     lineTransect: 'MHL.1',
     lineTransectEiVakio: 'MHL.27',
@@ -29,6 +31,7 @@ export const Global = {
     valioForm: 'MHL.57',
     sykeButterfly: 'MHL.59',
     birdPointCount: 'MHL.75',
+    glowWormForm: 'MHL.79'
   },
   _forms: {
     'MHL.3': {
@@ -64,6 +67,9 @@ export const Global = {
     'MHL.9',
     'MHL.25'
   ],
+  canHaveHasekaLatest: [
+    'sieniatlas'
+  ],
   collections: {
     nafi: 'HR.175',
     wbc: 'HR.39',
@@ -75,6 +81,7 @@ export const Global = {
     sykeButterfly: 'HR.3431',
     waterbird: 'HR.62',
     birdPointCount: 'HR.157',
+    glowFormForm: 'HR.3531',
   },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
@@ -95,6 +102,7 @@ export const Global = {
     'MHL.59': '/syke-perhoset',
     'JX.652': '/sieniatlas',
     'MHL.75': '/pistelaskenta',
+    'MHL.79': '/kiiltomadot',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {
@@ -249,7 +257,12 @@ export const Global = {
       value: 'MMAN.51',
       quality: 'MMAN.typeAdmin',
       type: 'admin'
-    }
+    },
+    /*'MMAN.52': {
+      value: 'MMAN.52',
+      quality: 'MMAN.typePositiveQuality',
+      type: 'admin'
+    }*/
   },
   limit: {
     simpleDownload: 10000

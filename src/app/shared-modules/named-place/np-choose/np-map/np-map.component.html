@@ -8,6 +8,8 @@
 		          controls: {location: false}, popupOnHover: true
 				   }"
             [onPopupClose]="onPopupClose"
+            [data]="_data"
+            (loaded)="onMapLoad()"
   ></laji-map>
   <div style="display: none;">
     <div #popup>

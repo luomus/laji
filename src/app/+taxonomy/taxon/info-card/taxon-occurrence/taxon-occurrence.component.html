@@ -8,6 +8,12 @@
         <laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">
           {{ taxon.occurrenceInFinland | label }}
         </laji-taxon-info-row>
+        <laji-taxon-info-row *ngIf="taxon.primaryHabitat" [label]="'iucn.results.habitat.primaryFull' | translate">
+          <laji-habitat [habitat]="taxon.primaryHabitat"></laji-habitat>
+        </laji-taxon-info-row>
+        <laji-taxon-info-row *ngIf="taxon.secondaryHabitats" [label]="'iucn.results.habitat.secondary' | translate">
+          <laji-habitat [habitat]="taxon.secondaryHabitats"></laji-habitat>
+        </laji-taxon-info-row>
         <laji-taxon-info-row *ngIf="taxon.typeOfOccurrenceInFinland" [label]="'taxonomy.typeOfOccurrenceInFinland' | translate">
           <ul>
             <li *ngFor="let type of taxon.typeOfOccurrenceInFinland">
@@ -168,6 +174,43 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
+    <div [hidden]="taxon.habitatOccurrenceCounts.length === 0"
+         class="panel panel-default"
+         laji-panel
+         [title]="'observation.active.anyHabitat' | translate"
+         [open]="true"
+         [autoToggle]="true"
+    >
+    <p class="disclaimer">
+      {{ 'taxonomy.observations.habitat.disclaimer' | translate }}
+    </p>
+      <laji-datatable
+      class="habitat-datatable"
+      [height]="'200px'"
+      [rows]="filterHabitats"
+      [columns]="[
+        {
+          name: 'habitat',
+          label: 'MO.habitat' | label,
+          cellTemplate: 'multiLang'
+        },
+        {
+          name: 'occurrenceCount',
+          label: 'MO.count' | label,
+          cellTemplate: 'label',
+          width: 30
+        }
+      ]"
+      [showHeader]="false"
+      [showFooter]="false"
+      [virtualScrolling]="false"
+      [clientSideSorting]="true"
+      [count]="taxon.habitatOccurrenceCounts.length"
+      [page]="1"
+      [pageSize]="taxon.habitatOccurrenceCounts.length"
+    ></laji-datatable>
+    </div>
+    
     <div [hidden]="!filterByRecordBasisTotal"
          class="panel panel-default"
          laji-panel

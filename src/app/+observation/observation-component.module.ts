@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { ObservationChartComponent } from './chart/observation-chart.component';
 import { ObservationViewComponent } from './view/observation-view.component';
 import { ObservationResultComponent } from './result/observation-result.component';
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
-import { PieChartComponent } from './chart/pie/pie-chart.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { routing } from './observation.routes';
@@ -19,7 +17,6 @@ import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/thr
 import { ObservationFiltersComponent } from './observation-filters/observation-filters.component';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ObservationFormComponent } from './form/observation-form.component';
 import { SeasonComponent } from './form/season/season.component';
 import { ResetComponent } from './reset/reset.component';
@@ -37,6 +34,8 @@ import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.co
 import { DateFormComponent } from './form/date-form/date-form.component';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
+import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
+import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 
 @NgModule({
   imports: [
@@ -50,23 +49,22 @@ import { ChartModule } from '../shared-modules/chart/chart.module';
     SearchFiltersModule,
     ObservationMapModule,
     InfoModule,
-    NgxChartsModule,
     JwBootstrapSwitchNg2Module,
     AnnotationModule,
     LajiUiModule,
     DownloadModule,
     ChartModule,
     ThreeStateSwitchModule,
-    PillListModule
+    PillListModule,
+    TechnicalNewsModule,
+    InfoPageModule
   ],
   declarations: [
     ObservationComponent,
-    ObservationChartComponent,
     ObservationViewComponent,
     ResetComponent,
     ObservationResultComponent,
     ObservationResultListComponent,
-    PieChartComponent,
     ObservationDownloadComponent,
     MainResultComponent,
     ObservationFiltersComponent,

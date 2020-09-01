@@ -1,4 +1,4 @@
-import { delay, tap } from 'rxjs/operators';
+import { delay, switchMap, tap } from 'rxjs/operators';
 import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from '../../../shared/model/Document';
@@ -8,9 +8,9 @@ import { Subscription } from 'rxjs';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { WINDOW } from '@ng-toolkit/universal';
 import { getLocality$ } from '../../own-submissions/own-submissions.component';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { DialogService } from '../../../shared/service/dialog.service';
 
 
 @Component({
@@ -23,6 +23,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
   @Input() form: any;
   @Input() showFormName = true;
+  @Input() staticWidth: number = undefined;
   @Input() complainLocality = true;
   @Input() unsaved = false;
   @Output() discardTempDocument = new EventEmitter();
@@ -48,7 +49,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     private translate: TranslateService,
     private labelService: TriplestoreLabelService,
     private localizeRouterService: LocalizeRouterService,
-    @Inject(WINDOW) private window: Window
+    private dialogService: DialogService
   ) {}
 
   ngOnInit() {
@@ -97,9 +98,11 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   removeDocument(event) {
     event.stopPropagation();
     if (this.newUnitsLength > 0) {
-      this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).subscribe(
+      this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).pipe(
+        switchMap(msg => this.dialogService.confirm(msg)),
+      ).subscribe(
         (confirm) => {
-          if (this.window.confirm(confirm)) {
+          if (confirm) {
             this.discardTempDocument.emit();
           }
         }

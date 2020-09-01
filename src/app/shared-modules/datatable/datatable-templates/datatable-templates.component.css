@@ -26,3 +26,23 @@ img.compact {
   padding:0;
   list-style:none
 }
+
+.tag {
+  display: inline-block;
+}
+
+div.annotation-marker {
+  margin-bottom: 0px;
+  border-radius: 0px; 
+  padding: 0; 
+  background-color: transparent;
+  border: 0;
+  margin-right: 5px;
+}
+
+.title {
+  display: inline; 
+  vertical-align: super;
+}
+
+

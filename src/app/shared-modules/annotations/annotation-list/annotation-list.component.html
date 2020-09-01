@@ -54,9 +54,9 @@
              <div class="col-xs-4" style="font-weight: bold;">{{ 'MAN.addedTags' | label }}:</div>
              <div class="col-xs-8">
                <div *ngIf="annotation.addedTags.length > 0">
-                <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngSwitch]="addedTag | warehouse" [ngClass]="{'margin-bottom-5': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags !== undefined && effectiveTags.indexOf(addedTag) !== -1 }">
-                  <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
-                     <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker" [ngClass]="{'positive': annotationTagsObservation[addedTag | warehouse ].type==='positive', 'check': annotationTagsObservation[addedTag | warehouse ].type==='check', 'negative': annotationTagsObservation[addedTag | warehouse ].type==='negative', 'self': annotationTagsObservation[addedTag | warehouse ].type ==='info', 'admin': annotationTagsObservation[addedTag | warehouse ].type ==='admin' }" >
+                <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngClass]="{'margin-bottom-5': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags !== undefined && effectiveTags.indexOf(addedTag) !== -1 }">
+                  <div *ngIf="tagsConverted[addedTag | warehouse]; else noCategory">
+                     <div class="annotation-marker" [ngClass]="{'positive': tagsConverted[addedTag | warehouse]?.type==='MMAN.typePositiveQuality', 'check': tagsConverted[addedTag | warehouse]?.type==='MMAN.typeCheck', 'negative': (tagsConverted[addedTag | warehouse]?.type==='MMAN.typeNegativeQuality' || tagsConverted[addedTag | warehouse]?.type==='MMAN.typeAdmin'), 'info': tagsConverted[addedTag | warehouse]?.type ==='MMAN.typeSelf', 'self': tagsConverted[addedTag | warehouse]?.type ==='MMAN.typeInfo' }">
                        <span>{{ addedTag | label: 'warehouse' }}</span>
                      </div>
                   </div>
@@ -90,10 +90,6 @@
               <ng-template #taxonNameSimple>
                 <span>
                   {{ annotation.identification.taxon }}
-                  <a (click)="onTaxonLinkClick($event)" [routerLink]="['/taxon/' + (annotation.identification.taxonID | toQName)] | localize" target="_blank"
-                  [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
-                    <i class="glyphicon glyphicon-tag"></i>
-                  </a>
                 </span>
               </ng-template>
                <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''"> ,{{ annotation.identification.taxonSpecifier }}</ng-container>

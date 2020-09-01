@@ -1,12 +1,11 @@
-import { map } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, Input, OnInit, Output,
 EventEmitter} from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
-import { Observable } from 'rxjs';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DocumentViewerFacade } from '../document-viewer.facade';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
   selector: 'laji-unit',
@@ -27,16 +26,15 @@ export class UnitComponent implements OnInit {
   @Input() showFacts = false;
   @Input() showAnnotation: boolean;
   @Input() showOnlyHighlighted: boolean;
+  @Input() annotationTags: AnnotationTag[]; 
   @Output() annotationPending = new EventEmitter<boolean>();
 
   annotationVisible = false;
-  annotationClass$: Observable<string>;
   annotationIcon: string;
   annotations: Annotation[] = [];
 
   unitID: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
-  annotationClass = Annotation.AnnotationClassEnum;
 
   constructor(
     private toQname: ToQNamePipe,
@@ -76,22 +74,7 @@ export class UnitComponent implements OnInit {
       }
       this.unit.annotations = annotations;
     }
-    this.annotationClass$ = this.annotationService
-      .getAnnotationClassInEffect(annotations).pipe(
-      map(annotationClass => {
-        this.annotationIcon = annotationClass ? 'fa-comments' : 'fa-comment-o';
-        switch (annotationClass) {
-          case Annotation.AnnotationClassEnum.AnnotationClassUnreliable:
-          case Annotation.AnnotationClassEnum.AnnotationClassSuspicious:
-          case Annotation.AnnotationClassEnum.AnnotationClassSpam:
-            return 'btn-danger';
-          case Annotation.AnnotationClassEnum.AnnotationClassLikely:
-          case Annotation.AnnotationClassEnum.AnnotationClassReliable:
-            return 'btn-success';
-          default:
-            return 'btn-default';
-        }
-      }));
+
     if (this.unit.annotations) {
       this.annotations = this.unit.annotations.reverse();
     }

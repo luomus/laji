@@ -33,6 +33,7 @@ import { ObservationTableColumn } from '../../shared-modules/observation-result/
 import { IColumns } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { ObservationDataService } from '../observation-data.service';
 import { environment } from '../../../environments/environment';
+import { DownloadService } from 'src/app/shared/service/download.service';
 
 
 enum RequestStatus {
@@ -54,7 +55,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   @Input() unitCount: number;
   @Input() speciesCount: number;
-  @Input() taxaLimit = 1000;
+  @Input() taxaLimit = 3000;
   @Input() loadLimit = 2000000;
   @Input() maxSimpleDownload = Global.limit.simpleDownload;
 
@@ -68,9 +69,12 @@ export class ObservationDownloadComponent implements OnDestroy {
   description = '';
   csvParams = '';
   reason = '';
+  reasonEnum = '';
   columnSelector = new ColumnSelector;
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
+
+  speciesCsvLoading = false;
 
   linkTimeout: any;
 
@@ -97,11 +101,13 @@ export class ObservationDownloadComponent implements OnDestroy {
               private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
               private exportService: ExportService,
               private modalService: BsModalService,
-              private observationDataService: ObservationDataService
+              private observationDataService: ObservationDataService,
+              private downloadService: DownloadService
   ) {
     this.columnGroups = tableColumnService.getColumnGroups();
     this.columnLookup = tableColumnService.getAllColumnLookup();
     this.columnSelector.columns = this.tableColumnService.getDefaultFields();
+    this.columnSelector.required = this.tableColumnService.getRequiredFields();
     this._originalSelected = this.tableColumnService.getDefaultFields();
   }
 
@@ -140,7 +146,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     }
     let hasPersonalData = false;
     const warehouseQuery: WarehouseQueryInterface = {...query};
-    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
+    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
       if (warehouseQuery[key]) {
         hasPersonalData = true;
       }
@@ -184,7 +190,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   updateQueryParamsDownloadTaxon(e) {
     e.stopPropagation();
     const arrayParams = this.csvParams.split('&');
-    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
+    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
       arrayParams.forEach((element, index) => {
         if (element.indexOf(key) !== -1) {
           arrayParams[index] = key + '=' + this.userService.getToken();
@@ -196,6 +202,16 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.linkTimeout = setTimeout(() => {
       this.updateCsvLink();
     }, 200);
+  }
+
+  downloadSpecies(e) {
+    this.speciesCsvLoading = true;
+    this.cd.markForCheck();
+    this.updateQueryParamsDownloadTaxon(e);
+    this.downloadService.download('/api/warehouse/query/aggregate?' + this.csvParams, 'species.csv').subscribe(() => {
+      this.speciesCsvLoading = false;
+      this.cd.markForCheck();
+    });
   }
 
   makePrivateRequest() {
@@ -257,7 +273,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       this.translate.currentLang,
       true,
       environment.type === Global.type.vir,
-      this.reason
+      [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
     ).subscribe(

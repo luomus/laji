@@ -15,7 +15,7 @@ import { CacheService } from '../../shared/service/cache.service';
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
-  styleUrls: ['./taxon.component.css'],
+  styleUrls: ['./taxon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonComponent implements OnInit, OnDestroy {
@@ -25,15 +25,11 @@ export class TaxonComponent implements OnInit, OnDestroy {
   infoCardContext: string;
   infoCardTab: string;
 
-  sidebarWidth = 225;
-  showTree = true;
+  showTree = false;
   canShowTree = true;
 
   loading = false;
   private initTaxonSub: Subscription;
-
-  private onMouseMove = this.updateSidebarWidth.bind(this);
-  private onMouseUp  = this.stopDragging.bind(this);
 
   private subParam: Subscription;
 
@@ -82,43 +78,12 @@ export class TaxonComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  startDragging(e) {
-    e.preventDefault();
-    this.document.addEventListener(
-      'mousemove', this.onMouseMove
-    );
-    this.document.addEventListener(
-      'mouseup', this.onMouseUp
-    );
-  }
-
-  private updateSidebarWidth(e) {
-    e.preventDefault();
-    this.sidebarWidth = Math.min(Math.max(e.pageX + 2, 120), 450);
-    this.cd.detectChanges();
-  }
-
-  private stopDragging(e) {
-    this.document.removeEventListener(
-      'mousemove', this.onMouseMove
-    );
-    this.document.removeEventListener(
-      'mouseup', this.onMouseUp
-    );
-  }
-
-  toggleSidebar() {
-    this.showTree = !this.showTree;
-    this.updateRoute();
-  }
-
   updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false) {
     const route = ['/taxon', id];
     const params = {};
     const extra = {};
 
-    if (tab !== 'overview' && tab !== 'taxonomy') {
+    if (tab !== 'overview') {
       route.push(tab);
     }
     if (context !== 'default' && id === this.taxon.id) {
@@ -156,14 +121,23 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private setTitle() {
     let title = this.taxon.vernacularName && this.taxon.vernacularName[this.translate.currentLang] || '';
-    title += title ? ' (' + this.taxon.scientificName + ')' : this.taxon.scientificName;
+    if (title) {
+      const alternativeNames: string[] = [];
+      if (this.taxon?.alternativeVernacularName?.[this.translate.currentLang]) {
+        alternativeNames.push(...this.taxon.alternativeVernacularName[this.translate.currentLang]);
+      }
+      title += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
+    }
+    title += title ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
     this.title.setTitle((title ? title + ' | '  : '') + this.title.getTitle());
   }
 
   private getTaxon(id) {
-    const taxon$ = this.taxonService
-      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true, includeRedListEvaluations: true});
-    return this.cacheService.getCachedObservable(taxon$, `taxon-${id}`).pipe(
+    return this.taxonService.taxonomyFindBySubject(id, 'multi', {
+      includeMedia: true,
+      includeDescriptions: true,
+      includeRedListEvaluations: true,
+    }).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
       catchError(err => {
         this.logger.warn('Failed to fetch taxon by id', err);

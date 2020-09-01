@@ -56,8 +56,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() defaultOrder: string;
   @Input() visible: boolean;
   @Input() hideDefaultCountColumn = false;
+  @Input() factInfo: boolean;
   @Input() allAggregateFields = [
     'unit.species',
+    'unit.facts.value',
     'unit.linkings.taxon.vernacularName',
     'unit.linkings.taxon.scientificName',
     'unit.taxonVerbatim',
@@ -150,6 +152,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
     this.columnSelector.columns       = selected;
     this.numberColumnSelector.columns = selectedNumbers;
+  }
+
+  @Input() set required(required: string[]) {
+    this.columnSelector.required = required;
   }
 
   ngOnInit() {
@@ -276,7 +282,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       this.pageSize,
       [...this.orderBy, this.defaultOrder],
       this.lang,
-      this.useStatistics
+      this.useStatistics,
+      this.factInfo ? this.factInfo : false
     );
     const list$ = this.resultService.getList(
       this.query,
@@ -289,6 +296,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
     this.fetchSub = (this.isAggregate ? aggregate$ : list$)
       .subscribe(data => {
+        if (this.factInfo) {
+          this.setHabitatColumn(data, 'unit.facts.fact');
+        }
+
         this.total.emit(data && data.total || 0);
         this.result = data;
         this.loading = false;
@@ -314,6 +325,20 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     return (value || '')
       .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
   }
+
+  private setHabitatColumn(data: PagedResult<any>, value: string): PagedResult<any> {
+    const filter = data.results.filter(item => {
+      if (item.unit.facts.fact === 'http://tun.fi/MY.habitatIUCN') {
+        delete item.unit.facts.fact;
+        return item;
+      }      
+    })
+    data.results = filter;
+    data.total = filter.length;
+    this.columns = this.columns.filter(r => {if (r.name !== value) return r});
+    return data;
+  }
+
 
   download(type: string) {
     this.downloadLoading = true;

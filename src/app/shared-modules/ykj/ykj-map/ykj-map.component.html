@@ -1,5 +1,6 @@
 <div [style.height]="height" class="map-wrap">
   <laji-map
+    (loaded)="onMapLoad()"
     [loading]="loading"
     [maxBounds]="maxBounds"
     [options]="mapOptions"
@@ -17,8 +18,8 @@
       </h5>
     </div>
     <div class="legend">
-      <span class="cnt">
-        {{ 'theme.cnt' | translate }}
+      <span class="cnt capitalize">
+        {{ 'theme.square' | translate }}
       </span>
       <div dropdown style="position: relative">
         <ng-container *ngIf="types.length > 1">
@@ -35,8 +36,8 @@
           </ul>
         </ng-container>
         <ng-container *ngIf="types.length <= 1">
-          <span>
-            {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
+          <span class="capitalize">
+            {{ (typeLabels[type] ? typeLabels[type] : 'theme.count') | translate }}
           </span>
         </ng-container>
       </div>
@@ -48,7 +49,7 @@
         </li>
         <li>
           {{ 'theme.total' | translate }}
-          <span class="cnt">{{ count['total'] }}</span>
+          <span class="cnt">{{ count['total'] }} {{ 'theme.square' | translate }}</span>
         </li>
       </ul>
     </div>

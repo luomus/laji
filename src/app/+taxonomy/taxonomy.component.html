@@ -1,63 +1,48 @@
-<header class="mb-6">
+<header class="mb-5">
   <div class="container-fluid">
     <ng-container *lajiForTypes="['vir']; exclude: true">
       <h1 translate>species.search</h1>
       <h2 translate>species.title.short</h2>
       <p translate>species.title.long</p>
     </ng-container>
-    <ng-container *lajiForTypes="['vir']">
-      <h1 translate>vir.taxonomyHeader.title</h1>
-      <ul>
-        <li>
-          {{ 'vir.taxonomyHeader.li.1.1' | translate }}
-          <a target="_blank" href="https://laji.fi/theme/checklist" translate>vir.taxonomyHeader.li.1.2</a>
-          {{ 'vir.taxonomyHeader.li.1.3' | translate }}
-        </li>
-        <li translate>vir.taxonomyHeader.li.2</li>
-      </ul>
-    </ng-container>
-    <div class="row">
-      <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
-        <laji-omni-search [placeholder]="'species.search' | translate"></laji-omni-search>
-      </div>
-    </div>
+    <laji-technical-news></laji-technical-news>
+    <laji-omni-search [placeholder]="'species.search' | translate"></laji-omni-search>
   </div>
 </header>
 <div class="container-fluid">
-  <div class="row">
-    <laji-navigation-thumbnail
-      *lajiForTypes="['dev', 'prod', 'embedded']"
-      [name]="'taxonomy.browseSpeciesPage'"
-      [icon]="'kotilo_1_sha'"
-      [iconType]="'png'"
-      [path]="'taxon/browse'"
-      [intro]="'taxonomy.browseSpeciesPage.intro' | translate"
-      [bodyHeight]="'150px'"
-    ></laji-navigation-thumbnail>
-    <laji-navigation-thumbnail
-      [name]="'taxonomy.speciesPage'"
-      [icon]="'table'"
-      [iconType]="'png'"
-      [path]="'taxon/list'"
-      [query]="{ onlyFinnish: true }"
-      [intro]="'taxonomy.speciesPage.intro' | translate"
-      [bodyHeight]="'150px'"
-    ></laji-navigation-thumbnail>
-    <laji-navigation-thumbnail
-      [name]="'taxonomy.taxonPage'"
-      [icon]="'tree'"
-      [iconType]="'png'"
-      [path]="'taxon/MX.37600/taxonomy'"
-      [query]="{ showTree: true }"
-      [bodyHeight]="'150px'"
-    >
-      <div class="taxon-select">
-        <laji-taxon-select
-          [placeholder]="'taxonomy.taxonPage.search' | translate"
-          [searchParams]="{ species: false }"
-          (taxonIdChange)="toTaxonPage($event)"
-        ></laji-taxon-select>
+  <div class="nav-card-container d-flex flex-col my-7">
+    <div routerLink="browse" class="nav-card d-flex mr-3 mb-3" *lajiForTypes="['dev', 'prod', 'beta', 'embedded']">
+      <div class="nav-card-img">
+        <img src="/static/images/icons/kotilo_1_sha.png">
       </div>
-    </laji-navigation-thumbnail>
+      <div class="nav-card-content">
+        <strong>{{ 'taxonomy.browseSpeciesPage' | translate }}</strong>
+        <div class="nav-description">
+          {{ 'taxonomy.browseSpeciesPage.intro' | translate }}
+        </div>
+      </div>
+    </div>
+    <div routerLink="list" [queryParams]="{ onlyFinnish: true }" class="nav-card d-flex mr-3 mb-3">
+      <div class="nav-card-img">
+        <img src="/static/images/icons/table.png">
+      </div>
+      <div class="nav-card-content">
+        <strong>{{ 'taxonomy.speciesPage' | translate }}</strong>
+        <div class="nav-description">
+          {{ 'taxonomy.speciesPage.intro' | translate }}
+        </div>
+      </div>
+    </div>
+    <div routerLink="MX.37600/taxonomy" [queryParams]="{ showTree: true }" class="nav-card d-flex mr-3 mb-3">
+      <div class="nav-card-img">
+        <img src="/static/images/icons/tree.png">
+      </div>
+      <div class="nav-card-content">
+        <strong>{{ 'taxonomy.taxonPage' | translate }}</strong>
+        <div class="nav-description">
+          {{ 'taxonomy.taxonPage.intro' | translate }}
+        </div>
+      </div>
+    </div>
   </div>
 </div>

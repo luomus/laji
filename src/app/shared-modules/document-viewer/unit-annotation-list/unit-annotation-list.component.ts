@@ -1,5 +1,6 @@
 import {map, switchMap } from 'rxjs/operators';
-import { ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter, OnDestroy,
+ChangeDetectionStrategy} from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
@@ -8,11 +9,13 @@ import { Annotation } from '../../../shared/model/Annotation';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
   selector: 'laji-unit-annotation-list',
   templateUrl: './unit-annotation-list.component.html',
-  styleUrls: ['./unit-annotation-list.component.scss']
+  styleUrls: ['./unit-annotation-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Input() editors: string[];
@@ -26,15 +29,14 @@ export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Input() openAnnotation: boolean;
   @Input() showFacts = false;
   @Input() showAnnotation: boolean;
+  @Input() annotationTags: AnnotationTag[]; 
   @Output() annotationPending = new EventEmitter<Object>();
 
   annotationVisible = false;
-  annotationClass$: Observable<string>;
   annotationIcon: string;
   annotations: Annotation[] = [];
   unitID: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
-  annotationClass = Annotation.AnnotationClassEnum;
   checkloading = {
     status: false,
     action: undefined
@@ -80,22 +82,7 @@ export class UnitAnnotationListComponent implements OnInit, OnDestroy {
       }
       this.unit.annotations = annotations;
     }
-    this.annotationClass$ = this.annotationService
-      .getAnnotationClassInEffect(annotations).pipe(
-      map(annotationClass => {
-        this.annotationIcon = annotationClass ? 'fa-comments' : 'fa-comment-o';
-        switch (annotationClass) {
-          case Annotation.AnnotationClassEnum.AnnotationClassUnreliable:
-          case Annotation.AnnotationClassEnum.AnnotationClassSuspicious:
-          case Annotation.AnnotationClassEnum.AnnotationClassSpam:
-            return 'btn-danger';
-          case Annotation.AnnotationClassEnum.AnnotationClassLikely:
-          case Annotation.AnnotationClassEnum.AnnotationClassReliable:
-            return 'btn-success';
-          default:
-            return 'btn-default';
-        }
-      }));
+
     if (this.unit.annotations) {
       this.annotations = this.unit.annotations.reverse();
     }

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, EventEmitter,
 Output, NgZone } from '@angular/core';
 import { Global } from '../../../../environments/global';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+
 
 @Component({
   selector: 'laji-annotation-item',
@@ -10,10 +12,12 @@ import { Global } from '../../../../environments/global';
 export class AnnotationItemComponent implements OnInit {
 
   @Input() item: any;
+  @Input() annotationTags: AnnotationTag[]; 
 
   annotationTagsObservation = Global.annotationTags;
   limit = 1;
   moreTags: number;
+  tagsConverted: Object = {};
 
 
   constructor(
@@ -24,6 +28,13 @@ export class AnnotationItemComponent implements OnInit {
     if (this.item.unit.interpretations && this.item.unit.interpretations.effectiveTags && this.item.unit.interpretations.effectiveTags.length > 0) {
       this.moreTags = this.item.unit.interpretations.effectiveTags.length - 2;
     }
+    this.annotationTags.forEach(element =>{
+      var key = element.id;
+      var obj = {};
+      obj[key] = element;
+      this.tagsConverted = Object.assign(this.tagsConverted,obj);
+    })
+
   }
 
   toggleLimit(e) {

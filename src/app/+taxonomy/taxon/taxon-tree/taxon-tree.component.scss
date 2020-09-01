@@ -1,0 +1,44 @@
+.tree-wrapper {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.show-main-levels-wrapper {
+  border-top: 1px solid #e1e1e1;
+}
+.show-main-levels-wrapper label {
+  display: inline;
+  font-weight: normal;
+}
+.small-flag {
+  margin-left: 4px;
+  vertical-align: baseline;
+}
+
+.rank {
+      display: inline-block;
+      line-height: 0.5;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-style: italic;
+      margin-left:5px
+}
+
+@media only screen and (min-width : 768px) {
+  :host {
+    width: 100%;
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+  }
+  .tree-wrapper {
+    flex: 0 1 auto;
+  }
+  .show-main-levels-wrapper {
+    flex: 1 0 auto;
+  }
+}
+@media only screen and (max-width : 767px) {
+  .tree-wrapper {
+    max-height: calc(50vh - 50px);
+  }
+}

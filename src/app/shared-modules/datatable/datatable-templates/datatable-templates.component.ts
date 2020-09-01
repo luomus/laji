@@ -1,6 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { SYNONYM_KEYS } from '../../../+taxonomy/species/service/taxon-export.service';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-datatable-templates',
@@ -14,6 +15,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('originalTaxon', { static: true }) originalTaxon: TemplateRef<any>;
   @ViewChild('species', { static: true }) species: TemplateRef<any>;
   @ViewChild('synonyms', { static: true }) synonyms: TemplateRef<any>;
+  @ViewChild('misappliedNames', { static: true }) misappliedNames: TemplateRef<any>;
   @ViewChild('eventDate', { static: true }) eventDate: TemplateRef<any>;
   @ViewChild('multiLang', { static: true }) multiLang: TemplateRef<any>;
   @ViewChild('multiLangAll', { static: true }) multiLangAll: TemplateRef<any>;
@@ -39,10 +41,14 @@ export class DatatableTemplatesComponent {
   @ViewChild('number', { static: true }) number: TemplateRef<any>;
   @ViewChild('biogeographicalProvince', { static: true }) biogeographicalProvince: TemplateRef<any>;
   @ViewChild('taxonHabitats', { static: true }) taxonHabitats: TemplateRef<any>;
+  @ViewChild('country', { static: true }) country: TemplateRef<any>;
+  @ViewChild('formName', { static: true }) formName: TemplateRef<any>;
+  @ViewChild('userName', { static: true }) userName: TemplateRef<any>;
 
-  annotationClass = Annotation.AnnotationClassEnum;
+
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;
+  annotationTagsObservation = Global.annotationTags;
 
   constructor() { }
 

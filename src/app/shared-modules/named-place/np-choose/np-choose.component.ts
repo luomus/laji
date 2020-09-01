@@ -3,19 +3,17 @@ import {
   Component,
   EventEmitter,
   HostListener,
-  Inject,
   Input,
   OnChanges,
   OnInit,
   Output,
-  PLATFORM_ID,
   SimpleChanges
 } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { ExtendedNamedPlace } from '../model/extended-named-place';
-import { isPlatformBrowser } from '@angular/common';
 import { LoadedElementsStore } from '../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
+import { Rights } from '../../../+haseka/form-permission/form-permission.service';
+import { PlatformService } from '../../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-np-choose',
@@ -30,12 +28,13 @@ export class NpChooseComponent implements OnInit, OnChanges {
   height = '600px';
   _namedPlaces: ExtendedNamedPlace[] = [];
   _documentForm: any;
+  _userID: string;
 
   @Input() placeForm: any;
   @Input() visible = true;
   @Input() allowCreate = true;
-  @Input() userID: string;
   @Input() showMap = true;
+  @Input() formRights: Rights;
 
   @Output() activePlaceChange = new EventEmitter<number>();
   @Output() createButtonClick = new EventEmitter();
@@ -51,8 +50,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
   FEATURE_RESERVE = 'MHL.featureReserve';
 
   constructor(
-    @Inject(WINDOW) private window: Window,
-    @Inject(PLATFORM_ID) private platformID: object
+    private platformService: PlatformService
   ) {}
 
   ngOnInit() {
@@ -70,6 +68,12 @@ export class NpChooseComponent implements OnInit, OnChanges {
         this.loadedTabs.load(this.activeIndex);
       }
     }
+  }
+
+  @Input() set userID(userID: string) {
+    this._userID = userID;
+    // Reset so uses user id correctly.
+    this.namedPlaces = this._namedPlaces;
   }
 
   @Input() set namedPlaces(namedPlaces: NamedPlace[]) {
@@ -93,8 +97,8 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   updateHeight() {
-    if (isPlatformBrowser(this.platformID)) {
-      this.height = Math.min(this.window.innerHeight - 70, 490) + 'px';
+    if (this.platformService.isBrowser) {
+      this.height = Math.min(window.innerHeight - 70, 490) + 'px';
     }
   }
 
@@ -132,7 +136,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
     const until = new Date(np.reserve.until);
     if (now > until) {
       return 'free';
-    } else if (np.reserve.reserver === this.userID) {
+    } else if (np.reserve.reserver === this._userID) {
       return 'mine';
     }
     return 'reserved';

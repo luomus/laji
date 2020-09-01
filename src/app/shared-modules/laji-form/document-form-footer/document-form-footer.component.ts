@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Form } from '../../../shared/model/Form';
 import { Readonly } from '@laji-form/laji-form-document.facade';
 import { FormService } from '../../../shared/service/form.service';
+import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
+import { LajiFormUtil } from '@laji-form/laji-form-util.service';
 
 @Component({
   selector: 'laji-document-form-footer',
@@ -14,8 +16,11 @@ export class DocumentFormFooterComponent {
   @Input() saving = false;
   @Input() readonly: Readonly = Readonly.false;
   @Input() edit = false;
+  @Input() lajiForm: LajiFormComponent;
+  @Input() template = false;
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
+  @Output() submitTemplate = new EventEmitter();
   @Output() cancel = new EventEmitter();
   @Output() lock = new EventEmitter<boolean>();
   _form: any;
@@ -28,6 +33,9 @@ export class DocumentFormFooterComponent {
   };
   displayFeedback = true;
   readonlyStates = Readonly;
+  hasOnlyWarnings = false;
+  _touchedCounter: number;
+  _touchedCounterOnErrors: number;
 
   constructor() { }
 
@@ -38,7 +46,9 @@ export class DocumentFormFooterComponent {
     }
     this._form = form;
     this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
-    this._locked = FormService.hasFeature(form, Form.Feature.AdminLockable) ? (form.formData && !!form.formData.locked) : undefined;
+    this._locked = (form.formData.id?.indexOf('T:') !== 0 && FormService.hasFeature(form, Form.Feature.AdminLockable))
+      ? (form.formData && !!form.formData.locked)
+      : undefined;
     ['save', 'temp', 'cancel'].forEach(prop => {
       let show: boolean;
 
@@ -60,6 +70,28 @@ export class DocumentFormFooterComponent {
     }
   }
 
+  private _hasOnlyWarnings(errors) {
+    if (errors.__errors?.length && errors.__errors.every(e => e.indexOf('[warning]') === 0)) {
+      return true;
+    }
+    return Object.keys(errors).length && Object.keys(errors).every(key => key !== '__errors' && this._hasOnlyWarnings(errors[key]));
+  }
+
+  @Input()
+  set errors(errors: any) {
+    this.hasOnlyWarnings = document.querySelector('.warning-panel') && this._hasOnlyWarnings(errors);
+    this._touchedCounterOnErrors = this._touchedCounter;
+  }
+
+  @Input()
+  set touchedCounter(counter: number) {
+    this._touchedCounter = counter;
+  }
+
+  disableIfOnlyWarnings() {
+    return this.hasOnlyWarnings && this._touchedCounterOnErrors === this._touchedCounter;
+  }
+
   buttonLabel(prop: 'save'|'temp'|'cancel') {
     if (this._form && this._form.actions && this._form.actions[prop]) {
       if (prop === 'save' && this.edit && this._form.actions.edit) {
@@ -73,5 +105,10 @@ export class DocumentFormFooterComponent {
       return 'haseka.form.savePrivate';
     }
     return 'haseka.form.back';
+  }
+
+  highlightErrorContainer() {
+    this.lajiForm.popErrorListIfNeeded();
+    LajiFormUtil.scrollIntoViewIfNeeded(document.querySelector('.laji-form-error-list'));
   }
 }

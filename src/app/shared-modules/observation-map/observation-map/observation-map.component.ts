@@ -25,6 +25,7 @@ import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../shared/service/platform.service';
 import { latLngBounds as LlatLngBounds } from 'leaflet';
+import { TileLayersOptions } from 'laji-map';
 
 @Component({
   selector: 'laji-observation-map',
@@ -64,6 +65,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() set showControls(show: boolean) {
     this._mapOptions = {...this._mapOptions, controls: show ? { draw: false } : false};
   }
+  @Input() set clickBeforeZoomAndPan(clickBeforeZoomAndPan: boolean) {
+    this._mapOptions = {...this._mapOptions, clickBeforeZoomAndPan};
+  }
   @Input() ready = true;
   @Input() unitCount: number;
   /**
@@ -101,7 +105,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     controls: {
       draw: false
     },
-    zoom: 1,
+    zoom: 1.5,
     draw: false,
     tileLayerName: LajiMapTileLayerName.openStreetMap
   };
@@ -240,8 +244,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }, 200);
   }
 
-  onTileLayerChange(layer) {
-    const shouldLimit = ['googleSatellite', 'openStreetMap'].indexOf(layer) === -1;
+  onTileLayersChange(layerOptions: TileLayersOptions) {
+    const shouldLimit = layerOptions.active === 'finnish';
     if (this.limitResults !== shouldLimit) {
       this.limitResults = shouldLimit;
     }

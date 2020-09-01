@@ -1,186 +1,143 @@
-directive @cacheControl(
-  maxAge: Int,
-  scope: CacheControlScope
-) on OBJECT | FIELD_DEFINITION
+# This file was generated based on ".graphqlconfig". Do not edit manually.
 
-enum CacheControlScope {
-  PUBLIC
-  PRIVATE
+schema {
+  query: Query
 }
 
-scalar JSON
-scalar JSONObject
+type APIUser {
+  email: String!
+  "Email address to where feedback is send (only admin can edit)"
+  feedbackEmail: String
+  "Source systems ID (only admin can edit)"
+  systemID: String
+}
+
+type Alt {
+  "alt name"
+  alt: ID!
+  "short property name"
+  options: [Option!]!
+}
 
 type Annotation {
-  """Unique ID for the object. This will be automatically generated."""
-  id: String
-
-  """QName for MMAN.tagClass"""
+  "QName for MMAN.tagClass"
   addedTags: [String!]
-
-  """QName for MA.person"""
+  "QName for MA.person"
   annotationByPerson: String
-
-  """QName for KE.informationSystem"""
+  "QName for KE.informationSystem"
   annotationBySystem: String
   annotationClass: String
   byRole: String
   censusAnnotation: [String!]
-
-  """dateTime string using ISO8601 format"""
+  "dateTime string using ISO8601 format"
   created: String
-
-  """instance of identification"""
+  "Unique ID for the object. This will be automatically generated."
+  id: String
+  "instance of identification"
   identification: AnnotationIdentification
   invasiveControlEffectiveness: String
   lineTransectAnnotation: [String!]
   notes: String
   occurrenceAtTimeOfAnnotation: String
   opinion: String
-
-  """QName for MMAN.tagClass"""
+  "QName for MMAN.tagClass"
   removedTags: [String!]
-
-  """QName for MY.document"""
+  "QName for MY.document"
   rootID: String
-
-  """QName for MY.unit"""
+  "QName for MY.unit"
   targetID: String
   type: String!
 }
 
-"""instance of identification"""
+"instance of identification"
 type AnnotationIdentification {
   """
+
   Write associated observation taxa names here, separated by a semicolon (;).
-  E.g.: \"Betula pendula; Betula pubescens; Poaceae\". These will form their own
+  E.g.: \\\"Betula pendula; Betula pubescens; Poaceae\\\". These will form their own
   units of the type observation.
   """
   associatedObservationTaxa: String
-
-  """Author for the taxon"""
+  "Author for the taxon"
   author: String
-
-  """
-  Name of the identifier (person) preferably in format \"lastname, firstname\"
-  """
+  "Name of the identifier (person) preferably in format \\\"lastname, firstname\\\""
   det: String
-
-  """
-  Date or year when the identification was done, preferably in format \"d.m.Y\" or  \"Y\"
-  """
+  "Date or year when the identification was done, preferably in format \\\"d.m.Y\\\" or  \\\"Y\\\""
   detDate: String
   detMethod: String
-
-  """
-  Name of the identifier and date of identification in original format (e.g. from the label), errors and all
-  """
+  "Name of the identifier and date of identification in original format (e.g. from the label), errors and all"
   detVerbatim: String
-
-  """Additional qualifier or specifier at genus level (e.g. aff., cf.)"""
+  "Additional qualifier or specifier at genus level (e.g. aff., cf.)"
   genusQualifier: String
   identificationBasis: [String!]
   identificationDate: String
-
-  """Additional information on the identification, basis or such"""
+  "Additional information on the identification, basis or such"
   identificationNotes: String
-
-  """Author for the taxon below species level/infra epithet"""
+  "Author for the taxon below species level/infra epithet"
   infraAuthor: String
-
-  """Taxon name for the epithet below species level"""
+  "Taxon name for the epithet below species level"
   infraEpithet: String
-
-  """Taxonomic level of the epithet below species level"""
+  "Taxonomic level of the epithet below species level"
   infraRank: String
-
-  """
-  Pathovars, serovars and other infrasubspecific subdivisions of microbes.
-  """
+  "Pathovars, serovars and other infrasubspecific subdivisions of microbes."
   infrasubspecificSubdivision: String
   isTaxonGroup: Boolean
-
   """
+
   This can be used to select one of the identifications as 'recommended', which
   is the used as default when displaying information about the specimen.
   """
   preferredIdentification: String
-
   """
+
   PUBLIC: all data can be published; PROTECTED: exact locality is hidden
   (100*100km square); PRIVATE: most of the data is hidden. Empty value means
   same as public.
   """
   publicityRestrictions: String
-
-  """
-  Publication reference for the taxon concept, that was used in identification
-  """
+  "Publication reference for the taxon concept, that was used in identification"
   sec: String
   sortOrder: Int
-
-  """Additional qualifier at species level (e.g. aff., cf., sp. n., coll.)"""
+  "Additional qualifier at species level (e.g. aff., cf., sp. n., coll.)"
   speciesQualifier: String
-
-  """Taxon name"""
+  "Taxon name"
   taxon: String
-
-  """ID for the taxon if has some other than an MX code"""
+  "ID for the taxon if has some other than an MX code"
   taxonID: String
-
-  """Taxonomic level for the identification"""
+  "Taxonomic level for the identification"
   taxonRank: String
   taxonSpecifier: String
-
-  """QName for MX.taxon"""
+  "QName for MX.taxon"
   taxonURI: String
-
-  """Taxon name in original format (e.g. from the label), errors and all"""
+  "Taxon name in original format (e.g. from the label), errors and all"
   taxonVerbatim: String
 }
 
-type APIUser {
-  """Source systems ID (only admin can edit)"""
-  systemID: String
-
-  """Email address to where feedback is send (only admin can edit)"""
-  feedbackEmail: String
-  email: String!
-}
-
-type Area @cacheControl(maxAge: 300) {
-  id: ID!
-
-  """Aluetyyppi"""
+type Area {
+  "Aluetyyppi"
   areaType: String
-
-  """Country code ISO alpha 2"""
+  "Country code ISO alpha 2"
   countryCodeISOalpha2: String
-
-  """country code ISO alpha 3"""
+  "country code ISO alpha 3"
   countryCodeISOalpha3: String
+  id: ID!
   isPartOf: Area
-
-  """ If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-  """
+  " If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!"
   name: String
-
-  """ If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-  """
+  " If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!"
   provinceCodeAlpha: String
   provinceCodeNumeric: String
 }
 
 type Autocomplete {
   key: String!
-  value: String!
   payload: JSON
+  value: String!
 }
 
-type Checklist @cacheControl(maxAge: 300) {
-  id: ID!
-
+type Checklist {
   bibliographicCitation: String
+  id: ID!
   isPublic: Boolean
   owner: String
   rootTaxon: String
@@ -188,626 +145,644 @@ type Checklist @cacheControl(maxAge: 300) {
   taxon: Taxon!
 }
 
-type ChecklistVersion @cacheControl(maxAge: 300) {
+type ChecklistVersion {
   id: ID!
   versionChecklist: String
   versionDate: String
-
-  """ If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-  """
+  " If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!"
   versionDescription: String
-
-  """ If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-  """
+  " If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!"
   versionName: String
 }
 
 type Collection {
-  """More descriptive name for the collection"""
-  longName: String
-
-  """Whether or not this collection has sub collections"""
-  hasChildren: Boolean
-  id: ID!
-
-  """Secure level (salaus-/karkeistustaso) for the data"""
-  secureLevel: String
-
-  """Official abbreviation (or acronym) for this collection"""
+  "Official abbreviation (or acronym) for this collection"
   abbreviation: String
-
-  """
-  Example how to cite this collection in a scientific article, if using organization, name and abbreviation is not enough.
-  """
+  "Example how to cite this collection in a scientific article, if using organization, name and abbreviation is not enough."
   citation: String
-
   """
+
   Name of the collection in different languages. (Not name of collection
   database.) If lang parameter is 'multi' this will be a lang object instead of
   a string or an array of strings!
   """
   collectionName: String
-
   """
+
   How many specimens, records or such does the collection contain? Fill in
   approximate number, describe more in notes if necessary.
   """
   collectionSize: String
-
-  """Type of the collection (specimen, monitoring etc)."""
+  "Type of the collection (specimen, monitoring etc)."
   collectionType: String
-
   """
+
   Legal basis for concealment or quarantine If lang parameter is 'multi' this
   will be a lang object instead of a string or an array of strings!
   """
   concealmentBasis: String
-
-  """
-  Personal or general (e.g. group of people in the organisation) email address to reach the person(s) responsible.
-  """
+  "Personal or general (e.g. group of people in the organisation) email address to reach the person(s) responsible."
   contactEmail: String
-
   """
+
   Concise definition of the coverage, if not clear from name or description. For
   example, 'Winter birds of Finland'. If lang parameter is 'multi' this will be
   a lang object instead of a string or an array of strings!
   """
   coverageBasis: String
-
-  """Quality estimation for the data in this collection"""
+  "Quality estimation for the data in this collection"
   dataQuality: String
-
   """
+
   Description and reasons for the data quality in different languages. If lang
   parameter is 'multi' this will be a lang object instead of a string or an
   array of strings!
   """
   dataQualityDescription: String
-
-  """Quarantine period in years after which data is opened"""
+  "Quarantine period in years after which data is opened"
   dataQuarantinePeriod: Int
-
   """
+
   Description of possible special terms for data use (for example not for
   commercial purposes etc.) If lang parameter is 'multi' this will be a lang
   object instead of a string or an array of strings!
   """
   dataUseTerms: String
-
+  dateCreated: String
+  dateEdited: String
   """
+
   Free-form description of the collection in different languages. If lang
   parameter is 'multi' this will be a lang object instead of a string or an
   array of strings!
   """
   description: String
-
   """
+
   How many percent of the collection is in digital form, e.g. in a database or
   Excel file? Fill in approximate number, describe more in notes if necessary.
   """
   digitizedSize: String
-
   """
+
   Admin field. The identifier of the person responsible for handling requests
   for restricted data for this set (typically same person who's responsible for
   the collection)
   """
   downloadRequestHandler: [String!]
-
-  """Reason for this edit or notes about it."""
+  "Reason for this edit or notes about it."
   editNotes: String
-
   """
+
   Smallest common geographical area for the specimens/data in the collection
   (for example, country or continent name). If lang parameter is 'multi' this
   will be a lang object instead of a string or an array of strings!
   """
   geographicCoverage: String
-
+  "Whether or not this collection has sub collections"
+  hasChildren: Boolean
+  id: ID!
   """
+
   Description of the rights governing the data (for example, what contracts have
   been made about this). If left blank, Luomus data policy is followed. If lang
   parameter is 'multi' this will be a lang object instead of a string or an
   array of strings!
   """
   intellectualDescription: String
-
   """
+
   Name of the data owner; ONLY fill this if the owner is not clear from the
-  parent collection name(s). E.g. "University of Oulu" or "Luomus"
+  parent collection name(s). E.g. \"University of Oulu\" or \"Luomus\"
   """
   intellectualOwner: String
-
-  """
-  License which is used when publishing data that belongs to this collection.
-  """
+  "License which is used when publishing data that belongs to this collection."
   intellectualRights: String
   internalUseOnly: Boolean
-
-  """Which parent or larger collection this is part of."""
+  "Which parent or larger collection this is part of."
   isPartOf: String
-
-  """Language the data is (mainly) written in, if applicable."""
+  "Language the data is (mainly) written in, if applicable."
   language: String
+  "More descriptive name for the collection"
+  longName: String
   metadataCreator: String
-
-  """Indication of how comprehensive the information on this form is."""
+  "Indication of how comprehensive the information on this form is."
   metadataStatus: String
-
   """
+
   Methods used when creating this collection, if they are standardized. Includes
   information on items such as census methods, tools, instrument calibration and
   software. If lang parameter is 'multi' this will be a lang object instead of a
   string or an array of strings!
   """
   methods: String
-
-  """Additional information to the data in each section."""
+  "Additional information to the data in each section."
   notes: String
-
   """
+
   Web address (URL) with more info about the collection. If lang parameter is
   'multi' this will be a lang object instead of a string or an array of strings!
   """
   onlineUrl: String
-
-  """
-  Person(s) responsible for the collection (Lastname, Firstname; Lastname, Firstname).
-  """
+  "Team or organisation that owns the record and can edit it."
+  owner: String
+  "Person(s) responsible for the collection (Lastname, Firstname; Lastname, Firstname)."
   personResponsible: String
-
   """
+
   Description of possible restrictions on publication of the data (for example,
   is there data about endangered species which should be concealed?) If lang
   parameter is 'multi' this will be a lang object instead of a string or an
   array of strings!
   """
   publicationDescription: String
-
-  """How can Luomus publish the data, if it is owned by third party?"""
+  "How can Luomus publish the data, if it is owned by third party?"
   publicationTerms: String
-
   """
+
+  PUBLIC: all data can be published; PROTECTED: exact locality is hidden
+  (100*100km square); PRIVATE: most of the data is hidden. Empty value means
+  same as public.
+  """
+  publicityRestrictions: String
+  "Secure level (salaus-/karkeistustaso) for the data"
+  secureLevel: String
+  """
+
   Lowest common taxon in the collection (for example, scientific name of an
   order). If lang parameter is 'multi' this will be a lang object instead of a
   string or an array of strings!
   """
   taxonomicCoverage: String
-
   """
+
   When were the specimens/data collected? If lang parameter is 'multi' this will
   be a lang object instead of a string or an array of strings!
   """
   temporalCoverage: String
-
-  """
-  How many TYPE specimens does the collection contain?  Fill in approximate number, describe more in notes if necessary.
-  """
+  "How many TYPE specimens does the collection contain?  Fill in approximate number, describe more in notes if necessary."
   typesSize: String
-  dateCreated: String
-  dateEdited: String
-
-  """Team or organisation that owns the record and can edit it."""
-  owner: String
-
-  """
-  PUBLIC: all data can be published; PROTECTED: exact locality is hidden
-  (100*100km square); PRIVATE: most of the data is hidden. Empty value means
-  same as public.
-  """
-  publicityRestrictions: String
 }
 
-type DocumentResponse {
-  currentPage: Int
-  prevPage: Int
-  nextPage: Int
-  lastPage: Int
-  pageSize: Int
-  total: Int!
-  results: [Document!]!
+type CoordinatePoint {
+  lat: Float
+  lon: Float
 }
 
 type Document {
-  """Unique ID for the object. This will be automatically generated."""
-  id: String
-
-  """
-  Leave empty if no sample taken, or if the sample is recorded separately
-  """
+  "Leave empty if no sample taken, or if the sample is recorded separately"
   DNASampleLocation: String
-
-  """IPEN Number for the accession"""
+  "IPEN Number for the accession"
   IPEN: String
-
-  """URL where more information is available about the specimen"""
+  "URL where more information is available about the specimen"
   URL: String
-
-  """QName for MZ.keyAny"""
+  "QName for MZ.keyAny"
   acknowledgedWarnings: [String!]
-
-  """
-  From who/where the specimen was acquired (if not recorded as a transaction)
-  """
+  "From who/where the specimen was acquired (if not recorded as a transaction)"
   acquiredFrom: String
-
   """
+
   Organization where the accession was acquired from. If the organization is not
   on the list, add it first.. QName for MOS.organization
   """
   acquiredFromOrganization: String
-
   """
+
   Date (d.m.yyyy) or year (yyyy) on which the specimen was acquired to the
   collection. Empty means an old specimen acquired on an unknown date.
   """
   acquisitionDate: String
-
-  """
-  Other identifiers this specimen has, in format 'type:identifier'. For example: 'mzhtypes:123' (old MAZ-type number)
-  """
+  "Other identifiers this specimen has, in format 'type:identifier'. For example: 'mzhtypes:123' (old MAZ-type number)"
   additionalIDs: [String!]
-
   """
+
   BOLD identifier, usually BOLD Sample ID. You can include additonal comment by
-  separating them with colon, e.g. \"AY123456:comments here\"
+  separating them with colon, e.g. \\\"AY123456:comments here\\\"
   """
   bold: [String!]
   caption: String
-
-  """Clad book id number or such"""
+  "Clad book id number or such"
   cladBookID: String
-
-  """Clad specimen id: usually color description and a number"""
+  "Clad specimen id: usually color description and a number"
   cladSpecimenID: String
-
-  """Verbatim specimen data from clad book"""
+  "Verbatim specimen data from clad book"
   cladVerbatim: String
-
-  """The collection which this specimen belongs to. QName for MY.collection"""
+  "The collection which this specimen belongs to. QName for MY.collection"
   collectionID: String
-
   """
+
   Notes on the defects of the specimen (missing parts or such). Empty value
-  means same as \"good\" or \"hyvä\" - that there is nothing special to mention
+  means same as \\\"good\\\" or \\\"hyvä\\\" - that there is nothing special to mention
   about the condition.
   """
   condition: String
-
-  """QName for MA.person"""
+  "QName for MA.person"
   creator: String
-
-  """
-  Annuality/perenniality or other specialities about cultivation in our conditions.
-  """
+  "Annuality/perenniality or other specialities about cultivation in our conditions."
   cultivationInformation: String
   dataOrigin: [String!]
-
-  """
-  Where the data about this specimen is from, in addition to labels. Eg. Field notes, expedition journals.
-  """
+  "Where the data about this specimen is from, in addition to labels. Eg. Field notes, expedition journals."
   dataSource: String
-
-  """The dataset(s) this specimen belongs to. QName for GX.dataset"""
+  "The dataset(s) this specimen belongs to. QName for GX.dataset"
   datasetID: [String!]
   datatype: String
-
-  """dateTime string using ISO8601 format"""
+  "dateTime string using ISO8601 format"
   dateCreated: String
-
-  """dateTime string using ISO8601 format"""
+  "dateTime string using ISO8601 format"
   dateEdited: String
   deviceID: String
-
   """
+
   Location of the specimen so that museum personnel can find it. E.g. taxon
   under which it is stored (if not clear from the identification), or shelf number
   """
   documentLocation: String
-
-  """
-  Description where duplicates (specimens of the same individual) are located or have been sent to and by which ID's.
-  """
+  "Description where duplicates (specimens of the same individual) are located or have been sent to and by which ID's."
   duplicatesIn: String
-
-  """Reason for this edit or notes about it."""
+  "Reason for this edit or notes about it."
   editNotes: String
-
-  """
-  Name of the person(s) (and possibly the organization) who first transcribed the data
-  """
+  "Name of the person(s) (and possibly the organization) who first transcribed the data"
   editor: String
-
-  """QName for MA.person"""
+  "QName for MA.person"
   editors: [String!]
-
-  """
-  Date the data was first transcribed into electronic format or paper registry
-  """
+  "Date the data was first transcribed into electronic format or paper registry"
   entered: String
-
-  """
-  Free-text diary-style information about what has been done to the specimen and when.
-  """
+  "Free-text diary-style information about what has been done to the specimen and when."
   event: [String!]
-
-  """
-  Name of the exsiccatum this specimen belongs to and possible exsiccatum number.
-  """
+  "Name of the exsiccatum this specimen belongs to and possible exsiccatum number."
   exsiccatum: String
-
-  """Id of the form that was used for the document"""
+  "Id of the form that was used for the document"
   formID: String
-
-  """QName for MY.gathering"""
+  "QName for MY.gathering"
   gathering: [String!]
-
-  """instance of gatheringEvent"""
+  "instance of gatheringEvent"
   gatheringEvent: GatheringEvent
-
-  """Array of gatherings"""
+  "Array of gatherings"
   gatherings: [Gathering!]
-
-  """
-  Genbank identifier. You can include additonal comment by separating them with colon, e.g. \"AY123456:comments here\"
-  """
+  "Genbank identifier. You can include additonal comment by separating them with colon, e.g. \\\"AY123456:comments here\\\""
   genbank: [String!]
-
-  """QName for MY.gathering"""
+  "QName for MY.gathering"
   hasGathering: [String!]
-
-  """QName for MM.image"""
+  "Unique ID for the object. This will be automatically generated."
+  id: String
+  "QName for MM.image"
   images: [String!]
   isTemplate: Boolean
   keywords: [String!]
-
   """
+
   All text from labels word-for-word, including spelling errors. Separate each
   label on its own row, starting from topmost label.
   """
   labelsVerbatim: String
-
-  """Language the data is (mainly) written in, if applicable."""
+  "Language the data is (mainly) written in, if applicable."
   language: String
-
-  """
-  Collector's identifier (field identifier, keruunumero) for the specimen
-  """
+  "Collector's identifier (field identifier, keruunumero) for the specimen"
   legID: String
   locked: Boolean
-
-  """QName for MNP.namedPlace"""
+  "QName for MNP.namedPlace"
   namedPlaceID: String
-
-  """Additional information to the data in each section."""
+  "Additional information to the data in each section."
   notes: String
-
-  """
-  Original catalogue number or other  original identifier of the specimen. E.g. H9000000
-  """
+  "Original catalogue number or other  original identifier of the specimen. E.g. H9000000"
   originalSpecimenID: String
-
-  """
-  Team or organisation that owns the record and can edit it.. QName for MOS.organization
-  """
+  "Team or organisation that owns the record and can edit it.. QName for MOS.organization"
   owner: String
-
-  """Garden area where this accession is planned to be located."""
+  "Garden area where this accession is planned to be located."
   plannedLocation: String
-
-  """
-  Main method of preservation. If parts of the specimen are preserved in different ways, you can choose several methods.
-  """
+  "Main method of preservation. If parts of the specimen are preserved in different ways, you can choose several methods."
   preservation: [String!]
-
-  """Location of the primary data if not Kotka."""
+  "Location of the primary data if not Kotka."
   primaryDataLocation: String
   privateNotes: String
-
-  """Publication references or doi's that refer to this specimen"""
+  "Publication references or doi's that refer to this specimen"
   publication: [String!]
-
   """
+
   PUBLIC: all data can be published; PROTECTED: exact locality is hidden
   (100*100km square); PRIVATE: most of the data is hidden. Empty value means
   same as public.
   """
   publicityRestrictions: String
-
   """
+
   Relationship to another taxon OR specimen. Choose relationship type as prefix
-  and give taxon name or specimen identifier thereafter, e.g. \"parasite:
-  Parasiticus specius\" OR \"host:http://tun.fi/JAA.123\"
+  and give taxon name or specimen identifier thereafter, e.g. \\\"parasite:
+  Parasiticus specius\\\" OR \\\"host:http://tun.fi/JAA.123\\\"
   """
   relationship: [String!]
-
-  """
-  The history of the specimen, for example how it was acquired or in which museums it has been before.
-  """
+  "The history of the specimen, for example how it was acquired or in which museums it has been before."
   sampleHistory: String
   scheduledForDeletion: Boolean
-
-  """Secure level (salaus-/karkeistustaso) for the data"""
+  "Secure level (salaus-/karkeistustaso) for the data"
   secureLevel: String
-
-  """ID of the specimen from which this has been separated"""
+  "ID of the specimen from which this has been separated"
   separatedFrom: String
-
-  """
-  ID's of those new specimens that have been separated from this specimen
-  """
+  "ID's of those new specimens that have been separated from this specimen"
   separatedTo: [String!]
   serialNumber: String
-
-  """QName for KE.informationSystem"""
+  "QName for KE.informationSystem"
   sourceID: String
-
-  """
-  Empty value means same as \"ok\" - that there is not anything special about the status of the specimen.
-  """
+  "Empty value means same as \\\"ok\\\" - that there is not anything special about the status of the specimen."
   status: String
   temp: Boolean
   templateDescription: String
   templateName: String
-
   """
+
   Additional information regarding the data entry or transcription process, e.g.
   unclarities, explanations for interpretations,
   """
   transcriberNotes: String
-
-  """Common name of agreement concerning the transfer, if any."""
+  "Common name of agreement concerning the transfer, if any."
   transferAgreement: String
-
-  """
-  List of those fields that contain unreliable data. The list is created automatically.
-  """
+  "List of those fields that contain unreliable data. The list is created automatically."
   unreliableFields: String
-
-  """
-  Information about the quality of the specimen data. Possible to select several. Empty value means same as OK.
-  """
+  "Information about the quality of the specimen data. Possible to select several. Empty value means same as OK."
   verificationStatus: [String!]
-
-  """
-  Identifier of the herbarium voucher specimen or information about it if the identifier is unknown.
-  """
+  "Identifier of the herbarium voucher specimen or information about it if the identifier is unknown."
   voucherSpecimenID: String
 }
 
-"""instance of gatheringEvent"""
-type GatheringEvent {
-  """Non-negative integer"""
-  breaksDuringCensusInMinutes: Int
-  censusHinderedByEnviromentalFactors: Boolean
-  censusPrematurelyAborted: Boolean
-  dateBegin: String
-  dateEnd: String
-  gpsUsed: Boolean
-
-  """Unique ID for the object. This will be automatically generated."""
-  id: String
-
-  """
-  Name of the collector(s), in format 'Lastname, Firstname; Lastname Firstname'
-  """
-  leg: [String!]
-  legPublic: Boolean
-
-  """Alkuperäislähteen käyttäjätunnus"""
-  legUserID: [String!]
-  namedPlaceNotes: String
-  routeDirectionAdhered: Boolean
-  startDistanceFromNECorner: String
-  startPointDeviation: Int
-  timeEnd: String
-  timeStart: String
+type DocumentCount {
+  count: Float
+  year: String
 }
 
-type DocumentCount {
-  year: String
-  count: Float
+type DocumentResponse {
+  currentPage: Int
+  lastPage: Int
+  nextPage: Int
+  pageSize: Int
+  prevPage: Int
+  results: [Document!]!
+  total: Int!
 }
 
 type DocumentStats {
   dateMedian: String
 }
 
-type DwFact {
-  fact: String
-  value: String
-  integerValue: Int
-  decimalValue: Float
+type DwAnnotation {
+  annotationByPerson: String
+  annotationByPersonName: String
+  annotationClass: String
+  created: String
+  id: String
+  invasiveControlEffectiveness: String
+  notes: String
+  opinion: String
+  rootID: String
+  targetID: String
+  type: String
 }
 
-type DwUnitResult {
-  document: DwDocument
-  gathering: DwGathering
-  unit: DwUnit
-  annotation: DwAnnotation
-  media: DwUnitMedia
-  sample: DwSample
-  count: Int
+type DwCoordinateArea {
+  latMax: Float
+  latMin: Float
+  lonMax: Float
+  lonMin: Float
+}
+
+type DwDocument {
+  annotations: [DwAnnotation!]
+  collectionId: String
+  conservationReasonSecured: Boolean
+  createdDate: String
+  customReasonSecured: Boolean
+  dataQuarantinePeriodReasonSecured: Boolean
+  documentId: String
+  editorUserIds: [String!]
+  facts: [DwFact!]
+  firstLoadDate: String
+  formId: String
+  gatherings: [DwGathering!]
+  keywords: [String!]
+  licenseId: String
+  linkings: DwDocumentLinkings
+  loadDate: String
+  media: [DwMediaObject!]
+  mediaCount: Int
+  modifiedDate: String
+  namedPlaceId: String
+  notes: String
+  partial: Boolean
+  quality: DwDocumentQuality
+  secureLevel: String
+  secureReasons: [String!]
+  secured: Boolean
+  sourceId: String
+}
+
+type DwDocumentLinkings {
+  collectionQuality: String
+  editors: [DwPerson!]
 }
 
 type DwDocumentQuality {
   issue: DwIssue
 }
 
+type DwFact {
+  decimalValue: Float
+  fact: String
+  integerValue: Int
+  value: String
+}
+
+type DwGathering {
+  biogeographicalProvince: String
+  conversions: DwGatheringConversions
+  coordinatesVerbatim: String
+  country: String
+  displayDateTime: String
+  eventDate: DwGatheringEventDate
+  facts: [DwFact!]
+  gatheringId: String
+  gatheringOrder: Int
+  "GeoJSON object with custom \"csr\" required property that takes in values WGS84,EUREF,YKJ"
+  geo: JSON
+  higherGeography: String
+  hourBegin: Int
+  hourEnd: Int
+  interpretations: DwGatheringInterpretations
+  linkings: DwGatheringLinkings
+  locality: String
+  media: [DwMediaObject!]
+  mediaCount: Int
+  minutesBegin: Int
+  minutesEnd: Int
+  municipality: String
+  notes: String
+  observerUserIds: [String!]
+  province: String
+  quality: DwGatheringQuality
+  taxonCensus: [DwTaxonCensus!]
+  team: [String!]
+  units: [DwUnit!]
+}
+
+type DwGatheringConversions {
+  boundingBoxAreaInSquareMeters: Int
+  century: Int
+  day: Int
+  dayOfYearBegin: Int
+  dayOfYearEnd: Int
+  decade: Int
+  euref: DwCoordinateArea
+  "GeoJSON object with custom \"csr\" required property that takes in values WGS84,EUREF,YKJ"
+  eurefGeo: JSON
+  eurefWKT: String
+  linelengthInMeters: Int
+  month: Int
+  seasonBegin: Int
+  seasonEnd: Int
+  wgs84: DwCoordinateArea
+  wgs84CenterPoint: CoordinatePoint
+  "GeoJSON object with custom \"csr\" required property that takes in values WGS84,EUREF,YKJ"
+  wgs84Geo: JSON
+  wgs84Grid005: CoordinatePoint
+  wgs84Grid01: CoordinatePoint
+  wgs84Grid05: CoordinatePoint
+  wgs84Grid1: CoordinatePoint
+  wgs84WKT: String
+  year: Int
+  ykj: DwCoordinateArea
+  ykj100km: CoordinatePoint
+  ykj100kmCenter: CoordinatePoint
+  ykj10km: CoordinatePoint
+  ykj10kmCenter: CoordinatePoint
+  ykj1km: CoordinatePoint
+  ykj1kmCenter: CoordinatePoint
+  ykj50km: CoordinatePoint
+  ykj50kmCenter: CoordinatePoint
+  "GeoJSON object with custom \"csr\" required property that takes in values WGS84,EUREF,YKJ"
+  ykjGeo: JSON
+  ykjWKT: String
+}
+
+type DwGatheringEventDate {
+  begin: String
+  end: String
+}
+
+type DwGatheringInterpretations {
+  biogeographicalProvince: String
+  biogeographicalProvinceDisplayname: String
+  biogeographicalProvinces: [String!]
+  coordinateAccuracy: Int
+  country: String
+  countryDisplayname: String
+  finnishMunicipalities: [String!]
+  finnishMunicipality: String
+  municipalityDisplayname: String
+  sourceOfBiogeographicalProvince: String
+  sourceOfCoordinates: String
+  sourceOfCountry: String
+  sourceOfFinnishMunicipality: String
+}
+
+type DwGatheringLinkings {
+  observers: [DwPerson!]
+}
+
 type DwGatheringQuality {
   issue: DwIssue
-  timeIssue: DwIssue
   locationIssue: DwIssue
+  timeIssue: DwIssue
 }
 
 type DwIssue {
   issue: String
-  source: String
   message: String
+  source: String
 }
 
-type DwUnitMedia {
-  mediaType: String
-  fullURL: String
-  thumbnailURL: String
+type DwLinkingsTaxon {
+  checklist: String
+  cursiveName: Boolean
+  finnish: Boolean
+  id: String
+  informalTaxonGroups: [String!]
+  scientificName: String
+  scientificNameAuthorship: String
+  scientificNameDisplayName: String
+  taxonRank: String
+  vernacularName: JSON
+}
+
+type DwMediaObject {
   author: String
   caption: String
-  licenseId: String
-  licenseAbbreviation: String
   copyrightOwner: String
+  fullURL: String
+  licenseAbbreviation: String
+  licenseId: String
+  mediaType: String
   squareThumbnailURL: String
+  thumbnailURL: String
+}
+
+type DwPerson {
+  fullName: String
+  id: String
+  userId: String
 }
 
 type DwSample {
-  sampleId: String
   collectionId: String
+  facts: [DwFact!]
   keywords: [String!]
-  type: String
-  quality: String
-  status: String
   material: String
   multiple: Boolean
-  sampleOrder: Int
   notes: String
-  facts: [DwFact!]
+  quality: String
+  sampleId: String
+  sampleOrder: Int
+  status: String
+  type: String
+}
+
+type DwTaxonCensus {
+  taxonId: String
+  type: String
 }
 
 type DwUnit {
-  unitId: String
-  unitOrder: Int
-  taxonVerbatim: String
-  quality: DwUnitQuality
-  reportedTaxonConfidence: String
-  linkings: DwUnitLinking
-  referencePublication: String
   abundanceString: String
-  interpretations: DwUnitInterpretation
-  superRecordBasis: String
-  recordBasis: String
-  typeSpecimen: Boolean
-  det: String
-  sex: String
-  lifeStage: String
-  wild: Boolean
-  keywords: [String!]
-  breedingSite: Boolean
-  individualId: String
-  invasiveControlEffectiveness: String
-  notes: String
   annotationCount: Int
   annotations: [DwAnnotation!]
   author: String
+  breedingSite: Boolean
+  det: String
   facts: [DwFact!]
   individualCountFemale: Int
   individualCountMale: Int
+  individualId: String
+  interpretations: DwUnitInterpretation
+  invasiveControlEffectiveness: String
   invasiveControlled: Boolean
+  keywords: [String!]
+  lifeStage: String
+  linkings: DwUnitLinking
   media: [DwMediaObject!]
   mediaCount: Int
+  notes: String
+  quality: DwUnitQuality
+  recordBasis: String
+  referencePublication: String
   reportedInformalTaxonGroup: String
+  reportedTaxonConfidence: String
   reportedTaxonId: String
   sampleCount: Int
   samples: [DwSample!]
+  sex: String
+  superRecordBasis: String
+  taxonVerbatim: String
+  typeSpecimen: Boolean
+  unitId: String
+  unitOrder: Int
+  wild: Boolean
 }
 
 type DwUnitInterpretation {
@@ -818,260 +793,54 @@ type DwUnitInterpretation {
 }
 
 type DwUnitLinking {
-  taxon: DwLinkingsTaxon
   originalTaxon: DwLinkingsTaxon
+  taxon: DwLinkingsTaxon
 }
 
-type DwLinkingsTaxon {
-  id: String
-  checklist: String
-  scientificName: String
-  scientificNameAuthorship: String
-  scientificNameDisplayName: String
-  cursiveName: Boolean
-  finnish: Boolean
-  taxonRank: String
-  vernacularName: JSON
-  informalTaxonGroups: [String!]
+type DwUnitMedia {
+  author: String
+  caption: String
+  copyrightOwner: String
+  fullURL: String
+  licenseAbbreviation: String
+  licenseId: String
+  mediaType: String
+  squareThumbnailURL: String
+  thumbnailURL: String
 }
 
 type DwUnitQuality {
-  issue: DwIssue
-  taxon: DwUnitQualityTaxon
   documentGatheringUnitQualityIssues: Boolean
+  issue: DwIssue
   reliable: Boolean
+  taxon: DwUnitQualityTaxon
 }
 
 type DwUnitQualityTaxon {
+  message: String
   reliability: String
   source: String
-  message: String
 }
 
-type UnitResponse {
-  currentPage: Int
-  prevPage: Int
-  nextPage: Int
-  lastPage: Int
-  pageSize: Int
-  total: Int
-  results: [DwUnitResult!]
+type DwUnitResult {
+  annotation: DwAnnotation
+  count: Int
+  document: DwDocument
+  gathering: DwGathering
+  media: DwUnitMedia
+  sample: DwSample
+  unit: DwUnit
 }
 
-type DwMediaObject {
-  mediaType: String
-  fullURL: String
-  thumbnailURL: String
-  author: String
-  caption: String
-  licenseId: String
-  licenseAbbreviation: String
-  copyrightOwner: String
-  squareThumbnailURL: String
-}
-
-type DwPerson {
-  fullName: String
-  id: String
-  userId: String
-}
-
-type DwTaxonCensus {
-  taxonId: String
-  type: String
-}
-
-type DwAnnotation {
-  annotationByPerson: String
-  annotationByPersonName: String
-  annotationBySystem: String
-  annotationBySystemName: String
-  annotationClass: String
-  created: String
-  id: String
-  invasiveControlEffectiveness: String
-  notes: String
-  opinion: String
-  rootID: String
-  targetID: String
-  type: String
-}
-
-type DwDocument {
-  documentId: String
-  secureLevel: String
-  secureReasons: [String!]
-  partial: Boolean
-  collectionId: String
-  licenseId: String
-  quality: DwDocumentQuality
-  sourceId: String
-  namedPlaceId: String
-  keywords: [String!]
-  firstLoadDate: String
-  loadDate: String
-  createdDate: String
-  modifiedDate: String
-  notes: String
-  annotations: [DwAnnotation!]
-  conservationReasonSecured: Boolean
-  customReasonSecured: Boolean
-  dataQuarantinePeriodReasonSecured: Boolean
-  editorUserIds: [String!]
-  facts: [DwFact!]
-  formId: String
-  gatherings: [DwGathering!]
-  linkings: DwDocumentLinkings
-  media: [DwMediaObject!]
-  mediaCount: Int
-  secured: Boolean
-}
-
-type DwDocumentLinkings {
-  editors: [DwPerson!]
-  collectionQuality: String
-}
-
-type DwGathering {
-  gatheringId: String
-  gatheringOrder: Int
-  quality: DwGatheringQuality
-
-  """
-  GeoJSON object with custom "csr" required property that takes in values WGS84,EUREF,YKJ
-  """
-  geo: JSON
-  eventDate: DwGatheringEventDate
-  hourBegin: Int
-  hourEnd: Int
-  displayDateTime: String
-  team: [String!]
-  conversions: DwGatheringConversions
-  interpretations: DwGatheringInterpretations
-  higherGeography: String
-  country: String
-  municipality: String
-  biogeographicalProvince: String
-  province: String
-  locality: String
-  notes: String
-  coordinatesVerbatim: String
-  facts: [DwFact!]
-  linkings: DwGatheringLinkings
-  media: [DwMediaObject!]
-  mediaCount: Int
-  minutesBegin: Int
-  minutesEnd: Int
-  observerUserIds: [String!]
-  taxonCensus: [DwTaxonCensus!]
-  units: [DwUnit!]
-}
-
-type DwGatheringConversions {
-  wgs84: DwCoordinateArea
-  wgs84CenterPoint: CoordinatePoint
-  euref: DwCoordinateArea
-  ykj: DwCoordinateArea
-  ykj10kmCenter: CoordinatePoint
-  ykj1kmCenter: CoordinatePoint
-  century: Int
-  decade: Int
-  year: Int
-  month: Int
-  day: Int
-  dayOfYearBegin: Int
-  dayOfYearEnd: Int
-  boundingBoxAreaInSquareMeters: Int
-
-  """
-  GeoJSON object with custom "csr" required property that takes in values WGS84,EUREF,YKJ
-  """
-  eurefGeo: JSON
-  eurefWKT: String
-  linelengthInMeters: Int
-  seasonBegin: Int
-  seasonEnd: Int
-
-  """
-  GeoJSON object with custom "csr" required property that takes in values WGS84,EUREF,YKJ
-  """
-  wgs84Geo: JSON
-  wgs84Grid005: CoordinatePoint
-  wgs84Grid01: CoordinatePoint
-  wgs84Grid05: CoordinatePoint
-  wgs84Grid1: CoordinatePoint
-  wgs84WKT: String
-  ykj100km: CoordinatePoint
-  ykj100kmCenter: CoordinatePoint
-  ykj10km: CoordinatePoint
-  ykj1km: CoordinatePoint
-  ykj50km: CoordinatePoint
-  ykj50kmCenter: CoordinatePoint
-
-  """
-  GeoJSON object with custom "csr" required property that takes in values WGS84,EUREF,YKJ
-  """
-  ykjGeo: JSON
-  ykjWKT: String
-}
-
-type DwCoordinateArea {
-  latMin: Float
-  latMax: Float
-  lonMin: Float
-  lonMax: Float
-}
-
-type CoordinatePoint {
-  lat: Float
-  lon: Float
-}
-
-type DwGatheringEventDate {
-  begin: String
-  end: String
-}
-
-type DwGatheringInterpretations {
-  coordinateAccuracy: Int
-  sourceOfCoordinates: String
-  countryDisplayname: String
-  biogeographicalProvinceDisplayname: String
-  municipalityDisplayname: String
-  sourceOfCountry: String
-  sourceOfBiogeographicalProvince: String
-  sourceOfFinnishMunicipality: String
-  biogeographicalProvince: String
-  biogeographicalProvinces: [String!]
-  country: String
-  finnishMunicipalities: [String!]
-  finnishMunicipality: String
-}
-
-type DwGatheringLinkings {
-  observers: [DwPerson!]
-}
-
-type Forms @cacheControl(maxAge: 300) {
-  id: ID!
-  category: String
-  collectionID: String
-  description: String
-  features:	[String]
-  logo: String
-  shortDescription: String
-  supportedLanguage: [String]
-  title: String
-}
-
-type Form @cacheControl(maxAge: 300) {
-  id: ID!
+type Form {
   actions: JSONObject
   category: String
   collectionID: String
   description: String
-  features:	[String]
+  extra: JSON
+  features: [String]
   fields: JSON
+  id: ID!
   instructions: String
   language: String!
   logo: String
@@ -1081,163 +850,131 @@ type Form @cacheControl(maxAge: 300) {
   prepopulatedDocument: Document
   printType: String
   reservationType: String
-  shortDescription: String
-  """
-  When schema field is selected fields will be null
-  """
+  "When schema field is selected fields will be null"
   schema: JSON
+  shortDescription: String
   supportedLanguage: [String]
   template: JSON
   title: String
   uiSchema: JSON
   viewerType: String
-  extra: JSON
 }
 
 type FormPermission {
-  id: ID!
   admins: [String!]
   collectionID: String
   editors: [String!]
+  id: ID!
   permissionRequests: [String!]
 }
 
 type FormPermissionPerson {
-  """Users person id"""
-  personID: String!
-
-  """List of collections where person is admin"""
+  "List of collections where person is admin"
   admins: [String!]
-
-  """List of collections where person is editor"""
+  "List of collections where person is editor"
   editors: [String!]
-
-  """List of collections where person has permission requests"""
+  "List of collections where person has permission requests"
   permissionRequests: [String!]
+  "Users person id"
+  personID: String!
+}
+
+type Forms {
+  category: String
+  collectionID: String
+  description: String
+  features: [String]
+  id: ID!
+  logo: String
+  shortDescription: String
+  supportedLanguage: [String]
+  title: String
 }
 
 type Gathering {
-
-  """AFE grid name"""
+  "AFE grid name"
   AFEQuadrat: String
-
-  """UTM grid name"""
+  "UTM grid name"
   UTMQuadrat: String
-
   """
+
   Regions, rayons, provinces and other administrative areas. Separate multiple
   names with commas, from generic to specific. (E.g. Etelä-Suomen lääni, Uusimaa)
   """
   administrativeProvince: String
-
-  """
-  Altitude form sea level in meters, single value or range (E.g. 90, or 80-100). No GPS altitude here.
-  """
+  "Altitude form sea level in meters, single value or range (E.g. 90, or 80-100). No GPS altitude here."
   alt: String
   areaDetail: String
-
   """
+
   Write associated observation taxa names here, separated by a semicolon (;).
-  E.g.: \"Betula pendula; Betula pubescens; Poaceae\". These will form their own
+  E.g.: \\\"Betula pendula; Betula pubescens; Poaceae\\\". These will form their own
   units of the type observation.
   """
   associatedObservationTaxa: String
-
   """
+
   Write associated specimen taxa names here, separated by a semicolon (;). E.g.:
-  \"Betula pendula; Betula pubescens; Poaceae\". These will form their own units
+  \\\"Betula pendula; Betula pubescens; Poaceae\\\". These will form their own units
   of the type Preserved specimen.
   """
   associatedSpecimenTaxa: String
-
-  """Bat habitat"""
+  "Bat habitat"
   batHabitat: [String!]
-
-  """
-  Formal abbreviation. For Finnish eliömaakunnat, use Finnish abbreviation.
-  """
+  "Formal abbreviation. For Finnish eliömaakunnat, use Finnish abbreviation."
   biologicalProvince: String
-
-  """Name of an expedition or such."""
+  "Name of an expedition or such."
   collectingEventName: String
   controlActivitiesNotes: String
-
-  """Free-text notes about the coordinates."""
+  "Free-text notes about the coordinates."
   coordinateNotes: String
-
-  """Maximum error of coordinates in meters"""
+  "Maximum error of coordinates in meters"
   coordinateRadius: String
-
-  """Use for NEW SPECIMENS: Where the coordinates have been acquired"""
+  "Use for NEW SPECIMENS: Where the coordinates have been acquired"
   coordinateSource: String
-
-  """
-  More information about the coordinate systems: https://wiki.helsinki.fi/display/digit/Entering+specimen+data
-  """
+  "More information about the coordinate systems: https://wiki.helsinki.fi/display/digit/Entering+specimen+data"
   coordinateSystem: String
   coordinatesGridYKJ: String
-
   """
+
   Coordinates, possible coordinate system and error radius word-to-word as they
   appear on the label or other original source, errors and all.
   """
   coordinatesVerbatim: String
-
-  """Country name in English, or 2-letter country code, or name from label"""
+  "Country name in English, or 2-letter country code, or name from label"
   country: String
-
-  """County (piirikunta, kreivikunta etc.)"""
+  "County (piirikunta, kreivikunta etc.)"
   county: String
   dateBegin: String
   dateEnd: String
-
-  """
-  Date just as it appears on the label or other original source, no interpretation, errors and all
-  """
+  "Date just as it appears on the label or other original source, no interpretation, errors and all"
   dateVerbatim: String
-
-  """Depth in meters, single value or range (E.g. 0.9, or 0.8-1.0)"""
+  "Depth in meters, single value or range (E.g. 0.9, or 0.8-1.0)"
   depth: String
   dynamicProperties: String
   eventDate: String
-
-  """Finnish forest vegetation zone"""
+  "Finnish forest vegetation zone"
   forestVegetationZone: String
-
-  """instance of gatheringFact"""
+  "instance of gatheringFact"
   gatheringFact: GatheringFact
   gatheringType: String
-
-  """Geometry object from GeoJSON"""
+  "Geometry object from GeoJSON"
   geometry: String
-
-  """
-  Use for OLD SPECIMENS: What source was used to get coordinates based on locality names
-  """
+  "Use for OLD SPECIMENS: What source was used to get coordinates based on locality names"
   georeferenceSource: String
   habitat: [String!]
   habitatAttributes: [String!]
-
-  """
-  Formal habitat name or abbreviation. If several, separate with semicolons (E.g. 'OMT; OMaT').
-  """
+  "Formal habitat name or abbreviation. If several, separate with semicolons (E.g. 'OMT; OMaT')."
   habitatClassification: String
-
-  """Informal description of the habitat."""
+  "Informal description of the habitat."
   habitatDescription: String
-
-  """QName for MY.unit"""
+  "QName for MY.unit"
   hasUnit: [String!]
-
-  """
-  If country is not known or not applicable, for example continent, ocean or large island
-  """
+  "If country is not known or not applicable, for example continent, ocean or large island"
   higherGeography: String
-
-  """Unique ID for the object. This will be automatically generated."""
+  "Unique ID for the object. This will be automatically generated."
   id: String
-
-  """QName for MM.image"""
+  "QName for MM.image"
   images: [String!]
   invasiveControlAreaKnown: Boolean
   invasiveControlDangerous: Boolean
@@ -1248,261 +985,208 @@ type Gathering {
   invasiveControlMethodsDescription: String
   invasiveControlOpen: Boolean
   invasiveControlOpenDescription: String
-
-  """Non-negative integer"""
+  "Non-negative integer"
   invasiveControlOtherExpensesInEuros: Int
-
-  """QName for MX.taxon"""
+  "QName for MX.taxon"
   invasiveControlTaxon: [String!]
   keywords: [String!]
-
-  """Latitude. For southern latitudes, use negative value."""
+  "Latitude. For southern latitudes, use negative value."
   latitude: String
-
-  """
-  Name of the collector(s), in format 'Lastname, Firstname; Lastname Firstname'
-  """
+  "Name of the collector(s), in format 'Lastname, Firstname; Lastname Firstname'"
   leg: [String!]
-
-  """Alkuperäislähteen käyttäjätunnus"""
+  "Alkuperäislähteen käyttäjätunnus"
   legUserID: [String!]
-
-  """
-  Leg just as it appears in the label or other original source, no interpretation, errors and all.
-  """
+  "Leg just as it appears in the label or other original source, no interpretation, errors and all."
   legVerbatim: String
-
   """
+
   Official name of the locality in basic form. Separate multiple names with
   commas, from generic to specific. No informal description here.
   """
   locality: String
-
-  """
-  Informal description of the exact locality, e.g. '5 km NE of city X, under stone bridge'
-  """
+  "Informal description of the exact locality, e.g. '5 km NE of city X, under stone bridge'"
   localityDescription: String
-
-  """
-  An unique identifier or code for the locality, if the locality has one (e.g. from SAPO-ontology).
-  """
+  "An unique identifier or code for the locality, if the locality has one (e.g. from SAPO-ontology)."
   localityID: String
-
-  """
-  Locality word-to-word as it appears on the label or other original source, errors and all
-  """
+  "Locality word-to-word as it appears on the label or other original source, errors and all"
   localityVerbatim: String
-
-  """Longitude. For western longitudes, use negative value."""
+  "Longitude. For western longitudes, use negative value."
   longitude: String
-
-  """Municipality, commune, town, city or civil parish"""
+  "Municipality, commune, town, city or civil parish"
   municipality: String
-
-  """QName for MNP.namedPlace"""
+  "QName for MNP.namedPlace"
   namedPlaceID: String
-
-  """Additional information to the data in each section."""
+  "Additional information to the data in each section."
   notes: String
   observationDays: Int
   observationMinutes: Int
   predominantTree: String
   projectTitle: String
   province: String
-
   """
+
   PUBLIC: all data can be published; PROTECTED: exact locality is hidden
   (100*100km square); PRIVATE: most of the data is hidden. Empty value means
   same as public.
   """
   publicityRestrictions: String
-
-  """Relative humidity %. Non-negative integer"""
+  "Relative humidity %. Non-negative integer"
   relativeHumidity: Int
-
-  """Main method for (usually intentional) sampling"""
+  "Main method for (usually intentional) sampling"
   samplingMethod: String
   samplingMethodNotes: String
   skipped: Boolean
-
-  """Type of substrate or name of substrate species."""
+  "Type of substrate or name of substrate species."
   substrate: String
-
-  """Array of taxonCensus"""
+  "Array of taxonCensus"
   taxonCensus: [TaxonCensus!]
   temperature: Int
   timeEnd: String
   timeStart: String
   trapCount: Int
-
-  """QName for MY.unit"""
+  "QName for MY.unit"
   unit: [String!]
-
-  """Array of units"""
+  "Array of units"
   units: [Unit!]
   weather: String
-
-  """Geological information about gathering in wgs84 format"""
+  "Geological information about gathering in wgs84 format"
   wgs84Geometry: JSON
   wgs84Latitude: String
   wgs84Longitude: String
 }
 
-"""instance of gatheringFact"""
+"instance of gatheringEvent"
+type GatheringEvent {
+  "Non-negative integer"
+  breaksDuringCensusInMinutes: Int
+  censusHinderedByEnviromentalFactors: Boolean
+  censusPrematurelyAborted: Boolean
+  dateBegin: String
+  dateEnd: String
+  gpsUsed: Boolean
+  "Unique ID for the object. This will be automatically generated."
+  id: String
+  "Name of the collector(s), in format 'Lastname, Firstname; Lastname Firstname'"
+  leg: [String!]
+  legPublic: Boolean
+  "Alkuperäislähteen käyttäjätunnus"
+  legUserID: [String!]
+  namedPlaceNotes: String
+  routeDirectionAdhered: Boolean
+  startDistanceFromNECorner: String
+  startPointDeviation: Int
+  timeEnd: String
+  timeStart: String
+}
+
+"instance of gatheringFact"
 type GatheringFact {
-  """Non-negative integer"""
+  "Non-negative integer"
   ACAFLAonAlder: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   ACAFLAonBirch: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   ACAFLAonGround: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   ACAFLAonPine: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   ACAFLAonSpruce: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   CARSPIonAlder: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   CARSPIonBirch: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   CARSPIonGround: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   CARSPIonPine: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   CARSPIonSpruce: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   LOXIAonAlder: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   LOXIAonBirch: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   LOXIAonGround: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   LOXIAonPine: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   LOXIAonSpruce: Int
   abundanceBOMGAR: String
   abundancePINENU: String
   abundanceTURPIL: String
   batCollector: String
-
-  """Non-negative integer"""
+  "Non-negative integer"
   birdFeederCount: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   birdFeederCountBiotopeA: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   birdFeederCountBiotopeB: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   birdFeederCountBiotopeC: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   birdFeederCountBiotopeD: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   birdFeederCountBiotopeE: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   birdFeederCountBiotopeF: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   birdFeederCountBiotopeG: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   birdFeederCountBiotopeH: Int
   cloudAndRain: String
   descriptionBiotopeF: String
-
-  """Non-negative integer"""
+  "Non-negative integer"
   feedingStationCount: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   feedingStationCountBiotopeA: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   feedingStationCountBiotopeB: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   feedingStationCountBiotopeC: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   feedingStationCountBiotopeD: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   feedingStationCountBiotopeE: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   feedingStationCountBiotopeF: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   feedingStationCountBiotopeG: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   feedingStationCountBiotopeH: Int
   iceCover: String
-
-  """Non-negative integer"""
+  "Non-negative integer"
   invasiveControlOtherExpensesInEuros: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   invasiveControlWorkHours: Int
   lineTransectSegmentCounted: Boolean
-
-  """Non-negative integer"""
+  "Non-negative integer"
   lineTransectSegmentMetersEnd: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   lineTransectSegmentMetersStart: Int
   meanTemperature: Int
   observerCount: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   observerID: Int
   pineConesAtCensus: String
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeID: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeLength: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeLengthBiotopeA: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeLengthBiotopeB: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeLengthBiotopeC: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeLengthBiotopeD: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeLengthBiotopeE: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeLengthBiotopeF: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeLengthBiotopeG: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   routeLengthBiotopeH: Int
   routeLengthChange: Int
   routeLengthChangeBiotopeA: Int
@@ -1527,544 +1211,540 @@ type GatheringFact {
 }
 
 type Identification {
-
   """
+
   Write associated observation taxa names here, separated by a semicolon (;).
-  E.g.: \"Betula pendula; Betula pubescens; Poaceae\". These will form their own
+  E.g.: \\\"Betula pendula; Betula pubescens; Poaceae\\\". These will form their own
   units of the type observation.
   """
   associatedObservationTaxa: String
-
-  """Author for the taxon"""
+  "Author for the taxon"
   author: String
-
-  """
-  Name of the identifier (person) preferably in format \"lastname, firstname\"
-  """
+  "Name of the identifier (person) preferably in format \\\"lastname, firstname\\\""
   det: String
-
-  """
-  Date or year when the identification was done, preferably in format \"d.m.Y\" or  \"Y\"
-  """
+  "Date or year when the identification was done, preferably in format \\\"d.m.Y\\\" or  \\\"Y\\\""
   detDate: String
   detMethod: String
-
-  """
-  Name of the identifier and date of identification in original format (e.g. from the label), errors and all
-  """
+  "Name of the identifier and date of identification in original format (e.g. from the label), errors and all"
   detVerbatim: String
-
-  """Additional qualifier or specifier at genus level (e.g. aff., cf.)"""
+  "Additional qualifier or specifier at genus level (e.g. aff., cf.)"
   genusQualifier: String
-
-  """Unique ID for the object. This will be automatically generated."""
+  "Unique ID for the object. This will be automatically generated."
   id: String
   identificationBasis: [String!]
   identificationDate: String
-
-  """Additional information on the identification, basis or such"""
+  "Additional information on the identification, basis or such"
   identificationNotes: String
-
-  """Author for the taxon below species level/infra epithet"""
+  "Author for the taxon below species level/infra epithet"
   infraAuthor: String
-
-  """Taxon name for the epithet below species level"""
+  "Taxon name for the epithet below species level"
   infraEpithet: String
-
-  """Taxonomic level of the epithet below species level"""
+  "Taxonomic level of the epithet below species level"
   infraRank: String
-
-  """
-  Pathovars, serovars and other infrasubspecific subdivisions of microbes.
-  """
+  "Pathovars, serovars and other infrasubspecific subdivisions of microbes."
   infrasubspecificSubdivision: String
   isTaxonGroup: Boolean
-
   """
+
   This can be used to select one of the identifications as 'recommended', which
   is the used as default when displaying information about the specimen.
   """
   preferredIdentification: String
-
   """
+
   PUBLIC: all data can be published; PROTECTED: exact locality is hidden
   (100*100km square); PRIVATE: most of the data is hidden. Empty value means
   same as public.
   """
   publicityRestrictions: String
-
-  """
-  Publication reference for the taxon concept, that was used in identification
-  """
+  "Publication reference for the taxon concept, that was used in identification"
   sec: String
   sortOrder: Int
-
-  """Additional qualifier at species level (e.g. aff., cf., sp. n., coll.)"""
+  "Additional qualifier at species level (e.g. aff., cf., sp. n., coll.)"
   speciesQualifier: String
-
-  """Taxon name"""
+  "Taxon name"
   taxon: String
-
-  """ID for the taxon if has some other than an MX code"""
+  "ID for the taxon if has some other than an MX code"
   taxonID: String
-
-  """Taxonomic level for the identification"""
+  "Taxonomic level for the identification"
   taxonRank: String
   taxonSpecifier: String
-
-  """QName for MX.taxon"""
+  "QName for MX.taxon"
   taxonURI: String
-
-  """Taxon name in original format (e.g. from the label), errors and all"""
+  "Taxon name in original format (e.g. from the label), errors and all"
   taxonVerbatim: String
 }
 
 type Image {
-  id: ID!
-  captureDateTime: String
   caption: String
+  captureDateTime: String
   capturerVerbatim: [String!]
-  keyword: [String!]
+  fullURL: String
+  id: ID!
   intellectualOwner: String
   intellectualRights: String
-  fullURL: String
+  keyword: [String!]
   largeURL: String
+  originalURL: String
   squareThumbnailURL: String
   thumbnailURL: String
-  originalURL: String
   uploadedBy: String
 }
 
-type InformalTaxonGroup @cacheControl(maxAge: 300) {
-  id: ID!
-
-  name: String
-
-  parent: InformalTaxonGroup
-
+type InformalTaxonGroup {
   children: [InformalTaxonGroup!]!
+  id: ID!
+  name: String
+  parent: InformalTaxonGroup
 }
 
 type Information {
-  id: ID
-  content: String!
-  title: String
-  menuTitle: String
   author: String
-  posted: String
-  modified: String
   children: [InformationItem!]
+  content: String!
+  id: ID
+  menuTitle: String
+  modified: String
   parents: [InformationItem!]
+  posted: String
+  title: String
 }
 
 type InformationItem {
+  children: [InformationItem]
   id: ID!
   title: String!
-  children: [InformationItem]
 }
 
-type TaxonSearchInformalGroup {
-  """Unique identifier for the informal group"""
-  id: ID!
-
-  """Name of the informal group"""
-  name: MultiLang
+"instance of measurement"
+type Measurement {
+  "Decimal number"
+  DNAConcentrationNgPerMicroliter: [Float!]
+  "Decimal number"
+  DNARatioOfAbsorbance260And280: [Float!]
+  "Decimal number"
+  DNAVolumeMicroliters: [Float!]
+  "Decimal number"
+  beakMillimeters: [Float!]
+  "Decimal number"
+  bodyCentimeters: [Float!]
+  "Decimal number"
+  bodyMillimeters: [Float!]
+  "Decimal number"
+  earLengthMillimeters: [Float!]
+  "Decimal number"
+  embryoCount: [Float!]
+  "Decimal number"
+  follicleDiameterMillimeters: [Float!]
+  "Decimal number"
+  footLengthMillimeters: [Float!]
+  "Decimal number"
+  forearmMillimeters: [Float!]
+  "Decimal number"
+  gonadMillimeters: [Float!]
+  "Decimal number"
+  tailCentimeters: [Float!]
+  "Decimal number"
+  tailMillimeters: [Float!]
+  "Decimal number"
+  tarsusLengthMillimeters: [Float!]
+  "Decimal number"
+  totalLengthCentimeters: [Float!]
+  "Decimal number"
+  totalLengthMillimeters: [Float!]
+  "Decimal number"
+  uterineScarCount: [Float!]
+  "Decimal number"
+  weightGrams: [Float!]
+  "Decimal number"
+  weightKilograms: [Float!]
+  "Decimal number"
+  wingMaxMillimeters: [Float!]
+  "Decimal number"
+  wingMillimeters: [Float!]
+  "Decimal number"
+  wingMinMillimeters: [Float!]
 }
 
-"""String value in multiple languages"""
+type Metadata {
+  "Class name"
+  class: ID!
+  "comment for the class"
+  comment: String
+  "label for the class"
+  label: String
+  properties: [Property!]!
+  "showrt class name"
+  shortName: String
+}
+
+"String value in multiple languages"
 type MultiLang {
-  """Value in finnish"""
-  fi: String
-
-  """Value in english"""
+  "Value in english"
   en: String
-
-  """Value in swedish"""
+  "Value in finnish"
+  fi: String
+  "Value in swedish"
   sv: String
 }
 
-type TaxonSearch {
-  """Unique identifier for the taxon"""
-  id: ID!
-
-  """What kind of match this is"""
-  type: String!
-
-  """Name that the search matches to"""
-  matchingName: String!
-
-  """Type of the name"""
-  nameType: String
-
-  """Scientific name for the match"""
-  scientificName: String
-
-  """Name of the informal group"""
-  vernacularName: MultiLang
-
-  """Author"""
-  scientificNameAuthorship: String
-
-  """Taxon rank"""
-  taxonRank: String
-
-  """Score for the match"""
-  similarity: String
-
-  """Is finnish taxa"""
-  finnish: Boolean
-
-  """Is taxon rank species"""
-  species: Boolean
-
-  """Should scientific name be cursive"""
-  cursiveName: Boolean
-
-  """Informal group"""
-  informalGroup: [TaxonSearchInformalGroup!]
-}
-
-type Metadata @cacheControl(maxAge: 300) {
-  """Class name"""
-  class: ID!
-
-  """showrt class name"""
-  shortName: String
-
-  """label for the class"""
-  label: String
-
-  """comment for the class"""
-  comment: String
-
-  properties: [Property!]!
-}
-
 type NamedPlace {
-  """Unique ID for the object. This will be automatically generated."""
-  id: String
-
-  """instance of acceptedDocument"""
+  "instance of acceptedDocument"
   acceptedDocument: Document
   accessibility: String
-
-  """instance of active"""
+  "instance of active"
   active: NamedPlaceActive
   alternativeIDs: [String!]
-
-  """
-  Formal abbreviation. For Finnish eliömaakunnat, use Finnish abbreviation.. QName for ML.area
-  """
+  "Formal abbreviation. For Finnish eliömaakunnat, use Finnish abbreviation.. QName for ML.area"
   biogeographicalProvince: [String!]
-
-  """QName for ML.area"""
+  "QName for ML.area"
   birdAssociationArea: [String!]
-
-  """QName for MY.collection"""
+  "QName for MY.collection"
   collectionID: String
-
-  """
-  Persons who have rights to see and use the named places in their documents. QName for MA.person
-  """
+  "Persons who have rights to see and use the named places in their documents. QName for MA.person"
   editors: [String!]
-
-  """Using GeoJSONs geometry object specification. QName for MZ.geometry"""
+  "Using GeoJSONs geometry object specification. QName for MZ.geometry"
   geometry: JSON!
-
-  """QName for MM.image"""
+  "Unique ID for the object. This will be automatically generated."
+  id: String
+  "QName for MM.image"
   images: [String!]
   locality: String
-
-  """
-  Informal description of the exact locality, e.g. '5 km NE of city X, under stone bridge'
-  """
+  "Informal description of the exact locality, e.g. '5 km NE of city X, under stone bridge'"
   localityDescription: String
-
-  """QName for ML.area"""
+  "QName for ML.area"
   municipality: [String!]
   name: String!
   notes: String
-
-  """
-  Persons who have full use access and rights to edit the named place. QName for MA.person
-  """
+  "Persons who have full use access and rights to edit the named place. QName for MA.person"
   owners: [String!]
-
-  """instance of prepopulatedDocument"""
+  "instance of prepopulatedDocument"
   prepopulatedDocument: Document
   priority: String
   privateNotes: String
-
-  """Is the named place publicaly available. (Defaults to false)"""
+  "Is the named place publicaly available. (Defaults to false)"
   public: Boolean
-
-  """instance of reserve"""
+  "instance of reserve"
   reserve: NamedPlaceReserve
   tags: [String!]
-
-  """QName for MX.taxon"""
+  "QName for MX.taxon"
   taxonIDs: [String!]
 }
 
-"""instance of active"""
+"instance of active"
 type NamedPlaceActive {
-  """date string using ISO8601 format"""
+  "date string using ISO8601 format"
   end: String
-
-  """date string using ISO8601 format"""
+  "date string using ISO8601 format"
   start: String
 }
 
-"""instance of reserve"""
+"instance of reserve"
 type NamedPlaceReserve {
-  """QName for MA.person"""
+  "QName for MA.person"
   reserver: String!
-
-  """date string using ISO8601 format"""
+  "date string using ISO8601 format"
   until: String!
+}
+
+type News {
+  content: String
+  external: Boolean!
+  externalURL: String
+  featuredImage: String
+  id: ID!
+  "timestamp for when the news was edited"
+  modified: String
+  "timestamp for when the news was posted"
+  posted: String!
+  tag: String!
+  title: String!
 }
 
 type NewsResponse {
   currentPage: Int
-  prevPage: Int
-  nextPage: Int
   lastPage: Int
+  nextPage: Int
   pageSize: Int
-  total: Int
+  prevPage: Int
   results: [News]
-}
-
-type News {
-  id: ID!
-  featuredImage: String
-  external: Boolean!
-  externalURL: String
-  title: String!
-  content: String
-
-  """timestamp for when the news was posted"""
-  posted: String!
-
-  """timestamp for when the news was edited"""
-  modified: String
-  tag: String!
-}
-
-type NotificationResponse @cacheControl(maxAge: 0) {
-  currentPage: Int
-  prevPage: Int
-  nextPage: Int
-  lastPage: Int
-  pageSize: Int
   total: Int
-  results: [Notification!]!
 }
 
-type Notification @cacheControl(maxAge: 0) {
-  id: ID!
+type Notification {
   annotation: Annotation
   created: String
   friendRequest: String
   friendRequestAccepted: String
+  id: ID!
+  notificationReason: String
   seen: Boolean
   toPerson: String
-  notificationReason: String
+}
+
+type NotificationResponse {
+  currentPage: Int
+  lastPage: Int
+  nextPage: Int
+  pageSize: Int
+  prevPage: Int
+  results: [Notification!]!
+  total: Int
+}
+
+type Option {
+  " optional link parameter"
+  description: String
+  "key value"
+  id: ID!
+  " optional link parameter"
+  link: String
+  "label for the value"
+  value: String!
 }
 
 type Person {
-  id: ID!
-  fullName: String
-  emailAddress: String
   defaultLanguage: String
-  role: [String!]
-
-  """
-  Group, membership or any other way that allows the user to distinguish themselves from people with the same name
-  """
+  emailAddress: String
+  fullName: String
+  "Group, membership or any other way that allows the user to distinguish themselves from people with the same name"
   group: String
+  id: ID!
+  role: [String!]
   roleAnnotation: String
 }
 
 type PersonToken {
-  """users identifier"""
-  personId: String!
-
-  """target system to witch user token was issued to"""
-  target: String
-
-  """content of next parameter send on login"""
+  "content of next parameter send on login"
   next: String
+  "users identifier"
+  personId: String!
+  "target system to witch user token was issued to"
+  target: String
 }
 
 type Profile {
-  """Profile key to link profiles"""
-  profileKey: String
-
-  """Settings for the user"""
-  userID: String
-
-  """Profile description"""
-  profileDescription: String
-
-  """Image for the porfile"""
-  image: String
-
-  """List of friends of the user"""
-  friends: [String!]
-
-  """Blocked ppl"""
+  "Blocked ppl"
   blocked: [String!]
-
-  """friend requests reseived"""
+  "friend requests reseived"
   friendRequests: [String!]
-
-  """Settings for the user"""
+  "List of friends of the user"
+  friends: [String!]
+  "Image for the porfile"
+  image: String
+  "Profile description"
+  profileDescription: String
+  "Profile key to link profiles"
+  profileKey: String
+  "Settings for the user"
   settings: JSON
+  "Settings for the user"
+  userID: String
 }
 
-type Option {
-  """key value"""
-  id: ID!
-
-  """label for the value"""
-  value: String!
-
-  """ optional link parameter"""
-  description: String
-
-  """ optional link parameter"""
-  link: String
-}
-
-type Alt @cacheControl(maxAge: 300) {
-  """alt name"""
-  alt: ID!
-
-  """short property name"""
-  options: [Option!]!
-}
-
-type Property @cacheControl(maxAge: 300)  {
-  """property name"""
-  property: ID!
-
-  """short property name"""
-  shortName: String
-
-  """label for the property"""
-  label: String
-
-  """comment for the property"""
-  comment: String
-  range: [String!]!
-  domain: [String!]!
-
-  """min occurrence"""
-  minOccurs: String
-
-  """max occurrence"""
-  maxOccurs: String
-
-  """is required (interpreted from occurrence fields)"""
-  required: Boolean
-
-  """is an array (interpreted from occurrence fields)"""
-  hasMany: Boolean
-
-  """has multiple languages"""
-  multiLang: Boolean
-
-  """range object can be embedded"""
-  embedded: Boolean
-
-  """Property position in the class"""
-  sortOrder: Float
-
+type Property {
   alts: [Alt!]!
-
   classes: [Metadata!]!
+  "comment for the property"
+  comment: String
+  domain: [String!]!
+  "range object can be embedded"
+  embedded: Boolean
+  "is an array (interpreted from occurrence fields)"
+  hasMany: Boolean
+  "label for the property"
+  label: String
+  "max occurrence"
+  maxOccurs: String
+  "min occurrence"
+  minOccurs: String
+  "has multiple languages"
+  multiLang: Boolean
+  "property name"
+  property: ID!
+  range: [String!]!
+  "is required (interpreted from occurrence fields)"
+  required: Boolean
+  "short property name"
+  shortName: String
+  "Property position in the class"
+  sortOrder: Float
 }
 
-type PublicationResponse @cacheControl(maxAge: 300) {
-  currentPage: Int
-  prevPage: Int
-  nextPage: Int
-  lastPage: Int
-  pageSize: Int
-  total: Int
-  results: [Publication]
-}
-
-type Publication @cacheControl(maxAge: 300) {
-  id: ID!
+type Publication {
   URI: String
-
-  """ If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-  """
+  " If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!"
   bibliographicCitation: String
   doi: String
-
-  """International Standard Book Number"""
+  id: ID!
+  "International Standard Book Number"
   isbn: String
 }
 
-enum LangEnum {
-  fi
-  en
-  sv
+type PublicationResponse {
+  currentPage: Int
+  lastPage: Int
+  nextPage: Int
+  pageSize: Int
+  prevPage: Int
+  results: [Publication]
+  total: Int
 }
 
-enum AreaTypeEnum {
-  country
-  biogeographicalProvince
-  municipality
-  oldMunicipality
-  birdAssociationArea
+type Query {
+  alts(id: ID): [Alt!]
+  areas(page: Int, pageSize: Int, type: AreaTypeEnum): [Area!]
+  checklistVersions(id: ID): [ChecklistVersion!]
+  checklists(id: ID): [Checklist!]
+  classes(id: ID): [Metadata!]
+  collection(id: ID, page: Int, pageSize: Int): [Collection!]
+  documents(collectionID: String, formID: String, id: ID, namedPlace: String, observationYear: String, page: Int, pageSize: Int, personToken: String!, templates: Boolean): DocumentResponse
+  form(id: ID!): Form
+  forms(page: Int, pageSize: Int): [Forms]
+  informalTaxonGroups(id: ID): [InformalTaxonGroup!]
+  information(id: ID): Information
+  news(id: ID, page: Int, pageSize: Int, tag: String): NewsResponse
+  notifications(onlyUnSeen: Boolean, page: Int, pageSize: Int, personToken: String!): NotificationResponse
+  person(personToken: String!): [Person!]
+  properties(id: ID): [Property!]
+  publications(id: ID, page: Int, pageSize: Int): PublicationResponse
+  redListEvaluationGroup(id: ID): [RedListEvaluationGroup!]
+  status: String!
+  taxa(adminStatusFilters: String, anyHabitat: String, checklist: String, checklistVersion: String, hasDescriptionFilter: Boolean, hasLatestRedListEvaluation: String, hasMediaFilter: Boolean, includeDescriptions: Boolean, includeHidden: Boolean, includeMedia: Boolean, includeRedListEvaluations: Boolean, informalGroupFilters: String, invasiveSpeciesFilter: Boolean, invasiveSpeciesMainGroups: String, latestRedListEvaluation_anyHabitat: String, latestRedListEvaluation_endangermentReasons: String, latestRedListEvaluation_primaryEndangermentReason: String, latestRedListEvaluation_primaryHabitat: String, latestRedListEvaluation_primaryThreat: String, latestRedListEvaluation_redListStatus: String, latestRedListEvaluation_threats: String, onlyFinnish: Boolean, page: Int, pageSize: Int, primaryHabitat: String, redListEvaluationGroups: String, redListStatusFilters: String, species: Boolean, taxonRanks: String, typesOfOccurrenceFilters: String, typesOfOccurrenceNotFilters: String): [Taxon!]
+  taxon(id: ID!): Taxon
+  units(administrativeStatusId: [String!], aggregateBy: String, annotated: Boolean, anyHabitat: [String!], area: [String!], biogeographicalProvinceId: [String!], birdAssociationAreaId: [String!], breedingSite: Boolean, cache: Boolean, collectionId: [String!], collectionIdNot: [String!], collectionQuality: [String!], coordinateAccuracyMax: Int, coordinates: [String!], countryId: [String!], dayOfYear: String, documentFact: [String!], documentId: [String!], editorId: String, editorOrObserverId: String, editorOrObserverPersonToken: String, editorOrObserverIsNotPersonToken: String, editorPersonToken: String, effectiveTag: [String!], finnish: Boolean, finnishMunicipalityId: [String!], firstLoadedSameOrAfter: String, firstLoadedSameOrBefore: String, formId: [String!], gatheringFact: [String!], gatheringId: [String!], hasDocumentMedia: Boolean, hasGatheringMedia: Boolean, hasMedia: Boolean, hasSample: Boolean, hasUnitMedia: Boolean, includeNonValidTaxa: Boolean, includeSubCollections: Boolean, includeSubTaxa: Boolean, occurrenceCountFinlandMax: Int, individualCountMax: Int, individualCountMin: Int, individualId: [String!], informalTaxonGroupId: [String!], informalTaxonGroupIdIncludingReported: [String!], invasive: Boolean, invasiveControl: [String!], invasiveControlled: Boolean, keyword: [String!], lifeStage: [String!], loadedSameOrAfter: String, loadedSameOrBefore: String, namedPlaceId: [String!], needsCheck: Boolean, observerId: String, observerPersonToken: String, orderBy: String, page: Int, pageSize: Int, primaryHabitat: [String!], qualityIssues: [String!], recordBasis: [String!], recordQuality: [String!], redListStatusId: [String!], reliable: Boolean, season: String, secureLevel: [String!], secureReason: [String!], secured: Boolean, sex: [String!], sourceId: [String!], sourceOfCoordinates: [String!], superRecordBasis: [String!], target: [String!], taxonCensus: [String!], taxonId: [String!], taxonRankId: String, teamMember: [String!], teamMemberId: [String!], time: [String!], typeOfOccurrenceId: [String!], typeOfOccurrenceIdNot: [String!], typeSpecimen: Boolean, unidentified: Boolean, unitFact: [String!], unitId: [String!], useIdentificationAnnotations: Boolean, wgs84CenterPoint: String, wild: [String!], yearMonth: String, ykj100km: String, ykj100kmCenter: String, ykj10km: String, ykj10kmCenter: String, ykj1km: String, ykj1kmCenter: String, ykj50km: String, ykj50kmCenter: String): UnitResponse
+  warehouseLabels(id: ID): [WarehouseLabel!]
 }
 
 type RedListEvaluationGroup {
+  children: [RedListEvaluationGroup!]!
   id: ID!
   includesInformalTaxonGroup: [String!]
   includesTaxon: [String!]
-
   name: String
   parent: RedListEvaluationGroup
-  children: [RedListEvaluationGroup!]!
 }
 
-type Source @cacheControl(maxAge: 300) {
-  id: ID!
-
-  """ If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-  """
-  name: String
-
-  """ If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-  """
+type Source {
+  " If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!"
   description: String
+  id: ID!
+  " If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!"
+  name: String
 }
 
 type TaxaDescription {
+  groups: [JSON!]
   id: ID!
   title: String
-  groups: [JSON!]
 }
 
 type TaxaMedia {
-  source: String
-  thumbnailURL: String
-  fullURL: String
   author: String
-  copyrightOwner: String
   caption: String
+  copyrightOwner: String
+  fullURL: String
   licenseAbbreviation: String
   licenseDescription: String
+  source: String
+  thumbnailURL: String
 }
 
 type Taxon {
+  "Identifier of this taxon concept/name in other systems/sources"
+  additionalID: [String!]
+  additionalIds: [String!]
+  administrativeStatuses: [String!]
+  "Leväosakkaiden kuvaus"
+  algalPartnerOfLichen: String
+  alsoKnownAs: [String!]
+  basionyms: [Taxon!]
+  "Lajin elintavat"
+  behaviour: String
+  birdlifeCode: String
+  breedingSecureLevel: String
+  children: [Taxon!]
+  circumscription: String
+  countOfFinnishSpecies: Float
+  countOfSpecies: Float
+  createdAtTimestamp: Float
+  cultivationText: String
+  "should the name appear cursive"
+  cursiveName: Boolean
+  customReportFormLink: String
+  descriptions: [TaxaDescription!]
+  distributionFinland: String
+  distributionMapFinland: String
+  "Lajin ekologian sekalainen kuvaus"
+  ecology: String
+  economicUseText: String
+  etymologyText: String
+  euringCode: String
+  expertChangesFromParent: Boolean
+  externalLinkURL: String
+  "taxon occurs in Finland"
+  finnish: Boolean
+  frequencyScoringPoints: Int
+  growthFormAndGrowthHabit: String
+  "Lajin elinympäristö"
+  habitat: String
+  "Lajin kasvialusta"
+  habitatSubstrate: String
+  hasAlternativeName: [String!]
+  "true if has children"
+  hasChildren: Boolean
+  "true if has parents"
+  hasParent: Boolean
+  heterotypicSynonyms: [Taxon!]
+  "Should this taxon be hidden when showing contents of a checklist (publicly)?"
+  hiddenTaxon: Boolean
+  homotypicSynonyms: [Taxon!]
   id: ID!
-
+  identificationText: String
+  includedIn: [Taxon!]
+  includes: [Taxon!]
+  informalTaxonGroups: [String!]
+  ingressText: String
+  invasiveCitizenActionsText: String
+  invasiveEffectText: String
+  invasivePreventionMethodsText: String
+  invasiveSpecies: Boolean
+  invasiveSpeciesClassificationDescription: String
+  invasiveSpeciesEarlyWarning: Boolean
+  invasiveSpeciesEstablishment: String
+  "is taxon species or subspecies or etc and occurs in Finland"
+  isFinnishSpecies: Boolean
+  isPartOf: String
+  isPartOfInformalTaxonGroup: [String!]
+  isSpecies: Boolean
+  latestRedListStatusFinland: JSON
+  "Eliön elinkierto"
+  lifeCycle: String
+  management: String
+  misappliedNames: [Taxon!]
+  miscText: String
+  misspelledNames: [Taxon!]
+  multimedia: [TaxaMedia!]
+  nameAccordingTo: String
+  nameDecidedBy: String
+  nameDecidedDate: String
+  naturaAreaSecureLevel: String
+  nestSiteSecureLevel: String
+  notes: String
+  objectiveSynonyms: [Taxon!]
+  " If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!"
+  obsoleteVernacularName: [String!]
+  occurrenceInFinland: String
+  occurrenceInFinlandPublication: [String!]
+  occurrenceInFinlandSpecimenURI: String
+  occurrences: [JSON!]
+  originAndDistributionText: String
+  originalDescription: String
+  originalPublication: [String!]
+  orthographicVariants: [Taxon!]
+  overridingTargetName: [String!]
   """
+
   <p>Lisämerkinnät:</p>
   <ul>
   <li><b>v - vanhat metsät</b> (myös yksittäiset vanhat puut ja runsaasti lahopuuta sisältävät nuoremmat metsät)</li>
@@ -2080,248 +1760,143 @@ type Taxon {
   </ul>
   """
   primaryHabitat: String
-  secondaryHabitat: [String!]
-
-  """Identifier of this taxon concept/name in other systems/sources"""
-  additionalID: [String!]
-
-  """Leväosakkaiden kuvaus"""
-  algalPartnerOfLichen: String
-  alsoKnownAs: [String!]
-
-  """Lajin elintavat"""
-  behaviour: String
-  birdlifeCode: String
-  breedingSecureLevel: String
-  circumscription: String
-  cultivationText: String
-  customReportFormLink: String
-  distributionFinland: String
-  distributionMapFinland: String
-
-  """Lajin ekologian sekalainen kuvaus"""
-  ecology: String
-  economicUseText: String
-  etymologyText: String
-  euringCode: String
-  externalLinkURL: String
-
-  """taxon occurs in Finland"""
-  finnish: Boolean
-  frequencyScoringPoints: Int
-  growthFormAndGrowthHabit: String
-
-  """Lajin elinympäristö"""
-  habitat: String
-
-  """Lajin kasvialusta"""
-  habitatSubstrate: String
-  hasAlternativeName: [String!]
-
-  """
-  Should this taxon be hidden when showing contents of a checklist (publicly)?
-  """
-  hiddenTaxon: Boolean
-  identificationText: String
-  ingressText: String
-  invasiveCitizenActionsText: String
-  invasiveEffectText: String
-  invasivePreventionMethodsText: String
-  invasiveSpeciesClassificationDescription: String
-  invasiveSpeciesEarlyWarning: Boolean
-  invasiveSpeciesEstablishment: String
-  isPartOf: String
-  isPartOfInformalTaxonGroup: [String!]
-
-  """Eliön elinkierto"""
-  lifeCycle: String
-  management: String
-  miscText: String
-  nameAccordingTo: String
-  nameDecidedBy: String
-  nameDecidedDate: String
-  naturaAreaSecureLevel: String
-  nestSiteSecureLevel: String
-  notes: String
-
-  """ If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-  """
-  obsoleteVernacularName: [String!]
-  occurrenceInFinland: String
-  occurrenceInFinlandPublication: [String!]
-  occurrenceInFinlandSpecimenURI: String
-  originAndDistributionText: String
-  originalDescription: String
-  originalPublication: [String!]
-  overridingTargetName: [String!]
   productionText: String
   redListStatus2000Finland: String
   redListStatus2010Finland: String
   redListStatus2015Finland: String
   redListStatus2019Finland: String
+  redListStatusesInFinland: [JSON!]
   reproduction: String
-
-  """Kukinta-aika"""
+  "Kukinta-aika"
   reproductionFloweringTime: String
-
-  """Pölytyksen kuvaus"""
+  "Pölytyksen kuvaus"
   reproductionPollination: String
   scientificName: String
   scientificNameAuthorship: String
-
-  """Secure level (salaus-/karkeistustaso) for the data"""
+  secondaryHabitat: [String!]
+  "Secure level (salaus-/karkeistustaso) for the data"
   secureLevel: String
+  species: [Taxon!]
   speciesCardAuthors: String
+  "stable in Finland"
+  stableInFinland: Boolean
   stopOccurrenceInFinlandPublicationInheritance: Boolean
   stopOriginalPublicationInheritance: Boolean
+  subjectiveSynonyms: [Taxon!]
+  synonymNames: [String!]
+  misappliedListNames: [String!]
+  synonyms: [Taxon!]
   targetName: [String!]
   taxonEditor: [String!]
   taxonExpert: [String!]
   taxonRank: String
+  "sort order for taxonomic sorting"
+  taxonomicSortOrder: Float
   taxonomyText: String
   tradeName: [String!]
   typeOfOccurrenceInFinland: [String!]
   typeOfOccurrenceInFinlandNotes: String
   typeSpecimenURI: String
-
-  """ If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-  """
+  uncertainSynonyms: [Taxon!]
+  " If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!"
   vernacularName: String
   winteringSecureLevel: String
-  createdAtTimestamp: Float
-  synonymNames: [String!]
-  informalTaxonGroups: [String!]
-  occurrences: [JSON!]
-  multimedia: [TaxaMedia!]
-  descriptions: [TaxaDescription!]
-  synonyms: [Taxon!]
-  misappliedNames: [Taxon!]
-  misspelledNames: [Taxon!]
-  basionyms: [Taxon!]
-  objectiveSynonyms: [Taxon!]
-  subjectiveSynonyms: [Taxon!]
-  orthographicVariants: [Taxon!]
-  homotypicSynonyms: [Taxon!]
-  heterotypicSynonyms: [Taxon!]
-  uncertainSynonyms: [Taxon!]
-  includes: [Taxon!]
-  includedIn: [Taxon!]
-  children: [Taxon!]
-  species: [Taxon!]
-  administrativeStatuses: [String!]
-  isSpecies: Boolean
-  invasiveSpecies: Boolean
-
-  """should the name appear cursive"""
-  cursiveName: Boolean
-  countOfSpecies: Float
-  countOfFinnishSpecies: Float
-
-  """is taxon species or subspecies or etc and occurs in Finland"""
-  isFinnishSpecies: Boolean
-
-  """stable in Finland"""
-  stableInFinland: Boolean
-  expertChangesFromParent: Boolean
-
-  """sort order for taxonomic sorting"""
-  taxonomicSortOrder: Float
-
-  """true if has parents"""
-  hasParent: Boolean
-
-  """true if has children"""
-  hasChildren: Boolean
-  latestRedListStatusFinland: JSON
-  redListStatusesInFinland: [JSON!]
-  additionalIds: [String!]
 }
 
 type TaxonCensus {
-  """QName for MX.taxon"""
+  "QName for MX.taxon"
   censusTaxonID: String!
   taxonCensusType: String!
 }
 
+type TaxonSearch {
+  "Should scientific name be cursive"
+  cursiveName: Boolean
+  "Is finnish taxa"
+  finnish: Boolean
+  "Unique identifier for the taxon"
+  id: ID!
+  "Informal group"
+  informalGroup: [TaxonSearchInformalGroup!]
+  "Name that the search matches to"
+  matchingName: String!
+  "Type of the name"
+  nameType: String
+  "Scientific name for the match"
+  scientificName: String
+  "Author"
+  scientificNameAuthorship: String
+  "Score for the match"
+  similarity: String
+  "Is taxon rank species"
+  species: Boolean
+  "Taxon rank"
+  taxonRank: String
+  "What kind of match this is"
+  type: String!
+  "Name of the informal group"
+  vernacularName: MultiLang
+}
+
+type TaxonSearchInformalGroup {
+  "Unique identifier for the informal group"
+  id: ID!
+  "Name of the informal group"
+  name: MultiLang
+}
+
 type TypeSpecimen {
-
-  """Unique ID for the object. This will be automatically generated."""
+  "Unique ID for the object. This will be automatically generated."
   id: String
-
   """
+
   PUBLIC: all data can be published; PROTECTED: exact locality is hidden
   (100*100km square); PRIVATE: most of the data is hidden. Empty value means
   same as public.
   """
   publicityRestrictions: String
-
-  """Author of the type species"""
+  "Author of the type species"
   typeAuthor: String
-
-  """Publication reference for original description or basionyme"""
+  "Publication reference for original description or basionyme"
   typeBasionymePubl: String
-
-  """Additional information on the type"""
+  "Additional information on the type"
   typeNotes: String
-
-  """Publication reference for type publication"""
+  "Publication reference for type publication"
   typePubl: String
-
-  """ID for the type series, if part of one"""
+  "ID for the type series, if part of one"
   typeSeriesID: String
-
-  """Name of the type species"""
+  "Name of the type species"
   typeSpecies: String
-
-  """Is this holotype, paratype, syntype etc..."""
+  "Is this holotype, paratype, syntype etc..."
   typeStatus: String
-
-  """Name of the type subspecies"""
+  "Name of the type subspecies"
   typeSubspecies: String
-
-  """Author of the type subspecies"""
+  "Author of the type subspecies"
   typeSubspeciesAuthor: String
-
-  """Verification whether this really is a type?"""
+  "Verification whether this really is a type?"
   typeVerification: String
-
-  """
-  Name of the person who chose the type, preferably in the format \"Lastname, firstname\"
-  """
+  "Name of the person who chose the type, preferably in the format \\\"Lastname, firstname\\\""
   typif: String
-
-  """Date when the specimen was chosen as a type"""
+  "Date when the specimen was chosen as a type"
   typifDate: String
 }
 
 type Unit {
-
-  """Diameter at breast height, in centimeters"""
+  "Diameter at breast height, in centimeters"
   DBH: String
-
-  """
-  Leave empty if no sample taken, or if the sample is recorded separately
-  """
+  "Leave empty if no sample taken, or if the sample is recorded separately"
   DNASampleLocation: String
   abundanceString: String
-
-  """
-  Other identifiers this specimen has, in format 'type:identifier'. For example: 'mzhtypes:123' (old MAZ-type number)
-  """
+  "Other identifiers this specimen has, in format 'type:identifier'. For example: 'mzhtypes:123' (old MAZ-type number)"
   additionalIDs: [String!]
   adultIndividualCount: Int
-
-  """
-  Estimated or known age in calendar years, years, days or other relevant unit.
-  """
+  "Estimated or known age in calendar years, years, days or other relevant unit."
   age: String
-
-  """E.g. how age was determined, by whom and when."""
+  "E.g. how age was determined, by whom and when."
   ageNotes: String
   alive: Boolean
   ankleInMillimeters: [String!]
-
-  """Non-negative integer"""
+  "Non-negative integer"
   areaInSquareMeters: Int
   atlasCode: String
   batBehavior: String
@@ -2331,182 +1906,130 @@ type Unit {
   birdPlumage: String
   breeding: Boolean
   broodSize: Int
-
-  """Cause of death, if not intentionally trapped on sampled"""
+  "Cause of death, if not intentionally trapped on sampled"
   causeOfDeath: String
-
-  """QName for MR.checklist"""
+  "QName for MR.checklist"
   checklistID: String
-
-  """Results of chemical reaction tests etc."""
+  "Results of chemical reaction tests etc."
   chemistry: String
-
   """
+
   Numeric or other description on the amount of individuals (or sprouts,
   fruiting bodies or such) in the specimen. Sexes and juveniles can be specified
   like so: 1m2f3j (=1 male, 2 females, 3 juveniles)
   """
   count: String
-
-  """
-  Estimation of decay stage (lahoaste in Finnish) on the scale of 1 to 5 and/or description
-  """
+  "Estimation of decay stage (lahoaste in Finnish) on the scale of 1 to 5 and/or description"
   decayStage: String
   distance: String
-
   """
+
   For palaeontological specimens, earliest possible geochronologic epoch or
   lowest chronostratigraphic series attributable to the stratigraphic horizon
   from which the specimen was collected
   """
   earliestEpochOrLowestSeries: String
-
-  """Non-negative integer"""
+  "Non-negative integer"
   femaleIndividualCount: Int
-
-  """Genotype of the microbial strain"""
+  "Genotype of the microbial strain"
   genotype: String
   gonadInMillimeters: [String!]
-
-  """Microbial culture growth medium name, usually from a standard"""
+  "Microbial culture growth medium name, usually from a standard"
   growthMediumName: String
-
-  """Other growth conditions for the microbial culture, light etc."""
+  "Other growth conditions for the microbial culture, light etc."
   growthOtherConditions: String
-
-  """Microbial culture growth temperature"""
+  "Microbial culture growth temperature"
   growthTemperature: String
-
-  """QName for MY.identification"""
+  "QName for MY.identification"
   hasIdentification: [String!]
-
-  """QName for MY.subUnit"""
+  "QName for MY.subUnit"
   hasSubUnit: [String!]
-
-  """QName for MX.taxon"""
+  "QName for MX.taxon"
   hostID: String
   hostInformalNameString: String
-
-  """Unique ID for the object. This will be automatically generated."""
+  "Unique ID for the object. This will be automatically generated."
   id: String
-
-  """QName for MY.identification"""
+  "QName for MY.identification"
   identification: [String!]
-
-  """Array of identifications"""
+  "Array of identifications"
   identifications: [Identification!]
-
-  """QName for MM.image"""
+  "QName for MM.image"
   images: [String!]
-
-  """Non-negative integer"""
+  "Non-negative integer"
   individualCount: Int
   informalNameString: String
-
-  """QName for MVL.informalTaxonGroup"""
+  "QName for MVL.informalTaxonGroup"
   informalTaxonGroup: String
-
-  """Valitut muotoryhmät. QName for MVL.informalTaxonGroup"""
+  "Valitut muotoryhmät. QName for MVL.informalTaxonGroup"
   informalTaxonGroups: [String!]
-
-  """
-  Pathovars, serovars and other infrasubspecific subdivisions of microbes.
-  """
+  "Pathovars, serovars and other infrasubspecific subdivisions of microbes."
   infrasubspecificSubdivision: String
   juvenileIndividualCount: Int
   keywords: [String!]
-
   """
+
   For palaeontological specimens, latest possible geochronologic epoch or
   highest chronostratigraphic series attributable to the stratigraphic horizon
   from which the specimen was collected.
   """
   latestEpochOrHighestSeries: String
   lengthInMillimeters: [String!]
-
-  """Life stage of the specimen"""
+  "Life stage of the specimen"
   lifeStage: String
-
-  """Free-text notes or addtional information about the life stage"""
+  "Free-text notes or addtional information about the life stage"
   lifeStageDescription: String
   likelyMigrant: Boolean
-
-  """
-  Macroscopic features and measurements, if not recorded separately into measurement fields.
-  """
+  "Macroscopic features and measurements, if not recorded separately into measurement fields."
   macroscopy: String
-
-  """Non-negative integer"""
+  "Non-negative integer"
   maleIndividualCount: Int
-
-  """instance of measurement"""
+  "instance of measurement"
   measurement: Measurement
-
-  """
-  According to German TRBA August 2015, which is more comprehensive than the EU or Finnish list for bacterial risk groups
-  """
+  "According to German TRBA August 2015, which is more comprehensive than the EU or Finnish list for bacterial risk groups"
   microbiologicalRiskGroup: String
-
-  """
-  Microscopic features and measurements, if not recorded separately into measurement fields.
-  """
+  "Microscopic features and measurements, if not recorded separately into measurement fields."
   microscopy: String
   movingDirection: String
   movingStatus: [String!]
-
-  """Information on mutant microbial strain."""
+  "Information on mutant microbial strain."
   mutant: String
   nativeStatus: String
-
-  """Additional information to the data in each section."""
+  "Additional information to the data in each section."
   notes: String
   pairCount: Int
   plantLifeStage: String
   plantStatusCode: String
-
-  """Abundance of the taxon in the field"""
+  "Abundance of the taxon in the field"
   populationAbundance: String
-
-  """
-  Preparations/preparates made from the specimen, if not recorded as separate Preparations/samples in the designated section
-  """
+  "Preparations/preparates made from the specimen, if not recorded as separate Preparations/samples in the designated section"
   preparations: String
-
-  """
-  Main method of preservation. If parts of the specimen are preserved in different ways, you can choose several methods.
-  """
+  "Main method of preservation. If parts of the specimen are preserved in different ways, you can choose several methods."
   preservation: [String!]
-
-  """Origin or source of the garden accession"""
+  "Origin or source of the garden accession"
   provenance: String
-
   """
+
   PUBLIC: all data can be published; PROTECTED: exact locality is hidden
   (100*100km square); PRIVATE: most of the data is hidden. Empty value means
   same as public.
   """
   publicityRestrictions: String
-
   """
+
   Type of record, most commonly preserved specimen for museum specimens and
-  observation for associated observations (\"seuralaislajihavainto\").
+  observation for associated observations (\\\"seuralaislajihavainto\\\").
   """
   recordBasis: String
-
-  """What parts of the record are / have been in storage."""
+  "What parts of the record are / have been in storage."
   recordParts: [String!]
-
-  """Bird or bat ring number, code, colour code or such"""
+  "Bird or bat ring number, code, colour code or such"
   ring: String
-
-  """Main method for (usually intentional) sampling"""
+  "Main method for (usually intentional) sampling"
   samplingMethod: String
   samplingMethodNotes: String
-
-  """Sex of the individual(s)"""
+  "Sex of the individual(s)"
   sex: String
-
-  """E.g. how sex was determined, by whom and when."""
+  "E.g. how sex was determined, by whom and when."
   sexNotes: String
   shortHandText: String
   smell: String
@@ -2515,8 +2038,7 @@ type Unit {
   substrateDecayStage: String
   substrateNotes: String
   substrateSpecies: String
-
-  """QName for MX.taxon"""
+  "QName for MX.taxon"
   substrateSpeciesID: String
   substrateSpeciesInformalNameString: String
   substrateTreeClassification: [String!]
@@ -2525,17 +2047,13 @@ type Unit {
   tasteNotes: String
   taxonConfidence: String
   twitched: Boolean
-
-  """QName for MY.typeSpecimen"""
+  "QName for MY.typeSpecimen"
   typeSpecimen: [String!]
-
-  """Array of typeSpecimens"""
+  "Array of typeSpecimens"
   typeSpecimens: [TypeSpecimen!]
-
-  """instance of unitFact"""
+  "instance of unitFact"
   unitFact: UnitFact
-
-  """instance of unitGathering"""
+  "instance of unitGathering"
   unitGathering: UnitGathering
   unitType: [String!]
   weightInGrams: [String!]
@@ -2543,152 +2061,84 @@ type Unit {
   wingInMillimeters: [String!]
 }
 
-"""instance of measurement"""
-type Measurement {
-  """Decimal number"""
-  DNAConcentrationNgPerMicroliter: [Float!]
-
-  """Decimal number"""
-  DNARatioOfAbsorbance260And280: [Float!]
-
-  """Decimal number"""
-  DNAVolumeMicroliters: [Float!]
-
-  """Decimal number"""
-  beakMillimeters: [Float!]
-
-  """Decimal number"""
-  bodyCentimeters: [Float!]
-
-  """Decimal number"""
-  bodyMillimeters: [Float!]
-
-  """Decimal number"""
-  earLengthMillimeters: [Float!]
-
-  """Decimal number"""
-  embryoCount: [Float!]
-
-  """Decimal number"""
-  follicleDiameterMillimeters: [Float!]
-
-  """Decimal number"""
-  footLengthMillimeters: [Float!]
-
-  """Decimal number"""
-  forearmMillimeters: [Float!]
-
-  """Decimal number"""
-  gonadMillimeters: [Float!]
-
-  """Decimal number"""
-  tailCentimeters: [Float!]
-
-  """Decimal number"""
-  tailMillimeters: [Float!]
-
-  """Decimal number"""
-  tarsusLengthMillimeters: [Float!]
-
-  """Decimal number"""
-  totalLengthCentimeters: [Float!]
-
-  """Decimal number"""
-  totalLengthMillimeters: [Float!]
-
-  """Decimal number"""
-  uterineScarCount: [Float!]
-
-  """Decimal number"""
-  weightGrams: [Float!]
-
-  """Decimal number"""
-  weightKilograms: [Float!]
-
-  """Decimal number"""
-  wingMaxMillimeters: [Float!]
-
-  """Decimal number"""
-  wingMillimeters: [Float!]
-
-  """Decimal number"""
-  wingMinMillimeters: [Float!]
-}
-
-"""instance of unitFact"""
+"instance of unitFact"
 type UnitFact {
   autocompleteSelectedTaxonID: String
-
-  """Non-negative integer"""
+  "Non-negative integer"
   individualCountBiotopeA: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   individualCountBiotopeB: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   individualCountBiotopeC: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   individualCountBiotopeD: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   individualCountBiotopeE: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   individualCountBiotopeF: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   individualCountBiotopeG: Int
-
-  """Non-negative integer"""
+  "Non-negative integer"
   individualCountBiotopeH: Int
   lineTransectObsType: String
   lineTransectRouteFieldType: String
   runningWaterInVicinity: Boolean
 }
 
-"""instance of unitGathering"""
+"instance of unitGathering"
 type UnitGathering {
-
   dateBegin: String
   dateEnd: String
-
-  """Geometry object from GeoJSON"""
+  "Geometry object from GeoJSON"
   geometry: JSON
-
-  """Informal description of the habitat."""
+  "Informal description of the habitat."
   habitatDescription: String
   habitatIUCN: String
-
-  """Unique ID for the object. This will be automatically generated."""
+  "Unique ID for the object. This will be automatically generated."
   id: String
-
-  """Type of substrate or name of substrate species."""
+  "Type of substrate or name of substrate species."
   substrate: String
 }
 
-
-type Query {
-  alts(id: ID): [Alt!]
-  areas(type: AreaTypeEnum, page: Int, pageSize: Int): [Area!]
-  checklists(id: ID): [Checklist!]
-  checklistVersions(id: ID): [ChecklistVersion!]
-  collection(id: ID, page: Int, pageSize: Int): [Collection!]
-  classes(id: ID): [Metadata!]
-  documents(personToken: String!, id: ID, page: Int, pageSize: Int, observationYear: String, templates: Boolean, namedPlace: String, collectionID: String, formID: String): DocumentResponse
-  forms(page: Int, pageSize: Int): [Forms]
-  form(id: ID!): Form
-  information(id: ID): Information
-  informalTaxonGroups(id: ID): [InformalTaxonGroup!]
-  news(id: ID, tag: String, page: Int, pageSize: Int): NewsResponse
-  notifications(personToken: String!, page: Int, pageSize: Int, onlyUnSeen: Boolean): NotificationResponse
-  units(pageSize: Int, page: Int, cache: Boolean, orderBy: String, aggregateBy: String, taxonId: [String!], useIdentificationAnnotations: Boolean, includeSubTaxa: Boolean, target: [String!], includeNonValidTaxa: Boolean, informalTaxonGroupId: [String!], informalTaxonGroupIdIncludingReported: [String!], administrativeStatusId: [String!], redListStatusId: [String!], typeOfOccurrenceId: [String!], typeOfOccurrenceIdNot: [String!], primaryHabitat: [String!], anyHabitat: [String!], finnish: Boolean, invasive: Boolean, taxonRankId: String, countryId: [String!], finnishMunicipalityId: [String!], biogeographicalProvinceId: [String!], area: [String!], birdAssociationAreaId: [String!], namedPlaceId: [String!], formId: [String!], time: [String!], yearMonth: String, dayOfYear: String, season: String, keyword: [String!], collectionId: [String!], includeSubCollections: Boolean, collectionIdNot: [String!], collectionQuality: [String!], sourceId: [String!], recordBasis: [String!], superRecordBasis: [String!], lifeStage: [String!], sex: [String!], invasiveControl: [String!], invasiveControlled: Boolean, documentId: [String!], gatheringId: [String!], unitId: [String!], individualId: [String!], individualCountMin: Int, individualCountMax: Int, loadedSameOrAfter: String, loadedSameOrBefore: String, firstLoadedSameOrAfter: String, coordinates: [String!], coordinateAccuracyMax: Int, wgs84CenterPoint: String, ykj1km: String, ykj10km: String, ykj50km: String, ykj100km: String, ykj1kmCenter: String, ykj10kmCenter: String, ykj50kmCenter: String, ykj100kmCenter: String, sourceOfCoordinates: [String!], typeSpecimen: Boolean, wild: [String!], breedingSite: Boolean, hasDocumentMedia: Boolean, hasGatheringMedia: Boolean, hasUnitMedia: Boolean, hasMediaImages: boolean, hasMediaAudio:boolean, hasMedia: Boolean, editorId: String, observerId: String, editorOrObserverId: String, teamMember: [String!], teamMemberId: [String!], secureReason: [String!], secureLevel: [String!], secured: Boolean, annotated: Boolean, qualityIssues: [String!], reliable: Boolean, recordQuality: [String!], unidentified: Boolean, taxonCensus: [String!], hasSample: Boolean, unitFact: [String!], gatheringFact: [String!], documentFact: [String!], firstLoadedSameOrBefore: String, editorPersonToken: String, observerPersonToken: String, editorOrObserverPersonToken: String): UnitResponse
-  publications(id: ID, page: Int, pageSize: Int): PublicationResponse
-  person(personToken: String!): [Person!]
-  properties(id: ID): [Property!]
-  redListEvaluationGroup(id: ID): [RedListEvaluationGroup!]
-  status: String!
-  taxa(species: Boolean, informalGroupFilters: String, redListEvaluationGroups: String, invasiveSpeciesMainGroups: String, adminStatusFilters: String, redListStatusFilters: String, typesOfOccurrenceFilters: String, typesOfOccurrenceNotFilters: String, primaryHabitat: String, anyHabitat: String, hasLatestRedListEvaluation: String, latestRedListEvaluation_redListStatus: String, latestRedListEvaluation_primaryHabitat: String, latestRedListEvaluation_anyHabitat: String, latestRedListEvaluation_primaryThreat: String, latestRedListEvaluation_threats: String, latestRedListEvaluation_primaryEndangermentReason: String, latestRedListEvaluation_endangermentReasons: String, taxonRanks: String, invasiveSpeciesFilter: Boolean, hasMediaFilter: Boolean, hasDescriptionFilter: Boolean, includeHidden: Boolean, includeMedia: Boolean, includeDescriptions: Boolean, includeRedListEvaluations: Boolean, onlyFinnish: Boolean, checklist: String, checklistVersion: String, page: Int, pageSize: Int): [Taxon!]
-  taxon(id: ID!): Taxon
+type UnitResponse {
+  currentPage: Int
+  lastPage: Int
+  nextPage: Int
+  pageSize: Int
+  prevPage: Int
+  results: [DwUnitResult!]
+  total: Int
 }
 
+type WarehouseLabel {
+  "alt name"
+  enumeration: ID!
+  label: MultiLang
+  property: String!
+}
+
+enum AreaTypeEnum {
+  biogeographicalProvince
+  birdAssociationArea
+  country
+  municipality
+  oldMunicipality
+}
+
+enum CacheControlScope {
+  PRIVATE
+  PUBLIC
+}
+
+enum LangEnum {
+  en
+  fi
+  sv
+}
+
+
+"The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
+scalar JSON
+
+"The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
+scalar JSONObject

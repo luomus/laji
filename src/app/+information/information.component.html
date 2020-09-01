@@ -1,33 +1,27 @@
-<div class="container-fluid">
-  <div id="wrapper" class="row" *ngIf="information$ | async; let information">
-    <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
-      <ol class="breadcrumb">
-        <ng-container *ngFor="let parent of information.parents; let i = index">
-          <li *ngIf="i !== 0">
-            <a [routerLink]="['/about/' + parent.id] | localize">
-              {{ parent.title }}
-            </a>
-          </li>
-        </ng-container>
-        <li class="active">{{ information.title }}</li>
-      </ol>
-      <div class="laji-information" [innerHtml]="information.content" lajiRouteTransformer></div>
-    </div>
-    <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 more-info" *ngIf="information.children">
-      <div class="media">
-        <div class="media-body">
-          <h4 class="media-heading">
-            {{ 'information.more' | translate }}
-          </h4>
-          <ul>
-            <li *ngFor="let child of information.children">
-              <a [routerLink]="['/about/' + child.id] | localize">
-                {{ child.title }}
+<ng-container *ngIf="information$ | async; let information">
+  <lu-sidebar position="right" [displayNav]="information.children">
+    <main class="d-flex justify-center">
+      <div class="mt-4 mb-8 mx-3">
+        <ol class="breadcrumb">
+          <ng-container *ngFor="let parent of information.parents; let i = index">
+            <li *ngIf="i !== 0">
+              <a [routerLink]="['/about/' + parent.id] | localize">
+                {{ parent.title }}
               </a>
             </li>
-          </ul>
-        </div>
+          </ng-container>
+          <li class="active">{{ information.title }}</li>
+        </ol>
+        <div class="laji-information" [innerHtml]="information.content | safe:'html'" lajiRouteTransformer></div>
       </div>
-    </div>
-  </div>
-</div>
+    </main>
+    <nav *ngIf="information.children">
+      <h4>
+        {{ 'information.more' | translate }}
+      </h4>
+      <lu-sidebar-link *ngFor="let child of information.children" [link]="['/about/' + child.id] | localize">
+        {{ child.title }}
+      </lu-sidebar-link>
+    </nav>
+  </lu-sidebar>
+</ng-container>

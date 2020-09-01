@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit,
-ChangeDetectorRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+ChangeDetectorRef, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Subscription, Observable, forkJoin, of } from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
@@ -7,6 +7,10 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { map, switchMap } from 'rxjs/operators';
 import { Annotation } from '../../shared/model/Annotation';
 import { PagedResult } from '../../shared/model/PagedResult';
+import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
+import { AnnotationTag } from '../../shared/model/AnnotationTag';
+import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service'
+import { ToQNamePipe } from 'src/app/shared/pipe/to-qname.pipe';
 
 
 
@@ -14,9 +18,10 @@ import { PagedResult } from '../../shared/model/PagedResult';
   selector: 'laji-annotations',
   templateUrl: './annotations.component.html',
   styleUrls: ['./annotations.component.scss'],
+  providers: [ToQNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AnnotationsComponent implements OnInit, OnChanges {
+export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() query: WarehouseQueryInterface;
   @Input() showPaginator = true;
@@ -41,17 +46,36 @@ export class AnnotationsComponent implements OnInit, OnChanges {
   count: number;
   size: number;
   paginatorDisplay: boolean;
+  annotationTags$: Observable<AnnotationTag[]>;
+  subscriptionDeleteOwnDocument: Subscription;
+  childEvent: any;
 
 
 
   constructor(
     private warehouseApi: WarehouseApi,
     private translations: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private annotationService: AnnotationService,
+    private translate: TranslateService,
+    private deleteOwnDocument: DeleteOwnDocumentService,
+    private toQname: ToQNamePipe
   ) { }
 
   ngOnInit() {
     this.lang = this.translations.currentLang;
+    this.annotationTags$ = this.annotationService.getAllTags(this.lang);
+
+    this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(info => {
+      this.childEvent = info;
+      if (this.childEvent !== null) {
+        setTimeout(()=>{    
+          this.updateAnnotations();
+          this.subscriptionDeleteOwnDocument.unsubscribe();
+        }, 1300);
+      }
+      this.cd.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -129,6 +153,12 @@ export class AnnotationsComponent implements OnInit, OnChanges {
   pageChanged(event) {
     this.page = event.page;
     this.updateAnnotations();
+  }
+
+  ngOnDestroy() {
+    if (this.subscriptionDeleteOwnDocument) {
+      this.subscriptionDeleteOwnDocument.unsubscribe();
+    }
   }
 
 

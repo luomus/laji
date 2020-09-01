@@ -6,6 +6,7 @@
     "laji": {
       "root": "",
       "sourceRoot": "src",
+      "prefix": "laji",
       "projectType": "application",
       "architect": {
         "build": {
@@ -15,7 +16,7 @@
             "outputPath": "dist/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/static",
@@ -35,7 +36,8 @@
                 "projects/laji-ui/src/lib"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -47,7 +49,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -58,10 +60,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/robots.txt",
-                  "with": "src/robots.allow.txt"
                 }
               ]
             },
@@ -74,7 +72,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -120,7 +118,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -135,7 +133,7 @@
               ]
             },
             "local": {
-              "sourceMap": false,
+              "sourceMap": true,
               "buildOptimizer": false,
               "budgets": [
                 {
@@ -161,7 +159,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -206,7 +204,7 @@
             "main": "src/test.ts",
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
+            "tsConfig": "tsconfig.spec.json",
             "scripts": [],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
@@ -226,8 +224,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "tsconfig.worker.json"
             ],
             "exclude": []
           }
@@ -236,8 +235,8 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/server",
-            "main": "src/main.server.ts",
-            "tsConfig": "src/tsconfig.server.json",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
             "stylePreprocessorOptions": {
               "includePaths": [
                 "projects/laji-ui/src/lib"
@@ -246,6 +245,7 @@
           },
           "configurations": {
             "production": {
+              "outputHashing": "media",
               "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
@@ -254,14 +254,11 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/robots.txt",
-                  "with": "src/robots.allow.txt"
                 }
               ]
             },
             "beta": {
+              "outputHashing": "media",
               "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
@@ -274,12 +271,14 @@
               ]
             },
             "dev": {
+              "outputHashing": "media",
               "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true
             },
             "embedded": {
+              "outputHashing": "media",
               "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
@@ -292,6 +291,7 @@
               ]
             },
             "local": {
+              "outputHashing": "media",
               "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
@@ -302,6 +302,19 @@
                   "with": "src/environments/environment.local.ts"
                 }
               ]
+            }
+          }
+        },
+        "serve-ssr":  {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "laji:build",
+            "serverTarget": "laji:server"
+          },
+          "configurations": {
+            "local": {
+              "browserTarget": "laji:build:local",
+              "serverTarget": "laji:server:local"
             }
           }
         }
@@ -439,10 +452,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "projects/iucn/src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "projects/iucn/src/robots.txt",
-                  "with": "src/robots.allow.txt"
                 }
               ]
             },
@@ -859,11 +868,15 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/vir/src/environments/environment.ts",
+                  "with": "projects/vir/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -891,6 +904,10 @@
                 }
               ],
               "fileReplacements": [
+                {
+                  "replace": "projects/vir/src/environments/environment.ts",
+                  "with": "projects/vir/src/environments/environment.dev.ts"
+                },
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.dev.ts"

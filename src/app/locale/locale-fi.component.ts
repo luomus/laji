@@ -1,9 +1,8 @@
-import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component } from '@angular/core';
 import { LocaleComponent } from './locale.component';
 import * as moment from 'moment';
 import 'moment/locale/fi';
+import { PlatformService } from '../shared/service/platform.service';
 
 @Component({
   selector: 'laji-locale-fi',
@@ -12,11 +11,9 @@ import 'moment/locale/fi';
 export class LocaleFiComponent extends LocaleComponent {
 
   constructor(
-    @Inject(PLATFORM_ID) protected platformId,
-    @Inject(WINDOW) protected window: Window,
-    protected translateService: TranslateService
+    platformService: PlatformService
   ) {
-    super();
+    super(platformService);
     moment.locale('fi');
     this.setLocale('fi');
   }

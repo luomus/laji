@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import { delay, map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
@@ -7,15 +7,12 @@ import {
   Component,
   EventEmitter,
   HostListener,
-  Inject,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  PLATFORM_ID,
   ViewChild
 } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
 import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
@@ -29,9 +26,9 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
-import { isPlatformBrowser } from '@angular/common';
 import { Global } from '../../../../environments/global';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { PlatformService } from '../../../shared/service/platform.service';
 
 export interface RowDocument {
   creator: string;
@@ -40,8 +37,10 @@ export interface RowDocument {
   publicity: string;
   dateEdited: string;
   dateObserved: string;
+  dateCreated: string;
   namedPlaceName: string;
   locality: string;
+  gatheringsCount: number,
   unitCount: number;
   observer: string;
   formID: string;
@@ -131,11 +130,12 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   allColumns = [
     {prop: 'templateName', mode: 'small'},
     {prop: 'templateDescription', mode: 'small'},
-    {prop: 'dateEdited', mode: 'medium'},
-    {prop: 'dateObserved', mode: 'small'},
-    {prop: 'namedPlaceName', mode: 'small'},
-    {prop: 'locality', mode: 'small'},
-    {prop: 'taxon', mode: 'small'},
+    {prop: 'dateEdited', mode: 'small'},
+    {prop: 'dateObserved', mode: 'large'},
+    {prop: 'namedPlaceName', mode: 'large'},
+    {prop: 'locality', mode: 'medium'},
+    {prop: 'taxon', mode: 'medium'},
+    {prop: 'gatheringsCount', mode: 'large'},
     {prop: 'unitCount', mode: 'medium'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
@@ -157,7 +157,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   downloadedDocumentId: string;
   fileType = 'csv';
 
-  _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'unitCount', 'observer', 'form', 'id'];
+  _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id'];
   _goToStartAfterViewCheck = false;
   private lastSort: any;
 
@@ -170,8 +170,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   private readonly labelSettingsKey = 'label-filters';
 
   constructor(
-    @Inject(WINDOW) private window: Window,
-    @Inject(PLATFORM_ID) private platformID: object,
+    private platformService: PlatformService,
     private translate: TranslateService,
     private router: Router,
     private userService: UserService,
@@ -413,10 +412,10 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   private updateDisplayMode() {
-    if (!isPlatformBrowser(this.platformID)) {
+    if (this.platformService.isServer) {
       return;
     }
-    const width = this.window.innerWidth;
+    const width = window.innerWidth;
 
     if (width > 1150) {
       if (this.table) {

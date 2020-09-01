@@ -1,4 +1,6 @@
 <laji-observation-table
+  [luFillHeight]="{ minHeight: 500 }"
+  class="d-block"
   #datatable
   [visible]="visible"
   [showDownloadMenu]="showDownloadMenu"
@@ -7,11 +9,12 @@
   (selectChange)="setSelectedFields($event)"
   (resetColumns)="resetSelectedFields()"
   [pageSize]="pageSize"
-  [height]="'calc(80vh - 30px)'"
+  [height]="'calc(100% - 50px)'"
   [query]="query"
   [showSettingsMenu]="true"
   [isAggregate]="false"
   [selected]="selectedFields"
+  [required]="requiredFields"
   [allAggregateFields]="[]"
 ></laji-observation-table>
 

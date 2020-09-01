@@ -40,7 +40,7 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
     return this._tabComponents;
   }
 
-  @Output() select = new EventEmitter<number>();
+  @Output() selectedChange = new EventEmitter<number>();
 
   private _selectedIndex = 0;
 
@@ -50,10 +50,9 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
   }
 
   @Input() set selectedIndex(idx) {
-    const updateActive = this.updateActiveComponents(this._selectedIndex);
     this._selectedIndex = idx;
     if (this.tabComponents) {
-      updateActive(idx);
+      this.updateActiveComponents(idx);
     }
   }
   get selectedIndex() {
@@ -61,20 +60,20 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
   }
 
   onSelect(tabIndex: number) {
-    const updateActive = this.updateActiveComponents(this.selectedIndex);
     this._selectedIndex = tabIndex;
-    updateActive(tabIndex);
-    this.select.next(tabIndex);
+    this.updateActiveComponents(tabIndex);
+    this.selectedChange.next(tabIndex);
   }
 
-  updateActiveComponents = oldIdx => newIdx => {
-    const oldTab = this.tabComponents.toArray()[oldIdx];
-    const newTab = this.tabComponents.toArray()[newIdx];
-    if (oldTab && newTab) {
-      oldTab.active = false;
-      newTab.active = true;
-      this.cdr.markForCheck();
-    }
+  updateActiveComponents(newIdx: number) {
+    this.tabComponents.toArray().forEach((tab, idx) => {
+      if (idx === newIdx) {
+        tab.active = true;
+      } else {
+        tab.active = false;
+      }
+    });
+    this.cdr.markForCheck();
   }
 
   ngOnDestroy(): void {

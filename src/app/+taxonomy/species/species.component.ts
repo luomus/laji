@@ -1,4 +1,3 @@
-import { WINDOW } from '@ng-toolkit/universal';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,7 +6,6 @@ import {
   Inject,
   OnDestroy,
   OnInit,
-  PLATFORM_ID,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -36,8 +34,6 @@ export class SpeciesComponent implements OnInit, OnDestroy {
   private subParams: Subscription;
 
   constructor(
-    @Inject(WINDOW) private window: Window,
-    @Inject(PLATFORM_ID) private platformID: object,
     private route: ActivatedRoute,
     private router: Router,
     public searchQuery: TaxonomySearchQuery,

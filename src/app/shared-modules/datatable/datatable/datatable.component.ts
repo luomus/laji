@@ -5,23 +5,22 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
   Output,
-  PLATFORM_ID,
   ViewChild
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 import { Subject, Subscription } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
-import { isPlatformBrowser } from '@angular/common';
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
+import { PlatformService } from '../../../shared/service/platform.service';
+import { BrowserService } from '../../../shared/service/browser.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 
@@ -38,7 +37,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @Input() loading = false;
   @Input() pageSize: number;
-  @Input() height = '100%';
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() sortType = 'multi';
@@ -57,6 +55,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   // Initialize datatable row selection with some index
   _preselectedRowIndex = -1;
   _filterBy: FilterByType;
+  _height = '100%';
+  _isFixedHeight = false;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -80,11 +80,17 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    private platformService: PlatformService,
     private logger: Logger,
     private filterService: FilterService,
-    private zone: NgZone
+    private zone: NgZone,
+    private browserService: BrowserService
   ) {}
+
+  @Input() set height(height: string) {
+    this._height = height;
+    this._isFixedHeight = height.substr(height.length - 2, 2).includes('px');
+  }
 
   @Input() set count(cnt: number) {
     this._count = typeof cnt === 'number' ? cnt  : 0;
@@ -189,7 +195,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
 
       // All action after initialization should be done after timeout, so
       // individual methods don't have to care about  synchronization problems.
@@ -223,7 +229,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   refreshTable() {
-    if (!isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isServer) {
       return;
     }
     if (this._rows) {
@@ -262,10 +268,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
-  isFixedHeight() {
-    return this.height.substr(this.height.length - 2, 2).includes('px');
-  }
-
   private updateFilteredRows() {
     this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
     this._count = this._rows.length;
@@ -274,7 +276,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private scrollTo(offsetY: number = 0) {
-    if (!isPlatformBrowser(this.platformId) || !this._rows) {
+    if (this.platformService.isServer || !this._rows) {
       return;
     }
     try {

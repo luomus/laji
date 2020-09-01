@@ -3,15 +3,15 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, take } from 'rxjs/operators';
 import { NamedPlacesService } from './named-places.service';
-import { NamedPlaceQuery } from 'app/shared/api/NamedPlaceApi';
-import { FormService } from 'app/shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService } from 'app/shared/service/user.service';
-import { FormPermissionService, Rights } from 'app/+haseka/form-permission/form-permission.service';
-import { environment } from 'environments/environment';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import { Form } from '../../shared/model/Form';
 import { AreaService } from '../../shared/service/area.service';
+import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
+import { FormService } from '../../shared/service/form.service';
+import { UserService } from '../../shared/service/user.service';
+import { environment } from '../../../environments/environment';
+import { NamedPlaceQuery } from '../../shared/api/NamedPlaceApi';
 
 export interface NPResolverData {
   collectionId?: string;
@@ -59,7 +59,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     this.tags = (queryParams['tags'] || '').split(',');
     const municipalityId = queryParams['municipality'];
     const activeNPId = queryParams['activeNP'];
-
+    
     return this.getDocumentForm$().pipe(
       switchMap((documentForm) => this.userService.user$.pipe(take(1), map((user) => ({documentForm, user})))),
       switchMap(data => {

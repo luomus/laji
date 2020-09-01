@@ -29,7 +29,20 @@ export class InfoCardQueryService {
       taxonId: [taxonId],
       countryId: ['ML.206'],
       coordinateAccuracyMax: mapQuery ? 10000 : undefined,
+      reliability: ['RELIABLE', 'UNDEFINED'],
+      needsCheck: false,
+      includeNonValidTaxa: false,
+      cache: true
+    };
+  }
+
+  static getFinnishObservationHabitatQuery(taxonId: string, mapQuery?: boolean): WarehouseQueryInterface {
+    return {
+      taxonId: [taxonId],
+      countryId: ['ML.206'],
+      coordinateAccuracyMax: mapQuery ? 10000 : undefined,
       recordQuality: ['NEUTRAL', 'COMMUNITY_VERIFIED', 'EXPERT_VERIFIED'],
+      unitFact: ['http://tun.fi/MY.habitatIUCN'],
       includeNonValidTaxa: false,
       cache: true
     };

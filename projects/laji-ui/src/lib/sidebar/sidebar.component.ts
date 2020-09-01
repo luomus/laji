@@ -1,5 +1,5 @@
 import {
-  Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID, ContentChildren, QueryList
+  Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID, ContentChildren, QueryList, Output, EventEmitter
 } from '@angular/core';
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
@@ -60,6 +60,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() position: 'left' | 'right' = 'left';
   @Input() staticWidth: number;
   @Input() menuTitle: string;
+  @Input() displayNav = true;
 
   sidebarMinWidth = 50;
 
@@ -67,10 +68,13 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() set open(b) {
     this._open = b;
     this.checkCloseOnClickListener();
+    this.toggled.emit(b);
   }
   get open() {
     return this._open;
   }
+
+  @Output() toggled = new EventEmitter<boolean>();
 
   dragging = false;
   mobile = false;
@@ -94,6 +98,8 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
       this.open = !(window.innerWidth < mobileBreakpoint);
+    } else {
+      this.open = false;
     }
   }
 

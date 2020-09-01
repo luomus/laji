@@ -70,12 +70,15 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { WarehousePipe } from './pipe/warehouse.pipe';
 import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
 import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
+import { IncludesPipe } from './pipe/includes.pipe';
+import { SsrDisableDirective } from './directive/ssr-disable.directive';
+import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
 
 
 @NgModule({
   entryComponents: [ImageModalOverlayComponent],
   declarations: [
-    NewsListComponent, LocalizePipe, NotificationComponent, NotificationsComponent,
+    NewsListComponent, LocalizePipe, NotificationComponent, NotificationsComponent, TaxonDropdownComponent,
     ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
     AreaNamePipe, TaxonNamePipe, CollectionNamePipe, FormNamePipe,
@@ -102,7 +105,9 @@ import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
     AfterIfDirective,
     FilterValuePipe,
     WarehousePipe,
-    DateCutoffFuturePipe
+    DateCutoffFuturePipe,
+    IncludesPipe,
+    SsrDisableDirective
   ],
   imports: [
     FormsModule,
@@ -122,7 +127,7 @@ import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent, NotificationsComponent,
-    AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
+    TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
     ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,
     FormattedNumber, ObservationCountComponent, GalleryComponent,
@@ -132,8 +137,9 @@ import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
     ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
     FactNotInPipe, CapitalizePipe, CoordinatePipe,
-    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe,
-    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule
+    FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
+    UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
+    SsrDisableDirective
   ]
 })
 export class SharedModule {

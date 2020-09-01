@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, Input,
 ChangeDetectorRef, ChangeDetectionStrategy, TemplateRef, HostListener } from '@angular/core';
-import { Audio } from 'app/shared/model/Audio';
-import { Image } from 'app/shared/model/Image';
 import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { DocumentViewerChildComunicationService } from '../document-viewer/document-viewer-child-comunication.service';
+import { Audio } from '../../shared/model/Audio';
+import { Image } from '../../shared/model/Image';
 
 
 @Component({

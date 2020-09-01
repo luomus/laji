@@ -31,6 +31,8 @@ import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInte
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
+import { PlatformService } from '../service/platform.service';
+import { EMPTY } from 'rxjs';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
@@ -44,7 +46,11 @@ export class WarehouseApi {
     '/warehouse/query/' = '/warehouse/query/';
   protected basePath = environment.apiBase;
 
-  constructor(protected http: HttpClient, private queryService: SearchQueryService) {
+  constructor(
+    protected http: HttpClient,
+    private queryService: SearchQueryService,
+    private platformService: PlatformService
+  ) {
     this.warehouseQueryAggregateGet = this.warehouseQueryAggregateGet.bind(this);
     this.warehouseQueryStatisticsGet = this.warehouseQueryStatisticsGet.bind(this);
   }
@@ -105,6 +111,9 @@ export class WarehouseApi {
    * @param extraHttpRequestParams
    */
   public warehouseTeamMemberGet(id: string, extraHttpRequestParams?: any): Observable<any> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + `/warehouse/teamMember/${id}`;
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -122,6 +131,9 @@ export class WarehouseApi {
    * @param extraHttpRequestParams
    */
   public warehouseTeamMemberFind(query: string, extraHttpRequestParams?: any): Observable<any> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + `/warehouse/teamMember`;
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -135,6 +147,9 @@ export class WarehouseApi {
   }
 
   private warehouseQueryGet(target: string, query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + `${this.subPath}${target}`;
 
     let queryParameters = {};
@@ -267,6 +282,8 @@ export class WarehouseApi {
 
     if (downloadType !== undefined) {
       queryParameters['downloadType'] = downloadType;
+    } else {
+      queryParameters['downloadType'] = 'CITABLE';
     }
 
 
@@ -281,6 +298,9 @@ export class WarehouseApi {
    * @param query to make to the warehouse
    */
   public warehouseQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<WarehouseCountResultInterface> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + this.subPath + 'count';
 
     if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
@@ -304,6 +324,9 @@ export class WarehouseApi {
    * @param page Set current page.
    */
   public warehouseQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + this.subPath + 'list';
 
     if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
@@ -323,12 +346,37 @@ export class WarehouseApi {
    * @param documentId Full document ID (URI identifier)
    */
   public warehouseQuerySingleGet(documentId: string, extraHttpRequestParams?: any): Observable<any> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + '/warehouse/query/single';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'documentId' is not null or undefined
     if (documentId === null || documentId === undefined) {
       throw new Error('Required parameter documentId was null or undefined when calling warehouseQuerySingleGet.');
+    }
+
+    queryParameters['documentId'] = documentId;
+
+    return this.http.get(path, {params: queryParameters});
+  }
+
+  /**
+   * Get single full document.
+   * Get single full document by document URI. Contains the document, gatherings and units, including facts, media etc
+   * @param documentId Full document ID (URI identifier)
+   */
+  public warehouseQueryDocumentGet(documentId: string, extraHttpRequestParams?: any): Observable<any> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
+    const path = this.basePath + '/warehouse/query/document';
+
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+    // verify required parameter 'documentId' is not null or undefined
+    if (documentId === null || documentId === undefined) {
+      throw new Error('Required parameter documentId was null or undefined when calling warehouseQueryDocumentGet.');
     }
 
     queryParameters['documentId'] = documentId;
@@ -345,6 +393,9 @@ export class WarehouseApi {
    * @param page Set current page.
    */
   public warehouseQueryAnnotationListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<any> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + '/warehouse/query/annotation/list';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -363,6 +414,9 @@ export class WarehouseApi {
    * @param page Set current page.
    */
   public warehouseQueryUnitMediaListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + '/warehouse/query/unitMedia/list';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -377,6 +431,9 @@ export class WarehouseApi {
    * Get descriptions of enumerations that are used in query parameters and responses.
    */
   public warehouseEnumerationLabels(extraHttpRequestParams?: any): Observable<any> {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + '/warehouse/enumeration-labels';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};

@@ -1,0 +1,29 @@
+.router-content {
+  /*min-height: calc(100vh - 150px); Uncomment when form supports scrolling in container */
+  min-height: 300px; /* Remove when form supports scrolling in container */
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  > *:not(router-outlet) {
+    flex-grow: 1;
+  }
+}
+
+.footer {
+  flex: none;
+}
+
+/** for embedded page */
+
+:host >>> .embedded laji-map-front .map-wrap {
+  height: 100vh;
+}
+.embedded {
+  margin-top: -50px;
+}
+:host >>> .embedded .container, .embedded .container {
+  width: 100% !important;
+}
+
+/** /for embedded page */

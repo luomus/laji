@@ -15,8 +15,9 @@ const routes: Routes = [
   {path: 'about', loadChildren: () => import('../../../../src/app/+information/information.module').then(m => m.InformationModule)},
   {path: 'user', loadChildren: () => import('../../../../src/app/+user/user.module').then(m => m.UserModule)},
   {path: 'view', loadChildren: () => import('../../../../src/app/+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
+  {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule)},
   {path: 'usage', loadChildren: () => import('./+usage/usage.module').then(m => m.UsageModule), data: {title: 'navigation.usage'}},
-  {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule), data: {title: 'navigation.saveVirObservations'}},
+//  {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule), data: {title: 'navigation.saveVirObservations'}},
   {path: 'monitoring', loadChildren: () => import('./+monitoring/monitoring.module').then(m => m.MonitoringModule), data: {title: 'navigation.monitoring'}},
   {path: 'observation', loadChildren: () => import('../../../../src/app/+observation/observation.module').then(m => m.ObservationModule), data: {
     preload: true,
@@ -57,7 +58,9 @@ const allRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(allRoutes)],
+  imports: [RouterModule.forRoot(allRoutes, {
+    initialNavigation: 'enabled'
+  })],
   exports: [RouterModule]
 })
 export class VirRoutingModule { }

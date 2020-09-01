@@ -1,5 +1,5 @@
 <span
-  (click)="show()"
+  (click)="show($event)"
   (mouseenter)="mouseEnter()"
   (mouseleave)="mouseLeave()"
   [class]="'link no-propagation'"
@@ -31,5 +31,5 @@
   <button class="close pull-right" type="button" (click)="hide()">
     <i class="glyphicon glyphicon-remove"></i>
   </button>
-  <span *ngIf="html" [innerHTML]="html" lajiRouteTransformer></span><ng-content></ng-content>
+  <div style="word-break: break-word" *ngIf="html" [innerHTML]="html" lajiRouteTransformer></div><ng-content></ng-content>
 </ng-template>

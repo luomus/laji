@@ -1,5 +1,5 @@
 node {
-   nvm('v10.19.0') {
+   nvm('v12.16.3') {
      stage('Prepare environment') {
       cleanWs()
       git branch: 'beta', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
@@ -10,7 +10,8 @@ node {
       sh 'rm -rf dist'
       sh 'npm run --silent build:ssr:beta'
       sh 'pre-compress-web-assets dist/browser'
-      sh 'tar -cvzf beta.tar.gz --strip-components=1 dist'
+      sh 'npm prune --silent --production'
+      sh 'tar -cvzf beta.tar.gz --strip-components=1 dist node_modules'
     }
     stage('Archive') {
       milestone()

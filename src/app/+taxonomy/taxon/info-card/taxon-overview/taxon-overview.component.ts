@@ -6,6 +6,7 @@ import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { CheckLangService } from '../../service/check-lang.service';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -30,12 +31,17 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   _taxonDescription: TaxonomyDescription[];
   groupHasTranslation: any[];
   ylestaHasTranslation: any[];
+  isChildrenOnlySpecie = false;
+  totalObservations = 0;
+  linkObservations: string;
 
   contentHasLanguage: boolean;
   currentLang: string;
 
   mapQuery: WarehouseQueryInterface;
+  queryCount: WarehouseQueryInterface;
 
+  queryKeysDeleted = ['coordinateAccuracyMax', 'recordQuality', 'includeNonValidTaxa', 'cache']
   private childrenSub: Subscription;
 
   @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
@@ -89,6 +95,12 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.currentLang = this.translate.currentLang;
     this.getChildren();
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
+    this.queryCount = Object.keys(this.mapQuery).reduce((object, key) => {
+      if (this.queryKeysDeleted.indexOf(key) === -1) {
+        object[key] = this.mapQuery[key]
+      }
+      return object
+    }, {})
   }
 
   ngOnDestroy() {
@@ -102,9 +114,19 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
       this.childrenSub.unsubscribe();
     }
     this.childrenSub = this.taxonomyService
-      .getChildren(this.taxon.id)
+      .getChildren(this.taxon.id).pipe(
+        map((obj) => {
+          obj.forEach(r => {
+            if (!r['observationCountFinland']) {
+              r['observationCountFinland'] = 0;
+            }
+          });
+          return obj;
+       })
+      )
       .subscribe(data => {
         this.taxonChildren = data;
+        this.isChildrenOnlySpecie = this.taxonChildren.filter(e => e.taxonRank === 'MX.species').length > 0 ? true : false;
         this.cd.markForCheck();
       });
   }

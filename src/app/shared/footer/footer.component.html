@@ -1,23 +1,23 @@
 <footer *ngIf="footerService.footerVisible">
-  <div class="container-fluid info-footer">
-    <div class="row">
-      <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
-        <h3>{{ item.title }}</h3>
-        <p class="intro" *ngIf="i === 0"><strong>{{ 'footer.intro1' | translate }}</strong></p>
-        <ul *ngIf="item.children">
-          <li *ngFor="let child of item.children">
-            <a [routerLink]="'/about/' + child.id | localize">{{ child.title }}</a>
-          </li>
-          <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
-        </ul>
+  <div class="info-footer">
+    <div class="d-flex justify-center">
+      <div class="d-flex flex-wrap info-footer-content">
+        <div *ngFor="let item of tree$ | async; let i=index">
+          <h3>{{ item.title }}</h3>
+          <p class="intro" *ngIf="i === 0">{{ 'footer.intro1' | translate }}</p>
+          <ul *ngIf="item.children">
+            <li *ngFor="let child of item.children">
+              <a [routerLink]="'/about/' + child.id | localize">{{ child.title }}</a>
+            </li>
+            <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="row" *ngIf="onFrontPage">
-      <div class="col-sm-12">
-        <div class="pull-right info">
-          {{ 'footer.image.attribution' | translate }}:
-          <a [href]="headerImage.attributionUrl">{{ headerImage.attribution }}</a>, <a [href]="headerImage.licenseUrl">{{ headerImage.license }}</a>
-        </div>
+    <div *ngIf="onFrontPage" class="d-flex justify-end">
+      <div class="header-image-info">
+        {{ 'footer.image.attribution' | translate }}:
+        <a [href]="headerImage.attributionUrl">{{ headerImage.attribution }}</a>, <a [href]="headerImage.licenseUrl">{{ headerImage.license }}</a>
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@
             </li>
             <li>
               <a href="https://www.metsa.fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/metsahallitus.jpg" alt="Metsähallitus">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/MH-suomi-ruotsi-VARI.png" alt="Metsähallitus">
               </a>
             </li>
             <li>
@@ -101,6 +101,26 @@
             <li>
               <a href="https://www.centralbaltic.eu/" target="_blank" rel="noopener nofollow">
                 <img lajiLazyImage src="https://cdn.laji.fi/images/partners/interreg.png" alt="Central Baltic Interreg Programme">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.dissco.eu//" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/dissco-logo-high-res.png" alt="Distributed System of Scientific Collections">
+              </a>
+            </li>
+            <li>
+              <a href="https://earthcape.com/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/earthcape_logo.png" alt="Earthcape">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.gbif.org/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/GBIF-2015.png" alt="Global Biodiversity Information Facility">
+              </a>
+            </li>
+            <li>
+              <a href="https://inaturalist.laji.fi/" target="_blank" rel="noopener nofollow">
+                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/iNaturalist.png" alt="iNaturalist" height="40px">
               </a>
             </li>
           </ul>

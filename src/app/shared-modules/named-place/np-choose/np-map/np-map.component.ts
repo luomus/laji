@@ -1,6 +1,4 @@
 import {
-  AfterViewChecked,
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -15,11 +13,11 @@ import {
 import { ExtendedNamedPlace } from '../../model/extended-named-place';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
-import { Logger } from 'app/shared/logger';
-import { LabelPipe } from 'app/shared/pipe';
-import { AreaNamePipe } from 'app/shared/pipe/area-name.pipe';
 import { NpInfoComponent } from '../../np-edit/np-info/np-info.component';
 import { NpInfoRow } from '../../np-edit/np-info/np-info-row/np-info-row.component';
+import { LabelPipe } from '../../../../shared/pipe';
+import { AreaNamePipe } from '../../../../shared/pipe/area-name.pipe';
+import { Logger } from '../../../../shared/logger';
 
 @Component({
   selector: 'laji-np-map',
@@ -27,7 +25,7 @@ import { NpInfoRow } from '../../np-edit/np-info/np-info-row/np-info-row.compone
   styleUrls: ['./np-map.component.css'],
   providers: [ LabelPipe, AreaNamePipe ]
 })
-export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
+export class NpMapComponent implements OnInit, OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @ViewChild('popup', { static: true }) popupComponent;
   @Input() visible = false;
@@ -45,7 +43,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   listItems: NpInfoRow[] = [];
   tileLayerName;
   overlayNames;
-  private _data: any;
+  _data: any;
   private _popupCallback: (elemOrString: HTMLElement | string) => void;
   private _zoomOnNextTick = false;
   private _lastVisibleActiveNP: number;
@@ -75,7 +73,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlaces']) {
       this.initMapData();
-      this.setMapData();
     }
     if (changes['visible'] && changes['visible'].currentValue === true && this._lastVisibleActiveNP !== this.activeNP) {
       this._zoomOnNextTick = true;
@@ -88,11 +85,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
     }
   }
 
-  ngAfterViewInit() {
-    this.setMapData();
-  }
-
-  ngAfterViewChecked() {
+  onMapLoad() {
     const {nativeElement: popup} = this.popupComponent || {nativeElement: undefined};
     if (popup && this._popupCallback) {
       this._popupCallback(popup);
@@ -111,12 +104,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
     }
   }
 
-  setMapData() {
-    if (this._data && this.lajiMap.map) {
-      this.lajiMap.map.setData([this._data]);
-    }
-  }
-
   private setNewActivePlace(newActive: number) {
     if (!this.lajiMap.map) { return; }
 
@@ -125,18 +112,34 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
     } catch (e) {}
   }
 
+  private initLegend() {
+    if (!this.reservable) {
+      return;
+    }
+
+    type Counts = {[status in ExtendedNamedPlace['_status'] | 'all']: number};
+    // tslint:disable-next-line:no-shadowed-variable
+    const counts = this.namedPlaces?.reduce<Counts>((counts, np) => ({
+        ...counts,
+        [np._status]: counts[np._status] + 1,
+        all: counts.all + 1
+      }),
+      {all: 0, free: 0, reserved: 0, mine: 0, sent: 0}
+    );
+    this.legend = {
+      [this.placeColor]: `Vapaa ${counts.free} / ${counts.all}`,
+      [this.reservedColor]: `Varattu ${counts.reserved} / ${counts.all}`,
+      [this.mineColor]: `Itselle varattu ${counts.mine} / ${counts.all}`,
+      [this.sentColor]: `Ilmoitettu ${counts.sent} / ${counts.all}`
+    };
+  }
+
   private initMapData() {
     if (!this.namedPlaces) {
       return;
     }
-    if (this.reservable) {
-      this.legend = {
-        [this.placeColor]: 'Vapaa',
-        [this.reservedColor]: 'Varattu',
-        [this.mineColor]: 'Itselle varattu',
-        [this.sentColor]: 'Ilmoitettu'
-      };
-    }
+
+    this.initLegend();
 
     const {mapTileLayerName = 'maastokartta', mapOverlayNames} = this.documentForm.namedPlaceOptions || {mapOverlayNames: undefined};
     this.tileLayerName = mapTileLayerName;

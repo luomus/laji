@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { saveAs } from 'file-saver';
 
 interface IFileLoad {
   filename: string;
   content: any;
+  type: string;
+}
+
+export interface LoadOptions {
+  type: 'arrayBuffer' | 'dataUrl';
 }
 
 export function instanceOfFileLoad(object: any): object is IFileLoad {
@@ -38,28 +43,42 @@ export class FileService {
    */
   load(event: Event, validTypes?: string[]): Observable<IFileLoad> {
     const target = <HTMLInputElement> event.target;
+
+    if (target.files.length !== 1) {
+      return throwError(FileService.ERROR_NO_FILE);
+    }
+
+    return this.loadFile(target.files[0], validTypes);
+  }
+
+  loadFile(file: File, validTypes?: string[], options: LoadOptions = {type: 'arrayBuffer'}): Observable<IFileLoad> {
     const reader: FileReader = new FileReader();
     let filename = '';
 
     return new Observable(subscriber => {
-      if (target.files.length !== 1) {
-        return subscriber.error(FileService.ERROR_NO_FILE);
-      }
       reader.onload = (e: any) => {
         subscriber.next({
           filename,
-          content: e.target.result
+          content: e.target.result,
+          type: file.type
         });
         subscriber.complete();
       };
       reader.onerror = () => {
         return subscriber.error(FileService.ERROR_GENERIC);
       };
-      if (validTypes && validTypes.includes(target.files[0].type)) {
-        filename = target.files[0].name;
-        reader.readAsArrayBuffer(target.files[0]);
-      } else {
+      if (validTypes && !validTypes.includes(file.type)) {
         return subscriber.error(FileService.ERROR_INVALID_TYPE);
+      } else {
+        filename = file.name;
+        switch (options.type) {
+          case 'dataUrl':
+            reader.readAsDataURL(file);
+            break;
+          default:
+            reader.readAsArrayBuffer(file);
+            break;
+        }
       }
     });
   }

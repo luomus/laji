@@ -50,7 +50,7 @@
     </ng-container>
   </ng-container>
   <lu-button role="primary" *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</lu-button>
-  <div class="fill-space"></div>
+  <div class="flex-grow"></div>
   <div class="finnish-selector-buttons" *ngIf="visible.finnish">
     <lu-button [routerLink]="['/observation', this.lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
       {{ 'search.result.all' | translate }}</lu-button>
@@ -59,7 +59,8 @@
   </div>
 </div>
 
-<lu-tabs *ngIf="loadedModes.isLoaded('all')" [hidden]="mode !== 'all'" [selectedIndex]="selectedTabIdx" (select)="onSelect($event)">
+<lu-tabs *ngIf="loadedModes.isLoaded('all')" [hidden]="mode !== 'all'" [selectedIndex]="selectedTabIdx"
+         (selectedChange)="onSelect($event)">
   <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate">
     <laji-observation-result-list
       *ngIf="loadedTabs.isLoaded('list')"
@@ -214,6 +215,22 @@
     <laji-annotations [query]="query"
         *ngIf="loadedTabs.isLoaded('annotations')"
     ></laji-annotations>
+  </lu-tab>
+  <lu-tab *ngIf="visible.own && (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken)" [heading]="'haseka.ownSubmissions.title' | translate">
+    <div>
+      <laji-observation-table-own-documents
+      [visible]="true"
+      [pageSize]="100"
+      [height]="'calc(80vh - 40px)'"
+      [overrideInQuery]="{collectionIdNot: ['HR.3211']}"
+      [query]="query"
+      [showSettingsMenu]="false"
+      [showRowAsLink]="false"
+      [isAggregate]="true"
+      [hideDefaultCountColumn]="false"
+      [selected]="['document.createdDate','document.documentId','document.formId','document.loadDate','document.namedPlace.id','gathering.locality','gathering.municipality','gathering.team']"
+      ></laji-observation-table-own-documents>
+    </div>
   </lu-tab>
 </lu-tabs>
 

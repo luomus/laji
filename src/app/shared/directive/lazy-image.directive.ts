@@ -4,13 +4,11 @@ import {
   Directive,
   ElementRef,
   HostBinding,
-  Inject,
   Input,
   NgZone,
-  OnDestroy,
-  PLATFORM_ID
+  OnDestroy
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { PlatformService } from '../service/platform.service';
 
 @Directive({
   selector: 'img[lajiLazyImage]'
@@ -28,11 +26,11 @@ export class LazyImageDirective implements AfterViewInit, OnDestroy {
     private el: ElementRef,
     private cdr: ChangeDetectorRef,
     private zone: NgZone,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private platformService: PlatformService
   ) {}
 
   ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       this.canLazyLoad() ? this.lazyLoadImage() : this.loadImage();
     }
   }

@@ -7,8 +7,9 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 
 import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
-import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { GeneratorService } from './generator.service';
+import { Util } from '../../../shared/service/util.service';
 
 interface IColCombine {
   col: string;
@@ -71,10 +72,12 @@ export class SpreadsheetService {
     private labelService: TriplestoreLabelService,
     private translateService: TranslateService
   ) {
+    this.setCustomFieldLabels();
     this.translateService.onLangChange.pipe(
       map(() => this.translateService.currentLang),
       startWith(this.translateService.currentLang),
       distinctUntilChanged(),
+      tap(() => this.setCustomFieldLabels()),
       switchMap(lang =>
         ObservableForkJoin([
           this.labelService.get('MY.document', lang),
@@ -100,6 +103,10 @@ export class SpreadsheetService {
     return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes];
   }
 
+  csvTypes(): string[] {
+    return this.csvMimeTypes;
+  }
+
   setRequiredFields(formID: string, fields: object) {
     this.requiredFields[formID] = fields;
   }
@@ -123,8 +130,8 @@ export class SpreadsheetService {
     return result;
   }
 
-  loadSheet(data: any) {
-    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true});
+  loadSheet(data: any, options: XLSX.ParsingOptions = {}) {
+    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
 
@@ -169,6 +176,11 @@ export class SpreadsheetService {
       }
     }
     return '';
+  }
+
+  private setCustomFieldLabels() {
+    SpreadsheetService.deleteField.label = this.translateService.instant('haseka.delete.title');
+    SpreadsheetService.deleteField.fullLabel = this.translateService.instant('haseka.delete.title');
   }
 
   private combineSplittedFields(data: {[col: string]: string}[]) {
@@ -245,16 +257,8 @@ export class SpreadsheetService {
       return '';
     }
     return values[GeneratorService.splitDate.yyyy] + '-' +
-      this.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
-      this.addLeadingZero(values[GeneratorService.splitDate.dd]);
-  }
-
-  private addLeadingZero(val: string | number) {
-    val = '' + val;
-    if (val.length === 1) {
-      return '0' + val;
-    }
-    return val;
+      Util.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
+      Util.addLeadingZero(values[GeneratorService.splitDate.dd]);
   }
 
   private getCombinedCoordinateValue(values: {[key: string]: string}): string {
@@ -262,10 +266,14 @@ export class SpreadsheetService {
       return values[GeneratorService.splitCoordinate.N] + ' ' + values[GeneratorService.splitCoordinate.E];
     }
     const suffix = typeof values[GeneratorService.splitCoordinate.N] === 'undefined' ||
-    values[GeneratorService.splitCoordinate.E] === 'undefined' ? ' ' + values[GeneratorService.splitCoordinate.system] : '';
+      typeof values[GeneratorService.splitCoordinate.E] === 'undefined' ?
+      ' ' + values[GeneratorService.splitCoordinate.system] : '';
 
     if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.ykj) {
       return values[GeneratorService.splitCoordinate.N] + ':' + values[GeneratorService.splitCoordinate.E] + suffix;
+    }
+    if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.etrs) {
+      return `+${values[GeneratorService.splitCoordinate.N]}+${values[GeneratorService.splitCoordinate.E]}/CRSEPSG:3067`;
     }
     return ('' + values[GeneratorService.splitCoordinate.N]).replace(',', '.') + ',' +
       ('' + values[GeneratorService.splitCoordinate.E]).replace(',', '.') + suffix;

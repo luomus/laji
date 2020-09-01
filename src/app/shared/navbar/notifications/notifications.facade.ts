@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, of, from } from 'rxjs';
-import { PagedResult } from 'app/shared/model/PagedResult';
+import { BehaviorSubject, Observable, Subject, of, from, EMPTY } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs/operators';
-import { LajiApi, LajiApiService } from 'app/shared/service/laji-api.service';
-import { UserService } from 'app/shared/service/user.service';
-import { Notification } from 'app/shared/model/Notification';
 import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
 import gql from 'graphql-tag';
+import { PagedResult } from '../../model/PagedResult';
+import { UserService } from '../../service/user.service';
+import { LajiApi, LajiApiService } from '../../service/laji-api.service';
+import { Notification } from '../../model/Notification';
 
 interface State {
   notifications: PagedResult<Notification>;
@@ -25,22 +25,9 @@ const NOTIFICATION_MAX_PAGESIZE = 100;
 const REFRESH_QUERY = gql`
   query($pageSize: Int, $personToken: String = "") {
     notifications(personToken: $personToken, pageSize: $pageSize) {
-      currentPage
-      pageSize
       total
       results {
         id
-        created
-        friendRequest
-        friendRequestAccepted
-        seen
-        toPerson
-        annotation {
-          rootID
-          targetID
-          annotationByPerson
-          annotationBySystem
-        }
       }
     }
     unseenCount: notifications(personToken: $personToken, onlyUnSeen: true, pageSize: 0) {
@@ -118,7 +105,9 @@ export class NotificationsFacade {
       personToken: this.userService.getToken(),
       page: page,
       pageSize: this.pageSize
-    }).subscribe(this.notificationsReducer.bind(this));
+    }).pipe(
+      catchError(() => EMPTY)
+    ).subscribe(this.notificationsReducer.bind(this));
   }
 
   private subscribeUnseenCount() {
@@ -128,7 +117,8 @@ export class NotificationsFacade {
       pageSize: 1,
       onlyUnSeen: true
     }).pipe(
-      map(unseen => unseen.total || 0)
+      map(unseen => unseen.total || 0),
+      catchError(() => of(0))
     ).subscribe(this.unseenCountReducer.bind(this));
   }
 
@@ -163,12 +153,19 @@ export class NotificationsFacade {
     this.graphQLService.query<IRefreshDataResult>({
       query: REFRESH_QUERY,
       fetchPolicy: 'network-only',
-      variables: {personToken: this.userService.getToken(), pageSize: this.pageSize}
+      variables: {personToken: this.userService.getToken(), pageSize: 1}
     }).pipe(
       map(({data}) => data),
+      catchError(e => of({unseenCount: {total: 0}, notifications: {total: 0, results: []}}))
     ).subscribe((data) => {
       this.unseenCountReducer(data.unseenCount.total);
-      this.notificationsReducer(data.notifications);
+      if (
+        data.notifications &&
+        data.notifications.total > 0 &&
+        this.store$.getValue().notifications?.[0]?.id !== data.notifications.results[0].id
+      ) {
+        this.loadNotifications(1);
+      }
     });
   }
 

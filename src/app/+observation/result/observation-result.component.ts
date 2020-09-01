@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild,
-OnInit, ChangeDetectorRef} from '@angular/core';
+OnInit, ChangeDetectorRef, OnChanges, SimpleChanges, SimpleChange} from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
@@ -9,18 +9,18 @@ import { ObservationDownloadComponent } from '../download/observation-download.c
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { SearchQueryService } from '../search-query.service';
 import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
-import { BrowserService } from '../../shared/service/browser.service';
 import { Subscription } from 'rxjs';
 import {LocalStorageService} from 'ngx-webstorage';
+import { ActivatedRoute } from "@angular/router";
 
-const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations'];
+const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
   selector: 'laji-observation-result',
   templateUrl: './observation-result.component.html',
   styleUrls: ['./observation-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationResultComponent implements OnInit {
+export class ObservationResultComponent implements OnInit, OnChanges {
   private _visible: VisibleSections = {
     finnish: true,
     countTaxa: true,
@@ -32,6 +32,7 @@ export class ObservationResultComponent implements OnInit {
     statistics: true,
     download: true,
     annotations: true,
+    own: true
   };
   @Input() set visible(v: VisibleSections) {
     this._visible = v;
@@ -89,9 +90,9 @@ export class ObservationResultComponent implements OnInit {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private searchQueryService: SearchQueryService,
-    private browserService: BrowserService,
     private cd: ChangeDetectorRef,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private route: ActivatedRoute
   ) {}
 
   @Input()
@@ -106,7 +107,6 @@ export class ObservationResultComponent implements OnInit {
       this.loadedTabs.load(value);
       this.selectedTabIdx = this.loadedTabs.getIdxFromName(value);
     }
-    this.browserService.triggerResizeEvent();
   }
 
   onSelect(tabIndex: number) {
@@ -120,6 +120,25 @@ export class ObservationResultComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.snapshot.queryParams.subscribe(queryParams => {
+      if (queryParams["editorOrObserverPersonToken"] === undefined &&
+      queryParams["observerPersonToken"] === undefined &&
+      queryParams["editorPersonToken"] === undefined &&
+      this.selectedTabIdx === 6
+      ) {
+        this.onSelect(0);
+      }
+    });
+  }
+
+  ngOnChanges() {
+    if (this.route.snapshot.queryParams["editorOrObserverPersonToken"] === undefined &&
+        this.route.snapshot.queryParams["observerPersonToken"] === undefined &&
+        this.route.snapshot.queryParams["editorPersonToken"] === undefined &&
+        this.selectedTabIdx === 6
+    ) {
+      this.onSelect(0);
+    }
   }
 
   ngDestroy() {

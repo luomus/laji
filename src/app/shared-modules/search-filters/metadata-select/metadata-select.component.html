@@ -1,14 +1,28 @@
-<laji-select
-  [options]="_options || []"
-  [title]="(placeholder || '') | translate"
-  [filterPlaceHolder]="'haseka.submissions.filter' | translate"
-  [useFilter]="useFilter"
-  [selected]="active"
-  [multiple]="multiple"
-  [info]="info"
-  [open]="open"
-  [disabled]="disabled"
-  [loading]="_options === null"
-  (selectedChange)="refreshValue($event)"
->
-</laji-select>
+<ng-container [ngSwitch]="selectStyle">
+  <ng-template [ngSwitchCase]="selectStyles.advanced">
+    <laji-select
+      [options]="_options || []"
+      [title]="(placeholder || '') | translate"
+      [filterPlaceHolder]="'haseka.submissions.filter' | translate"
+      [useFilter]="useFilter"
+      [selected]="active"
+      [multiple]="multiple"
+      [info]="info"
+      [open]="open"
+      [disabled]="disabled"
+      [loading]="_options === null"
+      (selectedChange)="refreshValue($event)"
+    >
+    </laji-select>
+  </ng-template>
+  <ng-template [ngSwitchCase]="selectStyles.basic">
+    <select
+      [(ngModel)]="value"
+      class="form-control"
+      [disabled]="disabled || _options === null"
+    >
+      <option value="" *ngIf="placeholder">{{ placeholder | translate }}</option>
+      <option *ngFor="let option of (_options || [])" [value]="option.id">{{ option.value }}</option>
+    </select>
+  </ng-template>
+</ng-container>

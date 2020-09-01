@@ -7,15 +7,15 @@
 import { Global } from './global';
 
 export const environment = {
-  type: Global.type.prod,
+  type: Global.type.beta,
   base: 'https://beta.laji.fi',
   production: true,
   forceLogin: false,
   disableAnalytics: true,
   sourceKotka: 'KE.3',
   systemID: 'KE.841',
-  formWhitelist: ['MHL.51', 'JX.519', 'MHL.9', 'MHL.53', 'MHL.25', 'JX.652', 'MHL.1', 'MHL.3', 'MHL.6', 'MHL.33', 'MHL.50', 'MHL.57'],
-  massForms: ['JX.519', 'JX.652', 'MHL.33A'],
+  formWhitelist: ['MHL.51', 'JX.519', 'MHL.9', 'MHL.53', 'MHL.25', 'JX.652', 'MHL.1', 'MHL.3', 'MHL.6', 'MHL.33', 'MHL.50', 'MHL.57', 'MHL.79'],
+  massForms: ['JX.519', 'JX.652', 'MHL.33A', 'MHL.45A'],
   defaultForm: 'JX.519',
   nafiForm: 'MHL.6',
   invasiveControlForm: 'MHL.33',
@@ -32,12 +32,15 @@ export const environment = {
   batForm: 'MHL.50',
   valioForm: 'MHL.57',
   birdPointCountForm: 'MHL.75',
+  sykeButterflyForm: 'MHL.59',
+  glowWormForm: 'MHL.79',
   saveObservations: {
-    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
-    birdMonitoringForms: ['MHL.1', 'MHL.3'],
-    researchProjects: ['MHL.33', 'MHL.35', 'MHL.50', 'MHL.57']
+    citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25', 'MHL.79'],
+    birdMonitoringForms: ['MHL.1', 'MHL.3', 'MHL.65', 'MHL.75'],
+    researchProjects: ['MHL.33', 'MHL.35', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
   },
   apiBase: 'https://beta.laji.fi/api',
+  loginCheck: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/loginInfo',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi'

@@ -7,7 +7,6 @@ import { SharedModule } from '../shared/shared.module';
 import { ThemeResultComponent } from './theme-result/theme-result.component';
 import { NafiResultComponent } from './nafi/nafi-result/nafi-result.component';
 import { ResultService } from './service/result.service';
-import { FixedTableDirective } from './directive/fixed-table.directive';
 import { ThemeObservationListComponent } from './theme-observation-list/theme-observation-list.component';
 import { ThemeMyDocumentListComponent } from './theme-my-document-list/theme-my-document-list.component';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
@@ -37,7 +36,6 @@ import { QualityFiltersComponent } from './quality/quality-filters/quality-filte
 import { TaxonAutocompleteModule } from '../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { WbcSpeciesComponent } from './wbc/wbc-result/wbc-species/wbc-species.component';
 import { WbcRoutesComponent } from './wbc/wbc-result/wbc-routes/wbc-routes.component';
 import { WbcCensusesComponent } from './wbc/wbc-result/wbc-censuses/wbc-censuses.component';
@@ -48,7 +46,6 @@ import { WbcResultFiltersComponent } from './wbc/wbc-result/wbc-result-filters/w
 import { WbcSpeciesChartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-charts.component';
 import { WbcSpeciesMapsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-maps/wbc-species-maps.component';
 import { WbcSpeciesLinechartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-linecharts/wbc-species-linecharts.component';
-import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-linecharts/line-chart-with-points/line-chart-with-points.component';
 import { WbcRouteComponent } from './wbc/wbc-result/wbc-route/wbc-route.component';
 import { WbcRouteTableComponent } from './wbc/wbc-result/wbc-route-table/wbc-route-table.component';
 import { FormPermissionModule } from '../+haseka/form-permission/form-permission.module';
@@ -78,23 +75,28 @@ import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-sprea
 import { GenericInstructionsComponent } from './common/instructions/generic-instructions/generic-instructions.component';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
-import { ExpertiseFormComponent } from './kerttu/kerttu-main-view/expertise-form/expertise-form.component';
+import { ExpertiseFormComponent } from './kerttu/kerttu-expertise-form/expertise-form/expertise-form.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
-import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 import { KerttuApi } from './kerttu/service/kerttu-api';
-import { KerttuFacade } from './kerttu/service/kerttu.facade';
 import { AudioService } from './kerttu/service/audio.service';
+import { SpectrogramService } from './kerttu/service/spectrogram.service';
 import { FormHasFeaturePipe } from './pipe/form-has-feature.pipe';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
-import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-letter-annotation/kerttu-letter-annotation.component';
-import { AudioViewerComponent } from './kerttu/kerttu-main-view/audio-viewer/audio-viewer.component';
-import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-main-view/kerttu-recording-annotation/kerttu-recording-annotation.component';
+import { LetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/letter-annotation/letter-annotation.component';
+import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
+import { RecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/recording-annotation/recording-annotation.component';
 import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 import { PinkkaComponent } from './pinkka/pinkka.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
-import { AudioSpectrogramComponent } from './kerttu/kerttu-main-view/audio-spectrogram/audio-spectrogram.component';
+import { AudioSpectrogramComponent } from './kerttu/audio-viewer/audio-spectrogram/audio-spectrogram.component';
 import { BirdPointCountResultComponent } from './bird-point-count/bird-point-count-result/bird-point-count-result.component';
+import { ChartModule } from '../shared-modules/chart/chart.module';
+import { KerttuExpertiseFormComponent } from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
+import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
+import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
+import { RequiresAudioSupportDirective } from './kerttu/directive/requires-audio-support.directive';
+import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-supported-error.component';
 
 /* tslint:enable:max-line-length */
 
@@ -114,7 +116,6 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     TaxonAutocompleteModule,
     LajiFormModule,
     ObservationMapModule,
-    NgxChartsModule,
     JwBootstrapSwitchNg2Module,
     FormPermissionModule,
     NavigationThumbnailModule,
@@ -126,7 +127,8 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     InfoModule,
     SpreadsheetModule,
     ThreeStateSwitchModule,
-    PillListModule
+    PillListModule,
+    ChartModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -135,7 +137,6 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     InsectGuideComponent,
     ThemeResultComponent,
     NafiResultComponent,
-    FixedTableDirective,
     ThemeObservationListComponent,
     ThemeMyDocumentListComponent,
     YkjComponent,
@@ -161,7 +162,6 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     WbcSpeciesChartsComponent,
     WbcSpeciesMapsComponent,
     WbcSpeciesLinechartsComponent,
-    LineChartWithPointsComponent,
     WbcRouteComponent,
     WbcRouteTableComponent,
     WbcTableFilterComponent,
@@ -181,22 +181,26 @@ import { BirdPointCountResultComponent } from './bird-point-count/bird-point-cou
     KerttuInstructionsComponent,
     ExpertiseFormComponent,
     LolifeInstructionsComponent,
-    KerttuMainViewComponent,
     FormHasFeaturePipe,
-    KerttuLetterAnnotationComponent,
+    LetterAnnotationComponent,
     AudioViewerComponent,
     ThemeBreadcrumbComponent,
-    KerttuRecordingAnnotationComponent,
+    RecordingAnnotationComponent,
     AudioSpectrogramComponent,
-    BirdPointCountResultComponent
+    BirdPointCountResultComponent,
+    KerttuExpertiseFormComponent,
+    KerttuLetterAnnotationComponent,
+    KerttuRecordingAnnotationComponent,
+    RequiresAudioSupportDirective,
+    AudioNotSupportedErrorComponent
   ],
   providers: [
     ResultService,
     QualityService,
     WbcResultService,
     KerttuApi,
-    KerttuFacade,
     AudioService,
+    SpectrogramService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })

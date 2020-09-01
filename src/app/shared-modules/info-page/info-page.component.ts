@@ -7,7 +7,7 @@ import { InformationItem } from '../../shared/model/InformationItem';
 @Component({
   selector: 'laji-info-page',
   template: `
-<div *ngIf="content$ | async; else loading; let content" [innerHtml]="content" lajiRouteTransformer></div>
+<div *ngIf="content$ | async; else loading; let content" [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
 <ng-template #loading>
   <lu-ghost-paragraph [length]="10"></lu-ghost-paragraph>
   <lu-ghost-paragraph [length]="300"></lu-ghost-paragraph>
@@ -18,9 +18,7 @@ import { InformationItem } from '../../shared/model/InformationItem';
 export class InfoPageComponent implements OnChanges {
 
   content$;
-
-  @Input()
-  rootPage: {fi: string, sv: string, en: string};
+  _rootPage: {fi: string, sv: string, en: string};
 
   @Input()
   child: string;
@@ -41,13 +39,22 @@ export class InfoPageComponent implements OnChanges {
     private lajiApiService: LajiApiService
   ) { }
 
+  @Input()
+  set rootPage(roots: {fi: string, sv: string, en: string} | string) {
+    if (typeof roots === 'string') {
+      this._rootPage = {fi: roots, en: roots, sv: roots};
+    } else {
+      this._rootPage = roots;
+    }
+  }
+
   ngOnChanges() {
     this.updatePage();
   }
 
   private updatePage() {
-    const rootPageID = this.rootPage && this.rootPage[this.translateService.currentLang];
-    const roots = this.rootPage && Object.keys(this.rootPage).map(key => this.rootPage[key]);
+    const rootPageID = this._rootPage && this._rootPage[this.translateService.currentLang];
+    const roots = this._rootPage && Object.keys(this._rootPage).map(key => this._rootPage[key]);
     const page = this.child || rootPageID;
     if (this.currentPage === page) {
       return;

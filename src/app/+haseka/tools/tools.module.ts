@@ -23,7 +23,6 @@ import { SheetImporterComponent } from './sheet-importer/sheet-importer.componen
     LabelDesignerComponent,
     SheetGeneratorComponent,
     SheetImporterComponent
-  ],
-  exports: []
+  ]
 })
 export class ToolsModule { }

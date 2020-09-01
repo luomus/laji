@@ -1,0 +1,237 @@
+@mixin headingBorderLeft1() {
+  border-left: 6px solid $neutral-6;
+  padding-left: 10px;
+}
+
+@mixin headingBorderLeft2() {
+  border-left: 10px solid $neutral-5;
+  padding-left: 10px;
+}
+
+@mixin headingBorderLeft3() {
+  border-left: 14px solid $neutral-4;
+  padding-left: 10px;
+}
+
+@mixin heading1() {
+  color: $neutral-8;
+  font-size: $fs-8;
+  font-weight: 600;
+}
+@mixin heading2() {
+  color: $neutral-8;
+  font-size: $fs-7;
+}
+@mixin heading3() {
+  color: $neutral-8;
+  font-size: $fs-6;
+}
+@mixin heading4() {
+  color: $neutral-7;
+  font-size: $fs-5;
+}
+@mixin heading5() {
+  color: $neutral-6;
+  font-size: $fs-4;
+}
+@mixin heading6() {
+  color: $neutral-6;
+  font-size: $fs-3;
+}
+@mixin section() {
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.lu-text-content {
+  font-size: $fs-3;
+  color: $neutral-8;
+
+  h1, h2, h3 {
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h1 + h2 {
+    margin-top: 30px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+  }
+  h1 {
+    @include heading1();
+
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  h2 {
+    @include heading2();
+
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  h3 {
+    @include heading3();
+
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  h4 {
+    @include heading4();
+
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  h5 {
+    @include heading5();
+
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  h6 {
+    @include heading6();
+
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  p, ul, ol {
+    margin-bottom: 20px;
+  }
+  p {
+
+  }
+  ul {
+
+  }
+  ol {
+
+  }
+  li {
+    margin-bottom: 5px;
+    > * {
+      margin-top: 3px;
+    }
+    * {
+      margin-bottom: 3px;
+    }
+  }
+  blockquote {
+    background-color: $neutral-3;
+    border-left: 5px solid $neutral-4;
+    color: $neutral-7;
+  }
+
+  a {
+
+  }
+  strong {
+    color: $neutral-8;
+  }
+  small {
+    font-size: $fs-1;
+    color: $neutral-7;
+  }
+
+  figure {
+    margin-bottom: 30px;
+    width: fit-content;
+    img {
+      border: 1px solid $neutral-4;
+    }
+  }
+  figcaption {
+    font-style: italic;
+    font-size: $fs-2;
+    color: $neutral-7;
+    padding-top: 10px;
+  }
+  hr {
+    margin: 20px 0;
+    border-top: 1px solid $neutral-4;
+  }
+  header {
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+}
+
+.lu-text-content > section, .lu-section {
+  @include section();
+  background-color: $neutral-3;
+  border-top: 1px solid $neutral-4;
+  border-left: 1px solid $neutral-4;
+  // SECTION HEADERS
+  & > h1 {
+    @include heading2();
+  }
+  & > h2 {
+    @include heading3();
+  }
+  & > h3 {
+    @include heading4();
+  }
+  & > h4 {
+    @include heading5();
+  }
+  & > h5 {
+    @include heading6();
+  }
+  & > h6 {
+    @include heading6();
+  }
+}
+// SUBSECTION
+.lu-text-content > section > section, .lu-subsection {
+  @include section();
+  border-bottom: 1px solid $neutral-4;
+  border-left: 1px solid $neutral-4;
+  background-color: $neutral-2;
+  // SUBSECTION HEADERS
+  & > h1 {
+    @include heading3();
+  }
+  & > h2 {
+    @include heading4();
+  }
+  & > h3 {
+    @include heading5();
+  }
+  & > h4 {
+    @include heading6();
+  }
+  & > h5 {
+    @include heading6();
+  }
+  & > h6 {
+    @include heading6();
+  }
+
+}
+// SUBSUBSECTION
+.lu-text-content > section > section > section, .lu-subsubsection {
+  @include section();
+  border-left: 4px solid $neutral-4;
+  // SUBSUBSECTION HEADERS
+  & > h1 {
+    @include heading4();
+  }
+  & > h2 {
+    @include heading5();
+  }
+  & > h3 {
+    @include heading6();
+  }
+  & > h4 {
+    @include heading6();
+  }
+  & > h5 {
+    @include heading6();
+  }
+  & > h6 {
+    @include heading6();
+  }
+}

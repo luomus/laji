@@ -16,7 +16,7 @@ import { IssuesComponent } from './issues/issues.component';
 import { FactsComponent } from './facts/facts.component';
 import { LangModule } from '../lang/lang.module';
 import { AnnotationsModule } from '../annotations/annotations.module';
-import { EditLinkComponent } from './edit-link/edit-link.component';
+import { UserDocumentToolsComponent } from './user-document-tools/user-document-tools.component';
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { DocumentLocalComponent } from './document-local/document-local.component';
 import { DocumentObjectComponent } from './document-local/document-object/document-object.component';
@@ -57,7 +57,7 @@ import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-pl
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe, SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent,
-    EditLinkComponent, DocumentLocalComponent, DocumentObjectComponent, DocumentLocalViewerViewComponent,
+    UserDocumentToolsComponent, DocumentLocalComponent, DocumentObjectComponent, DocumentLocalViewerViewComponent,
     DocumentLocalPrintViewComponent, PrintMapComponent, PrintImagesComponent, DocumentPrintComponent, UnitRowsComponent,
     GatheringRowsComponent,
     CollectionContestPrintComponent,

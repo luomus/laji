@@ -16,7 +16,7 @@ import { FormCategoryComponent } from './form-list/form-category/form-category.c
 import { FormCategorySurveyComponent } from './form-list/form-category-survey/form-category-survey.component';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { HasekaComponent } from './haseka.component';
-import { HaSeKaFormListComponent } from './form-list/haseka-form-list';
+import { HaSeKaFormListComponent } from './form-list/haseka-form-list.component';
 import { routing } from './haseka.routes';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
@@ -25,8 +25,9 @@ import { HasekaTermsComponent } from './terms/haseka-terms.component';
 import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
 import { AppComponentModule } from '../shared-modules/app-component/app-component.module';
 import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
-import { SurveyBoxModule } from 'app/shared-modules/survey-box/survey-box.module';
 import { VihkoHomeComponent } from './vihko-home/vihko-home.component';
+import { SurveyBoxModule } from '../shared-modules/survey-box/survey-box.module';
+import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import { VihkoHomeComponent } from './vihko-home/vihko-home.component';
     LatestDocumentsModule,
     AppComponentModule,
     LajiUiModule,
-    SurveyBoxModule
+    SurveyBoxModule,
+    TechnicalNewsModule
   ],
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,

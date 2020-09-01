@@ -1,13 +1,16 @@
 import { Component, EventEmitter, Input, Output, OnDestroy, OnChanges,
 ChangeDetectionStrategy, OnInit, ChangeDetectorRef} from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Global } from '../../../../environments/global';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
+
 
 @Component({
   selector: 'laji-annotation-list',
   templateUrl: './annotation-list.component.html',
   styleUrls: ['./annotation-list.component.scss'],
+  providers: [WarehousePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
@@ -17,24 +20,32 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showLinks = true;
   @Input() lastAnnotationAddedId: string;
   @Input() effectiveTags: Annotation[];
+  @Input() annotationTags: AnnotationTag[]; 
   @Output() remove = new EventEmitter<Annotation>();
 
   annotationTagsObservation = Global.annotationTags;
 
   types = Annotation.TypeEnum;
-  annotationClass = Annotation.AnnotationClassEnum;
   changingLocale = false;
   lastFalse: number;
   hasNextTrue: boolean;
   open: boolean[] = undefined;
   showItem: boolean[];
   annotationRole = Annotation.AnnotationRoleEnum;
+  tagsConverted: Object = {};
 
   constructor(
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private warehousePipe: WarehousePipe
   ) { }
 
   ngOnInit() {
+    this.annotationTags.forEach(element =>{
+      var key = element.id;
+      var obj = {};
+      obj[key] = element;
+      this.tagsConverted = Object.assign(this.tagsConverted,obj);
+    })
   }
 
   ngOnChanges() {

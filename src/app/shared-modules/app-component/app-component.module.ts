@@ -13,6 +13,7 @@ import { IucnFooterComponent } from '../../shared/iucn-footer/footer.component';
 import { LangModule } from '../lang/lang.module';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
+import { BetaPopupComponent } from './beta-popup/beta-popup.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.modul
     LocaleEnComponent,
     LocaleFiComponent,
     LocaleSvComponent,
-    AppComponent
+    AppComponent,
+    BetaPopupComponent
   ],
   imports: [
     LangModule,

@@ -1,7 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { HasekaComponent } from './haseka.component';
-import { HaSeKaFormListComponent } from './form-list/haseka-form-list';
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
@@ -70,6 +69,31 @@ export const hasekaRoutes: Routes = [
         pathMatch: 'full',
         canActivate: [OnlyLoggedIn],
         component: RequestWrapperComponent
+      },
+      {
+        path: 'template',
+        children: [
+          {
+            path: ':formId',
+            pathMatch: 'full',
+            canActivate: [OnlyLoggedIn],
+            component: HaSeKaFormComponent,
+            //canDeactivate: [DocumentDeActivateGuard],
+            data: {
+              displayFeedback: false
+            }
+          },
+          {
+            path: ':formId/:documentId',
+            pathMatch: 'full',
+            canActivate: [OnlyLoggedIn],
+            component: HaSeKaFormComponent,
+            canDeactivate: [DocumentDeActivateGuard],
+            data: {
+              displayFeedback: false
+            }
+          }
+        ]
       },
       {
         path: ':formId',

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions } from '@laji-map/laji-map.interface';
 
@@ -7,7 +7,7 @@ import { LajiMapOptions } from '@laji-map/laji-map.interface';
   templateUrl: './print-map.component.html',
   styleUrls: ['./print-map.component.css']
 })
-export class PrintMapComponent implements OnChanges, AfterViewInit {
+export class PrintMapComponent implements OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @Input() data: any;
 
@@ -22,7 +22,7 @@ export class PrintMapComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
+  onMapLoad() {
     this.lajiMap.map.setData([this._data || {}]);
     this.lajiMap.map.zoomToData({maxZoom: 4});
   }

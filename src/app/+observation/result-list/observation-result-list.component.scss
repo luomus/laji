@@ -1,0 +1,24 @@
+:host >>> .individualId {
+  font-size: x-small;
+}
+
+.setting-menu {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  z-index: 1;
+}
+
+.viewer-column {
+  text-align: center;
+  width: 35px;
+}
+
+:host ::ng-deep laji-observation-table {
+  .observation-table-wrapper {
+    height: calc(100% - 50px);
+  }
+  laji-datatable {
+    height: 100%;
+  }
+}

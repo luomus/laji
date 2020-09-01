@@ -40,12 +40,13 @@
                 {{ 'print' | translate }}
                 <img src="/static/images/icons/pdf_16x16.png">
               </a>
-              <laji-edit-link
+                <laji-user-document-tools
                 [editors]="editors"
                 [personID]="personID"
                 [documentID]="document.documentId"
                 [formID]="document.formId"
-              ></laji-edit-link>
+                (documentDeleted)="onDocumentDeleted($event)"
+              ></laji-user-document-tools>
               <div class="manual-shortcuts">
                 <span [ngSwitch]="currentLang">
                   <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'sv'" [routerLink]="['/about', '3928'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
@@ -58,16 +59,16 @@
           </div>
         </div>
     </div>
-        
+
         <div class="row container-col">
-          <div class="col-sm-4 column-modal" *ngIf="document.gatherings && document.gatherings[0].units">
+          <div class="col-sm-4 column-modal">
             <div class="title">{{ 'annotation.mediaFiles' | translate }}</div>
             <laji-images [document]="document" [highlight]="highlight" [shortcut]="true"></laji-images>
           </div>
           <div class="col-sm-4 column-modal">
               <div class="title">{{ 'annotation.list' | translate }}</div>
             <ng-container *ngIf="activeGathering">
-              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="true"
+              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="true"
               [loadDate]="document.loadDate" [createdDate]="document.createdDate" [observerId]="document.editorUserIds" [collectionId]="document.collectionId"></laji-gathering-annotation>
             </ng-container>
           </div>
@@ -104,13 +105,13 @@
                           [secureLevel]="document.secureLevel"
                           [secureReasons]="document.secureReasons"
                         ></laji-secure-info>
-                        <ng-container *ngIf="document.secureReasons && document.secureReasons.indexOf('DEFAULT_TAXON_CONSERVATION') > -1">
+                        <ng-container *ngIf="document.secureReasons | includes:'DEFAULT_TAXON_CONSERVATION'">
                           <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
                         </ng-container>
                       </div>
                   </alert>
                 </div>
-            <h5>{{ 'annotation.collectionEditor' | translate }}</h5>    
+            <h5>{{ 'annotation.collectionEditor' | translate }}</h5>
             <laji-issues [data]="document"></laji-issues>
             <laji-row [title]="'result.document.collectionId' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
               <span>{{ document.collectionId | toQName | collectionName }}</span>
@@ -139,10 +140,10 @@
                   <span *ngIf="unitCnt > 1"> {{ 'annotation.observations.count' | translate }}</span>
                   <span *ngIf="unitCnt === 1"> {{ 'annotation.observation.count' | translate }}</span>
                 </span>
-              </a>  
+              </a>
             </laji-row>
             <ng-container *ngIf="activeGathering">
-              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"
+              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"
               [loadDate]="document.loadDate" [createdDate]="document.createdDate" [observerId]="document.editorUserIds" [collectionId]="document.collectionId"></laji-gathering-annotation>
             </ng-container>
             <laji-viewer-map [settingsKey]="'viewer-map'" [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData" [hideCoordinates]="showCoordinates"></laji-viewer-map>

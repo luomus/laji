@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { IColOrganization, VirOrganisationService } from '../../../service/vir-organisation.service';
-import { tap } from 'rxjs/operators';
+import { VirOrganisationService } from '../../../service/vir-organisation.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'vir-organization-select',
@@ -10,19 +10,19 @@ import { tap } from 'rxjs/operators';
 })
 export class OrganizationSelectComponent {
 
-  private organisations: IColOrganization[];
-
-  readonly organisations$ = this.virOrganisationService.organisations$.pipe(
-      tap(data => this.organisations = data)
+  readonly organisations$ = this.virOrganisationService.users$.pipe(
+      map(data => {
+        const organizations = new Set<string>();
+        data.forEach(person => {
+          person.organisation.forEach(o => organizations.add(o));
+        });
+        return Array.from(organizations.values());
+      })
   );
 
-  @Output() select = new EventEmitter<undefined|IColOrganization>();
+  @Output() select = new EventEmitter<string>();
 
   constructor(
       private virOrganisationService: VirOrganisationService
   ) {}
-
-  test(event) {
-    this.select.emit(this.organisations.find((org) => org.id === event));
-  }
 }

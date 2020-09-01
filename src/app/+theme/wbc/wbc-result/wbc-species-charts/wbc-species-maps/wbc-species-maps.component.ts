@@ -1,11 +1,8 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
-  Inject,
   Input,
   OnChanges,
-  PLATFORM_ID,
   QueryList,
   SimpleChanges,
   ViewChildren
@@ -16,14 +13,14 @@ import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.servic
 import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isPlatformBrowser } from '@angular/common';
+import { PlatformService } from '../../../../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-wbc-species-maps',
   templateUrl: './wbc-species-maps.component.html',
   styleUrls: ['./wbc-species-maps.component.css']
 })
-export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
+export class WbcSpeciesMapsComponent implements OnChanges {
   @ViewChildren('maps') mapComponents: QueryList<YkjMapComponent>;
   @Input() taxonId: string;
   @Input() taxonCensus = undefined;
@@ -53,9 +50,9 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
     private resultService: WbcResultService,
     private ykjService: YkjService,
     private cd: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private platformService: PlatformService
   ) {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.platformService.isBrowser) {
       require('leaflet.sync');
     }
   }
@@ -66,14 +63,16 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.maps = this.mapComponents.map(mapComponent => {
-        return mapComponent.mapComponent.map;
-      });
-      this.maps.forEach(m => this.initEventListeners(m));
+  mapLoaded() {
+    const maps = this.mapComponents.map(mapComponent => {
+      return mapComponent.mapComponent.map;
+    });
+    if (this.platformService.isBrowser && maps.every(mapComponents => mapComponents)) {
+      this.maps = maps;
+      maps.forEach(m => this.initEventListeners(m));
     }
   }
+
 
   private updateMapData() {
     this.querys = [];
@@ -204,9 +203,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
       lajiMap._handling[name] = false;
     };
     lajiMap.map.addEventListener({
-      tileLayerChange: sync((_map) => _map.setTileLayerByName(lajiMap.tileLayerName)),
-      tileLayerOpacityChange: sync((_map) => _map.setTileLayerOpacity(lajiMap.tileLayerOpacity)),
-      overlaysChange: sync((_map, e) => _map.setOverlaysByName(e.overlayNames))
+      tileLayersChange: sync((_map) => _map.setTileLayers(lajiMap.getTileLayers()))
     });
   }
 

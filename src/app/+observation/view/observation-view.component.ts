@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Router } from '@angular/router';
-import { WINDOW } from '@ng-toolkit/universal';
 import { ObservationFormComponent } from '../form/observation-form.component';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -12,6 +11,8 @@ import { tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { ISettingResultList, UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { environment } from '../../../environments/environment';
+import { Global } from '../../../environments/global';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -26,6 +27,7 @@ export interface VisibleSections {
   downloadList?: boolean;
   annotations?: boolean;
   info?: boolean;
+  own?: boolean;
 }
 
 @Component({
@@ -50,6 +52,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     statistics: true,
     download: true,
     annotations: true,
+    own: environment.type !== Global.type.vir
   };
   @Input() skipUrlParameters: string[] = [
     'selected',
@@ -84,7 +87,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   settingsList$: Observable<ISettingResultList>;
 
   constructor(
-    @Inject(WINDOW) private window: Window,
     public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private observationFacade: ObservationFacade,
@@ -97,9 +99,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @Input()
   set activeTab(tab: string) {
     this._activeTab = tab;
-    if (tab === 'map') {
-      this.browserService.triggerResizeEvent();
-    }
+    this.browserService.triggerResizeEvent();
   }
 
   get activeTab(): string {

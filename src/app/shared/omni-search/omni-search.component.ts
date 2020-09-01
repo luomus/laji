@@ -37,6 +37,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   @Input() expand = '';
   @Input() visible = true;
   @Output() visibleTaxon = new EventEmitter<any>();
+  @Output() close = new EventEmitter<void>();
   public search = '';
   public searchControl = new FormControl();
   public active = 0;
@@ -79,9 +80,10 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  close() {
+  onClose() {
     this.search = '';
     this.taxa = [];
+    this.close.emit();
   }
 
   activate(index: number): void {
@@ -94,7 +96,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         .map(group => group.name);
       this.subCnt =
         ObservableOf(this.taxon.key).pipe(combineLatest(
-          this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key}),
+          this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key, cache: true}),
           (id, cnt) => {
             return {id: id, cnt: cnt.total};
           }
@@ -128,7 +130,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         this.router.navigate(
           this.localizeRouterService.translateRoute([this.selectTo, this.taxa[this.active].key])
         );
-        this.close();
+        this.onClose();
       }
     }
   }

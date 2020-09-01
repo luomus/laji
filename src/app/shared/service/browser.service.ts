@@ -1,5 +1,5 @@
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
-import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
+import { BehaviorSubject, fromEvent, Subject, Subscription } from 'rxjs';
 import { PlatformService } from './platform.service';
 import { DOCUMENT, Location } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -29,13 +29,15 @@ export class BrowserService implements OnDestroy {
   lgScreen$ = this.state$.pipe(map((state) => state.lgScreen), distinctUntilChanged());
   visibility$ = this.state$.pipe(map((state) => state.visibility), distinctUntilChanged());
 
+  private resizingSub: Subscription;
   private resizeSub: Subscription;
   private visibilityChangeEvent: string;
-  private handlerForVisibilityChange: Function;
+  private handlerForVisibilityChange: (doc: Document) => any;
+  private resize = new Subject();
 
   constructor(
-    @Inject(DOCUMENT) private document: any,
-    @Inject(WINDOW) private window: Window,
+    @Inject(DOCUMENT) public readonly document: Document,
+    @Inject(WINDOW) public readonly window: Window,
     private zone: NgZone,
     private platformService: PlatformService,
     private historyService: HistoryService,
@@ -44,6 +46,7 @@ export class BrowserService implements OnDestroy {
     if (!platformService.isBrowser) {
       return;
     }
+    this.initResizeListener();
     this.initVisibilityListener();
     this.initScreenSizeListener();
   }
@@ -52,11 +55,14 @@ export class BrowserService implements OnDestroy {
     if (!this.platformService.isBrowser) {
       return;
     }
+    if (this.resizingSub) {
+      this.resizingSub.unsubscribe();
+    }
     if (this.resizeSub) {
       this.resizeSub.unsubscribe();
     }
     if (this.handlerForVisibilityChange) {
-      this.document.removeEventListener(this.handlerForVisibilityChange);
+      this.document.removeEventListener(this.visibilityChangeEvent as any, this.handlerForVisibilityChange);
     }
   }
 
@@ -64,17 +70,7 @@ export class BrowserService implements OnDestroy {
     if (!this.platformService.isBrowser) {
       return;
     }
-    setTimeout(() => {
-      try {
-        this.window.dispatchEvent(new Event('resize'));
-      } catch (e) {
-        try {
-          const evt: any = this.window.document.createEvent('UIEvents');
-          evt.initUIEvent('resize', true, false, this.window, 0);
-          this.window.dispatchEvent(evt);
-        } catch (e) {}
-      }
-    }, 100);
+    this.resize.next();
   }
 
   goBack(onNoHistory?: () => void): void {
@@ -103,10 +99,10 @@ export class BrowserService implements OnDestroy {
     if (typeof this.document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
       hidden = 'hidden';
       visibilityChange = 'visibilitychange';
-    } else if (typeof this.document.msHidden !== 'undefined') {
+    } else if (typeof (this.document as any).msHidden !== 'undefined') {
       hidden = 'msHidden';
       visibilityChange = 'msvisibilitychange';
-    } else if (typeof this.document.webkitHidden !== 'undefined') {
+    } else if (typeof (this.document as any).webkitHidden !== 'undefined') {
       hidden = 'webkitHidden';
       visibilityChange = 'webkitvisibilitychange';
     }
@@ -123,12 +119,26 @@ export class BrowserService implements OnDestroy {
   private initScreenSizeListener() {
     this.updateScreenSize();
     this.zone.runOutsideAngular(() => {
-      this.resizeSub = fromEvent(window, 'resize').pipe(
+      this.resizingSub = fromEvent(window, 'resize').pipe(
         debounceTime(1000),
         distinctUntilChanged()
       ).subscribe(() => {
         this.zone.run(() => this.updateScreenSize());
       });
+    });
+  }
+
+  private initResizeListener() {
+    this.resizeSub = this.resize.pipe(
+      debounceTime(100)
+    ).subscribe(() => {
+      try {
+        this.window.dispatchEvent(new Event('resize'));
+      } catch (e) {
+        const evt: any = this.window.document.createEvent('UIEvents');
+        evt.initUIEvent('resize', true, false, this.window, 0);
+        this.window.dispatchEvent(evt);
+      }
     });
   }
 

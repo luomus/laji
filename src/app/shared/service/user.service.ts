@@ -1,21 +1,31 @@
-import { catchError, distinctUntilChanged, filter, map, share, startWith, switchMap, take, tap } from 'rxjs/operators';
-import { isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
-import { Inject, Injectable } from '@angular/core';
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  share,
+  startWith,
+  switchMap,
+  take,
+  tap,
+  timeout
+} from 'rxjs/operators';
+import { isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
-import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
+import { LocalStorage, LocalStorageService, SessionStorage } from 'ngx-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
-import { WINDOW } from '@ng-toolkit/universal';
 import { PlatformService } from './platform.service';
 import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
-import { HistoryService } from './history.service';
+import { PERSON_TOKEN } from './laji-api-worker-common';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -35,7 +45,6 @@ export interface IUserSettings {
 
 interface IPersistentState {
   isLoggedIn: boolean;
-  returnUrl: string;
 }
 
 export interface IUserServiceState extends IPersistentState {
@@ -46,8 +55,7 @@ export interface IUserServiceState extends IPersistentState {
 }
 
 const _persistentState: IPersistentState = {
-  isLoggedIn: false,
-  returnUrl: ''
+  isLoggedIn: false
 };
 
 let _state: IUserServiceState = {
@@ -66,6 +74,10 @@ export class UserService {
 
   // Do not write to this variable in the server!
   @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
+  @SessionStorage() private returnUrl: string;
+  @SessionStorage('retry', 0) private retry: number;
+  private tabId: string;
+  private mRandom: string;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
   private state$ = this.store.asObservable();
@@ -76,8 +88,8 @@ export class UserService {
   settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
   user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
 
-  static getLoginUrl(next = '', lang = 'fi') {
-    return (environment.loginUrl
+  static getLoginUrl(next = '', lang = 'fi', base = '') {
+    return ((base || environment.loginUrl)
     + '?target=' + environment.systemID
     + '&redirectMethod=GET&locale=%lang%'
     + '&next=' + next).replace('%lang%', lang);
@@ -97,9 +109,7 @@ export class UserService {
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
     private browserService: BrowserService,
-    private storage: LocalStorageService,
-    private historyService: HistoryService,
-    @Inject(WINDOW) private window: any
+    private storage: LocalStorageService
   ) {
     if (!this.platformService.isBrowser) {
       this.doServiceSideLoginState();
@@ -113,9 +123,8 @@ export class UserService {
       take(1),
       switchMap(() => this.browserService.visibility$),
       filter(visible => visible),
-    ).subscribe(() => {
-      this._checkLogin();
-    });
+      switchMap(() => this._checkLogin())
+    ).subscribe();
   }
 
   checkLogin(): Observable<boolean> {
@@ -129,18 +138,30 @@ export class UserService {
     return this._checkLogin(userToken);
   }
 
-  logout(): void {
-    if (!_state.token || this.subLogout) {
+  logout(cb?: () => void): void {
+    if (this.subLogout) {
       return;
     }
-    this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
-      httpOkError(404, false),
-      retryWithBackoff(300),
-      catchError((err) => {
-        this.logger.warn('Failed to logout', err);
-        return of(false);
-      })
-    ).subscribe(() => this.doLogoutState());
+    if (!cb) {
+      cb = () => {};
+    }
+    if (_state.token) {
+      this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
+        httpOkError([404, 400], false),
+        retryWithBackoff(300),
+        catchError((err) => {
+          this.logger.warn('Failed to logout', err);
+          return of(false);
+        })
+      ).subscribe(() => {
+        this.subLogout = undefined;
+        this.doLogoutState();
+        cb();
+      });
+    } else {
+      this.doLogoutState();
+      cb();
+    }
   }
 
   getToken(): string {
@@ -172,8 +193,8 @@ export class UserService {
       catchError(() => of({
         id,
         fullName: id
-      } as Person)),
-      tap(person => _state.allUsers[id] = person),
+      })),
+      tap(person => _state.allUsers[id] = person as Person),
       share()
     );
     return pickValue(_state.allUsers[id] as Observable<Person>);
@@ -186,15 +207,14 @@ export class UserService {
         filter(data => !!data),
         take(1),
       ).subscribe(data => {
-        returnUrl = data.loginLanding || returnUrl || this.location.path(true);
-        this.updatePersistentState({...this.persistentState, returnUrl});
-        this.window.location.href = UserService.getLoginUrl(returnUrl, this.translate.currentLang);
+        this.returnUrl = data.loginLanding || returnUrl || this.location.path(true);
+        window.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
       });
     }
   }
 
   getReturnUrl(): string {
-    const returnTo = this.persistentState.returnUrl || '/';
+    const returnTo = this.returnUrl || '/';
     const lang = this.localizeRouterService.getLocationLang(returnTo);
     this.translate.use(lang);
     return this.localizeRouterService.translateRoute(
@@ -241,12 +261,38 @@ export class UserService {
         share()
       );
     } else if (this.persistentState.isLoggedIn) {
-      this.redirectToLogin();
-      return of(false);
+      return this.doBackgroundCheck().pipe(
+        switchMap(t => t ? this._checkLogin(t) : of(false)),
+        timeout(10000),
+        catchError(() => {
+          this.doLogoutState();
+          return of(true);
+        })
+      );
     } else {
       this.doLogoutState();
     }
     return of(true);
+  }
+
+  private doBackgroundCheck(): Observable<string> {
+    if (!this.platformService.canUseWebWorkerLogin || this.retry > 0) {
+      this.redirectToLogin();
+      return of('');
+    }
+    return this.personApi.personFindByToken(PERSON_TOKEN).pipe(
+      tap(() => this.retry = 0),
+      map(() => PERSON_TOKEN),
+      catchError((e) => {
+        if (e && e.status === 0) {
+          this.retry = 1;
+          this.redirectToLogin();
+          this.platformService.canUseWebWorkerLogin = false;
+          return of('');
+        }
+        return throwError('Logout');
+      })
+    );
   }
 
   private doServiceSideLoginState() {
@@ -271,6 +317,7 @@ export class UserService {
     // Token can be removed from there afters a while
     this.updatePersistentState({...this.persistentState, isLoggedIn: false, token: ''} as any);
     this.updateState({..._state, ...this.persistentState, token: '', user: {}, settings: {}});
+    this.retry = 0;
   }
 
   private doUserSettingsState(id: string) {

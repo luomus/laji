@@ -1,0 +1,4 @@
+<div class="container mt-6">
+  <vir-organization-select (select)="organizationSelect($event)"></vir-organization-select>
+  <vir-data-table type="people" [data]="users$ | async"></vir-data-table>
+</div>

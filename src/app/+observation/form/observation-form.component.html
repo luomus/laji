@@ -87,28 +87,52 @@
           {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
     ]">
   </laji-select>
+  <div style="margin-top:20px" *ngIf="advancedMode">
+    <div>
+      <label>{{ 'observation.maxOccurrenceFinland' | translate }}</label>
+      <laji-info>{{ 'observation.info.maxOccurrenceFinland' | translate }}</laji-info>  </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <input type="number" name="occurrenceCountFinlandMax"
+                  class="form-control input-sm"
+                  placeholder="{{'observation.form.countMax' | translate}}"
+                  (ngModelChange)="onCountChange()"
+                  [(ngModel)]="query.occurrenceCountFinlandMax">
+      </div>
+    </div>
+  </div>
 </section>
+
 
 <!-- OWN OBSERVATIONS -->
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
+  <fieldset>
+    <div>
+      <label>
+        <laji-checkbox [(value)]="formQuery.asObserver" (valueChange)="ownItemSelected('asObserver')"></laji-checkbox>
+        {{ 'observation.form.asObserver' | translate }}
+      </label>
+      <laji-info>
+        {{ 'observation.info.asObserver' | translate }}
+      </laji-info>
+    </div>
+    <div>
+      <label>
+        <laji-checkbox [(value)]="formQuery.asEditor" (valueChange)="ownItemSelected('asEditor')"></laji-checkbox>
+        {{ 'observation.form.asEditor' | translate }}
+      </label>
+      <laji-info>
+        {{ 'observation.info.asEditor' | translate }}
+      </laji-info>
+    </div>
+  </fieldset>
+
+  <hr>
   <div>
-    <label>
-      <laji-checkbox [(value)]="formQuery.asObserver" (valueChange)="ownItemSelected()"></laji-checkbox>
-      {{ 'observation.form.asObserver' | translate }}
-    </label>
-    <laji-info>
-      {{ 'observation.info.asObserver' | translate }}
-    </laji-info>
+    <p>{{ 'observation.intro.noOwnObservations' | translate }}</p>
+    <label><laji-checkbox [value]="formQuery.asNotEditorOrObserver" (valueChange)="ownItemSelected(ownStatutes, false)"></laji-checkbox>{{ 'observation.form.excludeOwn' | translate }}</label>
   </div>
-  <div>
-    <label>
-      <laji-checkbox [(value)]="formQuery.asEditor" (valueChange)="ownItemSelected()"></laji-checkbox>
-      {{ 'observation.form.asEditor' | translate }}
-    </label>
-    <laji-info>
-      {{ 'observation.info.asEditor' | translate }}
-    </laji-info>
-  </div>
+
   <ng-container *ngIf="formQuery.asEditor || formQuery.asObserver || query.qualityIssues">
     <laji-select
       [selected]="[query.qualityIssues]"
@@ -192,13 +216,13 @@
         <label>{{ 'observation.form.map.intro'|translate }}</label>
     </div>
     <div>
-      <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Rectangle')">
+      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Rectangle')">
         <i class="lji-icon lji-crop"></i>
       </button>
       {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate }}
     </div>
     <div>
-      <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Coordinates')">
+      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Coordinates')">
         YKJ
       </button>
       {{ 'observation.form.map.coordinates'|translate }}
@@ -245,11 +269,11 @@
         </datalist>
       </div>
       <div>
-        <div class="btn-group">
-          <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
+        <div class="lu-btn-group">
+          <button type="button" class="lu-btn lu-btn-small" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
             {{ 'observation.form.intersect0' | translate }}
           </button>
-          <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
+          <button type="button" class="lu-btn lu-btn-small" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
             {{ 'observation.form.intersect100' | translate }}
           </button>
         </div>
@@ -397,8 +421,8 @@
                 [(ngModel)]="query.individualCountMax">
       </div>
     </div>
-      <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations()">{{ 'observation.form.onlyZeroObservations' | translate }}</button>
-      <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations(false)">{{ 'observation.form.zeroObservations' | translate }}</button>
+      <button type="button" class="lu-btn lu-btn-small" (click)="zeroObservations()">{{ 'observation.form.onlyZeroObservations' | translate }}</button>
+      <button type="button" class="lu-btn lu-btn-small" (click)="zeroObservations(false)">{{ 'observation.form.zeroObservations' | translate }}</button>
   </div>
 </section>
 

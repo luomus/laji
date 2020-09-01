@@ -3,7 +3,7 @@
 </h3>
 <div class="row">
   <div class="col-sm-5 col-md-4 col-lg-3">
-    <a [routerLink]="['/vihko/tools/import'] | localize" class="thumbnail panel panel-default">
+    <a [routerLink]="['./import'] | localize" class="thumbnail panel panel-default">
       <div class="panel-heading">
         <h2 class="panel-title">{{ 'excel.import' | translate }}</h2>
       </div>
@@ -13,7 +13,7 @@
     </a>
   </div>
   <div class="col-sm-5 col-md-4 col-lg-3">
-    <a [routerLink]="['/vihko/tools/generate'] | localize" class="thumbnail panel panel-default">
+    <a [routerLink]="['./generate'] | localize" class="thumbnail panel panel-default">
       <div class="panel-heading">
         <h2 class="panel-title">{{ 'excel.generate' | translate }}</h2>
       </div>
@@ -23,12 +23,22 @@
     </a>
   </div>
   <div class="col-sm-5 col-md-4 col-lg-3">
-    <a [routerLink]="['/vihko/tools/label'] | localize" class="thumbnail panel panel-default">
+    <a [routerLink]="['./label'] | localize" class="thumbnail panel panel-default">
       <div class="panel-heading">
         <h2 class="panel-title">{{ 'label.designer' | translate }}</h2>
       </div>
       <div class="panel-body">
         <i class="glyphicon glyphicon-qrcode"></i>
+      </div>
+    </a>
+  </div>
+  <div class="col-sm-5 col-md-4 col-lg-3">
+    <a [routerLink]="['/vihko/templates'] | localize" class="thumbnail panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">{{ 'form.use' | translate }}</h2>
+      </div>
+      <div class="panel-body">
+        <i class="glyphicon glyphicon-list-alt"></i>
       </div>
     </a>
   </div>

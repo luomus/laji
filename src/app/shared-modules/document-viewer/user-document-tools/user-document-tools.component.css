@@ -1,0 +1,11 @@
+.margin-right-10 {
+    margin-right: 10px;
+}
+
+.margin-right-10:last-child {
+    margin-right: 0px;
+}
+
+::ng-deep .btn.white {
+    background-color: #FFF;
+}

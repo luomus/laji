@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, HostListener, Inject, Input, PLATFORM_ID, ViewChild, OnInit } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
+import { ChangeDetectionStrategy, Component, HostListener, Input, ViewChild, OnInit } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
-import { isPlatformBrowser } from '@angular/common';
+import { PlatformService } from '../../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-info',
@@ -18,18 +17,19 @@ export class InfoComponent implements OnInit {
   @Input() labelType = 'info';
   @Input() showOnHover = false;
   @Input() containerInfo = 'body';
+  @Input() noShow = false;
 
-  @ViewChild('modal', { static: true }) public modal: ModalDirective;
-  @ViewChild('pop', { static: true }) public popover: PopoverDirective;
+  @ViewChild('modal', {static: true}) public modal: ModalDirective;
+  @ViewChild('pop', {static: true}) public popover: PopoverDirective;
 
   isInsideModal: string;
   container: string;
   position: any;
 
   constructor(
-    @Inject(WINDOW) private window,
-    @Inject(PLATFORM_ID) private platformID: object
-  ) { }
+    private platformService: PlatformService
+  ) {
+  }
 
   @HostListener('window:resize')
   onResize() {
@@ -39,28 +39,32 @@ export class InfoComponent implements OnInit {
   }
 
   @HostListener('mousemove', ['$event'])
-    onMousemove(event: MouseEvent) {
-     if (this.modal.isShown) {
+  onMousemove(event: MouseEvent) {
+    if (this.modal.isShown) {
 
-     } else {
+    } else {
       if (this.containerInfo !== 'body') {
-        this.position = (event.pageY - event.clientY + 300 ) + 'px';
+        this.position = (event.pageY - event.clientY + 300) + 'px';
       } else {
         this.position = 'auto';
       }
-     }
     }
-
-  ngOnInit() {
-   this.container = this.containerInfo;
   }
 
-  show() {
-    if (!isPlatformBrowser(this.platformID)) {
+  ngOnInit() {
+    this.container = this.containerInfo;
+  }
+
+  show(e?: MouseEvent) {
+    e?.stopPropagation();
+    if (this.platformService.isServer) {
       return;
     }
     const useModal = this.useModal();
-    if (this.isVisible() && ((useModal && this.modal.isShown) || (!useModal && this.popover.isOpen))) {
+    if (this.isVisible() && ((useModal && this.modal.isShown) || (!useModal && this.popover.isOpen))) {
+      return;
+    }
+    if (this.noShow) {
       return;
     }
     this.hide();
@@ -93,10 +97,12 @@ export class InfoComponent implements OnInit {
   }
 
   private isVisible() {
-    return this.modal.isShown || this.popover.isOpen;
+    return this.modal.isShown || this.popover.isOpen;
   }
 
   private useModal() {
-    return this.window.innerWidth <= 767;
+    if (this.platformService.isBrowser) {
+      return window.innerWidth <= 767;
+    }
   }
 }

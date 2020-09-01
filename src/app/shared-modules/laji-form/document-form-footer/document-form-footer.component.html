@@ -7,11 +7,12 @@
       <button type="button" [disabled]="saving" class="btn btn-success btn-sm" (click)="lock.emit(true)"><i class="fa fa-unlock"></i></button>
     </ng-template>
   </div>
-  <button *ngIf="show.save" class="btn btn-success btn-sm" [disabled]="saving" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
-  <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
-  <div [ngSwitch]="status" class="fill-space status">
+  <button *ngIf="show.save && !template" class="btn btn-success btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
+  <button *ngIf="show.temp && !template" class="btn btn-warning btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
+  <button *ngIf="template" class="btn btn-success btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitTemplate.emit()">{{ 'haseka.form.saveTemplate' | translate }}</button>
+  <div [ngSwitch]="status" class="flex-grow status">
     <div *ngSwitchCase="'success'" class="success">
-      {{ 'haseka.form.success'|translate }}
+      {{ 'haseka.form.success' | translate }}
     </div>
     <div *ngSwitchCase="'error'" class="error">
       {{ 'haseka.form.error' | translate }}
@@ -24,9 +25,12 @@
         {{ 'haseka.form.unsavedNever' | translate }}
       </ng-template>
     </div>
+    <button *ngIf="hasOnlyWarnings" type="button" class="btn btn-link" (click)="highlightErrorContainer()" style="color: #3c9cdd;">
+      {{ 'haseka.form.hasOnlyWarnings' | translate }}
+    </button>
     <span *ngIf="readonly === readonlyStates.noEdit">
         {{ 'haseka.form.readonly' | translate }}
-      </span>
+    </span>
   </div>
   <button *ngIf="show.cancel" class="btn btn-danger btn-sm pull-right" [disabled]="saving" type="submit" (click)="cancel.emit()">{{ buttonLabel('cancel') | translate }}</button>
   <laji-feedback *ngIf="displayFeedback" [iconOnly]="true" [fixed]="false"></laji-feedback>

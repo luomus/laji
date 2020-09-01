@@ -32,8 +32,6 @@ export interface Annotation {
     annotationBySystem?: string;
     byRole?: string;
 
-    annotationClass?: Annotation.AnnotationClassEnum;
-
     /**
      * dateTime string using ISO8601 format
      */
@@ -85,15 +83,6 @@ export namespace Annotation {
     formAdmin = 'MMAN.formAdmin',
   }
 
-  export enum AnnotationClassEnum {
-      AnnotationClassReliable = <any> 'MAN.annotationClassReliable',
-      AnnotationClassLikely = <any> 'MAN.annotationClassLikely',
-      AnnotationClassNeutral = <any> 'MAN.annotationClassNeutral',
-      AnnotationClassSuspicious = <any> 'MAN.annotationClassSuspicious',
-      AnnotationClassUnreliable = <any> 'MAN.annotationClassUnreliable',
-      AnnotationClassSpam = <any> 'MAN.annotationClassSpam',
-      AnnotationClassAcknowledged = <any> 'MAN.annotationClassAcknowledged'
-  }
   export enum InvasiveControlEffectivenessEnum {
       InvasiveControlEffectivenessFull = <any> 'MY.invasiveControlEffectivenessFull',
       InvasiveControlEffectivenessPartial = <any> 'MY.invasiveControlEffectivenessPartial',

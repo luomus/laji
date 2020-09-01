@@ -16,9 +16,10 @@ import {
 import { IUserSettings, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
-import { Options, TileLayerName, Lang } from 'laji-map';
+import { Options, TileLayerName, Lang, TileLayersOptions } from 'laji-map';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
+import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 
 @Component({
@@ -48,10 +49,11 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
   @Output() select = new EventEmitter();
 
+  @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
   @Output() failure =  new EventEmitter();
-  @Output() tileLayerChange =  new EventEmitter();
+  @Output() tileLayersChange =  new EventEmitter();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -59,10 +61,13 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   _options: Options = {};
   _legend: {color: string, label: string}[];
   fullScreen = false;
+  @LocalStorage('onlycount') onlyCount;
+  
 
   private _settingsKey: keyof IUserSettings;
   private subSet: Subscription;
   private userSettings: Options = {};
+  private mapData: any;
 
   private customControlsSub: Subscription;
 
@@ -72,7 +77,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     private logger: Logger,
     private translate: TranslateService,
     private zone: NgZone
-  ) { }
+  ) {
+
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -84,28 +91,16 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   set options(options: Options) {
     if (!options.on) {
       options = {...options, on: {
-          tileLayerChange: (event) => {
-            this.zone.run(() => {
-              this.tileLayerChange.emit((event as any).tileLayerName);
-            });
+        tileLayersChange: (event) => {
+          this.zone.run(() => {
+            this.tileLayersChange.emit((event as any).tileLayers);
+          });
 
-            if (this._settingsKey) {
-              this.userSettings.tileLayerName = (event as any).tileLayerName as TileLayerName;
-              this.userService.setUserSetting(this._settingsKey, this.userSettings);
-            }
-          },
-          tileLayerOpacityChangeEnd: (event) => {
-            this.userSettings.tileLayerOpacity = (<any> event).tileLayerOpacity;
-            if (this._settingsKey) {
-              this.userService.setUserSetting(this._settingsKey, this.userSettings);
-            }
-          },
-          overlaysChange: (event) => {
-            this.userSettings.overlayNames = (<any> event).overlayNames;
-            if (this._settingsKey) {
-              this.userService.setUserSetting(this._settingsKey, this.userSettings);
-            }
+          if (this._settingsKey) {
+            this.userSettings.tileLayers = (event as any).tileLayers as TileLayersOptions;
+            this.userService.setUserSetting(this._settingsKey, this.userSettings);
           }
+        }
         } as object};
     }
     if (typeof options.draw === 'object' && !options.draw.onChange) {
@@ -131,8 +126,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
         .pipe(take(1))
         .subscribe(settings => {
           this.userSettings = settings || {};
-          if (this.userSettings.tileLayerName) {
-            this.tileLayerChange.emit(this.userSettings.tileLayerName);
+          if (this.userSettings.tileLayers) {
+            this.tileLayersChange.emit(this.userSettings.tileLayers);
           }
           this.initMap();
           this.cd.markForCheck();
@@ -189,10 +184,19 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
           this.map.map.on('moveend', _ => {
             this.moveEvent('moveend');
           });
-          this.map.map.on('movestart', _ => {
+          this.map.map.on('movestart', () => {
             this.moveEvent('movestart');
           });
           this.moveEvent('moveend');
+          this.updateCustomControls();
+          if (this.mapData) {
+            this.setData(this.mapData);
+            this.mapData = undefined;
+          } else {
+          }
+          this.zone.run(() => {
+            this.loaded.emit();
+          });
         } catch (e) {
           this.logger.error('Map initialization failed', e);
         }
@@ -220,7 +224,11 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   setData(data) {
-    if (!this.map || !data) {
+    if (!this.map) {
+      this.mapData = data;
+      return;
+    }
+    if (!data) {
       return;
     }
     this.map.setData(data);
@@ -260,6 +268,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
+
   private toggleFullscreen() {
     this.fullScreen = !this.fullScreen;
     this.updateCustomControls();
@@ -270,6 +279,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private updateCustomControls() {
+    if (!this.map) {
+      return;
+    }
     if (this.customControlsSub) {
       this.customControlsSub.unsubscribe();
     }

@@ -1,6 +1,6 @@
 <ng-container *ngIf="!externalUrl else ext">
-  <a *ngIf="form" [routerLink]="isFormIdInThemes(form.id) ? [themes[form.id]] : ['/vihko', form.id] | localize">
-    <div class="survey-box" [ngStyle]="{'background-image': 'url(' + form.logo + ')'}">
+  <a *ngIf="form" [routerLink]="(isFormIdInThemes(form.id) ? [themes[form.id]] : ['/vihko', form.id]) | localize">
+    <div class="survey-box" [ngStyle]="form.logo ? {'background-image': 'url(' + form.logo + ')'} : {}">
       <div class="survey-title">
         {{ form.id === waterbirdForm ? ('navigation.waterbird' | translate) : form.title }}
       </div>
@@ -9,7 +9,7 @@
 </ng-container>
 
 <a *ngIf="comingSoonForm" [href]="comingSoonForm.link" class="ribbon-wrapper">
-  <div class="survey-box" [ngStyle]="{'background-image': 'url(' + comingSoonForm.logo + ')'}">
+  <div class="survey-box" [ngStyle]="comingSoonForm.logo ? {'background-image': 'url(' + comingSoonForm.logo + ')'}: {}">
     <div class="corner-ribbon top-right">
       {{ 'haseka.forms.comingSoon' | translate }}
     </div>
@@ -20,8 +20,8 @@
 </a>
 
 <ng-template #ext>
-  <a *ngIf="form" target="_blank" [href]="isFormIdInThemes(form.id) ? externalUrl + themes[form.id] : externalUrl + '/vihko/' + form.id | localize">
-    <div class="survey-box" [ngStyle]="{'background-image': 'url(' + form.logo + ')'}">
+  <a *ngIf="form" target="_blank" [href]="(isFormIdInThemes(form.id) ? externalUrl + themes[form.id] : externalUrl + '/vihko/' + form.id) | localize">
+    <div class="survey-box" [ngStyle]="form.logo ? {'background-image': 'url(' + form.logo + ')'} : {}">
       <div class="survey-title">
         {{ form.id === waterbirdForm ? ('navigation.waterbird' | translate) : form.title }}
       </div>

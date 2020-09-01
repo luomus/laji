@@ -1,10 +1,19 @@
 import { Observable } from 'rxjs';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { GalleryService } from '../service/gallery.service';
 import { TaxonomyImage } from '../../model/Taxonomy';
 import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
 import { Logger } from '../../logger/logger.service';
-import { catchError, map, tap } from 'rxjs/operators';
+import {catchError, delay, map, tap} from 'rxjs/operators';
 import { IImageSelectEvent } from '../image-gallery/image.interface';
 
 @Component({
@@ -44,7 +53,8 @@ export class GalleryComponent implements OnChanges {
 
   constructor(
     private logger: Logger,
-    private galleryService: GalleryService
+    private galleryService: GalleryService,
+    private cdr: ChangeDetectorRef
   ) {
   }
 
@@ -73,7 +83,9 @@ export class GalleryComponent implements OnChanges {
     this.loading = true;
 
     this.images$ = this.galleryService.getList(this.query, this.sort, this.pageSize, this.page)
-      .pipe(map(result => {
+      .pipe(
+        delay(0),
+        map(result => {
         this.total = Math.min(result.total, this.limit);
         this.paginatorNeeded = this.total > this.pageSize;
         return this.galleryService.getImages(result, this.limit);
@@ -85,6 +97,7 @@ export class GalleryComponent implements OnChanges {
       tap((images: TaxonomyImage[]) => {
         this.loading = false;
         this.hasData.emit(images.length > 0);
+        this.cdr.detectChanges();
       })
     );
   }

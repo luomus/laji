@@ -5,6 +5,7 @@ import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { SpreadsheetFacade } from '../spreadsheet.facade';
+import { Util } from '../../../shared/service/util.service';
 
 export enum SpecialTypes {
   geometry = 'geometry',
@@ -333,20 +334,20 @@ export class MappingService {
   mapDateOptionalTime(value) {
     if (typeof value === 'string') {
       const parts = value.split(/[\s,T]+/).filter(v => !!v);
-      const dateParts = parts[0].split('.');
+      const dateParts = parts[0].split(/[.\-]/);
       if (dateParts.length === 3) {
         if (dateParts[0].length === 4) {
-          parts[0] = dateParts.join('-');
+          parts[0] = dateParts.map(v => Util.addLeadingZero(v)).join('-');
         } else if (dateParts[2].length === 4) {
-          parts[0] = dateParts.reverse().join('-');
+          parts[0] = dateParts.reverse().map(v => Util.addLeadingZero(v)).join('-');
         }
       }
-      if (parts.length === 2) {
-      } else if (parts.length > 2) {
+      if (parts.length > 2) {
         const first = parts.shift();
 
         return `${first}T${parts.join('')}`;
       }
+      return parts.join('T');
     }
     return value;
   }
@@ -408,7 +409,7 @@ export class MappingService {
             return this.coordinateService.convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
           } catch (e) {}
         }
-      } else if (value.match(/^-?[0-9]{1,2}\.[0-9]+,-?1?[0-9]{1,2}\.[0-9]+/)) {
+      } else if (value.match(/^-?[0-9]{1,2}(\.[0-9]+)?,-?1?[0-9]{1,2}(\.[0-9]+)?$/)) {
         const wgsParts = value.split(',');
         return {
           type: 'Point',

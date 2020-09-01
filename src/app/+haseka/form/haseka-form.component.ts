@@ -10,8 +10,8 @@ import { FormService } from '../../shared/service/form.service';
 import { map, take, switchMap } from 'rxjs/operators';
 import { Form } from '../../shared/model/Form';
 import { BrowserService } from '../../shared/service/browser.service';
-import { DocumentViewerFacade } from 'app/shared-modules/document-viewer/document-viewer.facade';
-import { Document } from 'app/shared/model/Document';
+import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
+import { Document } from '../../shared/model/Document';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -23,6 +23,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId: string;
   documentId: string;
+  template: boolean;
   showMobileEntryPage$: Observable<boolean>;
   form$: Observable<any>;
   isMobile$: Observable<boolean>;
@@ -50,6 +51,12 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
       this.documentId = params['documentId'] || null;
       this.cd.markForCheck();
     });
+
+    this.template = this.localizeRouterService.getPathWithoutLocale(this.router.url) ?
+    (this.localizeRouterService.getPathWithoutLocale(this.router.url).includes('template') ? true : false) : false
+    
+    console.log(this.template)
+
     this.form$ = this.route.params.pipe(
       switchMap(params => this.formService.getForm(params['formId'], this.translate.currentLang))
     );

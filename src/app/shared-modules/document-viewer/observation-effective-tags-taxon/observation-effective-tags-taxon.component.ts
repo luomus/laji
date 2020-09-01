@@ -4,12 +4,16 @@ import { Subject, Subscription } from 'rxjs';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
+import { AnnotationService } from '../../document-viewer/service/annotation.service';
+import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 
 
 @Component({
   selector: 'laji-observation-effective-tags-taxon',
   templateUrl: './observation-effective-tags-taxon.component.html',
   styleUrls: ['./observation-effective-tags-taxon.component.scss'],
+  providers: [WarehousePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy {
@@ -20,21 +24,30 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
   @Input() showEffectiveTaxon = true;
   @Input() showEffectiveTag = true;
   @Input() showRecordQuality = true;
+  @Input() annotationTags: AnnotationTag[];
 
   annotationResolving: boolean;
   subscriptParent: Subscription;
   annotationTagsObservation = Global.annotationTags;
   countItems: number;
   haschangedTaxon = false;
+  convertEffective: any;
 
   constructor(
     private taxonTagEffective: TaxonTagEffectiveService,
     private cd: ChangeDetectorRef,
     private toQname: ToQNamePipe,
-    private loadingElements: LoadingElementsService
+    private loadingElements: LoadingElementsService,
+    private annotationService: AnnotationService,
+    private warehousePipe: WarehousePipe
     ) { }
 
   ngOnInit() {
+
+    this.unit.interpretations.effectiveTags = (this.unit.interpretations && this.unit.interpretations.effectiveTags) ?
+    this.unit.interpretations.effectiveTags.map(element => {return this.warehousePipe.transform(element);}) : [];
+
+     this.convertEffective = this.annotationTags.filter(item => this.unit.interpretations.effectiveTags.includes(item.id))
      this.unit.addedTags = [];
      this.subscriptParent = this.loadingElements.childEventListner().subscribe(event => {
       this.annotationResolving = event;
@@ -51,7 +64,9 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
   }
 
   ngOnDestroy() {
-    this.subscriptParent.unsubscribe();
+    if (this.subscriptParent) {
+      this.subscriptParent.unsubscribe();
+    }
   }
 
 

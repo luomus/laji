@@ -45,19 +45,15 @@
       <div class="col-sm-12">
         <laji-spinner [spinning]="loading" [overlay]="true">
           <div class="chart-container">
-            <ngx-charts-line-chart
-              [view]="[500, 300]"
-              [results]="line"
-              [scheme]="colorScheme"
-              [animations]="false"
-              [xAxis]="true"
-              [yAxis]="true"
+            <laji-chart #lineChart
+              [datasets]="lineChartData"
+              [labels]="lineChartLabels"
+              [options]="lineChartOptions"
               [legend]="false"
-              [showXAxisLabel]="true"
-              [showYAxisLabel]="true"
-              [xAxisLabel]="'Vuodet'"
-              [yAxisLabel]="'Parim./km'">
-            </ngx-charts-line-chart>
+              [plugins]="lineChartPlugins"
+              [colors]="lineChartColors"
+              chartType="LineWithLine"
+            ></laji-chart>
           </div>
         </laji-spinner>
       </div>

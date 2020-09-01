@@ -22,21 +22,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { EMPTY, Observable, of as ObservableOf } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { Profile } from '../model/Profile';
 import { Person } from '../model/Person';
 import { environment } from '../../../environments/environment';
-import { isPlatformBrowser } from '@angular/common';
+import { PlatformService } from '../service/platform.service';
 
 @Injectable({providedIn: 'root'})
 export class PersonApi {
   protected basePath = environment.apiBase;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: object,
+    private platformService: PlatformService,
     protected http: HttpClient
   ) {
   }
@@ -48,8 +48,8 @@ export class PersonApi {
    * @param userId Accept this user as a person
    */
   public personAcceptFriendRequest(token: string, userId: string, extraHttpRequestParams?: any): Observable<Profile> {
-    if (!isPlatformBrowser(this.platformId)) {
-      return ObservableOf(null);
+    if (this.platformService.isServer) {
+      return EMPTY;
     }
     const path = this.basePath + '/person/{token}/friends/{userId}'
         .replace('{' + 'token' + '}', String(token))
@@ -75,8 +75,8 @@ export class PersonApi {
    * @param profileKey profile key
    */
   public personAddFriendRequest(token: string, profileKey: string, extraHttpRequestParams?: any): Observable<{}> {
-    if (!isPlatformBrowser(this.platformId)) {
-      return ObservableOf(null);
+    if (this.platformService.isServer) {
+      return EMPTY;
     }
     const path = this.basePath + '/person/{token}/friends/{profileKey}'
         .replace('{' + 'token' + '}', String(token))
@@ -102,8 +102,8 @@ export class PersonApi {
    * @param token users personToken
    */
   public personCreateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
-    if (!isPlatformBrowser(this.platformId)) {
-      return ObservableOf(null);
+    if (this.platformService.isServer) {
+      return EMPTY;
     }
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
@@ -126,8 +126,8 @@ export class PersonApi {
    * @param token users personToken
    */
   public personFindByToken(token: string, extraHttpRequestParams?: any): Observable<Person> {
-    if (!isPlatformBrowser(this.platformId)) {
-      return ObservableOf({id: ''});
+    if (this.platformService.isServer) {
+      return EMPTY;
     }
     const path = this.basePath + '/person/{token}'
         .replace('{' + 'token' + '}', String(token));
@@ -183,8 +183,8 @@ export class PersonApi {
    * @param token users personToken
    */
   public personFindProfileByToken(token: string, extraHttpRequestParams?: any): Observable<Profile> {
-    if (!isPlatformBrowser(this.platformId)) {
-      return ObservableOf(null);
+    if (this.platformService.isServer) {
+      return EMPTY;
     }
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
@@ -206,8 +206,8 @@ export class PersonApi {
    * @param block if the removed person should be blocked also
    */
   public personRemoveFriend(token: string, userId: string, block: boolean = false, extraHttpRequestParams?: any): Observable<Profile> {
-    if (!isPlatformBrowser(this.platformId)) {
-      return ObservableOf(null);
+    if (this.platformService.isServer) {
+      return EMPTY;
     }
     const path = this.basePath + '/person/{token}/friends/{userId}'
         .replace('{' + 'token' + '}', String(token))
@@ -236,8 +236,8 @@ export class PersonApi {
    * @param token users personToken
    */
   public personUpdateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
-    if (!isPlatformBrowser(this.platformId)) {
-      return ObservableOf(null);
+    if (this.platformService.isServer) {
+      return EMPTY;
     }
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
@@ -256,11 +256,11 @@ export class PersonApi {
   }
 
   public removePersonToken(token: string) {
-    if (!isPlatformBrowser(this.platformId)) {
-      return ObservableOf(null);
+    if (this.platformService.isServer) {
+      return EMPTY;
     }
     const url = this.basePath + `/person-token/${token}`;
-    return this.http.delete(url);
+    return this.http.delete(url, {observe: 'response'});
   }
 
 }

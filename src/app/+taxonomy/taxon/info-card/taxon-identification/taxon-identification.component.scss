@@ -1,0 +1,60 @@
+@import 'vars';
+
+.child-name {
+  margin-top: $sp-5;
+  margin-bottom: $sp-4;
+}
+
+.child-scientific-name-container {
+  font-size: $fs-6;
+}
+
+.child-scientific-name {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.child-rank {
+  color: $neutral-6;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.child-vernacular-name {
+  font-size: $fs-5;
+  color: $neutral-7;
+}
+
+.species-container {
+  padding: $sp-6;
+  background-color: $neutral-3;
+  border-left: 3px solid $neutral-5;
+  overflow-x: scroll;
+}
+
+.species {
+}
+
+.species-name-container {
+  padding-bottom: $sp-3;
+}
+
+.species-scientific-name {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.species-vernacular-name {
+  color: $neutral-7;
+}
+
+.species-img-container {
+  box-shadow: inset 0 1px 3px 0 rgba(#000,.2);
+  background-color: $neutral-4;
+  min-width: 250px;
+}
+
+.species-img-container > img {
+  max-width: 600px;
+  max-height: 600px;
+}

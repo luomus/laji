@@ -20,7 +20,6 @@ import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/n
 import { ThemeComponent } from './theme.component';
 import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
-import { NamedPlaceResolver } from 'app/shared-modules/named-place/named-place.resolver';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
 import { InstructionsComponent } from './common/instructions/instructions.component';
@@ -36,11 +35,13 @@ import { ThemeGenerateSpreadsheetComponent } from './common/theme-generate-sprea
 import { DatasetsGuard } from './datasets/datasets.guard';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
-import { KerttuMainViewComponent } from './kerttu/kerttu-main-view/kerttu-main-view.component';
 import { LolifeInstructionsComponent } from './lolife/lolife-instructions/lolife-instructions.component';
 import { PinkkaComponent } from './pinkka/pinkka.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
-import { BirdPointCountResultComponent } from './bird-point-count/bird-point-count-result/bird-point-count-result.component';
+import { NamedPlaceResolver } from '../shared-modules/named-place/named-place.resolver';
+import {KerttuExpertiseFormComponent} from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
+import {KerttuLetterAnnotationComponent} from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
+import {KerttuRecordingAnnotationComponent} from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
 
 /* tslint:enable:max-line-length */
 
@@ -106,7 +107,7 @@ const routes: Routes = [
             },
             {
               link: '../',
-              label: 'Datasets'
+              label: 'datasets.label'
             }
           ]
         }
@@ -145,7 +146,7 @@ const routes: Routes = [
             },
             {
               link: '../',
-              label: 'Datasets'
+              label: 'datasets.label'
             }
           ],
           titleFromCollectionName: true,
@@ -207,6 +208,7 @@ const routes: Routes = [
         },
       },
       navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'templates', 'formPermissions'],
+      hideNavFor: ['/form'],
       instructions: '2668',
     }
   },
@@ -418,6 +420,7 @@ const routes: Routes = [
       noFormPermissionRedirect: '/theme/vieraslajit',
       title: 'Vieras&shy;lajit',
       instructions: '2661',
+      hideNavFor: ['/form'],
       navLinks: {
         form: {
           label: 'invasiveSpecies.places'
@@ -473,6 +476,7 @@ const routes: Routes = [
       noFormPermissionRedirect: '/theme/kunnat',
       title: 'Kuntalomake',
       instructions: '2666',
+      hideNavFor: ['/form'],
       navLinks: {
         form: {
           label: 'invasiveSpecies.places'
@@ -521,10 +525,21 @@ const routes: Routes = [
         pathMatch: 'full',
         component: ThemeOwnSubmissionsComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
+      },
+      {
+        path: 'import',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        component: ThemeImportComponent
+      },
+      {
+        path: 'generate',
+        canActivate: [OnlyLoggedIn, HasFormPermission],
+        component: ThemeGenerateSpreadsheetComponent
       }
     ],
     data: {
       formID: Global.forms.lolifeForm,
+      excelFormID: Global.forms.lolifeExcelForm,
       noFormPermissionRedirect: '/theme/lolife',
       title: 'Liito-orava - seuranta',
       navLinks: {
@@ -538,9 +553,18 @@ const routes: Routes = [
         ownSubmissions: {
           label: 'theme.lolife.ownSubmissions',
           adminLabel: 'theme.lolife.ownSubmissions.admin'
+        },
+        toolsImport: {
+          routerLink: ['import'],
+          label: 'theme.nav.tools.import'
+        },
+        toolsGenerate: {
+          routerLink: ['generate'],
+          label: 'theme.nav.tools.generate'
         }
       },
-      navLinksOrder: ['about', 'instructions', 'form', 'ownSubmissions', 'formPermissions'],
+      navLinksOrder: ['about', 'instructions', 'form', 'toolsImport', 'toolsGenerate', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form']
     }
   },
   {
@@ -594,6 +618,7 @@ const routes: Routes = [
           label: 'bats.navLinks.form'
         }
       },
+      hideNavFor: ['/form'],
       hasRightsInstructions: '2780',
     }
   },
@@ -644,6 +669,7 @@ const routes: Routes = [
       noFormPermissionRedirect: '/theme/valio',
       title: 'VALIO',
       instructions: '2759',
+      hideNavFor: ['/form'],
       hasRightsInstructions: '2761',
     }
   },
@@ -672,6 +698,7 @@ const routes: Routes = [
       formID: Global.forms.fungi,
       noFormPermissionRedirect: '/theme/sieniatlas',
       title: 'Sieniatlas',
+      hideNavFor: ['/form'],
       instructions: '3901',
     }
   },
@@ -722,6 +749,7 @@ const routes: Routes = [
       formID: Global.forms.sykeButterfly,
       noFormPermissionRedirect: '/theme/syke-perhoset',
       title: 'SYKE Päiväperhoset',
+      hideNavFor: ['/form']
     }
   },
   {
@@ -733,13 +761,14 @@ const routes: Routes = [
       navLinks: {
         'form': {
           label: 'Parilaskenta',
-          accessLevel: undefined
+          accessLevel: undefined,
+          activeMatch: `/places/${Global.collections.waterbird}/${Global.forms.waterbirdPairForm}`
         },
         'juvenileForm': {
           routerLink: ['../vesilintulaskenta', 'poikuelaskenta'],
           label: 'Poikuelaskenta',
-          activeMatch: `/places/${Global.collections.waterbird}`
-        }
+          activeMatch: `/places/${Global.collections.waterbird}/${Global.forms.waterbirdJuvenileForm}`
+      }
       },
       navLinksOrder: ['instructions', 'form', 'juvenileForm', 'ownSubmissions', 'formPermissions'],
       hideNavFor: ['/form'],
@@ -820,12 +849,6 @@ const routes: Routes = [
         component: ThemeOwnSubmissionsComponent,
         canActivate: [OnlyLoggedIn, HasFormPermission],
       },
-      {
-        path: 'stats',
-        pathMatch: 'full',
-        data: { noScrollToTop: true },
-        component: BirdPointCountResultComponent
-      },
       {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ],
     data: {
@@ -835,13 +858,42 @@ const routes: Routes = [
       navLinks: {
         form: {
           accessLevel: undefined
-        },
-        stats: {
-          routerLink: ['stats'],
-          label: 'Tulokset'
         }
       },
-      navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'stats', 'formPermissions'],
+      navLinksOrder: ['instructions', 'form', 'ownSubmissions', 'formPermissions'],
+      hideNavFor: ['/form'],
+      instructions: '3941'
+    }
+  },
+  {
+    path: 'kiiltomadot',
+    component: MonitoringThemeBaseComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
+      {path: 'instructions', pathMatch: 'full', component: InstructionsComponent},
+      {
+        path: 'form',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: FormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard],
+        data: { displayFeedback: false }
+      },
+      {path: 'ownSubmissions', pathMatch: 'full', component: ThemeOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]}
+    ],
+    data: {
+      formID: Global.forms.glowWormForm,
+      title: 'Kiiltomadot',
+      hideNavFor: ['/form'],
+      instructions: '3988'
     }
   },
   {
@@ -853,7 +905,9 @@ const routes: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
-      {path: 'annotate', pathMatch: 'full', component: KerttuMainViewComponent, canActivate: [OnlyLoggedIn]}
+      {path: 'expertise', pathMatch: 'full', component: KerttuExpertiseFormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
+      {path: 'letters', pathMatch: 'full', component: KerttuLetterAnnotationComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn]}
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

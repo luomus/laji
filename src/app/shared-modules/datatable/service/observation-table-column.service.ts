@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IColumnGroup, TableColumnService } from './table-column.service';
 import { ObservationTableColumn } from '../../observation-result/model/observation-table-column';
+import { environment } from '../../../../environments/environment';
+import { Global } from '../../../../environments/global';
 
 export interface IColumns {
   'document.documentId': ObservationTableColumn;
@@ -32,10 +34,19 @@ export interface IColumns {
   'unit.media.mediaType': ObservationTableColumn;
   'document.collectionId': ObservationTableColumn;
   'unit.notes': ObservationTableColumn;
+  'unit.facts.fact': ObservationTableColumn;
+  'unit.facts.value': ObservationTableColumn;
   'document.secureLevel': ObservationTableColumn;
   'document.secureReasons': ObservationTableColumn;
   'document.sourceId': ObservationTableColumn;
   'document.linkings.collectionQuality': ObservationTableColumn;
+  'document.createdDate': ObservationTableColumn;
+  'document.modifiedDate': ObservationTableColumn;
+  'document.dateEdited': ObservationTableColumn;
+  'document.dateObserved': ObservationTableColumn;
+  'document.namedPlaceId': ObservationTableColumn;
+  'document.formId': ObservationTableColumn;
+  'document.keywords': ObservationTableColumn;
   'unit.det': ObservationTableColumn;
   'gathering.conversions.dayOfYearBegin': ObservationTableColumn;
   'gathering.conversions.dayOfYearEnd': ObservationTableColumn;
@@ -86,7 +97,8 @@ export const COLUMNS: IColumns = {
       'unit.linkings.taxon.nameSwedish,' +
       'unit.linkings.taxon.scientificName' +
       'unit.linkings.taxon.cursiveName',
-    width: 300
+    width: 300,
+    required: environment.type === Global.type.vir
   },
   'unit.taxonVerbatim': {
     name: 'unit.taxonVerbatim',
@@ -166,10 +178,12 @@ export const COLUMNS: IColumns = {
     label: 'result.unit.quality.taxon',
     sortable: false
   },
-  'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon'},
+  'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon', required: environment.type === Global.type.vir},
   'gathering.interpretations.countryDisplayname': {
     name: 'gathering.interpretations.countryDisplayname',
-    label: 'result.gathering.country'
+    label: 'result.gathering.country',
+    required: true,
+    sortable: false
   },
   'gathering.interpretations.biogeographicalProvinceDisplayname': {
     name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
@@ -179,7 +193,8 @@ export const COLUMNS: IColumns = {
   'gathering.interpretations.municipalityDisplayname': {
     name: 'gathering.interpretations.municipalityDisplayname',
     label: 'observation.form.municipality',
-    aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname'
+    aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname',
+    required: environment.type === Global.type.vir
   },
   'gathering.team.memberName': {
     name: 'gathering.team.memberName',
@@ -187,7 +202,7 @@ export const COLUMNS: IColumns = {
     aggregateBy: 'gathering.team.memberId,gathering.team.memberName'
   },
   'gathering.locality': {name: 'gathering.locality'},
-  'gathering.displayDateTime': {name: 'gathering.displayDateTime'},
+  'gathering.displayDateTime': {name: 'gathering.displayDateTime', required: environment.type === Global.type.vir},
   'gathering.interpretations.coordinateAccuracy': {
     name: 'gathering.interpretations.coordinateAccuracy',
     cellTemplate: 'numeric'
@@ -210,14 +225,21 @@ export const COLUMNS: IColumns = {
     cellTemplate: 'warehouseLabel',
     label: 'observation.filterBy.image'
   },
-  'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false},
+  'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false, required: true},
   'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.document.notes'},
-  'document.documentId': {name: 'document.documentId'},
+  'document.documentId': {name: 'document.documentId', required: environment.type === Global.type.vir},
   'unit.unitId': {name: 'unit.unitId'},
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
   'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel', sortable: false},
+  'document.createdDate': {name: 'document.createdDate', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
+  'document.modifiedDate': {name: 'document.modifiedDate', label: 'haseka.submissions.dateEdited', cellTemplate: 'date', sortable: false},
+  'document.dateObserved': {name: 'document.dateObserved', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
+  'document.dateEdited': {name: 'document.dateEdited', label: 'haseka.submissions.dateEdited', cellTemplate: 'date', sortable: false},
+  'document.namedPlaceId': {name: 'document.namedPlaceId', label: 'haseka.submissions.locality', cellTemplate: 'country', sortable: false},
+  'document.formId': {name: 'document.formId', label:'haseka.submissions.form', cellTemplate: 'formName', sortable: false},
+  'document.keywords': {name: 'document.keywords', label:'observation.active.keyword', cellTemplate: 'label', sortable: false},
   'unit.det': {name: 'unit.det'},
   'gathering.conversions.dayOfYearBegin': {name: 'gathering.conversions.dayOfYearBegin'},
   'gathering.conversions.dayOfYearEnd': {name: 'gathering.conversions.dayOfYearEnd'},
@@ -225,6 +247,15 @@ export const COLUMNS: IColumns = {
     name: 'unit.superRecordBasis',
     cellTemplate: 'warehouseLabel',
     label: 'observation.active.superRecordBasis'
+  },
+  'unit.facts.fact': {
+    name: 'unit.facts.fact',
+    prop: 'unit.facts.fact',
+    cellTemplate: 'label'
+  },
+  'unit.facts.value': {
+    name: 'unit.facts.value',
+    prop: 'unit.facts.value'
   },
   'oldestRecord': {name: 'oldestRecord', width: 85},
   'newestRecord': {name: 'newestRecord', width: 85},
@@ -276,7 +307,8 @@ export const COLUMNS: IColumns = {
   'gathering.conversions.euref': {
     name: 'gathering.conversions.euref',
     prop: 'gathering.conversions.euref.verbatim',
-    sortable: false
+    sortable: false,
+    required: environment.type === Global.type.vir
   },
   'gathering.conversions.wgs84': {
     name: 'gathering.conversions.wgs84',
@@ -284,8 +316,7 @@ export const COLUMNS: IColumns = {
     sortable: false
   },
   'gathering.interpretations.country': {
-    name: 'gathering.interpretations.country',
-    transform: 'label',
+    cellTemplate: 'label',
     label: 'result.gathering.country'
   },
   'sample.sampleId': {name: 'sample.sampleId', width: 300, sortable: false},
@@ -345,11 +376,12 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     'unit.taxon',
     'unit.abundanceString',
     'gathering.displayDateTime',
+    'gathering.interpretations.country',
     'gathering.interpretations.countryDisplayname',
     'gathering.interpretations.biogeographicalProvinceDisplayname',
-    'gathering.interpretations.municipalityDisplayname',
     'gathering.locality',
     'document.collectionId',
+    'document.documentId',
     'gathering.team',
   ];
 
@@ -388,7 +420,16 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.secureReasons'],
     COLUMNS['document.sourceId'],
     COLUMNS['document.linkings.collectionQuality'],
+    COLUMNS['document.createdDate'],
+    COLUMNS['document.modifiedDate'],
+    COLUMNS['document.dateEdited'],
+    COLUMNS['document.dateObserved'],
+    COLUMNS['document.namedPlaceId'],
+    COLUMNS['document.formId'],
+    COLUMNS['document.keywords'],
     COLUMNS['unit.det'],
+    COLUMNS['unit.facts.fact'],
+    COLUMNS['unit.facts.value'],
     COLUMNS['gathering.conversions.dayOfYearBegin'],
     COLUMNS['gathering.conversions.dayOfYearEnd'],
     COLUMNS['unit.superRecordBasis'],
@@ -487,10 +528,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
 
   getSelectFields(selected: string[], query?: any): string[] {
     const selects = super.getSelectFields(selected, query);
-    if (query) {
-      if (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken) {
-        selects.push('document.quality,gathering.quality,unit.quality');
-      }
+    if (query?.editorPersonToken || query?.observerPersonToken || query?.editorOrObserverPersonToken) {
+      selects.push('document.quality,gathering.quality,unit.quality');
     }
     return selects;
   }

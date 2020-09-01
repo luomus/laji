@@ -37,11 +37,15 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   @Output() dataSubmit = new EventEmitter();
   @Output() dataChange = new EventEmitter();
+  @Output() validationError = new EventEmitter();
 
   private lajiFormWrapper: any;
   private lajiFormWrapperProto: any;
   private _block = false;
   private settings: any;
+
+  static TOP_OFFSET = 50;
+  static BOTTOM_OFFSET = 61;
 
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
   @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
@@ -113,6 +117,10 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
+  popErrorListIfNeeded() {
+    this.lajiFormWrapper.app.refs.lajiform.popErrorListIfNeeded();
+  }
+
   private mount() {
     if (!this.formData || !this.formData.formData) {
       return;
@@ -166,12 +174,13 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           onSubmit: this._onSubmit.bind(this),
           onChange: this._onChange.bind(this),
           onSettingsChange: this._onSettingsChange.bind(this),
+          onValidationError: this._onValidationError.bind(this),
           settings: this.settings,
           apiClient: this.apiClient,
           lang: this.translate.currentLang,
           renderSubmit: false,
-          topOffset: 50,
-          bottomOffset: 61,
+          topOffset: LajiFormComponent.TOP_OFFSET,
+          bottomOffset: LajiFormComponent.BOTTOM_OFFSET,
           googleApiKey: Global.googleApiKey,
           notifier: {
             success: msg => this.toastsService.showSuccess(msg),
@@ -215,6 +224,12 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private _onError(error, info) {
     this.logger.error('LajiForm crashed', {error, reactInfo: info, userSettings: this.settings});
     this.errorModal.show();
+  }
+
+  private _onValidationError(errors) {
+    this.ngZone.run(() => {
+      this.validationError.emit(errors);
+    });
   }
 
   private unMount() {

@@ -16,5 +16,6 @@ export interface ObservationFormQuery {
   onlyFromCollectionSystems: boolean;
   asObserver: boolean;
   asEditor: boolean;
+  asNotEditorOrObserver: boolean;
   coordinatesInSource: boolean;
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import { DocumentNode } from 'graphql';
@@ -8,6 +8,7 @@ import { HistoryService } from '../shared/service/history.service';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { SearchQueryService } from './search-query.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
+import { PlatformService } from '../shared/service/platform.service';
 
 export interface IObservationData {
   units: {
@@ -33,11 +34,14 @@ export class ObservationDataService {
   constructor(
     private graphQLService: GraphQLService,
     private historyService: HistoryService,
-    private searchQueryService: SearchQueryService
+    private searchQueryService: SearchQueryService,
+    private platformService: PlatformService
   ) { }
 
-
   getData(query: WarehouseQueryInterface): Observable<IObservationData> {
+    if (this.platformService.isServer) {
+      return of(this.empty());
+    }
     query = this.searchQueryService.getQuery({
       ...query,
       cache: typeof query.cache === 'undefined' ? WarehouseApi.isEmptyQuery(query) : query.cache
@@ -59,12 +63,16 @@ export class ObservationDataService {
         });
         return res;
       }),
-      startWith({
-        units: {total: null},
-        species: {total: null},
-        private: {total: null}
-      }),
+      startWith(this.empty()),
     );
+  }
+
+  private empty() {
+    return {
+      units: {total: null},
+      species: {total: null},
+      private: {total: null}
+    };
   }
 
   private getGraphQuery(query: WarehouseQueryInterface): DocumentNode {

@@ -7,10 +7,20 @@
       ></laji-informal-group-select>
     </div>
   </div>
+  <div class="mt-6">
+    <h2 class="informal-group d-inline">
+      {{ searchQuery.query.informalGroupFilters | label }}
+    </h2>
+    <span class="species-count ml-2">
+      ({{ 'species.browse.list.count1' | translate }}
+      <laji-species-count [searchQuery]="searchQuery"></laji-species-count>
+      {{ 'species.browse.list.count2' | translate }})
+    </span>
+  </div>
 
   <div class="row">
     <div class="col-sm-12">
-      <lu-tabs [selectedIndex]="activeIndex" (select)="setActive($event)" style="margin-top: 24px; display:block;">
+      <lu-tabs [selectedIndex]="activeIndex" (selectedChange)="setActive($event)" style="margin-top: 24px; display:block;">
         <lu-tab [heading]="'species.images' | translate">
           <ng-container *ngIf="loadedTabs.isLoaded('images')">
             <laji-species-images [hidden]="activeIndex !== 0"
@@ -27,8 +37,6 @@
                               [visible]="activeIndex === 1"
                               [searchQuery]="searchQuery"
                               [showDownloadAndBrowse]="false"
-                              [countStartText]="'species.browse.list.count1' | translate"
-                              [countEndText]="'species.browse.list.count2' | translate"
             ></laji-species-list>
           </ng-container>
         </lu-tab>

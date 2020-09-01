@@ -18,6 +18,10 @@ import { AnnotationService } from '../../document-viewer/service/annotation.serv
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Annotation } from '../../../shared/model/Annotation';
 
+export enum SelectStyle {
+  basic,
+  advanced
+}
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -52,7 +56,10 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() skipBefore: string;
   @Input() open: boolean;
   @Input() disabled = false;
+  @Input() labelAsValue = false;
+  @Input() selectStyle = SelectStyle.advanced;
 
+  selectStyles = SelectStyle;
   lang: string;
   _options: SelectOptions[] = null;
   active = [];
@@ -141,8 +148,9 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
         } else {
           return ObservableOf(options);
         }
-      }))
-      .subscribe(options => {
+      }),
+      map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options)
+    ).subscribe(options => {
         if (this.firstOptions.length > 0) {
           this._options = options.sort((a, b) => {
             const hasA = this.firstOptions.indexOf(a.id) > -1;
@@ -230,7 +238,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
             map(tags => tags.map(t => ({id: t.id, value: MultiLangService.getValue(t.name as any, this.lang)})))
           );
         case 'MY.collectionID':
-          return this.collectionService.getAll(this.lang);
+          return this.collectionService.getAll(this.lang, true);
         case <any>Area.AreaType.Biogeographical:
           return this.areaService.getBiogeographicalProvinces(this.lang);
         case <any>Area.AreaType.Municipality:

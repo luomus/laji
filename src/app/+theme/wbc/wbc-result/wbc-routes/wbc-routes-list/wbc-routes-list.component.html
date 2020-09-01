@@ -22,8 +22,8 @@
 <ng-template let-value="value" let-row="row" #routeLink>
   <a
     *ngIf="value"
-    [routerLink]="['/theme/talvilintulaskenta/stats/routes', row['document.namedPlace.id'] | toQName] | localize"
-    (click)="$event.stopPropagation()"
+    [href]="'/theme/talvilintulaskenta/stats/routes/' + (row['document.namedPlace.id'] | toQName) | localize"
+    (click)="onRouteLinkClick($event, row['document.namedPlace.id'])"
     title="{{ value }}"
   >
     {{ value }}

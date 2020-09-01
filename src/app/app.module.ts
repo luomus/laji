@@ -7,7 +7,7 @@ import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { ILogger } from './shared/logger/logger.interface';
-import { routes } from './app-routes';
+import { AppRoutingModule } from './app-routing.modules';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LocalizeRouterService } from './locale/localize-router.service';
 import { environment } from '../environments/environment';
@@ -30,6 +30,9 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { RouterModule } from '@angular/router';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
+import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
+import { BrowserModule } from '@angular/platform-browser';
+import { LajiApiInterceptor } from './shared/service/laji-api.interceptor';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -41,9 +44,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 
 @NgModule({
   imports: [
+    BrowserModule.withServerTransition({appId: 'laji-app'}),
     AppComponentModule,
     GraphQLModule,
-    CommonModule,
     HttpClientModule,
     NgtUniversalModule,
     TranslateModule.forRoot({
@@ -53,11 +56,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
       }
     }),
     QuicklinkModule,
-    RouterModule.forRoot(routes, {
-      enableTracing: false,
-      preloadingStrategy: QuicklinkStrategy,
-      initialNavigation: 'enabled'
-    }),
+    AppRoutingModule,
     CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
@@ -77,6 +76,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: LajiApiInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true},
     {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},

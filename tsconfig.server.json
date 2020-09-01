@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app-server",
+    "module": "commonjs",
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@laji-map/*": ["src/app/shared-modules/laji-map-noop/*"],
+      "@laji-form/*": ["src/app/shared-modules/laji-form-noop/*"],
+      "@swimlane/ngx-charts": ["src/app/shared-modules/ngx-charts-module-noop/ngx-charts.module"]
+    }
+  },
+  "files": [
+    "src/main.server.ts",
+    "server.ts"
+  ],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": false,
+    "entryModule": "./src/app/app.server.module#AppServerModule"
+  }
+}
