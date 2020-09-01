@@ -13,7 +13,6 @@ import {DatatableColumn} from '../../../../shared-modules/datatable/model/datata
 export class ExpertiseFormComponent implements OnInit {
   @Input() taxonId = 'MX.37580';
   @Input() countThreshold = 50;
-  @Input() introText = '';
   @Input() set selectedTaxonIds(selectedTaxonIds: string[]) {
     this._seletedTaxonIds = selectedTaxonIds;
     this.updateSelected();
