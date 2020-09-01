@@ -216,6 +216,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   }
 
   ngOnInit() {
+    console.log('ciao')
     this.lang = this.translate.currentLang;
     this.initColumns();
     this.fetchPageGiorgio(this.page);
@@ -379,7 +380,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
 
   fetchPageGiorgio(page = 1) {
     this.query = {...this.query, ...this.overrideInQuery};
-
     if (!this.pageSize) {
       return;
     }
@@ -394,7 +394,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     this.loading = true;
     this.changeDetectorRef.markForCheck();
 
-    const listGiorgio$ = this.warehouseApi.warehouseQueryAggregateGet(
+    this.warehouseApi.warehouseQueryAggregateGet(
       this.query,
       [
       'document.createdDate',
@@ -418,6 +418,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     )
     .subscribe(data => {
       data = Array.from(new Set(data));
+      data = this.dedupeByKey(data, 'id');
       this.total.emit(data && data.length || 0);
       // data.total = data.length;
       this.result.results = data;
@@ -551,6 +552,14 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       },
       (err) => this.logger.error('Simple download failed', err));
   }
+
+  private dedupeByKey(arr, key) {
+    const temp = arr.map(el => el[key]);
+    return arr.filter((el, i) =>
+      temp.indexOf(el[key]) === i
+    );
+  }
+  
 
 }
 

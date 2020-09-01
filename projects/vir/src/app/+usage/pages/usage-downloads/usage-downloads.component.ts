@@ -6,11 +6,11 @@ import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'vir-usage-by-collection',
-  templateUrl: './usage-by-collection.component.html',
-  styleUrls: ['./usage-by-collection.component.scss'],
+  templateUrl: './usage-downloads.component.html',
+  styleUrls: ['./usage-downloads.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsageByCollectionComponent {
+export class UsageDownloadsComponent {
   downloadRequests$: Observable<IDownloadRequest[]>;
   constructor(
       private virDownloadRequestsService: VirDownloadRequestsService,

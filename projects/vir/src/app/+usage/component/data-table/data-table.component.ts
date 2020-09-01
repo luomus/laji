@@ -21,7 +21,7 @@ type TableType = 'downloads'|'people'|'user';
           <laji-datatable-header
                   [downloadText]="'haseka.submissions.download' | translate"
                   [downloadLoading]="downloadLoading"
-                  [showDownloadMenu]="true"
+                  [showDownloadMenu]="showDownloadMenu"
                   [showSettingsMenu]="false"
                   [count]="0"
                   [maxDownload]="10000"
@@ -45,8 +45,8 @@ type TableType = 'downloads'|'people'|'user';
                   [columns]="cols">
           </laji-datatable>
       </div>
-      <ng-template let-value="value" let-sort="sortFn" #downloadFileTpl>
-        <a [href]="'/api/file-download?id=' + value">{{'usage.dataDownloadLink' | translate}}</a>
+      <ng-template let-value="value" let-row="row" let-sort="sortFn" #downloadFileTpl>
+        <a [href]="'/api/file-download?id=' + value">{{ ('download.' + row.downloadType) | translate }}</a>
       </ng-template>
   `
 })
@@ -54,6 +54,9 @@ export class DataTableComponent implements AfterViewInit {
 
   @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
   @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
+
+  @Input() showDownloadMenu = true;
+
   downloadLoading: boolean;
 
   cols:  DatatableColumn[] = [];
@@ -88,11 +91,6 @@ export class DataTableComponent implements AfterViewInit {
       name: 'person',
       label: 'usage.person',
       cellTemplate: 'label',
-      canAutoResize: true
-    },
-    {
-      name: 'downloadType',
-      label: 'usage.downloadType',
       canAutoResize: true
     },
     {

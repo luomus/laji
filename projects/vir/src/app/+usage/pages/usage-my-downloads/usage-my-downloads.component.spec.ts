@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UsageByCollectionComponent } from './usage-by-collection.component';
+import { UsageMyDownloadsComponent } from './usage-my-downloads.component';
 
-describe('UsageByCollectionComponent', () => {
-  let component: UsageByCollectionComponent;
-  let fixture: ComponentFixture<UsageByCollectionComponent>;
+describe('UsageByPersonComponent', () => {
+  let component: UsageMyDownloadsComponent;
+  let fixture: ComponentFixture<UsageMyDownloadsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UsageByCollectionComponent ]
+      declarations: [ UsageMyDownloadsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UsageByCollectionComponent);
+    fixture = TestBed.createComponent(UsageMyDownloadsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

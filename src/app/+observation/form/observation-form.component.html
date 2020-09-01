@@ -87,7 +87,7 @@
           {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
     ]">
   </laji-select>
-  <div style="margin-top:20px">
+  <div style="margin-top:20px" *ngIf="advancedMode">
     <div>
       <label>{{ 'observation.maxOccurrenceFinland' | translate }}</label>
       <laji-info>{{ 'observation.info.maxOccurrenceFinland' | translate }}</laji-info>  </div>

@@ -3,12 +3,12 @@ import { Observable } from 'rxjs';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 
 @Component({
-  selector: 'vir-usage-by-user',
-  templateUrl: './usage-by-user.component.html',
-  styleUrls: ['./usage-by-user.component.scss'],
+  selector: 'vir-usage-my-downloads',
+  templateUrl: './usage-my-downloads.component.html',
+  styleUrls: ['./usage-my-downloads.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsageByUserComponent {
+export class UsageMyDownloadsComponent {
 
   downloadRequests$: Observable<IDownloadRequest[]>;
   constructor(

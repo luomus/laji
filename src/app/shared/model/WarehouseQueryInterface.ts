@@ -228,6 +228,7 @@ export interface WarehouseQueryInterface {
   anyHabitat?: Array<string>;
   effectiveTag?: Array<string>;
   formId?: string;
+  reliability?: Array<string>;
 }
 
 

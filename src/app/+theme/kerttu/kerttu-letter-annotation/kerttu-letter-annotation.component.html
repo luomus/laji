@@ -7,8 +7,10 @@
       [ngClass]="{'visibility-hidden': loadingLetters}"
       [template]="letterTemplate"
       [candidate]="letterCandidate"
+      [statusInfo]="statusInfo"
       (annotationChange)="onLetterAnnotationChange($event)"
       (skipLetterClick)="skipLetter()"
+      (backToPreviousCandidateClick)="goBackToPreviousCandidate()"
     ></laji-letter-annotation>
   </laji-spinner>
   <ng-container *ngIf="taxonExpertiseMissing">

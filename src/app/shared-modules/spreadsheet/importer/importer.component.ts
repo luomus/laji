@@ -44,7 +44,7 @@ export class ImporterComponent implements OnInit {
   @LocalStorage('importCombineBy', CombineToDocument.gathering) combineBy: CombineToDocument;
   @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
 
-  @Input() forms: string[] = environment.massForms || [];
+  @Input() forms: string[] = environment.massForms || [];
   @Input() allowedCombineOptions: CombineToDocument[];
 
   data: {[key: string]: any}[];
@@ -183,7 +183,7 @@ export class ImporterComponent implements OnInit {
           this.header = data.shift();
           this.data = data;
         }
-        if (FormService.hasFeature(this.form, Form.Feature.SecondaryCopy)) {
+        if (this.isSecondaryCopy()) {
           baseFields.push(SpreadsheetService.IdField);
           baseFields.push(SpreadsheetService.deleteField);
         }
@@ -438,11 +438,15 @@ export class ImporterComponent implements OnInit {
           if (success) {
             this.spreadsheetFacade.goToStep(Step.doneOk);
             this.valid = true;
-            this.uploadedFiles = this.uploadedFiles ? [...this.uploadedFiles, this.hash] : [this.hash];
+
+            if (!this.isSecondaryCopy()) {
+              this.uploadedFiles = this.uploadedFiles ? [...this.uploadedFiles, this.hash] : [this.hash];
+            }
+
             this.translateService.get('excel.import.done')
               .subscribe(msg => this.toastsService.showSuccess(msg));
           } else {
-            if (hadSuccess) {
+            if (hadSuccess && !this.isSecondaryCopy()) {
               this.partiallyUploadedFiles = this.partiallyUploadedFiles ? [...this.partiallyUploadedFiles, this.hash] : [this.hash];
             }
             this.spreadsheetFacade.goToStep(Step.doneWithErrors);
@@ -532,6 +536,10 @@ export class ImporterComponent implements OnInit {
     }
     this.spreadsheetFacade.goToStep(step);
     this.cdr.markForCheck();
+  }
+
+  private isSecondaryCopy() {
+    return FormService.hasFeature(this.form, Form.Feature.SecondaryCopy);
   }
 
   private getMappedValues(row, mapping, fields) {

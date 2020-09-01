@@ -29,7 +29,8 @@ export class InfoCardQueryService {
       taxonId: [taxonId],
       countryId: ['ML.206'],
       coordinateAccuracyMax: mapQuery ? 10000 : undefined,
-      recordQuality: ['NEUTRAL', 'COMMUNITY_VERIFIED', 'EXPERT_VERIFIED'],
+      reliability: ['RELIABLE', 'UNDEFINED'],
+      needsCheck: false,
       includeNonValidTaxa: false,
       cache: true
     };
