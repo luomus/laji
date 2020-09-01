@@ -217,7 +217,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
 
   ngOnInit() {
     this.lang = this.translate.currentLang;
-    this.query = {...this.query, ...this.overrideInQuery};
     this.initColumns();
     this.fetchPageGiorgio(this.page);
     
@@ -379,6 +378,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   }
 
   fetchPageGiorgio(page = 1) {
+    this.query = {...this.query, ...this.overrideInQuery};
     if (!this.pageSize) {
       return;
     }

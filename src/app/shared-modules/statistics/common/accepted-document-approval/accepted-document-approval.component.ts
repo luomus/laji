@@ -215,6 +215,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   }
 
   initDocumentDiff() {
+    
     this.formService.getForm(this.document.formID, this.translate.currentLang).subscribe(form => {
       const [differs, geometriesDiff, otherDiff] = this.checkDiff(form.excludeFromCopy);
       this.placesDiff = differs;

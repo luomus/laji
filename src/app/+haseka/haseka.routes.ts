@@ -78,7 +78,7 @@ export const hasekaRoutes: Routes = [
             pathMatch: 'full',
             canActivate: [OnlyLoggedIn],
             component: HaSeKaFormComponent,
-            canDeactivate: [DocumentDeActivateGuard],
+            //canDeactivate: [DocumentDeActivateGuard],
             data: {
               displayFeedback: false
             }
