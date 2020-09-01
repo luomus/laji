@@ -174,7 +174,7 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <div [hidden]="taxon.habitatOccurrenceCounts.length === 0"
+    <div [hidden]="taxon?.habitatOccurrenceCounts?.length === 0"
          class="panel panel-default"
          laji-panel
          [title]="'observation.active.anyHabitat' | translate"
@@ -205,12 +205,12 @@
       [showFooter]="false"
       [virtualScrolling]="false"
       [clientSideSorting]="true"
-      [count]="taxon.habitatOccurrenceCounts.length"
+      [count]="taxon?.habitatOccurrenceCounts?.length"
       [page]="1"
-      [pageSize]="taxon.habitatOccurrenceCounts.length"
+      [pageSize]="taxon?.habitatOccurrenceCounts?.length"
     ></laji-datatable>
     </div>
-    
+
     <div [hidden]="!filterByRecordBasisTotal"
          class="panel panel-default"
          laji-panel
