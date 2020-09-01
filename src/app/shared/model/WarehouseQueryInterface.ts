@@ -203,6 +203,7 @@ export interface WarehouseQueryInterface {
   observerPersonToken?: string;
   editorPersonToken?: string;
   editorOrObserverPersonToken?: string;
+  editorOrObserverIsNotPersonToken?: string;
   qualityIssues?: string;
   annotationType?: Array<string>;
   annotatedSameOrAfter?: string;

@@ -142,7 +142,8 @@ export class SearchQueryService implements SearchQueryInterface {
   private readonly obscure: Array<keyof WarehouseQueryInterface> = [
     'editorPersonToken',
     'observerPersonToken',
-    'editorOrObserverPersonToken'
+    'editorOrObserverPersonToken',
+    'editorOrObserverIsNotPersonToken'
   ];
 
   public static isEmpty(query: WarehouseQueryInterface, key: string) {
