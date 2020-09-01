@@ -64,7 +64,7 @@ export class NamedPlacesService {
             const msgKey = err.status === 404
               ? 'observation.form.placeNotFound'
               : 'haseka.form.genericError';
-            this.toastService.showInfo(this.translateService.instant(msgKey));
+            this.toastService.showWarning(this.translateService.instant(msgKey));
             return of(false);
           }),
           shareReplay(1)
