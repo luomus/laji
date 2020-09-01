@@ -859,7 +859,7 @@
   "observation.form.max.finland": "Taxon max observations from Finland",
   "observation.form.place": "Place",
   "observation.form.placeName": "Name",
-  "observation.form.placeNotFound": "Place not found. Try again.",
+  "observation.form.placeNotFound": "Place not found. Please try again.",
   "observation.form.preservedSpecimens": "Preserved specimens",
   "observation.form.qualityIssues": "Quality issues",
   "observation.form.qualityIssuesBOTH": "Included",
