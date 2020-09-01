@@ -9,7 +9,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
-import { UsersPipe } from 'app/shared/pipe/users.pipe';
+import { UsersPipe } from '../../shared/pipe/users.pipe';
 
 
 @Component({
@@ -24,12 +24,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     image: '',
     profileDescription: '',
     personalCollectionIdentifier: '',
-    capturerVerbatim: '',
-    intellectualOwner: '',
-    intellectualRights: undefined,
     friendRequests: [],
     friends: [],
-    blocked: []
+    blocked: [],
+    settings: {
+      capturerVerbatim: '',
+      intellectualOwner: '',
+      intellectualRights: undefined,
+    }
   };
 
   personsProfile: Profile = {};
@@ -59,6 +61,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(this.profile.settings['intellectualRights'])
     this.subProfile = this.route.params.pipe(
       tap(() => this.loading = true),
       map(params => params['userId']),
@@ -93,10 +96,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.userId = data.id;
           this.isCreate = !data.currentProfile;
           this.profile = data.profile || {};
-          this.profile.capturerVerbatim = this.profile.capturerVerbatim !== undefined ? this.profile.capturerVerbatim : this.userPipe.transform(this.profile.userID),
-          this.profile.intellectualOwner = this.profile.intellectualOwner !== undefined ? this.profile.intellectualOwner : this.userPipe.transform(this.profile.userID),
-          this.profile.intellectualRights = this.profile.intellectualRights !== undefined ?
-          this.profile.intellectualRights : Profile.IntellectualRightsEnum.IntellectualRightsCCBY,
+          if (!this.profile.settings) {
+            this.profile.settings = {
+              capturerVerbatim: '',
+              intellectualOwner: '',
+              intellectualRights: undefined,
+            }
+          }
+          this.profile.settings['capturerVerbatim'] = this.profile.settings && (this.profile.settings['capturerVerbatim'] || this.profile.settings['capturerVerbatim'] !== undefined) ? this.profile.settings['capturerVerbatim']  : this.userPipe.transform(this.profile.userID),
+          this.profile.settings['intellectualOwner'] = this.profile.settings && (this.profile.settings['intellectualOwner'] || this.profile.settings['intellectualOwner'] !== undefined) ? this.profile.settings.intellectualOwner : this.userPipe.transform(this.profile.userID),
+          this.profile.settings['intellectualRights'] = this.profile.settings && (this.profile.settings['intellectualRights'] || this.profile.settings['intellectualRights'] !== undefined) ?
+          this.profile.settings['intellectualRights'] : Profile.IntellectualRightsEnum.IntellectualRightsCCBY,
           this.personsProfile = data.currentProfile || {};
           this.loading = false;
           this.editing = false;
@@ -126,6 +136,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   saveProfile() {
+    this.loading = true;
     const method = this.isCreate ? 'personCreateProfileByToken' : 'personUpdateProfileByToken';
     this.personService[method](this.getProfile(), this.userService.getToken())
       .subscribe(
@@ -134,6 +145,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.profile = profile;
           this.personsProfile = profile;
           this.editing = false;
+          this.loading = false;
         },
         err => this.logger.warn('Failed to save profile', err)
       );
