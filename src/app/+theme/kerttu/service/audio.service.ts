@@ -11,6 +11,8 @@ export class AudioService {
   private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
   private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
+  private source: AudioBufferSourceNode;
+
   constructor(
     @Inject(WINDOW) private window: Window,
     private httpClient: HttpClient,
@@ -83,21 +85,26 @@ export class AudioService {
     return emptySegment;
   }
 
-  public createSource(buffer: AudioBuffer, frequencyRange?: number[]) {
-    const source = this.audioContext.createBufferSource();
-    source.buffer = buffer;
+  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): AudioBufferSourceNode {
+    if (this.source) {
+      this.source.stop(0);
+    }
+
+    this.source = this.audioContext.createBufferSource();
+    this.source.buffer = buffer;
 
     if (frequencyRange) {
       const highpassFilter = this.createFilter('highpass', frequencyRange[0]);
       const lowpassFilter = this.createFilter('lowpass', frequencyRange[1]);
-      source.connect(highpassFilter);
+      this.source.connect(highpassFilter);
       highpassFilter.connect(lowpassFilter);
       lowpassFilter.connect(this.audioContext.destination);
     } else {
-      source.connect(this.audioContext.destination);
+      this.source.connect(this.audioContext.destination);
     }
 
-    return source;
+    this.source.start(0, startTime);
+    return this.source;
   }
 
   public getTime() {

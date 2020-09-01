@@ -1,5 +1,11 @@
-:host {
-  height: 100%;
+:host, laji-spinner {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+lu-sidebar {
+  flex-grow: 1;
 }
 
 laji-info-card {

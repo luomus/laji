@@ -1,0 +1,42 @@
+<div routerLink="taxon/browse" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link" *lajiForTypes="['dev', 'prod', 'beta', 'embedded']">
+  <div class="img-container">
+    <img src="/static/images/icons/kotilo_1_sha.png">
+  </div>
+  <div class="nav-container">
+    <div class="nav-title">
+      {{ 'taxonomy.browseSpeciesPage' | translate }}
+    </div>
+    <div class="nav-description">
+      {{ 'taxonomy.browseSpeciesPage.intro' | translate}}
+    </div>
+  </div>
+</div>
+<div routerLink="taxon/list" [queryParams]="{ onlyFinnish: true }" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
+  <div class="img-container">
+    <img src="/static/images/icons/table.png">
+  </div>
+  <a class="nav-container">
+    <div class="nav-title">
+      {{ 'taxonomy.speciesPage' | translate }}
+    </div>
+    <div class="nav-description">
+      {{ 'taxonomy.speciesPage.intro' | translate }}
+    </div>
+  </a>
+</div>
+<div routerLink="taxon/MX.37600/taxonomy" [queryParams]="{ showTree: true }" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
+  <div class="img-container">
+    <img src="/static/images/icons/tree.png">
+  </div>
+  <a class="nav-container">
+    <div class="nav-title">
+      {{ 'taxonomy.taxonPage' | translate }}
+    </div>
+    <div class="nav-description">
+      {{ 'taxonomy.taxonPage.intro' | translate }}
+    </div>
+  </a>
+</div>
+<div>
+  <laji-omni-search (close)="onClose()" [placeholder]="'species.search' | translate"></laji-omni-search>
+</div>

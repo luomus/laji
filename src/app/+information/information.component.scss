@@ -1,27 +1,19 @@
 @import 'vars';
 
 :host {
-  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
-  z-index: auto;
+  flex-grow: 1;
 }
 
-@media only screen and (min-width : 768px) {
-  .more-info .media {
-    position: fixed;
-  }
-
-  #wrapper {
-    display: flex;
-  }
+lu-sidebar {
+  flex-grow: 1;
 }
 
 .breadcrumb {
   background-color: $neutral-3;
 }
 
-.laji-information {
-  max-width: 800px;
-  padding-bottom: 30px;
+main > div {
+  max-width: 1000px;
 }

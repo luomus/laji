@@ -87,7 +87,22 @@
           {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
     ]">
   </laji-select>
+  <div style="margin-top:20px" *ngIf="advancedMode">
+    <div>
+      <label>{{ 'observation.maxOccurrenceFinland' | translate }}</label>
+      <laji-info>{{ 'observation.info.maxOccurrenceFinland' | translate }}</laji-info>  </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <input type="number" name="occurrenceCountFinlandMax"
+                  class="form-control input-sm"
+                  placeholder="{{'observation.form.countMax' | translate}}"
+                  (ngModelChange)="onCountChange()"
+                  [(ngModel)]="query.occurrenceCountFinlandMax">
+      </div>
+    </div>
+  </div>
 </section>
+
 
 <!-- OWN OBSERVATIONS -->
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">

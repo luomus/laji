@@ -13,10 +13,10 @@ import { DocumentService } from '../../own-submissions/service/document.service'
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger';
 import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service'
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, flatMap, mergeMap } from 'rxjs/operators';
 import { Person } from '../../../shared/model/Person';
 import { Global } from '../../../../environments/global';
-import { of } from 'rxjs';
+import { of, forkJoin } from 'rxjs';
 // import { EventEmitter } from 'protractor';
 // import { EventEmitter } from 'redlock';
 
@@ -99,7 +99,7 @@ export class UserDocumentToolsComponent implements OnInit {
       this.cd.detectChanges();
     });
 
-    if (this._editors.indexOf(this._personID)!== -1){
+    if (this._editors.indexOf(this._personID)!== -1 || this._editors.length === 0){
       this.checkAdminRight();
     }
   }
@@ -205,15 +205,37 @@ export class UserDocumentToolsComponent implements OnInit {
   }
 
   private checkAdminRight() {
-    this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
+    /*this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
       map(document => document.creator),
       map(creator => this._personID === creator),
       catchError(() => of(false))
     ).subscribe(hasAdminRights => {
       this.hasAdminRights = hasAdminRights;
       this.cd.markForCheck();
-    });
+    });*/
+
+    const documentCreator$ = this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
+      map(document => document.creator),
+      map(creator => this._personID === creator),
+      catchError(() => of(false))
+    )
+
+    const documentEditor$ = this.hasEditRights ? of(true) : this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
+      map(document => document.editor),
+      map(editors => editors.indexOf(this._personID) !== -1),
+      catchError(() => of(false))
+    )
+
+    forkJoin(documentCreator$, documentEditor$).subscribe(([hasAdminRights, hasEditRights]) => {
+      this.hasAdminRights = hasAdminRights;
+      this.hasEditRights = hasEditRights;
+      if(this.hasEditRights) {
+        this.updateLink();
+      }
+      this.cd.markForCheck();
+    })
   }
+
 
   private updateLink() {
     if (!this.hasEditRights || !this._documentID || !this._formID) {

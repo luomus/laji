@@ -245,3 +245,12 @@
     width: 200px !important;
   }
 }
+
+.dropdown-menu {
+  border: unset;
+}
+
+.link.user > .glyphicon-triangle-bottom {
+  color: $primary-2;
+  font-size: $fs-1;
+}

@@ -20,6 +20,7 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
 import { PlatformService } from '../../../shared/service/platform.service';
+import { BrowserService } from '../../../shared/service/browser.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 
@@ -82,7 +83,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     private platformService: PlatformService,
     private logger: Logger,
     private filterService: FilterService,
-    private zone: NgZone
+    private zone: NgZone,
+    private browserService: BrowserService
   ) {}
 
   @Input() set height(height: string) {

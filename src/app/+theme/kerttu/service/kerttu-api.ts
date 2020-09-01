@@ -3,8 +3,20 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
-import {Step} from './kerttu.facade';
-import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterInfo} from '../model/letter';
+import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo} from '../model/letter';
+
+interface ILetterResponse {
+  statusInfo: ILetterStatusInfo;
+}
+interface ILetterTemplateResponse extends ILetterResponse {
+  template: ILetterTemplate;
+}
+interface ILetterCandidateResponse extends ILetterResponse {
+  candidate: ILetterCandidate;
+}
+interface ILetterAnnotationResponse extends ILetterResponse {
+  annotation: LetterAnnotation;
+}
 
 @Injectable()
 export class KerttuApi {
@@ -13,84 +25,73 @@ export class KerttuApi {
   constructor(protected httpClient: HttpClient) {
   }
 
-  public getStatus(personToken: string): Observable<number> {
-    const path = this.basePath + '/status/' + personToken;
-
-    return this.httpClient.get(path)
-      .pipe(
-        map((response: {status: number}) => {
-          return response.status;
-        })
-      );
-  }
-
-  public setStatus(personToken: string, status: Step): Observable<number> {
-    const path = this.basePath + '/status/' + personToken;
-
-    return this.httpClient.put(path, { status })
-      .pipe(
-        map((response: {status: number}) => {
-          return response.status;
-        })
-      );
-  }
-
-  public getLetterTemplate(personToken: string): Observable<ILetterTemplate> {
+  public getLetterTemplate(personToken: string): Observable<ILetterTemplateResponse> {
     const path = this.basePath + '/letter/template';
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
       .pipe(
-        map((response: ILetterTemplate) => {
+        map((response: ILetterTemplateResponse) => {
           return response;
         })
       );
   }
 
-  public getLetterCandidate(personToken: string, templateId: number): Observable<ILetterCandidate> {
+  public getLetterCandidate(personToken: string, templateId: number): Observable<ILetterCandidateResponse> {
     const path = this.basePath + '/letter/candidate/' + templateId;
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
       .pipe(
-        map((response: ILetterCandidate) => {
+        map((response: ILetterCandidateResponse) => {
           return response;
         })
       );
   }
 
-  public getNextLetterCandidate(personToken: string, templateId: number, candidateId: number): Observable<ILetterCandidate> {
+  public getNextLetterCandidate(personToken: string, templateId: number, candidateId: number): Observable<ILetterCandidateResponse> {
     const path = this.basePath + '/letter/nextCandidate/' + templateId + '/' + candidateId;
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get(path, { params })
       .pipe(
-        map((response: ILetterCandidate) => {
+        map((response: ILetterCandidateResponse) => {
           return response;
         })
       );
   }
 
-  public setLetterAnnotation(personToken: string, templateId: number, candidateId: number, annotation: LetterAnnotation):
-    Observable<{annotation: LetterAnnotation, info: ILetterInfo}> {
+  public getPreviousLetterCandidate(personToken: string, templateId: number, candidateId: number): Observable<ILetterCandidateResponse> {
+    const path = this.basePath + '/letter/previousCandidate/' + templateId + '/' + candidateId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get(path, { params })
+      .pipe(
+        map((response: ILetterCandidateResponse) => {
+          return response;
+        })
+      );
+  }
+
+  public setLetterAnnotation(personToken: string, templateId: number, candidateId: number, annotation: LetterAnnotation): Observable<ILetterAnnotationResponse> {
     const path = this.basePath + '/letter/annotation/' + templateId + '/' + candidateId;
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.put(path, { annotation }, { params })
       .pipe(
-        map((response: {annotation: LetterAnnotation, info: ILetterInfo}) => {
+        map((response: ILetterAnnotationResponse) => {
           return response;
         })
       );
   }
 
-  public skipLetterTemplate(personToken: string, templateId: number): Observable<ILetterTemplate> {
+  public skipLetterTemplate(personToken: string, templateId: number): Observable<ILetterTemplateResponse> {
     const path = this.basePath + '/letter/skipTemplate';
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.put(path, { templateId }, { params })
       .pipe(
-        map((response: ILetterTemplate) => {
+        map((response: ILetterTemplateResponse) => {
           return response;
         })
       );

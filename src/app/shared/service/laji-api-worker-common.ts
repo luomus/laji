@@ -54,7 +54,7 @@ export function hasPersonToken(request: any): boolean {
   return false;
 }
 
-export const PERSON_TOKEN = '__TOKEN___';
+export const PERSON_TOKEN = '__PERSON_TOKEN___';
 export const CLEAR_TOKEN_MSG = '__CLEAR_TOKEN__';
 export const REQUEST_MSG = '__REQUEST__';
 export const LOGOUT_MSG = '__LOGOUT__';

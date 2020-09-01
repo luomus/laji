@@ -83,11 +83,34 @@ $fs-3: 16px;
 $fs-4: 18px;
 $fs-5: 20px;
 $fs-6: 24px;
-$fs-7: 30px;
-$fs-8: 36px;
-$fs-9: 48px;
+$fs-7: 28px;
+$fs-8: 32px;
+$fs-9: 36px;
 
 /* SPACERS */
+
+$sp-1: 2px;
+$sp-2: 4px;
+$sp-3: 8px;
+$sp-4: 12px;
+$sp-5: 16px;
+$sp-6: 24px;
+$sp-7: 32px;
+$sp-8: 48px;
+$sp-9: 64px;
+
+$spacers: (
+  "0": 0px,
+  "1": $sp-1,
+  "2": $sp-2,
+  "3": $sp-3,
+  "4": $sp-4,
+  "5": $sp-5,
+  "6": $sp-6,
+  "7": $sp-7,
+  "8": $sp-8,
+  "9": $sp-9
+);
 
 $sp-btn: 0.5em 1em;
 $sm-btn: 0.3em 0.6em;

@@ -170,6 +170,7 @@ export interface WarehouseQueryInterface {
   individualId?: Array<string>;
   individualCountMin?: number;
   individualCountMax?: number;
+  occurrenceCountFinlandMax?: number;
   wgs84CenterPoint?: string;
   ykj100kmCenter?: string;
   ykj100km?: string;
@@ -226,6 +227,7 @@ export interface WarehouseQueryInterface {
   anyHabitat?: Array<string>;
   effectiveTag?: Array<string>;
   formId?: string;
+  reliability?: Array<string>;
 }
 
 

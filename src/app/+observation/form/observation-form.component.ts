@@ -96,7 +96,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     ],
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
     quality: ['recordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
@@ -275,6 +275,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   onCountChange() {
     this.formQuery['zeroObservations'] = this.query.individualCountMin === 0
       && this.query.individualCountMax === 0;
+    this.delayedQueryChange();
+  }
+
+  onMaxCountFinlandChange(){
+    if (this.query.occurrenceCountFinlandMax > 100) {
+      this.query.occurrenceCountFinlandMax = 100;
+    }
+
     this.delayedQueryChange();
   }
 

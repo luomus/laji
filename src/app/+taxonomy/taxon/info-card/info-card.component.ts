@@ -20,8 +20,12 @@ import { InfoCardQueryService } from './shared/service/info-card-query.service';
 import { LoadedElementsStore } from '../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { environment } from 'src/environments/environment';
+import { Global } from 'src/environments/global';
 
-const tabOrder = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
+const tabOrderProd = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
+                   'specimens', 'endangerment', 'invasive' ];
+const tabOrderDev = [ 'overview', 'identification', 'images', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
 const basePath = '/taxon';
 
@@ -32,12 +36,13 @@ const basePath = '/taxon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
-  loadedTabs: LoadedElementsStore = new LoadedElementsStore(tabOrder);
+  private tabOrder = environment.type === Global.type.dev ? tabOrderDev : tabOrderProd;
+  loadedTabs: LoadedElementsStore = new LoadedElementsStore(this.tabOrder);
 
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() set activeTab(tab: 'overview'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
+  @Input() set activeTab(tab: 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
     this.selectedTab = tab;
     this.loadedTabs.load(tab);
   }
@@ -90,7 +95,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.activeTab) {
       if (this.activeTab === 'observations') {
         this.updateRoute(this.taxon.id, 'occurrence', this.context, true);
-      } else if (!tabOrder.includes(this.activeTab)) {
+      } else if (!this.tabOrder.includes(this.activeTab)) {
         this.updateRoute(this.taxon.id, 'overview', this.context, true);
       }
     }

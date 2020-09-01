@@ -1,10 +1,10 @@
 <div id="species-table">
-  <div class="form-group">
+  <div class="form-group mb-0 mt-2">
     <div>
       <label for="speciesOrder">
         {{ 'species.order' | translate }}:
       </label>
-      <select id="speciesOrder" class="form-control" style="width: auto" [ngModel]="searchQuery.listOptions.sortOrder" (ngModelChange)="sortOrderChanged($event)">
+      <select id="speciesOrder" class="d-inline-block ml-2 form-control" style="width: auto" [ngModel]="searchQuery.listOptions.sortOrder" (ngModelChange)="sortOrderChanged($event)">
         <option [value]="'taxonomic'">
           {{ 'species.order.taxonomicOrder' | translate }}
         </option>
@@ -16,7 +16,7 @@
         </option>
       </select>
     </div>
-    <div class="counts">
+    <div *ngIf="countStartText" class="counts">
       <strong>
         {{ countStartText }}
         <laji-species-count [searchQuery]="searchQuery"></laji-species-count>

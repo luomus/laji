@@ -75,6 +75,7 @@ export class UserService {
   // Do not write to this variable in the server!
   @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
   @SessionStorage() private returnUrl: string;
+  @SessionStorage('retry', 0) private retry: number;
   private tabId: string;
   private mRandom: string;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
@@ -275,14 +276,16 @@ export class UserService {
   }
 
   private doBackgroundCheck(): Observable<string> {
-    if (!this.platformService.canUseWebWorkerLogin) {
+    if (!this.platformService.canUseWebWorkerLogin || this.retry > 0) {
       this.redirectToLogin();
       return of('');
     }
     return this.personApi.personFindByToken(PERSON_TOKEN).pipe(
+      tap(() => this.retry = 0),
       map(() => PERSON_TOKEN),
       catchError((e) => {
         if (e && e.status === 0) {
+          this.retry = 1;
           this.redirectToLogin();
           this.platformService.canUseWebWorkerLogin = false;
           return of('');
@@ -314,6 +317,7 @@ export class UserService {
     // Token can be removed from there afters a while
     this.updatePersistentState({...this.persistentState, isLoggedIn: false, token: ''} as any);
     this.updateState({..._state, ...this.persistentState, token: '', user: {}, settings: {}});
+    this.retry = 0;
   }
 
   private doUserSettingsState(id: string) {

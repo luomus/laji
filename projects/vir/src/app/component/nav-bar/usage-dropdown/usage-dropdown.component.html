@@ -1,0 +1,36 @@
+<div class="d-flex flex-nowrap mb-4">
+  <div class="img-container">
+    <img src="/static/images/icons/chart.svg">
+  </div>
+  <a routerLink="usage/downloads" (click)="onClose()" class="nav-container">
+    <div class="nav-title">
+      {{ 'usage.byCollection' | translate }}
+    </div>
+    <div class="nav-description">
+    </div>
+  </a>
+</div>
+<div class="d-flex flex-nowrap mb-4">
+  <div class="img-container">
+    <img src="/static/images/icons/person.svg">
+  </div>
+  <a routerLink="usage/by-organization" (click)="onClose()" class="nav-container">
+    <div class="nav-title">
+      {{ 'usage.byOrganization' | translate }}
+    </div>
+    <div class="nav-description">
+    </div>
+  </a>
+</div>
+<div class="d-flex flex-nowrap mb-2">
+  <div class="img-container">
+    <span class="glyphicon glyphicon-download-alt"></span>
+  </div>
+  <a routerLink="usage/my-downloads" (click)="onClose()" class="nav-container">
+    <div class="nav-title">
+      {{ 'usage.byUser' | translate }}
+    </div>
+    <div class="nav-description">
+    </div>
+  </a>
+</div>

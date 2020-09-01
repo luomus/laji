@@ -112,7 +112,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
     if (
       this.platformService.isServer ||
       !this.platformService.canUseWebWorkerLogin ||
-      !request.urlWithParams.startsWith(environment.apiBase)
+      !(request.urlWithParams.startsWith(environment.apiBase) || request.urlWithParams.startsWith(environment.kerttuApi))
     ) {
       return false;
     }

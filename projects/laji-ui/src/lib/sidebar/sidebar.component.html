@@ -18,6 +18,7 @@
 
 <ng-template #sidebar>
   <div class="sidebar"
+       *ngIf="displayNav"
        [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile, 'open': open}"
        [@sidebarOpen_wrapper]="{
          value: (dragging || preCheckScreenWidth) ? 'disabled' : (open ? 'open' : 'closed'),

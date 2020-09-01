@@ -120,6 +120,8 @@ export interface Taxonomy {
 
   nameAccordingTo?: string;
 
+  habitatOccurrenceCounts?: Array<any>;
+
   /**
    *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
    */
@@ -148,6 +150,8 @@ export interface Taxonomy {
   synonymOf?: Taxonomy;
 
   synonymNames?: string;
+
+  misappliedListNames?: string;
 
   synonyms?: Array<Taxonomy>;
 
@@ -231,6 +235,8 @@ export interface Taxonomy {
   alternativeVernacularName?: string[];
 
   misspelledNames?: string[];
+
+  misappliedNames?: string[];
 
   primaryHabitat?: Habitat;
 
