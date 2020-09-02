@@ -97,6 +97,7 @@ import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotati
 import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
 import { RequiresAudioSupportDirective } from './kerttu/directive/requires-audio-support.directive';
 import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-supported-error.component';
+import { SelectModule } from '../shared-modules/select/select.module';
 
 /* tslint:enable:max-line-length */
 
@@ -128,7 +129,8 @@ import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-su
     SpreadsheetModule,
     ThreeStateSwitchModule,
     PillListModule,
-    ChartModule
+    ChartModule,
+    SelectModule
   ],
   declarations: [
     HerpetologyComponent,

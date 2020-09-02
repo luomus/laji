@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
-import { SelectStyle } from '../search-filters/metadata-select/metadata-select.component';
+import { SelectStyle } from '../select/metadata-select/metadata-select.component';
 
 type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
 

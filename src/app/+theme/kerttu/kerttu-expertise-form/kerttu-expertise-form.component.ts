@@ -5,6 +5,9 @@ import {UserService} from '../../../shared/service/user.service';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {Profile} from '../../../shared/model/Profile';
 import {ComponentCanDeactivate} from '../../../shared/guards/document-de-activate.guard';
+import { SelectStyle } from '../../../shared-modules/select/metadata-select/metadata-select.component';
+import FinnishBirdSongRecognitionSkillLevelEnum = Profile.FinnishBirdSongRecognitionSkillLevelEnum;
+import BirdwatchingActivityLevelEnum = Profile.BirdwatchingActivityLevelEnum;
 
 @Component({
   selector: 'laji-kerttu-expertise-form',
@@ -14,13 +17,20 @@ import {ComponentCanDeactivate} from '../../../shared/guards/document-de-activat
 })
 export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   selectedTaxonIds: string[];
-  savedSelectedTaxonIds: string[];
+  private savedSelectedTaxonIds: string[];
+
+  finnishBirdSongRecognitionSkillLevel: string;
+  birdwatchingActivityLevel: string;
+
+  basicSelectStyle = SelectStyle.basic;
+
+  saving = false;
 
   private selectedTaxonIdsSub: Subscription;
   private selectedTaxonIdsChanged: Subject<string[]> = new Subject<string[]>();
   private saveProfileSub: Subscription;
 
-  private profile: Profile;
+  profile: Profile;
 
   private debounceTime = 1000;
 
@@ -33,6 +43,8 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
   ngOnInit() {
     this.selectedTaxonIdsSub = this.personService.personFindProfileByToken(this.userService.getToken()).subscribe((profile) => {
       this.profile = profile;
+      this.finnishBirdSongRecognitionSkillLevel = profile.finnishBirdSongRecognitionSkillLevel || '';
+      this.birdwatchingActivityLevel = profile.birdwatchingActivityLevel || '';
       this.selectedTaxonIds = profile.taxonExpertise || [];
       this.savedSelectedTaxonIds = this.selectedTaxonIds;
       this.cdr.markForCheck();
@@ -42,7 +54,7 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
       .pipe(
         debounceTime(this.debounceTime),
         switchMap(() => {
-          return this.updateTaxonExpertice(this.selectedTaxonIds);
+          return this.updateProfile(this.selectedTaxonIds);
         })
       ).subscribe(() => {
           this.cdr.markForCheck();
@@ -62,26 +74,50 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
   onSelectedTaxonIdsChange(selectedTaxonIds: string[]) {
     this.selectedTaxonIds = selectedTaxonIds;
     this.selectedTaxonIdsChanged.next(this.selectedTaxonIds);
+    this.updateSaving();
+  }
+
+  onSelectChange() {
+    this.selectedTaxonIdsChanged.next(this.selectedTaxonIds);
+    this.updateSaving();
   }
 
   canDeactivate() {
     if (this.saveProfileSub) {
       this.saveProfileSub.unsubscribe();
     }
-    return this.updateTaxonExpertice(this.selectedTaxonIds)
+    return this.updateProfile(this.selectedTaxonIds)
       .pipe(map(() => true));
   }
 
-  private updateTaxonExpertice(selectedTaxonIds): Observable<Profile> {
-    if (this.savedSelectedTaxonIds === selectedTaxonIds) {
+  private updateProfile(selectedTaxonIds): Observable<Profile> {
+    const finnishBirdSongRecognitionSkillLevel = this.finnishBirdSongRecognitionSkillLevel || undefined;
+    const birdwatchingActivityLevel = this.birdwatchingActivityLevel || undefined;
+
+    if (
+      this.savedSelectedTaxonIds === selectedTaxonIds &&
+      this.profile.finnishBirdSongRecognitionSkillLevel === finnishBirdSongRecognitionSkillLevel &&
+      this.profile.birdwatchingActivityLevel === birdwatchingActivityLevel) {
       return of (this.profile);
     }
 
     this.profile.taxonExpertise = selectedTaxonIds;
+    this.profile.finnishBirdSongRecognitionSkillLevel = finnishBirdSongRecognitionSkillLevel as FinnishBirdSongRecognitionSkillLevelEnum;
+    this.profile.birdwatchingActivityLevel = birdwatchingActivityLevel as BirdwatchingActivityLevelEnum;
+
     return this.personService.personUpdateProfileByToken(this.profile, this.userService.getToken()).pipe(
       tap(() => {
         this.savedSelectedTaxonIds = selectedTaxonIds;
+        this.updateSaving();
       })
     );
+  }
+
+  private updateSaving() {
+    const allSaved = this.savedSelectedTaxonIds === this.selectedTaxonIds
+      && (this.profile.finnishBirdSongRecognitionSkillLevel === this.finnishBirdSongRecognitionSkillLevel || undefined)
+      && (this.profile.birdwatchingActivityLevel === this.birdwatchingActivityLevel || undefined);
+
+    this.saving = !allSaved;
   }
 }

@@ -131,6 +131,7 @@
   <div>
     <p>{{ 'observation.intro.noOwnObservations' | translate }}</p>
     <label><laji-checkbox [value]="formQuery.asNotEditorOrObserver" (valueChange)="ownItemSelected(ownStatutes, false)"></laji-checkbox>{{ 'observation.form.excludeOwn' | translate }}</label>
+    <laji-info>{{ 'observation.info.asNotEditororObserver' | translate }}</laji-info>
   </div>
 
   <ng-container *ngIf="formQuery.asEditor || formQuery.asObserver || query.qualityIssues">

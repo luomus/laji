@@ -27,7 +27,7 @@ import { Form } from '../../../shared/model/Form';
 @Component({
   selector: 'laji-importer',
   templateUrl: './importer.component.html',
-  styleUrls: ['./importer.component.css'],
+  styleUrls: ['./importer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImporterComponent implements OnInit {

@@ -74,6 +74,7 @@ import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
 import { TaxonIdentificationComponent } from './taxon/info-card/taxon-identification/taxon-identification.component';
+import {SelectModule} from '../shared-modules/select/select.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -81,7 +82,7 @@ import { TaxonIdentificationComponent } from './taxon/info-card/taxon-identifica
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
     DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule, TechnicalNewsModule,
-    ChartModule, TechnicalNewsModule, InfoPageModule
+    ChartModule, TechnicalNewsModule, InfoPageModule, SelectModule
   ],
   providers: [
     TaxonomyApi,
