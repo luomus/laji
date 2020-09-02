@@ -9,7 +9,6 @@ import { ThreeStateMultiSwitchComponent } from './three-state-multi-switch/three
 import { SwitchRowComponent } from './three-state-multi-switch/switch-row/switch-row.component';
 import { InfoModule } from '../info/info.module';
 import { FilterOptionsPipe } from './filter-options.pipe';
-import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 import { HabitatSelectComponent } from './habitat-select/habitat-select.component';
 import { SelectModule } from '../select/select.module';
 
@@ -23,20 +22,17 @@ import { SelectModule } from '../select/select.module';
     InfoModule,
     SelectModule
   ],
-  providers: [ AdminStatusInfoPipe ] ,
   declarations: [
     ThreeStateMultiSwitchComponent,
     SwitchRowComponent,
     ObservationActiveComponent,
     SearchFiltersComponent,
     FilterOptionsPipe,
-    AdminStatusInfoPipe,
     HabitatSelectComponent
   ],
   exports: [
     ThreeStateMultiSwitchComponent,
     SearchFiltersComponent,
-    AdminStatusInfoPipe,
     HabitatSelectComponent,
     ObservationActiveComponent
   ]

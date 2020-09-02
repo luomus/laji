@@ -10,7 +10,7 @@ import { AreaService } from '../../../shared/service/area.service';
 import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
-import { AdminStatusInfoPipe } from '../../search-filters/admin-status-info.pipe';
+import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { Area } from '../../../shared/model/Area';
 import { BaseDataService } from '../../../graph-ql/service/base-data.service';
 import { SelectOptions } from '../select/select.component';
