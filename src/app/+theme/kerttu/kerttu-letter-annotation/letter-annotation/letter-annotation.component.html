@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <h2>
       <laji-taxon-name [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name>
-      <laji-info [html]="'theme.kerttu.info.taxon' | translate"></laji-info>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.taxon' | translate"></laji-info>
     </h2>
     <dl>
       <dt>{{ 'theme.kerttu.letter' | translate }}:</dt>
@@ -14,23 +14,24 @@
       <lu-button [disabled]="!candidate || !statusInfo?.hasPreviousCandidate" (click)="backToPreviousCandidateClick.emit()">
         Palaa edelliseen ehdokkaaseen
       </lu-button>
-      <laji-info [html]="'theme.kerttu.info.goBackToPreviousCandidate' | translate"></laji-info>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.goBackToPreviousCandidate' | translate"></laji-info>
     </div>
     <div>
       <lu-button [disabled]="!template" (click)="onSkipLetter()">
         {{ 'theme.kerttu.skipLetter' | translate }}
       </lu-button>
-      <laji-info [html]="'theme.kerttu.info.skipLetter' | translate"></laji-info>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.skipLetter' | translate"></laji-info>
     </div>
   </div>
 </div>
+
 <div id="letterAnnotationContainer" class="row">
-  <div class="col-md-12">
+  <div class="col-md-12" id="letterAnnotationButtons">
     <h3>
       {{ 'theme.kerttu.areLettersSame' | translate }}
       <laji-info [html]="'theme.kerttu.info.areLettersSame' | translate"></laji-info>
     </h3>
-    <div id="letterAnnotationButtons">
+    <div>
       <ng-container *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]">
         <lu-button [disabled]="!template || !candidate || loadingTemplate || loadingCandidate" (click)="onAnnotationChange(a)">
           {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
@@ -38,10 +39,11 @@
       </ng-container>
     </div>
   </div>
+
   <div class="col-md-12" id="letterAnnotationControls">
     <div>
       <label>{{ 'theme.kerttu.timeBuffer' | translate }}</label>
-      <laji-info [html]="'theme.kerttu.info.timeBuffer' | translate"></laji-info>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.timeBuffer' | translate"></laji-info>
       <div class="input-group" style="max-width: 110px">
         <select
           class="form-control input-sm"
@@ -55,7 +57,7 @@
     </div>
     <div>
       <label>{{ 'theme.kerttu.targetFrequency' | translate }}</label>
-      <laji-info [html]="'theme.kerttu.info.targetFrequency' | translate"></laji-info>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.targetFrequency' | translate"></laji-info>
       <bSwitch
         [switch-on-text]="'yes' | translate"
         [switch-off-text]="'no' | translate"
@@ -65,11 +67,12 @@
         [switch-base-class]="'bootstrap-switch'">
       </bSwitch>
     </div>
-    <div style="vertical-align: bottom">
+    <div style="vertical-align: bottom; display: block; margin-top: 5px">
       <lu-button [small]="true" (click)="setDefaultSettings()">Palauta oletusasetukset</lu-button>
-      <laji-info [html]="'theme.kerttu.info.setDefaultSettings' | translate"></laji-info>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.setDefaultSettings' | translate"></laji-info>
     </div>
   </div>
+
   <div class="col-md-6 col-md-push-6">
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
