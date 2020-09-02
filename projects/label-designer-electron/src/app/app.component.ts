@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
         .subscribe((response) => {
           this.pdfLoading = false;
           this.cdr.detectChanges();
-          FileSaver.saveAs(response, result.filename || 'labels.pdf');
+          FileSaver.saveAs(response, result.filename || 'labels.pdf');
         }, () => {
           this.pdfLoading = false;
           this.cdr.detectChanges();
@@ -110,7 +110,7 @@ export class AppComponent implements OnInit {
       ...this.defaultSetup,
       labelItems: [
         ...this.defaultSetup.labelItems.map((field, idx) => {
-          let target = fields[idx] || fields[0];
+          let target = fields[idx] || fields[0];
           const correctType = fields.find(f => f.type === field.fields[0].type);
           if (correctType) {
             target = correctType;

@@ -76,7 +76,7 @@
               <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
                 <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
                   <a dropdownToggle class="link user">
-                    <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
+                    <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
                     <i class="glyphicon glyphicon-user"></i>
                     <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span>
                   </a>

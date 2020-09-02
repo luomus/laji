@@ -61,7 +61,7 @@ export class FontSettingsComponent implements OnInit {
   change(field: keyof IFontStyle, value: string|number, forceNumeric = false): void {
     if (!value) {
       const result = {};
-      const currentSetting = this.fontSettings || {};
+      const currentSetting = this.fontSettings || {};
       Object.keys(currentSetting).forEach(key => {
         result[key] = key === field ? undefined : currentSetting[key];
       });

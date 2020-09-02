@@ -17,7 +17,7 @@ export class FilterService {
    * @param filterBy filter by these values
    */
   filter(value: any, filterBy: FilterByType): any {
-    if (!Array.isArray(value) || !filterBy) {
+    if (!Array.isArray(value) || !filterBy) {
       return value;
     }
     let needle: any = filterBy;

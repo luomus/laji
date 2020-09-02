@@ -227,7 +227,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onCheckBoxToggle(field, selectValue: any = true, isDirect = true) {
     if (isDirect) {
-      this.query[field] = typeof this.query[field] === 'undefined' || this.query[field] !== selectValue ? selectValue : undefined;
+      this.query[field] = typeof this.query[field] === 'undefined' || this.query[field] !== selectValue ? selectValue : undefined;
     } else {
       const value = this.query[field];
       this.query[field] = typeof value === 'undefined' ||  value !==  selectValue ? selectValue : undefined;
@@ -413,7 +413,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       let visible = false;
       for (let i = 0; i < this.sections[section].length; i++) {
         const value = this.query[this.sections[section][i]];
-        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
+        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
         }
@@ -427,7 +427,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       let visible = false;
       for (let i = 0; i < this.advancedSections[section].length; i++) {
         const value = this.query[this.advancedSections[section][i]];
-        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
+        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
         }
@@ -476,8 +476,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.controllingRisksOfInvasiveAlienSpecies'),
       allInvasiveSpecies: this.invasiveStatuses.length > 0 && this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
-      asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
-      asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
+      asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
+      asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
       asNotEditorOrObserver: !!query.editorOrObserverIsNotPersonToken,
       taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
@@ -523,7 +523,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
           }
           return;
         }
-        const administrativeStatusId = [...query.administrativeStatusId || []];
+        const administrativeStatusId = [...query.administrativeStatusId || []];
         if (administrativeStatusId.indexOf(value) === -1) {
           administrativeStatusId.push(value);
         }

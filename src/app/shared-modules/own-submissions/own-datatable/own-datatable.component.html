@@ -115,7 +115,7 @@
       </ng-template>
       <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
         <div class="buttons" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
-          <lu-button 
+          <lu-button
                 [role]="'success'"
                 (click)="showViewer(row.id)">
             <i class="glyphicon glyphicon-eye-open"></i>
@@ -131,7 +131,7 @@
         </lu-button>
       </div>
       <div class="buttons">
-        <lu-button *ngIf="(actions | includes:'edit')" 
+        <lu-button *ngIf="(actions | includes:'edit')"
               class="tableOwnSubmissions"
               [role]="'edit'"
               [routerLink]="row._editUrl | localize">
@@ -145,7 +145,7 @@
       </div>
 
         <!--<span *ngIf="showMakeTemplate(row)">
-          <lu-button 
+          <lu-button
                 [role]="'warning'"
                 (click)="makeTemplate(row)"
                 [tooltip]="'haseka.form.saveTemplate' | translate"
@@ -206,7 +206,7 @@
               <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
             </lu-button>
           </div>
-        <lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
+        <lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
                 [role]="'danger'"
                 [tooltip]="'friend.remove' | translate"
                 [placement]="'left'"

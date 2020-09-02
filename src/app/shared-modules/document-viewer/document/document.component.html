@@ -16,7 +16,7 @@
              [queryParams]="(document.formId | toQName) === collectionContestFormId && own ? {id: (document.documentId | toQName), showFacts: showFacts} : {uri: document.documentId, own: own, showFacts: showFacts}"
              target="_blank"
              [tooltip]="'haseka.submissions.toPrint' | translate">
-            {{ 'print' | translate }}
+            {{ 'print' | translate }}
             <img src="/static/images/icons/pdf_16x16.png">
           </a>
           <div>
@@ -75,7 +75,7 @@
                 {{ 'viewer.secured.partial' | translate }}
               </span>
               <span *ngIf="!document.secured; else isSecured">
-                {{ 'viewer.secured.none' | translate }}
+                {{ 'viewer.secured.none' | translate }}
               </span>
               <ng-template #isSecured>
                 <span *ngIf="document.public">

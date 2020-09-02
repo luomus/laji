@@ -213,7 +213,7 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public getQueryObject(query: WarehouseQueryInterface, skipParams: string[] = [], obscure = true) {
-    const result: {[field: string]: string | string[]}  = {};
+    const result: {[field: string]: string | string[]}  = {};
     if (query) {
       this.forEachType({
         skip: skipParams,

@@ -30,7 +30,7 @@ export class ExcelToolService {
     }).pipe(map(namedPlaces => namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)));
 
     const collection$ = (form: any) => {
-      const selected = ((form.options || {}).namedPlaceList || []);
+      const selected = ((form.options || {}).namedPlaceList || []);
       return this.namedPlacesService.getAllNamePlaces({
         collectionID: form.collectionID,
         includeUnits: form.namedPlaceOptions && form.namedPlaceOptions.includeUnits,

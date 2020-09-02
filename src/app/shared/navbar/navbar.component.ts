@@ -52,7 +52,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private browserService: BrowserService
   ) {
     this.devRibbon = !environment.production || environment.type === Global.type.beta;
-    this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
+    this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
   }
 
   ngOnInit() {

@@ -24,7 +24,7 @@ export class LocalizeGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | Observable<boolean> {
-    const lang = next.data['lang'] || 'fi';
+    const lang = next.data['lang'] || 'fi';
 
     if (this.translateService.getDefaultLang() !== 'fi' && lang !== 'fi') {
       this.translateService.setDefaultLang('fi');

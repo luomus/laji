@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="container-fluid" *lajiLoggedIn="false">
-      <h1>{{ 'haseka.title' | translate }}</h1>
-      <p>{{ 'haseka.pleaseLogin' | translate }}</p>
+      <h1>{{ 'haseka.title' | translate }}</h1>
+      <p>{{ 'haseka.pleaseLogin' | translate }}</p>
     </div>
     <div *lajiLoggedIn>
       <div *ngIf="(showMobileEntryPage$ | async)">

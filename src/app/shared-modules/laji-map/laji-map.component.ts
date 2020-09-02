@@ -62,7 +62,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   _legend: {color: string, label: string}[];
   fullScreen = false;
   @LocalStorage('onlycount') onlyCount;
-  
+
 
   private _settingsKey: keyof IUserSettings;
   private subSet: Subscription;
@@ -125,7 +125,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.subSet = this.userService.getUserSetting<Options>(this._settingsKey)
         .pipe(take(1))
         .subscribe(settings => {
-          this.userSettings = settings || {};
+          this.userSettings = settings || {};
           if (this.userSettings.tileLayers) {
             this.tileLayersChange.emit(this.userSettings.tileLayers);
           }

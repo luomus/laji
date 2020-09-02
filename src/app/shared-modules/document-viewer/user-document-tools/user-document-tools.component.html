@@ -1,6 +1,6 @@
 <ng-container>
   <a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm margin-right-10" *ngIf="(actions | includes:'edit') && hasEditRights && linkLocation" [tooltip]="'haseka.submissions.toEdit' | translate">
-    {{ 'np.edit' | translate }}
+    {{ 'np.edit' | translate }}
     <i class="glyphicon glyphicon-edit"></i>
   </a>
   <a (click)="makeTemplate()" class="btn btn-default btn-sm margin-right-10" *ngIf="(actions | includes:'template') && hasEditRights && linkLocation && showMakeTemplate(_formID)" [tooltip]="'haseka.form.saveTemplate' | translate">

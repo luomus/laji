@@ -31,7 +31,7 @@ export class IssueComponent implements OnChanges {
     this.error = {
       issue: this.issue.issue || this.issue.reliability || '',
       message: this.issue.message || '',
-      source: this.issue.source || ''
+      source: this.issue.source || ''
     };
   }
 

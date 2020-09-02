@@ -9,10 +9,10 @@
           <h3>
             {{ newsItem.title }}<br>
             <small>
-              {{ newsItem.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }}
+              {{ newsItem.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }}
               - {{ newsItem.author }}
               <span *ngIf="newsItem.modified">
-                ({{ 'news.updated' | translate }}: {{ newsItem.modified  | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})
+                ({{ 'news.updated' | translate }}: {{ newsItem.modified  | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})
               </span>
             </small>
           </h3>

@@ -43,8 +43,8 @@ export class IucnFooterComponent implements OnInit, OnDestroy {
     this.subRouteEvent = this.router.events.pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.onFrontPage = this.router.isActive('/', true)
-          || this.router.isActive('/en', true)
-          || this.router.isActive('/sv', true);
+          || this.router.isActive('/en', true)
+          || this.router.isActive('/sv', true);
       });
     this.subLangChange = this.translate.onLangChange.subscribe(() => {
       this.fetchTreeData();
