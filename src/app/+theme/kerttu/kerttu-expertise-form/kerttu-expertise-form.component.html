@@ -1,7 +1,10 @@
 <h1>{{ 'theme.kerttu.expertise' | translate }}</h1>
+<div>
+  <p>{{ 'theme.kerttu.expertise.intro' | translate }}</p>
+  <p>{{ 'theme.kerttu.expertise.goToNext' | translate }}<strong>{{ 'theme.kerttu.letterAnnotation' | translate }}.</strong></p>
+</div>
 
 <laji-expertise-form
-  [introText]="'theme.kerttu.expertise.intro' | translate"
   [selectedTaxonIds]="selectedTaxonIds"
   [saving]="selectedTaxonIds !== savedSelectedTaxonIds"
   (taxonIdSelect)="onSelectedTaxonIdsChange($event)"
