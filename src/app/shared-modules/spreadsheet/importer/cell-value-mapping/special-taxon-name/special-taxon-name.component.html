@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let value of invalidValues">
+  <ng-container *ngFor="let value of invalidValues; let i=index">
     <tr [ngClass]="{'hidden': hiddenValues[value]}">
       <td class="value-col">
         <div class="form-control-static">
@@ -24,6 +24,9 @@
           [allowInvalid]="true"
           [placeholder]="'Etsi haluttu laji'"
           [taxon]="value"
+          [index]="i"
+          [useValue]="useAsIs ? mapping[value] : ''"
+          (complete)="onSearchComplete()"
           (taxonSelect)="onTaxonSelect(value, $event)"
         ></laji-taxon-autocomplete>
       </td>
@@ -37,3 +40,6 @@
   </ng-container>
   </tbody>
 </table>
+<button class="btn btn-default pull-left lower-btn" [class.disabled]="!allCompleted" (click)="acceptAllAsIs()">
+  Tunnistamattomat lajinimet sellaisenaan
+</button>

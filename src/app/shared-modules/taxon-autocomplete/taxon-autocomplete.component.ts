@@ -3,7 +3,7 @@
  */
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable, of, of as ObservableOf } from 'rxjs';
+import { Observable, of, of as ObservableOf, timer } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Autocomplete } from '../../shared/model/Autocomplete';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
@@ -18,8 +18,10 @@ import 'rxjs-compat/add/operator/switchMap';
 })
 export class TaxonAutocompleteComponent implements AfterViewInit {
 
+  @Input() index = 0;
   @Input() limit = 10;
   @Input() placeholder = '';
+  @Input() taxon = '';
   @Input() allowInvalid = false;
   @Input() informalTaxonGroup = '';
   @Input() onlyFinnish = false;
@@ -29,6 +31,8 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
   @Input() clearValueOnSelect = true;
   @Input() allowEmpty = false;
   @Input() renderButton = true;
+  @Input() useValue = '';
+  @Output() complete = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
   dataSource: Observable<any>;
@@ -64,16 +68,12 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
         }
       });
     }
-  }
-
-  @Input()
-  set taxon(value: string) {
-    this.getTaxa(value, true)
+    this.getTaxa(this.taxon, true)
       .subscribe(result => {
         if (result && result.key) {
           this.onTaxonSelect(result);
         } else {
-          this.value = value;
+          this.value = this.taxon;
           this.cdr.markForCheck();
         }
       });
@@ -82,17 +82,18 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
   getTaxa(token: string, onlyExact = false): Observable<any> {
     this.loading = true;
     this.cdr.markForCheck();
-    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
-      q: token,
-      limit: '' + this.limit,
-      includePayload: true,
-      lang: this.translateService.currentLang,
-      matchType: LajiApi.AutocompleteMatchType.partial,
-      informalTaxonGroup: this.informalTaxonGroup,
-      excludeNameTypes: this.excludeNameTypes,
-      onlyFinnish: this.onlyFinnish,
-      onlyInvasive: this.onlyInvasive
-    }).pipe(
+    return timer(onlyExact ? this.index * 400 : 0).pipe(
+      switchMap(() => this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
+        q: token,
+        limit: '' + this.limit,
+        includePayload: true,
+        lang: this.translateService.currentLang,
+        matchType: LajiApi.AutocompleteMatchType.partial,
+        informalTaxonGroup: this.informalTaxonGroup,
+        excludeNameTypes: this.excludeNameTypes,
+        onlyFinnish: this.onlyFinnish,
+        onlyInvasive: this.onlyInvasive
+      })),
       map(data => {
         if (onlyExact) {
           if (data[0] && data[0].payload.matchType && data[0].payload.matchType === 'exactMatches' && (
@@ -117,6 +118,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
       tap(() => {
         this.loading = false;
         this.cdr.markForCheck();
+        this.complete.emit();
       }));
   }
 
