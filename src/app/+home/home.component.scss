@@ -120,6 +120,8 @@
   box-shadow: 0 2px 6px 0 rgba($primary-6, 0.4);
   border: 1px solid rgba($neutral-1, 0);
   cursor: pointer;
+  flex-basis: auto;
+  flex-grow: 1;
   span {
     color: $primary-5;
   }
