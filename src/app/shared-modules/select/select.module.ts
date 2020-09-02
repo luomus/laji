@@ -6,6 +6,7 @@ import { MetadataSelectComponent } from './metadata-select/metadata-select.compo
 import { SelectComponent } from './select/select.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { InfoModule } from '../info/info.module';
+import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 
 /* tslint:enable:max-line-length */
 
@@ -15,15 +16,18 @@ import { InfoModule } from '../info/info.module';
     SharedModule,
     InfoModule
   ],
+  providers: [ AdminStatusInfoPipe ] ,
   declarations: [
     MetadataSelectComponent,
     SelectComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    AdminStatusInfoPipe
   ],
   exports: [
     MetadataSelectComponent,
     SelectComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    AdminStatusInfoPipe
   ]
 })
 export class SelectModule { }
