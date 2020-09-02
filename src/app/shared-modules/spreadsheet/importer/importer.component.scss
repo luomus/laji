@@ -17,3 +17,10 @@
 .mapping-file-name {
   font-weight: bold;
 }
+
+:host ::ng-deep {
+ .lower-btn {
+   z-index: 1;
+   position: absolute;
+ }
+}
