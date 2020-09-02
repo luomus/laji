@@ -1,6 +1,6 @@
 <select [ngModel]="_value" (ngModelChange)="selected.emit($event)" class="form-control" [disabled]="disabled || (disabledWhenNoOptions && !options)">
   <ng-container *ngIf="_fields; else valueOption">
-    <option value="" disabled>{{ 'excel.map.col-select' | translate }}</option>
+    <option value="" disabled>{{ 'excel.map.col-select' | translate }}</option>
     <option [value]="skipValue">{{ 'ignore'| translate }}</option>
     <optgroup *ngFor="let group of fieldGroups | removeEmpty" [label]="fieldGroupsLabel[group]">
       <option *ngFor="let key of groups[group] | removeEmpty" [value]="key">

@@ -2,10 +2,10 @@
   <thead>
     <tr>
       <th>
-        {{ 'excel.map.value-user' | translate }}
+        {{ 'excel.map.value-user' | translate }}
       </th>
       <th>
-        {{ 'excel.map.value-mapped' | translate }}
+        {{ 'excel.map.value-mapped' | translate }}
       </th>
     </tr>
   </thead>
@@ -19,7 +19,7 @@
       <td>
         <laji-mapping-select
           [disabled]="validValues.length === 0"
-          [value]="currentValues && currentValues[value] || ''"
+          [value]="currentValues && currentValues[value] || ''"
           [options]="validValues"
           (selected)="valueMapped(value, $event)"></laji-mapping-select>
       </td>

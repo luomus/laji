@@ -15,13 +15,17 @@ img {
   padding: 10px;
 }
 
-.nav-container {
-  padding: 10px;
-  color: $neutral-8;
-  &:hover, &:focus {
+.container-link {
+  cursor: pointer;
+  &:hover .nav-container, &:focus .nav-container {
     color: $neutral-5;
     text-decoration: none;
   }
+}
+
+.nav-container {
+  padding: 10px;
+  color: $neutral-8;
   > * {
     color: inherit;
   }

@@ -120,6 +120,15 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.route.snapshot.queryParams.subscribe(queryParams => {
+      if (queryParams["editorOrObserverPersonToken"] === undefined &&
+      queryParams["observerPersonToken"] === undefined &&
+      queryParams["editorPersonToken"] === undefined &&
+      this.selectedTabIdx === 6
+      ) {
+        this.onSelect(0);
+      }
+    });
   }
 
   ngOnChanges() {

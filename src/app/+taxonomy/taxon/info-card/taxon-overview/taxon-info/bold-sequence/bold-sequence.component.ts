@@ -32,7 +32,7 @@ export class BoldSequenceComponent {
     this._scientificName = name;
     this.taxonApi.bold(name)
       .subscribe((result) => {
-        this.count = result['total_records'] || 0;
+        this.count = result['total_records'] || 0;
         this.link = this.getUrl(BoldSequenceComponent.resultUrl, name);
         this.cdr.markForCheck();
       }, (err) => console.log(err));

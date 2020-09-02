@@ -40,8 +40,8 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
   }
 
   changeValue(event) {
-    const trueValues = (this.trueValue || []).filter(item => item !== event.id);
-    const falseValues = (this.falseValue || []).filter(item => item !== event.id);
+    const trueValues = (this.trueValue || []).filter(item => item !== event.id);
+    const falseValues = (this.falseValue || []).filter(item => item !== event.id);
     if (event.value === true) {
       trueValues.push(event.id);
     } else if (event.value === false) {

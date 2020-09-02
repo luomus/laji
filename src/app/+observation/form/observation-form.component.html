@@ -82,52 +82,57 @@
     [title]="'observation.commonness' | translate"
     [info]="'observation.info.commonness' | translate"
     [options]="[
-          {id: 'MX.typeOfOccurrenceCommon', value: ('MX.typeOfOccurrenceCommon' | label)},
-          {id: 'MX.typeOfOccurrenceRare', value: ('MX.typeOfOccurrenceRare' | label)},
-          {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
+          {id: 'MX.typeOfOccurrenceCommon', value: ('MX.typeOfOccurrenceCommon' | label)},
+          {id: 'MX.typeOfOccurrenceRare', value: ('MX.typeOfOccurrenceRare' | label)},
+          {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
     ]">
   </laji-select>
-</section>
-
-<!--LIMIT OBSERVATION FINLAND-->
-<!--<section class="laji-panel" laji-panel [title]="'observation.form.max.finland' | translate" [autoToggle]="true" >
-  <div>
+  <div style="margin-top:20px" *ngIf="advancedMode">
     <div>
-      <label>{{ 'theme.count' | translate }}</label>
-      <laji-info>{{ 'observation.info.count' | translate }}</laji-info>
-    </div>
+      <label>{{ 'observation.maxOccurrenceFinland' | translate }}</label>
+      <laji-info>{{ 'observation.info.maxOccurrenceFinland' | translate }}</laji-info>  </div>
     <div class="row">
       <div class="col-sm-12">
-        <input type="number" name="countMaxFinland"
-                class="form-control input-sm"
-                placeholder="{{'observation.form.countMax' | translate}}"
-                (ngModelChange)="onCountChange()"
-                [(ngModel)]="query.countMaxFinland">
+        <input type="number" name="occurrenceCountFinlandMax"
+                  class="form-control input-sm"
+                  placeholder="{{'observation.form.countMax' | translate}}"
+                  (ngModelChange)="onCountChange()"
+                  [(ngModel)]="query.occurrenceCountFinlandMax">
       </div>
     </div>
   </div>
-</section>-->
+</section>
+
 
 <!-- OWN OBSERVATIONS -->
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
+  <fieldset>
+    <div>
+      <label>
+        <laji-checkbox [(value)]="formQuery.asObserver" (valueChange)="ownItemSelected('asObserver')"></laji-checkbox>
+        {{ 'observation.form.asObserver' | translate }}
+      </label>
+      <laji-info>
+        {{ 'observation.info.asObserver' | translate }}
+      </laji-info>
+    </div>
+    <div>
+      <label>
+        <laji-checkbox [(value)]="formQuery.asEditor" (valueChange)="ownItemSelected('asEditor')"></laji-checkbox>
+        {{ 'observation.form.asEditor' | translate }}
+      </label>
+      <laji-info>
+        {{ 'observation.info.asEditor' | translate }}
+      </laji-info>
+    </div>
+  </fieldset>
+
+  <hr>
   <div>
-    <label>
-      <laji-checkbox [(value)]="formQuery.asObserver" (valueChange)="ownItemSelected()"></laji-checkbox>
-      {{ 'observation.form.asObserver' | translate }}
-    </label>
-    <laji-info>
-      {{ 'observation.info.asObserver' | translate }}
-    </laji-info>
+    <p>{{ 'observation.intro.noOwnObservations' | translate }}</p>
+    <label><laji-checkbox [value]="formQuery.asNotEditorOrObserver" (valueChange)="ownItemSelected(ownStatutes, false)"></laji-checkbox>{{ 'observation.form.excludeOwn' | translate }}</label>
   </div>
-  <div>
-    <label>
-      <laji-checkbox [(value)]="formQuery.asEditor" (valueChange)="ownItemSelected()"></laji-checkbox>
-      {{ 'observation.form.asEditor' | translate }}
-    </label>
-    <laji-info>
-      {{ 'observation.info.asEditor' | translate }}
-    </laji-info>
-  </div>
+
   <ng-container *ngIf="formQuery.asEditor || formQuery.asObserver || query.qualityIssues">
     <laji-select
       [selected]="[query.qualityIssues]"
@@ -137,9 +142,9 @@
       [title]="'observation.form.qualityIssues' | translate"
       [info]="'observation.info.qualityIssues' | translate"
       [options]="[
-        {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
-        {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
-        {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
+        {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
+        {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
+        {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
       ]"></laji-select>
   </ng-container>
 </section>
@@ -391,8 +396,8 @@
       [title]="'observation.form.breedingSite' | translate"
       [info]="'observation.info.breedingSite' | translate"
       [options]="[
-        {id: true, value: ('observation.form.breedingSiteTrue' | translate)},
-        {id: false, value: ('observation.form.breedingSiteFalse' | translate)}
+        {id: true, value: ('observation.form.breedingSiteTrue' | translate)},
+        {id: false, value: ('observation.form.breedingSiteFalse' | translate)}
       ]"></laji-select>
   </div>
   <div>
@@ -442,8 +447,8 @@
     [title]="'observation.form.identify' | translate"
     [info]="'observation.info.identify' | translate"
     [options]="[
-        {id: true, value: ('observation.form.identify.true' | translate)},
-        {id: false, value: ('observation.form.identify.false' | translate)}
+        {id: true, value: ('observation.form.identify.true' | translate)},
+        {id: false, value: ('observation.form.identify.false' | translate)}
       ]"></laji-select>
 
   <laji-select
@@ -454,8 +459,8 @@
     [title]="'observation.form.needsCheck' | translate"
     [info]="'observation.info.needsCheck' | translate"
     [options]="[
-        {id: true, value: ('observation.form.needsCheck.true' | translate)},
-        {id: false, value: ('observation.form.needsCheck.false' | translate)}
+        {id: true, value: ('observation.form.needsCheck.true' | translate)},
+        {id: false, value: ('observation.form.needsCheck.false' | translate)}
       ]"></laji-select>
 
   <ng-container *ngIf="advancedMode || query.collectionQuality">
@@ -479,8 +484,8 @@
       [title]="'observation.form.annotated' | translate"
       [info]="'observation.info.annotated' | translate"
       [options]="[
-        {id: true, value: ('observation.form.annotatedTrue' | translate)},
-        {id: false, value: ('observation.form.annotatedFalse' | translate)}
+        {id: true, value: ('observation.form.annotatedTrue' | translate)},
+        {id: false, value: ('observation.form.annotatedFalse' | translate)}
       ]"></laji-select>
   </ng-container>
   <ng-container *ngIf="advancedMode || query.effectiveTag">
@@ -504,15 +509,15 @@
       [title]="'observation.form.qualityIssues' | translate"
       [info]="'observation.info.qualityIssues' | translate"
       [options]="[
-        {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
-        {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
-        {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
+        {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
+        {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
+        {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
       ]"></laji-select>
   </ng-container>
 </section>
 
 <!--Sources -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
+<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
   <laji-metadata-select
     [(ngModel)]="query.collectionId"
     (ngModelChange)="onQueryChange()"

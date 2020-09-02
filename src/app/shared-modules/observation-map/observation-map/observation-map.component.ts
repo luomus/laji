@@ -419,10 +419,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           this.clearDrawData();
           if (this.reset) {
             this.reset = false;
-            this.dataCache = data.featureCollection || data;
+            this.dataCache = data.featureCollection || data;
           } else {
             this.dataCache.features =
-              this.dataCache.features.concat((data.featureCollection || data).features);
+              this.dataCache.features.concat((data.featureCollection || data).features);
           }
           if (data.lastPage > page && (this.lastPage === 0 || page <= this.lastPage)) {
             page++;

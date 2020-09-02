@@ -23,7 +23,7 @@
               (click)="remove.emit(annotation)"
               [tooltip]="'annotation.deleteComment' | translate"
               placement="right"
-              *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted && showItem[i]"
+              *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted && showItem[i]"
               >
               <i class="glyphicon glyphicon-trash"></i>
             </button>
@@ -115,8 +115,8 @@
               </div>
               <span class="read-more" *ngIf="(annotation.notes.length > 250 && !open[i])" (click)="readMore(i)">Read more</span>
               <span class="read-more" *ngIf="open[i]" (click)="readMore(i)">Hide</span>
-            </div>  
-          </div>     
+            </div>
+          </div>
         </div>
       </div>
       <ng-template #dots>

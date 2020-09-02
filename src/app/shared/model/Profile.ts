@@ -84,4 +84,33 @@ export interface Profile {
    * Settings for the user
    */
   settings?: any;
+
+    /**
+   * Name of the data owner;
+   */
+  capturerVerbatim?: string;
+
+  /**
+   * Name of the data owner;
+   */
+  intellectualOwner?: string;
+  /**
+   * License which is used when publishing data that belongs to this media.
+   */
+  intellectualRights?: Profile.IntellectualRightsEnum;
+}
+
+export namespace Profile {
+  export type IntellectualRightsEnum =
+  'MY.intellectualRightsCC-BY'
+  | 'MY.intellectualRightsCC0'
+  | 'MY.intellectualRightsPD'
+  | 'MY.intellectualRightsARR';
+  export const IntellectualRightsEnum = {
+  IntellectualRightsCCBY: 'MY.intellectualRightsCC-BY' as IntellectualRightsEnum,
+  IntellectualRightsCC0: 'MY.intellectualRightsCC0' as IntellectualRightsEnum,
+  IntellectualRightsPD: 'MY.intellectualRightsPD' as IntellectualRightsEnum,
+  IntellectualRightsARR: 'MY.intellectualRightsARR' as IntellectualRightsEnum
+  };
+
 }

@@ -220,8 +220,8 @@ export class UserDocumentToolsComponent implements OnInit {
       catchError(() => of(false))
     )
 
-    const documentEditor$ = this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
-      map(document => document.editors),
+    const documentEditor$ = this.hasEditRights ? of(true) : this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
+      map(document => document.editor),
       map(editors => editors.indexOf(this._personID) !== -1),
       catchError(() => of(false))
     )
@@ -238,7 +238,7 @@ export class UserDocumentToolsComponent implements OnInit {
 
 
   private updateLink() {
-    if (!this.hasEditRights || !this._documentID || !this._formID) {
+    if (!this.hasEditRights || !this._documentID || !this._formID) {
       return;
     }
     this.linkLocation = this.formService.getEditUrlPath(this._formID, this._documentID);

@@ -170,7 +170,7 @@ export interface WarehouseQueryInterface {
   individualId?: Array<string>;
   individualCountMin?: number;
   individualCountMax?: number;
-  /*countMaxFinland?: number;*/ /* task #173499442 */
+  occurrenceCountFinlandMax?: number;
   wgs84CenterPoint?: string;
   ykj100kmCenter?: string;
   ykj100km?: string;
@@ -203,6 +203,7 @@ export interface WarehouseQueryInterface {
   observerPersonToken?: string;
   editorPersonToken?: string;
   editorOrObserverPersonToken?: string;
+  editorOrObserverIsNotPersonToken?: string;
   qualityIssues?: string;
   annotationType?: Array<string>;
   annotatedSameOrAfter?: string;
@@ -227,6 +228,7 @@ export interface WarehouseQueryInterface {
   anyHabitat?: Array<string>;
   effectiveTag?: Array<string>;
   formId?: string;
+  reliability?: Array<string>;
 }
 
 

@@ -63,6 +63,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     onlyFromCollectionSystems: undefined,
     asEditor: false,
     asObserver: false,
+    asNotEditorOrObserver: false,
     taxonUseAnnotated: true,
     taxonIncludeLower: true,
     coordinatesInSource: false,
@@ -72,6 +73,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   drawing = false;
   drawingShape: string;
   mediaStatutes: string[] = [];
+  ownStatutes: string[] = [];
 
   areaType = Area.AreaType;
   dataSource: Observable<any>;
@@ -83,7 +85,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   visibleAdvanced: {[key in keyof ISections]?: boolean} = {};
 
   sections: ISections = {
-    own: ['observerPersonToken', 'editorOrObserverPersonToken', 'editorPersonToken'],
+    own: ['observerPersonToken', 'editorOrObserverPersonToken', 'editorPersonToken', 'editorOrObserverIsNotPersonToken'],
     time: ['time', 'season', 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore', 'loadedSameOrAfter', 'loadedSameOrBefore'],
     place: [
       'countryId',
@@ -96,7 +98,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     ],
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', /*'countMaxFinland',*/ 'individualCountMin', 'individualCountMax'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
     quality: ['recordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
@@ -225,7 +227,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onCheckBoxToggle(field, selectValue: any = true, isDirect = true) {
     if (isDirect) {
-      this.query[field] = typeof this.query[field] === 'undefined' || this.query[field] !== selectValue ? selectValue : undefined;
+      this.query[field] = typeof this.query[field] === 'undefined' || this.query[field] !== selectValue ? selectValue : undefined;
     } else {
       const value = this.query[field];
       this.query[field] = typeof value === 'undefined' ||  value !==  selectValue ? selectValue : undefined;
@@ -278,13 +280,13 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedQueryChange();
   }
 
-  /*onMaxCountFinlandChange(){
-    if (this.query.countMaxFinland > 100) {
-      this.query.countMaxFinland = 100;
+  onMaxCountFinlandChange(){
+    if (this.query.occurrenceCountFinlandMax > 100) {
+      this.query.occurrenceCountFinlandMax = 100;
     }
 
     this.delayedQueryChange();
-  }*/
+  }
 
   onHabitatChange(habitats: any) {
     this.query.primaryHabitat = habitats.primaryHabitat;
@@ -302,13 +304,50 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  ownItemSelected() {
-    if (!this.formQuery.asEditor || !this.formQuery.asObserver) {
+  ownItemSelected(field, selectValue: any = true) {
+    /*if (!this.formQuery.asEditor || !this.formQuery.asObserver) {
       delete this.query.editorOrObserverPersonToken;
     }
     if (this.formQuery.asEditor || this.formQuery.asObserver) {
       this.query.qualityIssues = 'BOTH';
+    }*/
+
+    this.ownStatutes = this.query.editorPersonToken && this.query.observerPersonToken  ? ['asEditor', 'asObserver'] :
+    (this.query.editorPersonToken ? ['asEditor'] : (this.query.observerPersonToken ? ['asObserver'] : []));
+
+    if (Array.isArray(field)) {
+      if (selectValue === true) {
+        this.formQuery.asEditor = undefined;
+        this.formQuery.asObserver = undefined;
+        this.formQuery.asNotEditorOrObserver = true;
+        this.ownStatutes = this.ownStatutes.length === 2 ? [] : ['asEditor', 'asObserver'];
+      } else {
+        this.formQuery.asEditor = undefined;
+        this.formQuery.asObserver = undefined;
+        this.formQuery.asNotEditorOrObserver = this.formQuery.asNotEditorOrObserver ? undefined : true;
+        this.query.qualityIssues = undefined;
+        this.ownStatutes = selectValue ? this.ownStatutes : [] ;
+      }
+    } else {
+    if (this.ownStatutes.length === 0) {
+      this.formQuery.asEditor = undefined;
+      this.formQuery.asObserver = undefined;
     }
+    if (this.ownStatutes.indexOf(field) === -1) {
+      this.ownStatutes.push(field);
+      this.formQuery.asNotEditorOrObserver = undefined;
+    } else {
+      const index = this.ownStatutes.indexOf(field);
+      this.ownStatutes.splice(index, 1);
+    }
+    this.ownStatutes.forEach(element => {
+      this.formQuery[element] = true;
+    });
+
+    if (this.ownStatutes.length === 2) {
+      this.query.qualityIssues = 'BOTH';
+    }
+  }
     this.onFormQueryChange();
   }
 
@@ -354,6 +393,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onQueryChange() {
+    console.log(this.query);
     this.queryChange.emit(this.query);
     this.updateVisibleAdvancedSections();
   }
@@ -373,7 +413,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       let visible = false;
       for (let i = 0; i < this.sections[section].length; i++) {
         const value = this.query[this.sections[section][i]];
-        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
+        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
         }
@@ -387,7 +427,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       let visible = false;
       for (let i = 0; i < this.advancedSections[section].length; i++) {
         const value = this.query[this.advancedSections[section][i]];
-        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
+        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
         }
@@ -436,8 +476,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.controllingRisksOfInvasiveAlienSpecies'),
       allInvasiveSpecies: this.invasiveStatuses.length > 0 && this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
-      asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
-      asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
+      asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
+      asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
+      asNotEditorOrObserver: !!query.editorOrObserverIsNotPersonToken,
       taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
       coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates === 'REPORTED_VALUE'
@@ -463,6 +504,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
     query.editorPersonToken = formQuery.asEditor ? ObservationFacade.PERSON_TOKEN : undefined;
     query.observerPersonToken = formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;
+    query.editorOrObserverIsNotPersonToken = formQuery.asNotEditorOrObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
     query.sourceOfCoordinates = formQuery.coordinatesInSource ? 'REPORTED_VALUE' : undefined;
@@ -481,7 +523,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
           }
           return;
         }
-        const administrativeStatusId = [...query.administrativeStatusId || []];
+        const administrativeStatusId = [...query.administrativeStatusId || []];
         if (administrativeStatusId.indexOf(value) === -1) {
           administrativeStatusId.push(value);
         }

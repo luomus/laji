@@ -99,6 +99,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @Input()
   set activeTab(tab: string) {
     this._activeTab = tab;
+    this.browserService.triggerResizeEvent();
   }
 
   get activeTab(): string {

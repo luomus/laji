@@ -35,7 +35,7 @@ export class ErrorListComponent implements OnInit {
           default:
             errors.push({
               field: 'id',
-              errors: [data.statusText || this.translateService.instant('haseka.form.genericError')]
+              errors: [data.statusText || this.translateService.instant('haseka.form.genericError')]
             });
         }
       } else {

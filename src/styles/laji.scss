@@ -41,6 +41,10 @@ p, li, h1, h2, h3, h4, h5, h6, blockquote, caption {
   clear: both;
 }
 
+img {
+  max-width: 100%;
+}
+
 laji-locale-fi,
 laji-locale-en,
 laji-locale-sv,
@@ -762,6 +766,7 @@ body > .ui-select-bootstrap.open {
 }
 
 /** datatable global styling **/
+
 .ngx-datatable.material {
   box-shadow: none;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -805,6 +810,7 @@ body > .ui-select-bootstrap.open {
   top: 13px;
   font-size: 10px;
 }
+
 
 /** Tabs **/
 

@@ -322,8 +322,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   private setLangParams(value: string) {
-    return (value || '')
-      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
+    return (value || '')
+      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
   }
 
   private setHabitatColumn(data: PagedResult<any>, value: string): PagedResult<any> {
@@ -331,7 +331,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       if (item.unit.facts.fact === 'http://tun.fi/MY.habitatIUCN') {
         delete item.unit.facts.fact;
         return item;
-      }      
+      }
     })
     data.results = filter;
     data.total = filter.length;

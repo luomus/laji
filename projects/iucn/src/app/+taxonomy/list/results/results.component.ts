@@ -162,7 +162,7 @@ export class ResultsComponent implements OnChanges {
       checklistVersion: this.checklist,
       id: this.query.taxon,
       redListEvaluationGroups: this.query.redListGroup,
-      'latestRedListEvaluation.redListStatus': (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
+      'latestRedListEvaluation.redListStatus': (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
       [this.query.onlyPrimaryReason ?
         'latestRedListEvaluation.primaryEndangermentReason' : 'latestRedListEvaluation.endangermentReasons']: this.query.reasons,
       [this.query.onlyPrimaryHabitat ?
@@ -292,7 +292,7 @@ export class ResultsComponent implements OnChanges {
     const statusField = 'latestRedListEvaluation.redListStatus';
     const query: any = {
       ...this.baseQuery,
-      [statusField]: this.baseQuery[statusField] || this.resultService.habitatStatuses.join(','),
+      [statusField]: this.baseQuery[statusField] || this.resultService.habitatStatuses.join(','),
       aggregateBy: primaryField  + ',' + statusField + '=' + primaryField + ';' + allField + ',' + statusField + '=' + allField,
       aggregateSize: 10000
     };
@@ -463,7 +463,7 @@ export class ResultsComponent implements OnChanges {
 
   private initSpeciesListQuery(): void  {
     const cacheKey = 'species';
-    const query = this.getSpeciesQuery(this.query.page || '1');
+    const query = this.getSpeciesQuery(this.query.page || '1');
 
     const currentQuery = JSON.stringify(query);
     this.speciesQuery$ = this.hasCache(cacheKey, currentQuery) ?
@@ -542,7 +542,7 @@ export class ResultsComponent implements OnChanges {
           map(data => data.aggregations['a'].reduce((cumulative: {}, current) => {
             const val = current.values;
             const status = val[statusField];
-            const name = val[groupField] || (
+            const name = val[groupField] || (
               val[scientificNameField] && val[vernacularNameField] ?
                 val[vernacularNameField] + ', ' + val[scientificNameField] :
                 val[scientificNameField] || val[vernacularNameField]
@@ -618,7 +618,7 @@ export class ResultsComponent implements OnChanges {
   newFields(event: ISelectFields[]) {
     this.queryChange.emit({
       ...this.query,
-      speciesFields: (event || []).map(e => e.key).join(',')
+      speciesFields: (event || []).map(e => e.key).join(',')
     });
   }
 
@@ -630,7 +630,7 @@ export class ResultsComponent implements OnChanges {
       const key = this.exportKeyMap[field.key] || field.key;
       const label = field.label;
 
-      columns.push((!this.exportTemplates[key] ? this.taxonomyColumns.getColumn(key) : false) || {
+      columns.push((!this.exportTemplates[key] ? this.taxonomyColumns.getColumn(key) : false) || {
         name: key,
         cellTemplate: this.exportTemplates[key],
         label: label

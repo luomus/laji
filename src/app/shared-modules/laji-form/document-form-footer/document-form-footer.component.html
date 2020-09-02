@@ -1,4 +1,4 @@
-<div class='form-footer' *ngIf="_admin || (_form && !_locked)">
+<div class='form-footer' *ngIf="_admin || (_form && !_locked)">
   <div class="lock-button" *ngIf="_admin && _locked !== undefined">
     <ng-container *ngIf="_locked; else open">
       <button type="button" [disabled]="saving" class="btn btn-danger btn-sm" (click)="lock.emit(false)"><i class="fa fa-lock"></i></button>
@@ -7,8 +7,9 @@
       <button type="button" [disabled]="saving" class="btn btn-success btn-sm" (click)="lock.emit(true)"><i class="fa fa-unlock"></i></button>
     </ng-template>
   </div>
-  <button *ngIf="show.save" class="btn btn-success btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
-  <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
+  <button *ngIf="show.save && !template" class="btn btn-success btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
+  <button *ngIf="show.temp && !template" class="btn btn-warning btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
+  <button *ngIf="template" class="btn btn-success btn-sm" [disabled]="saving || this.disableIfOnlyWarnings()" type="submit" (click)="submitTemplate.emit()">{{ 'haseka.form.saveTemplate' | translate }}</button>
   <div [ngSwitch]="status" class="flex-grow status">
     <div *ngSwitchCase="'success'" class="success">
       {{ 'haseka.form.success' | translate }}

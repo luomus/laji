@@ -182,7 +182,7 @@
           <div [hidden]="!hasMonthDayData"
                 class="panel panel-default"
                 laji-panel
-                [title]="'observation.results.monthDayChart' | translate"
+                [title]="'observation.results.monthDayChart' | translate"
                 [open]="true"
                 [autoToggle]="true"
           >
@@ -222,8 +222,8 @@
       [visible]="true"
       [pageSize]="100"
       [height]="'calc(80vh - 40px)'"
+      [overrideInQuery]="{collectionIdNot: ['HR.3211']}"
       [query]="query"
-      [overrideInQuery]="{collectionNotId: ['HR.3211']}"
       [showSettingsMenu]="false"
       [showRowAsLink]="false"
       [isAggregate]="true"

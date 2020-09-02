@@ -115,7 +115,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'dayOfYearEnd',
     'individualCountMin',
     'individualCountMax',
-    /*'countMaxFinland',*/
+    'occurrenceCountFinlandMax',
     'coordinateAccuracyMax',
     'page',
     'pageSize'
@@ -142,7 +142,8 @@ export class SearchQueryService implements SearchQueryInterface {
   private readonly obscure: Array<keyof WarehouseQueryInterface> = [
     'editorPersonToken',
     'observerPersonToken',
-    'editorOrObserverPersonToken'
+    'editorOrObserverPersonToken',
+    'editorOrObserverIsNotPersonToken'
   ];
 
   public static isEmpty(query: WarehouseQueryInterface, key: string) {
@@ -212,7 +213,7 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public getQueryObject(query: WarehouseQueryInterface, skipParams: string[] = [], obscure = true) {
-    const result: {[field: string]: string | string[]}  = {};
+    const result: {[field: string]: string | string[]}  = {};
     if (query) {
       this.forEachType({
         skip: skipParams,

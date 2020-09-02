@@ -20,6 +20,7 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
 import { PlatformService } from '../../../shared/service/platform.service';
+import { BrowserService } from '../../../shared/service/browser.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 
@@ -82,7 +83,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     private platformService: PlatformService,
     private logger: Logger,
     private filterService: FilterService,
-    private zone: NgZone
+    private zone: NgZone,
+    private browserService: BrowserService
   ) {}
 
   @Input() set height(height: string) {
@@ -95,7 +97,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   @Input() set rows(rows: any[]) {
-    this._originalRows = rows || [];
+    this._originalRows = rows || [];
 
     // record the original indexes of each row element so that when the table is sorted
     // we can find out how the indexes were mapped
@@ -274,7 +276,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private scrollTo(offsetY: number = 0) {
-    if (this.platformService.isServer || !this._rows) {
+    if (this.platformService.isServer || !this._rows) {
       return;
     }
     try {

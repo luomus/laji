@@ -89,7 +89,7 @@ export class TaxonSelectComponent {
     this.getTaxa(id).pipe(
       take(1)
     ).subscribe(result => {
-      this._taxonId = result[0] && result[0].value || id;
+      this._taxonId = result[0] && result[0].value || id;
       this.cdr.markForCheck();
     });
   }

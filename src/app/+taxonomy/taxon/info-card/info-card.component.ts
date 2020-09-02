@@ -100,7 +100,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     if (changes.taxon) {
-      this.taxonImages = (this.taxon.multimedia || []).map(img => {
+      this.taxonImages = (this.taxon.multimedia || []).map(img => {
         if (img['taxon']) {
           img['taxonId'] = img['taxon']['id'];
           img['vernacularName'] = img['taxon']['vernacularName'];
@@ -108,7 +108,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         }
         return img;
       });
-      this.taxonDescription = (this.taxon.descriptions || []).reduce((prev, current) => {
+      this.taxonDescription = (this.taxon.descriptions || []).reduce((prev, current) => {
         if (current.title) {
           prev.push(current);
         }
