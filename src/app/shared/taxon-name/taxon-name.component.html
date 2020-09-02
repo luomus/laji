@@ -20,4 +20,4 @@
 </ng-container>
 
 <ng-template #scientificName><ng-container *ngIf="taxon.cursiveName; else noCursive"><em>{{ taxon.scientificName }}</em></ng-container><ng-template #noCursive>{{ taxon.scientificName }}</ng-template></ng-template>
-<ng-template #vernacularName> {{ capitalizeName ? (taxon.vernacularName | multiLang | capitalize) : (taxon.vernacularName | multiLang) }}<ng-container *ngIf="taxon?.alternativeVernacularName | multiLang:false | values; let alternativeVernacularName"> ({{ alternativeVernacularName }})</ng-container></ng-template>
+<ng-template #vernacularName> {{ capitalizeName ? (taxon.vernacularName | multiLang | capitalize) : (taxon.vernacularName | multiLang) }}<ng-container *ngIf="taxon?.alternativeVernacularName | multiLang:false | values; let alternativeVernacularName"> ({{ alternativeVernacularName }})</ng-container></ng-template>

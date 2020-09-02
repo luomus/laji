@@ -15,7 +15,7 @@ First prepare spreadsheet with the data you want to label. It can have data some
 |  id  | data gathered | species          |
 |------|---------------|------------------|
 | 1    | 2019-01-02    | Parus major      |
-| 2    | 2019-02-03    | Sciurus vulgaris |
+| 2    | 2019-02-03    | Sciurus vulgaris |
 
 1. Import the file using the menu item from File > Import from file...
 2. Choose the file from the menu and fill in the form.

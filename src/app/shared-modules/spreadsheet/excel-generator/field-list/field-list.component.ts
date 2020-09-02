@@ -57,7 +57,7 @@ export class FieldListComponent implements OnChanges {
   }
 
   private initVisibleFields() {
-    if (!this.parent || !this.fields) {
+    if (!this.parent || !this.fields) {
       return;
     }
     const visibleFields = this.fields.reduce((fields, current) => {

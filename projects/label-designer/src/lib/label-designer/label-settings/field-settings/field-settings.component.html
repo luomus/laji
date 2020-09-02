@@ -7,13 +7,13 @@
   </div>
 </ng-template>
 <div class="more" (click)="toggleMore()" *ngIf="field.type !== fieldType.qrCode">
-  <ll-icon type="down" *ngIf="field._menuOpen || more; else up"></ll-icon>
+  <ll-icon type="down" *ngIf="field._menuOpen || more; else up"></ll-icon>
   <ng-template #up>
     <ll-icon type="up"></ll-icon>
   </ng-template>
 </div>
 
-<div class="more-container" *ngIf="field._menuOpen || more">
+<div class="more-container" *ngIf="field._menuOpen || more">
   <table>
     <tr>
       <td></td>

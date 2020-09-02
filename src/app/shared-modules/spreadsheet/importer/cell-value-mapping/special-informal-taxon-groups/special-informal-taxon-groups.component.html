@@ -2,10 +2,10 @@
   <thead>
     <tr>
       <th class="value-col">
-        {{ 'excel.map.value-user' | translate }}
+        {{ 'excel.map.value-user' | translate }}
       </th>
       <th class="map-col">
-        {{ 'excel.map.value-mapped' | translate }}
+        {{ 'excel.map.value-mapped' | translate }}
       </th>
     </tr>
   </thead>
@@ -19,7 +19,7 @@
       <td>
         <laji-mapping-select
           [disabled]="!informalTaxonGroups"
-          [value]="mapping && mapping[value] || ''"
+          [value]="mapping && mapping[value] || ''"
           [options]="informalTaxonGroups"
           (selected)="valueMapped(value, $event)"></laji-mapping-select>
       </td>

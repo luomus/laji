@@ -219,11 +219,11 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     this.lang = this.translate.currentLang;
     this.initColumns();
     this.fetchPageGiorgio(this.page);
-    
+
     this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(info => {
       this.childEvent = info;
       if (this.childEvent !== null) {
-        setTimeout(()=>{    
+        setTimeout(() => {
           this.initColumns();
           this.fetchPageGiorgio(this.page);
           this.subscriptionDeleteOwnDocument.unsubscribe();
@@ -358,7 +358,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
 
     this.fetchSub = list$
         .subscribe(data => {
-        
+
         const ids = data.results.map(obj => this.toQName.transform(obj['document']['documentId']) );
         data.results.forEach((element, index) => {
           element['document']['documentId'] = ids[index];
@@ -413,7 +413,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       false
     ).pipe(
       map(res => res.results),
-      switchMap((documents: Document[]) => this.searchDocumentsToRowDocuments(documents)) 
+      switchMap((documents: Document[]) => this.searchDocumentsToRowDocuments(documents))
     )
     .subscribe(data => {
       data = Array.from(new Set(data));
@@ -530,8 +530,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   }
 
   private setLangParams(value: string) {
-    return (value || '')
-      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
+    return (value || '')
+      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
   }
 
   download(type: string) {
@@ -558,7 +558,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       temp.indexOf(el[key]) === i
     );
   }
-  
+
 
 }
 

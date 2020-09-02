@@ -2,7 +2,7 @@
         class="possible-re"
   >● &ndash; {{ 'MKV.possiblyRE' | translate }}</span>
   <span *ngIf="mark"
-  >{{ mark }} &ndash; {{ _evaluation.externalPopulationImpactOnRedListStatus | translate }}</span>
+  >{{ mark }} &ndash; {{ _evaluation.externalPopulationImpactOnRedListStatus | translate }}</span>
 </ng-container>
 <ng-template #withTooltip>
   <span *ngIf="re"
@@ -10,6 +10,6 @@
         class="possible-re"
   >●</span>
   <span *ngIf="mark"
-        [tooltip]="_evaluation.externalPopulationImpactOnRedListStatus | translate"
+        [tooltip]="_evaluation.externalPopulationImpactOnRedListStatus | translate"
   >{{ mark }}</span>
 </ng-template>

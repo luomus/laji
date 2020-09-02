@@ -129,7 +129,7 @@ export class GeneratorService {
 
       switch (special) {
         case SpecialTypes.person:
-          const person = specials.person || {};
+          const person = specials.person || {};
           value = `${person.fullName} (${person.id})`;
           break;
       }

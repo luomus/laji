@@ -59,7 +59,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
     this.tags = (queryParams['tags'] || '').split(',');
     const municipalityId = queryParams['municipality'];
     const activeNPId = queryParams['activeNP'];
-    
+
     return this.getDocumentForm$().pipe(
       switchMap((documentForm) => this.userService.user$.pipe(take(1), map((user) => ({documentForm, user})))),
       switchMap(data => {
@@ -150,7 +150,7 @@ export class NamedPlaceResolver implements Resolve<Observable<NPResolverData>> {
   }
 
   getNamedPlaces$(documentForm): Observable<any> {
-    const selected = ((documentForm.options || {}).namedPlaceList || ['$.name'])
+    const selected = ((documentForm.options || {}).namedPlaceList || ['$.name'])
       .map(field => field.replace('$.', '').replace(/\.length$/, ''));
     if (!(documentForm.namedPlaceOptions || {}).hideMapTab) {
       selected.push('geometry');

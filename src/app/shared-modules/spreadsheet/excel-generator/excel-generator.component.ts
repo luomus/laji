@@ -15,7 +15,7 @@ import { Form } from '../../../shared/model/Form';
 })
 export class ExcelGeneratorComponent implements OnInit {
 
-  @Input() forms: string[] = environment.massForms || [];
+  @Input() forms: string[] = environment.massForms || [];
 
   type: 'ods'|'xlsx' = 'xlsx';
   formID = '';
@@ -80,7 +80,7 @@ export class ExcelGeneratorComponent implements OnInit {
     if (this.selected.indexOf(field.key) === -1) {
       this.selected = [...this.selected, field.key];
     } else {
-      this.selected = this.selected.filter(val => val !== field.key || field.required);
+      this.selected = this.selected.filter(val => val !== field.key || field.required);
     }
   }
 

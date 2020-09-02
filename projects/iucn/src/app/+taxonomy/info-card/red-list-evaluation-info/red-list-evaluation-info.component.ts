@@ -151,7 +151,7 @@ export class RedListEvaluationInfoComponent {
       if (this.minMax[key]) {
         const combine = this.minMax[key];
         key = combine.combineTo;
-        this._evaluation[key] = (this._evaluation[combine.fields[0]] || '') + ' — ' + (this._evaluation[combine.fields[1]] || '');
+        this._evaluation[key] = (this._evaluation[combine.fields[0]] || '') + ' — ' + (this._evaluation[combine.fields[1]] || '');
         translate = 'iucn.taxon.' + key;
         delete this._evaluation[combine.fields[0]];
         delete this._evaluation[combine.fields[1]];
@@ -160,7 +160,7 @@ export class RedListEvaluationInfoComponent {
         this.occurrences = this._evaluation[key].map(o => ({key: o.area, value: o.status}));
         continue;
       }
-      const fullKey = 'MKV.' + (this.keyMap[key] || key);
+      const fullKey = 'MKV.' + (this.keyMap[key] || key);
       if (this.localTranslate[fullKey]) {
         translate = this.localTranslate[fullKey];
       }

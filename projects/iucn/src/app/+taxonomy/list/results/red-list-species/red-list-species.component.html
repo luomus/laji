@@ -1,7 +1,7 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
     <tr>
-      <th *ngFor="let field of fields">{{ field.label | translate }}</th>
+      <th *ngFor="let field of fields">{{ field.label | translate }}</th>
     </tr>
     <tr *ngFor="let taxon of species">
       <ng-container *ngFor="let field of fields">
@@ -32,16 +32,16 @@
             </ng-container>
           </td>
           <td *ngSwitchCase="'reasons'">
-            <span [innerHTML]="taxon.latestRedListEvaluation?.endangermentReasons | label | values:'<br>'"></span>
+            <span [innerHTML]="taxon.latestRedListEvaluation?.endangermentReasons | label | values:'<br>'"></span>
           </td>
           <td *ngSwitchCase="'threats'">
-            <span [innerHTML]="taxon.latestRedListEvaluation?.threats | label | values:'<br>'"></span>
+            <span [innerHTML]="taxon.latestRedListEvaluation?.threats | label | values:'<br>'"></span>
           </td>
           <td *ngSwitchCase="'reasonForStatusChange'">
-            <span [innerHTML]="taxon.latestRedListEvaluation?.reasonForStatusChange | label | values:'<br>'"></span>
+            <span [innerHTML]="taxon.latestRedListEvaluation?.reasonForStatusChange | label | values:'<br>'"></span>
           </td>
           <td *ngSwitchCase="'criteriaForStatus'">
-            <span [innerHTML]="taxon.latestRedListEvaluation?.criteriaForStatus | label | values:'<br>'"></span>
+            <span [innerHTML]="taxon.latestRedListEvaluation?.criteriaForStatus | label | values:'<br>'"></span>
           </td>
           <td *ngSwitchCase="'2015'">
             <ng-container *ngIf="taxon.redListStatusesInFinland">

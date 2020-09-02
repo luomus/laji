@@ -161,7 +161,7 @@ export class MappingService {
       throw new ErrorEvent('Column map is not initialized!');
     }
     value = ('' + value).toLowerCase();
-    return this.colMapping[value] || this.userColMappings[value] || null;
+    return this.colMapping[value] || this.userColMappings[value] || null;
   }
 
   clearUserMapping(): void {
@@ -217,7 +217,7 @@ export class MappingService {
   }
 
   map(value: any, field: IFormField, allowUnMapped = false) {
-    if (value === '' || value === null) {
+    if (value === '' || value === null) {
       return value;
     }
     return this._map(value, field, allowUnMapped);
@@ -384,10 +384,10 @@ export class MappingService {
         targetValue = this.mapUnitTaxon(targetValue || value);
         break;
       case SpecialTypes.namedPlaceID:
-        targetValue = this.mapNamedPlaceID(targetValue || value);
+        targetValue = this.mapNamedPlaceID(targetValue || value);
         break;
       case SpecialTypes.dateOptionalTime:
-        targetValue = this.mapDateOptionalTime(targetValue || value);
+        targetValue = this.mapDateOptionalTime(targetValue || value);
         break;
       default:
         if (targetValue === null) {
