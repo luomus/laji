@@ -1623,7 +1623,7 @@
   "theme.kerttu.listSpecies": "Mitä lajeja äänitteellä esiintyy?",
   "theme.kerttu.nextRecording": "Siirry seuraavaan",
   "theme.kerttu.notSupported": "Web Audio API ei ole tuettu tässä selaimessa!",
-  "theme.kerttu.confirmSkipLetter": "Oletko varma, että haluat jättää kirjaimen väliin? Kesken jääneiden kirjainten tunnistuksia ei tulla ottamaan huomioon tutkimuksessa.",
+  "theme.kerttu.confirmSkipLetter": "Oletko varma, että haluat jättää kirjaimen väliin? Aiemmat tunnistuksesi tästä kirjaimesta menetetään.",
   "theme.kerttu.info.taxon": "Lintulaji, joka esiintyy mallissa rajatussa kirjaimessa. Kirjaimen nimi on esitetty lajinimen alla.",
   "theme.kerttu.info.goBackToPreviousCandidate": "Jos vastasit vahingossa väärin, voit palata edelliseen ehdokkaaseen korjaamaan vastauksesi.",
   "theme.kerttu.info.skipLetter": "Voit jättää kirjaimen väliin, jos koet että siinä esiintyy sinulle tuntematon ääni tai tunnistaminen on muusta syystä hankalaa. Huomioi kuitenkin, että aiemmat tunnistuksesi tästä kirjaimesta menetetään, jos jätät kirjaimen väliin.",
