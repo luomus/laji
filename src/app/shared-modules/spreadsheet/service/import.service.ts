@@ -76,7 +76,7 @@ export class ImportService {
     return Array.isArray(mappedValue) ? mappedValue.indexOf(null) > -1 : mappedValue === null;
   }
 
-  validateData(document: Document): Observable<any> {
+  validateData(document: Document|Document[]): Observable<any> {
     return this.documentApi.validate(document, {
       personToken: this.userService.getToken(),
       lang: this.translateService.currentLang,

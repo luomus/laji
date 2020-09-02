@@ -186,7 +186,7 @@ export class DocumentApi {
     return this.http.get(path, {params: queryParameters});
   }
 
-  public validate(data: Document, extraHttpRequestParams?: any ): Observable<any> {
+  public validate(data: Document|Document[], extraHttpRequestParams?: any ): Observable<any> {
     const path = this.basePath + `/documents/validate`;
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};

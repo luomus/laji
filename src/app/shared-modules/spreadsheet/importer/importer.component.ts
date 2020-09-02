@@ -15,7 +15,7 @@ import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ngx-webstorage';
 import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../../../+haseka/tools/model/import-table-column';
-import { catchError, concatMap, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, tap, toArray } from 'rxjs/operators';
 import { ExcelToolService } from '../service/excel-tool.service';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
 import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
@@ -339,22 +339,23 @@ export class ImporterComponent implements OnInit {
     this.total = this.parsedData.length;
     this.current = 1;
     ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
-      concatMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
-        concatMap(document => this.importService.validateData(document).pipe(
-          switchMap(result => of({result: result, source: data})),
-          catchError(err => of(typeof err.error !== 'undefined' ? err.error : err).pipe(
-              map(body => body.error && body.error.details || body.error || body),
-              map(error => ({result: {_error: error}, source: data}))
-            ))
-        )),
-        catchError(() => of({result: {_error: {status: 422}}, source: data})),
-        tap(() => {
-          if (this.current < this.total) {
-            this.current++;
-          }
-          this.cdr.markForCheck();
-        })
-      )))
+      concatMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)),
+      toArray(),
+      concatMap(documents => this.importService.validateData(documents).pipe(
+      //  switchMap(result => of({result: result, source: data})),
+      //  catchError(err => of(typeof err.error !== 'undefined' ? err.error : err).pipe(
+      //    map(body => body.error && body.error.details || body.error || body),
+      //    map(error => ({result: {_error: error}, source: data}))
+      //  ))
+      )),
+      // catchError(() => of({result: {_error: {status: 422}}, source: data})),
+      tap(() => {
+        if (this.current < this.total) {
+          this.current++;
+        }
+        this.cdr.markForCheck();
+      })
+      )
       .subscribe(
         (data) => {
           if (data.result._error) {
