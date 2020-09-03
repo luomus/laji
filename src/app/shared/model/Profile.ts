@@ -98,6 +98,10 @@ export interface Profile {
    * License which is used when publishing data that belongs to this media.
    */
   intellectualRights?: Profile.IntellectualRightsEnum;
+
+  finnishBirdSongRecognitionSkillLevel?: Profile.FinnishBirdSongRecognitionSkillLevelEnum;
+
+  birdwatchingActivityLevel?: Profile.BirdwatchingActivityLevelEnum;
 }
 
 export namespace Profile {
@@ -113,4 +117,15 @@ export namespace Profile {
   IntellectualRightsARR: 'MY.intellectualRightsARR' as IntellectualRightsEnum
   };
 
+  export type FinnishBirdSongRecognitionSkillLevelEnum =
+    'MA.finnishBirdSongRecognitionSkillLevelEnum1'
+    | 'MA.finnishBirdSongRecognitionSkillLevelEnum2'
+    | 'MA.finnishBirdSongRecognitionSkillLevelEnum3'
+    | 'MA.finnishBirdSongRecognitionSkillLevelEnum4';
+
+  export type BirdwatchingActivityLevelEnum =
+    'MA.birdwatchingActivityLevelEnum1'
+    | 'MA.birdwatchingActivityLevelEnum2'
+    | 'MA.birdwatchingActivityLevelEnum3'
+    | 'MA.birdwatchingActivityLevelEnum4';
 }

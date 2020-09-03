@@ -36,6 +36,7 @@ import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
+import {SelectModule} from '../shared-modules/select/select.module';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
     ThreeStateSwitchModule,
     PillListModule,
     TechnicalNewsModule,
-    InfoPageModule
+    InfoPageModule,
+    SelectModule
   ],
   declarations: [
     ObservationComponent,

@@ -4,8 +4,54 @@
   <p>{{ 'theme.kerttu.expertise.goToNext' | translate }}<strong>{{ 'theme.kerttu.letterAnnotation' | translate }}.</strong></p>
 </div>
 
-<laji-expertise-form
-  [selectedTaxonIds]="selectedTaxonIds"
-  [saving]="selectedTaxonIds !== savedSelectedTaxonIds"
-  (taxonIdSelect)="onSelectedTaxonIdsChange($event)"
-></laji-expertise-form>
+<div class="pull-right saving-status">
+    <span
+      class="fa"
+      [ngClass]="{'fa-refresh': saving, 'fa-check': !saving}">
+    </span>
+  {{ saving ? 'Tallennetaan...' : 'Tallennettu' }}
+</div>
+<div class="lu-section" style="clear: both">
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="form-group">
+        <label for="finnishBirdSongRecognitionSkillLevel">
+          Arvioi kuinka hyvin tunnistat Suomessa tavattujen lintulajien äänet
+        </label>
+        <laji-metadata-select
+          [(ngModel)]="finnishBirdSongRecognitionSkillLevel"
+          (ngModelChange)="onSelectChange()"
+          [multiple]="false"
+          [useFilter]="false"
+          name="finnishBirdSongRecognitionSkillLevel"
+          id="finnishBirdSongRecognitionSkillLevel"
+          [alt]="'MA.finnishBirdSongRecognitionSkillLevelEnum'"
+          [selectStyle]="basicSelectStyle"
+          [disabled]="finnishBirdSongRecognitionSkillLevel === undefined"
+        ></laji-metadata-select>
+      </div>
+      <div class="form-group">
+        <label for="birdwatchingActivityLevel">
+          Arvioi kuinka aktiivinen lintuharrastaja olet
+        </label>
+        <laji-metadata-select
+          [(ngModel)]="birdwatchingActivityLevel"
+          (ngModelChange)="onSelectChange()"
+          [multiple]="false"
+          [useFilter]="false"
+          name="birdwatchingActivityLevel"
+          id="birdwatchingActivityLevel"
+          [alt]="'MA.birdwatchingActivityLevelEnum'"
+          [selectStyle]="basicSelectStyle"
+          [disabled]="birdwatchingActivityLevel === undefined"
+        ></laji-metadata-select>
+      </div>
+    </div>
+  </div>
+
+  <strong>Valitse taulukosta lajit, jotka osaat tunnistaa äänen perusteella</strong>
+  <laji-expertise-form
+    [selectedTaxonIds]="selectedTaxonIds"
+    (taxonIdSelect)="onSelectedTaxonIdsChange($event)"
+  ></laji-expertise-form>
+</div>
