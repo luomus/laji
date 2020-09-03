@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
-import { DocumentApi } from '../../../shared/api/DocumentApi';
+import { Observable, of } from 'rxjs';
+import { DocumentApi, DocumentJobPayload } from '../../../shared/api/DocumentApi';
 import { Document } from '../../../shared/model/Document';
 import { UserService } from '../../../shared/service/user.service';
 import {
@@ -14,6 +14,7 @@ import {
 } from '../model/excel';
 import { MappingService } from './mapping.service';
 import * as Hash from 'object-hash';
+import { catchError, delay, switchMap } from 'rxjs/operators';
 
 interface IData {
   rowIdx: number;
@@ -40,6 +41,12 @@ export interface IDocumentData {
       [parentLevel: string]: number
     }
   };
+}
+
+interface JobStatus {
+  total: number;
+  processed: number;
+  percentage: number;
 }
 
 @Injectable()
@@ -84,16 +91,34 @@ export class ImportService {
     });
   }
 
+  waitToComplete(type: keyof Pick<DocumentApi, 'validate'|'create'>, jobPayload: DocumentJobPayload, processCB: (status: JobStatus) => void) {
+    const personToken = this.userService.getToken();
+    const source$ = type === 'validate' ?
+      this.documentApi.validate(jobPayload, {personToken}) :
+      this.documentApi.create(jobPayload, personToken);
+    return source$.pipe(
+      switchMap(response => {
+        processCB(response.status);
+        if (response.status.percentage === 100) {
+          return of(response);
+        }
+        return of(response).pipe(
+          delay(1000),
+          switchMap(() => this.waitToComplete(type, jobPayload, processCB))
+        );
+      }),
+      catchError((e) => {
+        console.log('ERROR', e);
+        return this.waitToComplete(type, jobPayload, processCB);
+      })
+    );
+  }
+
   sendData(
-    document: Document,
-    publicityRestrictions: Document.PublicityRestrictionsEnum,
-    dataOrigin: Document.DataOriginEnum[]
+    job: DocumentJobPayload
   ): Observable<any> {
-    document.dataOrigin = dataOrigin;
-    document.publicityRestrictions = publicityRestrictions;
-    return this.documentApi.create(document, this.userService.getToken(), {
-      lang: this.translateService.currentLang,
-      validationErrorFormat: 'jsonPath'
+    return this.documentApi.create(job, this.userService.getToken(), {
+      lang: this.translateService.currentLang
     });
   }
 

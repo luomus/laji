@@ -34,6 +34,12 @@ import { of } from 'rxjs';
 
 'use strict';
 
+export interface DocumentJobPayload {
+  _jobID: string;
+  dataOrigin?: Document.DataOriginEnum[];
+  publicityRestrictions?: Document.PublicityRestrictionsEnum;
+}
+
 @Injectable({providedIn: 'root'})
 export class DocumentApi {
   protected basePath = environment.apiBase;
@@ -47,7 +53,7 @@ export class DocumentApi {
    * @param data Model instance data
    * @param userToken User authentication token
    */
-  public create(data: Document, userToken: string, extraHttpRequestParams?: any): Observable<Document> {
+  public create(data: Document|DocumentJobPayload, userToken: string, extraHttpRequestParams?: any): Observable<Document> {
     const path = this.basePath + '/documents';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -186,7 +192,7 @@ export class DocumentApi {
     return this.http.get(path, {params: queryParameters});
   }
 
-  public validate(data: Document|Document[], extraHttpRequestParams?: any ): Observable<any> {
+  public validate(data: Document|Document[]|DocumentJobPayload, extraHttpRequestParams?: any ): Observable<any> {
     const path = this.basePath + `/documents/validate`;
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
