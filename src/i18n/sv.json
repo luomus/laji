@@ -126,6 +126,8 @@
   "delete.noId": "Kunde inte hitta id för observation. Försök igen lite senare.",
   "delete.success": "Avlägsnades framgångsrikt.",
   "document.locked": "Denna observation är låst och kan inte ändras",
+  "download.reason": "Data används för?",
+  "download.reason-required": "Du måste välja vad data används för och även fylla i mer informationsfält",
   "email": "E-postadress",
   "error": "Error",
   "error.404.intro": "Kontrollera att webbadressen är korrekt skriven.",

@@ -126,6 +126,8 @@
   "delete.noId": "Could not find the id for observation. Try again little later.",
   "delete.success": "Removed successfully.",
   "document.locked": "This observation is locked and cannot be modified.",
+  "download.reason": "Data is used for?",
+  "download.reason-required": "You have to select for what the data is used for and also fill in more information field",
   "email": "Email",
   "error": "Error",
   "error.404.intro": "Please check that url is written correctly.",

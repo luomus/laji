@@ -127,7 +127,7 @@
   "delete.success": "Poisto onnistui.",
   "document.locked": "Tämä havaintoerä on lukittu, eikä sitä voi muokata.",
   "download.reason": "Mihin aineistoa käytetään?",
-  "download.reason-list": "Valitse aineiston käyttötarkoitus",
+  "download.reason-required": "Sinun täytyy valita aineiston käytön syy ja kirjoittaa lisätiedot",
   "email": "Sähköpostiosoite",
   "error": "Virhe",
   "error.404.intro": "Tarkista, että kirjoitit osoitteen oikein.",
