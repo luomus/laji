@@ -31,6 +31,7 @@ import 'web-animations-js'; // Run `npm install --save web-animations-js`.
  */
 import 'zone.js/dist/zone'; // Included with Angular CLI.
 import 'core-js/modules/es7.array.includes';
+import 'core-js/modules/es6.string.starts-with';
 import 'core-js/modules/es7.object.values';
 
 /**

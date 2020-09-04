@@ -261,7 +261,7 @@ export class ImportService {
       documents[hash].forEach(row => {
         [LEVEL_GATHERING, LEVEL_TAXON_CENSUS, LEVEL_UNIT].forEach(level => {
           const levelHash = this.findLevelHash(row, level);
-          if ((!docs[hash].ref[levelHash] || level === LEVEL_UNIT) && row[level] && row[level].data) {
+          if ((!docs[hash].ref[levelHash] || level === LEVEL_UNIT) && row[level] && row[level].data) {
             if (ignoreRowsWithNoCount && level === LEVEL_UNIT && !this.hasCountValue(row[level].data)) {
               docs[hash].skipped.push(row[level].rowIdx);
               return;
@@ -303,8 +303,8 @@ export class ImportService {
       let pointer = document;
       let now: string|number = parts.shift();
       while (parts.length > 0) {
-        if (!pointer[now]) {
-          pointer[now] = this.isNumber(parts[1] || '') ? {} : [];
+        if (typeof pointer[now] === 'undefined') {
+          pointer[now] = this.isNumber(parts[0]) ? [] : {};
         }
         pointer = pointer[now];
         now = parts.shift();
@@ -322,7 +322,7 @@ export class ImportService {
     const result = {};
     if (spot) {
       Object.keys(spot).map(level => {
-        if (level === LEVEL_DOCUMENT || level === '') {
+        if (level === LEVEL_DOCUMENT || level === '') {
           return;
         }
         replaces.push({from: `\\b${level}\\[\\*\\]`, to: `${level}[${spot[level]}]`});
