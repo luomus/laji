@@ -328,8 +328,8 @@ export class ImportService {
       let pointer = document;
       let now: string|number = parts.shift();
       while (parts.length > 0) {
-        if (!pointer[now]) {
-          pointer[now] = this.isNumber(parts[1] || '') ? {} : [];
+        if (typeof pointer[now] === 'undefined') {
+          pointer[now] = this.isNumber(parts[0]) ? [] : {};
         }
         pointer = pointer[now];
         now = parts.shift();

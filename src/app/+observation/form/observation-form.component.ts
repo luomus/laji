@@ -393,7 +393,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onQueryChange() {
-    console.log(this.query);
     this.queryChange.emit(this.query);
     this.updateVisibleAdvancedSections();
   }
