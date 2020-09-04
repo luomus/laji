@@ -171,13 +171,19 @@ addEventListener('message', ({ data }) => {
   fetchPersonToken().pipe(
     map((token) => hasPersonToken(request) ? replaceToken(token, request) : request),
     mergeMap(req => makeRequest(req)),
-    map(res => ({
+    map(res => (res.status < 400 ? {
       body: res.response,
       headers: {},
       status: res.status,
       statusText: '' + res.status,
       url: convertToken(request.url, personToken, PERSON_TOKEN),
-    } as SuccessResponse)),
+    } as SuccessResponse : {
+      error: res.response?.error || res.response,
+      headers: {},
+      status: res.status,
+      statusText: '' + res.status,
+      url: convertToken(request.url, personToken, PERSON_TOKEN),
+    } as ErrorResponse)),
     catchError((err) => typeof err.status !== 'undefined' ? of(err) : of({
       status: 500,
       statusText: '500',
