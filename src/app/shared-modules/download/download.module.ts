@@ -5,6 +5,7 @@ import { SpinnerModule } from '../spinner/spinner.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.module';
 import { SelectModule } from '../select/select.module';
 
@@ -17,7 +18,8 @@ import { SelectModule } from '../select/select.module';
     FormsModule,
     CommonModule,
     LajiUiModule,
-    SelectModule
+    SelectModule,
+    TooltipModule
   ],
   exports: [DownloadComponent]
 })

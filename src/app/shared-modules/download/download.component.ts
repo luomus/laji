@@ -65,8 +65,9 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
           <div class="col-sm-12">
             <laji-spinner [spinning]="downloadLoading" [overlay]="true">
               <button type="button"
+                      [tooltip]="showReason && (!reason || !reasonEnum) ? ('download.reason-required' | translate) : ''"
                       class="btn btn-default pull-right"
-                      [disabled]="downloadLoading || (showReason && (!reason || !reasonEnum))"
+                      [class.disabled]="downloadLoading || (showReason && (!reason || !reasonEnum))"
                       (click)="onDownload()">
                 <span>{{ "haseka.submissions.download" | translate }}</span>
               </button>
@@ -121,7 +122,7 @@ export class DownloadComponent {
   }
 
   onDownload() {
-    if (this.showReason && !this.reason && !this.reasonEnum) {
+    if (this.downloadLoading || (this.showReason && !this.reason && !this.reasonEnum)) {
       return;
     }
     this.download.emit(this.fileType);

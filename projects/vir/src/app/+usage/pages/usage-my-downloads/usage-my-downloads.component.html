@@ -1,7 +1,9 @@
 <div class="container mt-6">
-  <vir-data-table
-    type="user"
-    [data]="downloadRequests$ | async"
-    [showDownloadMenu]="false"
-  ></vir-data-table>
+  <laji-spinner [spinning]="loading" [overlay]="true">
+    <vir-data-table
+      type="user"
+      [data]="downloadRequests$ | async"
+      [showDownloadMenu]="false"
+    ></vir-data-table>
+  </laji-spinner>
 </div>
