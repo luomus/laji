@@ -41,7 +41,6 @@ export class InfoCardHeaderComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.taxon)
     if (changes.taxon) {
       this.setParent();
       this.setSiblings();

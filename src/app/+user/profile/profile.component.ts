@@ -61,7 +61,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.profile.settings['intellectualRights'])
     this.subProfile = this.route.params.pipe(
       tap(() => this.loading = true),
       map(params => params['userId']),
