@@ -72,7 +72,9 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
     this.form$.pipe(
       map((form) => {
         //form['uiSchema']['gatherings']['items']['units']['ui:readonly'] = true;
-        this.template ? form.uiSchema.gatherings.items.units['ui:readonly'] = true : form.uiSchema.gatherings.items.units['ui:readonly'] = false;
+        //this.template ? form.uiSchema.gatherings.items.units['ui:readonly'] = true : form.uiSchema.gatherings.items.units['ui:readonly'] = false;
+        this.template ? form.uiSchema.gatherings.items.units['ui:field'] = "HiddenField" : form.uiSchema.gatherings.items.units['ui:field'] = "SingleActiveArrayField";
+        this.template ? form.uiSchema.gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = "HiddenField" : form.uiSchema.gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = "SingleItemArrayField";
       })
     ).subscribe();
 
