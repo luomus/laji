@@ -54,7 +54,7 @@ export class ThemePageComponent implements OnInit{
       ) { }
 
     ngOnInit() {
-      if (this.allowHasekaLatest.some(this.router.url.includes.bind(this.router.url))) {
+      if (Object.values(this.allowHasekaLatest).some(this.router.url.includes.bind(this.router.url))) {
         this.routeHidden = false;
       } else {
         this.routeHidden = true;
