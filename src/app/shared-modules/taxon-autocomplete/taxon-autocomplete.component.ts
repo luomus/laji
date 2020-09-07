@@ -82,7 +82,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
   getTaxa(token: string, onlyExact = false): Observable<any> {
     this.loading = true;
     this.cdr.markForCheck();
-    return timer(onlyExact ? this.index * 400 : 0).pipe(
+    return timer(onlyExact ? this.index * 100 : 0).pipe(
       switchMap(() => this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
         q: token,
         limit: '' + this.limit,
