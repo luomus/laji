@@ -142,6 +142,12 @@
                 <option [selected]="false === onlyWithCount" [value]="false">{{ 'excel.import.alsoEmptyCount' | translate }}</option>
               </select>
             </div>
+            <div class="col-sm-5 checkbox">
+              <label class="pull-right">
+                <input type="checkbox"[(ngModel)]="showOnlyErroneous" />
+                {{ 'excel.import.onlyErroneous' | translate }}
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -155,7 +161,7 @@
             [virtualScrolling]="true"
             [clientSideSorting]="false"
             [height]="'50vh'"
-            [rows]='mappedData'
+            [rows]='mappedData | onlyErroneous:showOnlyErroneous'
             [count]="mappedData.length"
             [page]="1"
             [pageSize]="mappedData.length"
@@ -183,6 +189,14 @@
       <alert [type]="'danger'"  *ngIf="vm.step === step.doneWithErrors">
         <div [innerHtml]="'excel.import.error.doneWithErrors' | translate"></div>
       </alert>
+      <div class="row">
+        <div class="col-sm-12 checkbox">
+          <label class="pull-right">
+            <input type="checkbox"[(ngModel)]="showOnlyErroneous" />
+            {{ 'excel.import.onlyErroneous' | translate }}
+          </label>
+        </div>
+      </div>
       <div class="data-container">
         <laji-datatable
           #dataTable
@@ -192,7 +206,7 @@
           [virtualScrolling]="true"
           [clientSideSorting]="false"
           [height]="'50vh'"
-          [rows]='mappedData'
+          [rows]='mappedData | onlyErroneous:showOnlyErroneous'
           [count]="mappedData.length"
           [page]="1"
           [pageSize]="mappedData.length"

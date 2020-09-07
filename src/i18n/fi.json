@@ -172,6 +172,7 @@
   "excel.import.onlyWithCount": "Vain rivit, joissa on määrä",
   "excel.import.alsoEmptyCount": "Kaikki rivit",
   "excel.import.observations": "<strong>{{cnt}}</strong> havaintoerä(ä)",
+  "excel.import.onlyErroneous": "Näytä vain viheelliset",
   "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan \"{{separator}}\"-merkillä.",
   "excel.info.date": "Suositeltu muoto päivämäärälle on YYYY-MM-DD, esim. 2018-04-03. Myös päivämäärä-tyyppinen kentän arvo on sallittu.",
   "excel.info.geometry": "Tähän kenttää voit antaa YKJ-ruudun, WGS84-pisteen tai arvon jonka olet kopioinut karttapalvelun https://laji.fi/map \"Kopioi piirrettyjen kuvioiden koordinaatit\" työkalulla. Voit myös halutessasi kirjoittaa tähän mitä tahansa. Tällöin jos tallennusvaiheessa ei löydetä tarkkaa kuviota, pyytää Vihko sinua piirtämään kuvion kartalle.",

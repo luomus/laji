@@ -109,7 +109,10 @@ export class ImportService {
       }),
       catchError((e) => {
         console.log('ERROR', e);
-        return this.waitToComplete(type, jobPayload, processCB);
+        return of(e).pipe(
+          delay(1000),
+          switchMap(() => this.waitToComplete(type, jobPayload, processCB))
+        );
       })
     );
   }

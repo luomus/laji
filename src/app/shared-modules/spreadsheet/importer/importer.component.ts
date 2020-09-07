@@ -101,6 +101,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     'editors[*]',
     'gatheringEvent.leg[*]'
   ];
+  showOnlyErroneous = false;
 
   constructor(
     private formService: FormService,
@@ -249,7 +250,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         const columns: ImportTableColumn[] = [
           {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
           {prop: '_doc', label: label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
-          {prop: '_idx', label: rowLabel, sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
+          {prop: '_row', label: rowLabel, sortable: false, width: 40}
         ];
         Object.keys(this.header).map(address => {
           columns.push({
@@ -327,7 +328,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
       ...this.data.map((row, idx) => ({
         ...this.getMappedValues(row, this.colMap, this.fields),
         _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : {status: 'valid'},
-        _doc: docs[idx]
+        _doc: docs[idx],
+        _row: idx + 2
       }))
     ];
     setTimeout(() => {
@@ -353,6 +355,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
       this.spreadsheetFacade.setMappingFilename('');
     }
     this.spreadsheetFacade.goToStep(Step.validating);
+    this.showOnlyErroneous = false;
     let success = true;
     let skipped = false;
     this.total = this.parsedData.length;
@@ -415,6 +418,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   save(publicityRestrictions: Document.PublicityRestrictionsEnum) {
     this.spreadsheetFacade.goToStep(Step.importing);
+    this.showOnlyErroneous = false;
     let success = true;
     let skipped = false;
     let hadSuccess = false;
