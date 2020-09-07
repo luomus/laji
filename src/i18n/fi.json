@@ -154,6 +154,8 @@
   "excel.import.error.invalidFileType": "<strong>Virheellinen tiedostoformaatti.</strong>Tuettuina ovat vain Excel-, OpenDocument- sekä csv-tiedostoformaatit.",
   "excel.import.failed": "Kaikkia havaintoeriä ei onnistuttu tallentamaan!",
   "excel.import.intro": "Tällä sivulla voit tuoda massatallennuspohjaan tallennetut havainnot osaksi Vihkon havaintoja. Voit myös tuoda havaintoja omilla tallennuspohjilla, kunhan niissä ensimmäinen rivi on otsikkorivi, joka kertoo mitä kenttä sisältää. Tuetut tiedostoformaatit ovat Microsoft Excel Open XML Spreadsheet (xlsx), OpenDocument Text (odt) ja comma separated values file (csv).",
+  "excel.import.namesAsIs": "Kaikki nimet sellaisenaan",
+  "excel.import.taxonAsIs": "Tunnistamattomat lajinimet sellaisenaan",
   "excel.import.step1.addUserMapping": "Tuo datan kuvaus",
   "filename": "Tiedostonimi",
   "excel.mapping.load.failed": "Kuvauksen lataus epäonnistui",

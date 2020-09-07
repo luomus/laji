@@ -164,6 +164,8 @@
   "excel.import.workingOn": "Working on file:",
   "excel.import.split.no": "one column",
   "excel.import.split.yes": "multiple columns",
+  "excel.import.namesAsIs": "All names as they are",
+  "excel.import.taxonAsIs": "All names as they are",
   "excel.info.array": "You can give multiple values in one field using character \"{{separator}}\" to separate different values.",
   "excel.info.date": "Recommended form for dates is YYYY-MM-DD for example 2018-04-03. You can also use field that is of date type.",
   "excel.info.geometry": "Field can contain a YKJ grid, wgs84 point or export from laji.fi/maps geometry. You can also write any own identifier here and when importing Notebook will ask you to draw the desired geometry on a map.",
