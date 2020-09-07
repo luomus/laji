@@ -73,7 +73,6 @@ export class LatestDocumentsFacade implements OnDestroy {
   }
 
   update(): void {
-    console.log('ciao')
     this.updateLocal();
     this.updateRemote();
     if (this.remoteRefresh) {
