@@ -34,7 +34,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() autoplay = false;
   @Input() autoplayRepeat = 1;
 
-  @Input() sampleRate = 16000;
+  @Input() sampleRate = 22050;
   @Input() nperseg = 256;
   @Input() noverlap = 256 - 160;
   @Input() duration = 60;
