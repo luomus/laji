@@ -104,7 +104,7 @@
       </div>
       <div class="row" *ngIf="document.media">
         <div class="col-sm-12">
-          <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
+          <laji-image-gallery [modalImages]="document.media" [showOverlay]="true"></laji-image-gallery>
         </div>
       </div>
     </div>
@@ -127,7 +127,7 @@
     </div>
     <div class="col-sm-5">
       <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData"></laji-viewer-map>
-      <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
+      <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media" [showOverlay]="true"></laji-image-gallery>
     </div>
   </div>
   <div style="margin-top: 10px" *ngIf="document.licenseId">

@@ -23,7 +23,6 @@ export class ImageModalOverlayComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('buon')
   }
 
 
