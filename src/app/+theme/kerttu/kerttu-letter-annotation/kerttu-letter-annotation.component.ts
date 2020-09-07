@@ -194,6 +194,9 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   }
 
   private getErrorMessage(error) {
-    return error.error?.message || error.error?.body?.message;
+    while (error.error) {
+      error = error.error;
+    }
+    return error.message || error.body?.message;
   }
 }
