@@ -34,7 +34,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() autoplay = false;
   @Input() autoplayRepeat = 1;
 
-  @Input() sampleRate = 16000;
+  @Input() sampleRate = 22050;
   @Input() nperseg = 256;
   @Input() noverlap = 256 - 160;
   @Input() duration = 60;
@@ -122,7 +122,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       };
       this.startTimeupdateInterval();
     } else {
-      this.autoplayCounter = this.autoplayRepeat;
       this.source.stop(0);
     }
   }
@@ -156,8 +155,12 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.isPlaying = false;
 
     if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
-      this.autoplayCounter += 1;
-      this.toggleAudio();
+      if (this.currentTime === this.buffer.duration) {
+        this.autoplayCounter += 1;
+        this.toggleAudio();
+      } else {
+        this.autoplayCounter = this.autoplayRepeat;
+      }
     }
   }
 
@@ -200,7 +203,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.currentTime = 0;
     this.isPlaying = false;
     this.source = undefined;
-    this.autoplayCounter = this.autoplayRepeat;
   }
 
   setAudioLoading(loading: boolean) {

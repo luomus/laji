@@ -84,4 +84,48 @@ export interface Profile {
    * Settings for the user
    */
   settings?: any;
+
+    /**
+   * Name of the data owner;
+   */
+  capturerVerbatim?: string;
+
+  /**
+   * Name of the data owner;
+   */
+  intellectualOwner?: string;
+  /**
+   * License which is used when publishing data that belongs to this media.
+   */
+  intellectualRights?: Profile.IntellectualRightsEnum;
+
+  finnishBirdSongRecognitionSkillLevel?: Profile.FinnishBirdSongRecognitionSkillLevelEnum;
+
+  birdwatchingActivityLevel?: Profile.BirdwatchingActivityLevelEnum;
+}
+
+export namespace Profile {
+  export type IntellectualRightsEnum =
+  'MY.intellectualRightsCC-BY'
+  | 'MY.intellectualRightsCC0'
+  | 'MY.intellectualRightsPD'
+  | 'MY.intellectualRightsARR';
+  export const IntellectualRightsEnum = {
+  IntellectualRightsCCBY: 'MY.intellectualRightsCC-BY' as IntellectualRightsEnum,
+  IntellectualRightsCC0: 'MY.intellectualRightsCC0' as IntellectualRightsEnum,
+  IntellectualRightsPD: 'MY.intellectualRightsPD' as IntellectualRightsEnum,
+  IntellectualRightsARR: 'MY.intellectualRightsARR' as IntellectualRightsEnum
+  };
+
+  export type FinnishBirdSongRecognitionSkillLevelEnum =
+    'MA.finnishBirdSongRecognitionSkillLevelEnum1'
+    | 'MA.finnishBirdSongRecognitionSkillLevelEnum2'
+    | 'MA.finnishBirdSongRecognitionSkillLevelEnum3'
+    | 'MA.finnishBirdSongRecognitionSkillLevelEnum4';
+
+  export type BirdwatchingActivityLevelEnum =
+    'MA.birdwatchingActivityLevelEnum1'
+    | 'MA.birdwatchingActivityLevelEnum2'
+    | 'MA.birdwatchingActivityLevelEnum3'
+    | 'MA.birdwatchingActivityLevelEnum4';
 }
