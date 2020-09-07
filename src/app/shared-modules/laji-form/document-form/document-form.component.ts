@@ -26,6 +26,8 @@ import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-document-form',
@@ -79,6 +81,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
               private changeDetector: ChangeDetectorRef,
               private documentApi: DocumentApi,
               private documentService: DocumentService,
+              private latestFacade: LatestDocumentsFacade,
               private router: Router) {
     this.vm$ = this.lajiFormFacade.vm$;
     this.footerService.footerVisible = false;
@@ -179,6 +182,9 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   submitPublic() {
     this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
     this.lajiForm.submit();
+    if (Object.values(Global.canHaveHasekaLatest).some(this.router.url.includes.bind(this.router.url))) {
+       this.latestFacade.update();
+    }
   }
 
   submitPrivate() {
