@@ -25,6 +25,9 @@ export class SpecialTaxonNameComponent {
   private completedCnt = 0;
 
   toggleLinkedVisible() {
+    if (!this.allCompleted) {
+      return;
+    }
     this.linkedVisible = !this.linkedVisible;
     if (!this.linkedVisible) {
       const hide = {};
