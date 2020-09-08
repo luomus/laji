@@ -26,20 +26,6 @@ export class ImageModalOverlayComponent implements OnInit {
   }
 
 
-  @HostListener('window:keydown', ['$event'])
-  modalKeyDown(e: KeyboardEvent)  {
-    e.stopImmediatePropagation();
-    if (e.keyCode === 27) { // esc
-      this.closeGallery();
-    }
-    if (e.keyCode === 37) { // left
-      this.prevImage();
-    }
-    if (e.keyCode === 39) { // right
-      this.nextImage();
-    }
-  }
-
   closeGallery() {
     if (this.close) {
       this.close();
@@ -79,5 +65,21 @@ export class ImageModalOverlayComponent implements OnInit {
     setTimeout(() => {
       this.loading = loading;
     }, 200);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  modalKeyDown(e: KeyboardEvent)  {
+    if (e.keyCode === 27) { // esc
+      e.stopImmediatePropagation();
+      this.closeGallery();
+    }
+    if (e.keyCode === 37) { // left
+      e.stopImmediatePropagation();
+      this.prevImage();
+    }
+    if (e.keyCode === 39) { // right
+      e.stopImmediatePropagation();
+      this.nextImage();
+    }
   }
 }
