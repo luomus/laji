@@ -92,15 +92,8 @@ export class GeneratorService {
       this.userService.user$.pipe(take(1)),
       this.excelToolService.getNamedPlacesList(formID),
       this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(map(result => result.results)),
-      this.translateService.get(allTranslations, {separator: MappingService.valueSplitter}).pipe(
-        map(translated => Object.keys(this.instructionMapping).reduce((cumulative, current) => {
-          if (translated[this.instructionMapping[current]]) {
-            cumulative[current] = translated[this.instructionMapping[current]];
-          }
-          return cumulative;
-        }, {[this.instructionArray]: translated[this.instructionArray]})))
     ).pipe(
-      map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2], translations: data[3]}))
+      map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2]}))
     )
       .subscribe((data) => {
         const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, data));
@@ -110,7 +103,7 @@ export class GeneratorService {
         validationSheet['!protect'] = {password: '¡secret!'};
 
         XLSX.utils.book_append_sheet(book, sheet, this.sheetNames.base);
-        XLSX.utils.book_append_sheet(book, this.getInstructionSheet(fields, data.translations), this.sheetNames.info);
+        XLSX.utils.book_append_sheet(book, this.getInstructionSheet(), this.sheetNames.info);
         XLSX.utils.book_append_sheet(book, validationSheet, this.sheetNames.vars);
 
         this.exportService.exportArrayBuffer(XLSX.write(book, {bookType: type, type: 'array'}), filename, type);
@@ -254,37 +247,10 @@ export class GeneratorService {
     return XLSX.utils.aoa_to_sheet(vSheet);
   }
 
-  private getInstructionSheet(fields: IFormField[], translations: {[key: string]: string}) {
-    const vSheet = [];
-    const given = {};
-    let labelColLen = 10;
-    let instructionColLen = 10;
-    fields.forEach(field => {
-      const label = field.label;
-      if (given[label] || (!translations[field.key] && !translations[field.type] && !field.isArray)) {
-        return;
-      }
-      given[label] = true;
-      let instruction = translations[field.key] || translations[field.type];
-      if (field.isArray) {
-        instruction = (instruction ? instruction + ' ' : '') + translations[this.instructionArray];
-      }
-      if (label.length > labelColLen) {
-        labelColLen = label.length;
-      }
-      if (instruction.length > instructionColLen) {
-        instructionColLen = instruction.length;
-      }
-      vSheet.push([label, instruction]);
-    });
-    vSheet.sort((a, b) => {
-      return a[0].localeCompare(b[0]);
-    });
-    const sheet = XLSX.utils.aoa_to_sheet(vSheet);
-    sheet['!cols'] = [
-      {wch: labelColLen},
-      {wch: instructionColLen}
-    ];
+  private getInstructionSheet() {
+    const instructions = this.translateService.instant('excel.info.file');
+    const sheet = XLSX.utils.aoa_to_sheet([[instructions]]);
+    sheet['!cols'] = [{wch: instructions.length}];
 
     return sheet;
   }
