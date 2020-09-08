@@ -104,7 +104,7 @@ export class ExcelGeneratorComponent implements OnInit {
     this.generating = true;
     this.generatorService.generate(
       this.formID,
-      'Vihko - ' + this.formTitle + ' (' + this.formID + ')',
+      'Laji - ' + this.formTitle + ' (' + this.formID + ')',
       this.selected.map(field => this.fields.find(f => f.key === field)),
       this.useLabels,
       this.type,
