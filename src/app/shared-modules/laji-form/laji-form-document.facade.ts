@@ -58,6 +58,7 @@ export interface ILajiFormState {
   documentID?: string;
   form?: FormWithData;
   hasChanges: boolean;
+  hasLocalData: boolean;
   namedPlace?: NamedPlace;
   namedPlaceForFormID?: string;
   error: FormError;
@@ -67,6 +68,7 @@ export interface ILajiFormState {
 
 let _state: ILajiFormState = {
   hasChanges: false,
+  hasLocalData: false,
   saving: false,
   loading: false,
   error: FormError.incomplete,
@@ -84,6 +86,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   form$          = this.state$.pipe(map((state) => state.form), distinctUntilChanged());
   hasChanges$    = this.state$.pipe(map((state) => state.hasChanges), distinctUntilChanged());
+  hasLocalData$  = this.state$.pipe(map((state) => state.hasLocalData), distinctUntilChanged());
   loading$       = this.state$.pipe(map((state) => state.loading), distinctUntilChanged());
   saving$        = this.state$.pipe(map((state) => state.saving), distinctUntilChanged());
   error$         = this.state$.pipe(map((state) => state.error), distinctUntilChanged());
@@ -92,6 +95,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   vm$: Observable<ILajiFormState> = hotObjectObserver<ILajiFormState>({
     form: this.form$,
     hasChanges: this.hasChanges$,
+    hasLocalData: this.hasLocalData$,
     saving: this.saving$,
     error: this.error$,
     loading: this.loading$,
@@ -272,8 +276,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<Document> {
+    this.updateState({..._state, hasLocalData: false});
     if (FormService.isTmpId(documentID)) {
-      this.updateState({..._state, hasChanges: true});
+      this.updateState({..._state, hasChanges: true, hasLocalData: true});
       return this.userService.user$.pipe(
         take(1),
         mergeMap(p => this.documentStorage.getItem(documentID, p))
@@ -312,9 +317,36 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
-    return of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
+    const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.prepopulatedDocument ? merge(form.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
       map(data => this.addNamedPlaceData(form, data))
+    );
+
+    return this.findTmpData(form, person).pipe(
+      switchMap(tmpDoc => tmpDoc ? of(tmpDoc) : getEmpty$)
+    );
+  }
+
+  private findTmpData(form: Form.SchemaForm, person: Person): Observable<undefined|Document> {
+    let key = form.id;
+    let hasNp = false;
+    if (FormService.hasFeature(form, Form.Feature.NamedPlace)) {
+      const np: NamedPlace = _state.namedPlace;
+      key += '_' + np.id;
+      hasNp = true;
+    }
+    return FormService.hasFeature(form, Form.Feature.Mobile) ? of(undefined) : this.documentStorage.getAll(person, 'onlyTmp').pipe(
+      map(documents => documents.find(d => {
+        let docKey = d.formID;
+        if (hasNp) {
+          docKey += d.namedPlaceID;
+        }
+        if (key === docKey) {
+          this.updateState({..._state, hasLocalData: true});
+          return true;
+        }
+        return false;
+      }))
     );
   }
 
