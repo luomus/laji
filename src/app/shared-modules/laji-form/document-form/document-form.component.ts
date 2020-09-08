@@ -110,12 +110,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     }
     return this.translate
       .get(confirmKey).pipe(
-        switchMap(txt => this.dialogService.confirm(txt)),
-        tap((result) => {
-          if (result) {
-            this.lajiFormFacade.discardChanges();
-          }
-        })
+        switchMap(txt => this.dialogService.confirm(txt))
       );
   }
 
@@ -207,7 +202,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
           setTimeout(() => {
             this.templateModal.hide();
             this.router.navigate(['/vihko/templates']);
-          }, 200); 
+          }, 200);
           });
         this.templateForm = {
           name: '',

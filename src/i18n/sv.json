@@ -256,7 +256,7 @@
   "haseka.delete.title": "Remove",
   "haseka.form.back": "Avbryt utan att spara",
   "haseka.form.discard": "Ignorera ändringar",
-  "haseka.form.discardConfirm": "Är du säker på att du vill ignorera ändgringar som gjort efter senaste sparande?",
+  "haseka.form.discardConfirm": "Är du säker på att du vill lämna formuläret?",
   "haseka.form.documentNotFound": "Det hittades ingen observationbatch med id {{documentId}}.",
   "haseka.form.error": "Failed to submit data",
   "haseka.form.failure": "Det gick inte att spara!",

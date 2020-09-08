@@ -266,7 +266,7 @@
   "haseka.delete.title": "Remove",
   "haseka.form.back": "Leave without saving",
   "haseka.form.discard": "Discard changes",
-  "haseka.form.discardConfirm": "Are you sure that you want to discard changes that are made after last saving?",
+  "haseka.form.discardConfirm": "Are you sure that you want to leave the form?",
   "haseka.form.documentNotFound": "No submission was found with id {{documentId}}.",
   "haseka.form.error": "Failed to submit data",
   "haseka.form.failure": "Failed to save!",
