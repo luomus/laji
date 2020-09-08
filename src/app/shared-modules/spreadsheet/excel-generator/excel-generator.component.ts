@@ -56,12 +56,15 @@ export class ExcelGeneratorComponent implements OnInit {
           SpreadsheetService.IdField,
           SpreadsheetService.deleteField
         ] : []);
-        this.fields.map(field => {
+        this.fields.forEach(field => {
           if (this.parents.indexOf(field.parent) === -1) {
             this.parents.push(field.parent);
           }
           if (field.required) {
             selected.push(field.key);
+          }
+          if (GeneratorService.splittableFields[field.key]) {
+            field.splitType = GeneratorService.splittableFields[field.key];
           }
         });
         this.selected = selected;
