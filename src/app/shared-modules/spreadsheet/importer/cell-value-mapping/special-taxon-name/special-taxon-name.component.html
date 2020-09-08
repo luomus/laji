@@ -1,4 +1,5 @@
 <button class="btn btn-default toggle-linked" [class.disabled]="!allCompleted" (click)="toggleLinkedVisible()">{{ linkedVisible ? 'Piilota' : 'Näytä' }} linkitetyt</button><br>
+<progressbar [max]="invalidValues?.length" [value]="completedCnt" [striped]="true" [animate]="true">{{ completedCnt }}/{{ invalidValues?.length }}</progressbar>
 <table class="table">
   <thead>
     <tr>
