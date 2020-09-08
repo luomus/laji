@@ -21,8 +21,7 @@ export class SpecialTaxonNameComponent {
   hiddenValues: {[value: string]: boolean} = {};
   allCompleted = false;
   useAsIs = false;
-
-  private completedCnt = 0;
+  completedCnt = 0;
 
   toggleLinkedVisible() {
     if (!this.allCompleted) {
