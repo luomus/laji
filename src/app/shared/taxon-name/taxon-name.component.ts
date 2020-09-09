@@ -29,4 +29,8 @@ export class TaxonNameComponent {
     event.stopPropagation();
   }
 
+  isObject(val) {
+    return typeof val === 'object';
+  }
+
 }

@@ -17,8 +17,8 @@
   <div *ngIf="taxon.hasParent || taxon.hasChildren">
     <select class="form-control input-sm" [ngModel]="taxon.id" (ngModelChange)="taxonSelect.emit($event)">
       <option *ngFor="let sibling of siblings" [value]="sibling.id">
-        {{ sibling.vernacularName | multiLang }}
-        <ng-container *ngIf="sibling.vernacularName && sibling.scientificName">
+        {{ sibling.vernacularName | multiLang:false }}
+        <ng-container *ngIf="(sibling.vernacularName | multiLang:false ) && sibling.scientificName">
           &ndash;
         </ng-container>
         {{ sibling.scientificName }}
