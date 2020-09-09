@@ -57,6 +57,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   status = '';
   saveVisibility = 'hidden';
   isAdmin = false;
+  isFromCancel = false;
   validationErrors: any;
   touchedCounter = 0;
   templateForm: TemplateForm = {
@@ -103,15 +104,19 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     }
   }
 
-  canDeactivate(confirmKey = 'haseka.form.discardConfirm') {
+  canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {
     if (!this.lajiFormFacade.hasChanges()) {
-      this.lajiFormFacade.discardChanges();
       return true;
     }
-    return this.translate
-      .get(confirmKey).pipe(
-        switchMap(txt => this.dialogService.confirm(txt))
-      );
+    return this.translate.get(this.isFromCancel ? cancelKey : leaveKey).pipe(
+      switchMap(txt => this.dialogService.confirm(txt)),
+      tap(confirmed => {
+        if (confirmed && this.isFromCancel) {
+          this.lajiFormFacade.discardChanges();
+        }
+        this.isFromCancel = false;
+      })
+    );
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -122,6 +127,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   onCancel() {
+    this.isFromCancel = true;
     this.cancel.emit();
   }
 

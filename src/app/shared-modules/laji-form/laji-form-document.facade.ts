@@ -300,7 +300,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
               return this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
             }
             if (Util.isLocalNewestDocument(local, document)) {
-              this.updateState({..._state, hasChanges: true});
+              this.updateState({..._state, hasChanges: true, hasLocalData: true});
               return local;
             }
             return document;
@@ -342,7 +342,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
           docKey += d.namedPlaceID;
         }
         if (key === docKey) {
-          this.updateState({..._state, hasLocalData: true});
+          this.updateState({..._state, hasLocalData: true, hasChanges: true});
           return true;
         }
         return false;
