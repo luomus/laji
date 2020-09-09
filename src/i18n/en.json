@@ -104,22 +104,22 @@
   "closed.title": "Closed",
   "datasets": {
     "label": "Dataset owners",
-    "intro": "Vie oma havaintoaineistosi Lajitietokeskukseen primääri tai sekundääridatana. (<a href=\"/about/1289\">Lue lisää: Näin liitätä aineistosi</a>)",
-    "accessTo": "Collections that you have access to",
-    "accessNone": "You do not have access to any collection.",
+    "intro": "Publish your dataset at FinBIF as primary- or secondary data.",
+    "accessTo": "Datasets that you have access to",
+    "accessNone": "You do not have access to any dataset.",
     "new": {
-      "title": "Make a new collection",
-      "help": "You can ask...",
-      "intro": "Here you can ask for..."
+      "title": "Make a new dataset",
+      "help": "You can request access to datasets from your organization/group contact person.",
+      "intro": "Here you can request a new dataset for your organization or group, if you want to migrate or copy your data to FinBIF. The request will be handled as soon as possible, usually within a few days."
     },
     "primary": "primary data",
     "secondary": "secondary data",
     "generic": {
-      "intro": "Tässä osiossa voit hallita kokoelman “{{collection}}” havaintoja.",
-      "primary": "Havainnot ovat <strong>primääridataa</strong>, joten muutokset tulee tehdä täällä oleviin tietoihin.",
-      "secondary": "Havainnot ovat <strong>sekundääridataa</strong>, joten muutokset tulee tehdä primääridataan ja sitten päivittää tänne tallennuspohjan avulla, esim. määrävälein.",
+      "intro": "Here you can manage the dataset “{{collection}}”.",
+      "primary": "This data is <strong>primary data</strong>, so any changes to it must be done here (and not in any external system).",
+      "secondary": "This data is <strong>secondary data</strong>, so any changes must be done to the primary data (which is stored elsewhere), and then copied here.",
       "updates": "Updates",
-      "instructions": "<p><strong>Ohjeita</strong></p>\n\n<ul>\n  <li>Havaintojen lisääminen</li>\n  <li>Havaintojen päivittäminen</li>\n  <li>Havaintojen poistaminen</li>\n</ul>\n<ul>\n  <li>Kaikki kokoelman havainnot (Laji.fi havaintohaku)</li>\n  <li>Kokoelman metatiedot</li>\n</ul>"
+      "instructions": "<p><strong>Instructions</strong></p>\n\n<ul>\n  <li><a href='/about/1289'>Generic instructions</a> (in Finnish)</li></ul>"
     }
   },
   "delete.error": "Failed to remove. Try again little later.",
