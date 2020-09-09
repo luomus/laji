@@ -103,23 +103,23 @@
   "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
   "closed.title": "Suljettu",
   "datasets": {
-    "label": "Havaintoaineistojen omistajat",
-    "intro": "Vie oma havaintoaineistosi Lajitietokeskukseen primääri tai sekundääridatana. (<a href=\"/about/1289\">Lue lisää: Näin liitätä aineistosi</a>)",
-    "accessTo": "Kokoelmat, joihin sinulla on pääsy",
-    "accessNone": "Sinulla ei ole pääsyä mihinkään kokoelmaan.",
+    "label": "Aineistojen omistajat",
+    "intro": "Vie oma havainto- tai kokoelma-aineistosi Lajitietokeskukseen primääri- tai sekundääridatana. (<a href=\"/about/1289\">Lue lisää: Näin liitätä aineistosi</a>)",
+    "accessTo": "Aineistot, joihin sinulla on pääsy",
+    "accessNone": "Sinulla ei ole pääsyä mihinkään aineistoon.",
     "new": {
-      "title": "Perusta uusi kokoelma",
-      "help": "Voit pyytää pääsyä kokoelmiin oman organisaatiosi yhteyshenkilöltä.",
-      "intro": "Tässä voit pyytää organisaatiosi aineistolle uutta kokoelmaa, mikäli haluat viedä Laji.fi:hin uudenlaisia havaintotietoja. Pyyntö käsitellään Lajitietokeskuksessa mahdollisimman pian, yleensä muutamassa päivässä."
+      "title": "Perusta uusi aineisto",
+      "help": "Voit pyytää pääsyä aineistoihin oman organisaatiosi tai ryhmäsi yhteyshenkilöltä.",
+      "intro": "Tässä voit pyytää organisaatiosiollesi tai ryhmällesi uutta aineistoa. Pyyntö käsitellään Lajitietokeskuksessa mahdollisimman pian, yleensä muutamassa päivässä."
     },
     "primary": "primääridata",
     "secondary": "sekundääridata",
     "generic": {
-      "intro": "Tässä osiossa voit hallita kokoelman “{{collection}}” havaintoja.",
-      "primary": "Havainnot ovat <strong>primääridataa</strong>, joten muutokset tulee tehdä täällä oleviin tietoihin.",
-      "secondary": "Havainnot ovat <strong>sekundääridataa</strong>, joten muutokset tulee tehdä primääridataan ja sitten päivittää tänne tallennuspohjan avulla, esim. määrävälein.",
+      "intro": "Tässä osiossa voit hallita aineiston “{{collection}}” havaintoja.",
+      "primary": "Data on <strong>primääridataa</strong>, joten muutokset tulee tehdä täällä oleviin tietoihin.",
+      "secondary": "Data on <strong>sekundääridataa</strong>, joten muutokset tulee tehdä primääridataan ja sitten päivittää tänne tallennuspohjan avulla, esim. määrävälein.",
       "updates": "Tehdyt päivitykset",
-      "instructions": "<p><strong>Ohjeita</strong></p>\n\n<ul>\n  <li>Havaintojen lisääminen</li>\n  <li>Havaintojen päivittäminen</li>\n  <li>Havaintojen poistaminen</li>\n</ul>\n<ul>\n  <li>Kaikki kokoelman havainnot (Laji.fi havaintohaku)</li>\n  <li>Kokoelman metatiedot</li>\n</ul>"
+      "instructions": "<p><strong>Ohjeita</strong></p>\n\n<ul>\n  <li><a href='/about/1289'>Yleiset ohjeet</li>\n</ul>"
     }
   },
   "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",
