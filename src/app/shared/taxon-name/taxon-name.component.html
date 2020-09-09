@@ -14,7 +14,7 @@
   <ng-container *ngIf="warningOnMissingTaxonID && !(taxon.id || taxonID)">
       <span class="glyphicon glyphicon-warning-sign"></span>
   </ng-container>
-  <div class="alternative-names mt-2" *ngIf="taxon?.obsoleteVernacularName | multiLang:false | values; let obsoleteVernacularName">
+  <div class="alternative-names mt-2" *ngIf="!hideObsoleteVernacularName && taxon?.obsoleteVernacularName | multiLang:false | values; let obsoleteVernacularName">
     {{ obsoleteVernacularName }}
   </div>
 </ng-container>
