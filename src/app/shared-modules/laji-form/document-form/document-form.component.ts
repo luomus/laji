@@ -88,8 +88,8 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['formId'] || changes['documentId']) {
-      this.lajiFormFacade.loadForm(this.formId, this.documentId);
+    if (changes['formId'] || changes['documentId'] || changes['template']) {
+      this.lajiFormFacade.loadForm(this.formId, this.documentId, this.template);
       this.subErrors = this.lajiFormFacade.error$.pipe(
         mergeMap(() => this.lajiFormFacade.vm$.pipe(take(1)))
       ).subscribe(vm => this.errorHandling(vm));

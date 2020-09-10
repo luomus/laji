@@ -64,6 +64,7 @@ export interface ILajiFormState {
   error: FormError;
   saving: boolean;
   loading: boolean;
+  isTemplate: boolean;
 }
 
 let _state: ILajiFormState = {
@@ -71,6 +72,7 @@ let _state: ILajiFormState = {
   hasLocalData: false,
   saving: false,
   loading: false,
+  isTemplate: false,
   error: FormError.incomplete,
 };
 
@@ -88,6 +90,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   hasChanges$    = this.state$.pipe(map((state) => state.hasChanges), distinctUntilChanged());
   hasLocalData$  = this.state$.pipe(map((state) => state.hasLocalData), distinctUntilChanged());
   loading$       = this.state$.pipe(map((state) => state.loading), distinctUntilChanged());
+  isTemplate$    = this.state$.pipe(map((state) => state.isTemplate), distinctUntilChanged());
   saving$        = this.state$.pipe(map((state) => state.saving), distinctUntilChanged());
   error$         = this.state$.pipe(map((state) => state.error), distinctUntilChanged());
   namedPlace$    = this.state$.pipe(map((state) => state.namedPlace), distinctUntilChanged());
@@ -99,6 +102,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     saving: this.saving$,
     error: this.error$,
     loading: this.loading$,
+    isTemplate: this.isTemplate$,
     namedPlace: this.namedPlace$
   });
 
@@ -122,7 +126,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
       auditTime(3000),
       mergeMap(() => this.userService.user$.pipe(take(1))),
       map(person => ({person, formData: _state.form && _state.form.formData})),
-      mergeMap(data => data.formData ?
+      mergeMap(data => data.formData && !_state.isTemplate ?
         this.documentStorage.setItem(data.formData.id, {...data.formData, dateEdited: this.currentDateTime()}, data.person) : of(null)
       )
     ).subscribe();
@@ -137,7 +141,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     }
   }
 
-  loadForm(formID: string, documentID?: string): void {
+  loadForm(formID: string, documentID?: string, isTemplate = false): void {
     if (!formID) {
       this.updateState({..._state, error: FormError.incomplete});
       return;
@@ -145,14 +149,15 @@ export class LajiFormDocumentFacade implements OnDestroy {
     if (this.formSub) {
       this.formSub.unsubscribe();
     }
-    this.updateState({..._state, form: undefined, loading: true, hasChanges: false, error: FormError.incomplete});
+    this.updateState({..._state, form: undefined, loading: true, hasChanges: false, error: FormError.incomplete, isTemplate});
     this.formSub = this.formService.getForm(formID, this.translateService.currentLang).pipe(
+      map(data => isTemplate ? this.prepareTemplateForm(data) : data),
       switchMap(form => this.userService.user$.pipe(
         take(1),
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
           tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
           mergeMap(rights => {
-              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person)).pipe(
+              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person, isTemplate)).pipe(
                 map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
                 map((res: FormWithData) => res.readonly !== Readonly.false ?
                   {...res, uiSchema: {...res.uiSchema, 'ui:disabled': true}} :
@@ -316,14 +321,14 @@ export class LajiFormDocumentFacade implements OnDestroy {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
+  private fetchEmptyData(form: Form.SchemaForm, person: Person, isTemplate: boolean): Observable<Document> {
     const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.prepopulatedDocument ? merge(form.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
       map(data => this.addNamedPlaceData(form, data))
     );
 
     return this.findTmpData(form, person).pipe(
-      switchMap(tmpDoc => tmpDoc ? of(tmpDoc) : getEmpty$)
+      switchMap(tmpDoc => tmpDoc && !isTemplate ? of(tmpDoc) : getEmpty$)
     );
   }
 
@@ -444,5 +449,17 @@ export class LajiFormDocumentFacade implements OnDestroy {
       this.updateState({..._state, namedPlace: null});
     }
     return of(void 0);
+  }
+
+  private prepareTemplateForm(data: Form.SchemaForm) {
+    try {
+      const templateForm = Util.clone(data);
+      templateForm.uiSchema.gatherings.items.units['ui:field'] = 'HiddenField';
+      templateForm.uiSchema.gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = 'HiddenField';
+      return templateForm;
+    } catch (e) {
+      console.error(e);
+      return data;
+    }
   }
 }

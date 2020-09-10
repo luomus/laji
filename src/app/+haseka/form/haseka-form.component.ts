@@ -31,8 +31,8 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
 
   @Input() template = false;
-  @Input() form$: Observable<any>;
 
+  form$: Observable<any>;
   formId: string;
   documentId: string;
   showMobileEntryPage$: Observable<boolean>;
@@ -61,11 +61,9 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
       this.cd.markForCheck();
     });
 
-    if (!this.form$) {
-      this.form$ = this.route.params.pipe(
-        switchMap(params => this.formService.getForm(params['formId'], this.translate.currentLang))
-      );
-    }
+    this.form$ = this.route.params.pipe(
+      switchMap(params => this.formService.getForm(params['formId'], this.translate.currentLang))
+    );
 
     this.isMobile$ = this.form$.pipe(
       map(form => FormService.hasFeature(form, Form.Feature.Mobile))
