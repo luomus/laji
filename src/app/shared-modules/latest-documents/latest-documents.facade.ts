@@ -1,5 +1,4 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router'
 import { BehaviorSubject, from, Observable, of, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, map, mergeMap, take, tap, toArray } from 'rxjs/operators';
 import { Document } from '../../shared/model/Document';
@@ -12,7 +11,6 @@ import { Form } from '../../shared/model/Form';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../../shared/service/util.service';
-import { Global } from '../../../environments/global';
 
 export interface ILatestDocument {
   document: Document;
@@ -58,8 +56,7 @@ export class LatestDocumentsFacade implements OnDestroy {
     private userService: UserService,
     private documentStorage: DocumentStorage,
     private formService: FormService,
-    private translateService: TranslateService,
-    private router: Router
+    private translateService: TranslateService
   ) {
     this.localUpdateSub = this.documentStorage.deletes$.subscribe(() => {
       this.updateLocal();
@@ -112,9 +109,7 @@ export class LatestDocumentsFacade implements OnDestroy {
       return;
     }
     this.updateState({..._state, loading: true});
-    let idLastDocuments = Object.keys(Global.canHaveHasekaLatest).filter(key => this.router.url.includes(Global.canHaveHasekaLatest[key]));
-    const allowLatestDocumentsTheme =  idLastDocuments.length > 0 ? idLastDocuments[0] : undefined
-    this.updateSub = this.documentApi.findAll(this.userService.getToken(), '1', '10', undefined, {formID:allowLatestDocumentsTheme}).pipe(
+    this.updateSub = this.documentApi.findAll(this.userService.getToken(), '1', '10').pipe(
       map(docRes => docRes.results),
       mergeMap(documents => this.checkForLocalData(documents)),
       catchError((e) => {

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -21,17 +29,18 @@ import { Document } from '../../shared/model/Document';
 })
 export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
+
+  @Input() template = false;
+  @Input() form$: Observable<any>;
+
   formId: string;
   documentId: string;
-  template: boolean = false;
   showMobileEntryPage$: Observable<boolean>;
-  form$: Observable<any>;
   isMobile$: Observable<boolean>;
   mobileWelcomePageClosed = false;
   _mobileWelcomePageShown: Subject<boolean>;
 
   private subParam: Subscription;
-  private subUrl: Subscription;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -42,14 +51,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
               private browserService: BrowserService,
               public translate: TranslateService,
               private documentViewerFacade: DocumentViewerFacade
-  ) {
-    router.events.forEach((event) => {
-      if(event instanceof NavigationEnd) {
-        const url = event.url;
-        this.template = url ? (url.includes('template') ? true : false) : false
-      }
-    });
-  }
+  ) {}
 
   ngOnInit() {
     this.footerService.footerVisible = false;
@@ -58,25 +60,12 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
       this.documentId = params['documentId'] || null;
       this.cd.markForCheck();
     });
-    
-    this.subUrl = this.route.url.subscribe(url => {
-    this.template = this.localizeRouterService.getPathWithoutLocale(this.router.url) ?
-    (this.localizeRouterService.getPathWithoutLocale(this.router.url).includes('template') ? true : false) : false
-      this.cd.markForCheck();
-    });
 
-    this.form$ = this.route.params.pipe(
-      switchMap(params => this.formService.getForm(params['formId'], this.translate.currentLang))
-    );
-
-    this.form$.pipe(
-      map((form) => {
-        //form['uiSchema']['gatherings']['items']['units']['ui:readonly'] = true;
-        //this.template ? form.uiSchema.gatherings.items.units['ui:readonly'] = true : form.uiSchema.gatherings.items.units['ui:readonly'] = false;
-        this.template ? form.uiSchema.gatherings.items.units['ui:field'] = "HiddenField" : form.uiSchema.gatherings.items.units['ui:field'] = "SingleActiveArrayField";
-        this.template ? form.uiSchema.gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = "HiddenField" : form.uiSchema.gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = "SingleItemArrayField";
-      })
-    ).subscribe();
+    if (!this.form$) {
+      this.form$ = this.route.params.pipe(
+        switchMap(params => this.formService.getForm(params['formId'], this.translate.currentLang))
+      );
+    }
 
     this.isMobile$ = this.form$.pipe(
       map(form => FormService.hasFeature(form, Form.Feature.Mobile))
