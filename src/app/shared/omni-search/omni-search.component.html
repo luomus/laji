@@ -42,7 +42,7 @@
               <div style="margin-bottom: 10px">
                 <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="onClose()">
                   {{ 'omniSearch.taxonCard' | translate }}
-                  <i class="glyphicon glyphicon-tag"></i>
+                  <i class="glyphicon glyphicon-tag"></i> 
                 </a>
                 <br>
                 <a [routerLink]="['/taxon/' + taxon.key + '/taxonomy'] | localize" [queryParams]="{ showTree: true }" (click)="onClose()">
