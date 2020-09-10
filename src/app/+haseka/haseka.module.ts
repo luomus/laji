@@ -28,6 +28,8 @@ import { LajiUiModule } from '../../../projects/laji-ui/src/public-api';
 import { VihkoHomeComponent } from './vihko-home/vihko-home.component';
 import { SurveyBoxModule } from '../shared-modules/survey-box/survey-box.module';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
+import { TemplateHasekaFormComponent } from './template-haseka-form/template-haseka-form.component';
+
 
 @NgModule({
   imports: [
@@ -56,7 +58,8 @@ import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-
     FormCategorySurveyComponent,
     HasekaTermsComponent,
     HasekaFeedbackComponent,
-    VihkoHomeComponent
+    VihkoHomeComponent,
+    TemplateHasekaFormComponent,
   ]
 })
 export class HasekaModule {
