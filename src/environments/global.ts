@@ -67,9 +67,6 @@ export const Global = {
     'MHL.9',
     'MHL.25'
   ],
-  canHaveHasekaLatest: {
-    'JX.652': 'sieniatlas'
-  },
   collections: {
     nafi: 'HR.175',
     wbc: 'HR.39',

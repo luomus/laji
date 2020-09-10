@@ -27,7 +27,6 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
-import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-document-form',
@@ -139,7 +138,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   somethingChanged(input, event) {
-    this.templateForm[input] = event.target.value
+    this.templateForm[input] = event.target.value;
   }
 
   lock(lock) {
@@ -163,6 +162,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
             )
           );
           this.success.emit(res);
+          this.latestFacade.update();
         } else {
           this.saveVisibility = 'shown';
           this.status = 'unsaved';
@@ -183,9 +183,6 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   submitPublic() {
     this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
     this.lajiForm.submit();
-    if (Object.values(Global.canHaveHasekaLatest).some(this.router.url.includes.bind(this.router.url))) {
-       this.latestFacade.update();
-    }
   }
 
   submitPrivate() {

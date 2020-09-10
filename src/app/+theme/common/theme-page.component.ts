@@ -23,7 +23,7 @@ import { Document } from '../../shared/model/Document';
     <laji-haseka-latest [forms]="[formID]"
                         [tmpOnly]="false"
                         (showViewer)="showDocumentViewer($event)"
-                        *ngIf="!secondary && noLatestForForm !== formID && (userService.isLoggedIn$ | async) && !routeHidden">
+                        *ngIf="!secondary && noLatestForForm !== formID && (userService.isLoggedIn$ | async)">
     </laji-haseka-latest>
   </nav>
   <main>
@@ -33,7 +33,7 @@ import { Document } from '../../shared/model/Document';
     `,
     styleUrls: ['./theme-page.component.scss']
 })
-export class ThemePageComponent implements OnInit{
+export class ThemePageComponent {
     @Input() title: string;
     @Input() secondary: boolean;
     @Input() navLinks?:
@@ -44,7 +44,6 @@ export class ThemePageComponent implements OnInit{
     @Input() formID: string;
 
     noLatestForForm = Global.forms.default;
-    allowHasekaLatest = Global.canHaveHasekaLatest;
     routeHidden = true;
 
     constructor(
@@ -52,15 +51,6 @@ export class ThemePageComponent implements OnInit{
       private router: Router,
       private documentViewerFacade: DocumentViewerFacade
       ) { }
-
-    ngOnInit() {
-      if (Object.values(this.allowHasekaLatest).some(this.router.url.includes.bind(this.router.url))) {
-        this.routeHidden = false;
-      } else {
-        this.routeHidden = true;
-      }
-    }
-    
 
     trackByLabel(index, link) {
       return link.label;
