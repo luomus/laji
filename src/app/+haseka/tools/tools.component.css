@@ -6,3 +6,25 @@
 .glyphicon {
   font-size: 4em;
 }
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (max-width: 1200px){
+  .row-eq-height {
+    display: block
+  }
+}
+
+.row-eq-height [class*="col-"]{
+  padding: 10px;
+}
+
+.panel-heading {
+  height: 55px;
+}
+

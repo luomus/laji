@@ -10,7 +10,7 @@
 }
 
 .profile-edit {
-  margin-left: 160px;
+  margin-left: 0;
   margin-right: 30px;
   width: auto;
   width: calc(100% - 200px);
@@ -23,4 +23,13 @@
 .self-link {
   float: left;
   margin-right: 15px;
+}
+
+@media only screen and (max-width: 768px) {
+  .profile-edit {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: auto;
+    width: calc(100% - 50px);
+  }
 }

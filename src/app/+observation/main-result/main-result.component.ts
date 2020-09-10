@@ -116,7 +116,7 @@ export class MainResultComponent implements OnInit, OnChanges {
           }
           this.aggregateBy = data.aggregateBy || this.aggregateBy;
           this.selected = data.selected || this.selected;
-          this.pageSize = data.pageSize || DEFAULT_PAGE_SIZE;
+          this.pageSize = data.pageSize || DEFAULT_PAGE_SIZE;
         } else {
           this.pageSize = DEFAULT_PAGE_SIZE;
         }

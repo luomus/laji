@@ -42,7 +42,7 @@
     <div *ngIf="isFromMasterChecklist"
          class="panel panel-default"
          laji-panel
-         [title]="'taxonomy.map.finland' | translate"
+         [title]="'taxonomy.map.finland' | translate"
          [open]="true"
          [autoToggle]="true"
     >
@@ -134,7 +134,7 @@
     <!--<div *ngIf="isFromMasterChecklist" [hidden]="!hasMonthDayData"
          class="panel panel-default"
          laji-panel
-         [title]="'taxonomy.observations.monthDayChart' | translate"
+         [title]="'taxonomy.observations.monthDayChart' | translate"
          [open]="true"
          [autoToggle]="true"
     >
@@ -148,7 +148,7 @@
     <div [hidden]="!hasMonthDayData"
          class="panel panel-default"
          laji-panel
-         [title]="'taxonomy.observations.monthDayChart' | translate"
+         [title]="'taxonomy.observations.monthDayChart' | translate"
          [open]="true"
          [autoToggle]="true"
     >
@@ -174,7 +174,7 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <div [hidden]="taxon?.habitatOccurrenceCounts?.length === 0"
+    <div [hidden]="filterHabitats.length === 0"
          class="panel panel-default"
          laji-panel
          [title]="'observation.active.anyHabitat' | translate"
@@ -205,9 +205,9 @@
       [showFooter]="false"
       [virtualScrolling]="false"
       [clientSideSorting]="true"
-      [count]="taxon?.habitatOccurrenceCounts?.length"
+      [count]="filterHabitats.length"
       [page]="1"
-      [pageSize]="taxon?.habitatOccurrenceCounts?.length"
+      [pageSize]="filterHabitats.length"
     ></laji-datatable>
     </div>
 

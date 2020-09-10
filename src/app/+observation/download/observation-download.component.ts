@@ -146,7 +146,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     }
     let hasPersonalData = false;
     const warehouseQuery: WarehouseQueryInterface = {...query};
-    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
+    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
       if (warehouseQuery[key]) {
         hasPersonalData = true;
       }
@@ -190,7 +190,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   updateQueryParamsDownloadTaxon(e) {
     e.stopPropagation();
     const arrayParams = this.csvParams.split('&');
-    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken'].forEach(key => {
+    ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
       arrayParams.forEach((element, index) => {
         if (element.indexOf(key) !== -1) {
           arrayParams[index] = key + '=' + this.userService.getToken();

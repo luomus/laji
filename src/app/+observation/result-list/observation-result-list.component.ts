@@ -48,8 +48,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     if (!settings) {
       settings = {};
     }
-    this.aggregateBy = settings.aggregateBy || [];
-    this.selectedFields = settings.selected || this.selectedFields;
+    this.aggregateBy = settings.aggregateBy || [];
+    this.selectedFields = settings.selected || this.selectedFields;
     this.pageSize = settings.pageSize || DEFAULT_PAGE_SIZE;
   }
 
@@ -57,7 +57,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(info => {
       this.childEvent = info;
       if (this.childEvent !== null) {
-        setTimeout(()=>{    
+        setTimeout(()=>{
           this.setPageSize(this.pageSize - 1);
           this.subscriptionDeleteOwnDocument.unsubscribe();
         }, 1300);
@@ -104,7 +104,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
       pageSize: this.pageSize
     });
   }
-  
+
   ngOnDestroy() {
     if (this.subscriptionDeleteOwnDocument) {
       this.subscriptionDeleteOwnDocument.unsubscribe();

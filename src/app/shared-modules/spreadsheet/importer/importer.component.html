@@ -63,7 +63,7 @@
           </ng-container>
         </div>
         <div class="col-sm-7">
-          <button class="btn btn-primary pull-right" [disabled]="!formID || !vm.filename || vm.step === step.fileAlreadyUploadedPartially || vm.step === step.fileAlreadyUploaded" (click)="activate(step.colMapping)">{{ 'paginator.next' | translate }}</button>
+          <button class="btn btn-primary pull-right" [disabled]="!formID || !vm.filename || vm.step === step.fileAlreadyUploadedPartially || vm.step === step.fileAlreadyUploaded" (click)="activate(step.colMapping)">{{ 'paginator.next' | translate }}</button>
         </div>
       </div>
     </ng-container>
@@ -106,7 +106,7 @@
           <ng-container *ngIf="vm.step === step.importReady">
             <div class="row">
               <div class="col-sm-6">
-                <p class="action">{{ 'excel.import.step4.importReady' | translate }}</p>
+                <p class="action">{{ 'excel.import.step4.importReady' | translate }}</p>
               </div>
               <div class="col-sm-6">
                 <div class="row">
@@ -142,6 +142,12 @@
                 <option [selected]="false === onlyWithCount" [value]="false">{{ 'excel.import.alsoEmptyCount' | translate }}</option>
               </select>
             </div>
+            <div class="col-sm-5 checkbox">
+              <label class="pull-right">
+                <input type="checkbox"[(ngModel)]="showOnlyErroneous" />
+                {{ 'excel.import.onlyErroneous' | translate }}
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -155,7 +161,7 @@
             [virtualScrolling]="true"
             [clientSideSorting]="false"
             [height]="'50vh'"
-            [rows]='mappedData'
+            [rows]='mappedData | onlyErroneous:showOnlyErroneous'
             [count]="mappedData.length"
             [page]="1"
             [pageSize]="mappedData.length"
@@ -165,7 +171,7 @@
     </ng-container>
 
     <ng-container *ngIf="vm.step === step.importing">
-      <h4>{{ 'sending' | translate }}</h4>
+      <h4>{{ 'sending' | translate }}</h4>
       <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{ current }}/{{ total }}</progressbar>
     </ng-container>
 
@@ -183,6 +189,14 @@
       <alert [type]="'danger'"  *ngIf="vm.step === step.doneWithErrors">
         <div [innerHtml]="'excel.import.error.doneWithErrors' | translate"></div>
       </alert>
+      <div class="row">
+        <div class="col-sm-12 checkbox">
+          <label class="pull-right">
+            <input type="checkbox"[(ngModel)]="showOnlyErroneous" />
+            {{ 'excel.import.onlyErroneous' | translate }}
+          </label>
+        </div>
+      </div>
       <div class="data-container">
         <laji-datatable
           #dataTable
@@ -192,7 +206,7 @@
           [virtualScrolling]="true"
           [clientSideSorting]="false"
           [height]="'50vh'"
-          [rows]='mappedData'
+          [rows]='mappedData | onlyErroneous:showOnlyErroneous'
           [count]="mappedData.length"
           [page]="1"
           [pageSize]="mappedData.length"

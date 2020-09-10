@@ -36,7 +36,18 @@
       </h5>
     </ng-template>
   </div>
-  <div class="col-md-6 form-control-static" *ngIf="showResult && result && result.payload">
-    <laji-taxon-name [taxon]="result.payload" [taxonID]="result.key" [warningOnMissingTaxonID]="true"></laji-taxon-name>
+  <div class="col-md-6 form-control-static" *ngIf="showResult">
+    <ng-container *ngIf="result && result.payload; else asIs">
+      <laji-taxon-name [taxon]="result.payload" [taxonID]="result.key" [warningOnMissingTaxonID]="true"></laji-taxon-name>
+    </ng-container>
+    <ng-template #asIs>
+      <ng-container *ngIf="useValue">
+        <laji-taxon-name [taxon]="{
+          key: '',
+          cursiveName: false,
+          vernacularName: useValue
+        }" [taxonID]="''" [warningOnMissingTaxonID]="true"></laji-taxon-name>
+      </ng-container>
+    </ng-template>
   </div>
 </div>

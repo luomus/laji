@@ -93,7 +93,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     private cd: ChangeDetectorRef,
     private storage: LocalStorageService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   @Input()
   set active(value) {
@@ -119,23 +119,13 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     );
   }
 
-  ngOnInit() {
-    this.route.snapshot.queryParams.subscribe(queryParams => {
-      if (queryParams["editorOrObserverPersonToken"] === undefined &&
-      queryParams["observerPersonToken"] === undefined &&
-      queryParams["editorPersonToken"] === undefined &&
-      this.selectedTabIdx === 6
-      ) {
-        this.onSelect(0);
-      }
-    });
-  }
+  ngOnInit() {}
 
   ngOnChanges() {
-    if (this.route.snapshot.queryParams["editorOrObserverPersonToken"] === undefined &&
-        this.route.snapshot.queryParams["observerPersonToken"] === undefined &&
-        this.route.snapshot.queryParams["editorPersonToken"] === undefined &&
-        this.selectedTabIdx === 6
+    if (((this.route.snapshot.queryParams["editorOrObserverPersonToken"] === undefined &&
+    this.route.snapshot.queryParams["observerPersonToken"] === undefined &&
+    this.route.snapshot.queryParams["editorPersonToken"] === undefined) || this.route.snapshot.queryParams["editorOrObserverIsNotPersonToken"] ) &&
+    this.selectedTabIdx === 6
     ) {
       this.onSelect(0);
     }

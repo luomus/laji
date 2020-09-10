@@ -16,7 +16,7 @@
              [queryParams]="(document.formId | toQName) === collectionContestFormId && own ? {id: (document.documentId | toQName), showFacts: showFacts} : {uri: document.documentId, own: own, showFacts: showFacts}"
              target="_blank"
              [tooltip]="'haseka.submissions.toPrint' | translate">
-            {{ 'print' | translate }}
+            {{ 'print' | translate }}
             <img src="/static/images/icons/pdf_16x16.png">
           </a>
           <div>
@@ -75,7 +75,7 @@
                 {{ 'viewer.secured.partial' | translate }}
               </span>
               <span *ngIf="!document.secured; else isSecured">
-                {{ 'viewer.secured.none' | translate }}
+                {{ 'viewer.secured.none' | translate }}
               </span>
               <ng-template #isSecured>
                 <span *ngIf="document.public">
@@ -104,7 +104,7 @@
       </div>
       <div class="row" *ngIf="document.media">
         <div class="col-sm-12">
-          <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
+          <laji-image-gallery [modalImages]="document.media" [showOverlay]="true"></laji-image-gallery>
         </div>
       </div>
     </div>
@@ -127,7 +127,7 @@
     </div>
     <div class="col-sm-5">
       <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData"></laji-viewer-map>
-      <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
+      <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media" [showOverlay]="true"></laji-image-gallery>
     </div>
   </div>
   <div style="margin-top: 10px" *ngIf="document.licenseId">

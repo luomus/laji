@@ -22,7 +22,7 @@
         <option *ngFor="let description of taxonDescription; let i = index"
                 [value]="description.id"
                 [selected]="activeDescription === i">
-          {{ description.title ? (description.title | multiLang) : description.id }}
+          {{ description.title ? (description.title | multiLang) : description.id }}
         </option>
       </select>
       <div *ngIf="(taxonDescription[activeDescription].title[currentLang] || taxonDescription[activeDescription].speciesCardAuthors); else Nocontent">
@@ -71,7 +71,7 @@
            [open]="true"
            [autoToggle]="true"
         >
-        
+
           <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
         </div>
       </div>

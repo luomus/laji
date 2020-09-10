@@ -88,7 +88,7 @@ export class LabelDesignerComponent implements OnInit {
         .subscribe(
           (response) => {
             this.downloading = false;
-            FileSaver.saveAs(response,  data.filename || 'labels.pdf');
+            FileSaver.saveAs(response,  data.filename || 'labels.pdf');
             this.cdr.markForCheck();
           },
           (err) => {

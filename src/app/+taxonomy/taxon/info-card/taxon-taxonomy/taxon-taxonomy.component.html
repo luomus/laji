@@ -39,7 +39,7 @@
     >
       <laji-taxon-synonyms [taxon]="taxon" [synonymTypes]="synonymTypes"></laji-taxon-synonyms>
     </div>
-    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName"
+    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName || taxon.obsoleteVernacularName"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.otherNames' | translate"
@@ -69,13 +69,13 @@
          [open]="true"
          [autoToggle]="true">
       <laji-bold-sequence [scientificName]="taxon.scientificName" [cursive]="taxon.cursiveName"></laji-bold-sequence>
-      <laji-bold-synonym [taxa]="taxon.basionyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.heterotypicSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.homotypicSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.objectiveSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.orthographicVariants || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.basionyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.heterotypicSynonyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.homotypicSynonyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.objectiveSynonyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.orthographicVariants || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
+      <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
     </div>
     <div class="panel panel-default"
          *ngIf="taxon.taxonExpert"
@@ -90,7 +90,7 @@
     <div *ngIf="taxon.hasChildren"
          class="panel panel-default"
          laji-panel
-         [title]="'taxonomy.belongs.to' | translate"
+         [title]="'taxonomy.belongs.to' | translate"
          [open]="true"
          [autoToggle]="true"
     >

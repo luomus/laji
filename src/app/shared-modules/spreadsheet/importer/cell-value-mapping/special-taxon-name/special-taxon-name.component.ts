@@ -19,8 +19,14 @@ export class SpecialTaxonNameComponent {
   mergeKey = MappingService.mergeKey;
   linkedVisible = true;
   hiddenValues: {[value: string]: boolean} = {};
+  allCompleted = false;
+  useAsIs = false;
+  completedCnt = 0;
 
   toggleLinkedVisible() {
+    if (!this.allCompleted) {
+      return;
+    }
     this.linkedVisible = !this.linkedVisible;
     if (!this.linkedVisible) {
       const hide = {};
@@ -62,5 +68,23 @@ export class SpecialTaxonNameComponent {
       }
     }
     this.mappingChanged.emit(mapping);
+  }
+
+  acceptAllAsIs() {
+    if (this.allCompleted) {
+      this.useAsIs = true;
+      const mapping = {...this.mapping};
+      this.invalidValues.forEach(value => {
+        if (!mapping[value]) {
+          mapping[value] = value;
+        }
+      });
+      this.mappingChanged.emit(mapping);
+    }
+  }
+
+  onSearchComplete() {
+    this.completedCnt++;
+    this.allCompleted = this.invalidValues.length === this.completedCnt;
   }
 }

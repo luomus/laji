@@ -62,8 +62,8 @@ export class AppComponent {
 
         this.currentRoute = newRoute;
         this.onFrontPage = router.isActive('/', true)
-          || router.isActive('/en', true)
-          || router.isActive('/sv', true);
+          || router.isActive('/en', true)
+          || router.isActive('/sv', true);
       }
 
       // Use analytics

@@ -65,7 +65,7 @@
       </div>
       <div class="row" *ngIf="imageData[document.id]">
         <div class="col-sm-12">
-          <laji-image-gallery [modalImages]="imageData[document.id]"></laji-image-gallery>
+          <laji-image-gallery [modalImages]="imageData[document.id]" [showOverlay]="true"></laji-image-gallery>
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@
               <laji-document-object *ngIf="fields['identifications']" [object]="identification" [fields]="fields['identifications']" [showFacts]="showFacts"></laji-document-object>
             </ng-container>
             <laji-document-object *ngIf="fields['units']" [object]="unit" [fields]="fields['units']" [showFacts]="showFacts"></laji-document-object>
-            <laji-image-gallery *ngIf="imageData[unit.id]" [modalImages]="imageData[unit.id]"></laji-image-gallery>
+            <laji-image-gallery *ngIf="imageData[unit.id]" [modalImages]="imageData[unit.id]" [showOverlay]="true"></laji-image-gallery>
           </ng-container>
         </div>
       </div>
@@ -100,7 +100,7 @@
     <div class="col-sm-5">
       <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="mapData.length > 0" [data]="mapData" [zoomToData]="zoomToData"></laji-viewer-map>
       <laji-image-gallery *ngIf="document.gatherings.length > active && imageData[document.gatherings[active].id]"
-                          [modalImages]="imageData[document.gatherings[active].id]"></laji-image-gallery>
+                          [modalImages]="imageData[document.gatherings[active].id]" [showOverlay]="true"></laji-image-gallery>
     </div>
   </div>
 </ng-container>

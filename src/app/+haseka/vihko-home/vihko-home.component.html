@@ -74,6 +74,7 @@
     <h3><a [routerLink]="['/vihko', 'templates'] | localize" translate>vihko.home.form.pre</a></h3>
     <p translate>vihko.home.form.pre.desc</p>
     <ul>
+      <li><strong><a [routerLink]="['/vihko', 'template', 'JX.519'] | localize" translate>haseka.createPrefilledForm</a></strong></li>
       <li>
         <div [ngSwitch]="currentLang">
           <a *ngSwitchCase="'sv'" [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.pre.1</a>

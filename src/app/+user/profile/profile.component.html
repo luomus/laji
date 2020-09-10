@@ -5,7 +5,7 @@
       {{ 'profile.missing'|translate }}
     </div>
     <div class="row" *ngIf="profile.profileKey || isCurrentUser">
-      <div class="col-md-8 col-xs-12">
+      <div class="col-md-8 col-xs-12 margin-bottom-5">
         <h3>{{ profile.userID | users }}</h3>
         <div class="profile-image">
           <img *ngIf="profile.image" [src]="profile.image" alt="profile image" class="img-rounded">
@@ -21,6 +21,7 @@
           </p>
         </div>
         <div *ngIf="editing" class="profile-edit">
+          <p>{{ 'profile.info.intro' | translate }}</p>
           <div class="profile-edit-row">
             {{ 'profile.image' | translate }}
             <input class="form-control" placeholder="{{'profile.imagePlaceholder' | translate}}" [(ngModel)]="profile.image">
@@ -30,8 +31,22 @@
             <textarea class="form-control" [(ngModel)]="profile.profileDescription"></textarea>
           </div>
           <div class="profile-edit-row">
-            {{ 'MA.personalCollectionIdentifier' | label }}<laji-info>{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
+            {{ 'MA.personalCollectionIdentifier' | label }}<laji-info [placement]="'right'">{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
             <input class="form-control" [(ngModel)]="profile.personalCollectionIdentifier">
+          </div>
+          <div class="profile-edit-row">
+            {{ 'MM.capturerVerbatim' | label }}<laji-info [placement]="'right'">{{ 'profile.info.capturerVerbatim' | translate }}</laji-info>
+            <input class="form-control" [(ngModel)]="profile.settings.capturerVerbatim">
+          </div>
+          <div class="profile-edit-row">
+            {{ 'MY.intellectualOwner' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
+            <input class="form-control" [(ngModel)]="profile.settings.intellectualOwner">
+          </div>
+          <div class="profile-edit-row">
+            {{ 'MY.intellectualRights' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualRights' | translate }}</laji-info>
+            <select class="form-control" [(ngModel)]="profile.settings.intellectualRights">
+              <option *ngFor="let c of intellectualRightsArray" [ngValue]="c.value">{{ c.value | label }}</option>
+            </select>
           </div>
           <div class="profile-edit-row">
             <div class="btn btn-default" (click)="saveProfile()">{{ 'profile.save' | translate }}</div>

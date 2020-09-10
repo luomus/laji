@@ -238,7 +238,7 @@ export class UserDocumentToolsComponent implements OnInit {
 
 
   private updateLink() {
-    if (!this.hasEditRights || !this._documentID || !this._formID) {
+    if (!this.hasEditRights || !this._documentID || !this._formID) {
       return;
     }
     this.linkLocation = this.formService.getEditUrlPath(this._formID, this._documentID);

@@ -115,8 +115,8 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
 
   private updateSaving() {
     const allSaved = this.savedSelectedTaxonIds === this.selectedTaxonIds
-      && (this.profile.finnishBirdSongRecognitionSkillLevel === this.finnishBirdSongRecognitionSkillLevel || undefined)
-      && (this.profile.birdwatchingActivityLevel === this.birdwatchingActivityLevel || undefined);
+      && (this.profile.finnishBirdSongRecognitionSkillLevel === (this.finnishBirdSongRecognitionSkillLevel || undefined))
+      && (this.profile.birdwatchingActivityLevel === (this.birdwatchingActivityLevel || undefined));
 
     this.saving = !allSaved;
   }

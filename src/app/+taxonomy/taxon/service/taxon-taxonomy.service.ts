@@ -28,7 +28,7 @@ export class TaxonTaxonomyService {
 
     if (!this.pending[id]) {
       this.pending[id] = this.taxonService
-        .taxonomyFindBySubject(id, this.translate.currentLang, {
+        .taxonomyFindBySubject(id, 'multi', {
           selectedFields: this.getSelectedFields(),
           onlyFinnish: false
         })
@@ -60,7 +60,7 @@ export class TaxonTaxonomyService {
 
     if (!this.pendingChildren[id]) {
       this.pendingChildren[id] = this.taxonService
-        .taxonomyFindChildren(id, this.translate.currentLang, undefined, {
+        .taxonomyFindChildren(id, 'multi', undefined, {
           selectedFields: this.getSelectedFields(),
           onlyFinnish: false
         })
@@ -104,7 +104,7 @@ export class TaxonTaxonomyService {
 
     if (!this.pendingParents[id]) {
       this.pendingParents[id] = this.taxonService
-        .taxonomyFindParents(id, this.translate.currentLang, {
+        .taxonomyFindParents(id, 'multi', {
           selectedFields: this.getSelectedFields(),
           onlyFinnish: false
         })

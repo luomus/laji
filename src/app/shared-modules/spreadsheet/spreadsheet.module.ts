@@ -34,6 +34,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { UserMappingButtonComponent } from './importer/load-file/user-mapping-button.component';
 import { SpreadsheetFacade } from './spreadsheet.facade';
 import { FieldItemComponent } from './excel-generator/field-item/field-item.component';
+import { OnlyErroneousPipe } from './importer/only-erroneous.pipe';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { FieldItemComponent } from './excel-generator/field-item/field-item.comp
     SpecialInformalTaxonGroupsComponent,
     CanSplitToPipe,
     UserMappingButtonComponent,
-    FieldItemComponent
+    FieldItemComponent,
+    OnlyErroneousPipe
   ],
     exports: [ImporterComponent, ExcelGeneratorComponent, StepperComponent],
   imports: [

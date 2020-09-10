@@ -161,7 +161,7 @@ export class LineTransectComponent implements OnChanges {
     ) {
       const diff = +new Date(this.document.gatheringEvent.dateBegin + ' ' + this.document.gatheringEvent.timeEnd) -
         +new Date(
-          (this.document.gatheringEvent.dateEnd || this.document.gatheringEvent.dateBegin) + ' ' + this.document.gatheringEvent.timeStart
+          (this.document.gatheringEvent.dateEnd || this.document.gatheringEvent.dateBegin) + ' ' + this.document.gatheringEvent.timeStart
         );
       count.minPerKm = Math.round((diff / 1000 / 60) / (count.routeLength / 1000));
     }

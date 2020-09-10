@@ -120,7 +120,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
   }
 
   @Input() set rows(rows: any[]) {
-    this._originalRows = rows || [];
+    this._originalRows = rows || [];
 
     // record the original indexes of each row element so that when the table is sorted
     // we can find out how the indexes were mapped
@@ -145,7 +145,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit {
     this._offset = page - 1;
   }
 
- 
+
 
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;

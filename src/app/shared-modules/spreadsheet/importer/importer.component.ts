@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { from as ObservableFrom, Observable, of } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
@@ -15,7 +24,7 @@ import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ngx-webstorage';
 import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../../../+haseka/tools/model/import-table-column';
-import { catchError, concatMap, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, takeUntil, tap, toArray } from 'rxjs/operators';
 import { ExcelToolService } from '../service/excel-tool.service';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
 import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
@@ -23,14 +32,16 @@ import { FileService, instanceOfFileLoad } from '../service/file.service';
 import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
 import { environment } from '../../../../environments/environment';
 import { Form } from '../../../shared/model/Form';
+import { Logger } from '../../../shared/logger';
+import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
 
 @Component({
   selector: 'laji-importer',
   templateUrl: './importer.component.html',
-  styleUrls: ['./importer.component.css'],
+  styleUrls: ['./importer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ImporterComponent implements OnInit {
+export class ImporterComponent implements OnInit, OnDestroy {
 
   @ViewChild('currentUserMapModal', { static: true }) currentUserMapModal: ModalDirective;
   @ViewChild('userMapModal', { static: true }) userMapModal: ModalDirective;
@@ -53,6 +64,7 @@ export class ImporterComponent implements OnInit {
   header: {[key: string]: string};
   fields: {[key: string]: IFormField};
   dataColumns: ImportTableColumn[];
+  jobPayload: DocumentJobPayload;
   docCnt = 0;
   origColMap: {[key: string]: string};
   colMap: {[key: string]: string};
@@ -89,6 +101,7 @@ export class ImporterComponent implements OnInit {
     'editors[*]',
     'gatheringEvent.leg[*]'
   ];
+  showOnlyErroneous = false;
 
   constructor(
     private formService: FormService,
@@ -104,13 +117,18 @@ export class ImporterComponent implements OnInit {
     private excelToolService: ExcelToolService,
     private latestFacade: LatestDocumentsFacade,
     private spreadsheetFacade: SpreadsheetFacade,
-    private fileService: FileService
+    private fileService: FileService,
+    private logger: Logger
   ) {
     this.vm$ = spreadsheetFacade.vm$;
   }
 
   ngOnInit() {
     this.spreadsheetFacade.clear();
+  }
+
+  ngOnDestroy() {
+    this.spreadsheetFacade.goToStep(Step.empty);
   }
 
   onFileChange(event: Event) {
@@ -232,7 +250,7 @@ export class ImporterComponent implements OnInit {
         const columns: ImportTableColumn[] = [
           {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
           {prop: '_doc', label: label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
-          {prop: '_idx', label: rowLabel, sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
+          {prop: '_row', label: rowLabel, sortable: false, width: 40}
         ];
         Object.keys(this.header).map(address => {
           columns.push({
@@ -310,7 +328,8 @@ export class ImporterComponent implements OnInit {
       ...this.data.map((row, idx) => ({
         ...this.getMappedValues(row, this.colMap, this.fields),
         _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : {status: 'valid'},
-        _doc: docs[idx]
+        _doc: docs[idx],
+        _row: idx + 2
       }))
     ];
     setTimeout(() => {
@@ -331,53 +350,65 @@ export class ImporterComponent implements OnInit {
 
   validate() {
     const userDataMap = Hash(this.mappingService.getUserMappings(), {algorithm: 'sha1'});
+    const rowData = this.parsedData.filter(data => data.document !== null);
     if (this.currentUserMappingHash !== userDataMap) {
       this.spreadsheetFacade.setMappingFilename('');
     }
     this.spreadsheetFacade.goToStep(Step.validating);
+    this.showOnlyErroneous = false;
     let success = true;
+    let skipped = false;
     this.total = this.parsedData.length;
-    this.current = 1;
-    ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
-      concatMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
-        concatMap(document => this.importService.validateData(document).pipe(
-          switchMap(result => of({result: result, source: data})),
-          catchError(err => of(typeof err.error !== 'undefined' ? err.error : err).pipe(
-              map(body => body.error && body.error.details || body.error || body),
-              map(error => ({result: {_error: error}, source: data}))
-            ))
-        )),
-        catchError(() => of({result: {_error: {status: 422}}, source: data})),
-        tap(() => {
-          if (this.current < this.total) {
-            this.current++;
+    this.current = 0;
+    ObservableFrom(rowData).pipe(
+      concatMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)),
+      toArray(),
+      switchMap(documents => this.importService.validateData(documents)),
+      tap(job => this.jobPayload = job),
+      switchMap(job => this.importService.waitToComplete('validate', job, (status) => {
+        this.current = status.processed;
+        this.cdr.markForCheck();
+      })),
+      takeUntil(this.spreadsheetFacade.step$.pipe(
+        filter(step => step !== Step.validating),
+        map(() => skipped = true)
+      )),
+      map(({errors, documents}) => rowData.map((data, idx) => {
+        if (!documents[idx]) {
+          return {result: {_error: {status: 422}}, source: data};
+        }
+        return {
+          source: {...data, document: documents[idx]},
+          result: (errors[idx] ? {_error: errors[idx]} : {})
+        };
+      }))
+    ).subscribe(
+        (response: any) => {
+          if (skipped) {
+            return;
           }
-          this.cdr.markForCheck();
-        })
-      )))
-      .subscribe(
-        (data) => {
-          if (data.result._error) {
-            success = false;
-            Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {
-              status: 'invalid',
-              error: data.result._error
-            });
+          for (const data of response) {
+            if (data.result._error) {
+              success = false;
+              Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {
+                status: 'invalid',
+                error: data.result._error
+              });
+            }
           }
           this.mappedData = [...this.mappedData];
           this.cdr.markForCheck();
         },
         (err) => {
-          const body = typeof err.json === 'function' ? err.json() : err;
-          if (body.error && body.error.details) {
-            this.errors = body.error.details;
-          }
           this.valid = false;
           this.spreadsheetFacade.goToStep(Step.invalidData);
           this.cdr.markForCheck();
-          console.error(err);
+          this.logger.error('Import validation failed', err);
         },
         () => {
+          if (skipped) {
+            return;
+          }
           this.valid = success;
           this.spreadsheetFacade.goToStep(success ? Step.importReady : Step.invalidData);
           this.cdr.markForCheck();
@@ -387,42 +418,55 @@ export class ImporterComponent implements OnInit {
 
   save(publicityRestrictions: Document.PublicityRestrictionsEnum) {
     this.spreadsheetFacade.goToStep(Step.importing);
+    this.showOnlyErroneous = false;
     let success = true;
+    let skipped = false;
     let hadSuccess = false;
     this.total = this.parsedData.length;
     this.current = 1;
-    ObservableFrom(this.parsedData.filter(data => data.document !== null)).pipe(
-      concatMap(data => this.augmentService.augmentDocument(data.document).pipe(
-        concatMap(document => this.importService.sendData(
-          document,
-          publicityRestrictions,
-          [Document.DataOriginEnum.dataOriginSpreadsheetFile]
-        ).pipe(
-          switchMap(result => of({result: result, source: data})),
-          catchError(err => of(typeof err.json === 'function' ? err.json() : err).pipe(
-            map(error => error.error && error.error.details || error),
-            map(error => ({result: {_error: (error || {status: 422})}, source: data}))
-          ))
-        )),
-        tap(() => {
-          if (this.current < this.total) {
-            this.current++;
+
+    const rowData = this.parsedData.filter(data => data.document !== null);
+
+    this.importService.sendData({
+      ...this.jobPayload,
+      dataOrigin: [Document.DataOriginEnum.dataOriginSpreadsheetFile],
+      publicityRestrictions
+    }).pipe(
+      switchMap(() => this.importService.waitToComplete('create', this.jobPayload, (status) => {
+        this.current = status.processed;
+        this.cdr.markForCheck();
+      })),
+      map(({errors, documents}) => rowData.map((data, idx) => {
+        if (!documents[idx]) {
+          return {result: {_error: {status: 422}}, source: data};
+        }
+        return {
+          source: {...data, document: documents[idx]},
+          result: (errors[idx] ? {_error: errors[idx]} : {})
+        };
+      })),
+      takeUntil(this.spreadsheetFacade.step$.pipe(
+        filter(step => step !== Step.importing),
+        map(() => skipped = true)
+      )),
+    ).subscribe(
+        (response) => {
+          if (skipped) {
+            return;
           }
-          this.cdr.markForCheck();
-        })
-      )))
-      .subscribe(
-        (data) => {
-          if (data.result._error) {
-            success = false;
-            Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {
-              status: 'error',
-              error: data.result._error
-            });
-          } else {
-            hadSuccess = true;
-            Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {status: 'ok'});
+          for (const data of response) {
+            if (data.result._error) {
+              success = false;
+              Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {
+                status: 'error',
+                error: data.result._error
+              });
+            } else {
+              hadSuccess = true;
+              Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {status: 'ok'});
+            }
           }
+
           this.data = [...this.data];
           this.cdr.markForCheck();
         },
@@ -435,6 +479,9 @@ export class ImporterComponent implements OnInit {
           this.cdr.markForCheck();
         },
         () => {
+          if (skipped) {
+            return;
+          }
           if (success) {
             this.spreadsheetFacade.goToStep(Step.doneOk);
             this.valid = true;

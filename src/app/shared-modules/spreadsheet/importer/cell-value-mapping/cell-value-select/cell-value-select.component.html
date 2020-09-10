@@ -2,10 +2,10 @@
   <thead>
     <tr>
       <th>
-        {{ 'excel.map.value-user' | translate }}
+        {{ 'excel.map.value-user' | translate }}
       </th>
       <th>
-        {{ 'excel.map.value-mapped' | translate }}
+        {{ 'excel.map.value-mapped' | translate }}
       </th>
     </tr>
   </thead>
@@ -20,13 +20,13 @@
         <ng-container [ngSwitch]="_field.type">
           <ng-container *ngSwitchCase="'string'">
             <laji-mapping-select
-              [value]="mapping[_field.key] || ''"
+              [value]="mapping[_field.key] || ''"
               [options]="labels"
               (selected)="valueMapped(value, $event)"></laji-mapping-select>
           </ng-container>
           <ng-container *ngSwitchCase="'boolean'">
             <laji-mapping-select
-              [value]="mapping[_field.key] || ''"
+              [value]="mapping[_field.key] || ''"
               [options]="booleanValues"
               (selected)="valueMapped(value, $event)"></laji-mapping-select>
           </ng-container>

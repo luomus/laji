@@ -276,7 +276,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   showMakeTemplate(row: RowDocument): boolean {
-    if (this.actions === false || this.onlyTemplates === true || this.actions.indexOf('template') === -1) {
+    if (this.actions === false || this.onlyTemplates === true || this.actions.indexOf('template') === -1) {
       return false;
     }
     return row && row.formID && Global.canHaveTemplate.indexOf(row.formID) > -1;
