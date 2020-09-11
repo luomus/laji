@@ -3,6 +3,7 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import { TaxonAutocompleteService } from '../../shared/taxon-autocomplete/taxon-autocomplete.service'
 
 @Component({
   selector: 'laji-taxon-select',
@@ -52,14 +53,17 @@ export class TaxonSelectComponent {
   constructor(
     private lajiApi: LajiApiService,
     private translate: TranslateService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private taxonAutocompleteService: TaxonAutocompleteService
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this._taxonId);
+      console.log('ciaone')
     })
       .pipe(
         distinctUntilChanged(),
         switchMap((token: string) => this.getTaxa(token)),
+        switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa)),
         switchMap((data: any[]) => {
           this.typeaheadMatch = undefined;
 
@@ -129,6 +133,7 @@ export class TaxonSelectComponent {
   public getTaxa(token: string): Observable<any> {
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
+      includePayload: true,
       limit: '' + this.typeaheadLimit,
       lang: this.translate.currentLang,
       ...this.searchParams
