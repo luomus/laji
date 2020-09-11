@@ -1295,8 +1295,6 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     padding-top: 10px;
   }
 }
-<<<<<<< HEAD
-=======
 
   /* autocomplete */
   .taxon-select-bar .informal-group-image {
@@ -1307,6 +1305,7 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     background-position: center center;
     position: relative;
     padding: 5px 20px 5px 5px;
+    top: 3px;
   }
 
   .finnish-flag {
@@ -1320,114 +1319,8 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     margin-left: 10px;
     background-position: center center;
     position: relative;
-    border: 1px solid gray;
-    bottom: 2px;
-  }
-
-  .flag_icon {
-    float: right; 
-    display: inline-block;
-    margin-left: 5px;
-  }
-
-  .dropdown-menu>li>a {
-    width: 100%;
-  }
-
-  .responsive_container {
-    display: inline-block;
-    float: right;
-    margin-left: 5px;
-  }
-
-  .no-border {
-    border: 0;
-  }
-
-  .omni-search-results span.active div div:nth-child(1), .omni-search-results span.link div div:nth-child(1), typeahead-container ul li a span div div:nth-child(1) {
-    display: inline-block;
-    margin-left: 5px;
-    float: none;
-    top: 2px;
-  }
-
-
-  .omni-search-results span.active div div:nth-child(1) div:nth-child(1),.omni-search-results span.link div div:nth-child(1) div:nth-child(1),  typeahead-container ul li a span div div:nth-child(1) div:nth-child(1) {
-    display: inline-block;
-    padding-right: 20px;
-    height: 20px;
-    background-size: 20px 20px;
-    background-position: center center;
-    position: relative;
-    padding: 5px 20px 5px 5px;
-    background-repeat: no-repeat;
-    float: left;
-  }
-
-   .omni-search-results span.active div div:nth-child(1) div:nth-child(2), .omni-search-results span.link div div:nth-child(1) div:nth-child(2), typeahead-container ul li a span div div:nth-child(1) div:nth-child(2) {
-    display: inline-block;
-    width: 24px;
-    height: 14px;
-    margin-left: 10px;
-    background-position: center center;
-    position: relative;
-    border: 1px solid gray;
     top: 3px;
-    float: right;
-    background-image: url('/static/images/icons/flag_fi_small.png');
-  }
-
-  .omni-search-results span.active span, .omni-search-results span.link span, typeahead-container ul li a span span {
-    font-style: italic;
-  }
-
-  .omni-search-results span.active div div:nth-child(1) span, .omni-search-results span.link div div:nth-child(1) span, typeahead-container ul li a span div div:nth-child(1) span {
-    border: 0;
-    display: inline-block;
-    height: 14px;
-    width: 24px;
-    margin-left: 10px;
-    top: 3px;
-  }
- 
-
-
-  
-
-  @media only screen and (max-width : 767px) {
-
-    .responsive_container {
-      display: block;
-      float: none;
-      margin-left: 0px;
-      position: relative;
-      top: -4px;
-    }
-
-    ::ng-deep .omni-search-results span.active span, typeahead-container ul li a span span {
-      display: block;
-    }
-
-     typeahead-container ul li a span span {
-       display: block;
-     }
-
-
-    ::ng-deep .omni-search-results span.active div div:nth-child(1) div:nth-child(2), typeahead-container ul li a span div div:nth-child(1) div:nth-child(2) {
-      top: 15px;
-    }
-
-    ::ng-deep .omni-search-results span.active div div:nth-child(1) div:nth-child(1), typeahead-container ul li a span div div:nth-child(1) div:nth-child(1) {
-      top: 10px;
-    }
-
-    ::ng-deep .omni-search-results span.active div div:nth-child(1), typeahead-container ul li a span div div:nth-child(1) {
-      float: none;
-    }
-
+    border: 1px solid gray;
   }
 
 
-
-  
->>>>>>> 31eebcd11... [#174707757] some style on mobile
