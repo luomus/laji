@@ -3,7 +3,7 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
-import { TaxonAutocompleteService } from '../../shared/taxon-autocomplete/taxon-autocomplete.service'
+import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 
 @Component({
   selector: 'laji-taxon-select',
@@ -20,7 +20,7 @@ import { TaxonAutocompleteService } from '../../shared/taxon-autocomplete/taxon-
     [typeaheadWaitMs]="200"
     [typeaheadMinLength]="3"
     [typeaheadSelectFirstItem]="!allowInvalid"
-    [typeaheadOptionField]="'value'"
+    [typeaheadOptionField]="'autocompleteDisplayName'"
     (typeaheadLoading)="changeTypeaheadLoading($event)"
     (typeaheadOnSelect)="onTaxonSelect($event)"
     [typeaheadItemTemplate]="typeaheadItemTemplate"
@@ -28,6 +28,7 @@ import { TaxonAutocompleteService } from '../../shared/taxon-autocomplete/taxon-
     autocomplete="off"
     autocorrect="off">
   `,
+  styleUrls: ['taxon-select.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonSelectComponent {
@@ -58,7 +59,6 @@ export class TaxonSelectComponent {
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this._taxonId);
-      console.log('ciaone')
     })
       .pipe(
         distinctUntilChanged(),
@@ -104,7 +104,7 @@ export class TaxonSelectComponent {
 
   onTaxonSelect(event) {
     this.enteredValue = undefined;
-
+    this._taxonId = event.item.autocompleteSelectedName;
     if (event.item && event.item.key) {
       this.typeaheadMatch = {id: event.item.key, match: event.item.value};
       this.selectValue(event.item.key, true);
