@@ -1,3 +1,5 @@
+<alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "haseka.form.genericError" | translate }}</alert>
+
 <h1>{{ 'theme.kerttu.letterAnnotation' | translate }}</h1>
 
 <div class="lu-section" *lajiRequiresAudioSupport>
