@@ -7,28 +7,6 @@
     background-position: bottom center;
   }
 
-  ::ng-deep typeahead-container .dropdown-menu {
+  ::ng-deep .dropdown-menu {
     position: relative;
-  }
-
-  ::ng-deep typeahead-container ul li a span div {
-    display: inline-block;
-    float: right;
-    margin-left: 5px;
-    position: relative;
-    top: -5px;
-  }
-  
-
-  @media only screen and (max-width : 767px) {
-    ::ng-deep typeahead-container ul li a span div {
-      display: block;
-      float: none;
-      margin-left: 0px;
-      opacity: 0.7;
-    }
-
-    typeahead-container ul li a span span {
-     display: block
-    }
   }
