@@ -28,7 +28,7 @@ export class TaxonAutocompleteService {
      const scientificName = payload['cursiveName'] ? '<span>' + payload['scientificName'] + '</span>' : payload['scientificName'];
      const taxonRank = payload['taxonRankId'] ? ' (' + this.labelPipe.transform(payload['taxonRankId']) + ') ' : '';
      const informalGroupIcon = '<div class="' + payload['informalTaxonGroups'][0].id +'"></div>';
-     const flag = payload['finnish'] ? '<div></div>' : '<div class="no-border"></div>';
+     const flag = payload['finnish'] ? '<div></div>' : '<span></span>';
      const vernacularName = payload['vernacularName'] !== '' ? payload['vernacularName'] + '(' + this.translate.currentLang + ') (' + payload['matchingName'] + ') - ' + scientificName + ' '
      : scientificName + ' (' + payload['matchingName'] + ') - ' + scientificName;
      const otherVernacularName = payload['vernacularName'] !== '' ? payload['vernacularName'] + '(' + this.translate.currentLang + ') - ' + scientificName
