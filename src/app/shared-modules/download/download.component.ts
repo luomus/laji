@@ -86,6 +86,7 @@ export class DownloadComponent {
   @Input() showFileTypes = true;
   @Input() showBackdrop = true;
   @Input() showReason = false;
+  @Input() closeModalOnDownloadStart = false;
   @Input() role = 'secondary';
   @Input() reason = '';
   @Input() reasonEnum = '';
@@ -124,6 +125,9 @@ export class DownloadComponent {
   onDownload() {
     if (this.downloadLoading || (this.showReason && !this.reason && !this.reasonEnum)) {
       return;
+    }
+    if (this.closeModalOnDownloadStart) {
+      this.closeModal();
     }
     this.download.emit(this.fileType);
   }
