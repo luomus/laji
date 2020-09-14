@@ -1369,12 +1369,17 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     background-image: url('/static/images/icons/flag_fi_small.png');
   }
 
-  typeahead-container ul li a span span {
+  typeahead-container ul li a span span:nth-child(1) {
     font-style: italic;
   }
 
-  .no-border {
+  typeahead-container ul li a span span:nth-child(2) {
     border: 0;
+    display: inline-block;
+    height: 14px;
+    width: 24px;
+    margin-left: 10px;
+    top: 3px;
   }
 
   @media only screen and (max-width : 767px) {
