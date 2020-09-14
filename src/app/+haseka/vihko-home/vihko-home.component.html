@@ -1,7 +1,8 @@
 <laji-technical-news class="mt-4"></laji-technical-news>
 <h2 translate>vihko.home.title</h2>
+<h3 translate>haseka.forms.title</h3>
 <div class="d-flex flex-row flex-wrap">
-  <div class="form-card strong xs:basis-0 sm:basis-5 basis-3 m-3">
+  <div class="form-card strong form alert-info xs:basis-0 sm:basis-4 basis-3 m-3">
     <h3><a [routerLink]="['/vihko', 'MHL.51'] | localize" translate>vihko.home.form.mobile</a></h3>
     <p translate>vihko.home.form.mobile.desc</p>
     <ul>
@@ -14,7 +15,7 @@
       </li>
     </ul>
   </div>
-  <div class="form-card strong xs:basis-0 sm:basis-5 basis-3 m-3">
+  <div class="form-card strong form alert-info xs:basis-0 sm:basis-4 basis-3 m-3">
     <h3><a [routerLink]="['/vihko', 'JX.519'] | localize" translate>vihko.home.form.trip</a></h3>
     <p translate>vihko.home.form.trip.desc</p>
     <ul>
@@ -36,7 +37,7 @@
     </ul>
   </div>
   -->
-  <div *lajiForTypes="['dev']" class="form-card strong xs:basis-0 sm:basis-5 basis-3 m-3">
+  <div *lajiForTypes="['dev']" class="form-card strong form alert-info xs:basis-0 sm:basis-4 basis-3 m-3">
     <h3><a routerLink="" translate>vihko.home.form.collection</a></h3>
     <p translate>vihko.home.form.collection.desc</p>
     <ul>
@@ -56,7 +57,10 @@
       </li>
     </ul>
   </div>
-  <div class="form-card m-3 xs:basis-0 sm:basis-5 basis-3">
+</div>
+<h3 translate>haseka.tools</h3>
+<div class="d-flex flex-row flex-wrap">
+  <div class="form-card strong m-3 xs:basis-0 sm:basis-4 basis-3">
     <h3><a [routerLink]="['/vihko', 'tools', 'import'] | localize" translate>vihko.home.form.save</a></h3>
     <p translate>vihko.home.form.save.desc</p>
     <ul>
@@ -70,7 +74,7 @@
       </li>
     </ul>
   </div>
-  <div class="form-card m-3 xs:basis-0 sm:basis-5 basis-3">
+  <div class="form-card strong m-3 xs:basis-0 sm:basis-4 basis-3">
     <h3><a [routerLink]="['/vihko', 'templates'] | localize" translate>vihko.home.form.pre</a></h3>
     <p translate>vihko.home.form.pre.desc</p>
     <ul>

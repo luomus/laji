@@ -129,6 +129,7 @@ export class TaxonSelectComponent {
   public getTaxa(token: string): Observable<any> {
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
+      includePayload: true,
       limit: '' + this.typeaheadLimit,
       lang: this.translate.currentLang,
       ...this.searchParams
