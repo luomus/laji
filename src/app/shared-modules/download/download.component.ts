@@ -123,7 +123,7 @@ export class DownloadComponent {
   }
 
   onDownload() {
-    if (this.downloadLoading || (this.showReason && !this.reason && !this.reasonEnum)) {
+    if (this.downloadLoading || (this.showReason && (!this.reason || !this.reasonEnum))) {
       return;
     }
     if (this.closeModalOnDownloadStart) {
