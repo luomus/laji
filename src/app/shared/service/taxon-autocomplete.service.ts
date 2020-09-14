@@ -28,7 +28,9 @@ export class TaxonAutocompleteService {
      const scientificName = payload['cursiveName'] ? '<i>' + payload['scientificName'] + '</i>' : payload['scientificName'];
      const taxonRank = payload['taxonRankId'] ? ' (' + this.labelPipe.transform(payload['taxonRankId']) + ') ' : '';
      const informalGroupIcon = '<div class="informal-group-image ' + payload['informalTaxonGroups'][0].id +'"></div>';
-     const flag = '<div class="autocomplete-small-flag finnish-flag"></div>'
+     const flag = '<div class="autocomplete-small-flag finnish-flag"></div>';
+     const vernacularName = payload['vernacularName'] !== '' ? payload['vernacularName'] + '(' + this.translate.currentLang + ') - ' + scientificName
+     : scientificName + ' (' + payload['matchingName'] + ') - ' + scientificName;
 
     switch (payload['nameType']) {
       case 'MX.scientificName':
@@ -38,11 +40,10 @@ export class TaxonAutocompleteService {
       case 'MX.birdlifeCode':
         return "birdlifeCode";
       case 'MX.vernacularName':
-        return "vernacularName";
+        return ''+ vernacularName + '' + taxonRank + '<div class="flag-informalIcon">' + informalGroupIcon + flag + '</div>';
       case 'MX.alternativeVernacularName':
-        return "alternativeVernacularName";
       case 'MX.obsoleteVernacularName':
-        return "obsoleteVernacularName";
+        return "alternativeVernacularName"
       case 'MX.tradeName':
         return "tradeName";
     }
@@ -57,7 +58,7 @@ export class TaxonAutocompleteService {
       case 'MX.birdlifeCode':
         return "birdlifeCode";
       case 'MX.vernacularName':
-        return "vernacularName";
+        return payload['vernacularName'] !== '' ? payload['vernacularName'] : payload['scientificName'] ;
       case 'MX.alternativeVernacularName':
         return "alternativeVernacularName";
       case 'MX.obsoleteVernacularName':
