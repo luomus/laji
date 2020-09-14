@@ -1319,16 +1319,41 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     background-position: center center;
     position: relative;
     border: 1px solid gray;
+    bottom: 2px;
   }
 
-  .flag-informalIcon {
+  .flag_icon {
     float: right; 
     display: inline-block;
-    margin-left: 20px;
+    margin-left: 5px;
   }
 
   .dropdown-menu>li>a {
     width: 100%;
   }
+
+  .responsive_container {
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+  }
+
+  .no-border {
+    border: 0;
+  }
+
+  @media only screen and (max-width : 767px) {
+    .responsive_container {
+      display: block;
+      float: none;
+      margin-left: 0px;
+    }
+
+    .flag_icon {
+      float: none;
+    }
+  }
+
+
 
   
