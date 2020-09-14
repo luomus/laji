@@ -231,53 +231,53 @@ treenode:last-child > .tree-node > .tree-children::after {
   filter: brightness(0) invert(1);
 }
 
-.informal-group-image.MVL\.1 {
+.informal-group-image.MVL\.1, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.1 {
   background-image: url('/static/images/informalGroups/MVL.1.svg');
 }
 
-.informal-group-image.MVL\.2 {
+.informal-group-image.MVL\.2, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.2 {
   background-image: url('/static/images/informalGroups/MVL.2.svg');
 }
 
-.informal-group-image.MVL\.343 {
+.informal-group-image.MVL\.343, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.343{
   background-image: url('/static/images/informalGroups/MVL.21.svg');
 }
 
-.informal-group-image.MVL\.22 {
+.informal-group-image.MVL\.22 , typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.22 {
   background-image: url('/static/images/informalGroups/MVL.22.svg');
 }
 
-.informal-group-image.MVL\.26 {
+.informal-group-image.MVL\.26, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.26 {
   background-image: url('/static/images/informalGroups/MVL.26.svg');
 }
 
-.informal-group-image.MVL\.27 {
+.informal-group-image.MVL\.27, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.27 {
   background-image: url('/static/images/informalGroups/MVL.27.svg');
 }
 
-.informal-group-image.MVL\.37 {
+.informal-group-image.MVL\.37, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.37 {
   background-image: url('/static/images/informalGroups/MVL.37.svg');
 }
 
-.informal-group-image.MVL\.39 {
+.informal-group-image.MVL\.39, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.39 {
   background-image: url('/static/images/informalGroups/MVL.39.svg');
 }
-.informal-group-image.MVL\.40 {
+.informal-group-image.MVL\.40, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.40 {
   background-image: url('/static/images/informalGroups/MVL.40.svg');
 }
 
-.informal-group-image.MVL\.41 {
+.informal-group-image.MVL\.41, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.41 {
   background-image: url('/static/images/informalGroups/MVL.41.svg');
 }
 
-.informal-group-image.MVL\.232 {
+.informal-group-image.MVL\.232, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.232 {
   background-image: url('/static/images/informalGroups/MVL.232.svg');
 }
 
-.informal-group-image.MVL\.233 {
+.informal-group-image.MVL\.233, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.233 {
   background-image: url('/static/images/informalGroups/MVL.233.svg');
 }
-.informal-group-image.MVL\.28 {
+.informal-group-image.MVL\.28, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.28 {
   background-image: url('/static/images/informalGroups/MVL.28.svg');
 }
 
@@ -1338,18 +1338,48 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     margin-left: 5px;
   }
 
+  typeahead-container ul li a span div:nth-child(1) {
+    float: right; 
+    display: inline-block;
+    margin-left: 5px;
+  }
+
+  typeahead-container ul li a span div:nth-child(1) div:nth-child(1) {
+    display: inline-block;
+    padding-right: 20px;
+    height: 20px;
+    background-size: 20px 20px;
+    background-position: center center;
+    position: relative;
+    padding: 5px 20px 5px 5px;
+    background-repeat: no-repeat;
+    float: left;
+  }
+
+  typeahead-container ul li a span div:nth-child(1) div:nth-child(2) {
+    display: inline-block;
+    width: 24px;
+    height: 14px;
+    margin-left: 10px;
+    background-position: center center;
+    position: relative;
+    border: 1px solid gray;
+    top: 3px;
+    float: right;
+    background-image: url('/static/images/icons/flag_fi_small.png');
+  }
+
+  typeahead-container ul li a span span {
+    font-style: italic;
+  }
+
   .no-border {
     border: 0;
   }
 
   @media only screen and (max-width : 767px) {
-    .responsive_container {
-      display: block;
-      float: none;
-      margin-left: 0px;
-    }
 
-    .flag_icon {
+    typeahead-container ul li a span div:nth-child(1) {
       float: none;
     }
   }
