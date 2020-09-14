@@ -1305,7 +1305,6 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     background-position: center center;
     position: relative;
     padding: 5px 20px 5px 5px;
-    top: 3px;
   }
 
   .finnish-flag {
@@ -1319,8 +1318,17 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     margin-left: 10px;
     background-position: center center;
     position: relative;
-    top: 3px;
     border: 1px solid gray;
+  }
+
+  .flag-informalIcon {
+    float: right; 
+    display: inline-block;
+    margin-left: 20px;
+  }
+
+  .dropdown-menu>li>a {
+    width: 100%;
   }
 
   
