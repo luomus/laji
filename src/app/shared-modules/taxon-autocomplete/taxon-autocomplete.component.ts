@@ -2,8 +2,17 @@
  * TODO: Change this to use taxon-select component
  */
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable, of, of as ObservableOf, timer } from 'rxjs';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output
+} from '@angular/core';
+import { Observable, of, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Autocomplete } from '../../shared/model/Autocomplete';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
@@ -16,7 +25,7 @@ import 'rxjs-compat/add/operator/switchMap';
   styleUrls: ['./taxon-autocomplete.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonAutocompleteComponent implements AfterViewInit {
+export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
 
   @Input() index = 0;
   @Input() limit = 10;
@@ -39,6 +48,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
   value = '';
   result: Autocomplete;
   loading = false;
+  taxonSub: Subscription;
 
   constructor(
     private lajiApi: LajiApiService,
@@ -68,15 +78,20 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
         }
       });
     }
-    this.getTaxa(this.taxon, true)
-      .subscribe(result => {
-        if (result && result.key) {
-          this.onTaxonSelect(result);
-        } else {
-          this.value = this.taxon;
-          this.cdr.markForCheck();
-        }
-      });
+    this.taxonSub = this.getTaxa(this.taxon, true).subscribe(result => {
+      if (result && result.key) {
+        this.onTaxonSelect(result);
+      } else {
+        this.value = this.taxon;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.taxonSub) {
+      this.taxonSub.unsubscribe();
+    }
   }
 
   getTaxa(token: string, onlyExact = false): Observable<any> {
