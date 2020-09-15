@@ -5,12 +5,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 
+
 @Component({
   selector: 'laji-taxon-select',
   template: `<input
     #typeahead
     [ngClass]="{loading: typeaheadLoading}"
-    type="text"
+    type="text/html"
     [class]="class"
     [name]="name"
     [placeholder]="placeholder"
@@ -23,15 +24,19 @@ import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplet
     [typeaheadOptionField]="'autocompleteDisplayName'"
     (typeaheadLoading)="changeTypeaheadLoading($event)"
     (typeaheadOnSelect)="onTaxonSelect($event)"
-    [typeaheadItemTemplate]="typeaheadItemTemplate"
+    [typeaheadItemTemplate]="taxonItem"
     (keyup)="onTaxonSelect($event)"
     autocomplete="off"
     autocorrect="off">
+
+    <ng-template #taxonItem let-model="item">
+     <span [innerHtml]="model['autocompleteDisplayName' ]"></span>
+    </ng-template>
   `,
   styleUrls: ['taxon-select.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonSelectComponent {
+export class TaxonSelectComponent{
   @Input() searchParams = {};
   @Input() name = 'target';
   @Input() placeholder = '';
@@ -50,6 +55,7 @@ export class TaxonSelectComponent {
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
   public dataSource: Observable<any>;
+  currentLang: string;
 
   constructor(
     private lajiApi: LajiApiService,
@@ -63,10 +69,9 @@ export class TaxonSelectComponent {
       .pipe(
         distinctUntilChanged(),
         switchMap((token: string) => this.getTaxa(token)),
-        switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa)),
+        switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this._taxonId)),
         switchMap((data: any[]) => {
           this.typeaheadMatch = undefined;
-
           if (this._taxonId) {
             const searchTerm = this._taxonId.toLowerCase();
             if (data.length > 0 && (data[0].value.toLowerCase() === searchTerm || data[0].key.toLowerCase() === searchTerm)) {

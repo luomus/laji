@@ -1338,11 +1338,16 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     margin-left: 5px;
   }
 
+  .no-border {
+    border: 0;
+  }
+
   typeahead-container ul li a span div div:nth-child(1) {
     float: right; 
     display: inline-block;
     margin-left: 5px;
   }
+
 
   typeahead-container ul li a span div div:nth-child(1) div:nth-child(1) {
     display: inline-block;
@@ -1381,12 +1386,25 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     margin-left: 10px;
     top: 3px;
   }
+ 
+
+
+  
 
   @media only screen and (max-width : 767px) {
+
+    .responsive_container {
+      display: block;
+      float: none;
+      margin-left: 0px;
+      position: relative;
+      top: -4px;
+    }
 
     typeahead-container ul li a span div div:nth-child(1) {
       float: none;
     }
+
   }
 
 
