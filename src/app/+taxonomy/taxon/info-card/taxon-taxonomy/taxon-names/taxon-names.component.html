@@ -1,7 +1,7 @@
 <ng-container *ngFor="let name of ['vernacularName', 'alternativeVernacularName', 'obsoleteVernacularName', 'tradeName']">
   <laji-taxon-info-row
     *ngIf="availableLangs[name].length > 0"
-    [label]="name==='obsoleteVernacularName' ? ('taxonomy.obsolete.vernacular.name' | translate ) : ('MX.' + name) | label">
+    [label]="('MX.' + name) | label">
     <ul>
       <li *ngFor="let lang of availableLangs[name]">
         {{ _taxon[name] | multiLang: false:lang | values }} ({{ lang }})
