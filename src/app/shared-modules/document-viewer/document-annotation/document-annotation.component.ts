@@ -418,7 +418,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
 
-@HostListener('window:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
       if (e.keyCode === 37 && !this.childEvent && !this.isfocusedCommentTaxon && !this.documentToolsOpen) { // left
         if (this.result && this.indexPagination > 0) {
