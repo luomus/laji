@@ -45,13 +45,13 @@ export class TaxonAutocompleteService {
       case 'MX.euringCode':
         return this.matchingName + ' - ' + (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName) + '<div class="responsive_container">' + (payload['taxonRankId'] ? ' (' + this.labelPipe.transform(payload['taxonRankId']) + ') ' : '' ) + '<div class="flag_icon"><div class="' + payload['informalTaxonGroups'][0].id +'"></div>' + (payload['finnish'] ? '<div></div>' : '<span></span>') + '</div>';
       case 'MX.vernacularName':
-        return (payload['vernacularName'] !== '' ? this.vernacularName + '(' + this.translate.currentLang + ') - ' + (payload['cursiveName'] ? '<span>' + this.scientificName + '</span>' : this.scientificName) + ' '
+        return (payload['vernacularName'] !== '' ? this.vernacularName + ' - ' + (payload['cursiveName'] ? '<span>' + this.scientificName + '</span>' : this.scientificName) + ' '
         : (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName) + ' (' + this.matchingName + ') - ' + (payload['cursiveName'] ? '<span>' + this.scientificName + '</span>' : this.scientificName)) + '<div>' + (payload['taxonRankId'] ? ' (' + this.labelPipe.transform(payload['taxonRankId']) + ') ' : '') + '<div> <div class="' + payload['informalTaxonGroups'][0].id +'"></div>' + (payload['finnish'] ? '<div></div>' : '<span></span>') + '</div>';
       case 'MX.alternativeVernacularName':
-        return (payload['vernacularName'] !== '' ? this.vernacularName + '(' + this.translate.currentLang + ') - ' + (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName)
+        return (payload['vernacularName'] !== '' ? this.vernacularName + ' - ' + (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName)
         : (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName) + ' (' + this.matchingName + ') - ' + (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName)) + '<div>' + (payload['taxonRankId'] ? ' (' + this.labelPipe.transform(payload['taxonRankId']) + ') ' : '' ) + '<div> <div class="' + payload['informalTaxonGroups'][0].id +'"></div>' + (payload['finnish'] ? '<div></div>' : '<span></span>') + '</div>';
       case 'MX.obsoleteVernacularName':
-        return (payload['vernacularName'] !== '' ? this.vernacularName + '(' + this.translate.currentLang + ') - ' + (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName)
+        return (payload['vernacularName'] !== '' ? this.vernacularName + ' - ' + (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName)
         : (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName) + ' (' + this.matchingName + ') - ' + (payload['cursiveName'] ? '<i>' + this.scientificName + '</i>' : this.scientificName)) + '<div>' + (payload['taxonRankId'] ? ' (' + this.labelPipe.transform(payload['taxonRankId']) + ') ' : '' ) + '<div> <div class="' + payload['informalTaxonGroups'][0].id +'"></div>' + (payload['finnish'] ? '<div></div>' : '<span></span>') + '</div>';
       case 'MX.tradeName':
         return "tradeName";
