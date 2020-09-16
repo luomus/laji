@@ -12,13 +12,15 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { of as ObservableOf, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
-
+import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-omni-search',
@@ -29,7 +31,7 @@ import { LajiApi, LajiApiService } from '../service/laji-api.service';
 export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() placeholder: string;
-  @Input() limit = 10;
+  @Input() limit = 5;
   @Input() delay = 200;
   @Input() selectTo = '/taxon';
   @Input() matchType: LajiApi.AutocompleteMatchType;
@@ -55,7 +57,9 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
               private router: Router,
               private changeDetector: ChangeDetectorRef,
               viewContainerRef: ViewContainerRef,
-              private logger: Logger
+              private logger: Logger,
+              private taxonAutocompleteService: TaxonAutocompleteService,
+              private translate: TranslateService
   ) {
     this.el = viewContainerRef.element.nativeElement;
   }
@@ -153,9 +157,11 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         q: this.search,
         limit: '' + this.limit,
         includePayload: true,
-        lang: 'multi',
+        lang: this.translate.currentLang,
         matchType: this.matchType
-      })
+      }).pipe(
+        switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.search)),
+      )
       .subscribe(
         data => {
           this.taxa = data;
