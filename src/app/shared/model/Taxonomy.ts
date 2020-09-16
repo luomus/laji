@@ -253,6 +253,8 @@ export interface Taxonomy {
   nonHiddenParentsIncludeSelf?: string[];
 
   observationCount?: number;
+
+  observationCountFinland?: number;
 }
 
 export interface RedListEvaluation {
