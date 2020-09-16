@@ -1174,7 +1174,7 @@
   "taxonomy.browse.title": "Browse and download",
   "taxonomy.browseAndDownload": "Browse and download observations",
   "taxonomy.card": "Species card",
-  "taxonomy.card.id": "Identification",
+  "taxonomy.card.id": "Identifier",
   "taxonomy.card.search": "Search taxon",
   "taxonomy.card.download": "Taxon information in machine-readable form",
   "taxonomy.checklist": "Checklist",
