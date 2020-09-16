@@ -133,6 +133,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     private observationFacade: ObservationFacade,
     private taxonAutocompleteService: TaxonAutocompleteService
   ) {
+    console.log('ciao')
     this.dataSource = new Observable((subscriber: any) => {
       subscriber.next(this.formQuery.taxon);
     });

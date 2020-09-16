@@ -11,8 +11,8 @@ import {
   Output,
   ViewContainerRef
 } from '@angular/core';
-import { of as ObservableOf, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
@@ -49,6 +49,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   private subTaxa: Subscription;
   private subCnt: Subscription;
   private inputChange: Subscription;
+  private dataSearch: Observable<any>
   private el: Element;
 
   constructor(private lajiApi: LajiApiService,
@@ -65,7 +66,9 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('ciao')
     this.inputChange = this.searchControl.valueChanges.pipe(
+      distinctUntilChanged(),
       tap(value => this.search = value)).pipe(
       debounceTime(this.delay))
       .subscribe(value => {
@@ -160,6 +163,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         lang: this.translate.currentLang,
         matchType: this.matchType
       }).pipe(
+        distinctUntilChanged(),
         switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.search)),
       )
       .subscribe(
@@ -172,7 +176,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         err => {
           this.logger.warn('OmniSearch failed to find data', {
             taxon: this.search,
-            lang: 'multi',
+            lang: this.translate.currentLang,
             limit: this.limit,
             err: err
           });
