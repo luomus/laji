@@ -10,9 +10,10 @@ import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnai
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
+import { TaxonSelectModule } from '../shared-modules/taxon-select/taxon-select.module';
 
 @NgModule({
-  imports: [routing, SharedModule, CarouselModule, ObservationMapModule, NavigationThumbnailModule, TechnicalNewsModule, InfoModule, LajiUiModule],
+  imports: [routing, SharedModule, CarouselModule, ObservationMapModule, NavigationThumbnailModule, TechnicalNewsModule, InfoModule, LajiUiModule, TaxonSelectModule],
   declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent]
 })
 export class HomeModule {
