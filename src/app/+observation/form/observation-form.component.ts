@@ -8,6 +8,8 @@ import * as moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
 import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
+import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
+
 
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
@@ -128,7 +130,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   private _query: WarehouseQueryInterface;
 
   constructor(
-    private observationFacade: ObservationFacade
+    private observationFacade: ObservationFacade,
+    private taxonAutocompleteService: TaxonAutocompleteService
   ) {
     this.dataSource = new Observable((subscriber: any) => {
       subscriber.next(this.formQuery.taxon);
@@ -136,6 +139,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.dataSource = this.dataSource.pipe(
       distinctUntilChanged(),
       switchMap((token: string) => this.observationFacade.taxaAutocomplete(token, this.formQuery.informalTaxonGroupId, 10)),
+      switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.formQuery.taxon)),
       switchMap((data) => {
         if (this.formQuery.taxon) {
           return ObservableOf(data);
