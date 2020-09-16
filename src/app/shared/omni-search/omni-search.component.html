@@ -24,17 +24,17 @@
   <div class="col-sm-12" *ngIf="taxa.length > 0 && search.length > 0">
     <div class="omni-search-results" [class.right]="expand === 'right'" (lajiClickOutSide)="onClose()">
       <div class="row" *ngIf="taxon">
-        <div class="col-md-3 matches">
-          <h5
+        <div class="col-md-4 matches taxon-list">
+          <span
                   class="match"
+                  [innerHTML]="taxon.autocompleteDisplayName"
                   *ngFor="let taxon of taxa; let i=index"
                   [ngClass]="{active: i === active, link: i !== active}"
                   (click)="activate(i)">
-            {{ taxon.value }}
-          </h5>
+        </span>
           <hr class="hidden-md hidden-lg">
         </div>
-        <div class="col-md-9 taxon-match">
+        <div class="col-md-8 taxon-match">
           <h3><laji-taxon-name [taxon]="taxon.payload"></laji-taxon-name></h3>
 
           <div class="row">
