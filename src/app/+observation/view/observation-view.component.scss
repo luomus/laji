@@ -46,6 +46,26 @@ laji-observation-form {
   display: none;
 }
 
+::ng-deep .sidebar {
+  overflow-x: visible !important;
+}
+
+:host ::ng-deep typeahead-container.dropdown {
+  right: 80px !important;
+  left: unset !important;
+  min-width: 500px;
+}
+
+:host ::ng-deep typeahead-container.dropdown ul {
+  min-width: 500px;
+}
+
+::ng-deep typeahead-container ul li a span div {
+  display: inline-block;
+  float: right;
+  margin-left: 5px;
+}
+
 @media only screen and (max-width : 1024px) {
   .toggle-intro {
     font-size: 30px;
@@ -125,7 +145,6 @@ laji-observation-form {
     margin-left: 0px;
     top: -6px;
     position: relative;
-    opacity: 0.7;
   }
 
   ::ng-deep .sidebar {
