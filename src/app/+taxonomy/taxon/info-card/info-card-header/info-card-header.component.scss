@@ -18,3 +18,25 @@ laji-taxon-select {
   padding-left: 5px;
   padding-right: 5px;
 }
+
+@media only screen and (max-width : 767px) {
+  :host ::ng-deep typeahead-container.dropdown ul {
+    max-width: 250px;
+    min-width: 250px;
+  }
+
+  :host ::ng-deep typeahead-container.dropdown {
+    right: 126px !important;
+    left: unset !important;
+    min-width: 250px;
+    max-width: 250px;
+  }
+
+  ::ng-deep typeahead-container ul li a span div {
+    display: block;
+    float: none;
+    margin-left: 0px;
+    top: -6px;
+    position: relative;
+  }
+}

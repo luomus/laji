@@ -259,6 +259,22 @@ label {
 
   }
 
+  :host ::ng-deep typeahead-container.dropdown {
+    right: 20px !important;
+    left: unset !important;
+    min-width: 500px;
+  }
+  
+  :host ::ng-deep typeahead-container.dropdown ul {
+    min-width: 500px;
+  }
+  
+  ::ng-deep typeahead-container ul li a span div {
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+  }
+
   @media only screen and (min-width: 768px) and (max-width: 1200px)  {
    .taxon div:nth-child(2) label, .taxon div:nth-child(3) label {
      height: 20px;
@@ -316,4 +332,26 @@ $taxon-input-height: 30px;
   height: 30px;
   max-width: 200px;
   border-radius: 5px;
+}
+
+@media only screen and (max-width : 767px) {
+  :host ::ng-deep typeahead-container.dropdown ul {
+    max-width: 250px;
+    min-width: 250px;
+  }
+
+  :host ::ng-deep typeahead-container.dropdown {
+    right: 64px !important;
+    left: unset !important;
+    min-width: 250px;
+    max-width: 250px;
+  }
+
+  ::ng-deep typeahead-container ul li a span div {
+    display: block;
+    float: none;
+    margin-left: 0px;
+    top: -6px;
+    position: relative;
+  }
 }
