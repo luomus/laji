@@ -134,7 +134,7 @@
       [typeaheadOptionsLimit]="20"
       [typeaheadWaitMs]="200"
       [typeaheadMinLength]="3"
-      [typeaheadOptionField]="'value'"
+      [typeaheadOptionField]="'autocompleteDisplayName'"
       [typeaheadItemTemplate]="taxonItem"
       autocomplete="off"
       autocorrect="off"
@@ -156,9 +156,7 @@
       <laji-taxon-name [taxon]="taxonomy"></laji-taxon-name>
     </div>
     <ng-template #taxonItem let-model="item">
-      <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-        {{ model.value }}
-      </h5>
+      <span [innerHtml]="model['autocompleteDisplayName' ]"></span>
     </ng-template>
   </div>
 

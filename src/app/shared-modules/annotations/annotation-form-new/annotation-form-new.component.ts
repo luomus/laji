@@ -1,4 +1,4 @@
-import {map,  mergeMap, filter } from 'rxjs/operators';
+import {map,  mergeMap, filter, switchMap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit,
 Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
@@ -18,6 +18,8 @@ import { LajiTaxonSearch } from '../../../shared/model/LajiTaxonSearch';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 import { CheckFocusService } from '../../../shared-modules/document-viewer/check-focus.service';
+import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomplete.service';
+
 
 @Component({
   selector: 'laji-annotation-form-new',
@@ -105,7 +107,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     private el: ElementRef,
     private labelPipe: LabelPipe,
     private loadingElements: LoadingElementsService,
-    private focus: CheckFocusService
+    private focus: CheckFocusService,
+    private taxonAutocompleteService: TaxonAutocompleteService
   ) { }
 
   ngOnInit() {
@@ -113,7 +116,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.identification.taxon);
     }).pipe(
-      mergeMap((query: string) => this.getTaxa(query))
+      mergeMap((query: string) => this.getTaxa(query)),
+      switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.annotation.identification.taxon))
     );
   }
 
@@ -163,7 +167,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   select(event) {
     this.annotation.identification.taxonID = event.item.key;
-    this.annotation.identification.taxon = event.value;
+    this.annotation.identification.taxon = event.item.autocompleteSelectedName;
     if (this.annotationSub) {
       this.annotationSub.unsubscribe();
     }
