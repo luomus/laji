@@ -1645,6 +1645,8 @@
   "theme.protax.probabilityThreshold": "Todennäiköisyys-kynnysarvo",
   "theme.protax.sequenceDescription": "Liitä DNA-sekvenssidata (FASTA-formaatissa) alla olevaan tekstikenttään tai valitse tiedosto tiedostovalitsimen avulla.",
   "theme.protax.noSequence": "Liitä ensin sekvenssidata tekstikenttään tai valitse tiedosto tietostovalitsimella.",
+  "theme.protax.invalidSequence": "Virheellinen tiedostoformaatti! Tuettuna on vain FASTA-formaatti.",
+  "theme.protax.genericError": "Tiedoston lataamisessa tapahtui virhe!",
   "theme.protax.textArea": "Tekstikenttä",
   "theme.protax.fileInput": "Tiedostovalitsin",
   "theme.nav.tools": "Työkalut",
