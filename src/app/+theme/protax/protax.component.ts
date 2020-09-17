@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ProtaxApi} from './protax-api';
 import {ExportService} from '../../shared/service/export.service';
-import {ProtaxModelEnum} from './models';
 
 @Component({
   selector: 'laji-protax',
@@ -10,12 +9,6 @@ import {ProtaxModelEnum} from './models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProtaxComponent implements OnInit {
-  model: ProtaxModelEnum = ProtaxModelEnum.COIFull;
-  probabilityThreshold = 0.1;
-  sequenceData = '';
-
-  protaxModels = ProtaxModelEnum;
-
   constructor(
     private protaxApi: ProtaxApi,
     private exportService: ExportService
@@ -24,8 +17,8 @@ export class ProtaxComponent implements OnInit {
   ngOnInit() {
   }
 
-  analyseData() {
-    this.protaxApi.analyse(this.sequenceData, this.model, this.probabilityThreshold).subscribe(result => {
+  analyseData(formData: FormData) {
+    this.protaxApi.analyse(formData).subscribe(result => {
       this.exportService.exportArrayBuffer(result, 'protax_output', 'txt');
     });
   }

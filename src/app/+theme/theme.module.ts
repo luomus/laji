@@ -100,6 +100,7 @@ import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-su
 import { SelectModule } from '../shared-modules/select/select.module';
 import { ProtaxComponent } from './protax/protax.component';
 import { ProtaxApi } from './protax/protax-api';
+import { ProtaxFormComponent } from './protax/protax-form/protax-form.component';
 
 /* tslint:enable:max-line-length */
 
@@ -197,7 +198,8 @@ import { ProtaxApi } from './protax/protax-api';
     KerttuRecordingAnnotationComponent,
     RequiresAudioSupportDirective,
     AudioNotSupportedErrorComponent,
-    ProtaxComponent
+    ProtaxComponent,
+    ProtaxFormComponent
   ],
   providers: [
     ResultService,
