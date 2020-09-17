@@ -21,6 +21,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
+import { TriplestoreLabelService } from '../triplestore-label.service';
 
 @Component({
   selector: 'laji-omni-search',
@@ -162,7 +163,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         lang: this.translate.currentLang,
         matchType: this.matchType
       }).pipe(
-        flatMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.search))
+        switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.search))
       )
       .subscribe(
         data => {

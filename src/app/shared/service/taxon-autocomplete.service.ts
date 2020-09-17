@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { from, observable, Observable, of } from 'rxjs';
+import { take, map, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from './triplestore-label.service';
 
@@ -13,7 +13,7 @@ export class TaxonAutocompleteService {
   scientificName: string;
   vernacularName: string;
   matchingName: string;
-  taxonRank: string;
+  taxonRank: Observable<string>;
   
 
   constructor(
@@ -22,21 +22,26 @@ export class TaxonAutocompleteService {
   ) { }
 
   getinfo(taxa: any[], text:string) {
-    taxa.map(
-      t => {
-        t.autocompleteDisplayName = this.getAutocompleteDisplayName(t['payload'], text);
-        t.autocompleteSelectedName = this.getAutocompleteSelectedName(t['payload']);
-      }
-    )
+    taxa.forEach(el => {
+      this.tripleStoreService.get(el['payload']['taxonRankId'], this.translate.currentLang).subscribe(
+        rank => {
+          el['payload']['taxonRankId'] = rank;
+          el.autocompleteDisplayName = this.getAutocompleteDisplayName(el['payload'], text);
+          el.autocompleteSelectedName = this.getAutocompleteSelectedName(el['payload']);
+        }
+      )
+    })
+
     return of(taxa);
   }
+
 
   getAutocompleteDisplayName(payload: any, text: string) {
 
     this.scientificName = this.addBold(payload['scientificName'], text);
     this.vernacularName = this.addBold(payload['vernacularName'], text);
     this.matchingName = this.addBold(payload['matchingName'], text);
-    this.filterTaxonRank(payload['taxonRankId']);
+    this.taxonRank = payload['taxonRankId'];
     
 
     switch (payload['nameType']) {
@@ -96,12 +101,6 @@ export class TaxonAutocompleteService {
 
   capitalize(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  filterTaxonRank(taxonRank) {
-    this.tripleStoreService.get(taxonRank, this.translate.currentLang).subscribe((data: string) => {
-      this.taxonRank = data;
-    });
   }
 
 }
