@@ -27,9 +27,9 @@
         <div class="col-md-4 matches taxon-list">
           <span
                   class="match"
-                  [innerHTML]="taxon.autocompleteDisplayName"
                   *ngFor="let taxon of taxa; let i=index"
                   [ngClass]="{active: i === active, link: i !== active}"
+                  [innerHTML]="taxon.autocompleteDisplayName"
                   (click)="activate(i)">
         </span>
           <hr class="hidden-md hidden-lg">

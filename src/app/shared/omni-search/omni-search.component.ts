@@ -1,4 +1,4 @@
-import { combineLatest, debounceTime, tap } from 'rxjs/operators';
+import { combineLatest, debounceTime, tap, flatMap, take, delay, map } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,8 +11,8 @@ import {
   Output,
   ViewContainerRef
 } from '@angular/core';
-import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { Observable, of as ObservableOf, Subscription, Subject } from 'rxjs';
+import { switchMap, distinctUntilChanged, takeUntil, share } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
@@ -66,12 +66,11 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('ciao')
     this.inputChange = this.searchControl.valueChanges.pipe(
       distinctUntilChanged(),
       tap(value => this.search = value)).pipe(
-      debounceTime(this.delay))
-      .subscribe(value => {
+      debounceTime(this.delay),
+      ).subscribe(value => {
         this.updateTaxa();
       });
   }
@@ -163,8 +162,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         lang: this.translate.currentLang,
         matchType: this.matchType
       }).pipe(
-        distinctUntilChanged(),
-        switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.search)),
+        flatMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.search))
       )
       .subscribe(
         data => {

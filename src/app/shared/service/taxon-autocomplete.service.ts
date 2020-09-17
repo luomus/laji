@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { LabelPipe } from '../pipe/label.pipe';
+import { TriplestoreLabelService } from './triplestore-label.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +13,15 @@ export class TaxonAutocompleteService {
   scientificName: string;
   vernacularName: string;
   matchingName: string;
-  taxonRank: Observable<any>;
+  taxonRank: string;
   
 
   constructor(
     private translate: TranslateService,
-    private labelPipe: LabelPipe
+    private tripleStoreService: TriplestoreLabelService
   ) { }
 
   getinfo(taxa: any[], text:string) {
-    console.log('pippo')
     taxa.map(
       t => {
         t.autocompleteDisplayName = this.getAutocompleteDisplayName(t['payload'], text);
@@ -35,7 +36,8 @@ export class TaxonAutocompleteService {
     this.scientificName = this.addBold(payload['scientificName'], text);
     this.vernacularName = this.addBold(payload['vernacularName'], text);
     this.matchingName = this.addBold(payload['matchingName'], text);
-    this.taxonRank = this.filterTaxonRank(payload['taxonRankId']);
+    this.filterTaxonRank(payload['taxonRankId']);
+    
 
     switch (payload['nameType']) {
       case 'MX.scientificName':
@@ -97,7 +99,9 @@ export class TaxonAutocompleteService {
   }
 
   filterTaxonRank(taxonRank) {
-    return this.labelPipe.transform(taxonRank);
+    this.tripleStoreService.get(taxonRank, this.translate.currentLang).subscribe((data: string) => {
+      this.taxonRank = data;
+    });
   }
 
 }
