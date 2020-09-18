@@ -1,7 +1,7 @@
 <ng-container *ngIf="_list || autocompleteNames.length > 0">
-    <ng-container *ngIf="taxonAutocomplete && (_list.length === autocompleteNames.length)">
+    <ng-container *ngIf="taxonAutocomplete">
         <ng-container *ngFor="let item of autocompleteNames">
-            <span class="label label-success link" (click)="remove(item)">{{ isLabel ? (item.match !== 'MX.scientificName' ? (item.id | label) : item.value ) : item.value }} x</span>
+            <span class="label label-success link" (click)="remove(item)">{{ isLabel ? (item.value | label) : item.value }} x</span>
         </ng-container>
     </ng-container>
     <ng-container *ngIf="!taxonAutocomplete">

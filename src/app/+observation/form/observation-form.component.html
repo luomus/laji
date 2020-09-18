@@ -55,6 +55,7 @@
     <laji-pill-list
       [isLabel]="true"
       [list]="query.target || []"
+      [taxonAutocomplete] = "true"
       (updateList)="updateSearchQuery('target', $event)"
     ></laji-pill-list>
   </div>
