@@ -1419,6 +1419,11 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
       display: block;
     }
 
+     typeahead-container ul li a span span {
+       display: block;
+     }
+
+
     ::ng-deep .omni-search-results span.active div div:nth-child(1) div:nth-child(2), typeahead-container ul li a span div div:nth-child(1) div:nth-child(2) {
       top: 15px;
     }

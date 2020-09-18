@@ -25,5 +25,10 @@
       display: block;
       float: none;
       margin-left: 0px;
+      opacity: 0.7;
+    }
+
+    typeahead-container ul li a span span {
+     display: block
     }
   }
