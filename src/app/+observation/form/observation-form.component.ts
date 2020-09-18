@@ -374,7 +374,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
       const target = event.item && event.item.key ? event.item.key : this.formQuery.taxon;
       this.query['target'] = this.query['target'] ? [...this.query['target'], target] : [target];
-      this.autocompleteNames.push({id: event.item.key, value: event.item.autocompleteSelectedName});
+      this.autocompleteNames.push({id: event.item.key, value: event.item.autocompleteSelectedName, match: event.item.payload['nameType']});
       this.sessionStorage.store('autocompleteNames', this.autocompleteNames)
       this.formQuery.taxon = '';
       this.onQueryChange();
