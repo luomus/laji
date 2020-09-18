@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { SessionStorageService, SessionStorage } from 'ngx-webstorage';
+import { LocalStorageService, SessionStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-pill-list',
@@ -28,10 +28,11 @@ export class PillListComponent implements OnInit {
       data.map(item => items.push(...item.split(this.separator)));
       this._list = items;
     }
+    this.autocompleteNames = this._list && this._list.length > 0 ? this.autocompleteNames : [];
   }
 
   constructor(
-    private sessionStorage: SessionStorageService
+    private sessionStorage: LocalStorageService
   ) {
   }
 
@@ -39,6 +40,7 @@ export class PillListComponent implements OnInit {
     this.sessionStorage.observe('autocompleteNames').subscribe(
       value => this.autocompleteNames = value
     );
+    this.autocompleteNames = this.sessionStorage.retrieve('autocompleteNames');
   }
 
   remove(item) {

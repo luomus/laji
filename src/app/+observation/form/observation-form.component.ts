@@ -9,7 +9,7 @@ import { ObservationFacade } from '../observation.facade';
 import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
-import { SessionStorageService, SessionStorage } from 'ngx-webstorage';
+import { LocalStorageService, SessionStorage } from 'ngx-webstorage';
 
 
 interface ISections {
@@ -135,7 +135,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   constructor(
     private observationFacade: ObservationFacade,
     private taxonAutocompleteService: TaxonAutocompleteService,
-    private sessionStorage: SessionStorageService
+    private sessionStorage: LocalStorageService
   ) {
     this.dataSource = new Observable((subscriber: any) => {
       subscriber.next(this.formQuery.taxon);
@@ -160,6 +160,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.sessionStorage.observe('autocompleteNames').subscribe(
       value => this.autocompleteNames = value
     );
+    this.autocompleteNames = this.sessionStorage.retrieve('autocompleteNames');
+    //this.sessionStorage.store('autocompleteNames', this.autocompleteNames);
     this.updateVisibleSections();
     this.updateVisibleAdvancedSections();
   }
@@ -177,6 +179,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   @Input()
   set query(query: WarehouseQueryInterface) {
     this._query = query;
+    this.autocompleteNames = this.query.target && this.query.target.length > 0 ? this.autocompleteNames : [];
     this.formQuery = this.searchQueryToFormQuery(query);
   }
 
