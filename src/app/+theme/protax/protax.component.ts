@@ -25,6 +25,8 @@ export class ProtaxComponent implements OnInit {
     }, err => {
       if (err.status === 400) {
         alert(this.translate.instant('theme.protax.invalidSequence'));
+      } else if (err.status === 413) {
+        alert(this.translate.instant('theme.protax.tooLargeSequence'))
       } else {
         alert(this.translate.instant('theme.protax.genericError'));
       }
