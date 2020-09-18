@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { SessionStorageService, SessionStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-pill-list',
@@ -7,13 +8,16 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: true
 })
-export class PillListComponent {
+export class PillListComponent implements OnInit {
 
   @Input() separator = ',';
+  @Input() taxonAutocomplete = false;
   @Input() isLabel;
   @Output() updateList = new EventEmitter();
 
   _list;
+  autocompleteNames = [];
+  
 
   @Input()
   set list(data) {
@@ -26,8 +30,27 @@ export class PillListComponent {
     }
   }
 
+  constructor(
+    private sessionStorage: SessionStorageService
+  ) {
+  }
+
+  ngOnInit() {
+    this.sessionStorage.observe('autocompleteNames').subscribe(
+      value => this.autocompleteNames = value
+    );
+  }
+
   remove(item) {
-    this.updateList.emit(this._list.filter(value => value !== item));
+    if (this.taxonAutocomplete) {
+      let tmp = this.autocompleteNames.filter(value => value.id !== item.id);
+      this.autocompleteNames = tmp;
+      this.sessionStorage.store('autocompleteNames', tmp);
+      this.updateList.emit(this._list.filter(value => value !== item.id));
+    } else {
+      this.updateList.emit(this._list.filter(value => value !== item));
+    }
+
   }
 
 }

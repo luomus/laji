@@ -5,6 +5,8 @@ import { ObservationFacade } from './observation.facade';
 import { AbstractObservation } from './abstract-observation';
 import { ReloadObservationViewService } from '../shared/service/reload-observation-view.service';
 import { Subscription } from 'rxjs';
+import { SessionStorageService, SessionStorage } from 'ngx-webstorage';
+
 
 @Component({
   selector: 'laji-observation',
@@ -28,7 +30,8 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
     protected observationFacade: ObservationFacade,
     protected route: ActivatedRoute,
     protected searchQuery: SearchQueryService,
-    protected reloadObservationView: ReloadObservationViewService
+    protected reloadObservationView: ReloadObservationViewService,
+    private sessionStorage: SessionStorageService
   ) {
     super();
   }
@@ -58,5 +61,6 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
       this.subscription.unsubscribe();
     }
     this.destroy();
+    this.sessionStorage.clear('autocompleteNames')
   }
 }
