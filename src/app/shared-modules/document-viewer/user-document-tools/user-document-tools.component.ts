@@ -244,7 +244,7 @@ export class UserDocumentToolsComponent implements OnInit {
     this.linkLocation = this.formService.getEditUrlPath(this._formID, this._documentID);
   }
 
-  @HostListener('window:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   documentToolsKeyDown(e: KeyboardEvent) {
     if (e.keyCode === 27) {
       e.stopImmediatePropagation();

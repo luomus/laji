@@ -29,9 +29,4 @@ export class TaxonNameComponent {
   onTaxonLinkClick(event: MouseEvent) {
     event.stopPropagation();
   }
-
-  isObject(val) {
-    return typeof val === 'object';
-  }
-
 }

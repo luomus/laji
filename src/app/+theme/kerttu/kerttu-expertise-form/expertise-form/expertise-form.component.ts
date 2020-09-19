@@ -66,14 +66,14 @@ export class ExpertiseFormComponent implements OnInit {
         '1000',
         'taxonomic',
         {
-          selectedFields: ['id', 'vernacularName', 'scientificName', 'cursive', 'observationCount'],
+          selectedFields: ['id', 'vernacularName', 'scientificName', 'cursive', 'observationCountFinland'],
           onlyFinnish: true,
           taxonRanks: ['MX.species']
         }
       ).pipe(
         map((result) => result.results),
         map((result) => result.reduce((arr, taxon) => {
-          if (taxon.observationCount > this.countThreshold) {
+          if (taxon.observationCountFinland > this.countThreshold) {
             arr.push(taxon);
           }
           return arr;

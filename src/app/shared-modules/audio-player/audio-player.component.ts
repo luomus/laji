@@ -156,7 +156,7 @@ export class AudioPlayerComponent implements OnInit {
   }
 
 
-  @HostListener('window:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
     if (e.keyCode === 27) {
       e.stopImmediatePropagation();

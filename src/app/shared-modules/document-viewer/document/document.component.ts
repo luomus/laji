@@ -334,7 +334,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   }
 
 
-  @HostListener('window:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
     if (e.keyCode === 27 && !this.childEvent && !this.documentToolsOpen) {
        e.stopImmediatePropagation();

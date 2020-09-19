@@ -191,7 +191,7 @@ export class DocumentLocalComponent implements OnChanges {
   }
 
 
-  @HostListener('window:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
 
     if (e.keyCode === 27 ) {

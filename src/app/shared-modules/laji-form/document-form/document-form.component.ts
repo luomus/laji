@@ -199,14 +199,11 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     this.documentService.saveTemplate({...this.templateForm, document: this.tmpDocument})
     .subscribe(
       () => {
-        this.translate.get('template.success')
-          .subscribe((value) => {
-          this.toastsService.showSuccess(value);
-          setTimeout(() => {
-            this.templateModal.hide();
-            this.router.navigate(['/vihko/templates']);
-          }, 200);
-          });
+        this.toastsService.showSuccess(this.translate.instant('template.success'));
+        setTimeout(() => {
+          this.templateModal.hide();
+          this.router.navigate(['/vihko/templates']);
+        }, 200);
         this.templateForm = {
           name: '',
           description: '',
@@ -214,12 +211,10 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
         };
 
         this.tmpDocument = {};
-        //this.success.emit(res);
         this.changeDetector.markForCheck();
       },
-      (err) => {
-        this.translate.get('template.error')
-          .subscribe((value) => this.toastsService.showError(value));
+      () => {
+        this.toastsService.showError(this.translate.instant('template.error'));
         this.changeDetector.markForCheck();
       });
   }

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '../../shared/service/footer.service';
 import { ComponentCanDeactivate } from '../../shared/guards/document-de-activate.guard';
 import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';

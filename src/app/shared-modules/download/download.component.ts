@@ -1,5 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output, SimpleChanges,
+  TemplateRef
+} from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SelectStyle } from '../select/metadata-select/metadata-select.component';
 
 type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
@@ -65,9 +73,9 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
           <div class="col-sm-12">
             <laji-spinner [spinning]="downloadLoading" [overlay]="true">
               <button type="button"
-                      [tooltip]="showReason && (!reason || !reasonEnum) ? ('download.reason-required' | translate) : ''"
+                      [tooltip]="showReason && disableDownLoad ? ('download.reason-required' | translate) : ''"
                       class="btn btn-default pull-right"
-                      [class.disabled]="downloadLoading || (showReason && (!reason || !reasonEnum))"
+                      [class.disabled]="disableDownLoad"
                       (click)="onDownload()">
                 <span>{{ "haseka.submissions.download" | translate }}</span>
               </button>
@@ -79,7 +87,7 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DownloadComponent {
+export class DownloadComponent implements OnChanges {
 
   @Input() disabled = false;
   @Input() downloadLoading = false;
@@ -96,6 +104,7 @@ export class DownloadComponent {
   fileType = 'tsv';
   modalRef: BsModalRef;
   basicSelectStyle = SelectStyle.basic;
+  disableDownLoad = false;
 
   @Output() reasonChange = new EventEmitter<string>();
   @Output() reasonEnumChange = new EventEmitter<string>();
@@ -112,6 +121,10 @@ export class DownloadComponent {
     private modalService: BsModalService
   ) { }
 
+  ngOnChanges(changes: SimpleChanges) {
+    this.checkCanDownloadStatus();
+  }
+
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {backdrop: this.showBackdrop, class: 'modal-sm'});
   }
@@ -123,13 +136,17 @@ export class DownloadComponent {
   }
 
   onDownload() {
-    if (this.downloadLoading || (this.showReason && !this.reason && !this.reasonEnum)) {
+    if (this.disableDownLoad) {
       return;
     }
     if (this.closeModalOnDownloadStart) {
       this.closeModal();
     }
     this.download.emit(this.fileType);
+  }
+
+  private checkCanDownloadStatus() {
+    this.disableDownLoad = this.downloadLoading || (this.showReason && (!this.reason || !this.reasonEnum));
   }
 
 }

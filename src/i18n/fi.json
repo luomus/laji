@@ -935,7 +935,7 @@
   "observation.form.breedingSite": "Lisääntymispaikat",
   "observation.form.breedingSiteFalse": "Vain lisääntymispaikan ulkopuoliset",
   "observation.form.breedingSiteTrue": "Vain lisääntymispaikat",
-  "observation.form.collection": "Rajaa kansallisiin tieteellisiin kokoelmanäytteisiin",
+  "observation.form.collection": "Rajaa kansallisiin tieteellisiin kokoelmiin",
   "observation.form.collectionTitle": "Tieteelliset kokoelmat",
   "observation.form.coordinateAccuracyMax": "Havaintopaikan koordinaattien tarkkuus",
   "observation.form.coordinateIntersection": "Leikkausosuus",

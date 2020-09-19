@@ -27,7 +27,6 @@ export class TaxonOccurrenceComponent implements OnChanges {
   filterByCollectionIdTotal: number;
   filterByHabitatTotal: number;
   filterHabitats: Array<any> = [];
-  numberHabitats: number = 0;
 
   constructor() { }
 
@@ -42,12 +41,9 @@ export class TaxonOccurrenceComponent implements OnChanges {
     this.filterByLifeStageTotal = undefined;
     this.filterBySexTotal = undefined;
     this.filterByCollectionIdTotal = undefined;
-    
-    this.filterHabitats = this.taxon.habitatOccurrenceCounts ? this.taxon.habitatOccurrenceCounts.map(function(item) { 
-      delete item.id; 
-      return item; 
-    }): [];
-  
+
+    this.filterHabitats = this.taxon.habitatOccurrenceCounts ?? [];
+
 
   }
 
