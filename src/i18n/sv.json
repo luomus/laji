@@ -1602,5 +1602,7 @@
   "technicalNews.error": null,
   "betapopup.desc": null,
   "observation.active.occurrenceCountFinlandMax": "Max detektionsgrad för taxon",
-  "observation.active.editorOrObserverIsNotPersonToken": "Uteslut egna observationer"
+  "observation.active.editorOrObserverIsNotPersonToken": "Uteslut egna observationer",
+
+  "vir.page.title": "Viranomaisportaali | Suomen lajitietokeskus"
 }
