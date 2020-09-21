@@ -179,10 +179,11 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     this.destroyDragEndListener = this.renderer.listen(document, 'mouseup', this.onDragEnd.bind(this));
   }
 
-  onContentClick() {
+  onContentClick(event) {
     if (this.mobile) {
       this.open = false;
       this.cdr.detectChanges();
+      event.stopImmediatePropagation();
     }
   }
 

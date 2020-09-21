@@ -11,7 +11,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { RouteDataService } from './route-data.service';
 
-const MAIN_TITLE = environment.type === Global.type.iucn ? 'iucn.page.title' : 'home.main-page.title';
+let MAIN_TITLE: string;
+switch (environment.type) {
+  case Global.type.iucn:
+    MAIN_TITLE = 'iucn.page.title';
+    break;
+  case Global.type.vir:
+    MAIN_TITLE = 'vir.page.title';
+    break;
+  default:
+    MAIN_TITLE = 'home.main-page.title';
+    break;
+}
 const MAIN_DESCRIPTION = 'footer.intro1';
 
 const ALL_META_KEYS = [
