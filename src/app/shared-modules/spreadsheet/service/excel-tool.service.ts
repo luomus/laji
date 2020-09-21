@@ -24,6 +24,7 @@ export class ExcelToolService {
 
 
   getNamedPlacesList(formID: string): Observable<string[]> {
+    this.namedPlacesService.invalidateCache();
     const usersNS$ = this.namedPlacesService.getAllNamePlaces({
       userToken: this.userService.getToken(),
       includePublic: false
