@@ -222,7 +222,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onError(error, info) {
-    this.logger.error('LajiForm crashed', {error, reactInfo: info, userSettings: this.settings});
+    this.logger.error('LajiForm crashed', {error, userSettings: this.settings, document: this.formData && this.formData.formData});
+    console.error(info);
     this.errorModal.show();
   }
 
