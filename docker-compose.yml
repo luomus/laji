@@ -1,13 +1,9 @@
 version: '3'
 
 services:
-  redis:
-    image: 'redis'
   front:
     container_name: laji
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     volumes:
       - '.:/app:delegated'
       - '/app/node_modules'
