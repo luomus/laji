@@ -85,6 +85,6 @@ export class SpecialTaxonNameComponent {
 
   onSearchComplete() {
     this.completedCnt++;
-    this.allCompleted = this.invalidValues.length === this.completedCnt;
+    this.allCompleted = this.invalidValues.length <= this.completedCnt;
   }
 }
