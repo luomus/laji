@@ -1,0 +1,3 @@
+.env
+!get-from-crowdin.sh
+!send-to-crowdin.sh
