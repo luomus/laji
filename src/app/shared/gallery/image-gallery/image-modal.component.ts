@@ -138,8 +138,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.showOverlay) {
-      this._overlay
+    this._overlay
       .attach(ImageModalOverlayComponent)
       .to('body')
       .show({isAnimated: false});
@@ -151,7 +150,6 @@ export class ImageModalComponent implements OnInit, OnDestroy {
       this.closeImage();
     };
     this.overlay.instance.showLinkToSpeciesCard = this.showLinkToSpeciesCard;
-    }
   }
 
   closeImage() {
