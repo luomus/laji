@@ -8,7 +8,7 @@
     "ng": "ng",
     "start": "npm run ng-high-memory -- serve --proxy-config proxy.conf.js --configuration=local --host 0.0.0.0 --port 3000",
     "start:local:prod": "NODE_ENV=development ng serve --proxy-config proxy.conf.js --aot=false --build-optimizer=false --configuration=local --host 0.0.0.0 --port 3000",
-    "start:ssr:local": "ng run laji:serve-ssr --configuration=local --port 3000",
+    "start:ssr:local": "npm run ng-high-memory -- run laji:serve-ssr --configuration=local --port 3000",
     "start:aot": "npm run ng-high-memory -- serve --configuration=local --host 0.0.0.0 --port 3000",
     "start:prod": "npm run ng-high-memory -- serve --configuration=production --host 0.0.0.0 --port 3000",
     "start:embedded": "npm run ng-high-memory -- serve --configuration=embedded --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
