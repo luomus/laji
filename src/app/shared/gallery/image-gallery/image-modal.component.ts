@@ -138,7 +138,6 @@ export class ImageModalComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.showOverlay) {
       this._overlay
       .attach(ImageModalOverlayComponent)
       .to('body')
@@ -152,7 +151,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
     };
     this.overlay.instance.showLinkToSpeciesCard = this.showLinkToSpeciesCard;
     }
-  }
+  
 
   closeImage() {
     if (!this._isShown) {
@@ -170,7 +169,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
 
 
 
-  @HostListener('document:keydown', ['$event'])
+  @HostListener('body:keydown', ['$event'])
   keyEvent(e: KeyboardEvent) {
       if (e.keyCode === 73 && e.altKey) { // openImage
         if (this.shortcut) {
