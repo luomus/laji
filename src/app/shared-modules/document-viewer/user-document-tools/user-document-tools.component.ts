@@ -24,7 +24,6 @@ import { of, forkJoin } from 'rxjs';
   selector: 'laji-user-document-tools',
   templateUrl: './user-document-tools.component.html',
   styleUrls: ['./user-document-tools.component.css'],
-  providers: [BsModalRef],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserDocumentToolsComponent implements OnInit {
@@ -47,6 +46,8 @@ export class UserDocumentToolsComponent implements OnInit {
   hasEditRights = false;
   loading = false;
   hasAdminRights = false;
+  modalRef: any;
+  modalIsOpen = false;
 
 
   @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
@@ -57,7 +58,6 @@ export class UserDocumentToolsComponent implements OnInit {
     private documentToolsService: DocumentToolsService,
     private translate: TranslateService,
     private modalService: BsModalService,
-    private modalRef: BsModalRef,
     private cd: ChangeDetectorRef,
     private documentApi: DocumentApi,
     private userService: UserService,
@@ -95,6 +95,7 @@ export class UserDocumentToolsComponent implements OnInit {
     this.modalService.onHide.subscribe((e) => {
       const body = document.body;
       body.classList.add("modal-open-after");
+      this.modalIsOpen = false;
       this.documentToolsService.emitChildEvent(false);
       this.cd.detectChanges();
     });
@@ -105,15 +106,15 @@ export class UserDocumentToolsComponent implements OnInit {
   }
 
   makeTemplate() {
-    // this.templateModal.show();
     this.modalRef = this.modalService.show(this.templateModal, {class: 'modal-sm tools', backdrop: true});
     this.documentToolsService.emitChildEvent(true);
+    this.modalIsOpen = true;
   }
 
   makeDelete() {
-    // this.deleteModal.show();
     this.modalRef = this.modalService.show(this.deleteModal, {class: 'modal-sm tools', backdrop: true});
     this.documentToolsService.emitChildEvent(true);
+    this.modalIsOpen = true;
   }
 
   closeModal(event){
@@ -246,7 +247,7 @@ export class UserDocumentToolsComponent implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   documentToolsKeyDown(e: KeyboardEvent) {
-    if (e.keyCode === 27 && this.modalService.getModalsCount() > 0) {
+    if (e.keyCode === 27 && this.modalIsOpen) {
       e.stopImmediatePropagation();
        this.closeModal(event);
       }
