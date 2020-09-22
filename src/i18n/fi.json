@@ -395,7 +395,7 @@
   "herpetology.search": "Hae havaintoja",
   "herpetology.title": "Sammakkoeläinten ja matelijoiden levinneisyyskartoitus",
   "home.authority.text": "<p>Tervetuloa käyttämään Suomen Lajitietokeskuksen viranomaistoimintaa varten perustettua palvelua. Palvelu ei ole avoin ja perustuu rajoitettuun käyttöoikeuteen. Palvelu on pääsääntöisesti vain ympäristö- ja luonnonvaraviranomaistahojen käytettävissä.</p><p>Palveluita toteutetaan tukemaan viranomaistoimintoja, jotka vaativat luotettavaa luonnon monimuotoisuustietoa tehtäessä päätöksiä mm. kestävän luonnonvarojen käytön, maankäytön ja luonnonsuojelun suhteen.</p>",
-  "home.authority.title": "Suomen Lajitietokeskus – Viranomaispalvelut",
+  "home.authority.title": "Suomen Lajitietokeskus – Viranomaisportaali",
   "home.carousel.collections": "aineistoa",
   "home.carousel.digitized": "digitoitua näytettä",
   "home.carousel.observations": "havaintoa",
@@ -935,7 +935,7 @@
   "observation.form.breedingSite": "Lisääntymispaikat",
   "observation.form.breedingSiteFalse": "Vain lisääntymispaikan ulkopuoliset",
   "observation.form.breedingSiteTrue": "Vain lisääntymispaikat",
-  "observation.form.collection": "Rajaa kansallisiin tieteellisiin kokoelmanäytteisiin",
+  "observation.form.collection": "Rajaa kansallisiin tieteellisiin kokoelmiin",
   "observation.form.collectionTitle": "Tieteelliset kokoelmat",
   "observation.form.coordinateAccuracyMax": "Havaintopaikan koordinaattien tarkkuus",
   "observation.form.coordinateIntersection": "Leikkausosuus",
@@ -1689,5 +1689,7 @@
   "technicalNews.error": "Palvelut vikatilassa. Voit tarkistaa onko asiasta tiedotetta <a href='http://foorumi.laji.fi/' target='_blank'>Foorumeilla</a> tai <a href='https://twitter.com/lajitieto' target='_blank'>Twitterissä</a>.",
   "betapopup.desc": "Tämä on Laji.fi-portaalin kehitysversio, eikä sitä pidä käyttää muuhuin kuin sivuston testaamiseen. Talletetut havainnot eivät näy Laji.fi-portaalissa.",
   "observation.active.occurrenceCountFinlandMax": "Taksonin max havaintomäärä",
-  "observation.active.editorOrObserverIsNotPersonToken": "Sulje pois omat havainnot"
+  "observation.active.editorOrObserverIsNotPersonToken": "Sulje pois omat havainnot",
+
+  "vir.page.title": "Viranomaisportaali | Suomen lajitietokeskus"
 }

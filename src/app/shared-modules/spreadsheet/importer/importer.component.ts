@@ -423,7 +423,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     let skipped = false;
     let hadSuccess = false;
     this.total = this.parsedData.length;
-    this.current = 1;
+    this.current = 0;
 
     const rowData = this.parsedData.filter(data => data.document !== null);
 

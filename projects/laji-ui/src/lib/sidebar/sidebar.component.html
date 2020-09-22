@@ -1,11 +1,12 @@
 <ng-container *ngIf="position === 'right' else sidebar"></ng-container>
 
-<div class="content" #contentRef
+<div class="lu-content" #contentRef
   [ngClass]="{'mobile': mobile}"
   [ngStyle]="{
     'margin-left': position === 'left' ? sidebarMinWidth : 'unset',
     'margin-right': position === 'right' ? sidebarMinWidth : 'unset'
   }">
+  <div class="lu-overlay" [ngClass]="mobile && open ? 'lu-overlay-in': 'lu-overlay-out'"></div>
   <lu-button tabindex="0" *ngIf="mobile" class="open-btn-mobile" (click)="onSwitchOpen()">
     <!-- Open menu -->
     {{ menuTitle }}

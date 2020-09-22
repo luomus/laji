@@ -15,6 +15,8 @@ export class LocalizeRouterService {
       return path.replace(/^\/(in|en|sv|fi)\b/, lang === 'fi' ? '' : `/${lang}`);
     } else if (lang === 'fi' || path.startsWith('.')) {
       return path;
+    } else if (path === '/') {
+      path = '';
     }
     return `/${lang}${path}`;
   }

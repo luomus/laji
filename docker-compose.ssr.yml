@@ -1,9 +1,17 @@
 version: '3'
 
 services:
+  redis:
+    image: 'redis'
   front:
+    build: .
+    volumes:
+      - '.:/app:delegated'
+      - '/app/node_modules'
     depends_on:
       - 'redis'
+    ports:
+      - '80:3000'
     environment:
       - REDIS_HOST=redis
     command: 'npm run start:ssr:local'

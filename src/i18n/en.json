@@ -795,7 +795,7 @@
   "observation.form.breedingSite": "Breeding sites",
   "observation.form.breedingSiteFalse": "Only non breeding",
   "observation.form.breedingSiteTrue": "Only breeding",
-  "observation.form.collection": "Only national museum collection specimen",
+  "observation.form.collection": "Only national museum collections",
   "observation.form.collectionTitle": "Scientific collections",
   "observation.form.coordinateAccuracyMax": "Accuracy of coordinates",
   "observation.form.coordinateIntersection": "Intersection ratio",
@@ -1536,5 +1536,7 @@
   "technicalNews.error": "Service not responding. You can check if there's more information at <a href='http://foorumi.laji.fi/' target='_blank'>the forums</a> or <a href='https://twitter.com/lajitieto' target='_blank'>Twitter</a>.",
   "betapopup.desc": "This is a development version of the laji.fi service. Observations entered through this service do not appear in laji.fi.",
   "observation.active.occurrenceCountFinlandMax": "Taxon max observations",
-  "observation.active.editorOrObserverIsNotPersonToken": "Exclude own observations"
+  "observation.active.editorOrObserverIsNotPersonToken": "Exclude own observations",
+
+  "vir.page.title": "Viranomaisportaali | Suomen lajitietokeskus"
 }

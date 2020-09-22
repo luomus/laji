@@ -113,7 +113,7 @@
                 </li>
               </ng-container>
             </ng-container>
-            <li dropdown>
+            <li *ngIf="false" dropdown> <!-- Lang not supported in VIR currently -->
               <a dropdownToggle class="link language-toggle">
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">
