@@ -246,7 +246,7 @@ export class UserDocumentToolsComponent implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   documentToolsKeyDown(e: KeyboardEvent) {
-    if (e.keyCode === 27) {
+    if (e.keyCode === 27 && this.modalService.getModalsCount() > 0) {
       e.stopImmediatePropagation();
        this.closeModal(event);
       }
