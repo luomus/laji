@@ -85,8 +85,22 @@ export class ExpertiseFormComponent implements OnInit {
     });
   }
 
-  onSelect(event) {
-    this.taxonIdSelect.emit(event.selected.map(taxon => taxon.id).concat(this.otherTaxonIds || []));
+  onSelect(selected: Taxonomy[]) {
+    this.selected = selected;
+    this.taxonIdSelect.emit(selected.map(taxon => taxon.id).concat(this.otherTaxonIds || []));
+  }
+
+  onRowSelect(e) {
+    if (e.event.target.type === 'checkbox') {
+      return;
+    }
+    const taxon = e.row;
+    const filtered = this.selected.filter(t => t.id !== taxon.id);
+    if (filtered.length < this.selected.length) {
+      this.onSelect(filtered);
+    } else {
+      this.onSelect([...this.selected, taxon]);
+    }
   }
 
   private updateSelected() {

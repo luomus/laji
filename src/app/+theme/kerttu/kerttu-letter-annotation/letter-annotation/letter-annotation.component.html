@@ -33,7 +33,11 @@
     </h3>
     <div>
       <ng-container *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]">
-        <lu-button [disabled]="!template || !candidate || loadingTemplate || loadingCandidate" (click)="onAnnotationChange(a)">
+        <!--[role]="a === annotation.yes ? 'success' : a === annotation.no ? 'danger' : 'other'"-->
+        <lu-button
+          [disabled]="!template || !candidate || loadingTemplate || loadingCandidate"
+          (click)="onAnnotationChange(a)"
+        >
           {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
         </lu-button>
       </ng-container>
@@ -85,7 +89,10 @@
     ></laji-audio-viewer>
   </div>
   <div class="col-md-6 col-md-pull-6">
-    <h4>{{ 'theme.kerttu.letterCandidate' | translate }} ({{ 'theme.kerttu.correlation' | translate }} {{ candidate?.crossCorrelation | number : '1.0-2' }})</h4>
+    <h4>
+      {{ 'theme.kerttu.letterCandidate' | translate }} ({{ 'theme.kerttu.correlation' | translate }} {{ candidate?.crossCorrelation | number : '1.0-2' }})
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.correlation' | translate"></laji-info>
+    </h4>
     <laji-audio-viewer
       [recording]="candidate?.recording"
       [xRangePadding]="xRangePadding"
