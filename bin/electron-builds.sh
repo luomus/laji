@@ -13,7 +13,7 @@ mv release-builds/Label\ Designer-win32-ia32/LabelDesigner.exe release-builds/La
 # cp $HOME/.wine/drive_c/Program\ Files/7-Zip/7z.exe /usr/local/lib/node_modules/electron-installer-windows/vendor/squirrel/
 # cp $HOME/.wine/drive_c/Program\ Files/7-Zip/7z.dll /usr/local/lib/node_modules/electron-installer-windows/vendor/squirrel/
 
-electron-installer-windows --src release-builds/Label\ Designer-win32-ia32 --dest ./release-builds/label-designer/
+electron-installer-windows --src release-builds/Label\ Designer-win32-ia32 --config ./projects/label-designer-electron/electron-installer-windows-config.json --dest ./release-builds/label-designer/
 
 cd release-builds
 
