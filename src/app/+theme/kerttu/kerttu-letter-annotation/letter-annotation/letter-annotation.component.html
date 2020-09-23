@@ -1,31 +1,30 @@
-<div class="row" id="letterInfo">
-  <div class="col-md-12">
-    <h2>
-      <laji-taxon-name [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name>
-      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.taxon' | translate"></laji-info>
-    </h2>
-    <dl>
-      <dt>{{ 'theme.kerttu.letter' | translate }}:</dt>
-      <dd>{{ template?.name }}</dd>
-      <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
-      <dd>{{ statusInfo?.userAnnotationCount }}/{{ statusInfo?.targetAnnotationCount }}</dd>
-    </dl>
-    <div>
-      <lu-button [disabled]="!candidate || !statusInfo?.hasPreviousCandidate" (click)="backToPreviousCandidateClick.emit()">
-        Palaa edelliseen ehdokkaaseen
-      </lu-button>
-      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.goBackToPreviousCandidate' | translate"></laji-info>
-    </div>
-    <div>
-      <lu-button [disabled]="!template" (click)="onSkipLetter()">
-        {{ 'theme.kerttu.skipLetter' | translate }}
-      </lu-button>
-      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.skipLetter' | translate"></laji-info>
-    </div>
-  </div>
+<div class="mt-6" style="margin-bottom: 10px">
+  <h2 class="d-inline">
+    <laji-taxon-name [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name>
+  </h2>
+  <span class="gray ml-2"> ({{ template?.name }})</span>
+  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.taxon' | translate"></laji-info>
+</div>
+<div id="letterInfo">
+  <dl>
+    <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
+    <dd>{{ statusInfo?.userAnnotationCount }}/{{ statusInfo?.targetAnnotationCount }}</dd>
+  </dl>
+</div>
+<div>
+  <lu-button [disabled]="!template" [role]="'danger'" (click)="onSkipLetter()">
+    {{ 'theme.kerttu.skipLetter' | translate }}
+  </lu-button>
+  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.skipLetter' | translate"></laji-info>
+</div>
+<div>
+  <lu-button [disabled]="!candidate || !statusInfo?.hasPreviousCandidate" (click)="backToPreviousCandidateClick.emit()">
+    {{ 'theme.kerttu.backToPreviousCandidate' | translate }}
+  </lu-button>
+  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.goBackToPreviousCandidate' | translate"></laji-info>
 </div>
 
-<div id="letterAnnotationContainer" class="row">
+<div id="letterAnnotationContainer" class="row lu-section">
   <div class="col-md-12" id="letterAnnotationButtons">
     <h3>
       {{ 'theme.kerttu.areLettersSame' | translate }}
@@ -33,9 +32,9 @@
     </h3>
     <div>
       <ng-container *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]">
-        <!--[role]="a === annotation.yes ? 'success' : a === annotation.no ? 'danger' : 'other'"-->
         <lu-button
           [disabled]="!template || !candidate || loadingTemplate || loadingCandidate"
+          [role]="a === annotation.yes ? 'success' : a === annotation.no ? 'danger' : undefined"
           (click)="onAnnotationChange(a)"
         >
           {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
@@ -72,7 +71,7 @@
       </bSwitch>
     </div>
     <div style="vertical-align: bottom; display: block; margin-top: 5px">
-      <lu-button [small]="true" (click)="setDefaultSettings()">Palauta oletusasetukset</lu-button>
+      <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'theme.kerttu.setDefaultSettings' | translate }}</lu-button>
       <laji-info [placement]="'right'" [html]="'theme.kerttu.info.setDefaultSettings' | translate"></laji-info>
     </div>
   </div>
@@ -110,7 +109,7 @@
       <laji-info [html]="'theme.kerttu.info.letterCandidateLonger' | translate"></laji-info>
     </h4>
     <lu-button (click)="candidateLongerVisible = true" *ngIf="!candidateLongerVisible">
-      Näytä
+      {{ 'theme.kerttu.show' | translate }}
     </lu-button>
     <laji-audio-viewer
       *ngIf="candidateLongerVisible"
