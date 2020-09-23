@@ -40,7 +40,7 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
                 selectedFields: 'id,vernacularName,scientificName',
                 includeMedia: true,
                 pageSize: 8,
-                sortOrder: 'observationCountInvasiveFinland DESC'
+                sortOrder: 'observationCountFinland DESC'
               }).pipe(
                 map(res => {
                   return {
