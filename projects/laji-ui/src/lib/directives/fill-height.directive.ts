@@ -1,4 +1,5 @@
-import { Directive, ElementRef, Renderer2, OnDestroy, AfterViewInit, Input } from '@angular/core';
+import { Directive, ElementRef, Renderer2, OnDestroy, AfterViewInit, Input, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface IFillHeightOptions {
   disabled: boolean;
@@ -14,11 +15,14 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
   private destroyLoadListener: () => void;
   private destroyResizeListener: () => void;
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private el: ElementRef,
+    private renderer: Renderer2,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngAfterViewInit() {
     if (this.options.disabled) { return; }
-    if (document.readyState === 'complete') {
+    if (isPlatformBrowser(this.platformId) && document.readyState === 'complete') {
       this.onLoad();
     } else {
       this.destroyLoadListener = this.renderer.listen('window', 'load', this.onLoad.bind(this));

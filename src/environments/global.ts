@@ -31,7 +31,8 @@ export const Global = {
     valioForm: 'MHL.57',
     sykeButterfly: 'MHL.59',
     birdPointCount: 'MHL.75',
-    glowWormForm: 'MHL.79'
+    glowWormForm: 'MHL.79',
+    collectionForm: 'JX.5190'
   },
   _forms: {
     'MHL.3': {
