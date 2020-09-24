@@ -18,7 +18,7 @@ export class InfoCardQueryService {
     return {
       taxonId: [taxonId],
       superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
-      recordQuality: ['EXPERT_VERIFIED', 'COMMUNITY_VERIFIED'],
+      recordQuality: ['EXPERT_VERIFIED', 'COMMUNITY_VERIFIED', 'NEUTRAL'],
       includeNonValidTaxa: false,
       cache: true
     };
@@ -29,7 +29,8 @@ export class InfoCardQueryService {
       taxonId: [taxonId],
       countryId: ['ML.206'],
       coordinateAccuracyMax: mapQuery ? 10000 : undefined,
-      reliability: ['RELIABLE', 'UNDEFINED'],
+      // reliability: ['RELIABLE', 'UNDEFINED'],
+      recordQuality: ['EXPERT_VERIFIED','COMMUNITY_VERIFIED','NEUTRAL'],
       needsCheck: false,
       includeNonValidTaxa: false,
       cache: true
