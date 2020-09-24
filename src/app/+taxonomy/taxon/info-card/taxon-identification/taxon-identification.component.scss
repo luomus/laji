@@ -28,8 +28,8 @@
 .species-container {
   padding: $sp-6;
   background-color: $neutral-3;
-  border-left: 3px solid $neutral-5;
   overflow-x: scroll;
+  box-shadow: inset 1px 1px 3px 0 rgba(#000, .2);
 }
 
 .species {
