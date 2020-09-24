@@ -1542,6 +1542,7 @@
   "theme.kerttu.taxonExpertiseMissing": "Kirjaa ensin asiantuntijuutesi <strong>Kirjaa asiantuntijuutesi</strong> -osiossa.",
   "theme.kerttu.allLettersAnnotated": "Kaikki kirjaimet käyty läpi lajeilta, jotka olet valinnut <em>Kirjaa asiantuntijuutesi</em> -osiossa! Suuri kiitos panoksestasi lintujen äänten automaattisen tunnistuksen kehittämiseen!",
   "theme.kerttu.allCandidatesAnnotated": "Kaikki ehdokkaat käyty läpi tältä kirjaimelta! Vaihdetaan kirjainta.",
+  "theme.kerttu.audioError": "Äänitteen lataaminen epäonnistui.",
   "theme.kerttu.recording": "Äänite",
   "theme.kerttu.listSpecies": "Mitä lajeja äänitteellä esiintyy?",
   "theme.kerttu.nextRecording": "Siirry seuraavaan",
