@@ -25,4 +25,3 @@ zip -9 -r label-designer-darwin-x64.zip Label\ Designer-darwin-x64
 
 # win
 zip -9 -r label-designer-windows.zip label-designer
-
