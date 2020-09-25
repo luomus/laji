@@ -6,7 +6,8 @@ import { Logger } from '../shared/logger/logger.service';
 import { News } from '../shared/model/News';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { NewsStore } from './news.store';
-import { BrowserModule, Meta } from '@angular/platform-browser';
+import { TitleMetaPageService } from './title-meta-page.service';
+
 
 @Component({
   selector: 'laji-news',
@@ -23,7 +24,7 @@ export class NewsComponent implements OnInit, OnDestroy {
               private cd: ChangeDetectorRef,
               private logger: Logger,
               private store: NewsStore,
-              private metaService: Meta
+              private titleMetaPageService: TitleMetaPageService
   ) {
     //this.addTag(newsItem);
   }
@@ -39,17 +40,11 @@ export class NewsComponent implements OnInit, OnDestroy {
         ObservableOf(this.store.state.current) : this.newsService.get(id))
     ).subscribe(newsItem => {
       this.store.setCurrent(newsItem);
-      this.addTag(newsItem);
+      this.titleMetaPageService.addTag(newsItem);
     });
   }
 
-  addTag(news) {
-    this.metaService.addTag({ property: 'og:title', content: news.title });
-    this.metaService.addTag({ property: 'og:description', content: 'Content Title for social media' });
-    this.metaService.addTag({ property: 'twitter:title', content: news.title });
-    this.metaService.addTag({ property: 'twitter:description', content: 'Content Title for social media' });
-  }
-
+  
   ngOnDestroy() {
     if (this.subTrans) {
       this.subTrans.unsubscribe();
