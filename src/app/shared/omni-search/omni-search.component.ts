@@ -162,7 +162,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         lang: this.translate.currentLang,
         matchType: this.matchType
       }).pipe(
-        switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.search))
+        switchMap((taxa:any[]) => this.taxonAutocompleteService.getInfo(taxa, this.search))
       )
       .subscribe(
         data => {

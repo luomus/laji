@@ -117,7 +117,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       observer.next(this.annotation.identification.taxon);
     }).pipe(
       mergeMap((query: string) => this.getTaxa(query)),
-      switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.annotation.identification.taxon))
+      switchMap((taxa:any[]) => this.taxonAutocompleteService.getInfo(taxa, this.annotation.identification.taxon))
     );
   }
 
