@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
 import { of } from 'rxjs';
+import { TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
+
+const AUTOCOMPLETE_TAXON_RESOURCE = '/autocomplete/taxon';
 
 @Injectable()
 export class FormApiClient {
@@ -12,7 +15,8 @@ export class FormApiClient {
   private _personToken: string;
   private _formID: string;
 
-  constructor(protected http: HttpClient) {
+  constructor(protected http: HttpClient,
+              private taxonAutocompleteService: TaxonAutocompleteService) {
   }
 
   public set lang(lang) {
@@ -59,7 +63,7 @@ export class FormApiClient {
     }
 
     switch (resource) {
-      case '/autocomplete/taxon':
+      case AUTOCOMPLETE_TAXON_RESOURCE:
         queryParameters['excludeNameTypes'] = 'MX.hasMisappliedName,MX.hasMisspelledName,MX.hasUncertainSynonym,MX.hasOrthographicVariant';
     }
 
@@ -73,6 +77,15 @@ export class FormApiClient {
         observe: 'response'
       }
     ).pipe(
+      switchMap(response => resource === AUTOCOMPLETE_TAXON_RESOURCE ?
+        this.taxonAutocompleteService.getInfo(response.body as any[], queryParameters['q']).pipe(
+          map(taxa => ({
+            ...response,
+            body: taxa
+          }))
+        ) :
+        of(response)
+      ),
       map((response) => ({...response, json: () => response.body})),
       catchError(err => of({...err, json: () => err.error}))
     ).toPromise(Promise);

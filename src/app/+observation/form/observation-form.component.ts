@@ -143,7 +143,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.dataSource = this.dataSource.pipe(
       distinctUntilChanged(),
       switchMap((token: string) => this.observationFacade.taxaAutocomplete(token, this.formQuery.informalTaxonGroupId, 10)),
-      switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this.formQuery.taxon)),
+     switchMap((taxa: any[]) => this.taxonAutocompleteService.getInfo(taxa, this.formQuery.taxon)),
       switchMap((data) => {
         if (this.formQuery.taxon) {
           return ObservableOf(data);

@@ -69,7 +69,7 @@ export class TaxonSelectComponent{
       .pipe(
         distinctUntilChanged(),
         switchMap((token: string) => this.getTaxa(token)),
-        switchMap((taxa:any[]) => this.taxonAutocompleteService.getinfo(taxa, this._taxonId)),
+        switchMap((taxa:any[]) => this.taxonAutocompleteService.getInfo(taxa, this._taxonId)),
         switchMap((data: any[]) => {
           this.typeaheadMatch = undefined;
           if (this._taxonId) {
