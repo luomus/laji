@@ -67,7 +67,7 @@ export class ImageModalOverlayComponent implements OnInit {
     }, 200);
   }
 
-  @HostListener('document:keydown', ['$event'])
+  @HostListener('body:keydown', ['$event'])
   modalKeyDown(e: KeyboardEvent)  {
     if (e.keyCode === 27) { // esc
       e.stopImmediatePropagation();
