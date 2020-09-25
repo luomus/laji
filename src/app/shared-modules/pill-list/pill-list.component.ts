@@ -40,7 +40,7 @@ export class PillListComponent implements OnInit {
     this.sessionStorage.observe('autocompleteNames').subscribe(
       value => this.autocompleteNames = value
     );
-    this.autocompleteNames = this.sessionStorage.retrieve('autocompleteNames');
+    this.autocompleteNames = this.sessionStorage.retrieve('autocompleteNames') ? this.sessionStorage.retrieve('autocompleteNames') : [];
   }
 
   remove(item) {

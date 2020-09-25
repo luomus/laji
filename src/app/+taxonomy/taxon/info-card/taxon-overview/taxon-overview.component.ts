@@ -126,7 +126,6 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
       )
       .subscribe(data => {
         this.taxonChildren = data;
-        console.log(this.taxonChildren)
         this.isChildrenOnlySpecie = this.taxonChildren.filter(e => e.taxonRank === 'MX.species').length > 0 ? true : false;
         this.cd.markForCheck();
       });
