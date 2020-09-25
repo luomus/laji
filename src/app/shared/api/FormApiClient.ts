@@ -4,6 +4,8 @@ import { catchError, map } from 'rxjs/operators';
 import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
 import { of } from 'rxjs';
+import { TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
+import { Autocomplete } from '../model/Autocomplete';
 
 @Injectable()
 export class FormApiClient {
@@ -12,7 +14,8 @@ export class FormApiClient {
   private _personToken: string;
   private _formID: string;
 
-  constructor(protected http: HttpClient) {
+  constructor(protected http: HttpClient,
+              private taxonAutocompleteService: TaxonAutocompleteService) {
   }
 
   public set lang(lang) {
@@ -76,5 +79,9 @@ export class FormApiClient {
       map((response) => ({...response, json: () => response.body})),
       catchError(err => of({...err, json: () => err.error}))
     ).toPromise(Promise);
+  }
+
+  getTaxonAutocompleteHTMLString(autocompletion: Autocomplete) {
+    return this.taxonAutocompleteService.getAutocompleteDisplayName(autocompletion.payload, autocompletion.value);
   }
 }
