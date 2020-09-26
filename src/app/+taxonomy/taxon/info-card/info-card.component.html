@@ -24,7 +24,7 @@
         [isFromMasterChecklist]="isFromMasterChecklist"
       ></laji-taxon-images>
     </lu-tab>
-    <lu-tab [heading]="'species.identification' | translate" *lajiForTypes="['dev']">
+    <lu-tab [heading]="'taxonomy.identification' | translate" *lajiForTypes="['dev']">
       <laji-taxon-identification
         *ngIf="loadedTabs.isLoaded('identification')"
         [taxon]="taxon"
