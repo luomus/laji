@@ -25,7 +25,7 @@ import { Global } from 'src/environments/global';
 
 const tabOrderProd = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
-const tabOrderDev = [ 'overview', 'identification', 'images', 'biology', 'taxonomy', 'occurrence',
+const tabOrderDev = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
 const basePath = '/taxon';
 
