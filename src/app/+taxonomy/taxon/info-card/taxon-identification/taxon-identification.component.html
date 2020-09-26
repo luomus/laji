@@ -8,7 +8,7 @@
   <div *ngFor="let child of taxonChildren">
     <div class="child-name">
       <div class="child-scientific-name-container">
-        <a class="child-scientific-name" [routerLink]="['/taxon', child.taxonomy.id, 'identification']" preserveQueryParams>{{child.taxonomy.scientificName}}</a>
+        <a class="child-scientific-name" [ngClass]="child.taxonomy.cursiveName ? 'cursive' : null" [routerLink]="['/taxon', child.taxonomy.id, 'identification']" preserveQueryParams>{{child.taxonomy.scientificName}}</a>
         <span class="child-rank"> ({{ child.taxonomy.taxonRank | label }})</span>
       </div>
       <div class="child-vernacular-name">
@@ -18,7 +18,7 @@
     <div class="d-flex species-container mb-8">
       <div *ngFor="let species of child.species?.results" class="species d-flex flex-col mr-4">
         <div class="species-name-container">
-          <div><a [routerLink]="['/taxon', species.id, 'identification']" class="species-scientific-name" preserveQueryParams>
+          <div><a [routerLink]="['/taxon', species.id, 'identification']" [ngClass]="species.cursiveName ? 'cursive' : null" class="species-scientific-name" preserveQueryParams>
             {{ species.scientificName }}
           </a></div>
           <div class="species-vernacular-name">{{ species.vernacularName }}</div>
