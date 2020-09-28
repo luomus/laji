@@ -92,9 +92,10 @@ export class TaxonAutocompleteService {
   addBold(original: string, substring: string): string {
     const words = substring.split(' ');
     words.forEach(el => {
-      substring = original.includes(el.toLowerCase()) ? el.toLowerCase() : this.capitalize(el);
-      original = original.includes(substring) ?
-      original.replace(substring,'<b>' + substring + '</b>') : original;
+      let newOriginal = original.toLowerCase();
+      let newString = el.toLowerCase();
+      console.log(newOriginal.indexOf(newString))
+      original = newOriginal.includes(newString) ? newOriginal.replace(newString,'<b>' + newString + '</b>') : newOriginal;
     })
     return original;
   }
