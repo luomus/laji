@@ -1436,6 +1436,10 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
       float: none;
     }
 
+    typeahead-container ul li a span i.sName {
+      display: block;
+    }
+
   }
 
 
