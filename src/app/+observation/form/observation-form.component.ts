@@ -9,7 +9,6 @@ import { ObservationFacade } from '../observation.facade';
 import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
-import { LocalStorageService, SessionStorage } from 'ngx-webstorage';
 
 
 interface ISections {
@@ -129,13 +128,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   delayedSub: Subscription;
 
   private _query: WarehouseQueryInterface;
-  autocompleteNames = [];
-  //@SessionStorage('autocompleteNames') autocompleteNames;
 
   constructor(
     private observationFacade: ObservationFacade,
-    private taxonAutocompleteService: TaxonAutocompleteService,
-    private sessionStorage: LocalStorageService
+    private taxonAutocompleteService: TaxonAutocompleteService
   ) {
     this.dataSource = new Observable((subscriber: any) => {
       subscriber.next(this.formQuery.taxon);
@@ -143,7 +139,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.dataSource = this.dataSource.pipe(
       distinctUntilChanged(),
       switchMap((token: string) => this.observationFacade.taxaAutocomplete(token, this.formQuery.informalTaxonGroupId, 10)),
-     switchMap((taxa: any[]) => this.taxonAutocompleteService.getInfo(taxa, this.formQuery.taxon)),
+      switchMap((taxa:any[]) => this.taxonAutocompleteService.getInfo(taxa, this.formQuery.taxon)),
       switchMap((data) => {
         if (this.formQuery.taxon) {
           return ObservableOf(data);
@@ -157,11 +153,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sessionStorage.observe('autocompleteNames').subscribe(
-      value => this.autocompleteNames = value
-    );
-    this.autocompleteNames = this.sessionStorage.retrieve('autocompleteNames');
-    //this.sessionStorage.store('autocompleteNames', this.autocompleteNames);
     this.updateVisibleSections();
     this.updateVisibleAdvancedSections();
   }
@@ -179,7 +170,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   @Input()
   set query(query: WarehouseQueryInterface) {
     this._query = query;
-    this.autocompleteNames = this.query.target && this.query.target.length > 0 ? this.autocompleteNames : [];
     this.formQuery = this.searchQueryToFormQuery(query);
   }
 
@@ -374,8 +364,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
       const target = event.item && event.item.key ? event.item.key : this.formQuery.taxon;
       this.query['target'] = this.query['target'] ? [...this.query['target'], target] : [target];
-      this.autocompleteNames.push({id: event.item.key, value: event.item.autocompleteSelectedName, match: event.item.payload['nameType']});
-      this.sessionStorage.store('autocompleteNames', this.autocompleteNames)
       this.formQuery.taxon = '';
       this.onQueryChange();
     }
