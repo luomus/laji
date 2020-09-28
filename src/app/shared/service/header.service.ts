@@ -58,6 +58,7 @@ export class HeaderService implements OnDestroy {
   }
 
   public startRouteListener(): void {
+    console.log('ciao')
     this.routeSub = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => this.location.path() || '/'),
