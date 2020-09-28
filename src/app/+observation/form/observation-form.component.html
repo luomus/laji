@@ -40,7 +40,7 @@
       [typeaheadWaitMs]="200"
       [typeaheadMinLength]="3"
       [typeaheadSelectFirstItem]="false"
-      [typeaheadOptionField]="'autocompleteDisplayName'"
+      [typeaheadOptionField]="'autocompleteSelectedName'"
       [typeaheadItemTemplate]="taxonItem"
       (typeaheadLoading)="changeTypeaheadLoading($event)"
       (typeaheadOnSelect)="onTaxonSelect($event)"
@@ -55,7 +55,6 @@
     <laji-pill-list
       [isLabel]="true"
       [list]="query.target || []"
-      [taxonAutocomplete] = "true"
       (updateList)="updateSearchQuery('target', $event)"
     ></laji-pill-list>
   </div>
