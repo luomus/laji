@@ -89,7 +89,7 @@ export class TaxonSelectComponent {
     this.getTaxa(id).pipe(
       take(1)
     ).subscribe(result => {
-      this._taxonId = result[0] && result[0].value || id;
+      this._taxonId = result[0] && result[0].value || id;
       this.cdr.markForCheck();
     });
   }
@@ -129,6 +129,7 @@ export class TaxonSelectComponent {
   public getTaxa(token: string): Observable<any> {
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
+      includePayload: true,
       limit: '' + this.typeaheadLimit,
       lang: this.translate.currentLang,
       ...this.searchParams

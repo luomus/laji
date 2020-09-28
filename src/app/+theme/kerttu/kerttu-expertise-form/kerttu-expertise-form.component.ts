@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, HostListener} from '@angular/core';
 import {Observable, of, Subject, Subscription} from 'rxjs';
 import {debounceTime, map, switchMap, tap} from 'rxjs/operators';
 import {UserService} from '../../../shared/service/user.service';
@@ -8,6 +8,7 @@ import {ComponentCanDeactivate} from '../../../shared/guards/document-de-activat
 import { SelectStyle } from '../../../shared-modules/select/metadata-select/metadata-select.component';
 import FinnishBirdSongRecognitionSkillLevelEnum = Profile.FinnishBirdSongRecognitionSkillLevelEnum;
 import BirdwatchingActivityLevelEnum = Profile.BirdwatchingActivityLevelEnum;
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-kerttu-expertise-form',
@@ -38,6 +39,7 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
     private cdr: ChangeDetectorRef,
     private userService: UserService,
     private personService: PersonApi,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -68,6 +70,13 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
     }
     if (this.saveProfileSub) {
       this.saveProfileSub.unsubscribe();
+    }
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  preventLeave($event: any) {
+    if (this.saving) {
+      $event.returnValue = false;
     }
   }
 
@@ -115,8 +124,8 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
 
   private updateSaving() {
     const allSaved = this.savedSelectedTaxonIds === this.selectedTaxonIds
-      && (this.profile.finnishBirdSongRecognitionSkillLevel === this.finnishBirdSongRecognitionSkillLevel || undefined)
-      && (this.profile.birdwatchingActivityLevel === this.birdwatchingActivityLevel || undefined);
+      && (this.profile.finnishBirdSongRecognitionSkillLevel === (this.finnishBirdSongRecognitionSkillLevel || undefined))
+      && (this.profile.birdwatchingActivityLevel === (this.birdwatchingActivityLevel || undefined));
 
     this.saving = !allSaved;
   }

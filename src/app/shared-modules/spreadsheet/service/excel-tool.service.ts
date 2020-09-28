@@ -24,13 +24,14 @@ export class ExcelToolService {
 
 
   getNamedPlacesList(formID: string): Observable<string[]> {
+    this.namedPlacesService.invalidateCache();
     const usersNS$ = this.namedPlacesService.getAllNamePlaces({
       userToken: this.userService.getToken(),
       includePublic: false
     }).pipe(map(namedPlaces => namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)));
 
     const collection$ = (form: any) => {
-      const selected = ((form.options || {}).namedPlaceList || []);
+      const selected = ((form.options || {}).namedPlaceList || []);
       return this.namedPlacesService.getAllNamePlaces({
         collectionID: form.collectionID,
         includeUnits: form.namedPlaceOptions && form.namedPlaceOptions.includeUnits,

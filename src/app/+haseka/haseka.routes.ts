@@ -18,6 +18,7 @@ import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
 import { ParticipantsComponent } from './form-permission/admin/participants/participants.component';
 import { VihkoHomeComponent } from './vihko-home/vihko-home.component';
+import { TemplateHasekaFormComponent } from './template-haseka-form/template-haseka-form.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -77,8 +78,7 @@ export const hasekaRoutes: Routes = [
             path: ':formId',
             pathMatch: 'full',
             canActivate: [OnlyLoggedIn],
-            component: HaSeKaFormComponent,
-            canDeactivate: [DocumentDeActivateGuard],
+            component: TemplateHasekaFormComponent,
             data: {
               displayFeedback: false
             }

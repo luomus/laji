@@ -1,7 +1,12 @@
 version: '3'
 
 services:
+  redis:
+    image: 'redis'
   front:
+    volumes:
+      - '.:/app:delegated'
+      - '/app/node_modules'
     depends_on:
       - 'redis'
     environment:

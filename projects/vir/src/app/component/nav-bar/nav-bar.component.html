@@ -82,7 +82,7 @@
               <ng-container>
                 <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
                   <a dropdownToggle class="link user">
-                    <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
+                    <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
                     <i class="glyphicon glyphicon-user"></i>
 <!--                     <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span> -->
                   </a>
@@ -113,7 +113,7 @@
                 </li>
               </ng-container>
             </ng-container>
-            <li dropdown>
+            <li *ngIf="false" dropdown> <!-- Lang not supported in VIR currently -->
               <a dropdownToggle class="link language-toggle">
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">

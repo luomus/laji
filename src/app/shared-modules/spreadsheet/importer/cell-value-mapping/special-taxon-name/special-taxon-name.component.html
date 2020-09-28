@@ -1,17 +1,18 @@
-<button class="btn btn-default toggle-linked" (click)="toggleLinkedVisible()">{{ linkedVisible ? 'Piilota' : 'Näytä' }} linkitetyt</button><br>
+<button class="btn btn-default toggle-linked" [class.disabled]="!allCompleted" (click)="toggleLinkedVisible()">{{ linkedVisible ? 'Piilota' : 'Näytä' }} linkitetyt</button><br>
+<progressbar *ngIf="!allCompleted" [max]="invalidValues?.length" [value]="completedCnt" [striped]="true" [animate]="true">{{ completedCnt }}/{{ invalidValues?.length }}</progressbar>
 <table class="table">
   <thead>
     <tr>
       <th colspan="2">
-        {{ 'excel.map.value-user' | translate }}
+        {{ 'excel.map.value-user' | translate }}
       </th>
       <th colspan="2">
-        {{ 'excel.map.value-mapped' | translate }}
+        {{ 'excel.map.value-mapped' | translate }}
       </th>
     </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let value of invalidValues">
+  <ng-container *ngFor="let value of invalidValues; let i=index">
     <tr [ngClass]="{'hidden': hiddenValues[value]}">
       <td class="value-col">
         <div class="form-control-static">
@@ -24,6 +25,9 @@
           [allowInvalid]="true"
           [placeholder]="'Etsi haluttu laji'"
           [taxon]="value"
+          [index]="i"
+          [useValue]="useAsIs ? mapping[value] : ''"
+          (complete)="onSearchComplete()"
           (taxonSelect)="onTaxonSelect(value, $event)"
         ></laji-taxon-autocomplete>
       </td>
@@ -37,3 +41,6 @@
   </ng-container>
   </tbody>
 </table>
+<button class="btn btn-default pull-left lower-btn" [class.disabled]="!allCompleted" (click)="acceptAllAsIs()">
+  {{ 'excel.import.taxonAsIs' | translate }}
+</button>

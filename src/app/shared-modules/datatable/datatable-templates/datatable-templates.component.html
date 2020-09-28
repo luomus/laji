@@ -17,13 +17,13 @@
 <ng-template let-value="value" let-column="column" #taxon>
   <span *ngIf="value">
     <span style="display: inline"
-          *ngIf="value.linkings && value.linkings.taxon && (value.linkings.taxon.id || value.linkings.taxon.qname); else taxonVerbatim"
-          title="{{(value.linkings.taxon.vernacularName ? (value.linkings.taxon.vernacularName | multiLang) : '')
+          *ngIf="value.linkings && value.linkings.taxon && (value.linkings.taxon.id || value.linkings.taxon.qname); else taxonVerbatim"
+          title="{{(value.linkings.taxon.vernacularName ? (value.linkings.taxon.vernacularName | multiLang:false) : '')
                 + (value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName ? ' &mdash; ': '')
                 + (value.linkings.taxon.scientificName ? value.linkings.taxon.scientificName : '')}}"
     >
-      {{ value.linkings.taxon.vernacularName | multiLang }}
-      <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName"> &mdash; </span>
+      {{ value.linkings.taxon.vernacularName | multiLang:false }}
+      <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName && (value.linkings.taxon.vernacularName | multiLang:false)"> &mdash; </span>
       <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
           {{ value.linkings.taxon.scientificName }}
       </span>
@@ -31,7 +31,7 @@
         [tooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
         container="body"
-        target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize" (click)="onTaxonLinkClick($event)">
+        target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize" (click)="onTaxonLinkClick($event)">
         <i class="glyphicon glyphicon-tag"></i>
       </a>
     </span>
@@ -49,7 +49,7 @@
 
     <ng-template #taxonLinkings let-taxon>
       <span class="inline"
-            *ngIf="value.linkings && value.linkings[taxon] && (value.linkings[taxon].id || value.linkings[taxon].qname); else originalTaxonVerbatim"
+            *ngIf="value.linkings && value.linkings[taxon] && (value.linkings[taxon].id || value.linkings[taxon].qname); else originalTaxonVerbatim"
             title="{{(value.linkings[taxon].vernacularName ? (value.linkings[taxon].vernacularName | multiLang) : '')
                 + (value.linkings[taxon].vernacularName && value.linkings[taxon].scientificName ? ' &mdash; ': '')
                 + (value.linkings[taxon].scientificName ? value.linkings[taxon].scientificName : '')}}"
@@ -64,7 +64,7 @@
           [placement]="'right'"
           (click)="onTaxonLinkClick($event)"
           container="body"
-          target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings[taxon].id || value.linkings[taxon].qname) | toQName)] | localize">
+          target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings[taxon].id || value.linkings[taxon].qname) | toQName)] | localize">
           <i class="glyphicon glyphicon-tag"></i>
         </a>
       </span>
@@ -95,7 +95,7 @@
         [placement]="'right'"
         container="body"
         (click)="onTaxonLinkClick($event)"
-        target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.speciesId | toQName)] | localize">
+        target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.speciesId | toQName)] | localize">
         <i class="glyphicon glyphicon-tag"></i>
       </a>
     </span>
@@ -221,7 +221,7 @@
 </ng-template>
 <ng-template let-value="value" #formName>
   <span *ngIf="value" title="value | formName">
-    {{ value | toQName | formName }} 
+    {{ value | toQName | formName }}
   </span>
 </ng-template>
 <ng-template let-value="value" #annotation>
@@ -237,7 +237,7 @@
        <span>{{ addedTag | label: 'warehouse' }}<span *ngIf="(i < value.addedTags.length - 1) && value.addedTags" style="display: inline;">,</span></span>
       </ng-template>
     </div>
-  </div> 
+  </div>
   <div *ngIf="value.removedTags && value.removedTags.length > 0">
     <div class="title">{{ 'annotation.removedTags' | translate }}: </div>
     <div class="tag" *ngFor="let addedTag of value.removedTags; let i = index" [ngSwitch]="addedTag | warehouse">
@@ -250,7 +250,7 @@
        <span>{{ addedTag | label: 'warehouse' }}<span *ngIf="(i < value.removedTags.length - 1) && value.removedTags" style="display: inline;">,</span></span>
       </ng-template>
     </div>
-  </div> 
+  </div>
   <span title="{{(value.opinion ? ('MAN.opinion' | label) + ': ' + value.opinion + '\n' : '')
                 + (value.notes ? value.notes : '')}}">
     <span *ngIf="value.opinion">

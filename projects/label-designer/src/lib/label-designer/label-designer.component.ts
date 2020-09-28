@@ -459,7 +459,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  updateGenerate(field: ILabelField | string, value: string, inData = false) {
+  updateGenerate(field: ILabelField | string, value: string, inData = false) {
     const key = typeof field === 'string' ? field : FieldKeyPipe.getKey(field);
     if (inData) {
       this.generate = {

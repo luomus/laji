@@ -36,7 +36,7 @@ export class AudioService {
           switchMap((response: ArrayBuffer) => {
             if (this.audioContext.decodeAudioData.length === 2) { // for Safari
               return new Observable(observer => {
-                  this.audioContext.decodeAudioData(response, (buffer) =>  {
+                  this.audioContext.decodeAudioData(response, (buffer) =>  {
                     this.ngZone.run(() => {
                       observer.next(buffer);
                       observer.complete();
@@ -62,8 +62,9 @@ export class AudioService {
     return this.buffer$[url];
   }
 
-  public extractSegment(buffer: AudioBuffer, startTime: number, endTime: number, actualDuration: number): AudioBuffer {
-    const emptySamplesAtStart = buffer.length - actualDuration * buffer.sampleRate;
+  public extractSegment(buffer: AudioBuffer, startTime: number, endTime: number): AudioBuffer {
+    const actualDuration = Math.floor(buffer.duration); // assume that the actual duration is in whole seconds
+    const emptySamplesAtStart = buffer.length - actualDuration * buffer.sampleRate; // remove empty samples at start which are caused by the mp3 format
 
     const startIdx = Math.max(Math.floor(startTime * buffer.sampleRate) + emptySamplesAtStart, emptySamplesAtStart);
     const endIdx = Math.min(Math.ceil(endTime * buffer.sampleRate) + emptySamplesAtStart, buffer.length - 1);

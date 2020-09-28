@@ -12,6 +12,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { FooterService } from '../../../shared/service/footer.service';
@@ -21,6 +22,11 @@ import { Document } from '../../../shared/model/Document';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
 import { FormError, ILajiFormState, ISuccessEvent, LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
+import { DocumentApi } from '../../../shared/api/DocumentApi';
+import { TemplateForm } from '../../own-submissions/models/template-form';
+import { DocumentService } from '../../own-submissions/service/document.service';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
 
 @Component({
   selector: 'laji-document-form',
@@ -30,15 +36,18 @@ import { FormError, ILajiFormState, ISuccessEvent, LajiFormDocumentFacade } from
 })
 export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCanDeactivate {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
+  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
   @Input() formId: string;
   @Input() documentId: string;
   @Input() showHeader = true;
   @Input() showShortcutButton = true;
+  @Input() template = false;
   @Output() success = new EventEmitter<ISuccessEvent>();
   @Output() error = new EventEmitter();
   @Output() cancel = new EventEmitter();
   @Output() accessDenied = new EventEmitter();
   @Output() missingNamedplace = new EventEmitter();
+  event: EventEmitter<any> = new EventEmitter();
 
   errors = FormError;
   hasAlertContent = false;
@@ -47,8 +56,15 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   status = '';
   saveVisibility = 'hidden';
   isAdmin = false;
+  isFromCancel = false;
   validationErrors: any;
   touchedCounter = 0;
+  templateForm: TemplateForm = {
+    name: '',
+    description: '',
+    type: 'gathering'
+  };
+  tmpDocument: any = {};
 
   private subErrors: Subscription;
   private subSaving: Subscription;
@@ -62,14 +78,18 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
               public translate: TranslateService,
               private toastsService: ToastsService,
               private dialogService: DialogService,
-              private changeDetector: ChangeDetectorRef) {
+              private changeDetector: ChangeDetectorRef,
+              private documentApi: DocumentApi,
+              private documentService: DocumentService,
+              private latestFacade: LatestDocumentsFacade,
+              private router: Router) {
     this.vm$ = this.lajiFormFacade.vm$;
     this.footerService.footerVisible = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['formId'] || changes['documentId']) {
-      this.lajiFormFacade.loadForm(this.formId, this.documentId);
+    if (changes['formId'] || changes['documentId'] || changes['template']) {
+      this.lajiFormFacade.loadForm(this.formId, this.documentId, this.template);
       this.subErrors = this.lajiFormFacade.error$.pipe(
         mergeMap(() => this.lajiFormFacade.vm$.pipe(take(1)))
       ).subscribe(vm => this.errorHandling(vm));
@@ -83,20 +103,19 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     }
   }
 
-  canDeactivate(confirmKey = 'haseka.form.discardConfirm') {
+  canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {
     if (!this.lajiFormFacade.hasChanges()) {
-      this.lajiFormFacade.discardChanges();
       return true;
     }
-    return this.translate
-      .get(confirmKey).pipe(
-        switchMap(txt => this.dialogService.confirm(txt)),
-        tap((result) => {
-          if (result) {
-            this.lajiFormFacade.discardChanges();
-          }
-        })
-      );
+    return this.translate.get(this.isFromCancel ? cancelKey : leaveKey).pipe(
+      switchMap(txt => this.dialogService.confirm(txt)),
+      tap(confirmed => {
+        if (confirmed && this.isFromCancel) {
+          this.lajiFormFacade.discardChanges();
+        }
+        this.isFromCancel = false;
+      })
+    );
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -107,6 +126,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   onCancel() {
+    this.isFromCancel = true;
     this.cancel.emit();
   }
 
@@ -115,6 +135,10 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     this.saveVisibility = 'shown';
     this.lajiFormFacade.dataUpdate(formData);
     this.touchedCounter++;
+  }
+
+  somethingChanged(input, event) {
+    this.templateForm[input] = event.target.value;
   }
 
   lock(lock) {
@@ -126,25 +150,34 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
       return;
     }
     const document = event.data.formData;
-    this.lajiForm.block();
-    this.subSaving = this.lajiFormFacade.save(document, this.publicityRestrictions).subscribe((res) => {
-      this.lajiForm.unBlock();
-      if (res.success) {
-        this.toastsService.showSuccess(
-          this.getMessage(
-            this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
-            this.translate.instant('haseka.form.success')
-          )
-        );
-        this.success.emit(res);
-      } else {
-        this.saveVisibility = 'shown';
-        this.status = 'unsaved';
-        this.toastsService.showError(this.getMessage('error', this.translate.instant('haseka.form.error')));
-        this.subSaving = undefined;
-      }
-      this.changeDetector.markForCheck();
-    });
+    if (!this.template) {
+      this.lajiForm.block();
+      this.subSaving = this.lajiFormFacade.save(document, this.publicityRestrictions).subscribe((res) => {
+        this.lajiForm.unBlock();
+        if (res.success) {
+          this.toastsService.showSuccess(
+            this.getMessage(
+              this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+              this.translate.instant('haseka.form.success')
+            )
+          );
+          this.success.emit(res);
+          this.latestFacade.update();
+        } else {
+          this.saveVisibility = 'shown';
+          this.status = 'unsaved';
+          this.toastsService.showError(this.getMessage('error', this.translate.instant('haseka.form.error')));
+          this.subSaving = undefined;
+        }
+        this.changeDetector.markForCheck();
+      });
+    } else {
+        this.tmpDocument = document;
+        this.templateModal.show();
+    }
+  }
+
+  onSaveTemplate(event) {
   }
 
   submitPublic() {
@@ -155,6 +188,35 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   submitPrivate() {
     this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
     this.lajiForm.submit();
+  }
+
+  submitTemplate() {
+    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
+    this.lajiForm.submit();
+  }
+
+  saveTemplate() {
+    this.documentService.saveTemplate({...this.templateForm, document: this.tmpDocument})
+    .subscribe(
+      () => {
+        this.toastsService.showSuccess(this.translate.instant('template.success'));
+        setTimeout(() => {
+          this.templateModal.hide();
+          this.router.navigate(['/vihko/templates']);
+        }, 200);
+        this.templateForm = {
+          name: '',
+          description: '',
+          type: 'gathering'
+        };
+
+        this.tmpDocument = {};
+        this.changeDetector.markForCheck();
+      },
+      () => {
+        this.toastsService.showError(this.translate.instant('template.error'));
+        this.changeDetector.markForCheck();
+      });
   }
 
   onValidationError(errors) {

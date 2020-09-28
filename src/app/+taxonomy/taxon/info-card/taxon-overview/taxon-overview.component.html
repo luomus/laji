@@ -15,16 +15,16 @@
             [showLinkToSpeciesCard]="!taxon.species"
           ></laji-image-gallery>
         </div>
-        <h4 *ngIf="ingress && contentHasLanguage" [innerHTML]="ingress | multiLang"></h4>
+        <h4 *ngIf="ingress && contentHasLanguage" [innerHTML]="ingress | multiLang"></h4>
         <span *ngIf="description && contentHasLanguage" [innerHTML]="description | multiLang"></span>
         <div *ngIf="(ingress || description) && contentHasLanguage">
           <laji-taxon-description-source [taxonDescription]="_taxonDescription[0]"></laji-taxon-description-source>
         </div>
-        <div *ngIf="ylesta" [ngClass]="{ 'margin-top-25': contentHasLanguage, '': !contentHasLanguage }"> 
+        <div *ngIf="ylesta" [ngClass]="{ 'margin-top-25': contentHasLanguage, '': !contentHasLanguage }">
           <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
         </div>
         <div *ngIf="ylesta[0].visible && ylesta[0].visible.indexOf(false) !== -1">
-          <strong>{{ 'taxonomy.source' | translate }}: </strong>{{ ylestaTitle | multiLang }}
+          <strong>{{ 'taxonomy.source' | translate }}: </strong>{{ ylestaTitle | multiLang }}
           <span style="margin: 0 7px; display: inline-block" *ngIf="ylesta && (ylestaTitle || ylestaSpeciesCardAuthors )">
             <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
           </span>
@@ -39,7 +39,7 @@
     <div *ngIf="isFromMasterChecklist"
          class="panel panel-default"
          laji-panel
-         [title]="'taxonomy.map.finland' | translate"
+         [title]="'taxonomy.map.finland' | translate"
          [open]="true"
          [autoToggle]="true"
     >
@@ -68,29 +68,29 @@
 
     <div class="panel panel-default"
          laji-panel
-         [title]="'taxonomy.browse.title' | translate"
+         [title]="'taxonomy.browse.title' | translate"
          [open]="true"
          [autoToggle]="true"
     >
       <ul class="br-list">
         <li>
           <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
-            {{ 'taxonomy.browse' | translate }}
+            {{ 'taxonomy.browse' | translate }}
           </a>
         </li>
         <li>
           <a [routerLink]="'/observation/load' | localize" [queryParams]="{target: taxon.id}">
-            {{ 'taxonomy.browse.download' | translate }}
+            {{ 'taxonomy.browse.download' | translate }}
           </a>
         </li>
         <li [hidden]="!taxon.hasChildren">
           <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id)}">
-            {{ 'taxonomy.browse.downloadSpecies' | translate }}
+            {{ 'taxonomy.browse.downloadSpecies' | translate }}
           </a>
         </li>
         <li [hidden]="!taxon.hasChildren">
           <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id), onlyFinnish: true}">
-            {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
+            {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
           </a>
         </li>
       </ul>
@@ -120,7 +120,7 @@
       <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0 && taxon.taxonRank !== 'MX.subgenus' && !isChildrenOnlySpecie"
            class="panel panel-default"
            laji-panel
-           [title]="'taxonomy.speciesPieChartTitle' | translate"
+           [title]="'taxonomy.speciesPieChartTitle' | translate"
            [open]="true"
            [autoToggle]="true"
       >
@@ -134,7 +134,7 @@
     <div *ngIf="taxon.hasChildren"
          class="panel panel-default"
          laji-panel
-         [title]="'taxonomy.belongs.to' | translate"
+         [title]="'taxonomy.belongs.to' | translate"
          [open]="true"
          [autoToggle]="true"
     >

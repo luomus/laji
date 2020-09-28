@@ -1,4 +1,5 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
+  <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "theme.kerttu.audioError" | translate }}</alert>
   <div id="spectrogramContainer" [ngClass]="{'visibility-hidden': loading}">
     <laji-audio-spectrogram
       [buffer]="buffer"

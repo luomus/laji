@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,10 +29,13 @@ import { Document } from '../../shared/model/Document';
 })
 export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
+
+  @Input() template = false;
+
+  form$: Observable<any>;
   formId: string;
   documentId: string;
   showMobileEntryPage$: Observable<boolean>;
-  form$: Observable<any>;
   isMobile$: Observable<boolean>;
   mobileWelcomePageClosed = false;
   _mobileWelcomePageShown: Subject<boolean>;
@@ -40,8 +51,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
               private browserService: BrowserService,
               public translate: TranslateService,
               private documentViewerFacade: DocumentViewerFacade
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.footerService.footerVisible = false;
@@ -50,9 +60,11 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
       this.documentId = params['documentId'] || null;
       this.cd.markForCheck();
     });
+
     this.form$ = this.route.params.pipe(
       switchMap(params => this.formService.getForm(params['formId'], this.translate.currentLang))
     );
+
     this.isMobile$ = this.form$.pipe(
       map(form => FormService.hasFeature(form, Form.Feature.Mobile))
     );

@@ -37,7 +37,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() sampleRate = 22050;
   @Input() nperseg = 256;
   @Input() noverlap = 256 - 160;
-  @Input() duration = 60;
 
   start = 0;
   stop: number;
@@ -49,6 +48,8 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   loading = false;
   @Output() audioLoading = new EventEmitter<boolean>();
+
+  hasError = false;
 
   private source: AudioBufferSourceNode;
   private startOffset = 0;
@@ -75,8 +76,14 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
       if (this.recording) {
         this.audioSub = this.audioService.getAudioBuffer(this.recording).subscribe((buffer) => {
+          const [minValue, maxValue] = [0, buffer.duration];
+          if (this.xRange && this.rangeIsNotValid(this.xRange, minValue, maxValue)) {
+            this.onError();
+            return;
+          }
+
           [this.start, this.stop] = KerttuUtils.getPaddedRange(this.xRange, this.xRangePadding, 0, buffer.duration);
-          buffer = this.audioService.extractSegment(buffer, this.start, this.stop, this.duration);
+          buffer = this.audioService.extractSegment(buffer, this.start, this.stop);
           this.buffer = buffer;
 
           if (this.autoplay && changes.recording) {
@@ -85,6 +92,8 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
           }
 
           this.cdr.markForCheck();
+        }, e => {
+          this.onError();
         });
       }
     } else if (changes.zoomed) {
@@ -203,10 +212,24 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.currentTime = 0;
     this.isPlaying = false;
     this.source = undefined;
+    this.hasError = false;
   }
 
   setAudioLoading(loading: boolean) {
     this.loading = loading;
     this.audioLoading.emit(loading);
+  }
+
+  private rangeIsNotValid(range: number[], minValue: number, maxValue: number) {
+    if (range[1] < range[0]) {
+      return true;
+    }
+    return range[1] < minValue || range[0] > maxValue;
+  }
+
+  private onError() {
+    this.hasError = true;
+    this.setAudioLoading(false);
+    this.cdr.markForCheck();
   }
 }

@@ -4,7 +4,7 @@
     <laji-unit-rows [unit]="unit" [showFacts]="showFacts"></laji-unit-rows>
     <laji-row *ngIf="unit.media" [title]="'species.images'|translate">
       <div class="image-holder">
-        <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media"></laji-image-gallery>
+        <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media" [showOverlay]="true"></laji-image-gallery>
       </div>
     </laji-row>
     <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>

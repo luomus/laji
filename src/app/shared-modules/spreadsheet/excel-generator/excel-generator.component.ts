@@ -15,7 +15,7 @@ import { Form } from '../../../shared/model/Form';
 })
 export class ExcelGeneratorComponent implements OnInit {
 
-  @Input() forms: string[] = environment.massForms || [];
+  @Input() forms: string[] = environment.massForms || [];
 
   type: 'ods'|'xlsx' = 'xlsx';
   formID = '';
@@ -56,12 +56,15 @@ export class ExcelGeneratorComponent implements OnInit {
           SpreadsheetService.IdField,
           SpreadsheetService.deleteField
         ] : []);
-        this.fields.map(field => {
+        this.fields.forEach(field => {
           if (this.parents.indexOf(field.parent) === -1) {
             this.parents.push(field.parent);
           }
           if (field.required) {
             selected.push(field.key);
+          }
+          if (GeneratorService.splittableFields[field.key]) {
+            field.splitType = GeneratorService.splittableFields[field.key];
           }
         });
         this.selected = selected;
@@ -80,7 +83,7 @@ export class ExcelGeneratorComponent implements OnInit {
     if (this.selected.indexOf(field.key) === -1) {
       this.selected = [...this.selected, field.key];
     } else {
-      this.selected = this.selected.filter(val => val !== field.key || field.required);
+      this.selected = this.selected.filter(val => val !== field.key || field.required);
     }
   }
 
@@ -104,7 +107,7 @@ export class ExcelGeneratorComponent implements OnInit {
     this.generating = true;
     this.generatorService.generate(
       this.formID,
-      'Vihko - ' + this.formTitle + ' (' + this.formID + ')',
+      'Laji - ' + this.formTitle + ' (' + this.formID + ')',
       this.selected.map(field => this.fields.find(f => f.key === field)),
       this.useLabels,
       this.type,

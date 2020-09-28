@@ -1,4 +1,4 @@
-import { map, mergeMap, shareReplay, switchMap, tap, toArray } from 'rxjs/operators';
+import { map, mergeMap, catchError, shareReplay, switchMap, tap, toArray } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { NamedPlaceApi, NamedPlaceQuery } from '../../shared/api/NamedPlaceApi';
 import { NamedPlace } from '../../shared/model/NamedPlace';
@@ -6,6 +6,7 @@ import { forkJoin, from, Observable, of, of as ObservableOf } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
+import { ToastsService } from '../../shared/service/toasts.service';
 
 const { JSONPath } = require('jsonpath-plus');
 
@@ -27,7 +28,8 @@ export class NamedPlacesService {
     private namedPlaceApi: NamedPlaceApi,
     private userService: UserService,
     private translateService: TranslateService,
-    private triplestoreLabelService: TriplestoreLabelService
+    private triplestoreLabelService: TriplestoreLabelService,
+    private toastService: ToastsService
 ) { }
 
   invalidateCache() {
@@ -58,11 +60,19 @@ export class NamedPlacesService {
     if (!this.idCache[key]) {
       this.idCache[key] = this.namedPlaceApi
         .findById(id, userToken, {includeUnits}).pipe(
+          catchError((err) => {
+            const msgKey = err.status === 404
+              ? 'observation.form.placeNotFound'
+              : 'haseka.form.genericError';
+            this.toastService.showWarning(this.translateService.instant(msgKey));
+            return of(false);
+          }),
           shareReplay(1)
         );
     }
     return this.idCache[key];
   }
+
 
   createNamedPlace(data: NamedPlace, userToken: string) {
     return this.namedPlaceApi

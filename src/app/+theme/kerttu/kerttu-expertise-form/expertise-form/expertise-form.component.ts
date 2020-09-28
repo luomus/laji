@@ -66,14 +66,14 @@ export class ExpertiseFormComponent implements OnInit {
         '1000',
         'taxonomic',
         {
-          selectedFields: ['id', 'vernacularName', 'scientificName', 'cursive', 'observationCount'],
+          selectedFields: ['id', 'vernacularName', 'scientificName', 'cursive', 'observationCountFinland'],
           onlyFinnish: true,
           taxonRanks: ['MX.species']
         }
       ).pipe(
         map((result) => result.results),
         map((result) => result.reduce((arr, taxon) => {
-          if (taxon.observationCount > this.countThreshold) {
+          if (taxon.observationCountFinland > this.countThreshold) {
             arr.push(taxon);
           }
           return arr;
@@ -85,8 +85,22 @@ export class ExpertiseFormComponent implements OnInit {
     });
   }
 
-  onSelect(event) {
-    this.taxonIdSelect.emit(event.selected.map(taxon => taxon.id).concat(this.otherTaxonIds || []));
+  onSelect(selected: Taxonomy[]) {
+    this.selected = selected;
+    this.taxonIdSelect.emit(selected.map(taxon => taxon.id).concat(this.otherTaxonIds || []));
+  }
+
+  onRowSelect(e) {
+    if (e.event.target.type === 'checkbox') {
+      return;
+    }
+    const taxon = e.row;
+    const filtered = this.selected.filter(t => t.id !== taxon.id);
+    if (filtered.length < this.selected.length) {
+      this.onSelect(filtered);
+    } else {
+      this.onSelect([...this.selected, taxon]);
+    }
   }
 
   private updateSelected() {

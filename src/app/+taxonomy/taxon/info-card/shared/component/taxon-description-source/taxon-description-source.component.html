@@ -1,5 +1,5 @@
 <!--<laji-info [glyphicon]="'user'" [placement]="'right'" [labelType]="'primary'" [showOnHover]="true">
-  <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title | multiLang }}
+  <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title | multiLang }}
   <ng-container *ngIf="taxonDescription?.speciesCardAuthors">
     <br>
     <strong>{{ taxonDescription?.speciesCardAuthors.title | multiLang }}:</strong>
@@ -7,7 +7,7 @@
   </ng-container>
 </laji-info>-->
 <ng-container *ngIf="taxonDescription && taxonDescription?.title[currentLang]">
-  <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title | multiLang }}
+  <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title | multiLang }}
 </ng-container>
 <ng-container *ngIf="taxonDescription?.speciesCardAuthors">
   <br>

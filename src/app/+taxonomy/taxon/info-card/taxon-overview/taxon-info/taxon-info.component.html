@@ -60,13 +60,13 @@
 </laji-taxon-info-row>
 <laji-taxon-info-row [label]="'taxonomy.bold' | translate">
   <laji-bold-sequence [scientificName]="taxon.scientificName" [cursive]="taxon.cursiveName"></laji-bold-sequence>
-  <laji-bold-synonym [taxa]="taxon.basionyms || []"></laji-bold-synonym>
-  <laji-bold-synonym [taxa]="taxon.heterotypicSynonyms || []"></laji-bold-synonym>
-  <laji-bold-synonym [taxa]="taxon.homotypicSynonyms || []"></laji-bold-synonym>
-  <laji-bold-synonym [taxa]="taxon.objectiveSynonyms || []"></laji-bold-synonym>
-  <laji-bold-synonym [taxa]="taxon.orthographicVariants || []"></laji-bold-synonym>
-  <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
-  <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.basionyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.heterotypicSynonyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.homotypicSynonyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.objectiveSynonyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.orthographicVariants || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
+  <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.informalTaxonGroups && taxon.informalTaxonGroups.length > 0" [label]="'taxonomy.informalTaxonGroups' | translate">
   <ul>

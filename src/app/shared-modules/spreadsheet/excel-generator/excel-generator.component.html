@@ -7,7 +7,7 @@
       [disabled]="generating"></laji-form-select>
   </div>
   <div class="col-sm-5">
-    <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID || generating">
+    <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID || generating">
       {{ 'checkAll' | translate }}
     </button>
     <button (click)="clearSelected()" type="button" class="btn btn-default" [class.disabled]="!formID || selected.length === 0 || generating">

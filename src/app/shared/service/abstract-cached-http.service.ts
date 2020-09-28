@@ -18,7 +18,7 @@ export abstract class AbstractCachedHttpService<T> {
   fetchLookup(query: Observable<T[]>, lang: string): Observable<{[id: string]: T}>;
   fetchLookup(query: Observable<any[]>, lang: string): Observable<{[id: string]: string}>;
   fetchLookup(query: Observable<any[]>, lang: string): Observable<{[id: string]: T|string}> {
-    if (lang !== this.currentLang || !this._fetch) {
+    if (lang !== this.currentLang || !this._fetch) {
       this.currentLang = lang;
       this._fetch = query.pipe(
         map(data => (data || []).reduce((cumulative, current) => {

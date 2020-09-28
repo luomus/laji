@@ -66,6 +66,7 @@ export class InfoCardHeaderComponent implements OnChanges {
     }
     this.taxonSelect.emit(this.siblings[idx].id);
   }
+  
 
   private setParent() {
     if (this.parentSub) {

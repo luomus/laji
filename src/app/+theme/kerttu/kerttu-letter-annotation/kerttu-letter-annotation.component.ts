@@ -24,6 +24,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   loadingLetters = false;
   firstTemplateLoaded = false;
 
+  hasError = false;
+
   private nextLetterCandidate: ILetterCandidate;
   private nextLetterCandidate$: Observable<ILetterCandidate>;
 
@@ -136,6 +138,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
       }, error => {
         if (this.getErrorMessage(error) === 'TaxonExpertiseMissingError') {
           this.taxonExpertiseMissing = true;
+        } else {
+          this.hasError = true;
         }
         this.cdr.markForCheck();
       });
@@ -190,6 +194,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
     const msg = this.getErrorMessage(error);
     if (msg === 'InvalidTemplateIdError' || msg === 'InvalidCandidateIdError') {
       this.getLetterTemplate();
+    } else {
+      this.hasError = true;
     }
   }
 
