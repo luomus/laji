@@ -21,7 +21,7 @@ import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplet
     [typeaheadWaitMs]="200"
     [typeaheadMinLength]="3"
     [typeaheadSelectFirstItem]="!allowInvalid"
-    [typeaheadOptionField]="'autocompleteDisplayName'"
+    [typeaheadOptionField]="'autocompleteSelectedName'"
     (typeaheadLoading)="changeTypeaheadLoading($event)"
     (typeaheadOnSelect)="onTaxonSelect($event)"
     [typeaheadItemTemplate]="taxonItem"

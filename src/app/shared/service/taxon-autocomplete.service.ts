@@ -94,7 +94,6 @@ export class TaxonAutocompleteService {
     words.forEach(el => {
       let newOriginal = original.toLowerCase();
       let newString = el.toLowerCase();
-      console.log(newOriginal.indexOf(newString))
       original = newOriginal.includes(newString) ? newOriginal.replace(newString,'<b>' + newString + '</b>') : newOriginal;
     })
     return original;
