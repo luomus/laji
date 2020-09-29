@@ -26,8 +26,6 @@ export class PillListComponent {
       data.map(item => items.push(...item.split(this.separator)));
       this._list = items;
     }
-    console.log(this._list)
-    console.log(this.selectedTaxonNames)
   }
 
   remove(item) {
