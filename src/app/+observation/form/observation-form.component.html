@@ -55,6 +55,8 @@
     <laji-pill-list
       [isLabel]="true"
       [list]="query.target || []"
+      [isTaxonAutocomplete]="true"
+      [selectedTaxonNames]="selectedNameTaxon"
       (updateList)="updateSearchQuery('target', $event)"
     ></laji-pill-list>
   </div>
