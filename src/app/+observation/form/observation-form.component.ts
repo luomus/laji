@@ -9,6 +9,7 @@ import { ObservationFacade } from '../observation.facade';
 import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
+import { forEach } from 'jszip';
 
 
 interface ISections {
@@ -82,6 +83,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   typeaheadLoading = false;
   autocompleteLimit = 10;
   logCoordinateAccuracyMax = 4;
+  selectedNameTaxon = [];
 
   visible: {[key in keyof ISections]?: boolean} = {};
   visibleAdvanced: {[key in keyof ISections]?: boolean} = {};
@@ -365,12 +367,19 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       const target = event.item && event.item.key ? event.item.key : this.formQuery.taxon;
       this.query['target'] = this.query['target'] ? [...this.query['target'], target] : [target];
       this.formQuery.taxon = '';
+      this.selectedNameTaxon.push({id: event.item.key, value: event.item.autocompleteSelectedName})
       this.onQueryChange();
     }
   }
 
   updateSearchQuery(field, value) {
     this.query[field] = value;
+    let porco = this.selectedNameTaxon.filter(item => {
+      if (value.indexOf(item.id) > -1) {
+        return item;
+      }
+    })
+    this.selectedNameTaxon = porco;
     this.onQueryChange();
   }
 
