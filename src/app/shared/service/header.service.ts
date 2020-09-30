@@ -99,6 +99,18 @@ export class HeaderService implements OnDestroy {
     });
   }
 
+  public updateTitle(title) {
+    const oldTitle = this.title.getTitle();
+    return this.title.setTitle(title + ' - ' + oldTitle)
+  }
+
+  public updateMetaDescription(description) {
+    this.metaService.removeTag("property='description'");
+    this.metaService.addTag({ property: 'description', content: description });
+    this.metaService.addTag({ property: 'og:description', content: description });
+    this.metaService.addTag({ property: 'twitter:description', content: description });
+  }
+
   ngOnDestroy() {
     this.routeSub.unsubscribe();
   }
@@ -125,7 +137,6 @@ export class HeaderService implements OnDestroy {
   private removeElements(selector: string) {
     if (this.platformService.isBrowser) {
       const alternatives = this.document.querySelectorAll(selector);
-      console.log(alternatives)
       if (alternatives.length) {
         alternatives.forEach(elem => this.renderer.removeChild(this.document.head, elem));
       }
@@ -142,6 +153,7 @@ export class HeaderService implements OnDestroy {
 
   private getDeepestTitle(routeSnapshot: ActivatedRouteSnapshot): Observable<string[]> {
     const title = [];
+    console.log(routeSnapshot)
     if (routeSnapshot.data && routeSnapshot.data['title']) {
       title.push(routeSnapshot.data['title'] || '');
     }
@@ -153,10 +165,4 @@ export class HeaderService implements OnDestroy {
     return ObservableOf(title);
   }
 
-  updateMetaDescription(description) {
-    this.metaService.removeTag("property='description'");
-    this.metaService.addTag({ property: 'description', content: description });
-    this.metaService.addTag({ property: 'og:description', content: description });
-    this.metaService.addTag({ property: 'twitter:description', content: description });
-  }
 }
