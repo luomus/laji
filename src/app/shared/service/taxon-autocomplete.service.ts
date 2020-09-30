@@ -65,7 +65,8 @@ export class TaxonAutocompleteService {
         return (payload['vernacularName'] !== '' ? vernacularName + ' - (' + this.matchingName + ') - ' + (payload['cursiveName'] ? '<i class="sName">' + scientificName + '</i>' : scientificName)
         : (payload['cursiveName'] ? '<i>' + scientificName + '</i>' : scientificName) + ' (' + this.matchingName + ') - ' + (payload['cursiveName'] ? '<i class="sName">' + scientificName + '</i>' : scientificName)) + '<div>' + lajiRankFlag;
       default:
-        return scientificName;  
+        return (payload['cursiveName'] ? '<i>' + scientificName + '</i>' : scientificName)
+         +' (' + (this.matchingName + ') <div>' + lajiRankFlag ); 
     }
   }
 
@@ -85,7 +86,7 @@ export class TaxonAutocompleteService {
       case 'MX.tradeName':
         return payload['vernacularName'] !== '' ? payload['vernacularName'] : payload['scientificName'];
       default:
-        return payload['scientificName'];   
+        return payload['scientificName'];  
     }
   }
 
@@ -97,10 +98,6 @@ export class TaxonAutocompleteService {
       original = newOriginal.includes(newString) ? newOriginal.replace(newString,'<b>' + newString + '</b>') : newOriginal;
     })
     return original;
-  }
-
-  capitalize(string): string {
-      return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
 }

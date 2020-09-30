@@ -38,6 +38,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   public isCurrentUser = false;
   public userId = '';
+  public userFullName = '';
   public isCreate = true;
   public editing = false;
   public loading = true;
@@ -93,6 +94,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         data => {
           this.isCurrentUser = data.id === data.currentUser.id;
           this.userId = data.id;
+          this.userFullName = data.currentUser.fullName;
           this.isCreate = !data.currentProfile;
           this.profile = data.profile || {};
           if (!this.profile.settings) {
@@ -102,10 +104,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
               intellectualRights: undefined,
             };
           }
-          this.profile.settings['capturerVerbatim'] = this.profile.settings && (this.profile.settings['capturerVerbatim'] || this.profile.settings['capturerVerbatim'] !== undefined) ? this.profile.settings['capturerVerbatim']  : this.userPipe.transform(this.profile.userID),
-          this.profile.settings['intellectualOwner'] = this.profile.settings && (this.profile.settings['intellectualOwner'] || this.profile.settings['intellectualOwner'] !== undefined) ? this.profile.settings.intellectualOwner : this.userPipe.transform(this.profile.userID),
+          this.profile.settings['capturerVerbatim'] = this.profile.settings && (this.profile.settings['capturerVerbatim'] || this.profile.settings['capturerVerbatim'] !== '') ? this.profile.settings['capturerVerbatim']  : this.userFullName;
+          this.profile.settings['intellectualOwner'] = this.profile.settings && (this.profile.settings['intellectualOwner'] || this.profile.settings['intellectualOwner'] !== '') ? this.profile.settings.intellectualOwner : this.userFullName;
           this.profile.settings['intellectualRights'] = this.profile.settings && (this.profile.settings['intellectualRights'] || this.profile.settings['intellectualRights'] !== undefined) ?
-          this.profile.settings['intellectualRights'] : Profile.IntellectualRightsEnum.IntellectualRightsCCBY,
+          this.profile.settings['intellectualRights'] : Profile.IntellectualRightsEnum.IntellectualRightsCCBY;
           this.personsProfile = data.currentProfile || {};
           this.loading = false;
           this.editing = false;
@@ -172,7 +174,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
       personalCollectionIdentifier: this.profile.personalCollectionIdentifier,
       capturerVerbatim: this.profile.capturerVerbatim,
       intellectualOwner: this.profile.intellectualOwner,
-      intellectualRights: this.profile.intellectualRights
+      intellectualRights: this.profile.intellectualRights,
+      settings: {
+        capturerVerbatim: this.profile.settings['capturerVerbatim'] !== '' ? this.profile.settings['capturerVerbatim'] : this.userFullName,
+        intellectualOwner: this.profile.settings['intellectualOwner'] !== '' ? this.profile.settings['intellectualOwner']: this.userFullName,
+        intellectualRights: this.profile.settings['intellectualRights'],
+      }
     };
   }
 }
