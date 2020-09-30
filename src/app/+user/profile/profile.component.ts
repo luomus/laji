@@ -1,5 +1,5 @@
 import { catchError, concatMap, map, take, tap } from 'rxjs/operators';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';
@@ -56,16 +56,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private logger: Logger,
-              private userPipe: UsersPipe
+              private userPipe: UsersPipe,
+              private cdr: ChangeDetectorRef
   ) {
     this.personSelfUrl = environment.selfPage;
   }
 
   ngOnInit() {
+    this.loading = true;
     this.subProfile = this.route.params.pipe(
-      tap(() => this.loading = true),
       map(params => params['userId']),
-      concatMap((id) => this.userService.user$.pipe(
+      concatMap(id => this.userService.user$.pipe(
         take(1),
         map(user => ({id: id, currentUser: user}))
       )),
@@ -89,8 +90,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           }))
         );
       })
-    )
-      .subscribe(
+    ).subscribe(
         data => {
           this.isCurrentUser = data.id === data.currentUser.id;
           this.userId = data.id;
@@ -102,7 +102,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
               capturerVerbatim: '',
               intellectualOwner: '',
               intellectualRights: undefined,
-            }
+            };
           }
           this.profile.settings['capturerVerbatim'] = this.profile.settings && (this.profile.settings['capturerVerbatim'] || this.profile.settings['capturerVerbatim'] !== '') ? this.profile.settings['capturerVerbatim']  : this.userFullName;
           this.profile.settings['intellectualOwner'] = this.profile.settings && (this.profile.settings['intellectualOwner'] || this.profile.settings['intellectualOwner'] !== '') ? this.profile.settings.intellectualOwner : this.userFullName;
@@ -111,8 +111,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.personsProfile = data.currentProfile || {};
           this.loading = false;
           this.editing = false;
+          this.cdr.detectChanges();
         },
-        err => this.logger.warn('Failed to init profile', err)
+        err => {
+          this.logger.warn('Failed to init profile', err);
+          this.loading = false;
+          this.cdr.detectChanges();
+        }
       );
 
       const values = Object.values(this.intellectualRights);
