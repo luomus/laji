@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { ILatestDocument, LatestDocumentsFacade } from '../latest-documents.facade';
 
 
-@Component({
+@Component({ 
   selector: 'laji-haseka-latest',
   templateUrl: './haseka-users-latest.component.html',
   styleUrls: ['./haseka-users-latest.component.css'],

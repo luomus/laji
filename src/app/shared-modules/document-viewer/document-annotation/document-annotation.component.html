@@ -95,10 +95,11 @@
                       </span>
                       <span *ngIf="!document.public">
                         {{ 'viewer.secured.own1' | translate }}
-                        (<a [routerLink]="['/view'] | localize" [queryParams]="{
-                          uri: document.documentId,
-                          highlight: highlight
-                         }" target="_blank">{{ 'viewer.secured.own2' | translate }}</a>).
+                        <ng-container *lajiForTypes="['vir']; exclude: true">
+                          (<a [routerLink]="['/view'] | localize"
+                              [queryParams]="{uri: document.documentId,highlight: highlight}"
+                              target="_blank">{{ 'viewer.secured.own2' | translate }}</a>).
+                        </ng-container>
                       </span>
                       <div *ngIf="document.secured">
                         <laji-secure-info

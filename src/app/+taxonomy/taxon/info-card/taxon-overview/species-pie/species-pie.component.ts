@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions, Chart } from 'chart.js';
 import { Color, BaseChartDirective} from 'ng2-charts';
 import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
+import { MultiLangService } from 'src/app/shared-modules/lang/service/multi-lang.service';
 
 
 @Component({
@@ -85,7 +86,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
             ctx.textAlign = 'center';
             ctx.fillStyle = '#000';
             ctx.textBaseline = 'middle';
-            if (this.data.datasets[0].tree && this.data.datasets[0].tree.length < 20) {
+            if (this.data.datasets[0].tree && this.data.datasets[0].tree.length < 40) {
               this.data.datasets.forEach(function (dataset, i) {
                 const meta = chartInstance.controller.getDatasetMeta(i);
                 meta.data.forEach(function (bar, index) {
@@ -141,7 +142,10 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         this.dataById[id] = child;
         // this.lineChartData[0].data.push(count);
         // this.lineChartData[0].data.push({x: index, y: count});
-        tmp_array.push({value: count, label: (child.vernacularName || child.scientificName), id: id});
+        tmp_array.push({value: count, 
+        label: (child.vernacularName) ? 
+        ( typeof child.vernacularName  === 'object' ? 
+        MultiLangService.getValue(child.vernacularName, this.translate.currentLang) : child.vernacularName)  : child.scientificName, id: id});
         this.lineChartLabels.push(child.vernacularName || child.scientificName);
         this.lineChartColors[0]['backgroundColor'].push(this.colorPalette[index % this.colorPalette.length]);
       }

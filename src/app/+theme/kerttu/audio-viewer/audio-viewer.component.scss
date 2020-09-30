@@ -5,6 +5,13 @@
   width: 100%;
   text-align: left;
   background-color: $neutral-4;
+  position: relative;
+}
+
+alert {
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
 #spectrogramContainer {

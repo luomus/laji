@@ -51,6 +51,7 @@ import { DownloadModule } from '../shared-modules/download/download.module';
 import { TaxonDescriptionSourceComponent } from './taxon/info-card/shared/component/taxon-description-source/taxon-description-source.component';
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
 import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
+import { TaxonAutocompleteService } from '../shared/service/taxon-autocomplete.service';
 import { CheckLangService } from './taxon/service/check-lang.service';
 import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
 import { TaxonObservationsComponent } from './taxon/info-card/taxon-observations/taxon-observations.component';
@@ -76,6 +77,7 @@ import { ChartModule } from '../shared-modules/chart/chart.module';
 import { TaxonIdentificationComponent } from './taxon/info-card/taxon-identification/taxon-identification.component';
 import {SelectModule} from '../shared-modules/select/select.module';
 import { IdentificationSpeciesListComponent } from './taxon/info-card/taxon-identification/species-list/species-list.component';
+import { LabelPipe } from '../shared/pipe/label.pipe';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -92,6 +94,8 @@ import { IdentificationSpeciesListComponent } from './taxon/info-card/taxon-iden
     TaxonTaxonomyService,
     CheckLangService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
+    TaxonAutocompleteService,
+    LabelPipe
   ],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
     TaxonTreeComponent, SpeciesListComponent, TaxonComponent,

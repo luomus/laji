@@ -11,6 +11,8 @@ export class PillListComponent {
 
   @Input() separator = ',';
   @Input() isLabel;
+  @Input() isTaxonAutocomplete = false;
+  @Input() selectedTaxonNames: Array<string>;
   @Output() updateList = new EventEmitter();
 
   _list;
@@ -29,5 +31,15 @@ export class PillListComponent {
   remove(item) {
     this.updateList.emit(this._list.filter(value => value !== item));
   }
+
+  findIndexValue(item) {
+    if (this.selectedTaxonNames.length > 0) {
+      let index = this.selectedTaxonNames.findIndex(i => i['id'] === item)
+      return index > -1 ? this.selectedTaxonNames[index]['value'] : null;
+    } else {
+      return null;
+    }
+  }
+
 
 }
