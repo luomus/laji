@@ -6,7 +6,7 @@ import { Logger } from '../shared/logger/logger.service';
 import { News } from '../shared/model/News';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { NewsStore } from './news.store';
-import { TitleMetaPageService } from './title-meta-page.service';
+import { HeaderService } from '../../app/shared/service/header.service'
 
 
 @Component({
@@ -24,7 +24,7 @@ export class NewsComponent implements OnInit, OnDestroy {
               private cd: ChangeDetectorRef,
               private logger: Logger,
               private store: NewsStore,
-              private titleMetaPageService: TitleMetaPageService
+              private headerService: HeaderService,
   ) {
     //this.addTag(newsItem);
   }
@@ -40,8 +40,12 @@ export class NewsComponent implements OnInit, OnDestroy {
         ObservableOf(this.store.state.current) : this.newsService.get(id))
     ).subscribe(newsItem => {
       this.store.setCurrent(newsItem);
-      //this.titleMetaPageService.addTag(newsItem);
+      this.headerService.updateMetaDescription(this.prepareDescriptionTag(newsItem.content))
     });
+  }
+
+  private prepareDescriptionTag(description) {
+    return description.substring(description.indexOf('<p>')+3, description.indexOf('</p>')-1).replace(/<[^>]*>/g, '')
   }
 
   
