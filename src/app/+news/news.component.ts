@@ -6,6 +6,8 @@ import { Logger } from '../shared/logger/logger.service';
 import { News } from '../shared/model/News';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { NewsStore } from './news.store';
+import { TitleMetaPageService } from './title-meta-page.service';
+
 
 @Component({
   selector: 'laji-news',
@@ -21,8 +23,10 @@ export class NewsComponent implements OnInit, OnDestroy {
               private newsService: NewsService,
               private cd: ChangeDetectorRef,
               private logger: Logger,
-              private store: NewsStore
+              private store: NewsStore,
+              private titleMetaPageService: TitleMetaPageService
   ) {
+    //this.addTag(newsItem);
   }
 
   ngOnInit() {
@@ -34,7 +38,10 @@ export class NewsComponent implements OnInit, OnDestroy {
       map(params => params['id']),
       switchMap(id => this.store.state.current && this.store.state.current.id === id ?
         ObservableOf(this.store.state.current) : this.newsService.get(id))
-    ).subscribe(newsItem => this.store.setCurrent(newsItem));
+    ).subscribe(newsItem => {
+      this.store.setCurrent(newsItem);
+      this.titleMetaPageService.addTag(newsItem);
+    });
   }
 
   ngOnDestroy() {
