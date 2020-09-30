@@ -75,6 +75,7 @@ import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
 import { TaxonIdentificationComponent } from './taxon/info-card/taxon-identification/taxon-identification.component';
 import {SelectModule} from '../shared-modules/select/select.module';
+import { IdentificationSpeciesListComponent } from './taxon/info-card/taxon-identification/species-list/species-list.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -117,7 +118,8 @@ import {SelectModule} from '../shared-modules/select/select.module';
     TaxonOccurrenceMapComponent,
     AdministrativeStatusComponent,
     TaxonYlestaFieldsComponent,
-    TaxonIdentificationComponent
+    TaxonIdentificationComponent,
+    IdentificationSpeciesListComponent
   ],
 })
 export class TaxonomyModule {
