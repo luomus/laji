@@ -43,5 +43,6 @@ export const environment = {
   loginCheck: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/loginInfo',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
-  kerttuApi: 'https://staging-kerttu-backend.laji.fi'
+  kerttuApi: 'https://staging-kerttu-backend.laji.fi',
+  protaxApi: 'https://protax-api-protax-api-staging.rahtiapp.fi'
 };

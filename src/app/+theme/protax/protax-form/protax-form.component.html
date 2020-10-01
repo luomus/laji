@@ -1,0 +1,36 @@
+<div id="protaxParams">
+  <div class="form-group">
+    <label for="model">{{ 'theme.protax.model' | translate }}</label>
+    <select [(ngModel)]="model" class="form-control input-sm" id="model">
+      <option [value]="protaxModels.COIFull">full-length COI</option>
+      <option [value]="protaxModels.COILeray">Leray-primer COI</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="threshold">{{ 'theme.protax.probabilityThreshold' | translate }}</label>
+    <input
+      [(ngModel)]="probabilityThreshold"
+      class="form-control input-sm"
+      type="number"
+      min="0"
+      max="1"
+      step="0.1"
+      id="threshold"
+    >
+  </div>
+</div>
+
+<div class="form-group">
+  <p>{{ 'theme.protax.sequenceDescription' | translate }}</p>
+  <lu-tabs class="d-block" [selectedIndex]="activeTab" (selectedChange)="activeTab = $event">
+    <lu-tab [heading]="'theme.protax.textArea' | translate">
+      <textarea id="inputData" class="form-control" [(ngModel)]="sequenceData" name="inputData" rows="10"></textarea>
+    </lu-tab>
+    <lu-tab [heading]="'theme.protax.fileInput' | translate">
+      <input class="form-control" type="file" style="height: auto" (change)="updateSequenceFile($event.target['files'])">
+    </lu-tab>
+  </lu-tabs>
+</div>
+
+<lu-button [role]="'primary'" (click)="submitForm()">Tunnista</lu-button>
