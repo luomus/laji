@@ -37,10 +37,10 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
             ...result.map(
               taxon => this.taxonomyApi.species({
                 id: taxon.id,
-                selectedFields: 'id,vernacularName,scientificName',
+                selectedFields: 'id,vernacularName,scientificName,cursiveName',
                 includeMedia: true,
                 pageSize: 8,
-                sortOrder: 'observationCountInvasiveFinland DESC'
+                sortOrder: 'observationCountFinland DESC'
               }).pipe(
                 map(res => {
                   return {
@@ -55,7 +55,6 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
       ).subscribe(res => {
         this.taxonChildren = res;
         this.cdr.markForCheck();
-        console.log(res);
       });
       return;
     }
