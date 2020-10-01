@@ -99,16 +99,11 @@ export class HeaderService implements OnDestroy {
     });
   }
 
-  public updateTitle(title) {
-    const oldTitle = this.title.getTitle();
-    return this.title.setTitle(title + ' - ' + oldTitle)
-  }
-
   public updateMetaDescription(description) {
-    this.metaService.removeTag("property='description'");
-    this.metaService.addTag({ property: 'description', content: description });
-    this.metaService.addTag({ property: 'og:description', content: description });
-    this.metaService.addTag({ property: 'twitter:description', content: description });
+    this.removeMetaDescription(ALL_META_KEYS);
+    ALL_META_KEYS.forEach((key) => {
+      this.metaService.addTag({ property: key, content: description });
+    })
   }
 
   ngOnDestroy() {
@@ -134,6 +129,19 @@ export class HeaderService implements OnDestroy {
     });
   }
 
+  private removeMetaDescription(metaTagsDescription) {
+    RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
+      map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
+    ).subscribe(meta => {
+      metaTagsDescription.forEach((key) => {
+        const propertySelector = `property='${key}'`;
+        if(meta?.[key]) {
+          this.metaService.removeTag(propertySelector);
+        }
+      })
+    })
+  }
+
   private removeElements(selector: string) {
     if (this.platformService.isBrowser) {
       const alternatives = this.document.querySelectorAll(selector);
@@ -153,7 +161,6 @@ export class HeaderService implements OnDestroy {
 
   private getDeepestTitle(routeSnapshot: ActivatedRouteSnapshot): Observable<string[]> {
     const title = [];
-    console.log(routeSnapshot)
     if (routeSnapshot.data && routeSnapshot.data['title']) {
       title.push(routeSnapshot.data['title'] || '');
     }
