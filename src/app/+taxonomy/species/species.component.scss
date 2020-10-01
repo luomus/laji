@@ -27,11 +27,51 @@
   position: fixed;
   top: 50px;
 }
+
+::ng-deep .sidebar {
+  overflow-x: visible !important;
+}
+
+:host ::ng-deep typeahead-container.dropdown {
+  right: 40px !important;
+  left: unset !important;
+  min-width: 500px;
+}
+
+:host ::ng-deep typeahead-container.dropdown ul {
+  min-width: 500px;
+}
+
+
 @media only screen and (max-width : 767px) {
   .form-filters {
     top: 0 !important;
     height: auto !important;
     position: relative !important;
+  }
+
+  :host ::ng-deep typeahead-container.dropdown ul {
+    max-width: 220px;
+    min-width: 220px;
+  }
+
+  :host ::ng-deep typeahead-container.dropdown {
+    right: 80px !important;
+    left: unset !important;
+    min-width: 220px;
+    max-width: 220px;
+  }
+
+  ::ng-deep typeahead-container ul li a span div {
+    display: block;
+    float: none;
+    margin-left: 0px;
+    top: -6px;
+    position: relative;
+    opacity: 0.7;
+  }
+  ::ng-deep .sidebar {
+    overflow-x: hidden !important;
   }
 }
 
