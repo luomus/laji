@@ -42,6 +42,7 @@ import { NamedPlaceResolver } from '../shared-modules/named-place/named-place.re
 import {KerttuExpertiseFormComponent} from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
 import {KerttuLetterAnnotationComponent} from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
 import {KerttuRecordingAnnotationComponent} from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
+import { ProtaxComponent } from './protax/protax.component';
 
 /* tslint:enable:max-line-length */
 
@@ -910,6 +911,7 @@ const routes: Routes = [
       {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn]}
     ]
   },
+  {path: 'protax', pathMatch: 'full', component: ProtaxComponent, data: {title: 'theme.protax'}},
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},

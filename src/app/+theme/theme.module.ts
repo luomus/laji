@@ -98,6 +98,9 @@ import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-recording-an
 import { RequiresAudioSupportDirective } from './kerttu/directive/requires-audio-support.directive';
 import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-supported-error.component';
 import { SelectModule } from '../shared-modules/select/select.module';
+import { ProtaxComponent } from './protax/protax.component';
+import { ProtaxApi } from './protax/protax-api';
+import { ProtaxFormComponent } from './protax/protax-form/protax-form.component';
 
 /* tslint:enable:max-line-length */
 
@@ -194,7 +197,9 @@ import { SelectModule } from '../shared-modules/select/select.module';
     KerttuLetterAnnotationComponent,
     KerttuRecordingAnnotationComponent,
     RequiresAudioSupportDirective,
-    AudioNotSupportedErrorComponent
+    AudioNotSupportedErrorComponent,
+    ProtaxComponent,
+    ProtaxFormComponent
   ],
   providers: [
     ResultService,
@@ -203,6 +208,7 @@ import { SelectModule } from '../shared-modules/select/select.module';
     KerttuApi,
     AudioService,
     SpectrogramService,
+    ProtaxApi,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })
