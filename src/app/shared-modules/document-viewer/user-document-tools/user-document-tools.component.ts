@@ -104,9 +104,11 @@ export class UserDocumentToolsComponent implements OnInit {
       }
     });
 
-    if (this._editors.indexOf(this._personID)!== -1 || this._editors.length === 0){
-      this.checkAdminRight();
-    }
+    this.userService.isLoggedIn$.subscribe(login => {
+      if ((this._editors.indexOf(this._personID)!== -1 || this._editors.length === 0) && login ){
+        this.checkAdminRight();
+      }
+    })
   }
 
   makeTemplate() {
