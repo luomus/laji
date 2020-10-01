@@ -44,5 +44,5 @@ export const environment = {
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   // kerttuApi: 'http://localhost:5000',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
-  protaxApi: 'http://localhost:5000'
+  protaxApi: 'https://protax-api-protax-api-staging.rahtiapp.fi'
 };

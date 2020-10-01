@@ -38,5 +38,5 @@ export const environment = {
   loginUrl: 'https://login.laji.fi/login',
   selfPage: 'https://login.laji.fi/self',
   kerttuApi: 'https://kerttu-backend.laji.fi',
-  protaxApi: 'http://localhost:5000'
+  protaxApi: 'https://protax-api-protax-api-staging.rahtiapp.fi'
 };
