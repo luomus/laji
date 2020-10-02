@@ -95,7 +95,7 @@ export class ProjectFormComponent implements OnInit {
             !(
               (!form.options?.useNamedPlaces && url.match(/\/form$/))
               || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
-              || (url.match(/\/form\/(.*\/)?JX\.\d+$/))
+              || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
             )
           )
         )

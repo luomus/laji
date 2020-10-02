@@ -103,7 +103,7 @@ export class FormComponent implements OnInit {
       );
       return true;
     };
-    if (routeParams['formOrDocument']?.match(/^JX\./)) {
+    if (routeParams['formOrDocument']?.match(/^((JX\.)|(T:))/)) {
       if (form.options?.forms?.length) {
         return of(navigateToForm(form.id, form.id));
       }
