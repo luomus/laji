@@ -1,15 +1,14 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { map, switchMap, take } from 'rxjs/operators';
 import { ProjectFormService } from '../project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { BrowserService } from '../../shared/service/browser.service';
 import { NamedPlacesService } from '../../shared/service/named-places.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { DocumentFormComponent } from './document-form/document-form.component';
 
 interface ViewModel {
