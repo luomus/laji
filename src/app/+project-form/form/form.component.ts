@@ -64,25 +64,32 @@ export class FormComponent implements OnInit {
             const formID = hasManyForms
               ? paramsStack.pop()
               : form.id;
-            const usedSubForm = [form, ...subForms].find(f => f.id === formID);
-            if (hasManyForms && !usedSubForm) {
+            const _usedSubForm = [form, ...subForms].find(f => f.id === formID);
+            if (hasManyForms && !_usedSubForm) {
               this.router.navigate([form.id], {relativeTo: this.route});
               return;
             }
             const documentID = paramsStack.pop();
-            const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
-            const namedPlace$ = namedPlaceID
-              ? this.namedPlacesService.getNamedPlace(namedPlaceID)
-              : of(null);
-            if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
-              this.router.navigate(['places'], {relativeTo: this.route});
-              return;
-            }
-            return namedPlace$.pipe(map(namedPlace => ({
-              form,
-              documentID,
-              namedPlace
-            })));
+            return (_usedSubForm === form ?
+              of(form)
+              : this.formService.getForm(_usedSubForm.id, this.translate.currentLang)
+            ).pipe(
+              switchMap(usedSubForm => {
+                const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
+                const namedPlace$ = namedPlaceID
+                  ? this.namedPlacesService.getNamedPlace(namedPlaceID)
+                  : of(null);
+                if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
+                  this.router.navigate(['places'], {relativeTo: this.route});
+                  return;
+                }
+                return namedPlace$.pipe(map(namedPlace => ({
+                  form,
+                  documentID,
+                  namedPlace
+                })));
+              })
+            )
           }))
         )
       ))

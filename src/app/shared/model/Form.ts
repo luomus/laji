@@ -62,10 +62,10 @@ export namespace Form {
     allowTemplate?: true;
     forms?: string[];
     secondaryCopy?: boolean;
+    sidebarFormLabel?: string;
   }
 
   export interface FormOptions extends ListOptions {
-    sidebarFormLabel?: string,
     useNamedPlaces?: boolean;
     restrictAccess?: RestrictAccess;
     hasAdmins?: boolean;

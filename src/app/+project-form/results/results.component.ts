@@ -16,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
         <laji-line-transect-result></laji-line-transect-result>
       </div>
       <div *ngSwitchCase="ResultServiceType.nafi">
-        <laji-nafi-result [form]="form$"></laji-nafi-result>
+        <laji-nafi-result [form]="(form$ | async)"></laji-nafi-result>
       </div>
     </div>
   `,
