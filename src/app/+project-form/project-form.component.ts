@@ -132,7 +132,7 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  private static getFormRoutes(form: Form.SchemaForm, subForms: Form.SchemaForm[], rights: Rights) {
+  private static getFormRoutes(form: Form.SchemaForm, subForms: Form.List[], rights: Rights) {
     if (!rights.view) {
       return [];
     }

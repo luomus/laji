@@ -12,7 +12,7 @@ import { Global } from '../../environments/global';
 
 export interface ProjectForm {
   form: Form.SchemaForm;
-  subForms: Form.SchemaForm[];
+  subForms: Form.List[];
 }
 
 export interface NamedPlacesQuery {
@@ -51,7 +51,7 @@ export class ProjectFormService {
     return form$.pipe(
       mergeMap(form =>
         (form.options?.forms
-            ? forkJoin((form.options.forms).map(formID => this.formService.getForm(formID, this.translate.currentLang)))
+            ? this.formService.getAllForms(this.translate.currentLang).pipe(map(forms => forms.filter(f => form.options.forms.indexOf(f.id) > -1)))
             : of([])
         ).pipe(
           map(forms => ({form, subForms: forms}))
@@ -93,7 +93,12 @@ export class ProjectFormService {
         const namedPlace$ = this.namedPlacesService.getNamedPlace(namedPlaceID);
         const documentForm$ = formID
           ? this.getProjectFormFromRoute$(route).pipe(
-            map(projectForm => [projectForm.form, ...projectForm.subForms].find(f => f.id === formID))
+            switchMap(projectForm => {
+              const form = [projectForm.form, ...projectForm.subForms].find(f => f.id === formID);
+              return form === projectForm.form
+                ? of(form as Form.SchemaForm)
+                : this.formService.getForm(form.id, this.translate.currentLang);
+            })
           )
           : this.getFormFromRoute$(route);
         const placeForm$ = documentForm$.pipe(switchMap(documentForm => this.getPlaceForm$(documentForm)));
