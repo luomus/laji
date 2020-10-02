@@ -104,7 +104,6 @@ export namespace Form {
     formPermissionDescription?: string;
     formOwnSubmissionsLabel?: string;
     hideTES?: boolean;
-    showLatestDocuments?: boolean;
     ownSubmissionsTitle?: string;
     ownSubmissionsAdminTitle?: string;
     shortTitleFromCollectionName?: boolean;
