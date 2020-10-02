@@ -45,7 +45,6 @@ export interface RowDocument {
   observer: string;
   formID: string;
   form: string;
-  formViewerType: string;
   id: string;
   locked: boolean;
   index: number;
@@ -273,13 +272,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     }, []);
 
     this.goToStart(goToStart);
-  }
-
-  showMakeTemplate(row: RowDocument): boolean {
-    if (this.actions === false || this.onlyTemplates === true || this.actions.indexOf('template') === -1) {
-      return false;
-    }
-    return row && row.formID && Global.canHaveTemplate.indexOf(row.formID) > -1;
   }
 
   rowIdentity(row: RowDocument) {

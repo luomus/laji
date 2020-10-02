@@ -1,0 +1,44 @@
+<laji-datatable
+  #dataTable
+  (rowSelect)="rowSelect.emit($event.row['unit.linkings.taxon.speciesId'])"
+  [clientSideSorting]="true"
+  (sortChange)="onSort($event)"
+  [showRowAsLink]="true"
+  [showHeader]="true"
+  [height]="'calc(80vh - 40px)'"
+  [filterBy]="filterBy"
+  [virtualScrolling]="true"
+  [rows]="rows"
+  [loading]="loading"
+  [columnMode]="'standard'"
+  [totalMessage]="'haseka.submissions.total' | translate"
+  [columns]="columns"
+  [count]="rows?.length">
+</laji-datatable>
+
+<ng-template let-value="value" let-row="row" #vernacularName>
+  <a
+    *ngIf="value"
+    [routerLink]="[]"
+    [queryParams]="{species: (row['unit.linkings.taxon.speciesId'] | toQName)}"
+    queryParamsHandling="merge"
+    (click)="$event.stopPropagation()"
+    title="{{ value }}"
+  >
+    {{ value }}
+  </a>
+</ng-template>
+<ng-template let-value="value" let-row="row" #scientificName>
+  <a
+    *ngIf="value"
+    [routerLink]="[]"
+    [queryParams]="{species: (row['unit.linkings.taxon.speciesId'] | toQName)}"
+    queryParamsHandling="merge"
+    (click)="$event.stopPropagation()"
+    title="{{ value }}"
+  >
+    <span class="cursive">
+    {{ value }}
+    </span>
+  </a>
+</ng-template>

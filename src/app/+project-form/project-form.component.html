@@ -1,0 +1,48 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <lu-sidebar *ngIf="!vm.form.options?.mobile; else mobileContent" [open]="(showNav$ | async)">
+    <nav>
+      <h5>
+        <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID | label) || vm.form.shortTitle || vm.form.title"></span>
+        <small *ngIf="vm.form.options?.secondaryCopy"><br>sekundääridataa</small>
+      </h5>
+      <ng-container *ngTemplateOutlet="sidebarLinks; context:{ $implicit: vm.navLinks}"></ng-container>
+      <laji-haseka-latest [forms]="[vm.form.id]"
+                          [tmpOnly]="false"
+                          (showViewer)="showDocumentViewer($event)"
+                          *ngIf="(userService.isLoggedIn$ | async) && vm.form.options?.showLatestDocuments">
+      </laji-haseka-latest>
+    </nav>
+    <main>
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </main>
+</lu-sidebar>
+</ng-container>
+
+<ng-template #mobileContent>
+  <div class="container-fluid">
+  <ng-container [ngTemplateOutlet]="content"></ng-container>
+  </div>
+</ng-template>
+<ng-template #content>
+  <router-outlet></router-outlet>
+</ng-template>
+
+<ng-template #sidebarLinks let-navLinks>
+  <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.link | localize" routerLinkActive [linkParams]="link.linkParams" [active]="link.active">
+    {{ link.label | translate }}
+    <ng-container [ngSwitch]="link.content?.template">
+      <ng-container *ngSwitchCase="'badge'">
+        <ng-container *ngTemplateOutlet="badge; context:{ $implicit: link.content }"> </ng-container>
+      </ng-container>
+    </ng-container>
+    <ng-container ngProjectAs="lu-sidebar-link" *ngTemplateOutlet="sidebarLinks; context:{ $implicit: link.children }"></ng-container>
+  </lu-sidebar-link>
+</ng-template>
+
+<ng-template #badge let-badge>
+      <span
+        *ngIf="(formPermissions$ | async)[badge.count]"
+        class="badge pull-right">
+          {{ (formPermissions$ | async)[badge.count].length }}
+      </span>
+</ng-template>

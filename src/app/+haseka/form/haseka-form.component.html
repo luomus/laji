@@ -6,25 +6,25 @@
     <div *lajiLoggedIn>
       <div *ngIf="(showMobileEntryPage$ | async)">
         <laji-haseka-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-haseka-terms>
-        <laji-document-form-header [formID]="(form$ | async).id" [formData]="(form$ | async).formData"></laji-document-form-header>
+        <laji-document-form-header [formID]="(form$ | async).id"></laji-document-form-header>
         <button type="button"
                 class="btn btn-md btn-primary btn-block use-button"
                 (click)="enterForm()">
           {{ 'haseka.mobile.newObservation' | translate }}
         </button>
-        <laji-haseka-latest [forms]="(form$ | async).id"
+        <laji-haseka-latest [forms]="[(form$ | async).id]"
                             [showFormNames]="false"
                             [complainLocality]="false"
                             (showViewer)="showDocumentViewer($event)"
         ></laji-haseka-latest>
         <br />
         <ng-container *ngIf="form$ | async as form">
-          <ng-container *ngIf="form.options?.footer">
-            <ng-container *ngIf="form.options.footer.description">
-              {{ form.options.footer.description }}
+          <ng-container *ngIf="form.options?.footerDescription || form.options?.footerLogos">
+            <ng-container *ngIf="form.options?.footerDescription">
+              {{ form.options.footerDescription }}
             </ng-container>
             <ul class="form-footer">
-            <ng-container *ngFor="let logo of form.options.footer.logos | keyvalue">
+            <ng-container *ngFor="let logo of form.options?.footerLogos | keyvalue">
                 <li>
               <a [href]="logo.value" target="_blank">
                 <img lajiLazyImage [src]="logo.key">

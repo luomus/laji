@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { map, switchMap } from 'rxjs/operators';
 import { FormService } from '../../../shared/service/form.service';
-import { Form } from '../../../shared/model/Form';
-import { NamedPlacesService } from '../../named-place/named-places.service';
+import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { UserService } from '../../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { CombineToDocument } from './import.service';
+import { Form } from '../../../shared/model/Form';
 
 const { JSONPath } = require('jsonpath-plus');
 
@@ -30,12 +30,12 @@ export class ExcelToolService {
       includePublic: false
     }).pipe(map(namedPlaces => namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)));
 
-    const collection$ = (form: any) => {
-      const selected = ((form.options || {}).namedPlaceList || []);
+    const collection$ = (form: Form.SchemaForm) => {
+      const selected = form.options?.namedPlaceOptions?.listColumns || [];
       return this.namedPlacesService.getAllNamePlaces({
         collectionID: form.collectionID,
-        includeUnits: form.namedPlaceOptions && form.namedPlaceOptions.includeUnits,
-        selectedFields: selected.map(field => field.replace('$.', ''))
+        includeUnits: form.options?.namedPlaceOptions?.includeUnits,
+        selectedFields: selected.map(field => field.replace('$.', '')).join(',')
       }, selected).pipe(
         map(namedPlaces => namedPlaces.map(np => {
           const values = selected.reduce((cumulative, current) => {
@@ -53,31 +53,23 @@ export class ExcelToolService {
     };
 
     return this.formService.getForm(formID, this.translateService.currentLang).pipe(
-      switchMap(form => FormService.hasFeature(form, Form.Feature.NamedPlace) ? collection$(form) : usersNS$),
+      switchMap(form => form.options?.useNamedPlaces ? collection$(form) : usersNS$),
       map(places => places.sort())
     );
   }
 
-  getCombineOptions(form: any): CombineToDocument[] {
-    if (form && form.schema && form.schema.properties && form.schema.properties && form.schema.properties.gatherings) {
-      if (form.schema.properties.gatherings.items &&
-        form.schema.properties.gatherings.items.properties && form.schema.properties.gatherings.items.properties.units &&
-        form.schema.properties.gatherings.items.properties.units.maxItems === 1) {
-        return [
-          CombineToDocument.none
-        ];
-      } else if (form.schema.properties.gatherings.maxItems === 1) {
-        return [
-          CombineToDocument.gathering,
-          CombineToDocument.none
-        ];
-      }
+  getCombineOptions(form: Form.SchemaForm): CombineToDocument[] {
+    const {gatherings} = form?.schema?.properties;
+    if (gatherings?.items?.properties?.units?.maxItems === 1) {
+      return [
+        CombineToDocument.none
+      ];
+    } else if (gatherings?.maxItems === 1) {
+      return [
+        CombineToDocument.gathering,
+        CombineToDocument.none
+      ];
     }
-    return [
-      CombineToDocument.gathering,
-      CombineToDocument.all,
-      CombineToDocument.none
-    ];
   }
 
 }

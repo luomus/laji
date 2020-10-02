@@ -1,0 +1,10 @@
+<ng-container *ngIf="vm$ | async; let vm">
+  <h3>{{ vm.title | translate }}</h3>
+  <laji-own-submissions
+    [admin]="vm.rights.admin"
+    [columns]="vm.columns"
+    [actions]="vm.actions"
+    [collectionID]="vm.collectionID"
+    [forceLocalDocument]="vm.useLocalDocumentViewer"
+    [showDownloadAll]="false"></laji-own-submissions>
+</ng-container>

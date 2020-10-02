@@ -1,0 +1,29 @@
+<div class="laji-form" *lajiLoggedIn="true">
+  <ng-container *ngIf="(asyncData$) | async as data; else spinner">
+    <laji-document-form-header [formID]="data.documentForm.id"
+                               [displayObservationList]="false"
+                               [description]="data.description"
+                               class="no-flex"></laji-document-form-header>
+    <laji-form
+      [formData]="data.placeForm"
+      (dataChange)="onChange()"
+      (dataSubmit)="onSubmit($event)"></laji-form>
+    <laji-document-form-footer
+      [form]="data.placeForm"
+      [status]="status"
+      [saving]="saving"
+      [edit]="data.namedPlace"
+      (submitPublic)="submitPublic()"
+      (submitPrivate)="submitPrivate()"
+      (cancel)="discard()"
+    ></laji-document-form-footer>
+  </ng-container>
+</div>
+<div class="row" *lajiLoggedIn="false">
+  <div class="col-sm-8">
+    <alert [type]="'warning'">
+      {{ 'haseka.pleaseLogin' | translate }}
+    </alert>
+  </div>
+</div>
+<ng-template #spinner><laji-spinner></laji-spinner></ng-template>

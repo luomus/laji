@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from '../../environments/environment';
 import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HomeDataService, IHomeData } from './home-data.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
 import { Router } from '@angular/router';
+import { Global } from '../../environments/global';
 
 @Component({
   selector: 'laji-home',
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   mapStartDate;
   images$: Observable<Image[]>;
   homeData$: Observable<IHomeData>;
-  formId = environment.whichSpeciesForm;
+  formId = Global.forms.whichSpecies;
 
   constructor(
     private sourceService: SourceService,

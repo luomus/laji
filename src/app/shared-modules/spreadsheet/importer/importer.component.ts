@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { from as ObservableFrom, Observable, of } from 'rxjs';
+import { forkJoin, from as ObservableFrom, Observable, of } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
@@ -55,8 +55,18 @@ export class ImporterComponent implements OnInit, OnDestroy {
   @LocalStorage('importCombineBy', CombineToDocument.gathering) combineBy: CombineToDocument;
   @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
 
-  @Input() forms: string[] = environment.massForms || [];
   @Input() allowedCombineOptions: CombineToDocument[];
+
+  _forms: Observable<string[]>;
+
+  @Input()
+  set forms(forms: string[]) {
+    if (forms) {
+      this._forms = of(forms);
+    } else {
+      this._forms = this.formService.getSpreadsheetForms().pipe(map(_forms => _forms.map(form => form.id)));
+    }
+  }
 
   data: {[key: string]: any}[];
   mappedData: {[key: string]: any}[];
@@ -70,7 +80,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   colMap: {[key: string]: string};
   valueMap: {[key: string]: {[value: string]: any}} = {};
   formID: string;
-  form: any;
+  form: Form.SchemaForm;
   bstr: string;
   mimeType: string;
   errors: any;
@@ -142,12 +152,13 @@ export class ImporterComponent implements OnInit, OnDestroy {
       catchError((e) => {
         this.spreadsheetFacade.goToStep(e === FileService.ERROR_INVALID_TYPE ? Step.invalidFileType : Step.empty);
         return of(null);
-      })
-    ).subscribe((content) => {
+      }),
+      switchMap(content => forkJoin(of(content), this.spreadSheetService.findFormIdFromFilename(content.filename)))
+    ).subscribe(([content, formID]) => {
       if (instanceOfFileLoad(content)) {
         this.bstr = content.content;
         this.mimeType = content.type;
-        this.formID = this.spreadSheetService.findFormIdFromFilename(content.filename);
+        this.formID = formID;
         this.spreadsheetFacade.setFilename(content.filename);
         this.initForm();
       }
@@ -201,7 +212,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
           this.header = data.shift();
           this.data = data;
         }
-        if (this.isSecondaryCopy()) {
+        if (this.form.options?.secondaryCopy) {
           baseFields.push(SpreadsheetService.IdField);
           baseFields.push(SpreadsheetService.deleteField);
         }
@@ -276,20 +287,16 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   hasButton(place: 'temp') {
-    if (this.form && this.form.actions) {
-      return typeof this.form.actions[place] !== 'undefined';
-    }
-    return true;
+    return !this.form.options?.hideDraftButton;
   }
 
   buttonLabel(place: 'save'|'temp') {
-    if (this.form && this.form.actions && this.form.actions[place]) {
-      return this.form.actions[place];
+    switch (place) {
+      case 'save':
+        return this.form?.options?.saveLabel || 'haseka.form.savePublic';
+      case 'temp':
+        return this.form?.options?.draftLabel || 'haseka.form.savePrivate';
     }
-    if (place === 'save') {
-      return 'haseka.form.savePublic';
-    }
-    return 'haseka.form.savePrivate';
   }
 
   mapCol(event) {
@@ -486,14 +493,14 @@ export class ImporterComponent implements OnInit, OnDestroy {
             this.spreadsheetFacade.goToStep(Step.doneOk);
             this.valid = true;
 
-            if (!this.isSecondaryCopy()) {
+            if (!this.form.options?.secondaryCopy) {
               this.uploadedFiles = this.uploadedFiles ? [...this.uploadedFiles, this.hash] : [this.hash];
             }
 
             this.translateService.get('excel.import.done')
               .subscribe(msg => this.toastsService.showSuccess(msg));
           } else {
-            if (hadSuccess && !this.isSecondaryCopy()) {
+            if (hadSuccess && !this.form.options?.secondaryCopy) {
               this.partiallyUploadedFiles = this.partiallyUploadedFiles ? [...this.partiallyUploadedFiles, this.hash] : [this.hash];
             }
             this.spreadsheetFacade.goToStep(Step.doneWithErrors);
@@ -583,10 +590,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
     }
     this.spreadsheetFacade.goToStep(step);
     this.cdr.markForCheck();
-  }
-
-  private isSecondaryCopy() {
-    return FormService.hasFeature(this.form, Form.Feature.SecondaryCopy);
   }
 
   private getMappedValues(row, mapping, fields) {

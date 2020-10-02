@@ -8,19 +8,19 @@
 
   <h4><span class="glyphicon glyphicon-leaf"></span> {{ 'theme.census.title' | translate }}</h4>
   <div class="d-flex flex-wrap">
-    <a [routerLink]="['/theme/nafi'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.nafi] | localize" tabindex="-1" class="navbox">
       <h5>{{ 'nafi.stats.title' | translate }}</h5>
       <p>{{ 'theme.nafi.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/talvilintulaskenta'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.talvilintulaskenta] | localize" tabindex="-1" class="navbox">
       <h5>{{ 'wbc.title' | translate }}</h5>
       <p>{{ 'theme.wbc.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/linjalaskenta'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.linjalaskenta] | localize" tabindex="-1" class="navbox">
       <h5>{{ 'navigation.linetransect' | translate }}</h5>
       <p>{{ 'theme.linetransect.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/vesilintulaskenta'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.vesilintulaskenta] | localize" tabindex="-1" class="navbox">
       <h5>{{ 'navigation.waterbird' | translate }}</h5>
       <p>{{ 'theme.waterbird.intro' | translate }}</p>
     </a>
@@ -32,27 +32,27 @@
       <h5>{{ 'navigation.satelliitti' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
       <p>{{ 'theme.satellite.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/vieraslajit'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.vieraslajit] | localize" tabindex="-1" class="navbox">
       <h5>{{ 'navigation.invasiveSpecies' | translate }}</h5>
       <p>{{ 'theme.invasiveSpecies.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/kunnat'] | localize" tabindex="-1" *lajiForTypes="['dev']" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.kunnat] | localize" tabindex="-1" *lajiForTypes="['dev']" class="navbox">
       <h5>{{ 'navigation.municipalityMonitoring' | translate }}</h5>
       <p>{{ 'theme.municipalityMonitoring.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/lolife'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.lolife] | localize" tabindex="-1" class="navbox">
       <h5>{{ 'navigation.lolife' | translate }}</h5>
       <p>{{ 'theme.lolife.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/syke-perhoset'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting['syke-perhoset']] | localize" tabindex="-1" class="navbox">
       <h5>{{ 'navigation.syke-butterfly' | translate }}</h5>
       <p>{{ 'theme.syke-butterfly.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/pistelaskenta'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.pistelaskenta] | localize" tabindex="-1" class="navbox">
       <h5>{{ 'navigation.birdPointCount' | translate }}</h5>
       <p>{{ 'theme.birdPointCount.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/kiiltomadot'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.kiiltomadot] | localize" tabindex="-1" class="navbox">
       <h5>{{ 'navigation.glowWormForm' | translate }}</h5>
       <p>{{ 'theme.glowWormForm.intro' | translate }}</p>
     </a>

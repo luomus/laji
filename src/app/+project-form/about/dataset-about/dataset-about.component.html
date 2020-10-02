@@ -1,0 +1,15 @@
+<h3>{{ form.collectionID | label }}</h3>
+<p>{{ 'datasets.generic.intro' | translate:{collection: (form.collectionID | label)} }}</p>
+
+<p *ngIf="form.options?.secondaryCopy; else primary" [innerHTML]="'datasets.generic.secondary' | translate">
+
+</p>
+<ng-template #primary>
+  <p [innerHTML]="'datasets.generic.primary' | translate"></p>
+</ng-template>
+
+<p><strong>Tehdyt päivitykset</strong></p>
+<p><a [routerLink]="'/observation/list' | localize" [queryParams]="{collectionId: form.collectionID}">{{ 'home.observation-sub-intro' | translate }}</a></p>
+
+<div [innerHTML]="'datasets.generic.instructions' | translate"></div>
+

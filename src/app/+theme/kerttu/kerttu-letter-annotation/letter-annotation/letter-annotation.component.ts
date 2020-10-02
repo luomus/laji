@@ -1,11 +1,11 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ILetterStatusInfo, LetterAnnotation} from '../../model/letter';
 import {ILetterCandidate, ILetterTemplate} from '../../model/letter';
-import {ResultService} from '../../../service/result.service';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 import {debounceTime} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';
+import { ResultService } from '../../../../+project-form/results/common/service/result.service';
 
 @Component({
   selector: 'laji-letter-annotation',

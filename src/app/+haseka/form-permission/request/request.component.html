@@ -1,7 +1,0 @@
-<laji-request-description
-  *ngIf="!disableDescription"
-  [accessLevel]="accessLevel"
-></laji-request-description>
-<button [disabled]="clicked || accessLevel === AccessLevel.Allowed || accessLevel === AccessLevel.Requested"
-        class="btn btn-success" (click)="makeAccessRequest()">{{ 'np.requestAccess' | translate }}</button>
-

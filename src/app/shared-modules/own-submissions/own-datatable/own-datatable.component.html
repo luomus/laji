@@ -191,9 +191,9 @@
           </lu-button>
           </div>
           <div class="buttons">
-            <lu-button *ngIf="(actions | includes:'stats') && row.formViewerType === 'MHL.viewerTypeLineTransect'"
+            <lu-button *ngIf="(actions | includes:'stats') && row.formViewerType"
               [role]="'other'"
-              [routerLink]="'/theme/linjalaskenta/statistics/' + row.id | localize">
+              [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
               <i class="glyphicon glyphicon-stats"></i>
               <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
           </lu-button>

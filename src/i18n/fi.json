@@ -417,6 +417,7 @@
   "ignore": "jätä huomiomatta",
   "information.more": "Lisätietoa",
   "instructions": "Ohjeet",
+  "about": "Tietoa",
   "invasive.alerted": "Hälytys tehty",
   "invasive.description": "<h2>Varhaisvaroitusjärjestelmä</h2><p>Haitallisten vieraslajien (EU-luettelo) havainnoista tulee varhaisvaroitusjärjestelmään aina ilmoitus (kaikista Lajitietietokeskukseen liitettyjen järjestelmistä) ja siitä lähetetään automaattisesti hälytys asianomaiselle viranomaiselle toimenpiteitä varten. Viranomaiset vastaavat myös tietojen välittämisestä EU:n vaatimusten mukaisesti <a href=\"https://easin-notsys.jrc.ec.europa.eu/Notsys/Account/Login\">EASIN-palveluun</a>.</p><p>Torjuntatoimet kirjataan Lajitietokeskuksen viranomaispalvelujen Vihko-palvelun vieraslajien torjunta -lomakkeella. Torjuntatoimien tiedot tallennetaan nimellä ja toimia voidaan hakea niiden vaikuttavuuden arvioimiseksi ja raportointia varten.</p><p>Suomen Lajitietokeskuksen viranomaispalvelujen osana on maa- ja metsätalousministeriön (MMM) hallinnoiman VISAKE-hankkeen (Vieraslajien varhaisvaroitus- ja seurantajärjestelmän kehitys ja tahattomien leviämisväylien hallinta) tuotoksena rakentunut varhaisvaroitusjärjestelmä, jota EU:n vieraslajiasetus edellyttää jäsenvaltioilta koskien EU:n luettelossa olevia haitallisia vieraslajeja (EU 2016/1141).</p>",
   "invasive.exists": "Havaintoa",

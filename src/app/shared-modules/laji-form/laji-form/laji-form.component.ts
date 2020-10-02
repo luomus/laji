@@ -122,7 +122,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private mount() {
-    if (!this.formData || !this.formData.formData) {
+    if (!this.formData?.formData) {
       return;
     }
     import('laji-form').then((formPackage) => {

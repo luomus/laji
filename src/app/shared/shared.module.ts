@@ -139,7 +139,8 @@ import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.c
     FactNotInPipe, CapitalizePipe, CoordinatePipe,
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
     UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
-    SsrDisableDirective
+    SsrDisableDirective,
+    NotFoundComponent
   ]
 })
 export class SharedModule {

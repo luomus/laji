@@ -3,11 +3,11 @@ import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { Form } from '../../../shared/model/Form';
 import { UserService } from '../../../shared/service/user.service';
 import { ILajiFormState } from '@laji-form/laji-form-document.facade';
 import * as moment from 'moment';
 import { AreaService } from '../../../shared/service/area.service';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-document-form-header',
@@ -21,6 +21,8 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() isAdmin = false;
   @Input() printType: string;
   @Input() formData: any;
+  @Input() displayDescription = true;
+  @Input() displayInstructions = true;
   @Input() displayObservationList: boolean;
   @Input() displayLatest: boolean;
   @Input() description: string;
@@ -38,7 +40,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     this.namedPlaceHeader = this.getNamedPlaceHeader();
   }
 
-  form: any;
+  form: Form.SchemaForm;
   useLocalDocumentViewer = false;
   editingOldWarning = false;
 
@@ -79,13 +81,13 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     this.formService.getForm(this.formID, this.translate.currentLang)
       .subscribe(form => {
         this.form = form;
-        this.useLocalDocumentViewer = FormService.hasFeature(form, Form.Feature.DocumentsViewableForAll);
+        this.useLocalDocumentViewer = form.options?.documentsViewableForAll;
 
-        if (this.edit && FormService.hasFeature(form, Form.Feature.EditingOldWarning)) {
+        if (this.edit && form.options?.warnEditingOldDocument) {
           // ISO 8601 duration
-          const {editingOldWarningDuration = 'P1W'} = form.options || {};
+          const {warnEditingOldDocumentDuration = 'P1W'} = form.options || {};
           const docCreateDuration = moment.duration(moment().diff(moment(this.formData.dateCreated)));
-          if (moment.duration(editingOldWarningDuration).subtract(docCreateDuration).asMilliseconds() < 0) {
+          if (moment.duration(warnEditingOldDocumentDuration).subtract(docCreateDuration).asMilliseconds() < 0) {
             this.editingOldWarning = true;
           }
         }
@@ -103,8 +105,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     if (!this.form || !this._namedPlace) {
       return [];
     }
-    const headerFields = this.form.namedPlaceOptions && this.form.namedPlaceOptions.headerFields ?
-      this.form.namedPlaceOptions.headerFields : ['alternativeIDs', 'name', 'municipality'];
+    const headerFields = this.form.options?.namedPlaceOptions?.headerFields || ['alternativeIDs', 'name', 'municipality'];
     const fields: [string, ((value: string) => Observable<string>)?][] = headerFields.map(field => {
       if (field === 'municipality') {
         return [field, val => this.areaService.getName(val, this.translate.currentLang)];

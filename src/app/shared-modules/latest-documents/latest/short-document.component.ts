@@ -1,16 +1,16 @@
 import { delay, switchMap, tap } from 'rxjs/operators';
-import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
-
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { getLocality$ } from '../../own-submissions/own-submissions.component';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { DialogService } from '../../../shared/service/dialog.service';
+import { Form } from '../../../shared/model/Form';
 
 
 @Component({
@@ -21,7 +21,7 @@ import { DialogService } from '../../../shared/service/dialog.service';
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() hasChanges: boolean;
   @Input() document: Document;
-  @Input() form: any;
+  @Input() form: Form.List;
   @Input() showFormName = true;
   @Input() staticWidth: number = undefined;
   @Input() complainLocality = true;
