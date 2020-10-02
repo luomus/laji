@@ -11,18 +11,18 @@ import { HasViewPermission } from '../guards/has-view-permission.service';
 
 export const routes: Routes = [
   {path: '', component: FormComponent, canDeactivate: [DocumentDeActivateGuard]},
-  {path: ':formOrDocument/places/new', component: NpEditFormComponent, canActivate: [OnlyLoggedIn, HasFormPermission]},
+  {path: ':formOrDocument/places/new', component: NpEditFormComponent, canActivate: [OnlyLoggedIn, HasFormPermission], data: {displayFeedback: false}},
   {path: ':formOrDocument/places/:namedPlace/print', component: NpPrintComponent},
-  {path: ':formOrDocument/places/:namedPlace/edit', component: NpEditFormComponent, canActivate: [OnlyLoggedIn, HasFormPermission]},
-  {path: ':formOrDocument/places/:namedPlace', component: FormComponent, canActivate: [OnlyLoggedIn, HasFormPermission], canDeactivate: [DocumentDeActivateGuard]},
+  {path: ':formOrDocument/places/:namedPlace/edit', component: NpEditFormComponent, canActivate: [OnlyLoggedIn, HasFormPermission], data: {displayFeedback: false}},
+  {path: ':formOrDocument/places/:namedPlace', component: FormComponent, canActivate: [OnlyLoggedIn, HasFormPermission], canDeactivate: [DocumentDeActivateGuard], data: {displayFeedback: false}},
   {path: ':formOrDocument/places', component: NamedPlaceComponent, data: { noScrollToTop: true }, canActivate: [HasViewPermission]},
-  {path: 'places/new', component: NpEditFormComponent, canActivate: [OnlyLoggedIn, HasFormPermission]},
-  {path: 'places/:namedPlace/edit', component: NpEditFormComponent, canActivate: [OnlyLoggedIn, HasFormPermission]},
+  {path: 'places/new', component: NpEditFormComponent, canActivate: [OnlyLoggedIn, HasFormPermission], data: {displayFeedback: false}},
+  {path: 'places/:namedPlace/edit', component: NpEditFormComponent, canActivate: [OnlyLoggedIn, HasFormPermission], data: {displayFeedback: false}},
   {path: 'places/:namedPlace/print', component: NpPrintComponent},
-  {path: 'places/:namedPlace', component: FormComponent, canActivate: [OnlyLoggedIn, HasFormPermission], canDeactivate: [DocumentDeActivateGuard]},
+  {path: 'places/:namedPlace', component: FormComponent, canActivate: [OnlyLoggedIn, HasFormPermission], canDeactivate: [DocumentDeActivateGuard], data: {displayFeedback: false}},
   {path: 'places', component: NamedPlaceComponent, data: { noScrollToTop: true }, canActivate: [HasViewPermission]},
-  {path: ':formOrDocument/:document', component: FormComponent, canDeactivate: [DocumentDeActivateGuard]},
-  {path: ':formOrDocument', component: FormComponent, canDeactivate: [DocumentDeActivateGuard]},
+  {path: ':formOrDocument/:document', component: FormComponent, canDeactivate: [DocumentDeActivateGuard], data: {displayFeedback: false}},
+  {path: ':formOrDocument', component: FormComponent, canDeactivate: [DocumentDeActivateGuard], data: {displayFeedback: false}},
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forChild(routes);
