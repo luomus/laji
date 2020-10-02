@@ -54,6 +54,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'secureReason',
     'editorId',
     'recordQuality',
+    'reliability',
     'annotationType',
     'namedPlaceId',
     'birdAssociationAreaId',
