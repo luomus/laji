@@ -66,7 +66,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
     );
 
     this.isMobile$ = this.form$.pipe(
-      map(form => FormService.hasFeature(form, Form.Feature.Mobile))
+      map(form => form.options?.mobile)
     );
     this._mobileWelcomePageShown = new Subject();
     this.showMobileEntryPage$ = merge(this.route.params.pipe(

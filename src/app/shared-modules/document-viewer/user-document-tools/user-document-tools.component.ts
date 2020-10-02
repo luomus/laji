@@ -13,10 +13,11 @@ import { DocumentService } from '../../own-submissions/service/document.service'
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger';
 import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service'
-import { catchError, map, switchMap, flatMap, mergeMap } from 'rxjs/operators';
+import { catchError, map, switchMap, flatMap, mergeMap, take } from 'rxjs/operators';
 import { Person } from '../../../shared/model/Person';
 import { Global } from '../../../../environments/global';
-import { of, forkJoin } from 'rxjs';
+import { of, forkJoin, Observable } from 'rxjs';
+import { Form } from '../../../shared/model/Form';
 // import { EventEmitter } from 'protractor';
 // import { EventEmitter } from 'redlock';
 
@@ -41,6 +42,7 @@ export class UserDocumentToolsComponent implements OnInit {
   linkLocation = '';
   _editors: string[];
   _formID: string;
+  _allowTemplate: boolean;
   _personID: string;
   _documentID: string;
   hasEditRights = false;
@@ -87,8 +89,14 @@ export class UserDocumentToolsComponent implements OnInit {
 
   @Input()
   set formID(formID: string) {
-    this._formID = IdService.getId(formID);
-    this.updateLink();
+    this.formService.getAllForms(this.translate.currentLang).pipe(
+      map(forms => forms.find(form => form.id === formID)),
+      take(1)
+    ).subscribe(form => {
+      this._formID = form.id;
+      this._allowTemplate = form.options?.allowTemplate;
+      this.updateLink();
+    });
   }
 
   ngOnInit() {
@@ -101,7 +109,7 @@ export class UserDocumentToolsComponent implements OnInit {
     });
 
     this.userService.isLoggedIn$.subscribe(login => {
-      if ((this._editors.indexOf(this._personID)!== -1 || this._editors.length === 0) && login ){
+      if ((this._editors.indexOf(this._personID) !== -1 || this._editors.length === 0) && login ){
         this.checkAdminRight();
       }
     })
@@ -188,12 +196,6 @@ export class UserDocumentToolsComponent implements OnInit {
 
   onClickOutside() {
     this.closeModal(event);
-  }
-
-  showMakeTemplate(formID: string): boolean {
-    if (formID) {
-      return Global.canHaveTemplate.indexOf(formID) > -1;
-    }
   }
 
   private checkEditRight() {

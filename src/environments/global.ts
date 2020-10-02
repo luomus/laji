@@ -10,97 +10,36 @@ export const Global = {
   forms: {
     datasets: 'MHL.67',
     default: 'JX.519',
-    nafi: 'MHL.6',
-    invasiveControl: 'MHL.33',
-    municipalityMonitoringForm: 'MHL.35',
-    lolifeForm: 'MHL.45',
-    lolifeExcelForm: 'MHL.45A',
-    wbc: 'MHL.3',
-    lineTransect: 'MHL.1',
-    lineTransectEiVakio: 'MHL.27',
-    lineTransectKartoitus: 'MHL.28',
-    fungi: 'JX.652',
-    waterbirdPairForm: 'MHL.65',
-    waterbirdJuvenileForm: 'MHL.66',
-    whichSpecies: 'MHL.9',
     namedPlace: 'MHL.36',
+    whichSpecies: 'MHL.9',
     collectionContest: 'MHL.25',
-    bats: 'MHL.50',
-    valio: 'MHL.57',
-    batForm: 'MHL.50',
-    valioForm: 'MHL.57',
-    sykeButterfly: 'MHL.59',
-    birdPointCount: 'MHL.75',
-    glowWormForm: 'MHL.79',
-    collectionForm: 'JX.5190'
-  },
-  _forms: {
-    'MHL.3': {
-      formID: 'MHL.3',
-      navLinks: {
-        stats: {
-          routerLink: ['stats'],
-          label: 'nafi.stats',
-          children: [
-            {
-              routerLink: ['stats', 'species'],
-              label: 'wbc.stats.species'
-            },
-            {
-              routerLink: ['stats', 'routes'],
-              label: 'wbc.stats.routes'
-            },
-            {
-              routerLink: ['stats', 'censuses'],
-              label: 'wbc.stats.censuses'
-            }
-          ]
-        }
-      },
-      navLinksOrder: ['instructions', 'stats', 'form', 'ownSubmissions', 'formPermissions']
-    }
-  },
-  canHaveTemplate: [
-    'JX.519',
-    'MHL.6',
-    'MHL.33',
-    'MHL.35',
-    'MHL.9',
-    'MHL.25'
-  ],
-  collections: {
-    nafi: 'HR.175',
-    wbc: 'HR.39',
-    lineTransect: 'HR.61',
-    lineTransectEiVakio: 'HR.2691',
-    lineTransectKartoitus: 'HR.2692',
-    invasiveControl: 'HR.2049',
-    municipalityMonitoring: 'HR.2891',
-    sykeButterfly: 'HR.3431',
-    waterbird: 'HR.62',
-    birdPointCount: 'HR.157',
-    glowFormForm: 'HR.3531',
   },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
   },
-  formsTheme: {
-    'MHL.6': '/nafi',
-    'MHL.1': '/linjalaskenta',
-    'MHL.27': '/linjalaskenta',
-    'MHL.28': '/linjalaskenta',
-    'MHL.3': '/talvilintu',
-    'MHL.65': '/vesilintulaskenta',
-    'MHL.66': '/vesilintulaskenta',
-    'MHL.33': '/vieraslajit',
-    'MHL.35': '/kunnat',
-    'MHL.45': '/lolife',
-    'MHL.50': '/lepakot',
-    'MHL.57': '/valio',
-    'MHL.59': '/syke-perhoset',
-    'JX.652': '/sieniatlas',
-    'MHL.75': '/pistelaskenta',
-    'MHL.79': '/kiiltomadot',
+  oldThemeRouting: {
+    'nafi': 'MHL.6',
+    'linjalaskenta': 'MHL.1',
+    'talvilintulaskenta': 'MHL.3',
+    'vesilintulaskenta': 'MHL.65',
+    'vieraslajit': 'MHL.33',
+    'kunnat': 'MHL.35',
+    'lolife': 'MHL.45',
+    'lepakot': 'MHL.50',
+    'valio': 'MHL.57',
+    'syke-perhoset': 'MHL.59',
+    'sieniatlas': 'JX.652',
+    'pistelaskenta': 'MHL.75',
+    'kiiltomadot': 'MHL.79',
+  },
+  oldThemeParents: {
+    'MHL.1': 'MHL.1',
+    'MHL.27': 'MHL.1',
+    'MHL.28': 'MHL.1',
+    'MHL.65': 'MHL.65',
+    'MHL.66': 'MHL.65',
+    'MHL.45': 'MHL.45',
+    'MHL.45A': 'MHL.45'
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {

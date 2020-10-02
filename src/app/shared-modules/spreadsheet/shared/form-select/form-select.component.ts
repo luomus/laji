@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { TranslateService } from '@ngx-translate/core';
 import { from, Observable, of } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
-import { FormPermissionService } from '../../../../+haseka/form-permission/form-permission.service';
+import { FormPermissionService } from '../../../../shared/service/form-permission.service';
 
 interface FormList {
   id: string;

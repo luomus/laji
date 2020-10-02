@@ -1,7 +1,7 @@
 <div class="row form-meta">
   <div class="col-sm-5">
     <laji-form-select
-      [forms]="forms"
+      [forms]="_forms | async"
       [formID]="formID"
       (selected)="formSelected($event)"
       [disabled]="generating"></laji-form-select>

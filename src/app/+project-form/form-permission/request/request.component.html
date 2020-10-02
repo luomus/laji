@@ -1,0 +1,15 @@
+<ng-container *ngIf="(vm$ | async) as vm">
+  <ng-container *ngIf="vm.loggedIn; else notLoggedIn">
+    <laji-request-description
+      *ngIf="!disableDescription"
+      [accessLevel]="vm.accessLevel"
+    ></laji-request-description>
+    <button [disabled]="clicked || vm.accessLevel === AccessLevel.Allowed || vm.accessLevel === AccessLevel.Requested"
+            class="btn btn-success" (click)="makeAccessRequest()">{{ 'np.requestAccess' | translate }}</button>
+  </ng-container>
+</ng-container>
+<ng-template #notLoggedIn>
+  <h3>
+    {{ 'force.login' | translate }}
+  </h3>
+</ng-template>

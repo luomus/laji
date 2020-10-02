@@ -1,0 +1,51 @@
+<ng-container *ngIf="aboutData$ | async as data">
+  <ng-container *ngIf="!data.form.options?.mobile; else mobile">
+    <ng-container *ngIf="(data.form.options?.about | multiLang) !== 'dataset'; else datasetIntro">
+      <laji-document-form-header [formID]="data.form.id"
+                                 [displayDescription]="false"
+                                 [displayInstructions]="false"
+      ></laji-document-form-header>
+      <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
+                      [child]="data.form.options?.about | multiLang"
+      ></laji-info-page>
+    </ng-container>
+    <ng-template #datasetIntro>
+      <laji-dataset-about [form]="data.form"></laji-dataset-about>
+    </ng-template>
+    <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
+                  [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription">
+    </laji-request>
+  </ng-container>
+</ng-container>
+
+<ng-template #mobile>
+  <ng-container *ngIf="aboutData$ | async as data">
+    <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
+    <laji-document-form-header [formID]="data.form.id"></laji-document-form-header>
+    <button type="button"
+            class="btn btn-md btn-primary btn-block use-button"
+            (click)="enterForm()">
+      {{ 'haseka.mobile.newObservation' | translate }}
+    </button>
+    <laji-haseka-latest [forms]="[data.form.id]"
+                        [showFormNames]="false"
+                        [complainLocality]="false"
+                        (showViewer)="showDocumentViewer($event)"
+    ></laji-haseka-latest>
+    <br />
+    <ng-container *ngIf="data.form.options?.footerDescription || data.form.options?.footerLogos">
+      <ng-container *ngIf="data.form.options?.footerDescription">
+        {{ data.form.options.footerDescription }}
+      </ng-container>
+      <ul class="form-footer">
+        <ng-container *ngFor="let logo of data.form.options?.footerLogos | keyvalue">
+          <li>
+            <a [href]="logo.value" target="_blank">
+              <img lajiLazyImage [src]="logo.key">
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+  </ng-container>
+</ng-template>

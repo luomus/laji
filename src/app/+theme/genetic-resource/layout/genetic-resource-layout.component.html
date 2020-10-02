@@ -1,0 +1,16 @@
+<lu-sidebar>
+  <nav>
+    <h5>
+      <span [innerHTML]="'theme.grc.title' | translate"></span>
+    </h5>
+    <lu-sidebar-link [link]="['instructions'] | localize" routerLinkActive>
+      {{ 'theme.grc.instructions' | translate }}
+    </lu-sidebar-link>
+    <lu-sidebar-link [link]="['search'] | localize" routerLinkActive>
+      {{ 'theme.grc.search' | translate }}
+    </lu-sidebar-link>
+  </nav>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</lu-sidebar>

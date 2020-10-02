@@ -3,12 +3,12 @@ import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../shared/service/form.service';
-import { FormList } from '../+haseka/form-list/haseka-form-list.interface';
+import { Form } from '../shared/model/Form';
 
 interface State {
-  citizenScienceForms: FormList[];
-  birdMonitoringForms: FormList[];
-  researchProjectForms: FormList[];
+  citizenScienceForms: Form.List[];
+  birdMonitoringForms: Form.List[];
+  researchProjectForms: Form.List[];
 }
 
 @Injectable()
@@ -35,21 +35,25 @@ export class SaveObservationsFacade {
     });
   }
 
-  loadAll(citizenScienceFormIds: string[], birdMonitoringFormIds: string[], researchProjectFormIds: string[]) {
+  loadAll() {
     this.formService.getAllForms(this.translate.currentLang).pipe(
       map((forms) => {
         const c = [];
         const b = [];
         const r = [];
-        forms.forEach((form) => {
-          if (citizenScienceFormIds.includes(form.id)) {
-            c.push(form);
-          }
-          if (birdMonitoringFormIds.includes(form.id)) {
-            b.push(form);
-          }
-          if (researchProjectFormIds.includes(form.id)) {
-            r.push(form);
+        forms.sort((a, b) =>
+          a.id.localeCompare(b.id, undefined, {numeric: true, sensitivity: 'base'})
+        ).forEach((form) => {
+          switch (form.category) {
+            case 'MHL.categoryCitizenScience':
+              c.push(form);
+              break;
+            case 'MHL.categoryBirdMonitoringSchemes':
+              b.push(form);
+              break;
+            case 'MHL.categorySurvey':
+              r.push(form);
+              break;
           }
         });
         return [c, b, r];
