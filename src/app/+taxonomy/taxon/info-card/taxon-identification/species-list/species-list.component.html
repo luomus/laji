@@ -6,7 +6,7 @@
     <div class="glyphicon glyphicon-chevron-right"></div>
   </div>
   <div class="d-flex species-container" #speciesContainer>
-    <div *ngFor="let species of speciesList" class="species d-flex flex-col mr-4">
+    <div *ngFor="let species of speciesList; index as i" class="species d-flex flex-col mr-4">
       <div class="species-name-container">
         <div><a [routerLink]="['/taxon', species.id, 'identification']" [ngClass]="species.cursiveName ? 'cursive' : null" class="species-scientific-name" preserveQueryParams>
           {{ species.scientificName }}
@@ -15,7 +15,7 @@
       </div>
       <div class="species-img-container flex-grow">
         <ng-container *ngIf="species.multimedia?.length > 0">
-          <img [src]="species.multimedia[0].largeURL">
+          <img (click)="openImage(i)" [src]="species.multimedia[0].largeURL">
         </ng-container>
       </div>
     </div>
