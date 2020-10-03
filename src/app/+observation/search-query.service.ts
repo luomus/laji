@@ -54,6 +54,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'secureReason',
     'editorId',
     'recordQuality',
+    'reliability',
     'annotationType',
     'namedPlaceId',
     'birdAssociationAreaId',
@@ -74,7 +75,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'sampleCollectionId',
     'aggregateBy',
     'selected',
-    'orderBy',
+    'orderBy'
   ];
 
   private readonly boolean: Array<keyof WarehouseQueryInterface|'geoJSON'|'excludeNulls'|'onlyCount'|'pessimisticDateRangeHandling'> = [

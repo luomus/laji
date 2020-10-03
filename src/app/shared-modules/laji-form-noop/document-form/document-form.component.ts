@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewCh
 import { Subject } from 'rxjs';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { Document } from '../../../shared/model/Document';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-document-form',
@@ -24,7 +25,7 @@ export class DocumentFormComponent {
   private changeSource = new Subject<any>();
   private changeEvent$ = this.changeSource.asObservable();
 
-  public form: any;
+  public form: Form.SchemaForm;
   public lang: string;
   public tick = 0;
   public status = '';
@@ -41,10 +42,6 @@ export class DocumentFormComponent {
 
   canDeactivate(confirmKey = 'haseka.form.discardConfirm') {
     return true;
-  }
-
-  hasChanges() {
-    return this.form && this.form.formData && this.form.formData._hasChanges;
   }
 
   onChange(formData) {}

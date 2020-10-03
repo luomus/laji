@@ -1,5 +1,5 @@
 <div>
-  <alert [type]="'danger'" *ngIf="formData && formData.formData && formData.formData.locked">
+  <alert [type]="'danger'" *ngIf="formData?.formData?.locked">
     {{ 'document.locked' | translate }}
   </alert>
   <div #lajiForm></div>

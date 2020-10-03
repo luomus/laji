@@ -5,7 +5,6 @@ import { Document } from '../model/Document';
 import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
 import { FormService as ToolsFormService } from './form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from '../../../environments/environment';
 import { IdService } from './id.service';
 import { SessionStorage } from 'ngx-webstorage';
 import { SchemaService, ILabelData } from 'label-designer';
@@ -89,7 +88,7 @@ export class PdfLabelService {
   }
 
   allPossibleFields(): Observable<ILabelField[]> {
-    return this.formService.getForm(environment.defaultForm, this.translateService.currentLang).pipe(
+    return this.formService.getForm(Global.forms.default, this.translateService.currentLang).pipe(
       map(form => this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields }))
     );
   }

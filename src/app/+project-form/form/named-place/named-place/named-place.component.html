@@ -1,0 +1,94 @@
+<div class="container-fluid" style="width: 100%">
+  <div id="container" class="row np-row" *ngIf="(vm$ | async) as data; else spinner ">
+    <laji-document-form-header [formID]="data.documentForm.id"
+                               [displayObservationList]="false"
+                               [description]="data.description"
+    class="no-flex"></laji-document-form-header>
+
+    <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
+
+    <ng-container *lajiLoggedIn="true">
+      <div *ngIf='data.allowEdit && data.namedPlaces' class="choose-label">
+      <span>{{data.documentForm.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel
+      || 'np.chooseLabel' | translate}}</span>
+        <lu-button (click)='onCreateNew()'>
+          {{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}
+        </lu-button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="data.filterByMunicipality">
+      <div class="form-group col-xs-12">
+        <div class="row">
+          <label class="col-xs-12">{{ 'MNP.municipality' | label }}</label>
+          <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
+                            [field]="areaTypes.Municipality"
+                            [allOptionEnabled]='true'
+                            [selectOptionEnabled]='false'
+                            (select)="onMunicipalityChange($event)"
+                            [value]="data.municipality"></laji-area-select>
+          </div>
+      </div>
+    </ng-container>
+    <div *ngIf="data.filterByBirdAssociationArea">
+      <div class="form-group col-xs-12">
+        <div class="row">
+          <div class="col-xs-12">
+            <label>{{ 'MNP.birdAssociationArea' | label }}</label>
+            <laji-info placement="right">
+              <strong>{{ 'MNP.birdAssociationArea' | label }}</strong>
+              <br>
+              {{ data.documentForm?.options?.namedPlaceOptions?.birdAssociationAreaHelp }}
+            </laji-info>
+          </div>
+          <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
+                            [field]="areaTypes.BirdAssociationArea"
+                            (select)="onBirdAssociationAreaChange($event)"
+                            [value]="data.birdAssociationArea"></laji-area-select>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="data.filterByTags">
+      <laji-metadata-select
+        [alt]="'MNP.tagEnum'"
+        [ngModel]="data.tags"
+        (ngModelChange)="onTagChange($event)"
+        [multiple]="true"
+        [useFilter]="false"
+        placeholder="np.tag"
+        [open]="true"></laji-metadata-select>
+    </ng-container>
+    <laji-spinner [spinning]="loading" [overlay]="true">
+      <div *ngIf="data.namedPlaces && data.documentForm && !errorMsg">
+        <div class="col-sm-12 col-md-12 col-lg-6">
+          <laji-np-choose [namedPlaces]="data.namedPlaces"
+                          [documentForm]="data.documentForm"
+                          [placeForm]="data.placeForm"
+                          [userID]="data.user.id"
+                          [allowCreate]="data.allowEdit"
+                          [activeNP]="data.activeNP?.id"
+                          [showMap]="data.showMap"
+                          [formRights]="data.formRights"
+                          (activePlaceChange)="onActivePlaceChange($event)"
+                          (createButtonClick)="onCreateNew()"></laji-np-choose>
+        </div>
+        <div [ngClass]="{'col-lg-6': true, 'nav-margin': data.showMap}">
+          <laji-np-info *ngIf="data.activeNP"
+                        [namedPlace]="data.activeNP"
+                        [formRights]="data.formRights"
+                        [placeForm]="data.placeForm"
+                        [documentForm]="data.documentForm"
+                        [collectionId]="data.collectionId"
+                        [allowEdit]="data.allowEdit"
+                        [loading]="loading"
+                        (releaseButtonClick)="onRelease($event)"
+                        (reserveButtonClick)="onReserve($event)"
+                        (editButtonClick)="onEdit()"
+                        (deleteButtonClick)="confirmDelete($event)"
+                        (useButtonClick)="use()"></laji-np-info>
+        </div>
+      </div>
+    </laji-spinner>
+  </div>
+</div>
+<ng-template #spinner><laji-spinner></laji-spinner></ng-template>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
@@ -10,6 +10,8 @@ import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { GeneratorService } from './generator.service';
 import { Util } from '../../../shared/service/util.service';
+import { Form } from '../../../shared/model/Form';
+import { FormService } from '../../../shared/service/form.service';
 
 interface IColCombine {
   col: string;
@@ -70,7 +72,8 @@ export class SpreadsheetService {
   constructor(
     private mappingService: MappingService,
     private labelService: TriplestoreLabelService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private formService: FormService
   ) {
     this.setCustomFieldLabels();
     this.translateService.onLangChange.pipe(
@@ -115,14 +118,14 @@ export class SpreadsheetService {
     this.hiddenFields[formID] = fields;
   }
 
-  formToFlatFieldsLookUp(form: any, base: IFormField[] = []): {[key: string]: IFormField} {
+  formToFlatFieldsLookUp(form: Form.SchemaForm, base: IFormField[] = []): {[key: string]: IFormField} {
     return this.formToFlatFields(form, base).reduce((result, field) => {
       result[field.key] = field;
       return result;
     }, {});
   }
 
-  formToFlatFields(form: any, base: IFormField[] = []): IFormField[] {
+  formToFlatFields(form: Form.SchemaForm, base: IFormField[] = []): IFormField[] {
     const result: IFormField[] = [...base];
     if (form && form.schema && form.schema.properties) {
       this.parserFields(form.schema, {properties: form.validators}, result, '', LEVEL_DOCUMENT, this.findUnitSubGroups(form.uiSchema));
@@ -168,14 +171,17 @@ export class SpreadsheetService {
     return colMap;
   }
 
-  findFormIdFromFilename(filename: string): string {
-    for (const id of environment.massForms) {
-      const regEx = new RegExp('\\b' + id + '\\b');
-      if (regEx.test(filename)) {
-        return id;
+  findFormIdFromFilename(filename: string): Observable<string> {
+    return this.formService.getSpreadsheetForms().pipe(map(forms => {
+      for (const form of forms) {
+        const {id} = form;
+        const regEx = new RegExp('\\b' + id + '\\b');
+        if (regEx.test(filename)) {
+          return id;
+        }
+        return '';
       }
-    }
-    return '';
+    }));
   }
 
   private setCustomFieldLabels() {
@@ -303,7 +309,7 @@ export class SpreadsheetService {
   }
 
   private parserFields(
-    form: any,
+    schema: any,
     validators: any,
     result: IFormField[],
     root,
@@ -313,52 +319,52 @@ export class SpreadsheetService {
     lastLabel = '',
     required = []
   ) {
-    if (!form || !form.type || (form.options && form.options.excludeFromSpreadSheet)) {
+    if (!schema || !schema.type || (schema.options && schema.options.excludeFromSpreadSheet)) {
       return;
     }
-    const label = form.title || lastLabel;
-    switch (form.type) {
+    const label = schema.title || lastLabel;
+    switch (schema.type) {
       case 'object':
-        if (form.properties) {
+        if (schema.properties) {
           let found = false;
-          Object.keys(form.properties).map(key => {
+          Object.keys(schema.properties).map(key => {
             found = true;
             this.parserFields(
-              form.properties[key],
+              schema.properties[key],
               validators.properties && validators.properties && validators.properties[key] || {},
               result, root ? root + '.' + key : key,
-              form.properties[key].type === 'object' && Object.keys(form.properties[key].properties).length > 0 ? key : parent,
+              schema.properties[key].type === 'object' && Object.keys(schema.properties[key].properties).length > 0 ? key : parent,
               unitSubGroups,
               key,
               label,
-              form.required || []
+              schema.required || []
             );
           });
           if (!found) {
-            if (this.isHiddenField(form.id, root)) {
+            if (this.isHiddenField(schema.id, root)) {
               return;
             }
             result.push({
-              type: form.type,
+              type: schema.type,
               label: label,
               fullLabel: label + SpreadsheetService.nameSeparator + (this.translations[parent] || parent),
               key: root,
               parent: parent,
               isArray: root.endsWith('[*]'),
-              required: this.hasRequiredValidator(form.id, lastKey, validators, required, root),
+              required: this.hasRequiredValidator(schema.id, lastKey, validators, required, root),
               subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
-              enum: form.enum,
-              enumNames: form.enumNames,
-              default: form.default
+              enum: schema.enum,
+              enumNames: schema.enumNames,
+              default: schema.default
             });
           }
         }
         break;
       case 'array':
-        if (form.items) {
-          const newParent = ['object', 'array'].indexOf(form.items.type) > -1 ? lastKey : parent;
+        if (schema.items) {
+          const newParent = ['object', 'array'].indexOf(schema.items.type) > -1 ? lastKey : parent;
           this.parserFields(
-            form.items,
+            schema.items,
             validators.items || validators,
             result,
             root + '[*]',
@@ -371,21 +377,21 @@ export class SpreadsheetService {
         }
         break;
       default:
-        if (this.isHiddenField(form.id, root)) {
+        if (this.isHiddenField(schema.id, root)) {
           return;
         }
         result.push({
-          type: form.type,
+          type: schema.type,
           label: label,
           fullLabel: label + SpreadsheetService.nameSeparator + (this.translations[parent] || parent),
           key: root,
           parent: parent,
           isArray: root.endsWith('[*]'),
-          required: this.hasRequiredValidator(form.id, lastKey, validators, required, root),
+          required: this.hasRequiredValidator(schema.id, lastKey, validators, required, root),
           subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
-          enum: form.enum,
-          enumNames: form.enumNames,
-          default: form.default
+          enum: schema.enum,
+          enumNames: schema.enumNames,
+          default: schema.default
         });
     }
   }

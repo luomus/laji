@@ -5,7 +5,8 @@ import { IFormField } from '../model/excel';
 import { SpreadsheetService } from '../service/spreadsheet.service';
 import { GeneratorService } from '../service/generator.service';
 import { environment } from '../../../../environments/environment';
-import { Form } from '../../../shared/model/Form';
+import { map, take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'laji-excel-generator',
@@ -14,8 +15,6 @@ import { Form } from '../../../shared/model/Form';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExcelGeneratorComponent implements OnInit {
-
-  @Input() forms: string[] = environment.massForms || [];
 
   type: 'ods'|'xlsx' = 'xlsx';
   formID = '';
@@ -27,6 +26,17 @@ export class ExcelGeneratorComponent implements OnInit {
   generating = false;
 
   private isSecondary = false;
+
+  _forms: Observable<string[]>;
+
+  @Input()
+  set forms(forms: string[]) {
+    if (forms) {
+      this._forms = of(forms);
+    } else {
+      this._forms = this.formService.getSpreadsheetForms().pipe(map(_forms => _forms.map(form => form.id)));
+    }
+  }
 
   constructor(
     private formService: FormService,
@@ -48,8 +58,8 @@ export class ExcelGeneratorComponent implements OnInit {
     const selected: string[] = [];
     this.formID = event;
     this.formService.getForm(this.formID, this.translateService.currentLang)
-      .subscribe((form: any) => {
-        this.isSecondary = FormService.hasFeature(form, Form.Feature.SecondaryCopy);
+      .subscribe((form) => {
+        this.isSecondary = form.options?.secondaryCopy;
         this.formTitle = form.title;
         this.parents = [];
         this.fields = this.spreadSheetService.formToFlatFields(form, this.isSecondary ? [

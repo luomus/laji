@@ -41,7 +41,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   mapQuery: WarehouseQueryInterface;
   queryCount: WarehouseQueryInterface;
 
-  queryKeysDeleted = ['coordinateAccuracyMax', 'recordQuality', 'includeNonValidTaxa', 'cache']
+  queryKeysDeleted = ['coordinateAccuracyMax', 'includeNonValidTaxa', 'cache']
   private childrenSub: Subscription;
 
   @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {

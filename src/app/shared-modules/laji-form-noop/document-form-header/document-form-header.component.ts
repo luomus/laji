@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-document-form-header',
@@ -16,6 +17,6 @@ export class DocumentFormHeaderComponent {
   @Input() description: string;
   @Input() displayTitle = true;
 
-  form: any;
+  form: Form.SchemaForm;
 
 }

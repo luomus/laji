@@ -26,7 +26,9 @@ switch (environment.type) {
 const MAIN_DESCRIPTION = 'footer.intro1';
 
 const ALL_META_KEYS = [
-  'description'
+  'description',
+  'og:description',
+  'twitter:description'
 ];
 
 @Injectable({
@@ -97,6 +99,13 @@ export class HeaderService implements OnDestroy {
     });
   }
 
+  public updateMetaDescription(description) {
+    this.removeMetaDescription(ALL_META_KEYS);
+    ALL_META_KEYS.forEach((key) => {
+      this.metaService.addTag({ property: key, content: description });
+    })
+  }
+
   ngOnDestroy() {
     this.routeSub.unsubscribe();
   }
@@ -118,6 +127,19 @@ export class HeaderService implements OnDestroy {
         rel: 'alternative'
       });
     });
+  }
+
+  private removeMetaDescription(metaTagsDescription) {
+    RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
+      map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
+    ).subscribe(meta => {
+      metaTagsDescription.forEach((key) => {
+        const propertySelector = `property='${key}'`;
+        if(meta?.[key]) {
+          this.metaService.removeTag(propertySelector);
+        }
+      })
+    })
   }
 
   private removeElements(selector: string) {
@@ -149,4 +171,5 @@ export class HeaderService implements OnDestroy {
     }
     return ObservableOf(title);
   }
+
 }

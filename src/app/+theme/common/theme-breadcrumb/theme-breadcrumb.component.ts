@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NavLink } from '../theme-form.service';
-import { Breadcrumb } from '../monitoring-theme-base.component';
+
+export interface Breadcrumb {
+  link: string;
+  label: string;
+  active?: boolean;
+}
 
 @Component({
   selector: 'laji-theme-breadcrumb',
@@ -11,10 +15,10 @@ import { Breadcrumb } from '../monitoring-theme-base.component';
 export class ThemeBreadcrumbComponent {
 
   @Input() breadcrumb: Breadcrumb[];
-  @Input() set navLinks(links: NavLink[]) {
+  @Input() set navLinks(links: Breadcrumb[]) {
     this.active = links.find(l => l.active === true);
   }
 
-  active: NavLink;
+  active: Breadcrumb;
 
 }

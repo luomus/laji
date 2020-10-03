@@ -4,8 +4,11 @@ import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { NewsService } from '../shared/service/news.service';
 import { Logger } from '../shared/logger/logger.service';
 import { News } from '../shared/model/News';
-import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap, filter } from 'rxjs/operators';
 import { NewsStore } from './news.store';
+import { HeaderService } from '../../app/shared/service/header.service'
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'laji-news',
@@ -21,22 +24,33 @@ export class NewsComponent implements OnInit, OnDestroy {
               private newsService: NewsService,
               private cd: ChangeDetectorRef,
               private logger: Logger,
-              private store: NewsStore
-  ) {
-  }
+              private store: NewsStore,
+              private headerService: HeaderService,
+              private title: Title
+  ) {}
 
   ngOnInit() {
     this.newsItem$ = this.store.state$.pipe(
       map(state => state.current),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      filter(info => !!info),
+      tap(info => this.title.setTitle(info.title + ' | ' + this.title.getTitle()))
     );
     this.subTrans = this.route.params.pipe(
       map(params => params['id']),
       switchMap(id => this.store.state.current && this.store.state.current.id === id ?
         ObservableOf(this.store.state.current) : this.newsService.get(id))
-    ).subscribe(newsItem => this.store.setCurrent(newsItem));
+    ).subscribe(newsItem => {
+      this.store.setCurrent(newsItem);
+      this.headerService.updateMetaDescription(this.prepareDescriptionTag(newsItem.content))
+    });
   }
 
+  private prepareDescriptionTag(description) {
+    return description.substring(description.indexOf('<p>')+3, description.indexOf('</p>')-1).replace(/<[^>]*>/g, '')
+  }
+
+  
   ngOnDestroy() {
     if (this.subTrans) {
       this.subTrans.unsubscribe();

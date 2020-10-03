@@ -4,50 +4,15 @@
       <p>{{ 'haseka.pleaseLogin' | translate }}</p>
     </div>
     <div *lajiLoggedIn>
-      <div *ngIf="(showMobileEntryPage$ | async)">
-        <laji-haseka-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-haseka-terms>
-        <laji-document-form-header [formID]="(form$ | async).id" [formData]="(form$ | async).formData"></laji-document-form-header>
-        <button type="button"
-                class="btn btn-md btn-primary btn-block use-button"
-                (click)="enterForm()">
-          {{ 'haseka.mobile.newObservation' | translate }}
-        </button>
-        <laji-haseka-latest [forms]="(form$ | async).id"
-                            [showFormNames]="false"
-                            [complainLocality]="false"
-                            (showViewer)="showDocumentViewer($event)"
-        ></laji-haseka-latest>
-        <br />
-        <ng-container *ngIf="form$ | async as form">
-          <ng-container *ngIf="form.options?.footer">
-            <ng-container *ngIf="form.options.footer.description">
-              {{ form.options.footer.description }}
-            </ng-container>
-            <ul class="form-footer">
-            <ng-container *ngFor="let logo of form.options.footer.logos | keyvalue">
-                <li>
-              <a [href]="logo.value" target="_blank">
-                <img lajiLazyImage [src]="logo.key">
-              </a>
-                </li>
-            </ng-container>
-            </ul>
-          </ng-container>
-        </ng-container>
-      </div>
-      <ng-container *ngIf="!(showMobileEntryPage$ | async)">
-        <laji-document-form
-          (success)="onSuccess($event)"
-          (accessDenied)="onAccessDenied($event)"
-          (missingNamedplace)="onMissingNamedplace($event)"
-          (error)="onError()"
-          (cancel)="onCancel()"
-          [formId]="formId"
-          [documentId]="documentId"
-          [showHeader]="!(isMobile$ | async)"
-          [showShortcutButton]="!(isMobile$ | async)"
-          [template]="template"
-        ></laji-document-form>
-      </ng-container>
+      <laji-document-form
+        (success)="onSuccess($event)"
+        (accessDenied)="onAccessDenied($event)"
+        (missingNamedplace)="onMissingNamedplace($event)"
+        (error)="onError()"
+        (cancel)="onCancel()"
+        [formId]="formId"
+        [documentId]="documentId"
+        [template]="template"
+      ></laji-document-form>
     </div>
 </div>

@@ -21,7 +21,7 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { Document } from '../../../shared/model/Document';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
-import { FormError, ILajiFormState, ISuccessEvent, LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
+import { FormError, FormWithData, ILajiFormState, ISuccessEvent, LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentService } from '../../own-submissions/service/document.service';
@@ -51,7 +51,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
 
   errors = FormError;
   hasAlertContent = false;
-  form: any;
+  form: FormWithData;
   lang: string;
   status = '';
   saveVisibility = 'hidden';
@@ -70,6 +70,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   private subSaving: Subscription;
   private leaveMsg;
   private publicityRestrictions;
+  private formSubscription: Subscription;
 
   vm$: Observable<ILajiFormState>;
 
@@ -85,6 +86,9 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
               private router: Router) {
     this.vm$ = this.lajiFormFacade.vm$;
     this.footerService.footerVisible = false;
+    this.formSubscription = this.vm$.subscribe(state => {
+     this.form = state.form;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -97,6 +101,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   ngOnDestroy() {
+    this.formSubscription.unsubscribe();
     this.footerService.footerVisible = true;
     if (this.subErrors) {
       this.subErrors.unsubscribe();
@@ -242,9 +247,11 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   private getMessage(type, defaultValue) {
-    if (this.form && this.form.options && this.form.options.messages && this.form.options.messages[type]) {
-      return this.form.options.messages[type];
-    }
-    return defaultValue;
+    const {options = {}} = this.form || {};
+    return (
+      type === 'success' ? options.saveSuccessMessage :
+      type === 'success-temp' ? options.saveDraftSuccessMessage :
+      type === 'error' ? options.saveErrorMessage : undefined
+    ) ?? defaultValue;
   }
 }

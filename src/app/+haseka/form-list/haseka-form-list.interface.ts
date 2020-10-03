@@ -1,11 +1,7 @@
 import { Form } from '../../shared/model/Form';
 
-export interface FormList extends Form.List {
-  hasAdminRight: boolean;
-}
-
 export interface FormCategory {
-  forms: FormList[];
+  forms: Form.List[];
   category: string;
   label: string;
 }

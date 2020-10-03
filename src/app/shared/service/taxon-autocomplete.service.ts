@@ -41,32 +41,29 @@ export class TaxonAutocompleteService {
 
   getAutocompleteDisplayName(payload: any, rank: string, text: string): string {
 
-    const scientificName = this.addBold(payload['scientificName'], text);
+    const scientificName = (payload['cursiveName'] ? '<i>' + this.addBold(payload['scientificName'], text) + '</i>' : this.addBold(payload['scientificName'], text));
     const vernacularName = this.addBold(payload['vernacularName'], text);
     this.matchingName = this.addBold(payload['matchingName'], text);
     const lajiRankFlag = (payload['taxonRankId'] ? ' (' + rank + ') ' : '') + '<div><div class="' + (payload['informalTaxonGroups'].length > 0 ? payload['informalTaxonGroups'][0].id : '') +'"></div>' + (payload['finnish'] ? '<div></div>' : '<span></span>' ) + '</div></div>';
 
     switch (payload['nameType']) {
       case 'MX.scientificName':
-        return (payload['cursiveName'] ? '<i>' + scientificName + '</i>' : scientificName)
-        +' <div>'+ lajiRankFlag;
+        return scientificName +' <div>'+ lajiRankFlag;
       case 'MX.hasSynonym':
-        return (payload['cursiveName'] ? '<i>' + scientificName + '</i>' : scientificName)
-         +' (' + (this.matchingName + ') <div>' + lajiRankFlag );
+        return scientificName +' (' + (this.matchingName + ') <div>' + lajiRankFlag );
       case 'MX.birdlifeCode':
       case 'MX.euringCode':
-        return this.matchingName + ' - ' + (payload['cursiveName'] ? '<i>' + scientificName + '</i>' : scientificName) + '<div>' + lajiRankFlag;
+        return this.matchingName + ' - <span>' + scientificName + '</span><div>' + lajiRankFlag;
       case 'MX.vernacularName':
-        return (payload['vernacularName'] !== '' ? vernacularName + ' - ' + (payload['cursiveName'] ? '<span>' + scientificName + '</span>' : scientificName) + ' '
-        : (payload['cursiveName'] ? '<i>' + scientificName + '</i>' : scientificName) + ' (' + this.matchingName + ') - ' + (payload['cursiveName'] ? '<span>' + scientificName + '</span>' : scientificName)) + '<div>' + lajiRankFlag;
+        return (payload['vernacularName'] !== '' ? vernacularName + ' - <span>' + scientificName + '</span> '
+        : scientificName + ' (' + this.matchingName + ') - <span>' + scientificName +'</span>' ) + '<div>' + lajiRankFlag;
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
-        return (payload['vernacularName'] !== '' ? vernacularName + ' - (' + this.matchingName + ') - ' + (payload['cursiveName'] ? '<i class="sName">' + scientificName + '</i>' : scientificName)
-        : (payload['cursiveName'] ? '<i>' + scientificName + '</i>' : scientificName) + ' (' + this.matchingName + ') - ' + (payload['cursiveName'] ? '<i class="sName">' + scientificName + '</i>' : scientificName)) + '<div>' + lajiRankFlag;
+        return (payload['vernacularName'] !== '' ? vernacularName + ' - (' + this.matchingName + ') - <span>' + scientificName + '</span>'
+        :scientificName + ' (' + this.matchingName + ') - <span>' + scientificName + '</span>' ) + '<div>' + lajiRankFlag;
       default:
-        return (payload['cursiveName'] ? '<i>' + scientificName + '</i>' : scientificName)
-         +' (' + (this.matchingName + ') <div>' + lajiRankFlag ); 
+        return scientificName +' (' + (this.matchingName + ') <div>' + lajiRankFlag ); 
     }
   }
 
