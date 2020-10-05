@@ -8,6 +8,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentToolsService } from '../../../shared-modules/document-viewer/document-tools.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
+import { Router } from '@angular/router';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
@@ -59,6 +60,7 @@ export class UserDocumentToolsComponent implements OnInit {
     private translate: TranslateService,
     private modalService: BsModalService,
     private cd: ChangeDetectorRef,
+    private router: Router,
     private documentApi: DocumentApi,
     private userService: UserService,
     private documentService: DocumentService,
@@ -94,10 +96,13 @@ export class UserDocumentToolsComponent implements OnInit {
   ngOnInit() {
     this.modalService.onHide.subscribe((e) => {
       const body = document.body;
-      body.classList.add("modal-open-after");
-      this.modalIsOpen = false;
-      this.documentToolsService.emitChildEvent(false);
-      this.cd.detectChanges();
+      console.log('hola')
+      if (!this.router.url.includes('view')) {
+        body.classList.add("modal-open-after");
+        this.modalIsOpen = false;
+        this.documentToolsService.emitChildEvent(false);
+        this.cd.detectChanges();
+      }
     });
 
     if (this._editors.indexOf(this._personID)!== -1 || this._editors.length === 0){
