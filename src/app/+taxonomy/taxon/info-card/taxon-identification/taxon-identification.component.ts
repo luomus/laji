@@ -32,6 +32,7 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
       if (this.taxon.taxonRank === 'MX.species') {
+        this.loading = false;
         this.taxonChildren = [];
         return;
       }
