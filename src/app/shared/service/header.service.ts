@@ -108,14 +108,14 @@ export class HeaderService implements OnDestroy {
   public updateMetaDescription(description) {
     this.removeMetaTags(ALL_META_KEYS);
     ALL_META_KEYS.forEach((key) => {
-      this.metaService.updateTag({ property: key, content: description });
+      this.metaService.addTag({ property: key, content: description });
     })
   }
 
   public updateFeatureImage(image){
     this.removeMetaTags(ALL_META_KEYS);
     ALL_IMAGE_KEYS.forEach((key) => {
-      this.metaService.updateTag({ property: key, content: image });
+      this.metaService.addTag({ property: key, content: image });
     })
   }
 
