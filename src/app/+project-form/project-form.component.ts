@@ -141,7 +141,7 @@ export class ProjectFormComponent implements OnInit {
       link: [`form${hasVisibleSubForms ? `/${form.id}` : ''}`],
       label: form.options?.sidebarFormLabel || 'nafi.form'
     };
-    return [formRoute, ...subForms.filter(_form => form.options?.sidebarFormLabel).map(_form => ({
+    return [formRoute, ...subForms.filter(_form => _form.options?.sidebarFormLabel).map(_form => ({
       link: ['form', _form.id],
       label: _form.options.sidebarFormLabel
     }))];
