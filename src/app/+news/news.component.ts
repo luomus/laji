@@ -42,7 +42,8 @@ export class NewsComponent implements OnInit, OnDestroy {
         ObservableOf(this.store.state.current) : this.newsService.get(id))
     ).subscribe(newsItem => {
       this.store.setCurrent(newsItem);
-      this.headerService.updateMetaDescription(this.prepareDescriptionTag(newsItem.content))
+      this.headerService.updateMetaDescription(this.prepareDescriptionTag(newsItem.content));
+      this.headerService.updateFeatureImage(newsItem.featuredImage)
     });
   }
 
