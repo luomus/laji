@@ -23,14 +23,19 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
 
   taxonChildren: TaxonChildren = [];
 
+  loading = false;
+
   constructor(private taxonomyApi: TaxonomyApi, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
-      // if taxon.taxonRank === 'MX.species' ... load species related stuff
-      // else load parent related stuff
+      if (this.taxon.taxonRank === 'MX.species') {
+        this.taxonChildren = [];
+        return;
+      }
+      this.loading = true;
       this.taxonomyApi.taxonomyFindChildren(this.taxon.id).pipe(
         switchMap(result => {
           return forkJoin(
@@ -54,9 +59,9 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
         })
       ).subscribe(res => {
         this.taxonChildren = res;
+        this.loading = false;
         this.cdr.markForCheck();
       });
-      return;
     }
   }
 }

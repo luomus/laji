@@ -1,8 +1,10 @@
-<div *ngIf="taxon.taxonRank === 'MX.species'; else parent" class="lu-text-content">
-  <div *ngFor="let media of taxon.multimedia">
-    <img lajiLazyImage [src]="media.largeURL">
+<laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
+  <div *ngIf="taxon.taxonRank === 'MX.species'; else parent" class="lu-text-content">
+    <div *ngFor="let media of taxon.multimedia">
+      <img lajiLazyImage [src]="media.largeURL">
+    </div>
   </div>
-</div>
+</laji-spinner>
 
 <ng-template #parent>
   <div *ngFor="let child of taxonChildren">
