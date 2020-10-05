@@ -40,6 +40,8 @@ export interface News {
 
   author?: string;
 
+  featuredImage?: string;
+
   /**
    * timestamp for when the news was posted
    */
