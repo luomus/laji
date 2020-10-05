@@ -12,7 +12,8 @@ import { HasViewPermission } from '../guards/has-view-permission.service';
 export const routes: Routes = [
   {
     path: '', component: FormComponent,
-    canDeactivate: [DocumentDeActivateGuard]
+    canDeactivate: [DocumentDeActivateGuard],
+    data: {displayFeedback: false}
   },
   {
     path: ':formOrDocument/places/new', component: NpEditFormComponent,
