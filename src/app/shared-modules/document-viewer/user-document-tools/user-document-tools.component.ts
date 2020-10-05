@@ -104,7 +104,6 @@ export class UserDocumentToolsComponent implements OnInit {
   ngOnInit() {
     this.modalService.onHide.subscribe((e) => {
       const body = document.body;
-      console.log('hola')
       if (!this.router.url.includes('view')) {
         body.classList.add("modal-open-after");
         this.modalIsOpen = false;
