@@ -134,8 +134,10 @@ export class UserDocumentToolsComponent implements OnInit {
   closeModal(event){
     if (this.modalRef) {
       this.modalRef.hide();
+      if (!this.router.url.includes('view')) {
       const body = document.body;
       body.classList.add("modal-open-after");
+      }
     }
   }
 
