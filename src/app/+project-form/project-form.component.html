@@ -9,7 +9,7 @@
       <laji-haseka-latest [forms]="[vm.form.id]"
                           [tmpOnly]="false"
                           (showViewer)="showDocumentViewer($event)"
-                          *ngIf="(userService.isLoggedIn$ | async) && vm.form.options?.showLatestDocuments">
+                          *ngIf="(userService.isLoggedIn$ | async)">
       </laji-haseka-latest>
     </nav>
     <main>
