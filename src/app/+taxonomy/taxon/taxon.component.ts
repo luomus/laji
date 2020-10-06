@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
@@ -11,6 +11,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { FooterService } from '../../shared/service/footer.service';
 import { DOCUMENT } from '@angular/common';
 import { CacheService } from '../../shared/service/cache.service';
+import { HeaderService } from '../../../app/shared/service/header.service';
+import { MultiLangService } from '../../../../src/app/shared-modules/lang/service/multi-lang.service';
 
 @Component({
   selector: 'laji-taxonomy',
@@ -18,17 +20,16 @@ import { CacheService } from '../../shared/service/cache.service';
   styleUrls: ['./taxon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonComponent implements OnInit, OnDestroy {
+export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
   taxon: Taxonomy;
   isFromMasterChecklist: boolean;
 
   infoCardContext: string;
   infoCardTab: string;
-
   showTree = false;
   canShowTree = true;
-
   loading = false;
+  metaText: string;
   private initTaxonSub: Subscription;
 
   private subParam: Subscription;
@@ -44,6 +45,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private footerService: FooterService,
     private cd: ChangeDetectorRef,
     private cacheService: CacheService,
+    private headerService: HeaderService,
     @Inject(DOCUMENT) private document: Document
   ) { }
 
@@ -78,6 +80,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnChanges() {
+  }
+
   updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false) {
     const route = ['/taxon', id];
     const params = {};
@@ -105,6 +110,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       ),
       extra
     );
+ 
   }
 
   private initTaxon(taxonId: string): Observable<any> {
@@ -115,6 +121,10 @@ export class TaxonComponent implements OnInit, OnDestroy {
         this.canShowTree = this.taxon.hasParent || this.taxon.hasChildren;
 
         this.setTitle();
+        this.headerService.updateMetaDescription(this.getMetaDescription());
+        if (taxon.multimedia) {
+          this.headerService.updateFeatureImage(this.taxon.multimedia[0]['fullURL']);
+        }
       })
     );
   }
@@ -146,6 +156,21 @@ export class TaxonComponent implements OnInit, OnDestroy {
     );
   }
 
+  private getMetaDescription(): string {
+    if (this.taxon.descriptions) {
+      let descriptions = this.taxon.descriptions;
+      descriptions.reverse().forEach(element => {
+        element.groups.reverse().forEach(group => {
+          if (group['variables'] && group['group'] !=='MX.SDVG10' && 
+          MultiLangService.hasValue(group['variables'][0]['content'], this.translate.currentLang)) {
+            return this.metaText = MultiLangService.getValue(group['variables'][0]['content'], this.translate.currentLang).replace(/<[^>]*>?/gm, '');
+          }
+        });
+      });
+    }
+    return this.metaText ? this.metaText : this.translate.instant('footer.intro1');
+  }
+
   private getIsFromMasterChecklist() {
     const masterChecklist = 'MR.1';
     if (!this.taxon) {
@@ -156,4 +181,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
     }
     return this.taxon.nameAccordingTo === masterChecklist;
   }
+
+  
 }

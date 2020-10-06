@@ -106,14 +106,15 @@ export class HeaderService implements OnDestroy {
   }
 
   public updateMetaDescription(description) {
+    let truncate = description.length > 150 ? this.truncateString(description, 150, '') : description;
     this.removeMetaTags(ALL_META_KEYS);
     ALL_META_KEYS.forEach((key) => {
-      this.metaService.addTag({ property: key, content: description });
+      this.metaService.addTag({ property: key, content: truncate });
     })
   }
 
   public updateFeatureImage(image){
-    this.removeMetaTags(ALL_META_KEYS);
+    this.removeMetaTags(ALL_IMAGE_KEYS);
     ALL_IMAGE_KEYS.forEach((key) => {
       this.metaService.addTag({ property: key, content: image });
     })
@@ -183,6 +184,13 @@ export class HeaderService implements OnDestroy {
       );
     }
     return ObservableOf(title);
+  }
+
+  truncateString(str, maxLen, separator) {
+    if (str.length <= maxLen) {
+      return str;
+    } 
+    return str.substr(0, str.lastIndexOf(separator, maxLen));
   }
 
 }
