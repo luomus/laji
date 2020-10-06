@@ -57,6 +57,17 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
       this.showTree = data[1]['showTree'] === 'true';
       this.cd.markForCheck();
 
+      if (this.taxon && data[0]['id'] === this.taxon.id) {
+        if (this.initTaxonSub) {
+          this.initTaxonSub.unsubscribe();
+        }
+
+        this.initTaxonSub = this.initTaxon(data[0]['id']).subscribe(() => {
+          this.loading = false;
+          this.cd.markForCheck();
+        });
+      }
+
       if (!this.taxon || data[0]['id'] !== this.taxon.id) {
         if (this.initTaxonSub) {
           this.initTaxonSub.unsubscribe();
@@ -157,6 +168,7 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getMetaDescription(): string {
+    this.metaText = null;
     if (this.taxon.descriptions) {
       let descriptions = this.taxon.descriptions;
       descriptions.reverse().forEach(element => {
