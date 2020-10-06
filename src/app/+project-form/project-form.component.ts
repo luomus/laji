@@ -65,10 +65,10 @@ export class ProjectFormComponent implements OnInit {
       )
     );
 
-    this.vm$ = combineLatest(projectForm$, rights$, this.route.queryParams).pipe(
-      map(([projectForm, rights, queryParams]) => ({
+    this.vm$ = combineLatest(projectForm$, this.userService.isLoggedIn$, rights$, this.route.queryParams).pipe(
+      map(([projectForm, loggedIn, rights, queryParams]) => ({
           form: projectForm.form,
-          navLinks: this.getNavLinks(projectForm, rights, queryParams),
+          navLinks: this.getNavLinks(projectForm, loggedIn, rights, queryParams),
         })
       )
     );
@@ -132,8 +132,8 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  private static getFormRoutes(form: Form.SchemaForm, subForms: Form.List[], rights: Rights) {
-    if (!rights.view) {
+  private static getFormRoutes(form: Form.SchemaForm, subForms: Form.List[], loggedIn: boolean, rights: Rights) {
+    if (loggedIn && !rights.view) {
       return [];
     }
     const hasVisibleSubForms = (subForms.some(f => f.options?.sidebarFormLabel));
@@ -147,7 +147,7 @@ export class ProjectFormComponent implements OnInit {
     }))];
   }
 
-  private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
+  private getNavLinks(projectForm: ProjectForm, loggedIn: boolean, rights: Rights, queryParams: Params): NavLink[] {
     const allowExcel = this.projectFormService.getExcelFormIDs(projectForm).length;
     const {form, subForms} = projectForm;
     return [
@@ -155,7 +155,7 @@ export class ProjectFormComponent implements OnInit {
         link: ['about'],
         label: 'about'
       },
-      rights.edit && form.options?.instructions && {
+      (!loggedIn || rights.edit) && form.options?.instructions && {
         link: ['instructions'],
         label: 'instructions'
       },
@@ -164,20 +164,20 @@ export class ProjectFormComponent implements OnInit {
         label: 'nafi.stats',
         children: ProjectFormComponent.getResultServiceRoutes(form.options?.resultServiceType, queryParams)
       },
-      ...ProjectFormComponent.getFormRoutes(form, subForms, rights),
-      rights.edit && allowExcel && {
+      ...ProjectFormComponent.getFormRoutes(form, subForms, loggedIn, rights),
+      (!loggedIn || rights.edit) && allowExcel && {
         link: ['import'],
         label: 'excel.import',
       },
-      rights.edit && allowExcel && {
+      (!loggedIn || rights.edit) && allowExcel && {
         link: ['generate'],
         label: 'excel.generate'
       },
-      rights.edit && {
+      (!loggedIn || rights.edit) && {
         link: ['submissions'],
         label: this.projectFormService.getSubmissionsPageTitle(form, rights.admin)
       },
-      rights.edit && form.options?.allowTemplate && {
+      (!loggedIn || rights.edit) && form.options?.allowTemplate && {
         link: ['templates'],
         label: 'haseka.templates.title'
       },

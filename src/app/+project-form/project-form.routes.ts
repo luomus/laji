@@ -9,11 +9,11 @@ import { IntroComponent } from './form-permission/admin/intro/intro.component';
 import { AcceptComponent } from './form-permission/admin/accept/accept.component';
 import { ManageComponent } from './form-permission/admin/manage/manage.component';
 import { ParticipantsComponent } from './form-permission/admin/participants/participants.component';
-import { SubmissionsComponent } from './submissions/submissions.component';
 import { ImportComponent } from './import/import.component';
 import { GenerateSpreadsheetComponent } from './generate-spreadsheet/generate-spreadsheet.component';
 import { TemplatesComponent } from './templates/templates.component';
-import { StatisticsComponent } from './submissions/statistics/statistics.component';
+import { HasAdminPermission } from './guards/has-admin-permission';
+import { HasFormPermission } from './guards/has-form-permission';
 
 export const routes: Routes = [
   {
@@ -22,17 +22,17 @@ export const routes: Routes = [
     children : [
       {path: '', redirectTo: 'about'},
       {path: 'about', component: AboutComponent},
-      {path: 'instructions', component: InstructionsComponent},
+      {path: 'instructions', component: InstructionsComponent, canActivate: [OnlyLoggedIn, HasFormPermission]},
       {path: 'stats', loadChildren: () => import('./results/results.module').then(m => m.ResultsModule)},
       {
         path: 'submissions',
-        canActivate: [OnlyLoggedIn],
+        canActivate: [OnlyLoggedIn, HasFormPermission],
         loadChildren: () => import('./submissions/submissions.module').then(m => m.SubmissionsModule)
       },
       {path: 'form', loadChildren: () => import('./form/form.module').then(m => m.FormModule)},
       {
         path: 'admin',
-        canActivate: [OnlyLoggedIn],
+        canActivate: [OnlyLoggedIn, HasAdminPermission],
         component: AdminComponent,
         children: [
           {path: '', redirectTo: 'instructions'},
@@ -44,17 +44,17 @@ export const routes: Routes = [
       },
       {
         path: 'import',
-        canActivate: [OnlyLoggedIn],
+        canActivate: [OnlyLoggedIn, HasFormPermission],
         component: ImportComponent
       },
       {
         path: 'generate',
-        canActivate: [OnlyLoggedIn],
+        canActivate: [OnlyLoggedIn, HasFormPermission],
         component: GenerateSpreadsheetComponent
       },
       {
         path: 'templates',
-        canActivate: [OnlyLoggedIn],
+        canActivate: [OnlyLoggedIn, HasFormPermission],
         component: TemplatesComponent
       }
     ]

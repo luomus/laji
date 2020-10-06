@@ -11,8 +11,6 @@ import { LajiUiModule } from '../../../../projects/laji-ui/src/lib/laji-ui.modul
 import { SharedModule } from '../../shared/shared.module';
 import { InfoModule } from '../../shared-modules/info/info.module';
 import { SelectModule } from '../../shared-modules/select/select.module';
-import { HasFormPermission } from '../guards/has-form-permission';
-import { HasViewPermission } from '../guards/has-view-permission.service';
 
 @NgModule({
   imports: [
@@ -31,10 +29,7 @@ import { HasViewPermission } from '../guards/has-view-permission.service';
     FormComponent,
     DocumentFormComponent
   ],
-  providers: [
-    HasFormPermission,
-    HasViewPermission
-  ]
+  providers: []
 })
 export class FormModule {
 }
