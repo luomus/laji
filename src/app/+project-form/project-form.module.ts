@@ -23,7 +23,7 @@ import { TermsComponent } from './about/terms/terms.component';
 import { StatisticsModule } from './submissions/statistics/statistics.module';
 import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
-import { HasViewPermission } from './guards/has-view-permission.service';
+import { HasViewPermission } from './guards/has-view-permission';
 
 @NgModule({
   imports: [
