@@ -5,6 +5,7 @@ import { TaxonomyApi } from 'src/app/shared/api/TaxonomyApi';
 import { switchMap, map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { PagedResult } from 'src/app/shared/model/PagedResult';
+import { TranslateService } from '@ngx-translate/core';
 
 type TaxonChildren = {
   taxonomy: Taxonomy,
@@ -25,7 +26,7 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
 
   loading = false;
 
-  constructor(private taxonomyApi: TaxonomyApi, private cdr: ChangeDetectorRef) { }
+  constructor(private taxonomyApi: TaxonomyApi, private cdr: ChangeDetectorRef, private translate: TranslateService) { }
 
   ngOnInit() {}
 
@@ -37,7 +38,7 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
         return;
       }
       this.loading = true;
-      this.taxonomyApi.taxonomyFindChildren(this.taxon.id).pipe(
+      this.taxonomyApi.taxonomyFindChildren(this.taxon.id, this.translate.currentLang).pipe(
         switchMap(result => {
           return forkJoin(
             ...result.map(
@@ -47,7 +48,7 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
                 includeMedia: true,
                 pageSize: 8,
                 sortOrder: 'observationCountFinland DESC'
-              }).pipe(
+              }, this.translate.currentLang).pipe(
                 map(res => {
                   return {
                     taxonomy: taxon,

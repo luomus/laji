@@ -13,8 +13,9 @@
         <a class="child-scientific-name" [ngClass]="child.taxonomy.cursiveName ? 'cursive' : null" [routerLink]="['/taxon', child.taxonomy.id, 'identification']" preserveQueryParams>{{child.taxonomy.scientificName}}</a>
         <span class="child-rank"> ({{ child.taxonomy.taxonRank | label }})</span>
       </div>
-      <div class="child-vernacular-name">
-        {{child.taxonomy.vernacularName}}
+      <div class="child-vernacular-name-row">
+        <span *ngIf="child.taxonomy.vernacularName" class="child-vernacular-name">{{child.taxonomy.vernacularName}}</span>
+        {{child.taxonomy.vernacularName ? ' - ' : ''}}{{ child.species.total | formattedNumber:' ' }} {{ (child.species.total === 1 ? 'taxonomy.identification.species' : 'taxonomy.identification.speciesPlural') | translate }} - {{ child.taxonomy.observationCountFinland | formattedNumber:' ' }} {{ (child.taxonomy.observationCountFinland === 1 ? 'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
       </div>
     </div>
     <laji-identification-species-list
