@@ -20,6 +20,7 @@ export class TaxonService {
   ) { }
 
   getTaxon(id: string, lang: string, checklist?: string): Observable<Taxonomy> {
+    console.log('merda')
     return this.taxonApi.taxonomyFindBySubject(id, lang, {
       includeMedia: true,
       includeRedListEvaluations: true,

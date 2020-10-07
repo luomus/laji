@@ -6,6 +6,7 @@ import { TableColumnService } from '../shared-modules/datatable/service/table-co
 import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
 import { TaxonAutocompleteService } from '../shared/service/taxon-autocomplete.service';
 import { LabelPipe } from '../shared/pipe/label.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { LabelPipe } from '../shared/pipe/label.pipe';
     TaxonAutocompleteService,
     LabelPipe,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
-  ]
+  ],
+  exports: [SharedModule]
 })
 export class ObservationModule {
 }
