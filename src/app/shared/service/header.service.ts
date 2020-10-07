@@ -65,6 +65,7 @@ export class HeaderService implements OnDestroy {
   }
 
   public startRouteListener(): void {
+    console.log('arriverderci')
     this.routeSub = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => this.location.path() || '/'),
@@ -106,7 +107,7 @@ export class HeaderService implements OnDestroy {
   }
 
   public updateMetaDescription(description) {
-    let truncate = description.length > 150 ? this.truncateString(description, 150, '') : description;
+    let truncate = description.length > 170 ? this.truncateString(description, 170, ' ') : description;
     this.removeMetaTags(ALL_META_KEYS);
     ALL_META_KEYS.forEach((key) => {
       this.metaService.addTag({ property: key, content: truncate });

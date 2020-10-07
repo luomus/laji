@@ -12,6 +12,8 @@ import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/t
 import { Subscription } from 'rxjs';
 import {LocalStorageService} from 'ngx-webstorage';
 import { ActivatedRoute } from "@angular/router";
+import { HeaderService } from '../../shared/service/header.service';
+import { TranslateService } from '@ngx-translate/core';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -92,7 +94,9 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     private searchQueryService: SearchQueryService,
     private cd: ChangeDetectorRef,
     private storage: LocalStorageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private headerService: HeaderService,
+    private translate: TranslateService
   ) { }
 
   @Input()
@@ -119,7 +123,9 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('ciao')
+  }
 
   ngOnChanges() {
     if (((this.route.snapshot.queryParams["editorOrObserverPersonToken"] === undefined &&
@@ -129,6 +135,9 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     ) {
       this.onSelect(0);
     }
+    
+    this.headerService.updateMetaDescription(this.translate.instant('observation.intro'));
+    this.headerService.updateFeatureImage('https://cdn.laji.fi/images/logos/LAJI_FI_valk.png')
   }
 
   ngDestroy() {
