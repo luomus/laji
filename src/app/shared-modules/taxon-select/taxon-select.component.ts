@@ -126,6 +126,7 @@ export class TaxonSelectComponent{
 
   private selectValue(key: string, blur?: boolean) {
     this.taxonIdChange.emit(key);
+    this._taxonId = '';
     if (blur) {
       this.blur();
     }
