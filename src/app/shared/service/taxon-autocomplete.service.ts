@@ -73,7 +73,7 @@ export class TaxonAutocompleteService {
         return payload['scientificName'];
       case 'MX.birdlifeCode':
       case 'MX.euringCode':
-        return this.capitalizeFirstLetter(payload['matchingName'].toLowerCase());
+        return payload['matchingName'].toLowerCase();
       case 'MX.vernacularName':
         return payload['vernacularName'] !== '' ? payload['vernacularName'] : payload['scientificName'];
       case 'MX.alternativeVernacularName':
