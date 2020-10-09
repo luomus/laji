@@ -54,7 +54,6 @@ import { AbstractPermissionGuard } from './abstract-permission-guard';
 
 export class HasFormPermission extends AbstractPermissionGuard {
   checkPermission(rights: Rights) {
-    console.log(rights);
     return rights.edit || rights.admin;
   }
 }
