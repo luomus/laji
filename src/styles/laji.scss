@@ -231,66 +231,53 @@ treenode:last-child > .tree-node > .tree-children::after {
   filter: brightness(0) invert(1);
 }
 
-.informal-group-image.MVL\.1, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.1,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.1{
+.informal-group-image.MVL\.1 {
   background-image: url('/static/images/informalGroups/MVL.1.svg');
 }
 
-.informal-group-image.MVL\.2, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.2,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.2 {
+.informal-group-image.MVL\.2 {
   background-image: url('/static/images/informalGroups/MVL.2.svg');
 }
 
-.informal-group-image.MVL\.343, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.343,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.343{
+.informal-group-image.MVL\.343 {
   background-image: url('/static/images/informalGroups/MVL.21.svg');
 }
 
-.informal-group-image.MVL\.22 , typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.22,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.22 {
+.informal-group-image.MVL\.22 {
   background-image: url('/static/images/informalGroups/MVL.22.svg');
 }
 
-.informal-group-image.MVL\.26, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.26,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.26 {
+.informal-group-image.MVL\.26 {
   background-image: url('/static/images/informalGroups/MVL.26.svg');
 }
 
-.informal-group-image.MVL\.27, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.27,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.27 {
+.informal-group-image.MVL\.27 {
   background-image: url('/static/images/informalGroups/MVL.27.svg');
 }
 
-.informal-group-image.MVL\.37, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.37,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.37 {
+.informal-group-image.MVL\.37 {
   background-image: url('/static/images/informalGroups/MVL.37.svg');
 }
 
-.informal-group-image.MVL\.39, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.39,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.39 {
+.informal-group-image.MVL\.39 {
   background-image: url('/static/images/informalGroups/MVL.39.svg');
 }
-.informal-group-image.MVL\.40, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.40,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.40 {
+.informal-group-image.MVL\.40 {
   background-image: url('/static/images/informalGroups/MVL.40.svg');
 }
 
-.informal-group-image.MVL\.41, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.41,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.41 {
+.informal-group-image.MVL\.41 {
   background-image: url('/static/images/informalGroups/MVL.41.svg');
 }
 
-.informal-group-image.MVL\.232, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.232,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.232 {
+.informal-group-image.MVL\.232 {
   background-image: url('/static/images/informalGroups/MVL.232.svg');
 }
 
-.informal-group-image.MVL\.233, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.233,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.233 {
+.informal-group-image.MVL\.233 {
   background-image: url('/static/images/informalGroups/MVL.233.svg');
 }
-.informal-group-image.MVL\.28, typeahead-container ul li a span div:nth-child(1) div:nth-child(1).MVL\.28,
-.omni-search-results span div:nth-child(1) div:nth-child(1).MVL\.28 {
+.informal-group-image.MVL\.28 {
   background-image: url('/static/images/informalGroups/MVL.28.svg');
 }
 
@@ -1318,6 +1305,7 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     background-position: center center;
     position: relative;
     padding: 5px 20px 5px 5px;
+    margin-left: 5px;
   }
 
   .finnish-flag {
@@ -1328,11 +1316,11 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     display: inline-block;
     width: 24px;
     height: 14px;
-    margin-left: 10px;
+    margin-left: 5px;
     background-position: center center;
     position: relative;
     border: 1px solid gray;
-    bottom: 2px;
+    top: 2px;
   }
 
   .flag_icon {
@@ -1355,91 +1343,43 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     border: 0;
   }
 
-  .omni-search-results span.active div div:nth-child(1), .omni-search-results span.link div div:nth-child(1), typeahead-container ul li a span div div:nth-child(1) {
+  .container-taxon-group {
     display: inline-block;
-    margin-left: 5px;
-    float: none;
-    top: 2px;
+    width: 22px;
+    height: 22px;
+    background-position: center center;
+    background-size: 80%;
+    position: relative;
+    top: 4px;
   }
 
-
-  .omni-search-results span.active div div:nth-child(1) div:nth-child(1),.omni-search-results span.link div div:nth-child(1) div:nth-child(1),  typeahead-container ul li a span div div:nth-child(1) div:nth-child(1) {
-    display: inline-block;
-    padding-right: 20px;
-    height: 20px;
-    background-size: 20px 20px;
-    background-position: center center;
-    position: relative;
-    padding: 5px 20px 5px 5px;
-    background-repeat: no-repeat;
-    float: left;
-  }
-
-   .omni-search-results span.active div div:nth-child(1) div:nth-child(2), .omni-search-results span.link div div:nth-child(1) div:nth-child(2), typeahead-container ul li a span div div:nth-child(1) div:nth-child(2) {
-    display: inline-block;
-    width: 24px;
-    height: 14px;
-    margin-left: 10px;
-    background-position: center center;
-    position: relative;
-    border: 1px solid gray;
-    top: 3px;
+  .flag-taxonRank {
     float: right;
-    background-image: url('/static/images/icons/flag_fi_small.png');
+    position: relative;
+    top: -6px;
+    margin-left:10px;
   }
+  
 
-  .omni-search-results span.active span, .omni-search-results span.link span, typeahead-container ul li a span span {
-    font-style: italic;
-  }
-
-  .omni-search-results span.active div div:nth-child(1) span, .omni-search-results span.link div div:nth-child(1) span, typeahead-container ul li a span div div:nth-child(1) span {
-    border: 0;
-    display: inline-block;
-    height: 14px;
-    width: 24px;
-    margin-left: 10px;
-    top: 3px;
-  }
+  
  
 
 
   
 
   @media only screen and (max-width : 767px) {
-
-    .responsive_container {
-      display: block;
+    .flag-taxonRank {
       float: none;
-      margin-left: 0px;
       position: relative;
-      top: -4px;
+      top: -6px;
+      display: block;
+      opacity: 0.5;
+      margin-left: 0px;
     }
 
-    ::ng-deep .omni-search-results span.active span, typeahead-container ul li a span span {
+    .taxon-second-element, .taxon-third-element {
       display: block;
     }
-
-     typeahead-container ul li a span span {
-       display: block;
-     }
-
-
-    ::ng-deep .omni-search-results span.active div div:nth-child(1) div:nth-child(2), typeahead-container ul li a span div div:nth-child(1) div:nth-child(2) {
-      top: 15px;
-    }
-
-    ::ng-deep .omni-search-results span.active div div:nth-child(1) div:nth-child(1), typeahead-container ul li a span div div:nth-child(1) div:nth-child(1) {
-      top: 10px;
-    }
-
-    ::ng-deep .omni-search-results span.active div div:nth-child(1), typeahead-container ul li a span div div:nth-child(1) {
-      float: none;
-    }
-
-    typeahead-container ul li a span i.sName {
-      display: block;
-    }
-
   }
 
 
