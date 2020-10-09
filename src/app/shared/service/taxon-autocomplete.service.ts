@@ -44,24 +44,24 @@ export class TaxonAutocompleteService {
     const scientificName = (payload['cursiveName'] ? '<i>' + this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)) + '</i>' : this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)));
     const vernacularName = this.addBold(payload['vernacularName'], text);
     this.matchingName = this.addBold(payload['matchingName'], text);
-    const lajiRankFlag = (payload['taxonRankId'] ? ' (' + rank + ') ' : '') + '<div><div class="' + (payload['informalTaxonGroups'].length > 0 ? payload['informalTaxonGroups'][0].id : '') +'"></div>' + (payload['finnish'] ? '<div></div>' : '<span></span>' ) + '</div></div>';
+    const lajiRankFlag = (payload['taxonRankId'] ? ' (' + rank + ') ' : '') + '<span><span class="container-taxon-group informal-group-image ' + (payload['informalTaxonGroups'].length > 0 ? payload['informalTaxonGroups'][0].id : '') +'"></span>' + (payload['finnish'] ? '<span class="autocomplete-small-flag finnish-flag"></span>' : '<span class="autocomplete-small-flag no-border"></span>' ) + '</span></span>';
 
     switch (payload['nameType']) {
       case 'MX.scientificName':
-        return scientificName +' <div>'+ lajiRankFlag;
+        return scientificName +' <span class="flag-taxonRank">'+ lajiRankFlag;
       case 'MX.birdlifeCode':
       case 'MX.euringCode':
-        return this.matchingName + ' - ' + scientificName + '<div>' + lajiRankFlag;
+        return this.matchingName + '<span class="taxon-second-element"> - ' + scientificName + '</span><span class="flag-taxonRank">' + lajiRankFlag;
       case 'MX.vernacularName':
-        return (payload['vernacularName'] !== '' ? vernacularName + ' - ' + scientificName + ' '
-        : scientificName + ' (' + this.matchingName + ') - ' + scientificName +'' ) + '<div>' + lajiRankFlag;
+        return (payload['vernacularName'] !== '' ? vernacularName + ' <span class="taxon-second-element">- ' + scientificName + '</span> '
+        : scientificName + '<span class="taxon-second-element"> (' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName +'</span>' ) + '<span class="flag-taxonRank">' + lajiRankFlag;
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
-        return (payload['vernacularName'] !== '' ? vernacularName + ' - (' + this.matchingName + ') - ' + scientificName + ''
-        :scientificName + ' (' + this.matchingName + ') - ' + scientificName + '' ) + '<div>' + lajiRankFlag;
+        return (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - (' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
+        : scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' ) + '<span class="flag-taxonRank">' + lajiRankFlag;
       default:
-        return scientificName +' (' + (this.matchingName + ') <div>' + lajiRankFlag ); 
+        return scientificName +' <span class="taxon-second-element">(' + (this.matchingName + ')</span> <span class="flag-taxonRank">' + lajiRankFlag ); 
     }
   }
 
