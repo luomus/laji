@@ -61,10 +61,12 @@ export class DocumentFormComponent implements OnDestroy {
     if (this.documentID) {
       levels++;
     }
-    this.router.navigate(
-      [new Array(levels).fill('..').join('/')],
-      {relativeTo: this.route.parent, replaceUrl: true}
-    );
+    this.browserService.goBack(() => {
+      this.router.navigate(
+        [new Array(levels).fill('..').join('/')],
+        {relativeTo: this.route.parent, replaceUrl: true}
+      );
+    });
   }
 
   onSuccess() {
@@ -76,14 +78,16 @@ export class DocumentFormComponent implements OnDestroy {
       }
     }));
 
-    findProjectRootRoute(this.route).pipe(take(1)).subscribe(projectRoute => {
-      const page = this.form.options?.resultServiceType
-        ? 'stats'
-        : this.form.options?.mobile
-          ? 'about'
-          : 'submissions';
-      this.router.navigate([`./${page}`], {relativeTo: projectRoute});
-    });
+    this.browserService.goBack(() => {
+      findProjectRootRoute(this.route).pipe(take(1)).subscribe(projectRoute => {
+        const page = this.form.options?.resultServiceType
+          ? 'stats'
+          : this.form.options?.mobile
+            ? 'about'
+            : 'submissions';
+        this.router.navigate([`./${page}`], {relativeTo: projectRoute});
+      });
+    })
   }
 
   canDeactivate(...params) {
