@@ -12,11 +12,17 @@
     <ng-template #datasetIntro>
       <laji-dataset-about [form]="data.form"></laji-dataset-about>
     </ng-template>
-    <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
-                  [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription">
-    </laji-request>
+    <ng-container *ngIf="data.loggedIn; else loginButton">
+      <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
+                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription">
+      </laji-request>
+    </ng-container>
   </ng-container>
 </ng-container>
+
+<ng-template #loginButton>
+  <lu-button (click)="login()" role="primary">{{ 'project-form.about.login' | translate }}</lu-button>
+</ng-template>
 
 <ng-template #mobile>
   <ng-container *ngIf="aboutData$ | async as data">
