@@ -81,7 +81,7 @@ export class DocumentFormComponent implements OnDestroy {
         ? 'stats'
         : this.form.options?.mobile
           ? 'about'
-          : 'ownSubmissions';
+          : 'submissions';
       this.router.navigate([`./${page}`], {relativeTo: projectRoute});
     });
   }
