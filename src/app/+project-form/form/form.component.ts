@@ -79,7 +79,7 @@ export class FormComponent implements OnInit {
                   ? this.namedPlacesService.getNamedPlace(namedPlaceID)
                   : of(null);
                 if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
-                  this.router.navigate(['places'], {relativeTo: this.route});
+                  this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
                   return;
                 }
                 return namedPlace$.pipe(map(namedPlace => ({
@@ -98,7 +98,7 @@ export class FormComponent implements OnInit {
   tryRedirectToSubForm(form: Form.SchemaForm, routeParams: Params): Observable<boolean> {
     const navigateToForm = (parentID: string, formID: string) => {
       this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(rootRoute =>
-        this.router.navigate([parentID, 'form', formID, routeParams['formOrDocument']], {relativeTo: rootRoute.parent})
+        this.router.navigate([parentID, 'form', formID, routeParams['formOrDocument']], {relativeTo: rootRoute.parent, replaceUrl: true})
       );
       return true;
     };
