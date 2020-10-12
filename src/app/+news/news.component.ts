@@ -4,7 +4,7 @@ import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { NewsService } from '../shared/service/news.service';
 import { Logger } from '../shared/logger/logger.service';
 import { News } from '../shared/model/News';
-import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap, filter } from 'rxjs/operators';
 import { NewsStore } from './news.store';
 import { HeaderService } from '../../app/shared/service/header.service'
 import { Title } from '@angular/platform-browser';
@@ -32,8 +32,9 @@ export class NewsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.newsItem$ = this.store.state$.pipe(
       map(state => state.current),
-      tap(info => this.title.setTitle(info.title + ' | ' + this.title.getTitle())),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      filter(info => !!info),
+      tap(info => this.title.setTitle(info.title + ' | ' + this.title.getTitle()))
     );
     this.subTrans = this.route.params.pipe(
       map(params => params['id']),
