@@ -30,7 +30,7 @@ import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplet
     autocorrect="off">
 
     <ng-template #taxonItem let-model="item">
-     <span [innerHtml]="model['autocompleteDisplayName' ]"></span>
+     <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName' ]"></span>
     </ng-template>
   `,
   styleUrls: ['taxon-select.scss'],

@@ -1360,7 +1360,7 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
   .flag-taxonRank {
     float: right;
     position: relative;
-    top: -6px;
+    top: -3px;
     margin-left:10px;
   }
 
@@ -1373,6 +1373,9 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     display:inline-block
   }
   
+  span.autocomplete-container {
+    vertical-align: sub;
+}
  
 
 
