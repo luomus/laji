@@ -31,7 +31,7 @@
       </ng-container>
     </div>
     <ng-template #taxonItem let-model="item">
-      <span [innerHtml]="model['autocompleteDisplayName' ]"></span>
+      <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName' ]"></span>
      </ng-template>
   </div>
   <div class="col-md-6 form-control-static" *ngIf="showResult">
