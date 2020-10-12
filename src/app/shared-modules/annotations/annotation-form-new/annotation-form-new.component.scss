@@ -262,11 +262,11 @@ label {
   :host ::ng-deep typeahead-container.dropdown {
     right: 20px !important;
     left: unset !important;
-    min-width: 500px;
+    min-width: 600px;
   }
 
   :host ::ng-deep typeahead-container.dropdown ul {
-    min-width: 500px;
+    min-width: 600px;
   }
 
   ::ng-deep typeahead-container ul li a span div {
