@@ -3,6 +3,6 @@ import { AbstractPermissionGuard } from './abstract-permission-guard';
 
 export class HasAdminPermission extends AbstractPermissionGuard {
   checkPermission(rights: Rights) {
-    return rights.admin;
+    return rights.admin || rights.ictAdmin;
   }
 }

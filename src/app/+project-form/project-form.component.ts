@@ -56,14 +56,7 @@ export class ProjectFormComponent implements OnInit {
   ngOnInit(): void {
     const projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
 
-    const rights$ = projectForm$.pipe(
-      switchMap(projectForm => this.formPermissionService.getRights(projectForm.form).pipe(
-        mergeMap(_rights => this.userService.user$.pipe(
-          map(user => ({..._rights, ictAdmin: UserService.isIctAdmin(user)} as Rights))
-        ))
-        )
-      )
-    );
+    const rights$ = projectForm$.pipe(switchMap(projectForm => this.formPermissionService.getRights(projectForm.form)));
 
     this.vm$ = combineLatest(projectForm$, rights$, this.route.queryParams).pipe(
       map(([projectForm, rights, queryParams]) => ({
