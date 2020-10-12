@@ -113,7 +113,7 @@ export class HeaderService implements OnDestroy {
   }
 
   public updateFeatureImage(image){
-    this.removeMetaTags(ALL_META_KEYS);
+    this.removeMetaTags(ALL_IMAGE_KEYS);
     ALL_IMAGE_KEYS.forEach((key) => {
       this.metaService.addTag({ property: key, content: image });
     })

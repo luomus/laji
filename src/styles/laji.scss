@@ -1312,6 +1312,10 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     background-image: url('/static/images/icons/flag_fi_small.png');
   }
 
+  typeahead-container.dropdown ul li a {
+    display: inline-block
+  }
+
   .autocomplete-small-flag {
     display: inline-block;
     width: 24px;
@@ -1356,12 +1360,22 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
   .flag-taxonRank {
     float: right;
     position: relative;
-    top: -6px;
+    top: -3px;
     margin-left:10px;
   }
-  
 
+
+  .container-flag-taxonRank {
+    display:  inline-block;
+  }
   
+  typeahead-container ul li a ~ span{
+    display:inline-block
+  }
+  
+  span.autocomplete-container {
+    vertical-align: sub;
+}
  
 
 
