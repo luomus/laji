@@ -272,10 +272,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   private toggleFullscreen() {
     this.fullScreen = !this.fullScreen;
     this.updateCustomControls();
-    setTimeout(() => {
-      this.invalidateSize();
-    }, 0);
-    this.cd.markForCheck();
+    this.cd.detectChanges();
+    this.invalidateSize();
   }
 
   private updateCustomControls() {
