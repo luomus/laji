@@ -45,6 +45,14 @@ export const Global = {
   sources: {
     kotka: 'KE.3'
   },
+  canHaveTemplate: [
+    'JX.519',
+    'MHL.6',
+    'MHL.33',
+    'MHL.35',
+    'MHL.9',
+    'MHL.25'
+  ],
   documentCountUnitProperties: [
     'count',
     'individualCount',
