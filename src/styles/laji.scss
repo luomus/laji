@@ -1374,6 +1374,11 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     width: 100%;
   }
 
+  .omni-search-results .match.active .informal-group-image {
+    -webkit-filter: none;
+    filter: none;
+  }
+
   .container-flag-taxonRank {
     display:  inline-block;
   }
